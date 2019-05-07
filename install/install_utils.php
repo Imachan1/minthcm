@@ -839,7 +839,7 @@ function handleSugarConfig() {
         array ('level'=>$setup_site_log_level,
             'file' => array(
                 'ext' => '.log',
-                'name' => 'suitecrm',
+                'name' => 'minthcm',
                 'dateFormat' => '%c',
                 'maxSize' => '10MB',
                 'maxLogs' => 10,
@@ -1063,7 +1063,7 @@ function handleWebConfig()
     if (empty($setup_site_log_file)) {
         $setup_site_log_file = $sugar_config['log_file'];
         if ( empty($sugar_config['log_file']) ) {
-            $setup_site_log_file = 'suitecrm.log';
+            $setup_site_log_file = 'minthcm.log';
         }
     }
     if (empty($setup_site_log_dir)) {
@@ -1239,7 +1239,7 @@ function insert_default_settings(){
     if (isset($_SESSION['smtp_from_addr']) && $_SESSION['smtp_from_addr']) {
         $fromAddress = $_SESSION['smtp_from_addr'];
     }
-    $fromName = 'SuiteCRM';
+    $fromName = 'MintHCM';
     if (isset($_SESSION['smtp_from_name']) && $_SESSION['smtp_from_name']) {
         $fromName = $_SESSION['smtp_from_name'];
     }

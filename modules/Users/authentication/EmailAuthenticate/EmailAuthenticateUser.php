@@ -145,8 +145,8 @@ class EmailAuthenticateUser extends SugarAuthenticateUser {
         $notify_mail->Subject = 'Sugar Token';
         $notify_mail->Body = 'Your sugar session authentication token  is: ' . $password;
         $notify_mail->setMailerForSystem();
-        $notify_mail->From = 'no-reply@sugarcrm.com';
-        $notify_mail->FromName = 'Sugar Authentication';
+        $notify_mail->From = 'no-reply@minthcm.com';
+        $notify_mail->FromName = 'MintHCM Authentication';
 
         if(!$notify_mail->Send()) {
             $GLOBALS['log']->warn("Notifications: error sending e-mail (method: {$notify_mail->Mailer}), (error: {$notify_mail->ErrorInfo})");

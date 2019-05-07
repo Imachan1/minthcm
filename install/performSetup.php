@@ -101,7 +101,7 @@ $setup_site_url                     = $_SESSION['setup_site_url'];
 $parsed_url                         = parse_url($setup_site_url);
 $setup_site_host_name               = $parsed_url['host'];
 $setup_site_log_dir                 = isset($_SESSION['setup_site_custom_log_dir']) ? $_SESSION['setup_site_log_dir'] : '.';
-$setup_site_log_file                = 'suitecrm.log';  // may be an option later
+$setup_site_log_file                = 'minthcm.log';  // may be an option later
 $setup_site_session_path            = isset($_SESSION['setup_site_custom_session_path']) ? $_SESSION['setup_site_session_path'] : '';
 $setup_site_log_level				='fatal';
 
@@ -145,7 +145,7 @@ $out =<<<EOQ
                         <i class="icon-progress-1" id="complete"></i>
                         <i class="icon-progress-2"></i>
                     </div>
-            <div class="install_img"><a href="https://suitecrm.com" target="_blank"><img src="{$sugar_md}" alt="SuiteCRM"></a></div>
+            <div class="install_img"><a href="https://minthcm.com" target="_blank"><img src="{$sugar_md}" alt="MintHCM"></a></div>
 </header>
 EOQ;
 echo $out;
@@ -401,7 +401,7 @@ installLog("Installation has completed *********");
 
 
     $errTcpip = '';
-    $fp = @fsockopen("www.suitecrm.com", 80, $errno, $errstr, 3);
+    //$fp = @fsockopen("www.suitecrm.com", 80, $errno, $errstr, 3);
     if (!$fp) {
         $errTcpip = "<p>{$mod_strings['ERR_PERFORM_NO_TCPIP']}</p>";
     }
@@ -754,7 +754,7 @@ $out =<<<EOQ
 <p><b>{$fpResult}</b></p>
 </div>
 <footer id="install_footer">
-    <p id="footer_links"><a href="https://suitecrm.com" target="_blank">Visit suitecrm.com</a> | <a href="https://suitecrm.com/index.php?option=com_kunena&view=category&Itemid=1137&layout=list" target="_blank">Support Forums</a> | <a href="https://docs.suitecrm.com/admin/installation-guide/" target="_blank">Installation Guide</a> | <a href="LICENSE.txt" target="_blank">License</a>
+    <p id="footer_links"><a href="https://minthcm.com" target="_blank">Visit minthcm.com</a> | <a href="https://suitecrm.com" target="_blank">Visit suitecrm.com</a> | <a href="https://suitecrm.com/index.php?option=com_kunena&view=category&Itemid=1137&layout=list" target="_blank">Support Forums</a> | <a href="https://docs.suitecrm.com/admin/installation-guide/" target="_blank">Installation Guide</a> | <a href="LICENSE.txt" target="_blank">License</a>
 </footer>
 </div>
 </body>

@@ -107,7 +107,7 @@ function checkLoggerSettings(){
 		    'file' =>
 		     array (
 		      'ext' => '.log',
-		      'name' => 'sugarcrm',
+		      'name' => 'minthcm',
 		      'dateFormat' => '%c',
 		      'maxSize' => '10MB',
 		      'maxLogs' => 10,

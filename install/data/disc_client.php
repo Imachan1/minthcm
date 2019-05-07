@@ -49,6 +49,8 @@ $disc_client_ignore = array (
     // files
     "\\.*config\\.php\$",
     "\\.*sugarcrm\\.log\\.*",
+    "\\.*suitecrm\\.log\\.*",
+    "\\.*minthcm\\.log\\.*",
     
      "\\.*sync\\.log\\.*",
     "\\.htaccess\$",

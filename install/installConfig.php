@@ -199,8 +199,8 @@ EOQ;
                 <div id='licenseDiv'></div>
                 <header id="install_header">
                     <div class="install_img">
-                        <a href="https://suitecrm.com" target="_blank">
-                            <img src="{$sugar_md}" alt="SuiteCRM">
+                        <a href="https://minthcm.com" target="_blank">
+                            <img src="{$sugar_md}" alt="MintHCM">
                         </a>
                     </div>
                     <div id="steps">
@@ -214,7 +214,7 @@ EOQ;
             </div>
 
             <footer id="install_footer">
-                <p id="footer_links"><a href="https://suitecrm.com" target="_blank">Visit suitecrm.com</a> | <a href="https://suitecrm.com/index.php?option=com_kunena&view=category&Itemid=1137&layout=list" target="_blank">Support Forums</a> | <a href="https://docs.suitecrm.com/admin/installation-guide/" target="_blank">Installation Guide</a> | <a href="LICENSE.txt" target="_blank">License</a>
+                <p id="footer_links"><a href="https://minthcm.com" target="_blank">Visit minthcm.com</a> | <a href="https://suitecrm.com" target="_blank">Visit suitecrm.com</a> | <a href="https://suitecrm.com/index.php?option=com_kunena&view=category&Itemid=1137&layout=list" target="_blank">Support Forums</a> | <a href="https://docs.suitecrm.com/admin/installation-guide/" target="_blank">Installation Guide</a> | <a href="LICENSE.txt" target="_blank">License</a>
             </footer>
         </div>
     </body>
@@ -596,7 +596,7 @@ EOQ;
         if(empty($_SESSION['smtp_tab_selected'])) $_SESSION['smtp_tab_selected'] = 'smtp_tab_other';
         
         if(!isset($_SESSION['smtp_from_name']) || !$_SESSION['smtp_from_name']) {
-            $_SESSION['smtp_from_name'] = 'SuiteCRM';
+            $_SESSION['smtp_from_name'] = 'MintHCM';
         }
         if(!isset($_SESSION['smtp_from_addr']) || !$_SESSION['smtp_from_addr']) {
             $_SESSION['smtp_from_addr'] = 'do_not_reply@example.com';
@@ -1113,18 +1113,21 @@ EOQ;
 EOQ;
         $checked = '';
 //if(!empty($_SESSION['setup_site_sugarbeet_anonymous_stats'])) $checked = 'checked=""';
-        $out .= "
-   <tr style='display:none'><td></td>
-       <td><input type='checkbox' class='checkbox' name='setup_site_sugarbeet_anonymous_stats' value='yes' $checked /></td>
-       <td><b>{$mod_strings['LBL_SITECFG_ANONSTATS']}</b><br><i>{$mod_strings['LBL_SITECFG_ANONSTATS_DIRECTIONS']}</i></td></tr>
+//         $out .= "
+//    <tr style='display:none'><td></td>
+//        <td><input type='checkbox' class='checkbox' name='setup_site_sugarbeet_anonymous_stats' value='yes' $checked /></td>
+//        <td><b>{$mod_strings['LBL_SITECFG_ANONSTATS']}</b><br><i>{$mod_strings['LBL_SITECFG_ANONSTATS_DIRECTIONS']}</i></td></tr>
 
-";
+// ";
         $checked = '';
 //if(!empty($_SESSION['setup_site_sugarbeet_automatic_checks'])) $checked = 'checked=""';
-        $out .= <<<EOQ
-   <tr style='display:none'><td></td>
-       <td><input type="checkbox" class="checkbox" name="setup_site_sugarbeet_automatic_checks" value="yes" /></td>
-       <td><b>{$mod_strings['LBL_SITECFG_SUITE_UP']}</b><br><i>{$mod_strings['LBL_SITECFG_SUITE_UP_DIRECTIONS']}</i><br>&nbsp;</td></tr>
+//         $out .= <<<EOQ
+//    <tr style='display:none'><td></td>
+//        <td><input type="checkbox" class="checkbox" name="setup_site_sugarbeet_automatic_checks" value="yes" /></td>
+//        <td><b>{$mod_strings['LBL_SITECFG_SUITE_UP']}</b><br><i>{$mod_strings['LBL_SITECFG_SUITE_UP_DIRECTIONS']}</i><br>&nbsp;</td>
+//     </tr>
+// EOQ;
+ $out .= <<<EOQ
    <tbody id="setup_site_session_section_pre">
    <tr><td></td>
        <td><input type="checkbox" class="checkbox" name="setup_site_custom_session_path" value="yes" onclick="javascript:$('#setup_site_session_section').toggle();" {$customSession} /></td>
@@ -1867,9 +1870,10 @@ if( is_file("config.php") ){
 }
 
 //Load in the array for the site scenarios
-require_once('install/suite_install/scenarios.php');
-if(isset($installation_scenarios))
-    $_SESSION['installation_scenarios'] = $installation_scenarios;
+//require_once('install/suite_install/scenarios.php');
+// if(isset($installation_scenarios)){
+//    $_SESSION['installation_scenarios'] = $installation_scenarios;
+// }
 
 ////	errors
 $errors = '';
