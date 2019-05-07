@@ -516,32 +516,32 @@ EOQ;
         // ------------------------->
 
 
-        //demo data select
-        $demoDD = "<select name='demoData' id='demoData' class='select'><option value='no' >".$mod_strings['LBL_NO']."</option><option value='yes'>".$mod_strings['LBL_YES']."</option>";
-        $demoDD .= "</select>";
+//         //demo data select
+//         $demoDD = "<select name='demoData' id='demoData' class='select'><option value='no' >".$mod_strings['LBL_NO']."</option><option value='yes'>".$mod_strings['LBL_YES']."</option>";
+//         $demoDD .= "</select>";
 
-        $out .=<<<EOQ3
-        </div>
-        </div>
+//         $out .=<<<EOQ3
+//         </div>
+//         </div>
 
-        <div class="floatbox full" id="fb0">
-            <h2>{$mod_strings['LBL_MORE_OPTIONS_TITLE']}</h2>
-        </div>
+//         <div class="floatbox full" id="fb0">
+//             <h2>{$mod_strings['LBL_MORE_OPTIONS_TITLE']}</h2>
+//         </div>
 
-        <div class="floatbox full" id="fb1">
-            <div class="install_block">
-                <h3 onclick="$(this).next().toggle();" class="toggler">&raquo; {$mod_strings['LBL_DBCONF_DEMO_DATA_TITLE']}</h3>
+//         <div class="floatbox full" id="fb1">
+//             <div class="install_block">
+//                 <h3 onclick="$(this).next().toggle();" class="toggler">&raquo; {$mod_strings['LBL_DBCONF_DEMO_DATA_TITLE']}</h3>
 
-                <div class="form_section" style="display: none;">
-                <div class="clear"></div>
-                    <div class="formrow big">
-                        <label>{$mod_strings['LBL_DBCONF_DEMO_DATA']}</label>
-                        {$demoDD}
-                    </div>
-                </div>
-            </div>
-        </div>
-EOQ3;
+//                 <div class="form_section" style="display: none;">
+//                 <div class="clear"></div>
+//                     <div class="formrow big">
+//                         <label>{$mod_strings['LBL_DBCONF_DEMO_DATA']}</label>
+//                         {$demoDD}
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+// EOQ3;
 
         // ------------------
         //  Choose Scenarios
@@ -562,19 +562,19 @@ EOQ3;
         }
 
 
-        $out .= <<<EOQ
+//         $out .= <<<EOQ
 
-        <!-- Scenario Selection -->
-        <div class="floatbox full" id="fb3">
-            <h3 onclick="$(this).next().toggle();" class="toggler">&raquo; {$mod_strings['LBL_WIZARD_SCENARIO_TITLE']}</h3>
-            <div class="form_section" style="display: none;">
-                <p class="ibmsg">{$mod_strings['LBL_WIZARD_SCENARIO_DESC']}</p>
-                <div class="formrow">$scenarioSelection</div>
-                <div class="clear"></div>
-            </div>
-        </div>
+//         <!-- Scenario Selection -->
+//         <div class="floatbox full" id="fb3">
+//             <h3 onclick="$(this).next().toggle();" class="toggler">&raquo; {$mod_strings['LBL_WIZARD_SCENARIO_TITLE']}</h3>
+//             <div class="form_section" style="display: none;">
+//                 <p class="ibmsg">{$mod_strings['LBL_WIZARD_SCENARIO_DESC']}</p>
+//                 <div class="formrow">$scenarioSelection</div>
+//                 <div class="clear"></div>
+//             </div>
+//         </div>
 
-EOQ;
+// EOQ;
 
         //--End of scenarios
 

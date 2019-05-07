@@ -28,7 +28,7 @@ a:link, a:visited {
 }
 
 a:hover {
-    color: #EA1313;
+    color: #009976;
     text-decoration: none;
     text-decoration: underline;
 }
@@ -39,7 +39,7 @@ a:hover {
 /* buttons */
 #install_container .button,
 #install_container .acceptButton {
-    background-color:#B41C4F;
+    background-color:#009976; /*#009976; #63c29a*/
     text-indent:0;
     display:inline-block;
     color:#ffffff;
@@ -264,12 +264,12 @@ input[type=password] {
 }
 
 .stop {
-    color: #cc0000;
+    color: #63c29a;
     text-align: left;
 }
 
 .stop a:link, a:visited  {
-    color: #cc0000;
+    color: #63c29a;
     text-decoration: underline;
     text-align: left;
 }
@@ -455,7 +455,7 @@ div.tooltip-toggle {
     color: #565656;
 }
 h1 {
-    color: #EA1313;
+    color: #009976;
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 8px;
