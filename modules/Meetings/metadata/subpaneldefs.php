@@ -1,6 +1,7 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
 }
 /**
  *
@@ -40,74 +41,180 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
-
 $layout_defs['Meetings'] = array(
-    // list of what Subpanels to show in the DetailView
-    'subpanel_setup' => array(
-        'contacts' => array(
-            'top_buttons' => array(),
-            'order' => 10,
-            'module' => 'Contacts',
-            'sort_order' => 'asc',
-            'sort_by' => 'last_name, first_name',
-            'subpanel_name' => 'ForMeetings',
-            'get_subpanel_data' => 'contacts',
-            'title_key' => 'LBL_CONTACTS_SUBPANEL_TITLE',
-        ),
-        'users' => array(
-            'top_buttons' => array(),
-            'order' => 20,
-            'module' => 'Users',
-            'sort_order' => 'asc',
-            'sort_by' => 'name',
-            'subpanel_name' => 'ForMeetings',
-            'get_subpanel_data' => 'users',
-            'title_key' => 'LBL_USERS_SUBPANEL_TITLE',
-        ),
-        'leads' => array(
-            'order' => 30,
-            'module' => 'Leads',
-            'sort_order' => 'asc',
-            'sort_by' => 'last_name, first_name',
-            'subpanel_name' => 'ForMeetings',
-            'get_subpanel_data' => 'leads',
-            'title_key' => 'LBL_LEADS_SUBPANEL_TITLE',
-            'top_buttons' => array(),
-        ),
-        'history' => array(
-            'order' => 40,
-            'sort_order' => 'desc',
-            'sort_by' => 'date_entered',
-            'title_key' => 'LBL_HISTORY_SUBPANEL_TITLE',
-            'type' => 'collection',
-            'subpanel_name' => 'history',   //this values is not associated with a physical file.
-            'header_definition_from_subpanel' => 'meetings',
-            'module' => 'History',
-
-            'top_buttons' => array(
-                array('widget_class' => 'SubPanelTopCreateNoteButton'),
+   // list of what Subpanels to show in the DetailView
+   'subpanel_setup' => array(
+      'contacts' => array(
+         'top_buttons' => array(),
+         'order' => 10,
+         'module' => 'Contacts',
+         'sort_order' => 'asc',
+         'sort_by' => 'last_name, first_name',
+         'subpanel_name' => 'ForMeetings',
+         'get_subpanel_data' => 'contacts',
+         'title_key' => 'LBL_CONTACTS_SUBPANEL_TITLE',
+      ),
+      'users' => array(
+         'top_buttons' => array(),
+         'order' => 20,
+         'module' => 'Users',
+         'sort_order' => 'asc',
+         'sort_by' => 'name',
+         'subpanel_name' => 'ForMeetings',
+         'get_subpanel_data' => 'users',
+         'title_key' => 'LBL_USERS_SUBPANEL_TITLE',
+      ),
+      'leads' => array(
+         'order' => 30,
+         'module' => 'Leads',
+         'sort_order' => 'asc',
+         'sort_by' => 'last_name, first_name',
+         'subpanel_name' => 'ForMeetings',
+         'get_subpanel_data' => 'leads',
+         'title_key' => 'LBL_LEADS_SUBPANEL_TITLE',
+         'top_buttons' => array(),
+      ),
+//      'history' => array(
+//         'order' => 40,
+//         'sort_order' => 'desc',
+//         'sort_by' => 'date_entered',
+//         'title_key' => 'LBL_HISTORY_SUBPANEL_TITLE',
+//         'type' => 'collection',
+//         'subpanel_name' => 'history', //this values is not associated with a physical file.
+//         'header_definition_from_subpanel' => 'meetings',
+//         'module' => 'History',
+//         'top_buttons' => array(
+//            array('widget_class' => 'SubPanelTopCreateNoteButton'),
+//         ),
+//         'collection_list' => array(
+//            'notes' => array(
+//               'module' => 'Notes',
+//               'subpanel_name' => 'ForMeetings',
+//               'get_subpanel_data' => 'notes',
+//            ),
+//         )
+//      ),
+      'candidates' => array(
+         'order' => 35,
+         'module' => 'Candidates',
+         'sort_order' => 'asc',
+         'sort_by' => 'last_name, first_name',
+         'subpanel_name' => 'ForMeetings',
+         'get_subpanel_data' => 'candidates',
+         'title_key' => 'LBL_CANDIDATES',
+         'top_buttons' => array(),
+      ),
+      'trainings' => array(
+         'order' => 100,
+         'module' => 'Trainings',
+         'subpanel_name' => 'default',
+         'sort_order' => 'asc',
+         'sort_by' => 'id',
+         'title_key' => 'LBL_TRAININGS',
+         'get_subpanel_data' => 'trainings',
+         'top_buttons' => array(
+            array(
+               'widget_class' => 'SubPanelTopButtonQuickCreate',
             ),
-
-            'collection_list' => array(
-                'notes' => array(
-                    'module' => 'Notes',
-                    'subpanel_name' => 'ForMeetings',
-                    'get_subpanel_data' => 'notes',
-                ),
-            )
-        ),
-        'securitygroups' => array(
-            'top_buttons' => array(array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'SecurityGroups', 'mode' => 'MultiSelect'),),
-            'order' => 900,
-            'sort_by' => 'name',
-            'sort_order' => 'asc',
-            'module' => 'SecurityGroups',
-            'refresh_page' => 1,
-            'subpanel_name' => 'default',
-            'get_subpanel_data' => 'SecurityGroups',
-            'add_subpanel_data' => 'securitygroup_id',
-            'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
-        ),
-    ),
+            array(
+               'widget_class' => 'SubPanelTopSelectButton',
+               'mode' => 'MultiSelect',
+            ),
+         ),
+      ),
+      'exitinterviews' => array(
+         'order' => 100,
+         'module' => 'ExitInterviews',
+         'subpanel_name' => 'default',
+         'sort_order' => 'asc',
+         'sort_by' => 'id',
+         'title_key' => 'LBL_EXITINTERVIEWS',
+         'get_subpanel_data' => 'exitinterviews',
+         'top_buttons' => array(
+            array(
+               'widget_class' => 'SubPanelTopButtonQuickCreate',
+            ),
+            array(
+               'widget_class' => 'SubPanelTopSelectButton',
+               'mode' => 'MultiSelect',
+            ),
+         ),
+      ),
+      'appraisals' => array(
+         'order' => 100,
+         'module' => 'Appraisals',
+         'subpanel_name' => 'default',
+         'sort_order' => 'asc',
+         'sort_by' => 'id',
+         'title_key' => 'LBL_APPRAISALS',
+         'get_subpanel_data' => 'appraisals',
+         'top_buttons' => array(
+            array(
+               'widget_class' => 'SubPanelTopButtonQuickCreate',
+            ),
+            array(
+               'widget_class' => 'SubPanelTopSelectButton',
+               'mode' => 'MultiSelect',
+            ),
+         ),
+      ),
+      'conclusions' => array(
+         'order' => 100,
+         'module' => 'Conclusions',
+         'subpanel_name' => 'default',
+         'sort_order' => 'asc',
+         'sort_by' => 'id',
+         'title_key' => 'LBL_CONCLUSIONS',
+         'get_subpanel_data' => 'conclusions',
+         'top_buttons' => array(
+            array(
+               'widget_class' => 'SubPanelTopButtonQuickCreate',
+            ),
+            array(
+               'widget_class' => 'SubPanelTopSelectButton',
+               'mode' => 'MultiSelect',
+            ),
+         ),
+      ),
+      'reservations' => array(
+         'order' => 100,
+         'module' => 'Reservations',
+         'subpanel_name' => 'default',
+         'sort_order' => 'asc',
+         'sort_by' => 'id',
+         'title_key' => 'LBL_RESERVATIONS',
+         'get_subpanel_data' => 'reservations',
+         'top_buttons' => array(
+            array(
+               'widget_class' => 'SubPanelTopButtonQuickCreate',
+            ),
+            array(
+               'widget_class' => 'SubPanelTopSelectButton',
+               'mode' => 'MultiSelect',
+            ),
+         ),
+      ),
+      'resources' => array(
+         'order' => 35,
+         'module' => 'Resources',
+         'sort_order' => 'asc',
+         'sort_by' => 'name',
+         'subpanel_name' => 'default',
+         'get_subpanel_data' => 'resources',
+         'title_key' => 'LBL_RESOURCES',
+         'top_buttons' => array(),
+      ),
+      'securitygroups' => array(
+         'top_buttons' => array(array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'SecurityGroups', 'mode' => 'MultiSelect'),),
+         'order' => 900,
+         'sort_by' => 'name',
+         'sort_order' => 'asc',
+         'module' => 'SecurityGroups',
+         'refresh_page' => 1,
+         'subpanel_name' => 'default',
+         'get_subpanel_data' => 'SecurityGroups',
+         'add_subpanel_data' => 'securitygroup_id',
+         'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
+      ),
+   ),
 );

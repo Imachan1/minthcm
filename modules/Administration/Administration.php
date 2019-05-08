@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -37,203 +38,184 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
 }
 
 require_once('data/SugarBean.php');
 require_once('include/OutboundEmail/OutboundEmail.php');
 
-class Administration extends SugarBean
-{
-    public $settings = array();
-    public $table_name = "config";
-    public $object_name = "Administration";
-    public $new_schema = true;
-    public $module_dir = 'Administration';
-    public $config_categories = array(
-        // 'mail', // cn: moved to include/OutboundEmail
-        'disclosure', // appended to all outbound emails
-        'notify',
-        'system',
-        'portal',
-        'proxy',
-        'massemailer',
-        'ldap',
-        'captcha',
-        'sugarpdf',
-    );
-    public $disable_custom_fields = true;
-    public $checkbox_fields = array("notify_send_by_default", "mail_smtpauth_req", "notify_on", 'portal_on', 'skypeout_on', 'system_mailmerge_on', 'proxy_auth', 'proxy_on', 'system_ldap_enabled', 'captcha_on');
+class Administration extends SugarBean {
 
-    public function __construct()
-    {
-        parent::__construct();
+   public $settings = array();
+   public $table_name = "config";
+   public $object_name = "Administration";
+   public $new_schema = true;
+   public $module_dir = 'Administration';
+   public $config_categories = array(
+      // 'mail', // cn: moved to include/OutboundEmail
+      'disclosure', // appended to all outbound emails
+      'notify',
+      'system',
+      'portal',
+      'proxy',
+      'massemailer',
+      'ldap',
+      'captcha',
+      'sugarpdf',
+   );
+   public $disable_custom_fields = true;
+   public $checkbox_fields = array( "notify_send_by_default", "mail_smtpauth_req", "notify_on", 'portal_on', 'skypeout_on', 'system_mailmerge_on', 'proxy_auth', 'proxy_on', 'system_ldap_enabled', 'captcha_on' );
 
-        $this->setupCustomFields('Administration');
-    }
+   public function __construct() {
+      parent::__construct();
 
-    public function checkSmtpError($displayWarning = true)
-    {
-        global $sugar_config;
+      $this->setupCustomFields('Administration');
+   }
 
-        $smtp_error = false;
-        $this->retrieveSettings();
+   public function checkSmtpError($displayWarning = true) {
+      global $sugar_config;
+
+      $smtp_error = false;
+      $this->retrieveSettings();
 
 
-        //If sendmail has been configured by setting the config variable ignore this warning
-        $sendMailEnabled = isset($sugar_config['allow_sendmail_outbound']) && $sugar_config['allow_sendmail_outbound'];
+      //If sendmail has been configured by setting the config variable ignore this warning
+      $sendMailEnabled = isset($sugar_config['allow_sendmail_outbound']) && $sugar_config['allow_sendmail_outbound'];
 
-            // remove php notice from installer
-            if (!array_key_exists('mail_smtpserver', $this->settings)) {
-                $this->settings['mail_smtpserver'] = '';
+      // remove php notice from installer
+      if ( !array_key_exists('mail_smtpserver', $this->settings) ) {
+         $this->settings['mail_smtpserver'] = '';
+      }
+
+      if ( trim($this->settings['mail_smtpserver']) == '' && !$sendMailEnabled ) {
+         if ( isset($this->settings['notify_on']) && $this->settings['notify_on'] ) {
+            $smtp_error = true;
+         }
+      }
+
+      if ( $displayWarning && $smtp_error ) {
+         displayAdminError(translate('WARN_NO_SMTP_SERVER_AVAILABLE_ERROR', 'Administration'));
+      }
+
+
+      return $smtp_error;
+   }
+
+   public function retrieveSettings($category = false, $clean = false) {
+      // declare a cache for all settings
+      $settings_cache = sugar_cache_retrieve('admin_settings_cache');
+
+      if ( $clean ) {
+         $settings_cache = array();
+      }
+
+      // Check for a cache hit
+      if ( !empty($settings_cache) ) {
+         $this->settings = $settings_cache;
+         if ( !empty($this->settings[$category]) ) {
+            return $this;
+         }
+      }
+
+      if ( !empty($category) ) {
+         $query = "SELECT category, name, value FROM {$this->table_name} WHERE category = '{$category}'";
+      } else {
+         $query = "SELECT category, name, value FROM {$this->table_name}";
+      }
+
+      $result = $this->db->query($query, true, "Unable to retrieve system settings");
+
+      if ( empty($result) ) {
+         return null;
+      }
+
+      while ( $row = $this->db->fetchByAssoc($result) ) {
+         if ( $row['category'] . "_" . $row['name'] == 'ldap_admin_password' || $row['category'] . "_" . $row['name'] == 'proxy_password' ) {
+            $this->settings[$row['category'] . "_" . $row['name']] = $this->decrypt_after_retrieve($row['value']);
+         } else {
+            $this->settings[$row['category'] . "_" . $row['name']] = $row['value'];
+         }
+         $this->settings[$row['category']] = true;
+      }
+      $this->settings[$category] = true;
+
+      if ( !isset($this->settings["mail_sendtype"]) ) {
+         // outbound email settings
+         $oe = new OutboundEmail();
+         $oe->getSystemMailerSettings();
+
+         foreach ( $oe->field_defs as $def ) {
+            // fixes installer php notice
+            if ( !array_key_exists($def, $this->settings) ) {
+               $this->settings[$def] = '';
             }
 
-            if (trim($this->settings['mail_smtpserver']) == '' && !$sendMailEnabled) {
-                if (isset($this->settings['notify_on']) && $this->settings['notify_on']) {
-                    $smtp_error = true;
-                }
+            if ( strpos($def, "mail_") !== false ) {
+               $this->settings[$def] = $oe->$def;
             }
-
-            if ($displayWarning && $smtp_error) {
-                displayAdminError(translate('WARN_NO_SMTP_SERVER_AVAILABLE_ERROR', 'Administration'));
+            if ( strpos($def, "smtp") !== false ) {
+               $this->settings[$def] = $oe->$def;
             }
+         }
+      }
+
+      // At this point, we have built a new array that should be cached.
+      sugar_cache_put('admin_settings_cache', $this->settings);
+      return $this;
+   }
+
+   public function saveConfig() {
 
 
-        return $smtp_error;
-    }
+      // outbound email settings
+      $oe = new OutboundEmail();
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function Administration()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-    public function retrieveSettings($category = false, $clean = false)
-    {
-        // declare a cache for all settings
-        $settings_cache = sugar_cache_retrieve('admin_settings_cache');
-
-        if ($clean) {
-            $settings_cache = array();
-        }
-
-        // Check for a cache hit
-        if (!empty($settings_cache)) {
-            $this->settings = $settings_cache;
-            if (!empty($this->settings[$category])) {
-                return $this;
+      foreach ( $_POST as $key => $val ) {
+         $prefix = $this->get_config_prefix($key);
+         if ( in_array($prefix[0], $this->config_categories) ) {
+            if ( is_array($val) ) {
+               $val = implode(",", $val);
             }
-        }
-
-        if (!empty($category)) {
-            $query = "SELECT category, name, value FROM {$this->table_name} WHERE category = '{$category}'";
-        } else {
-            $query = "SELECT category, name, value FROM {$this->table_name}";
-        }
-
-        $result = $this->db->query($query, true, "Unable to retrieve system settings");
-
-        if (empty($result)) {
-            return null;
-        }
-
-        while ($row = $this->db->fetchByAssoc($result)) {
-            if ($row['category'] . "_" . $row['name'] == 'ldap_admin_password' || $row['category'] . "_" . $row['name'] == 'proxy_password') {
-                $this->settings[$row['category'] . "_" . $row['name']] = $this->decrypt_after_retrieve($row['value']);
-            } else {
-                $this->settings[$row['category'] . "_" . $row['name']] = $row['value'];
+            $this->saveSetting($prefix[0], $prefix[1], $val);
+         }
+         if ( strpos($key, "mail_") !== false ) {
+            if ( in_array($key, $oe->field_defs) ) {
+               $oe->$key = $val;
             }
-            $this->settings[$row['category']] = true;
-        }
-        $this->settings[$category] = true;
+         }
+      }
 
-        if (!isset($this->settings["mail_sendtype"])) {
-            // outbound email settings
-            $oe = new OutboundEmail();
-            $oe->getSystemMailerSettings();
+      //saving outbound email from here is probably redundant, adding a check to make sure
+      //smtpserver name is set.
+      if ( !empty($oe->mail_smtpserver) ) {
+         $oe->saveSystem();
+      }
 
-            foreach ($oe->field_defs as $def) {
-                // fixes installer php notice
-                if (!array_key_exists($def, $this->settings)) {
-                    $this->settings[$def] = '';
-                }
+      $this->retrieveSettings(false, true);
+   }
 
-                if (strpos($def, "mail_") !== false) {
-                    $this->settings[$def] = $oe->$def;
-                }
-                if (strpos($def, "smtp") !== false) {
-                    $this->settings[$def] = $oe->$def;
-                }
-            }
-        }
+   public function saveSetting($category, $key, $value) {
+      $result = $this->db->query("SELECT count(*) AS the_count FROM config WHERE category = '{$category}' AND name = '{$key}'");
+      $row = $this->db->fetchByAssoc($result);
+      $row_count = $row['the_count'];
 
-        // At this point, we have built a new array that should be cached.
-        sugar_cache_put('admin_settings_cache', $this->settings);
-        return $this;
-    }
+      if ( $category . "_" . $key == 'ldap_admin_password' || $category . "_" . $key == 'proxy_password' ) {
+         $value = $this->encrpyt_before_save($value);
+      }
 
-    public function saveConfig()
-    {
+      if ( $row_count == 0 ) {
+         $id = create_guid();
+         $result = $this->db->query("INSERT INTO config (id, value, category, name) VALUES ('$id', '$value','$category', '$key')");
+      } else {
+         $result = $this->db->query("UPDATE config SET value = '{$value}' WHERE category = '{$category}' AND name = '{$key}'");
+      }
+      sugar_cache_clear('admin_settings_cache');
+      return $this->db->getAffectedRowCount($result);
+   }
 
+   public function get_config_prefix($str) {
+      return $str ? array( substr($str, 0, strpos($str, "_")), substr($str, strpos($str, "_") + 1) ) : array( false, false );
+   }
 
-        // outbound email settings
-        $oe = new OutboundEmail();
-
-        foreach ($_POST as $key => $val) {
-            $prefix = $this->get_config_prefix($key);
-            if (in_array($prefix[0], $this->config_categories)) {
-                if (is_array($val)) {
-                    $val = implode(",", $val);
-                }
-                $this->saveSetting($prefix[0], $prefix[1], $val);
-            }
-            if (strpos($key, "mail_") !== false) {
-                if (in_array($key, $oe->field_defs)) {
-                    $oe->$key = $val;
-                }
-            }
-        }
-
-        //saving outbound email from here is probably redundant, adding a check to make sure
-        //smtpserver name is set.
-        if (!empty($oe->mail_smtpserver)) {
-            $oe->saveSystem();
-        }
-
-        $this->retrieveSettings(false, true);
-    }
-
-    public function saveSetting($category, $key, $value)
-    {
-        $result = $this->db->query("SELECT count(*) AS the_count FROM config WHERE category = '{$category}' AND name = '{$key}'");
-        $row = $this->db->fetchByAssoc($result);
-        $row_count = $row['the_count'];
-
-        if ($category . "_" . $key == 'ldap_admin_password' || $category . "_" . $key == 'proxy_password') {
-            $value = $this->encrpyt_before_save($value);
-        }
-
-        if ($row_count == 0) {
-            $result = $this->db->query("INSERT INTO config (value, category, name) VALUES ('$value','$category', '$key')");
-        } else {
-            $result = $this->db->query("UPDATE config SET value = '{$value}' WHERE category = '{$category}' AND name = '{$key}'");
-        }
-        sugar_cache_clear('admin_settings_cache');
-        return $this->db->getAffectedRowCount($result);
-    }
-
-    public function get_config_prefix($str)
-    {
-        return $str ? array(substr($str, 0, strpos($str, "_")), substr($str, strpos($str, "_") + 1)) : array(false, false);
-    }
 }

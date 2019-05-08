@@ -1,0 +1,44 @@
+.evTimePanel {
+    overflow: visible;
+}
+
+.evTimePanel table{
+    border-spacing: 0 !important;
+    border-collapse: collapse !important;
+}
+
+.evTimePanel .time-cell {
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0px 5px 20px 2px #00000021;
+    display: inline-block;
+    margin: 0px;
+    position: absolute;
+    cursor: pointer;
+    text-align: center;
+    margin: 0;
+    color: #000;
+}
+
+.evTimePanel .orangeColor {
+    background-color: orange;
+}
+
+.evTimePanel .orangeColor:hover {
+    background-color: #ff6633;
+}
+
+
+.evTimePanelLeft {
+    position:relative;
+    z-index: 15;
+}
+
+.evTimePanelMiddle {
+    position:relative;
+}
+
+.evTimePanelRight {
+    position:relative;
+    text-align:right;
+}

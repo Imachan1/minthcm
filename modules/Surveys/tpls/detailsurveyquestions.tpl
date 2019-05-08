@@ -3,13 +3,22 @@
     <table id="questionTable" class="table table-bordered">
         <tr>
             <th>
-                Question
+                {* View Tools START *}
+                {*Question*}
+                {$MOD.LBL_QUESTION}
+                {* View Tools END *}
             </th>
             <th>
-                Text
+                {* View Tools START *}
+                {*Text*}
+                {$MOD.LBL_TEXT}
+                {* View Tools END *}
             </th>
             <th>
-                Type
+                {* View Tools START *}
+                {*Type*}
+                {$MOD.LBL_TYPE}
+                {* View Tools END *}
             </th>
         </tr>
         {foreach from=$questions item=question}
@@ -21,7 +30,10 @@
                     {$question.name}
                 </td>
                 <td>
-                    {$question.type}
+                    {* View Tools START *}
+                    {*{$question.type}*}
+                    {$APP_LIST.surveys_question_type[$question.type]}
+                    {* View Tools END *}
                 </td>
             </tr>
         {/foreach}

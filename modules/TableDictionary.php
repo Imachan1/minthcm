@@ -1,6 +1,7 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
 }
 /**
  *
@@ -40,8 +41,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
-
 include("metadata/accounts_bugsMetaData.php");
 include("metadata/accounts_casesMetaData.php");
 include("metadata/accounts_contactsMetaData.php");
@@ -54,7 +53,6 @@ include("metadata/contacts_bugsMetaData.php");
 include("metadata/contacts_casesMetaData.php");
 include("metadata/configMetaData.php");
 include("metadata/contacts_usersMetaData.php");
-include("metadata/custom_fieldsMetaData.php");
 include("metadata/email_addressesMetaData.php");
 include("metadata/emails_beansMetaData.php");
 include("metadata/foldersMetaData.php");
@@ -63,7 +61,6 @@ include("metadata/meetings_contactsMetaData.php");
 include("metadata/meetings_usersMetaData.php");
 include("metadata/meetings_leadsMetaData.php");
 include("metadata/opportunities_contactsMetaData.php");
-include("metadata/user_feedsMetaData.php");
 include("metadata/users_passwordLinkMetaData.php");
 include("metadata/prospect_list_campaignsMetaData.php");
 include("metadata/prospect_lists_prospectsMetaData.php");
@@ -72,6 +69,11 @@ include("metadata/roles_usersMetaData.php");
 //include("metadata/project_relationMetaData.php");
 include("metadata/outboundEmailMetaData.php");
 include("metadata/addressBookMetaData.php");
+include('metadata/calls_resourcesMetaData.php');
+include('metadata/custom_fieldsMetaData.php');
+include('metadata/meetings_resourcesMetaData.php');
+include('metadata/user_feedsMetaData.php');
+include('metadata/workschedules_spenttimeMetaData.php');
 include("metadata/project_bugsMetaData.php");
 include("metadata/project_casesMetaData.php");
 include("metadata/project_productsMetaData.php");
@@ -132,6 +134,40 @@ include('metadata/securitygroups_usersMetaData.php');
 
 include 'metadata/surveyquestionoptions_surveyquestionresponsesMetaData.php';
 
-if(file_exists('custom/application/Ext/TableDictionary/tabledictionary.ext.php')){
-	include('custom/application/Ext/TableDictionary/tabledictionary.ext.php');
+include('metadata/Appraisals_DocumentsMetaData.php');
+include('metadata/Appraisals_MeetingsMetaData.php');
+include('metadata/Appraisals_RolesMetaData.php');
+include('metadata/Benefits_EmployeesMetaData.php');
+include('metadata/Benefits_PositionsMetaData.php');
+include('metadata/Benefits_RolesMetaData.php');
+include('metadata/Calls_CandidatesMetaData.php');
+include('metadata/Candidates_EmployeesMetadata.php');
+include('metadata/Certificates_DocumentsMetaData.php');
+include('metadata/Conclusions_ImprovementsMetadata.php');
+include('metadata/Conclusions_ProblemsMetadata.php');
+include('metadata/Emails_CandidaturesMetaData.php');
+include('metadata/Emails_RecruitmentsMetaData.php');
+include('metadata/ExitInterviews_DocumentsMetaData.php');
+include('metadata/ExitInterviews_MeetingsMetaData.php');
+include('metadata/Meetings_CandidatesMetaData.php');
+include('metadata/OnboardingOffboardingElements_OffboardingTemplatesMetadata.php');
+include('metadata/OnboardingOffboardingElements_OnboardingTemplatesMetadata.php');
+include('metadata/OrganizationalUnits_EmployeesMetaData.php');
+include('metadata/OrganizationalUnits_NewsMetadata.php');
+include('metadata/OrganizationalUnits_Positions_leaderMetadata.php');
+include('metadata/OrganizationalUnits_Positions_membershipMetadata.php');
+include('metadata/Positions_DocumentsMetaData.php');
+include('metadata/Positions_EmployeesMetaData.php');
+include('metadata/Responsibilities_ActivitiesMetadata.php');
+include('metadata/Responsibilities_PositionsMetaData.php');
+include('metadata/Responsibilities_RolesMetaData.php');
+include('metadata/Roles_EmployeesMetaData.php');
+include('metadata/Trainings_CertificatesMetaData.php');
+include('metadata/Trainings_DocumentsMetaData.php');
+include('metadata/Trainings_MeetingsMetaData.php');
+include('metadata/viewtools_metadata.php');
+include('metadata/kreporter.users_schedulereports.php');
+
+if ( file_exists('custom/application/Ext/TableDictionary/tabledictionary.ext.php') ) {
+   include('custom/application/Ext/TableDictionary/tabledictionary.ext.php');
 }

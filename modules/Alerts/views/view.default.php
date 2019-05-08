@@ -1,7 +1,9 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
 }
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -40,41 +42,38 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
-/*********************************************************************************
+/* * *******************************************************************************
 
  * Description:  TODO: To be written.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
- ********************************************************************************/
+ * ****************************************************************************** */
 
-class AlertsViewDefault extends SugarView
-{
-    /**
-     * @see SugarView::_getModuleTitleParams()
-     */
-    protected function _getModuleTitleParams($browserTitle = false)
-    {
-        return array('Alerts');
-    }
+class AlertsViewDefault extends SugarView {
 
-    /**
-     * @see SugarView::preDisplay()
-     */
-    public function preDisplay()
-    {
+   /**
+    * @see SugarView::_getModuleTitleParams()
+    */
+   protected function _getModuleTitleParams($browserTitle = false) {
+      return array('Alerts');
+   }
 
-    }
+   /**
+    * @see SugarView::preDisplay()
+    */
+   public function preDisplay() {
+      
+   }
 
-    /**
-     * @see SugarView::display()
-     */
-    public function display()
-    {
-        $this->ss->assign('Flash', $this->view_object_map['Flash']);
-        $this->ss->assign('Results', $this->view_object_map['Results']);
-        echo $this->ss->fetch('modules/Alerts/templates/default.tpl');
-        die();
-    }
+   /**
+    * @see SugarView::display()
+    */
+   public function display() {
+      $this->ss->assign('Flash', $this->view_object_map['Flash']);
+      $this->ss->assign('Results', $this->view_object_map['Results']);
+      echo $this->ss->fetch('modules/Alerts/templates/default.tpl');
+      die();
+   }
+
 }

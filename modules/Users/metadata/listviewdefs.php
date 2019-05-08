@@ -1,14 +1,14 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
 }
-/**
- *
+/* * *******************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,60 +37,99 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * ****************************************************************************** */
 
 
 
 
 $listViewDefs['Users'] = array(
-    'NAME' => array(
-        'width' => '30', 
-        'label' => 'LBL_LIST_NAME', 
-        'link' => true,
-        'related_fields' => array('last_name', 'first_name'),
-        'orderBy' => 'last_name',
-        'default' => true),
-    'USER_NAME' => array(
-        'width' => '5', 
-        'label' => 'LBL_USER_NAME', 
-        'link' => true,
-        'default' => true),
-    'TITLE' => array(
-        'width' => '15', 
-        'label' => 'LBL_TITLE', 
-        'link' => true,
-        'default' => true),        
-    'DEPARTMENT' => array(
-        'width' => '15', 
-        'label' => 'LBL_DEPARTMENT', 
-        'link' => true,
-        'default' => true),
-    'EMAIL1' => array(
-        'width' => '30',
-        'sortable' => false, 
-        'label' => 'LBL_LIST_EMAIL', 
-        'link' => true,
-        'default' => true),
-    'PHONE_WORK' => array(
-        'width' => '25', 
-        'label' => 'LBL_LIST_PHONE', 
-        'link' => true,
-        'default' => true),
-    'STATUS' => array(
-        'width' => '10', 
-        'label' => 'LBL_STATUS', 
-        'link' => false,
-        'default' => true),
-    'IS_ADMIN' => array(
-        'width' => '10', 
-        'label' => 'LBL_ADMIN', 
-        'link' => false,
-        'default' => true),
-    'IS_GROUP' => array(
-        'width' => '10', 
-        'label' => 'LBL_LIST_GROUP', 
-        'link' => true,
-        'default' => false),
+   'NAME' => array(
+      'width' => '30',
+      'label' => 'LBL_LIST_NAME',
+      'link' => true,
+      'related_fields' => array('last_name', 'first_name'),
+      'orderBy' => 'last_name',
+      'default' => true
+   ),
+   'USER_NAME' => array(
+      'width' => '5',
+      'label' => 'LBL_USER_NAME',
+      'link' => true,
+      'default' => true
+   ),
+   'POSITION_NAME' => array(
+      'width' => '15',
+      'label' => 'LBL_POSITION_NAME',
+      'link' => true,
+      'default' => true
+   ),
+   'ORGANIZATIONALUNIT_NAME' => array(
+      'width' => '15',
+      'label' => 'LBL_ORGANIZATIONALUNIT_NAME',
+      'link' => true,
+      'default' => true
+   ),
+   'EMAIL1' => array(
+      'width' => '30',
+      'sortable' => false,
+      'label' => 'LBL_LIST_EMAIL',
+      'link' => true,
+      'default' => true
+   ),
+   'PHONE_WORK' => array(
+      'width' => '25',
+      'label' => 'LBL_LIST_PHONE',
+      'link' => true,
+      'default' => true
+   ),
+   'STATUS' => array(
+      'width' => '10',
+      'label' => 'LBL_STATUS',
+      'link' => false,
+      'default' => true
+   ),
+   'IS_ADMIN' => array(
+      'width' => '10',
+      'label' => 'LBL_ADMIN',
+      'link' => false,
+      'default' => true
+   ),
+   'IS_GROUP' => array(
+      'width' => '10',
+      'label' => 'LBL_LIST_GROUP',
+      'link' => true,
+      'default' => false
+   ),
+   'REPORTS_TO_NAME' => array(
+      'width' => '10',
+      'label' => 'LBL_REPORTS_TO_NAME',
+      'link' => true,
+      'default' => false
+   ),
+   'ADDRESS_STREET' => array(
+      'width' => '10',
+      'label' => 'LBL_ADDRESS_STREET',
+      'link' => false,
+      'default' => false
+   ),
+   'ADDRESS_CITY' => array(
+      'width' => '10',
+      'label' => 'LBL_ADDRESS_CITY',
+      'link' => false,
+      'default' => false
+   ),
+   'ADDRESS_STATE' => array(
+      'width' => '10',
+      'label' => 'LBL_ADDRESS_STATE',
+      'link' => false,
+      'default' => false
+   ),
+   'ADDRESS_COUNTRY' => array(
+      'width' => '10',
+      'label' => 'LBL_ADDRESS_COUNTRY',
+      'link' => false,
+      'default' => false
+   ),
 );

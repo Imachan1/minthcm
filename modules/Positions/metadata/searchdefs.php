@@ -1,0 +1,55 @@
+<?php
+
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+/*
+ * Created on May 29, 2007
+ *
+ * To change the template for this generated file go to
+ * Window - Preferences - PHPeclipse - PHP - Code Templates
+ */
+$module_name = 'Positions';
+$searchdefs[$module_name] = array(
+   'templateMeta' => array(
+      'maxColumns' => '3',
+      'maxColumnsBasic' => '4',
+      'widths' => array( 'label' => '10', 'field' => '30' ),
+   ),
+   'layout' => array(
+      'basic_search' => array(
+         'name',
+         array( 'name' => 'current_user_only', 'label' => 'LBL_CURRENT_USER_FILTER', 'type' => 'bool' ),
+      ),
+      'advanced_search' => array(
+         'name',
+         'status',
+         'organizationalunits_leader_name' => array(
+            'type' => 'relate',
+            'link' => true,
+            'label' => 'LBL_ORGANIZATIONALUNITS_LEADER_NAME',
+            'width' => '10%',
+            'default' => true,
+            'id' => 'organizationalunits_leader_id',
+            'name' => 'organizationalunits_leader_name',
+         ),
+         'positions_supervision_name' => array(
+            'type' => 'relate',
+            'link' => true,
+            'label' => 'LBL_POSITIONS_SUPERVISION_NAME',
+            'width' => '10%',
+            'default' => true,
+            'id' => 'positions_supervision_id',
+            'name' => 'positions_supervision_name',
+         ),
+         array( 'name' => 'assigned_user_id', 'label' => 'LBL_ASSIGNED_TO', 'type' => 'enum', 'function' => array( 'name' => 'get_user_array', 'params' => array( false ) ) ),
+      ),
+   ),
+);

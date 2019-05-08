@@ -1,13 +1,14 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
 }
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -19,7 +20,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,191 +38,177 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
 require_once('include/EditView/EditView2.php');
+
 /**
  * Quick create form in the subpanel
  * @api
  */
-class SubpanelQuickCreate{
-    public $defaultProcess = true;
+class SubpanelQuickCreate {
 
-    /**
-     * The view type to use
-     *
-     * @var string
-     */
-    public $viewType = 'QuickCreate';
+   public $defaultProcess = true;
+   /**
+    * The view type to use
+    *
+    * @var string
+    */
+   public $viewType = 'QuickCreate';
 
-    public function __construct($module, $view='QuickCreate', $proccessOverride = false)
-    {
-        $this->viewType = $view;
+   public function __construct($module, $view = 'QuickCreate', $proccessOverride = false) {
+      $this->viewType = $view;
 
-        //treat quickedit and quickcreate views as the same
-        if($this->viewType == 'QuickEdit') {
-            $this->viewType = 'QuickCreate';
-        }
+      //treat quickedit and quickcreate views as the same
+      if ( $this->viewType == 'QuickEdit' ) {
+         $this->viewType = 'QuickCreate';
+      }
 
-        // Get the viewdefs source file, called here to ensure proper viewType setting
-        $source = $this->getModuleViewDefsSourceFile($module, $this->viewType);
+      // Get the viewdefs source file, called here to ensure proper viewType setting
+      $source = $this->getModuleViewDefsSourceFile($module, $this->viewType);
 
-		// locate the best viewdefs to use: 1. custom/module/quickcreatedefs.php 2. module/quickcreatedefs.php 3. custom/module/editviewdefs.php 4. module/editviewdefs.php
-		$base = 'modules/' . $module . '/metadata/';
-		$source = 'custom/' . $base . strtolower($view) . 'defs.php';
-		if (!file_exists( $source))
-		{
-			$source = $base . strtolower($view) . 'defs.php';
-			if (!file_exists($source))
-			{
-				//if our view does not exist default to EditView
-				$view = 'EditView';
-				$source = 'custom/' . $base . 'editviewdefs.php';
-				if (!file_exists($source))
-				{
-					$source = $base . 'editviewdefs.php';
-				}
-			}
-		}
-
-        $this->ev = $this->getEditView();
-		$this->ev->view = $this->viewType;
-		$this->ev->showVCRControl = false;
-		$this->ev->ss = new Sugar_Smarty();
-		//$_REQUEST['return_action'] = 'SubPanelViewer';
-
-        $class = $GLOBALS['beanList'][$module];
-        $bean = new $class();
-        if(!empty($_REQUEST['record'])) {
-            $bean->retrieve($_REQUEST['record']);
-        }
-		$this->ev->setup($module, $bean, $source);
-		unset($bean);
-
-
-		// Bug 49219 - Check empty before set defaults, or the settings from viewdefs above will be overridden.
-        if (!isset($this->ev->defs['templateMeta']['form']['headerTpl']))
-        {
-            $this->ev->defs['templateMeta']['form']['headerTpl'] = 'include/EditView/header.tpl';
-        }
-
-		if (!isset($this->ev->defs['templateMeta']['form']['footerTpl']))
-        {
-            $this->ev->defs['templateMeta']['form']['footerTpl'] = 'include/EditView/footer.tpl';
-        }
-		// Comment below, breaks many out of the box viewdefs
-		/*if (empty($this->ev->defs['templateMeta']['form']['buttons'])) $this->ev->defs['templateMeta']['form']['buttons'] = array('SUBPANELSAVE', 'SUBPANELCANCEL', 'SUBPANELFULLFORM');*/
-		$this->ev->defs['templateMeta']['form']['buttons'] = array('SUBPANELSAVE', 'SUBPANELCANCEL', 'SUBPANELFULLFORM');
-
-        //Load the parent view class if it exists.  Check for custom file first
-        loadParentView('edit');
-
-		$viewEditSource = 'modules/'.$module.'/views/view.edit.php';
-		if (file_exists('custom/'. $viewEditSource)) {
-			$viewEditSource = 'custom/'. $viewEditSource;
-		}
-
-		if(file_exists($viewEditSource) && !$proccessOverride) {
-            include($viewEditSource);
-            $c = $module . 'ViewEdit';
-
-            $customClass = 'Custom' . $c;
-            if(class_exists($customClass)) {
-                $c = $customClass;
+      // locate the best viewdefs to use: 1. custom/module/quickcreatedefs.php 2. module/quickcreatedefs.php 3. custom/module/editviewdefs.php 4. module/editviewdefs.php
+      $base = 'modules/' . $module . '/metadata/';
+      $source = 'custom/' . $base . strtolower($view) . 'defs.php';
+      if ( !file_exists($source) ) {
+         $source = $base . strtolower($view) . 'defs.php';
+         if ( !file_exists($source) ) {
+            //if our view does not exist default to EditView
+            $view = 'EditView';
+            $source = 'custom/' . $base . 'editviewdefs.php';
+            if ( !file_exists($source) ) {
+               $source = $base . 'editviewdefs.php';
             }
+         }
+      }
 
-            if(class_exists($c)) {
-	            $view = new $c;
-	            if($view->useForSubpanel) {
-	            	$this->defaultProcess = false;
+      $this->ev = $this->getEditView();
+      $this->ev->view = $this->viewType;
+      $this->ev->showVCRControl = false;
+      $this->ev->ss = new Sugar_Smarty();
+      //$_REQUEST['return_action'] = 'SubPanelViewer';
 
-	            	// Check if we should use the module's QuickCreate.tpl file.
-	            	if($view->useModuleQuickCreateTemplate && file_exists('modules/'.$module.'/tpls/QuickCreate.tpl')) {
-	            	   $this->ev->defs['templateMeta']['form']['headerTpl'] = 'modules/'.$module.'/tpls/QuickCreate.tpl';
-	            	}
+      $class = $GLOBALS['beanList'][$module];
+      $bean = new $class();
 
-		            $view->ev = & $this->ev;
-		            $view->ss = & $this->ev->ss;
-					$class = $GLOBALS['beanList'][$module];
-					if(!empty($GLOBALS['beanFiles'][$class])){
-						require_once($GLOBALS['beanFiles'][$class]);
-						$bean = new $class();
-						$view->bean = $bean;
-					}
-					$this->ev->formName = 'form_Subpanel'.$this->ev->view .'_'.$module;
-					$view->showTitle = false; // Do not show title since this is for subpanel
-		            $view->display();
-	            }
+      //viewTools start #40916
+      $mrf = new ModuleRelatedField();
+      $locked_field = $mrf->getModuleRelatedField($bean);
+      $this->ev->ss->assign('locked_field', $locked_field);
+      //viewTools end #40916
+
+      if ( !empty($_REQUEST['record']) ) {
+         $bean->retrieve($_REQUEST['record']);
+      }
+      $this->ev->setup($module, $bean, $source);
+      unset($bean);
+
+
+      // Bug 49219 - Check empty before set defaults, or the settings from viewdefs above will be overridden.
+      if ( !isset($this->ev->defs['templateMeta']['form']['headerTpl']) ) {
+         $this->ev->defs['templateMeta']['form']['headerTpl'] = 'include/EditView/header.tpl';
+      }
+
+      if ( !isset($this->ev->defs['templateMeta']['form']['footerTpl']) ) {
+         $this->ev->defs['templateMeta']['form']['footerTpl'] = 'include/EditView/footer.tpl';
+      }
+      // Comment below, breaks many out of the box viewdefs
+      /* if (empty($this->ev->defs['templateMeta']['form']['buttons'])) $this->ev->defs['templateMeta']['form']['buttons'] = array('SUBPANELSAVE', 'SUBPANELCANCEL', 'SUBPANELFULLFORM'); */
+      $this->ev->defs['templateMeta']['form']['buttons'] = array( 'SUBPANELSAVE', 'SUBPANELCANCEL', 'SUBPANELFULLFORM' );
+
+      //Load the parent view class if it exists.  Check for custom file first
+      loadParentView('edit');
+
+      $viewEditSource = 'modules/' . $module . '/views/view.edit.php';
+      if ( file_exists('custom/' . $viewEditSource) ) {
+         $viewEditSource = 'custom/' . $viewEditSource;
+      }
+
+      if ( file_exists($viewEditSource) && !$proccessOverride ) {
+         include($viewEditSource);
+         $c = $module . 'ViewEdit';
+
+         $customClass = 'Custom' . $c;
+         if ( class_exists($customClass) ) {
+            $c = $customClass;
+         }
+
+         if ( class_exists($c) ) {
+            $view = new $c;
+            if ( $view->useForSubpanel ) {
+               $this->defaultProcess = false;
+
+               // Check if we should use the module's QuickCreate.tpl file.
+               if ( $view->useModuleQuickCreateTemplate && file_exists('modules/' . $module . '/tpls/QuickCreate.tpl') ) {
+                  $this->ev->defs['templateMeta']['form']['headerTpl'] = 'modules/' . $module . '/tpls/QuickCreate.tpl';
+               }
+
+               $view->ev = & $this->ev;
+               $view->ss = & $this->ev->ss;
+               $class = $GLOBALS['beanList'][$module];
+               if ( !empty($GLOBALS['beanFiles'][$class]) ) {
+                  require_once($GLOBALS['beanFiles'][$class]);
+                  $bean = new $class();
+                  $view->bean = $bean;
+               }
+               $this->ev->formName = 'form_Subpanel' . $this->ev->view . '_' . $module;
+               $view->showTitle = false; // Do not show title since this is for subpanel
+               $view->display();
             }
-		} //if
+         }
+      } //if
 
-		if($this->defaultProcess && !$proccessOverride) {
-		   $this->process($module);
-		}
-	}
+      if ( $this->defaultProcess && !$proccessOverride ) {
+         $this->process($module);
+      }
+   }
 
-	/**
-	 * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-	 */
-	public function SubpanelQuickCreate($module, $view='QuickCreate', $proccessOverride = false){
-		$deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-		if(isset($GLOBALS['log'])) {
-			$GLOBALS['log']->deprecated($deprecatedMessage);
-		}
-		else {
-			trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-		}
-		self::__construct($module, $view, $proccessOverride);
-	}
+   public function process($module) {
+      if ( $_REQUEST['target_action'] == 'QuickCreate' ) {
+         $this->ev->view = 'QuickCreate';
+      }
+      $form_name = 'form_Subpanel' . $this->ev->view . '_' . $module;
+      $this->ev->formName = $form_name;
+      $this->ev->process(true, $form_name);
+      echo $this->ev->display(false, true);
+   }
 
-	function process($module){
-        if($_REQUEST['target_action'] == 'QuickCreate'){
-            $this->ev->view = 'QuickCreate';
-        }
-        $form_name = 'form_Subpanel'.$this->ev->view .'_'.$module;
-        $this->ev->formName = $form_name;
-        $this->ev->process(true, $form_name);
-		echo $this->ev->display(false, true);
-	}
+   /**
+    * Get EditView object
+    * @return EditView
+    */
+   protected function getEditView() {
+      return new EditView();
+   }
 
-    /**
-     * Get EditView object
-     * @return EditView
-     */
-    protected function getEditView()
-    {
-        return new EditView();
-    }
+   /**
+    * Finds and returns the best viewdefs to use:
+    *  1. custom/module/quickcreatedefs.php
+    *  2. module/quickcreatedefs.php
+    *  3. custom/module/editviewdefs.php
+    *  4. module/editviewdefs.php
+    *
+    * @param $module
+    * @param $view
+    * @return string The path to the viewdefs file to use
+    */
+   public function getModuleViewDefsSourceFile($module, $view) {
+      $base = 'modules/' . $module . '/metadata/';
+      $source = 'custom/' . $base . strtolower($view) . 'defs.php';
+      if ( !file_exists($source) ) {
+         $source = $base . strtolower($view) . 'defs.php';
+         if ( !file_exists($source) ) {
+            //if our view does not exist default to EditView
+            $this->viewType = 'EditView';
+            $source = 'custom/' . $base . 'editviewdefs.php';
+            if ( !file_exists($source) ) {
+               $source = $base . 'editviewdefs.php';
+            }
+         }
+      }
 
+      return $source;
+   }
 
-    /**
-     * Finds and returns the best viewdefs to use:
-     *  1. custom/module/quickcreatedefs.php
-     *  2. module/quickcreatedefs.php
-     *  3. custom/module/editviewdefs.php
-     *  4. module/editviewdefs.php
-     *
-     * @param $module
-     * @param $view
-     * @return string The path to the viewdefs file to use
-     */
-    public function getModuleViewDefsSourceFile($module, $view) {
-        $base = 'modules/' . $module . '/metadata/';
-		$source = 'custom/' . $base . strtolower($view) . 'defs.php';
-		if (!file_exists($source)) {
-			$source = $base . strtolower($view) . 'defs.php';
-			if (!file_exists($source)) {
-				//if our view does not exist default to EditView
-				$this->viewType = 'EditView';
-				$source = 'custom/' . $base . 'editviewdefs.php';
-				if (!file_exists($source)) {
-					$source = $base . 'editviewdefs.php';
-				}
-			}
-		}
-
-        return $source;
-    }
 }

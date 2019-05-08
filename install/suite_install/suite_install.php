@@ -51,6 +51,9 @@ install_gmaps();
 require_once('install/suite_install/Social.php');
 install_social();
 
+require_once('install/suite_install/KReport.php');
+install_kreport();
+
 require_once('install/suite_install/SystemEmailTemplates.php');
 installSystemEmailTemplates();
 setSystemEmailTemplatesDefaultConfig();

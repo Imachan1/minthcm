@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -40,179 +41,189 @@
 
 namespace SuiteCRM\SubPanel;
 
-class SubPanelRowCounter
-{
-    /**
-     * @var \SugarBean
-     */
-    private $focus;
+class SubPanelRowCounter {
 
-    /**
-     * @var array
-     */
-    private $subPanelDef;
+   /**
+    * @var \SugarBean
+    */
+   private $focus;
+   /**
+    * @var array
+    */
+   private $subPanelDef;
 
-    /**
-     * SubPanelRowCounter constructor.
-     * @param $focus
-     */
-    public function __construct($focus)
-    {
-        $this->focus = $focus;
-    }
+   /**
+    * SubPanelRowCounter constructor.
+    * @param $focus
+    */
+   public function __construct($focus) {
+      $this->focus = $focus;
+   }
 
-    /**
-     * @param array $subPanelDef
-     * @return int
-     */
-    public function getSubPanelRowCount($subPanelDef)
-    {
-        $this->setSubPanelDefs($subPanelDef);
+   /**
+    * @param array $subPanelDef
+    * @return int
+    */
+   public function getSubPanelRowCount($subPanelDef) {
+      $this->setSubPanelDefs($subPanelDef);
 
-        try {
-            $count = $this->doGetSubPanelRowCount($this->subPanelDef);
-            if ($count < 0) {
-                throw new \Exception('sub panel row count can not be negative');
-            }
-            return $count;
-        } catch (\Exception $e) {
-            \LoggerManager::getLogger()->error($e->getMessage());
-            return -1;
-        }
-    }
+      try {
+         $count = $this->doGetSubPanelRowCount($this->subPanelDef);
+         if ( $count < 0 ) {
+            throw new \Exception('sub panel row count can not be negative');
+         }
+         return $count;
+      } catch ( \Exception $e ) {
+         \LoggerManager::getLogger()->error($e->getMessage());
+         return -1;
+      }
+   }
 
-    /**
-     * @param string[] $subPanelDef
-     */
-    public function setSubPanelDefs($subPanelDef)
-    {
-        $this->subPanelDef = $subPanelDef;
-    }
+   /**
+    * @param string[] $subPanelDef
+    */
+   public function setSubPanelDefs($subPanelDef) {
+      $this->subPanelDef = $subPanelDef;
+   }
 
-    /**
-     * @param array $subPanelDef
-     * @return int
-     */
-    private function doGetSubPanelRowCount($subPanelDef)
-    {
-        if (!isset($subPanelDef['get_subpanel_data'])) {
-            foreach ($subPanelDef['collection_list'] as $subSubPanelDef) {
-                $subPanelRowCount = $this->doGetSubPanelRowCount($subSubPanelDef);
-                if ($subPanelRowCount) {
-                    return $subPanelRowCount;
-                }
-            }
-            return 0;
-        }
+   /**
+    * @param array $subPanelDef
+    * @return int
+    */
+   private function doGetSubPanelRowCount($subPanelDef) {
+      if ( !isset($subPanelDef['get_subpanel_data']) ) {
+         //viewTools start #60768
+         $subPanelRowCount = 0;
+         foreach ( $subPanelDef['collection_list'] as $subSubPanelDef ) {
+            $this->setSubPanelDefs($subSubPanelDef);
+            $subPanelRowCount += $this->doGetSubPanelRowCount($subSubPanelDef);
+         }
+         return $subPanelRowCount;
+         //viewTools end #60768
+      }
 
-        return $this->getSingleSubPanelRowCount();
-    }
+      return $this->getSingleSubPanelRowCount();
+   }
 
-    /**
-     * @return int
-     */
-    public function getSingleSubPanelRowCount()
-    {
-        global $db;
+   /**
+    * @return int
+    */
+   public function getSingleSubPanelRowCount() {
+      global $db;
 
-        $query = $this->makeSubPanelRowCountQuery();
-        if (!$query) {
-            return -1;
-        }
+      $query = $this->makeSubPanelRowCountQuery();
+      if ( !$query ) {
+         return -1;
+      }
 
-        $result = $db->query($query);
-        if ($result === false) {
-            return -1;
-        }
+      $result = $db->query($query);
+      if ( $result === false ) {
+         return -1;
+      }
 
-        if ($row = $db->fetchByAssoc($result)) {
-            return (int)array_shift($row);
-        }
+      if ( $row = $db->fetchByAssoc($result) ) {
+         return ( int ) array_shift($row);
+      }
 
-        return 0;
-    }
+      return 0;
+   }
 
-    /**
-     * @return string
-     */
-    public function makeSubPanelRowCountQuery()
-    {
+   /**
+    * @return string
+    */
+   public function makeSubPanelRowCountQuery() {
 
-        $relationshipName = isset($this->subPanelDef['get_subpanel_data']) && $this->subPanelDef['get_subpanel_data'] ? $this->subPanelDef['get_subpanel_data'] : null;
-        if (!$relationshipName) {
-            throw new \Exception('relationship name can not be empty');
-        }
+      $relationshipName = isset($this->subPanelDef['get_subpanel_data']) && $this->subPanelDef['get_subpanel_data'] ? $this->subPanelDef['get_subpanel_data'] : null;
+      if ( !$relationshipName ) {
+         throw new \Exception('relationship name can not be empty');
+      }
 
-        if (0 === strpos($relationshipName, 'function:')) {
-            return $this->makeFunctionCountQuery($relationshipName);
-        }
+      if ( 0 === strpos($relationshipName, 'function:') ) {
+         return $this->makeFunctionCountQuery($relationshipName);
+      }
 
-        if ($this->focus->load_relationship($relationshipName) !== false) {
-            /** @var \Link2 $relationship */
-            $relationship = $this->focus->$relationshipName;
-            return $this->selectQueryToCountQuery($relationship->getQuery());
-        }
+      if ( $this->focus->load_relationship($relationshipName) !== false ) {
+         /** @var \Link2 $relationship */
+         $relationship = $this->focus->$relationshipName;
+         //viewTools start 60768
+         $params = [];
+         if ( isset($this->subPanelDef['count_limit']) && !empty($this->subPanelDef['count_limit']) ) {
+            $params["limit"] = $this->subPanelDef['count_limit'];
+         }
 
-        return '';
-    }
+         return $this->selectQueryToCountQuery($relationship->getQuery($params));
+         //viewTools end 60768
+      }
 
-    /**
-     * @param $relationshipName
-     * @return string
-     */
-    public function makeFunctionCountQuery($relationshipName)
-    {
-        include_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'utils.php';
-        $functionName = substr($relationshipName, 9);
-        $qry = [];
-        $functionParameters = isset($this->subPanelDef['function_parameters']) && $this->subPanelDef['function_parameters'] ? $this->subPanelDef['function_parameters'] : null;
-        if (null === $functionParameters) {
-            \LoggerManager::getLogger()->warn('Function parameters is empty');
-        }
-        if (method_exists($this->focus, $functionName)) {
-            $qry = $this->focus->$functionName($functionParameters);
-        } elseif (\function_exists($functionName)) {
-            $qry = $functionName($functionParameters);
-        }
-        if (\is_array($qry) && \count($qry)) {
-            $qry = $qry['select'] . $qry['from'] . $qry['join'] . $qry['where'];
-        }
-        return $this->selectQueryToCountQuery($qry);
-    }
+      return '';
+   }
 
-    /**
-     * @param string $selectQuery
-     * @return string
-     */
-    public function selectQueryToCountQuery($selectQuery)
-    {
-        if (!\is_string($selectQuery)) {
-            return '';
-        }
+   /**
+    * @param $relationshipName
+    * @return string
+    */
+   public function makeFunctionCountQuery($relationshipName) {
+      include_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'utils.php';
+      $functionName = substr($relationshipName, 9);
+      $qry = [];
+      $functionParameters = isset($this->subPanelDef['function_parameters']) && $this->subPanelDef['function_parameters'] ? $this->subPanelDef['function_parameters'] : null;
+      if ( null === $functionParameters ) {
+         \LoggerManager::getLogger()->warn('Function parameters is empty');
+      }
+      if ( method_exists($this->focus, $functionName) ) {
+         $qry = $this->focus->$functionName($functionParameters);
+      } elseif ( \function_exists($functionName) ) {
+         $qry = $functionName($functionParameters);
+      }
+      if ( \is_array($qry) && \count($qry) ) {
+         $qry = $qry['select'] . $qry['from'] . $qry['join'] . $qry['where'];
+      }
+      return $this->selectQueryToCountQuery($qry);
+   }
 
-        $selectQuery = trim(str_replace(["\n", "\t", "\r", '  '], ' ', $selectQuery));
+   /**
+    * @param string $selectQuery
+    * @return string
+    */
+   public function selectQueryToCountQuery($selectQuery) {
+      if ( !\is_string($selectQuery) ) {
+         return '';
+      }
 
-        if (0 !== stripos($selectQuery, 'SELECT')) {
-            return '';
-        }
+      $selectQuery = trim(str_replace([ "\n", "\t", "\r", '  ' ], ' ', $selectQuery));
 
-        $fromPos = strpos($selectQuery, ' FROM');
-        if ($fromPos === false) {
-            return '';
-        }
+      if ( 0 !== stripos($selectQuery, 'SELECT') ) {
+         return '';
+      }
 
-        $selectPart = trim(substr($selectQuery, 7, $fromPos - 7));
-        if (false !== strpos($selectPart, ',')) {
-            return '';
-        }
+      $fromPos = strpos($selectQuery, ' FROM');
+      if ( $fromPos === false ) {
+         return '';
+      }
 
-        $selectArr = explode(' ', $selectPart);
-        $selectPartFirst = $selectArr[0];
+      $selectPart = trim(substr($selectQuery, 7, $fromPos - 7));
+      if ( false !== strpos($selectPart, ',') ) {
+         return '';
+      }
 
-        if (strpos($selectPartFirst, '*') !== false) {
-            $selectPartFirst = \str_replace('*', 'id', $selectPartFirst);
-        }
+      $selectArr = explode(' ', $selectPart);
+      $selectPartFirst = $selectArr[0];
+//viewTools start #60768
+      if ( "DISTINCT" === $selectPartFirst ) {
+         $selectPartFirst .= " ".$selectArr[1];
+      }
+//viewTools end #60768
+      if ( strpos($selectPartFirst, '*') !== false ) {
+         $selectPartFirst = \str_replace('*', 'id', $selectPartFirst);
+      }
+//viewTools start #60768
+      if ( strpos($selectQuery, 'LIMIT') !== false ) {
+         return 'SELECT COUNT(' . 'id' . ') FROM (' . $selectQuery . ' ) t';
+      } else {
+         return 'SELECT COUNT(' . $selectPartFirst . ')' . substr($selectQuery, $fromPos) . ' LIMIT 1';
+      }
+      //return 'SELECT COUNT(' . $selectPartFirst . ')' . substr($selectQuery, $fromPos) . ' LIMIT 1';
+      //viewTools end #60768
+   }
 
-        return 'SELECT COUNT(' . $selectPartFirst . ')' . substr($selectQuery, $fromPos) . ' LIMIT 1';
-    }
 }

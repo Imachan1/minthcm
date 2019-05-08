@@ -1,54 +1,29 @@
 <?php
-
-/*
-
-Modification information for LGPL compliance
-
-r56990 - 2010-06-16 13:05:36 -0700 (Wed, 16 Jun 2010) - kjing - snapshot "Mango" svn branch to a new one for GitHub sync
-
-r56989 - 2010-06-16 13:01:33 -0700 (Wed, 16 Jun 2010) - kjing - defunt "Mango" svn dev branch before github cutover
-
-r55980 - 2010-04-19 13:31:28 -0700 (Mon, 19 Apr 2010) - kjing - create Mango (6.1) based on windex
-
-r51719 - 2009-10-22 10:18:00 -0700 (Thu, 22 Oct 2009) - mitani - Converted to Build 3  tags and updated the build system 
-
-r51634 - 2009-10-19 13:32:22 -0700 (Mon, 19 Oct 2009) - mitani - Windex is the branch for Sugar Sales 1.0 development
-
-r50375 - 2009-08-24 18:07:43 -0700 (Mon, 24 Aug 2009) - dwong - branch kobe2 from tokyo r50372
-
-r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with changes from bsoufflet.
-
-
-*/
-
-
-// BEGIN SUGARCRM SPECIFIC
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
-// END SUGARCRM SPECIFIC
-
 //============================================================+
 // File name   : makefont.php
 // Begin       : 2004-12-31
-// Last Update : 2008-12-06
-// Version     : 1.2.004
+// Last Update : 2010-12-03
+// Version     : 1.2.007
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
-// 	Copyright (C) 2008  Nicola Asuni - Tecnick.com S.r.l.
+// 	Copyright (C) 2008-2010  Nicola Asuni - Tecnick.com S.r.l.
 //
-// 	This program is free software: you can redistribute it and/or modify
-// 	it under the terms of the GNU Lesser General Public License as published by
-// 	the Free Software Foundation, either version 2.1 of the License, or
-// 	(at your option) any later version.
+// This file is part of TCPDF software library.
 //
-// 	This program is distributed in the hope that it will be useful,
-// 	but WITHOUT ANY WARRANTY; without even the implied warranty of
-// 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// 	GNU Lesser General Public License for more details.
+// TCPDF is free software: you can redistribute it and/or modify it
+// under the terms of the GNU Lesser General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
 //
-// 	You should have received a copy of the GNU Lesser General Public License
-// 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// TCPDF is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU Lesser General Public License for more details.
 //
-// 	See LICENSE.TXT file for more information.
+// You should have received a copy of the GNU Lesser General Public License
+// along with TCPDF.  If not, see <http://www.gnu.org/licenses/>.
+//
+// See LICENSE.TXT file for more information.
 //  ----------------------------------------------------------------------------
 //
 // Description : Utility to generate font definition files fot TCPDF
@@ -66,25 +41,29 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 //============================================================+
 
 /**
+ * @file
  * Utility to generate font definition files fot TCPDF.
  * @author Nicola Asuni, Olivier Plathey, Steven Wittens
- * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @package com.tecnick.tcpdf
- * @link http://www.tcpdf.org
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
 */
 
 /**
- *
- * @param string $fontfile path to font file (TTF, OTF or PFB).
- * @param string $fmfile font metrics file (UFM or AFM).
- * @param boolean $embedded Set to false to not embed the font, true otherwise (default).
- * @param string $enc Name of the encoding table to use. Omit this parameter for TrueType Unicode, OpenType Unicode and symbolic fonts like Symbol or ZapfDingBats.
- * @param array $patch Optional modification of the encoding
+ * Convert a Font for TCPDF
+ * @param $fontfile (string) path to font file (TTF, OTF or PFB).
+ * @param $fmfile (string) font metrics file (UFM or AFM).
+ * @param $embedded (boolean) Set to false to not embed the font, true otherwise (default).
+ * @param $enc (string) Name of the encoding table to use. Omit this parameter for TrueType Unicode, OpenType Unicode and symbolic fonts like Symbol or ZapfDingBats.
+ * @param $patch (array) Optional modification of the encoding
  */
-function MakeFont($fontfile, $fmfile, $embedded=true, $enc='cp1252', $patch=array()/* BEGIN SUGARCRM SPECIFIC */, $cidInfo=""/* END SUGARCRM SPECIFIC */) {
+function MakeFont($fontfile, $fmfile, $embedded=true, $enc='cp1252', $patch=array()) {
 	//Generate a font definition file
-	set_magic_quotes_runtime(0);
+	if(!defined('PHP_VERSION_ID')) {
+		$version = PHP_VERSION;
+		define('PHP_VERSION_ID', (($version{0} * 10000) + ($version{2} * 100) + $version{4}));
+	}
+	if (PHP_VERSION_ID < 50300) {
+		@set_magic_quotes_runtime(0);
+	}
 	ini_set('auto_detect_line_endings', '1');
 	if (!file_exists($fontfile)) {
 		die('Error: file not found: '.$fontfile);
@@ -132,39 +111,8 @@ function MakeFont($fontfile, $fmfile, $embedded=true, $enc='cp1252', $patch=arra
 		$fd = MakeFontDescriptor($fm, false);
 	}
 	//Start generation
-	$s = '<?php
-
-/*
-
-Modification information for LGPL compliance
-
-r56990 - 2010-06-16 13:05:36 -0700 (Wed, 16 Jun 2010) - kjing - snapshot "Mango" svn branch to a new one for GitHub sync
-
-r56989 - 2010-06-16 13:01:33 -0700 (Wed, 16 Jun 2010) - kjing - defunt "Mango" svn dev branch before github cutover
-
-r55980 - 2010-04-19 13:31:28 -0700 (Mon, 19 Apr 2010) - kjing - create Mango (6.1) based on windex
-
-r51719 - 2009-10-22 10:18:00 -0700 (Thu, 22 Oct 2009) - mitani - Converted to Build 3  tags and updated the build system 
-
-r51634 - 2009-10-19 13:32:22 -0700 (Mon, 19 Oct 2009) - mitani - Windex is the branch for Sugar Sales 1.0 development
-
-r50375 - 2009-08-24 18:07:43 -0700 (Mon, 24 Aug 2009) - dwong - branch kobe2 from tokyo r50372
-
-r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with changes from bsoufflet.
-
-
-*/
-
-'."\n";
-	   // BEGIN SUGARCRM SPECIFIC
-    if($embedded){
-    // END SUGARCRM SPECIFIC
-	   $s .= '$type=\''.$type."';\n";
-	// BEGIN SUGARCRM SPECIFIC
-    }else{
-        $s .= '$type=\''."cidfont0';\n";
-    }
-    // END SUGARCRM SPECIFIC
+	$s = '<?php'."\n";
+	$s .= '$type=\''.$type."';\n";
 	$s .= '$name=\''.$fm['FontName']."';\n";
 	$s .= '$desc='.$fd.";\n";
 	if (!isset($fm['UnderlinePosition'])) {
@@ -183,29 +131,12 @@ r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with ch
 			$dw = 600;
 		}
 	}
-	// BEGIN SUGARCRM SPECIFIC
-	if($embedded){
-	// END SUGARCRM SPECIFIC
-	    $s .= '$dw='.$dw.";\n";
-	// BEGIN SUGARCRM SPECIFIC
-	}else{
-	    $s .= '$dw='."1000;\n";
-	}
-	// END SUGARCRM SPECIFIC
+	$s .= '$dw='.$dw.";\n";
 	$w = MakeWidthArray($fm);
 	$s .= '$cw='.$w.";\n";
-	// BEGIN SUGARCRM SPECIFIC
-    if($embedded){
-    // END SUGARCRM SPECIFIC
-	   $s .= '$enc=\''.$enc."';\n";
-	// BEGIN SUGARCRM SPECIFIC
-    }
-    // END SUGARCRM SPECIFIC
+	$s .= '$enc=\''.$enc."';\n";
 	$s .= '$diff=\''.$diff."';\n";
 	$basename = substr(basename($fmfile), 0, -4);
-    // BEGIN SUGARCRM SPECIFIC
-	$dirname = dirname($fmfile);
-    // END SUGARCRM SPECIFIC
 	if ($embedded) {
 		//Embedded font
 		if (($type == 'TrueType') OR ($type == 'TrueTypeUnicode')) {
@@ -215,7 +146,7 @@ r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with ch
 		if (!$f) {
 			die('Error: Unable to open '.$fontfile);
 		}
-		$file = stream_get_contents($f);
+		$file = fread($f, filesize($fontfile));
 		fclose($f);
 		if ($type == 'Type1') {
 			//Find first two sections and discard third one
@@ -243,26 +174,12 @@ r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with ch
 		$basename = strtolower($basename);
 		if (function_exists('gzcompress')) {
 			$cmp = $basename.'.z';
-			// BEGIN SUGARCRM SPECIFIC
-			/*
-			// END SUGARCRM SPECIFIC
 			SaveToFile($cmp, gzcompress($file, 9), 'b');
-			// BEGIN SUGARCRM SPECIFIC
-            */
-			SaveToFile($dirname."/".$cmp, gzcompress($file, 9), 'b');
-            // END SUGARCRM SPECIFIC
 			$s .= '$file=\''.$cmp."';\n";
 			print "Font file compressed (".$cmp.")\n";
 			if (!empty($cidtogidmap)) {
 				$cmp = $basename.'.ctg.z';
-    			// BEGIN SUGARCRM SPECIFIC
-                /*
-                // END SUGARCRM SPECIFIC
 				SaveToFile($cmp, gzcompress($cidtogidmap, 9), 'b');
-                // BEGIN SUGARCRM SPECIFIC
-                */
-				SaveToFile($dirname."/".$cmp, gzcompress($cidtogidmap, 9), 'b');
-                // END SUGARCRM SPECIFIC
 				print "CIDToGIDMap created and compressed (".$cmp.")\n";
 				$s .= '$ctg=\''.$cmp."';\n";
 			}
@@ -271,14 +188,7 @@ r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with ch
 			print "Notice: font file could not be compressed (zlib extension not available)\n";
 			if (!empty($cidtogidmap)) {
 				$cmp = $basename.'.ctg';
-				// BEGIN SUGARCRM SPECIFIC
-                /*
-                // END SUGARCRM SPECIFIC
 				$f = fopen($cmp, 'wb');
-                // BEGIN SUGARCRM SPECIFIC
-                */
-				$f = fopen($dirname."/".$cmp, 'wb');
-                // END SUGARCRM SPECIFIC
 				fwrite($f, $cidtogidmap);
 				fclose($f);
 				print "CIDToGIDMap created (".$cmp.")\n";
@@ -293,33 +203,16 @@ r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with ch
 		}
 	} else {
 		//Not embedded font
-    	// BEGIN SUGARCRM SPECIFIC
-        /*
-        // END SUGARCRM SPECIFIC
-	    $s .= '$file='."'';\n";
-    	// BEGIN SUGARCRM SPECIFIC
-        */
-	    $s .= $cidInfo;
-        // END SUGARCRM SPECIFIC
+		$s .= '$file='."'';\n";
 	}
-	$s .= "?>";
-    // BEGIN SUGARCRM SPECIFIC
-    /*
-    // END SUGARCRM SPECIFIC
+	$s .= '// --- EOF ---';
 	SaveToFile($basename.'.php',$s);
-    // BEGIN SUGARCRM SPECIFIC
-    */
-	SaveToFile($dirname."/".$basename.'.php',$s);
-    // END SUGARCRM SPECIFIC
 	print "Font definition file generated (".$basename.".php)\n";
-	// BEGIN SUGARCRM SPECIFIC
-    return $dirname."/".$basename;
-    // END SUGARCRM SPECIFIC
 }
 
 /**
  * Read the specified encoding map.
- * @param string $enc map name (see /enc/ folder for valid names).
+ * @param $enc (string) map name (see /enc/ folder for valid names).
  */
 function ReadMap($enc) {
 	//Read a map file
@@ -383,7 +276,7 @@ function ReadUFM($file, &$cidtogidmap) {
 				$cidtogidmap{(($cc * 2) + 1)} = chr($glyph & 0xFF);
 			}
 		}
-		if(($gn == '.notdef') AND (!isset($fm['MissingWidth']))) {
+		if((isset($gn) AND ($gn == '.notdef')) AND (!isset($fm['MissingWidth']))) {
 			$fm['MissingWidth'] = $w;
 		}
 		} elseif($code == 'FontName') {
@@ -592,7 +485,7 @@ function MakeFontDescriptor($fm, $symbolic=false) {
 	//StemV
 	if (isset($fm['StdVW'])) {
 		$stemv = $fm['StdVW'];
-	} elseif (isset($fm['Weight']) and eregi('(bold|black)', $fm['Weight'])) {
+	} elseif (isset($fm['Weight']) AND preg_match('/(bold|black)/i', $fm['Weight'])) {
 		$stemv = 120;
 	} else {
 		$stemv = 70;
@@ -692,12 +585,11 @@ function CheckTTF($file) {
 	$e = ($fsType & 0x08) != 0;
 	fclose($f);
 	if($rl AND (!$pp) AND (!$e)) {
-		print "Warning: font license does not allow embedding\n";
+		print 'Warning: font license does not allow embedding.'."\n";
 	}
 }
-// BEGIN SUGARCRM SPECIFIC
-/*
-// END SUGARCRM SPECIFIC
+
+// -------------------------------------------------------------------
 
 $arg = $GLOBALS['argv'];
 if (count($arg) >= 3) {
@@ -721,10 +613,9 @@ if (count($arg) >= 3) {
 	$t = ob_get_clean();
 	print preg_replace('!<BR( /)?>!i', "\n", $t);
 } else {
-	print "Usage: makefont.php <ttf/otf/pfb file> <afm/ufm file> <encoding> <patch>\n";
+	print 'Usage: makefont.php <ttf/otf/pfb file> <afm/ufm file> <encoding> <patch>'."\n";
 }
 
-// BEGIN SUGARCRM SPECIFIC
-*/
-// END SUGARCRM SPECIFIC
-?>
+//============================================================+
+// END OF FILE
+//============================================================+

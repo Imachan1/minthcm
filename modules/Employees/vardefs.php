@@ -1,6 +1,7 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
 }
 /**
  *
@@ -40,24 +41,150 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
 global $dictionary;
-if(empty($dictionary['User'])){
-	include('modules/Users/vardefs.php');
+if ( empty($dictionary['User']) ) {
+   include('modules/Users/vardefs.php');
 }
-$dictionary['Employee']=$dictionary['User'];
+$dictionary['Employee'] = $dictionary['User'];
 //users of employees modules are not allowed to change the employee/user status.
-$dictionary['Employee']['fields']['status']['massupdate']=false;
-$dictionary['Employee']['fields']['is_admin']['massupdate']=false;
+$dictionary['Employee']['fields']['status']['massupdate'] = false;
+$dictionary['Employee']['fields']['is_admin']['massupdate'] = false;
 //begin bug 48033
-$dictionary['Employee']['fields']['UserType']['massupdate']=false;
-$dictionary['Employee']['fields']['messenger_type']['massupdate']=false;
-$dictionary['Employee']['fields']['email_link_type']['massupdate']=false;
+$dictionary['Employee']['fields']['UserType']['massupdate'] = false;
+$dictionary['Employee']['fields']['messenger_type']['massupdate'] = false;
+$dictionary['Employee']['fields']['email_link_type']['massupdate'] = false;
 //end bug 48033
-$dictionary['Employee']['fields']['email1']['required']=false;
-$dictionary['Employee']['fields']['email_addresses']['required']=false;
-$dictionary['Employee']['fields']['email_addresses_primary']['required']=false;
+$dictionary['Employee']['fields']['email1']['required'] = false;
+$dictionary['Employee']['fields']['email_addresses']['required'] = false;
+$dictionary['Employee']['fields']['email_addresses_primary']['required'] = false;
 // bugs 47553 & 49716
-$dictionary['Employee']['fields']['status']['studio']=false;
-$dictionary['Employee']['fields']['status']['required']=false;
+$dictionary['Employee']['fields']['status']['studio'] = false;
+$dictionary['Employee']['fields']['status']['required'] = false;
 
+
+$dictionary["Employee"]["fields"]["spenttime"] = array(
+   'name' => 'spenttime',
+   'type' => 'link',
+   'relationship' => 'spenttime_employees',
+   'source' => 'non-db',
+   'side' => 'right',
+   'vname' => 'LBL_USERS_SPENT_TIME_TITLE',
+);
+$dictionary["Employee"]["fields"]["contracts"] = array(
+   'name' => 'contracts',
+   'type' => 'link',
+   'relationship' => 'contracts_employee',
+   'source' => 'non-db',
+   'side' => 'right',
+   'vname' => 'LBL_CONTRACTS',
+);
+$dictionary["Employee"]["fields"]["resources"] = array(
+   'name' => 'resources',
+   'type' => 'link',
+   'relationship' => 'resources_employee',
+   'source' => 'non-db',
+   'side' => 'right',
+   'vname' => 'LBL_RESOURCES',
+);
+$dictionary["Employee"]["fields"]["reservations"] = array(
+   'name' => 'reservations',
+   'type' => 'link',
+   'relationship' => 'reservations_employee',
+   'source' => 'non-db',
+   'side' => 'right',
+   'vname' => 'LBL_RESERVATIONS',
+);
+$dictionary["Employee"]["fields"]["periodsofemployment"] = array(
+   'name' => 'periodsofemployment',
+   'type' => 'link',
+   'relationship' => 'periodsofemployment_employee',
+   'source' => 'non-db',
+   'side' => 'right',
+   'vname' => 'LBL_PERIODSOFEMPLOYMENT',
+);
+
+$dictionary["Employee"]["fields"]["goals"] = array(
+   'name' => 'goals',
+   'type' => 'link',
+   'relationship' => 'goals_employee',
+   'source' => 'non-db',
+   'side' => 'right',
+   'vname' => 'LBL_GOALS',
+);
+$dictionary["Employee"]["fields"]["appraisals"] = array(
+   'name' => 'appraisals',
+   'type' => 'link',
+   'relationship' => 'appraisals_employee',
+   'source' => 'non-db',
+   'side' => 'right',
+   'vname' => 'LBL_APPRAISALS',
+);
+$dictionary["Employee"]["fields"]["roles"] = array(
+   'name' => 'roles',
+   'type' => 'link',
+   'relationship' => 'roles_employees',
+   'source' => 'non-db',
+   'module' => 'EmployeeRoles',
+   'bean_name' => 'EmployeeRoles',
+   'vname' => 'LBL_ROLES',
+);
+$dictionary["Employee"]["fields"]["benefits"] = array(
+   'name' => 'benefits',
+   'type' => 'link',
+   'relationship' => 'benefits_employees',
+   'source' => 'non-db',
+   'module' => 'Benefits',
+   'bean_name' => 'Benefits',
+   'vname' => 'LBL_RESPONSIBILITIES',
+);
+$dictionary["Employee"]["fields"]["onboardings"] = array(
+   'name' => 'onboardings',
+   'type' => 'link',
+   'relationship' => 'onboardings_employee',
+   'source' => 'non-db',
+   'side' => 'right',
+   'vname' => 'LBL_ONBOARDINGS',
+);
+$dictionary["Employee"]["fields"]["offboardings"] = array(
+   'name' => 'offboardings',
+   'type' => 'link',
+   'relationship' => 'offboardings_employee',
+   'source' => 'non-db',
+   'side' => 'right',
+   'vname' => 'LBL_OFFBOARDINGS',
+);
+$dictionary["Employee"]["fields"]["competencyratings"] = array(
+   'name' => 'competencyratings',
+   'type' => 'link',
+   'relationship' => 'competencyratings_employee',
+   'module' => 'CompetencyRatings',
+   'bean_name' => 'CompetencyRatings',
+   'source' => 'non-db',
+   'vname' => 'LBL_COMPETENCYRATINGS',
+);
+$dictionary["Employee"]["fields"]["organizationalunits"] = array(
+   'name' => 'organizationalunits',
+   'type' => 'link',
+   'relationship' => 'employees_organizationalunits',
+   'source' => 'non-db',
+   'module' => 'OrganizationalUnits',
+   'bean_name' => 'OrganizationalUnits',
+   'vname' => 'LBL_RELATIONSHIP_ORGANIZATIONALUNITS_NAME',
+   'side' => 'right',
+);
+$dictionary["Employee"]["fields"]["certificates"] = array(
+   'name' => 'certificates',
+   'type' => 'link',
+   'relationship' => 'certificates_employee',
+   'source' => 'non-db',
+   'side' => 'right',
+   'vname' => 'LBL_CERTIFICATES',
+);
+$dictionary["Employee"]["fields"]["applications"] = array(
+   'name' => 'applications',
+   'type' => 'link',
+   'relationship' => 'applications_employee',
+   'source' => 'non-db',
+   'side' => 'right',
+   'vname' => 'LBL_APPLICATIONS_SUBPANEL',
+);

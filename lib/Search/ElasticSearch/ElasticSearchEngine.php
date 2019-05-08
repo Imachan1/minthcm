@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -36,9 +37,8 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
 }
 
 use Elasticsearch\Client;
@@ -52,129 +52,127 @@ use SuiteCRM\Search\SearchResults;
 /**
  * SearchEngine that use Elasticsearch index for performing almost real-time search.
  */
-class ElasticSearchEngine extends SearchEngine
-{
-    /** @var Client */
-    private $client;
-    /** @var string */
-    private $index = 'main';
+class ElasticSearchEngine extends SearchEngine {
 
-    /**
-     * ElasticSearchEngine constructor.
-     *
-     * @param Client|null $client
-     */
-    public function __construct(Client $client = null)
-    {
-        $this->client = empty($client) ? ElasticSearchClientBuilder::getClient() : $client;
-    }
+   /** @var Client */
+   private $client;
+   /** @var string */
+   private $index = 'main';
 
-    /**
-     * @inheritdoc
-     */
-    public function search(SearchQuery $query)
-    {
-        $this->validateQuery($query);
-        $params = $this->createSearchParams($query);
-        $start = microtime(true);
-        $hits = $this->runElasticSearch($params);
-        $results = $this->parseHits($hits);
-        $end = microtime(true);
-        $searchTime = ($end - $start);
-        return new SearchResults($results, true, $searchTime, $hits['hits']['total']);
-    }
+   /**
+    * ElasticSearchEngine constructor.
+    *
+    * @param Client|null $client
+    */
+   public function __construct(Client $client = null) {
+      // View Tools start #60464
+      if ( !empty($GLOBALS['sugar_config']['unique_key']) ) {
+         $this->setIndex($GLOBALS['sugar_config']['unique_key'] . '_shared');
+      }
+      // View Tools end #60464
+      $this->client = empty($client) ? ElasticSearchClientBuilder::getClient() : $client;
+   }
 
-    /**
-     * @return string
-     */
-    public function getIndex()
-    {
-        return $this->index;
-    }
+   /**
+    * @inheritdoc
+    */
+   public function search(SearchQuery $query) {
+      $this->validateQuery($query);
+      $params = $this->createSearchParams($query);
+      $start = microtime(true);
+      $hits = $this->runElasticSearch($params);
+      $results = $this->parseHits($hits);
+      $end = microtime(true);
+      $searchTime = ($end - $start);
+      return new SearchResults($results, true, $searchTime, $hits['hits']['total']);
+   }
 
-    /**
-     * @param string $index
-     */
-    public function setIndex($index)
-    {
-        $this->index = $index;
-    }
+   /**
+    * @return string
+    */
+   public function getIndex() {
+      return $this->index;
+   }
 
-    /**
-     * @param SearchQuery $query
-     */
-    protected function validateQuery(SearchQuery &$query)
-    {
-        $query->trim();
-        $query->convertEncoding();
-    }
+   /**
+    * @param string $index
+    */
+   public function setIndex($index) {
+      $this->index = $index;
+   }
 
-    /**
-     * Generates the parameter array for the Elasticsearch API from a SearchQuery.
-     *
-     * @param SearchQuery $query
-     *
-     * @return array
-     */
-    private function createSearchParams($query)
-    {
-        $params = [
-            'index' => $this->index,
-            'body' => [
-                'stored_fields' => [],
-                'from' => $query->getFrom(),
-                'size' => $query->getSize(),
-                'query' => [
-                    'query_string' => [
-                        'query' => $query->getSearchString(),
-                        'fields' => ['name.*^5', '_all'],
-                        'analyzer' => 'standard',
-                        'default_operator' => 'OR',
-                        'minimum_should_match' => '66%',
-                    ],
-                ],
+   /**
+    * @param SearchQuery $query
+    */
+   protected function validateQuery(SearchQuery &$query) {
+      $query->trim();
+      $query->convertEncoding();
+   }
+
+   /**
+    * Generates the parameter array for the Elasticsearch API from a SearchQuery.
+    *
+    * @param SearchQuery $query
+    *
+    * @return array
+    */
+   private function createSearchParams($query) {
+      $params = [
+         'index' => $this->index,
+         'body' => [
+            'stored_fields' => [],
+            'from' => $query->getFrom(),
+            'size' => $query->getSize(),
+            'query' => [
+               'query_string' => [
+                  'query' => $query->getSearchString(),
+                  'fields' => [ 'name.*^5', '_all' ],
+                  'analyzer' => 'standard',
+                  'default_operator' => 'OR',
+                  'minimum_should_match' => '66%',
+               ],
             ],
-        ];
+         ],
+      ];
 
-        return $params;
-    }
+      return $params;
+   }
 
-    /**
-     * Calls the Elasticsearch API.
-     *
-     * @param array $params
-     *
-     * @return array
-     */
-    private function runElasticSearch($params)
-    {
-        try {
-            $results = $this->client->search($params);
-        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (BadRequest400Exception $exception) {
-            throw new SearchInvalidRequestException('The query was not valid.');
-        }
+   /**
+    * Calls the Elasticsearch API.
+    *
+    * @param array $params
+    *
+    * @return array
+    */
+   private function runElasticSearch($params) {
+      try {
+         $results = $this->client->search($params);
+      } /** @noinspection PhpRedundantCatchClauseInspection */ catch ( BadRequest400Exception $exception ) {
+         throw new SearchInvalidRequestException('The query was not valid.');
+      }
 
-        return $results;
-    }
+      return $results;
+   }
 
-    /**
-     * Reads the array returned from the Elasticsearch API
-     * and converts it into an associative array of ids, grouped by Module.
-     *
-     * @param array $hits
-     *
-     * @return array
-     */
-    private function parseHits($hits)
-    {
-        $hitsArray = $hits['hits']['hits'];
+   /**
+    * Reads the array returned from the Elasticsearch API
+    * and converts it into an associative array of ids, grouped by Module.
+    *
+    * @param array $hits
+    *
+    * @return array
+    */
+   private function parseHits($hits) {
+      $hitsArray = $hits['hits']['hits'];
 
-        $results = [];
+      $results = [];
 
-        foreach ($hitsArray as $hit) {
-            $results[$hit['_type']][] = $hit['_id'];
-        }
+      foreach ( $hitsArray as $hit ) {
+         $results[$hit['_type']][] = $hit['_id'];
+      }
 
-        return $results;
-    }
+      return $results;
+   }
+
 }

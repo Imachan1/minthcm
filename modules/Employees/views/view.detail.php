@@ -1,5 +1,8 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
+}
 
 /**
  *
@@ -39,29 +42,9 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
-
 require_once('include/MVC/View/views/view.detail.php');
 
 class EmployeesViewDetail extends ViewDetail {
-
- 	function __construct(){
- 		parent::__construct();
- 	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function EmployeesViewDetail(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
 
 
    /**
@@ -70,39 +53,38 @@ class EmployeesViewDetail extends ViewDetail {
     * @param  bool $show_help optional, true if we show the help links
     * @return HTML string containing breadcrumb title
     */
-    public function getModuleTitle($show_help = true)
-    {
-        global $sugar_version, $sugar_flavor, $server_unique_key, $current_language, $action, $current_user;
+   public function getModuleTitle($show_help = true) {
+      //global $sugar_version, $sugar_flavor, $server_unique_key, $current_language, $action;
+      global $current_user;
 
-        $theTitle = "<div class='moduleTitle'>\n";
+      $theTitle = "<div class='moduleTitle'>\n";
 
-        $module = preg_replace("/ /","",$this->module);
+      $module = preg_replace("/ /", "", $this->module);
 
-        $params = $this->_getModuleTitleParams();
-        $count = count($params);
-        $index = 0;
+      $params = $this->_getModuleTitleParams();
+      $count = count($params);
+      $index = 0;
 
-		if(SugarThemeRegistry::current()->directionality == "rtl") {
-			$params = array_reverse($params);
-		}
+      if ( SugarThemeRegistry::current()->directionality == "rtl" ) {
+         $params = array_reverse($params);
+      }
 
-        $paramString = '';
-        foreach($params as $parm){
-            $index++;
-            $paramString .= $parm;
-            if($index < $count){
-                $paramString .= $this->getBreadCrumbSymbol();
-            }
-        }
+      $paramString = '';
+      foreach ( $params as $parm ) {
+         $index++;
+         $paramString .= $parm;
+         if ( $index < $count ) {
+            $paramString .= $this->getBreadCrumbSymbol();
+         }
+      }
 
-        if(!empty($paramString)){
-            $theTitle .= "<h2> $paramString </h2>\n";
-        }
+      if ( !empty($paramString) ) {
+         $theTitle .= "<h2> $paramString </h2>\n";
+      }
 
-        if ($show_help) {
-            $theTitle .= "<span class='utils'>";
-            if(is_admin($current_user) || is_admin_for_module($current_user, $this->module))
-            {
+      if ( $show_help ) {
+         $theTitle .= "<span class='utils'>";
+         if ( is_admin($current_user) || is_admin_for_module($current_user, $this->module) ) {
             $createImageURL = SugarThemeRegistry::current()->getImageURL('create-record.gif');
             $theTitle .= <<<EOHTML
 &nbsp;
@@ -112,34 +94,47 @@ class EmployeesViewDetail extends ViewDetail {
 {$GLOBALS['app_strings']['LNK_CREATE']}
 </a>
 EOHTML;
-            }
-        }
+         }
+      }
 
-        $theTitle .= "</span></div>\n";
-        return $theTitle;
-    }
+      $theTitle .= "</span></div>\n";
+      return $theTitle;
+   }
 
- 	function display() {
-       	if(is_admin($GLOBALS['current_user']) || $_REQUEST['record'] == $GLOBALS['current_user']->id) {
-			 $this->ss->assign('DISPLAY_EDIT', true);
-        }
-        if(is_admin($GLOBALS['current_user'])){
- 			$this->ss->assign('DISPLAY_DUPLICATE', true);
- 		}
+   public function display() {
+      if ( is_admin($GLOBALS['current_user']) || $_REQUEST['record'] == $GLOBALS['current_user']->id ) {
+         $this->ss->assign('DISPLAY_EDIT', true);
+      }
+      if ( is_admin($GLOBALS['current_user']) ) {
+         $this->ss->assign('DISPLAY_DUPLICATE', true);
+      }
 
- 		$showDeleteButton = FALSE;
- 		if(  $_REQUEST['record'] != $GLOBALS['current_user']->id && $GLOBALS['current_user']->isAdminForModule('Users') )
-        {
-            $showDeleteButton = TRUE;
- 		     if( empty($this->bean->user_name) ) //Indicates just employee
- 		         $deleteWarning = $GLOBALS['mod_strings']['LBL_DELETE_EMPLOYEE_CONFIRM'];
- 		     else
- 		         $deleteWarning = $GLOBALS['mod_strings']['LBL_DELETE_USER_CONFIRM'];
- 		     $this->ss->assign('DELETE_WARNING', $deleteWarning);
-        }
-        $this->ss->assign('DISPLAY_DELETE', $showDeleteButton);
+      $showDeleteButton = FALSE;
+      if (
+         $_REQUEST['record'] != $GLOBALS['current_user']->id &&
+         $GLOBALS['current_user']->isAdminForModule('Users')
+      ) {
+         $showDeleteButton = TRUE;
+         if ( empty($this->bean->user_name) ) {//Indicates just employee
+            $deleteWarning = $GLOBALS['mod_strings']['LBL_DELETE_EMPLOYEE_CONFIRM'];
+         } else {
+            $deleteWarning = $GLOBALS['mod_strings']['LBL_DELETE_USER_CONFIRM'];
+         }
+         $this->ss->assign('DELETE_WARNING', $deleteWarning);
+      }
+      $this->ss->assign('DISPLAY_DELETE', $showDeleteButton);
 
- 		parent::display();
- 	}
+      parent::display();
+   }
+
+   public function preDisplay() {
+      $this->assignSmartyVariables();
+      parent::preDisplay();
+   }
+
+   protected function assignSmartyVariables() {
+      $appraisals_edit_access = ACLController::checkAccess('Appraisals', 'edit');
+      $this->ss->assign('appraisals_edit_access', $appraisals_edit_access);
+   }
+
 }
-

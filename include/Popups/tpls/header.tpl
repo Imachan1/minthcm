@@ -1,4 +1,5 @@
 {*
+Mint #61877 : added missing STYLE_JS, which is required for checkbox functionality
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -41,6 +42,9 @@
 *}
 <script type="text/javascript" src="{sugar_getjspath file='include/javascript/sugar_3.js'}"></script>
 <script type="text/javascript" src="{sugar_getjspath file='include/javascript/popup_helper.js'}"></script>
+{* Mint start #61877 *}
+{$STYLE_JS}
+{* Mint end #61877 *}
 <script type="text/javascript">
 	{$ASSOCIATED_JAVASCRIPT_DATA}
 

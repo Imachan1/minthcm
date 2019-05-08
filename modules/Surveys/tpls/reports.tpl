@@ -1,15 +1,24 @@
 <h1>{$survey.name}</h1>
 <table>
     <tr>
-        <th>Responses:</th>
+        {* View Tools START *}
+        {*<th>Responses:</th>*}
+        <th>{$mod.LBL_RESPONSES}:</th>
+            {* View Tools END *}
         <td>{$responsesCount}</td>
     </tr>
     <tr>
-        <th>Surveys Sent:</th>
+        {* View Tools START *}
+        {*<th>Surveys Sent:</th>*}
+        <th>{$mod.LBL_SURVEYS_SENT}:</th>
+            {* View Tools END *}
         <td>{$surveysSent}</td>
     </tr>
     <tr>
-        <th>Distinct Surveys Sent:</th>
+        {* View Tools START *}
+        {*<th>Distinct Surveys Sent:</th>*}
+        <th>{$mod.LBL_DISTINCT_SURVEYS_SENT}:</th>
+            {* View Tools END *}
         <td>{$surveysSentDistinct}</td>
     </tr>
 </table>
@@ -54,8 +63,8 @@
 <script type='text/javascript' src='modules/Surveys/javascript/Survey.js'></script>
 <script>
     {literal}
-    $(document).ready(function () {
-        Survey.showHide($('.showHideResponses'));
-    });
+        $( document ).ready( function () {
+           Survey.showHide( $( '.showHideResponses' ) );
+        } );
     {/literal}
 </script>

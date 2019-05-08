@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -16,7 +17,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,119 +35,113 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
 }
 
 /**
  * Class SpotsController.
  */
-class SpotsController extends SugarController
-{
-    protected $nullSqlPlaceholder = '';
-    protected $action_remap = array('DetailView' => 'editview', 'index' => 'listview');
+class SpotsController extends SugarController {
 
-    //These are the file paths for the cached results of the spot data sets
-    protected $spotFilePath = 'cache/modules/Spots/';
-    protected $accountsFileName = 'accounts.json';
-    protected $servicesFileName = 'service.json';
-    protected $salesFileName = 'sales.json';
-    protected $leadsFileName = 'leads.json';
-    protected $marketingsFileName = 'marketing.json';
-    protected $marketingActivitiesFileName = 'marketingActivity.json';
-    protected $activitiesFileName = 'activities.json';
-    protected $quotesFileName = 'quotes.json';
+   protected $nullSqlPlaceholder = '';
+   protected $action_remap = array( 'DetailView' => 'editview', 'index' => 'listview' );
+   //These are the file paths for the cached results of the spot data sets
+   protected $spotFilePath = 'cache/modules/Spots/';
+   protected $accountsFileName = 'accounts.json';
+   protected $servicesFileName = 'service.json';
+   protected $salesFileName = 'sales.json';
+   protected $leadsFileName = 'leads.json';
+   protected $marketingsFileName = 'marketing.json';
+   protected $marketingActivitiesFileName = 'marketingActivity.json';
+   protected $activitiesFileName = 'activities.json';
+   protected $quotesFileName = 'quotes.json';
+   //This is when to consider a data file as stale and replace it (should not be an issue if the scheduler is running)
+   //This is the time in seconds, so an hour is 3600
+   protected $spotsStaleTime = 3600;
 
-    //This is when to consider a data file as stale and replace it (should not be an issue if the scheduler is running)
-    //This is the time in seconds, so an hour is 3600
-    protected $spotsStaleTime = 3600;
+   /**
+    * This returns a string of the type of db being used.
+    *
+    * @return a string of the type of db being used (mysql, mssql or undefined)
+    */
+   public function getDatabaseType() {
+      global $sugar_config;
+      $dbType = 'undefined';
+      if ( $sugar_config['dbconfig']['db_type'] == 'mysql' ) {
+         $dbType = 'mysql';
+      } elseif ( $sugar_config['dbconfig']['db_type'] == 'mssql' ) {
+         $dbType = 'mssql';
+      }
 
-    /**
-     * This returns a string of the type of db being used.
-     *
-     * @return a string of the type of db being used (mysql, mssql or undefined)
-     */
-    public function getDatabaseType()
-    {
-        global $sugar_config;
-        $dbType = 'undefined';
-        if ($sugar_config['dbconfig']['db_type'] == 'mysql') {
-            $dbType = 'mysql';
-        } elseif ($sugar_config['dbconfig']['db_type'] == 'mssql') {
-            $dbType = 'mssql';
-        }
+      return $dbType;
+   }
 
-        return $dbType;
-    }
+   /**
+    * This is a duplicate of the build_report_access_query in AOR_Report (here for autonomy).
+    *
+    * @param SugarBean $module the $module to return the access query for
+    * @param string    $alias  the alias for the table
+    *
+    * @return string $where the where clause to represent access
+    */
+   public function buildSpotsAccessQuery(SugarBean $module, $alias) {
+      $module->table_name = $alias;
+      $where = '';
+      if ( $module->bean_implements('ACL') && ACLController::requireOwner($module->module_dir, 'list') ) {
+         global $current_user;
+         $owner_where = $module->getOwnerWhere($current_user->id);
+         $where = ' AND ' . $owner_where;
+      }
 
-    /**
-     * This is a duplicate of the build_report_access_query in AOR_Report (here for autonomy).
-     *
-     * @param SugarBean $module the $module to return the access query for
-     * @param string    $alias  the alias for the table
-     *
-     * @return string $where the where clause to represent access
-     */
-    public function buildSpotsAccessQuery(SugarBean $module, $alias)
-    {
-        $module->table_name = $alias;
-        $where = '';
-        if ($module->bean_implements('ACL') && ACLController::requireOwner($module->module_dir, 'list')) {
+      if ( file_exists('modules/SecurityGroups/SecurityGroup.php') ) {
+         /* BEGIN - SECURITY GROUPS */
+         if ( $module->bean_implements('ACL') && ACLController::requireSecurityGroup($module->module_dir, 'list') ) {
+            require_once 'modules/SecurityGroups/SecurityGroup.php';
             global $current_user;
             $owner_where = $module->getOwnerWhere($current_user->id);
-            $where = ' AND '.$owner_where;
-        }
-
-        if (file_exists('modules/SecurityGroups/SecurityGroup.php')) {
-            /* BEGIN - SECURITY GROUPS */
-            if ($module->bean_implements('ACL') && ACLController::requireSecurityGroup($module->module_dir, 'list')) {
-                require_once 'modules/SecurityGroups/SecurityGroup.php';
-                global $current_user;
-                $owner_where = $module->getOwnerWhere($current_user->id);
-                $group_where = SecurityGroup::getGroupWhere($alias, $module->module_dir, $current_user->id);
-                if (!empty($owner_where)) {
-                    $where .= ' AND ('.$owner_where.' or '.$group_where.') ';
-                } else {
-                    $where .= ' AND '.$group_where;
-                }
+            $group_where = SecurityGroup::getGroupWhere($alias, $module->module_dir, $current_user->id);
+            if ( !empty($owner_where) ) {
+               $where .= ' AND (' . $owner_where . ' or ' . $group_where . ') ';
+            } else {
+               $where .= ' AND ' . $group_where;
             }
-        }
+         }
+      }
 
-        return $where;
-    }
+      return $where;
+   }
 
-    /**
-     * Returns the cached account file, will create it first if it is out of date / does not exist.
-     *
-     * @return string returns a string representation of the accounts file
-     */
-    public function action_getAccountsSpotsData()
-    {
-        $userId = $_SESSION['authenticated_user_id'];
-        $fileLocation = $this->spotFilePath.$userId.'_'.$this->accountsFileName;
-        if (file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime)) {
-            echo file_get_contents($fileLocation);
-        } else {
-            $this->action_createAccountsSpotsData($fileLocation);
-            echo file_get_contents($fileLocation);
-        }
-    }
+   /**
+    * Returns the cached account file, will create it first if it is out of date / does not exist.
+    *
+    * @return string returns a string representation of the accounts file
+    */
+   public function action_getAccountsSpotsData() {
+      $userId = $_SESSION['authenticated_user_id'];
+      $fileLocation = $this->spotFilePath . $userId . '_' . $this->accountsFileName;
+      if ( file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime) ) {
+         echo file_get_contents($fileLocation);
+      } else {
+         $this->action_createAccountsSpotsData($fileLocation);
+         echo file_get_contents($fileLocation);
+      }
+   }
 
-    /**
-     * This creates the cached file for accounts.
-     *
-     * @param string $filepath the filepath to save the cached file
-     */
-    public function action_createAccountsSpotsData($filepath)
-    {
-        global $mod_strings;
-        $returnArray = array();
-        $db = DBManagerFactory::getInstance();
+   /**
+    * This creates the cached file for accounts.
+    *
+    * @param string $filepath the filepath to save the cached file
+    */
+   public function action_createAccountsSpotsData($filepath) {
+      global $mod_strings;
+      $returnArray = array();
+      $db = DBManagerFactory::getInstance();
 
-        $query = <<<EOF
+      $query = <<<EOF
         SELECT
             COALESCE(name,'$this->nullSqlPlaceholder') as accountName,
             COALESCE(account_type,'$this->nullSqlPlaceholder') as account_type,
@@ -156,53 +151,55 @@ class SpotsController extends SugarController
         WHERE accounts.deleted = 0
 EOF;
 
-        $accounts = BeanFactory::getBean('Accounts');
-        $aclWhere = $this->buildSpotsAccessQuery($accounts, $accounts->table_name);
+      $accounts = BeanFactory::getBean('Accounts');
+      $aclWhere = $this->buildSpotsAccessQuery($accounts, $accounts->table_name);
 
-        $queryString = $query.$aclWhere;
+      $queryString = $query . $aclWhere;
 
-        $result = $db->query($queryString);
+      $result = $db->query($queryString);
 
-        while ($row = $db->fetchByAssoc($result)) {
-            $x = new stdClass();
-            $x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_NAME']} = $row['accountName'];
-            $x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_TYPE']} = $row['account_type'];
-            $x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_INDUSTRY']} = $row['industry'];
-            $x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_BILLING_COUNTRY']} = $row['billing_address_country'];
-            $returnArray[] = $x;
-        }
-        file_put_contents($filepath, json_encode($returnArray));
-    }
+      while ( $row = $db->fetchByAssoc($result) ) {
+         $x = new stdClass();
+         $x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_NAME']} = $row['accountName'];
+         // View Tools start
+         //$x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_TYPE']} = $row['account_type'];
+         //$x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_INDUSTRY']} = $row['industry'];
+         $x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_TYPE']} = $this->translateAppString('account_type_dom', $row['account_type']);
+         $x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_INDUSTRY']} = $this->translateAppString('industry_dom', $row['industry']);
+         // View Tools end
+         $x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_BILLING_COUNTRY']} = $row['billing_address_country'];
+         $returnArray[] = $x;
+      }
+      file_put_contents($filepath, json_encode($returnArray));
+   }
 
-    /**
-     * Returns the cached leads file, will create it first if it is out of date / does not exist.
-     *
-     * @return string returns a string representation of the leads file
-     */
-    public function action_getLeadsSpotsData()
-    {
-        $userId = $_SESSION['authenticated_user_id'];
-        $fileLocation = $this->spotFilePath.$userId.'_'.$this->leadsFileName;
-        if (file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime)) {
-            echo file_get_contents($fileLocation);
-        } else {
-            $this->action_createLeadsSpotsData($fileLocation);
-            echo file_get_contents($fileLocation);
-        }
-    }
+   /**
+    * Returns the cached leads file, will create it first if it is out of date / does not exist.
+    *
+    * @return string returns a string representation of the leads file
+    */
+   public function action_getLeadsSpotsData() {
+      $userId = $_SESSION['authenticated_user_id'];
+      $fileLocation = $this->spotFilePath . $userId . '_' . $this->leadsFileName;
+      if ( file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime) ) {
+         echo file_get_contents($fileLocation);
+      } else {
+         $this->action_createLeadsSpotsData($fileLocation);
+         echo file_get_contents($fileLocation);
+      }
+   }
 
-    /**
-     * This creates the cached file for leads.
-     *
-     * @param string $filepath the filepath to save the cached file
-     */
-    public function action_createLeadsSpotsData($filepath)
-    {
-        global $mod_strings;
-        $returnArray = array();
-        $db = DBManagerFactory::getInstance();
+   /**
+    * This creates the cached file for leads.
+    *
+    * @param string $filepath the filepath to save the cached file
+    */
+   public function action_createLeadsSpotsData($filepath) {
+      global $mod_strings;
+      $returnArray = array();
+      $db = DBManagerFactory::getInstance();
 
-        $mysqlSelect = <<<EOF
+      $mysqlSelect = <<<EOF
         SELECT
             RTRIM(LTRIM(CONCAT(COALESCE(users.first_name,''),' ',COALESCE(users.last_name,'')))) as assignedUser,
             leads.status,
@@ -215,7 +212,7 @@ EOF;
 			DAYNAME(leads.date_entered) as day
 EOF;
 
-        $mssqlSelect = <<<EOF
+      $mssqlSelect = <<<EOF
         SELECT
             RTRIM(LTRIM(COALESCE(users.first_name,'')+' '+COALESCE(users.last_name,''))) as assignedUser,
             leads.status,
@@ -228,7 +225,7 @@ EOF;
 			DATENAME(weekday,leads.date_entered) as day
 EOF;
 
-        $fromClause = <<<EOF
+      $fromClause = <<<EOF
         FROM leads
         INNER JOIN users
             ON leads.assigned_user_id = users.id
@@ -236,78 +233,83 @@ EOF;
 			ON leads.campaign_id = campaigns.id
 			AND campaigns.deleted = 0
 EOF;
-        $whereClause = <<<EOF
+      $whereClause = <<<EOF
         WHERE leads.deleted = 0
         AND users.deleted = 0
 EOF;
 
-        $query = '';
-        if ($this->getDatabaseType() === 'mssql') {
-            $query = $mssqlSelect.' '.$fromClause.' '.$whereClause;
-        } elseif ($this->getDatabaseType() === 'mysql') {
-            $query = $mysqlSelect.' '.$fromClause.' '.$whereClause;
-        } else {
-            $GLOBALS['log']->error($mod_strings['LBL_AN_UNSUPPORTED_DB']);
+      $query = '';
+      if ( $this->getDatabaseType() === 'mssql' ) {
+         $query = $mssqlSelect . ' ' . $fromClause . ' ' . $whereClause;
+      } elseif ( $this->getDatabaseType() === 'mysql' ) {
+         $query = $mysqlSelect . ' ' . $fromClause . ' ' . $whereClause;
+      } else {
+         $GLOBALS['log']->error($mod_strings['LBL_AN_UNSUPPORTED_DB']);
 
-            return;
-        }
+         return;
+      }
 
-        $leads = BeanFactory::getBean('Leads');
-        $users = BeanFactory::getBean('Users');
-        $campaigns = BeanFactory::getBean('Campaigns');
-        $aclWhereLeads = $this->buildSpotsAccessQuery($leads, $leads->table_name);
-        $aclWhereUsers = $this->buildSpotsAccessQuery($users, $users->table_name);
-        $aclWhereCampaigns = $this->buildSpotsAccessQuery($campaigns, $campaigns->table_name);
+      $leads = BeanFactory::getBean('Leads');
+      $users = BeanFactory::getBean('Users');
+      $campaigns = BeanFactory::getBean('Campaigns');
+      $aclWhereLeads = $this->buildSpotsAccessQuery($leads, $leads->table_name);
+      $aclWhereUsers = $this->buildSpotsAccessQuery($users, $users->table_name);
+      $aclWhereCampaigns = $this->buildSpotsAccessQuery($campaigns, $campaigns->table_name);
 
-        $queryString = $query.$aclWhereLeads.$aclWhereUsers.$aclWhereCampaigns;
-        $result = $db->query($queryString);
+      $queryString = $query . $aclWhereLeads . $aclWhereUsers . $aclWhereCampaigns;
+      $result = $db->query($queryString);
 
-        while ($row = $db->fetchByAssoc($result)) {
-            $x = new stdClass();
-            $x->{$mod_strings['LBL_AN_LEADS_ASSIGNED_USER']} = $row['assignedUser'];
-            $x->{$mod_strings['LBL_AN_LEADS_STATUS']} = $row['status'];
-            $x->{$mod_strings['LBL_AN_LEADS_LEAD_SOURCE']} = $row['leadSource'];
-            $x->{$mod_strings['LBL_AN_LEADS_CAMPAIGN_NAME']} = $row['campaignName'];
-            $x->{$mod_strings['LBL_AN_LEADS_YEAR']} = $row['year'];
-            $x->{$mod_strings['LBL_AN_LEADS_QUARTER']} = $row['quarter'];
-            $x->{$mod_strings['LBL_AN_LEADS_MONTH']} = $row['month'];
-            $x->{$mod_strings['LBL_AN_LEADS_WEEK']} = $row['week'];
-            $x->{$mod_strings['LBL_AN_LEADS_DAY']} = $row['day'];
+      while ( $row = $db->fetchByAssoc($result) ) {
+         $x = new stdClass();
+         $x->{$mod_strings['LBL_AN_LEADS_ASSIGNED_USER']} = $row['assignedUser'];
+         // View Tools start
+         //$x->{$mod_strings['LBL_AN_LEADS_STATUS']} = $row['status'];
+         //$x->{$mod_strings['LBL_AN_LEADS_LEAD_SOURCE']} = $row['leadSource'];
+         $x->{$mod_strings['LBL_AN_LEADS_STATUS']} = $this->translateAppString('lead_status_dom', $row['status']);
+         $x->{$mod_strings['LBL_AN_LEADS_LEAD_SOURCE']} = $this->translateAppString('lead_source_dom', $row['leadSource']);
+         // View Tools end
+         $x->{$mod_strings['LBL_AN_LEADS_CAMPAIGN_NAME']} = $row['campaignName'];
+         $x->{$mod_strings['LBL_AN_LEADS_YEAR']} = $row['year'];
+         $x->{$mod_strings['LBL_AN_LEADS_QUARTER']} = $row['quarter'];
+         $x->{$mod_strings['LBL_AN_LEADS_MONTH']} = $row['month'];
+         $x->{$mod_strings['LBL_AN_LEADS_WEEK']} = $row['week'];
+         $x->{$mod_strings['LBL_AN_LEADS_DAY']} = $row['day'];
 
-            $returnArray[] = $x;
-        }
-        file_put_contents($filepath, json_encode($returnArray));
-    }
+         $returnArray[] = $x;
+      }
+      file_put_contents($filepath, json_encode($returnArray));
+   }
 
-    /**
-     * Returns the cached sales file, will create it first if it is out of date / does not exist.
-     *
-     * @return string returns a string representation of the sales file
-     */
-    public function action_getSalesSpotsData()
-    {
-        $userId = $_SESSION['authenticated_user_id'];
-        $fileLocation = $this->spotFilePath.$userId.'_'.$this->salesFileName;
-        if (file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime)) {
-            echo file_get_contents($fileLocation);
-        } else {
-            $this->action_createSalesSpotsData($fileLocation);
-            echo file_get_contents($fileLocation);
-        }
-    }
+   /**
+    * Returns the cached sales file, will create it first if it is out of date / does not exist.
+    *
+    * @return string returns a string representation of the sales file
+    */
+   public function action_getSalesSpotsData() {
+      $userId = $_SESSION['authenticated_user_id'];
+      $fileLocation = $this->spotFilePath . $userId . '_' . $this->salesFileName;
+      if ( file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime) ) {
+         echo file_get_contents($fileLocation);
+      } else {
+         $this->action_createSalesSpotsData($fileLocation);
+         echo file_get_contents($fileLocation);
+      }
+   }
 
-    /**
-     * This creates the cached file for sales.
-     *
-     * @param string $filepath the filepath to save the cached file
-     */
-    public function action_createSalesSpotsData($filepath)
-    {
-        global $mod_strings;
-        $returnArray = array();
-        $db = DBManagerFactory::getInstance();
+   /**
+    * This creates the cached file for sales.
+    *
+    * @param string $filepath the filepath to save the cached file
+    */
+   public function action_createSalesSpotsData($filepath) {
+      global $mod_strings;
+      // View Tools start
+      global $app_list_strings;
+      // View Tools end
+      $returnArray = array();
+      $db = DBManagerFactory::getInstance();
 
-        $mysqlSelect = <<<EOF
+      $mysqlSelect = <<<EOF
         SELECT
 			accounts.name as accountName,
             opportunities.name as opportunityName,
@@ -326,7 +328,7 @@ EOF;
             COALESCE(campaigns.name,'$this->nullSqlPlaceholder') as campaign
 EOF;
 
-        $mssqlSelect = <<<EOF
+      $mssqlSelect = <<<EOF
         SELECT
 			accounts.name as accountName,
             opportunities.name as opportunityName,
@@ -345,7 +347,7 @@ EOF;
             COALESCE(campaigns.name,'$this->nullSqlPlaceholder') as campaign
 EOF;
 
-        $fromClause = <<<EOF
+      $fromClause = <<<EOF
         FROM opportunities
 		INNER JOIN accounts_opportunities
 			ON accounts_opportunities.opportunity_id = opportunities.id
@@ -357,89 +359,94 @@ EOF;
             ON opportunities.campaign_id = campaigns.id
             AND campaigns.deleted = 0
 EOF;
-        $whereClause = <<<EOF
+      $whereClause = <<<EOF
         WHERE opportunities.deleted = 0
         AND accounts_opportunities.deleted = 0
         AND accounts.deleted = 0
         AND users.deleted = 0
 EOF;
 
-        $query = '';
-        if ($this->getDatabaseType() === 'mssql') {
-            $query = $mssqlSelect.' '.$fromClause.' '.$whereClause;
-        } elseif ($this->getDatabaseType() === 'mysql') {
-            $query = $mysqlSelect.' '.$fromClause.' '.$whereClause;
-        } else {
-            $GLOBALS['log']->error($mod_strings['LBL_AN_UNSUPPORTED_DB']);
+      $query = '';
+      if ( $this->getDatabaseType() === 'mssql' ) {
+         $query = $mssqlSelect . ' ' . $fromClause . ' ' . $whereClause;
+      } elseif ( $this->getDatabaseType() === 'mysql' ) {
+         $query = $mysqlSelect . ' ' . $fromClause . ' ' . $whereClause;
+      } else {
+         $GLOBALS['log']->error($mod_strings['LBL_AN_UNSUPPORTED_DB']);
 
-            return;
-        }
+         return;
+      }
 
-        $opps = BeanFactory::getBean('Opportunities');
-        $accounts = BeanFactory::getBean('Accounts');
-        $users = BeanFactory::getBean('Users');
-        $campaigns = BeanFactory::getBean('Campaigns');
-        $aclWhereOpps = $this->buildSpotsAccessQuery($opps, $opps->table_name);
-        $aclWhereAccounts = $this->buildSpotsAccessQuery($accounts, $accounts->table_name);
-        $aclWhereUsers = $this->buildSpotsAccessQuery($users, $users->table_name);
-        $aclWhereCampaigns = $this->buildSpotsAccessQuery($campaigns, $campaigns->table_name);
+      $opps = BeanFactory::getBean('Opportunities');
+      $accounts = BeanFactory::getBean('Accounts');
+      $users = BeanFactory::getBean('Users');
+      $campaigns = BeanFactory::getBean('Campaigns');
+      $aclWhereOpps = $this->buildSpotsAccessQuery($opps, $opps->table_name);
+      $aclWhereAccounts = $this->buildSpotsAccessQuery($accounts, $accounts->table_name);
+      $aclWhereUsers = $this->buildSpotsAccessQuery($users, $users->table_name);
+      $aclWhereCampaigns = $this->buildSpotsAccessQuery($campaigns, $campaigns->table_name);
 
-        $queryString = $query.$aclWhereOpps.$aclWhereAccounts.$aclWhereUsers.$aclWhereCampaigns;
-        $result = $db->query($queryString);
+      $queryString = $query . $aclWhereOpps . $aclWhereAccounts . $aclWhereUsers . $aclWhereCampaigns;
+      $result = $db->query($queryString);
 
-        while ($row = $db->fetchByAssoc($result)) {
-            $x = new stdClass();
-            $x->{$mod_strings['LBL_AN_SALES_ACCOUNT_NAME']} = $row['accountName'];
-            $x->{$mod_strings['LBL_AN_SALES_OPPORTUNITY_NAME']} = $row['opportunityName'];
-            $x->{$mod_strings['LBL_AN_SALES_ASSIGNED_USER']} = $row['assignedUser'];
-            $x->{$mod_strings['LBL_AN_SALES_OPPORTUNITY_TYPE']} = $row['opportunity_type'];
-            $x->{$mod_strings['LBL_AN_SALES_LEAD_SOURCE']} = $row['lead_source'];
-            $x->{$mod_strings['LBL_AN_SALES_AMOUNT']} = $row['amount'];
-            $x->{$mod_strings['LBL_AN_SALES_STAGE']} = $row['sales_stage'];
-            $x->{$mod_strings['LBL_AN_SALES_PROBABILITY']} = $row['probability'];
-            $x->{$mod_strings['LBL_AN_SALES_DATE']} = $row['expectedCloseDate'];
+      while ( $row = $db->fetchByAssoc($result) ) {
+         $x = new stdClass();
+         $x->{$mod_strings['LBL_AN_SALES_ACCOUNT_NAME']} = $row['accountName'];
+         $x->{$mod_strings['LBL_AN_SALES_OPPORTUNITY_NAME']} = $row['opportunityName'];
+         $x->{$mod_strings['LBL_AN_SALES_ASSIGNED_USER']} = $row['assignedUser'];
+         // View Tools start
+         //$x->{$mod_strings['LBL_AN_SALES_OPPORTUNITY_TYPE']} = $row['opportunity_type'];
+         //$x->{$mod_strings['LBL_AN_SALES_LEAD_SOURCE']} = $row['lead_source'];
+         $x->{$mod_strings['LBL_AN_SALES_OPPORTUNITY_TYPE']} = $this->translateAppString('opportunity_type_dom', $row['opportunity_type']);
+         $x->{$mod_strings['LBL_AN_SALES_LEAD_SOURCE']} = $this->translateAppString('lead_source_dom', $row['lead_source']);
+         // View Tools end
+         $x->{$mod_strings['LBL_AN_SALES_AMOUNT']} = $row['amount'];
+         // View Tools start
+         //$x->{$mod_strings['LBL_AN_SALES_STAGE']} = $row['sales_stage'];
+         $x->{$mod_strings['LBL_AN_SALES_STAGE']} = $this->translateAppString('sales_stage_dom', $row['sales_stage']);
+         // View Tools end
+         $x->{$mod_strings['LBL_AN_SALES_PROBABILITY']} = $row['probability'];
+         $x->{$mod_strings['LBL_AN_SALES_DATE']} = $row['expectedCloseDate'];
 
-            $x->{$mod_strings['LBL_AN_SALES_QUARTER']} = $row['salesQuarter'];
-            $x->{$mod_strings['LBL_AN_SALES_MONTH']} = $row['salesMonth'];
-            $x->{$mod_strings['LBL_AN_SALES_WEEK']} = $row['salesWeek'];
-            $x->{$mod_strings['LBL_AN_SALES_DAY']} = $row['salesDay'];
-            $x->{$mod_strings['LBL_AN_SALES_YEAR']} = $row['salesYear'];
-            $x->{$mod_strings['LBL_AN_SALES_CAMPAIGN']} = $row['campaign'];
+         $x->{$mod_strings['LBL_AN_SALES_QUARTER']} = $row['salesQuarter'];
+         $x->{$mod_strings['LBL_AN_SALES_MONTH']} = $row['salesMonth'];
+         $x->{$mod_strings['LBL_AN_SALES_WEEK']} = $row['salesWeek'];
+         $x->{$mod_strings['LBL_AN_SALES_DAY']} = $row['salesDay'];
+         $x->{$mod_strings['LBL_AN_SALES_YEAR']} = $row['salesYear'];
+         $x->{$mod_strings['LBL_AN_SALES_CAMPAIGN']} = $row['campaign'];
 
-            $returnArray[] = $x;
-        }
-        file_put_contents($filepath, json_encode($returnArray));
-    }
+         $returnArray[] = $x;
+      }
+      file_put_contents($filepath, json_encode($returnArray));
+   }
 
-    /**
-     * Returns the cached service file, will create it first if it is out of date / does not exist.
-     *
-     * @return string returns a string representation of the service file
-     */
-    public function action_getServiceSpotsData()
-    {
-        $userId = $_SESSION['authenticated_user_id'];
-        $fileLocation = $this->spotFilePath.$userId.'_'.$this->servicesFileName;
-        if (file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime)) {
-            echo file_get_contents($fileLocation);
-        } else {
-            $this->action_createServiceSpotsData($fileLocation);
-            echo file_get_contents($fileLocation);
-        }
-    }
+   /**
+    * Returns the cached service file, will create it first if it is out of date / does not exist.
+    *
+    * @return string returns a string representation of the service file
+    */
+   public function action_getServiceSpotsData() {
+      $userId = $_SESSION['authenticated_user_id'];
+      $fileLocation = $this->spotFilePath . $userId . '_' . $this->servicesFileName;
+      if ( file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime) ) {
+         echo file_get_contents($fileLocation);
+      } else {
+         $this->action_createServiceSpotsData($fileLocation);
+         echo file_get_contents($fileLocation);
+      }
+   }
 
-    /**
-     * This creates the cached file for service.
-     *
-     * @param string $filepath the filepath to save the cached file
-     */
-    public function action_createServiceSpotsData($filepath)
-    {
-        global $mod_strings;
-        $returnArray = array();
-        $db = DBManagerFactory::getInstance();
+   /**
+    * This creates the cached file for service.
+    *
+    * @param string $filepath the filepath to save the cached file
+    */
+   public function action_createServiceSpotsData($filepath) {
+      global $mod_strings;
+      $returnArray = array();
+      $db = DBManagerFactory::getInstance();
 
-        $mysqlSelect = <<<EOF
+      $mysqlSelect = <<<EOF
         SELECT
             accounts.name,
             cases.state,
@@ -453,7 +460,7 @@ EOF;
             COALESCE(NULLIF(RTRIM(LTRIM(CONCAT(COALESCE(u2.first_name,''),' ',COALESCE(u2.last_name,'')))),''),'$this->nullSqlPlaceholder') as contactName,
             RTRIM(LTRIM(CONCAT(COALESCE(users.first_name,''),' ',COALESCE(users.last_name,'')))) as assignedUser
 EOF;
-        $mssqlSelect = <<<EOF
+      $mssqlSelect = <<<EOF
         SELECT
             accounts.name,
             cases.state,
@@ -468,7 +475,7 @@ EOF;
             RTRIM(LTRIM(COALESCE(users.first_name,'') + ' ' + COALESCE(users.last_name,''))) as assignedUser
 EOF;
 
-        $fromClause = <<<EOF
+      $fromClause = <<<EOF
         FROM cases
         INNER JOIN users
             ON cases.assigned_user_id = users.id
@@ -478,81 +485,84 @@ EOF;
             ON cases.contact_created_by_id = u2.id
             AND u2.deleted = 0
 EOF;
-        $whereClause = <<<EOF
+      $whereClause = <<<EOF
         WHERE cases.deleted = 0
         AND users.deleted = 0
         AND accounts.deleted = 0
 EOF;
 
-        $query = '';
-        if ($this->getDatabaseType() === 'mssql') {
-            $query = $mssqlSelect.' '.$fromClause.' '.$whereClause;
-        } elseif ($this->getDatabaseType() === 'mysql') {
-            $query = $mysqlSelect.' '.$fromClause.' '.$whereClause;
-        } else {
-            $GLOBALS['log']->error($mod_strings['LBL_AN_UNSUPPORTED_DB']);
+      $query = '';
+      if ( $this->getDatabaseType() === 'mssql' ) {
+         $query = $mssqlSelect . ' ' . $fromClause . ' ' . $whereClause;
+      } elseif ( $this->getDatabaseType() === 'mysql' ) {
+         $query = $mysqlSelect . ' ' . $fromClause . ' ' . $whereClause;
+      } else {
+         $GLOBALS['log']->error($mod_strings['LBL_AN_UNSUPPORTED_DB']);
 
-            return;
-        }
+         return;
+      }
 
-        $cases = BeanFactory::getBean('Cases');
-        $accounts = BeanFactory::getBean('Accounts');
-        $users = BeanFactory::getBean('Users');
-        $aclWhereCases = $this->buildSpotsAccessQuery($cases, $cases->table_name);
-        $aclWhereAccounts = $this->buildSpotsAccessQuery($accounts, $accounts->table_name);
-        $aclWhereUsers = $this->buildSpotsAccessQuery($users, $users->table_name);
+      $cases = BeanFactory::getBean('Cases');
+      $accounts = BeanFactory::getBean('Accounts');
+      $users = BeanFactory::getBean('Users');
+      $aclWhereCases = $this->buildSpotsAccessQuery($cases, $cases->table_name);
+      $aclWhereAccounts = $this->buildSpotsAccessQuery($accounts, $accounts->table_name);
+      $aclWhereUsers = $this->buildSpotsAccessQuery($users, $users->table_name);
 
-        $queryString = $query.$aclWhereCases.$aclWhereAccounts.$aclWhereUsers;
-        $result = $db->query($queryString);
+      $queryString = $query . $aclWhereCases . $aclWhereAccounts . $aclWhereUsers;
+      $result = $db->query($queryString);
 
-        while ($row = $db->fetchByAssoc($result)) {
-            $x = new stdClass();
-            $x->{$mod_strings['LBL_AN_SERVICE_ACCOUNT_NAME']} = $row['name'];
-            $x->{$mod_strings['LBL_AN_SERVICE_STATE']} = $row['state'];
-            $x->{$mod_strings['LBL_AN_SERVICE_STATUS']} = $row['status'];
-            $x->{$mod_strings['LBL_AN_SERVICE_PRIORITY']} = $row['priority'];
-            $x->{$mod_strings['LBL_AN_SERVICE_CREATED_DAY']} = $row['day'];
-            $x->{$mod_strings['LBL_AN_SERVICE_CREATED_WEEK']} = $row['week'];
-            $x->{$mod_strings['LBL_AN_SERVICE_CREATED_MONTH']} = $row['month'];
-            $x->{$mod_strings['LBL_AN_SERVICE_CREATED_QUARTER']} = $row['quarter'];
-            $x->{$mod_strings['LBL_AN_SERVICE_CREATED_YEAR']} = $row['year'];
-            $x->{$mod_strings['LBL_AN_SERVICE_CONTACT_NAME']} = $row['contactName'];
-            $x->{$mod_strings['LBL_AN_SERVICE_ASSIGNED_TO']} = $row['assignedUser'];
+      while ( $row = $db->fetchByAssoc($result) ) {
+         $x = new stdClass();
+         $x->{$mod_strings['LBL_AN_SERVICE_ACCOUNT_NAME']} = $row['name'];
+         // View Tools start
+         //$x->{$mod_strings['LBL_AN_SERVICE_STATE']} = $row['state'];
+         //$x->{$mod_strings['LBL_AN_SERVICE_STATUS']} = $row['status'];
+         //$x->{$mod_strings['LBL_AN_SERVICE_PRIORITY']} = $row['priority'];
+         $x->{$mod_strings['LBL_AN_SERVICE_STATE']} = $this->translateAppString('case_state_dom', $row['state']);
+         $x->{$mod_strings['LBL_AN_SERVICE_STATUS']} = $this->translateAppString('case_status_dom', $row['status']);
+         $x->{$mod_strings['LBL_AN_SERVICE_PRIORITY']} = $this->translateAppString('case_priority_dom', $row['priority']);
+         // View Tools end
+         $x->{$mod_strings['LBL_AN_SERVICE_CREATED_DAY']} = $row['day'];
+         $x->{$mod_strings['LBL_AN_SERVICE_CREATED_WEEK']} = $row['week'];
+         $x->{$mod_strings['LBL_AN_SERVICE_CREATED_MONTH']} = $row['month'];
+         $x->{$mod_strings['LBL_AN_SERVICE_CREATED_QUARTER']} = $row['quarter'];
+         $x->{$mod_strings['LBL_AN_SERVICE_CREATED_YEAR']} = $row['year'];
+         $x->{$mod_strings['LBL_AN_SERVICE_CONTACT_NAME']} = $row['contactName'];
+         $x->{$mod_strings['LBL_AN_SERVICE_ASSIGNED_TO']} = $row['assignedUser'];
 
-            $returnArray[] = $x;
-        }
-        file_put_contents($filepath, json_encode($returnArray));
-    }
+         $returnArray[] = $x;
+      }
+      file_put_contents($filepath, json_encode($returnArray));
+   }
 
-    /**
-     * Returns the cached activities file, will create it first if it is out of date / does not exist.
-     *
-     * @return string returns a string representation of the activities file
-     */
-    public function action_getActivitiesSpotsData()
-    {
-        $userId = $_SESSION['authenticated_user_id'];
-        $fileLocation = $this->spotFilePath.$userId.'_'.$this->activitiesFileName;
-        if (file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime)) {
-            echo file_get_contents($fileLocation);
-        } else {
-            $this->action_createActivitiesSpotsData($fileLocation);
-            echo file_get_contents($fileLocation);
-        }
-    }
+   /**
+    * Returns the cached activities file, will create it first if it is out of date / does not exist.
+    *
+    * @return string returns a string representation of the activities file
+    */
+   public function action_getActivitiesSpotsData() {
+      $userId = $_SESSION['authenticated_user_id'];
+      $fileLocation = $this->spotFilePath . $userId . '_' . $this->activitiesFileName;
+      if ( file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime) ) {
+         echo file_get_contents($fileLocation);
+      } else {
+         $this->action_createActivitiesSpotsData($fileLocation);
+         echo file_get_contents($fileLocation);
+      }
+   }
 
-    /**
-     * This creates the cached file for activities.
-     *
-     * @param string $filepath the filepath to save the cached file
-     */
-    public function action_createActivitiesSpotsData($filepath)
-    {
-        global $mod_strings;
-        $returnArray = array();
-        $db = DBManagerFactory::getInstance();
+   /**
+    * This creates the cached file for activities.
+    *
+    * @param string $filepath the filepath to save the cached file
+    */
+   public function action_createActivitiesSpotsData($filepath) {
+      global $mod_strings;
+      $returnArray = array();
+      $db = DBManagerFactory::getInstance();
 
-        $mysqlQueryCalls = <<<EOF
+      $mysqlQueryCalls = <<<EOF
         SELECT
             'call' as type
             , calls.name
@@ -565,7 +575,7 @@ EOF;
         WHERE calls.deleted = 0
 EOF;
 
-        $mysqlQueryMeetings = <<<EOF
+      $mysqlQueryMeetings = <<<EOF
         UNION ALL
         SELECT
             'meeting' as type
@@ -579,7 +589,7 @@ EOF;
         WHERE meetings.deleted = 0
 EOF;
 
-        $mysqlQueryTasks = <<<EOF
+      $mysqlQueryTasks = <<<EOF
         UNION ALL
         SELECT
             'task' as type
@@ -593,7 +603,7 @@ EOF;
         WHERE tasks.deleted = 0
 EOF;
 
-        $mssqlQueryCalls = <<<EOF
+      $mssqlQueryCalls = <<<EOF
         SELECT
             'call' as type
             , calls.name
@@ -605,7 +615,7 @@ EOF;
             AND users.deleted = 0
         WHERE calls.deleted = 0
 EOF;
-        $mssqlQueryMeetings = <<<EOF
+      $mssqlQueryMeetings = <<<EOF
         UNION ALL
         SELECT
             'meeting' as type
@@ -618,7 +628,7 @@ EOF;
             AND users.deleted = 0
         WHERE meetings.deleted = 0
 EOF;
-        $mssqlQueryTasks = <<<EOF
+      $mssqlQueryTasks = <<<EOF
         UNION ALL
         SELECT
             'task' as type
@@ -632,67 +642,71 @@ EOF;
         WHERE tasks.deleted = 0
 EOF;
 
-        $calls = BeanFactory::getBean('Calls');
-        $aclWhereCalls = $this->buildSpotsAccessQuery($calls, $calls->table_name);
-        $meetings = BeanFactory::getBean('Meetings');
-        $aclWhereMeetings = $this->buildSpotsAccessQuery($meetings, $meetings->table_name);
-        $tasks = BeanFactory::getBean('Tasks');
-        $aclWhereTasks = $this->buildSpotsAccessQuery($tasks, $tasks->table_name);
+      $calls = BeanFactory::getBean('Calls');
+      $aclWhereCalls = $this->buildSpotsAccessQuery($calls, $calls->table_name);
+      $meetings = BeanFactory::getBean('Meetings');
+      $aclWhereMeetings = $this->buildSpotsAccessQuery($meetings, $meetings->table_name);
+      $tasks = BeanFactory::getBean('Tasks');
+      $aclWhereTasks = $this->buildSpotsAccessQuery($tasks, $tasks->table_name);
 
-        $query = '';
-        if ($this->getDatabaseType() === 'mssql') {
-            $query = $mssqlQueryCalls.$aclWhereCalls.$mssqlQueryMeetings.$aclWhereMeetings.$mssqlQueryTasks.$aclWhereTasks;
-        } elseif ($this->getDatabaseType() === 'mysql') {
-            $query = $mysqlQueryCalls.$aclWhereCalls.$mysqlQueryMeetings.$aclWhereMeetings.$mysqlQueryTasks.$aclWhereTasks;
-        } else {
-            $GLOBALS['log']->error($mod_strings['LBL_AN_UNSUPPORTED_DB']);
+      $query = '';
+      if ( $this->getDatabaseType() === 'mssql' ) {
+         $query = $mssqlQueryCalls . $aclWhereCalls . $mssqlQueryMeetings . $aclWhereMeetings . $mssqlQueryTasks . $aclWhereTasks;
+      } elseif ( $this->getDatabaseType() === 'mysql' ) {
+         $query = $mysqlQueryCalls . $aclWhereCalls . $mysqlQueryMeetings . $aclWhereMeetings . $mysqlQueryTasks . $aclWhereTasks;
+      } else {
+         $GLOBALS['log']->error($mod_strings['LBL_AN_UNSUPPORTED_DB']);
 
-            return;
-        }
+         return;
+      }
 
-        $result = $db->query($query);
+      $result = $db->query($query);
 
-        while ($row = $db->fetchByAssoc($result)) {
-            $x = new stdClass();
-            $x->{$mod_strings['LBL_AN_ACTIVITIES_TYPE']} = $row['type'];
-            $x->{$mod_strings['LBL_AN_ACTIVITIES_NAME']} = $row['name'];
-            $x->{$mod_strings['LBL_AN_ACTIVITIES_STATUS']} = $row['status'];
-            $x->{$mod_strings['LBL_AN_ACTIVITIES_ASSIGNED_TO']} = $row['assignedUser'];
+      while ( $row = $db->fetchByAssoc($result) ) {
+         $x = new stdClass();
+         // View Tools start
+         //$x->{$mod_strings['LBL_AN_ACTIVITIES_TYPE']} = $row['type'];
+         $x->{$mod_strings['LBL_AN_ACTIVITIES_TYPE']} = $this->translateAppString('spots_activities_type_dom', $row['type']);
+         // View Tools end
+         $x->{$mod_strings['LBL_AN_ACTIVITIES_NAME']} = $row['name'];
+         // View Tools start
+         //$x->{$mod_strings['LBL_AN_ACTIVITIES_STATUS']} = $row['status'];
+         $x->{$mod_strings['LBL_AN_ACTIVITIES_STATUS']} = $this->translateAppStringByActivitiesType($row['type'], $row['status']);
+         // View Tools end
+         $x->{$mod_strings['LBL_AN_ACTIVITIES_ASSIGNED_TO']} = $row['assignedUser'];
 
-            $returnArray[] = $x;
-        }
-        file_put_contents($filepath, json_encode($returnArray));
-    }
+         $returnArray[] = $x;
+      }
+      file_put_contents($filepath, json_encode($returnArray));
+   }
 
-    /**
-     * Returns the cached marketing file, will create it first if it is out of date / does not exist.
-     *
-     * @return string returns a string representation of the marketing file
-     */
-    public function action_getMarketingSpotsData()
-    {
-        $userId = $_SESSION['authenticated_user_id'];
-        $fileLocation = $this->spotFilePath.$userId.'_'.$this->marketingsFileName;
-        if (file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime)) {
-            echo file_get_contents($fileLocation);
-        } else {
-            $this->action_createMarketingSpotsData($fileLocation);
-            echo file_get_contents($fileLocation);
-        }
-    }
+   /**
+    * Returns the cached marketing file, will create it first if it is out of date / does not exist.
+    *
+    * @return string returns a string representation of the marketing file
+    */
+   public function action_getMarketingSpotsData() {
+      $userId = $_SESSION['authenticated_user_id'];
+      $fileLocation = $this->spotFilePath . $userId . '_' . $this->marketingsFileName;
+      if ( file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime) ) {
+         echo file_get_contents($fileLocation);
+      } else {
+         $this->action_createMarketingSpotsData($fileLocation);
+         echo file_get_contents($fileLocation);
+      }
+   }
 
-    /**
-     * This creates the cached file for marketing.
-     *
-     * @param string $filepath the filepath to save the cached file as
-     */
-    public function action_createMarketingSpotsData($filepath)
-    {
-        global $mod_strings;
-        $returnArray = array();
-        $db = DBManagerFactory::getInstance();
+   /**
+    * This creates the cached file for marketing.
+    *
+    * @param string $filepath the filepath to save the cached file as
+    */
+   public function action_createMarketingSpotsData($filepath) {
+      global $mod_strings;
+      $returnArray = array();
+      $db = DBManagerFactory::getInstance();
 
-        $mysqlSelect = <<<EOF
+      $mysqlSelect = <<<EOF
         SELECT
               COALESCE(campaigns.status,'$this->nullSqlPlaceholder') as campaignStatus
             , COALESCE(campaigns.campaign_type,'$this->nullSqlPlaceholder') as campaignType
@@ -706,7 +720,7 @@ EOF;
             , accounts.name as accountsName
 EOF;
 
-        $mssqlSelect = <<<EOF
+      $mssqlSelect = <<<EOF
         SELECT
               COALESCE(campaigns.status,'$this->nullSqlPlaceholder') as campaignStatus
             , COALESCE(campaigns.campaign_type,'$this->nullSqlPlaceholder') as campaignType
@@ -720,7 +734,7 @@ EOF;
             , accounts.name as accountsName
 EOF;
 
-        $fromClause = <<<EOF
+      $fromClause = <<<EOF
         FROM opportunities
         LEFT JOIN users
             ON opportunities.assigned_user_id = users.id
@@ -735,79 +749,84 @@ EOF;
             ON opportunities.campaign_id = campaigns.id
             AND campaigns.deleted = 0
 EOF;
-        $whereClause = <<<EOF
+      $whereClause = <<<EOF
         WHERE opportunities.deleted = 0
 EOF;
 
-        $query = '';
-        if ($this->getDatabaseType() === 'mssql') {
-            $query = $mssqlSelect.' '.$fromClause.' '.$whereClause;
-        } elseif ($this->getDatabaseType() === 'mysql') {
-            $query = $mysqlSelect.' '.$fromClause.' '.$whereClause;
-        } else {
-            $GLOBALS['log']->error($mod_strings['LBL_AN_UNSUPPORTED_DB']);
+      $query = '';
+      if ( $this->getDatabaseType() === 'mssql' ) {
+         $query = $mssqlSelect . ' ' . $fromClause . ' ' . $whereClause;
+      } elseif ( $this->getDatabaseType() === 'mysql' ) {
+         $query = $mysqlSelect . ' ' . $fromClause . ' ' . $whereClause;
+      } else {
+         $GLOBALS['log']->error($mod_strings['LBL_AN_UNSUPPORTED_DB']);
 
-            return;
-        }
-        $opps = BeanFactory::getBean('Opportunities');
-        $users = BeanFactory::getBean('Users');
-        $accounts = BeanFactory::getBean('Accounts');
-        $campaigns = BeanFactory::getBean('Campaigns');
-        $aclWhereOpps = $this->buildSpotsAccessQuery($opps, $opps->table_name);
-        $aclWhereUsers = $this->buildSpotsAccessQuery($users, $users->table_name);
-        $aclWhereAccounts = $this->buildSpotsAccessQuery($accounts, $accounts->table_name);
-        $aclWhereCampaigns = $this->buildSpotsAccessQuery($campaigns, $campaigns->table_name);
+         return;
+      }
+      $opps = BeanFactory::getBean('Opportunities');
+      $users = BeanFactory::getBean('Users');
+      $accounts = BeanFactory::getBean('Accounts');
+      $campaigns = BeanFactory::getBean('Campaigns');
+      $aclWhereOpps = $this->buildSpotsAccessQuery($opps, $opps->table_name);
+      $aclWhereUsers = $this->buildSpotsAccessQuery($users, $users->table_name);
+      $aclWhereAccounts = $this->buildSpotsAccessQuery($accounts, $accounts->table_name);
+      $aclWhereCampaigns = $this->buildSpotsAccessQuery($campaigns, $campaigns->table_name);
 
-        $queryString = $query.$aclWhereOpps.$aclWhereUsers.$aclWhereAccounts.$aclWhereCampaigns;
-        $result = $db->query($queryString);
+      $queryString = $query . $aclWhereOpps . $aclWhereUsers . $aclWhereAccounts . $aclWhereCampaigns;
+      $result = $db->query($queryString);
 
-        while ($row = $db->fetchByAssoc($result)) {
-            $x = new stdClass();
-            $x->{$mod_strings['LBL_AN_MARKETING_STATUS']} = $row['campaignStatus'];
-            $x->{$mod_strings['LBL_AN_MARKETING_TYPE']} = $row['campaignType'];
-            $x->{$mod_strings['LBL_AN_MARKETING_BUDGET']} = $row['campaignBudget'];
-            $x->{$mod_strings['LBL_AN_MARKETING_EXPECTED_COST']} = $row['campaignExpectedCost'];
-            $x->{$mod_strings['LBL_AN_MARKETING_EXPECTED_REVENUE']} = $row['campaignExpectedRevenue'];
-            $x->{$mod_strings['LBL_AN_MARKETING_OPPORTUNITY_NAME']} = $row['opportunityName'];
-            $x->{$mod_strings['LBL_AN_MARKETING_OPPORTUNITY_AMOUNT']} = $row['opportunityAmount'];
-            $x->{$mod_strings['LBL_AN_MARKETING_OPPORTUNITY_SALES_STAGE']} = $row['opportunitySalesStage'];
-            $x->{$mod_strings['LBL_AN_MARKETING_OPPORTUNITY_ASSIGNED_TO']} = $row['assignedUser'];
-            $x->{$mod_strings['LBL_AN_MARKETING_ACCOUNT_NAME']} = $row['accountsName'];
+      while ( $row = $db->fetchByAssoc($result) ) {
+         $x = new stdClass();
+         // View Tools start
+         //$x->{$mod_strings['LBL_AN_MARKETING_STATUS']} = $row['campaignStatus'];
+         //$x->{$mod_strings['LBL_AN_MARKETING_TYPE']} = $row['campaignType'];
+         $x->{$mod_strings['LBL_AN_MARKETING_STATUS']} = $this->translateAppString('campaign_status_dom', $row['campaignStatus']);
+         $x->{$mod_strings['LBL_AN_MARKETING_TYPE']} = $this->translateAppString('campaign_type_dom', $row['campaignType']);
+         // View Tools end
+         $x->{$mod_strings['LBL_AN_MARKETING_BUDGET']} = $row['campaignBudget'];
+         $x->{$mod_strings['LBL_AN_MARKETING_EXPECTED_COST']} = $row['campaignExpectedCost'];
+         $x->{$mod_strings['LBL_AN_MARKETING_EXPECTED_REVENUE']} = $row['campaignExpectedRevenue'];
+         $x->{$mod_strings['LBL_AN_MARKETING_OPPORTUNITY_NAME']} = $row['opportunityName'];
+         $x->{$mod_strings['LBL_AN_MARKETING_OPPORTUNITY_AMOUNT']} = $row['opportunityAmount'];
+         // View Tools start
+         //$x->{$mod_strings['LBL_AN_MARKETING_OPPORTUNITY_SALES_STAGE']} = $row['opportunitySalesStage'];
+         $x->{$mod_strings['LBL_AN_MARKETING_OPPORTUNITY_SALES_STAGE']} = $this->translateAppString('sales_stage_dom', $row['opportunitySalesStage']);
+         // View Tools end
+         $x->{$mod_strings['LBL_AN_MARKETING_OPPORTUNITY_ASSIGNED_TO']} = $row['assignedUser'];
+         $x->{$mod_strings['LBL_AN_MARKETING_ACCOUNT_NAME']} = $row['accountsName'];
 
-            $returnArray[] = $x;
-        }
-        file_put_contents($filepath, json_encode($returnArray));
-    }
+         $returnArray[] = $x;
+      }
+      file_put_contents($filepath, json_encode($returnArray));
+   }
 
-    /**
-     * Returns the cached marketing activity file, will create it first if it is out of date / does not exist.
-     *
-     * @return string returns a string representation of the marketing activity file
-     */
-    public function action_getMarketingActivitySpotsData()
-    {
-        $userId = $_SESSION['authenticated_user_id'];
-        $fileLocation = $this->spotFilePath.$userId.'_'.$this->marketingActivitiesFileName;
-        if (file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime)) {
-            echo file_get_contents($fileLocation);
-        } else {
-            $this->action_createMarketingActivitySpotsData($fileLocation);
-            echo file_get_contents($fileLocation);
-        }
-    }
+   /**
+    * Returns the cached marketing activity file, will create it first if it is out of date / does not exist.
+    *
+    * @return string returns a string representation of the marketing activity file
+    */
+   public function action_getMarketingActivitySpotsData() {
+      $userId = $_SESSION['authenticated_user_id'];
+      $fileLocation = $this->spotFilePath . $userId . '_' . $this->marketingActivitiesFileName;
+      if ( file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime) ) {
+         echo file_get_contents($fileLocation);
+      } else {
+         $this->action_createMarketingActivitySpotsData($fileLocation);
+         echo file_get_contents($fileLocation);
+      }
+   }
 
-    /**
-     * This creates the cached file for marketing activity.
-     *
-     * @param string $filepath the filepath to save the cached file
-     */
-    public function action_createMarketingActivitySpotsData($filepath)
-    {
-        global $mod_strings;
-        $returnArray = array();
-        $db = DBManagerFactory::getInstance();
+   /**
+    * This creates the cached file for marketing activity.
+    *
+    * @param string $filepath the filepath to save the cached file
+    */
+   public function action_createMarketingActivitySpotsData($filepath) {
+      global $mod_strings;
+      $returnArray = array();
+      $db = DBManagerFactory::getInstance();
 
-        $query = <<<EOF
+      $query = <<<EOF
         SELECT
             campaigns.name,
             campaign_log.activity_date,
@@ -822,54 +841,56 @@ EOF;
 
 EOF;
 
-        $campaigns = BeanFactory::getBean('Campaigns');
-        $aclWhereCampaigns = $this->buildSpotsAccessQuery($campaigns, $campaigns->table_name);
+      $campaigns = BeanFactory::getBean('Campaigns');
+      $aclWhereCampaigns = $this->buildSpotsAccessQuery($campaigns, $campaigns->table_name);
 
-        $queryString = $query.$aclWhereCampaigns;
-        $result = $db->query($queryString);
+      $queryString = $query . $aclWhereCampaigns;
+      $result = $db->query($queryString);
 
-        while ($row = $db->fetchByAssoc($result)) {
-            $x = new stdClass();
-            $x->{$mod_strings['LBL_AN_MARKETINGACTIVITY_CAMPAIGN_NAME']} = $row['name'];
-            $x->{$mod_strings['LBL_AN_MARKETINGACTIVITY_ACTIVITY_DATE']} = $row['activity_date'];
-            $x->{$mod_strings['LBL_AN_MARKETINGACTIVITY_ACTIVITY_TYPE']} = $row['activity_type'];
-            $x->{$mod_strings['LBL_AN_MARKETINGACTIVITY_RELATED_TYPE']} = $row['related_type'];
-            $x->{$mod_strings['LBL_AN_MARKETINGACTIVITY_RELATED_ID']} = $row['related_id'];
+      while ( $row = $db->fetchByAssoc($result) ) {
+         $x = new stdClass();
+         $x->{$mod_strings['LBL_AN_MARKETINGACTIVITY_CAMPAIGN_NAME']} = $row['name'];
+         $x->{$mod_strings['LBL_AN_MARKETINGACTIVITY_ACTIVITY_DATE']} = $row['activity_date'];
+         // View Tools start
+         //$x->{$mod_strings['LBL_AN_MARKETINGACTIVITY_ACTIVITY_TYPE']} = $row['activity_type'];
+         //$x->{$mod_strings['LBL_AN_MARKETINGACTIVITY_RELATED_TYPE']} = $row['related_type'];
+         $x->{$mod_strings['LBL_AN_MARKETINGACTIVITY_ACTIVITY_TYPE']} = $this->translateAppString('campainglog_activity_type_dom', $row['activity_type']);
+         $x->{$mod_strings['LBL_AN_MARKETINGACTIVITY_RELATED_TYPE']} = $this->translateAppString('spots_campainlog_related_type_dom', $row['related_type']);
+         // View Tools end
+         $x->{$mod_strings['LBL_AN_MARKETINGACTIVITY_RELATED_ID']} = $row['related_id'];
 
-            $returnArray[] = $x;
-        }
-        file_put_contents($filepath, json_encode($returnArray));
-    }
+         $returnArray[] = $x;
+      }
+      file_put_contents($filepath, json_encode($returnArray));
+   }
 
-    /**
-     * Returns the cached quotes file, will create it first if it is out of date / does not exist.
-     *
-     * @return string returns a string representation of the quotes file
-     */
-    public function action_getQuotesSpotsData()
-    {
-        $userId = $_SESSION['authenticated_user_id'];
-        $fileLocation = $this->spotFilePath.$userId.'_'.$this->quotesFileName;
-        if (file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime)) {
-            echo file_get_contents($fileLocation);
-        } else {
-            $this->action_createQuotesSpotsData($fileLocation);
-            echo file_get_contents($fileLocation);
-        }
-    }
+   /**
+    * Returns the cached quotes file, will create it first if it is out of date / does not exist.
+    *
+    * @return string returns a string representation of the quotes file
+    */
+   public function action_getQuotesSpotsData() {
+      $userId = $_SESSION['authenticated_user_id'];
+      $fileLocation = $this->spotFilePath . $userId . '_' . $this->quotesFileName;
+      if ( file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime) ) {
+         echo file_get_contents($fileLocation);
+      } else {
+         $this->action_createQuotesSpotsData($fileLocation);
+         echo file_get_contents($fileLocation);
+      }
+   }
 
-    /**
-     * This creates the cached file for quotes.
-     *
-     * @param string $filepath the filepath to save the cached file
-     */
-    public function action_createQuotesSpotsData($filepath)
-    {
-        global $mod_strings;
-        $returnArray = array();
-        $db = DBManagerFactory::getInstance();
+   /**
+    * This creates the cached file for quotes.
+    *
+    * @param string $filepath the filepath to save the cached file
+    */
+   public function action_createQuotesSpotsData($filepath) {
+      global $mod_strings;
+      $returnArray = array();
+      $db = DBManagerFactory::getInstance();
 
-        $mysqlSelect = <<<EOF
+      $mysqlSelect = <<<EOF
             SELECT
             opportunities.name as opportunityName,
             opportunities.opportunity_type as opportunityType,
@@ -900,7 +921,7 @@ EOF;
             YEAR(aos_quotes.date_entered) as dateCreatedYear
 EOF;
 
-        $mssqlSelect = <<<EOF
+      $mssqlSelect = <<<EOF
             SELECT
             opportunities.name as opportunityName,
             opportunities.opportunity_type as opportunityType,
@@ -931,7 +952,7 @@ EOF;
             CAST(YEAR(aos_quotes.date_entered) as CHAR(10)) as dateCreatedYear
 EOF;
 
-        $fromClause = <<<EOF
+      $fromClause = <<<EOF
         FROM aos_quotes
         LEFT JOIN accounts
             ON aos_quotes.billing_account_id = accounts.id
@@ -955,71 +976,111 @@ EOF;
             ON aos_products.aos_product_category_id = aos_product_categories.id
             AND aos_product_categories.deleted = 0
 EOF;
-        $whereClause = <<<EOF
+      $whereClause = <<<EOF
         WHERE aos_quotes.deleted = 0
 EOF;
 
-        $query = '';
-        if ($this->getDatabaseType() === 'mssql') {
-            $query = $mssqlSelect.' '.$fromClause.' '.$whereClause;
-        } elseif ($this->getDatabaseType() === 'mysql') {
-            $query = $mysqlSelect.' '.$fromClause.' '.$whereClause;
-        } else {
-            $GLOBALS['log']->error($mod_strings['LBL_AN_UNSUPPORTED_DB']);
+      $query = '';
+      if ( $this->getDatabaseType() === 'mssql' ) {
+         $query = $mssqlSelect . ' ' . $fromClause . ' ' . $whereClause;
+      } elseif ( $this->getDatabaseType() === 'mysql' ) {
+         $query = $mysqlSelect . ' ' . $fromClause . ' ' . $whereClause;
+      } else {
+         $GLOBALS['log']->error($mod_strings['LBL_AN_UNSUPPORTED_DB']);
 
-            return;
-        }
+         return;
+      }
 
-        $opps = BeanFactory::getBean('Opportunities');
-        $quotes = BeanFactory::getBean('AOS_Quotes');
-        $accounts = BeanFactory::getBean('Accounts');
-        $contacts = BeanFactory::getBean('Contacts');
-        $aosProductQuotes = BeanFactory::getBean('AOS_Products_Quotes');
-        $aosProducts = BeanFactory::getBean('AOS_Products');
-        $users = BeanFactory::getBean('Users');
-        $asoProductCategories = BeanFactory::getBean('AOS_Product_Categories');
+      $opps = BeanFactory::getBean('Opportunities');
+      $quotes = BeanFactory::getBean('AOS_Quotes');
+      $accounts = BeanFactory::getBean('Accounts');
+      $contacts = BeanFactory::getBean('Contacts');
+      $aosProductQuotes = BeanFactory::getBean('AOS_Products_Quotes');
+      $aosProducts = BeanFactory::getBean('AOS_Products');
+      $users = BeanFactory::getBean('Users');
+      $asoProductCategories = BeanFactory::getBean('AOS_Product_Categories');
 
-        $aclWhereOpps = $this->buildSpotsAccessQuery($opps, $opps->table_name);
-        $aclWhereQuotes = $this->buildSpotsAccessQuery($quotes, $quotes->table_name);
-        $aclWhereAccounts = $this->buildSpotsAccessQuery($accounts, $accounts->table_name);
-        $aclWhereContacts = $this->buildSpotsAccessQuery($contacts, $contacts->table_name);
-        $aclWhereProductQuotes = $this->buildSpotsAccessQuery($aosProductQuotes, $aosProductQuotes->table_name);
-        $aclWhereUsers = $this->buildSpotsAccessQuery($users, $users->table_name);
-        $aclWhereProductCategories = $this->buildSpotsAccessQuery($asoProductCategories, $asoProductCategories->table_name);
-        $aclWhereProducts = $this->buildSpotsAccessQuery($aosProducts, $aosProducts->table_name);
+      $aclWhereOpps = $this->buildSpotsAccessQuery($opps, $opps->table_name);
+      $aclWhereQuotes = $this->buildSpotsAccessQuery($quotes, $quotes->table_name);
+      $aclWhereAccounts = $this->buildSpotsAccessQuery($accounts, $accounts->table_name);
+      $aclWhereContacts = $this->buildSpotsAccessQuery($contacts, $contacts->table_name);
+      $aclWhereProductQuotes = $this->buildSpotsAccessQuery($aosProductQuotes, $aosProductQuotes->table_name);
+      $aclWhereUsers = $this->buildSpotsAccessQuery($users, $users->table_name);
+      $aclWhereProductCategories = $this->buildSpotsAccessQuery($asoProductCategories, $asoProductCategories->table_name);
+      $aclWhereProducts = $this->buildSpotsAccessQuery($aosProducts, $aosProducts->table_name);
 
-        $queryString = $query.$aclWhereOpps.$aclWhereQuotes.$aclWhereAccounts.$aclWhereContacts.$aclWhereProductQuotes.$aclWhereUsers.$aclWhereProductCategories.$aclWhereProducts;
-        $result = $db->query($queryString);
+      $queryString = $query . $aclWhereOpps . $aclWhereQuotes . $aclWhereAccounts . $aclWhereContacts . $aclWhereProductQuotes . $aclWhereUsers . $aclWhereProductCategories . $aclWhereProducts;
+      $result = $db->query($queryString);
 
-        while ($row = $db->fetchByAssoc($result)) {
-            $x = new stdClass();
-            $x->{$mod_strings['LBL_AN_QUOTES_OPPORTUNITY_NAME']} = $row['opportunityName'];
-            $x->{$mod_strings['LBL_AN_QUOTES_OPPORTUNITY_TYPE']} = $row['opportunityType'];
-            $x->{$mod_strings['LBL_AN_QUOTES_OPPORTUNITY_LEAD_SOURCE']} = $row['opportunityLeadSource'];
-            $x->{$mod_strings['LBL_AN_QUOTES_OPPORTUNITY_SALES_STAGE']} = $row['opportunitySalesStage'];
-            $x->{$mod_strings['LBL_AN_QUOTES_ACCOUNT_NAME']} = $row['accountName'];
-            $x->{$mod_strings['LBL_AN_QUOTES_CONTACT_NAME']} = $row['contactName'];
-            $x->{$mod_strings['LBL_AN_QUOTES_ITEM_NAME']} = $row['productName'];
-            $x->{$mod_strings['LBL_AN_QUOTES_ITEM_TYPE']} = $row['itemType'];
-            $x->{$mod_strings['LBL_AN_QUOTES_ITEM_CATEGORY']} = $row['categoryName'];
-            $x->{$mod_strings['LBL_AN_QUOTES_ITEM_QTY']} = $row['productQty'];
-            $x->{$mod_strings['LBL_AN_QUOTES_ITEM_LIST_PRICE']} = $row['productListPrice'];
-            $x->{$mod_strings['LBL_AN_QUOTES_ITEM_SALE_PRICE']} = $row['productPrice'];
-            $x->{$mod_strings['LBL_AN_QUOTES_ITEM_COST_PRICE']} = $row['productCostPrice'];
-            $x->{$mod_strings['LBL_AN_QUOTES_ITEM_DISCOUNT_PRICE']} = $row['productDiscount'];
-            $x->{$mod_strings['LBL_AN_QUOTES_ITEM_DISCOUNT_AMOUNT']} = $row['discountAmount'];
-            $x->{$mod_strings['LBL_AN_QUOTES_ITEM_TOTAL']} = $row['productTotal'];
-            $x->{$mod_strings['LBL_AN_QUOTES_GRAND_TOTAL']} = $row['grandTotal'];
-            $x->{$mod_strings['LBL_AN_QUOTES_ASSIGNED_TO']} = $row['assignedUser'];
-            $x->{$mod_strings['LBL_AN_QUOTES_DATE_CREATED']} = $row['dateCreated'];
-            $x->{$mod_strings['LBL_AN_QUOTES_DAY_CREATED']} = $row['dateCreatedDay'];
-            $x->{$mod_strings['LBL_AN_QUOTES_WEEK_CREATED']} = $row['dateCreatedWeek'];
-            $x->{$mod_strings['LBL_AN_QUOTES_MONTH_CREATED']} = $row['dateCreatedMonth'];
-            $x->{$mod_strings['LBL_AN_QUOTES_QUARTER_CREATED']} = $row['dateCreatedQuarter'];
-            $x->{$mod_strings['LBL_AN_QUOTES_YEAR_CREATED']} = $row['dateCreatedYear'];
+      while ( $row = $db->fetchByAssoc($result) ) {
+         $x = new stdClass();
+         $x->{$mod_strings['LBL_AN_QUOTES_OPPORTUNITY_NAME']} = $row['opportunityName'];
+         // View Tools start
+         //$x->{$mod_strings['LBL_AN_QUOTES_OPPORTUNITY_TYPE']} = $row['opportunityType'];
+         //$x->{$mod_strings['LBL_AN_QUOTES_OPPORTUNITY_LEAD_SOURCE']} = $row['opportunityLeadSource'];
+         //$x->{$mod_strings['LBL_AN_QUOTES_OPPORTUNITY_SALES_STAGE']} = $row['opportunitySalesStage'];
+         $x->{$mod_strings['LBL_AN_QUOTES_OPPORTUNITY_TYPE']} = $this->translateAppString('opportunity_type_dom', $row['opportunityType']);
+         $x->{$mod_strings['LBL_AN_QUOTES_OPPORTUNITY_LEAD_SOURCE']} = $this->translateAppString('lead_source_dom', $row['opportunityLeadSource']);
+         $x->{$mod_strings['LBL_AN_QUOTES_OPPORTUNITY_SALES_STAGE']} = $this->translateAppString('sales_stage_dom', $row['opportunitySalesStage']);
+         // View Tools end
+         $x->{$mod_strings['LBL_AN_QUOTES_ACCOUNT_NAME']} = $row['accountName'];
+         $x->{$mod_strings['LBL_AN_QUOTES_CONTACT_NAME']} = $row['contactName'];
+         $x->{$mod_strings['LBL_AN_QUOTES_ITEM_NAME']} = $row['productName'];
+         // View Tools start
+         //$x->{$mod_strings['LBL_AN_QUOTES_ITEM_TYPE']} = $row['itemType'];
+         $x->{$mod_strings['LBL_AN_QUOTES_ITEM_TYPE']} = $this->translateAppString('spots_aos_products_quotes_item_type', $row['itemType']);
+         // View Tools end
+         $x->{$mod_strings['LBL_AN_QUOTES_ITEM_CATEGORY']} = $row['categoryName'];
+         $x->{$mod_strings['LBL_AN_QUOTES_ITEM_QTY']} = $row['productQty'];
+         $x->{$mod_strings['LBL_AN_QUOTES_ITEM_LIST_PRICE']} = $row['productListPrice'];
+         $x->{$mod_strings['LBL_AN_QUOTES_ITEM_SALE_PRICE']} = $row['productPrice'];
+         $x->{$mod_strings['LBL_AN_QUOTES_ITEM_COST_PRICE']} = $row['productCostPrice'];
+         $x->{$mod_strings['LBL_AN_QUOTES_ITEM_DISCOUNT_PRICE']} = $row['productDiscount'];
+         $x->{$mod_strings['LBL_AN_QUOTES_ITEM_DISCOUNT_AMOUNT']} = $row['discountAmount'];
+         $x->{$mod_strings['LBL_AN_QUOTES_ITEM_TOTAL']} = $row['productTotal'];
+         $x->{$mod_strings['LBL_AN_QUOTES_GRAND_TOTAL']} = $row['grandTotal'];
+         $x->{$mod_strings['LBL_AN_QUOTES_ASSIGNED_TO']} = $row['assignedUser'];
+         $x->{$mod_strings['LBL_AN_QUOTES_DATE_CREATED']} = $row['dateCreated'];
+         $x->{$mod_strings['LBL_AN_QUOTES_DAY_CREATED']} = $row['dateCreatedDay'];
+         $x->{$mod_strings['LBL_AN_QUOTES_WEEK_CREATED']} = $row['dateCreatedWeek'];
+         $x->{$mod_strings['LBL_AN_QUOTES_MONTH_CREATED']} = $row['dateCreatedMonth'];
+         $x->{$mod_strings['LBL_AN_QUOTES_QUARTER_CREATED']} = $row['dateCreatedQuarter'];
+         $x->{$mod_strings['LBL_AN_QUOTES_YEAR_CREATED']} = $row['dateCreatedYear'];
 
-            $returnArray[] = $x;
-        }
-        file_put_contents($filepath, json_encode($returnArray));
-    }
+         $returnArray[] = $x;
+      }
+      file_put_contents($filepath, json_encode($returnArray));
+   }
+
+   // View Tools start
+   protected function translateAppString($app_string_key, $sub_key) {
+      global $app_list_strings;
+      $value = '';
+      if ( isset($app_list_strings[$app_string_key][$sub_key]) ) {
+         $value = $app_list_strings[$app_string_key][$sub_key];
+      } else {
+         $value = $sub_key;
+      }
+      return $value;
+   }
+
+   protected function translateAppStringByActivitiesType($type, $status) {
+      $value = '';
+      switch ( $type ) {
+         case 'call':
+            $value = $this->translateAppString('call_status_dom', $status);
+            break;
+         case 'meeting':
+            $value = $this->translateAppString('meeting_status_dom', $status);
+            break;
+         case 'task':
+            $value = $this->translateAppString('task_status_dom', $status);
+            break;
+         default:
+            $value = $status;
+      }
+      return $value;
+   }
+
+   // View Tools end
 }

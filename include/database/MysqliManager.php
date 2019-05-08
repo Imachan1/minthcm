@@ -1,14 +1,14 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
 }
-/**
- *
+/* * *******************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,11 +37,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * ****************************************************************************** */
 
-/*********************************************************************************
+/* * *******************************************************************************
+
  * Description: This file handles the Data base functionality for the application.
  * It acts as the DB abstraction layer for the application. It depends on helper classes
  * which generate the necessary SQL. This sql is then passed to PEAR DB classes.
@@ -91,327 +92,313 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
- ********************************************************************************/
+ * ****************************************************************************** */
 
 require_once('include/database/MysqlManager.php');
 
 /**
  * MySQL manager implementation for mysqli extension
  */
-class MysqliManager extends MysqlManager
-{
-    /**
-     * @see DBManager::$dbType
-     */
-    public $dbType = 'mysql';
-    public $variant = 'mysqli';
-    public $priority = 10;
-    public $label = 'LBL_MYSQLI';
+class MysqliManager extends MysqlManager {
 
-    /**
-     * @see DBManager::$backendFunctions
-     */
-    protected $backendFunctions = array(
-        'free_result' => 'mysqli_free_result',
-        'close' => 'mysqli_close',
-        'row_count' => 'mysqli_num_rows',
-        'affected_row_count' => 'mysqli_affected_rows',
-    );
+   /**
+    * @see DBManager::$dbType
+    */
+   public $dbType = 'mysql';
+   public $variant = 'mysqli';
+   public $priority = 10;
+   public $label = 'LBL_MYSQLI';
+   /**
+    * @see DBManager::$backendFunctions
+    */
+   protected $backendFunctions = array(
+      'free_result' => 'mysqli_free_result',
+      'close' => 'mysqli_close',
+      'row_count' => 'mysqli_num_rows',
+      'affected_row_count' => 'mysqli_affected_rows',
+   );
 
-    /**
-     * @see MysqlManager::query()
-     */
-    public function query($sql, $dieOnError = false, $msg = '', $suppress = false, $keepResult = false)
-    {
-        if (is_array($sql)) {
-            return $this->queryArray($sql, $dieOnError, $msg, $suppress);
-        }
+   /**
+    * @see MysqlManager::query()
+    */
+   public function query($sql, $dieOnError = false, $msg = '', $suppress = false, $keepResult = false) {
+      if ( is_array($sql) ) {
+         return $this->queryArray($sql, $dieOnError, $msg, $suppress);
+      }
 
-        static $queryMD5 = array();
+      static $queryMD5 = array();
 
-        parent::countQuery($sql);
-        $GLOBALS['log']->info('Query:' . $sql);
-        $this->checkConnection();
-        $this->query_time = microtime(true);
-        $this->lastsql = $sql;
-        if(!empty($sql)) {
-            if ($this->database instanceof mysqli) {
-                $result = $suppress ? @mysqli_query($this->database, $sql) : mysqli_query($this->database, $sql);
-                if($result === false && !$suppress) {
-                    if(inDeveloperMode()) {
-                        LoggerManager::getLogger()->debug('Mysqli_query failed, error was: ' . $this->lastDbError() . ', query was: ');
-                    }
-                    LoggerManager::getLogger()->fatal('Mysqli_query failed.');
-                }
-            } else {
-                LoggerManager::getLogger()->fatal('Database error: Incorrect link');
+      // MintHCM start
+      if ( stristr(strtolower($sql), 'workschedules ') && ( stristr(strtolower($sql), 'update ') || stristr(strtolower($sql), 'insert ') ) ) {
+         $GLOBALS['log']->dev('Mysqli Query:' . $sql);
+      }
+      // MintHCM end 
+      parent::countQuery($sql);
+      $GLOBALS['log']->info('Query:' . $sql);
+      $this->checkConnection();
+      $this->query_time = microtime(true);
+      $this->lastsql = $sql;
+      if ( !empty($sql) ) {
+         if ( $this->database instanceof mysqli ) {
+            $result = $suppress ? @mysqli_query($this->database, $sql) : mysqli_query($this->database, $sql);
+            if ( $result === false && !$suppress ) {
+               if ( inDeveloperMode() ) {
+                  LoggerManager::getLogger()->debug('Mysqli_query failed, error was: ' . $this->lastDbError() . ', query was: ');
+               }
+               LoggerManager::getLogger()->fatal('Mysqli_query failed.');
             }
-        } else {
-            $GLOBALS['log']->fatal('MysqliManager: Empty query');
-            $result = null;
-        }
-        $md5 = md5($sql);
+         } else {
+            LoggerManager::getLogger()->fatal('Database error: Incorrect link');
+         }
+      } else {
+         $GLOBALS['log']->fatal('MysqliManager: Empty query');
+         $result = null;
+      }
+      $md5 = md5($sql);
 
-        if (empty($queryMD5[$md5])) {
-            $queryMD5[$md5] = true;
-        }
+      if ( empty($queryMD5[$md5]) ) {
+         $queryMD5[$md5] = true;
+      }
 
-        $this->query_time = microtime(true) - $this->query_time;
-        $GLOBALS['log']->info('Query Execution Time:' . $this->query_time);
-        $this->dump_slow_queries($sql);
-
-        // This is some heavy duty debugging, leave commented out unless you need this:
-        /*
+      $this->query_time = microtime(true) - $this->query_time;
+      $GLOBALS['log']->info('Query Execution Time:' . $this->query_time);
+      $this->dump_slow_queries($sql);
+      // This is some heavy duty debugging, leave commented out unless you need this:
+      /*
         $bt = debug_backtrace();
         for ( $i = count($bt) ; $i-- ; $i > 0 ) {
-            if ( strpos('MysqliManager.php',$bt[$i]['file']) === false ) {
-                $line = $bt[$i];
-            }
+        if ( strpos('MysqliManager.php',$bt[$i]['file']) === false ) {
+        $line = $bt[$i];
+        }
         }
 
         $GLOBALS['log']->fatal("${line['file']}:${line['line']} ${line['function']} \nQuery: $sql\n");
-        */
+       */
 
 
-        if ($keepResult) {
-            $this->lastResult = $result;
-        }
-        $this->checkError($msg . ' Query Failed: ' . $sql, $dieOnError);
+      if ( $keepResult ) {
+         $this->lastResult = $result;
+      }
+      $this->checkError($msg . ' Query Failed: ' . $sql, $dieOnError);
 
-        return $result;
-    }
+      return $result;
+   }
 
-    /**
-     * Returns the number of rows affected by the last query
-     *
-     * @return int
-     */
-    public function getAffectedRowCount($result)
-    {
-        return mysqli_affected_rows($this->getDatabase());
-    }
+   /**
+    * Returns the number of rows affected by the last query
+    *
+    * @return int
+    */
+   public function getAffectedRowCount($result) {
+      return mysqli_affected_rows($this->getDatabase());
+   }
 
-    /**
-     * Returns the number of rows returned by the result
-     *
-     * This function can't be reliably implemented on most DB, do not use it.
-     * @abstract
-     * @deprecated
-     * @param  resource $result
-     * @return int
-     */
-    public function getRowCount($result)
-    {
-        return mysqli_num_rows($result);
-    }
+   /**
+    * Returns the number of rows returned by the result
+    *
+    * This function can't be reliably implemented on most DB, do not use it.
+    * @abstract
+    * @deprecated
+    * @param  resource $result
+    * @return int
+    */
+   public function getRowCount($result) {
+      return mysqli_num_rows($result);
+   }
 
+   /**
+    * Disconnects from the database
+    *
+    * Also handles any cleanup needed
+    */
+   public function disconnect() {
+      if ( isset($GLOBALS['log']) && !is_null($GLOBALS['log']) ) {
+         $GLOBALS['log']->debug('Calling MySQLi::disconnect()');
+      }
+      if ( !empty($this->database) ) {
+         $this->freeResult();
+         if ( !@mysqli_close($this->database) ) {
+            $GLOBALS['log']->fatal('mysqli_close() failed');
+         }
+         $this->database = null;
+      }
+   }
 
-    /**
-     * Disconnects from the database
-     *
-     * Also handles any cleanup needed
-     */
-    public function disconnect()
-    {
-        if (isset($GLOBALS['log']) && !is_null($GLOBALS['log'])) {
-            $GLOBALS['log']->debug('Calling MySQLi::disconnect()');
-        }
-        if (!empty($this->database)) {
-            $this->freeResult();
-            if(!@mysqli_close($this->database)) {
-                $GLOBALS['log']->fatal('mysqli_close() failed');
-            }
-            $this->database = null;
-        }
-    }
+   /**
+    * @see DBManager::freeDbResult()
+    */
+   protected function freeDbResult($dbResult) {
+      if ( !empty($dbResult) ) {
+         mysqli_free_result($dbResult);
+      }
+   }
 
-    /**
-     * @see DBManager::freeDbResult()
-     */
-    protected function freeDbResult($dbResult)
-    {
-        if (!empty($dbResult)) {
-            mysqli_free_result($dbResult);
-        }
-    }
+   /**
+    * @see DBManager::getFieldsArray()
+    */
+   public function getFieldsArray($result, $make_lower_case = false) {
+      $field_array = array();
 
-    /**
-     * @see DBManager::getFieldsArray()
-     */
-    public function getFieldsArray($result, $make_lower_case = false)
-    {
-        $field_array = array();
+      if ( !isset($result) || empty($result) ) {
+         return 0;
+      }
 
-        if (!isset($result) || empty($result)) {
+      $i = 0;
+      while ( $i < mysqli_num_fields($result) ) {
+         $meta = mysqli_fetch_field_direct($result, $i);
+         if ( !$meta ) {
             return 0;
-        }
+         }
 
-        $i = 0;
-        while ($i < mysqli_num_fields($result)) {
-            $meta = mysqli_fetch_field_direct($result, $i);
-            if (!$meta) {
-                return 0;
-            }
+         if ( $make_lower_case == true ) {
+            $meta->name = strtolower($meta->name);
+         }
 
-            if ($make_lower_case == true) {
-                $meta->name = strtolower($meta->name);
-            }
+         $field_array[] = $meta->name;
 
-            $field_array[] = $meta->name;
+         $i++;
+      }
 
-            $i++;
-        }
+      return $field_array;
+   }
 
-        return $field_array;
-    }
+   /**
+    * @see DBManager::fetchRow()
+    */
+   public function fetchRow($result) {
+      if ( empty($result) ) {
+         return false;
+      }
 
-    /**
-     * @see DBManager::fetchRow()
-     */
-    public function fetchRow($result)
-    {
-        if (empty($result)) {
-            return false;
-        }
+      $row = mysqli_fetch_assoc($result);
+      if ( $row == null ) {
+         $row = false; //Make sure MySQLi driver results are consistent with other database drivers
+      }
+      return $row;
+   }
 
-        $row = mysqli_fetch_assoc($result);
-        if ($row == null) {
-            $row = false;
-        } //Make sure MySQLi driver results are consistent with other database drivers
+   /**
+    * @see DBManager::quote()
+    */
+   public function quote($string) {
+      return mysqli_real_escape_string($this->getDatabase(), $this->quoteInternal($string));
+   }
 
-        return $row;
-    }
+   /**
+    * @see DBManager::connect()
+    */
+   public function connect(array $configOptions = null, $dieOnError = false) {
+      global $sugar_config;
 
-    /**
-     * @see DBManager::quote()
-     */
-    public function quote($string)
-    {
-        return mysqli_real_escape_string($this->getDatabase(), $this->quoteInternal($string));
-    }
+      if ( is_null($configOptions) ) {
+         $configOptions = $sugar_config['dbconfig'];
+      }
 
-    /**
-     * @see DBManager::connect()
-     */
-    public function connect(array $configOptions = null, $dieOnError = false)
-    {
-        global $sugar_config;
+      if ( !isset($this->database) ) {
 
-        if (is_null($configOptions)) {
-            $configOptions = $sugar_config['dbconfig'];
-        }
+         //mysqli connector has a separate parameter for port.. We need to separate it out from the host name
+         $dbhost = $configOptions['db_host_name'];
+         $dbport = isset($configOptions['db_port']) ? ($configOptions['db_port'] == '' ? null : $configOptions['db_port']) : null;
 
-        if (!isset($this->database)) {
+         $pos = strpos($configOptions['db_host_name'], ':');
+         if ( $pos !== false ) {
+            $dbhost = substr($configOptions['db_host_name'], 0, $pos);
+            $dbport = substr($configOptions['db_host_name'], $pos + 1);
+         }
 
-            //mysqli connector has a separate parameter for port.. We need to separate it out from the host name
-            $dbhost = $configOptions['db_host_name'];
-            $dbport = isset($configOptions['db_port']) ? ($configOptions['db_port'] == '' ? null : $configOptions['db_port']) : null;
-
-            $pos = strpos($configOptions['db_host_name'], ':');
-            if ($pos !== false) {
-                $dbhost = substr($configOptions['db_host_name'], 0, $pos);
-                $dbport = substr($configOptions['db_host_name'], $pos + 1);
-            }
-
-            $this->database = @mysqli_connect($dbhost, $configOptions['db_user_name'], $configOptions['db_password'],
-                isset($configOptions['db_name']) ? $configOptions['db_name'] : '', $dbport);
-            if (empty($this->database)) {
-                $GLOBALS['log']->fatal("Could not connect to DB server " . $dbhost . " as " . $configOptions['db_user_name'] . ". port " . $dbport . ": " . mysqli_connect_error());
-                if ($dieOnError) {
-                    if (isset($GLOBALS['app_strings']['ERR_NO_DB'])) {
-                        sugar_die($GLOBALS['app_strings']['ERR_NO_DB']);
-                    } else {
-                        sugar_die("Could not connect to the database. Please refer to suitecrm.log for details (2).");
-                    }
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        if (!empty($configOptions['db_name']) && !@mysqli_select_db($this->database, $configOptions['db_name'])) {
-            $GLOBALS['log']->fatal("Unable to select database {$configOptions['db_name']}: " . mysqli_connect_error());
-            if ($dieOnError) {
-                if (isset($GLOBALS['app_strings']['ERR_NO_DB'])) {
-                    sugar_die($GLOBALS['app_strings']['ERR_NO_DB']);
-                } else {
-                    sugar_die("Could not connect to the database. Please refer to suitecrm.log for details (2).");
-                }
+         $this->database = @mysqli_connect($dbhost, $configOptions['db_user_name'], $configOptions['db_password'], isset($configOptions['db_name']) ? $configOptions['db_name'] : '', $dbport);
+         if ( empty($this->database) ) {
+            $GLOBALS['log']->fatal("Could not connect to DB server " . $dbhost . " as " . $configOptions['db_user_name'] . ". port " . $dbport . ": " . mysqli_connect_error());
+            if ( $dieOnError ) {
+               if ( isset($GLOBALS['app_strings']['ERR_NO_DB']) ) {
+                  sugar_die($GLOBALS['app_strings']['ERR_NO_DB']);
+               } else {
+                  sugar_die("Could not connect to the database. Please refer to suitecrm.log for details.");
+               }
             } else {
-                return false;
+               return false;
             }
-        }
+         }
+      }
 
-        // cn: using direct calls to prevent this from spamming the Logs
-
-        $collation = $this->getOption('collation');
-        if (!empty($collation)) {
-            $names = "SET NAMES 'utf8' COLLATE '$collation'";
-            mysqli_query($this->database, $names);
-        }
-        mysqli_set_charset($this->database, "utf8");
-
-        if ($this->checkError('Could Not Connect', $dieOnError)) {
-            $GLOBALS['log']->info("connected to db");
-        }
-
-        $this->connectOptions = $configOptions;
-
-        return true;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see MysqlManager::lastDbError()
-     */
-    public function lastDbError()
-    {
-        if ($this->database) {
-            if (mysqli_errno($this->database)) {
-                return "MySQL error " . mysqli_errno($this->database) . ": " . mysqli_error($this->database);
+      if ( !empty($configOptions['db_name']) && !@mysqli_select_db($this->database, $configOptions['db_name']) ) {
+         $GLOBALS['log']->fatal("Unable to select database {$configOptions['db_name']}: " . mysqli_connect_error());
+         if ( $dieOnError ) {
+            if ( isset($GLOBALS['app_strings']['ERR_NO_DB']) ) {
+               sugar_die($GLOBALS['app_strings']['ERR_NO_DB']);
+            } else {
+               sugar_die("Could not connect to the database. Please refer to suitecrm.log for details.");
             }
-        } else {
-            $err = mysqli_connect_error();
-            if ($err) {
-                return $err;
-            }
-        }
+         } else {
+            return false;
+         }
+      }
 
-        return false;
-    }
+      // cn: using direct calls to prevent this from spamming the Logs
 
-    public function getDbInfo()
-    {
-        $charsets = $this->getCharsetInfo();
-        $charset_str = array();
-        foreach ($charsets as $name => $value) {
-            $charset_str[] = "$name = $value";
-        }
+      $collation = $this->getOption('collation');
+      if ( !empty($collation) ) {
+         $names = "SET NAMES 'utf8' COLLATE '$collation'";
+         mysqli_query($this->database, $names);
+      }
+      mysqli_set_charset($this->database, "utf8");
 
-        return array(
-            "MySQLi Version" => @mysqli_get_client_info(),
-            "MySQLi Host Info" => @mysqli_get_host_info($this->database),
-            "MySQLi Server Info" => @mysqli_get_server_info($this->database),
-            "MySQLi Client Encoding" => @mysqli_character_set_name($this->database),
-            "MySQL Character Set Settings" => join(", ", $charset_str),
-        );
-    }
+      if ( $this->checkError('Could Not Connect', $dieOnError) ) {
+         $GLOBALS['log']->info("connected to db");
+      }
 
-    /**
-     * Select database
-     * @param string $dbname
-     */
-    protected function selectDb($dbname)
-    {
-        return mysqli_select_db($this->getDatabase(), $dbname);
-    }
+      $this->connectOptions = $configOptions;
+      return true;
+   }
 
-    /**
-     * Check if this driver can be used
-     * @return bool
-     */
-    public function valid()
-    {
-        return function_exists("mysqli_connect") && empty($GLOBALS['sugar_config']['mysqli_disabled']);
-    }
+   /**
+    * (non-PHPdoc)
+    * @see MysqlManager::lastDbError()
+    */
+   public function lastDbError() {
+      if ( $this->database ) {
+         if ( mysqli_errno($this->database) ) {
+            return "MySQL error " . mysqli_errno($this->database) . ": " . mysqli_error($this->database);
+         }
+      } else {
+         $err = mysqli_connect_error();
+         if ( $err ) {
+            return $err;
+         }
+      }
+
+      return false;
+   }
+
+   public function getDbInfo() {
+      $charsets = $this->getCharsetInfo();
+      $charset_str = array();
+      foreach ( $charsets as $name => $value ) {
+         $charset_str[] = "$name = $value";
+      }
+      return array(
+         "MySQLi Version" => @mysqli_get_client_info(),
+         "MySQLi Host Info" => @mysqli_get_host_info($this->database),
+         "MySQLi Server Info" => @mysqli_get_server_info($this->database),
+         "MySQLi Client Encoding" => @mysqli_character_set_name($this->database),
+         "MySQL Character Set Settings" => join(", ", $charset_str),
+      );
+   }
+
+   /**
+    * Select database
+    * @param string $dbname
+    */
+   protected function selectDb($dbname) {
+      return mysqli_select_db($this->getDatabase(), $dbname);
+   }
+
+   /**
+    * Check if this driver can be used
+    * @return bool
+    */
+   public function valid() {
+      return function_exists("mysqli_connect") && empty($GLOBALS['sugar_config']['mysqli_disabled']);
+   }
+
 }

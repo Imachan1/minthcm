@@ -1,0 +1,3 @@
+<?php
+
+$exemptModules['PDFGenerator']='PDFGenerator';

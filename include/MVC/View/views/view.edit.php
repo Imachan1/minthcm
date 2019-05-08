@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -37,96 +38,81 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
-
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
 }
 
 
 require_once('include/EditView/EditView2.php');
 
-class ViewEdit extends SugarView
-{
-    /**
-     * @var EditView $ev
-     */
-    public $ev;
+class ViewEdit extends SugarView {
 
-    /**
-     * @inheritdoc
-     */
-    public $type = 'edit';
+   /**
+    * @var EditView $ev
+    */
+   public $ev;
+   /**
+    * @inheritdoc
+    */
+   public $type = 'edit';
+   /**
+    * @var boolean $useForSubpanel determine whether view can be used for subpanel creates
+    */
+   public $useForSubpanel = false;
+   /**
+    * @var boolean to determine whether or not SubpanelQuickCreate has a separate display function
+    */
+   public $useModuleQuickCreateTemplate = false;
+   /**
+    * @var boolean used to passed showTitle to $ev used for backwards compatibility
+    */
+   public $showTitle = true;
 
-    /**
-     * @var boolean $useForSubpanel determine whether view can be used for subpanel creates
-     */
-    public $useForSubpanel = false;
+   /**
+    * ViewEdit constructor.
+    */
+   public function __construct() {
+      parent::__construct();
+   }
 
-    /**
-     * @var boolean to determine whether or not SubpanelQuickCreate has a separate display function
-     */
-    public $useModuleQuickCreateTemplate = false;
+   /**
+    * @see SugarView::preDisplay()
+    */
+   public function preDisplay() {
+      $metadataFile = $this->getMetaDataFile();
+      $this->ev = $this->getEditView();
+      $this->ev->ss = & $this->ss;
+      $this->ev->setup($this->module, $this->bean, $metadataFile);
+   }
 
-    /**
-     * @var boolean used to passed showTitle to $ev used for backwards compatibility
-     */
-    public $showTitle = true;
+   /**
+    * @inheritdoc
+    */
+   public function display() {
+      $this->ev->process();
 
-    /**
-     * ViewEdit constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+      //viewTools start #40916
+      $mrf = new ModuleRelatedField();
+      $locked_field = $mrf->getModuleRelatedField($this->bean);
+      $this->ev->ss->assign('locked_field', $locked_field);
+      //viewTools end #40916
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function ViewEdit()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+      echo $this->ev->display($this->showTitle);
+      //viewTools start #52440
+      echo '<script>viewTools.form.calculateSelectors();</script>';
+      //viewTools end #52440
+   }
 
+   /**
+    * Get a new EditView object
+    * @return EditView
+    */
+   public function getEditView() {
+      if ( empty($this->ev) ) {
+         $this->ev = new EditView();
+      }
 
-    /**
-     * @see SugarView::preDisplay()
-     */
-    public function preDisplay()
-    {
-        $metadataFile = $this->getMetaDataFile();
-        $this->ev = $this->getEditView();
-        $this->ev->ss =& $this->ss;
-        $this->ev->setup($this->module, $this->bean, $metadataFile);
-    }
+      return $this->ev;
+   }
 
-    /**
-     * @inheritdoc
-     */
-    public function display()
-    {
-        $this->ev->process();
-        echo $this->ev->display($this->showTitle);
-    }
-
-    /**
-     * Get a new EditView object
-     * @return EditView
-     */
-    public function getEditView()
-    {
-        if(empty($this->ev)) {
-            $this->ev = new EditView();
-        }
-
-        return $this->ev;
-    }
 }
-
