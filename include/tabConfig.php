@@ -44,63 +44,37 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
-$GLOBALS['tabStructure'] = array(
-    "LBL_TABGROUP_SALES" => array(
-        'label' => 'LBL_TABGROUP_SALES',
-        'modules' => array(
-            "Home",
-            "Accounts",
-            "Contacts",
-            "Opportunities",
-            "Leads",
-            "Contracts",
-            "Quotes",
-            "Forecasts",
-        )
-    ),
-    "LBL_TABGROUP_MARKETING" => array(
-        'label' => 'LBL_TABGROUP_MARKETING',
-        'modules' => array(
-            "Home",
-            "Accounts",
-            "Contacts",
-            "Leads",    
-            "Campaigns",
-            "Prospects",
-            "ProspectLists",
-        )
-    ),
-    "LBL_TABGROUP_SUPPORT" => array(
-        'label' => 'LBL_TABGROUP_SUPPORT',
-        'modules' => array(
-            "Home",
-            "Accounts",
-            "Contacts",
-            "Cases",
-            "Bugs",
-        )
-    ),
-    "LBL_TABGROUP_ACTIVITIES" => array(
-        'label' => 'LBL_TABGROUP_ACTIVITIES',
-        'modules' => array(
-            "Home",
-            "Calendar",
-            "Calls",
-            "Meetings",
-            "Emails",
-            "Tasks",
-            "Notes",
-        )
-    ),
-    "LBL_TABGROUP_COLLABORATION"=>array(
-        'label' => 'LBL_TABGROUP_COLLABORATION',
-        'modules' => array(
-            "Home",
-            "Emails",
-            "Documents",
-            "Project",
-        )
-    ),
+$GLOBALS["tabStructure"] = array(       
+   'LBL_RECRUITMENT' => array(         
+      'label' => 'LBL_RECRUITMENT',        
+      'modules' => array(                     
+         'Candidates',
+         'Candidatures',
+         'Positions',
+         'Recruitments',
+      ),
+   ),
+   'LBL_TIME_TRACKING' => array(         
+      'label' => 'LBL_TIME_TRACKING',        
+      'modules' => array(                     
+         'WorkSchedules',
+         'WorkingMonths',
+         'NonWorkingDays',
+         'ev_Overtimes',
+         'Delegations',
+      ),
+   ),
+   'LBL_ACTIVITIES' => array(         
+      'label' => 'LBL_ACTIVITIES',        
+      'modules' => array(                     
+         'Calendar',
+         'Calls',
+         'Meetings',
+         'Tasks',
+         'Emails',
+         'Notes',
+      ),
+   ),
 );
 
 if(file_exists('custom/include/tabConfig.php')){
