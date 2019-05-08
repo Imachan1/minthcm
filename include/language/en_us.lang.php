@@ -2086,6 +2086,9 @@ $app_strings = array(
    'LBL_KREPORTS_DASHLET_HEIGHT_HELP' => 'Units: pixels. Ranges: 110 - 465 for Home, 110 - 365 for list and detail views.',
    'LBL_KREPORTS_DASHLET_SELECT_DATA' => 'Run setup and select report elements, which you want to see.',
    'LBL_KREPORTS_DASHLET_AUTOFILTER_ON_RECORDVIEW' => 'Automatically filter data on record view',
+'LBL_RECRUITMENT' => 'Recruitment',
+'LBL_TIME_TRACKING' => 'Time Tracking',
+'LBL_ACTIVITIES' => 'Activities',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
