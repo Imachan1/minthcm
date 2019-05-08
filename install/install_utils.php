@@ -1221,6 +1221,8 @@ function insert_default_settings() {
    if ( isset($_SESSION['smtp_from_name']) && $_SESSION['smtp_from_name'] ) {
       $fromName = $_SESSION['smtp_from_name'];
    }
+   $MySettings_tab =base64_encode(serialize(array( 'Accounts', 'Notes', 'Opportunities', 'SecurityGroups', 'Calendar', 'ResourceCalendar', 'Documents', 'Emails', 'Calls', 'Meetings', 'Tasks', 'Project', 'AM_ProjectTemplates', 'FP_events', 'FP_Event_Locations', 'AOS_PDF_Templates', 'AOR_Reports', 'AOW_WorkFlow', 'AOK_KnowledgeBase', 'AOK_Knowledge_Base_Categories', 'Surveys', 'Delegations', 'KTemplates', 'PDFTemplates', 'WorkSchedules', 'WorkingMonths', 'NonWorkingDays', 'ev_Overtimes', 'KReports', 'Candidates', 'Candidatures', 'Positions', 'Recruitments', 'Reservations', 'Resources', 'Contracts', 'TermsOfEmployment', 'PeriodsOfEmployment', 'Trainings', 'Positions', 'OrganizationalUnits', 'OnboardingTemplates', 'OffboardingTemplates', 'ExitInterviews', 'EmployeeRoles', 'Benefits', 'Responsibilities', 'Onboardings', 'Offboardings', 'Competencies', 'CompetencyRatings', 'Goals', 'Appraisals', 'News', 'Ideas', 'Conclusions', 'ResponsibilityActivities', 'Problems', 'Improvements', 'ReservationsCalendar', 'Certificates', 'Applications',
+        )));
 
    $configs = [
       [ 'category' => 'notify', 'name' => 'fromaddress', 'value' => $fromAddress, ],
@@ -1229,7 +1231,7 @@ function insert_default_settings() {
       [ 'category' => 'notify', 'name' => 'on', 'value' => 1, ],
       [ 'category' => 'notify', 'name' => 'send_from_assigning_user', 'value' => 0, ],
       [ 'category' => 'info', 'name' => 'sugar_version', 'value' => $sugar_db_version, ],
-      [ 'category' => 'MySettings', 'name' => 'tab', 'value' => '', ],
+      [ 'category' => 'MySettings', 'name' => 'tab', 'value' => $MySettings_tab, ],
       [ 'category' => 'portal', 'name' => 'on', 'value' => 0, ],
       [ 'category' => 'tracker', 'name' => 'Tracker', 'value' => 1, ],
       [ 'category' => 'system', 'name' => 'skypeout_on', 'value' => 1, ],

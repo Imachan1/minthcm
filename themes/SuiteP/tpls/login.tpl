@@ -51,7 +51,7 @@
 
 	<div class="p_login_top">
 		
-		<a title="SuiteCRM" href="http://www.suitecrm.com">SuiteCRM</a>
+		<a title="MintHCM" href="http://www.minthcm.com">MintHCM</a>
 		
 	</div>
     
