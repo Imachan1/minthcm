@@ -51,7 +51,7 @@
 
 	<div class="p_login_top">
 		
-		<a title="MintHCM" href="https://minthcm.com">MintHCM</a>
+		<a title="MintHCM" href="https://minthcm.com" target="_blank">MintHCM</a>
 		
 	</div>
     
