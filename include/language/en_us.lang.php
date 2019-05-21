@@ -196,7 +196,7 @@ $app_list_strings = array(
       'KReports' => 'Advanced Report',
       'KTemplates' => 'PDF Template',
       'ScheduleReports' => 'Schedule Report',
-      'ScheduleReportsLogs' => 'Schedule Reports Log',
+      'ScheduleReportsLogs' => 'Schedule Report Log',
    ),
    'checkbox_dom' => array(
       '' => '',
