@@ -368,6 +368,7 @@ installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS']);
     $scheduler->rebuildDefaultSchedulers();
     installerHook('post_createDefaultSchedulers');
 
+    installDelegationPDFTemplate();
 
     echo $mod_strings['LBL_PERFORM_DONE'];
 

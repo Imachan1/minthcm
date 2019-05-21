@@ -174,7 +174,9 @@ $mod_strings = array(
    'LBL_UPDATEEVNEWSDISPLAYDATE' => 'Update News Display Date',
    'LBL_REBUILDVIEWTOOLS' => 'Rebuild View Tools',
    'LBL_EXECUTEVIEWTOOLSQUEUE' => 'Execute View Tools Queue',
+   'LBL_UPDATE_NEWS_DISPLAY_DATE' => "Update News Display Date",
    
    'LBL_AUTOMATICCREATENOTIFICATION' => 'Creating Alerts for Users',
    'LBL_SEND_REPORTS' => "Send generated KReports PDFs",
+
 );

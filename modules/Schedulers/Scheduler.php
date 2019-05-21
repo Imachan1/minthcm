@@ -997,6 +997,18 @@ class Scheduler extends SugarBean {
       $sched16->catch_up = '0';
       $sched16->save();
 
+      $sched17 = new Scheduler();
+      $sched17->name = $mod_strings['LBL_UPDATE_NEWS_DISPLAY_DATE'];
+      $sched17->job = 'function::updateEvNewsDisplayDate';
+      $sched17->date_time_start = create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+      $sched17->date_time_end = null;
+      $sched17->job_interval = '0::1::*::*::*';
+      $sched17->status = 'Active';
+      $sched17->created_by = '1';
+      $sched17->modified_user_id = '1';
+      $sched17->catch_up = '1';
+      $sched17->save();
+
 
       $this->createJobEntry('AutomaticCreateNotification', '*/15::*::*::*::*', 'Automatic create Notification');
       $this->createJobEntry('find_spent_times_without_work_schedule', '0::10::*::*::0');
