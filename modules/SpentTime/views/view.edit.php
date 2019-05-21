@@ -17,7 +17,7 @@ class SpentTimeViewEdit extends ViewEdit {
       } else {
          $this->user = $GLOBALS['current_user'];
       }
-      parent::ViewEdit();
+      parent::__construct();
    }
 
    public function display() {
