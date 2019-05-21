@@ -193,6 +193,10 @@ $app_list_strings = array(
       'Ideas' => 'Idea',
       'Positions' => 'Position',
       'Recruitments' => 'Recruitment',
+      'KReports' => 'Advanced Report',
+      'KTemplates' => 'PDF Template',
+      'ScheduleReports' => 'Schedule Report',
+      'ScheduleReportsLogs' => 'Schedule Report Log',
    ),
    'checkbox_dom' => array(
       '' => '',

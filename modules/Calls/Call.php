@@ -118,15 +118,11 @@ class Call extends SugarBean {
    public $syncing = false;
    public $recurring_source;
    // This is used to retrieve related fields from form posts.
-   public $additional_column_fields = array('assigned_user_name', 'assigned_user_id', 'contact_id', 'user_id', 'contact_name');
-   public $relationship_fields = array('account_id' => 'accounts',
-      'opportunity_id' => 'opportunities',
-      'contact_id' => 'contacts',
-      'case_id' => 'cases',
+   public $additional_column_fields = array('assigned_user_name', 'assigned_user_id', 'user_id');
+   public $relationship_fields = array(
       'user_id' => 'users',
       'assigned_user_id' => 'users',
       'note_id' => 'notes',
-      'lead_id' => 'leads',
    );
 
    public function __construct() {
@@ -423,20 +419,6 @@ class Call extends SugarBean {
    function fill_in_additional_detail_fields() {
       global $locale;
       parent::fill_in_additional_detail_fields();
-      if ( !empty($this->contact_id) ) {
-         $query = "SELECT first_name, last_name FROM contacts ";
-         $query .= "WHERE id='$this->contact_id' AND deleted=0";
-         $result = $this->db->limitQuery($query, 0, 1, true, " Error filling in additional detail fields: ");
-
-         // Get the contact name.
-         $row = $this->db->fetchByAssoc($result);
-         $GLOBALS['log']->info("additional call fields $query");
-         if ( $row != null ) {
-            $this->contact_name = $locale->getLocaleFormattedName($row['first_name'], $row['last_name'], '', '');
-            $GLOBALS['log']->debug("Call($this->id): contact_name = $this->contact_name");
-            $GLOBALS['log']->debug("Call($this->id): contact_id = $this->contact_id");
-         }
-      }
       if ( !isset($this->duration_minutes) ) {
          $this->duration_minutes = $this->minutes_value_default;
       }
@@ -548,18 +530,6 @@ class Call extends SugarBean {
       }
       $this->fill_in_additional_detail_fields();
 
-      //make sure we grab the localized version of the contact name, if a contact is provided
-      if ( !empty($this->contact_id) ) {
-         // Bug# 46125 - make first name, last name, salutation and title of Contacts respect field level ACLs
-         $contact_temp = BeanFactory::getBean("Contacts", $this->contact_id);
-         if ( !empty($contact_temp) ) {
-            $contact_temp->_create_proper_name_field();
-            $this->contact_name = $contact_temp->full_name;
-         }
-      }
-
-      $call_fields['CONTACT_ID'] = $this->contact_id;
-      $call_fields['CONTACT_NAME'] = $this->contact_name;
       $call_fields['PARENT_NAME'] = $this->parent_name;
       $call_fields['REMINDER_CHECKED'] = $this->reminder_time == -1 ? false : true;
       $call_fields['EMAIL_REMINDER_CHECKED'] = $this->email_reminder_time == -1 ? false : true;
