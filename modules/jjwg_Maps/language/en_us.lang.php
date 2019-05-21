@@ -162,7 +162,7 @@ $mod_strings['LBL_CONFIG_ADDRESS_CACHE_SAVE_ENABLED_DESC'] = "'address_cache_sav
 
 $mod_strings['LBL_CONFIG_LOGIC_HOOKS_SETTINGS_TITLE'] = 'Logic Hooks Setting:';
 $mod_strings['LBL_CONFIG_LOGIC_HOOKS_ENABLED_TITLE'] = 'Enable All Logic Hooks: ';
-$mod_strings['LBL_CONFIG_LOGIC_HOOKS_ENABLED_DESC'] = "'logic_hooks_enabled' allows logic hooks for automatic updating based on related objects. It is recommended to disable when upgrading your SuiteCRM.";
+$mod_strings['LBL_CONFIG_LOGIC_HOOKS_ENABLED_DESC'] = "'logic_hooks_enabled' allows logic hooks for automatic updating based on related objects. It is recommended to disable when upgrading your MintHCM.";
 
 $mod_strings['LBL_CONFIG_MARKER_MAPPING_SETTINGS_TITLE'] = 'Marker/Mapping Settings:';
 $mod_strings['LBL_CONFIG_MAP_MARKERS_LIMIT_TITLE'] = "Map Markers Limit:";

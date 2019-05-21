@@ -44,7 +44,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 $mod_strings = array(
     'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
-    'LBL_ASSIGNED_TO_NAME' => 'SuiteCRM User',
+    'LBL_ASSIGNED_TO_NAME' => 'MintHCM User',
     'LBL_ID' => 'ID',
     'LBL_DATE_ENTERED' => 'Date Created',
     'LBL_DATE_MODIFIED' => 'Date Modified',
@@ -95,8 +95,8 @@ $mod_strings = array(
     'LBL_REAUTHENTICATE_LABEL' => 'Reauthenticate',
     'LBL_APPLICATION_FOUND_NOTICE' => 'An account for this application already exists. We have reinstated the existing account.',
     'LBL_OMIT_URL' => '(Omit http:// or https://)',
-    'LBL_OAUTH_SAVE_NOTICE' => 'Click <b>Connect</b> to be directed to a page to provide your account information and to authorize access to the account by SuiteCRM. After connecting, you will be directed back to SuiteCRM.',
-    'LBL_BASIC_SAVE_NOTICE' => 'Click <b>Connect</b> to connect this account to SuiteCRM.',
+    'LBL_OAUTH_SAVE_NOTICE' => 'Click <b>Connect</b> to be directed to a page to provide your account information and to authorize access to the account by MintHCM. After connecting, you will be directed back to MintHCM.',
+    'LBL_BASIC_SAVE_NOTICE' => 'Click <b>Connect</b> to connect this account to MintHCM.',
     'LBL_ERR_POPUPS_DISABLED' => 'Please enable browser popup windows or add an exception for website "{0}" to the exceptions list in order to connect.',
 
     'LBL_API_OAUTHSECRET' => 'API OAuth Secret',
