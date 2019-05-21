@@ -228,16 +228,6 @@ class Email extends Basic
      */
     public $bcc_addrs_emails;
 
-    /**
-     * @var string $contact_id
-     */
-    public $contact_id;
-
-    /**
-     * @var string $contact_name
-     */
-    public $contact_name;
-
     // Archive Email attributes
     /**
      * @var string $duration_hours
@@ -351,11 +341,7 @@ class Email extends Basic
      * @var array $relationshipMap
      */
     public $relationshipMap = array(
-        'Contacts' => 'emails_contacts_rel',
-        'Accounts' => 'emails_accounts_rel',
-        'Leads' => 'emails_leads_rel',
         'Users' => 'emails_users_rel',
-        'Prospects' => 'emails_prospects_rel',
     );
 
     /**
@@ -3416,10 +3402,6 @@ class Email extends Basic
         }
 
         ///////////////////////////////////////////////////////////////////////
-        if (empty($this->contact_id) && !empty($this->parent_id) && !empty($this->parent_type) && $this->parent_type === 'Contacts' && !empty($this->parent_name)) {
-            $this->contact_id = $this->parent_id;
-            $this->contact_name = $this->parent_name;
-        }
     }
 
     /**
@@ -3435,46 +3417,7 @@ class Email extends Basic
 
         // Fill in the assigned_user_name
         $this->assigned_user_name = get_assigned_user_name($this->assigned_user_id, '');
-        //if ($this->parent_type == 'Contacts') {
-        $query = "SELECT contacts.first_name, contacts.last_name, contacts.phone_work, contacts.id, contacts.assigned_user_id contact_name_owner, 'Contacts' contact_name_mod FROM contacts, emails_beans ";
-        $query .= "WHERE emails_beans.email_id='$this->id' AND emails_beans.bean_id=contacts.id AND emails_beans.bean_module = 'Contacts' AND emails_beans.deleted=0 AND contacts.deleted=0";
-        if (!empty($this->parent_id) && $this->parent_type == 'Contacts') {
-            $query .= " AND contacts.id= '" . $this->parent_id . "' ";
-        } else {
-            if (!empty($_REQUEST['record']) && !empty($_REQUEST['module']) && $_REQUEST['module'] == 'Contacts') {
-                $query .= " AND contacts.id= '" . $_REQUEST['record'] . "' ";
-            }
-        }
-        $result = $this->db->query($query, true, " Error filling in additional detail fields: ");
 
-        // Get the id and the name.
-        $row = $this->db->fetchByAssoc($result);
-        if ($row != null) {
-            $contact = new Contact();
-            $contact->retrieve($row['id']);
-            $this->contact_name = $contact->full_name;
-            $this->contact_phone = $row['phone_work'];
-            $this->contact_id = $row['id'];
-            $this->contact_email = $contact->emailAddress->getPrimaryAddress($contact);
-            $this->contact_name_owner = $row['contact_name_owner'];
-            $this->contact_name_mod = $row['contact_name_mod'];
-            $GLOBALS['log']->debug("Call($this->id): contact_name = $this->contact_name");
-            $GLOBALS['log']->debug("Call($this->id): contact_phone = $this->contact_phone");
-            $GLOBALS['log']->debug("Call($this->id): contact_id = $this->contact_id");
-            $GLOBALS['log']->debug("Call($this->id): contact_email1 = $this->contact_email");
-        } else {
-            $this->contact_name = '';
-            $this->contact_phone = '';
-            $this->contact_id = '';
-            $this->contact_email = '';
-            $this->contact_name_owner = '';
-            $this->contact_name_mod = '';
-            $GLOBALS['log']->debug("Call($this->id): contact_name = $this->contact_name");
-            $GLOBALS['log']->debug("Call($this->id): contact_phone = $this->contact_phone");
-            $GLOBALS['log']->debug("Call($this->id): contact_id = $this->contact_id");
-            $GLOBALS['log']->debug("Call($this->id): contact_email1 = $this->contact_email");
-        }
-        //}
         $this->created_by_name = get_assigned_user_name($this->created_by);
         $this->modified_by_name = get_assigned_user_name($this->modified_user_id);
 
@@ -3655,8 +3598,6 @@ class Email extends Basic
         }
 
         //BUG 17098 - MFH changed $this->from_addr to $this->to_addrs
-        $email_fields['CONTACT_NAME'] = empty($this->contact_name) ? '</a>' . $this->trimLongTo($this->to_addrs) . '<a>' : $this->contact_name;
-        $email_fields['CONTACT_ID'] = empty($this->contact_id) ? '' : $this->contact_id;
         $email_fields['ATTACHMENT_IMAGE'] = $this->attachment_image;
         $email_fields['LINK_ACTION'] = $this->link_action;
 
