@@ -257,26 +257,6 @@ $dictionary['Call'] = array(
          'len' => '20',
          'source' => 'non-db',
       ),
-      'contact_name' =>
-      array(
-         'name' => 'contact_name',
-         'rname' => 'name',
-         'db_concat_fields' => array(0 => 'first_name', 1 => 'last_name'),
-         'id_name' => 'contact_id',
-         'massupdate' => false,
-         'vname' => 'LBL_CONTACT_NAME',
-         'type' => 'relate',
-         'link' => 'contacts',
-         'table' => 'contacts',
-         'isnull' => 'true',
-         'module' => 'Contacts',
-         'join_name' => 'contacts',
-         'dbType' => 'varchar',
-         'source' => 'non-db',
-         'len' => 36,
-         'importable' => 'false',
-         'studio' => array('required' => false, 'listview' => true, 'visible' => false),
-      ),
       'opportunities' =>
       array(
          'name' => 'opportunities',
@@ -320,14 +300,6 @@ $dictionary['Call'] = array(
          'bean_name' => 'Account',
          'source' => 'non-db',
          'vname' => 'LBL_ACCOUNT',
-      ),
-      'contacts' =>
-      array(
-         'name' => 'contacts',
-         'type' => 'link',
-         'relationship' => 'calls_contacts',
-         'source' => 'non-db',
-         'vname' => 'LBL_CONTACTS',
       ),
       'aos_contracts' =>
       array(
@@ -386,11 +358,6 @@ $dictionary['Call'] = array(
          'link_type' => 'one',
          'module' => 'Users',
          'bean_name' => 'User',
-         'source' => 'non-db',
-      ),
-      'contact_id' => array(
-         'name' => 'contact_id',
-         'type' => 'id',
          'source' => 'non-db',
       ),
       'repeat_type' =>
