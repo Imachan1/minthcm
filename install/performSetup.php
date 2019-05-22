@@ -369,6 +369,8 @@ installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS']);
     installerHook('post_createDefaultSchedulers');
 
 
+    rebuildWithViewTools(false);
+
     echo $mod_strings['LBL_PERFORM_DONE'];
 
 
