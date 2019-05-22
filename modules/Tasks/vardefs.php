@@ -155,51 +155,6 @@ $dictionary['Task'] = array(
                 'reportable' => false,
                 'vname' => 'LBL_PARENT_ID',
             ),
-        'contact_id' =>
-            array(
-                'name' => 'contact_id',
-                'type' => 'id',
-                'group' => 'contact_name',
-                'reportable' => false,
-                'vname' => 'LBL_CONTACT_ID',
-            ),
-
-        'contact_name' =>
-            array(
-                'name' => 'contact_name',
-                'rname' => 'name',
-                'db_concat_fields' => array(0 => 'first_name', 1 => 'last_name'),
-                'source' => 'non-db',
-                'len' => '510',
-                'group' => 'contact_name',
-                'vname' => 'LBL_CONTACT_NAME',
-                'reportable' => false,
-                'id_name' => 'contact_id',
-                'join_name' => 'contacts',
-                'type' => 'relate',
-                'module' => 'Contacts',
-                'link' => 'contacts',
-                'table' => 'contacts',
-            ),
-
-        'contact_phone' =>
-            array(
-                'name' => 'contact_phone',
-                'type' => 'phone',
-                'source' => 'non-db',
-                'vname' => 'LBL_CONTACT_PHONE',
-                'studio' => array('listview' => true)
-            ),
-
-        'contact_email' =>
-            array(
-                'name' => 'contact_email',
-                'type' => 'varchar',
-                'vname' => 'LBL_EMAIL_ADDRESS',
-                'source' => 'non-db',
-                'studio' => false
-            ),
-
         'priority' =>
             array(
                 'name' => 'priority',
@@ -209,14 +164,6 @@ $dictionary['Task'] = array(
                 'len' => 100,
                 'required' => 'true',
             ),
-        'contacts' => array(
-            'name' => 'contacts',
-            'type' => 'link',
-            'relationship' => 'contact_tasks',
-            'source' => 'non-db',
-            'side' => 'right',
-            'vname' => 'LBL_CONTACT',
-        ),
         'accounts' =>
             array(
                 'name' => 'accounts',
@@ -290,15 +237,6 @@ $dictionary['Task'] = array(
                 'bean_name' => 'Note',
                 'source' => 'non-db',
                 'vname' => 'LBL_NOTES',
-            ),
-
-        'contact_parent' =>
-            array(
-                'name' => 'contact_parent',
-                'type' => 'link',
-                'relationship' => 'contact_tasks_parent',
-                'source' => 'non-db',
-                'reportable' => false
             ),
     )
 ,

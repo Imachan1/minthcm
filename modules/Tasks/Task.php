@@ -67,12 +67,7 @@ class Task extends SugarBean {
 	var $priority;
 	var $parent_type;
 	var $parent_id;
-	var $contact_id;
-
 	var $parent_name;
-	var $contact_name;
-	var $contact_phone;
-	var $contact_email;
 	var $assigned_user_name;
 
 //bug 28138 todo
@@ -85,7 +80,7 @@ class Task extends SugarBean {
 
 	var $importable = true;
 	// This is used to retrieve related fields from form posts.
-	var $additional_column_fields = Array('assigned_user_name', 'assigned_user_id', 'contact_name', 'contact_phone', 'contact_email', 'parent_name');
+	var $additional_column_fields = Array('assigned_user_name', 'assigned_user_id', 'parent_name');
 
 
     public function __construct() {
@@ -126,21 +121,11 @@ class Task extends SugarBean {
     {
         $custom_join = $this->getCustomJoin(true, true, $where);
         $custom_join['join'] .= $relate_link_join;
-                $contact_required = stristr($where,"contacts");
-                if($contact_required)
-                {
-                        $query = "SELECT tasks.*, contacts.first_name, contacts.last_name, users.user_name as assigned_user_name ";
-                        $query .= $custom_join['select'];
-                        $query .= " FROM contacts, tasks ";
-                        $where_auto = "tasks.contact_id = contacts.id AND tasks.deleted=0 AND contacts.deleted=0";
-                }
-                else
-                {
-                        $query = 'SELECT tasks.*, users.user_name as assigned_user_name ';
-                        $query .= $custom_join['select'];
-                        $query .= ' FROM tasks ';
-                        $where_auto = "tasks.deleted=0";
-                }
+
+        $query = 'SELECT tasks.*, users.user_name as assigned_user_name ';
+        $query .= $custom_join['select'];
+        $query .= ' FROM tasks ';
+        $where_auto = "tasks.deleted=0";
 
 
         $query .= $custom_join['join'];
@@ -164,29 +149,6 @@ class Task extends SugarBean {
 	function fill_in_additional_detail_fields()
 	{
         parent::fill_in_additional_detail_fields();
-		global $app_strings;
-
-		if (isset($this->contact_id)) {
-
-			$contact = new Contact();
-			$contact->retrieve($this->contact_id);
-
-			if($contact->id != "") {
-				$this->contact_name = $contact->full_name;
-				$this->contact_name_owner = $contact->assigned_user_id;
-				$this->contact_name_mod = 'Contacts';
-				$this->contact_phone = $contact->phone_work;
-				$this->contact_email = $contact->emailAddress->getPrimaryAddress($contact);
-			} else {
-				$this->contact_name_mod = '';
-				$this->contact_name_owner = '';
-				$this->contact_name='';
-				$this->contact_email = '';
-				$this->contact_id='';
-			}
-
-		}
-
 		$this->fill_in_additional_parent_fields();
 	}
 
@@ -264,12 +226,12 @@ class Task extends SugarBean {
         $taskClass = 'futureTask';
 		if ($dd < $today){
             if($task_fields['STATUS']=='Completed' || $task_fields['STATUS']=='Deferred')
-			{ 
+			{
 				$taskClass = '';
-			} 
-			else 
-			{ 
-				$taskClass = 'overdueTask'; 
+			}
+			else
+			{
+				$taskClass = 'overdueTask';
 			}
 		}else if( $dd	== $today ){
             $taskClass = 'todaysTask';
@@ -321,25 +283,8 @@ class Task extends SugarBean {
             $task_fields['SET_COMPLETE'] = $setCompleteUrl . "<span class='suitepicon suitepicon-action-clear'></span></a></b>";
 		}
 
-        // make sure we grab the localized version of the contact name, if a contact is provided
-        if (!empty($this->contact_id))
-        {
-            $contact_temp = BeanFactory::getBean("Contacts", $this->contact_id);
-            if (!empty($contact_temp))
-            {
-                // Make first name, last name, salutation and title of Contacts respect field level ACLs
-                $contact_temp->_create_proper_name_field();
-                $this->contact_name = $contact_temp->full_name;
-                $this->contact_phone = $contact_temp->phone_work;
-            }
-        }
-
-		$task_fields['CONTACT_NAME']= $this->contact_name;
-		$task_fields['CONTACT_PHONE']= $this->contact_phone;
 		$task_fields['TITLE'] = '';
-		if (!empty($task_fields['CONTACT_NAME'])) {
-			$task_fields['TITLE'] .= $current_module_strings['LBL_LIST_CONTACT'].": ".$task_fields['CONTACT_NAME'];
-		}
+
 		if (!empty($this->parent_name)) {
 			$task_fields['TITLE'] .= "\n".$app_list_strings['parent_type_display'][$this->parent_type].": ".$this->parent_name;
 			$task_fields['PARENT_NAME']=$this->parent_name;
@@ -411,37 +356,6 @@ class Task extends SugarBean {
 			}else{
 				$array_assign['PARENT'] = 'span';
 			}
-		$is_owner = false;
-		$in_group = false; //SECURITY GROUPS
-		if(!empty($this->contact_name)){
-			if(!empty($this->contact_name_owner)){
-				global $current_user;
-				$is_owner = $current_user->id == $this->contact_name_owner;
-			}
-			/* BEGIN - SECURITY GROUPS */
-			//contact_name_owner not being set for whatever reason so we need to figure this out
-			else {
-				global $current_user;
-                $parent_bean = BeanFactory::getBean('Contacts',$this->contact_id);
-                if($parent_bean !== false) {
-                	$is_owner = $current_user->id == $parent_bean->assigned_user_id;
-                }
-			}
-			require_once("modules/SecurityGroups/SecurityGroup.php");
-			$in_group = SecurityGroup::groupHasAccess('Contacts', $this->contact_id, 'view');
-        	/* END - SECURITY GROUPS */
-		}
-
-		/* BEGIN - SECURITY GROUPS */
-		/**
-		if( ACLController::checkAccess('Contacts', 'view', $is_owner)){
-		*/
-		if( ACLController::checkAccess('Contacts', 'view', $is_owner, 'module', $in_group)) {
-        /* END - SECURITY GROUPS */
-				$array_assign['CONTACT'] = 'a';
-		}else{
-				$array_assign['CONTACT'] = 'span';
-		}
 
 		return $array_assign;
 	}
