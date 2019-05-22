@@ -8,13 +8,13 @@ $( document ).ready( function () {
       height: 'auto',
       resizable: false
    } );
-   $( "#evCloseButton" ).click( function () {
+   $( "#CloseButton" ).click( function () {
       beforeClosePlan();
    } );
 } );
 
-function getEvTimePanel() {
-   return evTimePanel.instances[0];
+function getTimePanel() {
+   return TimePanel.instances[0];
 }
 
 
@@ -23,7 +23,7 @@ function getRecordID() {
    if ( $( "#formDetailView > input[name=record]" ).length > 0 ) {
       record_id = $( "input[name=record]" ).val();
    } else {
-      record_id = $( "#evCloseButton" ).parent().parent().find( 'select' ).val();
+      record_id = $( "#CloseButton" ).parent().parent().find( 'select' ).val();
    }
    return record_id;
 }
@@ -45,8 +45,8 @@ function beforeClosePlan() {
       var dialog_buttons = {};
       dialog_buttons[SUGAR.language.get( 'app_strings', 'LBL_DIALOG_YES' )] = function () {
          $( this ).dialog( "close" );
-         var planType = $( '#type' ).val() || (getEvTimePanel().taskman._currentPlans.filter( function ( i ) {
-            return i.id == getEvTimePanel().taskman.$planSelect.val();
+         var planType = $( '#type' ).val() || (getTimePanel().taskman._currentPlans.filter( function ( i ) {
+            return i.id == getTimePanel().taskman.$planSelect.val();
          } ))[0].type;
          var dontCheck = [ 'holiday', 'sick', 'occasional_leave', 'overtime', 'excused_absence', 'leave_at_request' ].indexOf( planType ) >= 0;
          if ( dontCheck || checkIfCanBeClosed() ) {
@@ -81,7 +81,7 @@ function checkScheduleName( workschedule_id ) {
 function checkIfCanBeClosed() {
    var result = true;
    var dialog = $( '#alert_dialog' );
-   var workschedule_id = getRecordID() || getEvTimePanel().taskman.$planSelect.val();
+   var workschedule_id = getRecordID() || getTimePanel().taskman.$planSelect.val();
    var schedule_name = checkScheduleName( workschedule_id );
    viewTools.api.callController( {
       module: "WorkSchedules",

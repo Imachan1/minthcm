@@ -197,7 +197,7 @@ class WorkSchedules extends Basic {
 
    public function UnpinCycle() {
       global $db;
-      $db->query("UPDATE {$this->table_name} SET repeat_parent_id = '', repeat_count='', repeat_until='', repeat_dow='', repeat_interval='', repeat_type='' WHERE repeat_parent_id='{$this->repeat_parent_id}' OR repeat_parent_id='{$this->id}' ");
+      $db->query("UPDATE {$this->table_name} SET repeat_parent_id=NULL, repeat_count=NULL, repeat_until=NULL, repeat_dow=NULL, repeat_interval=1, repeat_type=NULL WHERE repeat_parent_id='{$this->repeat_parent_id}' OR repeat_parent_id='{$this->id}' ");
 
       $this->repeat_parent_id = '';
       $this->repeat_count = '';

@@ -101,11 +101,11 @@ function toSugarTime( date_object, asObject ) {
    return h + time_separator + m + format12Separator + format12Sufix;
 }
 
-if ( !window.evTimePanel ) { // avoid multi-declaration
+if ( !window.TimePanel ) { // avoid multi-declaration
 
-   evTimePanel = function ( root ) {
+   TimePanel = function ( root ) {
 
-      this.index = evTimePanel.instances.push( this );
+      this.index = TimePanel.instances.push( this );
       this.root = $( root );
       this.currentTimes = [ ];
       this.timeline = {};
@@ -114,23 +114,23 @@ if ( !window.evTimePanel ) { // avoid multi-declaration
       this.initialize();
    };
 
-   evTimePanel.instances = [ ];
+   TimePanel.instances = [ ];
 
-   evTimePanel.prototype.getRecordID = function () {
+   TimePanel.prototype.getRecordID = function () {
       var record_id = '';
       if ( $( "input[name=record]" ).length > 0 ) {
          record_id = $( "input[name=record]" ).val();
       }
       return record_id;
    };
-   evTimePanel.prototype.initialize = function () {
+   TimePanel.prototype.initialize = function () {
       var _this = this;
       _this.inDashlet = getModuleName() == 'Home';
       if ( this.inDashlet ) {
-         var all = document.querySelectorAll( 'div.evTWSDashlet' );
+         var all = document.querySelectorAll( 'div.TWSDashlet' );
          var el = all[all.length - 1];
          if ( el ) {
-            _this.taskman = evTWSDashlet.instances.filter( function ( d ) {
+            _this.taskman = TWSDashlet.instances.filter( function ( d ) {
                return (d.$root !== undefined && d.$root.get( 0 ) === el);
             } ).pop();
             if ( _this.taskman ) {
@@ -149,7 +149,7 @@ if ( !window.evTimePanel ) { // avoid multi-declaration
          this.displayTimeline();
       }
    };
-   evTimePanel.prototype.displayTimeline = function () {
+   TimePanel.prototype.displayTimeline = function () {
       try {
          this.getTimes();
          this.createTimeLine();
@@ -158,10 +158,10 @@ if ( !window.evTimePanel ) { // avoid multi-declaration
          console.error( err );
       }
    };
-   evTimePanel.prototype.getPlanId = function () {
+   TimePanel.prototype.getPlanId = function () {
       return this.inDashlet ? this.taskman.$planSelect.val() : this.getRecordID();
    };
-   evTimePanel.prototype.getCurrentPlanData = function () {
+   TimePanel.prototype.getCurrentPlanData = function () {
       var start, end, plan;
 
       if ( this.inDashlet ) {
@@ -183,7 +183,7 @@ if ( !window.evTimePanel ) { // avoid multi-declaration
       };
 
    };
-   evTimePanel.prototype.formatToDBDateTime = function ( date_object ) {
+   TimePanel.prototype.formatToDBDateTime = function ( date_object ) {
       var year = date_object.getFullYear();
       var month = date_object.getMonth() + 1;
       var day = date_object.getDate();
@@ -201,7 +201,7 @@ if ( !window.evTimePanel ) { // avoid multi-declaration
 
       return year + date_sep + month + date_sep + day + ' ' + hours + time_sep + minutes + time_sep + seconds;
    };
-   evTimePanel.prototype.getTimes = function () {
+   TimePanel.prototype.getTimes = function () {
       var _this = this;
       viewTools.api.callController( {
          module: "WorkSchedules",
@@ -216,7 +216,7 @@ if ( !window.evTimePanel ) { // avoid multi-declaration
          }
       } );
    };
-   evTimePanel.prototype.createTimeLine = function () {
+   TimePanel.prototype.createTimeLine = function () {
       var p = this.getCurrentPlanData();
       var t = this.timeline;
 
@@ -225,15 +225,15 @@ if ( !window.evTimePanel ) { // avoid multi-declaration
       t.minutes = (+t.end - +t.start) / 1000 / 60;
       t.offset = t.start.getTimezoneOffset();
 
-      this.root.find( 'tr>td.evTimePanelLeft' ).html( toSugarTime( t.start ) );
-      this.root.find( 'tr>td.evTimePanelMiddle' ).html( '&nbsp;' );
-      this.root.find( 'tr>td.evTimePanelRight' ).html( toSugarTime( t.end ) );
+      this.root.find( 'tr>td.TimePanelLeft' ).html( toSugarTime( t.start ) );
+      this.root.find( 'tr>td.TimePanelMiddle' ).html( '&nbsp;' );
+      this.root.find( 'tr>td.TimePanelRight' ).html( toSugarTime( t.end ) );
    };
-   evTimePanel.prototype.createTimeLineItems = function () {
+   TimePanel.prototype.createTimeLineItems = function () {
       if ( $( 'span#time_tracking_pane' ).length ) {
          $( 'span#time_tracking_pane' ).css( 'display', 'block' );
       }
-      var parent_el = this.root.find( 'tr>td.evTimePanelMiddle' );
+      var parent_el = this.root.find( 'tr>td.TimePanelMiddle' );
       var width = parent_el.width();
       var div = width / this.timeline.minutes;
       var timeline = this.timeline;
@@ -264,7 +264,7 @@ if ( !window.evTimePanel ) { // avoid multi-declaration
       }.bind( this ) );
    };
 
-   evTimePanel.prototype.getTimeCellCssClasses = function ( i ) {
+   TimePanel.prototype.getTimeCellCssClasses = function ( i ) {
       var classes = [ ];
       classes.push( 'time-cell' );
       classes.push( 'orangeColor' );
@@ -272,7 +272,7 @@ if ( !window.evTimePanel ) { // avoid multi-declaration
    };
 
    $( window ).resize( function () {
-      evTimePanel.instances.forEach( function ( i ) {
+      TimePanel.instances.forEach( function ( i ) {
          i.createTimeLineItems();
       } );
    } );
