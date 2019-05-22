@@ -1,4 +1,4 @@
-mintMassUpdateManager = {
+MassUpdateManager = {
    massConfirmation: function () {
       this.sendRequest( 'WSMassConfirmation' );
    },

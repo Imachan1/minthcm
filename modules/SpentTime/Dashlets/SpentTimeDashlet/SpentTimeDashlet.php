@@ -44,7 +44,6 @@ require_once('modules/SpentTime/SpentTime.php');
 class SpentTimeDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/SpentTime/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

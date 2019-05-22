@@ -66,7 +66,7 @@ $js_groupings = array(
    'include/javascript/phpjs/htmlentities.js'                => 'include/javascript/sugar_grp1.js',
    'include/EditView/Panels.js'                              => 'include/javascript/sugar_grp1.js',
    'include/javascript/MintHCMPopup.js'                      => 'include/javascript/sugar_grp1.js',
-   'custom/include/javascript/datetime_utils.js'             => 'include/javascript/sugar_grp1.js',
+   'include/javascript/datetime_utils.js'             => 'include/javascript/sugar_grp1.js',
       
    'include/ViewTools/javascript/underscore-min.js'          => 'include/javascript/sugar_grp1.js',
    'include/ViewTools/javascript/autocomplete-config.js'     => 'include/javascript/sugar_grp1.js',

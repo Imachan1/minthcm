@@ -85,7 +85,7 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>
-                <div class="edit view">
+                <div class="edit view" style="padding: 0 20px 20px 20px;"> {*MintHCM #62537*}
                     <h2>{$MOD.LBL_WIZARD_WELCOME_TITLE}</h2>
                     <p>{$MOD.LBL_WIZARD_WELCOME}</p>
                     <div class="userWizWelcome" style="text-align: right; margin-top: 40px;"><img src='include/images/welcome.svg' border='0' alt='{$MOD.LBL_WIZARD_WELCOME_TAB}' /></div>
@@ -93,7 +93,7 @@
             </td>
         </tr>
     </table>
-    <div class="nav-buttons" style="margin-top: 40px">
+    <div class="nav-buttons" style="margin-top: 10px;"> {*MintHCM #62537*}
         <input title="{$MOD.LBL_WIZARD_NEXT_BUTTON}"
                class="button primary" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_NEXT_BUTTON}  "
                onclick="SugarWizard.changeScreen('personalinfo',false);" id="next_tab_personalinfo" />
@@ -104,7 +104,7 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>
-                <div class="edit view">
+                <div class="edit view" style="padding: 0 20px 20px 20px;"> {*MintHCM #62537*}
                     <h2>{$MOD.LBL_WIZARD_PERSONALINFO}</h2>
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
@@ -159,7 +159,7 @@
             </td>
         </tr>
     </table>
-    <div class="nav-buttons">
+    <div class="nav-buttons" style="margin-top: 10px;"> {*MintHCM #62537*}
         {if $SKIP_WELCOME}
             <input title="{$MOD.LBL_BACK}"
                    onclick="document.location.href='index.php?module=Configurator&action=AdminWizard&page=smtp';" class="button"
@@ -179,7 +179,7 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>
-                <div class="edit view">
+                <div class="edit view" style="padding: 0 20px 20px 20px;"> {*MintHCM #62537*}
                     <h2>{$MOD.LBL_WIZARD_LOCALE}</h2>
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
@@ -247,7 +247,7 @@
             </td>
         </tr>
     </table>
-    <div class="nav-buttons">
+    <div class="nav-buttons" style="margin-top: 10px;"> {*MintHCM #62537*}
         <input title="{$MOD.LBL_WIZARD_BACK_BUTTON}"
                class="button back" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  "
                onclick="SugarWizard.changeScreen('personalinfo',true);" id="previous_tab_personalinfo" />&nbsp;
@@ -257,7 +257,7 @@
     </div>
 </div>
 <div id="finish" class="screen">
-    <div class="edit view">
+                <div class="edit view" style="padding: 0 20px 20px 20px;"> {*MintHCM #62537*}
         <h2>{$MOD.LBL_WIZARD_FINISH_TITLE}</h2>
         <table>
             <tr>
@@ -289,7 +289,7 @@
             </tr>
         </table>
     </div>
-    <div class="nav-buttons">
+    <div class="nav-buttons" style="margin-top: 10px;"> {*MintHCM #62537*}
         <input title="{$MOD.LBL_WIZARD_BACK_BUTTON}"
                class="button back" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  "
         onclick="SugarWizard.changeScreen('locale',true);" id="previous_tab_locale" />&nbsp;

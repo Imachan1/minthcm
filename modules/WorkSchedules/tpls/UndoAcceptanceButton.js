@@ -3,7 +3,7 @@ function getRecordID() {
    if ( $( "#formDetailView > input[name=record]" ).length > 0 ) {
       record_id = $( "input[name=record]" ).val();
    } else {
-      record_id = $( "#evUndoAcceptanceButton" ).parent().parent().find( 'select' ).val();
+      record_id = $( "#UndoAcceptanceButton" ).parent().parent().find( 'select' ).val();
    }
    return record_id;
 }

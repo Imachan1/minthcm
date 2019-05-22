@@ -3,8 +3,8 @@
 /**
  * Joins entered strings (or references to string fields) to one string.
  * EOU:
- * "concat( 'Jan' , '&nbsp;&nbsp;' , 'Kowalski' )" will give us "Jan Kowalski"
- * "concat( strToUpper( 'Jan' ) , '&nbsp;&nbsp;' , strToLower( 'Kowalski' ) )" will give us "JAN kowalski"
+ * "concat( 'John' , '&nbsp;&nbsp;' , 'Smith' )" will give us "John Smith"
+ * "concat( strToUpper( 'John' ) , '&nbsp;&nbsp;' , strToLower( 'Smith' ) )" will give us "John smith"
  */
 class VTExpression_concat extends VTExpression {
 

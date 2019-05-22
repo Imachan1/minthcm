@@ -27,10 +27,8 @@
                  currentMonth = d.getMonth() + 1,
                  currentYear = d.getFullYear(),
                  currentDay = d.getDate(),
-                 //monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                 monthNames = [ "Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień" ],
-                 //dayNames = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
-                 dayNames = [ 'N', 'Pon', 'Wt', 'Śr', 'Czw', 'Pią', 'Sob' ];
+                 monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                 dayNames = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 
          if ( options.maxWidth != false ) {
             $( '#' + uniqueId ).css( 'maxWidth', options.maxWidth );

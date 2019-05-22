@@ -1,5 +1,8 @@
-<?PHP
+<?php
 
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
+}
 /* * *******************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2011 SugarCRM Inc.
@@ -35,40 +38,12 @@
  * "Powered by SugarCRM".
  * ****************************************************************************** */
 
-class Delegations_locale extends Basic {
+global $app_strings;
 
-   public $new_schema = true;
-   public $module_dir = 'Delegations_locale';
-   public $object_name = 'Delegations_locale';
-   public $table_name = 'delegations_locale';
-   public $importable = false;
-   public $disable_row_level_security = true;
-   public $id;
-   public $name;
-   public $date_entered;
-   public $date_modified;
-   public $modified_user_id;
-   public $modified_by_name;
-   public $created_by;
-   public $created_by_name;
-   public $description;
-   public $deleted;
-   public $created_by_link;
-   public $modified_user_link;
-   public $assigned_user_id;
-   public $assigned_user_name;
-   public $assigned_user_link;
-   public $regimen_value;
-   public $currency_id;
-   public $accommodation_value;
-   public $archival;
-
-   public function bean_implements($interface) {
-      $result = false;
-      if ( $interface === 'ACL' ) {
-         $result = true;
-      } 
-      return $result;
-   }
-
-}
+$dashletMeta['DelegationsLocaleDashlet'] = array(
+   'module' => 'DelegationsLocale',
+   'title' => translate('LBL_HOMEPAGE_TITLE', 'DelegationsLocale'),
+   'description' => 'A customizable view into DelegationsLocale',
+   'icon' => 'icon_DelegationsLocale_32.gif',
+   'category' => 'Module Views'
+);

@@ -18,7 +18,7 @@ class CostsApi {
       }
 
       $delegation = BeanFactory::getBean('Delegations', $delegation_id);
-      $delegation_locale = BeanFactory::getBean('Delegations_locale', $delegation->delegation_locale_id);
+      $delegation_locale = BeanFactory::getBean('DelegationsLocale', $delegation->delegation_locale_id);
       $locale_currency = $delegation_locale->currency_id;
       if ( $currency_id == $locale_currency ) {
          return true;

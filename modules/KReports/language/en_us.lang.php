@@ -1016,7 +1016,7 @@ $mod_strings['LBL_DLIST_CONTACT_ID'] = 'Contact ID';
 $mod_strings['LBL_DLIST_CONTACT_ACCOUNTNAME'] = 'Account Name';
 $mod_strings['LBL_DLIST_CONTACT_ACCOUNTID'] = 'Account ID';
 $mod_strings['LBL_DLIST_KREPORT_MODULENAME'] = 'Module';
-$mod_strings['LBL_DLIST_WINDOW_ADDKREPORTS_TITLE'] = 'Add KReports';
+$mod_strings['LBL_DLIST_WINDOW_ADDKREPORTS_TITLE'] = 'Add Advanced Report';
 $mod_strings['LBL_DLIST_WINDOW_ADDUSERS_TITLE'] = 'Add Users';
 $mod_strings['LBL_DLIST_WINDOW_ADDCONTACTS_TITLE'] = 'Add Contacts';
 

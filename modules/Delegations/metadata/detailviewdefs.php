@@ -36,7 +36,25 @@ $viewdefs [$module_name] = array(
                'field' => '30',
             ),
          ),
-         'useTabs' => false,
+         'useTabs' => true,
+         'tabDefs' =>
+         array(
+            'DEFAULT' =>
+            array(
+               'newTab' => true,
+               'panelDefault' => 'expanded',
+            ),
+            'LBL_ADDITIONAL_INFORMATION' =>
+            array(
+               'newTab' => true,
+               'panelDefault' => 'expanded',
+            ),
+            'LBL_PANEL_ASSIGNMENT' =>
+            array(
+               'newTab' => true,
+               'panelDefault' => 'expanded',
+            ),
+         ),
          'javascript' => '<script> var currentModule="Delegations"</script>',
       ),
       'panels' => array(

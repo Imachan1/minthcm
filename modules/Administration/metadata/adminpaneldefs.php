@@ -299,11 +299,11 @@ $admin_option_defs['Administration']['private_group_repair'] = [
 ];
 $admin_group_header[] = ['LBL_PRIVATE_GROUP', '', false, $admin_option_defs, ''];
 $admin_option_defs = [];
-$admin_option_defs['Administration']['Delegations_locale'] = [
-   'Delegations_locale',
+$admin_option_defs['Administration']['DelegationsLocale'] = [
+   'DelegationsLocale',
    'LBL_DEL_MODULENAME',
    'LBL_DEL_MODULENAME',
-   './index.php?module=Delegations_locale'
+   './index.php?module=DelegationsLocale'
 ];
 $admin_group_header[] = ['LBL_DEL_ADMIN_MODULES', '', false, $admin_option_defs, ''];
 $admin_option_defs = [];
@@ -328,31 +328,14 @@ $admin_option_defs['Administration']['DashboardHistory'] = array(
 $admin_group_header[] = array( 'LBL_DASHBOARD_MANAGEMENT', '', false, $admin_option_defs, '' );
 
 # PDFTemplates Administration Definition begin
-$found = false;
-
-$link_definition = array( 'PDFGenerator',
+$admin_option_defs = [];
+$admin_option_defs['Administration']['generator'] = [
+   'PDFGenerator',
    'LBL_GENERATOR',
    'LBL_GENERATOR_DESCRIPTION',
    './index.php?module=PDFGenerator&action=repair',
-);
-
-
-foreach ( $admin_group_header as &$header ) {
-
-   if ( $header[0] == 'LBL_ADMIN_GENERATOR' ) {
-      $admin_option_defs = array();
-      $header[3]['Administration']['generator'] = $link_definition;
-      $found = true;
-      break;
-   }
-}
-
-if ( !$found ) {
-   $admin_option_defs = array();
-   $admin_option_defs['Administration']['generator'] = $link_definition;
-   $admin_group_header[] = array( 'LBL_ADMIN_GENERATOR', '', false, $admin_option_defs, '' );
-}
-
+];
+$admin_group_header[] = ['LBL_ADMIN_GENERATOR', '', false, $admin_option_defs, ''];
 # PDFTemplates Administration Definition end
 
 if ( file_exists('custom/modules/Administration/Ext/Administration/administration.ext.php') ) {

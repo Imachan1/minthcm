@@ -270,7 +270,7 @@ $dictionary['SpentTime'] = array(
          'vname' => 'LBL_WORKSCHEDULE_NAME',
          'save' => true,
          'id_name' => 'workschedule_id',
-         'link' => 'workschedules_spenttime',
+         'link' => 'workschedules',
          'table' => 'workschedules',
          'module' => 'WorkSchedules',
          'rname' => 'name',
@@ -295,7 +295,6 @@ $dictionary['SpentTime'] = array(
          'module' => 'WorkSchedules',
          'bean_name' => 'WorkSchedules',
          'vname' => 'LBL_WORKSCHEDULES',
-         'id_name' => 'workschedule_id',
       ),
    ),
    'relationships' => array(

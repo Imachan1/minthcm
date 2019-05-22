@@ -560,7 +560,7 @@ $modInvisList[] = 'SurveyQuestionOptions';
  $beanList['DashboardBackups']='DashboardBackups';
  $beanList['DashboardManager']='DashboardManager';
  $beanList['DashboardHistory']='DashboardHistory';
- $beanList['KReport']='KReport';
+ $beanList['KReports']='KReport';
  $beanList['ScheduleReports']='ScheduleReports';
  $beanList['ScheduleReportsLogs']='ScheduleReportsLogs';
  $beanList['KTemplates']='KTemplates';
@@ -602,9 +602,11 @@ $modInvisList[] = 'SurveyQuestionOptions';
  $moduleList[]='News';
  $moduleList[]='Certificates';
  $moduleList[]='Applications';
- $moduleList[]='KReport';
+ $moduleList[]='KReports';
  $moduleList[]='KTemplates';
  $moduleList[]='PDFTemplates';
+ $moduleList[]='ScheduleReports';
+ $moduleList[]='ScheduleReportsLogs';
 
 if (file_exists('include/modules_override.php')) {
     include 'include/modules_override.php';

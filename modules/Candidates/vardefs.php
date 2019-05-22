@@ -377,7 +377,7 @@ $dictionary['Candidates'] = array(
             'enabled' => false,
          ),
       ),
-      "alfresco" => array(
+      "alfresco" => array( //mint TODO
          'name' => 'alfresco',
          'type' => 'link',
          'relationship' => 'ev_alfresco_candidates',

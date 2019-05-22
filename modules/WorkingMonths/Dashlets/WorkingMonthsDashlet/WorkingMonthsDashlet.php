@@ -44,7 +44,6 @@ require_once('modules/WorkingMonths/WorkingMonths.php');
 class WorkingMonthsDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/WorkingMonths/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

@@ -4,8 +4,6 @@ require_once 'include/DateFunctions/DateFormatter.php';
 include_once 'include/ViewTools/Expressions/VTFormulaParser.php';
 require_once 'modules/WorkSchedules/RelHooks.php';
 
-SugarAutoLoader::requireWithCustom('modules/SpentTime/SpentTimeActionAccess.php');
-
 class SpentTime extends Basic {
 
    public $new_schema = true;
@@ -100,6 +98,7 @@ class SpentTime extends Basic {
       } else {
          $_view = strtolower($view);
          if ( in_array($_view, array('edit', 'editview', 'save', 'massupdate', 'delete')) && $result !== false && !empty($this->workschedule_id) ) {
+            SugarAutoLoader::requireWithCustom('modules/SpentTime/SpentTimeActionAccess.php');
             $action_access = new SpentTimeActionAccess();
             $action_access->setBean(BeanFactory::getBean('WorkSchedules', $this->workschedule_id));
             $result = $action_access->checkAccess('add_past_time')['result'];
@@ -174,8 +173,8 @@ class SpentTime extends Basic {
          case 'edit':
          case 'EditView':
          case 'delete':
-            if ( !$current_user->is_admin && $this->load_relationship('workschedules_spenttime') ) {
-               $beans = $this->workschedules_spenttime->getBeans();
+            if ( !$current_user->is_admin && $this->load_relationship('workschedules') ) {
+               $beans = $this->workschedules->getBeans();
                if ( count($beans) && $plan[0]->status === 'closed' ) {
                   $result = false;
                }

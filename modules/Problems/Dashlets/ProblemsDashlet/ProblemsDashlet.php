@@ -10,7 +10,6 @@ require_once('modules/Problems/Problems.php');
 class ProblemsDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/Problems/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

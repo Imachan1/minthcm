@@ -1,6 +1,6 @@
 <?php
 
-$module_name = 'Delegations_locale';
+$module_name = 'DelegationsLocale';
 $searchdefs [$module_name] = array(
    'layout' => array(
       'basic_search' => array(
