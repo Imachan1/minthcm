@@ -1246,6 +1246,48 @@ function insert_default_settings() {
    }
 }
 
+function rebuildWithViewTools($set_developer_mode = null) {
+    require_once('modules/Administration/RebuildAllJavascripts.php');
+    setConfig('developerMode', true);
+    launchQuickRepairAndRebuild();
+    repairJSFile();
+    rebuildJavascriptLanguages();
+    rebuildJSCompressedFiles();
+    rebuildJSGroupingFiles();
+    rebuildMinifiedJSFiles();
+    launchRebuildEvolpeTools();
+    launchQuickRepairAndRebuild();
+    if( !is_null($set_developer_mode) ){
+        setConfig('developerMode', !!$set_developer_mode);
+    }
+}
+
+function launchQuickRepairAndRebuild() {
+    if (file_exists('custom/modules/Administration/QuickRepairAndRebuild.php')) {
+        require_once('custom/modules/Administration/QuickRepairAndRebuild.php');
+        $repair = new CustomRepairAndClear();
+    } else {
+        require_once("modules/Administration/QuickRepairAndRebuild.php");
+        $repair = new RepairAndClear();
+    }
+    $autoexecute = true;
+    $show_output = false;
+    $repair->repairAndClearAll(array('clearAll'), array(translate('LBL_ALL_MODULES')), $autoexecute, $show_output);
+}
+
+function launchRebuildEvolpeTools() {
+    if (php_sapi_name() == "cli") {
+        include 'rebuild_vtools.php';
+    }
+}
+
+function setConfig($name, $value) {
+    require_once 'modules/Configurator/Configurator.php';
+    $configurator = new Configurator();
+    $configurator->config[$name] = $value;
+    $configurator->handleOverride();
+}
+
 // Returns true if the given file/dir has been made writable (or is already
 // writable).
 function make_writable($file) {
