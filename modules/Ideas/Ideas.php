@@ -1,6 +1,5 @@
 <?php
 
-SugarAutoLoader::requireWithCustom('include/Notifications/Notification.php');
 require_once('modules/Ideas/SugarFeeds/IdeasFeed.php');
 
 class Ideas extends Basic {
@@ -61,7 +60,8 @@ class Ideas extends Basic {
    protected function addDecisionMakerNotification() {
       global $app_strings, $current_user;
 
-      if ( $this->user_id != $current_user->id ) {
+      if ( $this->user_id !== $current_user->id ) {
+         SugarAutoLoader::requireWithCustom('include/Notifications/Notification.php');
          $notification = new Notification();
          $notification->setAssignedUserId($this->user_id)
             ->setDescription($app_strings['LBL_DECISION_MAKER_ASSIGNMENT_FOR_IDEAS'])

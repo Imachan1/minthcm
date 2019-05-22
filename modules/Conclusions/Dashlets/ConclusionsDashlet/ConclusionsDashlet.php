@@ -10,7 +10,6 @@ require_once('modules/Conclusions/Conclusions.php');
 class ConclusionsDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/Conclusions/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

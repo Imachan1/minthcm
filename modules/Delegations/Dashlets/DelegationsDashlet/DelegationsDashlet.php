@@ -44,7 +44,6 @@ require_once('modules/Delegations/Delegations.php');
 class DelegationsDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/Delegations/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

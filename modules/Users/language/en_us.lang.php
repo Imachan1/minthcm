@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -368,39 +367,18 @@ $mod_strings = array(
    // Wizard
    'LBL_WIZARD_TITLE' => 'User Wizard',
    'LBL_WIZARD_WELCOME_TAB' => 'Welcome',
-   'LBL_WIZARD_WELCOME_TITLE' => 'Welcome to SuiteCRM!',
-   'LBL_WIZARD_WELCOME' => 'Click <b>Next</b> to configure a few basic settings for using SuiteCRM.',
-   'LBL_WIZARD_WELCOME_NOSMTP' => 'Click <b>Next</b> to configure a few basic settings for using SuiteCRM.',
+    'LBL_WIZARD_WELCOME_TITLE' => 'Welcome to MintHCM!',
+    'LBL_WIZARD_WELCOME' => 'a fresh way to do HR!',
    'LBL_WIZARD_NEXT_BUTTON' => 'Next >',
    'LBL_WIZARD_BACK_BUTTON' => '< Back',
    'LBL_WIZARD_SKIP_BUTTON' => 'Skip',
    'LBL_WIZARD_FINISH_BUTTON' => 'Finish',
-   'LBL_WIZARD_FINISH_TITLE' => 'You are ready to use SuiteCRM!',
-   'LBL_WIZARD_FINISH' => 'Click <b>Finish</b> below to save your settings and to begin using SuiteCRM. For more information on using SuiteCRM:<br /><br />
-<table cellpadding=0 cellspacing=0>
-<tr><td><!--not_in_theme!-->Visit www.suitecrm.com
-<img src=include/images/suitecrm_login.png style="margin-right: 5px;">
-</td><td><a href="http://www.suitecrm.com/" target="_blank"><b>SuiteCRM</b></a></td></tr>
-</table>',
-   'LBL_WIZARD_FINISH1' => 'What would you like to do next?',
-   'LBL_WIZARD_FINISH2' => 'Start Using SuiteCRM',
-   'LBL_WIZARD_FINISH3' => 'Import Data ',
-   'LBL_WIZARD_FINISH4' => 'Import data from external sources into the application.',
-   'LBL_WIZARD_FINISH5' => 'Create Users',
-   'LBL_WIZARD_FINISH6' => 'Create new user accounts for people to use to access the application.',
-   'LBL_WIZARD_FINISH7' => 'View and Manage Application Settings',
-   'LBL_WIZARD_FINISH8' => 'Manage advanced settings, including default application settings.',
-   'LBL_WIZARD_FINISH9' => 'Configure the Application ',
-   'LBL_WIZARD_FINISH10' => 'Use Studio to create and manage application fields and layouts.',
-   'LBL_WIZARD_FINISH11' => 'Visit SuiteCRM Site ',
-   'LBL_WIZARD_FINISH12' => 'Find training materials and classes that will help you get started as a system administrator or end user of the application.',
-   'LBL_WIZARD_FINISH14' => 'Documentation ',
-   'LBL_WIZARD_FINISH15' => 'Product Guides and Release Notes ',
-   'LBL_WIZARD_FINISH16' => 'Knowledge Base ',
-   'LBL_WIZARD_FINISH17' => 'Tips from SuiteCRM',
-   'LBL_WIZARD_FINISH18' => 'Forums ',
-   'LBL_WIZARD_FINISH19' => 'Forums dedicated to the SuiteCRM Community to discuss topics of interest with each other and with SuiteCRM Developers ',
-   'LBL_WIZARD_FINISH2DESC' => 'Go directly to the application Home page.',
+    'LBL_WIZARD_FINISH_TITLE' => 'You are ready to use MintHCM!',
+    'LBL_WIZARD_FINISH_SITE_DESC' => 'Visit our website to learn more about features and latest news.',
+    'LBL_WIZARD_FINISH_DOCUMENTATION' => 'Documentation',
+    'LBL_WIZARD_FINISH_DOCUMENTATION_DESC' => 'Read guides and get to know the system.',
+    'LBL_WIZARD_FINISH_FORUMS' => 'Forums',
+    'LBL_WIZARD_FINISH_FORUMS_DESC' => 'Get the support you need from the thriving Mint community.',
    'LBL_WIZARD_PERSONALINFO' => 'Your Information',
    'LBL_WIZARD_LOCALE' => 'Your Locale',
    //Wizard Scenarios

@@ -48,7 +48,6 @@ require_once('modules/ResponsibilityActivities/ResponsibilityActivities.php');
 class ResponsibilityActivitiesDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/ResponsibilityActivities/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

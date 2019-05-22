@@ -23,7 +23,11 @@ class WorkSchedulesController extends SugarController {
          $fields = [ 'repeat_parent_id', 'repeat_type', 'repeat_interval', 'repeat_dow', 'repeat_until', 'repeat_count' ];
          $update_fields = [];
          foreach ( $fields as $field ) {
-            $update_fields[] = $field . '=NULL';
+            if ( $field === 'repeat_interval' ) {
+               $update_fields[] = $field . '=1';
+            } else {
+               $update_fields[] = $field . '=NULL';
+            }
          }
          $update_fields = implode(',', $update_fields);
          $GLOBALS['db']->query("UPDATE workschedules SET {$update_fields} WHERE id='{$this->bean->id}'");

@@ -22,7 +22,20 @@ $viewdefs [$module_name] = array(
                'field' => '30',
             ),
          ),
-         'useTabs' => false,
+         'useTabs' => true,
+         'tabDefs' =>
+         array(
+            'DEFAULT' =>
+            array(
+               'newTab' => true,
+               'panelDefault' => 'expanded',
+            ),
+            'LBL_PANEL_ASSIGNMENT' =>
+            array(
+               'newTab' => true,
+               'panelDefault' => 'expanded',
+            ),
+         ),
       ),
       'panels' => array(
          'default' => array(
@@ -37,7 +50,7 @@ $viewdefs [$module_name] = array(
             array(
                array(
                   'name' => 'type_of_meal',
-               ),               
+               ),
                array(
                   'name' => 'accommodation_no',
                ),
@@ -46,7 +59,7 @@ $viewdefs [$module_name] = array(
                array(
                   'name' => 'transportation_name',
                   'label' => 'LBL_TRANSPORTATION_NAME',
-               ),                              
+               ),
                array(
                   'name' => 'delegation_name',
                   'label' => 'LBL_DELEGATION_NAME',

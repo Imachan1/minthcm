@@ -13,7 +13,7 @@ if ( version_compare($version, '7.0.0.0') > 0 ) {
    require_once('include/ytree/Node.php');
 }
 
-require_once('modules/ev_Templates/TreeData.php');
+require_once('modules/PDFTemplates/TreeData.php');
 
 class SugarFieldTree extends SugarFieldBase {
 

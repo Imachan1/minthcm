@@ -44,7 +44,6 @@ require_once('modules/Costs/Costs.php');
 class CostsDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/Costs/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

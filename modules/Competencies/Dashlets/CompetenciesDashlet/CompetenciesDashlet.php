@@ -48,7 +48,6 @@ require_once('modules/Competencies/Competencies.php');
 class CompetenciesDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/Competencies/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

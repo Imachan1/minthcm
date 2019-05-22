@@ -9,7 +9,6 @@ require_once('modules/Benefits/Benefits.php');
 class BenefitsDashlet extends DashletGeneric {
     public function __construct($id, $def = null)
     {
-        global $current_user, $app_strings;
         require('modules/Benefits/metadata/dashletviewdefs.php');
 
         parent::__construct($id, $def);

@@ -1,18 +1,9 @@
 <?php
 
 /**
- * Returns result of custom Module Api method
+ * Checks if current user is supperior for user from argument
  * EOU:
- * "callCustomApi( Accounts , getSomeInfo , param_1, param_2, ..., param_N )" where:
- * - Accounts - module name to find his Api class (here: AccountsApi) / this param is required
- * - getSomeInfo - method name to call in this Api class / this param is required
- * - param_1, param_2, ..., param_N - parameters given for method / this params are optional
- * Important info:
- * - location of Api: (custom/)modules/ModuleName/api/ModuleNameApi.php
- * -- example: modules/ev_Orders/api/ev_OrdersApi.php or custom/modules/Accounts/api/AccountsApi.php
- * - method called in this class should returns: boolean, integer, float, string, array
- * - if callCustomApi will not have first and second params (eg. Accounts, getSomeInfo) then callCustomApi returns false
- * - if called method doesn't exists or gives Fatal error then callCustomApi returns false
+ * "isSuperior(\$assigned_user_id)" 
  */
 class VTExpression_isSuperior extends VTExpression {
 
