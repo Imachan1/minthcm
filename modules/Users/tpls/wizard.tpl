@@ -85,7 +85,7 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>
-                <div class="edit view" style="padding: 0 20px 20px 20px;"> {*MintHCM #62537*}
+                <div class="edit view">
                     <h2>{$MOD.LBL_WIZARD_WELCOME_TITLE}</h2>
                     <p>{$MOD.LBL_WIZARD_WELCOME}</p>
                     <div class="userWizWelcome" style="text-align: right; margin-top: 40px;"><img src='include/images/welcome.svg' border='0' alt='{$MOD.LBL_WIZARD_WELCOME_TAB}' /></div>
@@ -104,7 +104,7 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>
-                <div class="edit view" style="padding: 0 20px 20px 20px;"> {*MintHCM #62537*}
+                <div class="edit view">
                     <h2>{$MOD.LBL_WIZARD_PERSONALINFO}</h2>
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
@@ -179,7 +179,7 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>
-                <div class="edit view" style="padding: 0 20px 20px 20px;"> {*MintHCM #62537*}
+                <div class="edit view">
                     <h2>{$MOD.LBL_WIZARD_LOCALE}</h2>
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
@@ -257,7 +257,7 @@
     </div>
 </div>
 <div id="finish" class="screen">
-                <div class="edit view" style="padding: 0 20px 20px 20px;"> {*MintHCM #62537*}
+                <div class="edit view">
         <h2>{$MOD.LBL_WIZARD_FINISH_TITLE}</h2>
         <table>
             <tr>
