@@ -57,9 +57,16 @@
     {$CSS}
 </head>
 <body class="yui-skin-sam">
+<header>
+    <div class="p_login">
+<div class="p_login_top">
+    <a title="MintHCM" href="#">MintHCM</a>
+</div>
+</div>
+    </header>    
 <div id="main">
 <div id="content">
-<table style="width:auto;height:600px;" align="center"><tr><td align="center">
+<table style="width:780px;height:600px;" align="center"><tr><td align="center">
 
 <form id="UserWizard" name="UserWizard" enctype='multipart/form-data' method="POST" action="index.php" onkeypress="return disableReturnSubmission(event);">
 <input type='hidden' name='action' value='SaveUserWizard'/>
@@ -74,23 +81,14 @@
 
 <div class="bd">
 
-
 <div id="welcome" class="screen">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>
                 <div class="edit view" style="padding: 0 20px 20px 20px;"> {*MintHCM #62537*}
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <th align="left" scope="row" colspan="4"><h2>{$MOD.LBL_WIZARD_WELCOME_TITLE}</h2></th>
-                        </tr>
-                        <tr>
-                            <td scope="row">
-                                <p> {$MOD.LBL_WIZARD_WELCOME_NOSMTP}</p>
-                                <div class="userWizWelcome"><img src='include/images/sugar_wizard_welcome.jpg' border='0' alt='{$MOD.LBL_WIZARD_WELCOME_TAB}' width='765px' height='325px'></div>
-                            </td>
-                        </tr>
-                    </table>
+                    <h2>{$MOD.LBL_WIZARD_WELCOME_TITLE}</h2>
+                    <p>{$MOD.LBL_WIZARD_WELCOME}</p>
+                    <div class="userWizWelcome" style="text-align: right; margin-top: 40px;"><img src='include/images/welcome.svg' border='0' alt='{$MOD.LBL_WIZARD_WELCOME_TAB}' /></div>
                 </div>
             </td>
         </tr>
@@ -107,10 +105,8 @@
         <tr>
             <td>
                 <div class="edit view" style="padding: 0 20px 20px 20px;"> {*MintHCM #62537*}
+                    <h2>{$MOD.LBL_WIZARD_PERSONALINFO}</h2>
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <th align="left" scope="row" colspan="4"><h2><span>{$MOD.LBL_WIZARD_PERSONALINFO}</span></h2></th>
-                        </tr>
                         <tr>
                             <td align="left" scope="row" colspan="4"><i>{$MOD.LBL_WIZARD_PERSONALINFO_DESC}</i></td>
                         </tr>
@@ -124,7 +120,7 @@
                             <td scope="row" width="17%">
                                 {$MOD.LBL_EMAIL}: {if $REQUIRED_EMAIL_ADDRESS}<span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>{/if}
                             </td>
-                            <td width="33%"><span><input name='email1' tabindex='3' size='30' maxlength='100' value='{$EMAIL1}' id='email1' /></span></td>
+                            <td width="33%"><span><input type="text" name='email1' tabindex='3' size='30' maxlength='100' value='{$EMAIL1}' id='email1' /></span></td>
                             <td scope="row" nowrap="nowrap"><span>&nbsp;</span></td>
                             <td><span>&nbsp;</span></td>
                         </tr>
@@ -142,21 +138,21 @@
                         </tr>
                         <tr>
                             <td width="17%" scope="row" nowrap="nowrap"><span>{$MOD.LBL_PRIMARY_ADDRESS}:</span></td>
-                            <td width="33%" ><span><textarea name='address_street' rows="2" tabindex='8' cols="30">{$ADDRESS_STREET}</textarea></span></td>
+                            <td width="33%"><span><textarea name='address_street' rows="2" tabindex='8' cols="30">{$ADDRESS_STREET}</textarea></span></td>
                             <td scope="row" nowrap="nowrap"><span>&nbsp;</span></td>
                             <td><span>&nbsp;</span></td>
                         </tr>
                         <tr>
                             <td width="17%" scope="row" nowrap="nowrap"><span>{$MOD.LBL_CITY}:</span></td>
-                            <td width="33%" ><span><input name='address_city' tabindex='8' size='15' maxlength='100' value='{$ADDRESS_CITY}'></span></td>
+                            <td width="33%" ><span><input name='address_city' type="text" tabindex='8' size='15' maxlength='100' value='{$ADDRESS_CITY}'></span></td>
                             <td scope="row" nowrap="nowrap"><span>{$MOD.LBL_STATE}:</span></td>
-                            <td><span><input name='address_state' tabindex='9' size='15' maxlength='100' value='{$ADDRESS_STATE}'></span></td>
+                            <td><span><input name='address_state' type="text" tabindex='9' size='15' maxlength='100' value='{$ADDRESS_STATE}'></span></td>
                         </tr>
                         <tr>
                             <td scope="row" nowrap="nowrap"><span>{$MOD.LBL_POSTAL_CODE}:</span></td>
-                            <td><span><input name='address_postalcode' tabindex='9' size='10' maxlength='20' value='{$ADDRESS_POSTALCODE}'></span></td>
+                            <td><span><input name='address_postalcode' type="text" tabindex='9' size='10' maxlength='20' value='{$ADDRESS_POSTALCODE}'></span></td>
                             <td scope="row" nowrap="nowrap"><span>{$MOD.LBL_COUNTRY}:</span></td>
-                            <td><span><input name='address_country' tabindex='10' size='10' maxlength='20' value='{$ADDRESS_COUNTRY}'></span></td>
+                            <td><span><input name='address_country' type="text" tabindex='10' size='10' maxlength='20' value='{$ADDRESS_COUNTRY}'></span></td>
                         </tr>
                     </table>
                 </div>
@@ -170,7 +166,7 @@
                    type="button" name="cancel" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  " id="wizard_cancel"/>&nbsp;
         {else}
             <input title="{$MOD.LBL_WIZARD_BACK_BUTTON}"
-                   class="button" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  "
+                   class="button back" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  "
                    onclick="SugarWizard.changeScreen('welcome',true);" id="previous_tab_welcome" />&nbsp;
         {/if}
         <input title="{$MOD.LBL_WIZARD_NEXT_BUTTON}"
@@ -184,11 +180,8 @@
         <tr>
             <td>
                 <div class="edit view" style="padding: 0 20px 20px 20px;"> {*MintHCM #62537*}
+                    <h2>{$MOD.LBL_WIZARD_LOCALE}</h2>
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <th width="100%" align="left" scope="row" colspan="4">
-                                <h2><span>{$MOD.LBL_WIZARD_LOCALE}</span></h2></th>
-                        </tr>
                         <tr>
                             <td align="left" scope="row" colspan="4"><i>{$MOD.LBL_WIZARD_LOCALE_DESC}</i></td>
                         </tr>
@@ -256,7 +249,7 @@
     </table>
     <div class="nav-buttons" style="margin-top: 10px;"> {*MintHCM #62537*}
         <input title="{$MOD.LBL_WIZARD_BACK_BUTTON}"
-               class="button" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  "
+               class="button back" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  "
                onclick="SugarWizard.changeScreen('personalinfo',true);" id="previous_tab_personalinfo" />&nbsp;
         <input title="{$MOD.LBL_WIZARD_NEXT_BUTTON}"
                class="button primary" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_NEXT_BUTTON}  "
@@ -264,51 +257,41 @@
     </div>
 </div>
 <div id="finish" class="screen">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td>
                 <div class="edit view" style="padding: 0 20px 20px 20px;"> {*MintHCM #62537*}
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <th align="left" scope="row" colspan="4"><h2>{$MOD.LBL_WIZARD_FINISH_TITLE}</h2></th>
-                        </tr>
-                        <tr>
-                            <td scope="row">
-                                <h3>{$MOD.LBL_WIZARD_FINISH1}</h3>
-
-                                <table cellpadding=0 cellspacing=0><input id='whatnext' name='whatnext' type="hidden" value='finish' />
-                                    {if $IS_ADMIN}
-                                        <tr><td><img src=include/images/start.png style="margin-right: 5px;"></td><td><a onclick='document.UserWizard.whatnext.value="finish";document.UserWizard.submit()' href="#" ><b> {$MOD.LBL_WIZARD_FINISH2}  </b></a><br> {$MOD.LBL_WIZARD_FINISH2DESC}</td></tr>
-                                        <tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
-                                        <tr><td><img src=include/images/import.png style="margin-right: 5px;"></td><td><a onclick='document.UserWizard.whatnext.value="import";document.UserWizard.submit()' href="#" ><b> {$MOD.LBL_WIZARD_FINISH3} </b></a><br> {$MOD.LBL_WIZARD_FINISH4}</td></tr>
-                                        <tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
-                                        <tr><td><img src=include/images/create_users.png style="margin-right: 5px;"></td><td><a onclick='document.UserWizard.whatnext.value="users";document.UserWizard.submit()' href="#"  ><b> {$MOD.LBL_WIZARD_FINISH5} </b></a><br>{$MOD.LBL_WIZARD_FINISH6}</td></tr>
-                                        <tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
-                                        <tr><td><img src=include/images/settings.png style="margin-right: 5px;"></td><td><a  onclick='document.UserWizard.whatnext.value="settings";document.UserWizard.submit()' href="#" ><b> {$MOD.LBL_WIZARD_FINISH7} </b></a><br>{$MOD.LBL_WIZARD_FINISH8}</td></tr>
-                                        <tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
-                                        <tr><td><img src=include/images/configure.png style="margin-right: 5px;"></td><td><a onclick='document.UserWizard.whatnext.value="studio";document.UserWizard.submit()' href="#"  ><b> {$MOD.LBL_WIZARD_FINISH9} </b></a><br>{$MOD.LBL_WIZARD_FINISH10}</td></tr>
-                                        <tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
-                                        <tr><td><img src=include/images/university.png style="margin-right: 5px;"></td><td><a href="https://suitecrm.com/suitecrm/forum/suite-forum" target="_blank"><b> {$MOD.LBL_WIZARD_FINISH11} </b></a></b><br>{$MOD.LBL_WIZARD_FINISH12}</td></tr>
-                                        <tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
-                                    {else}
-                                        <tr><td><img src=include/images/university2.png style="margin-right: 5px;"></td><td><a href="https://suitecrm.com/suitecrm/forum/suite-forum" target="_blank"><b> {$MOD.LBL_WIZARD_FINISH11} </b></a></b><br>{$MOD.LBL_WIZARD_FINISH12}</td></tr>
-                                        <tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
-                                        <tr><td><img src=include/images/docs.png style="margin-right: 5px;"></td><td><a href="https://docs.suitecrm.com/user/" target="_blank"><b> {$MOD.LBL_WIZARD_FINISH14} </b></a></b><br>{$MOD.LBL_WIZARD_FINISH15}</td></tr>
-                                        <tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
-                                        <tr><td><img src=include/images/forums.png style="margin-right: 5px;"></td><td><a href="https://suitecrm.com/suitecrm/forum/suite-forum" target="_blank"><b> {$MOD.LBL_WIZARD_FINISH18} </b></a></b><br>{$MOD.LBL_WIZARD_FINISH19}</td></tr>
-                                        <tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
-                                    {/if}
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </td>
-        </tr>
-    </table>
+        <h2>{$MOD.LBL_WIZARD_FINISH_TITLE}</h2>
+        <table>
+            <tr>
+                <td><img src="include/images/globe-solid.svg" /></td>
+                <td><img src="include/images/file-alt-solid.svg" /></td>
+                <td><img src="include/images/comments-solid.svg" /></td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="https://minthcm.org/" class="button back" target="_blank">minthcm.org</a>
+                </td>
+                <td>
+                    <a href="https://minthcm.org/documentation/" class="button back" target="_blank">{$MOD.LBL_WIZARD_FINISH_DOCUMENTATION}</a>
+                </td>
+                <td>
+                    <a href="https://minthcm.org/support/" class="button back" target="_blank">{$MOD.LBL_WIZARD_FINISH_FORUMS}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>{$MOD.LBL_WIZARD_FINISH_SITE_DESC}</p>
+                </td>
+                <td>
+                    <p>{$MOD.LBL_WIZARD_FINISH_DOCUMENTATION_DESC}</p>
+                </td>
+                <td>
+                    <p>{$MOD.LBL_WIZARD_FINISH_FORUMS_DESC}</p>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="nav-buttons" style="margin-top: 10px;"> {*MintHCM #62537*}
         <input title="{$MOD.LBL_WIZARD_BACK_BUTTON}"
-               class="button" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  "
+               class="button back" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  "
         onclick="SugarWizard.changeScreen('locale',true);" id="previous_tab_locale" />&nbsp;
         <input title="{$MOD.LBL_WIZARD_FINISH_BUTTON}" class="button primary"
                type="submit" name="save" value="  {$MOD.LBL_WIZARD_FINISH_BUTTON}  " />&nbsp;
