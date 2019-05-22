@@ -41,7 +41,7 @@
 
 function showHelp(step)
 {
-  url = 'https://suitecrm.com/suitecrm/forum/suite-forum';
+  url = 'https://minthcm.org/support/';
   name = 'helpWindowPopup';
   window.open(url,name);
 }

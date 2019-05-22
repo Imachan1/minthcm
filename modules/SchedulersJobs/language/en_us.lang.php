@@ -59,7 +59,7 @@ $mod_strings = array(
 // Errors
     'ERR_CALL' => "Cannot call function: %s",
     'ERR_CURL' => "No CURL - cannot run URL jobs",
-    'ERR_FAILED' => "Unexpected failure, please check PHP logs and suitecrm.log",
+    'ERR_FAILED' => "Unexpected failure, please check PHP logs and system logs",
     'ERR_PHP' => "%s [%d]: %s in %s on line %d",
     'ERR_NOUSER' => "No User ID specified for the job",
     'ERR_NOSUCHUSER' => "User ID %s not found",

@@ -111,7 +111,7 @@ if ( !$hasUserPreferences ) {
          'forceColumn' => 0,
          'fileLocation' => $dashletsFiles['iFrameDashlet']['file'],
          'options' => array( 'titleLabel' => 'LBL_DASHLET_DISCOVER_SUITE',
-            'url' => 'https://suitecrm.com/',
+            'url' => 'https://minthcm.org/',
             'height' => 315,
          ) );
 
@@ -126,7 +126,7 @@ if ( !$hasUserPreferences ) {
          'forceColumn' => 1,
          'fileLocation' => $dashletsFiles['iFrameDashlet']['file'],
          'options' => array( 'titleLabel' => 'LBL_DASHLET_SUITE_NEWS',
-            'url' => 'https://suitecrm.com/about/newsroom/news/',
+            'url' => 'https://minthcm.org/news/',
             'height' => 315,
          ) );
 

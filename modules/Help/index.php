@@ -51,4 +51,4 @@ if (!defined('sugarEntry') || !sugarEntry) {
 ?>
 Sorry!  The <FONT COLOR="#000099"><strong><?php global $currentModule; echo $currentModule; ?></strong></FONT> module has not yet been implemented.  
 <P></P>
-<strong>Stay tuned </strong>for an upcoming release of <A href="https://suitecrm.com/">SuiteCRM</A>!
+<strong>Stay tuned </strong>for an upcoming release of <A href="https://minthcm.org/">MintHCM</A>!
