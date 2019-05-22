@@ -1,7 +1,7 @@
 <?php
 
 // created: 2012-04-10 18:13:39
-$layout_defs["Delegations_locale"]["subpanel_setup"] = array(
+$layout_defs["DelegationsLocale"]["subpanel_setup"] = array(
    'delegations' => array(
       'order' => 100,
       'module' => 'Delegations',

@@ -2,7 +2,7 @@
 
 require_once('include/tcpdf/config/lang/eng.php');
 require_once('include/tcpdf/tcpdf.php');
-require_once('modules/ev_Generator/simple_html_dom.php');
+require_once('modules/PDFGenerator/simple_html_dom.php');
 
 class PDF {
 

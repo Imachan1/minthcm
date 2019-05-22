@@ -1,11 +1,11 @@
 <?php
 
-$dashletData['Delegations_localeDashlet']['searchFields'] = array(
+$dashletData['DelegationsLocaleDashlet']['searchFields'] = array(
    'name' => array(
       'default' => '',
    ),
 );
-$dashletData['Delegations_localeDashlet']['columns'] = array(
+$dashletData['DelegationsLocaleDashlet']['columns'] = array(
    'name' => array(
       'width' => '40%',
       'label' => 'LBL_LIST_NAME',

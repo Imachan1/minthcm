@@ -1,15 +1,15 @@
 <?php
 
 $popupMeta = array(
-   'moduleMain' => 'Delegations_locale',
-   'varName' => 'Delegations_locale',
-   'orderBy' => 'delegations_locale.name',
+   'moduleMain' => 'DelegationsLocale',
+   'varName' => 'DelegationsLocale',
+   'orderBy' => 'delegationslocale.name',
    'whereClauses' => array(
-      'name' => 'delegations_locale.name',
-      'regimen_value' => 'delegations_locale.regimen_value',
-      'accommodation_value' => 'delegations_locale.accommodation_value',
+      'name' => 'delegationslocale.name',
+      'regimen_value' => 'delegationslocale.regimen_value',
+      'accommodation_value' => 'delegationslocale.accommodation_value',
    ),
-   'whereStatement' => "delegations_locale.archival = '0'",
+   'whereStatement' => "delegationslocale.archival = '0'",
    'searchInputs' => array(
       'name',
       'regimen_value',

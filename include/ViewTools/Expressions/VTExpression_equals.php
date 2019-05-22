@@ -5,7 +5,7 @@
  * EOU:
  * "equals( 2 , 2 )" will give us "true"
  * "equals( charAt( 'kot' , 2 ), 'o' )" will give us "true"
- * "equals( $name, 'Jan' )" - if field $name has value "Jan", then formula also give us "true"
+ * "equals( $name, 'John' )" - if field $name has value "John", then formula also give us "true"
  */
 class VTExpression_equals extends VTExpression {
 

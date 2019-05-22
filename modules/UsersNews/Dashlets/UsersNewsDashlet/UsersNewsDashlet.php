@@ -48,7 +48,6 @@ require_once('modules/UsersNews/UsersNews.php');
 class UsersNewsDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/UsersNews/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

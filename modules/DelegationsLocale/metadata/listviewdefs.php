@@ -1,6 +1,6 @@
 <?php
 
-$module_name = 'Delegations_locale';
+$module_name = 'DelegationsLocale';
 $listViewDefs [$module_name] = array(
    'NAME' => array(
       'width' => '32%',

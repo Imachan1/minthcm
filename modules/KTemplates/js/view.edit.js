@@ -67,29 +67,29 @@ function initTinymce( retrieve_limit ) {
                   title: 'Otwórz podgląd PDF',
                   image: 'images/tiny/pdf_preview.gif',
                   onclick: function () {
-                     // Nazwa modułu dla ktorego przeznaczony jest template potrzebna do wygenerowania podgladu
+                     
                      related_m = document.getElementById( 'relatedmodule' );
                      url_string_add = '';
-                     // Sprawdzamy czy jest to pierwsze wygenerowanie podglądu, jeśli nie dodajemy zapisane id do linka
+                     
                      if ( temp_template_id != null )
                      {
                         url_string_add = '&save_to_id=' + temp_template_id;
                      }
-                     // Przesłanie htmla do zapisu w celu wygenerowania podgladu (zwaraca id tymczasowego templajta)
+                     
                      $.post( 'index.php?module=KTemplates&action=save_temp_template&query=true&sugar_body_only=1' + url_string_add, {html_data: ed.getContent()}, function ( result ) {
                         var obj = jQuery.parseJSON( result );
 
                         winW = window.innerWidth;
                         winH = window.innerHeight;
-                        // Dodaje do strony diva zasłaniającego normalne elementy
+                        
                         $( "<div id='iframe_preview' style='position:fixed;background-color:#BFBBBD;z-index:10;top:0px;left:0px;width:100%;height:100%;'></div>" ).appendTo( 'body' );
-                        // Dodaje do powyższego diva pływająca ramke z url do podgladu pdf'a
-                        $( '#iframe_preview' ).html( "<div style='width:100%; height:40px;background-color:#3B5998;' align='center'><a onclick='$(\"#iframe_preview\").remove();' style='color:white;font-size:x-large;font-weight:bolder;line-height: 1.5;'>Zamknij podgląd</a></div><iframe width='100%' height='" + (winH - 40) + "px' src='index.php?module=ev_Generator&action=Preview&module_name=" + related_m.value + "&query=true&sugar_body_only=1&temp_template=true&template=" + obj.template_id + "'><iframe>" );
+                        
+                        $( '#iframe_preview' ).html( "<div style='width:100%; height:40px;background-color:#3B5998;' align='center'><a onclick='$(\"#iframe_preview\").remove();' style='color:white;font-size:x-large;font-weight:bolder;line-height: 1.5;'>Zamknij podgląd</a></div><iframe width='100%' height='" + (winH - 40) + "px' src='index.php?module=PDFGenerator&action=Preview&module_name=" + related_m.value + "&query=true&sugar_body_only=1&temp_template=true&template=" + obj.template_id + "'><iframe>" );
 
-                        // Wersja z otwieraniem okna 
-                        //WinId = window.open('index.php?module=ev_Generator&action=Preview&module_name='+ related_m.value +'&query=true&sugar_body_only=1&temp_template=true&template='+obj.template_id,'PDF PREVIEW');
+                        
+                        //WinId = window.open('index.php?module=PDFGenerator&action=Preview&module_name='+ related_m.value +'&query=true&sugar_body_only=1&temp_template=true&template='+obj.template_id,'PDF PREVIEW');
 
-                        // Przepisanie id
+                        
                         temp_template_id = obj.template_id;
                      } );
                   }
@@ -99,11 +99,11 @@ function initTinymce( retrieve_limit ) {
                   title: 'Check Syntax',
                   image: 'images/tiny/pdf_checksyntax.gif',
                   onclick: function () {
-                     // Nazwa modułu dla ktorego przeznaczony jest template potrzebna do wygenerowania podgladu
+                     
                      var related_m = document.getElementById( 'relatedmodule' );
                      url_string_add = '';
 
-                     // Przesłanie htmla do zapisu w celu wygenerowania podgladu (zwaraca id tymczasowego templajta)
+                     
                      $.post( 'index.php?module=KTemplates&action=checkSyntax&query=true&sugar_body_only=1&for_module=' + related_m.value, {page_content: ed.getContent()}, function ( result ) {
                         var obj = jQuery.parseJSON( result );
                         var message = '';

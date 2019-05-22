@@ -1,6 +1,6 @@
 <?php
 
-$module_name = 'Delegations_locale';
+$module_name = 'DelegationsLocale';
 $viewdefs [$module_name] = array(
    'DetailView' => array(
       'templateMeta' => array(
@@ -23,7 +23,20 @@ $viewdefs [$module_name] = array(
                'field' => '30',
             ),
          ),
-         'useTabs' => false,
+         'useTabs' => true,
+         'tabDefs' =>
+         array(
+            'DEFAULT' =>
+            array(
+               'newTab' => true,
+               'panelDefault' => 'expanded',
+            ),
+            'LBL_PANEL_ASSIGNMENT' =>
+            array(
+               'newTab' => true,
+               'panelDefault' => 'expanded',
+            ),
+         ),
       ),
       'panels' => array(
          'default' => array(

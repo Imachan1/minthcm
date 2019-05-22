@@ -46,7 +46,6 @@ require_once('include/Dashlets/DashletGeneric.php');
 class MyMeetingsDashlet extends DashletGeneric {
 
    function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/Meetings/metadata/dashletviewdefs.php'); //MintHCM #60356
 
       parent::__construct($id, $def);

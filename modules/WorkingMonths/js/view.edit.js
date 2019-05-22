@@ -12,8 +12,10 @@ $( document ).ready( function () {
 } );
 
 function workingDaysChange( ) {
-   $( '#working_hours' ).val( parseInt( $( '#working_days' ).val() ) * 8 );
+   let working_days = parseInt( $( '#working_days' ).val() );
+   $( '#working_hours' ).val( isNaN( working_days ) ? '' : working_days * 8 );
 }
 function workingHoursChange( ) {
-   $( '#working_days' ).val( Math.round( parseInt( $( '#working_hours' ).val() ) / 8, 0 ) );
+   let working_hours = parseInt( $( '#working_hours' ).val() );
+   $( '#working_days' ).val( isNaN( working_hours ) ? '' : Math.round( working_hours ) / 8, 0 );
 }

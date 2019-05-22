@@ -33,7 +33,7 @@ class WorkSchedulesViewList extends ViewList {
 
    protected function prepareLink($id, $js_function_name, $label) {
       global $mod_strings;
-      $action = "<a href=\"javascript:void(0)\" id=\"{$id}_mass_action\" onclick=\"mintMassUpdateManager.{$js_function_name}();\">{$mod_strings[$label]}</a>";
+      $action = "<a href=\"javascript:void(0)\" id=\"{$id}_mass_action\" onclick=\"MassUpdateManager.{$js_function_name}();\">{$mod_strings[$label]}</a>";
       return $action;
    }
 

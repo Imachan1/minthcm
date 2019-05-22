@@ -12,7 +12,7 @@ class SpentTimeSubpanelQuickCreate extends SubpanelQuickCreate {
 
    public function __construct($module) {
       $this->user = $GLOBALS['current_user'];
-      parent::SubpanelQuickCreate($module);
+      parent::__construct($module);
    }
 
    public function process($module) {
