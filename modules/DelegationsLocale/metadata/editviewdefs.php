@@ -1,8 +1,8 @@
 <?php
 
-$module_name = 'Delegations_locale';
+$module_name = 'DelegationsLocale';
 $viewdefs [$module_name] = array(
-   'QuickCreate' => array(
+   'EditView' => array(
       'templateMeta' => array(
          'maxColumns' => '2',
          'widths' => array(
@@ -40,6 +40,12 @@ $viewdefs [$module_name] = array(
                   'label' => 'LBL_ACCOMMODATION_VALUE',
                ),
                '',
+            ),
+            array(
+               array(
+                  'name' => 'description',
+                  'label' => 'LBL_DESCRIPTION',
+               ),
             ),
          ),
       ),

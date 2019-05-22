@@ -44,7 +44,6 @@ require_once('modules/Transportations/Transportations.php');
 class TransportationsDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/Transportations/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

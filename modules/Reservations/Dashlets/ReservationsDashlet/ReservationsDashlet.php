@@ -10,7 +10,6 @@ require_once('modules/Reservations/Reservations.php');
 class ReservationsDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/Reservations/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

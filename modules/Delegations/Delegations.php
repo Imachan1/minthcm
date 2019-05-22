@@ -150,7 +150,7 @@ class Delegations extends Delegations_sugar {
    }
 
    public function getDelegationLocaleValues() {
-      $locale = BeanFactory::getBean('Delegations_locale', $this->delegation_locale_id);
+      $locale = BeanFactory::getBean('DelegationsLocale', $this->delegation_locale_id);
       if ( $locale && $locale->id ) {
          $this->accommodation_value = $locale->accommodation_value;
          $this->regimen_value = $locale->regimen_value;

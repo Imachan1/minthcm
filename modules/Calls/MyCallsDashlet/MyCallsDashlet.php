@@ -46,7 +46,6 @@ require_once('include/Dashlets/DashletGeneric.php');
 class MyCallsDashlet extends DashletGeneric {
 
    function __construct($id, $def = null) {
-      global $current_user, $app_strings;
 
       require('modules/Calls/metadata/dashletviewdefs.php');
 

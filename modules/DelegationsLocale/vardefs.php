@@ -35,8 +35,8 @@
  * "Powered by SugarCRM".
  * ****************************************************************************** */
 
-$dictionary['Delegations_locale'] = array(
-   'table' => 'delegations_locale',
+$dictionary['DelegationsLocale'] = array(
+   'table' => 'delegationslocale',
    'audited' => true,
    'duplicate_merge' => true,
    'fields' => array(
@@ -115,7 +115,7 @@ $dictionary['Delegations_locale'] = array(
       "delegations" => array(
          'name' => 'delegations',
          'type' => 'link',
-         'relationship' => 'delegations_locale_delegations',
+         'relationship' => 'delegationslocale_delegations',
          'source' => 'non-db',
          'side' => 'right',
          'vname' => 'LBL_DELEGATIONS',
@@ -129,7 +129,7 @@ $dictionary['Delegations_locale'] = array(
 if ( !class_exists('VardefManager') ) {
    require_once('include/SugarObjects/VardefManager.php');
 }
-VardefManager::createVardef('Delegations_locale', 'Delegations_locale', array(
+VardefManager::createVardef('DelegationsLocale', 'DelegationsLocale', array(
    'basic',
    'assignable',
    'security_groups'

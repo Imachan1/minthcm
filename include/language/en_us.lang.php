@@ -124,7 +124,7 @@ $app_list_strings = array(
       'Contracts' => 'Contracts',
       'Costs' => 'Costs',
       'Delegations' => 'Delegations',
-      'Delegations_locale' => 'Delegations Locale',
+      'DelegationsLocale' => 'Delegations Locale',
       'EmployeeRoles' => 'Roles',
       'ExitInterviews' => 'Exit Interviews',
       'Goals' => 'Goals',
@@ -196,7 +196,7 @@ $app_list_strings = array(
       'KReports' => 'Advanced Report',
       'KTemplates' => 'PDF Template',
       'ScheduleReports' => 'Schedule Report',
-      'ScheduleReportsLogs' => 'Schedule Report Log',
+      'ScheduleReportsLogs' => 'Schedule Reports Log',
    ),
    'checkbox_dom' => array(
       '' => '',

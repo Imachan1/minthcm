@@ -19,7 +19,6 @@ require_once('modules/Certificates/Certificates.php');
 class CertificatesDashlet extends DashletGeneric {
 
    function CertificatesDashlet($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/Certificates/metadata/dashletviewdefs.php');
 
       parent::DashletGeneric($id, $def);

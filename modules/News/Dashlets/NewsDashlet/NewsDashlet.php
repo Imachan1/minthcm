@@ -48,7 +48,6 @@ require_once('modules/News/News.php');
 class NewsDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/News/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

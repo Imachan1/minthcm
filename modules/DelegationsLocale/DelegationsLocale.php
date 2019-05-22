@@ -35,40 +35,40 @@
  * "Powered by SugarCRM".
  * ****************************************************************************** */
 
-$mod_strings = array(
-   'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
-   'LBL_ASSIGNED_TO_NAME' => 'User',
-   'LBL_ID' => 'ID',
-   'LBL_DATE_ENTERED' => 'Date Created',
-   'LBL_DATE_MODIFIED' => 'Date Modified',
-   'LBL_MODIFIED' => 'Modified By',
-   'LBL_MODIFIED_ID' => 'Modified By Id',
-   'LBL_MODIFIED_NAME' => 'Modified By Name',
-   'LBL_CREATED' => 'Created By',
-   'LBL_CREATED_ID' => 'Created By Id',
-   'LBL_DESCRIPTION' => 'Description',
-   'LBL_DELETED' => 'Deleted',
-   'LBL_NAME' => 'Country',
-   'LBL_CREATED_USER' => 'Created By User',
-   'LBL_MODIFIED_USER' => 'Modified By User',
-   'LBL_LIST_NAME' => 'Name',
-   'LBL_LIST_FORM_TITLE' => 'Delegations Locale List',
-   'LBL_MODULE_NAME' => 'Delegations Locale',
-   'LBL_MODULE_TITLE' => 'Delegations Locale',
-   'LBL_HOMEPAGE_TITLE' => 'My Delegations Locale',
-   'LNK_NEW_RECORD' => 'Create Delegations Locale',
-   'LNK_LIST' => 'View Delegations Locale',
-   'LNK_IMPORT_DELEGATIONS_LOCALE' => 'Import Delegations Locale',
-   'LBL_SEARCH_FORM_TITLE' => 'Search Delegations Locale',
-   'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
-   'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-   'LBL_DELEGATIONS_LOCALE_SUBPANEL_TITLE' => 'Delegations Locale',
-   'LBL_NEW_FORM_TITLE' => 'New Delegations Locale',
-   'LBL_REGIMEN_VALUE' => 'Regimen Value',
-   'LBL_ACCOMMODATION_VALUE' => 'Accommodation Value',
-   'LBL_DEL_ADMIN_MODULES' => 'Delegations',
-   'LBL_DEL_MODULENAME' => 'Delegations Locale',
-   'LBL_DELEGATIONS' => 'Delegations',
-   'LBL_ARCHIVAL' => 'Archival',
-);
+class DelegationsLocale extends Basic {
 
+   public $new_schema = true;
+   public $module_dir = 'DelegationsLocale';
+   public $object_name = 'DelegationsLocale';
+   public $table_name = 'delegationslocale';
+   public $importable = false;
+   public $disable_row_level_security = true;
+   public $id;
+   public $name;
+   public $date_entered;
+   public $date_modified;
+   public $modified_user_id;
+   public $modified_by_name;
+   public $created_by;
+   public $created_by_name;
+   public $description;
+   public $deleted;
+   public $created_by_link;
+   public $modified_user_link;
+   public $assigned_user_id;
+   public $assigned_user_name;
+   public $assigned_user_link;
+   public $regimen_value;
+   public $currency_id;
+   public $accommodation_value;
+   public $archival;
+
+   public function bean_implements($interface) {
+      $result = false;
+      if ( $interface === 'ACL' ) {
+         $result = true;
+      } 
+      return $result;
+   }
+
+}

@@ -146,7 +146,7 @@ class VTFormulaParser {
          $formula_expression = '';
          $left_flag = true;
          $key = 0;
-         //parse '' signs to achieve "function("'kowalski'")" definition (single quotes put between double quotes)
+         //parse '' signs to achieve "function("'smith'")" definition (single quotes put between double quotes)
          while ( $key < strlen($tmp_string) ) {
             $tmp_sign = $tmp_string[$key];
             if ( $left_flag == false && $tmp_sign == " " ) {

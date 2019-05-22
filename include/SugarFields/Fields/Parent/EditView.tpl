@@ -43,7 +43,11 @@
         onchange='document.{$form_name}.{{sugarvar key='name'}}.value = "";document.{$form_name}.parent_id.value = ""; changeParentQS( "{{sugarvar key='name'}}" ); checkParentType( document.{$form_name}.parent_type.value, document.{$form_name}.btn_{{sugarvar key='name'}} );'>
     {html_options options={{sugarvar key='options' string=true}} selected=$fields.parent_type.value sortoptions=true}
 </select>
-
+{if $locked_field == "parent_type"}
+<input type="hidden" name='parent_type' id='parent_type' value='{$fields.parent_type.value}' >
+{/if}
+    
+    
 {{if $displayParams.split}}
 <br>
 {{/if}}
@@ -109,14 +113,6 @@
             //change this in case it wasn't the default on editing existing items.
             $( document ).ready( function () {
                changeParentQS( "parent_name" )
-            } );
-        </script>
-        <script>
-            //
-            jQuery( function ( $ ) {
-               $( 'form' ).bind( 'submit', function () {
-                  $( this ).find( 'select' ).prop( 'disabled', false );
-               } );
             } );
         </script>
     {/literal}

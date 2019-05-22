@@ -9,7 +9,6 @@ require_once('modules/EmployeeRoles/EmployeeRoles.php');
 class EmployeeRolesDashlet extends DashletGeneric {
     public function __construct($id, $def = null)
     {
-        global $current_user, $app_strings;
         require('modules/EmployeeRoles/metadata/dashletviewdefs.php');
 
         parent::__construct($id, $def);

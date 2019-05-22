@@ -48,7 +48,6 @@ require_once('modules/OrganizationalUnits/OrganizationalUnits.php');
 class OrganizationalUnitsDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/OrganizationalUnits/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);
