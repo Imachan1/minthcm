@@ -211,19 +211,6 @@ $dictionary['Meeting'] = array(
          'comment' => 'Meeting status (ex: Planned, Held, Not held)',
          'default' => 'Planned',
       ),
-      'type' =>
-     array(
-         'name' => 'type',
-         'vname' => 'LBL_TYPE',
-         'type' => 'enum',
-         'len' => 255,
-         'function' => 'getMeetingsExternalApiDropDown',
-         'comment' => 'Meeting type (ex: WebEx, Other)',
-         'options' => 'eapm_list',
-         'default' => 'Sugar',
-         'massupdate' => false,
-         'studio' => 'false',
-      ),
       // Bug 24170 - Added only to allow the sidequickcreate form to work correctly
       'direction' =>
      array(
