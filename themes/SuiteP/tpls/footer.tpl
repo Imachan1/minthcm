@@ -58,8 +58,9 @@
                 <p>{$COPYRIGHT}</p>
             </div>
             <div id="copyrightbuttons" class="footer_left">
-                <a id="admin_options">&copy; {$APP.LBL_SUITE_SUPERCHARGED}</a>
-                <a id="powered_by">&copy; {$APP.LBL_SUITE_POWERED_BY}</a>
+                <a href="https://minthcm.org/">&copy; {$APP.LBL_MINTHCM_PRODUCED_BY}</a>
+                <span style="margin-left: 5px; color: #000;">&copy; {$APP.LBL_SUITE_SUPERCHARGED}</span>
+                <span style="margin-left: 5px; color: #000;">&copy; {$APP.LBL_SUITE_POWERED_BY}</span>
             </div>
         </div>
     	<div class="footer_right">
