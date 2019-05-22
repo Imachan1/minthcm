@@ -74,7 +74,7 @@ $dictionary['ScheduleReports'] = array(
          'studio' => 'visible',
          'dependency' => false,
          'function' => array
-            ( 'name' => 'ev_getArray', 'include' => 'include/utils.php' ),
+            ( 'name' => 'kreport_getArray', 'include' => 'include/utils.php' ),
       ),
       'email_template_id' =>
       array(
@@ -100,7 +100,7 @@ $dictionary['ScheduleReports'] = array(
          'studio' => 'visible',
          'dependency' => false,
          'function' => array
-            ( 'name' => 'ev_getEmailTemplateArray', 'include' => 'include/utils.php' ),
+            ( 'name' => 'kreport_getEmailTemplateArray', 'include' => 'include/utils.php' ),
       ),
       'date_send' =>
       array(

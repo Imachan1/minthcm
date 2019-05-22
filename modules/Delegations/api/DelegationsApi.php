@@ -6,7 +6,7 @@ class DelegationsApi {
       if( is_array($delegation_locale_id)) {
          $delegation_locale_id = $delegation_locale_id['delegation_locale_id'];
       }
-      $delegation_locale = BeanFactory::getBean('Delegations_locale', $delegation_locale_id);
+      $delegation_locale = BeanFactory::getBean('DelegationsLocale', $delegation_locale_id);
       if ( !empty($delegation_locale) && $delegation_locale->id && $delegation_locale->currency_id != '-99' ) {
          return $delegation_locale->currency_id;
       }

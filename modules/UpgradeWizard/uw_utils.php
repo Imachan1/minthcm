@@ -3681,7 +3681,7 @@ function update_iframe_dashlets() {
       if ( !empty($content['dashlets']) && !empty($content['pages']) ) {
          $originalDashlets = $content['dashlets'];
          foreach ( $originalDashlets as $key => $ds ) {
-            if ( !empty($ds['options']['url']) && stristr($ds['options']['url'], 'https://suitecrm.com/') ) {
+            if ( !empty($ds['options']['url']) && stristr($ds['options']['url'], 'https://minthcm.org/') ) {
                unset($originalDashlets[$key]);
             }
          }

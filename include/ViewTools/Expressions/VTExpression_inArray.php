@@ -5,9 +5,9 @@
  * in given params, function will return "true". Otherwise wi will get "false".
  * Second param can be also array.
  * EOU:
- * "inArray( 'Jan' , 'Tomasz' , 'Stefan' , 'Jan' )" will give us "true"
- * "inArray( 'Jan' , 'Janek' , 'Stefan' , 'Tomasz' )" will give us "false"
- * "inArray( 'Jan' , ['Janek' , 'Stefan' , 'Tomasz'] )" will give us "false"
+ * "inArray( 'John' , 'Tom' , 'David' , 'John' )" will give us "true"
+ * "inArray( 'John' , 'Harry' , 'David' , 'Tom' )" will give us "false"
+ * "inArray( 'John' , ['Harry' , 'David' , 'Tom'] )" will give us "false"
  * "inArray( 'Completed' , $accounting_subtype )" $accounting_subtype is multienum
  */
 class VTExpression_inArray extends VTExpression {

@@ -66,6 +66,7 @@ class UsersController extends SugarController {
       // save and redirect to new view
       $_REQUEST['return_module'] = 'Home';
       $_REQUEST['return_action'] = 'index';
+      require('modules/Users/Save.php'); // MintHCM #62537
    }
 
    protected function action_saveftsmodules() {

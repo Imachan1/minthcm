@@ -43,7 +43,6 @@ require_once ('modules/WorkSchedules/WorkSchedules.php');
 class WorkSchedulesDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require ('modules/WorkSchedules/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

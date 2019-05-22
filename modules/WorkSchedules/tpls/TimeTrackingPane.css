@@ -1,13 +1,13 @@
-.evTimePanel {
+.TimePanel {
     overflow: visible;
 }
 
-.evTimePanel table{
+.TimePanel table{
     border-spacing: 0 !important;
     border-collapse: collapse !important;
 }
 
-.evTimePanel .time-cell {
+.TimePanel .time-cell {
     border: none;
     border-radius: 3px;
     box-shadow: 0px 5px 20px 2px #00000021;
@@ -20,25 +20,25 @@
     color: #000;
 }
 
-.evTimePanel .orangeColor {
+.TimePanel .orangeColor {
     background-color: orange;
 }
 
-.evTimePanel .orangeColor:hover {
+.TimePanel .orangeColor:hover {
     background-color: #ff6633;
 }
 
 
-.evTimePanelLeft {
+.TimePanelLeft {
     position:relative;
     z-index: 15;
 }
 
-.evTimePanelMiddle {
+.TimePanelMiddle {
     position:relative;
 }
 
-.evTimePanelRight {
+.TimePanelRight {
     position:relative;
     text-align:right;
 }

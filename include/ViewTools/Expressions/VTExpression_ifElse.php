@@ -3,7 +3,7 @@
 /**
  * if(condition){....}else{...}
  * EOU:
- * "ifElse(equals($name,'jan'),'kowalski','nowak')" will give us "kowalski" if $name is 'jan'
+ * "ifElse(equals($name,'John'),'smith','nowak')" will give us "smith" if $name is 'John'
  */
 class VTExpression_ifElse extends VTExpression {
 

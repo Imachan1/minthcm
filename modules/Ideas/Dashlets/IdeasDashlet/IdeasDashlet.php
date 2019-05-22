@@ -48,7 +48,6 @@ require_once('modules/Ideas/Ideas.php');
 class IdeasDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/Ideas/metadata/dashletviewdefs.php');
 
       parent::__construct($id, $def);

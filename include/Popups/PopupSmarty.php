@@ -1,10 +1,5 @@
 <?php
 
-/**
- * ViewTools zmiana.
- * #46476 - Zmiana wynika z faktu, że Suite inaczej koduje sobie query w popup. Te query podczas wysyłki do serwera zawiera niepoprawne znaki i nie przechodzą przez skan serwera.
- * Dlatego przywróciłem kodowanie z Sugara 6.5 i jest ok.
- */
 if ( !defined('sugarEntry') || !sugarEntry ) {
    die('Not A Valid Entry Point');
 }

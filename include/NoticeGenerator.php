@@ -640,10 +640,10 @@ class NoticeGenerator {
          global $focus, $pdftemplate;
          //too old Sugar for using BeanFactory
          //$focus = BeanFactory::getBean($module, $bean_id);
-         //$pdftemplate = BeanFactory::getBean('ev_Templates', $template_id);
+         //$pdftemplate = BeanFactory::getBean('PDFTemplates', $template_id);
          $focus = SugarModule::get($module)->loadBean();
          $focus->retrieve($bean_id);
-         $pdftemplate = SugarModule::get('ev_Templates')->loadBean();
+         $pdftemplate = SugarModule::get('PDFTemplates')->loadBean();
          $pdftemplate->retrieve($template_id);
          if ( isset($pdftemplate) && isset($focus) && !empty($pdftemplate->id) && !empty($focus->id) ) {
             if ( !empty($filename) && !str_end($filename, ".pdf") ) {
@@ -651,7 +651,7 @@ class NoticeGenerator {
             }
             $filename = !empty($filename) ? $filename : "attachment.pdf";
             $file_id = create_guid();
-            $_GET['file'] = 'modules/ev_Generator/tmp/attachment' . $file_id . '.pdf';
+            $_GET['file'] = 'modules/PDFGenerator/tmp/attachment' . $file_id . '.pdf';
             $pdf = new PDF();
             $pdf->Output();
             $content = file_get_contents($_GET['file']);

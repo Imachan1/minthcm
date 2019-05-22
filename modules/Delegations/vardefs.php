@@ -197,7 +197,7 @@ $dictionary['Delegations'] = array(
             'name' => 'getCurrencyDropDown',
             'returns' => 'html',
          ),
-         'vt_calculated' => 'related(@currency_id,#delegations_locale)'
+         'vt_calculated' => 'related(@currency_id,#delegationslocale)'
       ),
       'regiments' => array(
          'required' => false,
@@ -1078,12 +1078,12 @@ $dictionary['Delegations'] = array(
          'side' => 'right',
          'vname' => 'LBL_TRANSPORTATIONS',
       ),
-      "delegations_locale" => array(
-         'name' => 'delegations_locale',
+      "delegationslocale" => array(
+         'name' => 'delegationslocale',
          'type' => 'link',
-         'relationship' => 'delegations_locale_delegations',
+         'relationship' => 'delegationslocale_delegations',
          'source' => 'non-db',
-         'vname' => 'LBL_DELEGATIONS_LOCALE',
+         'vname' => 'LBL_DELEGATIONSLOCALE',
          'id_name' => 'delegation_locale_id',
       ),
       "delegation_locale_name" => array(
@@ -1093,16 +1093,16 @@ $dictionary['Delegations'] = array(
          'vname' => 'LBL_DELEGATION_LOCALE_NAME',
          'save' => true,
          'id_name' => 'delegation_locale_id',
-         'link' => 'delegations_locale',
-         'table' => 'delegations_locale',
-         'module' => 'Delegations_locale',
+         'link' => 'delegationslocale',
+         'table' => 'delegationslocale',
+         'module' => 'DelegationsLocale',
          'rname' => 'name',
          'audited' => true,
       ),
       "delegation_locale_id" => array(
          'name' => 'delegation_locale_id',
          'type' => 'id',
-         'relationship' => 'delegations_locale_delegations',
+         'relationship' => 'delegationslocale_delegations',
          'reportable' => false,
          'vname' => 'LBL_DELEGATION_LOCALE_ID',
          'rname' => 'id',
@@ -1129,9 +1129,9 @@ $dictionary['Delegations'] = array(
       ),
    ),
    'relationships' => array(
-      'delegations_locale_delegations' => array(
-         'lhs_module' => 'Delegations_locale',
-         'lhs_table' => 'delegations_locale',
+      'delegationslocale_delegations' => array(
+         'lhs_module' => 'DelegationsLocale',
+         'lhs_table' => 'delegationslocale',
          'lhs_key' => 'id',
          'rhs_module' => 'Delegations',
          'rhs_table' => 'delegations',

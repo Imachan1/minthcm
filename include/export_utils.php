@@ -763,7 +763,7 @@ function generateSearchWhere($module, $query) {//this function is similar with f
                                      }
                      break;
                 case "url":
-                     $returnContent .= '"https://suitecrm.com",';
+                     $returnContent .= '"https://minthcm.org",';
                      break;
 
                 case "enum":

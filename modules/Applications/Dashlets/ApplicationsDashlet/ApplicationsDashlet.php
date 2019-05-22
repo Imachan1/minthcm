@@ -19,7 +19,6 @@ require_once('modules/Applications/Applications.php');
 class ApplicationsDashlet extends DashletGeneric {
 
    function ApplicationsDashlet($id, $def = null) {
-      global $current_user, $app_strings;
       require('modules/Applications/metadata/dashletviewdefs.php');
 
       parent::DashletGeneric($id, $def);

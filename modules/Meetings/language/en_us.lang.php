@@ -146,7 +146,7 @@ $mod_strings = array(
    'LBL_REPEAT_COUNT' => 'Repeat Count',
    'LBL_REPEAT_PARENT_ID' => 'Repeat Parent ID',
    'LBL_RECURRING_SOURCE' => 'Recurring Source',
-   'LBL_SYNCED_RECURRING_MSG' => 'This meeting originated in another system and was synced to SuiteCRM. To make changes, go to the original meeting within the other system. Changes made in the other system can be synced to this record.',
+   'LBL_SYNCED_RECURRING_MSG' => 'This meeting originated in another system and was synced to MintHCM. To make changes, go to the original meeting within the other system. Changes made in the other system can be synced to this record.',
    'LBL_RELATED_TO' => 'Related to:',
    // for reminders
    'LBL_REMINDERS' => 'Reminders',
