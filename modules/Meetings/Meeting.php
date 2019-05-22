@@ -72,7 +72,6 @@ class Meeting extends SugarBean {
    public $parent_type_options;
    public $parent_id;
    public $field_name_map;
-   public $contact_id;
    public $user_id;
    public $meeting_id;
    public $reminder_time;
@@ -83,9 +82,6 @@ class Meeting extends SugarBean {
    public $required;
    public $accept_status;
    public $parent_name;
-   public $contact_name;
-   public $contact_phone;
-   public $contact_email;
    public $account_id;
    public $opportunity_id;
    public $case_id;
@@ -112,9 +108,12 @@ class Meeting extends SugarBean {
    public $object_name = "Meeting";
    public $importable = true;
    // This is used to retrieve related fields from form posts.
-   public $additional_column_fields = array('assigned_user_name', 'assigned_user_id', 'contact_id', 'user_id', 'contact_name', 'accept_status');
-   public $relationship_fields = array('account_id' => 'accounts', 'opportunity_id' => 'opportunity', 'case_id' => 'case',
-      'assigned_user_id' => 'users', 'contact_id' => 'contacts', 'user_id' => 'users', 'meeting_id' => 'meetings');
+   public $additional_column_fields = array('assigned_user_name', 'assigned_user_id', 'user_id', 'accept_status');
+   public $relationship_fields = array(
+      'assigned_user_id' => 'users',
+       'user_id' => 'users', 
+       'meeting_id' => 'meetings'
+       );
    // so you can run get_users() twice and run query only once
    public $cached_get_users = null;
    public $new_schema = true;
@@ -320,22 +319,6 @@ class Meeting extends SugarBean {
                      unset($reminderData[$r]['invitees'][$i]);
                   }
                   break;
-               case "Contacts":
-                  if ( in_array($invitee['module_id'], $this->contacts_arr) === false ) {
-                     // add to uninvited
-                     $uninvited[] = $reminderData[$r]['invitees'][$i];
-                     // remove contact
-                     unset($reminderData[$r]['invitees'][$i]);
-                  }
-                  break;
-               case "Leads":
-                  if ( in_array($invitee['module_id'], $this->leads_arr) === false ) {
-                     // add to uninvited
-                     $uninvited[] = $reminderData[$r]['invitees'][$i];
-                     // remove lead
-                     unset($reminderData[$r]['invitees'][$i]);
-                  }
-                  break;
                // MintHCM #54195 Start
                case "Candidates":
                   if ( in_array($invitee['module_id'], $this->candidates_arr) === false ) {
@@ -396,19 +379,12 @@ class Meeting extends SugarBean {
    public function create_export_query($order_by, $where, $relate_link_join = '') {
       $custom_join = $this->getCustomJoin(true, true, $where);
       $custom_join['join'] .= $relate_link_join;
-      $contact_required = stristr($where, "contacts");
 
-      if ( $contact_required ) {
-         $query = "SELECT meetings.*, contacts.first_name, contacts.last_name, contacts.assigned_user_id contact_name_owner, users.user_name as assigned_user_name   ";
-         $query .= $custom_join['select'];
-         $query .= " FROM contacts, meetings, meetings_contacts ";
-         $where_auto = " meetings_contacts.contact_id = contacts.id AND meetings_contacts.meeting_id = meetings.id AND meetings.deleted=0 AND contacts.deleted=0";
-      } else {
-         $query = 'SELECT meetings.*, users.user_name as assigned_user_name  ';
-         $query .= $custom_join['select'];
-         $query .= ' FROM meetings ';
-         $where_auto = "meetings.deleted=0";
-      }
+    $query = 'SELECT meetings.*, users.user_name as assigned_user_name  ';
+    $query .= $custom_join['select'];
+    $query .= ' FROM meetings ';
+    $where_auto = "meetings.deleted=0";
+
       $query .= "  LEFT JOIN users ON meetings.assigned_user_id=users.id ";
 
       $query .= $custom_join['join'];
@@ -431,23 +407,6 @@ class Meeting extends SugarBean {
       global $locale;
       // Fill in the assigned_user_name
       $this->assigned_user_name = get_assigned_user_name($this->assigned_user_id);
-
-      if ( !empty($this->contact_id) ) {
-         $query = "SELECT first_name, last_name FROM contacts ";
-         $query .= "WHERE id='$this->contact_id' AND deleted=0";
-         $result = $this->db->limitQuery($query, 0, 1, true, " Error filling in additional detail fields: ");
-
-         // Get the contact name.
-         $row = $this->db->fetchByAssoc($result);
-         $GLOBALS['log']->info("additional call fields $query");
-         if ( $row != null ) {
-            $this->contact_name = $locale->getLocaleFormattedName($row['first_name'], $row['last_name'], '', '');
-            $GLOBALS['log']->debug("Call($this->id): contact_name = $this->contact_name");
-            $GLOBALS['log']->debug("Call($this->id): contact_id = $this->contact_id");
-         }
-      }
-
-
 
       $this->created_by_name = get_assigned_user_name($this->created_by);
       $this->modified_by_name = get_assigned_user_name($this->modified_user_id);
@@ -621,18 +580,6 @@ class Meeting extends SugarBean {
       }
       $this->fill_in_additional_detail_fields();
 
-      // make sure we grab the localized version of the contact name, if a contact is provided
-      if ( !empty($this->contact_id) ) {
-         $contact_temp = BeanFactory::getBean("Contacts", $this->contact_id);
-         if ( !empty($contact_temp) ) {
-            // Make first name, last name, salutation and title of Contacts respect field level ACLs
-            $contact_temp->_create_proper_name_field();
-            $this->contact_name = $contact_temp->full_name;
-         }
-      }
-
-      $meeting_fields['CONTACT_ID'] = $this->contact_id;
-      $meeting_fields['CONTACT_NAME'] = $this->contact_name;
       $meeting_fields['PARENT_NAME'] = $this->parent_name;
       $meeting_fields['REMINDER_CHECKED'] = $this->reminder_time == -1 ? false : true;
       $meeting_fields['EMAIL_REMINDER_CHECKED'] = $this->email_reminder_time == -1 ? false : true;
@@ -835,14 +782,6 @@ class Meeting extends SugarBean {
          if ( $this->update_vcal ) {
             vCal::cache_sugar_vcal($user);
          }
-      } else if ( $user->object_name == 'Contact' ) {
-         $relate_values = array('contact_id' => $user->id, 'meeting_id' => $this->id);
-         $data_values = array('accept_status' => $status);
-         $this->set_relationship($this->rel_contacts_table, $relate_values, true, true, $data_values);
-      } else if ( $user->object_name == 'Lead' ) {
-         $relate_values = array('lead_id' => $user->id, 'meeting_id' => $this->id);
-         $data_values = array('accept_status' => $status);
-         $this->set_relationship($this->rel_leads_table, $relate_values, true, true, $data_values);
       }
       // MintHCM #54195 Start
       else if ( $user->object_name == 'Candidates' ) {
@@ -859,16 +798,9 @@ class Meeting extends SugarBean {
       }
 
       $list = array();
-      if ( !is_array($this->contacts_arr) ) {
-         $this->contacts_arr = array();
-      }
 
       if ( !is_array($this->users_arr) ) {
          $this->users_arr = array();
-      }
-
-      if ( !isset($this->leads_arr) || !is_array($this->leads_arr) ) {
-         $this->leads_arr = array();
       }
 
       // MintHCM #54195 Start
@@ -887,22 +819,6 @@ class Meeting extends SugarBean {
       foreach ( $this->users_arr as $user_id ) {
          $notify_user = new User();
          $notify_user->retrieve($user_id);
-         $notify_user->new_assigned_user_name = $notify_user->full_name;
-         $GLOBALS['log']->info("Notifications: recipient is $notify_user->new_assigned_user_name");
-         $list[$notify_user->id] = $notify_user;
-      }
-
-      foreach ( $this->contacts_arr as $contact_id ) {
-         $notify_user = new Contact();
-         $notify_user->retrieve($contact_id);
-         $notify_user->new_assigned_user_name = $notify_user->full_name;
-         $GLOBALS['log']->info("Notifications: recipient is $notify_user->new_assigned_user_name");
-         $list[$notify_user->id] = $notify_user;
-      }
-
-      foreach ( $this->leads_arr as $lead_id ) {
-         $notify_user = new Lead();
-         $notify_user->retrieve($lead_id);
          $notify_user->new_assigned_user_name = $notify_user->full_name;
          $GLOBALS['log']->info("Notifications: recipient is $notify_user->new_assigned_user_name");
          $list[$notify_user->id] = $notify_user;
@@ -963,35 +879,7 @@ class Meeting extends SugarBean {
       $is_owner = false;
       $in_group = false; //SECURITY GROUPS
 
-      if ( !empty($this->contact_name) ) {
-         if ( !empty($this->contact_name_owner) ) {
-            global $current_user;
-            $is_owner = $current_user->id == $this->contact_name_owner;
-         }
-         /* BEGIN - SECURITY GROUPS */
-         //contact_name_owner not being set for whatever reason so we need to figure this out
-         else {
-            global $current_user;
-            $parent_bean = BeanFactory::getBean('Contacts', $this->contact_id);
-            if ( $parent_bean !== false ) {
-               $is_owner = $current_user->id == $parent_bean->assigned_user_id;
-            }
-         }
-         require_once("modules/SecurityGroups/SecurityGroup.php");
-         $in_group = SecurityGroup::groupHasAccess('Contacts', $this->contact_id, 'view');
-         /* END - SECURITY GROUPS */
-      }
-
       /* BEGIN - SECURITY GROUPS */
-      /**
-        if(ACLController::checkAccess('Contacts', 'view', $is_owner)) {
-       */
-      if ( ACLController::checkAccess('Contacts', 'view', $is_owner, 'module', $in_group) ) {
-         /* END - SECURITY GROUPS */
-         $array_assign['CONTACT'] = 'a';
-      } else {
-         $array_assign['CONTACT'] = 'span';
-      }
       return $array_assign;
    }
 
@@ -1001,9 +889,9 @@ class Meeting extends SugarBean {
             //if the global soap_server_object variable is not empty (as in from a soap/OPI call), then process the assigned_user_id relationship, otherwise
             //add assigned_user_id to exclude list and let the logic from MeetingFormBase determine whether assigned user id gets added to the relationship
             if ( !empty($GLOBALS['soap_server_object']) ) {
-               $exclude = array('contact_id', 'user_id');
+               $exclude = array('user_id');
             } else {
-               $exclude = array('contact_id', 'user_id', 'assigned_user_id');
+               $exclude = array('user_id', 'assigned_user_id');
             }
          } else {
             $exclude = array('user_id');
@@ -1016,15 +904,8 @@ class Meeting extends SugarBean {
     * @see SugarBean::afterImportSave()
     */
    public function afterImportSave() {
-      if ( $this->parent_type === 'Contacts' ) {
-         $this->load_relationship('contacts');
-         $this->contacts->add($this->parent_id);
-      } elseif ( $this->parent_type === 'Leads' ) {
-         $this->load_relationship('leads');
-         $this->leads->add($this->parent_id);
-      }
       // MintHCM #54195 Start
-      elseif ( $this->parent_type === 'Candidates' ) {
+      if ( $this->parent_type === 'Candidates' ) {
          $this->load_relationship('candidates');
          $this->candidates->add($this->parent_id);
       }

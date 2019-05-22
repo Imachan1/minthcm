@@ -340,33 +340,6 @@ $dictionary['Meeting'] = array(
          'default' => 0,
          'comment' => 'Meeting update sequence for meetings as per iCalendar standards',
       ),
-      'contact_name' =>
-     array(
-         'name' => 'contact_name',
-         'rname' => 'last_name',
-         'db_concat_fields' =>array( 0 => 'first_name', 1 => 'last_name' ),
-         'id_name' => 'contact_id',
-         'massupdate' => false,
-         'vname' => 'LBL_CONTACT_NAME',
-         'type' => 'relate',
-         'link' => 'contacts',
-         'table' => 'contacts',
-         'isnull' => 'true',
-         'module' => 'Contacts',
-         'join_name' => 'contacts',
-         'dbType' => 'varchar',
-         'source' => 'non-db',
-         'len' => 36,
-         'studio' => 'false',
-      ),
-      'contacts' =>
-     array(
-         'name' => 'contacts',
-         'type' => 'link',
-         'relationship' => 'meetings_contacts',
-         'source' => 'non-db',
-         'vname' => 'LBL_CONTACTS',
-      ),
       'parent_name' =>
      array(
          'name' => 'parent_name',
@@ -436,11 +409,6 @@ $dictionary['Meeting'] = array(
          'bean_name' => 'Note',
          'source' => 'non-db',
          'vname' => 'LBL_NOTES',
-      ),
-      'contact_id' =>array(
-         'name' => 'contact_id',
-         'type' => 'id',
-         'source' => 'non-db',
       ),
       'repeat_type' =>
      array(
