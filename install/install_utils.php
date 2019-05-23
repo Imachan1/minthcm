@@ -1278,6 +1278,20 @@ function launchQuickRepairAndRebuild() {
 function launchRebuildEvolpeTools() {
     if (php_sapi_name() == "cli") {
         include 'rebuild_vtools.php';
+    } else {
+        $home_api_exists = false;
+        $home_api_filepath = 'modules/Home/api/HomeApi.php';
+        if( file_exists('custom' . $home_api_filepath) ){
+            require_once 'custom' . $home_api_filepath;
+            $home_api_exists = true;
+        } elseif(file_exists($home_api_filepath) ){
+            require_once $home_api_filepath;
+            $home_api_exists = true;
+        }
+        if( $home_api_exists ){
+            $home_api = new HomeApi();
+            $home_api->rebuildLock();
+        }
     }
 }
 
