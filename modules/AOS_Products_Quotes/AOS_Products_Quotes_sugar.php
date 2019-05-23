@@ -113,4 +113,8 @@ class AOS_Products_Quotes_sugar extends Basic
         return false;
     }
 
+    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set') {
+        return false;
+    }
+
 }

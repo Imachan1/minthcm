@@ -404,12 +404,14 @@ class Campaign extends SugarBean {
 
 	 function bean_implements($interface){
 		switch($interface){
-			case 'ACL':return true;
+			case 'ACL':return false;
 		}
 		return false;
 	}
 
-
+        public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set') {
+            return false;
+        }
 	/**
 	 * create_list_count_query
 	 * Overrode this method from SugarBean to handle the distinct parameter used to filter out

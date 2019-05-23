@@ -3699,19 +3699,19 @@ $app_list_strings['spenttime_done_ratio_dom'] = array(
 $app_list_strings['spenttime_status_dom'] = array( '' );
 $app_list_strings['meetings_type_dom'] = array(
    '' => '',
-   'first_meeting' => 'The first meeting',
-   'trade_meeting' => 'Trade meeting',
-   'existing_customer_meeting' => 'Development meeting',
-   'relation_meeting' => 'Relation meeting',
-   'implementation_analysis' => 'Implementation analysis',
-   'project_presentation' => 'Project presentation',
+   'first_meeting' => 'The First Meeting',
+   'trade_meeting' => 'Trade Meeting',
+   'existing_customer_meeting' => 'Development Meeting',
+   'relation_meeting' => 'Relation Meeting',
+   'implementation_analysis' => 'Implementation Analysis',
+   'project_presentation' => 'Project Presentation',
    'training' => 'Training',
    'standup' => 'Standup',
    'refinement' => 'Refinement',
-   'planning_meeting' => 'Planning meeting',
+   'planning_meeting' => 'Planning Meeting',
    'retrospective' => 'Retrospective',
-   'internal_training' => 'Internal training',
-   'performance_appraisal' => 'Performance appraisal',
+   'internal_training' => 'Internal Training',
+   'performance_appraisal' => 'Performance Appraisal',
    'other' => 'Other',
 );
 
@@ -3725,15 +3725,15 @@ $app_list_strings['week_days_list'] = [
    '6' => 'Saturday',
 ];
 $app_list_strings['workschedule_type_list'] = [
-   'office' => 'Office work',
-   'home' => 'Remote work',
+   'office' => 'Office Work',
+   'home' => 'Remote Work',
    'delegation' => 'Delegation',
    'holiday' => 'Holiday',
    'sick' => 'Sick',
-   'occasional_leave' => 'Occasional leave',
-   'leave_at_request' => 'Leave at request',
-   'overtime' => 'Free overtime',
-   'excused_absence' => 'Excused absence',
+   'occasional_leave' => 'Occasional Leave',
+   'leave_at_request' => 'Leave at Request',
+   'overtime' => 'Free Overtime',
+   'excused_absence' => 'Excused Absence',
 ];
 
 $app_list_strings['workschedules_status_dom'] = array(
@@ -3927,11 +3927,11 @@ $app_list_strings['status_list'] = array(
    'Negotation' => 'Negotations',
    'New' => 'New',
    'Offer' => 'Make an Offer',
-   'PracticalTask' => 'Practical task',
+   'PracticalTask' => 'Practical Task',
    'Preselection' => 'Preselection',
    'Rejected' => 'Rejected',
-   'Scored' => 'Scored stage 1',
-   'Scored2' => 'Scored stage 2',
+   'Scored' => 'Scored Stage 1',
+   'Scored2' => 'Scored Stage 2',
 );
 
 

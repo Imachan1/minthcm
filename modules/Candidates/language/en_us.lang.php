@@ -105,7 +105,6 @@ $mod_strings = array(
    'LBL_POTENTIAL' => 'Potential',
    'LBL_RELOCATION' => 'Need of relocation',
    'LBL_DOCUMENTS' => 'Documents',
-   'LNK_IMPORT_CANDIDATES' => 'Import candidates',
    'LBL_CANDIDATES_CALLS_FROM_CALLS_TITLE' => 'Calls',
    'LBL_CANDIDATES_TASKS_FROM_TASKS_TITLE' => 'Tasks',
    'LBL_CANDIDATES_MEETINGS_FROM_MEETINGS_TITLE' => 'Meetings',
