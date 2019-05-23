@@ -212,7 +212,7 @@ $dictionary['Document'] = array('table' => 'documents',
         'contracts' => array(
             'name' => 'contracts',
             'type' => 'link',
-            'relationship' => 'contracts_documents',
+            'relationship' => 'documents_contracts',
             'source' => 'non-db',
             'vname' => 'LBL_CONTRACTS',
         ),
