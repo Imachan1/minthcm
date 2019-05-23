@@ -4125,3 +4125,7 @@ $app_list_strings['alert_type_list'] = array(
    'normal' => 'Normal',
    'custom' => 'Custom',
 );
+
+$app_strings['LBL_RECRUITMENT'] = 'Recruitment';
+$app_strings['LBL_TIME_TRACKING'] = 'Time Tracking';
+$app_strings['LBL_ACTIVITIES'] = 'Activities';

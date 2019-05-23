@@ -44,19 +44,19 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
-$GLOBALS["tabStructure"] = array(       
-   'LBL_RECRUITMENT' => array(         
-      'label' => 'LBL_RECRUITMENT',        
-      'modules' => array(                     
+$GLOBALS["tabStructure"] = array(
+   'LBL_RECRUITMENT' => array(
+      'label' => 'LBL_RECRUITMENT',
+      'modules' => array(
          'Candidates',
          'Candidatures',
          'Positions',
          'Recruitments',
       ),
    ),
-   'LBL_TIME_TRACKING' => array(         
-      'label' => 'LBL_TIME_TRACKING',        
-      'modules' => array(                     
+   'LBL_TIME_TRACKING' => array(
+      'label' => 'LBL_TIME_TRACKING',
+      'modules' => array(
          'WorkSchedules',
          'WorkingMonths',
          'NonWorkingDays',
@@ -64,9 +64,9 @@ $GLOBALS["tabStructure"] = array(
          'Delegations',
       ),
    ),
-   'LBL_ACTIVITIES' => array(         
-      'label' => 'LBL_ACTIVITIES',        
-      'modules' => array(                     
+   'LBL_ACTIVITIES' => array(
+      'label' => 'LBL_ACTIVITIES',
+      'modules' => array(
          'Calendar',
          'Calls',
          'Meetings',

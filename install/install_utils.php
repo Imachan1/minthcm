@@ -1382,6 +1382,15 @@ function setConfig($name, $value) {
     $configurator->handleOverride();
 }
 
+function installDelegationPDFTemplate(){
+    $db = DBManagerFactory::getInstance();
+    $query = "
+        INSERT IGNORE INTO `pdftemplates` (`id`, `name`, `date_entered`, `date_modified`, `modified_user_id`, `created_by`, `description`, `deleted`, `is_default`, `relatedmodule`)
+        VALUES ('delegation-default', 'Domyślny', NOW(), NOW(), '1', '1', NULL, '0', '1', 'Delegations');
+    ";
+    $db->query($query);
+}
+
 // Returns true if the given file/dir has been made writable (or is already
 // writable).
 function make_writable($file) {
