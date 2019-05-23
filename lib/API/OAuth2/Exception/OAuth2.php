@@ -65,7 +65,7 @@ class OAuth2 extends Exception
      */
     public function getDetail()
     {
-        return 'SuiteCRM OAuth 2 Server has encountered an exception which has not been handled';
+        return 'MintHCM OAuth 2 Server has encountered an exception which has not been handled';
     }
 
 

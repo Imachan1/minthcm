@@ -53,7 +53,7 @@ $dictionary['Email'] = array(
          'type' => 'bool',
          'required' => false,
          'reportable' => false,
-         'comment' => 'Emails which exists in the SuiteCRM but have been deleted from the email server',
+         'comment' => 'Emails which exists in the MintHCM but have been deleted from the email server',
          'inline_edit' => false,
       ),
       'last_synced' => array(

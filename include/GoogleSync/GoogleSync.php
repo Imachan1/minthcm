@@ -136,7 +136,7 @@ class GoogleSync extends GoogleSyncBase
     /**
      * Perform the sync for a user
      *
-     * @param string $id The SuiteCRM user id
+     * @param string $id The MintHCM user id
      *
      * @return bool true, unless an exception is thrown by called function
      */
@@ -146,7 +146,7 @@ class GoogleSync extends GoogleSyncBase
 
         $meetings = $this->getUserMeetings($id);
 
-        // First, we look for SuiteCRM meetings that are not on Google
+        // First, we look for MintHCM meetings that are not on Google
         foreach ($meetings as $meeting) {
             $gevent = null;
             if ( !empty($meeting->gsync_id) ) {
@@ -172,8 +172,8 @@ class GoogleSync extends GoogleSyncBase
      *
      * The user id is used as the key
      *
-     * @param string $id : the SuiteCRM user id
-     * @param string $name : the SuiteCRM user name.
+     * @param string $id : the MintHCM user id
+     * @param string $name : the MintHCM user name.
      *  Not really used for anything other than reference.
      *
      * @return bool Success/Failure
