@@ -129,7 +129,7 @@ $out =<<<EOQ
    <script type="text/javascript" src="install/siteConfig.js"></script>
 </head>
 <body onload="javascript:document.getElementById('button_next2').focus();">
-    <!--SuiteCRM installer-->
+    <!--MintHCM installer-->
         <div id="install_container">
             <div id="install_box">
                 <form action="install.php" method="post" name="setConfig" id="form">

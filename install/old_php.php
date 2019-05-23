@@ -95,7 +95,7 @@ $out = <<<EOQ
     <link rel="stylesheet" href="themes/SuiteP/css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
 </head>
 <body onload="javascript:toggleNextButton();document.getElementById('button_next2').focus();">
-    <!--SuiteCRM installer-->
+    <!--MintHCM installer-->
     <div id="install_container">
     <div id="install_box">
         <form action="install.php" method="post" name="setConfig" id="form">

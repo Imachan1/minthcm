@@ -335,7 +335,7 @@ function executesugarlog()
 	require_once('include/SugarLogger/SugarLogger.php');
 	$logger = new SugarLogger();
     if(!copy($logger->getLogFileNameWithPath(), $cacheDir.'/'.$logger->getLogFileName())) {
-      echo "Couldn't copy suitecrm.log to cacheDir.<br>";
+      echo "Couldn't copy minthcm.log to cacheDir.<br>";
     }
     //END COPY SUGARCRM.LOG
 
