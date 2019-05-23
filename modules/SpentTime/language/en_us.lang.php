@@ -67,4 +67,5 @@ $mod_strings = array(
    'LBL_ERR_SPENT_TIME_NOT_UNIQUED' => 'Your work time overlaps on another work time',
    'LBL_ERR_CANT_LOG_TO_WORK_OFF_SCHEDULE' => 'You cannot log this Spent time to work off schedule',
    'LBL_ERR_DATE_END_BEFORE_DATE_START' => 'Date end should be after date start.',
+   'LBL_NEW_FORM_TITLE' => 'Log Spent Time',
 );

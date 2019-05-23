@@ -577,11 +577,6 @@ fclose($fp);
 // End of the scenario implementations
 
 
-installerHook('pre_setSystemTabs');
-require_once('modules/MySettings/TabController.php');
-$tabs = new TabController();
-$tabs->set_system_tabs($enabled_tabs);
-installerHook('post_setSystemTabs');
 include_once('install/suite_install/suite_install.php');
 
 post_install_modules();
