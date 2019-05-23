@@ -77,9 +77,13 @@ class AOP_Case_Events extends basic
     {
         switch ($interface) {
             case 'ACL':
-                return true;
+                return false;
             default:
                 return false;
         }
+    }
+
+    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set') {
+        return false;
     }
 }

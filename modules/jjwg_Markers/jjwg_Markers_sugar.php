@@ -51,9 +51,12 @@ class jjwg_Markers_sugar extends Basic {
 
     function bean_implements($interface) {
         switch ($interface) {
-            case 'ACL': return true;
+            case 'ACL': return false;
         }
         return false;
     }
 
+    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set') {
+        return false;
+    }
 }
