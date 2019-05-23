@@ -497,7 +497,7 @@ eoq;
             }
         }
 
-        /* uncomment this to send full log into suitecrm.log:
+        /* uncomment this to send full log into minthcm.log:
         $line = strtok($this->fullSmtpLog, "\n");
         while ($line !== false) {
              $GLOBALS['log']->debug("smtp send: { $line }");
