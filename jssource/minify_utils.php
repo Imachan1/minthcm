@@ -179,7 +179,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
                         if( $num=== false){
                          //log error, file did not get appended
-                         echo "Error while concatenating file $loc to target file $trgt \n";
+                            if( isCommandLineInterface() ){ // MintHCM
+                                echo "Error while concatenating file $loc to target file $trgt \n";
+                            } // MintHCM
                         }
                     //close file opened.
                     fclose($trgt_handle);
@@ -347,12 +349,17 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
             }else{
                  //log failure
-                 echo"<B> COULD NOT COMPRESS $from_path, it is not a file \n";
+                if( isCommandLineInterface() ){ // MintHCM
+                    echo"<B> COULD NOT COMPRESS $from_path, it is not a file \n";
+                } // MintHCM
+                 
             }
 
         }else{
          //log failure
-         echo"<B> COULD NOT COMPRESS $from_path, missing variables \n";
+            if( isCommandLineInterface() ){ // MintHCM
+                echo"<B> COULD NOT COMPRESS $from_path, missing variables \n";
+            } // MintHCM
         }
     }
 
@@ -368,7 +375,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
             if (!file_exists($from_path))
             {
                 //log error
-                echo "JS Source directory at $from_path Does Not Exist<p>\n";
+                if( isCommandLineInterface() ){ // MintHCM
+                    echo "JS Source directory at $from_path Does Not Exist<p>\n";
+                } // MintHCM
                 return;
             }
 
@@ -401,7 +410,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
                     if(!file_exists($bu_dir)){
                         //directory does not exist, log it and return
-                        echo" directory $bu_dir does not exist, could not restore $bu_path";
+                        if( isCommandLineInterface() ){ // MintHCM
+                            echo" directory $bu_dir does not exist, could not restore $bu_path";
+                        } // MintHCM
                         return;
                     }
 
@@ -429,7 +440,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
             if (!file_exists($from_path))
             {
                 //log error
-                echo "The from directory, $from_path Does Not Exist<p>\n";
+                if( isCommandLineInterface() ){ // MintHCM
+                    echo "The from directory, $from_path Does Not Exist<p>\n";
+                } // MintHCM
                 return;
             }else{
                 $from_path = str_replace('\\', '/', $from_path);
@@ -440,7 +453,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
             }elseif (!file_exists($to_path))
             {
                 //log error
-                echo "The to directory, $to_path Does Not Exist<p>\n";
+                if( isCommandLineInterface() ){ // MintHCM
+                    echo "The to directory, $to_path Does Not Exist<p>\n";
+                } // MintHCM
                 return;
             }
 
@@ -504,3 +519,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
             }
 
         }
+        // MintHCM START
+        function isCommandLineInterface()
+        {
+            return (substr(php_sapi_name(), 0, 3) === 'cli');
+        }
+        // MintHCM END
