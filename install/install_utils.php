@@ -1358,9 +1358,7 @@ function launchRebuildEvolpeTools() {
     if (php_sapi_name() == "cli") {
         include 'rebuild_vtools.php';
     } else {
-        require_once 'modules/Relationships/Relationship.php';
-        $relationship = new Relationship();
-        $relationship->load_relationship_meta();
+        SugarRelationshipFactory::rebuildCache();
         $home_api_exists = false;
         $home_api_filepath = 'modules/Home/api/HomeApi.php';
         if( file_exists('custom' . $home_api_filepath) ){
