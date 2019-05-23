@@ -1,8 +1,8 @@
 <?php
 
-$job_strings[] = 'updateEvNewsDisplayDate';
+$job_strings[] = 'updateNewsDisplayDate';
 
-function updateEvNewsDisplayDate() {
+function updateNewsDisplayDate() {
     require_once 'include/NewsDisplayDateUpdater/NewsDisplayDateUpdater.php';
     $ENDDU = new NewsDisplayDateUpdater();
     $ENDDU->start();
