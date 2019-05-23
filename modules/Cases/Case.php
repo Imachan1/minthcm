@@ -374,12 +374,15 @@ class aCase extends Basic
     {
         switch ($interface) {
             case 'ACL':
-                return true;
+                return false;
         }
 
         return false;
     }
 
+    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set') {
+        return false;
+    }
     /**
      * retrieves the Subject line macro for InboundEmail parsing.
      *
