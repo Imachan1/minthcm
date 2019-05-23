@@ -1926,8 +1926,8 @@ $app_strings = array(
    'LBL_DURATION_HOUR' => 'hour',
    'LBL_DURATION_MINUTE' => 'minute',
    'LBL_DURATION_DAYS' => 'days',
-   'LBL_DURATION_HOURS' => 'Duration Hours',
-   'LBL_DURATION_MINUTES' => 'Duration Minutes',
+   'LBL_DURATION_HOURS' => 'hours',
+   'LBL_DURATION_MINUTES' => 'minutes',
    //Calendar widget labels
    'LBL_CHOOSE_MONTH' => 'Choose Month',
    'LBL_ENTER_YEAR' => 'Enter Year',
