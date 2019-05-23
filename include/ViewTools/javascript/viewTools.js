@@ -3,7 +3,7 @@
 }
 window.viewTools.api = {
    /**
-    * Function for communication  with SuiteCRM by controller functionality
+    * Function for communication  with MintHCM by controller functionality
     * Please, set params as array (in "{}" clause)
     * @param {*String} module - Name of called module
     * @param {*String} action - Name of called module action
@@ -66,7 +66,7 @@ window.viewTools.api = {
       }
    },
    /**
-    * Function for communication  with SuiteCRM by custom/api.php
+    * Function for communication  with MintHCM by custom/api.php
     * Please, set params as array (in "{}" clause)
     * @param {*String} module - Name of called module
     * @param {*String} action - Name of called module action

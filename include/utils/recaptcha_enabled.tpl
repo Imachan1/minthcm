@@ -151,7 +151,7 @@
     };
 
     /**
-     * Callback to handle when SuiteCRM has responded to the browser
+     * Callback to handle when MintHCM has responded to the browser
      * @param {XMLHttpRequest} request
      */
     var verifySuiteCrmUserCallback = function (request) {
@@ -171,7 +171,7 @@
     };
 
     /**
-     * Send recaptcha response to SuiteCRM with the user's details from the login screen
+     * Send recaptcha response to MintHCM with the user's details from the login screen
      * @see verifySuiteCrmUserCallback
      * @return {boolean}
      */
@@ -198,7 +198,7 @@
     };
 
     /**
-     * Send recaptcha response to SuiteCRM with the user's details from the change password screen
+     * Send recaptcha response to MintHCM with the user's details from the change password screen
      * @return {boolean}
      */
     var validateCaptchaAndSubmit = function() {

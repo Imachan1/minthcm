@@ -68,7 +68,7 @@ class Exception extends \Exception
      */
     public function getDetail()
     {
-        return 'SuiteCRM has encountered an exception which has not been handled';
+        return 'MintHCM has encountered an exception which has not been handled';
     }
 
     /**

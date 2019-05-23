@@ -95,10 +95,10 @@ class GoogleSyncHelper
         // Get the last modified time from google event
         $timeArray['gModified'] = strtotime($event->getUpdated());
 
-        // Get last modified of SuiteCRM event
-        $timeArray['sModified'] = strtotime($meeting->fetched_row['date_modified'] . ' UTC'); // SuiteCRM stores the timedate as UTC in the DB
+        // Get last modified of MintHCM event
+        $timeArray['sModified'] = strtotime($meeting->fetched_row['date_modified'] . ' UTC'); // MintHCM stores the timedate as UTC in the DB
 
-        // Get the last sync time of SuiteCRM event
+        // Get the last sync time of MintHCM event
         $timeArray['lastSync'] = 0;
         if (isset($meeting->fetched_row['gsync_lastsync'])) {
             $timeArray['lastSync'] = $meeting->fetched_row['gsync_lastsync'];

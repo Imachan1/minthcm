@@ -58,7 +58,7 @@ use SuiteCRM\Utility\SuiteValidator;
 
 class GoogleSyncBase
 {    
-    /** @var User The SuiteCRM User Bean we're currently working with */
+    /** @var User The MintHCM User Bean we're currently working with */
     protected $workingUser;
 
     /** @var \Google_Client The Google client object for the current sync job */
@@ -76,7 +76,7 @@ class GoogleSyncBase
     /** @var string The Calendar ID */
     protected $calendarId;
 
-    /** @var array An array of SuiteCRM meeting id's that we've already synced this session */
+    /** @var array An array of MintHCM meeting id's that we've already synced this session */
     protected $syncedList = array();
 
     /** @var object A Database Instance */
@@ -134,7 +134,7 @@ class GoogleSyncBase
     /**
      * Creates and Sets the Google client in the object
      *
-     * @param string $id : the SuiteCRM user id
+     * @param string $id : the MintHCM user id
      *
      * @return bool Success/Failure
      * @throws GoogleSyncException
@@ -156,7 +156,7 @@ class GoogleSyncBase
     /**
      * Set the Google client up for the user by id
      *
-     * @param string $id : the SuiteCRM user id
+     * @param string $id : the MintHCM user id
      *
      * @return \Google_Client|false Google_Client on success. False on failure.
      * @throws GoogleSyncException if user invalid, unable to retrive the user, or json error
@@ -238,7 +238,7 @@ class GoogleSyncBase
     /**
      * Initialize Service for User
      * 
-     * @param string $id The SuiteCRM user id
+     * @param string $id The MintHCM user id
      * 
      * @return bool Success/Failure
      * @throws GoogleSyncException if $id is invalid
@@ -282,7 +282,7 @@ class GoogleSyncBase
      * Retrieve List of meetings owned by the Current Working User
      *
      *
-     * @return array Array of SuiteCRM Meeting Beans
+     * @return array Array of MintHCM Meeting Beans
      * @throws GoogleSyncException if $this->workingUser->id is invalid
      * @throws GoogleSyncException if unable to get Meetings bean
      */
@@ -331,9 +331,9 @@ class GoogleSyncBase
         // find the id of the 'SuiteCRM' calendar ... in the future, this will set the calendar of the users choosing.
         $this->calendarId = $this->getSuiteCRMCalendar($calendarList);
 
-        // if the SuiteCRM calendar doesn't exist... Create it!
+        // if the MintHCM calendar doesn't exist... Create it!
         if (!$this->isCalendarExists()) {
-            $this->logger->info(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - ' . 'Unable to find the SuiteCRM Google Calendar, Creating it!');
+            $this->logger->info(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - ' . 'Unable to find the MintHCM Google Calendar, Creating it!');
             $calendar = new Google_Service_Calendar_Calendar();
             $calendar->setSummary('SuiteCRM');
             $calendar->setTimeZone($this->timezone);
@@ -465,11 +465,11 @@ class GoogleSyncBase
     }
 
     /**
-     * Get a SuiteCRM meeting by Google Event ID
+     * Get a MintHCM meeting by Google Event ID
      *
      * @param string $event_id The Google Event ID
      *
-     * @return \Meeting|null SuiteCRM Meeting Bean if found, null if not found
+     * @return \Meeting|null MintHCM Meeting Bean if found, null if not found
      * @throws GoogleSyncException if more than one meeting matches $event_id
      * @throws GoogleSyncException If unable to retrieve meeting bean
      */
@@ -523,13 +523,13 @@ class GoogleSyncBase
     }
 
     /**
-     * Push event from SuiteCRM to Google Calendar
+     * Push event from MintHCM to Google Calendar
      *
      * If the google event is not provided, a new one will be created
      * and inserted. If one is provided, the existing Google Event will
      * be updated.
      *
-     * @param Meeting $event_local : SuiteCRM Meeting Bean
+     * @param Meeting $event_local : MintHCM Meeting Bean
      * @param \Google_Service_Calendar_Event $event_remote (optional) \Google_Service_Calendar_Event Object
      *
      * @return string|bool Meeting Id on success, false on failure
@@ -562,7 +562,7 @@ class GoogleSyncBase
             throw new GoogleSyncException('GCalendar insert/update failed.', GoogleSyncException::GEVENT_INSERT_OR_UPDATE_FAILURE);
         }
 
-        // Set the SuiteCRM Meeting's last sync timestamp, and google id. Return the saved meeting id from called method.
+        // Set the MintHCM Meeting's last sync timestamp, and google id. Return the saved meeting id from called method.
         return $this->setLastSync($event_local, $return->getId());
     }
 
@@ -598,9 +598,9 @@ class GoogleSyncBase
     }
 
     /**
-     * Pull event from Google Calendar to SuiteCRM
+     * Pull event from Google Calendar to MintHCM
      *
-     * If the SuiteCRM Meeting is not provided, a new one will be created
+     * If the MintHCM Meeting is not provided, a new one will be created
      * and inserted. If one is provided, the existing meeting will be updated.
      *
      * @param \Google_Service_Calendar_Event $event_remote \Google_Service_Calendar_Event Object
@@ -644,9 +644,9 @@ class GoogleSyncBase
     }
 
     /**
-     * Delete SuiteCRM Meeting
+     * Delete MintHCM Meeting
      *
-     * @param Meeting $meeting SuiteCRM Meeting Bean
+     * @param Meeting $meeting MintHCM Meeting Bean
      *
      * @return string|bool Meeting Id on success, false on failure (from setLastSync, since that's what saves the record)
      */
@@ -666,7 +666,7 @@ class GoogleSyncBase
      * Delete Google Event
      *
      * @param \Google_Service_Calendar_Event $event \Google_Service_Calendar_Event Object
-     * @param String $meeting_id SuiteCRM Meeting Id
+     * @param String $meeting_id MintHCM Meeting Id
      *
      * @return string Meeting Id on success
      * @throws GoogleSyncException If Google Service Unset
@@ -730,7 +730,7 @@ class GoogleSyncBase
             throw new InvalidArgumentException('Argument 1 not passed to GoogleSyncBase::clearPopups()');
         }
 
-        // Disable all popup reminders for the SuiteCRM meeting, and mark reminders where email is disabled as deleted.
+        // Disable all popup reminders for the MintHCM meeting, and mark reminders where email is disabled as deleted.
         $eventIdQuoted = $this->db->quoted($event_id);
         $sql = sprintf("UPDATE reminders SET popup = '0', deleted = CASE WHEN email = '0' THEN '1' ELSE deleted	END WHERE related_event_module_id = %s AND deleted = '0'", $eventIdQuoted);
         $res = $this->db->query($sql);
@@ -741,12 +741,12 @@ class GoogleSyncBase
     }
 
     /**
-     * Update SuiteCRM Meeting from Google Calendar Event
+     * Update MintHCM Meeting from Google Calendar Event
      *
-     * @param Meeting $event_local SuiteCRM Meeting Bean
+     * @param Meeting $event_local MintHCM Meeting Bean
      * @param \Google_Service_Calendar_Event $event_remote Google_Service_Calendar_Event Object
      *
-     * @return Meeting|bool SuiteCRM Meeting Bean or false on failure
+     * @return Meeting|bool MintHCM Meeting Bean or false on failure
      * @throws GoogleSyncException if the Google Event is missing required data
      */
     protected function updateSuitecrmMeetingEvent(Meeting $event_local, Google_Service_Calendar_Event $event_remote)
@@ -785,14 +785,14 @@ class GoogleSyncBase
         $hours = floor($tmins / 60);
         $mins = $tmins % 60;
 
-        // Set Start/End/Duration in SuiteCRM Meeting and Assigned User
+        // Set Start/End/Duration in MintHCM Meeting and Assigned User
         $event_local->date_start = gmdate("Y-m-d H:i:s", $starttime);
         $event_local->date_end = gmdate("Y-m-d H:i:s", $endtime);
         $event_local->duration_hours = $hours;
         $event_local->duration_minutes = $mins;
         $event_local->assigned_user_id = $this->workingUser->id;
 
-        // Disable all popup reminders for the SuiteCRM meeting. We add them back from Google event below.
+        // Disable all popup reminders for the MintHCM meeting. We add them back from Google event below.
         $event_id = $event_local->id;
         $this->clearPopups($event_id);
 
@@ -818,16 +818,16 @@ class GoogleSyncBase
     }
 
     /**
-     * Create SuiteCRM Meeting event
+     * Create MintHCM Meeting event
      *
-     * @param \Google_Service_Calendar_Event $event_remote The Google_Service_Calendar_Event we're creating a SuiteCRM Meeting for
+     * @param \Google_Service_Calendar_Event $event_remote The Google_Service_Calendar_Event we're creating a MintHCM Meeting for
      *
-     * @return Meeting|bool SuiteCRM Meeting Bean or false on failure
+     * @return Meeting|bool MintHCM Meeting Bean or false on failure
      * @throws GoogleSyncException if fails to retrive meeting
      */
     protected function createSuitecrmMeetingEvent(Google_Service_Calendar_Event $event_remote)
     {
-        $this->logger->debug(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - ' . 'Creating New SuiteCRM Meeting');
+        $this->logger->debug(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - ' . 'Creating New MintHCM Meeting');
         $meeting = BeanFactory::getBean('Meetings');
         if (!$meeting) {
             throw new GoogleSyncException('Unable to get Meeting bean.', GoogleSyncException::UNABLE_TO_RETRIEVE_MEETING);
@@ -839,9 +839,9 @@ class GoogleSyncBase
     }
 
     /**
-     * Update Google Calendar Event from SuiteCRM Meeting
+     * Update Google Calendar Event from MintHCM Meeting
      *
-     * @param Meeting $event_local SuiteCRM Meeting Bean
+     * @param Meeting $event_local MintHCM Meeting Bean
      * @param \Google_Service_Calendar_Event $event_remote Google Event Object
      *
      * @return \Google_Service_Calendar_Event
@@ -894,9 +894,9 @@ class GoogleSyncBase
     }
 
     /**
-     * Create New Google Event object for SuiteCRM Meeting
+     * Create New Google Event object for MintHCM Meeting
      *
-     * @param Meeting $event_local SuiteCRM Meeting Bean
+     * @param Meeting $event_local MintHCM Meeting Bean
      *
      * @return \Google_Service_Calendar_Event Google_Service_Calendar_Event Object
      */
@@ -911,7 +911,7 @@ class GoogleSyncBase
 
         $event_remote_empty->setExtendedProperties($extendedProperties);
 
-        //Set the Google Event up to match the SuiteCRM one
+        //Set the Google Event up to match the MintHCM one
         $event_remote = $this->updateGoogleCalendarEvent($event_local, $event_remote_empty);
 
         return $event_remote;
@@ -941,7 +941,7 @@ class GoogleSyncBase
      * This *must* be called *after* the sync is done
      * This also saves the event, so you don't need to do it twice. Just call this.
      *
-     * @param Meeting $event_local SuiteCRM Meeting bean
+     * @param Meeting $event_local MintHCM Meeting bean
      * @param string $gEventId (optional) The ID that Google has for the event.
      *
      * @return string Meeting Id on success
