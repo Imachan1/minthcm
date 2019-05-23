@@ -370,10 +370,13 @@ class Account extends Company implements EmailInterface {
 
 	function bean_implements($interface){
 		switch($interface){
-			case 'ACL':return true;
+			case 'ACL':return false;
 		}
 		return false;
 	}
+        public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set') {
+            return false;
+        }
 	function get_unlinked_email_query($type=array()) {
 
 		return get_unlinked_email_query($type, $this);
