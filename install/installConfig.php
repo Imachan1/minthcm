@@ -1097,7 +1097,7 @@ EOQ;
 
 <div class="security-block" style="display:none;">
 <table cellspacing="0" cellpadding="0" border="0" align="center" class="shell">
-      <tr><td colspan="2" id="help"><!-- <a href="{$help_url}" target='_blank'>{$mod_strings['LBL_HELP']} </a> --></td></tr>
+      <tr><td colspan="2" id="help"></td></tr>
     <tr>
       <th width="500">
    </th>
