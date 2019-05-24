@@ -45,8 +45,8 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 global $app_strings;
 
 $themedef = array(
-   'name' => 'Suite P',
-   'description' => 'SuiteCRM Responsive Theme',
+   'name' => 'MintHCM',
+   'description' => 'MintHCM Responsive Theme',
    'version' => array(
       'regex_matches' => array( '.+' ),
    ),
