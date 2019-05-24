@@ -112,7 +112,7 @@ $out = <<<EOQ
     </style>
 </head>
 <body onload="javascript:toggleNextButton();document.getElementById('button_next2').focus();">
-    <!--SuiteCRM installer-->
+    <!--MintHCM installer-->
     <div id="install_container">
     <div id="install_box">
         <form action="install.php" method="post" name="setConfig" id="form">

@@ -5438,6 +5438,7 @@ class SugarBean {
     */
    public function get_list_view_array() {
       static $cache = array();
+      $this->retrieve($this->id); // MintHCM
       // cn: bug 12270 - sensitive fields being passed arbitrarily in listViews
       $sensitiveFields = array( 'user_hash' => '' );
 

@@ -2,7 +2,7 @@
   "swagger": "3.0",
   "info": {
     "version": "8.0.0",
-    "title": "SuiteCRM REST API (JSON API v1.0.0)",
+    "title": "MintHCM REST API (JSON API v1.0.0)",
     "contact": {
       "name": "Support",
       "url": "https://suitecrm.com/forum"

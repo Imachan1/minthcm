@@ -135,7 +135,7 @@ $out =<<<EOQ
     <link rel="stylesheet" href="themes/SuiteP/css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
 </head>
 <body onload="javascript:document.getElementById('button_next2').focus();">
-<!--SuiteCRM installer-->
+<!--MintHCM installer-->
 <div id="install_container">
 <div id="install_box">
 <header id="install_header">
@@ -368,6 +368,9 @@ installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS']);
     $scheduler->rebuildDefaultSchedulers();
     installerHook('post_createDefaultSchedulers');
 
+    installDelegationPDFTemplate();
+
+    rebuildWithViewTools(false);
 
     echo $mod_strings['LBL_PERFORM_DONE'];
 
@@ -575,11 +578,6 @@ fclose($fp);
 // End of the scenario implementations
 
 
-installerHook('pre_setSystemTabs');
-require_once('modules/MySettings/TabController.php');
-$tabs = new TabController();
-$tabs->set_system_tabs($enabled_tabs);
-installerHook('post_setSystemTabs');
 include_once('install/suite_install/suite_install.php');
 
 post_install_modules();

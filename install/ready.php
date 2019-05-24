@@ -315,7 +315,7 @@ $out = <<<EOQ
    <script src="themes/SuiteP/js/responsiveslides.min.js"></script>
 </head>
 <body>
-    <!--SuiteCRM installer-->
+    <!--MintHCM installer-->
     <div id="install_container">
     <div id="install_box">
         <header id="install_header">

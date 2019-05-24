@@ -1926,8 +1926,8 @@ $app_strings = array(
    'LBL_DURATION_HOUR' => 'hour',
    'LBL_DURATION_MINUTE' => 'minute',
    'LBL_DURATION_DAYS' => 'days',
-   'LBL_DURATION_HOURS' => 'Duration Hours',
-   'LBL_DURATION_MINUTES' => 'Duration Minutes',
+   'LBL_DURATION_HOURS' => 'hours',
+   'LBL_DURATION_MINUTES' => 'minutes',
    //Calendar widget labels
    'LBL_CHOOSE_MONTH' => 'Choose Month',
    'LBL_ENTER_YEAR' => 'Enter Year',
@@ -2058,6 +2058,7 @@ $app_strings = array(
    'LBL_SUITE_TOP' => 'Back to top',
    'LBL_SUITE_SUPERCHARGED' => 'Supercharged by SuiteCRM',
    'LBL_SUITE_POWERED_BY' => 'Powered By SugarCRM',
+   'LBL_MINTHCM_PRODUCED_BY' => 'Produced by MintHCM',
    'LBL_SUITE_DESC1' => 'SuiteCRM has been written and assembled by <a href="https://salesagility.com">SalesAgility</a>. The Program is provided AS IS, without warranty. Licensed under AGPLv3.',
    'LBL_SUITE_DESC2' => 'This program is free software; you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation, including the additional permission set forth in the source code header.',
    'LBL_SUITE_DESC3' => 'SuiteCRM is a trademark of SalesAgility Ltd. All other company and product names may be trademarks of the respective companies with which they are associated.',
@@ -3698,19 +3699,19 @@ $app_list_strings['spenttime_done_ratio_dom'] = array(
 $app_list_strings['spenttime_status_dom'] = array( '' );
 $app_list_strings['meetings_type_dom'] = array(
    '' => '',
-   'first_meeting' => 'The first meeting',
-   'trade_meeting' => 'Trade meeting',
-   'existing_customer_meeting' => 'Development meeting',
-   'relation_meeting' => 'Relation meeting',
-   'implementation_analysis' => 'Implementation analysis',
-   'project_presentation' => 'Project presentation',
+   'first_meeting' => 'The First Meeting',
+   'trade_meeting' => 'Trade Meeting',
+   'existing_customer_meeting' => 'Development Meeting',
+   'relation_meeting' => 'Relation Meeting',
+   'implementation_analysis' => 'Implementation Analysis',
+   'project_presentation' => 'Project Presentation',
    'training' => 'Training',
    'standup' => 'Standup',
    'refinement' => 'Refinement',
-   'planning_meeting' => 'Planning meeting',
+   'planning_meeting' => 'Planning Meeting',
    'retrospective' => 'Retrospective',
-   'internal_training' => 'Internal training',
-   'performance_appraisal' => 'Performance appraisal',
+   'internal_training' => 'Internal Training',
+   'performance_appraisal' => 'Performance Appraisal',
    'other' => 'Other',
 );
 
@@ -3724,15 +3725,15 @@ $app_list_strings['week_days_list'] = [
    '6' => 'Saturday',
 ];
 $app_list_strings['workschedule_type_list'] = [
-   'office' => 'Office work',
-   'home' => 'Remote work',
+   'office' => 'Office Work',
+   'home' => 'Remote Work',
    'delegation' => 'Delegation',
    'holiday' => 'Holiday',
    'sick' => 'Sick',
-   'occasional_leave' => 'Occasional leave',
-   'leave_at_request' => 'Leave at request',
-   'overtime' => 'Free overtime',
-   'excused_absence' => 'Excused absence',
+   'occasional_leave' => 'Occasional Leave',
+   'leave_at_request' => 'Leave at Request',
+   'overtime' => 'Free Overtime',
+   'excused_absence' => 'Excused Absence',
 ];
 
 $app_list_strings['workschedules_status_dom'] = array(
@@ -3926,11 +3927,11 @@ $app_list_strings['status_list'] = array(
    'Negotation' => 'Negotations',
    'New' => 'New',
    'Offer' => 'Make an Offer',
-   'PracticalTask' => 'Practical task',
+   'PracticalTask' => 'Practical Task',
    'Preselection' => 'Preselection',
    'Rejected' => 'Rejected',
-   'Scored' => 'Scored stage 1',
-   'Scored2' => 'Scored stage 2',
+   'Scored' => 'Scored Stage 1',
+   'Scored2' => 'Scored Stage 2',
 );
 
 
@@ -4124,3 +4125,7 @@ $app_list_strings['alert_type_list'] = array(
    'normal' => 'Normal',
    'custom' => 'Custom',
 );
+
+$app_strings['LBL_RECRUITMENT'] = 'Recruitment';
+$app_strings['LBL_TIME_TRACKING'] = 'Time Tracking';
+$app_strings['LBL_ACTIVITIES'] = 'Activities';

@@ -590,9 +590,13 @@ class Contact extends Person implements EmailInterface
     {
         switch ($interface) {
             case 'ACL':
-                return true;
+                return false;
         }
 
+        return false;
+    }
+
+    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set') {
         return false;
     }
 

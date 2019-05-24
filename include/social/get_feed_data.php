@@ -39,7 +39,7 @@
  */
 /*
  *
- * This file requires each user to log into their twitter account and authorise SuiteCRM to access it.
+ * This file requires each user to log into their twitter account and authorise MintHCM to access it.
  *
  */
 

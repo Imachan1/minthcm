@@ -1221,9 +1221,87 @@ function insert_default_settings() {
    if ( isset($_SESSION['smtp_from_name']) && $_SESSION['smtp_from_name'] ) {
       $fromName = $_SESSION['smtp_from_name'];
    }
-   $MySettings_tab =base64_encode(serialize(array( 'Accounts', 'Notes', 'Opportunities', 'SecurityGroups', 'Calendar', 'ResourceCalendar', 'Documents', 'Emails', 'Calls', 'Meetings', 'Tasks', 'Project', 'AM_ProjectTemplates', 'FP_events', 'FP_Event_Locations', 'AOS_PDF_Templates', 'AOR_Reports', 'AOW_WorkFlow', 'AOK_KnowledgeBase', 'AOK_Knowledge_Base_Categories', 'Surveys', 'Delegations', 'KTemplates', 'PDFTemplates', 'WorkSchedules', 'WorkingMonths', 'NonWorkingDays', 'ev_Overtimes', 'KReports', 'Candidates', 'Candidatures', 'Positions', 'Recruitments', 'Reservations', 'Resources', 'Contracts', 'TermsOfEmployment', 'PeriodsOfEmployment', 'Trainings', 'Positions', 'OrganizationalUnits', 'OnboardingTemplates', 'OffboardingTemplates', 'ExitInterviews', 'EmployeeRoles', 'Benefits', 'Responsibilities', 'Onboardings', 'Offboardings', 'Competencies', 'CompetencyRatings', 'Goals', 'Appraisals', 'News', 'Ideas', 'Conclusions', 'ResponsibilityActivities', 'Problems', 'Improvements', 'ReservationsCalendar', 'Certificates', 'Applications',
-        )));
 
+   $visible_modules = array(
+    'Home',
+    'Calendar',
+    'ResourceCalendar',
+    'ReservationsCalendar',
+    'Calls',
+    'Meetings',
+    'Tasks',
+    'Notes',
+    'Emails',
+    'FP_events',
+    'FP_Event_Locations',
+    'Documents',
+    'Surveys',
+    'Project',
+    'AM_ProjectTemplates',
+    'AOS_PDF_Templates',
+    'AOR_Reports',
+    'AOW_WorkFlow',
+    'AOK_KnowledgeBase',
+    'AOK_Knowledge_Base_Categories',
+    'KReports',
+    'Delegations',
+    'KTemplates',
+    'PDFTemplates',
+    'WorkSchedules',
+    'WorkingMonths',
+    'NonWorkingDays',
+    'Candidates',
+    'Candidatures',
+    'Positions',
+    'Recruitments',
+    'Reservations',
+    'Resources',
+    'Contracts',
+    'TermsOfEmployment',
+    'PeriodsOfEmployment',
+    'Trainings',
+    'OrganizationalUnits',
+    'OnboardingTemplates',
+    'OffboardingTemplates',
+    'ExitInterviews',
+    'EmployeeRoles',
+    'Benefits',
+    'Responsibilities',
+    'Onboardings',
+    'Offboardings',
+    'Competencies',
+    'Goals',
+    'Appraisals',
+    'News',
+    'Ideas',
+    'Conclusions',
+    'ResponsibilityActivities',
+    'Problems',
+    'Improvements',
+    'Certificates',
+    'Applications',
+    'EmailTemplates',
+    );
+
+   $hidden_subpanels = array (
+    'contacts' => 'contacts',
+    'leads' => 'leads',
+    'opportunities' => 'opportunities',
+    'prospects' => 'prospects',
+    'cases' => 'cases',
+    'jjwg_areas' => 'jjwg_areas',
+    'prospectlists' => 'prospectlists',
+    'jjwg_markers' => 'jjwg_markers',
+    'bugs' => 'bugs',
+    'aos_contracts' => 'aos_contracts',
+    'jjwg_maps' => 'jjwg_maps',
+    'accounts' => 'accounts',
+    'aos_quotes' => 'aos_quotes',
+    'aos_product_categories' => 'aos_product_categories',
+    'aos_products' => 'aos_products',
+    'aos_invoices' => 'aos_invoices',
+  );
+   
    $configs = [
       [ 'category' => 'notify', 'name' => 'fromaddress', 'value' => $fromAddress, ],
       [ 'category' => 'notify', 'name' => 'fromname', 'value' => $fromName, ],
@@ -1231,7 +1309,8 @@ function insert_default_settings() {
       [ 'category' => 'notify', 'name' => 'on', 'value' => 1, ],
       [ 'category' => 'notify', 'name' => 'send_from_assigning_user', 'value' => 0, ],
       [ 'category' => 'info', 'name' => 'sugar_version', 'value' => $sugar_db_version, ],
-      [ 'category' => 'MySettings', 'name' => 'tab', 'value' => $MySettings_tab, ],
+      [ 'category' => 'MySettings', 'name' => 'tab', 'value' => base64_encode(serialize($visible_modules)), ],
+      [ 'category' => 'MySettings', 'name' => 'hide_subpanels', 'value' => base64_encode(serialize($hidden_subpanels)), ],
       [ 'category' => 'portal', 'name' => 'on', 'value' => 0, ],
       [ 'category' => 'tracker', 'name' => 'Tracker', 'value' => 1, ],
       [ 'category' => 'system', 'name' => 'skypeout_on', 'value' => 1, ],
@@ -1244,6 +1323,72 @@ function insert_default_settings() {
       $value = $record['value'];
       $db->query("INSERT INTO config (id, category, name, value) VALUES ('{$id}', '{$category}', '{$name}', '{$value}')");
    }
+}
+
+function rebuildWithViewTools($set_developer_mode = null) {
+    require_once('modules/Administration/RebuildAllJavascripts.php');
+    setConfig('developerMode', true);
+    launchQuickRepairAndRebuild();
+    repairJSFile();
+    rebuildJavascriptLanguages();
+    rebuildJSCompressedFiles();
+    rebuildJSGroupingFiles();
+    rebuildMinifiedJSFiles();
+    launchRebuildEvolpeTools();
+    launchQuickRepairAndRebuild();
+    if( !is_null($set_developer_mode) ){
+        setConfig('developerMode', !!$set_developer_mode);
+    }
+}
+
+function launchQuickRepairAndRebuild() {
+    if (file_exists('custom/modules/Administration/QuickRepairAndRebuild.php')) {
+        require_once('custom/modules/Administration/QuickRepairAndRebuild.php');
+        $repair = new CustomRepairAndClear();
+    } else {
+        require_once("modules/Administration/QuickRepairAndRebuild.php");
+        $repair = new RepairAndClear();
+    }
+    $autoexecute = true;
+    $show_output = false;
+    $repair->repairAndClearAll(array('clearAll'), array(translate('LBL_ALL_MODULES')), $autoexecute, $show_output);
+}
+
+function launchRebuildEvolpeTools() {
+    if (php_sapi_name() == "cli") {
+        include 'rebuild_vtools.php';
+    } else {
+        SugarRelationshipFactory::rebuildCache();
+        $home_api_exists = false;
+        $home_api_filepath = 'modules/Home/api/HomeApi.php';
+        if( file_exists('custom' . $home_api_filepath) ){
+            require_once 'custom' . $home_api_filepath;
+            $home_api_exists = true;
+        } elseif(file_exists($home_api_filepath) ){
+            require_once $home_api_filepath;
+            $home_api_exists = true;
+        }
+        if( $home_api_exists ){
+            $home_api = new HomeApi();
+            $home_api->rebuildLock();
+        }
+    }
+}
+
+function setConfig($name, $value) {
+    require_once 'modules/Configurator/Configurator.php';
+    $configurator = new Configurator();
+    $configurator->config[$name] = $value;
+    $configurator->handleOverride();
+}
+
+function installDelegationPDFTemplate(){
+    $db = DBManagerFactory::getInstance();
+    $query = "
+        INSERT IGNORE INTO `pdftemplates` (`id`, `name`, `date_entered`, `date_modified`, `modified_user_id`, `created_by`, `description`, `deleted`, `is_default`, `relatedmodule`)
+        VALUES ('delegation-default', 'Domyślny', NOW(), NOW(), '1', '1', NULL, '0', '1', 'Delegations');
+    ";
+    $db->query($query);
 }
 
 // Returns true if the given file/dir has been made writable (or is already

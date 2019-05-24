@@ -184,11 +184,15 @@ class Prospect extends Person implements EmailInterface {
     }
      function bean_implements($interface){
 		switch($interface){
-			case 'ACL':return true;
+			case 'ACL':return false;
 		}
 		return false;
 	}
 
+    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set') {
+        return false;
+    }
+        
     /**
      *  This method will be used by Mail Merge in order to retieve the targets as specified in the query
      *  @param query String - this is the query which contains the where clause for the query
