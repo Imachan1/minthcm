@@ -155,7 +155,7 @@ $app_list_strings = array(
       'DashboardBackups' => 'Dashboard Backups',
       'DashboardHistory' => 'Dashboard Deployment History',
       'KReports' => 'Advanced Reports',
-      'KTemplates' => 'PDF Templates',
+      'KTemplates' => 'Advanced Reports PDF Templates',
       'ScheduleReports' => 'Schedule Reports',
       'ScheduleReportsLogs' => 'Schedule Reports Logs',
    ),

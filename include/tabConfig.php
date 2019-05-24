@@ -60,7 +60,6 @@ $GLOBALS["tabStructure"] = array(
          'WorkSchedules',
          'WorkingMonths',
          'NonWorkingDays',
-         'ev_Overtimes',
          'Delegations',
       ),
    ),

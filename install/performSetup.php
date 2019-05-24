@@ -463,7 +463,6 @@ $enabled_tabs[] = 'Accounts';
    $enabled_tabs[] = 'WorkSchedules';
    $enabled_tabs[] = 'WorkingMonths';
    $enabled_tabs[] = 'NonWorkingDays';
-   $enabled_tabs[] = 'ev_Overtimes';
    $enabled_tabs[] = 'KReports';
    $enabled_tabs[] = 'Candidates';
    $enabled_tabs[] = 'Candidatures';

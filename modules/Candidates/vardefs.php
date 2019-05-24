@@ -360,18 +360,6 @@ $dictionary['Candidates']                                         = array(
                 'enabled' => false,
             ),
         ),
-        "alfresco" => array(//mint TODO
-            'name' => 'alfresco',
-            'type' => 'link',
-            'relationship' => 'ev_alfresco_candidates',
-            'source' => 'non-db',
-            'module' => 'ev_AlfrescoPath',
-            'bean_name' => false,
-            'side' => 'left',
-            'vname' => 'LBL_ALFRESCO',
-            'id_name' => 'module_id',
-            'link-type' => 'many',
-        ),
         'potential' => array(
             'required' => false,
             'name' => 'potential',
