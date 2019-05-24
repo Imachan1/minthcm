@@ -404,11 +404,7 @@ installLog("Installation has completed *********");
 
 
     $errTcpip = '';
-    //$fp = @fsockopen("www.suitecrm.com", 80, $errno, $errstr, 3);
-    if (!$fp) {
-        $errTcpip = "<p>{$mod_strings['ERR_PERFORM_NO_TCPIP']}</p>";
-    }
-    if ($fp && (!isset($_SESSION['oc_install']) || $_SESSION['oc_install'] == false)) {
+    if (isset($fp) && (!isset($_SESSION['oc_install']) || $_SESSION['oc_install'] == false)) {
         @fclose($fp);
         if ($next_step == 9999)
             $next_step = 8;
@@ -777,7 +773,7 @@ $out =<<<EOQ
 <p><b>{$fpResult}</b></p>
 </div>
 <footer id="install_footer">
-    <p id="footer_links"><a href="https://minthcm.com" target="_blank">Visit minthcm.com</a> | <a href="https://suitecrm.com" target="_blank">Visit suitecrm.com</a> | <a href="https://suitecrm.com/index.php?option=com_kunena&view=category&Itemid=1137&layout=list" target="_blank">Support Forums</a> | <a href="https://docs.suitecrm.com/admin/installation-guide/" target="_blank">Installation Guide</a> | <a href="LICENSE.txt" target="_blank">License</a>
+    <p id="footer_links"><a href="https://minthcm.org" target="_blank">Visit minthcm.org</a> | <a href="https://minthcm.com" target="_blank">Visit minthcm.com</a> | <a href="https://minthcm.org/support/" target="_blank">Support Forums</a> | <a href="LICENSE.txt" target="_blank">License</a></p>
 </footer>
 </div>
 </body>
