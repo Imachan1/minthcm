@@ -154,7 +154,7 @@ $mod_strings = array(
    'LBL_RUNELASTICSEARCHINDEXERSCHEDULER' => 'Elasticsearch indexer',
    'LBL_SCHEDULER_TIMES' => 'Scheduler Times',
    'LBL_SYNCGOOGLECALENDAR' => 'Sync Google Calendars',
-   //'LBL_CALCULATE_TIME_AND_EFFECTIVENESS' => 'Calculate time and effectiveness',
+   'LBL_CALCULATE_TIME_AND_EFFECTIVENESS' => 'Calculate time and effectiveness',
    'LBL_FIND_SPENT_TIMES_WITHOUT_WORK_SCHEDULE' => 'Find Spent times without work schedule',
    'LBL_FIND_INVALID_SPENT_TIMES' => 'Find invalid Spent times',
    'LBL_LAST_WORKING_DAY_CHECK' => 'Run verification on day before last working day',
@@ -168,13 +168,13 @@ $mod_strings = array(
    'LBL_FIND_SPENT_TIMES_ASSIGN_TO_DIFFERENT_USER_WORK_SCHEDULE_BODY' => "Find Spent times assign to different user that is in work schedule\n",
    'LBL_FIND_SPENT_TIMES_ASSIGN_TO_DIFFERENT_USER_WORK_SCHEDULE' => 'Find Spent times assign to different user that is in work schedule',
 
-   'LBL_AUTOMATICCREATENOTIFICATION' => 'Tworzenie powiadomień dla użytkowników',
    'LBL_SENDCHATNOTIFICATION' => 'Wysyła powiadomienia na RocketChat',
    'LBL_CLEARVCALCRON' => 'Wyczyść vCal',
-   'LBL_UPDATEEVNEWSDISPLAYDATE' => 'Update News Display Date',
+   'LBL_UPDATE_NEWS_DISPLAY_DATE' => 'Update News Display Date',
    'LBL_REBUILDVIEWTOOLS' => 'Rebuild View Tools',
    'LBL_EXECUTEVIEWTOOLSQUEUE' => 'Execute View Tools Queue',
    
    'LBL_AUTOMATICCREATENOTIFICATION' => 'Creating Alerts for Users',
    'LBL_SEND_REPORTS' => "Send generated KReports PDFs",
+
 );

@@ -997,29 +997,41 @@ class Scheduler extends SugarBean {
       $sched16->catch_up = '0';
       $sched16->save();
 
+      $sched17 = new Scheduler();
+      $sched17->name = $mod_strings['LBL_UPDATE_NEWS_DISPLAY_DATE'];
+      $sched17->job = 'function::updateNewsDisplayDate';
+      $sched17->date_time_start = create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+      $sched17->date_time_end = null;
+      $sched17->job_interval = '0::1::*::*::*';
+      $sched17->status = 'Active';
+      $sched17->created_by = '1';
+      $sched17->modified_user_id = '1';
+      $sched17->catch_up = '1';
+      $sched17->save();
 
-      $this->createJobEntry('AutomaticCreateNotification', '*/15::*::*::*::*', 'Automatic create Notification');
-      $this->createJobEntry('find_spent_times_without_work_schedule', '0::10::*::*::0');
-      $this->createJobEntry('find_invalid_spent_times', '0::12::*::*::0');
-      $this->createJobEntry('last_working_day_check', '0::20::*::*::1-5');
-      $this->createJobEntry('calculate_time_and_effectiveness', '00::3::*::*::*');
-      $this->createJobEntry('find_spent_times_assign_to_different_user_work_schedule', '00::0::*::*::0');
-      $this->createJobEntry('updateEvNewsDisplayDate', '0::1::*::*::*', 'Update News Display Date');
+
+      $this->createJobEntry('AutomaticCreateNotification', '*/15::*::*::*::*', $mod_strings['LBL_AUTOMATICCREATENOTIFICATION']);
+      $this->createJobEntry('find_spent_times_without_work_schedule', '0::10::*::*::0', $mod_strings['LBL_FIND_SPENT_TIMES_WITHOUT_WORK_SCHEDULE']);
+      $this->createJobEntry('find_invalid_spent_times', '0::12::*::*::0', $mod_strings['LBL_FIND_INVALID_SPENT_TIMES']);
+      $this->createJobEntry('last_working_day_check', '0::20::*::*::1-5', $mod_strings['LBL_LAST_WORKING_DAY_CHECK']);
+      $this->createJobEntry('calculate_time_and_effectiveness', '0::3::*::*::*', $mod_strings['LBL_CALCULATE_TIME_AND_EFFECTIVENESS']);
+      $this->createJobEntry('find_spent_times_assign_to_different_user_work_schedule', '0::0::*::*::0', $mod_strings['LBL_FIND_SPENT_TIMES_ASSIGN_TO_DIFFERENT_USER_WORK_SCHEDULE']);
    }
 
-   protected function createJobEntry($id, $interval, $name = true) {
+   protected function createJobEntry($function, $interval, $name = '') {
       $job = BeanFactory::getBean('Schedulers');
-      // if (  $job->retrieve_by_string_fields(['job' => 'function::' . $id]) == null ) {
-      $job->new_with_id = true;
-      $job->name = $name ?: ucfirst(str_replace('_', ' ', $id));
-      $job->id = 'function_' . $id;
-      $job->job = 'function::' . $id;
+      $job->name = $name;
+      $job->job = 'function::' . $function;
       $job->date_time_start = '2005-01-01 00:00:00';
+      $job->date_time_end = null;
       $job->job_interval = $interval;
       $job->status = 'Active';
+      $job->created_by = '1';
+      $job->modified_user_id = '1';
       $job->catch_up = '1';
+      $job->new_with_id = true;
+      $job->id = $function;
       $job->save();
-      //}
    }
 
    ////	END SCHEDULER HELPER FUNCTIONS

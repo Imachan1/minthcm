@@ -1,24 +1,23 @@
 <?php
-// created: 2018-10-11 11:45:12
-$dictionary["exitinterviews_documents"] = array(
+$dictionary["documents_termsofemployment"] = array(
     'true_relationship_type' => 'many-to-many',
     'relationships' =>
     array(
-        'exitinterviews_documents' =>
+        'documents_termsofemployment' =>
         array(
-            'lhs_module' => 'ExitInterviews',
-            'lhs_table' => 'exitinterviews',
+            'lhs_module' => 'Documents',
+            'lhs_table' => 'documents',
             'lhs_key' => 'id',
-            'rhs_module' => 'Documents',
-            'rhs_table' => 'documents',
+            'rhs_module' => 'TermsOfEmployment',
+            'rhs_table' => 'termsofemployment',
             'rhs_key' => 'id',
             'relationship_type' => 'many-to-many',
-            'join_table' => 'exitinterviews_documents',
-            'join_key_lhs' => 'exitinterview_id',
-            'join_key_rhs' => 'document_id',
+            'join_table' => 'documents_termsofemployment',
+            'join_key_lhs' => 'document_id',
+            'join_key_rhs' => 'termsofemployment_id',
         ),
     ),
-    'table' => 'exitinterviews_documents',
+    'table' => 'documents_termsofemployment',
     'fields' =>
     array(
         array(
@@ -38,12 +37,12 @@ $dictionary["exitinterviews_documents"] = array(
             'required' => true,
         ),
         array(
-            'name' => 'exitinterview_id',
+            'name' => 'document_id',
             'type' => 'varchar',
             'len' => 36,
         ),
         array(
-            'name' => 'document_id',
+            'name' => 'termsofemployment_id',
             'type' => 'varchar',
             'len' => 36,
         ),
@@ -51,7 +50,7 @@ $dictionary["exitinterviews_documents"] = array(
     'indices' =>
     array(
         array(
-            'name' => 'exitinterviews_documentsspk',
+            'name' => 'documents_termsofemploymentspk',
             'type' => 'primary',
             'fields' =>
             array(
@@ -59,13 +58,14 @@ $dictionary["exitinterviews_documents"] = array(
             ),
         ),
         array(
-            'name' => 'exitinterviews_documents_alt',
+            'name' => 'documents_termsofemployment_termsofemployment_id',
             'type' => 'alternate_key',
             'fields' =>
             array(
-                'exitinterview_id',
+                'termsofemployment_id',
                 'document_id',
             ),
         ),
     ),
 );
+

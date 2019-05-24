@@ -368,6 +368,7 @@ installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS']);
     $scheduler->rebuildDefaultSchedulers();
     installerHook('post_createDefaultSchedulers');
 
+    installDelegationPDFTemplate();
 
     rebuildWithViewTools(false);
 

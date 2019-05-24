@@ -1,7 +1,6 @@
 <?php
-
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 /**
  *
@@ -142,7 +141,6 @@ include('metadata/Benefits_PositionsMetaData.php');
 include('metadata/Benefits_RolesMetaData.php');
 include('metadata/Calls_CandidatesMetaData.php');
 include('metadata/Candidates_EmployeesMetadata.php');
-include('metadata/Certificates_DocumentsMetaData.php');
 include('metadata/Conclusions_ImprovementsMetadata.php');
 include('metadata/Conclusions_ProblemsMetadata.php');
 include('metadata/Emails_CandidaturesMetaData.php');
@@ -167,7 +165,12 @@ include('metadata/Trainings_DocumentsMetaData.php');
 include('metadata/Trainings_MeetingsMetaData.php');
 include('metadata/viewtools_metadata.php');
 include('metadata/kreporter.users_schedulereports.php');
+include('metadata/documents_candidatesMetaData.php');
+include('metadata/documents_candidaturesMetaData.php');
+include('metadata/documents_certificatesMetaData.php');
+include('metadata/documents_contractsMetaData.php');
+include('metadata/documents_termsofemploymentMetaData.php');
 
-if ( file_exists('custom/application/Ext/TableDictionary/tabledictionary.ext.php') ) {
-   include('custom/application/Ext/TableDictionary/tabledictionary.ext.php');
+if (file_exists('custom/application/Ext/TableDictionary/tabledictionary.ext.php')) {
+    include('custom/application/Ext/TableDictionary/tabledictionary.ext.php');
 }

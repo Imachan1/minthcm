@@ -477,17 +477,10 @@ $app_list_strings = array(
    ),
    // Note:  do not translate record_type_default_key
    //        it is the key for the default record_type_module value
-   'record_type_default_key' => 'Accounts',
+   'record_type_default_key' => 'Project',
    'record_type_display' => array(
       '' => '',
-      'Accounts' => 'Account',
-      'Opportunities' => 'Opportunity',
-      'Cases' => 'Case',
-      'Leads' => 'Lead',
-      'Contacts' => 'Contact', // cn (11/22/2005) added to support Emails
-      'Bugs' => 'Bug',
       'Project' => 'Project',
-      'Prospects' => 'Target',
       'ProjectTask' => 'Project Task',
       'Tasks' => 'Task',
       'Recruitments' => 'Recruitment',
@@ -495,17 +488,10 @@ $app_list_strings = array(
       'Candidates' => 'Candidate',
    ),
    'record_type_display_notes' => array(
-      'Accounts' => 'Account',
-      'Contacts' => 'Contact',
-      'Opportunities' => 'Opportunity',
       'Tasks' => 'Task',
       'Emails' => 'Email',
-      'Bugs' => 'Bug',
       'Project' => 'Project',
       'ProjectTask' => 'Project Task',
-      'Prospects' => 'Target',
-      'Cases' => 'Case',
-      'Leads' => 'Lead',
       'Meetings' => 'Meeting',
       'Candidatures' => 'Candidature',
       'Ideas' => 'Idea',
@@ -513,16 +499,9 @@ $app_list_strings = array(
       'Recruitments' => 'Recruitment',
    ),
    'parent_type_display' => array(
-      'Accounts' => 'Account',
-      'Contacts' => 'Contact',
       'Tasks' => 'Task',
-      'Opportunities' => 'Opportunity',
-      'Bugs' => 'Bug',
-      'Cases' => 'Case',
-      'Leads' => 'Lead',
       'Project' => 'Project',
       'ProjectTask' => 'Project Task',
-      'Prospects' => 'Target',
       'Recruitments' => 'Recruitment',
       'Candidates' => 'Candidate',
       'Candidatures' => 'Candidature',
@@ -1926,8 +1905,8 @@ $app_strings = array(
    'LBL_DURATION_HOUR' => 'hour',
    'LBL_DURATION_MINUTE' => 'minute',
    'LBL_DURATION_DAYS' => 'days',
-   'LBL_DURATION_HOURS' => 'Duration Hours',
-   'LBL_DURATION_MINUTES' => 'Duration Minutes',
+   'LBL_DURATION_HOURS' => 'hours',
+   'LBL_DURATION_MINUTES' => 'minutes',
    //Calendar widget labels
    'LBL_CHOOSE_MONTH' => 'Choose Month',
    'LBL_ENTER_YEAR' => 'Enter Year',
@@ -4125,3 +4104,7 @@ $app_list_strings['alert_type_list'] = array(
    'normal' => 'Normal',
    'custom' => 'Custom',
 );
+
+$app_strings['LBL_RECRUITMENT'] = 'Recruitment';
+$app_strings['LBL_TIME_TRACKING'] = 'Time Tracking';
+$app_strings['LBL_ACTIVITIES'] = 'Activities';
