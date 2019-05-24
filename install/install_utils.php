@@ -767,8 +767,8 @@ function handleSugarConfig() {
    $sugar_config['disable_convert_lead'] = false;
    $sugar_config['log_dir'] = $setup_site_log_dir;
    $sugar_config['log_file'] = $setup_site_log_file;
-   $sugar_config['enable_line_editing_detail'] = true;
-   $sugar_config['enable_line_editing_list'] = true;
+   $sugar_config['enable_line_editing_detail'] = false;
+   $sugar_config['enable_line_editing_list'] = false;
    $sugar_config['filter_module_fields'] = array(
       'Users' => array(
          'show_on_employees',
