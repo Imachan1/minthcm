@@ -37,24 +37,19 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
-/*********************************************************************************
+/* * *******************************************************************************
 
  * Description:
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc. All Rights
  * Reserved. Contributor(s): ______________________________________..
- *********************************************************************************/
+ * ******************************************************************************* */
+
 $defaultDashlets = array(
-						'MessageDashlet' => 'Home',
-						'MyCallsDashlet'=>'Calls',
-						'MyMeetingsDashlet'=>'Meetings',
-						'MyOpportunitiesDashlet'=>'Opportunities',
-						'MyAccountsDashlet'=>'Accounts',
-						'MyLeadsDashlet'=>'Leads',
-						 );
+    'TodaysWorkScheduleDashlet' => 'Home',
+    'MyMeetingsDashlet' => 'Meetings',
+    'LeaveOfAbsenceDashlet' => 'Home',
+    'CalendarDashlet' => 'Calendar',
+);
 
-
-
-
-
-if (is_file('custom/modules/Home/dashlets.php')) include_once('custom/modules/Home/dashlets.php');
+if (is_file('custom/modules/Home/dashlets.php'))
+        include_once('custom/modules/Home/dashlets.php');
