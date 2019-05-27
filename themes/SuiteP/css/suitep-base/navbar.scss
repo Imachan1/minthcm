@@ -1604,7 +1604,7 @@
   .tablet-bar > .toolbar > li > .btn {
     margin: 0;
     height: $navbar-toolbar-height;
-    width: $navbar-toolbar-height;
+    width: $navbar-toolbar-width;
     padding: 0;
     line-height: normal;
     background-size: 40px auto;
@@ -1826,7 +1826,7 @@
 
   .tablet-bar > .toolbar > li.open .searchbutton {
     border: none;
-    width: $navbar-toolbar-height;
+    width: $navbar-toolbar-width;
   }
 
   .tablet-bar > .toolbar > li.open .searchbutton:hover {
@@ -2085,7 +2085,7 @@
   .desktop-bar > .toolbar > li > .btn {
     margin: 0;
     height: $navbar-toolbar-height;
-    width: $navbar-toolbar-height;
+    width: $navbar-toolbar-width;
     padding: 0;
   }
 
@@ -2138,12 +2138,12 @@
 
   .desktop-bar > .toolbar > li.navbar-search.open .btn-default.searchbutton {
     border: none;
-    width: $navbar-toolbar-height;
+    width: $navbar-toolbar-width;
   }
 
   .desktop-bar > .toolbar > li.navbar-search.open .btn-default.searchbutton:hover {
     border: none;
-    width: $navbar-toolbar-height;
+    width: $navbar-toolbar-width;
   }
 
   .desktop-bar > .toolbar > li.navbar-search.open .btn-default.searchbutton:before {
