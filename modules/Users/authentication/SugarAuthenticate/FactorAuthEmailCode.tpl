@@ -70,7 +70,7 @@
 <body>
     <div class="p_login">
         <div class="p_login_top">
-            <a title="MintHCM" href="https://minthcm.com" target="_blank">MintHCM</a>
+            <a title="MintHCM" href="https://minthcm.org" target="_blank">MintHCM</a>
         </div>
 
     <div class="p_login_middle">
@@ -85,7 +85,8 @@
         </div>
 
         <div class="p_login_bottom">
-            <a id="admin_options">© Supercharged by SuiteCRM</a>
+            <a id="admin_options">© Produced by MintHCM</a>
+            <a id="admin_options" style="margin-left: 20px">© Supercharged by SuiteCRM</a>
             <a id="powered_by">© Powered By SugarCRM</a>
         </div>
     </div>

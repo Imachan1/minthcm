@@ -40,6 +40,7 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
+include 'minthcm_version.php';
 include 'suitecrm_version.php';
 global $sugar_config, $mod_strings;
 ?>
@@ -47,19 +48,17 @@ global $sugar_config, $mod_strings;
     <h2 style="text-transform: uppercase;"><?php echo $mod_strings['LBL_ABOUT']; ?></h2>
     <h2><img src="include/images/minthcm-logo.svg" alt="MintHCM"></h2>
     <h3 style="text-transform: uppercase;"><?php echo $mod_strings['LBL_ABOUT_TITLE']; ?></h3>
-    <br>
-    <b>
-        <?php
-        echo $mod_strings['LBL_VERSION'].' '.$suitecrm_version;
-        if (is_file('custom_version.php')) {
-            include 'custom_version.php';
-            echo '&nbsp;&nbsp;&nbsp;'.$custom_version;
-        }
-        ?>
-    </b>
+    <br />
     <p>
-        Sugar <?php echo $mod_strings['LBL_VERSION'].' '.$sugar_version.' ('.$mod_strings['LBL_BUILD'].' '.$sugar_build.')'; ?></p>
-    <br>
+        <b>
+            MintHCM <?php echo $mod_strings['LBL_VERSION'].' '.$minthcm_version; ?>
+        </b>
+        <br />
+        Suite <?php echo $mod_strings['LBL_VERSION'].' '.$suitecrm_version; ?>
+        <br />
+        Sugar <?php echo $mod_strings['LBL_VERSION'].' '.$sugar_version.' ('.$mod_strings['LBL_BUILD'].' '.$sugar_build.')'; ?>
+    </p>
+    <br />
     <p><?php echo $mod_strings['LBL_ABOUT_CHAPTER_1']; ?></p>
 
     <h3 style="margin-top:40px; text-transform: uppercase;"><?php echo $mod_strings['LBL_ABOUT_CHAPTER_2_TITLE']; ?></h3>

@@ -268,7 +268,7 @@ input[type=password] {
     text-align: left;
 }
 
-.stop a:link, a:visited  {
+.stop a:link, .stop a:visited  {
     color: #63c29a;
     text-decoration: underline;
     text-align: left;

@@ -111,13 +111,6 @@ if ( !$hasUserPreferences ) {
       $current_user->setPreference('columns', $old_columns, 0, 'home');
       $current_user->setPreference('dashlets', $old_dashlets, 0, 'home');
    } else {
-      // This is here to get Sugar dashlets added above the rest
-      $dashlets[create_guid()] = array('className' => 'SugarFeedDashlet',
-         'module' => 'SugarFeed',
-         'forceColumn' => 1,
-         'fileLocation' => $dashletsFiles['SugarFeedDashlet']['file'],
-      );
-
       foreach ( $defaultDashlets as $dashletName => $module ) {
          // clint - fixes bug #20398
          // only display dashlets that are from visibile modules and that the user has permission to list
@@ -131,7 +124,7 @@ if ( !$hasUserPreferences ) {
             }
             $dashlets[create_guid()] = array('className' => $dashletName,
                'module' => $module,
-               'forceColumn' => 0,
+               'forceColumn' => (int) ($module === 'Calendar'),
                'fileLocation' => $dashletsFiles[$dashletName]['file'],
                'options' => $options);
          }

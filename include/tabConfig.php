@@ -40,43 +40,84 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
-
-
-
-$GLOBALS["tabStructure"] = array(       
-   'LBL_RECRUITMENT' => array(         
-      'label' => 'LBL_RECRUITMENT',        
-      'modules' => array(                     
-         'Candidates',
-         'Candidatures',
-         'Positions',
-         'Recruitments',
-      ),
-   ),
-   'LBL_TIME_TRACKING' => array(         
-      'label' => 'LBL_TIME_TRACKING',        
-      'modules' => array(                     
-         'WorkSchedules',
-         'WorkingMonths',
-         'NonWorkingDays',
-         'ev_Overtimes',
-         'Delegations',
-      ),
-   ),
-   'LBL_ACTIVITIES' => array(         
-      'label' => 'LBL_ACTIVITIES',        
-      'modules' => array(                     
-         'Calendar',
-         'Calls',
-         'Meetings',
-         'Tasks',
-         'Emails',
-         'Notes',
-      ),
-   ),
+$GLOBALS['tabStructure'] = array(
+    'LBL_NAV_RECRUITMENT_EB' =>
+    array(
+        'label' => 'LBL_NAV_RECRUITMENT_EB',
+        'modules' =>
+        array(
+            0 => 'Candidates',
+            1 => 'Candidatures',
+            2 => 'Positions',
+            3 => 'Recruitments',
+            4 => 'Onboardings',
+            5 => 'Offboardings',
+            6 => 'OnboardingOffboardingElements',
+            7 => 'OffboardingTemplates',
+            8 => 'OnboardingTemplates',
+            9 => 'ExitInterviews',
+            10 => 'Documents',
+        ),
+    ),
+    'LBL_NAV_TIME_TRACKING' =>
+    array(
+        'label' => 'LBL_NAV_TIME_TRACKING',
+        'modules' =>
+        array(
+            0 => 'Calendar',
+            1 => 'ReservationsCalendar',
+            2 => 'WorkSchedules',
+            3 => 'Notes',
+            4 => 'Meetings',
+            5 => 'Calls',
+            6 => 'Tasks',
+            7 => 'Emails',
+            8 => 'Trainings',
+            9 => 'Reservations',
+            10 => 'Resources',
+            11 => 'Delegations',
+        ),
+    ),
+    'LBL_NAV_COMPANY_LIFE' =>
+    array(
+        'label' => 'LBL_NAV_COMPANY_LIFE',
+        'modules' =>
+        array(
+            0 => 'EmployeeRoles',
+            1 => 'OrganizationalUnits',
+            2 => 'News',
+            3 => 'Ideas',
+            4 => 'KReports',
+            5 => 'AM_ProjectTemplates',
+            6 => 'FP_events',
+            7 => 'Campaigns',
+            8 => 'Project',
+            9 => 'FP_Event_Locations',
+        ),
+    ),
+    'LBL_NAV_EMPLOYEE' =>
+    array(
+        'label' => 'LBL_NAV_EMPLOYEE',
+        'modules' =>
+        array(
+            0 => 'Conclusions',
+            1 => 'Problems',
+            2 => 'Improvements',
+            3 => 'Responsibilities',
+            4 => 'ResponsibilityActivities',
+            5 => 'Competencies',
+            6 => 'Contracts',
+            7 => 'TermsOfEmployment',
+            8 => 'PeriodsOfEmployment',
+            9 => 'Benefits',
+            10 => 'Applications',
+            11 => 'Certificates',
+            12 => 'Appraisals',
+            13 => 'Goals',
+        ),
+    ),
 );
 
-if(file_exists('custom/include/tabConfig.php')){
+if (file_exists('custom/include/tabConfig.php')) {
     require 'custom/include/tabConfig.php';
 }

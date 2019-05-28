@@ -129,14 +129,14 @@ $out =<<<EOQ
    <script type="text/javascript" src="install/siteConfig.js"></script>
 </head>
 <body onload="javascript:document.getElementById('button_next2').focus();">
-    <!--SuiteCRM installer-->
+    <!--MintHCM installer-->
         <div id="install_container">
             <div id="install_box">
                 <form action="install.php" method="post" name="setConfig" id="form">
                 <div id="install_content">
                     <header id="install_header">
                         <div id="steps"><p>{$mod_strings['LBL_STEP6']}</p><i class="icon-progress-0" id="complete"></i><i class="icon-progress-1" id="complete"></i><i class="icon-progress-2" id="complete"></i><i class="icon-progress-3" id="complete"></i><i class="icon-progress-4" id="complete"></i><i class="icon-progress-5" id="complete"></i><i class="icon-progress-6"></i><i class="icon-progress-7"></i></div>
-                        <div class="install_img"><a href="https://minthcm.com" target="_blank"><img src="{$sugar_md}" alt="MintHCM"></a></div>
+                        <div class="install_img"><a href="https://minthcm.org" target="_blank"><img src="{$sugar_md}" alt="MintHCM"></a></div>
                     </header>
                     <input type="hidden" name="current_step" value="{$next_step}">
                     <h2>{$mod_strings['LBL_SITECFG_TITLE']}</h2>
@@ -206,7 +206,7 @@ $out .= <<<EOQ
 <br>
 </div>
 <footer id="install_footer">
-    <p id="footer_links"><a href="https://minthcm.com" target="_blank">Visit minthcm.com</a> | <a href="https://suitecrm.com" target="_blank">Visit suitecrm.com</a> | <a href="https://suitecrm.com/index.php?option=com_kunena&view=category&Itemid=1137&layout=list" target="_blank">Support Forums</a> | <a href="https://docs.suitecrm.com/admin/installation-guide/" target="_blank">Installation Guide</a> | <a href="LICENSE.txt" target="_blank">License</a>
+    <p id="footer_links"><a href="https://minthcm.org" target="_blank">Visit minthcm.org</a> | <a href="https://minthcm.com" target="_blank">Visit minthcm.com</a> | <a href="https://minthcm.org/support/" target="_blank">Support Forums</a> | <a href="LICENSE.txt" target="_blank">License</a></p>
 </footer>
 </div>
 </div>

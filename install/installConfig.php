@@ -214,7 +214,7 @@ EOQ;
             </div>
 
             <footer id="install_footer">
-                <p id="footer_links"><a href="https://minthcm.com" target="_blank">Visit minthcm.com</a> | <a href="https://suitecrm.com" target="_blank">Visit suitecrm.com</a> | <a href="https://suitecrm.com/index.php?option=com_kunena&view=category&Itemid=1137&layout=list" target="_blank">Support Forums</a> | <a href="https://docs.suitecrm.com/admin/installation-guide/" target="_blank">Installation Guide</a> | <a href="LICENSE.txt" target="_blank">License</a>
+                <p id="footer_links"><a href="https://minthcm.org" target="_blank">Visit minthcm.org</a> | <a href="https://minthcm.com" target="_blank">Visit minthcm.com</a> | <a href="https://minthcm.org/support/" target="_blank">Support Forums</a> | <a href="LICENSE.txt" target="_blank">License</a></p>
             </footer>
         </div>
     </body>
@@ -1097,7 +1097,7 @@ EOQ;
 
 <div class="security-block" style="display:none;">
 <table cellspacing="0" cellpadding="0" border="0" align="center" class="shell">
-      <tr><td colspan="2" id="help"><!-- <a href="{$help_url}" target='_blank'>{$mod_strings['LBL_HELP']} </a> --></td></tr>
+      <tr><td colspan="2" id="help"></td></tr>
     <tr>
       <th width="500">
    </th>

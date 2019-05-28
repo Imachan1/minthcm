@@ -107,7 +107,6 @@ $admin_group_header[] = ['LBL_ADMINISTRATION_HOME_TITLE', '', false, $admin_opti
 $admin_option_defs = [];
 $admin_option_defs['Emails']['mass_Email_config'] = ['EmailMan', 'LBL_MASS_EMAIL_CONFIG_TITLE', 'LBL_MASS_EMAIL_CONFIG_DESC', './index.php?module=EmailMan&action=config', 'email-settings'];
 
-$admin_option_defs['Campaigns']['campaignconfig'] = ['EmailCampaigns', 'LBL_CAMPAIGN_CONFIG_TITLE', 'LBL_CAMPAIGN_CONFIG_DESC', './index.php?module=EmailMan&action=campaignconfig', 'campaign-email-settings'];
 
 $admin_option_defs['Emails']['mailboxes'] = ['EmailInbound', 'LBL_MANAGE_MAILBOX', 'LBL_MAILBOX_DESC', './index.php?module=InboundEmail&action=index', 'inbound-email'];
 $admin_option_defs['Emails']['mailboxes_outbound'] = ['EmailOutbound', 'LBL_MANAGE_MAILBOX_OUTBOUND', 'LBL_MAILBOX_OUTBOUND_DESC', './index.php?module=OutboundEmailAccounts&action=index', 'outbound-email'];
@@ -141,42 +140,6 @@ $admin_group_header[] = ['LBL_STUDIO_TITLE', '', false, $admin_option_defs, 'LBL
 
 $admin_option_defs = [];
 
-$admin_option_defs['jjwg_Maps']['config'] = [
-   'Administration',
-   'LBL_JJWG_MAPS_ADMIN_CONFIG_TITLE',
-   'LBL_JJWG_MAPS_ADMIN_CONFIG_DESC',
-   './index.php?module=jjwg_Maps&action=config',
-   'google-maps-settings'
-];
-$admin_option_defs['jjwg_Maps']['geocoded_counts'] = [
-   'Geocoded_Counts',
-   'LBL_JJWG_MAPS_ADMIN_GEOCODED_COUNTS_TITLE',
-   'LBL_JJWG_MAPS_ADMIN_GEOCODED_COUNTS_DESC',
-   './index.php?module=jjwg_Maps&action=geocoded_counts',
-   'geocoded-counts'
-];
-$admin_option_defs['jjwg_Maps']['geocoding_test'] = [
-   'GeocodingTests',
-   'LBL_JJWG_MAPS_ADMIN_GEOCODING_TEST_TITLE',
-   'LBL_JJWG_MAPS_ADMIN_GEOCODING_TEST_DESC',
-   './index.php?module=jjwg_Maps&action=geocoding_test',
-   'geocoding-test'
-];
-$admin_option_defs['jjwg_Maps']['geocode_addresses'] = [
-   'GeocodeAddresses',
-   'LBL_JJWG_MAPS_ADMIN_GEOCODE_ADDRESSES_TITLE',
-   'LBL_JJWG_MAPS_ADMIN_GEOCODE_ADDRESSES_DESC',
-   './index.php?module=jjwg_Maps&action=geocode_addresses',
-   'geocode-addresses'
-];
-$admin_option_defs['jjwg_Maps']['address_cache'] = [
-   'Address_Cache',
-   'LBL_JJWG_MAPS_ADMIN_ADDRESS_CACHE_TITLE',
-   'LBL_JJWG_MAPS_ADMIN_ADDRESS_CACHE_DESC',
-   './index.php?module=jjwg_Address_Cache&action=index',
-   'address-cache'
-];
-
 $admin_option_defs['Administration']['google_calendar_settings'] = [
    'Google Calendar Settings',
    'LBL_GOOGLE_CALENDAR_SETTINGS_TITLE',
@@ -201,47 +164,6 @@ $admin_option_defs['Administration'] = array_merge((array) $admin_group_header[0
 
 
 $admin_group_header[0] = ['LBL_USERS_TITLE', '', false, array_merge((array) $admin_group_header[0][3], (array) $admin_option_defs), 'LBL_USERS_DESC'];
-
-
-$admin_option_defs = [];
-$admin_option_defs['Administration']['aos'] = [
-   'AOS',
-   'LBL_AOS_SETTINGS',
-   'LBL_CHANGE_SETTINGS',
-   './index.php?module=Administration&action=AOSAdmin',
-   'aos-settings'
-];
-
-$admin_option_defs['Administration']['aod'] = [
-   'AOD',
-   'LBL_AOD_SETTINGS',
-   'LBL_CHANGE_SETTINGS_AOD',
-   './index.php?module=Administration&action=AODAdmin',
-   'aod-settings'
-];
-$admin_option_defs['Administration']['aop'] = [
-   'AOP',
-   'LBL_AOP_SETTINGS',
-   'LBL_CHANGE_SETTINGS_AOP',
-   './index.php?module=Administration&action=AOPAdmin',
-   'aop-settings'
-];
-
-$admin_option_defs['Administration']['business_hours'] = [
-   'AOBH_BusinessHours',
-   'LBL_BUSINESS_HOURS',
-   'LBL_AOP_BUSINESS_HOURS_DESC',
-   './index.php?module=Administration&action=BusinessHours',
-   'aobh-businesshours'
-];
-
-$admin_group_header['sagility'] = [
-   'LBL_SALESAGILITY_ADMIN',
-   '',
-   false,
-   $admin_option_defs,
-   ''
-];
 
 $admin_option_defs = [];
 
@@ -277,19 +199,6 @@ $admin_group_header[] = [
    $admin_option_defs,
    'LBL_SEARCH_HEADER_DESC'
 ];
-
-//bugs.
-$admin_option_defs = [];
-$admin_option_defs['Bugs']['bug_tracker'] = [
-   'Releases',
-   'LBL_MANAGE_RELEASES',
-   'LBL_RELEASE',
-   './index.php?module=Releases&action=index',
-   'releases'
-];
-$admin_group_header[] = ['LBL_BUG_TITLE', '', false, $admin_option_defs, 'LBL_BUG_DESC'];
-
-
 
 $admin_option_defs = [];
 $admin_option_defs['Administration']['private_group_repair'] = [

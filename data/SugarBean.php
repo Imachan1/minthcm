@@ -3826,7 +3826,7 @@ class SugarBean {
       }
       //Mint start SG optimization
       global $current_user;
-      $skipped_modules = [ 'ev_RedmineProjectTask' ]; //Mint #60146
+      $skipped_modules = [];
       $group_where = SecurityGroup::getGroupWhere($this->table_name, $this->module_dir, $current_user->id);
 
       if ( strpos($ret_array['where'], $group_where) !== false && !in_array($this->module_name, $skipped_modules) ) { //Mint #60146
@@ -5438,6 +5438,7 @@ class SugarBean {
     */
    public function get_list_view_array() {
       static $cache = array();
+      $this->retrieve($this->id); // MintHCM
       // cn: bug 12270 - sensitive fields being passed arbitrarily in listViews
       $sensitiveFields = array( 'user_hash' => '' );
 

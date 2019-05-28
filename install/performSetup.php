@@ -135,7 +135,7 @@ $out =<<<EOQ
     <link rel="stylesheet" href="themes/SuiteP/css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
 </head>
 <body onload="javascript:document.getElementById('button_next2').focus();">
-<!--SuiteCRM installer-->
+<!--MintHCM installer-->
 <div id="install_container">
 <div id="install_box">
 <header id="install_header">
@@ -145,7 +145,7 @@ $out =<<<EOQ
                         <i class="icon-progress-1" id="complete"></i>
                         <i class="icon-progress-2"></i>
                     </div>
-            <div class="install_img"><a href="https://minthcm.com" target="_blank"><img src="{$sugar_md}" alt="MintHCM"></a></div>
+            <div class="install_img"><a href="https://minthcm.org" target="_blank"><img src="{$sugar_md}" alt="MintHCM"></a></div>
 </header>
 EOQ;
 echo $out;
@@ -368,6 +368,7 @@ installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS']);
     $scheduler->rebuildDefaultSchedulers();
     installerHook('post_createDefaultSchedulers');
 
+    installDelegationPDFTemplate();
 
     rebuildWithViewTools(false);
 
@@ -403,11 +404,7 @@ installLog("Installation has completed *********");
 
 
     $errTcpip = '';
-    //$fp = @fsockopen("www.suitecrm.com", 80, $errno, $errstr, 3);
-    if (!$fp) {
-        $errTcpip = "<p>{$mod_strings['ERR_PERFORM_NO_TCPIP']}</p>";
-    }
-    if ($fp && (!isset($_SESSION['oc_install']) || $_SESSION['oc_install'] == false)) {
+    if (isset($fp) && (!isset($_SESSION['oc_install']) || $_SESSION['oc_install'] == false)) {
         @fclose($fp);
         if ($next_step == 9999)
             $next_step = 8;
@@ -466,7 +463,6 @@ $enabled_tabs[] = 'Accounts';
    $enabled_tabs[] = 'WorkSchedules';
    $enabled_tabs[] = 'WorkingMonths';
    $enabled_tabs[] = 'NonWorkingDays';
-   $enabled_tabs[] = 'ev_Overtimes';
    $enabled_tabs[] = 'KReports';
    $enabled_tabs[] = 'Candidates';
    $enabled_tabs[] = 'Candidatures';
@@ -776,7 +772,7 @@ $out =<<<EOQ
 <p><b>{$fpResult}</b></p>
 </div>
 <footer id="install_footer">
-    <p id="footer_links"><a href="https://minthcm.com" target="_blank">Visit minthcm.com</a> | <a href="https://suitecrm.com" target="_blank">Visit suitecrm.com</a> | <a href="https://suitecrm.com/index.php?option=com_kunena&view=category&Itemid=1137&layout=list" target="_blank">Support Forums</a> | <a href="https://docs.suitecrm.com/admin/installation-guide/" target="_blank">Installation Guide</a> | <a href="LICENSE.txt" target="_blank">License</a>
+    <p id="footer_links"><a href="https://minthcm.org" target="_blank">Visit minthcm.org</a> | <a href="https://minthcm.com" target="_blank">Visit minthcm.com</a> | <a href="https://minthcm.org/support/" target="_blank">Support Forums</a> | <a href="LICENSE.txt" target="_blank">License</a></p>
 </footer>
 </div>
 </body>

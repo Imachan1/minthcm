@@ -69,7 +69,7 @@ while ( $event = $db->fetchByAssoc($sql_result) ) {
    if ( !isset($users_events[$yesterday_key]) ) {
       $users_events[$today_key] = $i;
       $result[$i] = array(
-         "title" => $event['name'] . ' [' . $app_list_strings['workschedules_type_list'][$event['type']] . ']',
+         "title" => $event['name'] . ' [' . $app_list_strings['workschedule_type_list'][$event['type']] . ']',
          "start" => $event['start_date'],
          "color" => $typeToColor[$event['type']],
          "allDay" => true,

@@ -767,8 +767,8 @@ function handleSugarConfig() {
    $sugar_config['disable_convert_lead'] = false;
    $sugar_config['log_dir'] = $setup_site_log_dir;
    $sugar_config['log_file'] = $setup_site_log_file;
-   $sugar_config['enable_line_editing_detail'] = true;
-   $sugar_config['enable_line_editing_list'] = true;
+   $sugar_config['enable_line_editing_detail'] = false;
+   $sugar_config['enable_line_editing_list'] = false;
    $sugar_config['filter_module_fields'] = array(
       'Users' => array(
          'show_on_employees',
@@ -1380,6 +1380,15 @@ function setConfig($name, $value) {
     $configurator = new Configurator();
     $configurator->config[$name] = $value;
     $configurator->handleOverride();
+}
+
+function installDelegationPDFTemplate(){
+    $db = DBManagerFactory::getInstance();
+    $query = "
+        INSERT IGNORE INTO `pdftemplates` (`id`, `name`, `date_entered`, `date_modified`, `modified_user_id`, `created_by`, `description`, `deleted`, `is_default`, `relatedmodule`)
+        VALUES ('delegation-default', 'Domyślny', NOW(), NOW(), '1', '1', NULL, '0', '1', 'Delegations');
+    ";
+    $db->query($query);
 }
 
 // Returns true if the given file/dir has been made writable (or is already
