@@ -82,11 +82,15 @@ Just get the accessOptions for the Accounts module and use for the header select
 Not ideal but it'll work since it's the only way to get that info without editing DetailView.php to pass this with ACTION_NAMES
 {foreach from=$ACTION_NAMES item="ACTION_LABEL" key="ACTION_NAME"}
 *}
+{*MintHCM START*}
+{assign var="ACL_HEADER_DISPLAYED" value="false"}
 {foreach from=$CATEGORIES item="TYPES" key="CATEGORY_NAME"}
-{if $CATEGORY_NAME=='Accounts'}
-
-	{foreach from=$ACTION_NAMES item="ACTION_LABEL" key="ACTION_NAME"}
-		{foreach from=$TYPES item="ACTIONS"}
+{*{if $CATEGORY_NAME=='Accounts'}*}
+{if $ACL_HEADER_DISPLAYED == "false"}
+    {assign var="ACL_HEADER_DISPLAYED" value="true"}
+{*MintHCM END*}
+        {foreach from=$ACTION_NAMES item="ACTION_LABEL" key="ACTION_NAME"}
+                {foreach from=$TYPES item="ACTIONS"}
 			{foreach from=$ACTIONS item="ACTION" key="ACTION_NAME_ACTIVE"}
 			{if $ACTION_NAME==$ACTION_NAME_ACTIVE}
 
