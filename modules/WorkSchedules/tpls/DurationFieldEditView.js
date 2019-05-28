@@ -127,7 +127,6 @@ function setDateTimeField( date_time_field_id, formatted_date_time ) {
    }
    if ( date_time._d.toString() != "Invalid Date" ) {
       $( '#' + date_time_field_id + '_date' ).val( date_time.format( viewTools.date.getDateFormat() ) );
-      $( '#' + date_time_field_id + '_hours' ).val( date_time.format( "HH" ) );
       $( '#' + date_time_field_id + '_minutes' ).val( date_time.format( "mm" ) );
       if ( $( '#' + date_time_field_id + '_meridiem' ).length > 0 ) {
          if ( viewTools.date.getTimeFormat().indexOf( 'a' ) > -1 ) {
@@ -135,6 +134,10 @@ function setDateTimeField( date_time_field_id, formatted_date_time ) {
          } else if ( viewTools.date.getTimeFormat().indexOf( 'A' ) > -1 ) {
             $( '#' + date_time_field_id + '_meridiem' ).val( date_time.format( "A" ) );
          }
+         
+         $( '#' + date_time_field_id + '_hours' ).val( date_time.format( "hh" ) );
+      } else {
+         $( '#' + date_time_field_id + '_hours' ).val( date_time.format( "HH" ) );
       }
       if ( date_time_field_id === 'date_start' ) {
          combo_date_start.update();
