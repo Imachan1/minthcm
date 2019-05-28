@@ -82,6 +82,7 @@ $GLOBALS['sql_queries'] = 0;
 require_once('include/SugarLogger/LoggerManager.php');
 require_once('sugar_version.php');
 require_once('suitecrm_version.php');
+require_once('minthcm_version.php');
 require_once('install/install_utils.php');
 require_once('install/install_defaults.php');
 require_once('include/TimeDate.php');
@@ -117,7 +118,7 @@ if(get_magic_quotes_gpc() == 1) {
 
 
 $GLOBALS['log'] = LoggerManager::getLogger('SugarCRM');
-$setup_sugar_version = $suitecrm_version;
+$setup_sugar_version = $minthcm_version;
 $install_script = true;
 
 ///////////////////////////////////////////////////////////////////////////////
