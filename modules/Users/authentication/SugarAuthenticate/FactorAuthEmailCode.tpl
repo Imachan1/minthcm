@@ -70,7 +70,7 @@
 <body>
     <div class="p_login">
         <div class="p_login_top">
-            <a title="MintHCM" href="https://minthcm.com" target="_blank">MintHCM</a>
+            <a title="MintHCM" href="https://minthcm.org" target="_blank">MintHCM</a>
         </div>
 
     <div class="p_login_middle">

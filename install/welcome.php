@@ -118,7 +118,7 @@ $out = <<<EOQ
         <form action="install.php" method="post" name="setConfig" id="form">
             <header id="install_header">
                 <h1 id="welcomelink">{$mod_strings['LBL_TITLE_WELCOME']} {$setup_sugar_version} {$mod_strings['LBL_WELCOME_SETUP_WIZARD']}</h1>
-                <div class="install_img"><a href="https://minthcm.com" target="_blank"><img src="{$sugar_md}" alt="MintHCM"></a></div>
+                <div class="install_img"><a href="https://minthcm.org" target="_blank"><img src="{$sugar_md}" alt="MintHCM"></a></div>
             </header>
             <div id="wrapper" style="display:none;">
                 <div class="rslides_container">

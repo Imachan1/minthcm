@@ -145,7 +145,7 @@ $out =<<<EOQ
                         <i class="icon-progress-1" id="complete"></i>
                         <i class="icon-progress-2"></i>
                     </div>
-            <div class="install_img"><a href="https://minthcm.com" target="_blank"><img src="{$sugar_md}" alt="MintHCM"></a></div>
+            <div class="install_img"><a href="https://minthcm.org" target="_blank"><img src="{$sugar_md}" alt="MintHCM"></a></div>
 </header>
 EOQ;
 echo $out;

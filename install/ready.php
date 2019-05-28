@@ -328,7 +328,7 @@ $out = <<<EOQ
             <!--
             <div id="steps"><p>{$mod_strings['LBL_STEP1']}</p><i class="icon-progress-0"></i><i class="icon-progress-1"></i><i class="icon-progress-2"></i><i class="icon-progress-3"></i><i class="icon-progress-4"></i><i class="icon-progress-5"></i><i class="icon-progress-6"></i><i class="icon-progress-7"></i></div>
             -->
-            <div class="install_img"><a href="https://minthcm.com" target="_blank"><img src="{$sugar_md}" alt="MintHCM"></a></div>
+            <div class="install_img"><a href="https://minthcm.org" target="_blank"><img src="{$sugar_md}" alt="MintHCM"></a></div>
         </header>
 	        <form action="install.php" method="post" name="form" id="form">
 	        	<div id="install_content">
