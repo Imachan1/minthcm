@@ -6,6 +6,9 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2019 MintHCM
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
  * Free Software Foundation with the addition of the following permission added
@@ -31,10 +34,11 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by
- * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 (function($){$.fn.EmailsComposeViewModal=function(options){"use strict";var self=this;var opts=$.extend({},$.fn.EmailsComposeViewModal.defaults,options);self.handleClick=function(e){"use strict";var self=this;self.emailComposeView=null;var opts=$.extend({},$.fn.EmailsComposeViewModal.defaults);var composeBox=$('<div></div>').appendTo(opts.contentSelector);composeBox.messageBox({"showHeader":false,"showFooter":false,"size":'lg'});composeBox.setBody('<div class="email-in-progress"><img src="themes/'+SUGAR.themes.theme_name+'/images/loading.gif"></div>');composeBox.show();$.ajax({type:"GET",cache:false,url:'index.php?module=Emails&action=ComposeView&in_popup=1'}).done(function(data){if(data.length===0){console.error("Unable to display ComposeView");composeBox.setBody(SUGAR.language.translate('','ERR_AJAX_LOAD'));return;}
 composeBox.setBody(data);self.emailComposeView=composeBox.controls.modal.body.find('.compose-view').EmailsComposeView();$(self.emailComposeView).on('sentEmail',function(event,composeView){composeBox.hide();composeBox.remove();});$(self.emailComposeView).on('disregardDraft',function(event,composeView){if(typeof messageBox!=="undefined"){var mb=messageBox({size:'lg'});mb.setTitle(SUGAR.language.translate('','LBL_CONFIRM_DISREGARD_DRAFT_TITLE'));mb.setBody(SUGAR.language.translate('','LBL_CONFIRM_DISREGARD_DRAFT_BODY'));mb.on('ok',function(){mb.remove();composeBox.hide();composeBox.remove();});mb.on('cancel',function(){mb.remove();});mb.show();}else{if(confirm(self.translatedErrorMessage)){composeBox.hide();composeBox.remove();}}});composeBox.on('cancel',function(){composeBox.remove();});composeBox.on('hide.bs.modal',function(){composeBox.remove();});}).fail(function(data){composeBox.controls.modal.content.html(SUGAR.language.translate('','LBL_EMAIL_ERROR_GENERAL_TITLE'));});return $(self);};self.construct=function(){"use strict";$(opts.buttonSelector).click(self.handleClick)};self.destruct=function(){};self.construct();return $(self);};$.fn.openComposeViewModal=function(source){"use strict";var self=this;self.emailComposeView=null;var opts=$.extend({},$.fn.EmailsComposeViewModal.defaults);var composeBox=$('<div></div>').appendTo(opts.contentSelector);composeBox.messageBox({"showHeader":false,"showFooter":false,"size":'lg'});composeBox.setBody('<div class="email-in-progress"><img src="themes/'+SUGAR.themes.theme_name+'/images/loading.gif"></div>');composeBox.show();var relatedId=$('[name="record"]').val();var ids='&ids=';if($(source).attr('data-record-id')!==''){ids=ids+$(source).attr('data-record-id');relatedId=$(source).attr('data-record-id');}

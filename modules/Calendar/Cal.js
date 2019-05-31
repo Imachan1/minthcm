@@ -6,6 +6,9 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2019 MintHCM
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
  * Free Software Foundation with the addition of the following permission added
@@ -31,10 +34,11 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by
- * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 var CAL={};CAL.slot_height=14;CAL.dropped=0;CAL.records_openable=true;CAL.moved_from_cell="";CAL.deleted_id="";CAL.deleted_module="";CAL.tmp_header="";CAL.disable_creating=false;CAL.record_editable=false;CAL.shared_users={};CAL.shared_users_count=0;CAL.script_evaled=false;CAL.editDialog=false;CAL.settingsDialog=false;CAL.sharedDialog=false;CAL.basic={};CAL.basic.items={};CAL.update_dd=new YAHOO.util.CustomEvent("update_dd");CAL.dd_registry=new Object();CAL.resize_registry=new Object();CAL.print=false;CAL.dom=YAHOO.util.Dom;CAL.get=YAHOO.util.Dom.get;CAL.query=YAHOO.util.Selector.query;CAL.destroy_ui=function(id){if(CAL.items_resizable&&typeof CAL.resize_registry[id]!="undefined"){CAL.resize_registry[id].destroy();delete CAL.resize_registry[id];}
 if(CAL.items_draggable&&typeof CAL.dd_registry[id]!="undefined")
