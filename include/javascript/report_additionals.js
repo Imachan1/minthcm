@@ -6,6 +6,9 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2019 MintHCM
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
  * Free Software Foundation with the addition of the following permission added
@@ -31,10 +34,11 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by
- * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 var groups_arr=new Array();var chartTypesHolder=[];var groups_count=-1;var filters_arr=new Array();var filters_count_map=new Object();var filters_count=-1;var current_filter_id=-1;var groups_count_map=new Object();var current_group_id=-1;var join_refs=new Array();var group_field=null;var has_group=null;var global_report_def=null;var goto_anchor='';var all_fields=new Object();var full_table_list=new Object();full_table_list.self=new Object();full_table_list.self.parent='';full_table_list.self.value=document.EditView.self.options[document.EditView.self.options.selectedIndex].value;full_table_list.self.module=document.EditView.self.options[document.EditView.self.options.selectedIndex].value;full_table_list.self.label=document.EditView.self.options[document.EditView.self.options.selectedIndex].text;full_table_list.self.children=new Object();function hideCheckGroups(){document.getElementById('checkGroups').style.display='none';}
 function table_changed(obj){if(document.EditView.report_type[1].checked){if(typeof hideCheckGroupsTimeout!='undefined')clearTimeout(hideCheckGroupsTimeout);document.getElementById('checkGroups').style.display='';hideCheckGroupsTimeout=window.setTimeout('hideCheckGroups()',6000);}

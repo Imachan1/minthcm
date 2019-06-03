@@ -6,6 +6,9 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2019 MintHCM
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
  * Free Software Foundation with the addition of the following permission added
@@ -31,10 +34,11 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by
- * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 (function($){$.fn.messageBox=function(options){"use strict";var self=this;self.controls={};self.controls.modal={};if(typeof $.fn.modal==="undefined"){console.error('messageBox - Missing Dependency Required: Bootstrap model');return self;}
 self.modal=$.fn.modal;var opts=$.extend({},$.fn.messageBox.defaults,options);self.show=function(){"use strict";self.controls.modal.container.modal('show');return self;};self.onOk=function(){"use strict";$(self).trigger('ok');return false;};self.onCancel=function(){"use strict";$(self).trigger('cancel');return false;};self.generateID=function(){"use strict";var characters=['a','b','c','d','e','f','1','2','3','4','5','6','7','8','9'];var format='0000000-0000-0000-0000-00000000000';var z=Array.prototype.map.call(format,function($obj){var min=0;var max=characters.length-1;if($obj=='0'){var index=Math.round(Math.random()*(max-min)+min);$obj=characters[index];}
