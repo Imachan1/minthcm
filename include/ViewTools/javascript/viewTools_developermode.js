@@ -1,4 +1,4 @@
-/* Warging!
+/* Warning!
  * This file is generated automatically.
  * Edit only on your own responsibility
  */
