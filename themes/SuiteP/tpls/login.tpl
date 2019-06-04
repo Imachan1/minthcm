@@ -152,7 +152,7 @@
     </div>
     
     <div class="p_login_bottom">
-                <a id="admin_options">&copy; Produced by MintHCM</a>
+                <a id="admin_options">&copy; Reinvented by MintHCM</a>
     		<a id="admin_options" style="margin-left: 20px">&copy; Supercharged by SuiteCRM</a>
             <a id="powered_by">&copy; Powered By SugarCRM</a>
     	
