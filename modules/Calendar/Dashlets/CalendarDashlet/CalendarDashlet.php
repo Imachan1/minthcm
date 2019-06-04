@@ -136,7 +136,21 @@ class CalendarDashlet extends Dashlet
         $str = ob_get_contents();
         ob_end_clean();
 
-        return parent::display() . $str;
+// MintHCM QuickFix START - refresh Calendar Dashlet on load
+//        return parent::display() . $str;
+        $qfix = "
+            <script>
+                if ( typeof calendar_dashlet_reloaded === 'undefined' ) {
+                    var calendar_dashlet_reloaded = {};
+                }
+                if( !( '$this->id' in calendar_dashlet_reloaded ) ){
+                    calendar_dashlet_reloaded['$this->id'] = true;
+                    SUGAR.mySugar.retrieveDashlet( '$this->id', '' );
+                }
+            </script>
+        ";
+        return parent::display() . $str . $qfix;
+// MintHCM QuickFix END
     }
 
     /**
