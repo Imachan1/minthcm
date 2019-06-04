@@ -90,7 +90,7 @@
         </div>
 
         <div class="p_login_bottom">
-            <a id="admin_options">© Produced by MintHCM</a>
+            <a id="admin_options">© Reinvented by MintHCM</a>
             <a id="admin_options" style="margin-left: 20px">© Supercharged by SuiteCRM</a>
             <a id="powered_by">© Powered By SugarCRM</a>
         </div>
