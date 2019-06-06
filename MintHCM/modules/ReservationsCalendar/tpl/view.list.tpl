@@ -23,6 +23,8 @@
 
 <div id="calendar" style="height: 800px;"></div>
 
+<input type="hidden" id="calendar_fdow"  value="{$CALENDAR_FDOW}" />
+
 <link rel="stylesheet" type="text/css" href="include/tui-calendar/tui-calendar.css" />
 <script type="text/javascript" src="include/tui-calendar/tui-code-snippet.js"></script>
 <script type="text/javascript" src="include/tui-calendar/tui-calendar.js"></script>
