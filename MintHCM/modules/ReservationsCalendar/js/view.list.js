@@ -121,11 +121,7 @@ function createReservation( event ) {
 }
 
 YAHOO.util.Event.onContentReady( 'calendar', function () {
-   var calendar_fdow = 1; // 0 - sunday, ..., 6 - saturday
-   if ( $( '#calendar_fdow' ).length === 1 && $( '#calendar_fdow' ).val() >= 0 && $( '#calendar_fdow' ).val() <= 6 ) {
-      calendar_fdow = $( '#calendar_fdow' ).val();
-   }
-   calendar_fdow = parseInt( calendar_fdow );
+   calendar_fdow = parseInt( calendar_fdow ); /* 0 - sunday, ..., 6 - saturday */
    calendar = new tui.Calendar( '#calendar', {
       defaultView: 'month',
       calendars: calendarList,

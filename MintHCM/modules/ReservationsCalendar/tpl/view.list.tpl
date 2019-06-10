@@ -7,6 +7,7 @@
 <script type="text/javascript">
     calendarList = {$calendars};
     reservationList = {$reservations};
+    calendar_fdow = {if isset($CALENDAR_FDOW)}{$CALENDAR_FDOW|@intval}{else}1{/if};
 </script>
 
 <input style="margin-left: 20px;" type="button" class="button tuiCalendar" value="{$MOD.LNK_RESERVATION_CALENDAR_TODAY}" onclick="calendar.today();" />
@@ -22,8 +23,6 @@
 <div style="display: inline; margin-left: 20px; font-weight: bold; font-size: 16px;" id="currentCalendarDate"></div>
 
 <div id="calendar" style="height: 800px;"></div>
-
-<input type="hidden" id="calendar_fdow"  value="{$CALENDAR_FDOW}" />
 
 <link rel="stylesheet" type="text/css" href="include/tui-calendar/tui-calendar.css" />
 <script type="text/javascript" src="include/tui-calendar/tui-code-snippet.js"></script>
