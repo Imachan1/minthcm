@@ -41,18 +41,22 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-use SuiteCRM\Modules\Administration\Search\ElasticSearch\Controller;
+require_once('modules/Administration/Administration.php');
 
-global $current_user, $sugar_config; // MintHCM #62039
+/**
+ * Configure defaults for the MintHCM
+ */
+function installMintHCMSettings()
+{
+    global $sugar_config;
 
-if (!is_admin($current_user) || !empty($sugar_config['minthcm_cloud'])) { // MintHCM #62039
-    sugar_die("Unauthorized access to administration.");
+    $sugar_config['minthcm_cloud'] = false; // MintHCM #62039
+
+    ksort($sugar_config);
+    write_array_to_file('sugar_config', $sugar_config, 'config.php');
 }
-
-$controller = new Controller();
-
-$controller->handle();

@@ -187,13 +187,15 @@ $admin_option_defs['Administration']['global_search'] = [
    'global-search'
 ];
 
-$admin_option_defs['Administration']['elastic_search'] = [
-   'ElasticSearchIndexerSettings',
-   'LBL_ELASTIC_SEARCH_SETTINGS',
-   'LBL_ELASTIC_SEARCH_SETTINGS_DESC',
-   './index.php?module=Administration&action=ElasticSearchSettings',
-   'global-search'
-];
+if(empty($GLOBALS['sugar_config']['minthcm_cloud'])){ // MintHCM #62039
+   $admin_option_defs['Administration']['elastic_search'] = [
+      'ElasticSearchIndexerSettings',
+      'LBL_ELASTIC_SEARCH_SETTINGS',
+      'LBL_ELASTIC_SEARCH_SETTINGS_DESC',
+      './index.php?module=Administration&action=ElasticSearchSettings',
+      'global-search'
+   ];
+}
 
 // SearchWrapper
 $admin_group_header[] = [
