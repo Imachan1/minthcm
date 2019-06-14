@@ -1,5 +1,8 @@
 $( document ).ready( function () {
    var OnboardingOffboardingElementsViewEdit = function () {
+
+      var _form_selector = $( 'form#EditView' );
+      
       this.construct = function () {
          run();
       };
@@ -21,8 +24,8 @@ $( document ).ready( function () {
 
       var validateTaskDuration = function () {
          var result = true;
-         var task_duration_hours = $( '#task_duration_hours' );
-         var task_duration_minutes = $( '#task_duration_minutes' );
+         var task_duration_hours = _form_selector.find( '#task_duration_hours' );
+         var task_duration_minutes = _form_selector.find( '#task_duration_minutes' );
          var task_duration_hours_val = parseInt( task_duration_hours.val() );
          var task_duration_minutes_val = parseInt( task_duration_minutes.val() );
          if ( task_duration_hours_val < 0 || task_duration_minutes_val < 0 ) {
@@ -32,8 +35,8 @@ $( document ).ready( function () {
          return result;
       };
 
-      var setTypeList = function() {
-         var element_id = $( 'input[type="hidden"][name="record"]' ).val();
+      var setTypeList = function () {
+         var element_id = _form_selector.find( 'input[type="hidden"][name="record"]' ).val();
          if ( typeof element_id !== 'undefined' && !_.isEmpty( element_id ) ) {
             viewTools.api.callCustomApi( {
                module: 'OnboardingOffboardingElements',
@@ -43,8 +46,7 @@ $( document ).ready( function () {
                },
                callback: function ( data ) {
                   if ( data ) {
-                     var form_selector = $( 'form#EditView' );
-                     var element_type_selector = form_selector.find( '#type option[value=exit_interview]' );
+                     var element_type_selector = _form_selector.find( '#type option[value=exit_interview]' );
                      element_type_selector.css( 'display', 'none' );
                   }
                }

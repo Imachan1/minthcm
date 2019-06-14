@@ -1,5 +1,8 @@
 $( document ).ready( function () {
    var OnboardingOffboardingElementsViewQuickCreate = function () {
+
+      var _form_selector = $( 'form#form_SubpanelQuickCreate_OnboardingOffboardingElements' );
+      
       this.construct = function () {
          run();
       };
@@ -21,8 +24,8 @@ $( document ).ready( function () {
 
       var validateTaskDuration = function () {
          var result = true;
-         var task_duration_hours = $( '#task_duration_hours' );
-         var task_duration_minutes = $( '#task_duration_minutes' );
+         var task_duration_hours = _form_selector.find( '#task_duration_hours' );
+         var task_duration_minutes = _form_selector.find( '#task_duration_minutes' );
          var task_duration_hours_val = parseInt( task_duration_hours.val() );
          var task_duration_minutes_val = parseInt( task_duration_minutes.val() );
          if ( task_duration_hours_val < 0 || task_duration_minutes_val < 0 ) {
@@ -32,10 +35,10 @@ $( document ).ready( function () {
          return result;
       };
 
-      var setTypeList = function() {
+      var setTypeList = function () {
          var parent_type = $( 'input[name="parent_type"]' ).val();
-         var form_selector = $( 'form#form_SubpanelQuickCreate_OnboardingOffboardingElements' );
-         var element_type_selector = form_selector.find( '#type option[value=exit_interview]' );
+
+         var element_type_selector = _form_selector.find( '#type option[value=exit_interview]' );
          if ( parent_type == 'OnboardingTemplates' ) {
             element_type_selector.css( 'display', 'none' );
          }
@@ -44,7 +47,5 @@ $( document ).ready( function () {
       this.construct();
    };
 
-   if ( typeof onboarding_offboarding_elements_view_quickcreate === 'undefined' ) {
-      onboarding_offboarding_elements_view_quickcreate = new OnboardingOffboardingElementsViewQuickCreate();
-   }
+   onboarding_offboarding_elements_view_quickcreate = new OnboardingOffboardingElementsViewQuickCreate();
 } );
