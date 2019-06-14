@@ -145,10 +145,12 @@ class GenerateOnboardingOffboarding
         $bean->assigned_user_id = ((bool) $element->own_task ? $this->employee_id
                 : $element->users_id);
         $date_start_object      = new DateTime($this->date_start);
-        $date_start_object->modify("+".$element->days_from_start." days");
+        $days_from_start        = (int) $element->days_from_start;
+        $date_start_object->modify("+{$days_from_start} days");
         $bean->date_start       = $date_start_object->format($timedate->get_db_date_time_format());
-        $date_due               = $date_start_object->modify("+".$element->task_duration." hours");
-        $bean->date_due         = $date_due->format($timedate->get_db_date_time_format());
+        $duration_hours         = (int) $element->task_duration_hours;
+        $duration_minutes       = (int) $element->task_duration_minutes;
+        $bean->date_due         = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
         $bean->parent_type      = $this->process->module_name;
         $bean->parent_id        = $this->process->id;
         $bean->save();
@@ -162,10 +164,12 @@ class GenerateOnboardingOffboarding
         $bean->name             = $element->name;
         $bean->assigned_user_id = $element->users_id;
         $date_start_object      = new DateTime($this->date_start);
-        $date_start_object->modify("+".$element->days_from_start." days");
+        $days_from_start        = (int) $element->days_from_start;
+        $date_start_object->modify("+{$days_from_start} days");
         $bean->date_start       = $date_start_object->format($timedate->get_db_date_time_format());
-        $date_end               = $date_start_object->modify("+".$element->task_duration." hours");
-        $bean->date_end         = $date_end->format($timedate->get_db_date_time_format());
+        $duration_hours         = (int) $element->task_duration_hours;
+        $duration_minutes       = (int) $element->task_duration_minutes;
+        $bean->date_end         = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
         $bean->training_type    = "internal";
         $bean->parent_type      = $this->process->module_name;
         $bean->parent_id        = $this->process->id;
@@ -181,10 +185,12 @@ class GenerateOnboardingOffboarding
         $bean->assigned_user_id = $element->users_id;
         $bean->employee_id      = $this->employee_id;
         $date_start_object      = new DateTime($this->date_start);
-        $date_start_object->modify("+".$element->days_from_start." days");
+        $days_from_start        = (int) $element->days_from_start;
+        $date_start_object->modify("+{$days_from_start} days");
         $bean->date_start       = $date_start_object->format($timedate->get_db_date_time_format());
-        $date_end               = $date_start_object->modify("+".$element->task_duration." hours");
-        $bean->date_end         = $date_end->format($timedate->get_db_date_time_format());
+        $duration_hours         = (int) $element->task_duration_hours;
+        $duration_minutes       = (int) $element->task_duration_minutes;
+        $bean->date_end         = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
         if ($this->process->module_name == 'Offboardings') {
             $bean->offboarding_id = $this->process->id;
         }

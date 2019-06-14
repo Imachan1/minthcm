@@ -47,11 +47,6 @@ $viewdefs [$module_name] = array(
     array(
         'templateMeta' =>
         array(
-            'includes' => array(
-                array(
-                    'file' => 'modules/OnboardingOffboardingElements/js/view.edit.js',
-                ),
-            ),
             'maxColumns' => '2',
             'widths' =>
             array(
@@ -63,6 +58,9 @@ $viewdefs [$module_name] = array(
                     'label' => '10',
                     'field' => '30',
                 ),
+            ),
+            'includes' => array(
+                array('file' => 'modules/OnboardingOffboardingElements/js/view.edit.js'),
             ),
         ),
         'panels' =>
@@ -79,7 +77,11 @@ $viewdefs [$module_name] = array(
                 ),
                 array(
                     'days_from_start',
-                    'task_duration',
+                    array(
+                        'name' => 'task_duration_hours',
+                        'label' => 'LBL_TASK_DURATION',
+                        'customCode' => '<input id="task_duration_hours" name="task_duration_hours" size="2" maxlength="2" type="text" value="{$fields.task_duration_hours.value}"/>{$fields.task_duration_minutes.value}&nbsp;<span class="dateFormat">{$MOD.LBL_HOURS_MINUTES}</span>',
+                    ),
                 ),
                 array(
                     'assigned_user_name',

@@ -45,9 +45,7 @@ $module_name                           = 'OnboardingOffboardingElements';
 $viewdefs[$module_name]['QuickCreate'] = array(
     'templateMeta' => array(
         'includes' => array(
-            array(
-                'file' => 'modules/OnboardingOffboardingElements/js/view.quickcreate.js',
-            ),
+            array('file' => 'modules/OnboardingOffboardingElements/js/view.quickcreate.js'),
         ),
         'maxColumns' => '2',
         'widths' => array(
@@ -67,7 +65,14 @@ $viewdefs[$module_name]['QuickCreate'] = array(
             ),
             array(
                 'days_from_start',
-                'task_duration',
+                array(
+                    'name' => 'task_duration_hours',
+                    'label' => 'LBL_TASK_DURATION',
+                    'customCode' => '<input id="task_duration_hours" name="task_duration_hours" tabindex="1" size="2" maxlength="2" type="text" value="{$fields.task_duration_hours.value}"/>{$fields.task_duration_minutes.value}&nbsp;<span class="dateFormat">{$MOD.LBL_HOURS_MINUTES}',
+                    'displayParams' => array(
+                        'required' => true,
+                    ),
+                ),
             ),
             array(
                 'assigned_user_name',

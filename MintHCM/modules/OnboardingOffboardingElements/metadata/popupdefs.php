@@ -64,11 +64,6 @@ $popupMeta = array(
          'name' => 'name',
          'width' => '10%',
       ),
-      'task_duration' =>
-      array(
-         'name' => 'name',
-         'width' => '10%',
-      ),
       'days_from_start' =>
       array(
          'name' => 'name',

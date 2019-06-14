@@ -81,7 +81,6 @@ $searchdefs[$module_name] = array(
             'type' => 'enum',
             'options' => 'onoff_elements_list'
          ),
-         'task_duration',
          'days_from_start',
          'date_modified' =>
          array(
