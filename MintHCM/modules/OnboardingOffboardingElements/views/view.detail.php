@@ -41,42 +41,32 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-$module_name                           = 'OnboardingOffboardingElements';
-$viewdefs[$module_name]['QuickCreate'] = array(
-    'templateMeta' => array(
-        'includes' => array(
-            array('file' => 'modules/OnboardingOffboardingElements/js/view.quickcreate.js'),
-        ),
-        'maxColumns' => '2',
-        'widths' => array(
-            array('label' => '10', 'field' => '30'),
-            array('label' => '10', 'field' => '30')
-        ),
-    ),
-    'panels' => array(
-        'default' => array(
-            array(
-                'name',
-                'type',
-            ),
-            array(
-                'user_name',
-                'own_task',
-            ),
-            array(
-                'days_from_start',
-                array(
-                    'name' => 'task_duration_hours',
-                    'label' => 'LBL_TASK_DURATION',
-                    'customCode' => '<input id="task_duration_hours" name="task_duration_hours" tabindex="1" size="2" maxlength="2" type="text" value="{$fields.task_duration_hours.value}"/>{$fields.task_duration_minutes.value}&nbsp;<span class="dateFormat">{$MOD.LBL_HOURS_MINUTES}',
-                    'displayParams' => array(
-                        'required' => true,
-                    ),
-                ),
-            ),
-            array(
-                'assigned_user_name',
-            ),
-        ),
-    ),
-);
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+
+require_once('include/MVC/View/views/view.detail.php');
+
+class OnboardingOffboardingElementsViewDetail extends ViewDetail
+{
+
+    protected function _displaySubPanels()
+    {
+        if (isset($this->bean) &&
+            !empty($this->bean->id) &&
+            (file_exists('modules/'.$this->module.'/metadata/subpaneldefs.php') ||
+            file_exists('custom/modules/'.$this->module.'/metadata/subpaneldefs.php')
+            ||
+            file_exists('custom/modules/'.$this->module.'/Ext/Layoutdefs/layoutdefs.ext.php'))
+        ) {
+            $GLOBALS['focus'] = $this->bean;
+            require_once('include/SubPanel/SubPanelTiles.php');
+            $subpanel         = new SubPanelTiles($this->bean, $this->module);
+            if (!empty($this->bean->type) && $this->bean->type == "exit_interview"
+                && !empty($subpanel->subpanel_definitions->layout_defs['subpanel_setup']['onboardingtemplates'])) {
+                unset($subpanel->subpanel_definitions->layout_defs['subpanel_setup']['onboardingtemplates']);
+            }
+            echo $subpanel->display();
+        }
+    }
+}

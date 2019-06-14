@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,52 +35,55 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 $mod_strings = array(
-   'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
-   'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
-   'LBL_SECURITYGROUPS' => 'Security Groups',
-   'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Security Groups',
-   'LBL_ID' => 'ID',
-   'LBL_DATE_ENTERED' => 'Date Created',
-   'LBL_DATE_MODIFIED' => 'Date Modified',
-   'LBL_MODIFIED' => 'Modified by',
-   'LBL_MODIFIED_NAME' => 'Modified by Name',
-   'LBL_CREATED' => 'Created by',
-   'LBL_DESCRIPTION' => 'Description',
-   'LBL_DELETED' => 'Deleted',
-   'LBL_NAME' => 'Name',
-   'LBL_CREATED_USER' => 'Created by User',
-   'LBL_MODIFIED_USER' => 'Modified by User',
-   'LBL_LIST_NAME' => 'Name',
-   'LBL_EDIT_BUTTON' => 'Edit',
-   'LBL_REMOVE' => 'Remove',
-   'LBL_ASCENDING' => 'Ascending',
-   'LBL_DESCENDING' => 'Descending',
-   'LBL_OPT_IN' => 'Opt In',
-   'LBL_OPT_IN_PENDING_EMAIL_NOT_SENT' => 'Pending Confirm opt in, Confirm opt in not sent',
-   'LBL_OPT_IN_PENDING_EMAIL_SENT' => 'Pending Confirm opt in, Confirm opt in sent',
-   'LBL_OPT_IN_CONFIRMED' => 'Opted in',
-   'LBL_LIST_FORM_TITLE' => 'Exit Interviews List',
-   'LBL_MODULE_NAME' => 'Exit Interviews',
-   'LBL_MODULE_TITLE' => 'Exit Interviews',
-   'LBL_HOMEPAGE_TITLE' => 'My Exit Interviews',
-   'LNK_NEW_RECORD' => 'Create Exit Interview',
-   'LNK_LIST' => 'View Exit Interviews',
-   'LNK_IMPORT_EXITINTERVIEWS' => 'Import Exit Interviews',
-   'LBL_SEARCH_FORM_TITLE' => 'Search Exit Interviews',
-   'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
-   'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-   'LBL_EXITINTERVIEWS_SUBPANEL_TITLE' => 'Exit Interviews',
-   'LBL_NEW_FORM_TITLE' => 'New Exit Interview',
-   'LBL_DATE_START' => 'Start Date',
-   'LBL_DATE_END' => 'End Date',
-   'LBL_STATUS' => 'Status',
-   'LBL_MEETINGS' => 'Meetings',
-   'LBL_DOCUMENTS' => 'Documents',
+    'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
+    'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
+    'LBL_SECURITYGROUPS' => 'Security Groups',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Security Groups',
+    'LBL_ID' => 'ID',
+    'LBL_DATE_ENTERED' => 'Date Created',
+    'LBL_DATE_MODIFIED' => 'Date Modified',
+    'LBL_MODIFIED' => 'Modified by',
+    'LBL_MODIFIED_NAME' => 'Modified by Name',
+    'LBL_CREATED' => 'Created by',
+    'LBL_DESCRIPTION' => 'Description',
+    'LBL_DELETED' => 'Deleted',
+    'LBL_NAME' => 'Name',
+    'LBL_CREATED_USER' => 'Created by User',
+    'LBL_MODIFIED_USER' => 'Modified by User',
+    'LBL_LIST_NAME' => 'Name',
+    'LBL_EDIT_BUTTON' => 'Edit',
+    'LBL_REMOVE' => 'Remove',
+    'LBL_ASCENDING' => 'Ascending',
+    'LBL_DESCENDING' => 'Descending',
+    'LBL_OPT_IN' => 'Opt In',
+    'LBL_OPT_IN_PENDING_EMAIL_NOT_SENT' => 'Pending Confirm opt in, Confirm opt in not sent',
+    'LBL_OPT_IN_PENDING_EMAIL_SENT' => 'Pending Confirm opt in, Confirm opt in sent',
+    'LBL_OPT_IN_CONFIRMED' => 'Opted in',
+    'LBL_LIST_FORM_TITLE' => 'Exit Interviews List',
+    'LBL_MODULE_NAME' => 'Exit Interviews',
+    'LBL_MODULE_TITLE' => 'Exit Interviews',
+    'LBL_HOMEPAGE_TITLE' => 'My Exit Interviews',
+    'LNK_NEW_RECORD' => 'Create Exit Interview',
+    'LNK_LIST' => 'View Exit Interviews',
+    'LNK_IMPORT_EXITINTERVIEWS' => 'Import Exit Interviews',
+    'LBL_SEARCH_FORM_TITLE' => 'Search Exit Interviews',
+    'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
+    'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
+    'LBL_EXITINTERVIEWS_SUBPANEL_TITLE' => 'Exit Interviews',
+    'LBL_NEW_FORM_TITLE' => 'New Exit Interview',
+    'LBL_DATE_START' => 'Start Date',
+    'LBL_DATE_END' => 'End Date',
+    'LBL_STATUS' => 'Status',
+    'LBL_MEETINGS' => 'Meetings',
+    'LBL_DOCUMENTS' => 'Documents',
+    'LBL_OFFBOARDINGS' => 'Offboardings',
+    'LBL_OFFBOARDING_NAME' => 'Offboarding',
+    'LBL_OFFBOARDING_ID' => 'Offboarding (ID)',
 );

@@ -623,7 +623,15 @@
 
                                                                                                         <button id="usermenucollapsed" class="dropdown-toggle btn btn-default usermenucollapsed" data-toggle="dropdown"
                                                                                                                 aria-expanded="true">
-                                                                                                            <span class="suitepicon suitepicon-action-current-user"></span>
+                                                                                                            {* MintHCM #63083 START *}
+                                                                                                            {if $CURRENT_USER_HAS_PHOTO == false}
+                                                                                                                <span class="suitepicon suitepicon-action-current-user"></span>
+                                                                                                            {else}
+                                                                                                                <span class="suitepicon current-user-avatar" >
+                                                                                                                    <img src="index.php?entryPoint=download&id={$CURRENT_USER_ID}_photo&type=Users" />
+                                                                                                                </span>
+                                                                                                            {/if}
+                                                                                                            {* MintHCM #63083 END *}
                                                                                                         </button>
                                                                                                         <ul class="dropdown-menu user-dropdown user-menu" role="menu" aria-labelledby="dropdownMenu2">
                                                                                                             <li role="presentation">
@@ -706,7 +714,15 @@
                                                                                                     </li>
                                                                                                     <li id="globalLinks" class="dropdown nav navbar-nav globalLinks-desktop">
                                                                                                         <button id="with-label" class="dropdown-toggle user-menu-button" title="{$CURRENT_USER}"data-toggle="dropdown" aria-expanded="true">
-                                                                                                            <span class="suitepicon suitepicon-action-current-user"></span>
+                                                                                                            {* MintHCM #63083 START *}
+                                                                                                            {if $CURRENT_USER_HAS_PHOTO == false}
+                                                                                                                <span class="suitepicon suitepicon-action-current-user"></span>
+                                                                                                            {else}
+                                                                                                                <span class="suitepicon current-user-avatar" >
+                                                                                                                    <img src="index.php?entryPoint=download&id={$CURRENT_USER_ID}_photo&type=Users" />
+                                                                                                                </span>
+                                                                                                            {/if}
+                                                                                                            {* MintHCM #63083 END *}
                                                                                                             <span>{$CURRENT_USER}</span>
                                                                                                             <span class="suitepicon suitepicon-action-caret"></span>
                                                                                                         </button>

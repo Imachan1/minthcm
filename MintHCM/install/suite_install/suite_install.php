@@ -58,6 +58,11 @@ require_once('install/suite_install/SystemEmailTemplates.php');
 installSystemEmailTemplates();
 setSystemEmailTemplatesDefaultConfig();
 
+// MintHCM #62039 START
+require_once('install/suite_install/MintHCMSettings.php');
+installMintHCMSettings();
+// MintHCM #62039 END
+
 require_once('modules/Administration/QuickRepairAndRebuild.php');
 $actions = array('clearAll');
 $randc = new RepairAndClear();

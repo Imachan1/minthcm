@@ -7,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -35,10 +35,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -58,7 +58,7 @@ class SugarView
     const ERR_NOT_ARRAY = 3;
     const ERR_NOT_SUB_ARRAY = 4;
     const WARN_SCOPE_EXISTS = 5;
-    
+
     /**
      * @var array $view_object_map
      * This array is meant to hold an objects/data that we would like to pass between
@@ -140,7 +140,7 @@ class SugarView
      * @var array
      */
     private $settings = [];
-    
+
     /**
      * SugarView constructor.
      * @deprecated since version 7.11
@@ -149,7 +149,7 @@ class SugarView
     {
         LoggerManager::getLogger()->deprecated();
     }
-    
+
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 8.0
      * please update your code, use __construct instead
@@ -217,18 +217,18 @@ class SugarView
                 echo $this->_getModLanguageJS();
             }
         }
-        
+
         if ($this->_getOption('show_header')) {
             $this->displayHeader();
         } else {
             $this->renderJavascript();
         }
-        
+
         $this->_buildModuleList();
         $this->preDisplay();
         $this->displayErrors();
         $this->display();
-        
+
         if (!empty($this->module)) {
             $GLOBALS['logic_hook']->call_custom_logic($this->module, 'after_ui_frame');
         } else {
@@ -571,12 +571,13 @@ class SugarView
                 $current_user->full_name == '' || !showFullName() ? $current_user->user_name : $current_user->full_name
             );
             $ss->assign("CURRENT_USER_ID", $current_user->id);
+            $ss->assign("CURRENT_USER_HAS_PHOTO", !empty($current_user->photo)); // MintHCM #63083
 
 	    // get the last viewed records
 	    $favorites = BeanFactory::getBean('Favorites');
 	    $favorite_records = $favorites->getCurrentUserSidebarFavorites();
 	    $ss->assign("favoriteRecords", $favorite_records);
- 	    
+
 	    $tracker = BeanFactory::getBean('Trackers');
 	    $history = $tracker->get_recently_viewed($current_user->id);
 	    $ss->assign("recentRecords", $this->processRecentRecords($history));
@@ -1978,7 +1979,7 @@ EOHTML;
     public function mergeDeepArray($arrays)
     {
         $result = array();
-        
+
         if (!is_array($arrays)) {
             throw new InvalidArgumentException('Parameter should be an array to merging. ' . gettype($arrays) . ' given.', self::ERR_NOT_ARRAY);
         }
@@ -1989,7 +1990,7 @@ EOHTML;
 
         return $result;
     }
-    
+
     /**
      *
      * @param array $array
@@ -2000,7 +2001,7 @@ EOHTML;
     {
         if (!is_array($array)) {
             throw new InvalidArgumentException('Sub-parameter should be an array to merging. ' . gettype($array) . ' given.', self::ERR_NOT_SUB_ARRAY);
-        }        
+        }
         foreach ($array as $key => $value) {
             // Renumber integer keys as array_merge_recursive() does. Note that PHP
             // automatically converts array keys that are integer strings (e.g., '1')

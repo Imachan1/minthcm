@@ -6,6 +6,7 @@ $( document ).ready( function () {
 
       var run = function () {
          beforeSave();
+         setTypeList();
       };
 
       var beforeSave = function () {
@@ -29,6 +30,15 @@ $( document ).ready( function () {
             viewTools.GUI.fieldErrorMark( task_duration_hours, viewTools.language.get( 'OnboardingOffboardingElements', 'LBL_ERR_NOTICE_DURATION_TIME' ) );
          }
          return result;
+      };
+
+      var setTypeList = function() {
+         var parent_type = $( 'input[name="parent_type"]' ).val();
+         var form_selector = $( 'form#form_SubpanelQuickCreate_OnboardingOffboardingElements' );
+         var element_type_selector = form_selector.find( '#type option[value=exit_interview]' );
+         if ( parent_type == 'OnboardingTemplates' ) {
+            element_type_selector.css( 'display', 'none' );
+         }
       };
 
       this.construct();

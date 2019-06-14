@@ -191,6 +191,9 @@ class GenerateOnboardingOffboarding
         $duration_hours         = (int) $element->task_duration_hours;
         $duration_minutes       = (int) $element->task_duration_minutes;
         $bean->date_end         = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
+        if ($this->process->module_name == 'Offboardings') {
+            $bean->offboarding_id = $this->process->id;
+        }
         $bean->save();
         return $bean;
     }
