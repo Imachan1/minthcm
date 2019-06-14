@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,125 +35,131 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
 $dashletData['ExitInterviewsDashlet']['searchFields'] = array(
-   'name' =>
-   array(
-      'default' => '',
-   ),
-   'date_start' =>
-   array(
-      'default' => '',
-   ),
-   'date_end' =>
-   array(
-      'default' => '',
-   ),
-   'status' =>
-   array(
-      'default' => '',
-   ),
-   'employee_name' =>
-   array(
-      'default' => '',
-   ),
-   'date_entered' =>
-   array(
-      'default' => '',
-   ),
-   'date_modified' =>
-   array(
-      'default' => '',
-   ),
-   'assigned_user_name' =>
-   array(
-      'default' => '',
-   ),
+    'name' =>
+    array(
+        'default' => '',
+    ),
+    'date_start' =>
+    array(
+        'default' => '',
+    ),
+    'date_end' =>
+    array(
+        'default' => '',
+    ),
+    'status' =>
+    array(
+        'default' => '',
+    ),
+    'employee_name' =>
+    array(
+        'default' => '',
+    ),
+    'date_entered' =>
+    array(
+        'default' => '',
+    ),
+    'date_modified' =>
+    array(
+        'default' => '',
+    ),
+    'assigned_user_name' =>
+    array(
+        'default' => '',
+    ),
 );
-$dashletData['ExitInterviewsDashlet']['columns'] = array(
-   'name' =>
-   array(
-      'width' => '40%',
-      'label' => 'LBL_LIST_NAME',
-      'link' => true,
-      'default' => true,
-      'name' => 'name',
-   ),
-   'status' =>
-   array(
-      'type' => 'enum',
-      'default' => true,
-      'studio' => 'visible',
-      'label' => 'LBL_STATUS',
-      'width' => '10%',
-      'name' => 'status',
-   ),
-   'date_start' =>
-   array(
-      'type' => 'datetimecombo',
-      'label' => 'LBL_DATE_START',
-      'width' => '10%',
-      'default' => true,
-      'name' => 'date_start',
-   ),
-   'date_end' =>
-   array(
-      'type' => 'datetimecombo',
-      'label' => 'LBL_DATE_END',
-      'width' => '10%',
-      'default' => true,
-      'name' => 'date_end',
-   ),
-   'employee_name' =>
-   array(
-      'width' => '8%',
-      'label' => 'LBL_EMPLOYEE_NAME',
-      'name' => 'employee_name',
-      'default' => false,
-   ),
-   'date_modified' =>
-   array(
-      'width' => '15%',
-      'label' => 'LBL_DATE_MODIFIED',
-      'name' => 'date_modified',
-      'default' => false,
-   ),
-   'date_entered' =>
-   array(
-      'width' => '15%',
-      'label' => 'LBL_DATE_ENTERED',
-      'default' => false,
-      'name' => 'date_entered',
-   ),
-   'assigned_user_name' =>
-   array(
-      'width' => '8%',
-      'label' => 'LBL_LIST_ASSIGNED_USER',
-      'name' => 'assigned_user_name',
-      'default' => false,
-   ),
-   'created_by_name' =>
-   array(
-      'type' => 'relate',
-      'link' => true,
-      'label' => 'LBL_CREATED',
-      'id' => 'CREATED_BY',
-      'width' => '10%',
-      'default' => false,
-   ),
-   'modified_by_name' =>
-   array(
-      'type' => 'relate',
-      'link' => true,
-      'label' => 'LBL_MODIFIED_NAME',
-      'id' => 'MODIFIED_USER_ID',
-      'width' => '10%',
-      'default' => false,
-   ),
+$dashletData['ExitInterviewsDashlet']['columns']      = array(
+    'name' =>
+    array(
+        'width' => '40%',
+        'label' => 'LBL_LIST_NAME',
+        'link' => true,
+        'default' => true,
+        'name' => 'name',
+    ),
+    'status' =>
+    array(
+        'type' => 'enum',
+        'default' => true,
+        'studio' => 'visible',
+        'label' => 'LBL_STATUS',
+        'width' => '10%',
+        'name' => 'status',
+    ),
+    'date_start' =>
+    array(
+        'type' => 'datetimecombo',
+        'label' => 'LBL_DATE_START',
+        'width' => '10%',
+        'default' => true,
+        'name' => 'date_start',
+    ),
+    'date_end' =>
+    array(
+        'type' => 'datetimecombo',
+        'label' => 'LBL_DATE_END',
+        'width' => '10%',
+        'default' => true,
+        'name' => 'date_end',
+    ),
+    'offboarding_name' =>
+    array(
+        'width' => '8%',
+        'label' => 'LBL_OFFBOARDING_NAME',
+        'name' => 'offboarding_name',
+        'default' => false,
+    ),
+    'employee_name' =>
+    array(
+        'width' => '8%',
+        'label' => 'LBL_EMPLOYEE_NAME',
+        'name' => 'employee_name',
+        'default' => false,
+    ),
+    'date_modified' =>
+    array(
+        'width' => '15%',
+        'label' => 'LBL_DATE_MODIFIED',
+        'name' => 'date_modified',
+        'default' => false,
+    ),
+    'date_entered' =>
+    array(
+        'width' => '15%',
+        'label' => 'LBL_DATE_ENTERED',
+        'default' => false,
+        'name' => 'date_entered',
+    ),
+    'assigned_user_name' =>
+    array(
+        'width' => '8%',
+        'label' => 'LBL_LIST_ASSIGNED_USER',
+        'name' => 'assigned_user_name',
+        'default' => false,
+    ),
+    'created_by_name' =>
+    array(
+        'type' => 'relate',
+        'link' => true,
+        'label' => 'LBL_CREATED',
+        'id' => 'CREATED_BY',
+        'width' => '10%',
+        'default' => false,
+    ),
+    'modified_by_name' =>
+    array(
+        'type' => 'relate',
+        'link' => true,
+        'label' => 'LBL_MODIFIED_NAME',
+        'id' => 'MODIFIED_USER_ID',
+        'width' => '10%',
+        'default' => false,
+    ),
 );

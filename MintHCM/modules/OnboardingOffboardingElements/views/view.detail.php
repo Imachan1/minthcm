@@ -41,73 +41,32 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-$module_name                 = 'ExitInterviews';
-$listViewDefs [$module_name] = array(
-    'NAME' =>
-    array(
-        'width' => '32%',
-        'label' => 'LBL_NAME',
-        'default' => true,
-        'link' => true,
-    ),
-    'STATUS' =>
-    array(
-        'type' => 'enum',
-        'default' => true,
-        'studio' => 'visible',
-        'label' => 'LBL_STATUS',
-        'width' => '10%',
-    ),
-    'DATE_START' =>
-    array(
-        'type' => 'datetimecombo',
-        'label' => 'LBL_DATE_START',
-        'width' => '10%',
-        'default' => true,
-    ),
-    'DATE_END' =>
-    array(
-        'type' => 'datetimecombo',
-        'label' => 'LBL_DATE_END',
-        'width' => '10%',
-        'default' => true,
-    ),
-    'OFFBOARDING_NAME' =>
-    array(
-        'link' => true,
-        'label' => 'LBL_OFFBOARDING_NAME',
-        'id' => 'OFFBOARDING_ID',
-        'width' => '10%',
-        'default' => true,
-    ),
-    'EMPLOYEE_NAME' =>
-    array(
-        'link' => true,
-        'label' => 'LBL_EMPLOYEE_NAME',
-        'id' => 'EMPLOYEE_ID',
-        'width' => '10%',
-        'default' => true,
-    ),
-    'DATE_MODIFIED' =>
-    array(
-        'type' => 'datetime',
-        'label' => 'LBL_DATE_MODIFIED',
-        'width' => '10%',
-        'default' => false,
-    ),
-    'DATE_ENTERED' =>
-    array(
-        'type' => 'datetime',
-        'label' => 'LBL_DATE_ENTERED',
-        'width' => '10%',
-        'default' => false,
-    ),
-    'ASSIGNED_USER_NAME' =>
-    array(
-        'width' => '9%',
-        'label' => 'LBL_ASSIGNED_TO_NAME',
-        'module' => 'Employees',
-        'id' => 'ASSIGNED_USER_ID',
-        'default' => true,
-    ),
-);
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+
+require_once('include/MVC/View/views/view.detail.php');
+
+class OnboardingOffboardingElementsViewDetail extends ViewDetail
+{
+
+    protected function _displaySubPanels()
+    {
+        if (isset($this->bean) &&
+            !empty($this->bean->id) &&
+            (file_exists('modules/'.$this->module.'/metadata/subpaneldefs.php') ||
+            file_exists('custom/modules/'.$this->module.'/metadata/subpaneldefs.php')
+            ||
+            file_exists('custom/modules/'.$this->module.'/Ext/Layoutdefs/layoutdefs.ext.php'))
+        ) {
+            $GLOBALS['focus'] = $this->bean;
+            require_once('include/SubPanel/SubPanelTiles.php');
+            $subpanel         = new SubPanelTiles($this->bean, $this->module);
+            if (!empty($this->bean->type) && $this->bean->type == "exit_interview"
+                && !empty($subpanel->subpanel_definitions->layout_defs['subpanel_setup']['onboardingtemplates'])) {
+                unset($subpanel->subpanel_definitions->layout_defs['subpanel_setup']['onboardingtemplates']);
+            }
+            echo $subpanel->display();
+        }
+    }
+}
