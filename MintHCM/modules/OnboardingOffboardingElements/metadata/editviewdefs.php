@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -43,49 +41,55 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-$module_name = 'OnboardingOffboardingElements';
+$module_name             = 'OnboardingOffboardingElements';
 $viewdefs [$module_name] = array(
-   'EditView' =>
-   array(
-      'templateMeta' =>
-      array(
-         'maxColumns' => '2',
-         'widths' =>
-         array(
+    'EditView' =>
+    array(
+        'templateMeta' =>
+        array(
+            'maxColumns' => '2',
+            'widths' =>
             array(
-               'label' => '10',
-               'field' => '30',
+                array(
+                    'label' => '10',
+                    'field' => '30',
+                ),
+                array(
+                    'label' => '10',
+                    'field' => '30',
+                ),
             ),
+            'includes' => array(
+                array('file' => 'modules/OnboardingOffboardingElements/js/view.edit.js'),
+            ),
+        ),
+        'panels' =>
+        array(
+            'default' =>
             array(
-               'label' => '10',
-               'field' => '30',
+                array(
+                    'name',
+                    'type',
+                ),
+                array(
+                    'user_name',
+                    'own_task',
+                ),
+                array(
+                    'days_from_start',
+                    array(
+                        'name' => 'task_duration_hours',
+                        'label' => 'LBL_TASK_DURATION',
+                        'customCode' => '<input id="task_duration_hours" name="task_duration_hours" size="2" maxlength="2" type="text" value="{$fields.task_duration_hours.value}"/>{$fields.task_duration_minutes.value}&nbsp;<span class="dateFormat">{$MOD.LBL_HOURS_MINUTES}</span>',
+                    ),
+                ),
+                array(
+                    'assigned_user_name',
+                ),
+                array(
+                    'description',
+                ),
             ),
-         ),
-      ),
-      'panels' =>
-      array(
-         'default' =>
-         array(
-            array(
-               'name',
-                       'type',
-            ),
-         array(
-            'user_name',
-            'own_task',
-         ),
-         array(
-            'days_from_start',
-            'task_duration',
-         ),
-            array(
-               'assigned_user_name',
-            ),
-            array(
-               'description',
-            ),
-         ),
-      ),
-   ),
+        ),
+    ),
 );

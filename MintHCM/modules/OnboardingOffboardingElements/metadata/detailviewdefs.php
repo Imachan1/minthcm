@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -43,87 +41,90 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-$module_name = 'OnboardingOffboardingElements';
+$module_name             = 'OnboardingOffboardingElements';
 $viewdefs [$module_name] = array(
-   'DetailView' =>
-   array(
-      'templateMeta' =>
-      array(
-         'form' =>
-         array(
-            'buttons' =>
+    'DetailView' =>
+    array(
+        'templateMeta' =>
+        array(
+            'form' =>
             array(
-               'EDIT',
-               'DUPLICATE',
-               'DELETE',
-               'FIND_DUPLICATES',
+                'buttons' =>
+                array(
+                    'EDIT',
+                    'DUPLICATE',
+                    'DELETE',
+                    'FIND_DUPLICATES',
+                ),
             ),
-         ),
-         'maxColumns' => '2',
-         'widths' =>
-         array(
+            'maxColumns' => '2',
+            'widths' =>
             array(
-               'label' => '10',
-               'field' => '30',
+                array(
+                    'label' => '10',
+                    'field' => '30',
+                ),
+                array(
+                    'label' => '10',
+                    'field' => '30',
+                ),
             ),
+            'useTabs' => true,
+            'tabDefs' =>
             array(
-               'label' => '10',
-               'field' => '30',
+                'DEFAULT' =>
+                array(
+                    'newTab' => true,
+                    'panelDefault' => 'expanded',
+                ),
+                'LBL_PANEL_ASSIGNMENT' =>
+                array(
+                    'newTab' => true,
+                    'panelDefault' => 'expanded',
+                ),
             ),
-         ),
-         'useTabs' => true,
-         'tabDefs' =>
-         array(
-            'DEFAULT' =>
+        ),
+        'panels' =>
+        array(
+            'default' =>
             array(
-               'newTab' => true,
-               'panelDefault' => 'expanded',
+                array(
+                    'name',
+                    'type',
+                ),
+                array(
+                    'user_name',
+                    'own_task',
+                ),
+                array(
+                    'days_from_start',
+                    array(
+                        'name' => 'task_duration_hours',
+                        'customCode' => '{$fields.task_duration_hours.value}{$MOD.LBL_HOURS_ABBREV} {$fields.task_duration_minutes.value}{$MOD.LBL_MINSS_ABBREV}&nbsp;',
+                        'label' => 'LBL_TASK_DURATION',
+                    )
+                ),
+                array(
+                    'description',
+                ),
             ),
-            'LBL_PANEL_ASSIGNMENT' =>
-            array(
-               'newTab' => true,
-               'panelDefault' => 'expanded',
+            'LBL_PANEL_ASSIGNMENT' => array(
+                array(
+                    'assigned_user_name',
+                ),
+                array(
+                    array(
+                        'name' => 'date_entered',
+                        'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}'
+                    ),
+                    array(
+                        'name' => 'date_modified',
+                        'label' => 'LBL_DATE_MODIFIED',
+                        'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}'
+                    )
+                )
             ),
-         ),
-      ),
-      'panels' =>
-      array(
-         'default' =>
-         array(
-            array(
-               'name',
-               'type',
-            ),
-         array(
-            'user_name',
-            'own_task',
-         ),
-         array(
-            'days_from_start',
-            'task_duration',
-         ),
-            array(
-               'description',
-            ),
-         ),
-         'LBL_PANEL_ASSIGNMENT' => array(
-            array(
-               'assigned_user_name',
-            ),
-            array(
-               array(
-                  'name' => 'date_entered',
-                  'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}'
-               ),
-               array(
-                  'name' => 'date_modified',
-                  'label' => 'LBL_DATE_MODIFIED',
-                  'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}'
-               )
-            )
-         ),
-      ),
-   ),
+        ),
+    ),
 );
 

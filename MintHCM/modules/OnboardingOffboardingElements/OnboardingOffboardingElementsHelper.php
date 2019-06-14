@@ -41,70 +41,41 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+
+/**
+ * @param $focus
+ * @param $field
+ * @param $value
+ * @param $view
+ * @return string
+ */
+function getTaskDurationMinutesOptions($focus, $field, $value, $view)
+{
+
+    if (isset($_REQUEST['task_duration_minutes'])) {
+        $focus->task_duration_minutes = $_REQUEST['task_duration_minutes'];
+    }
+
+    if (!isset($focus->task_duration_minutes)) {
+        $focus->task_duration_minutes = $focus->minutes_value_default;
+    }
+
+    global $timedate;
+    //setting default date and time
+    if (is_null($focus->date_start))
+            $focus->date_start       = $timedate->to_display_date(gmdate($timedate->get_date_time_format()));
+    if (is_null($focus->task_duration_hours)) $focus->task_duration_hours   = "0";
+    if (is_null($focus->task_duration_minutes)) $focus->task_duration_minutes = "1";
+
+    if ($view == 'EditView' || $view == 'MassUpdate' || $view == "QuickCreate"
+    ) {
+        $html = '<select id="task_duration_minutes" ';
+        $html .= 'name="task_duration_minutes">';
+        $html .= get_select_options_with_id($focus->minutes_values,
+            $focus->task_duration_minutes);
+        $html .= '</select>';
+        return $html;
+    }
+
+    return $focus->task_duration_minutes;
 }
-
-global $current_user;
-
-$dashletData['OnboardingOffboardingElementsDashlet']['searchFields'] = array(
-    'date_entered' => array('default' => ''),
-    'date_modified' => array('default' => ''),
-    'assigned_user_name' => array(
-        'type' => 'assigned_user_name',
-        'label' => 'LBL_ASSIGNED_TO',
-    ),
-    'type' => array('default' => ''),
-    'days_from_start' => array('default' => ''),
-    'user_name' => array('default' => ''),
-    'own_task' => array('default' => ''),
-);
-$dashletData['OnboardingOffboardingElementsDashlet']['columns']      = array(
-    'name' => array(
-        'width' => '40',
-        'label' => 'LBL_LIST_NAME',
-        'link' => true,
-        'default' => true
-    ),
-    'type' => array(
-        'width' => '15',
-        'label' => 'LBL_TYPE',
-        'default' => true
-    ),
-    'task_duration' => array(
-        'width' => '10',
-        'label' => 'LBL_TASK_DURATION',
-        'sortable' => false,
-        'related_fields' => array('task_duration_hours', 'task_duration_minutes')
-    ),
-    'days_from_start' => array(
-        'width' => '15',
-        'label' => 'LBL_DAYS_FROM_START',
-        'default' => true
-    ),
-    'date_entered' => array(
-        'width' => '15',
-        'label' => 'LBL_DATE_ENTERED',
-        'default' => false
-    ),
-    'date_modified' => array(
-        'width' => '15',
-        'label' => 'LBL_DATE_MODIFIED'
-    ),
-    'created_by' => array(
-        'width' => '8',
-        'label' => 'LBL_CREATED'
-    ),
-    'user_name' => array(
-        'width' => '8',
-        'label' => 'LBL_USERS_NAME'
-    ),
-    'assigned_user_name' => array(
-        'width' => '8',
-        'label' => 'LBL_LIST_ASSIGNED_USER'
-    ),
-    'own_task' => array(
-        'width' => '8',
-        'label' => 'LBL_OWN_TASK',
-    ),
-);
