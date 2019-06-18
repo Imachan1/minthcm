@@ -162,8 +162,6 @@ class SugarWidgetSubPanelTopSelectButtonForOnboardingTemplates extends SugarWidg
       }
       //acl_roles_users_selectuser_button
 
-      $popup_request_data['test'] = 'test';
-
       $json_encoded_php_array = $this->_create_json_encoded_popup_request($popup_request_data);
       return ' <input type="button" name="' . $this->getWidgetId() . '" id="' . $this->getWidgetId() . '" class="button"' . "\n"
          . ' title="' . $this->title . '"'

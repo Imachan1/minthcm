@@ -2,7 +2,7 @@ $( document ).ready( function () {
    var OnboardingOffboardingElementsViewEdit = function () {
 
       var _form_selector = $( 'form#EditView' );
-      
+
       this.construct = function () {
          run();
       };
@@ -37,6 +37,8 @@ $( document ).ready( function () {
 
       var setTypeList = function () {
          var element_id = _form_selector.find( 'input[type="hidden"][name="record"]' ).val();
+         var relate_to = _form_selector.find( 'input[type="hidden"][name="relate_to"]' ).val();
+         var element_type_selector = _form_selector.find( '#type option[value=exit_interview]' );
          if ( typeof element_id !== 'undefined' && !_.isEmpty( element_id ) ) {
             viewTools.api.callCustomApi( {
                module: 'OnboardingOffboardingElements',
@@ -46,11 +48,12 @@ $( document ).ready( function () {
                },
                callback: function ( data ) {
                   if ( data ) {
-                     var element_type_selector = _form_selector.find( '#type option[value=exit_interview]' );
                      element_type_selector.css( 'display', 'none' );
                   }
                }
             } );
+         } else if ( typeof relate_to !== 'undefined' && relate_to === 'onboardingoffboardingelements_onboardingtemplates' ) {
+            element_type_selector.css( 'display', 'none' );
          }
       };
 
