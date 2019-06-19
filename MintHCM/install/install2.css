@@ -523,7 +523,7 @@ form #wrapper {
 
 /* system check preloader */
 .preloading {
-	text-align: left;
+    text-align: left;
 }
 
 
@@ -550,7 +550,7 @@ MEDIA QUERIES
 *************************************************************************************/
 /* for 1300px or less */
 @media screen and (max-width: 1300px) {
-   .formrow.big label {float: none;}
+    .formrow.big label {float: none;}
 }
 
 
@@ -570,4 +570,9 @@ MEDIA QUERIES
     #syscred p {width: initial; min-width: initial;}
     .licensetext {width: 70%;}
     #licenseaccept {width: initial; diaplay: block; float: none;}
+}
+
+#install_container input[type="button"][disabled] {
+    background: #565656;
+    transition: all 0.5s ease;
 }
