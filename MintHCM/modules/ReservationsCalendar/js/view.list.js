@@ -2,7 +2,7 @@ function setCurrentCalendarDate() {
    var view = calendar.getViewName();
    var calendarDate = calendar.getDate();
    var date = "";
-   switch (view) {
+   switch ( view ) {
       case "day":
          date = calendarDate.getDate() + "-" + (calendarDate.getMonth() + 1) + "-" + calendarDate.getFullYear();
          break;
@@ -15,29 +15,29 @@ function setCurrentCalendarDate() {
          date = (calendarDate.getMonth() + 1) + "-" + calendarDate.getFullYear();
          break;
    }
-   $('div#currentCalendarDate').html(date);
+   $( 'div#currentCalendarDate' ).html( date );
 }
 
 function setCurrentCalendar() {
-   if (typeof calendarList !== "undefined") {
-      var calendar_id = $('select#resources').val();
-      calendarList.forEach(function (cal) {
-         if (cal.id == calendar_id) {
+   if ( typeof calendarList !== "undefined" ) {
+      var calendar_id = $( 'select#resources' ).val();
+      calendarList.forEach( function ( cal ) {
+         if ( cal.id == calendar_id ) {
             cal.checked = true;
          } else {
             cal.checked = false;
          }
-         calendar.toggleSchedules(cal.id, !cal.checked, false);
-      });
-      calendar.render(true);
+         calendar.toggleSchedules( cal.id, !cal.checked, false );
+      } );
+      calendar.render( true );
    }
 }
 
-function scheduleUpdate(event) {
-   if (typeof event === 'undefined' || event.schedule.isReadOnly) {
+function scheduleUpdate( event ) {
+   if ( typeof event === 'undefined' || event.schedule.isReadOnly ) {
       return;
-   } else if (typeof event.triggerEventName !== 'undefined' && event.triggerEventName === "click") {
-      SUGAR.ajaxUI.loadContent("index.php?module=Reservations&action=EditView&record=" + event.schedule.id + "&return_module=ReservationsCalendar&return_action=index");
+   } else if ( typeof event.triggerEventName !== 'undefined' && event.triggerEventName === "click" ) {
+      SUGAR.ajaxUI.loadContent( "index.php?module=Reservations&action=EditView&record=" + event.schedule.id + "&return_module=ReservationsCalendar&return_action=index" );
       return;
    }
 
@@ -45,19 +45,19 @@ function scheduleUpdate(event) {
    var eventStart = event.start;
    var eventEnd = event.end;
 
-   if (eventStart.getDay() === schedule.start.getDay() && eventEnd.getDay() !== schedule.end.getDay()) {
-      eventEnd.setHours(schedule.end.getHours());
-      eventEnd.setMinutes(schedule.end.getMinutes());
+   if ( eventStart.getDay() === schedule.start.getDay() && eventEnd.getDay() !== schedule.end.getDay() ) {
+      eventEnd.setHours( schedule.end.getHours() );
+      eventEnd.setMinutes( schedule.end.getMinutes() );
    }
 
-   if (eventEnd.getMinutes() === 59) {
-      eventEnd.setMinutes(45);
+   if ( eventEnd.getMinutes() === 59 ) {
+      eventEnd.setMinutes( 45 );
    }
 
-   var startTime = moment(eventStart.toDate()).format(viewTools.date.getDateTimeFormat());
-   var endTime = moment(eventEnd.toDate()).format(viewTools.date.getDateTimeFormat());
+   var startTime = moment( eventStart.toDate() ).format( viewTools.date.getDateTimeFormat() );
+   var endTime = moment( eventEnd.toDate() ).format( viewTools.date.getDateTimeFormat() );
 
-   viewTools.api.callCustomApi({
+   viewTools.api.callCustomApi( {
       module: 'Reservations',
       action: 'updateReservation',
       dataPOST: {
@@ -65,83 +65,84 @@ function scheduleUpdate(event) {
          starting_date: startTime,
          ending_date: endTime
       },
-      callback: function (data) {
-         if (data) {
-            calendar.updateSchedule(schedule.id, schedule.calendarId, {
+      callback: function ( data ) {
+         if ( data ) {
+            calendar.updateSchedule( schedule.id, schedule.calendarId, {
                start: eventStart,
                end: eventEnd
-            });
+            } );
          }
       }
-   });
+   } );
 }
 
-function scheduleDelete(event) {
+function scheduleDelete( event ) {
    var schedule = event.schedule;
-   viewTools.api.callCustomApi({
+   viewTools.api.callCustomApi( {
       module: 'Reservations',
       action: 'deleteReservation',
       dataPOST: {
          reservation_id: schedule.id
       },
-      callback: function (data) {
-         if (data) {
-            calendar.deleteSchedule(schedule.id, schedule.calendarId);
+      callback: function ( data ) {
+         if ( data ) {
+            calendar.deleteSchedule( schedule.id, schedule.calendarId );
          }
       }
-   });
+   } );
 }
 
-function createReservation(event) {
-   if (typeof event === 'undefined') {
-      if (typeof event.guide !== 'undefined') {
+function createReservation( event ) {
+   if ( typeof event === 'undefined' ) {
+      if ( typeof event.guide !== 'undefined' ) {
          event.guide.clearGuideElement();
       }
       return;
    }
    var view = calendar.getViewName();
-   var resource_id = $('#resources').val();
-   var resource_name = $('#resources option:selected').text();
+   var resource_id = $( '#resources' ).val();
+   var resource_name = $( '#resources option:selected' ).text();
    var location = 'index.php?module=Reservations&action=EditView&resource_id=' + resource_id + '&resource_name=' + resource_name + "&return_module=ReservationsCalendar&return_action=index";
-   var eventStart = moment(event.start.toDate());
-   var eventEnd = moment(event.end.toDate());
-   if (eventEnd.minutes() == 59) {
-      eventEnd.minutes(45);
+   var eventStart = moment( event.start.toDate() );
+   var eventEnd = moment( event.end.toDate() );
+   if ( eventEnd.minutes() == 59 ) {
+      eventEnd.minutes( 45 );
    }
-   if (view === 'month' || (view !== 'month' && typeof event.isAllDay !== 'undefined' && event.isAllDay)) {
-      eventStart.hours(8);
-      eventStart.minutes(0);
-      eventEnd.hours(16);
-      eventEnd.minutes(0);
+   if ( view === 'month' || (view !== 'month' && typeof event.isAllDay !== 'undefined' && event.isAllDay) ) {
+      eventStart.hours( 8 );
+      eventStart.minutes( 0 );
+      eventEnd.hours( 16 );
+      eventEnd.minutes( 0 );
    }
-   var startTime = eventStart.format(viewTools.date.getDateTimeFormat());
-   var endTime = eventEnd.format(viewTools.date.getDateTimeFormat());
+   var startTime = eventStart.format( viewTools.date.getDateTimeFormat() );
+   var endTime = eventEnd.format( viewTools.date.getDateTimeFormat() );
    location += '&starting_date=' + startTime + '&ending_date=' + endTime;
-   SUGAR.ajaxUI.loadContent(location);
+   SUGAR.ajaxUI.loadContent( location );
 }
 
-YAHOO.util.Event.onContentReady('calendar', function () {
-   calendar = new tui.Calendar('#calendar', {
+YAHOO.util.Event.onContentReady( 'calendar', function () {
+   calendar_fdow = parseInt( calendar_fdow ); /* 0 - sunday, ..., 6 - saturday */
+   calendar = new tui.Calendar( '#calendar', {
       defaultView: 'month',
       calendars: calendarList,
       useDetailPopup: true,
       month: {
-         startDayOfWeek: 1
+         startDayOfWeek: calendar_fdow
       },
       week: {
-         startDayOfWeek: 1
+         startDayOfWeek: calendar_fdow
       }
-   });
-   calendar.on({
+   } );
+   calendar.on( {
       'beforeUpdateSchedule': scheduleUpdate,
       'beforeDeleteSchedule': scheduleDelete,
       'beforeCreateSchedule': createReservation
-   });
-   if (typeof reservationList !== "undefined") {
-      calendar.createSchedules(reservationList);
+   } );
+   if ( typeof reservationList !== "undefined" ) {
+      calendar.createSchedules( reservationList );
    }
-   $('input.tuiCalendar').click(setCurrentCalendarDate);
-   $('select#resources').change(setCurrentCalendar);
+   $( 'input.tuiCalendar' ).click( setCurrentCalendarDate );
+   $( 'select#resources' ).change( setCurrentCalendar );
    setCurrentCalendarDate();
    setCurrentCalendar();
-});
+} );

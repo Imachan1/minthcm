@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,64 +41,65 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
-$module_name = 'OnboardingOffboardingElements';
+$module_name                = 'OnboardingOffboardingElements';
 $listViewDefs[$module_name] = array(
-   'NAME' => array(
-      'width' => '20',
-      'label' => 'LBL_NAME',
-      'default' => true,
-      'link' => true
-   ),
-   'TYPE' => array(
-      'width' => '15',
-      'label' => 'LBL_TYPE',
-      'default' => true,
-   ),
-   'TASK_DURATION' => array(
-      'width' => '15',
-      'label' => 'LBL_TASK_DURATION',
-      'default' => true,
-   ),
-   'DAYS_FROM_START' => array(
-      'width' => '15',
-      'label' => 'LBL_DAYS_FROM_START',
-      'default' => true,
-   ),
-   'USERS_NAME' => array(
-      'width' => '9',
-      'label' => 'LBL_USERS_NAME',
-      'module' => 'Users',
-      'id' => 'USERS_ID',
-      'default' => true
-   ),
-   'OWN_TASK' => array(
-      'width' => '15',
-      'label' => 'LBL_OWN_TASK',
-      'default' => true,
-   ),
-   'ASSIGNED_USER_NAME' => array(
-      'width' => '9',
-      'label' => 'LBL_ASSIGNED_TO_NAME',
-      'module' => 'Employees',
-      'id' => 'ASSIGNED_USER_ID',
-      'default' => false
-   ),
-   'DATE_MODIFIED' =>
-   array(
-      'type' => 'datetime',
-      'label' => 'LBL_DATE_MODIFIED',
-      'width' => '10%',
-      'default' => false,
-   ),
-   'DATE_ENTERED' =>
-   array(
-      'type' => 'datetime',
-      'label' => 'LBL_DATE_ENTERED',
-      'width' => '10%',
-      'default' => false,
-   ),
+    'NAME' => array(
+        'width' => '20',
+        'label' => 'LBL_NAME',
+        'default' => true,
+        'link' => true
+    ),
+    'TYPE' => array(
+        'width' => '15',
+        'label' => 'LBL_TYPE',
+        'default' => true,
+    ),
+    'TASK_DURATION' => array(
+        'width' => '15',
+        'sortable' => false,
+        'label' => 'LBL_TASK_DURATION',
+        'default' => true,
+    ),
+    'DAYS_FROM_START' => array(
+        'width' => '15',
+        'label' => 'LBL_DAYS_FROM_START',
+        'default' => true,
+    ),
+    'USERS_NAME' => array(
+        'width' => '9',
+        'label' => 'LBL_USERS_NAME',
+        'module' => 'Users',
+        'id' => 'USERS_ID',
+        'default' => true
+    ),
+    'OWN_TASK' => array(
+        'width' => '15',
+        'label' => 'LBL_OWN_TASK',
+        'default' => true,
+    ),
+    'ASSIGNED_USER_NAME' => array(
+        'width' => '9',
+        'label' => 'LBL_ASSIGNED_TO_NAME',
+        'module' => 'Employees',
+        'id' => 'ASSIGNED_USER_ID',
+        'default' => false
+    ),
+    'DATE_MODIFIED' =>
+    array(
+        'type' => 'datetime',
+        'label' => 'LBL_DATE_MODIFIED',
+        'width' => '10%',
+        'default' => false,
+    ),
+    'DATE_ENTERED' =>
+    array(
+        'type' => 'datetime',
+        'label' => 'LBL_DATE_ENTERED',
+        'width' => '10%',
+        'default' => false,
+    ),
 );

@@ -63,6 +63,7 @@ class ReservationsCalendarViewList extends ViewList {
       if ( !empty($resource_id) ) {
          $this->ss->assign('default_resource', $resource_id);
       }
+      $this->ss->assign('CALENDAR_FDOW', $GLOBALS['current_user']->get_first_day_of_week());
       echo $this->ss->fetch('modules/ReservationsCalendar/tpl/view.list.tpl');
    }
 

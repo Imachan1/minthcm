@@ -41,18 +41,19 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-if( !isset( $install_script ) || !$install_script ){
+if (!isset($install_script) || !$install_script) {
     die($mod_strings['ERR_NO_DIRECT_SCRIPT']);
 }
 
-class NonDBLocalization extends Localization {
+class NonDBLocalization extends Localization
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         global $sugar_config;
         $this->localeNameFormatDefault = empty($sugar_config['locale_name_format_default']) ? 's f l' : $sugar_config['default_name_format'];
     }
@@ -64,7 +65,8 @@ class NonDBLocalization extends Localization {
      * @param array un-prettied dropdown list
      * @return array array of dropdown options
      */
-    public function getUsableLocaleNameOptions($options) {
+    public function getUsableLocaleNameOptions($options)
+    {
         global $mod_strings;
         $examples = array('s' => $mod_strings['LBL_LOCALE_NAME_FIRST'],
             'f' => $mod_strings['LBL_LOCALE_NAME_LAST'],
@@ -86,24 +88,26 @@ class NonDBLocalization extends Localization {
         }
         return $newOpts;
     }
-
 }
 
 class InstallLayout
 {
 
-    public static function getSelect($name, $options, $default) {
+    public static function getSelect($name, $options, $default)
+    {
         $out = "<select name=\"$name\">";
-        foreach($options as $key => $value) {
+        foreach ($options as $key => $value) {
             $selected = '';
-            if($key==$default) $selected = ' selected="selected"';
+            if ($key == $default)
+                $selected = ' selected="selected"';
             $out .= "<option label=\"$value\" value=\"$key\"$selected>$value</option>";
         }
         $out .= "</select>";
         return $out;
     }
 
-    private function getHeaderStyles() {
+    private function getHeaderStyles()
+    {
         $out = <<<EOQ
        <link REL="SHORTCUT ICON" HREF="include/images/sugar_icon.ico">
        <link rel="stylesheet" href="install/install2.css" type="text/css">
@@ -114,7 +118,8 @@ EOQ;
         return $out;
     }
 
-    private function getHeaderScripts($sugar_version, $js_custom_version) {
+    private function getHeaderScripts($sugar_version, $js_custom_version)
+    {
         $out = <<<EOQ
             <script src="include/javascript/jquery/jquery-min.js"></script>
             <script src="cache/include/javascript/sugar_grp1_yui.js?s={$sugar_version}&c={$js_custom_version}"></script>
@@ -142,7 +147,6 @@ EOQ;
 EOQ;
         return $out;
     }
-
 
     /**
      * @param $name form tag name
@@ -182,7 +186,6 @@ EOQ;
 
         return $out;
     }
-
 
     /**
      * @param $header install page head
@@ -227,16 +230,14 @@ EOQ;
         return $out;
     }
 
-    private function getFormItems($mod_strings, $app_list_strings, $sugarConfigDefaults, $drivers, $checked, $db, $errors, $supportedLanguages,
-        $current_language, $customSession, $customLog, $customId, $customSessionHidden, $customLogHidden, $customIdHidden) {
+    private function getFormItems($mod_strings, $app_list_strings, $sugarConfigDefaults, $drivers, $checked, $db, $errors, $supportedLanguages, $current_language, $customSession, $customLog, $customId, $customSessionHidden, $customLogHidden, $customIdHidden)
+    {
 
 
 
         // ------------------------------
         //  DB Type and DB configuration
         // ---------------------------------->
-
-
         // database selection
         $out_dbtypesel = "
     <div class=\"floatbox\" id=\"fb5\">
@@ -245,13 +246,13 @@ EOQ;
         <div class=\"form_section\">
           <h3>{$mod_strings['LBL_SYSOPTS_DB']}</h3>";
 
-        foreach($drivers as $type => $driver) {
-            $oci = ($type == "oci8")?"":'none'; // hack for special oracle message
-            $out_dbtypesel.=<<<EOQ
+        foreach ($drivers as $type => $driver) {
+            $oci = ($type == "oci8") ? "" : 'none'; // hack for special oracle message
+            $out_dbtypesel .= <<<EOQ
                 <input type="radio" class="checkbox" name="setup_db_type" id="setup_db_type" value="$type" {$checked[$type]} onclick="onDBTypeClick(this);//document.getElementById('ociMsg').style.display='$oci'"/>{$mod_strings[$driver->label]}<br>
 EOQ;
         }
-        $out_dbtypesel.=<<<EOQ
+        $out_dbtypesel .= <<<EOQ
         </div>
             <div name="ociMsg" id="ociMsg" style="display:none"></div>
     <!-- </div> -->
@@ -261,7 +262,7 @@ EOQ;
         $out2 = $out_dbtypesel;
 
 
-        $out2.=<<<EOQ2
+        $out2 .= <<<EOQ2
 
         <!-- <div class="floatbox"> -->
 
@@ -272,25 +273,25 @@ EOQ2;
 
         $config_params = $db->installConfig();
         $form = '';
-        foreach($config_params as $group => $gdata) {
-            $form.= "<div class='install_block'>";
-            if($mod_strings[$group . '_LABEL']) {
+        foreach ($config_params as $group => $gdata) {
+            $form .= "<div class='install_block'>";
+            if ($mod_strings[$group . '_LABEL']) {
                 $form .= "<label>{$mod_strings[$group . '_LABEL']}" . "<i> i <div class=\"tooltip\">{$mod_strings[$group]}</div></i></label>\n";
             }
-            foreach($gdata as $name => $value) {
+            foreach ($gdata as $name => $value) {
 
-                if(!empty($value)) {
-                    if(!empty($value['required'])) {
+                if (!empty($value)) {
+                    if (!empty($value['required'])) {
                         $form .= "<span class=\"required\">*</span>";
+                    } else {
+                        
                     }
-                    else {
-                    }
-                    if(!empty($_SESSION[$name])) {
+                    if (!empty($_SESSION[$name])) {
                         $sessval = $_SESSION[$name];
                     } else {
                         $sessval = '';
                     }
-                    if(!empty($value["type"])) {
+                    if (!empty($value["type"])) {
                         $type = $value["type"];
                     } else {
                         $type = '';
@@ -300,9 +301,9 @@ EOQ2;
 
 FORM;
                     //if the type is password, set a hidden field to capture the value.  This is so that we can properly encode special characters, which is a limitation with password fields
-                    if($type=='password'){
-                        $form .= "</div><div class=\"install_block\"><label>{$mod_strings['LBL_DBCONF_TITLE_PSWD_INFO_LABEL']}</label><span>&nbsp;</span><input type='$type' name='{$name}_entry' id='{$name}_entry' value='".urldecode($sessval)."'><input type='hidden' name='$name' id='$name' value='".urldecode($sessval)."'></div><div class=\"install_block\">";
-                    }else{
+                    if ($type == 'password') {
+                        $form .= "</div><div class=\"install_block\"><label>{$mod_strings['LBL_DBCONF_TITLE_PSWD_INFO_LABEL']}</label><span>&nbsp;</span><input type='$type' name='{$name}_entry' id='{$name}_entry' value='" . urldecode($sessval) . "'><input type='hidden' name='$name' id='$name' value='" . urldecode($sessval) . "'></div><div class=\"install_block\">";
+                    } else {
                         $form .= "<input type='$type' name='$name' id='$name' value='$sessval'>";
                     }
 
@@ -310,7 +311,6 @@ FORM;
 
                     $form .= <<<FORM
 FORM;
-
                 } else {
                     $form .= "<input name=\"$name\" id=\"$name\" value=\"\" type=\"hidden\">\n";
                 }
@@ -323,10 +323,8 @@ FORM;
 
 
         // ---------- user data set (dbConfig_a.php)
-
-
 //if we are installing in custom mode, include the following html
-        if($db->supports("create_user")) {
+        if ($db->supports("create_user")) {
 // create / set db user dropdown
             $auto_select = '';
             $provide_select = '';
@@ -395,12 +393,12 @@ FORM;
 
 EOQ2;
         }
-        $out =$out2;
+        $out = $out2;
 
 
 
         // ------ siteConfig_a.php
-        $out .=<<<EOQ
+        $out .= <<<EOQ
         </div>
     </div>
     <div class="floatbox" id="fb6">
@@ -412,8 +410,8 @@ EOQ2;
                     <h3>{$mod_strings['LBL_SITECFG_TITLE2']}<div class="tooltip-toggle"><em> i </em><div class="tooltip">{$mod_strings['LBL_SITECFG_PASSWORD_MSG']}</div></div></h3>
 EOQ;
         //hide this in typical mode
-        if(!empty($_SESSION['install_type']) && strtolower($_SESSION['install_type'])=='custom'){
-            $out .=<<<EOQ
+        if (!empty($_SESSION['install_type']) && strtolower($_SESSION['install_type']) == 'custom') {
+            $out .= <<<EOQ
 <div class='install_block'>
     {$mod_strings['LBL_SITECFG_URL_MSG']}
     <span class="required">*</span>
@@ -426,17 +424,17 @@ EOQ;
 </div>
 EOQ;
             $db = getDbConnection();
-            if($db->supports("collation")) {
+            if ($db->supports("collation")) {
                 $collationOptions = $db->getCollationList();
             }
-            if(!empty($collationOptions)) {
-                if(isset($_SESSION['setup_db_options']['collation'])) {
+            if (!empty($collationOptions)) {
+                if (isset($_SESSION['setup_db_options']['collation'])) {
                     $default = $_SESSION['setup_db_options']['collation'];
                 } else {
                     $default = $db->getDefaultCollation();
                 }
                 $options = get_select_options_with_id(array_combine($collationOptions, $collationOptions), $default);
-                $out .=<<<EOQ
+                $out .= <<<EOQ
      <div class='install_block'>
         <br>{$mod_strings['LBL_SITECFG_COLLATION_MSG']}
         <span class="required">*</span>
@@ -448,15 +446,15 @@ EOQ;
         }
 
         $help_url = get_help_button_url();
-        if(!isset($_SESSION['email1'])) {
+        if (!isset($_SESSION['email1'])) {
             $_SESSION['email1'] = null;
         }
 
-        if(!isset($_SESSION['setup_site_admin_user_name'])) {
+        if (!isset($_SESSION['setup_site_admin_user_name'])) {
             $_SESSION['setup_site_admin_user_name'] = null;
         }
 
-        $out .=<<<EOQ
+        $out .= <<<EOQ
 <div class='install_block'>
     <!--
     <p class="ibmsg">{$mod_strings['LBL_SITECFG_PASSWORD_MSG']}</p>
@@ -505,7 +503,7 @@ EOQ;
 EOQ;
 
 
-        $out.=<<<EOQ
+        $out .= <<<EOQ
 </div>
 EOQ;
 
@@ -513,7 +511,7 @@ EOQ;
 
 EOQ;
 
-  $out .=<<<EOQ3
+        $out .= <<<EOQ3
         </div>
         </div>
 
@@ -521,21 +519,17 @@ EOQ3;
         // ------------------
         //  Choose Demo Data
         // ------------------------->
-
-
         //demo data select
-        $demoDD = "<select name='demoData' id='demoData' class='select'><option value='no' >".$mod_strings['LBL_NO']."</option><option value='yes'>".$mod_strings['LBL_YES']."</option>";
+        $demoDD = "<select name='demoData' id='demoData' class='select'><option value='no' >" . $mod_strings['LBL_NO'] . "</option><option value='yes'>" . $mod_strings['LBL_YES'] . "</option>";
         $demoDD .= "</select>";
 
 //         $out .=<<<EOQ3
 //                <div class="floatbox full" id="fb0">
 //             <h2>{$mod_strings['LBL_MORE_OPTIONS_TITLE']}</h2>
 //         </div>
-
 //         <div class="floatbox full" id="fb1">
 //             <div class="install_block">
 //                 <h3 onclick="$(this).next().toggle();" class="toggler">&raquo; {$mod_strings['LBL_DBCONF_DEMO_DATA_TITLE']}</h3>
-
 //                 <div class="form_section" style="display: none;">
 //                 <div class="clear"></div>
 //                     <div class="formrow big">
@@ -546,28 +540,24 @@ EOQ3;
 //             </div>
 //         </div>
 // EOQ3;
-
         // ------------------
         //  Choose Scenarios
         // ------------------------->
         $scenarioSelection = "<p class='ibmsg'>{$mod_strings['LBL_WIZARD_SCENARIO_EMPTY']}</p>";
-        if(isset($_SESSION['installation_scenarios']) && !empty($_SESSION['installation_scenarios']))
-        {
+        if (isset($_SESSION['installation_scenarios']) && !empty($_SESSION['installation_scenarios'])) {
             $scenarioSelection = "";
-            foreach($_SESSION['installation_scenarios'] as $scenario)
-            {
+            foreach ($_SESSION['installation_scenarios'] as $scenario) {
                 $key = $scenario['key'];
                 $description = $scenario['description'];
-                $scenarioModuleList =  implode($scenario['modulesScenarioDisplayName'],',');
+                $scenarioModuleList = implode($scenario['modulesScenarioDisplayName'], ',');
                 $title = $scenario['title'];
 
-                $scenarioSelection.= "<input type='checkbox' name='scenarios[]' value='$key' checked><b>$title</b>.  $description ($scenarioModuleList).<br>";
+                $scenarioSelection .= "<input type='checkbox' name='scenarios[]' value='$key' checked><b>$title</b>.  $description ($scenarioModuleList).<br>";
             }
         }
 
 
 //         $out .= <<<EOQ
-
 //         <!-- Scenario Selection -->
 //         <div class="floatbox full" id="fb3">
 //             <h3 onclick="$(this).next().toggle();" class="toggler">&raquo; {$mod_strings['LBL_WIZARD_SCENARIO_TITLE']}</h3>
@@ -577,15 +567,11 @@ EOQ3;
 //                 <div class="clear"></div>
 //             </div>
 //         </div>
-
 // EOQ;
-
         //--End of scenarios
-
         //---------------
         // SMTP Settings
         //-------------------->
-
         // smtp
         // TODO-t: test it for all types
         $MAIL_SSL_OPTIONS_GMAIL = get_select_options_with_id($app_list_strings['email_settings_for_ssl'], '2');
@@ -597,12 +583,13 @@ EOQ3;
         $notify_allow_default_outbound_checked = empty($_SESSION['notify_allow_default_outbound']) ? '' : ' checked="checked" ';
 
         // set default smtp toggle buttons selected value
-        if(empty($_SESSION['smtp_tab_selected'])) $_SESSION['smtp_tab_selected'] = 'smtp_tab_other';
-        
-        if(!isset($_SESSION['smtp_from_name']) || !$_SESSION['smtp_from_name']) {
+        if (empty($_SESSION['smtp_tab_selected']))
+            $_SESSION['smtp_tab_selected'] = 'smtp_tab_other';
+
+        if (!isset($_SESSION['smtp_from_name']) || !$_SESSION['smtp_from_name']) {
             $_SESSION['smtp_from_name'] = 'MintHCM';
         }
-        if(!isset($_SESSION['smtp_from_addr']) || !$_SESSION['smtp_from_addr']) {
+        if (!isset($_SESSION['smtp_from_addr']) || !$_SESSION['smtp_from_addr']) {
             $_SESSION['smtp_from_addr'] = 'do_not_reply@example.com';
         }
 
@@ -918,7 +905,7 @@ EOQ;
 
 
         // db setup (dbConfig_a.php)
-        $out2 =<<<EOQ2
+        $out2 = <<<EOQ2
             <input type='hidden' name='setup_db_drop_tables' id='setup_db_drop_tables' value=''>
         </div>
 EOQ2;
@@ -932,12 +919,11 @@ EOQ2;
         // ----------
         //  Branding
         // ------------->
-
         // company logo
         $currentLogoLink = SugarThemeRegistry::current()->getImageURL('company_logo.png');
         // show logo if we have
         $hiddenLogo = '';
-        if(!file_exists($currentLogoLink)) {
+        if (!file_exists($currentLogoLink)) {
             $hiddenLogo = 'display:none;';
         }
 
@@ -997,7 +983,6 @@ EOQ;
 
 
         // System location defaults
-
         // TODO--low: 1000s sep, Decimal Symb, Name Format
 
         $defaultDateFormatSelect = self::getSelect('default_date_format', $sugarConfigDefaults['date_formats'], empty($_SESSION['default_date_format']) ? $sugarConfigDefaults['default_date_format'] : $_SESSION['default_date_format']);
@@ -1094,10 +1079,10 @@ EOQ;
 EOQ;
 
 
-        $out.= "<div class=\"floatbox full\">";
-        $out.= "    <h3 onclick=\"$(this).next().toggle();\" class=\"toggler\">&raquo; {$mod_strings['LBL_SITECFG_SECURITY_TITLE']}</h3>";
+        $out .= "<div class=\"floatbox full\">";
+        $out .= "    <h3 onclick=\"$(this).next().toggle();\" class=\"toggler\">&raquo; {$mod_strings['LBL_SITECFG_SECURITY_TITLE']}</h3>";
 
-        $out.=<<<EOQ
+        $out .= <<<EOQ
 
 <div class="security-block" style="display:none;">
 <table cellspacing="0" cellpadding="0" border="0" align="center" class="shell">
@@ -1121,7 +1106,6 @@ EOQ;
 //    <tr style='display:none'><td></td>
 //        <td><input type='checkbox' class='checkbox' name='setup_site_sugarbeet_anonymous_stats' value='yes' $checked /></td>
 //        <td><b>{$mod_strings['LBL_SITECFG_ANONSTATS']}</b><br><i>{$mod_strings['LBL_SITECFG_ANONSTATS_DIRECTIONS']}</i></td></tr>
-
 // ";
         $checked = '';
 //if(!empty($_SESSION['setup_site_sugarbeet_automatic_checks'])) $checked = 'checked=""';
@@ -1131,7 +1115,7 @@ EOQ;
 //        <td><b>{$mod_strings['LBL_SITECFG_SUITE_UP']}</b><br><i>{$mod_strings['LBL_SITECFG_SUITE_UP_DIRECTIONS']}</i><br>&nbsp;</td>
 //     </tr>
 // EOQ;
- $out .= <<<EOQ
+        $out .= <<<EOQ
    <tbody id="setup_site_session_section_pre">
    <tr><td></td>
        <td><input type="checkbox" class="checkbox" name="setup_site_custom_session_path" value="yes" onclick="javascript:$('#setup_site_session_section').toggle();" {$customSession} /></td>
@@ -1189,15 +1173,16 @@ EOQ;
 </div>
 EOQ;
 
-        $out.= "</div>";
+        $out .= "</div>";
 
 
 
         return $out;
     }
 
-    private function getFormControlls($mod_strings, $formId) {
-        $out =<<<EOQ
+    private function getFormControlls($mod_strings, $formId)
+    {
+        $out = <<<EOQ
         <div id="checkingDiv" style="display:none">
                     <p><img alt="{$mod_strings['LBL_LICENSE_CHKDB_HEADER']}" src='install/processing.gif'> <br>{$mod_strings['LBL_LICENSE_CHKDB_HEADER']}</p>
            </div>
@@ -1231,6 +1216,8 @@ EOQ;
                      * Back button clicked
                      */
                     var onBackClick = function(e) {
+                        document.getElementById('button_next2').disabled = true;
+                        document.getElementById('button_back_settings').disabled = true;
                         removeSMTPSettings();
                         storeConfig(e, function(){
                             removeSMTPSettings();
@@ -1460,7 +1447,8 @@ EOQ;
                      * Click to next button and start the installation.
                      */
                     var onNextClick = function(e) {
-
+                        document.getElementById('button_next2').disabled = true;
+                        document.getElementById('button_back_settings').disabled = true;
                         if($('#dbUSRData').val() == 'provide') {
                             $('#setup_db_admin_user_name').val($('input[name="setup_db_sugarsales_user"]').val());
                             $('#setup_db_admin_password_entry').val($('input[name="setup_db_sugarsales_password_entry"]').val());
@@ -1474,6 +1462,7 @@ EOQ;
                                 callDBCheck(function(url, next_step, msgpanel){
                                     dbCheckPassed(url, next_step, msgpanel);
                                 });
+                           
                             });
                         }
                         else {
@@ -1489,8 +1478,9 @@ EOQ;
         return $out;
     }
 
-    private function getFormScripts($mod_strings, $next_step) {
-        $out =<<<EOQ
+    private function getFormScripts($mod_strings, $next_step)
+    {
+        $out = <<<EOQ
             /**
              * Submit form without step.
              */
@@ -1600,6 +1590,8 @@ EOQ;
                                     msgPanel.hide();
                                     document.getElementById("errorMsgs").innerHTML = o.responseText;
                                     document.getElementById("errorMsgs").style.display = '';
+                                    document.getElementById('button_next2').disabled = false;
+                                    document.getElementById('button_back_settings').disabled = false;
                                     return false;
                                 }
 
@@ -1701,44 +1693,31 @@ EOQ;
      * @param $data   form data
      * @return string   output
      */
-    public function show($data = null) {
-        foreach($data as $__key => $__val) {
+    public function show($data = null)
+    {
+        foreach ($data as $__key => $__val) {
             $$__key = $__val;
         }
         $formId = 'installForm';
         $out = $this->getOutput(
             $this->getHeader(
-                $mod_strings,
-                $this->getHeaderStyles(),
-                $this->getHeaderScripts($sugar_version, $js_custom_version)
-            ),
-            $this->getForm(
-                $mod_strings,
-                $formId,
-                $formId,
-                $errs,
-                $this->getFormItems($mod_strings, $app_list_strings, $sugarConfigDefaults, $drivers, $checked, $db, $errors, $supportedLanguages,
-                    $current_language, $customSession, $customLog, $customId, $customSessionHidden, $customLogHidden, $customIdHidden),
-                $this->getFormControlls($mod_strings, $formId),
-                $this->getFormScripts($mod_strings, $next_step),
-                $next_step
-            ),
-            $sugar_md,
-            $mod_strings
+                $mod_strings, $this->getHeaderStyles(), $this->getHeaderScripts($sugar_version, $js_custom_version)
+            ), $this->getForm(
+                $mod_strings, $formId, $formId, $errs, $this->getFormItems($mod_strings, $app_list_strings, $sugarConfigDefaults, $drivers, $checked, $db, $errors, $supportedLanguages, $current_language, $customSession, $customLog, $customId, $customSessionHidden, $customLogHidden, $customIdHidden), $this->getFormControlls($mod_strings, $formId), $this->getFormScripts($mod_strings, $next_step), $next_step
+            ), $sugar_md, $mod_strings
         );
         echo $out;
         return $out;
     }
-
-
-
 }
 
-class DisplayErrors {
+class DisplayErrors
+{
 
     private static $settingsStack = array();
 
-    public static function show() {
+    public static function show()
+    {
         array_push(self::$settingsStack, array(
             'level' => error_reporting(),
             'display_errors' => ini_get('display_errors'),
@@ -1748,13 +1727,13 @@ class DisplayErrors {
         ini_set('display_errors', 1);
     }
 
-    public static function restore() {
+    public static function restore()
+    {
         $settings = array_pop(self::$settingsStack);
         error_reporting($settings['level']);
         ini_set('display_errors', $settings['display_errors']);
     }
 }
-
 
 //-------------------------------------- InstallLayout
 
@@ -1762,7 +1741,7 @@ global $sugar_version, $js_custom_version;
 
 
 
-if( !isset( $install_script ) || !$install_script ){
+if (!isset($install_script) || !$install_script) {
     die($mod_strings['ERR_NO_DIRECT_SCRIPT']);
 }
 
@@ -1770,19 +1749,19 @@ if( !isset( $install_script ) || !$install_script ){
 
 //---------------- systemOption: db driver select
 
-if(!isset($_SESSION['setup_db_type']) || $_SESSION['setup_db_type'] ==''){
+if (!isset($_SESSION['setup_db_type']) || $_SESSION['setup_db_type'] == '') {
     $_SESSION['setup_db_type'] = 'mysql';
 }
 $setup_db_type = $_SESSION['setup_db_type'];
 
 $errs = '';
-if(isset($validation_errors)) {
-    if(count($validation_errors) > 0) {
-        $errs  = '<div id="errorMsgs">';
+if (isset($validation_errors)) {
+    if (count($validation_errors) > 0) {
+        $errs = '<div id="errorMsgs">';
         $errs .= "<p>{$mod_strings['LBL_SYSOPTS_ERRS_TITLE']}</p>";
         $errs .= '<ul>';
 
-        foreach($validation_errors as $error) {
+        foreach ($validation_errors as $error) {
             $errs .= '<li>' . $error . '</li>';
         }
 
@@ -1792,7 +1771,7 @@ if(isset($validation_errors)) {
 }
 
 $drivers = DBManagerFactory::getDbDrivers();
-foreach(array_keys($drivers) as $dname) {
+foreach (array_keys($drivers) as $dname) {
     $checked[$dname] = '';
 }
 $checked[$setup_db_type] = 'checked="checked"';
@@ -1801,8 +1780,8 @@ $checked[$setup_db_type] = 'checked="checked"';
 
 //----------------- dbConfig_a: db name user pass...
 
-if(empty($_SESSION['setup_db_host_name'])){
-    $_SESSION['setup_db_host_name'] = (isset($sugar_config['db_host_name']))  ? $sugar_config['db_host_name'] :  $_SERVER['SERVER_NAME'];
+if (empty($_SESSION['setup_db_host_name'])) {
+    $_SESSION['setup_db_host_name'] = (isset($sugar_config['db_host_name'])) ? $sugar_config['db_host_name'] : $_SERVER['SERVER_NAME'];
 }
 
 
@@ -1811,16 +1790,16 @@ $createDbCheckbox = '';
 $createDb = (!empty($_SESSION['setup_db_create_database'])) ? 'checked="checked"' : '';
 $dropCreate = (!empty($_SESSION['setup_db_drop_tables'])) ? 'checked="checked"' : '';
 $instanceName = '';
-if (isset($_SESSION['setup_db_host_instance']) && !empty($_SESSION['setup_db_host_instance'])){
+if (isset($_SESSION['setup_db_host_instance']) && !empty($_SESSION['setup_db_host_instance'])) {
     $instanceName = $_SESSION['setup_db_host_instance'];
 }
 
-$setupDbPortNum ='';
-if (isset($_SESSION['setup_db_port_num']) && !empty($_SESSION['setup_db_port_num'])){
+$setupDbPortNum = '';
+if (isset($_SESSION['setup_db_port_num']) && !empty($_SESSION['setup_db_port_num'])) {
     $setupDbPortNum = $_SESSION['setup_db_port_num'];
 }
 
-if(!isset($_SESSION['setup_db_manager'])) {
+if (!isset($_SESSION['setup_db_manager'])) {
     $_SESSION['setup_db_manager'] = null;
 }
 
@@ -1833,43 +1812,40 @@ $db = getInstallDbInstance();
 //----------------- siteConfig_a.php Site Config & admin user
 
 
-if( is_file("config.php") ){
-    if(!empty($sugar_config['default_theme']))
+if (is_file("config.php")) {
+    if (!empty($sugar_config['default_theme']))
         $_SESSION['site_default_theme'] = $sugar_config['default_theme'];
 
-    if(!empty($sugar_config['disable_persistent_connections']))
-        $_SESSION['disable_persistent_connections'] =
-            $sugar_config['disable_persistent_connections'];
-    if(!empty($sugar_config['default_language']))
+    if (!empty($sugar_config['disable_persistent_connections']))
+        $_SESSION['disable_persistent_connections'] = $sugar_config['disable_persistent_connections'];
+    if (!empty($sugar_config['default_language']))
         $_SESSION['default_language'] = $sugar_config['default_language'];
-    if(!empty($sugar_config['translation_string_prefix']))
+    if (!empty($sugar_config['translation_string_prefix']))
         $_SESSION['translation_string_prefix'] = $sugar_config['translation_string_prefix'];
-    if(!empty($sugar_config['default_charset']))
+    if (!empty($sugar_config['default_charset']))
         $_SESSION['default_charset'] = $sugar_config['default_charset'];
 
-    if(!empty($sugar_config['default_currency_name']))
+    if (!empty($sugar_config['default_currency_name']))
         $_SESSION['default_currency_name'] = $sugar_config['default_currency_name'];
-    if(!empty($sugar_config['default_currency_symbol']))
+    if (!empty($sugar_config['default_currency_symbol']))
         $_SESSION['default_currency_symbol'] = $sugar_config['default_currency_symbol'];
-    if(!empty($sugar_config['default_currency_iso4217']))
+    if (!empty($sugar_config['default_currency_iso4217']))
         $_SESSION['default_currency_iso4217'] = $sugar_config['default_currency_iso4217'];
 
-    if(!empty($sugar_config['rss_cache_time']))
+    if (!empty($sugar_config['rss_cache_time']))
         $_SESSION['rss_cache_time'] = $sugar_config['rss_cache_time'];
-    if(!empty($sugar_config['languages']))
-    {
+    if (!empty($sugar_config['languages'])) {
         // We need to encode the languages in a way that can be retrieved later.
         $language_keys = Array();
         $language_values = Array();
 
-        foreach($sugar_config['languages'] as $key=>$value)
-        {
+        foreach ($sugar_config['languages'] as $key => $value) {
             $language_keys[] = $key;
             $language_values[] = $value;
         }
 
-        $_SESSION['language_keys'] = urlencode(implode(",",$language_keys));
-        $_SESSION['language_values'] = urlencode(implode(",",$language_values));
+        $_SESSION['language_keys'] = urlencode(implode(",", $language_keys));
+        $_SESSION['language_values'] = urlencode(implode(",", $language_values));
     }
 }
 
@@ -1878,14 +1854,13 @@ if( is_file("config.php") ){
 // if(isset($installation_scenarios)){
 //    $_SESSION['installation_scenarios'] = $installation_scenarios;
 // }
-
 ////	errors
 $errors = '';
-if( isset($validation_errors) && is_array($validation_errors)){
-    if( count($validation_errors) > 0 ){
-        $errors  = '<div id="errorMsgs">';
-        $errors .= '<p>'.$mod_strings['LBL_SITECFG_FIX_ERRORS'].'</p><ul>';
-        foreach( $validation_errors as $error ){
+if (isset($validation_errors) && is_array($validation_errors)) {
+    if (count($validation_errors) > 0) {
+        $errors = '<div id="errorMsgs">';
+        $errors .= '<p>' . $mod_strings['LBL_SITECFG_FIX_ERRORS'] . '</p><ul>';
+        foreach ($validation_errors as $error) {
             $errors .= '<li>' . $error . '</li>';
         }
         $errors .= '</ul></div>';
@@ -1912,7 +1887,6 @@ $_SESSION = array_merge($_SESSION, $_POST);
 $sugarConfigDefaults = array_merge(get_sugar_config_defaults(), $_SESSION);
 
 //----- show layout
-
 // show display errors (for testing only - do not forget restore!)
 // DisplayErrors::show();
 

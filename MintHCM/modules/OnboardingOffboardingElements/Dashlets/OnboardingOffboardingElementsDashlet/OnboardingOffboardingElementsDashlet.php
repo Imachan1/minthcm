@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,28 +41,84 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
 require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/OnboardingOffboardingElements/OnboardingOffboardingElements.php');
 
-class OnboardingOffboardingElementsDashlet extends DashletGeneric {
+class OnboardingOffboardingElementsDashlet extends DashletGeneric
+{
 
-   function __construct($id, $def = null) {
-      require('modules/OnboardingOffboardingElements/metadata/dashletviewdefs.php');
+    function __construct($id, $def = null)
+    {
 
-      parent::__construct($id, $def);
+        require('modules/OnboardingOffboardingElements/metadata/dashletviewdefs.php');
 
-      if ( empty($def['title']) ) {
-         $this->title = translate('LBL_HOMEPAGE_TITLE', 'OnboardingOffboardingElements');
-      }
+        parent::__construct($id, $def);
 
-      $this->searchFields = $dashletData['OnboardingOffboardingElementsDashlet']['searchFields'];
-      $this->columns = $dashletData['OnboardingOffboardingElementsDashlet']['columns'];
+        if (empty($def['title'])) {
+            $this->title = translate('LBL_MODULE_TITLE',
+                'OnboardingOffboardingElements');
+        }
+        $this->searchFields = $dashletData['OnboardingOffboardingElementsDashlet']['searchFields'];
+        $this->columns      = $dashletData['OnboardingOffboardingElementsDashlet']['columns'];
+        $this->seedBean     = BeanFactory::newBean('OnboardingOffboardingElements');
+    }
 
-      $this->seedBean = BeanFactory::newBean('OnboardingOffboardingElements');
-   }
+    function process($lvsParams = array(), $id = null)
+    {
+        global $current_language, $app_list_strings, $current_user;
+        $mod_strings = return_module_language($current_language,
+            'OnboardingOffboardingElements');
 
+        if ($this->myItemsOnly) {
+            $lvsParams['custom_where'] = " AND (onboardingoffboardingelements.assigned_user_id = '{$current_user->id}) ";
+        }
+
+        $this->myItemsOnly          = false;
+        $lvsParams['custom_select'] = ', onboardingoffboardingelements.date_entered ';
+        $lvsParams['distinct']      = true;
+
+        parent::process($lvsParams);
+
+        foreach ($this->lvs->data['data'] as $rowNum => $row) {
+            if (empty($this->lvs->data['data'][$rowNum]['TASK_DURATION_HOURS'])) {
+                $this->lvs->data['data'][$rowNum]['TASK_DURATION'] = '0'.$mod_strings['LBL_HOURS_ABBREV'];
+            } else {
+                $this->lvs->data['data'][$rowNum]['TASK_DURATION'] = $this->lvs->data['data'][$rowNum]['TASK_DURATION_HOURS'].
+                    $mod_strings['LBL_HOURS_ABBREV'];
+            }
+
+            if (
+                empty($this->lvs->data['data'][$rowNum]['TASK_DURATION_MINUTES']) ||
+                empty($this->seedBean->minutes_values[$this->lvs->data['data'][$rowNum]['TASK_DURATION_MINUTES']])
+            ) {
+                $this->lvs->data['data'][$rowNum]['TASK_DURATION'] .= '00';
+            } else {
+                $this->lvs->data['data'][$rowNum]['TASK_DURATION'] .= $this->seedBean->minutes_values[$this->lvs->data['data'][$rowNum]['TASK_DURATION_MINUTES']];
+            }
+            $this->lvs->data['data'][$rowNum]['TASK_DURATION'] .= $mod_strings['LBL_MINSS_ABBREV'];
+        }
+    }
+
+    function displayOptions()
+    {
+        $this->processDisplayOptions();
+        $this->configureSS->assign('strings',
+            array(
+            'general' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_GENERAL'],
+            'filters' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_FILTERS'],
+            'myItems' => translate('LBL_DASHLET_CONFIGURE_MY_ITEMS_ONLY',
+                'OnboardingOffboardingElements'),
+            'displayRows' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_DISPLAY_ROWS'],
+            'title' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_TITLE'],
+            'clear' => $GLOBALS['app_strings']['LBL_CLEAR_BUTTON_LABEL'],
+            'save' => $GLOBALS['app_strings']['LBL_SAVE_BUTTON_LABEL'],
+            'autoRefresh' => $GLOBALS['app_strings']['LBL_DASHLET_CONFIGURE_AUTOREFRESH'],
+        ));
+
+        return $this->configureSS->fetch($this->configureTpl);
+    }
 }

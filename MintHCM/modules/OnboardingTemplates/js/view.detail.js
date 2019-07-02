@@ -1,3 +1,4 @@
+var combo_date_start = null;
 generateOnboardingOffboarding = {
    id: 'generateOnboardingOffboarding',
    form_name: 'GenerateOnboardingOffboarding',
@@ -44,7 +45,10 @@ generateOnboardingOffboarding = {
          result = false;
       }
       if ( result ) {
-         var date_start = date_start_date.val() + " " + $( '#date_start_hours' ).val() + ":" + $( '#date_start_minutes' ).val() + ":00";
+         var date_start = date_start_date.val() + " " + $( '#date_start_hours' ).val() + ":" + $( '#date_start_minutes' ).val();
+         if ( $( '#date_start_meridiem' ).length === 1 ) {
+            var date_start = date_start + $( '#date_start_meridiem' ).val();
+         }
          callback( employee_field.val(), date_start );
       }
    }
@@ -104,8 +108,8 @@ generateOnboardingOffboarding = {
       enableQS();
    },
    prepareCalendar: function () {
-      var combo_date_start = new Datetimecombo( "", "date_start", "23:00", "0", "", false, true, "" );
-      text = combo_date_start.html( "" );
+      combo_date_start = new Datetimecombo( "", "date_start", _user_time_format, "0", '', false, true, '' );
+      var text = combo_date_start.html( "" );
       document.getElementById( "date_start_time_section" ).innerHTML = text;
       eval( combo_date_start.jsscript( "" ) );
       YAHOO.util.Event.onDOMReady( function ()
@@ -114,16 +118,17 @@ generateOnboardingOffboarding = {
             onClose: update_date_start,
             inputField: "date_start_date",
             form: "GenerateOnboardingOffboarding",
-            ifFormat: "%Y-%m-%d %H:%M",
-            daFormat: "%Y-%m-%d %H:%M",
+            ifFormat: _calendar_format,
+            daFormat: _calendar_format,
             button: "date_start_trigger",
             singleClick: true,
             step: 1,
             weekNumbers: false,
-            startWeekday: 0,
+            startWeekday: _calendar_fdow,
             comboObject: combo_date_start
          } );
          combo_date_start.update( false );
       } );
    }
+
 };

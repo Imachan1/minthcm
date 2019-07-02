@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -43,89 +41,144 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
 require_once 'include/Dashlets/Dashlet.php';
 require_once 'include/Sugar_Smarty.php';
 
-class LeaveOfAbsenceDashlet extends Dashlet {
+class LeaveOfAbsenceDashlet extends Dashlet
+{
+    protected $url               = 'http://www.sugarcrm.com/crm/aggregator/rss/1';
+    protected $height            = '200'; // height of the pad
+    protected $images_dir        = 'modules/Home/Dashlets/LeaveOfAbsenceDashlet/images';
+    protected $show_days_of_week = [
+        'sunday' => false, // 0 - sunday
+        'monday' => true,
+        'tuesday' => true,
+        'wednesday' => true,
+        'thursday' => true,
+        'friday' => true,
+        'saturday' => false, // 6 - saturday
+    ];
+    protected $first_day_of_week = 1;
 
-   protected $url = 'http://www.sugarcrm.com/crm/aggregator/rss/1';
-   protected $height = '200'; // height of the pad
-   protected $images_dir = 'modules/Home/Dashlets/LeaveOfAbsenceDashlet/images';
+    /**
+     * Constructor
+     *
+     * @global string current language
+     * @param guid $id id for the current dashlet (assigned from Home module)
+     * @param array $def options saved for this dashlet
+     */
+    public function __construct($id, $def)
+    {
+        $this->loadLanguage('LeaveOfAbsenceDashlet', 'modules/Home/Dashlets/'); // load the language strings here
 
-   /**
-    * Constructor
-    *
-    * @global string current language
-    * @param guid $id id for the current dashlet (assigned from Home module)
-    * @param array $def options saved for this dashlet
-    */
-   public function __construct($id, $def) {
-      $this->loadLanguage('LeaveOfAbsenceDashlet', 'modules/Home/Dashlets/'); // load the language strings here
+        if (!empty($def['height'])) { // set a default height if none is set
+            $this->height = $def['height'];
+        }
 
-      if ( !empty($def['height']) ) { // set a default height if none is set
-         $this->height = $def['height'];
-      }
+        if (!empty($def['url'])) {
+            $this->url = $def['url'];
+        }
 
-      if ( !empty($def['url']) ) {
-         $this->url = $def['url'];
-      }
+        if (!empty($def['title'])) {
+            $this->title = $def['title'];
+        } else {
+            $this->title = $this->dashletStrings['LBL_TITLE'];
+        }
 
-      if ( !empty($def['title']) ) {
-         $this->title = $def['title'];
-      } else {
-         $this->title = $this->dashletStrings['LBL_TITLE'];
-      }
+        $this->first_day_of_week = $GLOBALS['current_user']->get_first_day_of_week(); // 0 - sunday, ..., 6 - saturday
+        
+        if (!empty($def['show_days_of_week']) && is_array($def['show_days_of_week'])) {
+            $this->show_days_of_week = $def['show_days_of_week'];
+        }
+        foreach ($this->show_days_of_week as $day => $showed) {
+            $this->show_days_of_week[$day] = !!$showed;
+        }
 
-      $this->autoRefresh = false;
+        $this->autoRefresh = false;
 
-      parent::__construct($id); // call parent constructor
+        parent::__construct($id); // call parent constructor
 
-      $this->isConfigurable = false; // dashlet is configurable
-      $this->hasScript = true; // dashlet has javascript attached to it
-   }
+        $this->isConfigurable = false; // dashlet is configurable
+        $this->hasScript      = true; // dashlet has javascript attached to it
+    }
 
-   /**
-    * Displays the dashlet
-    *
-    * @return string html to display dashlet
-    */
-   public function display() {
-      $ss = new Sugar_Smarty();
-      $ss->assign('saving', $this->dashletStrings['LBL_SAVING']);
-      $ss->assign('saved', $this->dashletStrings['LBL_SAVED']);
-      $ss->assign('id', $this->id);
-      $ss->assign('height', $this->height);
-      $lang = strtolower(substr($GLOBALS['current_language'], 0, 2));
-      $ss->assign('lang', $lang);
-      $str = $ss->fetch('modules/Home/Dashlets/LeaveOfAbsenceDashlet/LeaveOfAbsenceDashlet.tpl');
-      return parent::display($this->dashletStrings['LBL_DBLCLICK_HELP']) . $str;
-   }
+    /**
+     * Displays the dashlet
+     *
+     * @return string html to display dashlet
+     */
+    public function display()
+    {
+        $ss   = new Sugar_Smarty();
+        $ss->assign('saving', $this->dashletStrings['LBL_SAVING']);
+        $ss->assign('saved', $this->dashletStrings['LBL_SAVED']);
+        $ss->assign('DASHLET_STRINGS', $this->dashletStrings);
+        $ss->assign('id', $this->id);
+        $ss->assign('height', $this->height);
+        $lang = strtolower(substr($GLOBALS['current_language'], 0, 2));
+        $ss->assign('lang', $lang);
+        $ss->assign('first_day_of_week', $this->first_day_of_week);
+        $ss->assign('show_days_of_week', $this->show_days_of_week);
+        $str  = $ss->fetch('modules/Home/Dashlets/LeaveOfAbsenceDashlet/LeaveOfAbsenceDashlet.tpl');
+        return parent::display($this->dashletStrings['LBL_DBLCLICK_HELP']).$str;
+    }
 
-   public function displayScript() {
-      
-   }
+    public function displayScript()
+    {
 
-   /**
-    * called to filter out $_REQUEST object when the user submits the configure dropdown
-    *
-    * @param array $req $_REQUEST
-    * @return array filtered options to save
-    */
-   public function saveOptions(
-      array $req
-   ) {
-      $options = array();
-      $options['title'] = $req['title'];
-      $options['url'] = $req['url'];
-      $options['height'] = $req['height'];
-      $options['autoRefresh'] = 0;
+    }
 
-      return $options;
-   }
+    /**
+     * @see Dashlet::displayOptions()
+     */
+    public function displayOptions()
+    {
+        global $app_strings, $mod_strings;
+        $ss = new Sugar_Smarty();
+        $ss->assign('id', $this->id);
+        $ss->assign('DASHLET_STRINGS', $this->dashletStrings);
+        $ss->assign('title', $this->title);
+        $ss->assign('show_days_of_week', $this->show_days_of_week);
 
+        return parent::displayOptions().
+            $ss->fetch('modules/Home/Dashlets/LeaveOfAbsenceDashlet/LeaveOfAbsenceDashletOptions.tpl');
+    }
+
+    /**
+     * called to filter out $_REQUEST object when the user submits the configure dropdown
+     *
+     * @param array $req $_REQUEST
+     * @return array filtered options to save
+     */
+    public function saveOptions(array $req)
+    {
+        $options                      = array();
+        $options['title']             = $req['title'];
+        $options['url']               = $req['url'];
+        $options['height']            = $req['height'];
+        $options['autoRefresh']       = 0;
+        $options['show_days_of_week'] = $this->show_days_of_week;
+        
+        foreach (array_keys($options['show_days_of_week']) as $day) {
+            $options['show_days_of_week'][$day] = false;
+            if (isset($req['show_'.$day])) {
+                $options['show_days_of_week'][$day] = true;
+            }
+        }
+        if (!in_array(true, array_values($options['show_days_of_week']))) {
+            $i = 0;
+            foreach (array_keys($options['show_days_of_week']) as $day) {
+                if ($i == $this->first_day_of_week) {
+                    $options['show_days_of_week'][$day] = true;
+                    break;
+                }
+                $i++;
+            }
+        }
+        return $options;
+    }
 }

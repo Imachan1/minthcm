@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,28 +35,69 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
 require_once('include/MVC/View/views/view.detail.php');
 
-class OnboardingTemplatesViewDetail extends ViewDetail {
+class OnboardingTemplatesViewDetail extends ViewDetail
+{
 
-   public function display() {
-      $result = parent::display();
-      echo '<script type="text/javascript" src="include/SugarFields/Fields/Datetimecombo/Datetimecombo.js"></script>';
-      echo '<script id="generate-onboarding-offboarding-template" type="text/template">';
-      echo file_get_contents('modules/OnboardingTemplates/tpl/generateOnboardingOffboarding.tpl');
-      echo '</script>';
-      return $result;
-   }
+    public function preDisplay()
+    {
+        global $timedate, $current_user;
+        parent::preDisplay();
+        $cal_date_format  = $timedate->get_cal_date_format();
+        $user_date_format = $timedate->get_user_date_format();
+        $user_time_format = $timedate->get_user_time_format();
+        $calendar_fdow    = $current_user->get_first_day_of_week();
+        $time_separator   = ':';
+        if (preg_match('/\d+([^\d])\d+([^\d]*)/s', $user_time_format, $match)) {
+            $time_separator = $match[1];
+        }
+        $t23 = strpos($user_time_format, '23') !== false ? '%H' : '%I';
+        if (!isset($match[2]) || empty($match[2])) {
+            $calendar_format = $cal_date_format.' '.$t23.$time_separator.'%M';
+        } else {
+            $pm              = $match[2] === 'pm' ? '%P' : '%p';
+            $calendar_format = $cal_date_format.' '.$t23.$time_separator.'%M'.$pm;
+        }
+        echo "
+            <script>
+                var _cal_date_format = '{$cal_date_format}';
+                var _user_date_format = '{$user_date_format}';
+                var _user_time_format = '{$user_time_format}';
+                var _calendar_format = '{$calendar_format}';
+                var _time_separator = '{$time_separator}';
+                var _calendar_fdow = {$calendar_fdow};
+            </script>
+        ";
+        $datetimecombo_js_file = 'include/SugarFields/Fields/Datetimecombo/Datetimecombo.js';
+        if (file_exists('custom/'.$datetimecombo_js_file)) {
+            $datetimecombo_js_file = 'custom/'.$datetimecombo_js_file;
+        } else if (!file_exists($datetimecombo_js_file)) {
+            $datetimecombo_js_file = '';
+        }
+        if (!empty($datetimecombo_js_file)) {
+            echo "<script type='text/javascript' src='{$datetimecombo_js_file}'></script>";
+        }
+    }
 
+    public function display()
+    {
+        parent::display();
+        $generate_onboarding_offboarding_tpl = file_get_contents('modules/OnboardingTemplates/tpl/generateOnboardingOffboarding.tpl');
+        echo "
+            <script id='generate-onboarding-offboarding-template' type='text/template'>
+                {$generate_onboarding_offboarding_tpl}
+            </script>
+        ";
+    }
 }

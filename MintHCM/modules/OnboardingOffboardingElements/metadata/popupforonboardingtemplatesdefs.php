@@ -45,63 +45,92 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-$module_name     = 'OnboardingOffboardingElements';
-$subpanel_layout = array(
-    'top_buttons' => array(
-        array(
-            'widget_class' => 'SubPanelTopSelectButton',
-            'mode' => 'MultiSelect',
-        ),
-        array(
-            'widget_class' => 'SubPanelTopButtonQuickCreate',
-        ),
+$module_name  = 'OnboardingOffboardingElements';
+$object_name  = 'OnboardingOffboardingElements';
+$_module_name = 'onboardingoffboardingelements';
+$popupMeta    = array(
+    'moduleMain' => $module_name,
+    'varName' => $object_name,
+    'orderBy' => $_module_name.'.name',
+    'whereClauses' => array(
+        'name' => $_module_name.'.name',
+        'user_name' => 'users.name',
     ),
-    'where' => '',
-    'list_fields' => array(
-        'name' => array(
-            'vname' => 'LBL_NAME',
-            'widget_class' => 'SubPanelDetailViewLink',
-            'width' => '25%',
+    'whereStatement' => "type!='exit_interview'",
+    'searchInputs' => array($_module_name.'_number', 'name', 'priority', 'status'),
+    'searchdefs' => array(
+        'name' =>
+        array(
+            'name' => 'name',
+            'width' => '10%',
+        ),
+        'task_duration' =>
+        array(
+            'name' => 'name',
+            'width' => '10%',
+        ),
+        'days_from_start' =>
+        array(
+            'name' => 'name',
+            'width' => '10%',
         ),
         'user_name' => array(
-            'vname' => 'LBL_USERS_NAME',
-            'width' => '25%',
-            'id' => 'user_id',
-            'module' => 'Users',
-            'widget_class' => 'SubPanelDetailViewLink',
-            'target_record_key' => 'user_id',
-            'target_module' => 'Users',
+            'type' => 'relate',
+            'link' => true,
+            'label' => 'LBL_USERS_NAME',
+            'id' => 'USERS_ID',
+            'width' => '10%',
+            'name' => 'user_name',
         ),
-        'type' => array(
-            'vname' => 'LBL_TYPE',
-            'width' => '15%',
+        'type' =>
+        array(
+            'type' => 'enum',
+            'studio' => 'visible',
+            'label' => 'LBL_TYPE',
+            'width' => '10%',
+            'name' => 'type',
         ),
-        'task_duration' => array(
-            'vname' => 'LBL_TASK_DURATION',
-            'width' => '15%',
-            'sortable' => false,
+        'own_task' =>
+        array(
+            'type' => 'bool',
+            'label' => 'LBL_OWN_TASK',
+            'width' => '10%',
+            'name' => 'own_task',
         ),
-        'own_task' => array(
-            'width' => '15%',
-            'vname' => 'LBL_OWN_TASK',
+    ),
+    'listviewdefs' => array(
+        'NAME' => array(
+            'width' => '20',
+            'label' => 'LBL_NAME',
+            'default' => true,
+            'link' => true
+        ),
+        'TYPE' => array(
+            'width' => '15',
+            'label' => 'LBL_TYPE',
             'default' => true,
         ),
-        'days_from_start' => array(
-            'vname' => 'LBL_DAYS_FROM_START',
-            'width' => '15%',
+        'TASK_DURATION' => array(
+            'width' => '15',
+            'label' => 'LBL_TASK_DURATION',
+            'default' => true,
         ),
-        'edit_button' => array(
-            'vname' => 'LBL_EDIT_BUTTON',
-            'widget_class' => 'SubPanelEditButton',
-            'module' => $module_name,
-            'width' => '4%',
+        'DAYS_FROM_START' => array(
+            'width' => '15',
+            'label' => 'LBL_DAYS_FROM_START',
+            'default' => true,
         ),
-        'remove_button' => array(
-            'vname' => 'LBL_REMOVE',
-            'widget_class' => 'SubPanelRemoveButton',
+        'USERS_NAME' => array(
+            'width' => '9',
+            'label' => 'LBL_USERS_NAME',
             'module' => 'Users',
-            'width' => '4%',
-            'linked_field' => 'users',
+            'id' => 'USERS_ID',
+            'default' => false
+        ),
+        'OWN_TASK' => array(
+            'width' => '15',
+            'label' => 'LBL_OWN_TASK',
+            'default' => true,
         ),
     ),
 );

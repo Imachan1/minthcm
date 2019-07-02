@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,60 +35,78 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
 $layout_defs["Offboardings"]["subpanel_setup"] = array(
-   'securitygroups' => array(
-      'top_buttons' => array( array( 'widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'SecurityGroups', 'mode' => 'MultiSelect' ), ),
-      'order' => 900,
-      'sort_by' => 'name',
-      'sort_order' => 'asc',
-      'module' => 'SecurityGroups',
-      'refresh_page' => 1,
-      'subpanel_name' => 'default',
-      'get_subpanel_data' => 'SecurityGroups',
-      'add_subpanel_data' => 'securitygroup_id',
-      'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
-   ),
-   'offboardings_trainings' => array(
-      'order' => 100,
-      'module' => 'Trainings',
-      'subpanel_name' => 'default',
-      'sort_order' => 'asc',
-      'sort_by' => 'id',
-      'title_key' => 'LBL_RELATIONSHIP_TRAININGS_NAME',
-      'get_subpanel_data' => 'trainings',
-      'top_buttons' => array(
-         array(
-            'widget_class' => 'SubPanelTopButtonQuickCreate',
-         ),
-         array(
-            'widget_class' => 'SubPanelTopSelectButton',
-            'mode' => 'MultiSelect',
-         ),
-      ),
-   ),
-   'tasks' => array(
-      'order' => 100,
-      'module' => 'Tasks',
-      'subpanel_name' => 'default',
-      'sort_order' => 'asc',
-      'sort_by' => 'id',
-      'title_key' => 'LBL_RELATIONSHIP_TASKS_NAME',
-      'get_subpanel_data' => 'tasks',
-      'top_buttons' => array(
-         array(
-            'widget_class' => 'SubPanelTopButtonQuickCreate',
-         ),
-         array(
-            'widget_class' => 'SubPanelTopSelectButton',
-            'mode' => 'MultiSelect',
-         ),
-      ),
-   ),
+    'securitygroups' => array(
+        'top_buttons' => array(array('widget_class' => 'SubPanelTopSelectButton',
+                'popup_module' => 'SecurityGroups', 'mode' => 'MultiSelect'),),
+        'order' => 900,
+        'sort_by' => 'name',
+        'sort_order' => 'asc',
+        'module' => 'SecurityGroups',
+        'refresh_page' => 1,
+        'subpanel_name' => 'default',
+        'get_subpanel_data' => 'SecurityGroups',
+        'add_subpanel_data' => 'securitygroup_id',
+        'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
+    ),
+    'offboardings_trainings' => array(
+        'order' => 100,
+        'module' => 'Trainings',
+        'subpanel_name' => 'default',
+        'sort_order' => 'asc',
+        'sort_by' => 'id',
+        'title_key' => 'LBL_RELATIONSHIP_TRAININGS_NAME',
+        'get_subpanel_data' => 'trainings',
+        'top_buttons' => array(
+            array(
+                'widget_class' => 'SubPanelTopButtonQuickCreate',
+            ),
+            array(
+                'widget_class' => 'SubPanelTopSelectButton',
+                'mode' => 'MultiSelect',
+            ),
+        ),
+    ),
+    'tasks' => array(
+        'order' => 100,
+        'module' => 'Tasks',
+        'subpanel_name' => 'default',
+        'sort_order' => 'asc',
+        'sort_by' => 'id',
+        'title_key' => 'LBL_RELATIONSHIP_TASKS_NAME',
+        'get_subpanel_data' => 'tasks',
+        'top_buttons' => array(
+            array(
+                'widget_class' => 'SubPanelTopButtonQuickCreate',
+            ),
+            array(
+                'widget_class' => 'SubPanelTopSelectButton',
+                'mode' => 'MultiSelect',
+            ),
+        ),
+    ),
+    'exitinterviews' => array(
+        'order' => 100,
+        'module' => 'ExitInterviews',
+        'subpanel_name' => 'default',
+        'sort_order' => 'asc',
+        'sort_by' => 'id',
+        'title_key' => 'LBL_EXITINTERVIEWS',
+        'get_subpanel_data' => 'exitinterviews',
+        'top_buttons' => array(
+            array(
+                'widget_class' => 'SubPanelTopButtonQuickCreate',
+            ),
+            array(
+                'widget_class' => 'SubPanelTopSelectButton',
+                'mode' => 'MultiSelect',
+            ),
+        ),
+    ),
 );
