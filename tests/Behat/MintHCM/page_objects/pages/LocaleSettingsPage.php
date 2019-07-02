@@ -1,8 +1,8 @@
 <?php
 
-namespace eVolpe\Suite;
+namespace eVolpe\MintHCM;
 
-class CustomLocaleSettingsPage extends LocaleSettingsPage
+class LocaleSettingsPage extends Suite\LocaleSettingsPage
 {
 
     public function setElements()
@@ -20,6 +20,6 @@ class CustomLocaleSettingsPage extends LocaleSettingsPage
             ),
         );
 
-        $this->elements = array_merge($this->elements, $elements);
+        $this->elements = array_merge_recursive($this->elements, $elements);
     }
 }

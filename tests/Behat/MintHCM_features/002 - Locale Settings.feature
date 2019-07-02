@@ -4,9 +4,9 @@ Feature: Testy ustawień regionalnych (Locale)
   Background:
     Given I am logged in as "admin" "t4jn3h4slo"
 
-  @javascript @suite
+  @javascript @MintHCM
   Scenario:
-    When I go to page "LocaleeSettingsPage"
+    When I go to page "LocaleSettingsPage"
     Then Field "Date Format" should contain "d/m/Y"
     And Field "Time Format" should contain "H:i"
     And Field "Language" should contain "pl_PL"

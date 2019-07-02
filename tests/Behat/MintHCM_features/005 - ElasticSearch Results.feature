@@ -4,14 +4,14 @@ Feature: Testy wyszukiwania ElasticSearch
   Background:
     Given I am logged in as "admin" "t4jn3h4slo"
 
-@javascript @suite
+@javascript @MintHCM
   Scenario:
     When I go to page "GlobalSearchResultsPage"
     And I search for all Global Search results
     Then I can not see 500 page
     And I should see Global Search results
     
-  @javascript @suite
+  @javascript @MintHCM
   Scenario:
     When I go to page "GlobalSearchResultsPage"
     And I search for "123456789phraseThatDoesNotExist" in Global Search
