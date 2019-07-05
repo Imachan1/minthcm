@@ -639,9 +639,9 @@ Ext.define( "SpiceCRM.KReporter.Viewer.model.KReporterRecord", {
            layout: "vbox",
            style: {
               "background-color": "transparent",
-              // Mint start #58240
-              "max-width": "3000px"
-                      // Mint end #58240
+              // eVolpe start #58240, #63175
+              "max-width": (typeof parent !== 'undefined' || window.insideSugarDashlet) ? ($('html').width() + 'px') : "3000px"
+              // eVolpe end #58240, #63175
            },
            defaults: {
               width: "100%"

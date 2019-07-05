@@ -1,4 +1,6 @@
-<form id="<%= form_name %>" name="<%= form_name %>"><b><%= MOD.LBL_EMPLOYEE_NAME %></b>:<div class="col-xs-12 col-sm-12 edit-view-field  yui-ac" type="relate" field="<%= relate_field_name %>_name">
+<form id="<%= form_name %>" name="<%= form_name %>">
+    <b><%= MOD.LBL_EMPLOYEE_NAME %></b>:
+    <div class="col-xs-12 col-sm-12 edit-view-field  yui-ac" type="relate" field="<%= relate_field_name %>_name">
         <input type="text" name="<%= relate_field_name %>_name" class="vt_formulaSelector sqsEnabled yui-ac-input" tabindex="" id="<%= relate_field_name %>_name" size="" value="" title="" autocomplete="off">
         <input class="vt_formulaSelector" type="hidden" name="<%= relate_field_name %>_id" id="<%= relate_field_name %>_id" value="">
         <span class="id-ff multiple">
@@ -12,54 +14,20 @@
             </button>
         </span>
     </div>
-    <br /><b><%= MOD.LBL_START_DATE %>:</b>
+    <br />
+    <b><%= MOD.LBL_START_DATE %>:</b>
     <div class="col-xs-12 col-sm-12 edit-view-field" type="datetimecombo" field="date_start" style="margin-top: 7px">
         <table border="0" cellpadding="0" cellspacing="0" class="dateTime">
             <tbody>
                 <tr valign="middle">
                     <td nowrap="" class="dateTimeComboColumn">
                         <input autocomplete="off" type="text" id="date_start_date" class="datetimecombo_date" value="" size="11" maxlength="10" title="" tabindex="0" onblur="combo_date_start.update();" onchange="combo_date_start.update();">
-                        <button type="button" id="date_start_trigger" class="btn btn-danger" onclick="return false;"><span class="suitepicon suitepicon-module-calendar" alt="Wprowadź datę"></span></button>
+                        <button type="button" id="date_start_trigger" class="btn btn-danger" onclick="return false;">
+                            <span class="suitepicon suitepicon-module-calendar" alt="Insert date"></span>
+                        </button>
                     </td>
                     <td nowrap="" class="dateTimeComboColumn">
-                        <div id="date_start_time_section" class="datetimecombo_time_section">
-                            <span>
-                                <select class="datetimecombo_time" size="1" id="date_start_hours" tabindex="0">
-                                    <option></option>
-                                    <option value="00">00</option>
-                                    <option value="01">01</option>
-                                    <option value="02">02</option>
-                                    <option value="03">03</option>
-                                    <option value="04">04</option>
-                                    <option value="05">05</option>
-                                    <option value="06">06</option>
-                                    <option value="07">07</option>
-                                    <option value="08">08</option>
-                                    <option value="09">09</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                    <option value="13">13</option>
-                                    <option value="14">14</option>
-                                    <option value="15">15</option>
-                                    <option value="16">16</option>
-                                    <option value="17">17</option>
-                                    <option value="18">18</option>
-                                    <option value="19">19</option>
-                                    <option value="20">20</option>
-                                    <option value="21">21</option>
-                                    <option value="22">22</option>
-                                    <option value="23">23</option>
-                                </select>
-                                <select class="datetimecombo_time" size="1" id="date_start_minutes" tabindex="0" onchange="combo_date_start.update();">
-                                    <option></option>
-                                    <option value="00">00</option>
-                                    <option value="15">15</option>
-                                    <option value="30">30</option>
-                                    <option value="45">45</option>
-                                </select>
-                            </span>
-                        </div>
+                        <div id="date_start_time_section" class="datetimecombo_time_section"></div>
                     </td>
                 </tr>
             </tbody>

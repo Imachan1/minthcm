@@ -1,0 +1,26 @@
+{
+  "name": "vendor/evolpe-behat",
+  "description": "Behat tests",
+  "authors": [
+    {
+      "name": "eVolpe"
+    }
+  ],
+  "require": {
+    "behat/mink-extension": "*",
+    "behat/mink-selenium2-driver": "*",
+    "sensiolabs/behat-page-object-extension": "*",
+    "emuse/behat-html-formatter": "*",
+    "sugarcrm/rest-php-client": "*"
+  },
+  "autoload": {
+    "classmap": [
+      "features/",
+      "src/",
+      "vendor/",
+      "SugarCRM/",
+      "SuiteCRM/",
+      "MintHCM/"
+    ]
+  }
+}

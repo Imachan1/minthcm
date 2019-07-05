@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,44 +41,45 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
-$module_name = 'OnboardingOffboardingElements';
+$module_name     = 'OnboardingOffboardingElements';
 $subpanel_layout = array(
-   'top_buttons' => array(
-      array( 'widget_class' => 'SubPanelTopButtonQuickCreate' ),
-   ),
-   'where' => '',
-   'list_fields' => array(
-      'name' => array(
-         'vname' => 'LBL_NAME',
-         'widget_class' => 'SubPanelDetailViewLink',
-         'width' => '25%',
-      ),
-      'type' => array(
-         'vname' => 'LBL_TYPE',
-         'width' => '15%',
-      ),
-      'task_duration' => array(
-         'vname' => 'LBL_TASK_DURATION',
-         'width' => '15%',
-      ),
-      'days_from_start' => array(
-         'vname' => 'LBL_DAYS_FROM_START',
-         'width' => '15%',
-      ),
-      'own_task' => array(
-         'width' => '15%',
-         'vname' => 'LBL_OWN_TASK',
-         'default' => true,
-      ),
-      'edit_button' => array(
-         'vname' => 'LBL_EDIT_BUTTON',
-         'widget_class' => 'SubPanelEditButton',
-         'module' => $module_name,
-         'width' => '4%',
-      ),
-   ),
+    'top_buttons' => array(
+        array('widget_class' => 'SubPanelTopButtonQuickCreate'),
+    ),
+    'where' => '',
+    'list_fields' => array(
+        'name' => array(
+            'vname' => 'LBL_NAME',
+            'widget_class' => 'SubPanelDetailViewLink',
+            'width' => '25%',
+        ),
+        'type' => array(
+            'vname' => 'LBL_TYPE',
+            'width' => '15%',
+        ),
+        'task_duration' => array(
+            'vname' => 'LBL_TASK_DURATION',
+            'width' => '15%',
+            'sortable' => false,
+        ),
+        'days_from_start' => array(
+            'vname' => 'LBL_DAYS_FROM_START',
+            'width' => '15%',
+        ),
+        'own_task' => array(
+            'width' => '15%',
+            'vname' => 'LBL_OWN_TASK',
+            'default' => true,
+        ),
+        'edit_button' => array(
+            'vname' => 'LBL_EDIT_BUTTON',
+            'widget_class' => 'SubPanelEditButton',
+            'module' => $module_name,
+            'width' => '4%',
+        ),
+    ),
 );

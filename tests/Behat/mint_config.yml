@@ -1,0 +1,34 @@
+default:
+  autoload:
+    '': %paths.base%/bootstrap
+  suites:
+    MintHCM:
+      filters:
+        tags: "@MintHCM"
+      paths:
+        '': %paths.base%/MintHCM_features
+      contexts:
+      - eVolpe\MintHCM\MintHCMContext:
+        - eVolpe\MintHCM\DataProvider
+  formatters:
+    progress:
+    pretty:
+    html:
+      output_path: %paths.base%/results/mint-tests
+
+  extensions:
+    SensioLabs\Behat\PageObjectExtension:
+      namespaces:
+        page: [eVolpe\CRMPage]
+        element: [eVolpe\CRMPageElement]
+    emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
+      name: html
+      renderer: Twig,Behat2
+      print_args: true
+      print_outp: true
+      loop_break: true
+    Behat\MinkExtension:
+      browser_name: chrome
+      selenium2: ~
+
+          

@@ -692,6 +692,24 @@
   color: $navbar-user-color-hover;
 }
 
+.globalLinks-desktop > .user-menu-button > .current-user-avatar {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.globalLinks-desktop > .user-menu-button > .current-user-avatar > img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  max-height: 100%;
+  vertical-align: middle;
+}
 
 .usermenucollapsed {
   margin: 0;
@@ -1082,6 +1100,7 @@
   @include alertButton();
   background-color: transparent;
   margin-top: 0;
+  padding-top: 4px;
   border: none;
 }
 
@@ -1610,6 +1629,10 @@
     background-size: 40px auto;
   }
 
+  .tablet-bar > .toolbar > li > .btn.alertsButton {
+    padding: 4px 0 0 0;
+  }
+
   .tablet-bar > .toolbar > li > .btn.searchbutton {
 	  background-size: 25px auto;
   }
@@ -1743,6 +1766,25 @@
 
   .globalLinks-mobile .suitepicon-action-current-user {
     font-size: $navbar-toolbar-height;
+  }
+  
+  .globalLinks-mobile > .btn > .current-user-avatar {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+  
+  .globalLinks-mobile > .btn > .current-user-avatar > img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    max-height: 100%;
+    vertical-align: middle;
   }
 
   .navbar-search {
@@ -2088,10 +2130,16 @@
     width: $navbar-toolbar-height;
     padding: 0;
   }
+  
+  .desktop-bar > .toolbar > li > .btn.alertsButton {
+    padding: 4px 0 0 0;
+  }
 
   .desktop-bar > .toolbar > li > .btn.searchbutton {
     font-size: $navbar-toolbar-height / 2;
   }
+  
+  
 
 
   .globalLinks-mobile .dropdown-toggle {

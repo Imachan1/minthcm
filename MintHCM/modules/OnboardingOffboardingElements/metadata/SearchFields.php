@@ -80,9 +80,6 @@ $searchFields[$module_name] = array(
       'enable_range_search' => true,
       'is_date_field' => true
    ),
-   'range_task_duration' => array( 'query_type' => 'default', 'enable_range_search' => true ),
-   'start_range_task_duration' => array( 'query_type' => 'default', 'enable_range_search' => true ),
-   'end_range_task_duration' => array( 'query_type' => 'default', 'enable_range_search' => true ),
    'range_days_from_start' => array( 'query_type' => 'default', 'enable_range_search' => true ),
    'start_range_days_from_start' => array( 'query_type' => 'default', 'enable_range_search' => true ),
    'end_range_days_from_start' => array( 'query_type' => 'default', 'enable_range_search' => true ),

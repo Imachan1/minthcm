@@ -44,8 +44,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-if( !isset( $install_script ) || !$install_script ){
+if (!isset($install_script) || !$install_script) {
     die($mod_strings['ERR_NO_DIRECT_SCRIPT']);
 }
 // $mod_strings come from calling page.
@@ -55,11 +54,11 @@ $langDropDown = get_select_options_with_id($supportedLanguages, $current_languag
 
 
 
-$_SESSION['setup_license_accept']   = get_boolean_from_request('setup_license_accept');
-$_SESSION['license_submitted']      = true;
+$_SESSION['setup_license_accept'] = get_boolean_from_request('setup_license_accept');
+$_SESSION['license_submitted'] = true;
 
 // setup session variables (and their defaults) if this page has not yet been submitted
-if(!isset($_SESSION['license_submitted']) || !$_SESSION['license_submitted']){
+if (!isset($_SESSION['license_submitted']) || !$_SESSION['license_submitted']) {
     $_SESSION['setup_license_accept'] = false;
 }
 
@@ -73,7 +72,7 @@ $langHeader = get_language_header();
 // load javascripts
 include('jssource/JSGroupings.php');
 $jsSrc = '';
-foreach($sugar_grp1_yui as $jsFile => $grp) {
+foreach ($sugar_grp1_yui as $jsFile => $grp) {
     $jsSrc .= "\t<script src=\"$jsFile\"></script>\n";
 }
 
@@ -221,7 +220,7 @@ $out = <<<EOQ
 <script>
 var msgPanel;
 function callSysCheck(){
-
+            
             //begin main function that will be called
             ajaxCall = function(msg_panel){
                 //create success function for callback
@@ -282,7 +281,6 @@ function callSysCheck(){
                         document.getElementById('sysCheckMsg').innerHTML=o.responseText;
                     }
 
-
                 }//end success
 
                 //set loading message and create url
@@ -303,6 +301,7 @@ function callSysCheck(){
 
 
             };//end ajaxCall method
+              event.currentTarget.disabled = true;
               ajaxCall();
             return;
 }
@@ -336,11 +335,11 @@ function onLangSelect(e) {
 </html>
 EOQ;
 if (check_php_version() === -1) {
-    if(empty($mod_strings['LBL_MINIMUM_PHP_VERSION'])){
-        $mod_strings['LBL_MINIMUM_PHP_VERSION'] = 'The minimum PHP version required is '.constant('SUITECRM_PHP_MIN_VERSION');
+    if (empty($mod_strings['LBL_MINIMUM_PHP_VERSION'])) {
+        $mod_strings['LBL_MINIMUM_PHP_VERSION'] = 'The minimum PHP version required is ' . constant('SUITECRM_PHP_MIN_VERSION');
     }
 
-    $php_verison_warning =<<<eoq
+    $php_verison_warning = <<<eoq
 	    <table width="100%" cellpadding="0" cellpadding="0" border="0" class="Welcome">
 			<tr>
 		      <td colspan="2"  align="center" id="ready_image"><IMG src="include/images/install_themes.jpg" width="698" height="190" alt="Sugar Themes" border="0"></td>
