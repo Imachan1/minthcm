@@ -154,7 +154,7 @@ class LeaveOfAbsenceDashlet extends Dashlet
      * @param array $req $_REQUEST
      * @return array filtered options to save
      */
-    public function saveOptions(array $req)
+    public function saveOptions($req)
     {
         $options                      = array();
         $options['title']             = $req['title'];
