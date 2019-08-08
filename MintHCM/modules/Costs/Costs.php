@@ -119,6 +119,9 @@ class Costs extends Costs_sugar
 
     protected function getExchangeRateFromDelegation()
     {
+        if ($this->currency_id == "-99") {
+            return 1;
+        }
         if (!empty($this->delegation_id)) {
             $delegation_id = $this->delegation_id;
         } else {
