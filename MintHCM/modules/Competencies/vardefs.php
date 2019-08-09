@@ -69,9 +69,9 @@ $dictionary['Competencies'] = array(
         ),
         //
         array(
-            'Competenciescompetencies_type_c' => array(
-                'id' => 'Competenciescompetencies_type_c',
-                'name' => 'competencies_type_c',
+            'competencies_type' => array(
+                'id' => 'competencies_type',
+                'name' => 'competencies_type',
                 'label' => 'LBL_COMPETENCIES_TYPE',
                 'comments' => null,
                 'help' => null,

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,86 +36,79 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 $module_name = 'Competencies';
-$viewdefs [$module_name] = array(
-   'DetailView' =>
-   array(
-      'templateMeta' =>
-      array(
-         'form' =>
-         array(
-            'buttons' =>
-            array(
-               'EDIT',
-               'DUPLICATE',
-               'DELETE',
-               'FIND_DUPLICATES',
+$viewdefs[$module_name] =
+array(
+    'DetailView' => array(
+        'templateMeta' => array(
+            'form' => array(
+                'buttons' => array(
+                    0 => 'EDIT',
+                    1 => 'DUPLICATE',
+                    2 => 'DELETE',
+                    3 => 'FIND_DUPLICATES',
+                ),
             ),
-         ),
-         'maxColumns' => '2',
-         'widths' =>
-         array(
-            array(
-               'label' => '10',
-               'field' => '30',
+            'maxColumns' => '2',
+            'widths' => array(
+                0 => array(
+                    'label' => '10',
+                    'field' => '30',
+                ),
+                1 => array(
+                    'label' => '10',
+                    'field' => '30',
+                ),
             ),
-            array(
-               'label' => '10',
-               'field' => '30',
+            'useTabs' => true,
+            'tabDefs' => array(
+                'DEFAULT' => array(
+                    'newTab' => true,
+                    'panelDefault' => 'expanded',
+                ),
+                'LBL_PANEL_ASSIGNMENT' => array(
+                    'newTab' => true,
+                    'panelDefault' => 'expanded',
+                ),
             ),
-         ),
-         'useTabs' => true,
-         'tabDefs' =>
-         array(
-            'DEFAULT' =>
-            array(
-               'newTab' => true,
-               'panelDefault' => 'expanded',
+        ),
+        'panels' => array(
+            'default' => array(
+                0 => array(
+                    0 => 'name',
+                    1 => array(
+                        'name' => 'competencies_type',
+                        'studio' => 'visible',
+                        'label' => 'LBL_COMPETENCIES_TYPE',
+                    ),
+                ),
+                1 => array(
+                    0 => 'description',
+                ),
             ),
-            'LBL_PANEL_ASSIGNMENT' =>
-            array(
-               'newTab' => true,
-               'panelDefault' => 'expanded',
+            'LBL_PANEL_ASSIGNMENT' => array(
+                0 => array(
+                    0 => 'assigned_user_name',
+                    1 => '',
+                ),
+                1 => array(
+                    0 => array(
+                        'name' => 'date_entered',
+                        'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
+                    ),
+                    1 => array(
+                        'name' => 'date_modified',
+                        'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+                    ),
+                ),
             ),
-         ),
-      ),
-      'panels' =>
-      array(
-         'default' =>
-         array(
-            array(
-               'name',
-            ),
-            array(
-               'description',
-            ),
-         ),
-         'LBL_PANEL_ASSIGNMENT' =>
-         array(
-            array(
-               'assigned_user_name',
-               '',
-            ),
-            array(
-               array(
-                  'name' => 'date_entered',
-                  'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}'
-               ),
-               array(
-                  'name' => 'date_modified',
-                  'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}'
-               )
-            )
-         ),
-      ),
-   ),
+        ),
+    ),
 );
-;
-?>

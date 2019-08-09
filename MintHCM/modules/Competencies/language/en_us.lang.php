@@ -82,5 +82,5 @@ $mod_strings = array(
     'LBL_COMPETENCYRATINGS' => 'Competency Ratings',
     'LBL_APPRAISALITEMS' => 'Appraisal Items',
 
-    'LBL_COMPETENCIES_TYPE' => 'competencies type',
+    'LBL_COMPETENCIES_TYPE' => 'Competencies Type',
 );
