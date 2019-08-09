@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,32 +36,35 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-class ScheduleGenerateUsersNews {
+class ScheduleGenerateUsersNews
+{
 
-   protected $news_bean;
+    protected $news_bean;
 
-   public function __construct($news_bean) {
-      $this->news_bean = $news_bean;
-   }
+    public function __construct($news_bean)
+    {
+        $this->news_bean = $news_bean;
+    }
 
-   public function schedule() {
-      global $current_user;
-      $jq = new SugarJobQueue();
-      $job = new SchedulersJob();
-      $job->name = "Schedule Generate User's News";
-      $job->target = "class::GenerateUsersNewsJob";
-      $data = $this->news_bean->id;
-      $job->data = $data;
-      $job->assigned_user_id = $current_user->id;
-      $jq->submitJob($job);
-      return true;
-   }
+    public function schedule()
+    {
+        global $current_user, $timedate;
+        $jq = new SugarJobQueue();
+        $job = new SchedulersJob();
+        $job->name = "Schedule Generate User's News";
+        $job->target = "class::GenerateUsersNewsJob";
+        $job->execute_time = $timedate->to_db_date($this->news_bean->publication_date, false) . " 00:00:00";
+        $job->data = $this->news_bean->id;
+        $job->assigned_user_id = $current_user->id;
+        $jq->submitJob($job);
+        return true;
+    }
 
 }

@@ -107,7 +107,7 @@ $viewdefs [$module_name] = array(
             ),
             array(
                'news_type',
-               '',
+               'publication_date',
             ),
             array(
                array(
