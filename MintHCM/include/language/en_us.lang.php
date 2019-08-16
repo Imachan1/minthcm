@@ -52,6 +52,10 @@ $app_list_strings = array(
 //e.g. auf Deutsch 'Contacts'=>'Contakten',
    'language_pack_name' => 'US English',
    'moduleList' => array(
+      'Skills' => 'Skills',
+      'Knowledge' => 'Knowledge',
+      'Attitudes' => 'Attitudes',
+      //
       'Home' => 'Home',
       'ResourceCalendar' => 'Resource Calendar',
       'Contacts' => 'Contacts',
