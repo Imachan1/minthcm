@@ -605,6 +605,11 @@ $modInvisList[] = 'SurveyQuestionOptions';
  $beanFiles['KTemplates']= 'modules/KTemplates/KTemplates.php';
  $beanFiles['PDFGenerator']= 'modules/PDFGenerator/PDFGenerator.php';
  $beanFiles['PDFTemplates']= 'modules/PDFTemplates/PDFTemplates.php';
+ // 
+ $beanFiles['Skills']= 'modules/Skills/Skills.php';
+ $beanFiles['Attitudes']= 'modules/Attitudes/Attitudes.php';
+ $beanFiles['Knowledge']= 'modules/Knowledge/Knowledge.php';
+ //
   $beanList['ReservationsCalendar']='ReservationsCalendar';
  $beanList['ResponsibilityActivities']='ResponsibilityActivities';
  $beanList['Improvements']='Improvements';
@@ -658,6 +663,11 @@ $modInvisList[] = 'SurveyQuestionOptions';
  $beanList['KTemplates']='KTemplates';
  $beanList['PDFGenerator']='PDFGenerator';
  $beanList['PDFTemplates']='PDFTemplates';
+ // 
+ $beanList['Skills']= 'Skills';
+ $beanList['Attitudes']= 'Attitudes';
+ $beanList['Knowledge']= 'Knowledge';
+ //
  $moduleList[]='ReservationsCalendar';
  $moduleList[]='ResponsibilityActivities';
  $moduleList[]='Improvements';
@@ -699,7 +709,11 @@ $modInvisList[] = 'SurveyQuestionOptions';
  $moduleList[]='PDFTemplates';
  $moduleList[]='ScheduleReports';
  $moduleList[]='ScheduleReportsLogs';
-
+ //
+ $moduleList[]='Skills';
+ $moduleList[]='Attitudes';
+ $moduleList[]='Knowledge';
+ //
 if (file_exists('include/modules_override.php')) {
     include 'include/modules_override.php';
 }

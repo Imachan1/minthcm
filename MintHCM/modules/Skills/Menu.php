@@ -38,18 +38,18 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
- if (!defined('sugarEntry') || !sugarEntry) {
+if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
 global $mod_strings, $app_strings, $sugar_config;
- 
-if(ACLController::checkAccess('ev_Skills', 'edit', true)){
-    $module_menu[]=array('index.php?module=ev_Skills&action=EditView&return_module=ev_Skills&return_action=DetailView', $mod_strings['LNK_NEW_RECORD'], 'Add', 'ev_Skills');
+
+if (ACLController::checkAccess('Skills', 'edit', true)) {
+    $module_menu[] = array('index.php?module=Skills&action=EditView&return_module=Skills&return_action=DetailView', $mod_strings['LNK_NEW_RECORD'], 'Add', 'Skills');
 }
-if(ACLController::checkAccess('ev_Skills', 'list', true)){
-    $module_menu[]=array('index.php?module=ev_Skills&action=index&return_module=ev_Skills&return_action=DetailView', $mod_strings['LNK_LIST'],'View', 'ev_Skills');
+if (ACLController::checkAccess('Skills', 'list', true)) {
+    $module_menu[] = array('index.php?module=Skills&action=index&return_module=Skills&return_action=DetailView', $mod_strings['LNK_LIST'], 'View', 'Skills');
 }
-if(ACLController::checkAccess('ev_Skills', 'import', true)){
-    $module_menu[]=array('index.php?module=Import&action=Step1&import_module=ev_Skills&return_module=ev_Skills&return_action=index', $app_strings['LBL_IMPORT'], 'Import', 'ev_Skills');
+if (ACLController::checkAccess('Skills', 'import', true)) {
+    $module_menu[] = array('index.php?module=Import&action=Step1&import_module=Skills&return_module=Skills&return_action=index', $app_strings['LBL_IMPORT'], 'Import', 'Skills');
 }

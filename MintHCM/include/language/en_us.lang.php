@@ -168,6 +168,10 @@ $app_list_strings = array(
       'ScheduleReportsLogs' => 'Schedule Reports Logs',
    ),
    'moduleListSingular' => array(
+        'Skills' => 'Skills',
+        'Knowledge' => 'Knowledge',
+        'Attitudes' => 'Attitudes',
+        //
       'Home' => 'Home',
       'Dashboard' => 'Dashboard',
       'Contacts' => 'Contact',
