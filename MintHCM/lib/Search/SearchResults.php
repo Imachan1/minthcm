@@ -199,7 +199,7 @@ class SearchResults
         } else {
             LoggerManager::getLogger()->warn('Unresolved related ID for field: '. $relField);
         }
-        return $relId;
+        return (is_object($relId))?$obj->id:$relId; //MintHCM team #60792
     }
     
     /**
