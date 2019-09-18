@@ -7,6 +7,11 @@
     url("../../../../../themes/SuiteP/css/suitep-base/suitepicon.svg#suitepicon") format("svg");
 }
 
+
+button .suitepicon {
+    color: white;
+}
+
 .suitepicon {
     line-height: 1;
     vertical-align: middle;
@@ -16,7 +21,7 @@
     font-family: suitepicon !important;
     font-style: normal;
     font-weight: normal !important;
-    vertical-align: top;
+    //vertical-align: top;
 }
 
 /**

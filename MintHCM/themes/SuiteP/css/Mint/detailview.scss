@@ -1,9 +1,11 @@
 input[type=button], input.button[type=button], input.button[type=submit]  {
-    background: $color-36;
+    background: $button-light-bg;
+    border: 1px solid $button-light-border;
+    color: $button-light-color;
 }
 
 input[type=button]:hover, input.button[type=button]:hover, .buttons .button:hover{
-    background-color: $color-94;
+    background-color: $button-light-bg-hover;
 }
 
 input[type=button][selected], .buttons .button[selected] {

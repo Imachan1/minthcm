@@ -247,6 +247,11 @@ p.msg {
 
   .btn {
     @include hideWhenPrinting();
+    @include BoxShadow(1);
+  }
+
+  .btn:active {
+    @include BoxShadow(4);
   }
 
   .button {
@@ -345,7 +350,7 @@ p.msg {
   .tab-inline-pagination {
     @include hideWhenPrinting()
   }
-  
+
 
   .tab-content > .active.tab-pane-NOBOOTSTRAPTOGGLER {
     display: block !important;

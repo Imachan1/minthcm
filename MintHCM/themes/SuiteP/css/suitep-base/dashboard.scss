@@ -41,15 +41,17 @@
 }
 
 #pageContainer .dashletcontainer .pagination td button {
-  background-color: $dashlet-pagination-bg;
+  background-color: $pagination-btn-bg;
+  color: $pagination-btn-color;
   padding: 2px;
   border-radius: 3px;
   width: auto;
   height: auto;
 }
 #pageContainer .dashletcontainer .pagination td button:disabled {
-  background-color: $disabled-btn-bg;
-  color: $disabled-btn-color;
+  display: none;
+  background-color: $pagination-disabled-btn-bg;
+  color: $pagination-disabled-btn-color;
 }
 
   // Fix the icons in the dashlet pagination.
@@ -297,12 +299,16 @@ ul.subpanelTablist li {
 .dashletPanel .hd .hd-center .dashletToolSet a {
   font-size: $dashlet-header-toolset-icon-font-size;
   color: $dashlet-btn-color;
-  padding: 0 2px;
+  padding: 0 0 0 $mint-rem/2;
   line-height: $dashlet-header-toolset-icon-font-size;
 }
 
 .dashletPanel .hd .hd-center .dashletToolSet a:last-child {
   padding-right: 0;
+}
+
+.dashletPanel .suitepicon:before {
+  vertical-align: middle;
 }
 
 .dashletPanelMenu.wizard.import .bd .screen {
@@ -323,7 +329,7 @@ div#chartDashlets {
 
 .dashletPanel {
   padding: 0;
-  margin: 15px 15px 15px 0;
+  margin: $mint-rem $mint-rem $mint-rem 0;
 }
 
 .dashletTable {
@@ -331,7 +337,7 @@ div#chartDashlets {
 }
 
 .hd-center {
-  padding: 0;
+  padding: 0 $mint-rem;
   margin: 0;
 }
 
@@ -357,15 +363,26 @@ div#chartDashlets {
 
 td.dashlet-title {
   line-height: $dashlet-title-height;
-  height: $dashlet-title-height + 4px;
+  height: $dashlet-title-height;
+}
+
+.dashletPanel table tr td.dashlet-title {
+  // padding-left: 16px !important;
 }
 
 td.dashlet-title > h3 > span {
-  margin-left: 8px;
+  margin-left: 0;
+  margin-right: 0;
+	vertical-align: baseline;
+
+  &:nth-of-type(2) {
+    margin-left: $mint-rem / 2;
+  }
 }
 
 .dashlet-title .suitepicon {
   font-size: $dashlet-header-icon-font-size;
+
 }
 
 #moduleDashletsList > table > tbody > tr > td {
@@ -488,14 +505,58 @@ td.dashlet-title > h3 > span {
 }
 
 
-.dashletPanel .list tr th {
-  padding-top: $dashlet-header-height/2;
-  padding-bottom: $dashlet-header-height/2;
-  padding-left: $dashlet-header-padding;
-  padding-right: $dashlet-header-padding;
-  
-  padding-top: $dashlet-header-padding;
-  padding-bottom: $dashlet-header-padding;
+.dashletPanel .list tr th, .dashletPanel .list tr td {
+  //padding-top: $dashlet-header-height/2;
+  //padding-bottom: $dashlet-header-height/2;
+  //padding-left: $mint-rem;
+  //padding-right: $dashlet-header-padding;
+
+  //padding-top: $dashlet-header-padding;
+  //padding-bottom: $dashlet-header-padding;
+  padding-top: 0;
+  padding-right: 0;
+  padding-bottom: 0;
+  padding-left: $mint-rem;
+}
+
+.dashletPanel tr {
+  td, th {
+    &:last-of-type {
+      // padding: 4px !important;
+      padding-right: $mint-rem;
+    }
+  }
+}
+
+.TimePanel tr {
+  td:last-of-type {
+    padding-right: 0;
+  }
+}
+
+.TWSListFooter {
+  padding-right: 0 !important;
+}
+
+.TWSDashlet {
+  td {
+    text-align: right;
+
+    &:nth-of-type(1), &:nth-of-type(2) {
+      text-align: left;
+    }
+
+    &:last-of-type {
+      padding-right: 0 !important;
+    }
+
+    img {
+      width: $mint-rem !important;
+      height: $mint-rem !important;
+      margin-left: $mint-rem / 2;
+      top: unset !important;
+    }
+  }
 }
 
 .bd .dashletPanel .list-view-data-icon {
@@ -525,13 +586,13 @@ td.dashlet-title > h3 > span {
   font-size: 13px;
   font-weight: bold;
   color: $dashlet-title-color;
-  margin: 0 0 0 10px;
+  margin: 0;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
 .dashletPanel .h3Row h3 span {
-  font-weight: normal;
+  font-weight: 700;
 }
 
 #dashletbuttons {
@@ -544,7 +605,7 @@ td.dashlet-title > h3 > span {
 }
 
 .dashletToolSet {
-  margin: 0 10px 0 0;
+  margin: 0;
 }
 
 @media (max-width: 750px) {
@@ -614,7 +675,7 @@ td.dashlet-title > h3 > span {
 
 
 .yui-skin-sam.masked #dlg.SuiteP-configureDashlet.yui-module.yui-overlay.yui-panel .bd form table.edit tr{
-  display: flex; 
+  display: flex;
   border-bottom: none;
   float: none;
   width: auto;
@@ -764,4 +825,12 @@ td.dashlet-title > h3 > span {
   .dashletcontainer.col-50 {
     width: 50%;
   }
+}
+
+// Mint development
+
+.dashboard {
+  @include BoxShadow(1);
+  border-radius: 4px;
+  background-color: #fff;
 }
