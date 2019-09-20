@@ -82,12 +82,8 @@ array(
         'panels' => array(
             'default' => array(
                 0 => array(
-                    0 => 'name',
-                    1 => array(
-                        'name' => 'competencies_type',
-                        'studio' => 'visible',
-                        'label' => 'LBL_COMPETENCIES_TYPE',
-                    ),
+                    'name',
+                    'competencies_type',
                 ),
                 1 => array(
                     0 => 'description',

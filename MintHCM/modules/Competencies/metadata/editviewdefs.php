@@ -72,12 +72,8 @@ array(
                     0 => 'name',
                 ),
                 1 => array(
-                    0 => array(
-                        'name' => 'competencies_type',
-                        'studio' => 'visible',
-                        'label' => 'LBL_COMPETENCIES_TYPE',
-                    ),
-                    1 => 'assigned_user_name',
+                    'competencies_type',
+                    'assigned_user_name',
                 ),
                 2 => array(
                     0 => 'description',
