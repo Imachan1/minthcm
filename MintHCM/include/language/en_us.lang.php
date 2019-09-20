@@ -52,10 +52,6 @@ $app_list_strings = array(
 //e.g. auf Deutsch 'Contacts'=>'Contakten',
    'language_pack_name' => 'US English',
    'moduleList' => array(
-      'Skills' => 'Skills',
-      'Knowledge' => 'Knowledge',
-      'Attitudes' => 'Attitudes',
-      //
       'Home' => 'Home',
       'ResourceCalendar' => 'Resource Calendar',
       'Contacts' => 'Contacts',
@@ -166,12 +162,11 @@ $app_list_strings = array(
       'KTemplates' => 'Advanced Reports PDF Templates',
       'ScheduleReports' => 'Schedule Reports',
       'ScheduleReportsLogs' => 'Schedule Reports Logs',
+      'Skills' => 'Skills',
+      'Knowledge' => 'Knowledge',
+      'Attitudes' => 'Attitudes',
    ),
    'moduleListSingular' => array(
-        'Skills' => 'Skills',
-        'Knowledge' => 'Knowledge',
-        'Attitudes' => 'Attitudes',
-        //
       'Home' => 'Home',
       'Dashboard' => 'Dashboard',
       'Contacts' => 'Contact',
@@ -209,6 +204,9 @@ $app_list_strings = array(
       'KTemplates' => 'PDF Template',
       'ScheduleReports' => 'Schedule Report',
       'ScheduleReportsLogs' => 'Schedule Report Log',
+      'Skills' => 'Skills',
+      'Knowledge' => 'Knowledge',
+      'Attitudes' => 'Attitudes',
    ),
    'checkbox_dom' => array(
       '' => '',
