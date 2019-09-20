@@ -30,12 +30,8 @@ array(
                     1 => 'assigned_user_name',
                 ),
                 1 => array(
-                    0 => 'description',
-                    1 => array(
-                        'name' => 'competency',
-                        'studio' => 'visible',
-                        'label' => 'LBL_COMPETENCY',
-                    ),
+                    'description',
+                    'competencies',
                 ),
                 2 => array(
                     0 => array(

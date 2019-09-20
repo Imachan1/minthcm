@@ -15,15 +15,6 @@ array(
         'id' => 'ASSIGNED_USER_ID',
         'default' => true,
     ),
-    'COMPETENCY' => array(
-        'type' => 'relate',
-        'studio' => 'visible',
-        'label' => 'LBL_COMPETENCY',
-        'id' => 'COMPETENCIES_ID_C',
-        'link' => true,
-        'width' => '10%',
-        'default' => true,
-    ),
     'DESCRIPTION' => array(
         'type' => 'text',
         'label' => 'LBL_DESCRIPTION',
