@@ -610,6 +610,11 @@ $modInvisList[] = 'SurveyQuestionOptions';
  $beanFiles['Attitudes']= 'modules/Attitudes/Attitudes.php';
  $beanFiles['Knowledge']= 'modules/Knowledge/Knowledge.php';
  //
+ 
+ $beanList['Skills']='Skills';
+ $beanList['Attitudes']='Attitudes';
+ $beanList['Knowledge']='Knowledge';
+ 
   $beanList['ReservationsCalendar']='ReservationsCalendar';
  $beanList['ResponsibilityActivities']='ResponsibilityActivities';
  $beanList['Improvements']='Improvements';
