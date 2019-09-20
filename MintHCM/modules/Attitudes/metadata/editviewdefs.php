@@ -37,18 +37,6 @@ array(
                         'label' => 'LBL_COMPETENCY',
                     ),
                 ),
-                2 => array(
-                    0 => array(
-                        'name' => 'date_entered',
-                        'comment' => 'Date record created',
-                        'label' => 'LBL_DATE_ENTERED',
-                    ),
-                    1 => array(
-                        'name' => 'date_modified',
-                        'comment' => 'Date record last modified',
-                        'label' => 'LBL_DATE_MODIFIED',
-                    ),
-                ),
             ),
         ),
     ),
