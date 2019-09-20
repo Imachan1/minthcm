@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,42 +43,76 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$mod_strings = array(
-    'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
-    'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
-    'LBL_SECURITYGROUPS' => 'Security Groups',
-    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Security Groups',
-    'LBL_ID' => 'ID',
-    'LBL_DATE_ENTERED' => 'Date Created',
-    'LBL_DATE_MODIFIED' => 'Date Modified',
-    'LBL_MODIFIED' => 'Modified By',
-    'LBL_MODIFIED_NAME' => 'Modified By Name',
-    'LBL_CREATED' => 'Created By',
-    'LBL_DESCRIPTION' => 'Description',
-    'LBL_DELETED' => 'Deleted',
-    'LBL_NAME' => 'Name',
-    'LBL_CREATED_USER' => 'Created by User',
-    'LBL_MODIFIED_USER' => 'Modified by User',
-    'LBL_LIST_NAME' => 'Name',
-    'LBL_EDIT_BUTTON' => 'Edit',
-    'LBL_REMOVE' => 'Remove',
-    'LBL_ASCENDING' => 'Ascending',
-    'LBL_DESCENDING' => 'Descending',
-    'LBL_OPT_IN' => 'Opt In',
-    'LBL_OPT_IN_PENDING_EMAIL_NOT_SENT' => 'Pending Confirm opt in, Confirm opt in not sent',
-    'LBL_OPT_IN_PENDING_EMAIL_SENT' => 'Pending Confirm opt in, Confirm opt in sent',
-    'LBL_OPT_IN_CONFIRMED' => 'Opted in',
-    'LBL_LIST_FORM_TITLE' => 'Skills List',
-    'LBL_MODULE_NAME' => 'Skills',
-    'LBL_MODULE_TITLE' => 'Skills',
-    'LBL_HOMEPAGE_TITLE' => 'My Skills',
-    'LNK_NEW_RECORD' => 'Create Skill',
-    'LNK_LIST' => 'View Skills',
-    'LNK_IMPORT_SKILLS' => 'Import Skills',
-    'LBL_SEARCH_FORM_TITLE' => 'Search Skill',
-    'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
-    'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-    'LBL_SKILLS_SUBPANEL_TITLE' => 'Skills',
-    'LBL_NEW_FORM_TITLE' => 'New Skill',
-    'LBL_COMPETENCIES' => 'Competencies',
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+$dictionary["skills_competencies"] = array(
+    'true_relationship_type' => 'many-to-many',
+    'from_studio' => true,
+    'relationships' => array(
+        'skills_competencies' => array(
+            'lhs_module' => 'Skills',
+            'lhs_table' => 'skills',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Competencies',
+            'rhs_table' => 'competencies',
+            'rhs_key' => 'id',
+            'relationship_type' => 'many-to-many',
+            'join_table' => 'skills_competencies',
+            'join_key_lhs' => 'skills_id',
+            'join_key_rhs' => 'competencies_id',
+        ),
+    ),
+    'table' => 'skills_competencies',
+    'fields' => array(
+        array(
+            'name' => 'id',
+            'type' => 'varchar',
+            'len' => 36,
+        ),
+        array(
+            'name' => 'date_modified',
+            'type' => 'datetime',
+        ),
+        array(
+            'name' => 'deleted',
+            'type' => 'bool',
+            'len' => '1',
+            'default' => '0',
+            'required' => true,
+        ),
+        array(
+            'name' => 'skills_id',
+            'type' => 'varchar',
+            'len' => 36,
+        ),
+        array(
+            'name' => 'competencies_id',
+            'type' => 'varchar',
+            'len' => 36,
+        ),
+    ),
+    'indices' => array(
+        array(
+            'name' => 'competencies_id_skills_id_spk',
+            'type' => 'primary',
+            'fields' => array(
+                'id',
+            ),
+        ),
+        array(
+            'name' => 'competencies_id_alt',
+            'type' => 'index',
+            'fields' => array(
+                'competencies_id',
+            ),
+        ),
+        array(
+            'name' => 'skills_id_alt',
+            'type' => 'index',
+            'fields' => array(
+                'skills_id',
+            ),
+        ),
+    ),
 );

@@ -79,6 +79,5 @@ $mod_strings = array(
     'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
     'LBL_ATTITUDES_SUBPANEL_TITLE' => 'Attiudes',
     'LBL_NEW_FORM_TITLE' => 'New Attiudes',
-    'LBL_COMPETENCY_COMPETENCIES_ID' => '\'Competency\' (related \'\' ID)',
-    'LBL_COMPETENCY' => 'Competency',
+    'LBL_COMPETENCIES' => 'Competencies',
 );
