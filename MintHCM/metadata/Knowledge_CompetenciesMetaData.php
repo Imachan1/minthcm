@@ -42,47 +42,77 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-$mod_strings = array(
-    'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
-    'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
-    'LBL_SECURITYGROUPS' => 'Security Groups',
-    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Security Groups',
-    'LBL_ID' => 'ID',
-    'LBL_DATE_ENTERED' => 'Date Created',
-    'LBL_DATE_MODIFIED' => 'Date Modified',
-    'LBL_MODIFIED' => 'Modified by',
-    'LBL_MODIFIED_NAME' => 'Modified by Name',
-    'LBL_CREATED' => 'Created by',
-    'LBL_DESCRIPTION' => 'Description',
-    'LBL_DELETED' => 'Deleted',
-    'LBL_NAME' => 'Name',
-    'LBL_CREATED_USER' => 'Created by User',
-    'LBL_MODIFIED_USER' => 'Modified by User',
-    'LBL_LIST_NAME' => 'Name',
-    'LBL_EDIT_BUTTON' => 'Edit',
-    'LBL_REMOVE' => 'Remove',
-    'LBL_ASCENDING' => 'Ascending',
-    'LBL_DESCENDING' => 'Descending',
-    'LBL_OPT_IN' => 'Opt In',
-    'LBL_OPT_IN_PENDING_EMAIL_NOT_SENT' => 'Pending Confirm opt in, Confirm opt in not sent',
-    'LBL_OPT_IN_PENDING_EMAIL_SENT' => 'Pending Confirm opt in, Confirm opt in sent',
-    'LBL_OPT_IN_CONFIRMED' => 'Opted in',
-    'LBL_LIST_FORM_TITLE' => 'Competencies List',
-    'LBL_MODULE_NAME' => 'Competencies',
-    'LBL_MODULE_TITLE' => 'Competencies',
-    'LBL_HOMEPAGE_TITLE' => 'My Competencies',
-    'LNK_NEW_RECORD' => 'Create Competency',
-    'LNK_LIST' => 'View Competencies',
-    'LNK_IMPORT_COMPETENCIES' => 'Import Competencies',
-    'LBL_SEARCH_FORM_TITLE' => 'Search Competencies',
-    'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
-    'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-    'LBL_COMPETENCIES_SUBPANEL_TITLE' => 'Competencies',
-    'LBL_NEW_FORM_TITLE' => 'New Competency',
-    'LBL_COMPETENCYRATINGS' => 'Competency Ratings',
-    'LBL_APPRAISALITEMS' => 'Appraisal Items',
-    'LBL_COMPETENCIES_TYPE' => 'Type',
-    'LBL_KNOWLEDGE' => 'Knowledge',
-    'LBL_SKILLS' => 'Skills',
-    'LBL_ATTITUDES' => 'Attitudes',
+
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+$dictionary["knowledge_competencies"] = array(
+    'true_relationship_type' => 'many-to-many',
+    'from_studio' => true,
+    'relationships' => array(
+        'knowledge_competencies' => array(
+            'lhs_module' => 'Knowledge',
+            'lhs_table' => 'knowledge',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Competencies',
+            'rhs_table' => 'competencies',
+            'rhs_key' => 'id',
+            'relationship_type' => 'many-to-many',
+            'join_table' => 'knowledge_competencies',
+            'join_key_lhs' => 'knowledge_id',
+            'join_key_rhs' => 'competencies_id',
+        ),
+    ),
+    'table' => 'knowledge_competencies',
+    'fields' => array(
+        array(
+            'name' => 'id',
+            'type' => 'varchar',
+            'len' => 36,
+        ),
+        array(
+            'name' => 'date_modified',
+            'type' => 'datetime',
+        ),
+        array(
+            'name' => 'deleted',
+            'type' => 'bool',
+            'len' => '1',
+            'default' => '0',
+            'required' => true,
+        ),
+        array(
+            'name' => 'knowledge_id',
+            'type' => 'varchar',
+            'len' => 36,
+        ),
+        array(
+            'name' => 'competencies_id',
+            'type' => 'varchar',
+            'len' => 36,
+        ),
+    ),
+    'indices' => array(
+        array(
+            'name' => 'competencies_id_knowledge_id_spk',
+            'type' => 'primary',
+            'fields' => array(
+                'id',
+            ),
+        ),
+        array(
+            'name' => 'competencies_id_alt',
+            'type' => 'index',
+            'fields' => array(
+                'competencies_id',
+            ),
+        ),
+        array(
+            'name' => 'knowledge_id_alt',
+            'type' => 'index',
+            'fields' => array(
+                'knowledge_id',
+            ),
+        ),
+    ),
 );

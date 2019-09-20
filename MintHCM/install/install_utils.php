@@ -1285,6 +1285,10 @@ function insert_default_settings() {
     'Certificates',
     'Applications',
     'EmailTemplates',
+    //
+    'Skills',
+    'Knowledge',
+    'Attitudes',
     );
 
    $hidden_subpanels = array (

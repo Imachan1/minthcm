@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,47 +41,27 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-$mod_strings = array(
-    'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
-    'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
-    'LBL_SECURITYGROUPS' => 'Security Groups',
-    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Security Groups',
-    'LBL_ID' => 'ID',
-    'LBL_DATE_ENTERED' => 'Date Created',
-    'LBL_DATE_MODIFIED' => 'Date Modified',
-    'LBL_MODIFIED' => 'Modified by',
-    'LBL_MODIFIED_NAME' => 'Modified by Name',
-    'LBL_CREATED' => 'Created by',
-    'LBL_DESCRIPTION' => 'Description',
-    'LBL_DELETED' => 'Deleted',
-    'LBL_NAME' => 'Name',
-    'LBL_CREATED_USER' => 'Created by User',
-    'LBL_MODIFIED_USER' => 'Modified by User',
-    'LBL_LIST_NAME' => 'Name',
-    'LBL_EDIT_BUTTON' => 'Edit',
-    'LBL_REMOVE' => 'Remove',
-    'LBL_ASCENDING' => 'Ascending',
-    'LBL_DESCENDING' => 'Descending',
-    'LBL_OPT_IN' => 'Opt In',
-    'LBL_OPT_IN_PENDING_EMAIL_NOT_SENT' => 'Pending Confirm opt in, Confirm opt in not sent',
-    'LBL_OPT_IN_PENDING_EMAIL_SENT' => 'Pending Confirm opt in, Confirm opt in sent',
-    'LBL_OPT_IN_CONFIRMED' => 'Opted in',
-    'LBL_LIST_FORM_TITLE' => 'Competencies List',
-    'LBL_MODULE_NAME' => 'Competencies',
-    'LBL_MODULE_TITLE' => 'Competencies',
-    'LBL_HOMEPAGE_TITLE' => 'My Competencies',
-    'LNK_NEW_RECORD' => 'Create Competency',
-    'LNK_LIST' => 'View Competencies',
-    'LNK_IMPORT_COMPETENCIES' => 'Import Competencies',
-    'LBL_SEARCH_FORM_TITLE' => 'Search Competencies',
-    'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
-    'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-    'LBL_COMPETENCIES_SUBPANEL_TITLE' => 'Competencies',
-    'LBL_NEW_FORM_TITLE' => 'New Competency',
-    'LBL_COMPETENCYRATINGS' => 'Competency Ratings',
-    'LBL_APPRAISALITEMS' => 'Appraisal Items',
-    'LBL_COMPETENCIES_TYPE' => 'Type',
-    'LBL_KNOWLEDGE' => 'Knowledge',
-    'LBL_SKILLS' => 'Skills',
-    'LBL_ATTITUDES' => 'Attitudes',
+
+$module_name = 'Attitudes';
+$searchdefs[$module_name] = array(
+    'templateMeta' => array(
+        'maxColumns' => '3',
+        'maxColumnsBasic' => '4',
+        'widths' => array('label' => '10', 'field' => '30'),
+    ),
+    'layout' => array(
+        'basic_search' => array(
+            'name',
+            array('name' => 'current_user_only', 'label' => 'LBL_CURRENT_USER_FILTER', 'type' => 'bool'),
+        ),
+        'advanced_search' => array(
+            'name',
+            array(
+                'name' => 'assigned_user_id',
+                'label' => 'LBL_ASSIGNED_TO',
+                'type' => 'enum',
+                'function' => array('name' => 'get_user_array', 'params' => array(false)),
+            ),
+        ),
+    ),
 );

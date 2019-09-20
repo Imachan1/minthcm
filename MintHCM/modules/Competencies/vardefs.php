@@ -48,6 +48,33 @@ $dictionary['Competencies'] = array(
     'inline_edit' => true,
     'duplicate_merge' => true,
     'fields' => array(
+        'knowledge' => array(
+            'name' => 'knowledge',
+            'type' => 'link',
+            'relationship' => 'knowledge_competencies',
+            'source' => 'non-db',
+            'module' => 'Knowledge',
+            'bean_name' => 'Knowledge',
+            'vname' => 'LBL_KNOWLEDGE',
+        ),
+        'skills' => array(
+            'name' => 'skills',
+            'type' => 'link',
+            'relationship' => 'skills_competencies',
+            'source' => 'non-db',
+            'module' => 'Skills',
+            'bean_name' => 'Skill',
+            'vname' => 'LBL_SKILLS',
+        ),
+        'attitudes' => array(
+            'name' => 'attitudes',
+            'type' => 'link',
+            'relationship' => 'attitudes_competencies',
+            'source' => 'non-db',
+            'module' => 'Attitudes',
+            'bean_name' => 'Attitude',
+            'vname' => 'LBL_ATTITUDES',
+        ),
         'competencyratings' => array(
             'name' => 'competencyratings',
             'type' => 'link',
@@ -67,6 +94,7 @@ $dictionary['Competencies'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_APPRAISALITEMS',
         ),
+<<<<<<< HEAD
         //
         array(
             'competencies_type' => array(
@@ -87,6 +115,8 @@ $dictionary['Competencies'] = array(
             ),
         ),
         //
+=======
+>>>>>>> feature/61220
     ),
     'relationships' => array(
         'appraisalitems_competencies' => array(

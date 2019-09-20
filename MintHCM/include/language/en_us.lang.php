@@ -60,6 +60,10 @@ $app_list_strings = array(
     'Management' => 'Management',
    ],
    'moduleList' => array(
+      'Skills' => 'Skills',
+      'Knowledge' => 'Knowledge',
+      'Attitudes' => 'Attitudes',
+      //
       'Home' => 'Home',
       'ResourceCalendar' => 'Resource Calendar',
       'Contacts' => 'Contacts',
@@ -172,6 +176,10 @@ $app_list_strings = array(
       'ScheduleReportsLogs' => 'Schedule Reports Logs',
    ),
    'moduleListSingular' => array(
+        'Skills' => 'Skills',
+        'Knowledge' => 'Knowledge',
+        'Attitudes' => 'Attitudes',
+        //
       'Home' => 'Home',
       'Dashboard' => 'Dashboard',
       'Contacts' => 'Contact',

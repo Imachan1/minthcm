@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,6 +41,7 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
 $mod_strings = array(
     'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
     'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
@@ -50,9 +50,9 @@ $mod_strings = array(
     'LBL_ID' => 'ID',
     'LBL_DATE_ENTERED' => 'Date Created',
     'LBL_DATE_MODIFIED' => 'Date Modified',
-    'LBL_MODIFIED' => 'Modified by',
-    'LBL_MODIFIED_NAME' => 'Modified by Name',
-    'LBL_CREATED' => 'Created by',
+    'LBL_MODIFIED' => 'Modified By',
+    'LBL_MODIFIED_NAME' => 'Modified By Name',
+    'LBL_CREATED' => 'Created By',
     'LBL_DESCRIPTION' => 'Description',
     'LBL_DELETED' => 'Deleted',
     'LBL_NAME' => 'Name',
@@ -67,22 +67,17 @@ $mod_strings = array(
     'LBL_OPT_IN_PENDING_EMAIL_NOT_SENT' => 'Pending Confirm opt in, Confirm opt in not sent',
     'LBL_OPT_IN_PENDING_EMAIL_SENT' => 'Pending Confirm opt in, Confirm opt in sent',
     'LBL_OPT_IN_CONFIRMED' => 'Opted in',
-    'LBL_LIST_FORM_TITLE' => 'Competencies List',
-    'LBL_MODULE_NAME' => 'Competencies',
-    'LBL_MODULE_TITLE' => 'Competencies',
-    'LBL_HOMEPAGE_TITLE' => 'My Competencies',
-    'LNK_NEW_RECORD' => 'Create Competency',
-    'LNK_LIST' => 'View Competencies',
-    'LNK_IMPORT_COMPETENCIES' => 'Import Competencies',
-    'LBL_SEARCH_FORM_TITLE' => 'Search Competencies',
+    'LBL_LIST_FORM_TITLE' => 'Knowledge List',
+    'LBL_MODULE_NAME' => 'Knowledge',
+    'LBL_MODULE_TITLE' => 'Knowledge',
+    'LBL_HOMEPAGE_TITLE' => 'My Knowledge',
+    'LNK_NEW_RECORD' => 'Create Knowledge',
+    'LNK_LIST' => 'View Knowledge',
+    'LNK_IMPORT_KNOWLEDGE' => 'Import Knowledge',
+    'LBL_SEARCH_FORM_TITLE' => 'Search Knowledge',
     'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
     'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-    'LBL_COMPETENCIES_SUBPANEL_TITLE' => 'Competencies',
-    'LBL_NEW_FORM_TITLE' => 'New Competency',
-    'LBL_COMPETENCYRATINGS' => 'Competency Ratings',
-    'LBL_APPRAISALITEMS' => 'Appraisal Items',
-    'LBL_COMPETENCIES_TYPE' => 'Type',
-    'LBL_KNOWLEDGE' => 'Knowledge',
-    'LBL_SKILLS' => 'Skills',
-    'LBL_ATTITUDES' => 'Attitudes',
+    'LBL_KNOWLEDGE_SUBPANEL_TITLE' => 'Knowledge',
+    'LBL_NEW_FORM_TITLE' => 'New Knowledge',
+    'LBL_COMPETENCIES' => 'Competencies',
 );
