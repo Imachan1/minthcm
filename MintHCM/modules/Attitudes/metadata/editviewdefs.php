@@ -31,7 +31,6 @@ array(
                 ),
                 1 => array(
                     'description',
-                    'competencies',
                 ),
             ),
         ),

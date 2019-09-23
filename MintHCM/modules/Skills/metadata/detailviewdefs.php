@@ -39,7 +39,6 @@ array(
                 ),
                 1 => array(
                     'description',
-                    'competencies',
                 ),
                 2 => array(
                     0 => 'date_entered',
