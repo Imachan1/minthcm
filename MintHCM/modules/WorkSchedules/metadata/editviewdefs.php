@@ -139,6 +139,9 @@ $viewdefs [$module_name] = array(
                'delegation_duration',
                '',
             ),
+            array(
+               'description',
+            ),
          ),
          'LBL_REPEAT_TAB' => array(
             array(

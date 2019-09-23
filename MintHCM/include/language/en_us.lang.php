@@ -51,6 +51,14 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 $app_list_strings = array(
 //e.g. auf Deutsch 'Contacts'=>'Contakten',
    'language_pack_name' => 'US English',
+   'competencies_type_list' => [
+    'Organizational' => 'Organizational',
+    'Core' => 'Core',
+    'Technical' => 'Technical',
+    'Behavioral' => 'Behavioral',
+    'Functional' => 'Functional',
+    'Management' => 'Management',
+   ],
    'moduleList' => array(
       'Home' => 'Home',
       'ResourceCalendar' => 'Resource Calendar',
@@ -162,6 +170,9 @@ $app_list_strings = array(
       'KTemplates' => 'Advanced Reports PDF Templates',
       'ScheduleReports' => 'Schedule Reports',
       'ScheduleReportsLogs' => 'Schedule Reports Logs',
+      'Skills' => 'Skills',
+      'Knowledge' => 'Knowledge',
+      'Attitudes' => 'Attitudes',
    ),
    'moduleListSingular' => array(
       'Home' => 'Home',
@@ -201,6 +212,9 @@ $app_list_strings = array(
       'KTemplates' => 'PDF Template',
       'ScheduleReports' => 'Schedule Report',
       'ScheduleReportsLogs' => 'Schedule Report Log',
+      'Skills' => 'Skills',
+      'Knowledge' => 'Knowledge',
+      'Attitudes' => 'Attitudes',
    ),
    'checkbox_dom' => array(
       '' => '',

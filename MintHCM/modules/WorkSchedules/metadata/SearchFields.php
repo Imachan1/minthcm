@@ -159,5 +159,7 @@ $searchFields[$module_name] = array(
       'enable_range_search' => true
    ),
    //Range Search Support
-   'workschedules_type' => array( 'query_type' => 'default', 'operator' => 'none', ),
+   'assigned_to_perm' => array( 'query_type' => 'default', 'operator' => 'none', ),
+    'type_perm' => array( 'query_type' => 'default', 'operator' => 'none', ),
+    'status_perm' => array( 'query_type' => 'default', 'operator' => 'none', ),
 );

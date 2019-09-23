@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -43,24 +41,25 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
 require_once('include/MVC/View/views/view.popup.php');
 
-class WorkSchedulesViewPopup extends ViewPopup {
+class WorkSchedulesViewPopup extends ViewPopup
+{
 
-   public function display() {
-      parent::display();
-      if ( !empty($_REQUEST['workschedules_type_advanced']) ) {
-         echo '<script>
+    public function display()
+    {
+        parent::display();
+        echo '<script>
             $( document ).ready(function() {
-               $(\'#search_form_clear\').attr(\'onclick\',"SUGAR.searchForm.clear_form(this.form,[\"workschedules_type_advanced\"]); return false;"); //dopisujemy, aby funkcja czyszcząca ignorowała nasz filtr.
+               $(\'#assigned_to_perm_advanced\').closest(\'div.col-advanced-search\').hide();
+               $(\'#type_perm_advanced\').closest(\'div.col-advanced-search\').hide();
+               $(\'#status_perm_advanced\').closest(\'div.col-advanced-search\').hide();
+               $(\'#search_form_clear\').attr(\'onclick\',"SUGAR.searchForm.clear_form(this.form,[\"assigned_to_perm_advanced\",\"type_perm_advanced\",\"status_perm_advanced\"]); return false;");
             });
             </script>';
-      }
-   }
-
+    }
 }

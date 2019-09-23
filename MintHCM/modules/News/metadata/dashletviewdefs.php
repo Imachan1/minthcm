@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,101 +36,96 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 $dashletData['NewsDashlet']['searchFields'] = array(
-   'name' =>
-   array(
-      'default' => '',
-   ),
-   'news_type' =>
-   array(
-      'default' => '',
-   ),
-   'news_status' =>
-   array(
-      'default' => '',
-   ),
-   'date_entered' =>
-   array(
-      'default' => '',
-   ),
-   'date_modified' =>
-   array(
-      'default' => '',
-   ),
-   'assigned_user_name' =>
-   array(
-      'default' => '',
-   ),
+    'name' => array(
+        'default' => '',
+    ),
+    'news_type' => array(
+        'default' => '',
+    ),
+    'news_status' => array(
+        'default' => '',
+    ),
+    'publication_date' => array(
+        'default' => '',
+    ),
+    'date_entered' => array(
+        'default' => '',
+    ),
+    'date_modified' => array(
+        'default' => '',
+    ),
+    'assigned_user_name' => array(
+        'default' => '',
+    ),
 );
 $dashletData['NewsDashlet']['columns'] = array(
-   'name' =>
-   array(
-      'width' => '40%',
-      'label' => 'LBL_LIST_NAME',
-      'link' => true,
-      'default' => true,
-      'name' => 'name',
-   ),
-   'news_type' =>
-   array(
-      'type' => 'enum',
-      'studio' => 'visible',
-      'label' => 'LBL_NEWS_TYPE',
-      'width' => '10%',
-      'default' => true,
-   ),
-   'news_status' =>
-   array(
-      'type' => 'enum',
-      'default' => true,
-      'studio' => 'visible',
-      'label' => 'LBL_NEWS_STATUS',
-      'width' => '10%',
-   ),
-   'assigned_user_name' =>
-   array(
-      'width' => '8%',
-      'label' => 'LBL_LIST_ASSIGNED_USER',
-      'name' => 'assigned_user_name',
-      'default' => true,
-   ),
-   'date_modified' =>
-   array(
-      'width' => '15%',
-      'label' => 'LBL_DATE_MODIFIED',
-      'name' => 'date_modified',
-      'default' => false,
-   ),
-   'date_entered' =>
-   array(
-      'width' => '15%',
-      'label' => 'LBL_DATE_ENTERED',
-      'default' => false,
-      'name' => 'date_entered',
-   ),
-   'created_by_name' =>
-   array(
-      'type' => 'relate',
-      'link' => true,
-      'label' => 'LBL_CREATED',
-      'id' => 'CREATED_BY',
-      'width' => '10%',
-      'default' => false,
-   ),
-   'modified_by_name' =>
-   array(
-      'type' => 'relate',
-      'link' => true,
-      'label' => 'LBL_MODIFIED_NAME',
-      'id' => 'MODIFIED_USER_ID',
-      'width' => '10%',
-      'default' => false,
-   ),
+    'name' => array(
+        'width' => '40%',
+        'label' => 'LBL_LIST_NAME',
+        'link' => true,
+        'default' => true,
+        'name' => 'name',
+    ),
+    'news_type' => array(
+        'type' => 'enum',
+        'studio' => 'visible',
+        'label' => 'LBL_NEWS_TYPE',
+        'width' => '10%',
+        'default' => true,
+    ),
+    'news_status' => array(
+        'type' => 'enum',
+        'default' => true,
+        'studio' => 'visible',
+        'label' => 'LBL_NEWS_STATUS',
+        'width' => '10%',
+    ),
+    'publication_date' => array(
+        'type' => 'date',
+        'default' => true,
+        'label' => 'LBL_PUBLICATION_DATE',
+        'width' => '10%',
+    ),
+    'assigned_user_name' => array(
+        'width' => '8%',
+        'label' => 'LBL_LIST_ASSIGNED_USER',
+        'name' => 'assigned_user_name',
+        'default' => true,
+    ),
+    'date_modified' => array(
+        'width' => '15%',
+        'label' => 'LBL_DATE_MODIFIED',
+        'name' => 'date_modified',
+        'default' => false,
+    ),
+    'date_entered' => array(
+        'width' => '15%',
+        'label' => 'LBL_DATE_ENTERED',
+        'default' => false,
+        'name' => 'date_entered',
+    ),
+    'created_by_name' => array(
+        'type' => 'relate',
+        'link' => true,
+        'label' => 'LBL_CREATED',
+        'id' => 'CREATED_BY',
+        'width' => '10%',
+        'default' => false,
+    ),
+    'modified_by_name' => array(
+        'type' => 'relate',
+        'link' => true,
+        'label' => 'LBL_MODIFIED_NAME',
+        'id' => 'MODIFIED_USER_ID',
+        'width' => '10%',
+        'default' => false,
+    ),
 );

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,62 +36,62 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 $module_name = 'Competencies';
-$listViewDefs [$module_name] = array(
-   'NAME' =>
-   array(
-      'width' => '32%',
-      'label' => 'LBL_NAME',
-      'default' => true,
-      'link' => true,
-   ),
-   'DATE_MODIFIED' =>
-   array(
-      'type' => 'datetime',
-      'label' => 'LBL_DATE_MODIFIED',
-      'width' => '10%',
-      'default' => true,
-   ),
-   'ASSIGNED_USER_NAME' =>
-   array(
-      'width' => '9%',
-      'label' => 'LBL_ASSIGNED_TO_NAME',
-      'module' => 'Employees',
-      'id' => 'ASSIGNED_USER_ID',
-      'default' => true,
-   ),
-   'DATE_ENTERED' =>
-   array(
-      'type' => 'datetime',
-      'label' => 'LBL_DATE_ENTERED',
-      'width' => '10%',
-      'default' => false,
-   ),
-   'CREATED_BY_NAME' =>
-   array(
-      'type' => 'relate',
-      'link' => true,
-      'label' => 'LBL_CREATED',
-      'id' => 'CREATED_BY',
-      'width' => '10%',
-      'default' => false,
-   ),
-   'MODIFIED_BY_NAME' =>
-   array(
-      'type' => 'relate',
-      'link' => true,
-      'label' => 'LBL_MODIFIED_NAME',
-      'id' => 'MODIFIED_USER_ID',
-      'width' => '10%',
-      'default' => false,
-   ),
+$listViewDefs[$module_name] =
+array(
+    'NAME' => array(
+        'width' => '32%',
+        'label' => 'LBL_NAME',
+        'default' => true,
+        'link' => true,
+    ),
+    'COMPETENCIES_TYPE' => array(
+        'type' => 'enum',
+        'default' => true,
+        'studio' => 'visible',
+        'label' => 'LBL_COMPETENCIES_TYPE',
+        'width' => '10%',
+    ),
+    'DATE_MODIFIED' => array(
+        'type' => 'datetime',
+        'label' => 'LBL_DATE_MODIFIED',
+        'width' => '10%',
+        'default' => true,
+    ),
+    'ASSIGNED_USER_NAME' => array(
+        'width' => '9%',
+        'label' => 'LBL_ASSIGNED_TO_NAME',
+        'module' => 'Employees',
+        'id' => 'ASSIGNED_USER_ID',
+        'default' => true,
+    ),
+    'DATE_ENTERED' => array(
+        'type' => 'datetime',
+        'label' => 'LBL_DATE_ENTERED',
+        'width' => '10%',
+        'default' => false,
+    ),
+    'CREATED_BY_NAME' => array(
+        'type' => 'relate',
+        'link' => true,
+        'label' => 'LBL_CREATED',
+        'id' => 'CREATED_BY',
+        'width' => '10%',
+        'default' => false,
+    ),
+    'MODIFIED_BY_NAME' => array(
+        'type' => 'relate',
+        'link' => true,
+        'label' => 'LBL_MODIFIED_NAME',
+        'id' => 'MODIFIED_USER_ID',
+        'width' => '10%',
+        'default' => false,
+    ),
 );
-;
-?>

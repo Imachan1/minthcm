@@ -90,7 +90,7 @@ class UsersNewsApi {
    protected function getAnnouncements() {
       global $current_user, $db;
       $results = array();
-      $sql = "SELECT id, name, content_of_announcement, news_type FROM news WHERE id IN (SELECT news_id FROM usersnews WHERE news_read = 0 AND assigned_user_id = '{$current_user->id}' AND deleted = 0) AND news_type='announcement' AND news_status <> 'draft' AND deleted = 0";
+      $sql = "SELECT id, name, content_of_announcement, news_type FROM news WHERE id IN (SELECT news_id FROM usersnews WHERE news_read = 0 AND assigned_user_id = '{$current_user->id}' AND deleted = 0) AND news_type='announcement' AND news_status <> 'draft' AND publication_date <= CURDATE() AND deleted = 0";
       $result = $db->query($sql);
       while ( $row = $db->fetchByAssoc($result) ) {
          $results[] = new NewsInfo($row);
