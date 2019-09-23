@@ -62,7 +62,7 @@ $layout_defs["Competencies"]["subpanel_setup"] = array(
         'sort_order' => 'asc',
         'sort_by' => 'id',
         'title_key' => 'LBL_SKILLS',
-        'get_subpanel_data' => 'skills_competencies',
+        'get_subpanel_data' => 'skills',
         'top_buttons' => array(array('widget_class' => 'SubPanelTopCreateButton')),
     ),
     'attitudes' => array(
