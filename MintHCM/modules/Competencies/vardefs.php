@@ -67,7 +67,6 @@ $dictionary['Competencies'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_APPRAISALITEMS',
         ),
-        //
         array(
             'competencies_type' => array(
                 'id' => 'competencies_type',
@@ -86,7 +85,6 @@ $dictionary['Competencies'] = array(
                 'importable' => 'true',
             ),
         ),
-        //
     ),
     'relationships' => array(
         'appraisalitems_competencies' => array(
