@@ -51,7 +51,7 @@ $layout_defs["Competencies"]["subpanel_setup"] = array(
         'sort_order' => 'asc',
         'sort_by' => 'id',
         'title_key' => 'LBL_KNOWLEDGE',
-        'get_subpanel_data' => 'knowledge_competencies',
+        'get_subpanel_data' => 'knowledge',
         'top_buttons' => array(array('widget_class' => 'SubPanelTopCreateButton')),
     ),
     'skills' => array(
@@ -71,7 +71,7 @@ $layout_defs["Competencies"]["subpanel_setup"] = array(
         'sort_order' => 'asc',
         'sort_by' => 'id',
         'title_key' => 'LBL_ATTITUDES',
-        'get_subpanel_data' => 'attitudes_competencies',
+        'get_subpanel_data' => 'attitudes',
         'top_buttons' => array(array('widget_class' => 'SubPanelTopCreateButton')),
     ),
     'competencyratings' => array(
