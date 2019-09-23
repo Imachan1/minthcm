@@ -94,6 +94,24 @@ $dictionary['Competencies'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_APPRAISALITEMS',
         ),
+        array(
+            'competencies_type' => array(
+                'id' => 'competencies_type',
+                'name' => 'competencies_type',
+                'label' => 'LBL_COMPETENCIES_TYPE',
+                'comments' => null,
+                'help' => null,
+                'module' => 'Competencies',
+                'type' => 'enum',
+                'options' => 'competencies_type_list',
+                'require_option' => '0',
+                'audited' => true,
+                'reportable' => true,
+                'mass_update' => '1',
+                'duplicate_merge' => '0',
+                'importable' => 'true',
+            ),
+        ),
     ),
     'relationships' => array(
         'appraisalitems_competencies' => array(
