@@ -26,12 +26,12 @@ array(
         'type' => 'datetime',
         'label' => 'LBL_DATE_MODIFIED',
         'width' => '10%',
-        'default' => false,
+        'default' => true,
     ),
     'DATE_ENTERED' => array(
         'type' => 'datetime',
         'label' => 'LBL_DATE_ENTERED',
         'width' => '10%',
-        'default' => false,
+        'default' => true,
     ),
 );
