@@ -212,9 +212,9 @@ $app_list_strings = array(
       'KTemplates' => 'PDF Template',
       'ScheduleReports' => 'Schedule Report',
       'ScheduleReportsLogs' => 'Schedule Report Log',
-      'Skills' => 'Skills',
+      'Skills' => 'Skill',
       'Knowledge' => 'Knowledge',
-      'Attitudes' => 'Attitudes',
+      'Attitudes' => 'Attitude',
    ),
    'checkbox_dom' => array(
       '' => '',
