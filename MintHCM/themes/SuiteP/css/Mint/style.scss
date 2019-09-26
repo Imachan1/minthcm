@@ -1,3 +1,6 @@
+// Mint development sytles
+@import 'material-shadows';
+
 // Core variables and mixins
 @import "color-palette";
 @import "variables";
@@ -83,7 +86,9 @@
 @import '../suitep-base/jstree';
 //
 
-/**Mint Styles**/
+
+
+// Mint Styles
 @import 'listview';
 @import 'detailview';
 @import 'editview';
@@ -91,7 +96,7 @@
 @import 'navbar';
 @import 'view-tools';
 @import 'work-schedule';
-@import 'redmine-project-task';
+//@import 'redmine-project-task';
 @import 'common-for-dashlets';
 @import 'mint-news';
 @import 'mint-popup';

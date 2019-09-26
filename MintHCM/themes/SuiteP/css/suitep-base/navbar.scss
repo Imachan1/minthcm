@@ -43,6 +43,7 @@
 
 .navbar-inverse {
   background: $navbar-bg;
+  @include BoxShadow(4);
 
   .navbar-brand,
   .navbar-nav > li > a.with-home-icon {
@@ -1767,7 +1768,7 @@
   .globalLinks-mobile .suitepicon-action-current-user {
     font-size: $navbar-toolbar-height;
   }
-  
+
   .globalLinks-mobile > .btn > .current-user-avatar {
     width: 40px;
     height: 40px;
@@ -1777,7 +1778,7 @@
     border-radius: 50%;
     border: 2px solid white;
   }
-  
+
   .globalLinks-mobile > .btn > .current-user-avatar > img {
     position: absolute;
     top: 50%;
@@ -2130,7 +2131,7 @@
     width: $navbar-toolbar-height;
     padding: 0;
   }
-  
+
   .desktop-bar > .toolbar > li > .btn.alertsButton {
     padding: 4px 0 0 0;
   }
@@ -2138,8 +2139,8 @@
   .desktop-bar > .toolbar > li > .btn.searchbutton {
     font-size: $navbar-toolbar-height / 2;
   }
-  
-  
+
+
 
 
   .globalLinks-mobile .dropdown-toggle {
