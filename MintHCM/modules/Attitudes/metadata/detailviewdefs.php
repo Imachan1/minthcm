@@ -23,7 +23,7 @@ array(
                     'field' => '30',
                 ),
             ),
-            'useTabs' => false,
+            'useTabs' => true,
             'tabDefs' => array(
                 'DEFAULT' => array(
                     'newTab' => false,
