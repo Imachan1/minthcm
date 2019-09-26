@@ -26,7 +26,11 @@ array(
             'useTabs' => true,
             'tabDefs' => array(
                 'DEFAULT' => array(
-                    'newTab' => false,
+                    'newTab' => true,
+                    'panelDefault' => 'expanded',
+                ),
+                'LBL_PANEL_ASSIGNMENT' => array(
+                    'newTab' => true,
                     'panelDefault' => 'expanded',
                 ),
             ),

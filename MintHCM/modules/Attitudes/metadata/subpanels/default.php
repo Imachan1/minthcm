@@ -29,10 +29,15 @@ $subpanel_layout = array(
             'target_module' => 'Users',
             'target_record_key' => 'assigned_user_id',
         ),
-        'description' => array(
-            'type' => 'text',
-            'vname' => 'LBL_DESCRIPTION',
-            'sortable' => false,
+        'date_entered' => array(
+            'type' => 'datetime',
+            'vname' => 'LBL_DATE_ENTERED',
+            'width' => '10%',
+            'default' => true,
+        ),
+        'date_modified' => array(
+            'type' => 'datetime',
+            'vname' => 'LBL_DATE_MODIFIED',
             'width' => '10%',
             'default' => true,
         ),

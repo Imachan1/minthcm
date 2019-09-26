@@ -63,5 +63,3 @@ if (!class_exists('VardefManager')) {
     require_once 'include/SugarObjects/VardefManager.php';
 }
 VardefManager::createVardef('Attitudes', 'Attitudes', array('basic', 'assignable', 'security_groups'));
-
-$dictionary['Attitudes']['fields']['name']['required'] = true;
