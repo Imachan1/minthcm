@@ -35,11 +35,6 @@ array(
                         'comment' => 'Full text of the note',
                         'label' => 'LBL_DESCRIPTION',
                     ),
-                    1 => array(
-                        'name' => 'competency',
-                        'studio' => 'visible',
-                        'label' => 'LBL_COMPETENCY',
-                    ),
                 ),
                 2 => array(
                     0 => array(
