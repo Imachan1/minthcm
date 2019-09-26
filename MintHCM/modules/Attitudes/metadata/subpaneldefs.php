@@ -52,19 +52,11 @@ $layout_defs["Attitudes"]["subpanel_setup"] = array(
         'sort_by' => 'id',
         'title_key' => 'LBL_COMPETENCIES',
         'get_subpanel_data' => 'competencies',
-        'top_buttons' => array(array('widget_class' => 'SubPanelTopCreateButton')),
-    ),
-    'appraisalitems' => array(
-        'order' => 200,
-        'module' => 'AppraisalItems',
-        'subpanel_name' => 'default',
-        'sort_order' => 'asc',
-        'sort_by' => 'id',
-        'title_key' => 'LBL_APPRAISALITEMS',
-        'get_subpanel_data' => 'appraisalitems',
         'top_buttons' => array(
+            array('widget_class' => 'SubPanelTopCreateButton'),
             array(
-                'widget_class' => 'SubPanelTopButtonQuickCreate',
+                'widget_class' => 'SubPanelTopSelectButton',
+                'mode' => 'MultiSelect',
             ),
         ),
     ),

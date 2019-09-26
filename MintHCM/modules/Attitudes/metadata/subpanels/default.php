@@ -29,18 +29,6 @@ $subpanel_layout = array(
             'target_module' => 'Users',
             'target_record_key' => 'assigned_user_id',
         ),
-        'competency' => array(
-            'type' => 'relate',
-            'studio' => 'visible',
-            'vname' => 'LBL_COMPETENCY',
-            'id' => 'COMPETENCIES_ID_C',
-            'link' => true,
-            'width' => '10%',
-            'default' => true,
-            'widget_class' => 'SubPanelDetailViewLink',
-            'target_module' => 'Competencies',
-            'target_record_key' => 'competencies_id_c',
-        ),
         'description' => array(
             'type' => 'text',
             'vname' => 'LBL_DESCRIPTION',

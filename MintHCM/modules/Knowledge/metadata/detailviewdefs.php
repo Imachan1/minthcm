@@ -34,15 +34,25 @@ array(
         'panels' => array(
             'default' => array(
                 0 => array(
-                    0 => 'name',
-                    1 => 'assigned_user_name',
+                    'name',
                 ),
                 1 => array(
                     'description',
                 ),
-                2 => array(
-                    0 => 'date_entered',
-                    1 => 'date_modified',
+            ),
+            'LBL_PANEL_ASSIGNMENT' => array(
+                array(
+                    'assigned_user_name',
+                ),
+                array(
+                    array(
+                        'name' => 'date_entered',
+                        'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
+                    ),
+                    array(
+                        'name' => 'date_modified',
+                        'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+                    ),
                 ),
             ),
         ),
