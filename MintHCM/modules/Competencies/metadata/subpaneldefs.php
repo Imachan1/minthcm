@@ -52,7 +52,13 @@ $layout_defs["Competencies"]["subpanel_setup"] = array(
         'sort_by' => 'id',
         'title_key' => 'LBL_KNOWLEDGE',
         'get_subpanel_data' => 'knowledge',
-        'top_buttons' => array(array('widget_class' => 'SubPanelTopCreateButton')),
+        'top_buttons' => array(
+            array('widget_class' => 'SubPanelTopCreateButton'),
+            array(
+                'widget_class' => 'SubPanelTopSelectButton',
+                'mode' => 'MultiSelect',
+            ),
+        ),
     ),
     'skills' => array(
         'order' => 100,
@@ -62,7 +68,13 @@ $layout_defs["Competencies"]["subpanel_setup"] = array(
         'sort_by' => 'id',
         'title_key' => 'LBL_SKILLS',
         'get_subpanel_data' => 'skills',
-        'top_buttons' => array(array('widget_class' => 'SubPanelTopCreateButton')),
+        'top_buttons' => array(
+            array('widget_class' => 'SubPanelTopCreateButton'),
+            array(
+                'widget_class' => 'SubPanelTopSelectButton',
+                'mode' => 'MultiSelect',
+            ),
+        ),
     ),
     'attitudes' => array(
         'order' => 100,
@@ -72,7 +84,13 @@ $layout_defs["Competencies"]["subpanel_setup"] = array(
         'sort_by' => 'id',
         'title_key' => 'LBL_ATTITUDES',
         'get_subpanel_data' => 'attitudes',
-        'top_buttons' => array(array('widget_class' => 'SubPanelTopCreateButton')),
+        'top_buttons' => array(
+            array('widget_class' => 'SubPanelTopCreateButton'),
+            array(
+                'widget_class' => 'SubPanelTopSelectButton',
+                'mode' => 'MultiSelect',
+            ),
+        ),
     ),
     'competencyratings' => array(
         'order' => 100,
