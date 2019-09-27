@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,41 +41,76 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
 global $app_strings;
 
 $themedef = array(
-   'name' => 'MintHCM',
-   'description' => 'MintHCM Responsive Theme',
-   'version' => array(
-      'regex_matches' => array( '.+' ),
-   ),
-   'group_tabs' => true,
-   'classic' => true,
-   'configurable' => true,
-   'config_options' => array(
-      'display_sidebar' => array(
-         'vname' => 'LBL_DISPLAY_SIDEBAR',
-         'type' => 'bool',
-         'default' => true,
-      ),
-      'sub_themes' => array(
-         'vname' => 'LBL_SUBTHEME_OPTIONS',
-         'type' => 'select',
-         'default' => 'Mint',
-      ),
-   ),
+    'name' => 'MintHCM',
+    'description' => 'MintHCM Responsive Theme',
+    'version' => array(
+        'regex_matches' => array('.+'),
+    ),
+    'group_tabs' => true,
+    'classic' => true,
+    'configurable' => true,
+    'config_options' => array(
+        'display_sidebar' => array(
+            'vname' => 'LBL_DISPLAY_SIDEBAR',
+            'type' => 'bool',
+            'default' => true,
+        ),
+        'sub_themes' => array(
+            'vname' => 'LBL_SUBTHEME_OPTIONS',
+            'type' => 'select',
+            'default' => 'Mint',
+        ),
+    ),
+    'fa_module_icons' => array(
+        'Candidates' => 'fa-address-book',
+        'Candidatures' => 'fa-address-card',
+        'Positions' => 'fa-list',
+        'Recruitments' => 'fa-user-plus',
+        'Onboardings' => 'fa-sign-in-alt',
+        'Offboardings' => 'fa-sign-out-alt',
+        'OffboardingTemplates' => 'fa-sign-out-alt',
+        'OnboardingTemplates' => 'fa-sign-in-alt',
+        'ExitInterviews' => 'fa-user-times',
+        'Delegations' => 'fa-plane',
+        'WorkSchedules' => 'fa-business-time',
+        'Transportations' => 'fa-car',
+        'Costs' => 'fa-dollar-sign',
+        'Reservations' => 'fa-calendar-check',
+        'Resources' => 'fa-people-carry',
+        'Trainings' => 'fa-user-graduate',
+        'EmployeeRoles' => 'fa-user-shield',
+        'OrganizationalUnits' => 'fa-users',
+        'News' => 'fa-bell',
+        'Ideas' => 'fa-lightbulb',
+        'Conclusions' => 'fa-hand-point-left',
+        'Problems' => 'fa-exclamation-triangle',
+        'Responsibilities' => 'fa-list',
+        'Activities' => 'fa-hand-point-right',
+        'Competencies' => 'fa-list',
+        'Contracts' => 'fa-file-signature',
+        'TermsOfEmployment' => 'fa-list',
+        'PeriodsOfEmployment' => 'fa-calendar',
+        'Benefits' => 'fa-umbrella-beach',
+        'Applications' => 'fa-user-plus',
+        'Certificates' => 'fa-scroll',
+        'Appraisals' => 'fa-door-closed',
+        'Goals' => 'fa-bullseye',
+    ),
 );
 
-if ( !empty($app_strings['LBL_SUBTHEMES']) ) {
-   // if statement removes the php notice
-   $themedef['config_options']['sub_themes']['options'] = array(
-      $app_strings['LBL_SUBTHEMES'] => array(
-         'Mint' => 'Mint',
-      ),
-   );
-   $themedef['config_options']['sub_themes']['default'] = 'Mint';
+if (!empty($app_strings['LBL_SUBTHEMES'])) {
+    // if statement removes the php notice
+    $themedef['config_options']['sub_themes']['options'] = array(
+        $app_strings['LBL_SUBTHEMES'] => array(
+            'Mint' => 'Mint',
+        ),
+    );
+    $themedef['config_options']['sub_themes']['default'] = 'Mint';
 }
