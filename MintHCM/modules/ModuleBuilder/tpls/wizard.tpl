@@ -62,7 +62,7 @@
 			         <tr>
 						<td align="center">
 							<a class='studiolink' href="javascript:void(0)">
-								<span class="suitepicon suitepicon-module-{$button.icon}"></span>
+								<span class="{get_module_icon_class module_name=$button.icon}"></span>
 							</a>
 						</td>
 					 </tr>
