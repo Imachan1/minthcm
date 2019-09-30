@@ -1,50 +1,60 @@
 <?php
-$module_name = 'Skills';
-$viewdefs[$module_name] =
-array(
-    'DetailView' => array(
-        'templateMeta' => array(
-            'form' => array(
-                'buttons' => array(
-                    0 => 'EDIT',
-                    1 => 'DUPLICATE',
-                    2 => 'DELETE',
-                    3 => 'FIND_DUPLICATES',
+$module_name             = 'Skills';
+$viewdefs [$module_name] = array(
+    'DetailView' =>
+    array(
+        'templateMeta' =>
+        array(
+            'form' =>
+            array(
+                'buttons' =>
+                array(
+                    'EDIT',
+                    'DUPLICATE',
+                    'DELETE',
+                    'FIND_DUPLICATES',
                 ),
             ),
             'maxColumns' => '2',
-            'widths' => array(
-                0 => array(
+            'widths' =>
+            array(
+                array(
                     'label' => '10',
                     'field' => '30',
                 ),
-                1 => array(
+                array(
                     'label' => '10',
                     'field' => '30',
                 ),
             ),
             'useTabs' => true,
-            'tabDefs' => array(
-                'DEFAULT' => array(
+            'tabDefs' =>
+            array(
+                'DEFAULT' =>
+                array(
                     'newTab' => true,
                     'panelDefault' => 'expanded',
                 ),
-                'LBL_PANEL_ASSIGNMENT' => array(
+                'LBL_PANEL_ASSIGNMENT' =>
+                array(
                     'newTab' => true,
                     'panelDefault' => 'expanded',
                 ),
             ),
         ),
-        'panels' => array(
-            'default' => array(
-                0 => array(
+        'panels' =>
+        array(
+            'default' =>
+            array(
+                array(
                     'name',
                 ),
-                1 => array(
+                array(
                     'description',
                 ),
             ),
-            'LBL_PANEL_ASSIGNMENT' => array(
+            'LBL_PANEL_ASSIGNMENT' =>
+            array(
                 array(
                     'assigned_user_name',
                 ),
@@ -62,3 +72,5 @@ array(
         ),
     ),
 );
+;
+?>

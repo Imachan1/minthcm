@@ -110,6 +110,11 @@ $themedef = array(
         'spenttime' => 'fa-clock',
         'responsibilityactivities' => 'fa-list',
         'delegationslocale' => 'fa-globe-africa',
+        'attitudes' => 'fa-brain',
+        'improvements' => 'fa-cogs',
+        'knowledge' => 'fa-book',
+        'skills' => 'fa-magic',
+        'workingmonths' => 'fa-calendar-week',
     ),
 );
 

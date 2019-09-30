@@ -6,8 +6,11 @@
     url("../../../../../themes/SuiteP/css/suitep-base/suitepicon.ttf") format("truetype"),
     url("../../../../../themes/SuiteP/css/suitep-base/suitepicon.svg#suitepicon") format("svg");
 }
-
-
+.fa,
+.fas {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
 button .suitepicon {
     color: white;
 }
