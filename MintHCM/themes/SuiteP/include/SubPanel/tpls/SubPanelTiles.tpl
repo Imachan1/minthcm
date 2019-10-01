@@ -24,7 +24,7 @@
                             {/if}
                             <div class="col-xs-10 col-sm-11 col-md-11">
                                 <div>
-                                    <span class="suitepicon suitepicon-module-{$subpanel_tabs_properties.$i.module_name|lower|replace:'_':'-'} subpanel-icon"></span>
+                                    <span class="{get_module_icon_class module_name=$subpanel_tabs_properties.$i.module_name} subpanel-icon"></span>
                                     {* viewTools start #36866 *}
                                     {*{$subpanel_tabs_properties.$i.title}*}
                                     <span class="subpanel_title">{$subpanel_tabs_properties.$i.title}</span>
