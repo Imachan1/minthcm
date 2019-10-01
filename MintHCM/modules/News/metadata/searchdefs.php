@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,96 +36,88 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 $module_name = 'News';
-$searchdefs [$module_name] = array(
-   'layout' =>
-   array(
-      'basic_search' =>
-      array(
-         'name',
-         array(
-            'name' => 'current_user_only',
-            'label' => 'LBL_CURRENT_USER_FILTER',
-            'type' => 'bool',
-         ),
-      ),
-      'advanced_search' =>
-      array(
-         'name' =>
-         array(
-            'name' => 'name',
-            'default' => true,
-            'width' => '10%',
-         ),
-         'news_type' =>
-         array(
-            'type' => 'enum',
-            'studio' => 'visible',
-            'label' => 'LBL_NEWS_TYPE',
-            'width' => '10%',
-            'default' => true,
-            'name' => 'news_type',
-         ),
-         'news_status' =>
-         array(
-            'type' => 'enum',
-            'default' => true,
-            'studio' => 'visible',
-            'label' => 'LBL_NEWS_STATUS',
-            'width' => '10%',
-            'name' => 'news_status',
-         ),
-         'date_entered' =>
-         array(
-            'type' => 'datetime',
-            'label' => 'LBL_DATE_ENTERED',
-            'width' => '10%',
-            'default' => true,
-            'name' => 'date_entered',
-         ),
-         'date_modified' =>
-         array(
-            'type' => 'datetime',
-            'label' => 'LBL_DATE_MODIFIED',
-            'width' => '10%',
-            'default' => true,
-            'name' => 'date_modified',
-         ),
-         'assigned_user_id' =>
-         array(
-            'name' => 'assigned_user_id',
-            'label' => 'LBL_ASSIGNED_TO',
-            'type' => 'enum',
-            'function' =>
+$searchdefs[$module_name] = array(
+    'layout' => array(
+        'basic_search' => array(
+            'name',
             array(
-               'name' => 'get_user_array',
-               'params' =>
-               array(
-                  false,
-               ),
+                'name' => 'current_user_only',
+                'label' => 'LBL_CURRENT_USER_FILTER',
+                'type' => 'bool',
             ),
-            'default' => true,
-            'width' => '10%',
-         ),
-      ),
-   ),
-   'templateMeta' =>
-   array(
-      'maxColumns' => '3',
-      'maxColumnsBasic' => '4',
-      'widths' =>
-      array(
-         'label' => '10',
-         'field' => '30',
-      ),
-   ),
+        ),
+        'advanced_search' => array(
+            'name' => array(
+                'name' => 'name',
+                'default' => true,
+                'width' => '10%',
+            ),
+            'news_type' => array(
+                'type' => 'enum',
+                'studio' => 'visible',
+                'label' => 'LBL_NEWS_TYPE',
+                'width' => '10%',
+                'default' => true,
+                'name' => 'news_type',
+            ),
+            'news_status' => array(
+                'type' => 'enum',
+                'default' => true,
+                'studio' => 'visible',
+                'label' => 'LBL_NEWS_STATUS',
+                'width' => '10%',
+                'name' => 'news_status',
+            ),
+            'publication_date' => array(
+                'name' => 'publication_date',
+                'type' => 'date',
+                'default' => true,
+                'vname' => 'LBL_PUBLICATION_DATE',
+                'width' => '10%',
+            ),
+            'date_entered' => array(
+                'type' => 'datetime',
+                'label' => 'LBL_DATE_ENTERED',
+                'width' => '10%',
+                'default' => true,
+                'name' => 'date_entered',
+            ),
+            'date_modified' => array(
+                'type' => 'datetime',
+                'label' => 'LBL_DATE_MODIFIED',
+                'width' => '10%',
+                'default' => true,
+                'name' => 'date_modified',
+            ),
+            'assigned_user_id' => array(
+                'name' => 'assigned_user_id',
+                'label' => 'LBL_ASSIGNED_TO',
+                'type' => 'enum',
+                'function' => array(
+                    'name' => 'get_user_array',
+                    'params' => array(
+                        false,
+                    ),
+                ),
+                'default' => true,
+                'width' => '10%',
+            ),
+        ),
+    ),
+    'templateMeta' => array(
+        'maxColumns' => '3',
+        'maxColumnsBasic' => '4',
+        'widths' => array(
+            'label' => '10',
+            'field' => '30',
+        ),
+    ),
 );
-;
-?>

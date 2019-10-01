@@ -51,6 +51,14 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 $app_list_strings = array(
 //e.g. auf Deutsch 'Contacts'=>'Contakten',
    'language_pack_name' => 'US English',
+   'competencies_type_list' => [
+    'Organizational' => 'Organizational',
+    'Core' => 'Core',
+    'Technical' => 'Technical',
+    'Behavioral' => 'Behavioral',
+    'Functional' => 'Functional',
+    'Management' => 'Management',
+   ],
    'moduleList' => array(
       'Home' => 'Home',
       'ResourceCalendar' => 'Resource Calendar',
@@ -162,6 +170,9 @@ $app_list_strings = array(
       'KTemplates' => 'Advanced Reports PDF Templates',
       'ScheduleReports' => 'Schedule Reports',
       'ScheduleReportsLogs' => 'Schedule Reports Logs',
+      'Skills' => 'Skills',
+      'Knowledge' => 'Knowledge',
+      'Attitudes' => 'Attitudes',
    ),
    'moduleListSingular' => array(
       'Home' => 'Home',
@@ -201,6 +212,9 @@ $app_list_strings = array(
       'KTemplates' => 'PDF Template',
       'ScheduleReports' => 'Schedule Report',
       'ScheduleReportsLogs' => 'Schedule Report Log',
+      'Skills' => 'Skill',
+      'Knowledge' => 'Knowledge',
+      'Attitudes' => 'Attitude',
    ),
    'checkbox_dom' => array(
       '' => '',
@@ -4107,6 +4121,7 @@ $app_strings['LBL_PDF_TEMPLATE'] = 'Download PDF';
 $app_list_strings['pdf_module_list']=array (
   'Accounts' => 'Accounts',
   'Contacts' => 'Contacts',
+  'Delegations' => 'Delegations',
 );
 
 $app_list_strings['alert_type_list'] = array(

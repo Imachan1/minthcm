@@ -65,6 +65,14 @@ $searchdefs [$module_name] = array(
             'default' => true,
             'width' => '10%',
          ),
+         'competencies_type' =>
+         array(
+            'type' => 'enum',
+            'label' => 'LBL_COMPETENCIES_TYPE',
+            'width' => '10%',
+            'default' => true,
+            'name' => 'competencies_type',
+         ),
          'date_entered' =>
          array(
             'type' => 'datetime',

@@ -48,12 +48,12 @@ QSCallbacksArray["EditView_delegation_locale_name"] = function ( sqs ) {
 
 function checkDelegationLocalCurrencyId() {
    var values = viewTools.form.getFormValues();
-   if ( values.delegation_locale_id ) {
+   if ( values.vt_delegation_locale_id ) {
       viewTools.api.callCustomApi( {
          module: 'Delegations',
          action: 'checkDelegationLocalCurrencyId',
          dataPOST: {
-            delegation_locale_id: values.delegation_locale_id
+            delegation_locale_id: values.vt_delegation_locale_id
          },
          callback: function ( data ) {
             var selector = "#currency_id_select>option[value=";

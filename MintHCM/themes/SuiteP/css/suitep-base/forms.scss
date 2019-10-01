@@ -828,52 +828,60 @@ fieldset[disabled] .btn-primary.active {
   text-transform: uppercase;
 }
 
+.btn {
+  @include BoxShadow(1);
+}
+
+.btn:active {
+  @include BoxShadow(4);
+}
+
 .btn-default{
-  background-color: $default-btn-bg;
-  color: $default-btn-color;
-  border: 1px solid $default-btn-bg;
+  background-color: $button-light-bg;
+  color: $button-light-color;
+  border: 1px solid $button-light-border;
 }
 
 .btn-default:hover {
-  background-color: $default-btn-bg;
-  color: $default-btn-color;
-  border: 1px solid $default-btn-bg;
+  background-color: $button-light-bg-hover;
+  color: $button-light-color;
+  border: 1px solid $button-light-border;
 }
 
 .btn-default:active {
-  background-color: $default-btn-bg;
-  color: $default-btn-color;
-  border: 1px solid $default-btn-bg;
+  background-color: $button-light-bg-hover;
+  color: $button-light-color;
+  border: 1px solid $button-light-border;
 }
 
 .btn-default:focus {
-  background-color: $default-btn-bg;
-  color: $default-btn-color;
-  border: 1px solid $default-btn-bg;
+  background-color: $button-light-bg-hover;
+  color: $button-light-color;
+  border: 1px solid $button-light-border;
 }
 
 .btn-primary {
   background-color: $primary-btn-bg;
-  color: $default-btn-color;
-  border: 1px solid $primary-btn-bg;
+  color: $primary-btn-color;
+  border: none;
 }
 
 .btn-primary:hover {
-  background-color: $primary-btn-bg;
-  color: $default-btn-color;
-  border: 1px solid $primary-btn-bg;
+  background-color: $primary-btn-bg-hover;
+  color: $primary-btn-color;
+  border: none;
 }
 
 .btn-primary:active {
-  background-color: $primary-btn-bg;
-  color: $default-btn-color;
-  border: 1px solid $primary-btn-bg;
+  background-color: $primary-btn-bg-hover;
+  color: $primary-btn-color;
+  border: none;
 }
 
 .btn-primary:focus {
-  background-color: $primary-btn-bg;
-  color: $default-btn-color;
-  border: 1px solid $primary-btn-bg;
+  background-color: $primary-btn-bg-hover;
+  color: $primary-btn-color;
+  border: none;
 }
 
 .btn-info {
@@ -951,25 +959,25 @@ input[type=button].btn-info:focus {
 .btn-danger {
   background-color: $danger-btn-bg;
   color: $default-btn-color;
-  border: 1px solid $danger-btn-bg;
+  border: none;
 }
 
 .btn-danger:hover {
-  background-color: $danger-btn-bg;
+  background-color: $danger-btn-bg-hover;
   color: $default-btn-color;
-  border: 1px solid $danger-btn-bg;
+  border: none;
 }
 
 .btn-danger:active {
-  background-color: $danger-btn-bg;
+  background-color: $danger-btn-bg-hover;
   color: $default-btn-color;
-  border: 1px solid $danger-btn-bg;
+  border: none;
 }
 
 .btn-danger:focus {
-  background-color: $danger-btn-bg;
+  background-color: $danger-btn-bg-hover;
   color: $default-btn-color;
-  border: 1px solid $danger-btn-bg;
+  border: none;
 }
 
 
@@ -990,7 +998,7 @@ input[type=button].btn-info:focus {
 }
 
 input[type=submit].button:hover {
-  background: $danger-btn-bg-hover;
+  //background: $danger-btn-bg-hover;
 }
 
 input[type=submit] {
@@ -1077,22 +1085,56 @@ input[type=reset] {
   margin-bottom: 4px;
 }
 
-input[type=submit]:hover, input[type=button]:hover, input[type=reset]:hover {
+input[type=submit]:hover,
+input[type=button]:hover,
+input[type=reset]:hover {
   font-size: $page-font-size;
-  color: $default-btn-color;
+  //color: $default-btn-color;
+  cursor: pointer;
+  background: $color-mint-white-hover;
+}
+
+input[type=submit],
+input[type=button],
+input[type=reset] {
+  color: #fff;
+  @include BoxShadow(1);
+}
+
+input[type=submit]:active,
+input[type=button]:active,
+input[type=reset]:active {
+  font-size: $page-font-size;
+  //color: $default-btn-color;
+  cursor: pointer;
+  @include BoxShadow(4);
+}
+
+input[type=submit]:focus,
+input[type=button] {
+  font-size: $page-font-size;
+  color: #fff;
   cursor: pointer;
 }
 
-input[type=submit]:active, input[type=button]:active, input[type=reset]:active {
-  font-size: $page-font-size;
-  color: $default-btn-color;
-  cursor: pointer;
+input[type=submit].button.primary,
+input[type=button].button.primary,
+input[type=reset].button.primary,
+input[type=button]#CloseButton {
+    background: $primary-btn-bg;
+    border: none;
+    color: $primary-btn-color;
 }
 
-input[type=submit]:focus, input[type=button] {
-  font-size: $page-font-size;
-  color: $default-btn-color;
-  cursor: pointer;
+input[type=submit].button.primary:hover,
+input[type=button].button.primary:hover,
+input[type=reset].button.primary:hover,
+input[type=button]#CloseButton:hover{
+    background: $primary-btn-bg-hover;
+}
+
+input.button {
+  @include BoxShadow(1);
 }
 
 .moremenu a {
@@ -1265,11 +1307,11 @@ input[type="button"][disabled] {
 }
 
 .buttons input#btn_view_change_log {
-  background-color: $info-btn-bg;
+  //background-color: $info-btn-bg;
 }
 
 .buttons input#btn_view_change_log:hover {
-  background-color: $info-btn-bg-hover;
+  //background-color: $info-btn-bg-hover;
 }
 
 

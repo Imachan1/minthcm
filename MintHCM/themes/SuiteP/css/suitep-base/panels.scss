@@ -372,6 +372,22 @@ div.sub-panel {
   background-color: $panel-button-bg-hover;
 }
 
+#selectLinkTop li.sugar_action_button {
+    padding: 0px;
+    background-color: $color-mint-grey;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+#selectLinkTop .sugar_action_button {
+
+    min-width: 32px;
+    margin-left: 0;
+}
+
+.sugar_action_button {
+    height: 27px;
+}
+
 .subpanel-table .pagination a {
   padding-left: 8px;
   padding-right: 8px;
@@ -490,6 +506,7 @@ table.subpanelTabForm {
   right: auto;
   margin-top: 4px;
   min-width: 128px;
+  background: $color-mint-lightgreen;
 }
 
 .clickMenu li .subnav li, .clickMenu .subnav-sub li, .SugarActionMenuIESub li {
@@ -528,4 +545,8 @@ table.subpanelTabForm {
 .clickMenu li a.disabled {
   color: $disabled-btn-color ;
   cursor: default ;
+}
+
+.footable-last-visible ul.clickMenu {
+    vertical-align: middle;
 }

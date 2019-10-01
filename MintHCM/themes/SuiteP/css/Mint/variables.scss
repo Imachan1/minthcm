@@ -1,3 +1,7 @@
+// Mint development
+
+$mint-rem: 16px;
+
 //********************
 //* color palette
 //********************
@@ -25,7 +29,7 @@ $selection-bg: $color-50;
 $nav-selection-color: $color-80;
 $nav-selection-bg: $color-50;
 //
-$page-content-spacing: 20px;
+$page-content-spacing: $mint-rem * 3;
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
@@ -929,7 +933,7 @@ $login-top-bar-bg: $color-7;
 
 
 // Buttons
-$default-btn-color: $color-51;
+$default-btn-color: $color-mint-grey;
 $default-text-disabled-bg: $color-52;
 $default-text-disabled-color: $color-52;
 $default-text-disabled-border-color: $color-45;
@@ -937,16 +941,22 @@ $default-input-group-color: $color-40;
 $default-btn-bg: $color-28;
 $default-btn-bg-hover: $color-28;
 
-$primary-btn-bg: $primary;
-$primary-btn-bg-hover: $color-20;
+$primary-btn-bg: $color-mint-darkgreen;
+$primary-btn-bg-hover: $color-mint-darkgreen-darker;
+$primary-btn-color: #fff;
+
+$button-light-bg: #fff;
+$button-light-bg-hover: $color-mint-white-hover;
+$button-light-color: $color-mint-lightgreen;
+$button-light-border: $color-mint-lightgreen;
 
 $info-btn-bg: $color-28;
 $info-btn-bg-hover: $color-60;
 
-$danger-btn-bg: $danger;
-$danger-btn-bg-hover: $color-43;
-$danger-btn-color: $btn-default-color;
-$danger-btn-color-hover: $btn-default-color;
+$danger-btn-bg: $color-mint-darkgreen;
+$danger-btn-bg-hover: $color-mint-darkgreen-darker;
+$danger-btn-color: #fff;
+$danger-btn-color-hover: #fff;
 
 
 $success-btn-bg: $success;
@@ -1021,6 +1031,7 @@ $navbar-search-button-background-hover: $color-93;
 
 // Sidebar
 $sidebar-bg: $color-20;
+$sidebar-toggle-expanded-bg: transparent;
 $sidebar-btn-bg: $color-87;
 $sidebar-btn-bg-hover: $color-99;
 $sidebar-btn-color: $color-80;
@@ -1037,19 +1048,23 @@ $side-bar-links-font-size: 13px;
 $side-bar-links-icon-font-size: $side-bar-links-height;
 
 // Tabs
-$active-tab-bg: $color-20;
-$active-tab-bg-hover:$color-97;
-$active-tab-color-hover:$color-80;
+$active-tab-bg: #fff;
+$active-tab-bg-hover: #fff;
+$active-tab-color-hover: $color-mint-darkgreen;
 $active-tab-border: transparent;
-$default-tab-bg: $color-39;
-$default-tab-bg-hover: $color-39;
-$default-tab-color-hover: $color-80;
-$default-tab-color: $color-80;
-$action-tab-bg: $color-97;
-$action-tab-bg-hover: $color-60;
+$active-tab-indicator: $color-mint-darkgreen;
+
+$default-tab-bg: #fff;
+$default-tab-bg-hover: $color-mint-white-hover;
+$default-tab-color-hover: $color-mint-grey;
+$default-tab-color: $color-mint-grey;
+
+$action-tab-bg: #fff;
+$action-tab-bg-hover: $color-mint-white-hover;
 $action-tab-seperator: $color-53;
-$action-tab-color: $color-80;
-$action-tab-color-hover: $color-80;
+$action-tab-color: $color-mint-grey;
+$action-tab-color-hover: $color-mint-grey;
+
 $tab-bg: $panel-bg;
 $tab-height: 10px; // 32p normal 24px small
 $tab-margin-bottom: 5px;
@@ -1081,9 +1096,9 @@ $confirm-opt-in-tick-color-in-confirmed: $color-16;
 $detail-view-button-background-hover: $color-94;
 
 // List View
-$list-view-toolbar-bg: $color-39;
+$list-view-toolbar-bg: #fff;
 $list-view-header-bg: $color-20;
-$list-view-header-color: $color-80;
+$list-view-header-color: $color-mint-grey;
 $list-view-button-color: $color-80;
 $list-view-text-color: $color-46;
 $list-view-link-color: $color-46;
@@ -1125,31 +1140,39 @@ $input-border: $color-34;
 
 // tables
 $table-header-bg: $color-20;
-$table-nav-bg: $color-39;
-$table-focus-bg: $color-54; // also hover
-$table-row-bg: $main-bg;
-$table-alternate-row-bg: $main-bg;
-$table-row-bg: $main-alternate-bg;
+$table-nav-bg: #fff;
+$table-nav-color: $color-mint-grey;
+$table-focus-bg: $color-mint-white-hover; // also hover
+$table-row-bg: #fff;
+$table-row-border: $color-mint-white-hover;
+$table-alternate-row-bg: #fff;
+//$table-row-bg: $main-alternate-bg;
 
 
 // Dashlets
-$dashlet-title-bg: $color-87;
+$dashlet-title-bg: $color-mint-lightgreen;
 $dashlet-title-color: $color-80;
-$dashlet-toolbar-bg: $color-39;
+$dashlet-toolbar-bg: #fff;
 $dashlet-pagination-bg: $color-28;
 $dashlet-header-bg: $color-20;
 $dashlet-btn-color: $color-80;
 
-$dashlet-title-height: 30px; // 48px normal 40px small
+$dashlet-title-height: $mint-rem * 3; // 48px normal 40px small
 $dashlet-header-height: 32px; // 32px normal 24px small
 $dashlet-header-padding: 5px; // 5 normal 0 small
-$dashlet-header-icon-font-size: 13px;
-$dashlet-header-toolset-icon-font-size: 18px;
+$dashlet-header-icon-font-size: $mint-rem;
+$dashlet-header-toolset-icon-font-size: $mint-rem;
 
 $dashlet-action-color: $main-font-color;
-$dashlet-action-icon-font-size: 18px;
+$dashlet-action-icon-font-size: $mint-rem;
 
 $add-dashlet-tab-color: $color-80;
+
+$pagination-disabled-btn-bg:     #fff;
+$pagination-disabled-btn-color:  $color-mint-grey-lighter;
+$pagination-btn-bg:              #fff;
+$pagination-btn-color:           $color-mint-grey;
+
 
 
 // Campaigns
@@ -1175,21 +1198,21 @@ $case-contact-border-color: transparent;
 
 // Full Calendar and YUI popup calendar
 $calendar-bg: $color-80;
-$calendar-border-color: $color-64;
+$calendar-border-color: $color-mint-white-hover;
 $calendar-slot-bg: $color-80;
 $calendar-slot-color: $link-color;
 $calendar-slot-border-color: $color-64;
 $calendar-month-slot-height: 52px;
 $calendar-today-bg: $color-90;
 $calendar-today-color: $default-btn-color;
-$calendar-title-bg: $color-20;
-$calendar-title-color: $default-btn-color;
-$calendar-title-height: 48px;
-$calendar-user-height: 32px;
-$calendar-user-bg: $color-36;
-$calendar-user-height: 40px;
+$calendar-title-bg: #fff;
+$calendar-title-color: $color-mint-grey;
+$calendar-title-height: 54px;
+$calendar-user-height: 54px;
+$calendar-user-bg: #fff;
+//$calendar-user-height: 40px;
 $calendar-header-bg: $color-39;
-$calendar-header-color: $color-51;
+$calendar-header-color: #fff;
 // YUI Popup calendar
 $calendar-month-day-header-bg: $color-20;
 $calendar-month-day-header-color: $color-51;
@@ -1203,7 +1226,7 @@ $calendar-nav-button-bg: $color-13;
 $calendar-body-bg: $main-alternate-bg;
 $calendar-body-color: $color-6;
 $calendar-body-header-color: $gray-lighter;
-$calendar-border-color: $color-31;
+$calendar-border-color: $color-mint-white-hover;
 $calendar-other-month-day-body-bg: $calendar-header-bg;
 $calendar-other-month-day-body-color: $color-12;
 $calendar-tip-bg: $color-65;
@@ -1291,3 +1314,5 @@ $notification-text: $danger-btn-color !default;
 // Required *
 $required-bg: transparent;
 $required-color: $color-49;
+
+$fa-font-path: "../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts";

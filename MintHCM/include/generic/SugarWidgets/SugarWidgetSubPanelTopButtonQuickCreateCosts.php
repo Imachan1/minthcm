@@ -54,7 +54,7 @@ class SugarWidgetSubPanelTopButtonQuickCreateCosts extends SugarWidgetSubPanelTo
 
    public function __construct(&$layout_manager) {
       global $app_strings;
-      parent::SugarWidget($layout_manager);
+      parent::__construct($layout_manager);
       $this->module = 'Costs';
       $this->title = $app_strings['LBL_NEW_BUTTON_TITLE'];
       $this->access_key = $app_strings['LBL_NEW_BUTTON_KEY'];

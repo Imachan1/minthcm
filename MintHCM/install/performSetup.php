@@ -501,7 +501,11 @@ $enabled_tabs[] = 'Accounts';
    $enabled_tabs[] = 'ReservationsCalendar';
    $enabled_tabs[] = 'Certificates';
    $enabled_tabs[] = 'Applications';
-
+    //
+    $enabled_tabs[] = 'Skills';
+    $enabled_tabs[] = 'Knowledge';
+    $enabled_tabs[] = 'Attitudes';
+    //
 //Beginning of the scenario implementations
 //We need to load the tabs so that we can remove those which are scenario based and un-selected
 //Remove the custom tabConfig as this overwrites the complete list containined in the include/tabConfig.php

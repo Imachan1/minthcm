@@ -10,6 +10,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   z-index: 1000;
+  @include BoxShadow(1);
 
   .actionMenuSidebar {
     margin-bottom: 10px;
@@ -118,7 +119,7 @@ a.buttontoggle:hover {
 
 .button-toggle-collapsed {
   position: fixed;
-  top: 72px;
+  top: 76px;
   background: $sidebar-bg;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
@@ -126,19 +127,20 @@ a.buttontoggle:hover {
   height: 30px;
   z-index: 1000;
   cursor: pointer;
-
+  @include BoxShadow(1);
 }
 
 .button-toggle-expanded {
   position: fixed;
-  top: 72px;
-  background: $sidebar-bg;
+  top: 76px;
+  background: $sidebar-toggle-expanded-bg;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
   width: 30px;
   height: 30px;
   z-index: 1000;
   cursor: pointer;
+  z-index: 1001;
 }
 
 
@@ -307,7 +309,7 @@ footer.collapsedSidebar {
   }
 
   .button-toggle-expanded {
-    left: 20%;
+    left: calc(20% - 30px);
   }
 
 
@@ -349,7 +351,7 @@ footer.collapsedSidebar {
   }
 
   .button-toggle-expanded {
-    left: 18%;
+    left: calc(18% - 30px);
   }
 
   .col-md-10 {
@@ -371,9 +373,9 @@ footer.collapsedSidebar {
   }
 
   .button-toggle-expanded {
-    left: 17%;
+    left: calc(17% - 30px);
   }
-  
+
 
   .col-md-10 {
     width: 83%;
@@ -394,10 +396,10 @@ footer.collapsedSidebar {
   }
 
   .button-toggle-expanded {
-    left: 15.8%;
+    left: calc(15.8% - 30px);
   }
 
-  
+
 
   .col-md-10 {
     width: 84.2%;
@@ -418,10 +420,10 @@ footer.collapsedSidebar {
   }
 
   .button-toggle-expanded {
-    left: 14.8%;
+    left: calc(14.8% - 30px);
   }
 
-  
+
 
   .col-md-10 {
     width: 85.2%;
@@ -445,10 +447,10 @@ footer.collapsedSidebar {
   }
 
   .button-toggle-expanded {
-    left: 13.8%;
+    left: calc(13.8% - 30px);
   }
 
-  
+
 
   .col-md-10 {
     width: 86.2%;
@@ -469,10 +471,10 @@ footer.collapsedSidebar {
   }
 
   .button-toggle-expanded {
-    left: 12.8%;
+    left: calc(12.8% - 30px);
   }
 
-  
+
 
   .col-md-10 {
     width: 87.2%;
@@ -493,10 +495,10 @@ footer.collapsedSidebar {
   }
 
   .button-toggle-expanded {
-    left: 11.8%;
+    left: calc(11.8% - 30px);
   }
 
-  
+
 
   .col-md-10 {
     width: 88.2%;
@@ -518,10 +520,10 @@ footer.collapsedSidebar {
   }
 
   .button-toggle-expanded {
-    left: 10.8%;
+    left: calc(10.8% - 30px);
   }
 
-  
+
 
   .col-md-10 {
     width: 89.2%;
@@ -543,10 +545,10 @@ footer.collapsedSidebar {
   }
 
   .button-toggle-expanded {
-    left: 10%;
+    left: calc(10% - 30px);
   }
 
-  
+
 
   .col-md-10 {
     width: 90%;
@@ -568,6 +570,6 @@ footer.collapsedSidebar {
 }
 
 .test {
-	
-	
+
+
 }

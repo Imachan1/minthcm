@@ -248,7 +248,7 @@ div.noBullet li,
 }
 
 .content {
-  padding: $page-content-spacing 3% 40px 3%;
+  padding: $page-content-spacing;
   width: 100%;
 }
 
@@ -1182,7 +1182,7 @@ li.noBullet {
   background-color: $danger-btn-bg;
   color: $default-btn-color;
   padding: 7px 10px;
-  font-size:12px;
+  font-size: 13px;
   margin-bottom: 20px;
   border: 1px solid transparent;
   border-radius: $border-radius-base;
@@ -1214,8 +1214,14 @@ p.error {
 }
 
 div.content p.error {
-  margin: 0 0 20px 0;
-  border-radius: 3px;
+  margin: 0 0 $mint-rem * 2 0;
+  border-radius: 4px;
+  @extend .card
+}
+
+div.content p.error:empty {
+  margin: 0;
+  padding: 0;
 }
 
 .required a:link {
@@ -1289,8 +1295,13 @@ input.sqsEnabled {
   position: static;
   font-weight: bold;
   color: $default-btn-color;
-  padding: 0 8px 0 0;
-  margin: 0 0 0 0;
+  padding: 0;
+  margin: 0;
+}
+
+.list .pagination > td {
+  padding-right: 0 !important;
+  padding-top: 16px !important;
 }
 
 .contentBox {
@@ -1815,10 +1826,14 @@ a.tabFormAdvLink:hover {
 
 .evenListRowS1 td {
   background: $table-row-bg;
+  border-top: 1px solid $color-mint-white-hover;
+  border-bottom: 1px solid $color-mint-white-hover;
 }
 
 .oddListRowS1 td {
   background: $table-alternate-row-bg;
+  border-top: 1px solid $color-mint-white-hover;
+  border-bottom: 1px solid $color-mint-white-hover;
 }
 
 .evenListRowS1:hover td {
@@ -2047,7 +2062,7 @@ ul.SugarActionMenuIESub li {
 
 ul.clickMenu li a {
   display: block;
-  color: $panel-button-color;
+  color: $panel-button-color !important;
   margin: 0 0 0 4px;
   display: inline-block;
   text-decoration: none;
@@ -2100,7 +2115,7 @@ ul.clickMenu > li > span {
 }
 
 ul.clickMenu.show {
-  display: inline-block;
+  //display: inline-block;
 }
 
 ul#selectLink.clickMenu > li > a {
@@ -2182,7 +2197,7 @@ ul.clickMenu.SugarActionMenu li.single a:hover {
 }
 
 table.view td {
-  border: none;
+  //border: none;
 }
 
 #ajaxHeader {
@@ -2275,8 +2290,45 @@ span.crumbLink {
   margin: 5px 0 5px 0;
 }
 
+// Mint development
+
 .view tr {
   padding: 5px 0 5px 0;
+  height: 54px;
+}
+
+.view .pagination, .view .pagination tr {
+  height: unset;
+}
+
+.view thead td,
+.view thead th,
+.list tr th a:link,
+.TWSList tr th,
+.TWSList tr td,
+.TWSList tr th a:link,
+.TWSList tr th div
+ {
+  background-color: $table-nav-bg;
+  color: $table-nav-color;
+}
+
+tr#pagination {
+  background: $color-mint-grey-lighter;
+
+  td {
+    background: transparent;
+    border-radius: $mint-rem / 4;
+  }
+
+  > td {
+    @include BoxShadow(1);
+  }
+}
+
+tr#pagination td {
+  background: transparent;
+  border-radius: $mint-rem / 4;
 }
 
 #mbfooter .yui-layout-hd td {
@@ -2288,8 +2340,14 @@ span.crumbLink {
 }
 
 .tabForm {
-  background: #ffffff;
-  border: none;
+  // background: #ffffff;
+  // border: none;
+  // border-radius: $mint-rem / 4;
+  // @include BoxShadow(1);
+  //
+  // > tbody > tr > td {
+  //   padding: $mint-rem;
+  // }
 }
 
 #create_image {
@@ -3394,8 +3452,21 @@ table legend {
   border: 1px solid #dddddd;
 }
 
-.table-responsive > tbody > tr > td {
-  padding: 4px;
+.table-responsive.list > tbody > tr > td {
+  padding: 0 0 0 $mint-rem;
+  height: 54px;
+  line-height: 54px;
+
+  .suitepicon {
+    line-height: unset;
+  }
+}
+
+.listViewBody {
+  padding: 16px;
+  background: #fff;
+  border-radius: $mint-rem / 4;
+  @include BoxShadow(1);
 }
 
 
@@ -5683,4 +5754,3 @@ div.content div.pagecontent form#EditView div.edit.view table tbody tr td input[
     height: initial;
   }
 }
-

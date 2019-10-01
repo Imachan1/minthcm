@@ -5,7 +5,7 @@
             <tr>
                 <td class="dashlet-title" colspan="2">
                     <h3>
-                        <span class="suitepicon suitepicon-module-{$DASHLET_MODULE|lower|replace:'_':'-'}"></span>
+                        <span class="{get_module_icon_class module_name=$DASHLET_MODULE}"></span>
                         <span>{$DASHLET_TITLE}</span>
                     </h3>
                 </td>
