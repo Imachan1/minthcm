@@ -69,16 +69,6 @@ class TodaysWorkScheduleDashlet extends Dashlet {
       $ss->assign('APP', $app_strings);
       $ss->assign('APPLIST', $app_list_strings);
       $ss->assign('MOD', $mod_strings);
-      include 'config_redmine.php';
-      if ( isset($config_redmine['redmine_rest']) && !empty($config_redmine['redmine_rest']) ) {
-         $redmineIssueUrl = ($config_redmine['redmine_rest_ssl'] == 'yes') ? 'https://' : 'http://';
-         $redmineIssueUrl .= $config_redmine['redmine_rest'];
-         if ( !empty($config_redmine["redmine_rest_port"]) ) {
-            $redmineIssueUrl .= ':' . $config_redmine["redmine_rest_port"];
-         }
-         $redmineIssueUrl .= '/issues/';
-         $ss->assign('redmineURL', $redmineIssueUrl);
-      }
    }
 
    /**
