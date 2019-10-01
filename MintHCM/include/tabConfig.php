@@ -10,7 +10,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -38,86 +38,78 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 $GLOBALS['tabStructure'] = array(
-    'LBL_NAV_RECRUITMENT_EB' =>
-    array(
+    'LBL_NAV_RECRUITMENT_EB' => array(
         'label' => 'LBL_NAV_RECRUITMENT_EB',
-        'modules' =>
-        array(
-            0 => 'Candidates',
-            1 => 'Candidatures',
-            2 => 'Positions',
-            3 => 'Recruitments',
-            4 => 'Onboardings',
-            5 => 'Offboardings',
-            6 => 'OnboardingOffboardingElements',
-            7 => 'OffboardingTemplates',
-            8 => 'OnboardingTemplates',
-            9 => 'ExitInterviews',
-            10 => 'Documents',
+        'modules' => array(
+            'Candidates',
+            'Candidatures',
+            'Positions',
+            'Recruitments',
+            'Onboardings',
+            'Offboardings',
+            'OnboardingOffboardingElements',
+            'OffboardingTemplates',
+            'OnboardingTemplates',
+            'ExitInterviews',
+            'Documents',
         ),
     ),
-    'LBL_NAV_TIME_TRACKING' =>
-    array(
+    'LBL_NAV_TIME_TRACKING' => array(
         'label' => 'LBL_NAV_TIME_TRACKING',
-        'modules' =>
-        array(
-            0 => 'Calendar',
-            1 => 'ReservationsCalendar',
-            2 => 'WorkSchedules',
-            3 => 'Notes',
-            4 => 'Meetings',
-            5 => 'Calls',
-            6 => 'Tasks',
-            7 => 'Emails',
-            8 => 'Trainings',
-            9 => 'Reservations',
-            10 => 'Resources',
-            11 => 'Delegations',
+        'modules' => array(
+            'Calendar',
+            'ReservationsCalendar',
+            'WorkSchedules',
+            'Notes',
+            'Emails',
+            'Trainings',
+            'Reservations',
+            'Resources',
+            'Delegations',
+            'Meetings',
+            'Calls',
+            'Tasks',
         ),
     ),
-    'LBL_NAV_COMPANY_LIFE' =>
-    array(
+    'LBL_NAV_COMPANY_LIFE' => array(
         'label' => 'LBL_NAV_COMPANY_LIFE',
-        'modules' =>
-        array(
-            0 => 'EmployeeRoles',
-            1 => 'OrganizationalUnits',
-            2 => 'News',
-            3 => 'Ideas',
-            4 => 'KReports',
-            5 => 'AM_ProjectTemplates',
-            6 => 'FP_events',
-            7 => 'Campaigns',
-            8 => 'Project',
-            9 => 'FP_Event_Locations',
+        'modules' => array(
+            'EmployeeRoles',
+            'OrganizationalUnits',
+            'News',
+            'Ideas',
+            'KReports',
+            'AM_ProjectTemplates',
+            'FP_events',
+            'Campaigns',
+            'Project',
+            'FP_Event_Locations',
         ),
     ),
-    'LBL_NAV_EMPLOYEE' =>
-    array(
+    'LBL_NAV_EMPLOYEE' => array(
         'label' => 'LBL_NAV_EMPLOYEE',
-        'modules' =>
-        array(
-            0 => 'Conclusions',
-            1 => 'Problems',
-            2 => 'Improvements',
-            3 => 'Responsibilities',
-            4 => 'ResponsibilityActivities',
-            5 => 'Competencies',
-            6 => 'Contracts',
-            7 => 'TermsOfEmployment',
-            8 => 'PeriodsOfEmployment',
-            9 => 'Benefits',
-            10 => 'Applications',
-            11 => 'Certificates',
-            12 => 'Appraisals',
-            13 => 'Goals',
+        'modules' => array(
+            'Conclusions',
+            'Problems',
+            'Improvements',
+            'Responsibilities',
+            'ResponsibilityActivities',
+            'Competencies',
+            'Contracts',
+            'TermsOfEmployment',
+            'PeriodsOfEmployment',
+            'Benefits',
+            'Applications',
+            'Certificates',
+            'Appraisals',
+            'Goals',
         ),
     ),
 );
