@@ -192,24 +192,44 @@ a#callnav_today {
 }
 
 .monthHeader {
-  background: $calendar-title-bg;
+  background: $calendar-title-bg !important;
   color: $calendar-title-color;
-  padding-left: 8px;
-  padding-right: 8px;
-  margin-top: 10px;
+  // padding-left: 8px;
+  // padding-right: 8px;
+  // margin-top: 10px;
   border: none;
-  border: 1px solid transparent;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  line-height: $calendar-title-height;
+  // border: 1px solid transparent;
+  // border-top-left-radius: 4px;
+  // border-top-right-radius: 4px;
+  //line-height: $calendar-title-height;
   height: $calendar-title-height;
   vertical-align: middle;
-}
+  margin: 0;
+  padding-left: $mint-rem;
+  padding-right: $mint-rem;
 
-.monthHeader h3 {
-  margin-top: 0;
-  line-height: $calendar-title-height;
-  height: $calendar-title-height;
+  > div {
+    padding: 0;
+
+    &:nth-child(3) svg {
+      transform: translate(16px, 8px);
+    }
+    &:nth-child(1) svg {
+      transform: translate(0px, 8px);
+    }
+
+  }
+
+  a svg * {
+    fill: $color-mint-grey !important;
+  }
+
+  h3 {
+    margin: 0;
+    line-height: $calendar-title-height;
+    //height: $calendar-title-height;
+  }
+
 }
 
 .monthCalBody {
@@ -222,12 +242,14 @@ a#callnav_today {
   padding: 0;
   text-align: center;
   clear:both;
-
+  //line-height: 54px;
 }
 
 h5.calSharedUser  {
   line-height: $calendar-user-height;
-  height: $calendar-user-height;
+  //height: $calendar-user-height;
+  margin-bottom: 0;
+  margin-top: 0;
 }
 
 
@@ -264,6 +286,7 @@ h5.calSharedUser  {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+  height: 54px;
 }
 
 
@@ -307,7 +330,7 @@ div.monthFooter {
 }
 
 h5.calSharedUser {
-  color: $calendar-month-day-header-bg;
+  color: $color-mint-grey;
 }
 
 
@@ -578,7 +601,7 @@ td.fc-day-top.fc-today {
 
 
 .pagecontent > div.row.monthHeader > div > a {
-  color: $default-btn-color;
+  color: $color-mint-grey;
 }
 
 .pagecontent > div.row.monthHeader {
@@ -676,12 +699,12 @@ td.fc-day-top.fc-today {
 }
 
 .calSharedUser {
-  padding-top: 5px;
-  padding-left: 8px;
-  margin-top: 0;
-  margin-bottom: 0;
-  border-top: 1px;
-  height: 20px;
+  // padding-top: 5px;
+  // padding-left: 8px;
+  // margin-top: 0;
+  // margin-bottom: 0;
+  // border-top: 1px;
+  // height: 20px;
 }
 
 .fc-toolbar {
@@ -691,7 +714,7 @@ td.fc-day-top.fc-today {
 }
 
 .monthCalBody > .calSharedUser {
-  color: $default-btn-color;
+  color: $color-mint-grey;
 }
 
 thead.fc-head {
@@ -909,4 +932,3 @@ iframe.teamNoticeBox {
     width: 900px;
   }
 }
-

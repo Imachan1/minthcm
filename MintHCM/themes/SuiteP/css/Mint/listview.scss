@@ -42,12 +42,19 @@ table.subpanel-table .pagination li.sugar_action_button:hover > form > a {
 
 .paginationTable .selectActionsDisabled,
 .paginationTable .selectActionsDisabled a,
-.paginationTable .paginationChangeButtons button[disabled], 
+.paginationTable .paginationChangeButtons button[disabled],
 .paginationTable .paginationActionButtons button[disabled],
 {
     background-color: $color-51;
     color: $color-100;
     opacity: 0.5;
+}
+
+// Mint development
+
+.paginationActionButtons > ul {
+    float: left;
+    height: 30px;
 }
 
 input.button {
@@ -77,4 +84,25 @@ ul.clickMenu li.sugar_action_button:hover {
 
 .paginationTable ul.clickMenu li.sugar_action_button a:hover{
     color: $color-100;
+}
+
+// Mint development
+
+.selectedRecords.value {
+    margin-right: 8px;
+}
+
+.selectedRecords {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+div.list-view-rounded-corners > table, tr.pagination-unique {
+    background: #eaeaea;
+}
+
+.selectActionsDisabled.show {
+    display: inline-block !important;
 }

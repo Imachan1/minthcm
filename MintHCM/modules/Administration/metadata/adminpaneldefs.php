@@ -210,7 +210,9 @@ $admin_option_defs = [];
 $admin_option_defs['Administration']['private_group_repair'] = [
    'private_group_repair',
    'LBL_PRIVATE_GROUP_REPAIR',
-   'LBL_PRIVATE_GROUP_REPAIR_DESCRIPTION'
+   'LBL_PRIVATE_GROUP_REPAIR_DESCRIPTION',
+    '#',
+    'repair'
 ];
 $admin_group_header[] = ['LBL_PRIVATE_GROUP', '', false, $admin_option_defs, ''];
 $admin_option_defs = [];
@@ -218,7 +220,8 @@ $admin_option_defs['Administration']['DelegationsLocale'] = [
    'DelegationsLocale',
    'LBL_DEL_MODULENAME',
    'LBL_DEL_MODULENAME',
-   './index.php?module=DelegationsLocale'
+   './index.php?module=DelegationsLocale',
+    'fa-globe-africa'
 ];
 $admin_group_header[] = ['LBL_DEL_ADMIN_MODULES', '', false, $admin_option_defs, ''];
 $admin_option_defs = [];
@@ -226,19 +229,22 @@ $admin_option_defs['Administration']['DashboardManager'] = array(
    'DashboardManager',
    'LBL_DASHBOARD_MANAGER',
    'LBL_DASHBOARD_MANAGER_DESCRIPTION',
-   'index.php?module=DashboardManager'
+   'index.php?module=DashboardManager',
+    'fa-th-large'
 );
 $admin_option_defs['Administration']['DashboardBackups'] = array(
    'DashboardBackups',
    'LBL_DASHBOARD_BACKUPS',
    'LBL_DASHBOARD_BACKUPS_DESCRIPTION',
-   'index.php?module=DashboardBackups'
+   'index.php?module=DashboardBackups',
+    'fa-th-large'
 );
 $admin_option_defs['Administration']['DashboardHistory'] = array(
    'DashboardHistory',
    'LBL_DASHBOARD_HISTORY',
    'LBL_DASHBOARD_HISTORY_DESCRIPTION',
-   'index.php?module=DashboardHistory'
+   'index.php?module=DashboardHistory',
+    'fa-th-large'
 );
 $admin_group_header[] = array( 'LBL_DASHBOARD_MANAGEMENT', '', false, $admin_option_defs, '' );
 
@@ -249,6 +255,7 @@ $admin_option_defs['Administration']['generator'] = [
    'LBL_GENERATOR',
    'LBL_GENERATOR_DESCRIPTION',
    './index.php?module=PDFGenerator&action=repair',
+    'fa-file-pdf'
 ];
 $admin_group_header[] = ['LBL_ADMIN_GENERATOR', '', false, $admin_option_defs, ''];
 # PDFTemplates Administration Definition end

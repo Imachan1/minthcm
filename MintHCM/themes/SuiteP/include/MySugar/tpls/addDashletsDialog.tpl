@@ -81,7 +81,7 @@
                         <tr>
                         {/if}
                         <td width="50%" align="left"><a id="{$module.id}_icon" href="javascript:void(0)" onclick="{$module.onclick}" style="text-decoration:none">
-                                <span class="suitepicon suitepicon-module-{$module.module_name|lower|replace:'_':'-'}"></span>
+                                <span class="{get_module_icon_class module_name=$module.module_name}"></span>
                                 <span id="mbLBLL" class="mbLBLL">{$module.title}</span></a><br /></td>
                                 {if $rowCounter % 2 == 1}
                         </tr>
@@ -99,7 +99,7 @@
             <table width="100%">
                 {foreach from=$charts item=chart key=a}
                     <tr>
-                        <td align="left"><a href="javascript:void(0)" onclick="{$chart.onclick}"><span class="suitepicon suitepicon-module-{$chart.icon|lower|replace:'_':'-'}"></span></a>&nbsp;<a class="mbLBLL" href="#" onclick="{$chart.onclick}">{$chart.title}</a><br /></td>
+                        <td align="left"><a href="javascript:void(0)" onclick="{$chart.onclick}"><span class="suitepicon pPp suitepicon-module-{$chart.icon|lower|replace:'_':'-'}"></span></a>&nbsp;<a class="mbLBLL" href="#" onclick="{$chart.onclick}">{$chart.title}</a><br /></td>
                     </tr>
                 {/foreach}
             </table>

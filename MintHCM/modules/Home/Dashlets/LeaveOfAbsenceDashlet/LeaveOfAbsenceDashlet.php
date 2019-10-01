@@ -90,7 +90,7 @@ class LeaveOfAbsenceDashlet extends Dashlet
         }
 
         $this->first_day_of_week = $GLOBALS['current_user']->get_first_day_of_week(); // 0 - sunday, ..., 6 - saturday
-        
+
         if (!empty($def['show_days_of_week']) && is_array($def['show_days_of_week'])) {
             $this->show_days_of_week = $def['show_days_of_week'];
         }
@@ -162,7 +162,7 @@ class LeaveOfAbsenceDashlet extends Dashlet
         $options['height']            = $req['height'];
         $options['autoRefresh']       = 0;
         $options['show_days_of_week'] = $this->show_days_of_week;
-        
+
         foreach (array_keys($options['show_days_of_week']) as $day) {
             $options['show_days_of_week'][$day] = false;
             if (isset($req['show_'.$day])) {
@@ -180,5 +180,20 @@ class LeaveOfAbsenceDashlet extends Dashlet
             }
         }
         return $options;
+    }
+
+    public function getHeader($text = '')
+    {
+        $template = new Sugar_Smarty();
+
+        $template->assign('is_locked', $this->is_locked);
+        $template->assign('DASHLET_TITLE', $this->title);
+        $template->assign('DASHLET_ID', $this->id);
+        $template->assign('DASHLET_MODULE', 'Calendar');
+        $template->assign('DASHLET_BUTTON_ARIA_EDIT', translate('LBL_DASHLET_EDIT', 'Home'));
+        $template->assign('DASHLET_BUTTON_ARIA_REFRESH', translate('LBL_DASHLET_REFRESH', 'Home'));
+        $template->assign('DASHLET_BUTTON_ARIA_DELETE', translate('LBL_DASHLET_DELETE', 'Home'));
+
+        return $template->fetch('include/Dashlets/DashletHeader.tpl');
     }
 }

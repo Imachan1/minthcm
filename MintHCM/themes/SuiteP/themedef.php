@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,41 +41,89 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
 global $app_strings;
 
 $themedef = array(
-   'name' => 'MintHCM',
-   'description' => 'MintHCM Responsive Theme',
-   'version' => array(
-      'regex_matches' => array( '.+' ),
-   ),
-   'group_tabs' => true,
-   'classic' => true,
-   'configurable' => true,
-   'config_options' => array(
-      'display_sidebar' => array(
-         'vname' => 'LBL_DISPLAY_SIDEBAR',
-         'type' => 'bool',
-         'default' => true,
-      ),
-      'sub_themes' => array(
-         'vname' => 'LBL_SUBTHEME_OPTIONS',
-         'type' => 'select',
-         'default' => 'Mint',
-      ),
-   ),
+    'name' => 'MintHCM',
+    'description' => 'MintHCM Responsive Theme',
+    'version' => array(
+        'regex_matches' => array('.+'),
+    ),
+    'group_tabs' => true,
+    'classic' => true,
+    'configurable' => true,
+    'config_options' => array(
+        'display_sidebar' => array(
+            'vname' => 'LBL_DISPLAY_SIDEBAR',
+            'type' => 'bool',
+            'default' => true,
+        ),
+        'sub_themes' => array(
+            'vname' => 'LBL_SUBTHEME_OPTIONS',
+            'type' => 'select',
+            'default' => 'Mint',
+        ),
+    ),
+    'fa_module_icons' => array(
+        'candidates' => 'fa-address-book',
+        'candidatures' => 'fa-address-card',
+        'positions' => 'fa-list',
+        'recruitments' => 'fa-user-plus',
+        'onboardings' => 'fa-sign-in-alt',
+        'offboardings' => 'fa-sign-out-alt',
+        'offboardingtemplates' => 'fa-sign-out-alt',
+        'onboardingtemplates' => 'fa-sign-in-alt',
+        'exitinterviews' => 'fa-user-times',
+        'delegations' => 'fa-plane',
+        'workschedules' => 'fa-business-time',
+        'transportations' => 'fa-car',
+        'costs' => 'fa-dollar-sign',
+        'reservations' => 'fa-calendar-check',
+        'resources' => 'fa-people-carry',
+        'trainings' => 'fa-user-graduate',
+        'employeeroles' => 'fa-user-shield',
+        'organizationalunits' => 'fa-users',
+        'news' => 'fa-bell',
+        'ideas' => 'fa-lightbulb',
+        'conclusions' => 'fa-hand-point-left',
+        'problems' => 'fa-exclamation-triangle',
+        'responsibilities' => 'fa-list',
+        'activities' => 'fa-hand-point-right',
+        'competencies' => 'fa-list',
+        'contracts' => 'fa-file-signature',
+        'termsofemployment' => 'fa-list',
+        'periodsofemployment' => 'fa-calendar',
+        'benefits' => 'fa-umbrella-beach',
+        'applications' => 'fa-user-plus',
+        'certificates' => 'fa-scroll',
+        'appraisals' => 'fa-medal',
+        'appraisalitems' => 'fa-medal',
+        'goals' => 'fa-bullseye',
+        'competencyratings' => 'fa-star-half-alt',
+        'employees' => 'fa-user-tie',
+        'careerpaths' => 'fa-project-diagram',
+        'onboardingoffboardingelements' => 'fa-plus-square',
+        'spenttime' => 'fa-clock',
+        'responsibilityactivities' => 'fa-list',
+        'delegationslocale' => 'fa-globe-africa',
+        'attitudes' => 'fa-brain',
+        'improvements' => 'fa-cogs',
+        'knowledge' => 'fa-book',
+        'skills' => 'fa-magic',
+        'workingmonths' => 'fa-calendar-week',
+    ),
 );
 
-if ( !empty($app_strings['LBL_SUBTHEMES']) ) {
-   // if statement removes the php notice
-   $themedef['config_options']['sub_themes']['options'] = array(
-      $app_strings['LBL_SUBTHEMES'] => array(
-         'Mint' => 'Mint',
-      ),
-   );
-   $themedef['config_options']['sub_themes']['default'] = 'Mint';
+if (!empty($app_strings['LBL_SUBTHEMES'])) {
+    // if statement removes the php notice
+    $themedef['config_options']['sub_themes']['options'] = array(
+        $app_strings['LBL_SUBTHEMES'] => array(
+            'Mint' => 'Mint',
+        ),
+    );
+    $themedef['config_options']['sub_themes']['default'] = 'Mint';
 }

@@ -3,7 +3,7 @@
 }
 
 option:checked {
-    color: $edit-view-option-checked-color; 
+    color: $edit-view-option-checked-color;
 }
 
 .col-sm-12 .col-sm-8.edit-view-field textarea {
@@ -22,11 +22,11 @@ option:checked {
 
 .col-sm-12 div[field="appraisal_items_inline"].edit-view-field {
     width: 100%;
-    
+
     textarea[name^="appraisal_item_description["] {
         font-weight: normal; padding-top: 5px;
     }
-    
+
     input[name^="parent_name"]{
         margin-top: 0px; margin-left: 10px;
     }
@@ -42,7 +42,7 @@ option:checked {
             width: 50%;
         }
     }
-    
+
     @media (min-width: 1024px) {
         input[name^="parent_name"]{
             width: 45%;
@@ -53,6 +53,6 @@ option:checked {
         margin: 0px;
     }
 
-    
+
 
 }

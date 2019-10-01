@@ -63,5 +63,3 @@ if (!class_exists('VardefManager')) {
     require_once 'include/SugarObjects/VardefManager.php';
 }
 VardefManager::createVardef('Skills', 'Skills', array('basic', 'assignable', 'security_groups'));
-
-$dictionary['Skills']['fields']['name']['required'] = true;

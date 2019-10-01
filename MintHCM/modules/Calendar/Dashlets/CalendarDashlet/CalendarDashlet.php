@@ -192,4 +192,17 @@ class CalendarDashlet extends Dashlet
     {
         return '';
     }
+   public function getHeader($text = '') {
+      $template = new Sugar_Smarty();
+
+      $template->assign('is_locked', $this->is_locked);
+      $template->assign('DASHLET_TITLE', $this->title);
+      $template->assign('DASHLET_ID', $this->id);
+      $template->assign('DASHLET_MODULE', 'Calendar');
+      $template->assign('DASHLET_BUTTON_ARIA_EDIT', translate('LBL_DASHLET_EDIT', 'Home'));
+      $template->assign('DASHLET_BUTTON_ARIA_REFRESH', translate('LBL_DASHLET_REFRESH', 'Home'));
+      $template->assign('DASHLET_BUTTON_ARIA_DELETE', translate('LBL_DASHLET_DELETE', 'Home'));
+
+      return $template->fetch('include/Dashlets/DashletHeader.tpl');
+   }
 }
