@@ -288,7 +288,7 @@ class SugarTheme
             'tif',
             'bmp',
     );
-
+    public $fa_module_icons;
     /**
      * Constructor
      *
