@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,60 +36,63 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 $mod_strings = array(
-   'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
-   'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
-   'LBL_ID' => 'ID',
-   'LBL_DATE_ENTERED' => 'Date Created',
-   'LBL_DATE_MODIFIED' => 'Date Modified',
-   'LBL_MODIFIED' => 'Modified By',
-   'LBL_MODIFIED_ID' => 'Modified By Id',
-   'LBL_MODIFIED_NAME' => 'Modified By Name',
-   'LBL_CREATED' => 'Created By',
-   'LBL_CREATED_ID' => 'Created By Id',
-   'LBL_DESCRIPTION' => 'Description',
-   'LBL_DELETED' => 'Deleted',
-   'LBL_NAME' => 'Dashboard Name',
-   'LBL_CREATED_USER' => 'Created by User',
-   'LBL_MODIFIED_USER' => 'Modified by User',
-   'LBL_LIST_NAME' => 'Dashboard Name',
-   'LBL_TEAM' => 'Teams',
-   'LBL_TEAMS' => 'Teams',
-   'LBL_TEAM_ID' => 'Team Id',
-   'LBL_LIST_FORM_TITLE' => 'Dashboard Manager List',
-   'LBL_MODULE_NAME' => 'Dashboard Manager',
-   'LBL_MODULE_TITLE' => 'Dashboard Manager',
-   'LBL_HOMEPAGE_TITLE' => 'My Dashboard Manager',
-   'LNK_NEW_RECORD' => 'Create Template',
-   'LNK_LIST' => 'View Templates',
-   'LNK_IMPORT_DASHBOARDMANAGER' => 'Import Dashboard Manager',
-   'LBL_SEARCH_FORM_TITLE' => 'Search Dashboards',
-   'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
-   'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-   'LBL_DASHBOARDMANAGER_SUBPANEL_TITLE' => 'Dashboard Manager',
-   'LBL_NEW_FORM_TITLE' => 'New Dashboard Manager',
-   'LBL_ENCODED_PAGES' => 'Encoded Pages',
-   'LBL_ENCODED_DASHLETS' => 'Encoded Dashlets',
-   'LNK_CREATE_DASHBOARD_BACKUP' => 'Create Backup',
-   'LNK_VIEW_DASHBOARD_BACKUPS' => 'View Backups',
-   'LBL_DASHBOARDBACKUPS' => 'Associated User Backups',
-   'LBL_DASHBOARDHISTORY' => 'Dashboard deployment history',
-   'LBL_DASHBOARDHISTORY_MENU' => 'Dashboard deployments history',
-   'LBL_USERS_LOCKED_DASHBOARDS' => 'Users: Locked Dashboards',
-   'LBL_USERS_ONE_TIME_DEFAULT_DASHBOARDS' => 'Users: One Time Default',
-   'LBL_USERS_FORCED_TABS_DASHBOARDS' => 'Users: Forced Tabs',
-   'LBL_LOAD_DASHBOARDS_BUTTON' => 'Load template data',
-   'LBL_DEPLOY_BUTTON' => 'Deploy dashboard',
-   'LBL_IS_LOADED' => 'Template loaded',
-   'LBL_CONFIRM_TITLE' => 'Confirmation',
-   'LBL_CONFIRM_TEXT' => 'Are you sure you want to load your Dashboard as a template? The currently saved template will be lost forever.',
-   'LBL_CONFIRM_YES' => 'Yes',
-   'LBL_CONFIRM_CANCEL' => 'Cancel',
+    'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
+    'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
+    'LBL_ID' => 'ID',
+    'LBL_DATE_ENTERED' => 'Date Created',
+    'LBL_DATE_MODIFIED' => 'Date Modified',
+    'LBL_MODIFIED' => 'Modified By',
+    'LBL_MODIFIED_ID' => 'Modified By Id',
+    'LBL_MODIFIED_NAME' => 'Modified By Name',
+    'LBL_CREATED' => 'Created By',
+    'LBL_CREATED_ID' => 'Created By Id',
+    'LBL_DESCRIPTION' => 'Description',
+    'LBL_DELETED' => 'Deleted',
+    'LBL_NAME' => 'Dashboard Name',
+    'LBL_CREATED_USER' => 'Created by User',
+    'LBL_MODIFIED_USER' => 'Modified by User',
+    'LBL_LIST_NAME' => 'Dashboard Name',
+    'LBL_TEAM' => 'Teams',
+    'LBL_TEAMS' => 'Teams',
+    'LBL_TEAM_ID' => 'Team Id',
+    'LBL_LIST_FORM_TITLE' => 'Dashboard Manager List',
+    'LBL_MODULE_NAME' => 'Dashboard Manager',
+    'LBL_MODULE_TITLE' => 'Dashboard Manager',
+    'LBL_HOMEPAGE_TITLE' => 'My Dashboard Manager',
+    'LNK_NEW_RECORD' => 'Create Template',
+    'LNK_LIST' => 'View Templates',
+    'LNK_IMPORT_DASHBOARDMANAGER' => 'Import Dashboard Manager',
+    'LBL_SEARCH_FORM_TITLE' => 'Search Dashboards',
+    'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
+    'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
+    'LBL_DASHBOARDMANAGER_SUBPANEL_TITLE' => 'Dashboard Manager',
+    'LBL_NEW_FORM_TITLE' => 'New Dashboard Manager',
+    'LBL_ENCODED_PAGES' => 'Encoded Pages',
+    'LBL_ENCODED_DASHLETS' => 'Encoded Dashlets',
+    'LNK_CREATE_DASHBOARD_BACKUP' => 'Create Backup',
+    'LNK_VIEW_DASHBOARD_BACKUPS' => 'View Backups',
+    'LBL_DASHBOARDBACKUPS' => 'Associated User Backups',
+    'LBL_DASHBOARDHISTORY' => 'Dashboard deployment history',
+    'LBL_DASHBOARDHISTORY_MENU' => 'Dashboard deployments history',
+    'LBL_USERS_LOCKED_DASHBOARDS' => 'Users: Locked Dashboards',
+    'LBL_USERS_ONE_TIME_DEFAULT_DASHBOARDS' => 'Users: One Time Default',
+    'LBL_USERS_FORCED_TABS_DASHBOARDS' => 'Users: Forced Tabs',
+    'LBL_LOAD_DASHBOARDS_BUTTON' => 'Load template data',
+    'LBL_DEPLOY_BUTTON' => 'Deploy dashboard',
+    'LBL_IS_LOADED' => 'Template loaded',
+    'LBL_CONFIRM_TITLE' => 'Confirmation',
+    'LBL_CONFIRM_TEXT' => 'Are you sure you want to load your Dashboard as a template? The currently saved template will be lost forever.',
+    'LBL_CONFIRM_YES' => 'Yes',
+    'LBL_CONFIRM_CANCEL' => 'Cancel',
+    'LBL_USERS_FORCED_TABS_DASHBOARDS' => 'Forced dashboards',
+    'LBL_USERS_LOCKED_DASHBOARDS' => 'Locked dashboards',
+    'LBL_USERS_ONE_TIME_DEFAULT_DASHBOARDS' => 'Default dashboards',
 );
