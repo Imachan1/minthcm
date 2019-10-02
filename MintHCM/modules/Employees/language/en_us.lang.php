@@ -186,4 +186,5 @@ $mod_strings = array(
     'LBL_POSITION_EMPLOYEES' => 'Stanowiska',
     'LBL_CANDIDATE_EMPLOYEE_LINK_FROM_EMPLOYEE' => 'Employee candidate link',
     'LBL_CANDIDATE_EMPLOYEE_LINK_FROM_CANDIDATE' => 'Candidate link for candidate',
+    'LBL_USERS_ONE_TIME_DEFAULT_DASHBOARDS' => 'Users: One Time Default',
 );
