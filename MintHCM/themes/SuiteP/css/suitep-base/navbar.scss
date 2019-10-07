@@ -1715,6 +1715,15 @@
     border-bottom-right-radius: 2px;
   }
 
+  .navbar .navbar-form .input-group {
+    .btn {
+      box-shadow: none;
+    }
+    .query_string {
+      -webkit-text-fill-color: $color-search-navbar;
+    }
+  }
+
   .quickcreatetop .dropdown-menu {
     background-position: 80px 2px;
     padding: 0px 0px 0px 0px;
