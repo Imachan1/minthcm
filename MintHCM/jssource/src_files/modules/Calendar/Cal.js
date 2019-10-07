@@ -966,7 +966,7 @@ $($.fullCalendar).ready(function () {
                   break;
                case 'delegation':
                   valueToPush["backgroundColor"] = '#e1b7c6';
-                  valueToPush["textColor"] = '#fff';
+                  valueToPush["textColor"] = '#000';
                   break;
                case 'holiday':
                   valueToPush["backgroundColor"] = '#ffff99';
