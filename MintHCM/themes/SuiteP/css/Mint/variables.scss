@@ -177,6 +177,8 @@ $table-bg-active:               $table-bg-hover !default;
 //** Border color for table and cell borders.
 $table-border-color:            $color-64 !default;
 
+$table-cal-bg: #fff;
+
 
 //== Buttons
 //
@@ -437,8 +439,8 @@ $navbar-inverse-bg:                         $color-7 !default;
 $navbar-inverse-border:                     darken($navbar-inverse-bg, 10%) !default;
 
 // Inverted navbar links
-$navbar-inverse-link-color:                 lighten($gray-light, 15%) !default;
-$navbar-inverse-link-hover-color:           $color-80 !default;
+$navbar-inverse-link-color:                 #fff;
+$navbar-inverse-link-hover-color:           #fff;
 $navbar-inverse-link-hover-bg:              transparent !default;
 $navbar-inverse-link-active-color:          $navbar-inverse-link-hover-color !default;
 $navbar-inverse-link-active-bg:             darken($navbar-inverse-bg, 10%) !default;
@@ -950,8 +952,10 @@ $button-light-bg-hover: $color-mint-white-hover;
 $button-light-color: $color-mint-lightgreen;
 $button-light-border: $color-mint-lightgreen;
 
-$info-btn-bg: $color-28;
-$info-btn-bg-hover: $color-60;
+$info-btn-bg: $color-mint-lightgreen;
+$info-btn-color: #fff;
+$info-btn-bg-hover: $color-mint-lightgreen-lighter;
+$info-btn-color-hover: #fff;
 
 $danger-btn-bg: $color-mint-darkgreen;
 $danger-btn-bg-hover: $color-mint-darkgreen-darker;
@@ -984,7 +988,7 @@ $navbar-home-color-hover: $navbar-link-color-hover;
 $navbar-search-bg: $color-99;
 $navbar-search-btn-bg: $color-23;
 $navbar-search-text-color: $color-32;
-$navbar-search-color: $color-59;
+$navbar-search-color: #000;
 $navbar-search-btn-color: $navbar-link-color;
 $navbar-search-btn-color-hover: $color-64;
 $navbar-search-query-btn-color: $navbar-link-color;
@@ -1029,13 +1033,15 @@ $navbar-alertsButton-background-hover: $color-93;
 $navbar-user-menu-button-background-hover: $color-93;
 $navbar-search-button-background-hover: $color-93;
 
+$header-link-color: #fff;
+
 // Sidebar
 $sidebar-bg: $color-20;
 $sidebar-toggle-expanded-bg: transparent;
-$sidebar-btn-bg: $color-87;
-$sidebar-btn-bg-hover: $color-99;
+$sidebar-btn-bg: $color-mint-darkgreen;
+$sidebar-btn-bg-hover: $color-mint-darkgreen-lighter;
 $sidebar-btn-color: $color-80;
-$side-bar-header-color: $color-51;
+$side-bar-header-color: #fff;
 $side-bar-link-color-hover: $color-99;
 
 $side-bar-action-height: 48px;
@@ -1076,9 +1082,9 @@ $panel-header-height: 32px;
 $panel-header-font-size: 14px;
 $panel-collapsed-color: $color-80;
 $panel-expanded-color: $panel-collapsed-color;
-$panel-button-bg: $color-97;
-$panel-button-bg-hover: $color-68;
-$panel-button-bg-disabled: $color-68;
+$panel-button-bg: $color-mint-grey;
+$panel-button-bg-hover: $color-mint-grey-lighter;
+$panel-button-bg-disabled: $color-mint-grey-lighter;
 $panel-button-color: $color-80;
 $campaign-pagination-bg-hover: $color-22;
 
@@ -1172,6 +1178,8 @@ $pagination-disabled-btn-bg:     #fff;
 $pagination-disabled-btn-color:  $color-mint-grey-lighter;
 $pagination-btn-bg:              #fff;
 $pagination-btn-color:           $color-mint-grey;
+$pagination-button-bg:           #b2b4b3;
+$pagination-numbers:             #fff;
 
 
 
@@ -1198,7 +1206,7 @@ $case-contact-border-color: transparent;
 
 // Full Calendar and YUI popup calendar
 $calendar-bg: $color-80;
-$calendar-border-color: $color-mint-white-hover;
+$calendar-border-color: #e4e4e4;
 $calendar-slot-bg: $color-80;
 $calendar-slot-color: $link-color;
 $calendar-slot-border-color: $color-64;
@@ -1226,7 +1234,7 @@ $calendar-nav-button-bg: $color-13;
 $calendar-body-bg: $main-alternate-bg;
 $calendar-body-color: $color-6;
 $calendar-body-header-color: $gray-lighter;
-$calendar-border-color: $color-mint-white-hover;
+//$calendar-border-color: $color-mint-white-hover;
 $calendar-other-month-day-body-bg: $calendar-header-bg;
 $calendar-other-month-day-body-color: $color-12;
 $calendar-tip-bg: $color-65;
@@ -1314,5 +1322,3 @@ $notification-text: $danger-btn-color !default;
 // Required *
 $required-bg: transparent;
 $required-color: $color-49;
-
-$fa-font-path: "../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts";
