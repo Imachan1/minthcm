@@ -685,4 +685,13 @@ $mod_strings = array(
    'LBL_USERS_ONE_TIME_DEFAULT_DASHBOARDS' => 'Dashboard: One time',
    'LBL_ONE_TIME_DEFAULT_DASHBOARD_ID' => 'Dashboard: One time (ID)',
    'LBL_SCHEDULEREPORTS' => 'Harmonogramy raportów',
+   
+   'LBL_CANDIDATE_EMPLOYEE_LINK_FROM_EMPLOYEE' => 'Candidates',
+   'LBL_POSITION_EMPLOYEES' => 'Position Employees',
+   'LBL_RELATIONSHIP_IDEAS_NAME' => 'Ideas',
+   'LBL_SCHEDULEREPORTS' => 'Schedules',
+   'LBL_USERS_FORCED_TABS_DASHBOARDS' => 'Forced dashboards',
+   'LBL_USERS_LOCKED_DASHBOARDS' => 'Locked dashboards',
+   'LBL_USERS_ONBOARDINGOFFBOARDINGELEMENTS' => 'Onboarding/Offboarding elements',
+   
 ); // END STRINGS DEFS
