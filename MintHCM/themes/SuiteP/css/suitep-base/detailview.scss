@@ -43,6 +43,7 @@ p.msg {
 
 .btn-pagination .suitepicon {
   line-height: inherit;
+  color: $color-mint-lightgreen;
 }
 
 .buttons .pagination .btn-pagination {
@@ -50,12 +51,17 @@ p.msg {
   line-height: 18px;
   font-size: 10px;
   padding: 0 10px 0 10px;
-  background-color: $default-btn-bg;
+  background: $button-light-bg;
+  border: 1px solid $button-light-border;
+  color: $button-light-color;
   font-weight: 600;
+  @include BoxShadow(1);
 }
 
 .nav-tabs > li.tab-inline-pagination .btn-pagination {
-  background-color: $default-btn-bg;
+  background: $button-light-bg;
+  border: 1px solid $button-light-border;
+  color: $button-light-color;
   font-size: 10px;
   font-weight: 600;
   height: 28px;
@@ -68,12 +74,12 @@ p.msg {
   line-height: 18px;
   font-size: 10px;
   padding: 0 10px 0 10px;
-  background-color: $default-btn-bg;
+  background: $button-light-bg-hover;
   font-weight: 600;
 }
 
 .nav-tabs > li.tab-inline-pagination .btn-pagination:hover {
-  background-color: $default-btn-bg-hover;
+  background: $button-light-bg-hover;
 }
 
 .nav-tabs > li.tab-inline-pagination .glyphicon-chevron-left {
@@ -85,7 +91,7 @@ p.msg {
 }
 
 .pagination-range-label {
-  color: $main-font-color;
+  color: $color-mint-grey;
   font-size: 13px;
   font-weight: bold;
 }
@@ -444,4 +450,24 @@ p.msg {
 
 .email-opt-in .suitepicon {
   line-height: inherit;
+}
+
+.mobileOnly {
+  display: none;
+}
+
+.desktopOnly {
+  display: none;
+}
+
+@media (max-width:768px) {
+  .mobileOnly {
+    display: block;
+  }
+}
+
+@media (min-width: 768px){
+  .desktopOnly {
+    display: block;
+  }
 }

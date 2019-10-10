@@ -12,7 +12,7 @@ ul.toolbar li.globalLinks-desktop:hover {
     ul.toolbar li.navbar-search button.searchbutton:hover {
         color: $navbar-search-button-background-hover;
     }
-} 
+}
 
 .has-alerts > .clear-all-alerts-container > .btn-warning {
     background-color: $navbar-link-color-hover;
@@ -40,14 +40,14 @@ ul.toolbar li.globalLinks-desktop:hover {
 .quickcreatetop .dropdown-menu li a {
     background-color: $navbar-main-menu-bg;
 }
-.navbar-inverse .nav > .topnav > span.notCurrentTab > a:hover, 
-.navbar-inverse .nav > .topnav > span.notCurrentTab > a:active, 
+.navbar-inverse .nav > .topnav > span.notCurrentTab > a:hover,
+.navbar-inverse .nav > .topnav > span.notCurrentTab > a:active,
 .navbar-inverse .dropdown-menu li a:hover,
 .navbar-inverse .dropdown-menu li a:active,
 .navbar li a.suitepicon:hover,
 .navbar li a.suitepicon:active,
 {
-    color: $color-100;
+    color: $navbar-inverse-link-color;
 }
 
 .quickcreatetop li:last-child a {

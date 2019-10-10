@@ -207,6 +207,7 @@ a#callnav_today {
   margin: 0;
   padding-left: $mint-rem;
   padding-right: $mint-rem;
+  margin-top: $mint-rem * 2;
 
   > div {
     padding: 0;
@@ -587,6 +588,10 @@ td.fc-day-top.fc-today {
 .fc-unthemed .fc-popover .fc-header,
 .fc-unthemed .fc-list-heading td {
   border-color: $calendar-border-color !important;
+}
+
+tbody.fc-body {
+  background: $calendar-title-bg;
 }
 
 .monthFooter td {

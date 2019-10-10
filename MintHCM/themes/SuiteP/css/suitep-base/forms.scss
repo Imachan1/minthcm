@@ -892,43 +892,43 @@ fieldset[disabled] .btn-primary.active {
 
 input[type=button].btn-info {
   background-color: $info-btn-bg;
-  color: $default-btn-color;
+  color: $info-btn-color;
   border: 1px solid $info-btn-bg;
 }
 
 .btn-info:hover {
   background-color: $info-btn-bg-hover;
-  color: $default-btn-color;
+  color: $info-btn-color-hover;
   border: 1px solid $info-btn-bg-hover;
 }
 
 .btn-info:active {
   background-color: $info-btn-bg-hover;
-  color: $default-btn-color;
+  color: $info-btn-color;
   border: 1px solid $info-btn-bg-hover;
 }
 
 .btn-info:focus {
   background-color: $info-btn-bg-hover;
-  color: $default-btn-color;
+  color: $info-btn-color;
   border: 1px solid $info-btn-bg-hover;
 }
 
 input[type=button].btn-info:hover {
   background-color: $info-btn-bg-hover;
-  color: $default-btn-color;
+  color: $info-btn-color;
   border: 1px solid $info-btn-bg-hover;
 }
 
 input[type=button].btn-info:active {
   background-color: $info-btn-bg-hover;
-  color: $default-btn-color;
+  color: $info-btn-color;
   border: 1px solid $info-btn-bg-hover;
 }
 
 input[type=button].btn-info:focus {
   background-color: $info-btn-bg-hover;
-  color: $default-btn-color;
+  color: $info-btn-color;
   border: 1px solid $info-btn-bg-hover;
 }
 
@@ -1952,3 +1952,8 @@ font[color=red] {
     margin-left: 8px;
   }
 }
+
+
+// .modal-search .col-lg-4 {
+//     width: 100%;
+// }
