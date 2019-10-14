@@ -693,6 +693,5 @@ $mod_strings = array(
    'LBL_USERS_FORCED_TABS_DASHBOARDS' => 'Forced dashboards',
    'LBL_USERS_LOCKED_DASHBOARDS' => 'Locked dashboards',
    'LBL_USERS_ONBOARDINGOFFBOARDINGELEMENTS' => 'Onboarding/Offboarding elements',
-   'LBL_USERS_ONE_TIME_DEFAULT_DASHBOARDS' => 'Default dashboards',
    
 ); // END STRINGS DEFS

@@ -9,8 +9,13 @@ input[type=button]:hover, input.button[type=button]:hover, .buttons .button:hove
 }
 
 input[type=button][selected], .buttons .button[selected] {
-    background: $color-99;
-    color: $color-100;
+    background: $color-mint-lightgreen;
+    color: #fff;
+}
+
+input[type=button][selected]:hover, .buttons .button[selected]:hover {
+    background: $color-mint-lightgreen-lighter;
+    color: #fff;
 }
 
 .detail-view-field .dataField input.button {
@@ -32,8 +37,8 @@ input[type=button][selected], .buttons .button[selected] {
     color: $color-22;
 }
 .pagination button.button[disabled],
-.pagination button.button[disabled]:hover {
-    color: $color-6;
+.pagination button.button[disabled]:hover, .pagination button.button[disabled] .suitepicon {
+    color: $color-mint-lightgreen-lighter;
 }
 
 table.subpanel-table .pagination .sugar_action_button:hover {

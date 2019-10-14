@@ -83,6 +83,15 @@
     border-top-right-radius: 0;
     overflow-y: auto;
     min-width: 185px;
+    @include BoxShadow(4);
+
+    &[aria-labelledby="searchbutton"] {
+      box-shadow: none !important;
+    }
+
+    .suitepicon-action-search {
+      box-shadow: none !important;
+    }
 
     li {
       padding: 0;
@@ -252,13 +261,13 @@
     border-color: transparent;
   }
   .headerlinks a:link {
-    color: $default-btn-color;
+    color: $header-link-color;
     padding: 0;
     width: 100%;
   }
 
   .headerlinks a:visited {
-    color: $default-btn-color;
+    color: $header-link-color;
     padding: 0;
     width: 100%;
   }
@@ -1706,6 +1715,15 @@
     border-bottom-right-radius: 2px;
   }
 
+  .navbar .navbar-form .input-group {
+    .btn {
+      box-shadow: none;
+    }
+    .query_string {
+      -webkit-text-fill-color: $color-search-navbar;
+    }
+  }
+
   .quickcreatetop .dropdown-menu {
     background-position: 80px 2px;
     padding: 0px 0px 0px 0px;
@@ -2808,4 +2826,8 @@
     max-height: inherit;
   }
 
+}
+
+button#searchbutton {
+    box-shadow: none;
 }

@@ -2039,6 +2039,7 @@ ul.clickMenu > li {
   border-radius: 3px;
   float: left;
   list-style: none;
+  background-color: $panel-button-bg;
 }
 
 ul.SugarActionMenuIESub li {
@@ -2527,19 +2528,19 @@ input[type=text].cstm_code {
 }
 
 .headerlinks a:link {
-  color: $default-btn-color;
+  color: $header-link-color;
   padding: 14px 5px 14px 0;
   width: 100%;
 }
 
 .headerlinks a:visited {
-  color: $default-btn-color;
+  color: $header-link-color;
   padding: 14px 5px 14px 0;
   width: 100%;
 }
 
 .headerlinks a:hover {
-  color: $danger;
+  color: $header-link-color;
 }
 
 .nav-pills li {
@@ -3359,7 +3360,7 @@ ul::-webkit-scrollbar-thumb { /* 5 */
 }
 
 .headerlinks a:hover {
-  color: $default-btn-color;
+  color: $header-link-color;
 }
 
 table {

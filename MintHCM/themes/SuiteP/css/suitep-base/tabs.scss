@@ -242,14 +242,25 @@
     border-bottom-right-radius: 4px;
   }
 
-  .detail-view .tab-content {
-    background-color: $tab-bg;
-    padding: 24px;
-    margin-bottom: $tab-margin-bottom;
-    border: 1px solid transparent;
-    border-top-right-radius: 4px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+  .detail-view {
+
+    @include BoxShadow(1);
+    background: $tab-bg;
+    border-top-left-radius: $mint-rem/4;
+    border-top-right-radius: $mint-rem/4;
+    border-bottom-left-radius: $mint-rem/4;
+    border-bottom-left-radius: $mint-rem/4;
+    margin-top: $mint-rem*2;
+
+    .tab-content {
+      background-color: $tab-bg;
+      padding: 24px;
+      margin-bottom: $tab-margin-bottom;
+      border: 1px solid transparent;
+      border-top-right-radius: 4px;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
   }
 }
 
