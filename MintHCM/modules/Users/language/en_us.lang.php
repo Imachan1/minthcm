@@ -693,5 +693,8 @@ $mod_strings = array(
    'LBL_USERS_FORCED_TABS_DASHBOARDS' => 'Forced dashboards',
    'LBL_USERS_LOCKED_DASHBOARDS' => 'Locked dashboards',
    'LBL_USERS_ONBOARDINGOFFBOARDINGELEMENTS' => 'Onboarding/Offboarding elements',
-   
+   'LBL_RELATIONSHIP_CERTIFICATES_NAME' => 'Certificates',
+   'LBL_RELATIONSHIP_TRAININGS_NAME' => 'Trainings',
+   'LBL_FACTOR_AUTH' => 'Factor Auth',
+   'LBL_FACTOR_AUTH_INTERFACE' => 'Factor Auth Interface',
 ); // END STRINGS DEFS

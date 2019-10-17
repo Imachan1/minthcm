@@ -187,4 +187,8 @@ $mod_strings = array(
     'LBL_CANDIDATE_EMPLOYEE_LINK_FROM_EMPLOYEE' => 'Employee candidate link',
     'LBL_CANDIDATE_EMPLOYEE_LINK_FROM_CANDIDATE' => 'Candidate link for candidate',
     'LBL_USERS_ONE_TIME_DEFAULT_DASHBOARDS' => 'Users: One Time Default',
+    'LBL_RELATIONSHIP_CERTIFICATES_NAME' => 'Certificates',
+    'LBL_RELATIONSHIP_TRAININGS_NAME' => 'Trainings',
+    'LBL_FACTOR_AUTH' => 'Factor Auth',
+    'LBL_FACTOR_AUTH_INTERFACE' => 'Factor Auth Interface',
 );
