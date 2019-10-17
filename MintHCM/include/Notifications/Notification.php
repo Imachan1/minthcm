@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,97 +36,70 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 require_once 'include/Notifications/NotificationManager.php';
+require_once 'include/Notifications/NotificationAbstractClass.php';
+require_once 'include/Notifications/NotificationNull.php';
 
-class Notification {
+class Notification extends NotificationAbstractClass
+{
 
-   protected $name;
-   protected $description;
-   protected $assigned_user_id;
-   protected $related_bean_type;
-   protected $related_bean_id;
-   
-   protected $skip_uniq_validate = FALSE;
+    public function setRelatedBean($related_bean_id, $related_bean_type)
+    {
+        $this->related_bean_type = $related_bean_type;
+        $this->related_bean_id = $related_bean_id;
+        return $this;
+    }
+    public function setAssignedUserId($assigned_user_id)
+    {
+        if (!NotificationManager::isValidUser($assigned_user_id)) {
+            return new NotificationNull;
+        }
+        $this->assigned_user_id = $assigned_user_id;
+        return $this;
+    }
 
-   public function isUnique() {
-      $alert_id = $GLOBALS['db']->getOne($this->buildUniqueQueryChecker());
-      return (empty($alert_id));
-   }
-   
-   public function disableUniqueValidation(){
-      $this->skip_uniq_validate = TRUE;
-   }
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
 
-   public function setActive() {
-      global $db;
-      $db->query("UPDATE `alerts` SET `is_read`=0 " . $this->buildUniqueQueryCheckerWhere());
-   }
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
 
-   protected function buildUniqueQueryChecker() {
-      return " SELECT id FROM `alerts` " . $this->buildUniqueQueryCheckerWhere();
-   }
+    public function saveAsAlert()
+    {
+        if ($this->skip_uniq_validate || $this->isUnique()) {
+            $bean = BeanFactory::newBean('Alerts');
+            $bean->name = $bean->date_entered ? $bean->date_entered : date("Y-m-d") . ' ' . NotificationManager::getUserFullName($this->assigned_user_id);
+            $bean->description = $this->description;
+            $bean->parent_type = $this->related_bean_type;
+            $bean->parent_id = $this->related_bean_id;
+            $bean->assigned_user_id = $this->assigned_user_id;
+            $bean->is_read = 0;
+            $bean->alert_type = 'custom';
 
-   protected function buildUniqueQueryCheckerWhere() {
-      return " WHERE `deleted` = 0
-         AND `parent_type` = '{$this->related_bean_type}'
-         AND `parent_id` = '{$this->related_bean_id}'
-         AND `assigned_user_id` = '{$this->assigned_user_id}'
-         AND `alert_type` = 'custom'";
-   }
+            if (!empty($bean->parent_id)) {
+                $bean->url_redirect = 'index.php?module=' . $bean->parent_type . '&action=DetailView&record=' . $bean->parent_id;
+            } else {
+                $bean->url_redirect = 'index.php?module=' . $bean->parent_type;
+            }
 
-   public function setRelatedBean($related_bean_id, $related_bean_type) {
-      $this->related_bean_type = $related_bean_type;
-      $this->related_bean_id = $related_bean_id;
-      return $this;
-   }
-
-   public function setAssignedUserId($assigned_user_id) {
-      if ( !NotificationManager::isValidUser($assigned_user_id) ) {
-         return false;
-      }
-      $this->assigned_user_id = $assigned_user_id;
-      return $this;
-   }
-
-   public function setName($name) {
-      $this->name = $name;
-      return $this;
-   }
-
-   public function setDescription($description) {
-      $this->description = $description;
-      return $this;
-   }
-
-   public function saveAsAlert() {
-      if ( $this->skip_uniq_validate || $this->isUnique() ) {
-         $bean = BeanFactory::newBean('Alerts');
-         $bean->name = $bean->date_entered ? $bean->date_entered : date("Y-m-d") . ' ' . NotificationManager::getUserFullName($this->assigned_user_id);
-         $bean->description = $this->description;
-         $bean->parent_type = $this->related_bean_type;
-         $bean->parent_id = $this->related_bean_id;
-         $bean->assigned_user_id = $this->assigned_user_id;
-         $bean->is_read = 0;
-         $bean->alert_type = 'custom';
-
-         if ( !empty($bean->parent_id) ) {
-            $bean->url_redirect = 'index.php?module=' . $bean->parent_type . '&action=DetailView&record=' . $bean->parent_id;
-         } else {
-            $bean->url_redirect = 'index.php?module=' . $bean->parent_type;
-         }
-
-         $bean->save();
-      } else {
-         $this->setActive();
-      }
-      return $this;
-   }
+            $bean->save();
+        } else {
+            $this->setActive();
+        }
+        return $this;
+    }
 
 }
