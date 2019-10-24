@@ -52,7 +52,13 @@ class VTFormulaParser {
    public static function getFormulaClassSource($formula_name) {
       if ( static::$vt_expression_list === null ) {
          $vt_expression_list = array();
-         require('include/ViewTools/Expressions/cache.php');
+         //
+         $cache_file = 'include/ViewTools/Expressions/cache.php';
+         if (!file_exists($cache_file)) {
+             include 'modules/Administration/viewToolsRebuild.php';
+         }
+         require $cache_file;
+         //
          static::$vt_expression_list = $vt_expression_list;
       }
       if ( !is_null(static::$vt_expression_list[$formula_name]) ) {
