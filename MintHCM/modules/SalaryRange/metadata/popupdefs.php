@@ -42,9 +42,57 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
 
-$minthcm_version = '3.0.2.2';
-$minthcm_timestamp = '2019-10-25-00:00:00';
+$popupMeta = array(
+    'moduleMain' => 'SalaryRange',
+    'varName' => 'SalaryRange',
+    'orderBy' => 'salary_range.start_date',
+    'whereClauses' => array(
+    ),
+    'searchInputs' => array(
+        'position_name',
+        'start_date',
+        'end_date',
+        'gross_value_from',
+        'gross_value_to',
+    ),
+    'searchdefs' => array(
+        'position_name',
+        'start_date',
+        'end_date',
+        'gross_value_from',
+        'gross_value_to',
+    ),
+    'listviewdefs' => array(
+        'POSITION_NAME' => array(
+            'label' => 'LBL_POSITION_NAME',
+            'width' => '10%',
+            'default' => true,
+            'name' => 'position_name',
+        ),
+        'START_DATE' => array(
+            'label' => 'LBL_START_DATE',
+            'width' => '10%',
+            'default' => true,
+            'name' => 'start_date',
+        ),
+        'END_DATE' => array(
+            'label' => 'LBL_END_DATE',
+            'width' => '10%',
+            'default' => true,
+            'name' => 'end_date',
+        ),
+        'GROSS_VALUE_FROM' => array(
+            'label' => 'LBL_GROSS_VALUE_FROM',
+            'width' => '10%',
+            'default' => true,
+            'name' => 'gross_value_from',
+        ),
+        'GROSS_VALUE_TO' => array(
+            'label' => 'LBL_GROSS_VALUE_TO',
+            'width' => '10%',
+            'default' => true,
+            'name' => 'gross_value_to',
+        ),
+    ),
+);

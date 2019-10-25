@@ -42,9 +42,46 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
 
-$minthcm_version = '3.0.2.2';
-$minthcm_timestamp = '2019-10-25-00:00:00';
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$module_name = 'SalaryRange';
+$viewdefs[$module_name]['QuickCreate'] = array(
+    'templateMeta' => array('maxColumns' => '2',
+        'widths' => array(
+            array('label' => '10', 'field' => '30'),
+            array('label' => '10', 'field' => '30'),
+        ),
+    ),
+    'panels' => array(
+        'default' => array(
+            array(
+                'position_name',
+            ),
+            array(
+                'start_date',
+                'end_date',
+            ),
+            array(
+                'gross_value_from',
+                'gross_value_to',
+            ),
+            array(
+                'net_value_from',
+                'net_value_to',
+            ),
+            array(
+                'employer_costs_from',
+                'employer_costs_to',
+            ),
+        ),
+    ),
+);
