@@ -42,9 +42,62 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
 
-$minthcm_version = '3.0.2.3';
-$minthcm_timestamp = '2019-10-25-00:00:00';
+$module_name = 'SalaryRange';
+$viewdefs[$module_name] = array(
+    'DetailView' => array(
+        'templateMeta' => array(
+            'form' => array(
+                'buttons' => array(
+                    'EDIT',
+                    'DUPLICATE',
+                    'DELETE',
+                    'FIND_DUPLICATES',
+                ),
+            ),
+            'useTabs' => true,
+            'maxColumns' => '2',
+            'widths' => array(
+                array(
+                    'label' => '10',
+                    'field' => '30',
+                ),
+                array(
+                    'label' => '10',
+                    'field' => '30',
+                ),
+            ),
+            'tabDefs' => array(
+                'LBL_RECORDVIEW_PANEL1' => array(
+                    'newTab' => true,
+                    'panelDefault' => 'expanded',
+                ),
+            ),
+        ),
+        'panels' => array(
+            'LBL_RECORDVIEW_PANEL1' => array(
+                array(
+                    'name',
+                    'position_name',
+                ),
+                array(
+                    'start_date',
+                    'end_date',
+                ),
+                array(
+                    'gross_value_from',
+                    'gross_value_to',
+                ),
+                array(
+                    'net_value_from',
+                    'net_value_to',
+                ),
+                array(
+                    'employer_costs_from',
+                    'employer_costs_to',
+                ),
+            ),
+
+        ),
+    ),
+);

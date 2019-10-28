@@ -214,6 +214,7 @@ $dictionary['Meeting'] = array(
          'options' => 'meeting_status_dom',
          'comment' => 'Meeting status (ex: Planned, Held, Not held)',
          'default' => 'Planned',
+         'massupdate' => 1,
       ),
       // Bug 24170 - Added only to allow the sidequickcreate form to work correctly
       'direction' =>

@@ -519,6 +519,13 @@ eoq;
 
                 if (isset($field['type'])) {
                     switch ($field["type"]) {
+                        case "ColoredActivityStatus":
+                            if (!empty($field['options'])) {
+                                $even = !$even;
+                                $newhtml .= $this->addStatus($displayname, $field["name"],
+                                    translate($field["options"]));
+                                break;
+                            }
                         case "relate":
                             // bug 14691: avoid laying out an empty cell in the <table>
                             $handleRelationship = $this->handleRelationship($displayname, $field);
