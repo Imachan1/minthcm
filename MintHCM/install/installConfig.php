@@ -7,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -35,10 +35,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 if (!defined('sugarEntry') || !sugarEntry) {
@@ -98,8 +98,10 @@ class InstallLayout
         $out = "<select name=\"$name\">";
         foreach ($options as $key => $value) {
             $selected = '';
-            if ($key == $default)
+            if ($key == $default) {
                 $selected = ' selected="selected"';
+            }
+
             $out .= "<option label=\"$value\" value=\"$key\"$selected>$value</option>";
         }
         $out .= "</select>";
@@ -233,8 +235,6 @@ EOQ;
     private function getFormItems($mod_strings, $app_list_strings, $sugarConfigDefaults, $drivers, $checked, $db, $errors, $supportedLanguages, $current_language, $customSession, $customLog, $customId, $customSessionHidden, $customLogHidden, $customIdHidden)
     {
 
-
-
         // ------------------------------
         //  DB Type and DB configuration
         // ---------------------------------->
@@ -258,9 +258,7 @@ EOQ;
     <!-- </div> -->
 EOQ;
 
-
         $out2 = $out_dbtypesel;
-
 
         $out2 .= <<<EOQ2
 
@@ -284,7 +282,7 @@ EOQ2;
                     if (!empty($value['required'])) {
                         $form .= "<span class=\"required\">*</span>";
                     } else {
-                        
+
                     }
                     if (!empty($_SESSION[$name])) {
                         $sessval = $_SESSION[$name];
@@ -307,8 +305,6 @@ FORM;
                         $form .= "<input type='$type' name='$name' id='$name' value='$sessval'>";
                     }
 
-
-
                     $form .= <<<FORM
 FORM;
                 } else {
@@ -320,10 +316,8 @@ FORM;
 
         $out2 .= $form;
 
-
-
         // ---------- user data set (dbConfig_a.php)
-//if we are installing in custom mode, include the following html
+        //if we are installing in custom mode, include the following html
         if ($db->supports("create_user")) {
 // create / set db user dropdown
             $auto_select = '';
@@ -352,11 +346,9 @@ FORM;
             $dbUSRDD .= "<option value='same' $same_select>" . $mod_strings['LBL_DBCONFIG_SAME_DD'] . "</option>";
             $dbUSRDD .= "</select><br>&nbsp;";
 
-
             $setup_db_sugarsales_password = urldecode($_SESSION['setup_db_sugarsales_password']);
             $setup_db_sugarsales_user = urldecode($_SESSION['setup_db_sugarsales_user']);
             $setup_db_sugarsales_password_retype = urldecode($_SESSION['setup_db_sugarsales_password_retype']);
-
 
             $out2 .= <<<EOQ2
 <br>
@@ -394,8 +386,6 @@ FORM;
 EOQ2;
         }
         $out = $out2;
-
-
 
         // ------ siteConfig_a.php
         $out .= <<<EOQ
@@ -502,7 +492,6 @@ EOQ;
 -->
 EOQ;
 
-
         $out .= <<<EOQ
 </div>
 EOQ;
@@ -524,22 +513,22 @@ EOQ3;
         $demoDD .= "</select>";
 
 //         $out .=<<<EOQ3
-//                <div class="floatbox full" id="fb0">
-//             <h2>{$mod_strings['LBL_MORE_OPTIONS_TITLE']}</h2>
-//         </div>
-//         <div class="floatbox full" id="fb1">
-//             <div class="install_block">
-//                 <h3 onclick="$(this).next().toggle();" class="toggler">&raquo; {$mod_strings['LBL_DBCONF_DEMO_DATA_TITLE']}</h3>
-//                 <div class="form_section" style="display: none;">
-//                 <div class="clear"></div>
-//                     <div class="formrow big">
-//                         <label>{$mod_strings['LBL_DBCONF_DEMO_DATA']}</label>
-//                         {$demoDD}
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-// EOQ3;
+        //                <div class="floatbox full" id="fb0">
+        //             <h2>{$mod_strings['LBL_MORE_OPTIONS_TITLE']}</h2>
+        //         </div>
+        //         <div class="floatbox full" id="fb1">
+        //             <div class="install_block">
+        //                 <h3 onclick="$(this).next().toggle();" class="toggler">&raquo; {$mod_strings['LBL_DBCONF_DEMO_DATA_TITLE']}</h3>
+        //                 <div class="form_section" style="display: none;">
+        //                 <div class="clear"></div>
+        //                     <div class="formrow big">
+        //                         <label>{$mod_strings['LBL_DBCONF_DEMO_DATA']}</label>
+        //                         {$demoDD}
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </div>
+        // EOQ3;
         // ------------------
         //  Choose Scenarios
         // ------------------------->
@@ -556,18 +545,17 @@ EOQ3;
             }
         }
 
-
 //         $out .= <<<EOQ
-//         <!-- Scenario Selection -->
-//         <div class="floatbox full" id="fb3">
-//             <h3 onclick="$(this).next().toggle();" class="toggler">&raquo; {$mod_strings['LBL_WIZARD_SCENARIO_TITLE']}</h3>
-//             <div class="form_section" style="display: none;">
-//                 <p class="ibmsg">{$mod_strings['LBL_WIZARD_SCENARIO_DESC']}</p>
-//                 <div class="formrow">$scenarioSelection</div>
-//                 <div class="clear"></div>
-//             </div>
-//         </div>
-// EOQ;
+        //         <!-- Scenario Selection -->
+        //         <div class="floatbox full" id="fb3">
+        //             <h3 onclick="$(this).next().toggle();" class="toggler">&raquo; {$mod_strings['LBL_WIZARD_SCENARIO_TITLE']}</h3>
+        //             <div class="form_section" style="display: none;">
+        //                 <p class="ibmsg">{$mod_strings['LBL_WIZARD_SCENARIO_DESC']}</p>
+        //                 <div class="formrow">$scenarioSelection</div>
+        //                 <div class="clear"></div>
+        //             </div>
+        //         </div>
+        // EOQ;
         //--End of scenarios
         //---------------
         // SMTP Settings
@@ -583,8 +571,9 @@ EOQ3;
         $notify_allow_default_outbound_checked = empty($_SESSION['notify_allow_default_outbound']) ? '' : ' checked="checked" ';
 
         // set default smtp toggle buttons selected value
-        if (empty($_SESSION['smtp_tab_selected']))
+        if (empty($_SESSION['smtp_tab_selected'])) {
             $_SESSION['smtp_tab_selected'] = 'smtp_tab_other';
+        }
 
         if (!isset($_SESSION['smtp_from_name']) || !$_SESSION['smtp_from_name']) {
             $_SESSION['smtp_from_name'] = 'MintHCM';
@@ -607,7 +596,7 @@ EOQ3;
             <!-- smtp types toggler buttons -->
 
             <p style="display: inline;">
-            
+
             <div>
                 <div class="formrow">
                     <label>{$mod_strings['LBL_FROM_NAME']}</label>
@@ -903,18 +892,11 @@ EOQ3;
             </div> <!-- toggle hidden box end -->
 EOQ;
 
-
         // db setup (dbConfig_a.php)
         $out2 = <<<EOQ2
             <input type='hidden' name='setup_db_drop_tables' id='setup_db_drop_tables' value=''>
         </div>
 EOQ2;
-
-
-
-
-
-
 
         // ----------
         //  Branding
@@ -926,7 +908,6 @@ EOQ2;
         if (!file_exists($currentLogoLink)) {
             $hiddenLogo = 'display:none;';
         }
-
 
         // TODO--low: check the tooltip text at the logo image!
 
@@ -977,16 +958,11 @@ EOQ2;
 
 EOQ;
 
-
-
-
-
-
         // System location defaults
         // TODO--low: 1000s sep, Decimal Symb, Name Format
 
         $defaultDateFormatSelect = self::getSelect('default_date_format', $sugarConfigDefaults['date_formats'], empty($_SESSION['default_date_format']) ? $sugarConfigDefaults['default_date_format'] : $_SESSION['default_date_format']);
-        $defaultTimeFormatSelect = self::getSelect('default_time_format', $sugarConfigDefaults['time_formats'], empty($_SESSION['default_time_format']) ? 'h:ia' : $_SESSION['default_time_format'] /* $sugarConfigDefaults['timef'] */);
+        $defaultTimeFormatSelect = self::getSelect('default_time_format', $sugarConfigDefaults['time_formats'], empty($_SESSION['default_time_format']) ? 'h:ia' : $_SESSION['default_time_format']/* $sugarConfigDefaults['timef'] */);
 
         $timezoneSelect = self::getSelect('timezone', array_merge(array(TimeDate::guessTimezone() => TimeDate::guessTimezone()), TimeDate::getTimezoneList()), TimeDate::guessTimezone());
 
@@ -1078,7 +1054,6 @@ EOQ;
 
 EOQ;
 
-
         $out .= "<div class=\"floatbox full\">";
         $out .= "    <h3 onclick=\"$(this).next().toggle();\" class=\"toggler\">&raquo; {$mod_strings['LBL_SITECFG_SECURITY_TITLE']}</h3>";
 
@@ -1102,19 +1077,19 @@ EOQ;
 EOQ;
         $checked = '';
 //if(!empty($_SESSION['setup_site_sugarbeet_anonymous_stats'])) $checked = 'checked=""';
-//         $out .= "
-//    <tr style='display:none'><td></td>
-//        <td><input type='checkbox' class='checkbox' name='setup_site_sugarbeet_anonymous_stats' value='yes' $checked /></td>
-//        <td><b>{$mod_strings['LBL_SITECFG_ANONSTATS']}</b><br><i>{$mod_strings['LBL_SITECFG_ANONSTATS_DIRECTIONS']}</i></td></tr>
-// ";
+        //         $out .= "
+        //    <tr style='display:none'><td></td>
+        //        <td><input type='checkbox' class='checkbox' name='setup_site_sugarbeet_anonymous_stats' value='yes' $checked /></td>
+        //        <td><b>{$mod_strings['LBL_SITECFG_ANONSTATS']}</b><br><i>{$mod_strings['LBL_SITECFG_ANONSTATS_DIRECTIONS']}</i></td></tr>
+        // ";
         $checked = '';
 //if(!empty($_SESSION['setup_site_sugarbeet_automatic_checks'])) $checked = 'checked=""';
-//         $out .= <<<EOQ
-//    <tr style='display:none'><td></td>
-//        <td><input type="checkbox" class="checkbox" name="setup_site_sugarbeet_automatic_checks" value="yes" /></td>
-//        <td><b>{$mod_strings['LBL_SITECFG_SUITE_UP']}</b><br><i>{$mod_strings['LBL_SITECFG_SUITE_UP_DIRECTIONS']}</i><br>&nbsp;</td>
-//     </tr>
-// EOQ;
+        //         $out .= <<<EOQ
+        //    <tr style='display:none'><td></td>
+        //        <td><input type="checkbox" class="checkbox" name="setup_site_sugarbeet_automatic_checks" value="yes" /></td>
+        //        <td><b>{$mod_strings['LBL_SITECFG_SUITE_UP']}</b><br><i>{$mod_strings['LBL_SITECFG_SUITE_UP_DIRECTIONS']}</i><br>&nbsp;</td>
+        //     </tr>
+        // EOQ;
         $out .= <<<EOQ
    <tbody id="setup_site_session_section_pre">
    <tr><td></td>
@@ -1175,8 +1150,6 @@ EOQ;
 
         $out .= "</div>";
 
-
-
         return $out;
     }
 
@@ -1204,7 +1177,7 @@ EOQ;
 
                 <input type="hidden" name="goto" id="goto">
                 <input type="hidden" id="hidden_goto" name="goto" value="{$mod_strings['LBL_BACK']}" />
-
+                <img src="install/loading.gif" class="loading" id="loading" style="display:none">
                 <input class="button" type="button" value="{$mod_strings['LBL_BACK']}" id="button_back_settings" onclick="onBackClick(this); //document.getElementById('goto').value='{$mod_strings['LBL_BACK']}';document.getElementById('$formId').submit();" />
                 <!--
                 <input class="button" type="button" value="{$mod_strings['LBL_LANG_BUTTON_COMMIT']}" onclick="document.getElementById('goto').value='{$mod_strings['LBL_NEXT']}';document.getElementById('$formId').submit();" id="button_next2"/>
@@ -1218,6 +1191,7 @@ EOQ;
                     var onBackClick = function(e) {
                         document.getElementById('button_next2').disabled = true;
                         document.getElementById('button_back_settings').disabled = true;
+                        document.getElementById('loading').style.display = 'inline';
                         removeSMTPSettings();
                         storeConfig(e, function(){
                             removeSMTPSettings();
@@ -1314,6 +1288,7 @@ EOQ;
 
                                 document.getElementById("errorMsgs").innerHTML = resp;
                                 document.getElementById("errorMsgs").style.display = '';
+                                document.getElementById('loading').style.display = 'none';
                                 return false;
 
                             }
@@ -1449,6 +1424,7 @@ EOQ;
                     var onNextClick = function(e) {
                         document.getElementById('button_next2').disabled = true;
                         document.getElementById('button_back_settings').disabled = true;
+                        document.getElementById('loading').style.display = 'inline';
                         if($('#dbUSRData').val() == 'provide') {
                             $('#setup_db_admin_user_name').val($('input[name="setup_db_sugarsales_user"]').val());
                             $('#setup_db_admin_password_entry').val($('input[name="setup_db_sugarsales_password_entry"]').val());
@@ -1462,12 +1438,13 @@ EOQ;
                                 callDBCheck(function(url, next_step, msgpanel){
                                     dbCheckPassed(url, next_step, msgpanel);
                                 });
-                           
+
                             });
                         }
                         else {
                             $('#errorMsgs').html("<p><b>Please fix the following errors before proceeding:</b></p><ul><li class=\"error\">" + errors.join('</li><li>') + "</li></ul>");
                             $('#errorMsgs').show();
+                            document.getElementById('loading').style.display = 'none';
                             //alert(errors.join('</li><li>'));
                         }
                         return false;
@@ -1739,13 +1716,9 @@ class DisplayErrors
 
 global $sugar_version, $js_custom_version;
 
-
-
 if (!isset($install_script) || !$install_script) {
     die($mod_strings['ERR_NO_DIRECT_SCRIPT']);
 }
-
-
 
 //---------------- systemOption: db driver select
 
@@ -1776,14 +1749,11 @@ foreach (array_keys($drivers) as $dname) {
 }
 $checked[$setup_db_type] = 'checked="checked"';
 
-
-
 //----------------- dbConfig_a: db name user pass...
 
 if (empty($_SESSION['setup_db_host_name'])) {
     $_SESSION['setup_db_host_name'] = (isset($sugar_config['db_host_name'])) ? $sugar_config['db_host_name'] : $_SERVER['SERVER_NAME'];
 }
-
 
 // DB split
 $createDbCheckbox = '';
@@ -1805,39 +1775,49 @@ if (!isset($_SESSION['setup_db_manager'])) {
 
 $db = getInstallDbInstance();
 
-
-
-
-
 //----------------- siteConfig_a.php Site Config & admin user
 
-
 if (is_file("config.php")) {
-    if (!empty($sugar_config['default_theme']))
+    if (!empty($sugar_config['default_theme'])) {
         $_SESSION['site_default_theme'] = $sugar_config['default_theme'];
+    }
 
-    if (!empty($sugar_config['disable_persistent_connections']))
+    if (!empty($sugar_config['disable_persistent_connections'])) {
         $_SESSION['disable_persistent_connections'] = $sugar_config['disable_persistent_connections'];
-    if (!empty($sugar_config['default_language']))
+    }
+
+    if (!empty($sugar_config['default_language'])) {
         $_SESSION['default_language'] = $sugar_config['default_language'];
-    if (!empty($sugar_config['translation_string_prefix']))
+    }
+
+    if (!empty($sugar_config['translation_string_prefix'])) {
         $_SESSION['translation_string_prefix'] = $sugar_config['translation_string_prefix'];
-    if (!empty($sugar_config['default_charset']))
+    }
+
+    if (!empty($sugar_config['default_charset'])) {
         $_SESSION['default_charset'] = $sugar_config['default_charset'];
+    }
 
-    if (!empty($sugar_config['default_currency_name']))
+    if (!empty($sugar_config['default_currency_name'])) {
         $_SESSION['default_currency_name'] = $sugar_config['default_currency_name'];
-    if (!empty($sugar_config['default_currency_symbol']))
-        $_SESSION['default_currency_symbol'] = $sugar_config['default_currency_symbol'];
-    if (!empty($sugar_config['default_currency_iso4217']))
-        $_SESSION['default_currency_iso4217'] = $sugar_config['default_currency_iso4217'];
+    }
 
-    if (!empty($sugar_config['rss_cache_time']))
+    if (!empty($sugar_config['default_currency_symbol'])) {
+        $_SESSION['default_currency_symbol'] = $sugar_config['default_currency_symbol'];
+    }
+
+    if (!empty($sugar_config['default_currency_iso4217'])) {
+        $_SESSION['default_currency_iso4217'] = $sugar_config['default_currency_iso4217'];
+    }
+
+    if (!empty($sugar_config['rss_cache_time'])) {
         $_SESSION['rss_cache_time'] = $sugar_config['rss_cache_time'];
+    }
+
     if (!empty($sugar_config['languages'])) {
         // We need to encode the languages in a way that can be retrieved later.
-        $language_keys = Array();
-        $language_values = Array();
+        $language_keys = array();
+        $language_values = array();
 
         foreach ($sugar_config['languages'] as $key => $value) {
             $language_keys[] = $key;
@@ -1854,7 +1834,7 @@ if (is_file("config.php")) {
 // if(isset($installation_scenarios)){
 //    $_SESSION['installation_scenarios'] = $installation_scenarios;
 // }
-////	errors
+////    errors
 $errors = '';
 if (isset($validation_errors) && is_array($validation_errors)) {
     if (count($validation_errors) > 0) {
@@ -1867,8 +1847,7 @@ if (isset($validation_errors) && is_array($validation_errors)) {
     }
 }
 
-
-////	ternaries
+////    ternaries
 $sugarUpdates = (isset($_SESSION['setup_site_sugarbeet']) && !empty($_SESSION['setup_site_sugarbeet'])) ? 'checked="checked"' : '';
 $siteSecurity = (isset($_SESSION['setup_site_defaults']) && !empty($_SESSION['setup_site_defaults'])) ? 'checked="checked"' : '';
 
@@ -1879,7 +1858,6 @@ $customId = (isset($_SESSION['setup_site_specify_guid']) && !empty($_SESSION['se
 $customSessionHidden = (isset($_SESSION['setup_site_custom_session_path']) && !empty($_SESSION['setup_site_custom_session_path'])) ? '' : ' style="display:none;" ';
 $customLogHidden = (isset($_SESSION['setup_site_custom_log_dir']) && !empty($_SESSION['setup_site_custom_log_dir'])) ? '' : ' style="display:none;" ';
 $customIdHidden = (isset($_SESSION['setup_site_specify_guid']) && !empty($_SESSION['setup_site_specify_guid'])) ? '' : ' style="display:none;" ';
-
 
 // defaults or user sets
 // warn: may the system bring it up
@@ -1896,4 +1874,4 @@ $installConfigLayout->show(get_defined_vars());
 // restore display errors
 // DisplayErrors::restore();
 
-// TODO--low: add Name Format 	[default_locale_name_format]	[Dr. David Livingstone]	-- ???
+// TODO--low: add Name Format     [default_locale_name_format]    [Dr. David Livingstone]    -- ???
