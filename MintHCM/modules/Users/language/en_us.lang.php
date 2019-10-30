@@ -697,4 +697,5 @@ $mod_strings = array(
    'LBL_RELATIONSHIP_TRAININGS_NAME' => 'Trainings',
    'LBL_FACTOR_AUTH' => 'Factor Auth',
    'LBL_FACTOR_AUTH_INTERFACE' => 'Factor Auth Interface',
+   'LBL_BUSINESS_ROLE' => 'Business role',
 ); // END STRINGS DEFS

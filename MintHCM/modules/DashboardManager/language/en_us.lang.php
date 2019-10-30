@@ -94,4 +94,6 @@ $mod_strings = array(
     'LBL_CONFIRM_CANCEL' => 'Cancel',
     'LBL_USERS_FORCED_TABS_DASHBOARDS' => 'Forced dashboards',
     'LBL_USERS_LOCKED_DASHBOARDS' => 'Locked dashboards',
+    'LBL_BUSINESS_ROLE' => 'Business role',
+    'LBL_ROLE_EXISTS' => 'Dashboard Manager is already assigned to that role',
 );

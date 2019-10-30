@@ -1048,6 +1048,12 @@ $app_list_strings = array(
       'every_week' => 'Every week',
       'every_month' => 'Every month',
    ),
+   'business_role_list' => array(
+      '' => '',
+      'manager' => 'Manager',
+      'analyst' => 'Analyst',
+      'developer' => 'Developer',
+   ),
    'template_id_list' => array(
       'Default' => 'Default',
    ),
