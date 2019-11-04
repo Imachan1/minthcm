@@ -4,8 +4,6 @@ $(document).ready(function () {
         createActivitySelectDialog();
     }
 
-    //    lockFields();
-
     $("#delegation_duration").change(function () {
         parseTimeNumberValue($("#delegation_duration"));
     }).change();
@@ -144,16 +142,6 @@ function convertDateFieldToMoment(field_id) {
         }
     }
     return result;
-}
-
-function lockFields() {
-    var status_element = $('#status');
-    if (isUserAdmin() == false) {
-        status_element.prop({
-            readonly: true,
-            disabled: true
-        });
-    }
 }
 
 function createActivitySelectDialog() {
