@@ -47,6 +47,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  */
 $dictionary['Meeting'] = array(
    'table' => 'meetings',
+   'audited' => true,
    'unified_search' => true,
    'full_text_search' => true,
    'unified_search_default_enabled' => true,
@@ -64,6 +65,7 @@ $dictionary['Meeting'] = array(
          'len' => '50',
          'comment' => 'Meeting name',
          'importable' => 'required',
+         'audited' => true,
       ),
       'accept_status' =>array(
          'name' => 'accept_status',
@@ -72,6 +74,7 @@ $dictionary['Meeting'] = array(
          'dbType' => 'varchar',
          'len' => '20',
          'source' => 'non-db',
+         'audited' => true,
       ),
       //bug 39559
       'set_accept_links' =>array(
@@ -81,6 +84,7 @@ $dictionary['Meeting'] = array(
          'dbType' => 'varchar',
          'len' => '20',
          'source' => 'non-db',
+         'audited' => true,
       ),
       'location' =>
      array(
@@ -88,7 +92,8 @@ $dictionary['Meeting'] = array(
          'vname' => 'LBL_LOCATION',
          'type' => 'varchar',
          'len' => '50',
-         'comment' => 'Meeting location'
+         'comment' => 'Meeting location',
+         'audited' => true,
       ),
       'password' =>
      array(
@@ -108,6 +113,7 @@ $dictionary['Meeting'] = array(
          'comment' => 'Join URL',
          'studio' => 'false',
          'reportable' => false,
+         'audited' => true,
       ),
       'host_url' =>
      array(
@@ -118,6 +124,7 @@ $dictionary['Meeting'] = array(
          'comment' => 'Host URL',
          'studio' => 'false',
          'reportable' => false,
+         'audited' => true,
       ),
       'displayed_url' =>
      array(
@@ -136,6 +143,7 @@ $dictionary['Meeting'] = array(
          'len' => '50',
          'comment' => 'Meeting creator',
          'studio' => 'false',
+         'audited' => true,
       ),
       'external_id' =>
      array(
@@ -157,6 +165,7 @@ $dictionary['Meeting'] = array(
          'importable' => 'required',
          'required' => true,
          'studio' => 'false',
+         'audited' => true,
       ),
       'duration_minutes' =>
      array(
@@ -167,6 +176,7 @@ $dictionary['Meeting'] = array(
          'len' => '2',
          'comment' => 'Duration (minutes)',
          'studio' => 'false',
+         'audited' => true,
       ),
       'date_start' =>
      array(
@@ -180,6 +190,7 @@ $dictionary['Meeting'] = array(
          'enable_range_search' => true,
          'options' => 'date_range_search_dom',
          'validation' => array('type' => 'isbefore', 'compareto' => 'date_end', 'blank' => false),
+         'audited' => true,
       ),
       'date_end' =>
      array(
@@ -191,6 +202,7 @@ $dictionary['Meeting'] = array(
          'comment' => 'Date meeting ends',
          'enable_range_search' => true,
          'options' => 'date_range_search_dom',
+         'audited' => true,
       ),
       'parent_type' =>
      array(
@@ -203,6 +215,7 @@ $dictionary['Meeting'] = array(
          'len' => 100,
          'comment' => 'Module meeting is associated with',
          'studio' =>array( 'searchview' => false ),
+         'audited' => true,
       ),
       'status' =>
      array(
@@ -215,6 +228,7 @@ $dictionary['Meeting'] = array(
          'comment' => 'Meeting status (ex: Planned, Held, Not held)',
          'default' => 'Planned',
          'massupdate' => 1,
+         'audited' => true,
       ),
       // Bug 24170 - Added only to allow the sidequickcreate form to work correctly
       'direction' =>
@@ -230,6 +244,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'parent_id' =>
      array(
@@ -249,6 +264,7 @@ $dictionary['Meeting'] = array(
          'comment' => 'checkbox indicating whether or not the reminder value is set (Meta-data only)',
          'massupdate' => false,
          'studio' => false,
+         'audited' => true,
       ),
       'reminder_time' =>
      array(
@@ -262,6 +278,7 @@ $dictionary['Meeting'] = array(
          'default' => -1,
          'comment' => 'Specifies when a reminder alert should be issued; -1 means no alert; otherwise the number of seconds prior to the start',
          'studio' => false,
+         'audited' => true,
       ),
       'email_reminder_checked' =>array(
          'name' => 'email_reminder_checked',
@@ -271,6 +288,7 @@ $dictionary['Meeting'] = array(
          'comment' => 'checkbox indicating whether or not the email reminder value is set (Meta-data only)',
          'massupdate' => false,
          'studio' => false,
+         'audited' => true,
       ),
       'email_reminder_time' =>
      array(
@@ -284,6 +302,7 @@ $dictionary['Meeting'] = array(
          'default' => -1,
          'comment' => 'Specifies when a email reminder alert should be issued; -1 means no alert; otherwise the number of seconds prior to the start',
          'studio' => false,
+         'audited' => true,
       ),
       'email_reminder_sent' =>array(
          'name' => 'email_reminder_sent',
@@ -293,6 +312,7 @@ $dictionary['Meeting'] = array(
          'comment' => 'Whether email reminder is already sent',
          'studio' => false,
          'massupdate' => false,
+         'audited' => true,
       ),
       'reminders' =>array(
          'required' => false,
@@ -320,7 +340,8 @@ $dictionary['Meeting'] = array(
          'type' => 'varchar',
          'len' => '255',
          'reportable' => false,
-         'comment' => 'When the Sugar Plug-in for Microsoft Outlook syncs an Outlook appointment, this is the Outlook appointment item ID'
+         'comment' => 'When the Sugar Plug-in for Microsoft Outlook syncs an Outlook appointment, this is the Outlook appointment item ID',
+         'audited' => true,
       ),
       'sequence' =>
      array(
@@ -331,6 +352,7 @@ $dictionary['Meeting'] = array(
          'reportable' => false,
          'default' => 0,
          'comment' => 'Meeting update sequence for meetings as per iCalendar standards',
+         'audited' => true,
       ),
       'parent_name' =>
      array(
@@ -343,6 +365,7 @@ $dictionary['Meeting'] = array(
          'group' => 'parent_name',
          'source' => 'non-db',
          'options' => 'parent_type_display',
+         'audited' => true,
       ),
       'users' =>
      array(
@@ -414,6 +437,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_interval' =>
      array(
@@ -427,6 +451,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_dow' =>
      array(
@@ -439,6 +464,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_until' =>
      array(
@@ -450,6 +476,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_count' =>
      array(
@@ -462,6 +489,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_parent_id' =>
      array(
@@ -486,6 +514,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => false,
+         'audited' => true,
       ),
       'duration' =>
      array(
@@ -498,6 +527,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'importable' => false,
+         'audited' => true,
       ),
       'gsync_id' =>
      array(
@@ -511,6 +541,7 @@ $dictionary['Meeting'] = array(
          'reportable' => false,
          'importable' => false,
          'studio' => false,
+         'audited' => true,
       ),
       'gsync_lastsync' =>array(
          'name' => 'gsync_lastsync',
@@ -522,6 +553,7 @@ $dictionary['Meeting'] = array(
          'reportable' => false,
          'importable' => false,
          'studio' => false,
+         'audited' => true,
       ),
       'type' =>array(
          'name' => 'type',
@@ -532,6 +564,7 @@ $dictionary['Meeting'] = array(
          'comment' => 'Meeting type',
          'options' => 'meetings_type_dom',
          'massupdate' => false,
+         'audited' => true,
       ),
       'repeat_pane' =>array(
          'name' => 'repeat_pane',
@@ -558,6 +591,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_interval' =>array(
          'name' => 'repeat_interval',
@@ -570,6 +604,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_dow' =>array(
          'name' => 'repeat_dow',
@@ -581,6 +616,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_until' =>array(
          'name' => 'repeat_until',
@@ -591,6 +627,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_count' =>array(
          'name' => 'repeat_count',
@@ -602,6 +639,7 @@ $dictionary['Meeting'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_parent_id' =>array(
          'name' => 'repeat_parent_id',
