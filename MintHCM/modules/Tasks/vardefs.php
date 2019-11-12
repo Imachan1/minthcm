@@ -297,3 +297,6 @@ VardefManager::createVardef('Tasks', 'Task', array(
     'assignable',
     'security_groups',
 ));
+
+$dictionary['Task']['fields']['assigned_user_id']['audited'] = false;
+$dictionary['Task']['fields']['assigned_user_name']['audited'] = true;

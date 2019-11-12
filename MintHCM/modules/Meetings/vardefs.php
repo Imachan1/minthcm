@@ -103,6 +103,7 @@ $dictionary['Meeting'] = array(
          'len' => '50',
          'comment' => 'Meeting password',
          'studio' => 'false',
+         'audited' => false,
       ),
       'join_url' =>
      array(
@@ -113,7 +114,6 @@ $dictionary['Meeting'] = array(
          'comment' => 'Join URL',
          'studio' => 'false',
          'reportable' => false,
-         'audited' => true,
       ),
       'host_url' =>
      array(
@@ -134,6 +134,7 @@ $dictionary['Meeting'] = array(
          'len' => '400',
          'comment' => 'Meeting URL',
          'studio' => 'false',
+         'audited' => true,
       ),
       'creator' =>
      array(
@@ -153,6 +154,7 @@ $dictionary['Meeting'] = array(
          'len' => '50',
          'comment' => 'Meeting ID for external app API',
          'studio' => 'false',
+         'audited' => false,
       ),
       'duration_hours' =>
      array(
@@ -341,7 +343,7 @@ $dictionary['Meeting'] = array(
          'len' => '255',
          'reportable' => false,
          'comment' => 'When the Sugar Plug-in for Microsoft Outlook syncs an Outlook appointment, this is the Outlook appointment item ID',
-         'audited' => true,
+         'audited' => false,
       ),
       'sequence' =>
      array(
@@ -541,7 +543,7 @@ $dictionary['Meeting'] = array(
          'reportable' => false,
          'importable' => false,
          'studio' => false,
-         'audited' => true,
+         'audited' => false,
       ),
       'gsync_lastsync' =>array(
          'name' => 'gsync_lastsync',
@@ -553,7 +555,7 @@ $dictionary['Meeting'] = array(
          'reportable' => false,
          'importable' => false,
          'studio' => false,
-         'audited' => true,
+         'audited' => false,
       ),
       'type' =>array(
          'name' => 'type',
@@ -740,8 +742,8 @@ $dictionary['Meeting'] = array(
          'rhs_table' => 'meetings',
          'rhs_key' => 'created_by',
          'relationship_type' => 'one-to-many'
-      )
-      , 'meetings_notes' =>array( 'lhs_module' => 'Meetings',
+      ),
+      'meetings_notes' =>array( 'lhs_module' => 'Meetings',
          'lhs_table' => 'meetings',
          'lhs_key' => 'id',
          'rhs_module' => 'Notes',
@@ -766,3 +768,6 @@ $dictionary['Meeting'] = array(
 VardefManager::createVardef('Meetings', 'Meeting',array( 'default', 'assignable', 'security_groups',
 ));
 
+
+$dictionary['Meeting']['fields']['assigned_user_id']['audited'] = false;
+$dictionary['Meeting']['fields']['assigned_user_name']['audited'] = true;

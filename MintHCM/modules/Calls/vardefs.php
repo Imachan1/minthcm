@@ -172,7 +172,6 @@ $dictionary['Call'] = array(
          'group' => 'parent_name',
          'reportable' => false,
          'comment' => 'The ID of the parent Sugar object identified by parent_type',
-         'audited' => true,
       ),
       'reminder_checked' => array(
          'name' => 'reminder_checked',
@@ -259,7 +258,7 @@ $dictionary['Call'] = array(
          'len' => '255',
          'reportable' => false,
          'comment' => 'When the Sugar Plug-in for Microsoft Outlook syncs an Outlook appointment, this is the Outlook appointment item ID',
-         'audited' => true,
+         'audited' => false,
       ),
       'accept_status' => array(
          'name' => 'accept_status',
@@ -488,7 +487,6 @@ $dictionary['Call'] = array(
          'duplicate_merge_dom_value' => 0,
          'audited' => false,
          'reportable' => false,
-         'audited' => true,
          'function' =>
          array(
             'name' => 'reschedule_history',
@@ -510,7 +508,6 @@ $dictionary['Call'] = array(
          'duplicate_merge_dom_value' => 0,
          'audited' => false,
          'reportable' => false,
-         'audited' => true,
          'function' =>
          array(
             'name' => 'reschedule_count',
@@ -632,3 +629,5 @@ $dictionary['Call'] = array(
 
 VardefManager::createVardef('Calls', 'Call', array('default', 'assignable', 'security_groups',
 ));
+
+$dictionary['Call']['fields']['outlook_id']['audited'] = false;
