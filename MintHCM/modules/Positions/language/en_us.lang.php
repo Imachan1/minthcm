@@ -122,5 +122,5 @@ $mod_strings = array(
     'LBL_POSITIONS_POSITIONS_SUPERVISION' => 'Positions supervision',
     'LBL_POSITIONS_EMPLOYEES' => 'Stanowisko',
     'LBL_ORGANIZATIONALUNITS_POSITIONS_LEADER_TITLE' => 'Organizational unit leader',
-    'LBL_SALARYRANGE_SUBPANEL_TITLE' => 'Salary Range',
+    'LBL_SALARYRANGE_SUBPANEL_TITLE' => 'Salary Ranges',
 );
