@@ -173,6 +173,7 @@ $app_list_strings = array(
       'Calls' => 'Calls',
       'Meetings' => 'Meetings',
       'Tasks' => 'Tasks',
+      'SalaryRanges' => 'Salary Ranges',
    ),
    'moduleListSingular' => array(
       'Home' => 'Home',
@@ -215,6 +216,7 @@ $app_list_strings = array(
       'Calls' => 'Call',
       'Meetings' => 'Meeting',
       'Tasks' => 'Task',
+      'SalaryRanges' => 'Salary Range',
    ),
    'checkbox_dom' => array(
       '' => '',
@@ -4139,5 +4141,3 @@ $app_strings['LBL_RECRUITMENT'] = 'Recruitment';
 $app_strings['LBL_TIME_TRACKING'] = 'Time Tracking';
 $app_strings['LBL_ACTIVITIES'] = 'Activities';
 $app_strings['LBL_SALARYRANGE_SUBPANEL_TITLE'] = 'Salary Ranges';
-$app_list_strings['moduleList']['SalaryRange'] = 'Salary Range';
-$app_list_strings['moduleListSingular']['SalaryRange'] = 'Salary Range';

@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -7,9 +6,6 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -36,51 +32,24 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
- * If the display of the logos is not reasonably feasible for technical reasons, the
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
- * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
+ * these Appropriate Legal Notices must retain the display of the "Powered by
+ * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-$module_name = 'SalaryRange';
-$listViewDefs[$module_name] = array(
-    'NAME' => array(
-        'label' => 'LBL_NAME',
-        'width' => '10%',
-        'default' => true,
-        'type' => 'name',
-        'name' => 'name',
-    ),
-    'POSITION_NAME' => array(
-        'label' => 'LBL_POSITION_NAME',
-        'width' => '10%',
-        'default' => true,
-        'name' => 'position_name',
-    ),
-    'START_DATE' => array(
-        'label' => 'LBL_START_DATE',
-        'width' => '10%',
-        'default' => true,
-        'name' => 'start_date',
-    ),
-    'END_DATE' => array(
-        'label' => 'LBL_END_DATE',
-        'width' => '10%',
-        'default' => true,
-        'name' => 'end_date',
-    ),
-    'GROSS_VALUE_FROM' => array(
-        'label' => 'LBL_GROSS_VALUE_FROM',
-        'width' => '10%',
-        'default' => true,
-        'name' => 'gross_value_from',
-    ),
-    'GROSS_VALUE_TO' => array(
-        'label' => 'LBL_GROSS_VALUE_TO',
-        'width' => '10%',
-        'default' => true,
-        'name' => 'gross_value_to',
-    ),
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
-);
+global $mod_strings, $app_strings, $sugar_config;
+
+if (ACLController::checkAccess('SalaryRanges', 'edit', true)) {
+    $module_menu[] = array('index.php?module=SalaryRanges&action=EditView&return_module=SalaryRanges&return_action=DetailView', $mod_strings['LNK_NEW_RECORD'], 'Add', 'SalaryRanges');
+}
+if (ACLController::checkAccess('SalaryRanges', 'list', true)) {
+    $module_menu[] = array('index.php?module=SalaryRanges&action=index&return_module=SalaryRanges&return_action=DetailView', $mod_strings['LNK_LIST'], 'View', 'SalaryRanges');
+}
+if (ACLController::checkAccess('SalaryRanges', 'import', true)) {
+    $module_menu[] = array('index.php?module=Import&action=Step1&import_module=SalaryRanges&return_module=SalaryRanges&return_action=index', $app_strings['LBL_IMPORT'], 'Import', 'SalaryRanges');
+}

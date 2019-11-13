@@ -43,61 +43,45 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$module_name = 'SalaryRange';
-$viewdefs[$module_name] = array(
-    'DetailView' => array(
-        'templateMeta' => array(
-            'form' => array(
-                'buttons' => array(
-                    'EDIT',
-                    'DUPLICATE',
-                    'DELETE',
-                    'FIND_DUPLICATES',
-                ),
-            ),
-            'useTabs' => true,
-            'maxColumns' => '2',
-            'widths' => array(
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-            ),
-            'tabDefs' => array(
-                'LBL_RECORDVIEW_PANEL1' => array(
-                    'newTab' => true,
-                    'panelDefault' => 'expanded',
-                ),
-            ),
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$module_name = 'SalaryRanges';
+$viewdefs[$module_name]['QuickCreate'] = array(
+    'templateMeta' => array('maxColumns' => '2',
+        'widths' => array(
+            array('label' => '10', 'field' => '30'),
+            array('label' => '10', 'field' => '30'),
         ),
-        'panels' => array(
-            'LBL_RECORDVIEW_PANEL1' => array(
-                array(
-                    'name',
-                    'position_name',
-                ),
-                array(
-                    'start_date',
-                    'end_date',
-                ),
-                array(
-                    'gross_value_from',
-                    'gross_value_to',
-                ),
-                array(
-                    'net_value_from',
-                    'net_value_to',
-                ),
-                array(
-                    'employer_costs_from',
-                    'employer_costs_to',
-                ),
+    ),
+    'panels' => array(
+        'default' => array(
+            array(
+                'position_name',
             ),
-
+            array(
+                'start_date',
+                'end_date',
+            ),
+            array(
+                'gross_value_from',
+                'gross_value_to',
+            ),
+            array(
+                'net_value_from',
+                'net_value_to',
+            ),
+            array(
+                'employer_costs_from',
+                'employer_costs_to',
+            ),
         ),
     ),
 );

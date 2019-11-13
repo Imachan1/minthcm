@@ -43,10 +43,18 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$module_name = 'SalaryRange';
+$module_name = 'SalaryRanges';
 $viewdefs[$module_name] = array(
-    'EditView' => array(
+    'DetailView' => array(
         'templateMeta' => array(
+            'form' => array(
+                'buttons' => array(
+                    'EDIT',
+                    'DUPLICATE',
+                    'DELETE',
+                    'FIND_DUPLICATES',
+                ),
+            ),
             'useTabs' => true,
             'maxColumns' => '2',
             'widths' => array(
@@ -69,6 +77,7 @@ $viewdefs[$module_name] = array(
         'panels' => array(
             'LBL_RECORDVIEW_PANEL1' => array(
                 array(
+                    'name',
                     'position_name',
                 ),
                 array(

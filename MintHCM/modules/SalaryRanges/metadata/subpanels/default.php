@@ -60,7 +60,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 $subpanel_layout = array(
     'top_buttons' => array(
         array('widget_class' => 'SubPanelTopCreateButton'),
-        array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'SalaryRange'),
+        array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'SalaryRanges'),
     ),
     'where' => '',
     'list_fields' => array(
@@ -87,12 +87,12 @@ $subpanel_layout = array(
         'edit_button' => array(
             'vname' => 'LBL_EDIT_BUTTON',
             'widget_class' => 'SubPanelEditButton',
-            'module' => 'SalaryRange',
+            'module' => 'SalaryRanges',
         ),
         'remove_button' => array(
             'vname' => 'LBL_REMOVE',
             'widget_class' => 'SubPanelRemoveButton',
-            'module' => 'SalaryRange',
+            'module' => 'SalaryRanges',
         ),
     ),
 );

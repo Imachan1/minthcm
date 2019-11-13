@@ -274,15 +274,15 @@ $dictionary['Positions'] = array(
             'bean_name' => 'OrganizationalUnits',
             'vname' => 'LBL_ORGANIZATIONALUNITS_POSITIONS_MEMBERSHIP',
         ),
-        'salaryrange' => array(
-            'name' => 'salaryrange',
+        'salaryranges' => array(
+            'name' => 'salaryranges',
             'type' => 'link',
             'relationship' => 'position_salaryranges',
             'source' => 'non-db',
-            'module' => 'SalaryRange',
-            'bean_name' => 'SalaryRange',
+            'module' => 'SalaryRanges',
+            'bean_name' => 'SalaryRanges',
             'side' => 'right',
-            'vname' => 'LBL_SALARYRANGE',
+            'vname' => 'LBL_SALARYRANGES',
         ),
     ),
     'relationships' => array(
