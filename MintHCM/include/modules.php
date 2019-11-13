@@ -7,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -35,13 +35,12 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
 
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
@@ -219,7 +218,6 @@ $beanFiles['Configurator'] = 'modules/Configurator/Configurator.php';
 
 $beanFiles['Spots'] = 'modules/Spots/Spots.php';
 $beanFiles['AOBH_BusinessHours'] = 'modules/AOBH_BusinessHours/AOBH_BusinessHours.php';
-
 
 // added these lists for security settings for tabs
 $modInvisList = array(
@@ -525,8 +523,6 @@ $beanList['OAuth2Clients'] = 'OAuth2Clients';
 $beanFiles['OAuth2Clients'] = 'modules/OAuth2Clients/OAuth2Clients.php';
 $modInvisList[] = 'OAuth2Clients';
 
-
-
 $beanList['SurveyResponses'] = 'SurveyResponses';
 $beanFiles['SurveyResponses'] = 'modules/SurveyResponses/SurveyResponses.php';
 $modules_exempt_from_availability_check['SurveyResponses'] = 'SurveyResponses';
@@ -551,177 +547,179 @@ $modules_exempt_from_availability_check['SurveyQuestionOptions'] = 'SurveyQuesti
 $report_include_modules['SurveyQuestionOptions'] = 'SurveyQuestionOptions';
 $modInvisList[] = 'SurveyQuestionOptions';
 
+$beanFiles['ReservationsCalendar'] = 'modules/ReservationsCalendar/ReservationsCalendar.php';
+$beanFiles['ResponsibilityActivities'] = 'modules/ResponsibilityActivities/ResponsibilityActivities.php';
+$beanFiles['Improvements'] = 'modules/Improvements/Improvements.php';
+$beanFiles['Conclusions'] = 'modules/Conclusions/Conclusions.php';
+$beanFiles['Problems'] = 'modules/Problems/Problems.php';
+$beanFiles['Candidates'] = 'modules/Candidates/Candidates.php';
+$beanFiles['Candidatures'] = 'modules/Candidatures/Candidatures.php';
+$beanFiles['Costs'] = 'modules/Costs/Costs.php';
+$beanFiles['Delegations'] = 'modules/Delegations/Delegations.php';
+$beanFiles['DelegationsLocale'] = 'modules/DelegationsLocale/DelegationsLocale.php';
+$beanFiles['Ideas'] = 'modules/Ideas/Ideas.php';
+$beanFiles['Positions'] = 'modules/Positions/Positions.php';
+$beanFiles['Recruitments'] = 'modules/Recruitments/Recruitments.php';
+$beanFiles['Transportations'] = 'modules/Transportations/Transportations.php';
+$beanFiles['EmployeeRoles'] = 'modules/EmployeeRoles/EmployeeRoles.php';
+$beanFiles['Benefits'] = 'modules/Benefits/Benefits.php';
+$beanFiles['Responsibilities'] = 'modules/Responsibilities/Responsibilities.php';
+$beanFiles['SpentTime'] = 'modules/SpentTime/SpentTime.php';
+$beanFiles['WorkSchedules'] = 'modules/WorkSchedules/WorkSchedules.php';
+$beanFiles['WorkingMonths'] = 'modules/WorkingMonths/WorkingMonths.php';
+$beanFiles['NonWorkingDays'] = 'modules/NonWorkingDays/NonWorkingDays.php';
+$beanFiles['Resources'] = 'modules/Resources/Resources.php';
+$beanFiles['PeriodsOfEmployment'] = 'modules/PeriodsOfEmployment/PeriodsOfEmployment.php';
+$beanFiles['Reservations'] = 'modules/Reservations/Reservations.php';
+$beanFiles['Contracts'] = 'modules/Contracts/Contracts.php';
+$beanFiles['TermsOfEmployment'] = 'modules/TermsOfEmployment/TermsOfEmployment.php';
+$beanFiles['OrganizationalUnits'] = 'modules/OrganizationalUnits/OrganizationalUnits.php';
+$beanFiles['Trainings'] = 'modules/Trainings/Trainings.php';
+$beanFiles['OnboardingOffboardingElements'] = 'modules/OnboardingOffboardingElements/OnboardingOffboardingElements.php';
+$beanFiles['OnboardingTemplates'] = 'modules/OnboardingTemplates/OnboardingTemplates.php';
+$beanFiles['OffboardingTemplates'] = 'modules/OffboardingTemplates/OffboardingTemplates.php';
+$beanFiles['ExitInterviews'] = 'modules/ExitInterviews/ExitInterviews.php';
+$beanFiles['Goals'] = 'modules/Goals/Goals.php';
+$beanFiles['Appraisals'] = 'modules/Appraisals/Appraisals.php';
+$beanFiles['AppraisalItems'] = 'modules/AppraisalItems/AppraisalItems.php';
+$beanFiles['Onboardings'] = 'modules/Onboardings/Onboardings.php';
+$beanFiles['Offboardings'] = 'modules/Offboardings/Offboardings.php';
+$beanFiles['CompetencyRatings'] = 'modules/CompetencyRatings/CompetencyRatings.php';
+$beanFiles['Competencies'] = 'modules/Competencies/Competencies.php';
+$beanFiles['CareerPaths'] = 'modules/CareerPaths/CareerPaths.php';
+$beanFiles['News'] = 'modules/News/News.php';
+$beanFiles['UsersNews'] = 'modules/UsersNews/UsersNews.php';
+$beanFiles['Certificates'] = 'modules/Certificates/Certificates.php';
+$beanFiles['Applications'] = 'modules/Applications/Applications.php';
+$beanFiles['DashboardBackups'] = 'modules/DashboardBackups/DashboardBackups.php';
+$beanFiles['DashboardManager'] = 'modules/DashboardManager/DashboardManager.php';
+$beanFiles['DashboardHistory'] = 'modules/DashboardHistory/DashboardHistory.php';
+$beanFiles['KReport'] = 'modules/KReports/KReport.php';
+$beanFiles['ScheduleReports'] = 'modules/ScheduleReports/ScheduleReports.php';
+$beanFiles['ScheduleReportsLogs'] = 'modules/ScheduleReportsLogs/ScheduleReportsLogs.php';
+$beanFiles['KTemplates'] = 'modules/KTemplates/KTemplates.php';
+$beanFiles['PDFGenerator'] = 'modules/PDFGenerator/PDFGenerator.php';
+$beanFiles['PDFTemplates'] = 'modules/PDFTemplates/PDFTemplates.php';
+//
+$beanFiles['Skills'] = 'modules/Skills/Skills.php';
+$beanFiles['Attitudes'] = 'modules/Attitudes/Attitudes.php';
+$beanFiles['Knowledge'] = 'modules/Knowledge/Knowledge.php';
+$beanFiles['SalaryRanges'] = 'modules/SalaryRanges/SalaryRanges.php';
+//
 
- $beanFiles['ReservationsCalendar']= 'modules/ReservationsCalendar/ReservationsCalendar.php';
- $beanFiles['ResponsibilityActivities']= 'modules/ResponsibilityActivities/ResponsibilityActivities.php';
- $beanFiles['Improvements']= 'modules/Improvements/Improvements.php';
- $beanFiles['Conclusions']= 'modules/Conclusions/Conclusions.php';
- $beanFiles['Problems']= 'modules/Problems/Problems.php';
- $beanFiles['Candidates']= 'modules/Candidates/Candidates.php';
- $beanFiles['Candidatures']= 'modules/Candidatures/Candidatures.php';
- $beanFiles['Costs']= 'modules/Costs/Costs.php';
- $beanFiles['Delegations']= 'modules/Delegations/Delegations.php';
- $beanFiles['DelegationsLocale']= 'modules/DelegationsLocale/DelegationsLocale.php';
- $beanFiles['Ideas']= 'modules/Ideas/Ideas.php';
- $beanFiles['Positions']= 'modules/Positions/Positions.php';
- $beanFiles['Recruitments']= 'modules/Recruitments/Recruitments.php';
- $beanFiles['Transportations']= 'modules/Transportations/Transportations.php';
- $beanFiles['EmployeeRoles']= 'modules/EmployeeRoles/EmployeeRoles.php';
- $beanFiles['Benefits']= 'modules/Benefits/Benefits.php';
- $beanFiles['Responsibilities']= 'modules/Responsibilities/Responsibilities.php';
- $beanFiles['SpentTime']= 'modules/SpentTime/SpentTime.php';
- $beanFiles['WorkSchedules']= 'modules/WorkSchedules/WorkSchedules.php';
- $beanFiles['WorkingMonths']= 'modules/WorkingMonths/WorkingMonths.php';
- $beanFiles['NonWorkingDays']= 'modules/NonWorkingDays/NonWorkingDays.php';
- $beanFiles['Resources']= 'modules/Resources/Resources.php';
- $beanFiles['PeriodsOfEmployment']= 'modules/PeriodsOfEmployment/PeriodsOfEmployment.php';
- $beanFiles['Reservations']= 'modules/Reservations/Reservations.php';
- $beanFiles['Contracts']= 'modules/Contracts/Contracts.php';
- $beanFiles['TermsOfEmployment']= 'modules/TermsOfEmployment/TermsOfEmployment.php';
- $beanFiles['OrganizationalUnits']= 'modules/OrganizationalUnits/OrganizationalUnits.php';
- $beanFiles['Trainings']= 'modules/Trainings/Trainings.php';
- $beanFiles['OnboardingOffboardingElements']= 'modules/OnboardingOffboardingElements/OnboardingOffboardingElements.php';
- $beanFiles['OnboardingTemplates']= 'modules/OnboardingTemplates/OnboardingTemplates.php';
- $beanFiles['OffboardingTemplates']= 'modules/OffboardingTemplates/OffboardingTemplates.php';
- $beanFiles['ExitInterviews']= 'modules/ExitInterviews/ExitInterviews.php';
- $beanFiles['Goals']= 'modules/Goals/Goals.php';
- $beanFiles['Appraisals']= 'modules/Appraisals/Appraisals.php';
- $beanFiles['AppraisalItems']= 'modules/AppraisalItems/AppraisalItems.php';
- $beanFiles['Onboardings']= 'modules/Onboardings/Onboardings.php';
- $beanFiles['Offboardings']= 'modules/Offboardings/Offboardings.php';
- $beanFiles['CompetencyRatings']= 'modules/CompetencyRatings/CompetencyRatings.php';
- $beanFiles['Competencies']= 'modules/Competencies/Competencies.php';
- $beanFiles['CareerPaths']= 'modules/CareerPaths/CareerPaths.php';
- $beanFiles['News']= 'modules/News/News.php';
- $beanFiles['UsersNews']= 'modules/UsersNews/UsersNews.php';
- $beanFiles['Certificates']= 'modules/Certificates/Certificates.php';
- $beanFiles['Applications']= 'modules/Applications/Applications.php';
- $beanFiles['DashboardBackups']= 'modules/DashboardBackups/DashboardBackups.php';
- $beanFiles['DashboardManager']= 'modules/DashboardManager/DashboardManager.php';
- $beanFiles['DashboardHistory']= 'modules/DashboardHistory/DashboardHistory.php';
- $beanFiles['KReport']= 'modules/KReports/KReport.php';
- $beanFiles['ScheduleReports']= 'modules/ScheduleReports/ScheduleReports.php';
- $beanFiles['ScheduleReportsLogs']= 'modules/ScheduleReportsLogs/ScheduleReportsLogs.php';
- $beanFiles['KTemplates']= 'modules/KTemplates/KTemplates.php';
- $beanFiles['PDFGenerator']= 'modules/PDFGenerator/PDFGenerator.php';
- $beanFiles['PDFTemplates']= 'modules/PDFTemplates/PDFTemplates.php';
- // 
- $beanFiles['Skills']= 'modules/Skills/Skills.php';
- $beanFiles['Attitudes']= 'modules/Attitudes/Attitudes.php';
- $beanFiles['Knowledge']= 'modules/Knowledge/Knowledge.php';
- //
- 
- $beanList['Skills']='Skills';
- $beanList['Attitudes']='Attitudes';
- $beanList['Knowledge']='Knowledge';
- 
-  $beanList['ReservationsCalendar']='ReservationsCalendar';
- $beanList['ResponsibilityActivities']='ResponsibilityActivities';
- $beanList['Improvements']='Improvements';
- $beanList['Conclusions']='Conclusions';
- $beanList['Problems']='Problems';
- $beanList['Candidates']='Candidates';
- $beanList['Candidatures']='Candidatures';
- $beanList['Costs']='Costs';
- $beanList['Delegations']='Delegations';
- $beanList['DelegationsLocale']='DelegationsLocale';
- $beanList['Ideas']='Ideas';
- $beanList['Positions']='Positions';
- $beanList['Recruitments']='Recruitments';
- $beanList['Transportations']='Transportations';
- $beanList['EmployeeRoles']='EmployeeRoles';
- $beanList['Benefits']='Benefits';
- $beanList['Responsibilities']='Responsibilities';
- $beanList['SpentTime']='SpentTime';
- $beanList['WorkSchedules']='WorkSchedules';
- $beanList['WorkingMonths']='WorkingMonths';
- $beanList['NonWorkingDays']='NonWorkingDays';
- $beanList['Resources']='Resources';
- $beanList['PeriodsOfEmployment']='PeriodsOfEmployment';
- $beanList['Reservations']='Reservations';
- $beanList['Contracts']='Contracts';
- $beanList['TermsOfEmployment']='TermsOfEmployment';
- $beanList['OrganizationalUnits']='OrganizationalUnits';
- $beanList['Trainings']='Trainings';
- $beanList['OnboardingOffboardingElements']='OnboardingOffboardingElements';
- $beanList['OnboardingTemplates']='OnboardingTemplates';
- $beanList['OffboardingTemplates']='OffboardingTemplates';
- $beanList['ExitInterviews']='ExitInterviews';
- $beanList['Goals']='Goals';
- $beanList['Appraisals']='Appraisals';
- $beanList['AppraisalItems']='AppraisalItems';
- $beanList['Onboardings']='Onboardings';
- $beanList['Offboardings']='Offboardings';
- $beanList['CompetencyRatings']='CompetencyRatings';
- $beanList['Competencies']='Competencies';
- $beanList['CareerPaths']='CareerPaths';
- $beanList['News']='News';
- $beanList['UsersNews']='UsersNews';
- $beanList['Certificates']='Certificates';
- $beanList['Applications']='Applications';
- $beanList['DashboardBackups']='DashboardBackups';
- $beanList['DashboardManager']='DashboardManager';
- $beanList['DashboardHistory']='DashboardHistory';
- $beanList['KReports']='KReport';
- $beanList['ScheduleReports']='ScheduleReports';
- $beanList['ScheduleReportsLogs']='ScheduleReportsLogs';
- $beanList['KTemplates']='KTemplates';
- $beanList['PDFGenerator']='PDFGenerator';
- $beanList['PDFTemplates']='PDFTemplates';
- // 
- $beanList['Skills']= 'Skills';
- $beanList['Attitudes']= 'Attitudes';
- $beanList['Knowledge']= 'Knowledge';
- //
- $moduleList[]='ReservationsCalendar';
- $moduleList[]='ResponsibilityActivities';
- $moduleList[]='Improvements';
- $moduleList[]='Conclusions';
- $moduleList[]='Problems';
- $moduleList[]='Candidates';
- $moduleList[]='Candidatures';
- $moduleList[]='Delegations';
- $moduleList[]='Ideas';
- $moduleList[]='Positions';
- $moduleList[]='Recruitments';
- $moduleList[]='EmployeeRoles';
- $moduleList[]='Benefits';
- $moduleList[]='Responsibilities';
- $moduleList[]='WorkSchedules';
- $moduleList[]='WorkingMonths';
- $moduleList[]='NonWorkingDays';
- $moduleList[]='Resources';
- $moduleList[]='PeriodsOfEmployment';
- $moduleList[]='Reservations';
- $moduleList[]='Contracts';
- $moduleList[]='TermsOfEmployment';
- $moduleList[]='OrganizationalUnits';
- $moduleList[]='Trainings';
- $moduleList[]='OnboardingOffboardingElements';
- $moduleList[]='OnboardingTemplates';
- $moduleList[]='OffboardingTemplates';
- $moduleList[]='ExitInterviews';
- $moduleList[]='Goals';
- $moduleList[]='Appraisals';
- $moduleList[]='Onboardings';
- $moduleList[]='Offboardings';
- $moduleList[]='Competencies';
- $moduleList[]='News';
- $moduleList[]='Certificates';
- $moduleList[]='Applications';
- $moduleList[]='KReports';
- $moduleList[]='KTemplates';
- $moduleList[]='PDFTemplates';
- $moduleList[]='ScheduleReports';
- $moduleList[]='ScheduleReportsLogs';
- //
- $moduleList[]='Skills';
- $moduleList[]='Attitudes';
- $moduleList[]='Knowledge';
- //
+$beanList['Skills'] = 'Skills';
+$beanList['Attitudes'] = 'Attitudes';
+$beanList['Knowledge'] = 'Knowledge';
+
+$beanList['ReservationsCalendar'] = 'ReservationsCalendar';
+$beanList['ResponsibilityActivities'] = 'ResponsibilityActivities';
+$beanList['Improvements'] = 'Improvements';
+$beanList['Conclusions'] = 'Conclusions';
+$beanList['Problems'] = 'Problems';
+$beanList['Candidates'] = 'Candidates';
+$beanList['Candidatures'] = 'Candidatures';
+$beanList['Costs'] = 'Costs';
+$beanList['Delegations'] = 'Delegations';
+$beanList['DelegationsLocale'] = 'DelegationsLocale';
+$beanList['Ideas'] = 'Ideas';
+$beanList['Positions'] = 'Positions';
+$beanList['Recruitments'] = 'Recruitments';
+$beanList['Transportations'] = 'Transportations';
+$beanList['EmployeeRoles'] = 'EmployeeRoles';
+$beanList['Benefits'] = 'Benefits';
+$beanList['Responsibilities'] = 'Responsibilities';
+$beanList['SpentTime'] = 'SpentTime';
+$beanList['WorkSchedules'] = 'WorkSchedules';
+$beanList['WorkingMonths'] = 'WorkingMonths';
+$beanList['NonWorkingDays'] = 'NonWorkingDays';
+$beanList['Resources'] = 'Resources';
+$beanList['PeriodsOfEmployment'] = 'PeriodsOfEmployment';
+$beanList['Reservations'] = 'Reservations';
+$beanList['Contracts'] = 'Contracts';
+$beanList['TermsOfEmployment'] = 'TermsOfEmployment';
+$beanList['OrganizationalUnits'] = 'OrganizationalUnits';
+$beanList['Trainings'] = 'Trainings';
+$beanList['OnboardingOffboardingElements'] = 'OnboardingOffboardingElements';
+$beanList['OnboardingTemplates'] = 'OnboardingTemplates';
+$beanList['OffboardingTemplates'] = 'OffboardingTemplates';
+$beanList['ExitInterviews'] = 'ExitInterviews';
+$beanList['Goals'] = 'Goals';
+$beanList['Appraisals'] = 'Appraisals';
+$beanList['AppraisalItems'] = 'AppraisalItems';
+$beanList['Onboardings'] = 'Onboardings';
+$beanList['Offboardings'] = 'Offboardings';
+$beanList['CompetencyRatings'] = 'CompetencyRatings';
+$beanList['Competencies'] = 'Competencies';
+$beanList['CareerPaths'] = 'CareerPaths';
+$beanList['News'] = 'News';
+$beanList['UsersNews'] = 'UsersNews';
+$beanList['Certificates'] = 'Certificates';
+$beanList['Applications'] = 'Applications';
+$beanList['DashboardBackups'] = 'DashboardBackups';
+$beanList['DashboardManager'] = 'DashboardManager';
+$beanList['DashboardHistory'] = 'DashboardHistory';
+$beanList['KReports'] = 'KReport';
+$beanList['ScheduleReports'] = 'ScheduleReports';
+$beanList['ScheduleReportsLogs'] = 'ScheduleReportsLogs';
+$beanList['KTemplates'] = 'KTemplates';
+$beanList['PDFGenerator'] = 'PDFGenerator';
+$beanList['PDFTemplates'] = 'PDFTemplates';
+//
+$beanList['Skills'] = 'Skills';
+$beanList['Attitudes'] = 'Attitudes';
+$beanList['Knowledge'] = 'Knowledge';
+$beanList['SalaryRanges'] = 'SalaryRanges';
+//
+$moduleList[] = 'ReservationsCalendar';
+$moduleList[] = 'ResponsibilityActivities';
+$moduleList[] = 'Improvements';
+$moduleList[] = 'Conclusions';
+$moduleList[] = 'Problems';
+$moduleList[] = 'Candidates';
+$moduleList[] = 'Candidatures';
+$moduleList[] = 'Delegations';
+$moduleList[] = 'Ideas';
+$moduleList[] = 'Positions';
+$moduleList[] = 'Recruitments';
+$moduleList[] = 'EmployeeRoles';
+$moduleList[] = 'Benefits';
+$moduleList[] = 'Responsibilities';
+$moduleList[] = 'WorkSchedules';
+$moduleList[] = 'WorkingMonths';
+$moduleList[] = 'NonWorkingDays';
+$moduleList[] = 'Resources';
+$moduleList[] = 'PeriodsOfEmployment';
+$moduleList[] = 'Reservations';
+$moduleList[] = 'Contracts';
+$moduleList[] = 'TermsOfEmployment';
+$moduleList[] = 'OrganizationalUnits';
+$moduleList[] = 'Trainings';
+$moduleList[] = 'OnboardingOffboardingElements';
+$moduleList[] = 'OnboardingTemplates';
+$moduleList[] = 'OffboardingTemplates';
+$moduleList[] = 'ExitInterviews';
+$moduleList[] = 'Goals';
+$moduleList[] = 'Appraisals';
+$moduleList[] = 'Onboardings';
+$moduleList[] = 'Offboardings';
+$moduleList[] = 'Competencies';
+$moduleList[] = 'News';
+$moduleList[] = 'Certificates';
+$moduleList[] = 'Applications';
+$moduleList[] = 'KReports';
+$moduleList[] = 'KTemplates';
+$moduleList[] = 'PDFTemplates';
+$moduleList[] = 'ScheduleReports';
+$moduleList[] = 'ScheduleReportsLogs';
+//
+$moduleList[] = 'Skills';
+$moduleList[] = 'Attitudes';
+$moduleList[] = 'Knowledge';
+$moduleList[] = 'SalaryRanges';
+//
 if (file_exists('include/modules_override.php')) {
     include 'include/modules_override.php';
 }
 if (file_exists('custom/application/Ext/Include/modules.ext.php')) {
-    include('custom/application/Ext/Include/modules.ext.php');
+    include 'custom/application/Ext/Include/modules.ext.php';
 }
