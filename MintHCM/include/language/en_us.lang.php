@@ -2103,6 +2103,7 @@ $app_strings = array(
     'LBL_NAV_TIME_TRACKING' => 'Time Tracking',
     'LBL_NAV_COMPANY_LIFE' => 'Company Life',
     'LBL_NAV_EMPLOYEE' => 'Employee',
+    
 
 );
 

@@ -1289,6 +1289,7 @@ function insert_default_settings() {
     'Skills',
     'Knowledge',
     'Attitudes',
+    'SalaryRanges',
     );
 
    $hidden_subpanels = array (
