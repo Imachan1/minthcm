@@ -15,6 +15,11 @@ $dictionary['SalaryRange'] = array(
             'importable' => 'required',
             'reportable' => true,
             'audited' => true,
+            'validation' => array(
+                'type' => 'isbefore',
+                'compareto' => 'end_date',
+                'blank' => true,
+            ),
         ),
         'end_date' => array(
             'name' => 'end_date',
@@ -24,6 +29,7 @@ $dictionary['SalaryRange'] = array(
             'importable' => 'true',
             'reportable' => true,
             'audited' => true,
+            'enable_range_search' => true,
         ),
         'gross_value_from' => array(
             'name' => 'gross_value_from',
