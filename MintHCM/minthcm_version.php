@@ -46,5 +46,5 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-$minthcm_version = '3.0.2.5';
+$minthcm_version = '3.0.2.6';
 $minthcm_timestamp = '2019-10-25-00:00:00';
