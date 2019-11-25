@@ -95,6 +95,16 @@ class DashletGeneric extends Dashlet {
      */
     var $showMyItemsOnly = true;
     /**
+     * Flag to display only the current users's favourite items.
+     * @var bool
+     */
+    var $myFavorites = false;
+    /**
+     * Flag to display "myFavorites" checkbox in the DashletGenericConfigure.
+     * @var bool
+     */
+    var $showMyFavorites = true;
+    /**
      * location of Smarty template file for display
      * @var string
      */
@@ -130,6 +140,7 @@ class DashletGeneric extends Dashlet {
             if(!empty($options['displayRows'])) $this->displayRows = $options['displayRows'];
             if(!empty($options['displayColumns'])) $this->displayColumns = $options['displayColumns'];
             if(isset($options['myItemsOnly'])) $this->myItemsOnly = $options['myItemsOnly'];
+            if(isset($options['myFavorites'])) $this->myFavorites = $options['myFavorites'];
             if(isset($options['autoRefresh'])) $this->autoRefresh = $options['autoRefresh'];
         }
 
@@ -254,10 +265,10 @@ class DashletGeneric extends Dashlet {
             }
         }
         $this->currentSearchFields = $currentSearchFields;
-
         $this->configureSS->assign('strings', array('general' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_GENERAL'],
                                      'filters' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_FILTERS'],
                                      'myItems' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_MY_ITEMS_ONLY'],
+                                     'myFavorites' => $GLOBALS['app_strings']['LBL_DASHLET_CONFIGURE_MY_FAVORITES'],
                                      'displayRows' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_DISPLAY_ROWS'],
                                      'title' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_TITLE'],
                                      'save' => $GLOBALS['app_strings']['LBL_SAVE_BUTTON_LABEL'],
@@ -266,7 +277,9 @@ class DashletGeneric extends Dashlet {
                                      ));
         $this->configureSS->assign('id', $this->id);
         $this->configureSS->assign('showMyItemsOnly', $this->showMyItemsOnly);
+        $this->configureSS->assign('showMyFavorites', $this->showMyFavorites);
         $this->configureSS->assign('myItemsOnly', $this->myItemsOnly);
+        $this->configureSS->assign('myFavorites', $this->myFavorites);
         $this->configureSS->assign('searchFields', $this->currentSearchFields);
         $this->configureSS->assign('showClearButton', $this->isConfigPanelClearShown);
         // title
@@ -308,7 +321,7 @@ class DashletGeneric extends Dashlet {
         }
         foreach($this->filters as $name=>$params) {
             if(!empty($params)) {
-                if($name == 'assigned_user_id' && $this->myItemsOnly) continue; // don't handle assigned user filter if filtering my items only
+                if($name == 'assigned_user_id' && $this->myItemsOnly)  continue; // don't handle assigned user filter if filtering my items only
                 $widgetDef = $this->seedBean->field_defs[$name];
 
                 $widgetClass = $this->layoutManager->getClassFromWidgetDef($widgetDef, true);
@@ -360,6 +373,11 @@ class DashletGeneric extends Dashlet {
         }
 
         if($this->myItemsOnly) array_push($returnArray, $this->seedBean->table_name . '.' . "assigned_user_id = '" . $current_user->id . "'");
+        if($this->myFavorites){
+            $favorites_sql = "id IN (SELECT parent_id FROM favorites WHERE parent_type = '{$this->seedBean->module_name}' AND assigned_user_id = '{$current_user->id}' AND deleted = '0' )";
+
+            array_push($returnArray, $favorites_sql);
+        } 
 
         return $returnArray;
     }
@@ -395,7 +413,7 @@ class DashletGeneric extends Dashlet {
 		$this->loadCustomMetadata();
         $this->addCustomFields();
         // apply filters
-        if(isset($this->filters) || $this->myItemsOnly) {
+        if(isset($this->filters) || $this->myItemsOnly || $this->myFavorites) {
             $whereArray = $this->buildWhere();
         }
 
@@ -530,6 +548,15 @@ class DashletGeneric extends Dashlet {
             }
             else {
                 $options['myItemsOnly'] = false;
+            }
+            
+        }
+        if($this->showMyFavorites){
+            if(!empty($req['myFavorites'])) {
+                $options['myFavorites'] = $req['myFavorites'];
+            }
+            else {
+            $options['myFavorites'] = false;
             }
         }
         $options['displayRows'] = empty($req['displayRows']) ? '5' : $req['displayRows'];

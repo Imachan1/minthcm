@@ -7,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -35,26 +35,26 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-require_once('include/Dashlets/DashletGeneric.php');
-require_once('modules/OnboardingOffboardingElements/OnboardingOffboardingElements.php');
+require_once 'include/Dashlets/DashletGeneric.php';
+require_once 'modules/OnboardingOffboardingElements/OnboardingOffboardingElements.php';
 
 class OnboardingOffboardingElementsDashlet extends DashletGeneric
 {
 
-    function __construct($id, $def = null)
+    public function __construct($id, $def = null)
     {
 
-        require('modules/OnboardingOffboardingElements/metadata/dashletviewdefs.php');
+        require 'modules/OnboardingOffboardingElements/metadata/dashletviewdefs.php';
 
         parent::__construct($id, $def);
 
@@ -63,11 +63,11 @@ class OnboardingOffboardingElementsDashlet extends DashletGeneric
                 'OnboardingOffboardingElements');
         }
         $this->searchFields = $dashletData['OnboardingOffboardingElementsDashlet']['searchFields'];
-        $this->columns      = $dashletData['OnboardingOffboardingElementsDashlet']['columns'];
-        $this->seedBean     = BeanFactory::newBean('OnboardingOffboardingElements');
+        $this->columns = $dashletData['OnboardingOffboardingElementsDashlet']['columns'];
+        $this->seedBean = BeanFactory::newBean('OnboardingOffboardingElements');
     }
 
-    function process($lvsParams = array(), $id = null)
+    public function process($lvsParams = array(), $id = null)
     {
         global $current_language, $app_list_strings, $current_user;
         $mod_strings = return_module_language($current_language,
@@ -77,17 +77,17 @@ class OnboardingOffboardingElementsDashlet extends DashletGeneric
             $lvsParams['custom_where'] = " AND (onboardingoffboardingelements.assigned_user_id = '{$current_user->id}) ";
         }
 
-        $this->myItemsOnly          = false;
+        $this->myItemsOnly = false;
         $lvsParams['custom_select'] = ', onboardingoffboardingelements.date_entered ';
-        $lvsParams['distinct']      = true;
+        $lvsParams['distinct'] = true;
 
         parent::process($lvsParams);
 
         foreach ($this->lvs->data['data'] as $rowNum => $row) {
             if (empty($this->lvs->data['data'][$rowNum]['TASK_DURATION_HOURS'])) {
-                $this->lvs->data['data'][$rowNum]['TASK_DURATION'] = '0'.$mod_strings['LBL_HOURS_ABBREV'];
+                $this->lvs->data['data'][$rowNum]['TASK_DURATION'] = '0' . $mod_strings['LBL_HOURS_ABBREV'];
             } else {
-                $this->lvs->data['data'][$rowNum]['TASK_DURATION'] = $this->lvs->data['data'][$rowNum]['TASK_DURATION_HOURS'].
+                $this->lvs->data['data'][$rowNum]['TASK_DURATION'] = $this->lvs->data['data'][$rowNum]['TASK_DURATION_HOURS'] .
                     $mod_strings['LBL_HOURS_ABBREV'];
             }
 
@@ -103,21 +103,22 @@ class OnboardingOffboardingElementsDashlet extends DashletGeneric
         }
     }
 
-    function displayOptions()
+    public function displayOptions()
     {
         $this->processDisplayOptions();
         $this->configureSS->assign('strings',
             array(
-            'general' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_GENERAL'],
-            'filters' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_FILTERS'],
-            'myItems' => translate('LBL_DASHLET_CONFIGURE_MY_ITEMS_ONLY',
-                'OnboardingOffboardingElements'),
-            'displayRows' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_DISPLAY_ROWS'],
-            'title' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_TITLE'],
-            'clear' => $GLOBALS['app_strings']['LBL_CLEAR_BUTTON_LABEL'],
-            'save' => $GLOBALS['app_strings']['LBL_SAVE_BUTTON_LABEL'],
-            'autoRefresh' => $GLOBALS['app_strings']['LBL_DASHLET_CONFIGURE_AUTOREFRESH'],
-        ));
+                'general' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_GENERAL'],
+                'filters' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_FILTERS'],
+                'myItems' => translate('LBL_DASHLET_CONFIGURE_MY_ITEMS_ONLY',
+                    'OnboardingOffboardingElements'),
+                'myFavorites' => $GLOBALS['app_strings']['LBL_DASHLET_CONFIGURE_MY_FAVORITES'],
+                'displayRows' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_DISPLAY_ROWS'],
+                'title' => $GLOBALS['mod_strings']['LBL_DASHLET_CONFIGURE_TITLE'],
+                'clear' => $GLOBALS['app_strings']['LBL_CLEAR_BUTTON_LABEL'],
+                'save' => $GLOBALS['app_strings']['LBL_SAVE_BUTTON_LABEL'],
+                'autoRefresh' => $GLOBALS['app_strings']['LBL_DASHLET_CONFIGURE_AUTOREFRESH'],
+            ));
 
         return $this->configureSS->fetch($this->configureTpl);
     }
