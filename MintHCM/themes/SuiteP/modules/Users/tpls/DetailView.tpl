@@ -89,12 +89,12 @@
                         {{/foreach}}
                         {{counter name="tabCountXS" print=false}}
                         <li role="presentation">
-                            <a data-toggle="tab" id="tab{{$tabCount}}" href="#">{{$MOD.LBL_ADVANCED}}</a>
+                            <a data-toggle="tab" id="tab{{$tabCount}}" href="#">{$MOD.LBL_ADVANCED}</a>
                         </li>
                         {if $SHOW_ROLES == true}
                             {{counter name="tabCountXS" print=false}}
                             <li role="presentation">
-                                <a data-toggle="tab" id="tab{{$tabCount}}" href="#">{{$MOD.LBL_USER_ACCESS}}</a>
+                                <a data-toggle="tab" id="tab{{$tabCount}}" href="#">{$MOD.LBL_USER_ACCESS}</a>
                             </li>
                         {/if}
                         </ul>
@@ -113,12 +113,12 @@
         {{/if}}
         {{counter name="tabCount" print=false}}
         <li role="presentation" class="hidden-xs ">
-            <a data-toggle="tab" id="tab{{$tabCount}}" href="#">{{$MOD.LBL_ADVANCED}}</a>
+            <a data-toggle="tab" id="tab{{$tabCount}}" href="#">{$MOD.LBL_ADVANCED}</a>
         </li>
         {if $SHOW_ROLES}
             {{counter name="tabCount" print=false}}
             <li role="presentation" class="hidden-xs ">
-                <a data-toggle="tab" id="tab{{$tabCount}}" href="#">{{$MOD.LBL_USER_ACCESS}}</a>
+                <a data-toggle="tab" id="tab{{$tabCount}}" href="#">{$MOD.LBL_USER_ACCESS}</a>
             </li>
         {/if}
         {if $config.enable_action_menu}
