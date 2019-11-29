@@ -115,7 +115,7 @@ class DashboardDeployer
     protected function _deployRoleDashboards($chosen_user)
     {
         if ($this->_bean->load_relationship('users_one_time_default_dashboards')) {
-
+            $this->_bean->users_one_time_default_dashboards->add($chosen_user->id);
             $this->_deploy($chosen_user, $this->_bean->pages, $this->_bean->dashlets);
         } else {
             throw new Exception('Can not load relationship: users_one_time_default_dashboards');
