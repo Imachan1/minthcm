@@ -136,20 +136,6 @@ if (isset($_POST['user_name'])) {
 
 // if the user saved is a Regular User
 if (!$focus->is_group && !$focus->portal_only) {
-    //MINT #66316
-    if (isset($_POST['business_role'])) {
-        $sql = "SELECT id from dashboardmanager WHERE business_role = '{$_POST['business_role']}' AND deleted = 0";
-        $dm_id = $db->getOne($sql);
-
-        $dm_object = BeanFactory::getBean('DashboardManager', $dm_id);
-        if ($_POST['business_role'] != '' && $dm_object->business_role == $_POST['business_role']) {
-            $action = 'deployDashboards';
-            $dd = new DashboardDeployer($dm_object);
-            $dd->deployForRole($focus);
-        }
-        $focus->business_role = $_POST['business_role'];
-    }
-    //MINT END
     foreach ($focus->column_fields as $fieldName) {
         $field = $focus->field_defs[$fieldName];
         $type = !empty($field['custom_type']) ? $field['custom_type'] : $field['type'];
@@ -453,6 +439,18 @@ if (!$focus->verify_data()) {
     $GLOBALS['sugar_config']['disable_team_access_check'] = false;
     $return_id = $focus->id;
     $ieVerified = true;
+
+    //MINT #66316
+    if (isset($focus->business_role)) {
+        $sql = "SELECT id from dashboardmanager WHERE business_role = '{$focus->business_role}' AND deleted = 0";
+        $dashboardmanager_id = $db->getOne($sql);
+        if(!empty($dashboardmanager_id)){
+            $dm_object = BeanFactory::getBean('DashboardManager', $dashboardmanager_id);
+            $dd = new DashboardDeployer($dm_object);
+            $dd->deployForRole($focus);
+        }   
+    }
+    //MINT END
 
     global $new_pwd;
     $new_pwd = '';
