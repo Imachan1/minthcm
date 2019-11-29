@@ -144,7 +144,8 @@ class GenerateOnboardingOffboarding
         $bean->name = $element->name;
         $bean->description = $element->description;
         $bean->assigned_user_id = ((bool) $element->own_task ? $this->employee_id
-            : $element->users_id);
+            : $element->user_id);
+        $bean->assigned_user_name = $element->user_name;
         $date_start_object = new DateTime($this->date_start);
         $days_from_start = (int) $element->days_from_start;
         $date_start_object->modify("+{$days_from_start} days");
@@ -164,7 +165,8 @@ class GenerateOnboardingOffboarding
         $bean = BeanFactory::newBean('Trainings');
         $bean->name = $element->name;
         $bean->description = $element->description;
-        $bean->assigned_user_id = $element->users_id;
+        $bean->assigned_user_id = $element->user_id;
+        $bean->assigned_user_name = $element->user_name;
         $date_start_object = new DateTime($this->date_start);
         $days_from_start = (int) $element->days_from_start;
         $date_start_object->modify("+{$days_from_start} days");
@@ -185,7 +187,8 @@ class GenerateOnboardingOffboarding
         $meeting_bean = BeanFactory::newBean('Meetings');
         $meeting_bean->name = $training_bean->name;
         $meeting_bean->type = 'training';
-        $meeting_bean->assigned_user_id = $element->users_id;
+        $meeting_bean->assigned_user_id = $element->user_id;
+        $meeting_bean->assigned_user_name = $element->user_name;
         $date_start_object = new DateTime($this->date_start);
         $days_from_start = (int) $element->days_from_start;
         $date_start_object->modify("+{$days_from_start} days");
@@ -196,8 +199,10 @@ class GenerateOnboardingOffboarding
         $meeting_bean->parent_type = $this->process->module_name;
         $meeting_bean->parent_id = $this->process->id;
         $meeting_bean->save();
-        if (!empty($meeting_bean->id) && !empty($training_bean->id) && $meeting_bean->load_relationship('trainings')) {
+        if (!empty($meeting_bean->id) && !empty($training_bean->id) && $meeting_bean->load_relationship('trainings') && $meeting_bean->load_relationship('users')) {
             $meeting_bean->trainings->add($training_bean->id);
+            $meeting_bean->users->add($this->process->employee_id);
+            $meeting_bean->users->add($element->user_id);
         }
         $this->addSecurityGroupToRecord($meeting_bean,
             $this->user_scheduled_onboarding->getUserPrivateGroup());
