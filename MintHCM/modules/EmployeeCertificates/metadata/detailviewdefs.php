@@ -43,7 +43,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$module_name = 'Certificates';
+$module_name = 'EmployeeCertificates';
 $viewdefs[$module_name] = array(
     'DetailView' => array(
         'templateMeta' => array(
@@ -82,7 +82,25 @@ $viewdefs[$module_name] = array(
             'lbl_default' => array(
                 array(
                     'name',
+                    'status',
+                ),
+                array(
+                    'start_date',
+                    'end_date',
+                ),
+                array(
+                    array(
+                        'name' => 'certificate_name',
+                        'label' => 'LBL_RELATIONSHIP_CERTIFICATE_NAME',
+                    ),
                     '',
+                ),
+                array(
+                    array(
+                        'name' => 'candidate_name',
+                        'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
+                    ),
+                    'employee_name',
                 ),
                 array(
                     'description',

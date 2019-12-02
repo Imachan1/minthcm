@@ -43,7 +43,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$module_name = 'Certificates';
+$module_name = 'EmployeeCertificates';
 $searchdefs[$module_name] = array(
     'layout' => array(
         'basic_search' => array(
@@ -71,6 +71,21 @@ $searchdefs[$module_name] = array(
                 'default' => true,
                 'name' => 'search_name',
             ),
+            'status' => array(
+                'name' => 'status',
+                'default' => true,
+                'width' => '10%',
+            ),
+            'start_date' => array(
+                'name' => 'start_date',
+                'default' => true,
+                'width' => '10%',
+            ),
+            'end_date' => array(
+                'name' => 'end_date',
+                'default' => true,
+                'width' => '10%',
+            ),
             'date_entered' => array(
                 'type' => 'datetime',
                 'label' => 'LBL_DATE_ENTERED',
@@ -84,6 +99,22 @@ $searchdefs[$module_name] = array(
                 'width' => '10%',
                 'default' => true,
                 'name' => 'date_modified',
+            ),
+            'candidate_name' => array(
+                'type' => 'relate',
+                'link' => true,
+                'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
+                'id' => 'CANDIDATE_ID',
+                'width' => '10%',
+                'default' => true,
+                'name' => 'candidate_name',
+            ),
+            'employee_name' => array(
+                'name' => 'employee_name',
+                'label' => 'LBL_EMPLOYEE_NAME',
+                'type' => 'relate',
+                'default' => true,
+                'width' => '10%',
             ),
             'assigned_user_id' => array(
                 'name' => 'assigned_user_id',

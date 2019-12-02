@@ -174,6 +174,7 @@ $app_list_strings = array(
       'Meetings' => 'Meetings',
       'Tasks' => 'Tasks',
       'SalaryRanges' => 'Salary Ranges',
+      'EmployeeCertificates' => 'Employee Certificates',
    ),
    'moduleListSingular' => array(
       'Home' => 'Home',
@@ -217,6 +218,7 @@ $app_list_strings = array(
       'Meetings' => 'Meeting',
       'Tasks' => 'Task',
       'SalaryRanges' => 'Salary Range',
+      'EmployeeCertificates' => 'Employee Certificate',
    ),
    'checkbox_dom' => array(
       '' => '',

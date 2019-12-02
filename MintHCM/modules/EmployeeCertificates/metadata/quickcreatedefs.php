@@ -53,7 +53,7 @@
  *
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
-$module_name = 'Certificates';
+$module_name = 'EmployeeCertificates';
 $viewdefs[$module_name]['QuickCreate'] = array(
     'templateMeta' => array('maxColumns' => '2',
         'widths' => array(
@@ -64,14 +64,18 @@ $viewdefs[$module_name]['QuickCreate'] = array(
     'panels' => array(
         'default' => array(
             array(
-                'name',
+                'status',
+            ),
+            array(
+                'start_date',
+                'end_date',
+            ),
+            array(
+                'candidate_name',
+                'employee_name',
             ),
             array(
                 'assigned_user_name',
-            ),
-            array(
-                'description',
-                '',
             ),
         ),
     ),

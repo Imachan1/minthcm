@@ -42,37 +42,18 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-/*
- * Your installation or use of this SugarCRM file is subject to the applicable
- * terms available at
- * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
- * If you do not agree to all of the applicable terms or do not have the
- * authority to bind the entity as an authorized representative, then do not
- * install or use this SugarCRM file.
- *
- * Copyright (C) SugarCRM Inc. All rights reserved.
- */
-$module_name = 'Certificates';
-$viewdefs[$module_name]['QuickCreate'] = array(
-    'templateMeta' => array('maxColumns' => '2',
-        'widths' => array(
-            array('label' => '10', 'field' => '30'),
-            array('label' => '10', 'field' => '30'),
-        ),
-    ),
-    'panels' => array(
-        'default' => array(
-            array(
-                'name',
-            ),
-            array(
-                'assigned_user_name',
-            ),
-            array(
-                'description',
-                '',
-            ),
-        ),
+$layout_defs["EmployeeCertificates"]["subpanel_setup"] = array(
+    'securitygroups' => array(
+        'top_buttons' => array(array('widget_class' => 'SubPanelTopSelectButton',
+            'popup_module' => 'SecurityGroups', 'mode' => 'MultiSelect')),
+        'order' => 900,
+        'sort_by' => 'name',
+        'sort_order' => 'asc',
+        'module' => 'SecurityGroups',
+        'refresh_page' => 1,
+        'subpanel_name' => 'default',
+        'get_subpanel_data' => 'SecurityGroups',
+        'add_subpanel_data' => 'securitygroup_id',
+        'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
     ),
 );

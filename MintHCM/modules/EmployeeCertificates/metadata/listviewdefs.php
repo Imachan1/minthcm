@@ -43,36 +43,86 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*
- * Your installation or use of this SugarCRM file is subject to the applicable
- * terms available at
- * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
- * If you do not agree to all of the applicable terms or do not have the
- * authority to bind the entity as an authorized representative, then do not
- * install or use this SugarCRM file.
- *
- * Copyright (C) SugarCRM Inc. All rights reserved.
- */
-$module_name = 'Certificates';
-$viewdefs[$module_name]['QuickCreate'] = array(
-    'templateMeta' => array('maxColumns' => '2',
-        'widths' => array(
-            array('label' => '10', 'field' => '30'),
-            array('label' => '10', 'field' => '30'),
-        ),
+$module_name = 'EmployeeCertificates';
+$listViewDefs[$module_name] = array(
+    'NAME' => array(
+        'label' => 'LBL_NAME',
+        'link' => true,
+        'orderBy' => 'name',
+        'default' => true,
+        'width' => '10%',
     ),
-    'panels' => array(
-        'default' => array(
-            array(
-                'name',
-            ),
-            array(
-                'assigned_user_name',
-            ),
-            array(
-                'description',
-                '',
-            ),
-        ),
+    'STATUS' => array(
+        'type' => 'enum',
+        'default' => true,
+        'studio' => 'visible',
+        'label' => 'LBL_STATUS',
+        'width' => '10%',
+    ),
+    'START_DATE' => array(
+        'label' => 'LBL_START_DATE',
+        'width' => '10%',
+        'default' => false,
+    ),
+    'END_DATE' => array(
+        'label' => 'LBL_END_DATE',
+        'width' => '10%',
+        'default' => false,
+    ),
+    'employee_name' => array(
+        'label' => 'LBL_EMPLOYEE',
+        'width' => '10%',
+        'default' => true,
+    ),
+    'CANDIDATE_NAME' => array(
+        'type' => 'relate',
+        'link' => true,
+        'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
+        'id' => 'CANDIDATE_ID',
+        'width' => '10%',
+        'default' => true,
+    ),
+    'CERTIFICATE_NAME' => array(
+        'type' => 'relate',
+        'link' => true,
+        'label' => 'LBL_RELATIONSHIP_CERTIFICATE_NAME',
+        'id' => 'CERTIFICATE_ID',
+        'width' => '10%',
+        'default' => true,
+    ),
+    'DATE_ENTERED' => array(
+        'type' => 'datetime',
+        'label' => 'LBL_DATE_ENTERED',
+        'width' => '10%',
+        'default' => false,
+    ),
+    'DATE_MODIFIED' => array(
+        'type' => 'datetime',
+        'label' => 'LBL_DATE_MODIFIED',
+        'width' => '10%',
+        'default' => false,
+    ),
+    'ASSIGNED_USER_NAME' => array(
+        'width' => '9%',
+        'label' => 'LBL_ASSIGNED_TO_NAME',
+        'module' => 'Employees',
+        'id' => 'ASSIGNED_USER_ID',
+        'default' => false,
+    ),
+    'CREATED_BY_NAME' => array(
+        'type' => 'relate',
+        'link' => true,
+        'label' => 'LBL_CREATED',
+        'id' => 'CREATED_BY',
+        'width' => '10%',
+        'default' => false,
+    ),
+    'MODIFIED_BY_NAME' => array(
+        'type' => 'relate',
+        'link' => true,
+        'label' => 'LBL_MODIFIED_NAME',
+        'id' => 'MODIFIED_USER_ID',
+        'width' => '10%',
+        'default' => false,
     ),
 );

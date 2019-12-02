@@ -43,6 +43,9 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*
  * Your installation or use of this SugarCRM file is subject to the applicable
  * terms available at
@@ -53,26 +56,47 @@
  *
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
-$module_name = 'Certificates';
-$viewdefs[$module_name]['QuickCreate'] = array(
-    'templateMeta' => array('maxColumns' => '2',
-        'widths' => array(
-            array('label' => '10', 'field' => '30'),
-            array('label' => '10', 'field' => '30'),
-        ),
+
+$subpanel_layout = array(
+    'top_buttons' => array(
+        array('widget_class' => 'SubPanelTopCreateButton'),
+        array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'EmployeeCertificates'),
     ),
-    'panels' => array(
-        'default' => array(
-            array(
-                'name',
-            ),
-            array(
-                'assigned_user_name',
-            ),
-            array(
-                'description',
-                '',
-            ),
+    'where' => '',
+    'list_fields' => array(
+        'name' => array(
+            'vname' => 'LBL_NAME',
+            'widget_class' => 'SubPanelDetailViewLink',
+            'width' => '15%',
+        ),
+        'start_date' => array(
+            'name' => 'start_date',
+            'vname' => 'LBL_START_DATE',
+        ),
+        'end_date' => array(
+            'name' => 'end_date',
+            'vname' => 'LBL_END_DATE',
+        ),
+        'status' => array(
+            'name' => 'status',
+            'vname' => 'LBL_STATUS',
+        ),
+        'employee_name' => array(
+            'vname' => 'LBL_EMPLOYEE',
+            'width' => '15%',
+        ),
+        'assigned_user_name' => array(
+            'vname' => 'LBL_ASSIGNED_TO_NAME',
+            'width' => '15%',
+        ),
+        'date_modified' => array(
+            'vname' => 'LBL_DATE_MODIFIED',
+            'width' => '15%',
+        ),
+        'edit_button' => array(
+            'vname' => 'LBL_EDIT_BUTTON',
+            'widget_class' => 'SubPanelEditButton',
+            'module' => 'EmployeeCertificates',
         ),
     ),
 );

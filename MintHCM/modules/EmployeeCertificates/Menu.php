@@ -42,37 +42,34 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
-/*
- * Your installation or use of this SugarCRM file is subject to the applicable
- * terms available at
- * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
- * If you do not agree to all of the applicable terms or do not have the
- * authority to bind the entity as an authorized representative, then do not
- * install or use this SugarCRM file.
- *
- * Copyright (C) SugarCRM Inc. All rights reserved.
- */
-$module_name = 'Certificates';
-$viewdefs[$module_name]['QuickCreate'] = array(
-    'templateMeta' => array('maxColumns' => '2',
-        'widths' => array(
-            array('label' => '10', 'field' => '30'),
-            array('label' => '10', 'field' => '30'),
-        ),
-    ),
-    'panels' => array(
-        'default' => array(
-            array(
-                'name',
-            ),
-            array(
-                'assigned_user_name',
-            ),
-            array(
-                'description',
-                '',
-            ),
-        ),
-    ),
-);
+global $mod_strings, $app_strings, $sugar_config;
+$module_name = 'EmployeeCertificates';
+
+if (ACLController::checkAccess($module_name, 'edit', true)) {
+    $module_menu[] = array(
+        'index.php?module=EmployeeCertificates&action=EditView&return_module=EmployeeCertificates&return_action=DetailView',
+        $mod_strings['LNK_NEW_RECORD'],
+        'Add',
+        $module_name,
+    );
+}
+if (ACLController::checkAccess($module_name, 'list', true)) {
+    $module_menu[] = array(
+        'index.php?module=EmployeeCertificates&action=index&return_module=EmployeeCertificates&return_action=DetailView',
+        $mod_strings['LNK_LIST'],
+        'View',
+        $module_name,
+    );
+}
+if (ACLController::checkAccess($module_name, 'import', true)) {
+    $module_menu[] = array(
+        'index.php?module=Import&action=Step1&import_module=EmployeeCertificates&return_module=EmployeeCertificates&return_action=index',
+        $app_strings['LBL_IMPORT'],
+        'Import',
+        $module_name,
+    );
+}

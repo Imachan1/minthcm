@@ -43,35 +43,69 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*
- * Your installation or use of this SugarCRM file is subject to the applicable
- * terms available at
- * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
- * If you do not agree to all of the applicable terms or do not have the
- * authority to bind the entity as an authorized representative, then do not
- * install or use this SugarCRM file.
- *
- * Copyright (C) SugarCRM Inc. All rights reserved.
- */
-$module_name = 'Certificates';
-$viewdefs[$module_name]['QuickCreate'] = array(
-    'templateMeta' => array('maxColumns' => '2',
-        'widths' => array(
-            array('label' => '10', 'field' => '30'),
-            array('label' => '10', 'field' => '30'),
+$module_name = 'EmployeeCertificates';
+$viewdefs[$module_name] = array(
+    'EditView' => array(
+        'templateMeta' => array(
+            'maxColumns' => '2',
+            'useTabs' => false,
+            'widths' => array(
+                array(
+                    'label' => '10',
+                    'field' => '30',
+                ),
+                array(
+                    'label' => '10',
+                    'field' => '30',
+                ),
+            ),
+            'tabDefs' => array(
+                'LBL_DEFAULT' => array(
+                    'newTab' => false,
+                    'panelDefault' => 'expanded',
+                ),
+                'LBL_RECORDVIEW_PANEL' => array(
+                    'newTab' => false,
+                    'panelDefault' => 'expanded',
+                ),
+            ),
         ),
-    ),
-    'panels' => array(
-        'default' => array(
-            array(
-                'name',
+        'panels' => array(
+            'lbl_default' => array(
+                array(
+                    array(
+                        'name' => 'name',
+                        'label' => 'LBL_NAME',
+                        'displayParams' => array(
+                            'required' => true,
+                        ),
+                    ),
+                    'status',
+                ),
+                array(
+                    'start_date',
+                    'end_date',
+                ),
+                array(
+                    array(
+                        'name' => 'certificate_name',
+                        'label' => 'LBL_RELATIONSHIP_CERTIFICATE_NAME',
+                    ),
+                    '',
+                ),
+                array(
+                    array(
+                        'name' => 'candidate_name',
+                        'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
+                    ),
+                    'employee_name',
+                ),
             ),
-            array(
-                'assigned_user_name',
-            ),
-            array(
-                'description',
-                '',
+            'LBL_RECORDVIEW_PANEL' => array(
+                array(
+                    'assigned_user_name',
+                    '',
+                ),
             ),
         ),
     ),
