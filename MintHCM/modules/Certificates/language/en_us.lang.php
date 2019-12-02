@@ -91,5 +91,5 @@ $mod_strings = array(
     'LBL_CANDIDATE_SUBPANEL_TITLE' => 'Certificates',
     'LBL_RELATIONSHIP_CANDIDATE_ID' => 'Candidate ID',
     'LBL_RELATIONSHIP_CANDIDATE_NAME' => 'Candidate',
-    'LBL_CERTIFICATE_SUBPANEL_TITLE' => 'Employee certificates',
+    'LBL_CERTIFICATE_SUBPANEL_TITLE' => 'Employee Certificates',
 );
