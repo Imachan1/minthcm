@@ -605,6 +605,7 @@ $beanFiles['Skills'] = 'modules/Skills/Skills.php';
 $beanFiles['Attitudes'] = 'modules/Attitudes/Attitudes.php';
 $beanFiles['Knowledge'] = 'modules/Knowledge/Knowledge.php';
 $beanFiles['SalaryRanges'] = 'modules/SalaryRanges/SalaryRanges.php';
+$beanFiles['EmployeeCertificates'] = 'modules/EmployeeCertificates/EmployeeCertificates.php';
 //
 
 $beanList['Skills'] = 'Skills';
@@ -669,6 +670,7 @@ $beanList['Skills'] = 'Skills';
 $beanList['Attitudes'] = 'Attitudes';
 $beanList['Knowledge'] = 'Knowledge';
 $beanList['SalaryRanges'] = 'SalaryRanges';
+$beanList['EmployeeCertificates'] = 'EmployeeCertificates';
 //
 $moduleList[] = 'ReservationsCalendar';
 $moduleList[] = 'ResponsibilityActivities';
@@ -716,6 +718,7 @@ $moduleList[] = 'Skills';
 $moduleList[] = 'Attitudes';
 $moduleList[] = 'Knowledge';
 $moduleList[] = 'SalaryRanges';
+$moduleList[] = 'EmployeeCertificates';
 //
 if (file_exists('include/modules_override.php')) {
     include 'include/modules_override.php';

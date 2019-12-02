@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,78 +36,24 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 $dashletData['CertificatesDashlet']['searchFields'] = array(
-   'name' =>
-   array(
-      'default' => '',
-   ),
-   'start_date' =>
-   array(
-      'default' => '',
-   ),
-   'end_date' =>
-   array(
-      'default' => '',
-   ),
-   'status' =>
-   array(
-      'default' => '',
-   ),
-   'employee_name' => array( 'default' => '' ),
-   'candidate_name' => array(
-      'default' => '',
-   ),
+    'name' => array(
+        'default' => '',
+    ),
 );
 $dashletData['CertificatesDashlet']['columns'] = array(
-   'name' =>
-   array(
-      'width' => '40%',
-      'label' => 'LBL_NAME', //LBL_LIST_NAME
-      'link' => true,
-      'default' => true,
-      'name' => 'name',
-   ),
-   'start_date' =>
-   array(
-      'width' => '15%',
-      'label' => 'LBL_START_DATE',
-      'default' => true,
-      'name' => 'start_date',
-   ),
-   'end_date' =>
-   array(
-      'width' => '15%',
-      'label' => 'LBL_END_DATE',
-      'default' => true,
-      'name' => 'end_date',
-   ),
-   'status' =>
-   array(
-      'type' => 'enum',
-      'width' => '15%',
-      'label' => 'LBL_STATUS',
-      'name' => 'status',
-      'default' => false,
-   ),
-   'employee_name' => array(
-      'width' => '15',
-      'label' => 'LBL_EMPLOYEE',
-      'default' => false
-   ),
-   'candidate_name' => array(
-      'name' => 'candidate_name',
-      'type' => 'relate',
-      'link' => true,
-      'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
-      'id' => 'CANDIDATE_ID',
-      'width' => '10%',
-      'default' => true,
-   ),
+    'name' => array(
+        'width' => '40%',
+        'label' => 'LBL_NAME', //LBL_LIST_NAME
+        'link' => true,
+        'default' => true,
+        'name' => 'name',
+    ),
 );

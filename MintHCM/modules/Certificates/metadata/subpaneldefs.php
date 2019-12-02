@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,16 +36,34 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 $layout_defs["Certificates"]["subpanel_setup"] = array(
+    'employeecertificates' => array(
+        'order' => 25,
+        'module' => 'EmployeeCertificates',
+        'subpanel_name' => 'default',
+        'sort_order' => 'asc',
+        'sort_by' => 'id',
+        'title_key' => 'LBL_CERTIFICATE_SUBPANEL_TITLE',
+        'get_subpanel_data' => 'employeecertificates',
+        'top_buttons' => array(
+            array(
+                'widget_class' => 'SubPanelTopButtonQuickCreate',
+            ),
+            array(
+                'widget_class' => 'SubPanelTopSelectButton',
+                'mode' => 'MultiSelect',
+            ),
+        ),
+    ),
     'securitygroups' => array(
         'top_buttons' => array(array('widget_class' => 'SubPanelTopSelectButton',
-                'popup_module' => 'SecurityGroups', 'mode' => 'MultiSelect'),),
+            'popup_module' => 'SecurityGroups', 'mode' => 'MultiSelect')),
         'order' => 900,
         'sort_by' => 'name',
         'sort_order' => 'asc',
@@ -65,8 +82,7 @@ $layout_defs["Certificates"]["subpanel_setup"] = array(
         'sort_by' => 'id',
         'title_key' => 'LBL_DOCUMENTS',
         'get_subpanel_data' => 'documents',
-        'top_buttons' =>
-        array(
+        'top_buttons' => array(
             array(
                 'widget_class' => 'SubPanelTopButtonQuickCreate',
             ),

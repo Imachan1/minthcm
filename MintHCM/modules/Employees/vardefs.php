@@ -183,6 +183,14 @@ $dictionary["Employee"]["fields"]["certificates"] = array(
     'side' => 'right',
     'vname' => 'LBL_CERTIFICATES',
 );
+$dictionary["Employee"]["fields"]["employeecertificates"] = array(
+    'name' => 'employeecertificates',
+    'type' => 'link',
+    'relationship' => 'employeecertificates_employee',
+    'source' => 'non-db',
+    'side' => 'right',
+    'vname' => 'LBL_EMPLOYEECERTIFICATES',
+);
 $dictionary["Employee"]["fields"]["applications"] = array(
     'name' => 'applications',
     'type' => 'link',

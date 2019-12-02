@@ -43,53 +43,60 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$mod_strings = array(
-    'LBL_TEAM' => 'Teams',
-    'LBL_TEAMS' => 'Teams',
-    'LBL_TEAM_ID' => 'Team Id',
-    'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
-    'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
-    'LBL_ID' => 'ID',
-    'LBL_DATE_ENTERED' => 'Date Created',
-    'LBL_DATE_MODIFIED' => 'Date Modified',
-    'LBL_MODIFIED' => 'Modified by',
-    'LBL_MODIFIED_ID' => 'Modified by Id',
-    'LBL_MODIFIED_NAME' => 'Modified by Name',
-    'LBL_CREATED' => 'Created by',
-    'LBL_CREATED_ID' => 'Created by Id',
-    'LBL_USER_FAVORITES' => 'Users Who Favorite',
-    'LBL_DESCRIPTION' => 'Description',
-    'LBL_DELETED' => 'Deleted',
-    'LBL_NAME' => 'Name',
-    'LBL_CREATED_USER' => 'Created by User',
-    'LBL_MODIFIED_USER' => 'Modified by User',
-    'LBL_LIST_NAME' => 'Name',
-    'LBL_EDIT_BUTTON' => 'Edit',
-    'LBL_REMOVE' => 'Remove',
-    'LBL_DEFAULT' => 'Basic',
-    'LBL_RECORDVIEW_PANEL' => 'Other',
-    'LBL_SHOW_MORE' => 'More Informations',
-    'LBL_SHOW_MORE_INFORMATION' => 'More Informations',
-    'LBL_CERTIFICATES' => 'Certificates',
-    'LBL_START_DATE' => 'Start Date',
-    'LBL_END_DATE' => 'End Date',
-    'LBL_STATUS' => 'Status',
-    'LNK_NEW_RECORD' => 'Create Certificate',
-    'LNK_LIST' => 'View Certificates',
-    'LBL_DOCUMENTS' => 'Documents',
-    'LBL_RELATIONSHIP_TRAININGS_NAME' => 'Trainings',
-    'LBL_EMPLOYEE' => 'Employee',
-    'LBL_LIST_FORM_TITLE' => 'Certificates',
-    'LBL_MODULE_NAME' => 'Certificates',
-    'LBL_MODULE_TITLE' => 'Certificates',
-    'LBL_MODULE_NAME_SINGULAR' => 'Certificate',
-    'LBL_HOMEPAGE_TITLE' => 'My Certificates',
-    'LNK_NEW_RECORD' => 'Create Certificate',
-    'LNK_LIST' => 'Certificates',
-    'LNK_IMPORT_CANDIDATE' => 'Import Certificates',
-    'LBL_SEARCH_FORM_TITLE' => 'Search Certificate',
-    'LBL_CANDIDATE_SUBPANEL_TITLE' => 'Certificates',
-    'LBL_RELATIONSHIP_CANDIDATE_ID' => 'Candidate ID',
-    'LBL_RELATIONSHIP_CANDIDATE_NAME' => 'Candidate',
-    'LBL_CERTIFICATE_SUBPANEL_TITLE' => 'Employee certificates',
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+
+$subpanel_layout = array(
+    'top_buttons' => array(
+        array('widget_class' => 'SubPanelTopCreateButton'),
+        array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'EmployeeCertificates'),
+    ),
+    'where' => '',
+    'list_fields' => array(
+        'name' => array(
+            'vname' => 'LBL_NAME',
+            'widget_class' => 'SubPanelDetailViewLink',
+            'width' => '15%',
+        ),
+        'start_date' => array(
+            'name' => 'start_date',
+            'vname' => 'LBL_START_DATE',
+        ),
+        'end_date' => array(
+            'name' => 'end_date',
+            'vname' => 'LBL_END_DATE',
+        ),
+        'status' => array(
+            'name' => 'status',
+            'vname' => 'LBL_STATUS',
+        ),
+        'employee_name' => array(
+            'vname' => 'LBL_EMPLOYEE',
+            'width' => '15%',
+        ),
+        'assigned_user_name' => array(
+            'vname' => 'LBL_ASSIGNED_TO_NAME',
+            'width' => '15%',
+        ),
+        'date_modified' => array(
+            'vname' => 'LBL_DATE_MODIFIED',
+            'width' => '15%',
+        ),
+        'edit_button' => array(
+            'vname' => 'LBL_EDIT_BUTTON',
+            'widget_class' => 'SubPanelEditButton',
+            'module' => 'EmployeeCertificates',
+        ),
+    ),
 );
