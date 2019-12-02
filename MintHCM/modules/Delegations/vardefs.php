@@ -312,6 +312,13 @@ $dictionary['Delegations'] = array(
          'size' => '20',
          'disable_num_format' => '',
       ),
+      'documents' => array(
+          'name' => 'documents',
+          'type' => 'link',
+          'relationship' => 'documents_delegations',
+          'source' => 'non-db',
+          'vname' => 'LBL_DOCUMENTS',
+      ),
       'accomodations' => array(
          'required' => false,
          'name' => 'accomodations',
