@@ -3893,13 +3893,6 @@ $app_list_strings['competency_ratings_type_list'] = array(
    'EmployeeRoles' => 'Role',
 );
 
-
-$app_list_strings['appraisal_subject_list'] = array(
-   'Goals' => 'Goal',
-   'Responsibilities' => 'Responsibility',
-   'Competencies' => 'Competency'
-);
-
 $app_list_strings['potential_list'] = array(
    'Not_applicable' => 'Not applicable',
    'Contact_in_future' => 'Contact us in the future',
@@ -4021,7 +4014,10 @@ $app_list_strings['accommodation_no_list'] = array(
 $app_list_strings['appraisal_subject_list'] = array(
    'Goals' => 'Goal',
    'Responsibilities' => 'Responsibility',
-   'Competencies' => 'Competency'
+   'Competencies' => 'Competency',
+   'Skills' => 'Skill',
+   'Knowledge' => 'Knowledge',
+   'Attitudes' => 'Attitude',
 );
 $app_list_strings['transport_type'] = array(
    '' => '',
