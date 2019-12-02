@@ -284,6 +284,16 @@ $dictionary['Positions'] = array(
             'side' => 'right',
             'vname' => 'LBL_SALARYRANGES',
         ),
+        'termsofemployment' => array(
+            'name' => 'termsofemployment',
+            'type' => 'link',
+            'relationship' => 'positions_termsofemployment',
+            'source' => 'non-db',
+            'module' => 'TermsOfEmployment',
+            'bean_name' => 'TermsOfEmployment',
+            'side' => 'right',
+            'vname' => 'LBL_TERMSOFEMPLOYMENT',
+        ),
     ),
     'relationships' => array(
         'recruitments_positions' => array(

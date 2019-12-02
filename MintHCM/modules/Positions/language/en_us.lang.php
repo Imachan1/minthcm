@@ -123,4 +123,5 @@ $mod_strings = array(
     'LBL_POSITIONS_EMPLOYEES' => 'Stanowisko',
     'LBL_ORGANIZATIONALUNITS_POSITIONS_LEADER_TITLE' => 'Organizational unit leader',
     'LBL_SALARYRANGE_SUBPANEL_TITLE' => 'Salary Ranges',
+    'LBL_TERMSOFEMPLOYMENT_SUBPANEL_TITLE' => 'Terms of Employment',
 );
