@@ -26,9 +26,9 @@ input[type=button][selected]:hover, .buttons .button[selected]:hover {
     background-color: $color-94;
 }
 
-.nav-tabs > li.tab-inline-pagination .btn-pagination[disabled]:hover {
+.nav-tabs > li.tab-inline-pagination .btn-pagination:hover {
     background-color: $color-94;
-    color: $color-6;
+    color: $color-52;
     cursor: default;
 }
 
@@ -38,7 +38,7 @@ input[type=button][selected]:hover, .buttons .button[selected]:hover {
 }
 .pagination button.button[disabled],
 .pagination button.button[disabled]:hover, .pagination button.button[disabled] .suitepicon {
-    color: $color-mint-lightgreen-lighter;
+    color: $color-mint-grey-lighter;
 }
 
 table.subpanel-table .pagination .sugar_action_button:hover {
