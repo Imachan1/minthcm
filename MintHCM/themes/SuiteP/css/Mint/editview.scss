@@ -16,8 +16,12 @@ option:checked {
     }
 }
 
-#save_and_continue.button {
+#save_and_continue {
     background-color: $color-mint-darkgreen;
+    color: $color-101;
+}
+
+.pagination-label{
     color: $color-101;
 }
 
