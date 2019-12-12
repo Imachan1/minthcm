@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,60 +36,65 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-class CertificatesUpdater {
+class CertificatesUpdater
+{
 
-   private $candidate_bean = '';
-   private $employee_bean = '';
+    private $candidate_bean = '';
+    private $employee_bean = '';
 
-   const CERTIFICATES_MODULE_NAME = 'Certificates';
+    const CERTIFICATES_MODULE_NAME = 'Certificates';
 
-   public function __construct($candidate_bean, $employee_bean) {
-      $this->candidate_bean = $candidate_bean;
-      $this->employee_bean = $employee_bean;
-   }
+    public function __construct($candidate_bean, $employee_bean)
+    {
+        $this->candidate_bean = $candidate_bean;
+        $this->employee_bean = $employee_bean;
+    }
 
-   public function updateCertificate() {
-      $certificates_beans = $this->fetchAllCertificatesForCandidate();
-      $this->modifyEmployeeRelationship($certificates_beans);
-   }
+    public function updateCertificate()
+    {
+        $certificates_beans = $this->fetchAllCertificatesForCandidate();
+        $this->modifyEmployeeRelationship($certificates_beans);
+    }
 
-   protected function fetchAllCertificatesForCandidate(): array {
-      global $db;
-      $fetched_ids = $certificates_beans = [];
+    protected function fetchAllCertificatesForCandidate(): array
+    {
+        global $db;
+        $fetched_ids = $certificates_beans = [];
 
-      $sql = "SELECT id FROM " . strtolower(static::CERTIFICATES_MODULE_NAME) . " WHERE candidates_id='{$this->candidate_bean->id}'";
+        $sql = "SELECT c.id from certificates c inner join employeecertificates ec on ec.certificate_id = c.id where ec.candidate_id = '{$this->candidate_bean->id}'";
 
-      $result = $db->query($sql);
+        $result = $db->query($sql);
 
-      if ( ( bool ) $result ) {
-         while ( $data = $db->fetchByAssoc($result) ) {
-            $fetched_ids[] = $data['id'];
-         }
+        if ((bool) $result) {
+            while ($data = $db->fetchByAssoc($result)) {
+                $fetched_ids[] = $data['id'];
+            }
 
-         foreach ( $fetched_ids as $id ) {
-            $certificates_beans[] = BeanFactory::getBean(static::CERTIFICATES_MODULE_NAME, $id);
-         }
-      }
+            foreach ($fetched_ids as $id) {
+                $certificates_beans[] = BeanFactory::getBean(static::CERTIFICATES_MODULE_NAME, $id);
+            }
+        }
 
-      return $certificates_beans;
-   }
+        return $certificates_beans;
+    }
 
-   protected function modifyEmployeeRelationship(array $certificates_beans) {
-      if ( empty($certificates_beans) ) {
-         return;
-      }
+    protected function modifyEmployeeRelationship(array $certificates_beans)
+    {
+        if (empty($certificates_beans)) {
+            return;
+        }
 
-      foreach ( $certificates_beans as $certificate_bean ) {
-         $certificate_bean->employee_id = $this->employee_bean->id;
-         $certificate_bean->save();
-      }
-   }
+        foreach ($certificates_beans as $certificate_bean) {
+            $certificate_bean->employee_id = $this->employee_bean->id;
+            $certificate_bean->save();
+        }
+    }
 
 }
