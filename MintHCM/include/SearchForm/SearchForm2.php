@@ -977,7 +977,7 @@ class SearchForm {
                      }
                   }
                } else {
-                  $operator = $operator != 'subquery' ? 'in' : $operator;
+                $operator = !in_array($operator, ['subquery', 'subquery_with_in']) ? 'in' : $operator; //evolpe
                   foreach ( $parms['value'] as $val ) {
                      if ( $val != ' ' && $val != '' ) {
                         if ( !empty($field_value) ) {
@@ -1192,6 +1192,10 @@ class SearchForm {
                   }
 
                   switch ( strtolower($operator) ) {
+                    case 'subquery_with_in': //evolpe
+                       $new_subquery = str_replace('{0}', $field_value, $parms['subquery']);
+                       $where .= "{$db_field} IN ($new_subquery)";
+                       break;
                      case 'subquery':
                         $in = 'IN';
                         if ( isset($parms['subquery_in_clause']) ) {

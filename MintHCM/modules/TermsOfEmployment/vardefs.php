@@ -111,6 +111,12 @@ $dictionary['TermsOfEmployment'] = array(
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
         ),
+        'contracted_employee' => array(
+            'name' => 'contracted_employee',
+            'type' => 'enum',
+            'source' => 'non-db',
+            'vname' => 'LBL_CONTRACTED_EMPLOYEE',
+        ),
         'gross' => array(
             'required' => false,
             'name' => 'gross',

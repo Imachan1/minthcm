@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,104 +36,112 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
 $module_name = 'TermsOfEmployment';
 $searchFields[$module_name] = array(
-   'name' => array( 'query_type' => 'default' ),
-   'current_user_only' => array(
-      'query_type' => 'default',
-      'db_field' => array( 'assigned_user_id' ),
-      'my_items' => true,
-      'vname' => 'LBL_CURRENT_USER_FILTER',
-      'type' => 'bool'
-   ),
-   'assigned_user_id' => array( 'query_type' => 'default' ),
-   'contract_id' => array( 'query_type' => 'default' ),
-   //Range Search Support
-   'range_term_starting_date' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'start_range_term_starting_date' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'end_range_term_starting_date' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'range_term_ending_date' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'start_range_term_ending_date' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'end_range_term_ending_date' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'range_date_of_signing' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'start_range_date_of_signing' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'end_range_date_of_signing' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'range_date_entered' => array( 'query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true ),
-   'start_range_date_entered' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'end_range_date_entered' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'range_date_modified' => array( 'query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true ),
-   'start_range_date_modified' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'end_range_date_modified' => array(
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true
-   ),
-   'range_gross' => array( 'query_type' => 'default', 'enable_range_search' => true ),
-   'start_range_gross' => array( 'query_type' => 'default', 'enable_range_search' => true ),
-   'end_range_gross' => array( 'query_type' => 'default', 'enable_range_search' => true ),
-   'range_net' => array( 'query_type' => 'default', 'enable_range_search' => true ),
-   'start_range_net' => array( 'query_type' => 'default', 'enable_range_search' => true ),
-   'end_range_net' => array( 'query_type' => 'default', 'enable_range_search' => true ),
-   'range_employer_cost' => array( 'query_type' => 'default', 'enable_range_search' => true ),
-   'start_range_employer_cost' => array( 'query_type' => 'default', 'enable_range_search' => true ),
-   'end_range_employer_cost' => array( 'query_type' => 'default', 'enable_range_search' => true ),
-        //Range Search Support
+    'name' => array('query_type' => 'default'),
+    'current_user_only' => array(
+        'query_type' => 'default',
+        'db_field' => array('assigned_user_id'),
+        'my_items' => true,
+        'vname' => 'LBL_CURRENT_USER_FILTER',
+        'type' => 'bool',
+    ),
+    'assigned_user_id' => array('query_type' => 'default'),
+    'contract_id' => array('query_type' => 'default'),
+    'contracted_employee' => array(
+        'query_type' => 'default',
+        'operator' => 'subquery_with_in',
+        'subquery' => 'SELECT toe.id from termsofemployment toe inner join contracts c on toe.contract_id = c.id where c.employee_id IN ({0})',
+        'db_field' => array(
+            'id',
+        ),
+    ),
+    //Range Search Support
+    'range_term_starting_date' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'start_range_term_starting_date' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'end_range_term_starting_date' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'range_term_ending_date' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'start_range_term_ending_date' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'end_range_term_ending_date' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'range_date_of_signing' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'start_range_date_of_signing' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'end_range_date_of_signing' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'range_date_entered' => array('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
+    'start_range_date_entered' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'end_range_date_entered' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'range_date_modified' => array('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
+    'start_range_date_modified' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'end_range_date_modified' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true,
+    ),
+    'range_gross' => array('query_type' => 'default', 'enable_range_search' => true),
+    'start_range_gross' => array('query_type' => 'default', 'enable_range_search' => true),
+    'end_range_gross' => array('query_type' => 'default', 'enable_range_search' => true),
+    'range_net' => array('query_type' => 'default', 'enable_range_search' => true),
+    'start_range_net' => array('query_type' => 'default', 'enable_range_search' => true),
+    'end_range_net' => array('query_type' => 'default', 'enable_range_search' => true),
+    'range_employer_cost' => array('query_type' => 'default', 'enable_range_search' => true),
+    'start_range_employer_cost' => array('query_type' => 'default', 'enable_range_search' => true),
+    'end_range_employer_cost' => array('query_type' => 'default', 'enable_range_search' => true),
+    //Range Search Support
 );

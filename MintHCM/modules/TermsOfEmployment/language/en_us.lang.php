@@ -96,4 +96,6 @@ $mod_strings = array(
     'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Security Groups',
     'LBL_DOCUMENTS' => 'Documents',
     'LBL_POSITION_NAME' => 'Position',
+
+    'LBL_CONTRACTED_EMPLOYEE' => 'Contracted Employee',
 );
