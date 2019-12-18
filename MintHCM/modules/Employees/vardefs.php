@@ -222,5 +222,4 @@ $dictionary["Employee"]["fields"]["address_postalcode"]["audited"] = true;
 $dictionary["Employee"]["fields"]["business_role"]["audited"] = false;
 $dictionary["Employee"]["fields"]["candidate_id"]["audited"] = false;
 
-$dictionary['Employee']['fields']['email1']['audited'] = true;
-$dictionary['Employee']['fields']['email_addresses']['audited'] = true;
+$dictionary['Employee']['fields']['email_address']['audited'] = true;
