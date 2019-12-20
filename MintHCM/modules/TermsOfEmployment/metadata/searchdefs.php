@@ -116,6 +116,7 @@ $searchdefs[$module_name] = array(
                     'name' => 'get_user_array',
                     'params' => array(
                         false,
+                        '',
                     ),
                 ),
                 'default' => true,
