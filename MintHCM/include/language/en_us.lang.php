@@ -3687,7 +3687,8 @@ $app_strings['LBL_WRONG_TASK_FOR_PLAN'] = 'Task with this type cannot be add to 
 $app_strings['LBL_WSMASSCONFIRMATION_ALERT'] = 'The approval process for work plans has been completed';
 $app_strings['LBL_ERR_DATE_ARE_NOT_EQUALS'] = 'Dates are not equal';
 $app_strings['LBL_REPAIR_PRIVATE_GROUPS_ALERT'] = 'Repair of the private groups has been completed.';
-$app_strings['LBL_DECISION_MAKER_ASSIGNMENT_FOR_IDEAS'] = 'You were assigned as decission maker to the idea.';
+$app_strings['LBL_ASSIGN_TO_IDEA'] = 'You were assigned to idea.';
+$app_strings['LBL_IDEA_MODIFIED'] = 'The idea you were assigned to has been modified.';
 
 
 $app_list_strings['type_list'] = array(
