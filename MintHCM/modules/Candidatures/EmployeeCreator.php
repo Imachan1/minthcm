@@ -103,7 +103,6 @@ class EmployeeCreator
         $employee_bean = $this->assignEmployeeContactFields($employee_bean);
 
         $employee_bean->employee_status = self::EMPLOYEE_ACTIVE_STATUS;
-        $employee_bean->status = self::EMPLOYEE_ACTIVE_STATUS;
         $employee_bean->save();
         $this->addCandidateRelationToUser($employee_bean);
         return $employee_bean;
