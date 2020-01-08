@@ -92,12 +92,12 @@ $viewdefs[$module_name]['DetailView'] = array(
          ),
          array(
             array(
-               'name' => 'salary_to',
-               'label' => '{$MOD.LBL_SALARY_TO} ({$CURRENCY})',
-            ),
-            array(
                'name' => 'salary_from',
                'label' => '{$MOD.LBL_SALARY_FROM} ({$CURRENCY})',
+            ),
+            array(
+               'name' => 'salary_to',
+               'label' => '{$MOD.LBL_SALARY_TO} ({$CURRENCY})',
             ),
          ),
          array(
