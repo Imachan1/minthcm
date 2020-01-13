@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,37 +36,57 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 $dictionary['ResponsibilityActivities'] = array(
-   'table' => 'responsibilityactivities',
-   'audited' => true,
-   'inline_edit' => true,
-   'duplicate_merge' => true,
-   'fields' => array(
-      'responsibilities' => array(
-         'name' => 'responsibilities',
-         'type' => 'link',
-         'relationship' => 'responsibilities_activities',
-         'source' => 'non-db',
-         'module' => 'Responsibilities',
-         'bean_name' => 'Responsibilities',
-         'vname' => 'LBL_RESPONSIBILITIES',
-      ),
-   ),
-   'relationships' => array(
-   ),
-   'optimistic_locking' => true,
-   'unified_search' => true,
+    'table' => 'responsibilityactivities',
+    'audited' => true,
+    'inline_edit' => true,
+    'duplicate_merge' => true,
+    'fields' => array(
+        'responsibilities' => array(
+            'name' => 'responsibilities',
+            'type' => 'link',
+            'relationship' => 'responsibilities_activities',
+            'source' => 'non-db',
+            'module' => 'Responsibilities',
+            'bean_name' => 'Responsibilities',
+            'vname' => 'LBL_RESPONSIBILITIES',
+        ),
+        'appraisalitems' => array(
+            'name' => 'appraisalitems',
+            'type' => 'link',
+            'relationship' => 'appraisalitems_responsibilityactivities',
+            'module' => 'AppraisalItems',
+            'bean_name' => 'AppraisalItems',
+            'source' => 'non-db',
+            'vname' => 'LBL_APPRAISALITEMS',
+        ),
+    ),
+    'relationships' => array(
+        'appraisalitems_responsibilityactivities' => array(
+            'lhs_module' => 'ResponsibilityActivities',
+            'lhs_table' => 'responsibilityactivities',
+            'lhs_key' => 'id',
+            'rhs_module' => 'AppraisalItems',
+            'rhs_table' => 'appraisalitems',
+            'rhs_key' => 'parent_id',
+            'relationship_type' => 'one-to-many',
+            'relationship_role_column' => 'parent_type',
+            'relationship_role_column_value' => 'ResponsibilityActivities',
+        ),
+    ),
+    'optimistic_locking' => true,
+    'unified_search' => true,
 );
-if ( !class_exists('VardefManager') ) {
-   require_once('include/SugarObjects/VardefManager.php');
+if (!class_exists('VardefManager')) {
+    require_once 'include/SugarObjects/VardefManager.php';
 }
-VardefManager::createVardef('ResponsibilityActivities', 'ResponsibilityActivities', array( 'basic', 'assignable', 'security_groups' ));
+VardefManager::createVardef('ResponsibilityActivities', 'ResponsibilityActivities', array('basic', 'assignable', 'security_groups'));
 
 $dictionary['ResponsibilityActivities']['fields']['name']['audited'] = true;
 $dictionary['ResponsibilityActivities']['fields']['assigned_user_id']['audited'] = false;

@@ -80,4 +80,5 @@ $mod_strings = array(
     'LBL_SKILLS_SUBPANEL_TITLE' => 'Skills',
     'LBL_NEW_FORM_TITLE' => 'New Skill',
     'LBL_COMPETENCIES' => 'Competencies',
+    'LBL_APPRAISALITEMS' => 'Appraisal Items',
 );
