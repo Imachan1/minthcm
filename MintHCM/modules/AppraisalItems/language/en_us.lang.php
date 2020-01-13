@@ -78,6 +78,7 @@ $mod_strings = array(
     'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
     'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
     'LBL_APPRAISALITEMS_SUBPANEL_TITLE' => 'Appraisal Items',
+    'LBL_APPRAISALITEMS' => 'Appraisal Items',
     'LBL_APPRAISALS' => 'Appraisals',
     'LBL_APPRAISAL_NAME' => 'Appraisal',
     'LBL_APPRAISAL_ID' => 'Appraisal (ID)',
@@ -104,4 +105,8 @@ $mod_strings = array(
     'LBL_GOALS' => 'Goals',
     'LBL_GOAL_NAME' => 'Goals',
     'LBL_GOAL_ID' => 'Goals (ID)',
+    'LBL_APPRLBL_APPRAISALITEMS' => 'Goals (ID)',
+    'LBL_RESPONSIBILITYACTIVITIES' => 'Responsibility Activities',
+    'LBL_RESPONSIBILITYACTIVITIE_NAME' => 'Responsibility Activities',
+    'LBL_RESPONSIBILITYACTIVITIE_ID' => 'Responsibility Activities (ID)',
 );

@@ -4021,6 +4021,7 @@ $app_list_strings['appraisal_subject_list'] = array(
    'Skills' => 'Skill',
    'Knowledge' => 'Knowledge',
    'Attitudes' => 'Attitude',
+   'ResponsibilityActivities' => 'ResponsibilityActivities',
 );
 $app_list_strings['transport_type'] = array(
    '' => '',
