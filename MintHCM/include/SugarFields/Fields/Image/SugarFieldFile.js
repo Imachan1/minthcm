@@ -40,19 +40,20 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if (typeof(SUGAR.field) == 'undefined') {
+if (typeof (SUGAR.field) == 'undefined') {
     SUGAR.field = new Object();
 }
-if (typeof(SUGAR.field.file) == 'undefined') {
+if (typeof (SUGAR.field.file) == 'undefined') {
     SUGAR.field.file = {
-        deleteAttachment: function(elemBaseName, docTypeName, elem) {
+        deleteAttachment: function (elemBaseName, docTypeName, elem) {
             ajaxStatus.showStatus(SUGAR.language.get("app_strings", "LBL_REMOVING_ATTACHMENT"));
             elem.form.deleteAttachment.value = 1;
             elem.form.action.value = "deleteattachment";
             var callback = SUGAR.field.file.deleteAttachmentCallbackGen(elemBaseName, docTypeName);
-            var success = function(data) {
+            var success = function (data) {
                 if (data) {
                     callback(data.responseText);
+                    location.reload();
                 }
             }
             YAHOO.util.Connect.setForm(elem.form);
@@ -63,8 +64,8 @@ if (typeof(SUGAR.field.file) == 'undefined') {
             elem.form.deleteAttachment.value = 0;
             elem.form.action.value = "";
         },
-        deleteAttachmentCallbackGen: function(elemBaseName, docTypeName) {
-            return function(text) {
+        deleteAttachmentCallbackGen: function (elemBaseName, docTypeName) {
+            return function (text) {
                 if (text == 'true') {
                     document.getElementById(elemBaseName + '_new').style.display = '';
                     ajaxStatus.hideStatus();
@@ -79,7 +80,7 @@ if (typeof(SUGAR.field.file) == 'undefined') {
                 }
             }
         },
-        checkEapiLogin: function(res) {
+        checkEapiLogin: function (res) {
             var failedLogins = YAHOO.lang.JSON.parse(res.responseText);
             if (failedLogins.length == 0) {
                 return;
@@ -93,8 +94,8 @@ if (typeof(SUGAR.field.file) == 'undefined') {
                 }
             }
         },
-        setupEapiShowHide: function(elemBaseName, docTypeName, formName) {
-            var externalSearchToggle = function() {
+        setupEapiShowHide: function (elemBaseName, docTypeName, formName) {
+            var externalSearchToggle = function () {
                 var moreElem = document.getElementById(elemBaseName + "_more");
                 var hideMore = (moreElem.style.display == 'none');
                 if (hideMore) {
@@ -109,10 +110,10 @@ if (typeof(SUGAR.field.file) == 'undefined') {
                     document.getElementById(elemBaseName + '_file').disabled = true;
                 }
             }
-            var showHideFunc = function() {
+            var showHideFunc = function () {
                 var docShowHideElem = document.getElementById(elemBaseName + "_externalApiSelector");
                 var dropdownValue = document.getElementById(docTypeName).value;
-                if (typeof(SUGAR.eapm) != 'undefined' && typeof(SUGAR.eapm[dropdownValue]) != 'undefined' && typeof(SUGAR.eapm[dropdownValue].docSearch) != 'undefined' && SUGAR.eapm[dropdownValue].docSearch) {
+                if (typeof (SUGAR.eapm) != 'undefined' && typeof (SUGAR.eapm[dropdownValue]) != 'undefined' && typeof (SUGAR.eapm[dropdownValue].docSearch) != 'undefined' && SUGAR.eapm[dropdownValue].docSearch) {
                     docShowHideElem.style.display = '';
                     YAHOO.util.Connect.asyncRequest('GET', 'index.php?module=EAPM&action=CheckLogins&to_pdf=1&api=' + dropdownValue, {
                         success: SUGAR.field.file.checkEapiLogin,
@@ -146,32 +147,32 @@ if (typeof(SUGAR.field.file) == 'undefined') {
             document.getElementById(elemBaseName + '_externalApiLabel').onclick = externalSearchToggle;
             showHideFunc();
         },
-        openPopup: function(elemBaseName) {
+        openPopup: function (elemBaseName) {
             window.open('index.php?module=Documents&action=extdoc&isPopup=1&elemBaseName=' + elemBaseName + '&apiName=' + document.getElementById('doc_type').value, 'sugarPopup', 'width=600,height=400,menubar=no,toolbar=no,status=no,resizeable=yes,scrollbars=yes');
         },
-        clearRemote: function(elemBaseName) {
+        clearRemote: function (elemBaseName) {
             document.getElementById('doc_id').value = '';
             document.getElementById(elemBaseName).value = '';
             document.getElementById(elemBaseName + '_remoteName').value = '';
             document.getElementById('doc_url').value = '';
         },
-        populateFromPopup: function(elemBaseName, docId, docName, docUrl, docDirectUrl) {
+        populateFromPopup: function (elemBaseName, docId, docName, docUrl, docDirectUrl) {
             document.getElementById('doc_id').value = docId;
             document.getElementById(elemBaseName).value = docId;
             document.getElementById(elemBaseName + '_remoteName').value = docName;
             document.getElementById('doc_url').value = docUrl;
         },
-        getFileExtension: function(fileName) {
+        getFileExtension: function (fileName) {
             var lastindex = fileName.lastIndexOf(".");
             if (lastindex == -1)
                 return '';
             else
                 return fileName.substr(++lastindex);
         },
-        isFileExtensionValid: function(fileName) {
+        isFileExtensionValid: function (fileName) {
             var docType = document.getElementById('doc_type').value;
             var fileExtension = this.getFileExtension(fileName);
-            if (typeof(SUGAR.eapm[docType]) == 'undefined' || !SUGAR.eapm[docType].restrictUploadsByExtension) {
+            if (typeof (SUGAR.eapm[docType]) == 'undefined' || !SUGAR.eapm[docType].restrictUploadsByExtension) {
                 return true;
             }
             var whiteSuffixlist = SUGAR.eapm[docType]['restrictUploadsByExtension'];
@@ -185,7 +186,7 @@ if (typeof(SUGAR.field.file) == 'undefined') {
             }
             return results;
         },
-        checkFileExtension: function(e, obj) {
+        checkFileExtension: function (e, obj) {
             var sff = SUGAR.field.file;
             var fileEl = document.getElementById(obj.fileEl);
             var fileName = fileEl.value;
