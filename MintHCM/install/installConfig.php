@@ -1569,6 +1569,7 @@ EOQ;
                                     document.getElementById("errorMsgs").style.display = '';
                                     document.getElementById('button_next2').disabled = false;
                                     document.getElementById('button_back_settings').disabled = false;
+                                    document.getElementById('loading').style.display = 'none';
                                     return false;
                                 }
 
