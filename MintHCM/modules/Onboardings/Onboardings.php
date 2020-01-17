@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,68 +36,77 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-class Onboardings extends Basic {
+class Onboardings extends Basic
+{
 
-   public $new_schema = true;
-   public $module_dir = 'Onboardings';
-   public $object_name = 'Onboardings';
-   public $table_name = 'onboardings';
-   public $importable = true;
-   public $id;
-   public $name;
-   public $date_entered;
-   public $date_modified;
-   public $modified_user_id;
-   public $modified_by_name;
-   public $created_by;
-   public $created_by_name;
-   public $description;
-   public $deleted;
-   public $created_by_link;
-   public $modified_user_link;
-   public $assigned_user_id;
-   public $assigned_user_name;
-   public $assigned_user_link;
-   public $SecurityGroups;
-   public $status;
-   public $date_start;
+    public $new_schema = true;
+    public $module_dir = 'Onboardings';
+    public $object_name = 'Onboardings';
+    public $table_name = 'onboardings';
+    public $importable = true;
+    public $id;
+    public $name;
+    public $date_entered;
+    public $date_modified;
+    public $modified_user_id;
+    public $modified_by_name;
+    public $created_by;
+    public $created_by_name;
+    public $description;
+    public $deleted;
+    public $created_by_link;
+    public $modified_user_link;
+    public $assigned_user_id;
+    public $assigned_user_name;
+    public $assigned_user_link;
+    public $SecurityGroups;
+    public $status;
+    public $date_start;
 
-   const SUGAR_FEED_CLASS_NAME = "OnboardingsFeed";
+    const SUGAR_FEED_CLASS_NAME = "OnboardingsFeed";
 
-   public function bean_implements($interface) {
-      if ( "ACL" === $interface ) {
-         return true;
-      } else {
-         return false;
-      }
-   }
+    public function bean_implements($interface)
+    {
+        if ("ACL" === $interface) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-   public function save($check_notify = false) {
-      $this->concatName();
-      $id = parent::save($check_notify);
-      require_once 'modules/' . $this->module_dir . '/SugarFeeds/' . static::SUGAR_FEED_CLASS_NAME . '.php';
-      $sugar_feed_class_name = static::SUGAR_FEED_CLASS_NAME;
-      $feed = new $sugar_feed_class_name;
-      $feed->pushFeed($this, null, null);
-      return $id;
-   }
+    public function save($check_notify = false)
+    {
+        $this->concatName();
+        $id = parent::save($check_notify);
+        require_once 'modules/' . $this->module_dir . '/SugarFeeds/' . static::SUGAR_FEED_CLASS_NAME . '.php';
+        $sugar_feed_class_name = static::SUGAR_FEED_CLASS_NAME;
+        $feed = new $sugar_feed_class_name;
+        $feed->pushFeed($this, null, null);
+        return $id;
+    }
 
-   protected function concatName() {
-      $employee = BeanFactory::getBean('Employees', $this->employee_id);
-      $this->name = $employee->last_name . ' ' . $employee->first_name . ' - ' . $this->date_start;
-   }
+    protected function concatName()
+    {
+        global $timedate, $current_user;
+        $test_converted_to_db = $timedate->to_db($this->date_start);
+        $coverted_to_user_date = $timedate->to_display_date_time($test_converted_to_db, $current_user);
+        $converted_to_db_date = $timedate->to_db_date($coverted_to_user_date, false);
+        $employee = BeanFactory::getBean('Employees', $this->employee_id);
+        $this->name = $employee->last_name . ' ' . $employee->first_name . ' - ' . $converted_to_db_date;
+    }
 
-   public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set') {
-      if ( in_array(strtolower($view), array( 'edit', 'save', 'popupeditview', 'editview' )) && !$this->id ) {
-         return false;
-      }
-      return parent::ACLAccess($view, $is_owner, $in_group);
-   }
+    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set')
+    {
+        if (in_array(strtolower($view), array('edit', 'save', 'popupeditview', 'editview')) && !$this->id) {
+            return false;
+        }
+        return parent::ACLAccess($view, $is_owner, $in_group);
+    }
 
 }
