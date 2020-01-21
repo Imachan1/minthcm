@@ -49,7 +49,7 @@ class CertificatesUpdater
     private $candidate_bean = '';
     private $employee_bean = '';
 
-    const CERTIFICATES_MODULE_NAME = 'Certificates';
+    const CERTIFICATES_MODULE_NAME = 'EmployeeCertificates';
 
     public function __construct($candidate_bean, $employee_bean)
     {
@@ -66,23 +66,13 @@ class CertificatesUpdater
     protected function fetchAllCertificatesForCandidate(): array
     {
         global $db;
-        $fetched_ids = $certificates_beans = [];
-
-        $sql = "SELECT c.id from certificates c inner join employeecertificates ec on ec.certificate_id = c.id where ec.candidate_id = '{$this->candidate_bean->id}'";
-
+        $sql = "SELECT id FROM employeecertificates WHERE deleted=0 AND candidate_id='{$this->candidate_bean->id}'";
+        $certificates = [];
         $result = $db->query($sql);
-
-        if ((bool) $result) {
-            while ($data = $db->fetchByAssoc($result)) {
-                $fetched_ids[] = $data['id'];
-            }
-
-            foreach ($fetched_ids as $id) {
-                $certificates_beans[] = BeanFactory::getBean(static::CERTIFICATES_MODULE_NAME, $id);
-            }
+        while ($row = $db->fetchByAssoc($result)) {
+            $certificates[] = BeanFactory::getBean(static::CERTIFICATES_MODULE_NAME, $row['id']);
         }
-
-        return $certificates_beans;
+        return $certificates;
     }
 
     protected function modifyEmployeeRelationship(array $certificates_beans)
@@ -93,7 +83,7 @@ class CertificatesUpdater
 
         foreach ($certificates_beans as $certificate_bean) {
             $certificate_bean->employee_id = $this->employee_bean->id;
-            $certificate_bean->save();
+            $certificate_bean->save(false);
         }
     }
 

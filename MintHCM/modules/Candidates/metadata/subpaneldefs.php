@@ -218,21 +218,17 @@ $layout_defs["Candidates"]["subpanel_setup"] = array(
             ),
         ),
     ),
-    'certificates' => array(
+	'employeecertificates' => array(
         'order' => 100,
-        'module' => 'Certificates',
+        'module' => 'EmployeeCertificates',
         'subpanel_name' => 'default',
         'sort_order' => 'asc',
         'sort_by' => 'id',
-        'title_key' => 'LBL_RELATIONSHIP_CERTIFICATES_NAME',
-        'get_subpanel_data' => 'certificates',
+        'title_key' => 'LBL_EMPLOYEECERTIFICATES',
+        'get_subpanel_data' => 'employeecertificates',
         'top_buttons' => array(
             array(
                 'widget_class' => 'SubPanelTopButtonQuickCreate',
-            ),
-            array(
-                'widget_class' => 'SubPanelTopSelectButton',
-                'mode' => 'MultiSelect',
             ),
         ),
     ),

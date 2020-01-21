@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,7 +41,6 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
 /*
  * Your installation or use of this SugarCRM file is subject to the applicable
  * terms available at
@@ -69,6 +67,12 @@ $viewdefs[$module_name]['QuickCreate'] = array(
             array(
                 'start_date',
                 'end_date',
+            ),
+            array(
+                array(
+                    'name' => 'certificate_name',
+                    'label' => 'LBL_RELATIONSHIP_CERTIFICATE_NAME',
+                ),
             ),
             array(
                 'candidate_name',

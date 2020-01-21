@@ -62,7 +62,7 @@ $dictionary['Certificates'] = array(
             'source' => 'non-db',
             'module' => 'Trainings',
             'bean_name' => 'Trainings',
-            'vname' => 'LBL_RELATIONSHIP_CERTIFICATES_NAME',
+            'vname' => 'LBL_RELATIONSHIP_TRAININGS_NAME',
         ),
         "employeecertificates" => array(
             'name' => 'employeecertificates',
@@ -75,15 +75,6 @@ $dictionary['Certificates'] = array(
         ),
     ),
     'relationships' => array(
-        "candidates_certificates" => array(
-            'lhs_module' => 'Candidates',
-            'lhs_table' => 'candidates',
-            'lhs_key' => 'id',
-            'rhs_module' => 'Certificates',
-            'rhs_table' => 'certificates',
-            'rhs_key' => 'candidate_id',
-            'relationship_type' => 'one-to-many',
-        ),
     ),
     'optimistic_locking' => true,
     'unified_search' => true,

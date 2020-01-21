@@ -73,13 +73,6 @@ $viewdefs[$module_name] = array(
         'panels' => array(
             'lbl_default' => array(
                 array(
-                    array(
-                        'name' => 'name',
-                        'label' => 'LBL_NAME',
-                        'displayParams' => array(
-                            'required' => true,
-                        ),
-                    ),
                     'status',
                 ),
                 array(
@@ -91,7 +84,6 @@ $viewdefs[$module_name] = array(
                         'name' => 'certificate_name',
                         'label' => 'LBL_RELATIONSHIP_CERTIFICATE_NAME',
                     ),
-                    '',
                 ),
                 array(
                     array(
@@ -100,11 +92,13 @@ $viewdefs[$module_name] = array(
                     ),
                     'employee_name',
                 ),
+                array(
+                    'description'
+                )
             ),
             'LBL_RECORDVIEW_PANEL' => array(
                 array(
                     'assigned_user_name',
-                    '',
                 ),
             ),
         ),

@@ -81,18 +81,6 @@ $subpanel_layout = array(
             'name' => 'status',
             'vname' => 'LBL_STATUS',
         ),
-        'employee_name' => array(
-            'vname' => 'LBL_EMPLOYEE',
-            'width' => '15%',
-        ),
-        'assigned_user_name' => array(
-            'vname' => 'LBL_ASSIGNED_TO_NAME',
-            'width' => '15%',
-        ),
-        'date_modified' => array(
-            'vname' => 'LBL_DATE_MODIFIED',
-            'width' => '15%',
-        ),
         'edit_button' => array(
             'vname' => 'LBL_EDIT_BUTTON',
             'widget_class' => 'SubPanelEditButton',

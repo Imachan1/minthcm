@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,7 +41,6 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
 $mod_strings = array(
     'LBL_TEAM' => 'Teams',
     'LBL_TEAMS' => 'Teams',
@@ -95,4 +93,8 @@ $mod_strings = array(
     'LBL_RELATIONSHIP_CERTIFICATE_ID' => 'Certificate ID',
     'LBL_RELATIONSHIP_CERTIFICATE_NAME' => 'Certificate',
     'LBL_EMPLOYEECERTIFICATES' => 'Employee Certificates',
+    'LBL_CERTIFICATE_NAME' => 'Certificate',
+    'LBL_CERTIFICATES' => 'Certificate',
+    'LBL_CERTIFICATE_ID' => 'Certificate ID',
+    'LBL_CANDIDATE_OR_EMPLOYEE_HAVE_TO_BE_SET' => 'Candidate or Employee have to be set',
 );
