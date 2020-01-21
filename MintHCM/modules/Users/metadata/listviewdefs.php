@@ -1,7 +1,7 @@
 <?php
 
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 /* * *******************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -41,95 +41,99 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  * ****************************************************************************** */
 
-
-
-
 $listViewDefs['Users'] = array(
-   'NAME' => array(
-      'width' => '30',
-      'label' => 'LBL_LIST_NAME',
-      'link' => true,
-      'related_fields' => array('last_name', 'first_name'),
-      'orderBy' => 'last_name',
-      'default' => true
-   ),
-   'USER_NAME' => array(
-      'width' => '5',
-      'label' => 'LBL_USER_NAME',
-      'link' => true,
-      'default' => true
-   ),
-   'POSITION_NAME' => array(
-      'width' => '15',
-      'label' => 'LBL_POSITION_NAME',
-      'link' => true,
-      'default' => true
-   ),
-   'ORGANIZATIONALUNIT_NAME' => array(
-      'width' => '15',
-      'label' => 'LBL_ORGANIZATIONALUNIT_NAME',
-      'link' => true,
-      'default' => true
-   ),
-   'EMAIL1' => array(
-      'width' => '30',
-      'sortable' => false,
-      'label' => 'LBL_LIST_EMAIL',
-      'link' => true,
-      'default' => true
-   ),
-   'PHONE_WORK' => array(
-      'width' => '25',
-      'label' => 'LBL_LIST_PHONE',
-      'link' => true,
-      'default' => true
-   ),
-   'STATUS' => array(
-      'width' => '10',
-      'label' => 'LBL_STATUS',
-      'link' => false,
-      'default' => true
-   ),
-   'IS_ADMIN' => array(
-      'width' => '10',
-      'label' => 'LBL_ADMIN',
-      'link' => false,
-      'default' => true
-   ),
-   'IS_GROUP' => array(
-      'width' => '10',
-      'label' => 'LBL_LIST_GROUP',
-      'link' => true,
-      'default' => false
-   ),
-   'REPORTS_TO_NAME' => array(
-      'width' => '10',
-      'label' => 'LBL_REPORTS_TO_NAME',
-      'link' => true,
-      'default' => false
-   ),
-   'ADDRESS_STREET' => array(
-      'width' => '10',
-      'label' => 'LBL_ADDRESS_STREET',
-      'link' => false,
-      'default' => false
-   ),
-   'ADDRESS_CITY' => array(
-      'width' => '10',
-      'label' => 'LBL_ADDRESS_CITY',
-      'link' => false,
-      'default' => false
-   ),
-   'ADDRESS_STATE' => array(
-      'width' => '10',
-      'label' => 'LBL_ADDRESS_STATE',
-      'link' => false,
-      'default' => false
-   ),
-   'ADDRESS_COUNTRY' => array(
-      'width' => '10',
-      'label' => 'LBL_ADDRESS_COUNTRY',
-      'link' => false,
-      'default' => false
-   ),
+    'NAME' => array(
+        'width' => '30',
+        'label' => 'LBL_LIST_NAME',
+        'link' => true,
+        'related_fields' => array('last_name', 'first_name'),
+        'orderBy' => 'last_name',
+        'default' => true,
+    ),
+    'USER_NAME' => array(
+        'width' => '5',
+        'label' => 'LBL_USER_NAME',
+        'link' => true,
+        'default' => true,
+    ),
+    'POSITION_NAME' => array(
+        'width' => '15',
+        'label' => 'LBL_POSITION_NAME',
+        'link' => true,
+        'default' => true,
+    ),
+    'ORGANIZATIONALUNIT_NAME' => array(
+        'width' => '15',
+        'label' => 'LBL_ORGANIZATIONALUNIT_NAME',
+        'link' => true,
+        'default' => true,
+    ),
+    'BUSINESS_ROLE' => array(
+        'type' => 'enum',
+        'label' => 'LBL_BUSINESS_ROLE',
+        'sortable' => true,
+        'width' => '5%',
+        'default' => false,
+    ),
+    'EMAIL1' => array(
+        'width' => '30',
+        'sortable' => false,
+        'label' => 'LBL_LIST_EMAIL',
+        'link' => true,
+        'default' => true,
+    ),
+    'PHONE_WORK' => array(
+        'width' => '25',
+        'label' => 'LBL_LIST_PHONE',
+        'link' => true,
+        'default' => true,
+    ),
+    'STATUS' => array(
+        'width' => '10',
+        'label' => 'LBL_STATUS',
+        'link' => false,
+        'default' => true,
+    ),
+    'IS_ADMIN' => array(
+        'width' => '10',
+        'label' => 'LBL_ADMIN',
+        'link' => false,
+        'default' => true,
+    ),
+    'IS_GROUP' => array(
+        'width' => '10',
+        'label' => 'LBL_LIST_GROUP',
+        'link' => true,
+        'default' => false,
+    ),
+    'REPORTS_TO_NAME' => array(
+        'width' => '10',
+        'label' => 'LBL_REPORTS_TO_NAME',
+        'link' => true,
+        'default' => false,
+    ),
+    'ADDRESS_STREET' => array(
+        'width' => '10',
+        'label' => 'LBL_ADDRESS_STREET',
+        'link' => false,
+        'default' => false,
+    ),
+    'ADDRESS_CITY' => array(
+        'width' => '10',
+        'label' => 'LBL_ADDRESS_CITY',
+        'link' => false,
+        'default' => false,
+    ),
+    'ADDRESS_STATE' => array(
+        'width' => '10',
+        'label' => 'LBL_ADDRESS_STATE',
+        'link' => false,
+        'default' => false,
+    ),
+    'ADDRESS_COUNTRY' => array(
+        'width' => '10',
+        'label' => 'LBL_ADDRESS_COUNTRY',
+        'link' => false,
+        'default' => false,
+    ),
 );

@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,9 +6,6 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -37,30 +32,58 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
- * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
+ * these Appropriate Legal Notices must retain the display of the "Powered by
+ * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+class SalaryRanges extends Basic
+{
+    public $new_schema = true;
+    public $module_dir = 'SalaryRanges';
+    public $object_name = 'SalaryRanges';
+    public $table_name = 'salaryranges';
+    public $importable = true;
+    public $assigned_user_id;
+    public $assigned_user_name;
+    public $assigned_user_link;
+    public $tag;
+    public $tag_link;
+    public $id;
+    public $name;
+    public $date_entered;
+    public $date_modified;
+    public $modified_user_id;
+    public $modified_by_name;
+    public $created_by;
+    public $created_by_name;
+    public $description;
+    public $deleted;
+    public $created_by_link;
+    public $modified_user_link;
+    public $activities;
+    public $following;
+    public $following_link;
+    public $my_favorite;
+    public $favorite_link;
+    public $commentlog;
+    public $commentlog_link;
+    public $locked_fields;
+    public $locked_fields_link;
+
+    public function bean_implements($interface)
+    {
+        switch ($interface) {
+            case 'ACL':return true;
+        }
+        return false;
+    }
+
+    public function save($check_notify = false)
+    {
+        $this->name = $this->position_name . ' - ' . $this->start_date . ' - ' . $this->end_date;
+        parent::save();
+    }
+
 }
-/*
- * Your installation or use of this SugarCRM file is subject to the applicable
- * terms available at
- * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
- * If you do not agree to all of the applicable terms or do not have the
- * authority to bind the entity as an authorized representative, then do not
- * install or use this SugarCRM file.
- *
- * Copyright (C) SugarCRM Inc. All rights reserved.
- */
-global $app_strings;
-
-$dashletMeta['CertificatesDashlet'] = array( 'module' => 'Certificates',
-   'title' => translate('LBL_HOMEPAGE_TITLE', 'Certificates'),
-   'description' => 'A customizable view into Certificates',
-   'icon' => 'icon_Certificates_32.gif',
-   'category' => 'Module Views' );

@@ -44,71 +44,16 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$dashletData['CertificatesDashlet']['searchFields'] = array(
-   'name' =>
-   array(
-      'default' => '',
-   ),
-   'start_date' =>
-   array(
-      'default' => '',
-   ),
-   'end_date' =>
-   array(
-      'default' => '',
-   ),
-   'status' =>
-   array(
-      'default' => '',
-   ),
-   'employee_name' => array( 'default' => '' ),
-   'candidate_name' => array(
-      'default' => '',
-   ),
-);
-$dashletData['CertificatesDashlet']['columns'] = array(
-   'name' =>
-   array(
-      'width' => '40%',
-      'label' => 'LBL_NAME', //LBL_LIST_NAME
-      'link' => true,
-      'default' => true,
-      'name' => 'name',
-   ),
-   'start_date' =>
-   array(
-      'width' => '15%',
-      'label' => 'LBL_START_DATE',
-      'default' => true,
-      'name' => 'start_date',
-   ),
-   'end_date' =>
-   array(
-      'width' => '15%',
-      'label' => 'LBL_END_DATE',
-      'default' => true,
-      'name' => 'end_date',
-   ),
-   'status' =>
-   array(
-      'type' => 'enum',
-      'width' => '15%',
-      'label' => 'LBL_STATUS',
-      'name' => 'status',
-      'default' => false,
-   ),
-   'employee_name' => array(
-      'width' => '15',
-      'label' => 'LBL_EMPLOYEE',
-      'default' => false
-   ),
-   'candidate_name' => array(
-      'name' => 'candidate_name',
-      'type' => 'relate',
-      'link' => true,
-      'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
-      'id' => 'CANDIDATE_ID',
-      'width' => '10%',
-      'default' => true,
-   ),
-);
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+/**
+ * This file adds support for studio
+ */

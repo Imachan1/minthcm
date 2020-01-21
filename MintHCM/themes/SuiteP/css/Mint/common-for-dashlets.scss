@@ -3,7 +3,9 @@
     //padding-left: $mint-rem;
 }
 
-
+#dlg .bd {
+    overflow-y: scroll !important;
+}
 
 .dashletcontainer > ul > li > .dashletPanel {
   @include BoxShadow(1);

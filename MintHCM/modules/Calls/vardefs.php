@@ -48,6 +48,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 $dictionary['Call'] = array(
    'table' => 'calls',
    'comment' => 'A Call is an activity representing a phone call',
+   'audited' => true,
    'unified_search' => true,
    'full_text_search' => true,
    'unified_search_default_enabled' => true,
@@ -63,6 +64,7 @@ $dictionary['Call'] = array(
          'full_text_search' => array('boost' => 3),
          'required' => true,
          'importable' => 'required',
+         'audited' => true,
       ),
       'duration_hours' =>
       array(
@@ -72,6 +74,7 @@ $dictionary['Call'] = array(
          'len' => '2',
          'comment' => 'Call duration, hours portion',
          'required' => true,
+         'audited' => true,
       ),
       'duration_minutes' =>
       array(
@@ -82,7 +85,8 @@ $dictionary['Call'] = array(
          'len' => '2',
          'group' => 'duration_hours',
          'importable' => 'required',
-         'comment' => 'Call duration, minutes portion'
+         'comment' => 'Call duration, minutes portion',
+         'audited' => true,
       ),
       'date_start' =>
       array(
@@ -95,6 +99,7 @@ $dictionary['Call'] = array(
          'required' => true,
          'enable_range_search' => true,
          'options' => 'date_range_search_dom',
+         'audited' => true,
       ),
       'date_end' =>
       array(
@@ -106,6 +111,7 @@ $dictionary['Call'] = array(
          'comment' => 'Date is which call is scheduled to (or did) end',
          'enable_range_search' => true,
          'options' => 'date_range_search_dom',
+         'audited' => true,
       ),
       'parent_type' =>
       array(
@@ -117,7 +123,8 @@ $dictionary['Call'] = array(
          'group' => 'parent_name',
          'options' => 'parent_type_display',
          'len' => 255,
-         'comment' => 'The Sugar object to which the call is related'
+         'comment' => 'The Sugar object to which the call is related',
+         'audited' => true,
       ),
       'parent_name' =>
       array(
@@ -130,6 +137,7 @@ $dictionary['Call'] = array(
          'group' => 'parent_name',
          'source' => 'non-db',
          'options' => 'parent_type_display',
+         'audited' => true,
       ),
       'status' =>
       array(
@@ -143,7 +151,8 @@ $dictionary['Call'] = array(
          'required' => true,
          'importable' => 'required',
          'default' => 'Planned',
-         'studio' => array('detailview' => false)
+         'studio' => array('detailview' => false),
+         'audited' => true,
       ),
       'direction' =>
       array(
@@ -152,7 +161,8 @@ $dictionary['Call'] = array(
          'type' => 'enum',
          'len' => 100,
          'options' => 'call_direction_dom',
-         'comment' => 'Indicates whether call is inbound or outbound'
+         'comment' => 'Indicates whether call is inbound or outbound',
+         'audited' => true,
       ),
       'parent_id' =>
       array(
@@ -161,7 +171,7 @@ $dictionary['Call'] = array(
          'type' => 'id',
          'group' => 'parent_name',
          'reportable' => false,
-         'comment' => 'The ID of the parent Sugar object identified by parent_type'
+         'comment' => 'The ID of the parent Sugar object identified by parent_type',
       ),
       'reminder_checked' => array(
          'name' => 'reminder_checked',
@@ -171,6 +181,7 @@ $dictionary['Call'] = array(
          'comment' => 'checkbox indicating whether or not the reminder value is set (Meta-data only)',
          'massupdate' => false,
          'studio' => false,
+         'audited' => true,
       ),
       'reminder_time' =>
       array(
@@ -184,6 +195,7 @@ $dictionary['Call'] = array(
          'default' => -1,
          'comment' => 'Specifies when a reminder alert should be issued; -1 means no alert; otherwise the number of seconds prior to the start',
          'studio' => false,
+         'audited' => true,
       ),
       'email_reminder_checked' => array(
          'name' => 'email_reminder_checked',
@@ -193,6 +205,7 @@ $dictionary['Call'] = array(
          'comment' => 'checkbox indicating whether or not the email reminder value is set (Meta-data only)',
          'massupdate' => false,
          'studio' => false,
+         'audited' => true,
       ),
       'email_reminder_time' =>
       array(
@@ -206,6 +219,7 @@ $dictionary['Call'] = array(
          'default' => -1,
          'comment' => 'Specifies when a email reminder alert should be issued; -1 means no alert; otherwise the number of seconds prior to the start',
          'studio' => false,
+         'audited' => true,
       ),
       'email_reminder_sent' => array(
          'name' => 'email_reminder_sent',
@@ -215,6 +229,7 @@ $dictionary['Call'] = array(
          'comment' => 'Whether email reminder is already sent',
          'studio' => false,
          'massupdate' => false,
+         'audited' => true,
       ),
       'reminders' => array(
          'required' => false,
@@ -242,7 +257,8 @@ $dictionary['Call'] = array(
          'type' => 'varchar',
          'len' => '255',
          'reportable' => false,
-         'comment' => 'When the Sugar Plug-in for Microsoft Outlook syncs an Outlook appointment, this is the Outlook appointment item ID'
+         'comment' => 'When the Sugar Plug-in for Microsoft Outlook syncs an Outlook appointment, this is the Outlook appointment item ID',
+         'audited' => false,
       ),
       'accept_status' => array(
          'name' => 'accept_status',
@@ -251,6 +267,7 @@ $dictionary['Call'] = array(
          'type' => 'varchar',
          'len' => '20',
          'source' => 'non-db',
+         'audited' => true,
       ),
       //bug 39559
       'set_accept_links' => array(
@@ -260,6 +277,7 @@ $dictionary['Call'] = array(
          'type' => 'varchar',
          'len' => '20',
          'source' => 'non-db',
+         'audited' => true,
       ),
       'opportunities' =>
       array(
@@ -376,6 +394,7 @@ $dictionary['Call'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_interval' =>
       array(
@@ -389,6 +408,7 @@ $dictionary['Call'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_dow' =>
       array(
@@ -401,6 +421,7 @@ $dictionary['Call'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_until' =>
       array(
@@ -412,6 +433,7 @@ $dictionary['Call'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_count' =>
       array(
@@ -424,6 +446,7 @@ $dictionary['Call'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => 'false',
+         'audited' => true,
       ),
       'repeat_parent_id' =>
       array(
@@ -448,6 +471,7 @@ $dictionary['Call'] = array(
          'massupdate' => false,
          'reportable' => false,
          'studio' => false,
+         'audited' => true,
       ),
       'reschedule_history' =>
       array(
@@ -605,3 +629,5 @@ $dictionary['Call'] = array(
 
 VardefManager::createVardef('Calls', 'Call', array('default', 'assignable', 'security_groups',
 ));
+
+$dictionary['Call']['fields']['outlook_id']['audited'] = false;

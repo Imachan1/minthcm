@@ -7,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -35,79 +35,80 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 $viewdefs['Users']['QuickCreate'] = array(
     'templateMeta' => array('maxColumns' => '2',
-                            'widths' => array(
-                                array('label' => '10', 'field' => '30'),
-                                array('label' => '10', 'field' => '30')
-                            ),
-                            'form' => array(
-                                'headerTpl'=>'modules/Users/tpls/EditViewHeader.tpl',
-                                'footerTpl'=>'modules/Users/tpls/EditViewFooter.tpl',
-                            ),
-                            'javascript' => '<script type="text/javascript" src="modules/Users/UserEditView.js"></script>',
+        'widths' => array(
+            array('label' => '10', 'field' => '30'),
+            array('label' => '10', 'field' => '30'),
+        ),
+        'form' => array(
+            'headerTpl' => 'modules/Users/tpls/EditViewHeader.tpl',
+            'footerTpl' => 'modules/Users/tpls/EditViewFooter.tpl',
+        ),
+        'javascript' => '<script type="text/javascript" src="modules/Users/UserEditView.js"></script>',
     ),
-    'panels' => array (
-        'LBL_USER_INFORMATION' => array (
+    'panels' => array(
+        'LBL_USER_INFORMATION' => array(
             array(
                 array(
-                    'name'=>'user_name',
-                    'displayParams' => array('required'=>true),
+                    'name' => 'user_name',
+                    'displayParams' => array('required' => true),
                 ),
-                'first_name'
+                'first_name',
             ),
             array(
                 array(
                     'name' => 'status',
                     'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}{$STATUS_READONLY}{/if}',
-                    'displayParams' => array('required'=>true),
+                    'displayParams' => array('required' => true),
                 ),
                 array(
-                    'name'=>'last_name',
-                    'displayParams' => array('required'=>true),
+                    'name' => 'last_name',
+                    'displayParams' => array('required' => true),
                 ),
             ),
             array(
                 array(
-                    'name'=>'email1',
-                    'displayParams' => array('required'=>true),
+                    'name' => 'email1',
+                    'displayParams' => array('required' => true),
                 ),
                 array(
-                    'name'=>'UserType',
-                    'customCode'=>'{if $IS_ADMIN}{$USER_TYPE_DROPDOWN}{else}{$USER_TYPE_READONLY}{/if}',
+                    'name' => 'UserType',
+                    'customCode' => '{if $IS_ADMIN}{$USER_TYPE_DROPDOWN}{else}{$USER_TYPE_READONLY}{/if}',
                 ),
+                'business_role',
             ),
         ),
         'LBL_EMPLOYEE_INFORMATION' => array(
             array(
                 array(
-                    'name'=>'employee_status',
-                    'customCode'=>'{if $IS_ADMIN}@@FIELD@@{else}{$EMPLOYEE_STATUS_READONLY}{/if}',
+                    'name' => 'employee_status',
+                    'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}{$EMPLOYEE_STATUS_READONLY}{/if}',
                 ),
-                'show_on_employees'
+                'show_on_employees',
             ),
             array(
                 array(
-                    'name'=>'title',
-                    'customCode'=>'{if $IS_ADMIN}@@FIELD@@{else}{$TITLE_READONLY}{/if}',
+                    'name' => 'title',
+                    'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}{$TITLE_READONLY}{/if}',
                 ),
-                'phone_work'
+                'phone_work',
             ),
             array(
                 array(
-                    'name'=>'department',
-                    'customCode'=>'{if $IS_ADMIN}@@FIELD@@{else}{$DEPT_READONLY}{/if}',
+                    'name' => 'department',
+                    'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}{$DEPT_READONLY}{/if}',
                 ),
                 array(
-                    'name'=>'reports_to_name',
-                    'customCode'=>'{if $IS_ADMIN}@@FIELD@@{else}{$REPORTS_TO_READONLY}{/if}',
+                    'name' => 'reports_to_name',
+                    'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}{$REPORTS_TO_READONLY}{/if}',
                 ),
             ),
         ),

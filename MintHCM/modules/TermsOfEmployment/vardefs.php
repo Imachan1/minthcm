@@ -7,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -35,18 +35,16 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 $dictionary['TermsOfEmployment'] = array(
     'audited' => true,
-    'fields' =>
-    array(
-        'term_starting_date' =>
-        array(
+    'fields' => array(
+        'term_starting_date' => array(
             'required' => true,
             'name' => 'term_starting_date',
             'vname' => 'LBL_TERM_STARTING_DATE',
@@ -69,8 +67,7 @@ $dictionary['TermsOfEmployment'] = array(
             'validation' => array('type' => 'isbefore', 'compareto' => 'term_ending_date'),
             'vt_readonly' => "callCustomApi(TermsOfEmployment, checkIfTermInBetween, {id: \$id})",
         ),
-        'term_ending_date' =>
-        array(
+        'term_ending_date' => array(
             'required' => false,
             'name' => 'term_ending_date',
             'vname' => 'LBL_TERM_ENDING_DATE',
@@ -93,8 +90,7 @@ $dictionary['TermsOfEmployment'] = array(
             'vt_validation' => "AEM(callCustomApi(TermsOfEmployment, validateTermDates, {id: \$id, contract_id: \$contract_id, date_start: \$term_starting_date, date_end: \$term_ending_date,}),'LBL_TERMS_NOT_ADJECENT')",
             'vt_readonly' => "callCustomApi(TermsOfEmployment, checkIfTermInBetween, {id: \$id})",
         ),
-        'date_of_signing' =>
-        array(
+        'date_of_signing' => array(
             'required' => false,
             'name' => 'date_of_signing',
             'vname' => 'LBL_DATE_OF_SIGNING',
@@ -115,8 +111,13 @@ $dictionary['TermsOfEmployment'] = array(
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
         ),
-        'gross' =>
-        array(
+        'contracted_employee' => array(
+            'name' => 'contracted_employee',
+            'type' => 'enum',
+            'source' => 'non-db',
+            'vname' => 'LBL_CONTRACTED_EMPLOYEE',
+        ),
+        'gross' => array(
             'required' => false,
             'name' => 'gross',
             'vname' => 'LBL_GROSS',
@@ -139,8 +140,7 @@ $dictionary['TermsOfEmployment'] = array(
             'options' => 'numeric_range_search_dom',
             'precision' => 6,
         ),
-        'gross_usdollar' =>
-        array(
+        'gross_usdollar' => array(
             'required' => false,
             'name' => 'gross_usdollar',
             'vname' => 'LBL_GROSS_USDOLLAR',
@@ -163,8 +163,7 @@ $dictionary['TermsOfEmployment'] = array(
             'options' => 'numeric_range_search_dom',
             'precision' => 6,
         ),
-        'currency_id' =>
-        array(
+        'currency_id' => array(
             'required' => false,
             'name' => 'currency_id',
             'vname' => 'LBL_CURRENCY',
@@ -185,14 +184,12 @@ $dictionary['TermsOfEmployment'] = array(
             'size' => '20',
             'dbType' => 'id',
             'studio' => 'visible',
-            'function' =>
-            array(
+            'function' => array(
                 'name' => 'getCurrencyDropDown',
                 'returns' => 'html',
             ),
         ),
-        'net' =>
-        array(
+        'net' => array(
             'required' => false,
             'name' => 'net',
             'vname' => 'LBL_NET',
@@ -215,8 +212,7 @@ $dictionary['TermsOfEmployment'] = array(
             'options' => 'numeric_range_search_dom',
             'precision' => 6,
         ),
-        'net_usdollar' =>
-        array(
+        'net_usdollar' => array(
             'required' => false,
             'name' => 'net_usdollar',
             'vname' => 'LBL_NET_USDOLLAR',
@@ -239,8 +235,7 @@ $dictionary['TermsOfEmployment'] = array(
             'options' => 'numeric_range_search_dom',
             'precision' => 6,
         ),
-        'employer_cost' =>
-        array(
+        'employer_cost' => array(
             'required' => false,
             'name' => 'employer_cost',
             'vname' => 'LBL_EMPLOYER_COST',
@@ -263,8 +258,7 @@ $dictionary['TermsOfEmployment'] = array(
             'options' => 'numeric_range_search_dom',
             'precision' => 6,
         ),
-        'employer_cost_usdollar' =>
-        array(
+        'employer_cost_usdollar' => array(
             'required' => false,
             'name' => 'employer_cost_usdollar',
             'vname' => 'LBL_EMPLOYER_COST_USDOLLAR',
@@ -324,9 +318,45 @@ $dictionary['TermsOfEmployment'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_DOCUMENTS',
         ),
+        "positions" => array(
+            'name' => 'positions',
+            'type' => 'link',
+            'relationship' => 'positions_termsofemployment',
+            'source' => 'non-db',
+            'vname' => 'LBL_POSITIONS',
+            'id_name' => 'position_id',
+        ),
+        'position_id' => array(
+            'name' => 'position_id',
+            'relationship' => 'positions_termsofemployment',
+            'type' => 'id',
+            'vname' => 'LBL_POSITION_ID',
+            'label' => 'LBL_POSITION_ID',
+            'audited' => true,
+            'importable' => true,
+            'reportable' => true,
+            'rname' => 'id',
+            'isnull' => 'true',
+            'dbType' => 'id',
+        ),
+        'position_name' => array(
+            'name' => 'position_name',
+            'type' => 'relate',
+            'source' => 'non-db',
+            'vname' => 'LBL_POSITION_NAME',
+            'label' => 'LBL_POSITION_NAME',
+            'id_name' => 'position_id',
+            'link' => 'positions',
+            'module' => 'Positions',
+            'table' => 'positions',
+            'rname' => 'name',
+            'importable' => true,
+            'reportable' => true,
+            'audited' => true,
+            'required' => true,
+        ),
     ),
-    'relationships' =>
-    array(
+    'relationships' => array(
         "contracts_termsofemployment" => array(
             'lhs_module' => 'Contracts',
             'lhs_table' => 'contracts',
@@ -336,15 +366,24 @@ $dictionary['TermsOfEmployment'] = array(
             'rhs_key' => 'contract_id',
             'relationship_type' => 'one-to-many',
         ),
+        'positions_termsofemployment' => array(
+            'lhs_module' => 'Positions',
+            'lhs_table' => 'positions',
+            'lhs_key' => 'id',
+            'rhs_module' => 'TermsOfEmployment',
+            'rhs_table' => 'termsofemployment',
+            'rhs_key' => 'position_id',
+            'relationship_type' => 'one-to-many',
+        ),
     ),
 );
 
 if (!class_exists('VardefManager')) {
-    require_once('include/SugarObjects/VardefManager.php');
+    require_once 'include/SugarObjects/VardefManager.php';
 }
 VardefManager::createVardef('TermsOfEmployment', 'TermsOfEmployment',
     array(
         'basic',
         'assignable',
-        'security_groups'
-));
+        'security_groups',
+    ));

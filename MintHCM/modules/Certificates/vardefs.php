@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,10 +36,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 $dictionary['Certificates'] = array(
@@ -49,55 +48,6 @@ $dictionary['Certificates'] = array(
     'activity_enabled' => false,
     'duplicate_merge' => true,
     'fields' => array(
-        'start_date' => array(
-            'name' => 'start_date',
-            'label' => 'LBL_START_DATE',
-            'vname' => 'LBL_START_DATE',
-            'type' => 'date',
-            'audited' => false,
-            'mass_update' => false,
-            'duplicate_merge' => '1',
-            'reportable' => true,
-            'importable' => true,
-            'options' => 'date_range_search_dom',
-            'enable_range_search' => '1',
-            'validation' => array('type' => 'isbefore', 'compareto' => 'end_date'),
-        ),
-        'end_date' => array(
-            'name' => 'end_date',
-            'label' => 'LBL_END_DATE',
-            'vname' => 'LBL_END_DATE',
-            'type' => 'date',
-            'audited' => false,
-            'mass_update' => false,
-            'duplicate_merge' => '1',
-            'reportable' => true,
-            'importable' => true,
-            'options' => 'date_range_search_dom',
-            'enable_range_search' => '1',
-        ),
-        'status' => array(
-            'required' => false,
-            'name' => 'status',
-            'vname' => 'LBL_STATUS',
-            'type' => 'enum',
-            'audited' => true,
-            'default' => 'Active',
-            'no_default' => false,
-            'massupdate' => true,
-            'importable' => false,
-            'duplicate_merge' => 'disabled',
-            'duplicate_merge_dom_value' => '0',
-            'reportable' => true,
-            'unified_search' => false,
-            'merge_filter' => 'disabled',
-            'calculated' => false,
-            'len' => 100,
-            'size' => '20',
-            'options' => 'certificates_status_list',
-            'studio' => 'visible',
-            'dependency' => false,
-        ),
         'documents' => array(
             'name' => 'documents',
             'type' => 'link',
@@ -112,54 +62,19 @@ $dictionary['Certificates'] = array(
             'source' => 'non-db',
             'module' => 'Trainings',
             'bean_name' => 'Trainings',
-            'vname' => 'LBL_RELATIONSHIP_CERTIFICATES_NAME',
+            'vname' => 'LBL_RELATIONSHIP_TRAININGS_NAME',
         ),
-        "candidate" => array(
-            'name' => 'candidate',
+        "employeecertificates" => array(
+            'name' => 'employeecertificates',
             'type' => 'link',
-            'relationship' => 'candidates_certificates',
+            'relationship' => 'certificates_employeecertificates',
             'source' => 'non-db',
-            'module' => 'Candidates',
-            'bean_name' => 'Candidates',
-            'vname' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
-            'id_name' => 'candidate_id',
-        ),
-        "candidate_name" => array(
-            'name' => 'candidate_name',
-            'type' => 'relate',
-            'source' => 'non-db',
-            'vname' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
-            'id_name' => 'candidate_id',
-            'link' => 'candidate',
-            'module' => 'Candidates',
-            'table' => 'candidates',
-            'rname' => 'name',
-            'audited' => true,
-            'importable' => true,
-            'required' => false,
-            'reportable' => true,
-            'massupdate' => false,
-            'duplicate_merge' => 'enabled',
-        ),
-        "candidate_id" => array(
-            'name' => 'candidate_id',
-            'relationship' => 'candidates_certificates',
-            'type' => 'id',
-            'vname' => 'LBL_RELATIONSHIP_CANDIDATE_ID',
-            'audited' => true,
-            'reportable' => true,
+            'module' => 'EmployeeCertificates',
+            'bean_name' => 'EmployeeCertificates',
+            'vname' => 'LBL_EMPLOYEE_CERTIFICATES',
         ),
     ),
     'relationships' => array(
-        "candidates_certificates" => array(
-            'lhs_module' => 'Candidates',
-            'lhs_table' => 'candidates',
-            'lhs_key' => 'id',
-            'rhs_module' => 'Certificates',
-            'rhs_table' => 'certificates',
-            'rhs_key' => 'candidate_id',
-            'relationship_type' => 'one-to-many',
-        ),
     ),
     'optimistic_locking' => true,
     'unified_search' => true,
@@ -169,4 +84,4 @@ if (!class_exists('VardefManager')) {
     require_once 'include/SugarObjects/VardefManager.php';
 }
 VardefManager::createVardef('Certificates', 'Certificates',
-    array('basic', 'assignable', 'security_groups', 'employee_related'));
+    array('basic', 'assignable', 'security_groups'));

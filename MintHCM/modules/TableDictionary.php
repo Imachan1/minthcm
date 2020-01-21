@@ -171,6 +171,7 @@ include 'metadata/documents_candidatesMetaData.php';
 include 'metadata/documents_candidaturesMetaData.php';
 include 'metadata/documents_certificatesMetaData.php';
 include 'metadata/documents_contractsMetaData.php';
+include 'metadata/documents_delegationsMetaData.php';
 include 'metadata/documents_termsofemploymentMetaData.php';
 //
 include 'metadata/Knowledge_CompetenciesMetaData.php';

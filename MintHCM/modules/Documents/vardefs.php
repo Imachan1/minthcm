@@ -10,7 +10,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -38,10 +38,10 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 $dictionary['Document'] = array('table' => 'documents',
@@ -63,7 +63,7 @@ $dictionary['Document'] = array('table' => 'documents',
             'name' => 'name',
             'vname' => 'LBL_NAME',
             'source' => 'non-db',
-            'type' => 'varchar'
+            'type' => 'varchar',
         ),
         'doc_id' => array(
             'name' => 'doc_id',
@@ -185,7 +185,7 @@ $dictionary['Document'] = array('table' => 'documents',
             'vname' => 'LBL_LAST_REV_CREATOR',
             'type' => 'varchar',
             'reportable' => false,
-            'source' => 'non-db'
+            'source' => 'non-db',
         ),
         'last_rev_mime_type' => array(
             'name' => 'last_rev_mime_type',
@@ -193,14 +193,14 @@ $dictionary['Document'] = array('table' => 'documents',
             'type' => 'varchar',
             'reportable' => false,
             'studio' => 'false',
-            'source' => 'non-db'
+            'source' => 'non-db',
         ),
         'latest_revision' => array(
             'name' => 'latest_revision',
             'vname' => 'LBL_LATEST_REVISION',
             'type' => 'varchar',
             'reportable' => false,
-            'source' => 'non-db'
+            'source' => 'non-db',
         ),
         'last_rev_create_date' => array(
             'name' => 'last_rev_create_date',
@@ -211,7 +211,7 @@ $dictionary['Document'] = array('table' => 'documents',
             'vname' => 'LBL_LAST_REV_CREATE_DATE',
             'rname' => 'date_entered',
             'reportable' => false,
-            'source' => 'non-db'
+            'source' => 'non-db',
         ),
         'contracts' => array(
             'name' => 'contracts',
@@ -219,6 +219,13 @@ $dictionary['Document'] = array('table' => 'documents',
             'relationship' => 'documents_contracts',
             'source' => 'non-db',
             'vname' => 'LBL_CONTRACTS',
+        ),
+        'delegations' => array(
+            'name' => 'delegations',
+            'type' => 'link',
+            'relationship' => 'documents_delegations',
+            'source' => 'non-db',
+            'vname' => 'LBL_DELEGATIONS',
         ),
         //todo remove
         'leads' => array(
@@ -318,56 +325,56 @@ $dictionary['Document'] = array('table' => 'documents',
             'vname' => 'LBL_LASTEST_REVISION_NAME',
             'type' => 'varchar',
             'reportable' => false,
-            'source' => 'non-db'
+            'source' => 'non-db',
         ),
         'selected_revision_name' => array(
             'name' => 'selected_revision_name',
             'vname' => 'LBL_SELECTED_REVISION_NAME',
             'type' => 'varchar',
             'reportable' => false,
-            'source' => 'non-db'
+            'source' => 'non-db',
         ),
         'contract_status' => array(
             'name' => 'contract_status',
             'vname' => 'LBL_CONTRACT_STATUS',
             'type' => 'varchar',
             'reportable' => false,
-            'source' => 'non-db'
+            'source' => 'non-db',
         ),
         'contract_name' => array(
             'name' => 'contract_name',
             'vname' => 'LBL_CONTRACT_NAME',
             'type' => 'varchar',
             'reportable' => false,
-            'source' => 'non-db'
+            'source' => 'non-db',
         ),
         'linked_id' => array(
             'name' => 'linked_id',
             'vname' => 'LBL_LINKED_ID',
             'type' => 'varchar',
             'reportable' => false,
-            'source' => 'non-db'
+            'source' => 'non-db',
         ),
         'selected_revision_id' => array(
             'name' => 'selected_revision_id',
             'vname' => 'LBL_SELECTED_REVISION_ID',
             'type' => 'varchar',
             'reportable' => false,
-            'source' => 'non-db'
+            'source' => 'non-db',
         ),
         'latest_revision_id' => array(
             'name' => 'latest_revision_id',
             'vname' => 'LBL_LATEST_REVISION_ID',
             'type' => 'varchar',
             'reportable' => false,
-            'source' => 'non-db'
+            'source' => 'non-db',
         ),
         'selected_revision_filename' => array(
             'name' => 'selected_revision_filename',
             'vname' => 'LBL_SELECTED_REVISION_FILENAME',
             'type' => 'varchar',
             'reportable' => false,
-            'source' => 'non-db'
+            'source' => 'non-db',
         ),
 //END fields used for contract documents subpanel.
         'aos_contracts' => array(
@@ -445,7 +452,7 @@ $dictionary['Document'] = array('table' => 'documents',
     ),
     'indices' => array(
         array('name' => 'idx_doc_cat', 'type' => 'index', 'fields' => array('category_id',
-                'subcategory_id')),
+            'subcategory_id')),
     ),
     'relationships' => array(
         'document_revisions' => array('lhs_module' => 'Documents', 'lhs_table' => 'documents',
@@ -453,17 +460,14 @@ $dictionary['Document'] = array('table' => 'documents',
             'rhs_module' => 'DocumentRevisions', 'rhs_table' => 'document_revisions',
             'rhs_key' => 'document_id',
             'relationship_type' => 'one-to-many')
-        , 'documents_modified_user' =>
-        array('lhs_module' => 'Users', 'lhs_table' => 'users', 'lhs_key' => 'id',
+        , 'documents_modified_user' => array('lhs_module' => 'Users', 'lhs_table' => 'users', 'lhs_key' => 'id',
             'rhs_module' => 'Documents', 'rhs_table' => 'documents', 'rhs_key' => 'modified_user_id',
             'relationship_type' => 'one-to-many')
-        , 'documents_created_by' =>
-        array('lhs_module' => 'Users', 'lhs_table' => 'users', 'lhs_key' => 'id',
+        , 'documents_created_by' => array('lhs_module' => 'Users', 'lhs_table' => 'users', 'lhs_key' => 'id',
             'rhs_module' => 'Documents', 'rhs_table' => 'documents', 'rhs_key' => 'created_by',
-            'relationship_type' => 'one-to-many')
+            'relationship_type' => 'one-to-many'),
     ),
 );
 VardefManager::createVardef('Documents', 'Document',
     array('default', 'assignable', 'security_groups',
-));
-
+    ));

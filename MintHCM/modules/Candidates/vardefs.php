@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -54,7 +52,7 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 
-$dictionary['Candidates']                                         = array(
+$dictionary['Candidates'] = array(
     'table' => 'candidates',
     'audited' => true,
     'activity_enabled' => false,
@@ -532,15 +530,13 @@ $dictionary['Candidates']                                         = array(
             'vname' => 'LBL_CANDIDATE_EMPLOYEE_ID_FROM_CANDIDATE',
             'audited' => true,
         ),
-        "certificates" => array(
-            'name' => 'certificates',
+        "employeecertificates" => array(
+            'name' => 'employeecertificates',
             'type' => 'link',
-            'relationship' => 'candidates_certificates',
+            'relationship' => 'candidates_employeecertificates',
             'source' => 'non-db',
-            'module' => 'Certificates',
-            'bean_name' => 'Certificates',
-            'vname' => 'LBL_RELATIONSHIP_CERTIFICATES_NAME',
             'side' => 'right',
+            'vname' => 'LBL_EMPLOYEECERTIFICATES',
         ),
     ),
     'relationships' => array(
@@ -622,7 +618,7 @@ $dictionary['Candidates']                                         = array(
     'unified_search' => true,
 );
 $dictionary['Candidates']['fields']['do_not_call']['mass_update'] = false;
-$dictionary['Candidates']['fields']['phone_work']['audited']      = false;
+$dictionary['Candidates']['fields']['phone_work']['audited'] = false;
 
 if (!class_exists('VardefManager')) {
     require_once 'include/SugarObjects/VardefManager.php';
@@ -630,9 +626,9 @@ if (!class_exists('VardefManager')) {
 VardefManager::createVardef('Candidates', 'Candidates',
     array('basic', 'assignable', 'person', 'security_groups'));
 
-$dictionary['Candidates']['fields']['date_reviewed']['audited']          = false;
-$dictionary['Candidates']['fields']['date_reviewed']['reportable']       = false;
-$dictionary['Candidates']['fields']['lawful_basis_source']['audited']    = false;
+$dictionary['Candidates']['fields']['date_reviewed']['audited'] = false;
+$dictionary['Candidates']['fields']['date_reviewed']['reportable'] = false;
+$dictionary['Candidates']['fields']['lawful_basis_source']['audited'] = false;
 $dictionary['Candidates']['fields']['lawful_basis_source']['reportable'] = false;
-$dictionary['Candidates']['fields']['lawful_basis']['audited']           = false;
-$dictionary['Candidates']['fields']['lawful_basis']['reportable']        = false;
+$dictionary['Candidates']['fields']['lawful_basis']['audited'] = false;
+$dictionary['Candidates']['fields']['lawful_basis']['reportable'] = false;

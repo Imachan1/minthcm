@@ -60,16 +60,16 @@ class GenerateOnboardingOffboarding
     public function __construct($data)
     {
         $this->module_name = (isset($data['module_name'])) ? $data['module_name']
-                : null;
+        : null;
         $this->template_id = (isset($data['template_id'])) ? $data['template_id']
-                : null;
+        : null;
         $this->employee_id = (isset($data['employee_id'])) ? $data['employee_id']
-                : null;
-        $this->date_start  = (isset($data['date_start'])) ? $data['date_start'] : null;
-        $this->record_id   = (isset($data['record_id'])) ? $data['record_id'] : null;
+        : null;
+        $this->date_start = (isset($data['date_start'])) ? $data['date_start'] : null;
+        $this->record_id = (isset($data['record_id'])) ? $data['record_id'] : null;
         if (isset($data['user_scheduled_onboarding_id'])) {
             $this->user_scheduled_onboarding = BeanFactory::getBean('Users',
-                    $data['user_scheduled_onboarding_id']);
+                $data['user_scheduled_onboarding_id']);
         } else {
             $this->user_scheduled_onboarding = BeanFactory::newBean('Users');
         }
@@ -94,17 +94,16 @@ class GenerateOnboardingOffboarding
     }
 
     protected function createProcess($process_name, $relate_id_field_name,
-                                     $assigned_user_id)
-    {
-        $bean                        = BeanFactory::newBean($process_name);
-        $bean->date_start            = $this->date_start;
-        $bean->employee_id           = $this->employee_id;
+        $assigned_user_id) {
+        $bean = BeanFactory::newBean($process_name);
+        $bean->date_start = $this->date_start;
+        $bean->employee_id = $this->employee_id;
         $bean->$relate_id_field_name = $this->template_id;
-        $bean->assigned_user_id      = $assigned_user_id;
+        $bean->assigned_user_id = $assigned_user_id;
         $bean->save();
         $this->addSecurityGroupToRecord($bean,
             $this->user_scheduled_onboarding->getUserPrivateGroup());
-        $this->process               = $bean;
+        $this->process = $bean;
     }
 
     protected function addSecurityGroupToRecord($bean, $sg_id)
@@ -126,6 +125,7 @@ class GenerateOnboardingOffboarding
                 break;
             case 'training':
                 $bean = $this->createTraining($element);
+                $meeting_bean = $this->createMeeting($element, $bean);
                 break;
             case 'exit_interview':
                 $bean = $this->createExitInterview($element);
@@ -134,25 +134,27 @@ class GenerateOnboardingOffboarding
                 return false;
         }
         return $this->addSecurityGroupToRecord($bean,
-                $this->user_scheduled_onboarding->getUserPrivateGroup());
+            $this->user_scheduled_onboarding->getUserPrivateGroup());
     }
 
     protected function createTask($element)
     {
         global $timedate;
-        $bean                   = BeanFactory::newBean('Tasks');
-        $bean->name             = $element->name;
+        $bean = BeanFactory::newBean('Tasks');
+        $bean->name = $element->name;
+        $bean->description = $element->description;
         $bean->assigned_user_id = ((bool) $element->own_task ? $this->employee_id
-                : $element->users_id);
-        $date_start_object      = new DateTime($this->date_start);
-        $days_from_start        = (int) $element->days_from_start;
+            : $element->user_id);
+        $bean->assigned_user_name = $element->user_name;
+        $date_start_object = new DateTime($this->date_start);
+        $days_from_start = (int) $element->days_from_start;
         $date_start_object->modify("+{$days_from_start} days");
-        $bean->date_start       = $date_start_object->format($timedate->get_db_date_time_format());
-        $duration_hours         = (int) $element->task_duration_hours;
-        $duration_minutes       = (int) $element->task_duration_minutes;
-        $bean->date_due         = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
-        $bean->parent_type      = $this->process->module_name;
-        $bean->parent_id        = $this->process->id;
+        $bean->date_start = $date_start_object->format($timedate->get_db_date_time_format());
+        $duration_hours = (int) $element->task_duration_hours;
+        $duration_minutes = (int) $element->task_duration_minutes;
+        $bean->date_due = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
+        $bean->parent_type = $this->process->module_name;
+        $bean->parent_id = $this->process->id;
         $bean->save();
         return $bean;
     }
@@ -160,37 +162,66 @@ class GenerateOnboardingOffboarding
     protected function createTraining($element)
     {
         global $timedate;
-        $bean                   = BeanFactory::newBean('Trainings');
-        $bean->name             = $element->name;
-        $bean->assigned_user_id = $element->users_id;
-        $date_start_object      = new DateTime($this->date_start);
-        $days_from_start        = (int) $element->days_from_start;
+        $bean = BeanFactory::newBean('Trainings');
+        $bean->name = $element->name;
+        $bean->description = $element->description;
+        $bean->assigned_user_id = $element->user_id;
+        $bean->assigned_user_name = $element->user_name;
+        $date_start_object = new DateTime($this->date_start);
+        $days_from_start = (int) $element->days_from_start;
         $date_start_object->modify("+{$days_from_start} days");
-        $bean->date_start       = $date_start_object->format($timedate->get_db_date_time_format());
-        $duration_hours         = (int) $element->task_duration_hours;
-        $duration_minutes       = (int) $element->task_duration_minutes;
-        $bean->date_end         = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
-        $bean->training_type    = "internal";
-        $bean->parent_type      = $this->process->module_name;
-        $bean->parent_id        = $this->process->id;
+        $bean->date_start = $date_start_object->format($timedate->get_db_date_time_format());
+        $duration_hours = (int) $element->task_duration_hours;
+        $duration_minutes = (int) $element->task_duration_minutes;
+        $bean->date_end = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
+        $bean->training_type = "internal";
+        $bean->parent_type = $this->process->module_name;
+        $bean->parent_id = $this->process->id;
         $bean->save();
         return $bean;
+    }
+
+    protected function createMeeting($element, $training_bean)
+    {
+        global $timedate;
+        $meeting_bean = BeanFactory::newBean('Meetings');
+        $meeting_bean->name = $training_bean->name;
+        $meeting_bean->type = 'training';
+        $meeting_bean->assigned_user_id = $element->user_id;
+        $meeting_bean->assigned_user_name = $element->user_name;
+        $date_start_object = new DateTime($this->date_start);
+        $days_from_start = (int) $element->days_from_start;
+        $date_start_object->modify("+{$days_from_start} days");
+        $meeting_bean->date_start = $date_start_object->format($timedate->get_db_date_time_format());
+        $duration_hours = (int) $element->task_duration_hours;
+        $duration_minutes = (int) $element->task_duration_minutes;
+        $meeting_bean->date_end = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
+        $meeting_bean->parent_type = $this->process->module_name;
+        $meeting_bean->parent_id = $this->process->id;
+        $meeting_bean->save();
+        if (!empty($meeting_bean->id) && !empty($training_bean->id) && $meeting_bean->load_relationship('trainings') && $meeting_bean->load_relationship('users')) {
+            $meeting_bean->trainings->add($training_bean->id);
+            $meeting_bean->users->add($this->process->employee_id);
+            $meeting_bean->users->add($element->user_id);
+        }
+        $this->addSecurityGroupToRecord($meeting_bean,
+            $this->user_scheduled_onboarding->getUserPrivateGroup());
     }
 
     protected function createExitInterview($element)
     {
         global $timedate;
-        $bean                   = BeanFactory::newBean('ExitInterviews');
-        $bean->name             = $element->name;
+        $bean = BeanFactory::newBean('ExitInterviews');
+        $bean->name = $element->name;
         $bean->assigned_user_id = $element->users_id;
-        $bean->employee_id      = $this->employee_id;
-        $date_start_object      = new DateTime($this->date_start);
-        $days_from_start        = (int) $element->days_from_start;
+        $bean->employee_id = $this->employee_id;
+        $date_start_object = new DateTime($this->date_start);
+        $days_from_start = (int) $element->days_from_start;
         $date_start_object->modify("+{$days_from_start} days");
-        $bean->date_start       = $date_start_object->format($timedate->get_db_date_time_format());
-        $duration_hours         = (int) $element->task_duration_hours;
-        $duration_minutes       = (int) $element->task_duration_minutes;
-        $bean->date_end         = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
+        $bean->date_start = $date_start_object->format($timedate->get_db_date_time_format());
+        $duration_hours = (int) $element->task_duration_hours;
+        $duration_minutes = (int) $element->task_duration_minutes;
+        $bean->date_end = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
         if ($this->process->module_name == 'Offboardings') {
             $bean->offboarding_id = $this->process->id;
         }

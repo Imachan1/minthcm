@@ -68,13 +68,10 @@ $app_list_strings = array(
       'Opportunities' => 'Opportunities',
       'Cases' => 'Cases',
       'Notes' => 'Notes',
-      'Calls' => 'Calls',
       'TemplateSectionLine' => 'Template Section Line',
       'Calls_Reschedule' => 'Calls Reschedule',
       'Emails' => 'Emails',
       'EAPM' => 'EAPM',
-      'Meetings' => 'Meetings',
-      'Tasks' => 'Tasks',
       'Calendar' => 'Calendar',
       'Leads' => 'Leads',
       'Currencies' => 'Currencies',
@@ -173,6 +170,11 @@ $app_list_strings = array(
       'Skills' => 'Skills',
       'Knowledge' => 'Knowledge',
       'Attitudes' => 'Attitudes',
+      'Calls' => 'Calls',
+      'Meetings' => 'Meetings',
+      'Tasks' => 'Tasks',
+      'SalaryRanges' => 'Salary Ranges',
+      'EmployeeCertificates' => 'Employee Certificates',
    ),
    'moduleListSingular' => array(
       'Home' => 'Home',
@@ -182,11 +184,8 @@ $app_list_strings = array(
       'Opportunities' => 'Opportunity',
       'Cases' => 'Case',
       'Notes' => 'Note',
-      'Calls' => 'Call',
       'Emails' => 'Email',
       'EmailTemplates' => 'Email Template',
-      'Meetings' => 'Meeting',
-      'Tasks' => 'Task',
       'Calendar' => 'Calendar',
       'Leads' => 'Lead',
       'Activities' => 'Activity',
@@ -215,6 +214,11 @@ $app_list_strings = array(
       'Skills' => 'Skill',
       'Knowledge' => 'Knowledge',
       'Attitudes' => 'Attitude',
+      'Calls' => 'Call',
+      'Meetings' => 'Meeting',
+      'Tasks' => 'Task',
+      'SalaryRanges' => 'Salary Range',
+      'EmployeeCertificates' => 'Employee Certificate',
    ),
    'checkbox_dom' => array(
       '' => '',
@@ -1048,6 +1052,12 @@ $app_list_strings = array(
       'every_week' => 'Every week',
       'every_month' => 'Every month',
    ),
+   'business_role_list' => array(
+      '' => '',
+      'manager' => 'Manager',
+      'analyst' => 'Analyst',
+      'developer' => 'Developer',
+   ),
    'template_id_list' => array(
       'Default' => 'Default',
    ),
@@ -1825,6 +1835,7 @@ $app_strings = array(
    'LBL_DASHLET_CONFIGURE_GENERAL' => 'General',
    'LBL_DASHLET_CONFIGURE_FILTERS' => 'Filters',
    'LBL_DASHLET_CONFIGURE_MY_ITEMS_ONLY' => 'Only My Items',
+   'LBL_DASHLET_CONFIGURE_MY_FAVORITES' => 'Only My Favorites',
    'LBL_DASHLET_CONFIGURE_TITLE' => 'Title',
    'LBL_DASHLET_CONFIGURE_DISPLAY_ROWS' => 'Display Rows',
    // MySugar status strings
@@ -2095,6 +2106,7 @@ $app_strings = array(
     'LBL_NAV_TIME_TRACKING' => 'Time Tracking',
     'LBL_NAV_COMPANY_LIFE' => 'Company Life',
     'LBL_NAV_EMPLOYEE' => 'Employee',
+    
 
 );
 
@@ -3675,7 +3687,8 @@ $app_strings['LBL_WRONG_TASK_FOR_PLAN'] = 'Task with this type cannot be add to 
 $app_strings['LBL_WSMASSCONFIRMATION_ALERT'] = 'The approval process for work plans has been completed';
 $app_strings['LBL_ERR_DATE_ARE_NOT_EQUALS'] = 'Dates are not equal';
 $app_strings['LBL_REPAIR_PRIVATE_GROUPS_ALERT'] = 'Repair of the private groups has been completed.';
-$app_strings['LBL_DECISION_MAKER_ASSIGNMENT_FOR_IDEAS'] = 'You were assigned as decission maker to the idea.';
+$app_strings['LBL_ASSIGN_TO_IDEA'] = 'You were assigned to idea.';
+$app_strings['LBL_IDEA_MODIFIED'] = 'The idea you were assigned to has been modified.';
 
 
 $app_list_strings['type_list'] = array(
@@ -3883,13 +3896,6 @@ $app_list_strings['competency_ratings_type_list'] = array(
    'EmployeeRoles' => 'Role',
 );
 
-
-$app_list_strings['appraisal_subject_list'] = array(
-   'Goals' => 'Goal',
-   'Responsibilities' => 'Responsibility',
-   'Competencies' => 'Competency'
-);
-
 $app_list_strings['potential_list'] = array(
    'Not_applicable' => 'Not applicable',
    'Contact_in_future' => 'Contact us in the future',
@@ -4011,7 +4017,11 @@ $app_list_strings['accommodation_no_list'] = array(
 $app_list_strings['appraisal_subject_list'] = array(
    'Goals' => 'Goal',
    'Responsibilities' => 'Responsibility',
-   'Competencies' => 'Competency'
+   'Competencies' => 'Competency',
+   'Skills' => 'Skill',
+   'Knowledge' => 'Knowledge',
+   'Attitudes' => 'Attitude',
+   'ResponsibilityActivities' => 'ResponsibilityActivities',
 );
 $app_list_strings['transport_type'] = array(
    '' => '',
@@ -4132,3 +4142,4 @@ $app_list_strings['alert_type_list'] = array(
 $app_strings['LBL_RECRUITMENT'] = 'Recruitment';
 $app_strings['LBL_TIME_TRACKING'] = 'Time Tracking';
 $app_strings['LBL_ACTIVITIES'] = 'Activities';
+$app_strings['LBL_SALARYRANGE_SUBPANEL_TITLE'] = 'Salary Ranges';

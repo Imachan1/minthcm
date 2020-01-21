@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,130 +36,53 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 $popupMeta = array(
-   'moduleMain' => 'Certificates',
-   'varName' => 'Certificates',
-   'orderBy' => 'certificates.name',
-   'whereClauses' => array(
-      'name' => 'certificates.name',
-      'start_date' => 'certificates.start_date',
-      'end_date' => 'certificates.end_date',
-      'status' => 'certificates.status',
-      'candidate_name' => 'candidates.candidate_name',
-   ),
-   'searchInputs' => array(
-      'name',
-      'start_date',
-      'end_date',
-      'status',
-      'candidate_name',
-   ),
-   'searchdefs' => array(
-      'name' => array(
-         'name' => 'name',
-      ),
-      'start_date' => array(
-         'name' => 'start_date',
-      ),
-      'end_date' => array(
-         'name' => 'end_date',
-      ),
-      'status' => array(
-         'name' => 'status',
-      ),
-      'assigned_user_id' =>
-      array(
-         'name' => 'assigned_user_id',
-         'label' => 'LBL_ASSIGNED_TO',
-         'type' => 'enum',
-         'function' =>
-         array(
-            'name' => 'get_user_array',
-            'params' =>
-            array(
-               false,
+    'moduleMain' => 'Certificates',
+    'varName' => 'Certificates',
+    'orderBy' => 'certificates.name',
+    'whereClauses' => array(
+        'name' => 'certificates.name',
+    ),
+    'searchInputs' => array(
+        'name',
+    ),
+    'searchdefs' => array(
+        'name' => array(
+            'name' => 'name',
+        ),
+        'assigned_user_id' => array(
+            'name' => 'assigned_user_id',
+            'label' => 'LBL_ASSIGNED_TO',
+            'type' => 'enum',
+            'function' => array(
+                'name' => 'get_user_array',
+                'params' => array(
+                    false,
+                ),
             ),
-         ),
-         'width' => '10%',
-      ),
-      'employee_id' =>
-      array(
-         'name' => 'employee_id',
-         'label' => 'LBL_EMPLOYEE',
-         'type' => 'enum',
-         'function' =>
-         array(
-            'name' => 'get_user_array',
-            'params' =>
-            array(
-               false,
-            ),
-         ),
-         'default' => true,
-         'width' => '10%',
-      ),
-      'candidate_name' => array(
-         'type' => 'relate',
-         'link' => true,
-         'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
-         'id' => 'CANDIDATE_ID',
-         'width' => '10%',
-         'name' => 'candidate_name',
-      ),
-   ),
-   'listviewdefs' => array(
-      'NAME' => array(
-         'label' => 'LBL_NAME',
-         'link' => true,
-         'default' => true,
-      ),
-      'start_date' => array(
-         'default' => true,
-         'label' => 'LBL_START_DATE',
-         'name' => 'start_date',
-      ),
-      'end_date' => array(
-         'default' => true,
-         'label' => 'LBL_END_DATE',
-         'name' => 'end_date',
-      ),
-      'status' => array(
-         'default' => true,
-         'label' => 'LBL_STATUS',
-         'name' => 'status',
-      ),
-      'ASSIGNED_USER_NAME' =>
-      array(
-         'width' => '9%',
-         'label' => 'LBL_ASSIGNED_TO_NAME',
-         'module' => 'Employees',
-         'id' => 'ASSIGNED_USER_ID',
-         'default' => true,
-         'name' => 'assigned_user_name',
-      ),
-      'EMPLOYEE_NAME' =>
-      array(
-         'width' => '9%',
-         'label' => 'LBL_EMPLOYEE',
-         'module' => 'Employees',
-         'default' => true,
-         'name' => 'employee_name',
-      ),
-      'CANDIDATE_NAME' => array(
-         'type' => 'relate',
-         'link' => true,
-         'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
-         'id' => 'CANDIDATE_ID',
-         'width' => '10%',
-         'default' => true,
-         'name' => 'candidate_name',
-      ),
-   ),
+            'width' => '10%',
+        ),
+    ),
+    'listviewdefs' => array(
+        'NAME' => array(
+            'label' => 'LBL_NAME',
+            'link' => true,
+            'default' => true,
+        ),
+        'ASSIGNED_USER_NAME' => array(
+            'width' => '9%',
+            'label' => 'LBL_ASSIGNED_TO_NAME',
+            'module' => 'Employees',
+            'id' => 'ASSIGNED_USER_ID',
+            'default' => true,
+            'name' => 'assigned_user_name',
+        ),
+    ),
 );

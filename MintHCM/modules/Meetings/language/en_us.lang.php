@@ -176,4 +176,5 @@ $mod_strings = array(
    'LBL_RESOURCES' => 'Resources',
    'LBL_ADD_INVITEE' => 'Add Invitees/Resources',
    'LBL_FIRST_NAME' => 'First Name/Resource Name',
+   'LBL_LIST_TITLE' => 'Meeting',
 );

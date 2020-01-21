@@ -92,4 +92,5 @@ $mod_strings = array(
    'LBL_PARENT_TYPE' => 'Related to (Type)',
    'LBL_PARENT_NAME' => 'Related to',
    'LBL_PARENT_ID' => 'Related to (ID)',
+   'LBL_LIST_TITLE' => 'Reservation',
 );

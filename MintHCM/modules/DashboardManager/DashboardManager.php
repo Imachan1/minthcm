@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,97 +36,112 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-require_once('modules/DashboardManager/src/DashboardDeployer.php');
+require_once 'modules/DashboardManager/src/DashboardDeployer.php';
 
-class DashboardManager extends Basic {
+class DashboardManager extends Basic
+{
 
-   public $new_schema = true;
-   public $module_dir = 'DashboardManager';
-   public $object_name = 'DashboardManager';
-   public $table_name = 'dashboardmanager';
-   public $importable = true;
-   public $id;
-   public $name;
-   public $date_entered;
-   public $date_modified;
-   public $modified_user_id;
-   public $modified_by_name;
-   public $created_by;
-   public $created_by_name;
-   public $description;
-   public $deleted;
-   public $created_by_link;
-   public $modified_user_link;
-   public $assigned_user_id;
-   public $assigned_user_name;
-   public $assigned_user_link;
-   public $encoded_pages;
-   public $encoded_dashlets;
-   public $dashboardbackups_dashboardmanager;
-   public $users_locked_dashboards;
-   public $users_forced_tabs_dashboards;
-   public $users_one_time_default_dashboards;
-   public $is_loaded;
+    public $new_schema = true;
+    public $module_dir = 'DashboardManager';
+    public $object_name = 'DashboardManager';
+    public $table_name = 'dashboardmanager';
+    public $importable = true;
+    public $id;
+    public $name;
+    public $date_entered;
+    public $date_modified;
+    public $modified_user_id;
+    public $modified_by_name;
+    public $created_by;
+    public $created_by_name;
+    public $description;
+    public $deleted;
+    public $created_by_link;
+    public $modified_user_link;
+    public $assigned_user_id;
+    public $assigned_user_name;
+    public $assigned_user_link;
+    public $encoded_pages;
+    public $encoded_dashlets;
+    public $dashboardbackups_dashboardmanager;
+    public $users_locked_dashboards;
+    public $users_forced_tabs_dashboards;
+    public $users_one_time_default_dashboards;
+    public $is_loaded;
 
-   public function bean_implements($interface) {
-      if ( "ACL" === $interface ) {
-         return true;
-      } else {
-         return false;
-      }
-   }
+    public function bean_implements($interface)
+    {
+        if ("ACL" === $interface) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set')
+    {
+        global $current_user;
+        if ($current_user->isAdmin()) {
+            return true;
+        }
+        return false;
+    }
 
-   public function retrieve($id = -1, $encode = true, $deleted = true) {
-      $parent = parent::retrieve($id, $encode, $deleted);
-      $this->unserializeData();
-      return $parent;
-   }
+    public function retrieve($id = -1, $encode = true, $deleted = true)
+    {
+        $parent = parent::retrieve($id, $encode, $deleted);
+        $this->unserializeData();
+        return $parent;
+    }
 
-   public function save($check_notify = false) {
-      if ( !empty($_REQUEST['customAction']) ) {
-         $this->processCustomAction($_REQUEST['customAction']);
-      }
+    public function save($check_notify = false)
+    {
+        if (!empty($_REQUEST['customAction'])) {
+            $this->processCustomAction($_REQUEST['customAction']);
+        }
 
-      $this->serializeData();
-      return parent::save($check_notify);
-   }
+        $this->serializeData();
+        return parent::save($check_notify);
+    }
 
-   protected function processCustomAction($action) {
-      global $log, $current_user;
+    protected function processCustomAction($action)
+    {
+        global $log, $current_user;
 
-      switch ( $action ) {
-         case 'loadDashboards':
-            $this->pages = $current_user->getPreference('pages', 'Home');
-            $this->dashlets = $current_user->getPreference('dashlets', 'Home');
-            $this->is_loaded = 1;
-            break;
-         case 'deployDashboards':
-            $d = new DashboardDeployer($this);
-            $d->deploy();
-            break;
-         default:
-            $log->fatal('[EV][DM] Undefined customAction: ' . $action);
-      }
-   }
+        switch ($action) {
+            case 'loadDashboards':
+                $this->pages = $current_user->getPreference('pages', 'Home');
+                $this->dashlets = $current_user->getPreference('dashlets', 'Home');
+                $this->is_loaded = 1;
+                break;
+            case 'deployDashboards':
+                $d = new DashboardDeployer($this);
+                $d->deploy();
+                break;
+            default:
+                $log->fatal('[EV][DM] Undefined customAction: ' . $action);
+        }
+    }
 
-   public function serializeData() {
-      $this->encoded_pages = base64_encode(serialize($this->pages));
-      $this->encoded_dashlets = base64_encode(serialize($this->dashlets));
-   }
+    public function serializeData()
+    {
+        $this->encoded_pages = base64_encode(serialize($this->pages));
+        $this->encoded_dashlets = base64_encode(serialize($this->dashlets));
+    }
 
-   public function unserializeData() {
-      $this->pages = unserialize(base64_decode($this->encoded_pages));
-      $this->dashlets = unserialize(base64_decode($this->encoded_dashlets));
+    public function unserializeData()
+    {
+        $this->pages = unserialize(base64_decode($this->encoded_pages));
+        $this->dashlets = unserialize(base64_decode($this->encoded_dashlets));
 
-      $this->pages = empty($this->pages) ? array() : $this->pages;
-      $this->dashlets = empty($this->dashlets) ? array() : $this->dashlets;
-   }
+        $this->pages = empty($this->pages) ? array() : $this->pages;
+        $this->dashlets = empty($this->dashlets) ? array() : $this->dashlets;
+    }
 
 }
