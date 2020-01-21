@@ -100,6 +100,7 @@ $themedef = array(
         'benefits' => 'fa-umbrella-beach',
         'applications' => 'fa-user-plus',
         'certificates' => 'fa-scroll',
+        'employeecertificates' => 'fa-scroll',
         'appraisals' => 'fa-medal',
         'appraisalitems' => 'fa-medal',
         'goals' => 'fa-bullseye',
