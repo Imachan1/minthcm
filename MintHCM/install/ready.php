@@ -7,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -35,10 +35,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 if (!defined('sugarEntry') || !sugarEntry) {
@@ -59,12 +59,9 @@ $envString = '
 // PHP VERSION
 $envString .= '<p><b>' . $mod_strings['LBL_CHECKSYS_PHPVER'] . '</b> ' . constant('PHP_VERSION') . '</p>';
 
-
 //Begin List of already known good variables.  These were checked during the initial sys check
 // XML Parsing
 $envString .= '<p><b>' . $mod_strings['LBL_CHECKSYS_XML'] . '</b> ' . $mod_strings['LBL_CHECKSYS_OK'] . '</p>';
-
-
 
 // mbstrings
 
@@ -75,9 +72,7 @@ $envString .= '<p><b>' . $mod_strings['LBL_CHECKSYS_CONFIG'] . '</b> ' . $mod_st
 
 // custom dir
 
-
 $envString .= '<p><b>' . $mod_strings['LBL_CHECKSYS_CUSTOM'] . '</b> ' . $mod_strings['LBL_CHECKSYS_OK'] . '</p>';
-
 
 // modules dir
 $envString .= '<p><b>' . $mod_strings['LBL_CHECKSYS_MODULE'] . '</b> ' . $mod_strings['LBL_CHECKSYS_OK'] . '</p>';
@@ -105,9 +100,9 @@ if (!defined('SUGARCRM_MIN_MEM')) {
 }
 $sugarMinMem = constant('SUGARCRM_MIN_MEM');
 // logic based on: http://us2.php.net/manual/en/ini.core.php#ini.memory-limit
-if ($memory_limit == "") {          // memory_limit disabled at compile time, no memory limit
+if ($memory_limit == "") { // memory_limit disabled at compile time, no memory limit
     $memory_msg = "<b>{$mod_strings['LBL_CHECKSYS_MEM_OK']}</b>";
-} elseif ($memory_limit == "-1") {   // memory_limit enabled, but set to unlimited
+} elseif ($memory_limit == "-1") { // memory_limit enabled, but set to unlimited
     $memory_msg = "{$mod_strings['LBL_CHECKSYS_MEM_UNLIMITED']}";
 } else {
     $mem_display = $memory_limit;
@@ -176,7 +171,6 @@ if ($imap->isAvailable()) {
 
 $envString .= '<p><b>' . $mod_strings['LBL_CHECKSYS_IMAP'] . '</b> ' . $imapStatus . '</p>';
 
-
 // cURL
 if (function_exists('curl_init')) {
     $curlStatus = "{$mod_strings['LBL_CHECKSYS_OK']}";
@@ -185,7 +179,6 @@ if (function_exists('curl_init')) {
 }
 
 $envString .= '<p><b>' . $mod_strings['LBL_CHECKSYS_CURL'] . '</b> ' . $curlStatus . '</p>';
-
 
 //CHECK UPLOAD FILE SIZE
 $upload_max_filesize = ini_get('upload_max_filesize');
@@ -239,14 +232,22 @@ EOQ;
 $sugar_config_defaults = get_sugar_config_defaults();
 
 // CRON Settings
-if (!isset($sugar_config['default_language']))
+if (!isset($sugar_config['default_language'])) {
     $sugar_config['default_language'] = $_SESSION['default_language'];
-if (!isset($sugar_config['cache_dir']))
+}
+
+if (!isset($sugar_config['cache_dir'])) {
     $sugar_config['cache_dir'] = $sugar_config_defaults['cache_dir'];
-if (!isset($sugar_config['site_url']))
+}
+
+if (!isset($sugar_config['site_url'])) {
     $sugar_config['site_url'] = $_SESSION['setup_site_url'];
-if (!isset($sugar_config['translation_string_prefix']))
+}
+
+if (!isset($sugar_config['translation_string_prefix'])) {
     $sugar_config['translation_string_prefix'] = $sugar_config_defaults['translation_string_prefix'];
+}
+
 $mod_strings_scheduler = return_module_language($GLOBALS['current_language'], 'Schedulers');
 $error = '';
 
@@ -358,11 +359,17 @@ $out = <<<EOQ
                 <div id="installcontrols">
 				    <input type="hidden" name="current_step" value="{$next_step}">
 				    <input type="hidden" name="goto" value="">
+                    <img src="install/loading.gif" class="loading" id="loading" style="display:none">
 					<input class="acceptButton" type="button" value="{$mod_strings['LBL_BACK']}" id="button_back_ready" onclick="submitInstallForm('{$mod_strings['LBL_BACK']}');" />
 			        <input class="button" type="button" value="{$mod_strings['LBL_NEXT']}" id="button_next2" onclick="submitInstallForm('{$mod_strings['LBL_NEXT']}');" />
 			    </div>
             </form>
     <script>
+        document.querySelector('#button_back_ready').addEventListener('click', showLoading);
+        document.querySelector('#button_next2').addEventListener('click', showLoading);
+        function showLoading(){
+            document.querySelector('#loading').style.display = 'inline';
+        }
         function showtime(div){
 
             if(document.getElementById(div).style.display == ''){
@@ -376,7 +383,7 @@ $out = <<<EOQ
             }
 
         }
-                    
+
          function submitInstallForm(\$value) {
           document.getElementById('button_back_ready').disabled = true;
           document.getElementById('button_next2').disabled = true;
@@ -393,4 +400,3 @@ $out = <<<EOQ
 </html>
 EOQ;
 echo $out;
-
