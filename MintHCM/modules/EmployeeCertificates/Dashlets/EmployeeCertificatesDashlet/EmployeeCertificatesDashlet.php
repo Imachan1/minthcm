@@ -58,22 +58,22 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 require_once('include/Dashlets/DashletGeneric.php');
-require_once('modules/Certificates/Certificates.php');
+require_once('modules/EmployeeCertificates/EmployeeCertificates.php');
 
-class CertificatesDashlet extends DashletGeneric {
+class EmployeeCertificatesDashlet extends DashletGeneric {
 
-   function CertificatesDashlet($id, $def = null) {
-      require('modules/Certificates/metadata/dashletviewdefs.php');
+   function EmployeeCertificatesDashlet($id, $def = null) {
+      require('modules/EmployeeCertificates/metadata/dashletviewdefs.php');
 
       parent::DashletGeneric($id, $def);
 
       if ( empty($def['title']) )
-         $this->title = translate('LBL_HOMEPAGE_TITLE', 'Certificates');
+         $this->title = translate('LBL_HOMEPAGE_TITLE', 'EmployeeCertificates');
 
-      $this->searchFields = $dashletData['CertificatesDashlet']['searchFields'];
-      $this->columns = $dashletData['CertificatesDashlet']['columns'];
+      $this->searchFields = $dashletData['EmployeeCertificatesDashlet']['searchFields'];
+      $this->columns = $dashletData['EmployeeCertificatesDashlet']['columns'];
 
-      $this->seedBean = new Certificates();
+      $this->seedBean = new EmployeeCertificates();
    }
 
 }
