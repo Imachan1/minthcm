@@ -374,7 +374,7 @@ class DashletGeneric extends Dashlet {
 
         if($this->myItemsOnly) array_push($returnArray, $this->seedBean->table_name . '.' . "assigned_user_id = '" . $current_user->id . "'");
         if($this->myFavorites){
-            $favorites_sql = "appraisals.id IN (SELECT parent_id FROM favorites WHERE parent_type = '{$this->seedBean->module_name}' AND assigned_user_id = '{$current_user->id}' AND deleted = '0' )";
+            $favorites_sql = "{$this->seedBean->table_name}.id IN (SELECT parent_id FROM favorites WHERE parent_type = '{$this->seedBean->module_name}' AND assigned_user_id = '{$current_user->id}' AND deleted = '0' )";
 
             array_push($returnArray, $favorites_sql);
         } 
