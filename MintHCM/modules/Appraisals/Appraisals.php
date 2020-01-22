@@ -44,8 +44,9 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-require_once('modules/AppraisalItems/AppraisalItems.php');
-require_once('modules/Appraisals/SugarFeeds/AppraisalsFeed.php');
+require_once 'modules/AppraisalItems/AppraisalItems.php';
+require_once 'modules/Appraisals/SugarFeeds/AppraisalsFeed.php';
+require_once 'modules/Appraisals/AppraisalTokenController.php';
 
 class Appraisals extends Basic {
 
@@ -77,6 +78,15 @@ class Appraisals extends Basic {
          $result = true;
       }
       return $result;
+   }
+
+   public function save($check_notify = false)
+   {
+      parent::save($check_notify);
+      if (!empty($this->evaluator_id)) {
+         $appraisal_token_controller = new AppraisalTokenController();
+         $appraisal_token_controller->getToken($this->evaluator_id, $this->id);
+      }
    }
 
    protected function postSave() {
