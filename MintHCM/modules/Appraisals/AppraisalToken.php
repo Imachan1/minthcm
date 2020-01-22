@@ -57,4 +57,13 @@ class AppraisalToken
             $db->query($update_sql);
         }
     }
+
+    public function deactivate($appraisal_token_id)
+    {
+        global $db;
+        if (!empty($appraisal_token_id)) {
+            $update_sql = "UPDATE appraisals_tokens SET status = 0 WHERE id = '{$appraisal_token_id}'";
+            $db->query($update_sql);
+        }
+    }
 }

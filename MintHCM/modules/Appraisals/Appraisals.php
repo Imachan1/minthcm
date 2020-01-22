@@ -85,6 +85,9 @@ class Appraisals extends Basic {
       parent::save($check_notify);
       if (!empty($this->evaluator_id)) {
          $appraisal_token_controller = new AppraisalTokenController();
+         if($this->status == 'held'){
+               $appraisal_token_controller->deactivateToken($this->evaluator_id, $this->id);
+         }
          $appraisal_token_controller->getToken($this->evaluator_id, $this->id);
       }
    }
