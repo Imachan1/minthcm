@@ -11,28 +11,31 @@ class AppraisalToken
     public $employee_id;
     public $appraisal_id;
 
-    public function save($employee_id, $appraisal_id, $evaluator_has_changed = false)
+    public function save()
     {
         global $db;
-        if($evaluator_has_changed){
-            $select_sql = "SELECT id from appraisals_tokens WHERE employee_id = '{$employee_id}' AND appraisal_id = '{$appraisal_id}' AND deleted = 0";
-            $id = $db->getOne($select_sql);
-            if (!empty($id)) {
-                $update_sql = "UPDATE appraisals_tokens SET status = 0 WHERE id = '{$id}'";
-            }
+        $id = $this->id;
+        $employee_id = $this->employee_id;
+        $appraisal_id = $this->appraisal_id;
+        $deleted = $this->deleted;
+        $status = $this->status;
+        if (!empty($this->id)) {
+            $sql = "UPDATE appraisals_tokens SET deleted = {$deleted}, status = {$status}, appraisal_id = {$appraisal_id} WHERE id = {$id}";
+        } else {
             $id = create_guid();
             $token = create_guid();
-            $insert_sql = "INSERT INTO appraisals_tokens (id, date_entered, deleted, status, expired_date, token, employee_id, appraisal_id) VALUES ('{$id}', NOW(), 0, 1, DATE_ADD(NOW(), INTERVAL +{$this->sugar_config['days_to_token_expiration']} DAY), '{$token}', '{$employee_id}', '{$appraisal_id}')";
-            if ($db->query($insert_sql) === true) {
-                return $id;
-            }
+            $sql = "INSERT INTO appraisals_tokens (id, date_entered, deleted, status, expired_date, token, employee_id, appraisal_id) VALUES ('{$id}', NOW(), 0, 1, DATE_ADD(NOW(), INTERVAL +{$this->sugar_config['days_to_token_expiration']} DAY), '{$token}', '{$employee_id}', '{$appraisal_id}')";
+        }
+        if ($db->query($sql) === true) {
+            return $id;
         }
         return null;
     }
 
-    public function retrieve($appraisal_token_id)
+    public function retrieve()
     {
         global $db;
+        $appraisal_token_id = $this->id;
         $select_sql = "SELECT * FROM appraisals_tokens WHERE id = '{$appraisal_token_id}'";
         $appraisal_token = $db->fetchOne($select_sql);
         if (!empty($appraisal_token)) {
@@ -49,21 +52,15 @@ class AppraisalToken
 
     }
 
-    public function mark_deleted($appraisal_token_id)
+    public function mark_deleted()
     {
-        global $db;
-        if (!empty($appraisal_token_id)) {
-            $update_sql = "UPDATE appraisals_tokens SET deleted = 1 WHERE id = '{$appraisal_token_id}'";
-            $db->query($update_sql);
-        }
+        $this->deleted = 1;
+        return $this->save();
     }
 
-    public function deactivate($appraisal_token_id)
+    public function deactivate()
     {
-        global $db;
-        if (!empty($appraisal_token_id)) {
-            $update_sql = "UPDATE appraisals_tokens SET status = 0 WHERE id = '{$appraisal_token_id}'";
-            $db->query($update_sql);
-        }
+        $this->status = 0;
+        return $this->save();
     }
 }
