@@ -146,7 +146,6 @@ EOHTML;
                 $this->where .= " AND ";
             }
             $this->where .= "(users.status <> 'Reserved' or users.status is null) ";
-            $this->params['custom_where'] = ' GROUP BY users.id ';
             $this->lv->setup($this->seed, $tplFile, $this->where, $this->params);
             $savedSearchName = empty($_REQUEST['saved_search_select_name']) ? '' : (' - ' . $_REQUEST['saved_search_select_name']);
             echo $this->lv->display();
