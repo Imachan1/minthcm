@@ -99,7 +99,7 @@
                     {$columnChooser}
                 </td>
             </tr>
-            {if $showMyItemsOnly || $showMyFavorites || !empty($searchFields)}
+            {if $showMyItemsOnly || $showMyFavorites || $showMySubordinates || !empty($searchFields)}
                 <tr>
                     <td scope='row' colspan='4' align='left'>
                         <br>
@@ -124,6 +124,16 @@
                         </td>
                         <td>
                             <input type='checkbox' {if $myFavorites == 'true'}checked{/if} name='myFavorites' value='true'>
+                        </td>
+                    </tr>
+                {/if}
+                {if $showMySubordinates}
+                    <tr>
+                        <td scope='row'>
+                            {$strings.mySubordinates}
+                        </td>
+                        <td>
+                            <input type='checkbox' {if $mySubordinates == 'true'}checked{/if} name='mySubordinates' value='true'>
                         </td>
                     </tr>
                 {/if}
