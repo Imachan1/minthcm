@@ -2122,6 +2122,28 @@ function create_phone_number() {
    return $phone;
 }
 
+function modify_date($field, $modify) {
+   global $timedate;
+   $date = $timedate->fromDbDate($field);
+   $date->modify($modify);
+   return $timedate->asDbDate($date);
+}
+
+function modify_datetime($field, $modify) {
+   global $timedate;
+   $date = $timedate->fromDb($field);
+   $date->modify($modify);
+   return $timedate->asDb($date);
+}
+
+function create_datetime($year = null, $mnth = null, $day = null, $hr = null, $min = null, $sec = null) {
+   return create_date($year,$mnth,$day) . ' ' . create_time($hr,$min,$sec);
+}
+
+function create_past_datetime($year = null, $mnth = null, $day = null, $hr = null, $min = null, $sec = null) {
+   return create_past_date($year,$mnth,$day) . ' ' . create_time($hr,$min,$sec);
+}
+
 function create_date($year = null, $mnth = null, $day = null) {
    global $timedate;
    $now = $timedate->getNow();
