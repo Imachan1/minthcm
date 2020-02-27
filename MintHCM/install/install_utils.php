@@ -1335,6 +1335,12 @@ function insert_default_settings() {
    }
 }
 
+function install_default_roles(){
+   require_once 'install/suite_install/ACLRolesUpdater.php';
+   $acl_roles_updater = new ACLRolesUpdater();
+   $acl_roles_updater->run();
+}
+
 function rebuildWithViewTools($set_developer_mode = null) {
     require_once('modules/Administration/RebuildAllJavascripts.php');
     setConfig('developerMode', true);

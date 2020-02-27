@@ -359,7 +359,7 @@ installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS']);
         echo $mod_strings['LBL_PERFORM_DONE'];
     }
     installerHook('post_createUsers');
-
+    installDefaultRoles();
 
 
 
@@ -373,7 +373,7 @@ installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS']);
     installerHook('post_createDefaultSchedulers');
 
     installDelegationPDFTemplate();
-
+    
     rebuildWithViewTools(false);
 
     echo $mod_strings['LBL_PERFORM_DONE'];
