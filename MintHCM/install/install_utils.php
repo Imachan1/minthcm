@@ -1335,7 +1335,7 @@ function insert_default_settings() {
    }
 }
 
-function install_default_roles(){
+function installDefaultRoles(){
    require_once 'install/suite_install/ACLRolesUpdater.php';
    $acl_roles_updater = new ACLRolesUpdater();
    $acl_roles_updater->run();
