@@ -360,7 +360,7 @@ installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS']);
     }
     installerHook('post_createUsers');
 
-
+    
 
 
     // default OOB schedulers
@@ -374,7 +374,12 @@ installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS']);
 
     installDelegationPDFTemplate();
 
+    install_mint_dashlets($db);
+    deploy_mint_dashlets();
+
+    
     rebuildWithViewTools(false);
+    
 
     echo $mod_strings['LBL_PERFORM_DONE'];
 

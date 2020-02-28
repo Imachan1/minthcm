@@ -2268,3 +2268,6 @@ function enableInsideViewConnector() {
    // $mapping is brought in from the mapping.php file above
    $source->saveMappingHook($mapping);
 }
+
+
+include_once('install/config/dashlets/dashlets_config.php');
