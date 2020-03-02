@@ -145,11 +145,8 @@ $GLOBALS['tabStructure'] = array(
             4 => 'Competencies',
             5 => 'ResponsibilityActivities',
             6 => 'Certificates',
-            7 => 'Skills',
-            8 => 'Attitudes',
-            9 => 'Knowledge',
-            10 => 'AOK_Knowledge_Base_Categories',
-            11 => 'FP_Event_Locations',
+            7 => 'AOK_Knowledge_Base_Categories',
+            8 => 'FP_Event_Locations',
         ),
     ),
 );
