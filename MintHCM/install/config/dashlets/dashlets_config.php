@@ -33,12 +33,16 @@ function install_mint_dashlets($db)
 function deploy_mint_dashlets()
 {
 	$role_payroll = array('millera', 'brookse', 'Kate', 'clarkek');
+	$role_payroll =  array('d8969478-9591-0c6e-93ca-5ce3c44276c5','3764d490-cd45-5796-dde9-5ce3c7a1e614','ed6cb023-a3ba-b1c5-ad75-5dca74c006ac','f333cc2c-cb86-c2ae-6c21-5ce3c5d477c2');
 	deploy_mint_dashlets_for_users('payrole',$role_payroll);
 	$role_hr =  array('ellism', 'novakm');
+	$role_hr =  array('7451ac0d-c4d1-04f6-4666-5ce3c54ff383','a306a144-af6e-c110-56e5-5dce87229735');
 	deploy_mint_dashlets_for_users('hr',$role_hr);
 	$role_employee = array('leej', 'hartc', 'stewardb', 'owena', 'whitej', 'rosss', 'lewisa', 'smithc');
+	$role_employee = array('14a7c3af-44fc-4e11-ef11-5ce3c5778501', '22da6f70-1581-910f-02b7-5ce3c54fab51', '4ec12c2e-fa27-bec5-3f64-5ce3c8dd0a9b', 'c4676ffc-58c1-5fe5-ea08-5ce3c7b25d74', 'ef6c26ec-8269-6ff1-120b-5ce3c4a1874e', '53d6b86d-60ec-7e08-f5d6-5ce3c7a2c99a', '7fd88261-8d29-be47-2d19-5ce3c69d1048', 'c74cbf0a-50a5-85e6-d4c3-5cf62f1f31c8');
 	deploy_mint_dashlets_for_users('employee',$role_employee);
 	$role_manager = array('westj', 'howardr', 'woodd', 'blacko');
+	$role_manager = array('60e00d24-af21-f93c-272d-5ce3c65ac237', 'b5dcff6f-1a14-56bf-eecd-5ce3c791a112', '59330569-01eb-9b31-0fba-5ce3c5c427d2', 'bf3cb12c-88b6-e637-022e-5ce3c7df4ab7');
 	deploy_mint_dashlets_for_users('manager',$role_manager);
 }
 
