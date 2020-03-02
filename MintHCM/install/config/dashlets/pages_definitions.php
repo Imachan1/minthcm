@@ -8,9 +8,13 @@ $main = array (
       'width' => '60%',
       'dashlets' => 
       array (
-        0 => 'main_redmine_projec_task_dashlet',
-        1 => 'main_todays_work_schedule_dashlet',
-        2 => 'main_my_meetings_dashlet',
+        0 => 'main_offboarding_dashlet',
+        2 => 'main_calendar_dashlet',
+        3 => 'main_todays_work_schedule_dashlet',
+        4 => 'main_leave_of_absence_dashlet',
+        5 => 'main_appraisals_report_dashlet',
+        6 => 'main_reservation_dashlet',
+        7 => 'main_my_tasks_dashlet',
       ),
     ),
     1 => 
@@ -18,11 +22,14 @@ $main = array (
       'width' => '40%',
       'dashlets' => 
       array (
-        0 => 'main_calendar_dashlet',
-        1 => 'main_leave_of_absence_dashlet',
+        0 => 'main_contracts_dashlet',
+        1 => 'main_terms_of_employment_dashlet',
+        3 => 'main_appraisals_dashlet',
+        5 => 'main_competencies_dashlet',
+        6 => 'main_daily_work_schedule_dashlet',
       ),
     ),
-  ),
+  ), 
   'numColumns' => '3',
   'pageTitleLabel' => 'LBL_HOME_PAGE_1_NAME', //main_
 );
@@ -47,7 +54,7 @@ $recruitment = array (
       'width' => '40%',
     ),
   ),
-  'pageTitle' => 'Rekrutacje',
+  'pageTitle' => 'Recruitment',
   'numColumns' => '2',
 );
 
@@ -100,7 +107,7 @@ $my_team = array (
       'width' => '40%',
     ),
   ),
-  'pageTitle' => 'Mój zespół',//'Moi pracownicy',
+  'pageTitle' => 'My Team',
   'numColumns' => '2',
 );
 
@@ -127,7 +134,7 @@ $employee = array (
       'width' => '40%',
     ),
   ),
-  'pageTitle' => 'Moje rekordy',
+  'pageTitle' => 'My Records',  
   'numColumns' => '2',
 );
 
@@ -156,7 +163,7 @@ $hr_actions = array (
       'width' => '40%',
     ),
   ),
-  'pageTitle' => 'Działania HR',
+  'pageTitle' => 'HR Actions',
   'numColumns' => '2',
 );
 
@@ -184,7 +191,7 @@ $settlements = array (
       'width' => '40%',
     ),
   ),
-  'pageTitle' => 'Czas pracy',
-  'numColumns' => '2',
+ 'pageTitle' => 'Spent Time',
+ 'numColumns' => '2',
 );
 

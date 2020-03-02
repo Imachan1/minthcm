@@ -10,110 +10,191 @@
     array (
     ),
   ),
-  'main_my_meetings_dashlet' => 
+  'main_my_tasks_dashlet' => 
   array (
-    'className' => 'MyMeetingsDashlet',
-    'module' => 'Meetings',
+    'className' => 'MyTasksDashlet',
+    'module' => 'Tasks',
     'forceColumn' => 0,
-    'fileLocation' => 'modules/Meetings/Dashlets/MyMeetingsDashlet/MyMeetingsDashlet.php',
+    'fileLocation' => 'modules/Tasks/Dashlets/MyTasksDashlet/MyTasksDashlet.php',
     'options' => 
     array (
     ),
+  ),
+  'main_offboarding_dashlet' =>  array (
+    'className' => 'OffboardingTemplatesDashlet',
+    'module' => 'OffboardingTemplates',
+    'options' => 
+    array (
+    ),
+    'fileLocation' => 'modules/OffboardingTemplates/Dashlets/OffboardingTemplatesDashlet/OffboardingTemplatesDashlet.php',
+  ),
+  'main_contracts_dashlet' => 
+  array (
+    'className' => 'ContractsDashlet',
+    'module' => 'Contracts',
+    'options' => 
+    array (
+    ),
+    'fileLocation' => 'modules/Contracts/Dashlets/ContractsDashlet/ContractsDashlet.php',
+  ),
+  'main_terms_of_employment_dashlet' => 
+  array (
+    'className' => 'TermsOfEmploymentDashlet',
+    'module' => 'TermsOfEmployment',
+    'options' => 
+    array (
+    ),
+    'fileLocation' => 'modules/TermsOfEmployment/Dashlets/TermsOfEmploymentDashlet/TermsOfEmploymentDashlet.php',
+  ),
+  'main_appraisals_report_dashlet' =>
+  array (
+    'className' => 'KReportsDashlet',
+    'module' => 'KReports',
+    'options' => 
+    array (
+      'title' => 'Appraisals - Raport',
+      'report_id' => '06ac7ffc-6548-4f76-b483-170768adfae9',
+      'show_chart' => false,
+      'show_data' => true,
+      'show_filters' => true,
+      'height' => '300',
+      'autoRefresh' => '30',
+    ),
+    'fileLocation' => 'modules/KReports/Dashlets/KReportsDashlet/KReportsDashlet.php',
+  ),
+  'main_appraisals_dashlet' => 
+  array (
+    'className' => 'AppraisalsDashlet',
+    'module' => 'Appraisals',
+    'options' => 
+    array (
+      'filters' => 
+      array (
+        'date' => 
+        array (
+        ),
+      ),
+      'title' => 'My Appraisals',
+      'myItemsOnly' => 'true',
+      'myFavorites' => false,
+      'displayRows' => '3',
+      'displayColumns' => 
+      array (
+        0 => 'name',
+        1 => 'status',
+        2 => 'type',
+        3 => 'date',
+        4 => 'employee_name',
+      ),
+      'autoRefresh' => '-1',
+    ),
+    'fileLocation' => 'modules/Appraisals/Dashlets/AppraisalsDashlet/AppraisalsDashlet.php',
+  ),
+  'main_reservation_dashlet' => array (
+    'className' => 'ReservationsDashlet',
+    'module' => 'Reservations',
+    'options' => 
+    array (
+    ),
+    'fileLocation' => 'modules/Reservations/Dashlets/ReservationsDashlet/ReservationsDashlet.php',
   ),
   'main_leave_of_absence_dashlet' => 
   array (
     'className' => 'LeaveOfAbsenceDashlet',
     'module' => 'Home',
-    'forceColumn' => 0,
-    'fileLocation' => 'modules/Home/Dashlets/LeaveOfAbsenceDashlet/LeaveOfAbsenceDashlet.php',
     'options' => 
     array (
+      'title' => 'Absences in Office',
+      'url' => NULL,
+      'height' => NULL,
+      'autoRefresh' => 0,
+      'show_days_of_week' => 
+      array (
+        'sunday' => true,
+        'monday' => true,
+        'tuesday' => true,
+        'wednesday' => true,
+        'thursday' => true,
+        'friday' => true,
+        'saturday' => true,
+      ),
     ),
+    'fileLocation' => 'modules/Home/Dashlets/LeaveOfAbsenceDashlet/LeaveOfAbsenceDashlet.php',
+  ),
+  'main_daily_work_schedule_dashlet' => 
+  array (
+    'className' => 'WorkSchedulesDashlet',
+    'module' => 'WorkSchedules',
+    'options' => 
+    array (
+      'filters' => 
+      array (
+        'schedule_date' => 
+        array (
+        ),
+      ),
+      'title' => 'My Daily Work Schedule',
+      'myItemsOnly' => 'true',
+      'displayRows' => '1',
+      'displayColumns' => 
+      array (
+        0 => 'assigned_user_name',
+        1 => 'schedule_date',
+        2 => 'type',
+        3 => 'status',
+        4 => 'spent_time',
+      ),
+      'autoRefresh' => '-1',
+    ),
+    'fileLocation' => 'modules/WorkSchedules/Dashlets/WorkSchedulesDashlet/WorkSchedulesDashlet.php',
+  ),
+  'main_competencies_dashlet' =>
+  array (
+    'className' => 'CompetenciesDashlet',
+    'module' => 'Competencies',
+    'options' => 
+    array (
+      'filters' => 
+      array (
+        'date_entered' => 
+        array (
+        ),
+        'date_modified' => 
+        array (
+        ),
+      ),
+      'title' => 'My Competencies',
+      'myItemsOnly' => false,
+      'myFavorites' => false,
+      'displayRows' => '5',
+      'displayColumns' => 
+      array (
+        0 => 'name',
+        1 => 'date_modified',
+        2 => 'assigned_user_name',
+      ),
+      'autoRefresh' => '-1',
+    ),
+    'fileLocation' => 'modules/Competencies/Dashlets/CompetenciesDashlet/CompetenciesDashlet.php',
   ),
   'main_calendar_dashlet' => 
   array (
     'className' => 'CalendarDashlet',
     'module' => 'Calendar',
-    'forceColumn' => 1,
     'fileLocation' => 'modules/Calendar/Dashlets/CalendarDashlet/CalendarDashlet.php',
     'options' => 
     array (
     ),
   ),
-  'main_redmine_projec_task_dashlet' => 
-  array (
-    'className' => 'ev_RedmineProjectTaskDashlet',
-    'module' => 'ev_RedmineProjectTask',
-    'options' => 
-    array (
-      'filters' => 
-      array (
-        'issue_tracker' => 
-        array (
-          0 => 'Administration',
-          1 => 'Analysis',
-          2 => 'Bug',
-          3 => 'Change',
-          4 => 'Consulting',
-          5 => 'Critic. error',
-          6 => 'Design',
-          7 => 'Documentation',
-          8 => 'Implementation',
-          9 => 'Management Task',
-          10 => 'Marketing',
-          11 => 'Meeting',
-          12 => 'Other error',
-          13 => 'Project Management',
-          14 => 'Research',
-          15 => 'Risk',
-          16 => 'Small Customization',
-          17 => 'Spike',
-          18 => 'Summary',
-          19 => 'Support',
-          20 => 'Task',
-          21 => 'Testing',
-          22 => 'User Story',
-          23 => 'User Story Bug',
-          24 => 'Zamówienie',
-        ),
-        'status' => 
-        array (
-          0 => 'Nowy / New',
-          1 => 'W Toku / In progress',
-          2 => 'New',
-          3 => 'In progress',
-        ),
-        'date_start' => 
-        array (
-        ),
-        'date_finish' => 
-        array (
-        ),
-      ),
-      'title' => 'Moje zagadnienia Redmine',
-      'myItemsOnly' => 'true',
-      'displayRows' => '10',
-      'displayColumns' => 
-      array (
-        0 => 'id',
-        1 => 'name',
-        2 => 'issue_tracker',
-        3 => 'status',
-        4 => 'priority',
-        5 => 'date_finish',
-        6 => 'assigned_user_name',
-      ),
-      'autoRefresh' => '-1',
-    ),
-    'fileLocation' => 'modules/ev_RedmineProjectTask/Dashlets/ev_RedmineProjectTaskDashlet/ev_RedmineProjectTaskDashlet.php',
-  ),
+ 
   'recruitment_kreports_second_dashlet' => 
   array (
     'className' => 'KReportsDashlet',
     'module' => 'KReports',
     'options' => 
     array (
-      'title' => 'Rekrutacje - Kandydatury na źródło / aY',
+      // 'title' => 'Rekrutacje - Kandydatury na źródło / aY',
+      'title' => 'Recruitment - Candidates for the source / aY',
       'report_id' => 'cd43dec0-477c-4500-bd9a-d9902cc10324',
       'show_chart' => true,
       'show_data' => false,
@@ -129,7 +210,8 @@
     'module' => 'KReports',
     'options' => 
     array (
-      'title' => 'Rekrutacje - Kandydatury na źródło / pY',
+      //'title' => 'Rekrutacje - Kandydatury na źródło / pY',
+      'title' => 'Recruitment - Candidates for source / pY',
       'report_id' => 'kba29c52282b3f8326b09a8bbad1f',
       'show_chart' => true,
       'show_data' => false,
@@ -138,15 +220,6 @@
       'autoRefresh' => '-1',
     ),
     'fileLocation' => 'modules/KReports/Dashlets/KReportsDashlet/KReportsDashlet.php',
-  ),
-  '74a45ecc-3071-ebb6-459d-5de6cf12f755' => 
-  array (
-    'className' => 'OnboardingsDashlet',
-    'module' => 'Onboardings',
-    'options' => 
-    array (
-    ),
-    'fileLocation' => 'modules/Onboardings/Dashlets/OnboardingsDashlet/OnboardingsDashlet.php',
   ),
   'hr_manager_onboardings_dashlet' => 
   array (
@@ -170,7 +243,7 @@
         array (
         ),
       ),
-      'title' => 'Moje Onboardings',
+      'title' => 'Onboardings',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'displayRows' => '5',
@@ -209,7 +282,7 @@
         array (
         ),
       ),
-      'title' => 'Moje Offboardings',
+      'title' => 'Offboardings',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'displayRows' => '5',
@@ -257,10 +330,9 @@
         ),
         'assigned_user_id' => 
         array (
-          0 => 'a374a554-7173-cc73-07c9-55a5162ed9b8',
         ),
       ),
-      'title' => 'Moje szkolenia',
+      'title' => 'Trainings',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'displayRows' => '5',
@@ -307,7 +379,8 @@
         array (
         ),
       ),
-      'title' => 'Urlopy do zatwierdzenia',
+      //'title' => 'Urlopy do zatwierdzenia',
+      'title' => 'Leave for approval',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => 'true',
@@ -341,7 +414,8 @@
           1 => 'in_progress',
         ),
       ),
-      'title' => 'Moje oceny',
+      //'title' => 'Moje oceny',
+      'title' => 'My ratings',
       'myItemsOnly' => 'true',
       'displayRows' => '5',
       'displayColumns' => 
@@ -370,7 +444,8 @@
           1 => 'in_progress',
         ),
       ),
-      'title' => 'Wnioski mojego zespołu',
+      //'title' => 'Wnioski mojego zespołu',
+      'title' => 'My team\'s applications',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => 'true',
@@ -406,7 +481,8 @@
           1 => 'in_progress',
         ),
       ),
-      'title' => 'Pomysły mojego zespołu',
+      //'title' => 'Pomysły mojego zespołu',
+      'title' => 'My team\'s ideas',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => 'true',
@@ -452,7 +528,8 @@
         array (
         ),
       ),
-      'title' => 'Cele własne',
+      //'title' => 'Cele własne',
+      'title' => 'My Goals',
       'myItemsOnly' => 'true',
       'displayRows' => '5',
       'displayColumns' => 
@@ -491,7 +568,7 @@
         array (
         ),
       ),
-      'title' => 'Moje szkolenia',
+      'title' => 'Trainings',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -536,7 +613,8 @@
           'type' => 'TP_last_30_days',
         ),
       ),
-      'title' => 'Moje niezatwierdzone plany pracy',
+      //'title' => 'Moje niezatwierdzone plany pracy',
+      'title' => 'My Unconfirmed Work Schedules',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'displayRows' => '5',
@@ -571,7 +649,7 @@
         array (
         ),
       ),
-      'title' => 'Moje spotkania',
+      'title' => 'My Meetings',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -660,7 +738,7 @@
         array (
         ),
       ),
-      'title' => 'Moje Onboardings',
+      'title' => 'Onboardings',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -700,7 +778,7 @@
         array (
         ),
       ),
-      'title' => 'Moje Offboardings',
+      'title' => 'Offboardings',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -736,7 +814,7 @@
           'type' => 'TP_last_month',
         ),
       ),
-      'title' => 'Niezatwierdzone plany pracy - Poprzedni miesiąc',
+      'title' => 'Unconfirmed Work Schedules - Previous Month',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -771,7 +849,7 @@
           'type' => 'TP_last_30_days',
         ),
       ),
-      'title' => 'Niezatwierdzone plany pracy - Ostatnie 30 dni',
+      'title' => 'Unconfirmed Work Schedules - Last 30 days',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -817,7 +895,8 @@
         array (
         ),
       ),
-      'title' => 'Wygasające umowy',
+      //'title' => 'Wygasające umowy',
+      'title' => 'Expiring contracts',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -863,7 +942,8 @@
         array (
         ),
       ),
-      'title' => 'Oczekujące umowy',
+      //'title' => 'Oczekujące umowy',
+      'title' => 'Pending contracts',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -902,7 +982,8 @@
         array (
         ),
       ),
-      'title' => 'Delegacje - poprzedni miesiąc',
+      //'title' => 'Delegacje - poprzedni miesiąc',
+      'title' => 'Delegations - previous month',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -941,7 +1022,8 @@
         array (
         ),
       ),
-      'title' => 'Delegacje - aktualny miesiąc',
+      //'title' => 'Delegacje - aktualny miesiąc',
+      'title' => 'Delegations - this month',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => false,

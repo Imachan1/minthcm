@@ -13,7 +13,7 @@ function install_mint_dashlets($db)
 	$db->query($sql_insert . $sql_payrole);
 
 
-	$dashlets_configuration_hr =  array($main, $employee, $hr_actions);
+	$dashlets_configuration_hr =  array($main, $employee, $hr_actions,$hr_manager);
 	$sql_hr = "('hr', 'HR', '2020-02-28 16:00:03', '2020-02-28 15:26:09', '1', '1', NULL, 0, '1', '" . base64_encode(serialize($dashlets_configuration_hr)) . "', '" . base64_encode(serialize($dashlets_definitions)) . "', 1, NULL)";
 	$db->query($sql_insert . $sql_hr);
 	
@@ -23,7 +23,7 @@ function install_mint_dashlets($db)
 	$db->query($sql_insert . $sql_employee);
 
 
-	$dashlets_configuration_manager =  array($main,  $employee, $my_team, $hr_actions);
+	$dashlets_configuration_manager =  array($main,  $employee, $my_team, $hr_actions,$hr_manager);
 	$sql_manager = "('manager', 'Manager', '2020-02-28 16:24:03', '2020-02-28 18:26:09', '1', '1', NULL, 0, '1', '" . base64_encode(serialize($dashlets_configuration_manager)) . "', '" . base64_encode(serialize($dashlets_definitions)) . "', 1, NULL)";
 	
 	$db->query($sql_insert . $sql_manager);
