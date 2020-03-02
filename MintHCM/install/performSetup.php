@@ -374,7 +374,12 @@ installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS']);
 
     installDelegationPDFTemplate();
     
+    install_mint_dashlets($db);
+    
+
+    
     rebuildWithViewTools(false);
+
 
     echo $mod_strings['LBL_PERFORM_DONE'];
 
@@ -613,6 +618,7 @@ if( $_SESSION['demoData'] != 'no' ){
     $current_user->retrieve(1);
     include("install/populateSeedData.php");
     installerHook('post_installDemoData');
+    deploy_mint_dashlets();
 }
 
 /////////////////////////////////////////////////////////////
