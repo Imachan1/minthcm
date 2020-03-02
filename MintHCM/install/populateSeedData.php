@@ -45,6 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+require_once 'install/install_utils.php';
 require_once 'install/UserDemoData.php';
 require_once 'install/TeamDemoData.php';
 
@@ -68,12 +69,15 @@ foreach ($sugar_demodata as $module => $records) {
         $bean->new_with_id = true;
         foreach ($record as $field_name => $value) {
             if (isset($bean->field_defs[$field_name]) && !empty($value)) {
-                if(!empty($value['function'])) {
+                if (!empty($value['function'])) {
                     $arguments = $value['arguments'] ?? [];
-                    $bean->$field_name = call_user_func_array($value['function'], $arguments);
-                } else {
-                    $bean->$field_name = $value;
+                    $field = $arguments['field'] ?? null;
+                    if ($field && !empty($bean->$field)) {
+                        $arguments['field'] = $bean->$field;
+                    }
+                    $value = call_user_func_array($value['function'], $arguments);
                 }
+                $bean->$field_name = $value;
             }
         }
         $bean->save();

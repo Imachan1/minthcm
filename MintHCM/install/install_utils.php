@@ -2128,20 +2128,26 @@ function create_phone_number() {
    return $phone;
 }
 
-function create_datetime($year = null, $mnth = null, $day = null) {
+function modify_date($field, $modify) {
    global $timedate;
-   $now = $timedate->getNow();
-   if ( $day == null )
-      $day = $now->day + mt_rand(0, 365);
-   return $timedate->asDb($now->get_day_begin($day, $mnth, $year));
+   $date = $timedate->fromDbDate($field);
+   $date->modify($modify);
+   return $timedate->asDbDate($date);
 }
 
-function create_datetime_modify($field, $modify, $bean) {
+function modify_datetime($field, $modify) {
    global $timedate;
-   $now = $timedate->getNow();
-   if ( $day == null )
-      $day = $now->day + mt_rand(0, 365);
-   return $timedate->asDb($now->get_day_begin($day, $mnth, $year));
+   $date = $timedate->fromDb($field);
+   $date->modify($modify);
+   return $timedate->asDb($date);
+}
+
+function create_datetime($year = null, $mnth = null, $day = null, $hr = null, $min = null, $sec = null) {
+   return create_date($year,$mnth,$day) . ' ' . create_time($hr,$min,$sec);
+}
+
+function create_past_datetime($year = null, $mnth = null, $day = null, $hr = null, $min = null, $sec = null) {
+   return create_past_date($year,$mnth,$day) . ' ' . create_time($hr,$min,$sec);
 }
 
 function create_date($year = null, $mnth = null, $day = null) {
