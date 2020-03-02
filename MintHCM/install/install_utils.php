@@ -2128,6 +2128,22 @@ function create_phone_number() {
    return $phone;
 }
 
+function create_datetime($year = null, $mnth = null, $day = null) {
+   global $timedate;
+   $now = $timedate->getNow();
+   if ( $day == null )
+      $day = $now->day + mt_rand(0, 365);
+   return $timedate->asDb($now->get_day_begin($day, $mnth, $year));
+}
+
+function create_datetime_modify($field, $modify, $bean) {
+   global $timedate;
+   $now = $timedate->getNow();
+   if ( $day == null )
+      $day = $now->day + mt_rand(0, 365);
+   return $timedate->asDb($now->get_day_begin($day, $mnth, $year));
+}
+
 function create_date($year = null, $mnth = null, $day = null) {
    global $timedate;
    $now = $timedate->getNow();
