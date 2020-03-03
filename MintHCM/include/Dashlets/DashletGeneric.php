@@ -557,7 +557,12 @@ class DashletGeneric extends Dashlet {
             }
         }
         if(!empty($req['dashletTitle'])) {
-            $options['title'] = $req['dashletTitle'];
+            if(array_key_exists($req['dashletTitle'],$GLOBALS['app_strings'])){
+                $options['title'] = $GLOBALS['app_strings'][$req['dashletTitle']];
+            }else{
+                $options['title'] = $req['dashletTitle'];
+            }
+            
         }
 
         // Don't save the options for myItemsOnly if we're not even showing the options.
