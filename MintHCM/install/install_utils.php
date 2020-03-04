@@ -2142,6 +2142,10 @@ function modify_datetime($field, $modify) {
    return $timedate->asDb($date);
 }
 
+function create_datetime_from_date($field, $hr = null, $min = null, $sec = null) {
+   return $field . ' ' . create_time($hr,$min,$sec);
+}
+
 function create_datetime($year = null, $mnth = null, $day = null, $hr = null, $min = null, $sec = null) {
    return create_date($year,$mnth,$day) . ' ' . create_time($hr,$min,$sec);
 }

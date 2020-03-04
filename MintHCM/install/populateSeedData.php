@@ -63,23 +63,43 @@ if (file_exists("install/demoData.{$current_language}.php")) {
 
 global $sugar_demodata;
 
-foreach ($sugar_demodata as $module => $records) {
-    foreach ($records as $record) {
-        $bean = BeanFactory::newBean($module);
-        $bean->new_with_id = true;
-        foreach ($record as $field_name => $value) {
-            if (isset($bean->field_defs[$field_name]) && !empty($value)) {
-                if (!empty($value['function'])) {
-                    $arguments = $value['arguments'] ?? [];
-                    $field = $arguments['field'] ?? null;
-                    if ($field && !empty($bean->$field)) {
-                        $arguments['field'] = $bean->$field;
+try {
+    foreach ($sugar_demodata as $module => $records) {
+        foreach ($records as $record) {
+            $bean = BeanFactory::newBean($module);
+            $bean->new_with_id = true;
+            foreach ($record as $field_name => $value) {
+                if (isset($bean->field_defs[$field_name]) && !empty($value)) {
+                    if (!empty($value['function'])) {
+                        $arguments = $value['arguments'] ?? [];
+                        $field = $arguments['field'] ?? null;
+                        if ($field) {
+                            if(isset($value['related_record'])) {
+                                $GLOBALS['disable_date_format'] = true;
+                                $rel_record = BeanFactory::getBean($value['related_record']['module'], $value['related_record']['id']);
+                                $GLOBALS['disable_date_format'] = false;
+                                $arguments['field'] = $rel_record->$field ?? '';
+                            } elseif(!empty($bean->$field)) {
+                                $arguments['field'] = $bean->$field;
+                            }
+                        }
+                        $value = call_user_func_array($value['function'], $arguments);
                     }
-                    $value = call_user_func_array($value['function'], $arguments);
+                    $bean->$field_name = $value;
+                    if ($bean->field_defs[$field_name]['type'] == 'id' && (isset($bean->field_defs[$field_name]['relationship']) || $field_name == 'parent_id')) {
+                        $rel_field_name = str_replace('_id', '_name', $field_name);
+                        $rel_module_name = $bean->field_defs[$rel_field_name]['module'] ?? $bean->parent_type;
+                        if (isset($bean->field_defs[$rel_field_name]) && !empty($rel_module_name)) {
+                            $rel_bean = BeanFactory::getBean($rel_module_name, $bean->$field_name);
+                            $bean->$rel_field_name = $rel_bean->name;
+                        }
+                    }
                 }
-                $bean->$field_name = $value;
             }
+            $bean->skip_vt_validation = true;
+            $bean->save();
         }
-        $bean->save();
     }
+} catch (Throwable $e) {
+    $GLOBALS['log']->fatal($e->getMessage());
 }
