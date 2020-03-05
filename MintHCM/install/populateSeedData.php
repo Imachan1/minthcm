@@ -61,7 +61,7 @@ if (file_exists("install/demoData.{$current_language}.php")) {
     require_once "install/demoData.en_us.php";
 }
 
-global $sugar_demodata;
+global $sugar_demodata, $sugar_demodata_relations;
 
 foreach ($sugar_demodata as $module => $records) {
     foreach ($records as $record) {
@@ -72,14 +72,46 @@ foreach ($sugar_demodata as $module => $records) {
                 if (!empty($value['function'])) {
                     $arguments = $value['arguments'] ?? [];
                     $field = $arguments['field'] ?? null;
-                    if ($field && !empty($bean->$field)) {
-                        $arguments['field'] = $bean->$field;
+                    if ($field) {
+                        if (isset($value['related_record'])) {
+                            $GLOBALS['disable_date_format'] = true;
+                            $rel_record = BeanFactory::getBean($value['related_record']['module'], $value['related_record']['id']);
+                            $GLOBALS['disable_date_format'] = false;
+                            $arguments['field'] = $rel_record->$field ?? '';
+                        } elseif (!empty($bean->$field)) {
+                            $arguments['field'] = $bean->$field;
+                        }
                     }
                     $value = call_user_func_array($value['function'], $arguments);
                 }
                 $bean->$field_name = $value;
+                if ($field_name == 'assigned_user_id' || ($bean->field_defs[$field_name]['type'] == 'id' && (isset($bean->field_defs[$field_name]['relationship']) || $field_name == 'parent_id'))) {
+                    $rel_field_name = str_replace('_id', '_name', $field_name);
+                    $rel_module_name = $bean->field_defs[$rel_field_name]['module'] ?? $bean->parent_type;
+                    if (isset($bean->field_defs[$rel_field_name]) && !empty($rel_module_name)) {
+                        $rel_bean = BeanFactory::getBean($rel_module_name, $bean->$field_name);
+                        $bean->$rel_field_name = $rel_bean->name;
+                    }
+                }
             }
         }
-        $bean->save();
+        $bean->skip_vt_validation = true;
+        try {
+            $bean->save();
+        } catch (Throwable $e) {
+            $GLOBALS['log']->fatal("[MintHCM Demo Data] Can't save {$module} id: {$record['id']}");
+        }
+    }
+}
+
+foreach ($sugar_demodata_relations as $module => $relations) {
+    foreach ($relations as $rel_name => $ids) {
+        $link_field = getRelationshipLinkFieldName($module, $rel_name);
+        foreach ($ids as $bean_id => $rel_beans_ids) {
+            $bean = BeanFactory::getBean($module, $bean_id);
+            if ($bean && !empty($bean->id) && $bean->load_relationship($link_field)) {
+                $bean->$link_field->add($rel_beans_ids);
+            }
+        }
     }
 }

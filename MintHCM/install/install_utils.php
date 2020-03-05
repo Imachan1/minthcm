@@ -2117,6 +2117,18 @@ function add_digits($quantity, &$string, $min = 0, $max = 9) {
    }
 }
 
+function getRelationshipLinkFieldName($module, $rel_name) {
+   $result = '';
+   $bean = BeanFactory::newBean($module);
+   foreach ($bean->field_defs as $field_name => $field_def) {
+      if($field_def['type'] == 'link' && $field_def['relationship'] == $rel_name) {
+         $result = $field_name;
+         break;
+      }
+   }
+   return $result;
+}
+
 function create_phone_number() {
    $phone = "(";
    add_digits(3, $phone);
@@ -2140,6 +2152,10 @@ function modify_datetime($field, $modify) {
    $date = $timedate->fromDb($field);
    $date->modify($modify);
    return $timedate->asDb($date);
+}
+
+function create_datetime_from_date($field, $hr = null, $min = null, $sec = null) {
+   return $field . ' ' . create_time($hr,$min,$sec);
 }
 
 function create_datetime($year = null, $mnth = null, $day = null, $hr = null, $min = null, $sec = null) {
