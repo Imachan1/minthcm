@@ -115,21 +115,17 @@
                             <input type='checkbox' {if $myItemsOnly == 'true'}checked{/if} name='myItemsOnly'
                                    value='true'>
                         </td>
-                    </tr>
                 {/if}
                 {if $showMyFavorites}
-                    <tr>
-                        <td scope='row'>
+                        <td scope='row' style='margin-left: 20px'>
                             {$strings.myFavorites}
                         </td>
                         <td>
                             <input type='checkbox' {if $myFavorites == 'true'}checked{/if} name='myFavorites' value='true'>
                         </td>
-                    </tr>
                 {/if}
                 {if $showMySubordinates}
-                    <tr>
-                        <td scope='row'>
+                        <td scope='row' style='margin-left: 20px'>
                             {$strings.mySubordinates}
                         </td>
                         <td>
@@ -148,7 +144,7 @@
                     {if ($smarty.foreach.searchIteration.iteration is even) and $smarty.foreach.searchIteration.iteration != $smarty.foreach.searchIteration.last}                        </tr>
                         </tr>
 
-                        <tr>
+                        <tr style='margin-bottom: 15px'>
                     {/if}
                 {/foreach}
 
