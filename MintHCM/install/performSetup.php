@@ -351,6 +351,7 @@ if ($new_tables) {
 }
 installerHook('post_createUsers');
 installDefaultRoles();
+installDefaultKReports();
 
 // default OOB schedulers
 
@@ -571,8 +572,6 @@ include_once 'install/suite_install/suite_install.php';
 
 post_install_modules();
 
-//install default KReports
-installDefaultKReports();
 //Call rebuildSprites
 /*if(function_exists('imagecreatetruecolor'))
 {
