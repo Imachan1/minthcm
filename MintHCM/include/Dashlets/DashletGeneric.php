@@ -297,7 +297,8 @@ class DashletGeneric extends Dashlet {
         $this->configureSS->assign('searchFields', $this->currentSearchFields);
         $this->configureSS->assign('showClearButton', $this->isConfigPanelClearShown);
         // title
-        $this->configureSS->assign('dashletTitle', $this->title);
+         $this->configureSS->assign('dashletTitle', $this->title);
+
 
         // display rows
         $displayRowOptions = $GLOBALS['sugar_config']['dashlet_display_row_options'];
@@ -597,6 +598,9 @@ class DashletGeneric extends Dashlet {
             $options['displayColumns'] = explode('|', $req['displayColumnsDef']);
         }
         $options['autoRefresh'] = empty($req['autoRefresh']) ? '0' : $req['autoRefresh'];
+        if(!empty($req['dashletTitle'])){
+            $options['title'] = $req['dashletTitle'];
+        }
         return $options;
     }
 
