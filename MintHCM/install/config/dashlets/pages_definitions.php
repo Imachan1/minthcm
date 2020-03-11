@@ -44,7 +44,7 @@ $recruitment = array(
             'width' => '40%',
         ),
     ),
-    'pageTitle' => $GLOBALS['app_list_strings']['LBL_RECRUITMENT_DASHBOARD'],
+    'pageTitle' => $GLOBALS['app_strings']['LBL_RECRUITMENT_DASHBOARD'],
     'numColumns' => '2',
 );
 
@@ -67,7 +67,7 @@ $hr_manager = array(
             'width' => '40%',
         ),
     ),
-    'pageTitle' => $GLOBALS['app_list_strings']['LBL_HR_MANAGER_DASHBOARD'], //hr_manager_
+    'pageTitle' => $GLOBALS['app_strings']['LBL_HR_MANAGER_DASHBOARD'], //hr_manager_
     'numColumns' => '2',
 );
 
@@ -87,7 +87,7 @@ $my_team = array(
             'width' => '40%',
         ),
     ),
-    'pageTitle' => $GLOBALS['app_list_strings']['LBL_MY_TEAM_DASHBOARD'],
+    'pageTitle' => $GLOBALS['app_strings']['LBL_MY_TEAM_DASHBOARD'],
     'numColumns' => '2',
 );
 
@@ -109,7 +109,7 @@ $employee = array(
             'width' => '40%',
         ),
     ),
-    'pageTitle' => $GLOBALS['app_list_strings']['LBL_MY_RECORDS_DASHBOARD'],
+    'pageTitle' => $GLOBALS['app_strings']['LBL_MY_RECORDS_DASHBOARD'],
     'numColumns' => '2',
 );
 
@@ -132,7 +132,7 @@ $hr_actions = array(
             'width' => '40%',
         ),
     ),
-    'pageTitle' => $GLOBALS['app_list_strings']['LBL_HR_ACTIONS_DASHBOARD'],
+    'pageTitle' => $GLOBALS['app_strings']['LBL_HR_ACTIONS_DASHBOARD'],
     'numColumns' => '2',
 );
 
@@ -155,6 +155,6 @@ $settlements = array(
             'width' => '40%',
         ),
     ),
-    'pageTitle' => $GLOBALS['app_list_strings']['LBL_SPENT_TIME_DASHBOARD'],
+    'pageTitle' => $GLOBALS['app_strings']['LBL_SPENT_TIME_DASHBOARD'],
     'numColumns' => '2',
 );
