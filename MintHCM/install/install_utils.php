@@ -1341,6 +1341,12 @@ function installDefaultRoles(){
    $acl_roles_updater->run();
 }
 
+function installDefaultKReports(){
+   require_once 'install/suite_install/KReportsInstaller.php';
+   $kreports_installer = new KReportsInstaller();
+   $kreports_installer->run();
+}
+
 function rebuildWithViewTools($set_developer_mode = null) {
     require_once('modules/Administration/RebuildAllJavascripts.php');
     setConfig('developerMode', true);
