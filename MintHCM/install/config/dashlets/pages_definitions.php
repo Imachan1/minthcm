@@ -5,23 +5,18 @@ $main = array(
         0 => array(
             'width' => '60%',
             'dashlets' => array(
-                0 => 'main_offboarding_dashlet',
                 2 => 'main_calendar_dashlet',
-                3 => 'main_todays_work_schedule_dashlet',
                 4 => 'main_leave_of_absence_dashlet',
-                5 => 'main_appraisals_report_dashlet',
                 6 => 'main_reservation_dashlet',
-                7 => 'main_my_tasks_dashlet',
+
             ),
         ),
         1 => array(
             'width' => '40%',
             'dashlets' => array(
-                0 => 'main_contracts_dashlet',
-                1 => 'main_terms_of_employment_dashlet',
-                3 => 'main_appraisals_dashlet',
-                5 => 'main_competencies_dashlet',
+                3 => 'main_todays_work_schedule_dashlet',
                 6 => 'main_daily_work_schedule_dashlet',
+                7 => 'main_my_tasks_dashlet',
             ),
         ),
     ),
