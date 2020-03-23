@@ -8,7 +8,6 @@ $main = array(
                 2 => 'main_calendar_dashlet',
                 4 => 'main_leave_of_absence_dashlet',
                 6 => 'main_reservation_dashlet',
-
             ),
         ),
         1 => array(
