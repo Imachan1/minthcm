@@ -4200,6 +4200,8 @@ function setPhpIniSettings()
     if (!empty($backtrack_limit)) {
         ini_set('pcre.backtrack_limit', '-1');
     }
+    ini_set('max_execution_time', '3000');
+    ini_set('memory_limit', '2048m');
 }
 
 /**
