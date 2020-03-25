@@ -4153,13 +4153,6 @@ $app_strings['LBL_NAV_TIME_TRACKING'] = 'Time Management';
 $app_strings['LBL_NAV_RECRUITMENT_EB'] = 'HR';
 $app_strings['LBL_GROUPTAB4_1574081420'] = 'Definitions';
 
-$app_strings['LBL_RECRUITMENT_DASHBOARD'] = 'Recruitment';
-$app_strings['LBL_HR_MANAGER_DASHBOARD'] = 'HR - Manager';
-$app_strings['LBL_MY_TEAM_DASHBOARD'] = 'My Team';
-$app_strings['LBL_MY_RECORDS_DASHBOARD'] = 'My Records';
-$app_strings['LBL_HR_ACTIONS_DASHBOARD'] = 'HR Actions';
-$app_strings['LBL_SPENT_TIME_DASHBOARD'] = 'Spent Time';
-
 $app_strings['LBL_ABSENCES_IN_OFFICE_DASHLET'] = 'Absences in Office';
 $app_strings['LBL_MY_DAILY_WORK_SCHEDULE_DASHLET'] = 'My Daily Work Schedule';
 $app_strings['LBL_MY_COMPETENCIES_DASHLET'] = 'My Competencies';
