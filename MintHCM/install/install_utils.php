@@ -706,7 +706,7 @@ function installLog($entry) {
  * takes session vars and creates config.php
  * @return array bottle collection of error messages
  */
-function handleSugarConfig() {
+function handleSugarConfig($lock = false) {
    global $bottle;
    global $cache_dir;
    global $mod_strings;
@@ -740,7 +740,7 @@ function handleSugarConfig() {
    // build default sugar_config and merge with new values
    $sugar_config = sugarArrayMerge(get_sugar_config_defaults(), $sugar_config);
    // always lock the installer
-   $sugar_config['installer_locked'] = true;
+   $sugar_config['installer_locked'] = ($lock)?true:false;
    // we're setting these since the user was given a fair chance to change them
    $sugar_config['dbconfig']['db_host_name'] = $setup_db_host_name;
    if ( !empty($setup_db_host_instance) ) {
