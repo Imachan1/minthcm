@@ -108,28 +108,28 @@
                 </tr>
                 {if $showMyItemsOnly}
                     <tr>
-                        <td scope='row'>
-                            {$strings.myItems}
-                        </td>
                         <td>
                             <input type='checkbox' {if $myItemsOnly == 'true'}checked{/if} name='myItemsOnly'
                                    value='true'>
                         </td>
+                        <td scope='row' style='margin-left: 5px'>
+                            {$strings.myItems}
+                        </td>
                 {/if}
                 {if $showMyFavorites}
-                        <td scope='row' style='margin-left: 20px'>
-                            {$strings.myFavorites}
-                        </td>
                         <td>
                             <input type='checkbox' {if $myFavorites == 'true'}checked{/if} name='myFavorites' value='true'>
                         </td>
+                        <td scope='row' style='margin-left: 5px'>
+                            {$strings.myFavorites}
+                        </td>
                 {/if}
                 {if $showMySubordinates}
-                        <td scope='row' style='margin-left: 20px'>
-                            {$strings.mySubordinates}
-                        </td>
                         <td>
                             <input type='checkbox' {if $mySubordinates == 'true'}checked{/if} name='mySubordinates' value='true'>
+                        </td>
+                        <td scope='row' style='margin-left: 5px'>
+                            {$strings.mySubordinates}
                         </td>
                     </tr>
                 {/if}
