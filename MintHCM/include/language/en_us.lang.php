@@ -1061,6 +1061,13 @@ $app_list_strings = array(
    'template_id_list' => array(
       'Default' => 'Default',
    ),
+   'kind_of_element_list' => array(
+      '' => '',
+      'self' => 'Self',
+      'employee_manager' => 'Employee Manager',
+      'organizational_unit_manager' => 'Organizational Unit Manager',
+      'specific_user' => 'Specific User',
+   ),
 );
 
 $app_strings = array(
