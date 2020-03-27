@@ -83,8 +83,6 @@ $mod_strings = array(
    'LBL_POSITION_NAME' => 'Position',
    'LBL_POSITION_ID' => 'Position (ID)',
    'LBL_OFFBOARDINGS' => 'Offboardings',
-   'LBL_EMPLOYEE_NAME' => 'Employee',
-   'LBL_START_DATE' => 'Start Date',
-   'LBL_GENERATE_BUTTON' => 'Generate',
+   'LBL_GENERATE_BUTTON' => 'Generate Offboarding',
    'LBL_ELEMENTS' => 'Onboarding/Offboarding Elements',
 );
