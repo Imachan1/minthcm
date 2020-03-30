@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,61 +36,67 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
-}
-/*
- * Your installation or use of this SugarCRM file is subject to the applicable
- * terms available at
- * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
- * If you do not agree to all of the applicable terms or do not have the
- * authority to bind the entity as an authorized representative, then do not
- * install or use this SugarCRM file.
- *
- * Copyright (C) SugarCRM Inc. All rights reserved.
- */
-
-global $current_user;
-
-$dashletData['CandidaturesDashlet']['searchFields'] = array(
-   'date_entered' => array(
-      'default' => ''
-   ),
-   'date_modified' => array(
-      'default' => ''
-   ),
-   'status' => array(
-      'default' => ''
-   ),
-   'assigned_user_id' => array(
-      'type' => 'assigned_user_name',
-      'default' => $current_user->name
-   )
-);
-$dashletData['CandidaturesDashlet']['columns'] = array(
-   'name' => array(
-      'label' => 'LBL_LIST_NAME',
-      'link' => true,
-      'default' => true
-   ),
-   'date_entered' => array(
-      'label' => 'LBL_DATE_ENTERED',
-      'default' => true
-   ),
-   'date_modified' => array(
-      'label' => 'LBL_DATE_MODIFIED'
-   ),
-   'created_by' => array(
-      'label' => 'LBL_CREATED'
-   ),
-   'assigned_user_name' => array(
-      'label' => 'LBL_LIST_ASSIGNED_USER'
-   ),
+// created: 2018-10-13 15:14:30
+$dictionary["appraisals_tokens"] = array(
+    'table' => 'appraisals_tokens',
+    'fields' => array(
+        array(
+            'name' => 'id',
+            'type' => 'varchar',
+            'len' => 36,
+        ),
+        array(
+            'name' => 'date_entered',
+            'type' => 'datetime',
+        ),
+        array(
+            'name' => 'deleted',
+            'type' => 'bool',
+            'len' => '1',
+            'default' => '0',
+            'required' => true,
+        ),
+        array(
+            'name' => 'status',
+            'type' => 'bool',
+            'len' => '1',
+            'default' => '0',
+            'required' => true,
+        ),
+        array(
+            'name' => 'expired_date',
+            'type' => 'datetime',
+        ),
+        array(
+            'name' => 'token',
+            'type' => 'varchar',
+            'len' => 36,
+        ),
+        array(
+            'name' => 'appraisal_id',
+            'type' => 'varchar',
+            'len' => 36,
+        ),
+        array(
+            'name' => 'employee_id',
+            'type' => 'varchar',
+            'len' => 36,
+        ),
+    ),
+    'indices' => array(
+        array(
+            'name' => 'id_index',
+            'type' => 'primary',
+            'fields' => array(
+                'id',
+            ),
+        ),
+    ),
 );

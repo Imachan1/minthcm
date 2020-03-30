@@ -124,6 +124,12 @@ $mod_strings = array(
     'LBL_DASHLET_EDIT' => 'Edit MintHCM Dashlet',
     // Default out-of-box names for tabs
     'LBL_HOME_PAGE_1_NAME' => 'My MintHCM',
+    'LBL_RECRUITMENT_DASHBOARD' => 'Recruitment',
+    'LBL_HR_MANAGER_DASHBOARD' => 'HR - Manager',
+    'LBL_MY_TEAM_DASHBOARD' => 'My Team',
+    'LBL_MY_RECORDS_DASHBOARD' => 'My Records',
+    'LBL_HR_ACTIONS_DASHBOARD' => 'HR Actions',
+    'LBL_SPENT_TIME_DASHBOARD' => 'Spent Time',
     'LBL_CLOSE_SITEMAP' => 'Close',
     'LBL_SEARCH' => 'Search',
     'LBL_CLEAR' => 'Clear',
