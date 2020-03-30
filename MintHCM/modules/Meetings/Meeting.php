@@ -262,6 +262,29 @@ class Meeting extends SugarBean {
          $api->logoff();
       }
 
+      if ($this->status == 'Held') {
+         $bean = BeanFactory::getBean('Meetings', $this->id);
+         $bean->load_relationship('trainings');
+         $training_ids = $bean->trainings->get();
+         foreach ($training_ids as $training_id) {
+             $training = BeanFactory::getBean('Trainings', $training_id);
+             $training->load_relationship('meetings');
+             $meeting_ids = $training->meetings->get();
+             foreach ($meeting_ids as $meeting_id) {
+                $meetings_are_held = true;
+                $meeting = BeanFactory::getBean('Meetings', $meeting_id);
+                if($meeting->status != 'Held'){
+                  $meetings_are_held = false;
+                }
+             }
+             if($meetings_are_held == true){
+               $training->status = 'Held';
+               $training->save();
+             }
+             
+         }
+     }
+
       $return_id = parent::save($check_notify);
 
       if ( $this->update_vcal ) {

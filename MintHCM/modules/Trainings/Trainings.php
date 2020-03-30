@@ -78,6 +78,16 @@ class Trainings extends Basic
 
     public function save($check_notify = false)
     {
+        if ($this->status == 'Held') {
+            $bean = BeanFactory::getBean('Trainings', $this->id);
+            $bean->load_relationship('meetings');
+            $meeting_ids = $bean->meetings->get();
+            foreach ($meeting_ids as $meeting_id) {
+                $meeting = BeanFactory::getBean('Meetings', $meeting_id);
+                $meeting->status = 'Held';
+                $meeting->save();
+            }
+        }
         require_once 'include/AreOnboardingOffboardingActivitiesHeld/AreOnboardingOffboardingActivitiesHeld.php';
         if (!empty($this->parent_id) && $this->status == 'Held') {
             $boarding = BeanFactory::getBean($this->parent_name, $this->parent_id);
