@@ -184,39 +184,36 @@ $dictionary["Employee"]["fields"]["organizationalunits"] = array(
     'side' => 'right',
 );
 
-
-
-
 $dictionary["Employee"]["fields"]["organizationalunit"] = array(
-            'name' => 'organizationalunit',
-            'type' => 'link',
-            'relationship' => 'organizationalunits_employees',
-            'source' => 'non-db',
-            'module' => 'OrganizationalUnits',
-            'bean_name' => 'OrganizationalUnits',
-            'vname' => 'LBL_ORGANIZATIONALUNITS_EMPLOYEES',
-            'id_name' => 'organizationalunit_id',
-        );
+    'name' => 'organizationalunit',
+    'type' => 'link',
+    'relationship' => 'organizationalunits_employees',
+    'source' => 'non-db',
+    'module' => 'OrganizationalUnits',
+    'bean_name' => 'OrganizationalUnits',
+    'vname' => 'LBL_ORGANIZATIONALUNITS_EMPLOYEES',
+    'id_name' => 'organizationalunit_id',
+);
 $dictionary["Employee"]["fields"]["organizationalunit_name"] = array(
-            'name' => 'organizationalunit_name',
-            'type' => 'relate',
-            'source' => 'non-db',
-            'vname' => 'LBL_ORGANIZATIONALUNIT_NAME',
-            'save' => true,
-            'id_name' => 'organizationalunit_id',
-            'link' => 'organizationalunit',
-            'module' => 'OrganizationalUnits',
-            'table' => 'organizationalunits',
-            'rname' => 'name',
-        );
+    'name' => 'organizationalunit_name',
+    'type' => 'relate',
+    'source' => 'non-db',
+    'vname' => 'LBL_ORGANIZATIONALUNIT_NAME',
+    'save' => true,
+    'id_name' => 'organizationalunit_id',
+    'link' => 'organizationalunit',
+    'module' => 'OrganizationalUnits',
+    'table' => 'organizationalunits',
+    'rname' => 'name',
+);
 $dictionary["Employee"]["fields"]["organizationalunit_id"] = array(
-            'name' => 'organizationalunit_id',
-            'relationship' => 'organizationalunits_employees',
-            'type' => 'link',
-            'vname' => 'LBL_ORGANIZATIONALUNIT_ID',
-            'dbType' => 'id',
+    'name' => 'organizationalunit_id',
+    'relationship' => 'organizationalunits_employees',
+    'type' => 'link',
+    'vname' => 'LBL_ORGANIZATIONALUNIT_ID',
+    'dbType' => 'id',
     'join_name' => 'organizationalunits_employees',
-        );
+);
 $dictionary["Employee"]["fields"]["certificates"] = array(
     'name' => 'certificates',
     'type' => 'link',
@@ -239,6 +236,7 @@ $dictionary["Employee"]["fields"]["employee_status"]["audited"] = true;
 $dictionary["Employee"]["fields"]["first_name"]["audited"] = true;
 $dictionary["Employee"]["fields"]["last_name"]["audited"] = true;
 $dictionary["Employee"]["fields"]["position_name"]["audited"] = true;
+$dictionary["Employee"]["fields"]["position_name"]["required"] = true;
 $dictionary["Employee"]["fields"]["phone_work"]["audited"] = true;
 $dictionary["Employee"]["fields"]["phone_mobile"]["audited"] = true;
 $dictionary["Employee"]["fields"]["phone_home"]["audited"] = true;
