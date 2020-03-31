@@ -2114,8 +2114,15 @@ $app_strings = array(
     'LBL_NAV_TIME_TRACKING' => 'Time Tracking',
     'LBL_NAV_COMPANY_LIFE' => 'Company Life',
     'LBL_NAV_EMPLOYEE' => 'Employee',
-    
-
+    'LBL_GENERATEONBOARDINGOFFBOARDING_EMPLOYEE_NAME' => 'Employee',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_START_DATE' => 'Start Date',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_SUCCESS' => 'Generation has been started',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR' => 'Generating failed',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_TEMPLATE' => 'Template',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_POPUP_TITLE' => 'Generate Onboarding/Offboarding',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_SELF' => 'Employee is not system User: ',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_EMPLOYEE_MANAGER' => 'Employee does not have Manager set: ',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_ORGANIZATIONAL_UNIT_MANAGER' => 'The following Organizational Units do not have Manager set:',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
