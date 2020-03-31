@@ -126,7 +126,7 @@ $viewdefs ['Employees'] = array(
                         'title' => '{$MOD.LBL_GENERATE_ONBOARDING_OFFBOARDING}',
                         'onClick' => 'generateOnboardingOffboarding.init(generateOnboardingOffboarding)',
                      ),
-                     'template' => '[CONTENT]',
+                     'template' => '{if $bean->aclAccess("edit")}[CONTENT]{/if}',
                   ),
                ),
             ),
