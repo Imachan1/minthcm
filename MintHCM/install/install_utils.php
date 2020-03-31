@@ -2204,6 +2204,10 @@ function create_past_date() {
    return $timedate->asDbDate($now->get_day_begin($day));
 }
 
+function generateUserPasswordHash($user_name) {
+   return User::getPasswordHash($user_name);
+}
+
 /**
  *   This method will look for a file modules_post_install.php in the root directory and based on the
  *   contents of this file, it will silently install any modules as specified in this array.
