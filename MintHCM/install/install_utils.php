@@ -2176,7 +2176,7 @@ function create_date($year = null, $mnth = null, $day = null) {
    global $timedate;
    $now = $timedate->getNow();
    if ( $day == null )
-      $day = $now->day + mt_rand(0, 30);
+      $day = $now->day + mt_rand(0, 100);
    return $timedate->asDbDate($now->get_day_begin($day, $mnth, $year));
 }
 
@@ -2200,7 +2200,7 @@ function create_time($hr = null, $min = null, $sec = null) {
 function create_past_date() {
    global $timedate;
    $now = $timedate->getNow(true);
-   $day = $now->day - mt_rand(1, 30);
+   $day = $now->day - mt_rand(1, 100);
    return $timedate->asDbDate($now->get_day_begin($day));
 }
 
