@@ -145,7 +145,6 @@ installerHook('post_createDefaultSchedulers');
 installDelegationPDFTemplate();
 
     install_mint_dashlets($db);
-    deploy_mint_dashlets();
 installLog($mod_strings['LBL_PERFORM_VIEW_TOOLS']);
 installStatus($mod_strings['STAT_PERFORM_VIEW_TOOLS']);
 rebuildWithViewTools(false);

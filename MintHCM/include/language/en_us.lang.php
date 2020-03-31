@@ -3768,7 +3768,7 @@ $app_list_strings['workschedule_type_list'] = [
 
 $app_list_strings['workschedules_status_dom'] = array(
    'planned' => 'Planned',
-   'worked' => 'Worked',
+   'worked' => 'In progress',
    'closed' => 'Closed',
 );
 

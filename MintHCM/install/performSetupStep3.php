@@ -117,5 +117,6 @@ if ($_SESSION['demoData'] != 'no') {
     include("install/populateSeedData.php");
     installerHook('post_installDemoData');
 }
+deploy_mint_dashlets();
 
 installStatus('', array('function' => 'next_step', 'step' => 3, 'skip_minify' => true)); //mn

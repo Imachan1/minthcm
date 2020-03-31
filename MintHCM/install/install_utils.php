@@ -1408,7 +1408,7 @@ function installDelegationPDFTemplate(){
     $db = DBManagerFactory::getInstance();
     $query = "
         INSERT IGNORE INTO `pdftemplates` (`id`, `name`, `date_entered`, `date_modified`, `modified_user_id`, `created_by`, `description`, `deleted`, `is_default`, `relatedmodule`)
-        VALUES ('delegation-default', 'Domyślny', NOW(), NOW(), '1', '1', NULL, '0', '1', 'Delegations');
+        VALUES ('delegation-default', 'Default', NOW(), NOW(), '1', '1', NULL, '0', '1', 'Delegations');
     ";
     $db->query($query);
 }
@@ -2176,7 +2176,7 @@ function create_date($year = null, $mnth = null, $day = null) {
    global $timedate;
    $now = $timedate->getNow();
    if ( $day == null )
-      $day = $now->day + mt_rand(0, 365);
+      $day = $now->day + mt_rand(0, 30);
    return $timedate->asDbDate($now->get_day_begin($day, $mnth, $year));
 }
 
@@ -2200,7 +2200,7 @@ function create_time($hr = null, $min = null, $sec = null) {
 function create_past_date() {
    global $timedate;
    $now = $timedate->getNow(true);
-   $day = $now->day - mt_rand(1, 365);
+   $day = $now->day - mt_rand(1, 30);
    return $timedate->asDbDate($now->get_day_begin($day));
 }
 
