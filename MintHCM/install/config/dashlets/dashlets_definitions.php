@@ -8,7 +8,7 @@ $dashlets_definitions =  array(
     'fileLocation' => 'modules/Home/Dashlets/TodaysWorkScheduleDashlet/TodaysWorkScheduleDashlet.php',
     'options' =>
     array(
-      'title' => $GLOBALS['app_strings']['LBL_TODAYS_WORK_SCHEDULE_DASHLET'],
+      'title' => 'LBL_TODAYS_WORK_SCHEDULE_DASHLET',
     ),
   ),
   'main_my_tasks_dashlet' =>
@@ -19,7 +19,7 @@ $dashlets_definitions =  array(
     'fileLocation' => 'modules/Tasks/Dashlets/MyTasksDashlet/MyTasksDashlet.php',
     'options' =>
     array(
-      'title' => $GLOBALS['app_strings']['LBL_MY_TASKS_DASHLET'],
+      'title' => 'LBL_MY_TASKS_DASHLET',
     ),
   ),
   'main_offboarding_dashlet' =>  array(
@@ -27,7 +27,7 @@ $dashlets_definitions =  array(
     'module' => 'OffboardingTemplates',
     'options' =>
     array(
-      'title' => $GLOBALS['app_strings']['LBL_OFFBOARDING_TEMPLATES_DASHLET'],
+      'title' => 'LBL_OFFBOARDING_TEMPLATES_DASHLET',
     ),
     'fileLocation' => 'modules/OffboardingTemplates/Dashlets/OffboardingTemplatesDashlet/OffboardingTemplatesDashlet.php',
   ),
@@ -37,7 +37,7 @@ $dashlets_definitions =  array(
     'module' => 'Contracts',
     'options' =>
     array(
-      'title' => $GLOBALS['app_strings']['LBL_CONTRACTS_DASHLET'],
+      'title' => 'LBL_CONTRACTS_DASHLET',
     ),
     'fileLocation' => 'modules/Contracts/Dashlets/ContractsDashlet/ContractsDashlet.php',
   ),
@@ -47,7 +47,7 @@ $dashlets_definitions =  array(
     'module' => 'TermsOfEmployment',
     'options' =>
     array(
-      'title' => $GLOBALS['app_strings']['LBL_TERMS_OF_EMPLOYMENT_DASHLET'],
+      'title' => 'LBL_TERMS_OF_EMPLOYMENT_DASHLET',
     ),
     'fileLocation' => 'modules/TermsOfEmployment/Dashlets/TermsOfEmploymentDashlet/TermsOfEmploymentDashlet.php',
   ),
@@ -57,7 +57,7 @@ $dashlets_definitions =  array(
     'module' => 'KReports',
     'options' =>
     array(
-      'title' => $GLOBALS['app_strings']['LBL_APPRAISALS_RAPORT_DASHLET'],
+      'title' => 'LBL_APPRAISALS_RAPORT_DASHLET',
       'report_id' => '06ac7ffc-6548-4f76-b483-170768adfae9',
       'show_chart' => false,
       'show_data' => true,
@@ -78,7 +78,7 @@ $dashlets_definitions =  array(
         'date' =>
         array(),
       ),
-      'title' => $GLOBALS['app_strings']['LBL_MY_APPRAISALS_DASHLET'],
+      'title' => 'LBL_MY_APPRAISALS_DASHLET',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'displayRows' => '3',
@@ -107,7 +107,7 @@ $dashlets_definitions =  array(
     'module' => 'Home',
     'options' =>
     array(
-      'title' => $GLOBALS['app_strings']['LBL_ABSENCES_IN_OFFICE_DASHLET'],
+      'title' => 'LBL_ABSENCES_IN_OFFICE_DASHLET',
       'url' => NULL,
       'height' => NULL,
       'autoRefresh' => 0,
@@ -135,7 +135,7 @@ $dashlets_definitions =  array(
         'schedule_date' =>
         array(),
       ),
-      'title' => $GLOBALS['app_strings']['LBL_MY_DAILY_WORK_SCHEDULE_DASHLET'],
+      'title' => 'LBL_MY_DAILY_WORK_SCHEDULE_DASHLET',
       'myItemsOnly' => 'true',
       'displayRows' => '1',
       'displayColumns' =>
@@ -163,7 +163,7 @@ $dashlets_definitions =  array(
         'date_modified' =>
         array(),
       ),
-      'title' => $GLOBALS['app_strings']['LBL_MY_COMPETENCIES_DASHLET'],
+      'title' => 'LBL_MY_COMPETENCIES_DASHLET',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'displayRows' => '5',
@@ -192,8 +192,7 @@ $dashlets_definitions =  array(
     'module' => 'KReports',
     'options' =>
     array(
-      // 'title' => 'Rekrutacje - Kandydatury na źródło / aY',
-      'title' => $GLOBALS['app_strings']['LBL_RECRUITMENTS_CANDIDATES_FOR_THE_SOURCE_AY_DASHLET'],
+      'title' => 'LBL_RECRUITMENTS_CANDIDATES_FOR_THE_SOURCE_AY_DASHLET',
       'report_id' => 'cd43dec0-477c-4500-bd9a-d9902cc10324',
       'show_chart' => true,
       'show_data' => false,
@@ -209,8 +208,7 @@ $dashlets_definitions =  array(
     'module' => 'KReports',
     'options' =>
     array(
-      //'title' => 'Rekrutacje - Kandydatury na źródło / pY',
-      'title' => $GLOBALS['app_strings']['LBL_RECRUITMENTS_CANDIDATES_FOR_THE_SOURCE_PY_DASHLET'],
+      'title' => 'LBL_RECRUITMENTS_CANDIDATES_FOR_THE_SOURCE_PY_DASHLET', //brak
       'report_id' => 'kba29c52282b3f8326b09a8bbad1f',
       'show_chart' => true,
       'show_data' => false,
@@ -239,7 +237,7 @@ $dashlets_definitions =  array(
         'date_modified' =>
         array(),
       ),
-      'title' => $GLOBALS['app_strings']['LBL_ONBOARDINGS_DASHLET'],
+      'title' => 'LBL_ONBOARDINGS_DASHLET',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'displayRows' => '5',
@@ -275,7 +273,7 @@ $dashlets_definitions =  array(
         'date_modified' =>
         array(),
       ),
-      'title' => $GLOBALS['app_strings']['LBL_OFFBOARDINGS_DASHLET'],
+      'title' => 'LBL_OFFBOARDINGS_DASHLET',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'displayRows' => '5',
@@ -319,7 +317,7 @@ $dashlets_definitions =  array(
         'assigned_user_id' =>
         array(),
       ),
-      'title' => $GLOBALS['app_strings']['LBL_TRAININGS_DASHLET'],
+      'title' => 'LBL_TRAININGS_DASHLET',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'displayRows' => '5',
@@ -364,8 +362,7 @@ $dashlets_definitions =  array(
         'schedule_date' =>
         array(),
       ),
-      //'title' => 'Urlopy do zatwierdzenia',
-      'title' => $GLOBALS['app_strings']['LBL_LEAVE_FOR_APPROVAL_DASHLET'],
+      'title' => 'LBL_LEAVE_FOR_APPROVAL_DASHLET',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => 'true',
@@ -398,8 +395,7 @@ $dashlets_definitions =  array(
           1 => 'in_progress',
         ),
       ),
-      //'title' => 'Moje oceny',
-      'title' => $GLOBALS['app_strings']['LBL_MY_RATINGS_DASHLET'],
+      'title' => 'LBL_MY_RATINGS_DASHLET',
       'myItemsOnly' => 'true',
       'displayRows' => '5',
       'displayColumns' =>
@@ -428,8 +424,7 @@ $dashlets_definitions =  array(
           1 => 'in_progress',
         ),
       ),
-      //'title' => 'Wnioski mojego zespołu',
-      'title' => $GLOBALS['app_strings']['LBL_MY_TEAMS_APPLICATIONS_DASHLET'],
+      'title' => 'LBL_MY_TEAMS_APPLICATIONS_DASHLET',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => 'true',
@@ -463,8 +458,7 @@ $dashlets_definitions =  array(
           1 => 'in_progress',
         ),
       ),
-      //'title' => 'Pomysły mojego zespołu',
-      'title' => $GLOBALS['app_strings']['LBL_MY_TEAMS_IDEAS_DASHLET'],
+      'title' => 'LBL_MY_TEAMS_IDEAS_DASHLET',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => 'true',
@@ -505,8 +499,7 @@ $dashlets_definitions =  array(
         'date_modified' =>
         array(),
       ),
-      //'title' => 'Cele własne',
-      'title' => $GLOBALS['app_strings']['LBL_MY_GOALS_DASHLET'],
+      'title' => 'LBL_MY_GOALS_DASHLET',
       'myItemsOnly' => 'true',
       'displayRows' => '5',
       'displayColumns' =>
@@ -541,7 +534,7 @@ $dashlets_definitions =  array(
         'date_modified' =>
         array(),
       ),
-      'title' => $GLOBALS['app_strings']['LBL_TRAININGS_DASHLET'],
+      'title' => 'LBL_TRAININGS_DASHLET',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -585,8 +578,7 @@ $dashlets_definitions =  array(
           'type' => 'TP_last_30_days',
         ),
       ),
-      //'title' => 'Moje niezatwierdzone plany pracy',
-      'title' => $GLOBALS['app_strings']['LBL_MY_UNCONFIRMED_WORK_SCHEDULES_DASHLET'],
+      'title' => 'LBL_MY_UNCONFIRMED_WORK_SCHEDULES_DASHLET',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'displayRows' => '5',
@@ -619,7 +611,7 @@ $dashlets_definitions =  array(
         'date_entered' =>
         array(),
       ),
-      'title' => $GLOBALS['app_strings']['LBL_MY_MEETINGS_DASHLET'],
+      'title' => 'LBL_MY_MEETINGS_DASHLET',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -642,7 +634,7 @@ $dashlets_definitions =  array(
     'module' => 'Calls',
     'options' =>
     array(
-      'title' => $GLOBALS['app_strings']['LBL_MY_CALLS_DASHLET'],
+      'title' => 'LBL_MY_CALLS_DASHLET',
     ),
     'fileLocation' => 'modules/Calls/Dashlets/MyCallsDashlet/MyCallsDashlet.php',
   ),
@@ -652,7 +644,7 @@ $dashlets_definitions =  array(
     'module' => 'Recruitments',
     'options' =>
     array(
-      'title' => $GLOBALS['app_strings']['LBL_RECRUITMENTS_DASHLET'],
+      'title' => 'LBL_RECRUITMENTS_DASHLET',
       'filters' =>
       array(
         'project_status' =>
@@ -674,7 +666,7 @@ $dashlets_definitions =  array(
     'module' => 'Candidatures',
     'options' =>
     array(
-      'title' => $GLOBALS['app_strings']['LBL_CANDIDATURES_DASHLET'],
+      'title' => 'LBL_CANDIDATURES_DASHLET',
       'filters' =>
       array(
         'status' =>
@@ -720,7 +712,7 @@ $dashlets_definitions =  array(
         'date_modified' =>
         array(),
       ),
-      'title' => $GLOBALS['app_strings']['LBL_ONBOARDINGS_DASHLET'],
+      'title' => 'LBL_ONBOARDINGS_DASHLET',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -757,7 +749,7 @@ $dashlets_definitions =  array(
         'date_modified' =>
         array(),
       ),
-      'title' => $GLOBALS['app_strings']['LBL_OFFBOARDINGS_DASHLET'],
+      'title' => 'LBL_OFFBOARDINGS_DASHLET',
       'myItemsOnly' => 'true',
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -793,7 +785,7 @@ $dashlets_definitions =  array(
           'type' => 'TP_last_month',
         ),
       ),
-      'title' => $GLOBALS['app_strings']['LBL_UNCONFIRMED_WORK_SCHEDULES_PREVIOUS_MONTH_DASHLET'],
+      'title' => 'LBL_UNCONFIRMED_WORK_SCHEDULES_PREVIOUS_MONTH_DASHLET',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -828,7 +820,7 @@ $dashlets_definitions =  array(
           'type' => 'TP_last_30_days',
         ),
       ),
-      'title' => $GLOBALS['app_strings']['LBL_UNCONFIRMED_WORK_SCHEDULES_LAST_THIRTY_DAYS_DASHLET'],
+      'title' => 'LBL_UNCONFIRMED_WORK_SCHEDULES_LAST_THIRTY_DAYS_DASHLET',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -870,8 +862,7 @@ $dashlets_definitions =  array(
         'date_modified' =>
         array(),
       ),
-      //'title' => 'Wygasające umowy',
-      'title' => $GLOBALS['app_strings']['LBL_EXPIRING_CONTRACTS_DASHLET'],
+      'title' => 'LBL_EXPIRING_CONTRACTS_DASHLET',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -912,8 +903,7 @@ $dashlets_definitions =  array(
         'date_modified' =>
         array(),
       ),
-      //'title' => 'Oczekujące umowy',
-      'title' => $GLOBALS['app_strings']['LBL_PENDING_CONTRACTS_DASHLET'],
+      'title' => 'LBL_PENDING_CONTRACTS_DASHLET',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -949,8 +939,7 @@ $dashlets_definitions =  array(
         'end_date' =>
         array(),
       ),
-      //'title' => 'Delegacje - poprzedni miesiąc',
-      'title' => $GLOBALS['app_strings']['LBL_DELEGATIONS_PREVIOUS_MONTH_DASHLET'],
+      'title' => 'LBL_DELEGATIONS_PREVIOUS_MONTH_DASHLET',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => false,
@@ -986,8 +975,7 @@ $dashlets_definitions =  array(
         'end_date' =>
         array(),
       ),
-      //'title' => 'Delegacje - aktualny miesiąc',
-      'title' => $GLOBALS['app_strings']['LBL_DELEGATIONS_THIS_MONTH_DASHLET'],
+      'title' => 'LBL_DELEGATIONS_THIS_MONTH_DASHLET',
       'myItemsOnly' => false,
       'myFavorites' => false,
       'mySubordinates' => false,
