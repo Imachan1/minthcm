@@ -56,7 +56,7 @@ $popupMeta = array(
         'name' => $_module_name . '.name',
         'user_name' => 'users.name',
     ),
-    'whereStatement' => "type!='exit_interview'",
+    'whereStatement' => "$_module_name . type!='exit_interview'",
     'searchInputs' => array($_module_name . '_number', 'name', 'priority', 'status'),
     'searchdefs' => array(
         'name' => array(
