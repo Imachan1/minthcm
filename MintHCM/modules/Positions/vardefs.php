@@ -188,25 +188,83 @@ $dictionary['Positions'] = array(
             'side' => 'right',
             'vname' => 'LBL_POSITIONS_EMPLOYEES',
         ),
+<<<<<<< Updated upstream
         'onboardingtemplates' => array(
             'name' => 'onboardingtemplates',
+=======
+        'onboardingstemplates' => array(
+            'name' => 'onboardingstemplates',
+>>>>>>> Stashed changes
             'type' => 'link',
             'relationship' => 'onboardingtemplates_positions',
             'source' => 'non-db',
             'module' => 'OnboardingTemplates',
             'bean_name' => 'OnboardingTemplates',
+<<<<<<< Updated upstream
             'side' => 'right',
             'vname' => 'LBL_ONBOARDINGTEMPLATES_POSITIONS_TITLE',
         ),
         'offboardingtemplates' => array(
             'name' => 'offboardingtemplates',
+=======
+            'vname' => 'LBL_ONBOARDINGTEMPLATES_POSITIONS',
+            'id_name' => 'onboardingtemplate_id',
+        ),
+        'onboardingtemplate_name' => array(
+            'name' => 'onboardingtemplate_name',
+            'type' => 'relate',
+            'source' => 'non-db',
+            'vname' => 'LBL_ONBOARDINGTEMPLATE_NAME',
+            'save' => true,
+            'id_name' => 'onboardingtemplate_id',
+            'link' => 'onboardingtemplates',
+            'module' => 'OnboardingTemplates',
+            'table' => 'onboardingtemplates',
+            'rname' => 'name',
+        ),
+        'onboardingtemplate_id' => array(
+            'name' => 'onboardingtemplate_id',
+            'relationship' => 'onboardingtemplates_positions',
+            'type' => 'id',
+            'vname' => 'LBL_ONBOARDINGTEMPLATE_ID',
+            'rname' => 'id',
+            'dbType' => 'id',
+        ),
+        'offboardingstemplates' => array(
+            'name' => 'offboardingstemplates',
+>>>>>>> Stashed changes
             'type' => 'link',
             'relationship' => 'offboardingtemplates_positions',
             'source' => 'non-db',
             'module' => 'OffboardingTemplates',
             'bean_name' => 'OffboardingTemplates',
+<<<<<<< Updated upstream
             'side' => 'right',
             'vname' => 'LBL_OFFBOARDINGTEMPLATES_POSITIONS_TITLE',
+=======
+            'vname' => 'LBL_OFFBOARDINGTEMPLATES_POSITIONS',
+            'id_name' => 'offboardingtemplate_id',
+        ),
+        'offboardingtemplate_name' => array(
+            'name' => 'offboardingtemplate_name',
+            'type' => 'relate',
+            'source' => 'non-db',
+            'vname' => 'LBL_OFFBOARDINGTEMPLATE_NAME',
+            'save' => true,
+            'id_name' => 'offboardingtemplate_id',
+            'link' => 'offboardingtemplates',
+            'module' => 'OffboardingTemplates',
+            'table' => 'offboardingtemplates',
+            'rname' => 'name',
+        ),
+        'offboardingtemplate_id' => array(
+            'name' => 'offboardingtemplate_id',
+            'relationship' => 'offboardingtemplates_positions',
+            'type' => 'id',
+            'vname' => 'LBL_OFFBOARDINGTEMPLATE_ID',
+            'rname' => 'id',
+            'dbType' => 'id',
+>>>>>>> Stashed changes
         ),
         'benefits' => array(
             'name' => 'benefits',
@@ -296,6 +354,27 @@ $dictionary['Positions'] = array(
         ),
     ),
     'relationships' => array(
+<<<<<<< Updated upstream
+=======
+        'onboardingtemplates_positions' => array(
+            'lhs_module' => 'OnboardingTemplates',
+            'lhs_table' => 'onboardingtemplates',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Positions',
+            'rhs_table' => 'positions',
+            'rhs_key' => 'onboardingtemplate_id',
+            'relationship_type' => 'one-to-many',
+        ),
+        'offboardingtemplates_positions' => array(
+            'lhs_module' => 'OffboardingTemplates',
+            'lhs_table' => 'offboardingtemplates',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Positions',
+            'rhs_table' => 'positions',
+            'rhs_key' => 'offboardingtemplate_id',
+            'relationship_type' => 'one-to-many',
+        ),
+>>>>>>> Stashed changes
         'recruitments_positions' => array(
             'lhs_module' => 'Positions',
             'lhs_table' => 'positions',

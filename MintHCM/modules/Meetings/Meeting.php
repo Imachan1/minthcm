@@ -169,7 +169,7 @@ class Meeting extends SugarBean {
    public function save($check_notify = FALSE) {
       global $timedate;
       global $current_user;
-
+      global $db;
       global $disable_date_format;
 
       if ( isset($this->date_start) ) {
@@ -262,6 +262,11 @@ class Meeting extends SugarBean {
          $api->logoff();
       }
 
+      if ($this->status == 'Held') {
+         $id = $this->id;
+         $this->closeRelatedTraining($id);
+         }
+         
       $return_id = parent::save($check_notify);
 
       if ( $this->update_vcal ) {
@@ -283,6 +288,26 @@ class Meeting extends SugarBean {
 
       return $return_id;
    }
+
+   public function closeRelatedTraining($id){
+      global $db;
+      $sql = "SELECT id FROM trainings AS t 
+         JOIN trainings_meetings AS tm ON t.id = tm.training_id 
+         JOIN meetings AS m ON tm.meeting_id = m.id
+         WHERE m.id = '{$id}' AND t.status = 'held' AND deleted = 0";
+         $result = $db->query($sql);
+         while (($row = $db->fetchByAssoc($result)) != null) {
+            $training_id = $row['t.id'];
+            $sql_meetings = "SELECT id FROM meetings AS m 
+            JOIN trainings_meetings AS tm ON m.id = tm.meeting_id 
+            JOIN trainings AS m ON tm.training_id = t.id
+            WHERE t.id = '{$training_id}' AND t.status NOT LIKE 'held'";
+            if(empty($db->getOne($sql_meetings))){
+               $sql_close = "UPDATE trainings SET status = 'held' WHERE id = {$training_id}";
+               $db->query($sql_close);
+            }
+   }
+}
 
    protected function postSave() {
       require_once 'modules/Candidatures/logic_hooks/CandidaturesLogicHook.php';
