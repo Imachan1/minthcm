@@ -78,32 +78,32 @@ class Trainings extends Basic
 
     public function save($check_notify = false)
     {
-        if ($this->status == 'Held') {
-            $bean = BeanFactory::getBean('Trainings', $this->id);
-            $bean->load_relationship('meetings');
-            $meeting_ids = $bean->meetings->get();
-            foreach ($meeting_ids as $meeting_id) {
-                $meeting = BeanFactory::getBean('Meetings', $meeting_id);
-                $meeting->status = 'Held';
-                $meeting->save();
-            }
-        }
-        require_once 'include/AreOnboardingOffboardingActivitiesHeld/AreOnboardingOffboardingActivitiesHeld.php';
-        if (!empty($this->parent_id) && $this->status == 'Held') {
-            $boarding = BeanFactory::getBean($this->parent_name, $this->parent_id);
-            $are_other_activities_held = new AreOnboardingOffboardingActivitiesHeld();
-            if ($are_other_activities_held->areTrainingsHeld($offboarding)
-                && $are_other_activities_held->areExitInterviewsHeld($offboarding)
-                && $are_other_activities_held->areTasksHeld($offboarding)) {
-                $boarding->status = 'Held';
-                $boarding->save();
-            }
-        }
         $id = parent::save($check_notify);
+        if ($this->status == 'Held') {
+            $this->load_relationship('meetings');
+            $meeting_ids = $this->meetings->get();
+            $this->closeRelatedMeetings($meeting_ids);
+        }
+        require_once 'modules/Onboardings/OnboardingStatus.php';
+        if (!empty($this->parent_id) && $this->status == 'Held') {
+            $onboarding_status = new OnboardingStatus();
+            $onboarding_status->closeIfActivitiesAreHeld($this);
+        }
         require_once 'modules/Trainings/SugarFeeds/TrainingsFeed.php';
         $feed = new TrainingsFeed();
         $feed->pushFeed($this, null, null);
         return $id;
+    }
+
+    public function closeRelatedMeetings($meeting_ids)
+    {
+        foreach ($meeting_ids as $meeting_id) {
+            $meeting = BeanFactory::getBean('Meetings', $meeting_id);
+            if ($meeting->status != 'Held') {
+                $meeting->status = 'Held';
+                $meeting->save();
+            }
+        }
     }
 
 }

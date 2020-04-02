@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,52 +41,9 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-class ExitInterviews extends Basic
+
+class OffboardingTemplatesController extends OnboardingTemplatesController
 {
-
-    public $new_schema = true;
-    public $module_dir = 'ExitInterviews';
-    public $object_name = 'ExitInterviews';
-    public $table_name = 'exitinterviews';
-    public $importable = true;
-    public $id;
-    public $name;
-    public $date_entered;
-    public $date_modified;
-    public $modified_user_id;
-    public $modified_by_name;
-    public $created_by;
-    public $created_by_name;
-    public $description;
-    public $deleted;
-    public $created_by_link;
-    public $modified_user_link;
-    public $assigned_user_id;
-    public $assigned_user_name;
-    public $assigned_user_link;
-    public $SecurityGroups;
-
-    public function bean_implements($interface)
-    {
-        if ("ACL" === $interface) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function save($check_notify = false)
-    {
-        require_once 'modules/Onboardings/OnboardingStatus.php';
-        $id = parent::save($check_notify);
-        if (!empty($this->offboarding_id) && $this->status == 'Held') {
-            $onboarding_status = new OnboardingStatus();
-            $onboarding_status->closeIfActivitiesAreHeld($this);
-        }
-        require_once 'modules/ExitInterviews/SugarFeeds/ExitInterviewsFeed.php';
-        $feed = new ExitInterviewsFeed();
-        $feed->pushFeed($this, null, null);
-        return $id;
-    }
+    const TEMPLATE = 'OffboardingTemplates';
 
 }

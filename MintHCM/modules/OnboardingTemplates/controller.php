@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,52 +41,23 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-class ExitInterviews extends Basic
+
+class OnboardingTemplatesController extends SugarController
 {
-
-    public $new_schema = true;
-    public $module_dir = 'ExitInterviews';
-    public $object_name = 'ExitInterviews';
-    public $table_name = 'exitinterviews';
-    public $importable = true;
-    public $id;
-    public $name;
-    public $date_entered;
-    public $date_modified;
-    public $modified_user_id;
-    public $modified_by_name;
-    public $created_by;
-    public $created_by_name;
-    public $description;
-    public $deleted;
-    public $created_by_link;
-    public $modified_user_link;
-    public $assigned_user_id;
-    public $assigned_user_name;
-    public $assigned_user_link;
-    public $SecurityGroups;
-
-    public function bean_implements($interface)
+    const TEMPLATE = 'OnboardingTemplates';
+    public function action_save()
     {
-        if ("ACL" === $interface) {
-            return true;
-        } else {
-            return false;
+        parent::action_save();
+        if (isset($_REQUEST['duplicateSave']) && $_REQUEST['duplicateSave'] === "true") {
+            $template_id = $_REQUEST['duplicateId'];
+            $duplicate_bean = BeanFactory::getBean(static::template, $template_id);
+            $duplicate_bean->load_relationship('elements');
+            $this_bean = BeanFactory::getBean(static::template, $this->bean->id);
+            $this_bean->load_relationship('elements');
+            $linked_beans = $duplicate_bean->get_linked_beans('elements');
+            foreach ($linked_beans as $linked_bean) {
+                $this_bean->elements->add($linked_bean);
+            }
         }
     }
-
-    public function save($check_notify = false)
-    {
-        require_once 'modules/Onboardings/OnboardingStatus.php';
-        $id = parent::save($check_notify);
-        if (!empty($this->offboarding_id) && $this->status == 'Held') {
-            $onboarding_status = new OnboardingStatus();
-            $onboarding_status->closeIfActivitiesAreHeld($this);
-        }
-        require_once 'modules/ExitInterviews/SugarFeeds/ExitInterviewsFeed.php';
-        $feed = new ExitInterviewsFeed();
-        $feed->pushFeed($this, null, null);
-        return $id;
-    }
-
 }

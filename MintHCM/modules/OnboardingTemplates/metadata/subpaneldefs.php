@@ -43,7 +43,7 @@
  */
 $layout_defs["OnboardingTemplates"]["subpanel_setup"] = array(
     'elements' => array(
-        'order' => 103,
+        'order' => 90,
         'module' => 'OnboardingOffboardingElements',
         'subpanel_name' => 'for_Templates',
         'sort_order' => 'asc',
