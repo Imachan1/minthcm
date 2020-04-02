@@ -2208,6 +2208,40 @@ function generateUserPasswordHash($user_name) {
    return User::getPasswordHash($user_name);
 }
 
+function create_unique_past_date($table, $field_name)
+{
+   global $db;
+   $counter = 0;
+   while (true) {
+      $date = create_past_date();
+      $sql = "SELECT count(id) FROM {$table} WHERE {$field_name} = '{$date}' AND deleted = 0";
+      if ($counter == 100 || (!isWeekend($date) && !$db->getOne($sql))) {
+         break;
+      }
+      $counter++;
+   }
+   return $date;
+}
+
+function create_unique_date($table, $field_name)
+{
+   global $db;
+   $counter = 0;
+   while (true) {
+      $date = create_date();
+      $sql = "SELECT count(id) FROM {$table} WHERE {$field_name} = '{$date}' AND deleted = 0";
+      if ($counter == 100 || (!isWeekend($date) && !$db->getOne($sql))) {
+         break;
+      }
+      $counter++;
+   }
+   return $date;
+}
+
+function isWeekend($date) {
+   return (date('N', strtotime($date)) >= 6);
+}
+
 /**
  *   This method will look for a file modules_post_install.php in the root directory and based on the
  *   contents of this file, it will silently install any modules as specified in this array.
