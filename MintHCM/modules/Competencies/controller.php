@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -43,42 +42,41 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*
- * Your installation or use of this SugarCRM file is subject to the applicable
- * terms available at
- * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
- * If you do not agree to all of the applicable terms or do not have the
- * authority to bind the entity as an authorized representative, then do not
- * install or use this SugarCRM file.
- *
- * Copyright (C) SugarCRM Inc. All rights reserved.
- */
-$module_name = 'Positions';
-$viewdefs[$module_name]['QuickCreate'] = array(
-    'templateMeta' => array('maxColumns' => '2',
-        'widths' => array(
-            array('label' => '10', 'field' => '30'),
-            array('label' => '10', 'field' => '30'),
-        ),
-    ),
-    'panels' => array(
-        'default' => array(
-            array(
-                'name',
-                'status',
-            ),
-            array(
-                'organizationalunits_leader_name',
-                'positions_supervision_name',
-            ),
-            array(
-                'offboardingtemplate_name',
-                'onboardingtemplate_name',
-            ),
-            array(
-                'assigned_user_name',
-                '',
-            ),
-        ),
-    ),
-);
+class CompetenciesController extends SugarController
+{
+    const TEMPLATE = 'Competencies';
+    public function action_save()
+    {
+        parent::action_save();
+        if (isset($_REQUEST['duplicateSave']) && $_REQUEST['duplicateSave'] === "true") {
+            $template_id = $_REQUEST['duplicateId'];
+            $duplicate_bean = BeanFactory::getBean(static::template, $template_id);
+            $duplicate_bean->load_relationship('knowledge');
+            $duplicate_bean->load_relationship('skills');
+            $duplicate_bean->load_relationship('attitudes');
+            $duplicate_bean->load_relationship('competencyratings');
+            $this_bean = BeanFactory::getBean(static::template, $this->bean->id);
+            $duplicate_bean = BeanFactory::getBean(static::template, $template_id);
+            $this_bean->load_relationship('knowledge');
+            $this_bean->load_relationship('skills');
+            $this_bean->load_relationship('attitudes');
+            $this_bean->load_relationship('competencyratings');
+            $linked_beans_knowledge = $duplicate_bean->get_linked_beans('knowledge');
+            $linked_beans_skills = $duplicate_bean->get_linked_beans('skills');
+            $linked_beans_attitudes = $duplicate_bean->get_linked_beans('attitudes');
+            $linked_beans_competencyratings = $duplicate_bean->get_linked_beans('competencyratings');
+            foreach ($linked_beans_knowledge as $linked_bean) {
+                $this_bean->knowledge->add($linked_bean);
+            }
+            foreach ($linked_beans_skills as $linked_bean) {
+                $this_bean->skills->add($linked_bean);
+            }
+            foreach ($linked_beans_attitudes as $linked_bean) {
+                $this_bean->attitudes->add($linked_bean);
+            }
+            foreach ($linked_beans_competencyratings as $linked_bean) {
+                $this_bean->competencyratings->add($linked_bean);
+            }
+        }
+    }
+}

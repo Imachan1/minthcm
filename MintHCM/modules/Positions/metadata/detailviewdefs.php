@@ -85,6 +85,10 @@ $viewdefs[$module_name]['DetailView'] = array(
                 'positions_supervision_name',
             ),
             array(
+                'offboardingtemplate_name',
+                'onboardingtemplate_name',
+            ),
+            array(
                 array(
                     'name' => 'parent_name',
                     'customLabel' => '{sugar_translate label=\'LBL_MODULE_NAME\' module=$fields.parent_type.value}',

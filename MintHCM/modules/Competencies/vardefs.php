@@ -85,15 +85,6 @@ $dictionary['Competencies'] = array(
             'side' => 'right',
             'vname' => 'LBL_COMPETENCYRATINGS',
         ),
-        'appraisalitems' => array(
-            'name' => 'appraisalitems',
-            'type' => 'link',
-            'relationship' => 'appraisalitems_competencies',
-            'module' => 'AppraisalItems',
-            'bean_name' => 'AppraisalItems',
-            'source' => 'non-db',
-            'vname' => 'LBL_APPRAISALITEMS',
-        ),
         'competencies_type' => array(
             'id' => 'competencies_type',
             'name' => 'competencies_type',

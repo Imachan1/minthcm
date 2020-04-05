@@ -79,7 +79,7 @@ class Trainings extends Basic
     public function save($check_notify = false)
     {
         $id = parent::save($check_notify);
-        if ($this->status == 'Held') {
+        if ($this->status != $this->fetched_row['status'] && $this->status == 'Held') {
             $this->load_relationship('meetings');
             $meeting_ids = $this->meetings->get();
             $this->closeRelatedMeetings($meeting_ids);
@@ -99,7 +99,7 @@ class Trainings extends Basic
     {
         foreach ($meeting_ids as $meeting_id) {
             $meeting = BeanFactory::getBean('Meetings', $meeting_id);
-            if ($meeting->status != 'Held') {
+            if ($meeting->status == 'Planned') {
                 $meeting->status = 'Held';
                 $meeting->save();
             }

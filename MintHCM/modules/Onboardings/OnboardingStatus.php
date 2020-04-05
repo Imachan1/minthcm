@@ -2,20 +2,23 @@
 
 class OnboardingStatus
 {
-    public function closeIfActivitiesAreHeld($boarding)
+    protected $focus;
+
+    public function closeIfActivitiesAreHeld($focus)
     {
-        if ($this->areTrainingsHeld($boarding)
-            && $this->areExitInterviewsHeld($boarding)
-            && $this->areTasksHeld($boarding)) {
-            $this->close($boarding);
+        $this->focus = $focus;
+        if ($this->areTrainingsHeld()
+            && $this->areExitInterviewsHeld()
+            && $this->areTasksHeld()) {
+            $this->close();
 
         }
 
     }
-    protected function areTrainingsHeld($boarding)
+    protected function areTrainingsHeld()
     {
         global $db;
-        $boarding_id = $boarding->id;
+        $boarding_id = $this->focus->id;
         $sql = "SELECT id, status FROM trainings WHERE parent_id='{$boarding_id}'";
         $result = $db->query($sql);
         while (($row = $db->fetchByAssoc($result)) != null) {
@@ -26,10 +29,10 @@ class OnboardingStatus
         return true;
     }
 
-    protected function areExitInterviewsHeld($boarding)
+    protected function areExitInterviewsHeld()
     {
         global $db;
-        $boarding_id = $boarding->id;
+        $boarding_id = $this->focus->id;
         $sql = "SELECT id, status FROM exitinterviews WHERE offboarding_id='{$boarding_id}'";
         $result = $db->query($sql);
         while (($row = $db->fetchByAssoc($result)) != null) {
@@ -40,10 +43,10 @@ class OnboardingStatus
         return true;
     }
 
-    protected function areTasksHeld($boarding)
+    protected function areTasksHeld()
     {
         global $db;
-        $boarding_id = $boarding->id;
+        $boarding_id = $this->focus->id;
         $sql = "SELECT id, status FROM tasks WHERE parent_id='{$boarding_id}'";
         $result = $db->query($sql);
         while (($row = $db->fetchByAssoc($result)) != null) {
@@ -54,9 +57,9 @@ class OnboardingStatus
         return true;
     }
 
-    protected function close($boarding)
+    protected function close()
     {
-        $boarding->status = 'Held';
-        $boarding->save();
+        $this->focus->status = 'Held';
+        $this->focus->save();
     }
 }

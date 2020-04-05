@@ -75,6 +75,10 @@ class SugarFieldFile extends SugarFieldBase {
                 $vardef['fileId'] = 'id';
             }
         }
+
+        if (!isset($vardef['filename'])){
+            $vardef['filename'] = 'filename';
+        }
     }
 
 

@@ -72,6 +72,10 @@ $viewdefs[$module_name]['EditView'] = array(
                 'positions_supervision_name',
             ),
             array(
+                'offboardingtemplate_name',
+                'onboardingtemplate_name',
+            ),
+            array(
                 'parent_name',
                 '',
             ),
