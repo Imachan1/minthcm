@@ -78,16 +78,19 @@ class Trainings extends Basic
 
     public function save($check_notify = false)
     {
+        $status_before = $this->fetched_row['status'];
         $id = parent::save($check_notify);
-        if ($this->status != $this->fetched_row['status'] && $this->status == 'Held') {
+        if ($this->status != $status_before && $this->status == 'held') {
             $this->load_relationship('meetings');
             $meeting_ids = $this->meetings->get();
             $this->closeRelatedMeetings($meeting_ids);
         }
         require_once 'modules/Onboardings/OnboardingStatus.php';
-        if (!empty($this->parent_id) && $this->status == 'Held') {
+        if (!empty($this->parent_id) && $this->status != $status_before
+            && $this->status == 'held') {
+            $boarding_bean = BeanFactory::getBean($this->parent_type, $this->parent_id);
             $onboarding_status = new OnboardingStatus();
-            $onboarding_status->closeIfActivitiesAreHeld($this);
+            $onboarding_status->closeIfActivitiesAreHeld($boarding_bean);
         }
         require_once 'modules/Trainings/SugarFeeds/TrainingsFeed.php';
         $feed = new TrainingsFeed();

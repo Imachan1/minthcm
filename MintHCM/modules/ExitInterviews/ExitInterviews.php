@@ -79,10 +79,13 @@ class ExitInterviews extends Basic
     public function save($check_notify = false)
     {
         require_once 'modules/Onboardings/OnboardingStatus.php';
+        $status_before = $this->fetched_row['status'];
         $id = parent::save($check_notify);
-        if (!empty($this->offboarding_id) && $this->status == 'Held') {
+        if (!empty($this->offboarding_id) && $this->status != $status_before
+            && $this->status == 'Held') {
+            $boarding_bean = BeanFactory::getBean('Offboardings', $this->offboarding_id);
             $onboarding_status = new OnboardingStatus();
-            $onboarding_status->closeIfActivitiesAreHeld($this);
+            $onboarding_status->closeIfActivitiesAreHeld($boarding_bean);
         }
         require_once 'modules/ExitInterviews/SugarFeeds/ExitInterviewsFeed.php';
         $feed = new ExitInterviewsFeed();

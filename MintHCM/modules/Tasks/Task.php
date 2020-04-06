@@ -111,27 +111,19 @@ class Task extends SugarBean
     {
         if (empty($this->status)) {
             $this->status = $this->getDefaultStatus();
-		}
-		require_once 'include/AreOnboardingOffboardingActivitiesHeld/AreOnboardingOffboardingActivitiesHeld.php';
-        if (!empty($this->parent_id) && $this->status == 'Held') {
-            $boarding = BeanFactory::getBean($this->parent_name, $this->parent_id);
-            $are_other_activities_held = new AreOnboardingOffboardingActivitiesHeld();
-            if ($are_other_activities_held->areTrainingsHeld($offboarding)
-                && $are_other_activities_held->areExitInterviewsHeld($offboarding)
-                && $are_other_activities_held->areTasksHeld($offboarding)) {
-                $boarding->status = 'Held';
-                $boarding->save();
-            }
         }
+
         require_once 'modules/Onboardings/OnboardingStatus.php';
+        $status_before = $this->fetched_row['status'];
         $id = parent::save($check_notify);
-        if (!empty($this->parent_id) && $this->status == 'Held') {
+        if (!empty($this->parent_id) && $this->status != $status_before
+            && $this->status == 'Held') {
+            $boarding_bean = BeanFactory::getBean($this->parent_type, $this->parent_id);
             $onboarding_status = new OnboardingStatus();
-            $onboarding_status->closeIfActivitiesAreHeld($this);
+            $onboarding_status->closeIfActivitiesAreHeld($boarding_bean);
         }
         return $id;
     }
-
     public function get_summary_text()
     {
         return "$this->name";
