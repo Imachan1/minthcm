@@ -2208,13 +2208,15 @@ function generateUserPasswordHash($user_name) {
    return User::getPasswordHash($user_name);
 }
 
-function create_unique_past_date($table, $field_name)
+function create_unique_past_date_from_now($assigned_user_id, $table, $field_name)
 {
-   global $db;
+   global $db, $timedate;
    $counter = 0;
+   $now = $timedate->getNow(true);
    while (true) {
-      $date = create_past_date();
-      $sql = "SELECT count(id) FROM {$table} WHERE {$field_name} = '{$date}' AND deleted = 0";
+      $now->modify('-1 day');
+      $date = $timedate->asDbDate($now);
+      $sql = "SELECT count(id) FROM {$table} WHERE {$field_name} = '{$date}' AND assigned_user_id = '{$assigned_user_id}' AND deleted = 0";
       if ($counter == 100 || (!isWeekend($date) && !$db->getOne($sql))) {
          break;
       }
@@ -2223,16 +2225,18 @@ function create_unique_past_date($table, $field_name)
    return $date;
 }
 
-function create_unique_date($table, $field_name)
+function create_unique_date_from_now($assigned_user_id, $table, $field_name)
 {
-   global $db;
+   global $db, $timedate;
    $counter = 0;
+   $now = $timedate->getNow(true);
    while (true) {
-      $date = create_date();
-      $sql = "SELECT count(id) FROM {$table} WHERE {$field_name} = '{$date}' AND deleted = 0";
+      $date = $timedate->asDbDate($now);
+      $sql = "SELECT count(id) FROM {$table} WHERE {$field_name} = '{$date}' AND assigned_user_id = '{$assigned_user_id}' AND deleted = 0";
       if ($counter == 100 || (!isWeekend($date) && !$db->getOne($sql))) {
          break;
       }
+      $now->modify('+1 day');
       $counter++;
    }
    return $date;

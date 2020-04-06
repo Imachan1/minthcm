@@ -76,7 +76,6 @@ foreach ($sugar_demodata as $module => $records) {
                         if (isset($value['related_record'])) {
                             $GLOBALS['disable_date_format'] = true;
                             $rel_record = BeanFactory::getBean($value['related_record']['module'], $value['related_record']['id']);
-                            $GLOBALS['disable_date_format'] = false;
                             $arguments['field'] = $rel_record->$field ?? '';
                         } elseif (!empty($bean->$field)) {
                             $arguments['field'] = $bean->$field;
