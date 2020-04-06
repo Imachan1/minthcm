@@ -96,4 +96,5 @@ $mod_strings = array(
     'LBL_ORGANIZATIONALUNITS' => 'Organizational Units',
     'LBL_ORGANIZATIONALUNIT_NAME' => 'Organizational Unit',
     'LBL_ORGANIZATIONALUNIT_ID' => 'Organizational Unit (ID)',
+    'LBL_RELATIONSHIP_TRAININGS_NAME' => 'Trainings',
 );

@@ -226,6 +226,15 @@ $dictionary['OnboardingOffboardingElements'] = array(
             'dbType' => 'id',
             'vname' => 'LBL_ORGANIZATIONALUNIT_ID',
         ),
+        "trainings" => array(
+            'name' => 'trainings',
+            'type' => 'link',
+            'relationship' => 'onboardingoffboardingelements_trainings',
+            'source' => 'non-db',
+            'module' => 'Trainings',
+            'bean_name' => 'Trainings',
+            'vname' => 'LBL_RELATIONSHIP_TRAININGS_NAME',
+        ),
     ),
     'relationships' => array(
         "users_onboardingoffboardingelements" => array(
@@ -245,7 +254,7 @@ $dictionary['OnboardingOffboardingElements'] = array(
             'rhs_table' => 'onboardingoffboardingelements',
             'rhs_key' => 'organizationalunit_id',
             'relationship_type' => 'one-to-many',
-         ),
+        ),
     ),
     'optimistic_locking' => true,
     'unified_search' => true,
