@@ -114,3 +114,15 @@ foreach ($sugar_demodata_relations as $module => $relations) {
         }
     }
 }
+
+$ws_ids = [];
+foreach ($sugar_demodata['WorkSchedules'] as $ws) {
+    if (!empty($ws['status']) && $ws['status'] == 'closed') {
+        $ws_ids[] = $ws['id'];
+    }
+}
+if (!empty($ws_ids)) {
+    global $db;
+    $sql = "UPDATE workschedules SET status = 'closed' WHERE id IN ('" . implode("','", $ws_ids) . "')";
+    $db->query($sql);
+}
