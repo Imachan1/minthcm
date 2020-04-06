@@ -50,13 +50,13 @@ class CompetenciesController extends SugarController
         parent::action_save();
         if (isset($_REQUEST['duplicateSave']) && $_REQUEST['duplicateSave'] === "true") {
             $template_id = $_REQUEST['duplicateId'];
-            $duplicate_bean = BeanFactory::getBean(static::template, $template_id);
+            $duplicate_bean = BeanFactory::getBean(static::TEMPLATE, $template_id);
             $duplicate_bean->load_relationship('knowledge');
             $duplicate_bean->load_relationship('skills');
             $duplicate_bean->load_relationship('attitudes');
             $duplicate_bean->load_relationship('competencyratings');
-            $this_bean = BeanFactory::getBean(static::template, $this->bean->id);
-            $duplicate_bean = BeanFactory::getBean(static::template, $template_id);
+            $this_bean = BeanFactory::getBean(static::TEMPLATE, $this->bean->id);
+            $duplicate_bean = BeanFactory::getBean(static::TEMPLATE, $template_id);
             $this_bean->load_relationship('knowledge');
             $this_bean->load_relationship('skills');
             $this_bean->load_relationship('attitudes');

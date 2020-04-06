@@ -52,20 +52,4 @@ class OffboardingTemplates extends OnboardingTemplates
     public $object_name = 'OffboardingTemplates';
     public $table_name = 'offboardingtemplates';
 
-    public function save($check_notify = false)
-    {
-        parent::save($check_notify);
-        if (isset($_REQUEST['duplicateSave']) && $_REQUEST['duplicateSave'] === "true") {
-            $base_offboarding_template_id = $_REQUEST['duplicateId'];
-            $duplicate_bean = BeanFactory::getBean('OffboardingTemplates', $base_offboarding_template_id);
-            $duplicate_bean->load_relationship('elements');
-            $this_bean = BeanFactory::getBean('OffboardingTemplates', $this->id);
-            $this_bean->load_relationship('elements');
-            $linked_beans = $duplicate_bean->get_linked_beans('elements');
-            foreach ($linked_beans as $linked_bean) {
-                $this_bean->elements->add($linked_bean);
-            }
-        }
-    }
-
 }
