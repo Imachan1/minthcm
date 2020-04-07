@@ -188,8 +188,8 @@ $dictionary['Positions'] = array(
             'side' => 'right',
             'vname' => 'LBL_POSITIONS_EMPLOYEES',
         ),
-        'onboardingstemplates' => array(
-            'name' => 'onboardingstemplates',
+        'onboardingtemplates' => array(
+            'name' => 'onboardingtemplates',
             'type' => 'link',
             'relationship' => 'onboardingtemplates_positions',
             'source' => 'non-db',
@@ -218,8 +218,8 @@ $dictionary['Positions'] = array(
             'rname' => 'id',
             'dbType' => 'id',
         ),
-        'offboardingstemplates' => array(
-            'name' => 'offboardingstemplates',
+        'offboardingtemplates' => array(
+            'name' => 'offboardingtemplates',
             'type' => 'link',
             'relationship' => 'offboardingtemplates_positions',
             'source' => 'non-db',
