@@ -2176,7 +2176,7 @@ function create_date($year = null, $mnth = null, $day = null) {
    global $timedate;
    $now = $timedate->getNow();
    if ( $day == null )
-      $day = $now->day + mt_rand(0, 30);
+      $day = $now->day + mt_rand(0, 100);
    return $timedate->asDbDate($now->get_day_begin($day, $mnth, $year));
 }
 
@@ -2200,12 +2200,50 @@ function create_time($hr = null, $min = null, $sec = null) {
 function create_past_date() {
    global $timedate;
    $now = $timedate->getNow(true);
-   $day = $now->day - mt_rand(1, 30);
+   $day = $now->day - mt_rand(1, 100);
    return $timedate->asDbDate($now->get_day_begin($day));
 }
 
 function generateUserPasswordHash($user_name) {
    return User::getPasswordHash($user_name);
+}
+
+function create_unique_past_date_from_now($assigned_user_id, $table, $field_name)
+{
+   global $db, $timedate;
+   $counter = 0;
+   $now = $timedate->getNow(true);
+   while (true) {
+      $now->modify('-1 day');
+      $date = $timedate->asDbDate($now);
+      $sql = "SELECT count(id) FROM {$table} WHERE {$field_name} = '{$date}' AND assigned_user_id = '{$assigned_user_id}' AND deleted = 0";
+      if ($counter == 100 || (!isWeekend($date) && !$db->getOne($sql))) {
+         break;
+      }
+      $counter++;
+   }
+   return $date;
+}
+
+function create_unique_date_from_now($assigned_user_id, $table, $field_name)
+{
+   global $db, $timedate;
+   $counter = 0;
+   $now = $timedate->getNow(true);
+   while (true) {
+      $date = $timedate->asDbDate($now);
+      $sql = "SELECT count(id) FROM {$table} WHERE {$field_name} = '{$date}' AND assigned_user_id = '{$assigned_user_id}' AND deleted = 0";
+      if ($counter == 100 || (!isWeekend($date) && !$db->getOne($sql))) {
+         break;
+      }
+      $now->modify('+1 day');
+      $counter++;
+   }
+   return $date;
+}
+
+function isWeekend($date) {
+   return (date('N', strtotime($date)) >= 6);
 }
 
 /**

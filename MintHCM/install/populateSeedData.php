@@ -76,7 +76,6 @@ foreach ($sugar_demodata as $module => $records) {
                         if (isset($value['related_record'])) {
                             $GLOBALS['disable_date_format'] = true;
                             $rel_record = BeanFactory::getBean($value['related_record']['module'], $value['related_record']['id']);
-                            $GLOBALS['disable_date_format'] = false;
                             $arguments['field'] = $rel_record->$field ?? '';
                         } elseif (!empty($bean->$field)) {
                             $arguments['field'] = $bean->$field;
@@ -114,4 +113,16 @@ foreach ($sugar_demodata_relations as $module => $relations) {
             }
         }
     }
+}
+
+$ws_ids = [];
+foreach ($sugar_demodata['WorkSchedules'] as $ws) {
+    if (!empty($ws['status']) && $ws['status'] == 'closed') {
+        $ws_ids[] = $ws['id'];
+    }
+}
+if (!empty($ws_ids)) {
+    global $db;
+    $sql = "UPDATE workschedules SET status = 'closed' WHERE id IN ('" . implode("','", $ws_ids) . "')";
+    $db->query($sql);
 }
