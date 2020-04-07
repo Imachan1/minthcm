@@ -50,7 +50,7 @@ class OnboardingStatus
         $sql = "SELECT id, status FROM tasks WHERE parent_id='{$boarding_id}'";
         $result = $db->query($sql);
         while (($row = $db->fetchByAssoc($result)) != null) {
-            if ($row['status'] != 'Completed') {
+            if ($row['status'] != 'Completed' && $row['status'] != 'Deferred') {
                 return false;
             }
         }
@@ -59,7 +59,7 @@ class OnboardingStatus
 
     protected function close()
     {
-        $this->focus->status = 'Held';
+        $this->focus->status = 'held';
         $this->focus->save();
     }
 }

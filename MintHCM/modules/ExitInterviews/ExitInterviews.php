@@ -82,7 +82,7 @@ class ExitInterviews extends Basic
         $status_before = $this->fetched_row['status'];
         $id = parent::save($check_notify);
         if (!empty($this->offboarding_id) && $this->status != $status_before
-            && $this->status == 'Held') {
+            && $this->status == 'held') {
             $boarding_bean = BeanFactory::getBean('Offboardings', $this->offboarding_id);
             $onboarding_status = new OnboardingStatus();
             $onboarding_status->closeIfActivitiesAreHeld($boarding_bean);
