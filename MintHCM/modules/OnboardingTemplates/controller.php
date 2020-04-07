@@ -50,9 +50,9 @@ class OnboardingTemplatesController extends SugarController
         parent::action_save();
         if (isset($_REQUEST['duplicateSave']) && $_REQUEST['duplicateSave'] === "true") {
             $template_id = $_REQUEST['duplicateId'];
-            $duplicate_bean = BeanFactory::getBean(static::template, $template_id);
+            $duplicate_bean = BeanFactory::getBean(static::TEMPLATE, $template_id);
             $duplicate_bean->load_relationship('elements');
-            $this_bean = BeanFactory::getBean(static::template, $this->bean->id);
+            $this_bean = BeanFactory::getBean(static::TEMPLATE, $this->bean->id);
             $this_bean->load_relationship('elements');
             $linked_beans = $duplicate_bean->get_linked_beans('elements');
             foreach ($linked_beans as $linked_bean) {
