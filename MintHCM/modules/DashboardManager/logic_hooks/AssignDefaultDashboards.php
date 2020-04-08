@@ -48,13 +48,20 @@ class AssignDefaultDashboards
 
     public function before_relationship_delete($bean, $event, $arguments)
     {
-        if ($arguments['related_module'] === 'Users') {
-            $arguments['related_bean']->resetPreferences('Home');
-            global $current_user;
-            if ($arguments['related_bean']->id == $current_user->id) {
-                $_COOKIE[$current_user->id . '_activePage'] = '0';
-                setcookie($current_user->id . '_activePage', '0', 3000, null, null, false, true);
+        global $current_user;
+        if (
+            $arguments['related_module'] === 'Users'
+            && !empty($arguments['related_id'])
+        ) {
+            $user = BeanFactory::getBean($arguments['related_module'], $arguments['related_id']);
+            if ($user instanceof User && $user->id == $arguments['related_id']) {
+                $user->resetPreferences('Home');
+                if ($user->id == $current_user->id) {
+                    $_COOKIE[$current_user->id . '_activePage'] = '0';
+                    setcookie($current_user->id . '_activePage', '0', 3000, null, null, false, true);
+                }
             }
+
         }
     }
 
