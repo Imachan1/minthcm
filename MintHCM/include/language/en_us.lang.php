@@ -1836,6 +1836,7 @@ $app_strings = array(
    'LBL_DASHLET_CONFIGURE_FILTERS' => 'Filters',
    'LBL_DASHLET_CONFIGURE_MY_ITEMS_ONLY' => 'Only My Items',
    'LBL_DASHLET_CONFIGURE_MY_FAVORITES' => 'Only My Favorites',
+   'LBL_DASHLET_CONFIGURE_MY_SUBORDINATES' => 'Only My Subordinates Items',
    'LBL_DASHLET_CONFIGURE_TITLE' => 'Title',
    'LBL_DASHLET_CONFIGURE_DISPLAY_ROWS' => 'Display Rows',
    // MySugar status strings
@@ -3753,7 +3754,7 @@ $app_list_strings['workschedule_type_list'] = [
 
 $app_list_strings['workschedules_status_dom'] = array(
    'planned' => 'Planned',
-   'worked' => 'Worked',
+   'worked' => 'In progress',
    'closed' => 'Closed',
 );
 
@@ -4143,3 +4144,41 @@ $app_strings['LBL_RECRUITMENT'] = 'Recruitment';
 $app_strings['LBL_TIME_TRACKING'] = 'Time Tracking';
 $app_strings['LBL_ACTIVITIES'] = 'Activities';
 $app_strings['LBL_SALARYRANGE_SUBPANEL_TITLE'] = 'Salary Ranges';
+
+$app_strings['LBL_GROUPTAB6_1574082086'] = 'Employer Branding';
+$app_strings['LBL_NAV_RECRUITMENT_EB'] = 'HR';
+$app_strings['LBL_GROUPTAB5_1574081775'] = 'Onboarding / Offboarding';
+$app_strings['LBL_GROUPTAB7_1574082257'] = 'Employee';
+$app_strings['LBL_NAV_TIME_TRACKING'] = 'Time Management';
+$app_strings['LBL_NAV_RECRUITMENT_EB'] = 'HR';
+$app_strings['LBL_GROUPTAB4_1574081420'] = 'Definitions';
+
+$app_strings['LBL_ABSENCES_IN_OFFICE_DASHLET'] = 'Absences in Office';
+$app_strings['LBL_MY_DAILY_WORK_SCHEDULE_DASHLET'] = 'My Daily Work Schedule';
+$app_strings['LBL_MY_COMPETENCIES_DASHLET'] = 'My Competencies';
+$app_strings['LBL_RECRUITMENTS_CANDIDATES_FOR_THE_SOURCE_AY_DASHLET'] = 'Recruitment - Candidates for source / aY';
+$app_strings['LBL_RECRUITMENTS_CANDIDATES_FOR_THE_SOURCE_PY_DASHLET'] = 'Recruitment - Candidates for source / pY';
+$app_strings['LBL_ONBOARDINGS_DASHLET'] = 'Onboardings';
+$app_strings['LBL_OFFBOARDINGS_DASHLET'] = 'Offboardings';
+$app_strings['LBL_TRAININGS_DASHLET'] = 'Trainings';
+$app_strings['LBL_LEAVE_FOR_APPROVAL_DASHLET'] = 'Leave for approval';
+$app_strings['LBL_MY_RATINGS_DASHLET'] = 'My ratings';
+$app_strings['LBL_MY_TEAMS_APPLICATIONS_DASHLET'] = 'My team\'s applications';
+$app_strings['LBL_MY_TEAMS_IDEAS_DASHLET'] = 'My team\'s ideas';
+$app_strings['LBL_MY_GOALS_DASHLET'] = 'My Goals';
+$app_strings['LBL_MY_UNCONFIRMED_WORK_SCHEDULES_DASHLET'] = 'My Unconfirmed Work Schedules';
+$app_strings['LBL_MY_MEETINGS_DASHLET'] = 'My Meetings';
+$app_strings['LBL_UNCONFIRMED_WORK_SCHEDULES_PREVIOUS_MONTH_DASHLET'] = 'Unconfirmed Work Schedules - Previous Month';
+$app_strings['LBL_UNCONFIRMED_WORK_SCHEDULES_LAST_THIRTY_DAYS_DASHLET'] = 'Unconfirmed Work Schedules - Last 30 days';
+$app_strings['LBL_EXPIRING_CONTRACTS_DASHLET'] = 'Expiring contracts';
+$app_strings['LBL_PENDING_CONTRACTS_DASHLET'] = 'Pending contracts';
+$app_strings['LBL_DELEGATIONS_PREVIOUS_MONTH_DASHLET'] = 'Delegations - previous month';
+$app_strings['LBL_DELEGATIONS_THIS_MONTH_DASHLET'] = 'Delegations - this month';
+$app_strings['LBL_TODAYS_WORK_SCHEDULE_DASHLET'] = 'Today\'s Work Schedule';
+$app_strings['LBL_MY_TASKS_DASHLET'] = 'My Tasks';
+$app_strings['LBL_OFFBOARDING_TEMPLATES_DASHLET'] = 'Offboarding Templates';
+$app_strings['LBL_CONTRACTS_DASHLET'] = 'Contracts';
+$app_strings['LBL_TERMS_OF_EMPLOYMENT_DASHLET'] = 'Terms Of Employment';
+$app_strings['LBL_MY_CALLS_DASHLET'] = 'My Calls';
+$app_strings['LBL_RECRUITMENTS_DASHLET'] = 'Recruitments';
+$app_strings['LBL_CANDIDATURES_DASHLET'] = 'Candidatures';

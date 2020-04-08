@@ -122,6 +122,14 @@ $dictionary["Employee"]["fields"]["appraisals"] = array(
     'side' => 'right',
     'vname' => 'LBL_APPRAISALS',
 );
+$dictionary["Employee"]["fields"]["evaluations"] = array(
+    'name' => 'evaluations',
+    'type' => 'link',
+    'relationship' => 'appraisals_employees_evaluations',
+    'source' => 'non-db',
+    'side' => 'right',
+    'vname' => 'LBL_EVALUATIONS',
+);
 $dictionary["Employee"]["fields"]["roles"] = array(
     'name' => 'roles',
     'type' => 'link',
