@@ -104,7 +104,7 @@ $silentInstall = true;
 
 //Todo, check if there is an instance where goto is not set, but a silent install is in place
 if (isset($_REQUEST['goto']) && $_REQUEST['goto'] != 'SilentInstall') {
-    if(!isset($_REQUEST['skip_minify'])){
+    if (!isset($_REQUEST['skip_minify'])) {
         require_once('jssource/minify.php');
     }
     $silentInstall = false;
@@ -754,7 +754,11 @@ EOQ;
             }
 
             if (!$si_errors) {
-                $the_file = 'performSetup.php';
+                $the_files = [];
+                $the_files[] = 'performSetupStep1.php';
+                $the_files[] = 'performSetupStep2.php';
+                $the_files[] = 'performSetupStep3.php';
+                $the_files[] = 'performSetup.php';
             }
             require_once('jssource/minify.php');
             //since this is a SilentInstall we still need to make sure that
@@ -801,14 +805,17 @@ EOQ;
             break;
     }
 }
+if (!isset($the_files) || !is_array($the_files)) {
+    $the_files = [$the_file];
+}
+foreach ($the_files as $the_file) {
+    $the_file = clean_string($the_file, 'FILE');
 
-
-$the_file = clean_string($the_file, 'FILE');
-
-installerHook('pre_installFileRequire', array('the_file' => $the_file));
+    installerHook('pre_installFileRequire', array('the_file' => $the_file));
 
 // change to require to get a good file load error message if the file is not available.
 
-require('install/'.$the_file);
+    require('install/'.$the_file);
 
-installerHook('post_installFileRequire', array('the_file' => $the_file));
+    installerHook('post_installFileRequire', array('the_file' => $the_file));
+}
