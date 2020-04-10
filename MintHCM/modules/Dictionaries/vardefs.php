@@ -72,19 +72,15 @@ $dictionary['Dictionaries'] = array(
                 'readonly' => true,
             ),
         ),
-        'module' => array(
-            'name' => 'module',
+        'list_module' => array(
+            'name' => 'list_module',
             'vname' => 'LBL_MODULE',
             'type' => 'enum',
             'massupdate' => false,
             'audited' => true,
             'len' => '100',
             'reportable' => true,
-            'function' => 'getModuleList',
-            'vt_calculated' => '$list_type',
-            'related_fields' => array(
-                'list_type',
-            ),
+            'function' => array('name' => 'getModuleList', 'include' => 'include/utils/getModuleList.php'),
         ),
     ),
     'relationships' => array(

@@ -75,7 +75,7 @@ $searchdefs[$module_name] = array(
                 'type' => 'enum',
             ),
             array(
-                'name' => 'module',
+                'name' => 'list_module',
                 'label' => 'LBL_MODULE',
                 'type' => 'enum',
             ),

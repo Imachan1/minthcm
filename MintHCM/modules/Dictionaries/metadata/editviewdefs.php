@@ -67,11 +67,11 @@ $viewdefs[$module_name] = array(
         'panels' => array(
             'default' => array(
                 array(
-                    'list_type',
-                    'module',
+                    'name',
+                    'is_active',
                 ),
                 array(
-                    'is_active',
+                    'list_type',
                     '',
                 ),
             ),

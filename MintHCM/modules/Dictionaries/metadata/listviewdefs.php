@@ -55,8 +55,8 @@ $listViewDefs[$module_name] = array(
         'width' => '10%',
         'default' => true,
     ),
-    'MODULE' => array(
-        'type' => 'enum',
+    'LIST_MODULE' => array(
+        'type' => 'readonly',
         'label' => 'LBL_MODULE',
         'width' => '10%',
         'default' => true,

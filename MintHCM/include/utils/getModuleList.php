@@ -2,12 +2,15 @@
 
 function getModuleList()
 {
-    global $moduleList;
+    static $modules = null;
+    if (!$modules) {
+        global $moduleList;
 
-    $modules = array();
-    foreach ($moduleList as $module) {
-        $modules[$module] = $module;
+        $modules = array();
+        $modules[''] = '';
+        foreach ($moduleList as $module) {
+            $modules[$module] = $module;
+        }
     }
-
     return $modules;
 }

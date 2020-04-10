@@ -129,7 +129,7 @@ $admin_option_defs['Administration']['configure_group_tabs'] = ['ConfigureTabs',
 
 $admin_option_defs['any']['dropdowneditor'] = ['Dropdown', 'LBL_DROPDOWN_EDITOR', 'DESC_DROPDOWN_EDITOR', './index.php?module=ModuleBuilder&action=index&type=dropdowns', 'dropdown-editor'];
 
-$admin_option_defs['Administration']['dictionaries'] = ['Dictionaries', 'LBL_DICTIONARIES', 'LBL_DICTIONARIES_DESC', 'index.php?module=DashboardManager', 'fa-th-large'];
+$admin_option_defs['Administration']['dictionaries'] = ['Dictionaries', 'LBL_DICTIONARIES', 'LBL_DICTIONARIES_DESC', 'index.php?module=Dictionaries', 'dropdown-editor'];
 //$admin_option_defs['migrate_custom_fields']= array('MigrateFields','LBL_EXTERNAL_DEV_TITLE','LBL_EXTERNAL_DEV_DESC','./index.php?module=Administration&action=Development');
 
 $admin_group_header[] = ['LBL_STUDIO_TITLE', '', false, $admin_option_defs, 'LBL_TOOLS_DESC'];

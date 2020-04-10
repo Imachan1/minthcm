@@ -72,4 +72,20 @@ class Dictionaries extends Basic
         }
     }
 
+    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set')
+    {
+        global $current_user;
+        if ($current_user->isAdmin()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function save($check_notify = false)
+    {
+        $this->list_module = $this->link_type;
+        $id = parent::save($check_notify);
+        return $id;
+    }
+
 }

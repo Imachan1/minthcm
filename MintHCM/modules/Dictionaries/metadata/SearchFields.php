@@ -50,7 +50,7 @@ $module_name = 'Dictionaries';
 $searchFields[$module_name] = array(
     'name' => array('query_type' => 'default'),
     'list_type' => array('query_type' => 'default'),
-    'module' => array('query_type' => 'default'),
+    'list_module' => array('query_type' => 'default'),
     'range_date_entered' => array('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
     'start_range_date_entered' => array(
         'query_type' => 'default',
