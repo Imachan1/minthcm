@@ -4096,7 +4096,11 @@ $app_list_strings['idea_status_list'] = array(
    'rejected' => 'Rejected',
 );
 
-
+$app_list_strings['list_type_list'] = array(
+   '' => '',
+   'Meetings' => 'Meetings - Type',
+   'WorkSchedules' => 'Work Schedules - Category',
+);
 
 $app_list_strings['reservations_parent_type_list'] = array(
    'Calls' => 'Calls',

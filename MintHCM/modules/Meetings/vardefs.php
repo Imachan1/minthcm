@@ -564,9 +564,9 @@ $dictionary['Meeting'] = array(
          'type' => 'enum',
          'len' => 255,
          'comment' => 'Meeting type',
-         'options' => 'meetings_type_dom',
          'massupdate' => false,
          'audited' => true,
+         'function' => 'getMeetingTypes',
       ),
       'repeat_pane' =>array(
          'name' => 'repeat_pane',
