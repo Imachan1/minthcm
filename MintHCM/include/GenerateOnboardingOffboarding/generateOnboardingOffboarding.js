@@ -7,6 +7,7 @@ generateOnboardingOffboarding = {
    relate_field_target_module: 'Employees',
    tpl: 'themes/SuiteP/tpls/generateOnboardingOffboarding.tpl',
    popup: null,
+   hide_dropdown = false,
    init: function () {
       viewTools.GUI.fieldErrorUnmark();
       if (this.popup) {
@@ -114,6 +115,7 @@ generateOnboardingOffboarding = {
          form_name: this.form_name,
          relate_field_target_module: this.relate_field_target_module,
          parent_type_options: this.getParentTypeOptions(),
+         hide_dropdown: this.hideDropdown(),
       }, this.getPrefillData())) + '</div>';
    },
    getPrefillData: function () {
@@ -139,6 +141,19 @@ generateOnboardingOffboarding = {
          parent_name: parent_name
       }
    },
+   hideDropdown: function () {
+      let hide_dropdown = false;
+      const module = $('input[name=module]:not(.form-control)').val();
+      switch (module) {
+         case 'Onboardings':
+         case 'Offboardings':
+         case 'OffboardingTemplates':
+         case 'OnboardingTemplates':
+            hide_dropdown = true;
+            break;
+      }
+      return hide_dropdown;
+   },
    getParentTypeOptions: function () {
       let selected = '';
       const module = $('input[name=module]:not(.form-control)').val();
@@ -158,7 +173,8 @@ generateOnboardingOffboarding = {
       sqs_objects = [];
       let relate_field_name = this.relate_field_name + "_name";
       let relate_field_id = this.relate_field_name + "_id";
-      sqs_objects[this.form_name + "_" + this.relate_field_name + "_name"] = { form: this.form_name, method: "query", modules: [this.relate_field_target_module], group: "and", field_list: ["name", "id"], populate_list: [relate_field_name, relate_field_id], conditions: [{ "name": "name", "op": "like_custom", "end": "%", "value": "" }], required_list: [relate_field_id], order: "name", limit: "30", no_match_text: "Nie pasuje" };
+      let hide_dropdown = this.hide_dropdown;
+      sqs_objects[this.form_name + "_" + this.relate_field_name + "_name"] = { form: this.form_name, method: "query", modules: [this.relate_field_target_module], group: "and", field_list: ["name", "id"], populate_list: [relate_field_name, relate_field_id, hide_dropdown], conditions: [{ "name": "name", "op": "like_custom", "end": "%", "value": "" }], required_list: [relate_field_id], order: "name", limit: "30", no_match_text: "Nie pasuje" };
       sqs_objects[this.form_name + "_parent_name"] = { form: this.form_name, method: "query", modules: ["Accounts"], group: "or", field_list: ["name", "id"], populate_list: ["parent_name", "parent_id"], required_list: ["parent_id"], conditions: [{ "name": "name", "op": "like_custom", "end": "%", "value": "" }], order: "name", limit: "30", no_match_text: "Nie pasuje" };
       enableQS();
       if (typeof (changeParentQS) == 'undefined') {
@@ -193,7 +209,7 @@ generateOnboardingOffboarding = {
          }
       }
       changeParentQS("parent_name")
-   }, 
+   },
    prepareCalendar: function () {
       viewTools.api.callCustomApi({
          module: 'Home',
