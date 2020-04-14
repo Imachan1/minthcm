@@ -1018,6 +1018,14 @@ class SearchForm {
                   $field_value = $db->quote($current_user->id);
                   $operator = '=';
                }
+            } elseif(!empty($parms['my_subordinates'])){
+               if ( $parms['value'] == false ) {
+                  continue;
+               } else {
+                  global $current_user;
+                $field_value = "SELECT id FROM users WHERE reports_to_id = {$current_user->id}";
+                $operator = 'in';
+               }
             } elseif ( !empty($parms['closed_values']) && is_array($parms['closed_values']) ) {
                if ( $parms['value'] == false ) {
                   continue;
