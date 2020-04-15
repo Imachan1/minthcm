@@ -115,6 +115,7 @@ generateOnboardingOffboarding = {
          relate_field_target_module: this.relate_field_target_module,
          parent_type_options: this.getParentTypeOptions(),
          hide_dropdown: this.hideDropdown(),
+         is_employees: this.isEmployees(),
       }, this.getPrefillData())) + '</div>';
    },
    getPrefillData: function () {
@@ -152,6 +153,16 @@ generateOnboardingOffboarding = {
             break;
       }
       return hide_dropdown;
+   },
+   isEmployees: function () {
+      let is_employees = "";
+      const module = $('input[name=module]:not(.form-control)').val();
+      switch (module) {
+         case 'Employees':
+            is_employees = "true";
+            break;
+      }
+      return is_employees;
    },
    getParentTypeOptions: function () {
       let selected = '';
@@ -235,6 +246,22 @@ generateOnboardingOffboarding = {
                combo_goo_date_start.update(false);
             }
          }.bind(this)
+      });
+   },
+   getOnboardingOffboardingNameForEmployees: function (boarding, employee_id) {
+      viewTools.api.callCustomApi({
+         module: 'Positions',
+         action: 'getOnboardingOffboardingName',
+         dataPOST: {
+            boarding: boarding,
+            employee_id: employee_id
+         },
+         callback: function (data) {
+            if (data) {
+               $('#' + this.form_name + ' #parent_id').val(data['parent_id']);
+               $('#' + this.form_name + ' #parent_name').val(data['parent_name']);
+            }
+         }
       });
    }
 };
