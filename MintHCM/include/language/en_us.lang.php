@@ -2117,11 +2117,11 @@ $app_strings = array(
     'LBL_GENERATEONBOARDINGOFFBOARDING_EMPLOYEE_NAME' => 'Employee',
     'LBL_GENERATEONBOARDINGOFFBOARDING_START_DATE' => 'Start Date',
     'LBL_GENERATEONBOARDINGOFFBOARDING_SUCCESS' => 'Generation has been started',
-    'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR' => 'Generating failed',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR' => 'Generation failed',
     'LBL_GENERATEONBOARDINGOFFBOARDING_TEMPLATE' => 'Template',
     'LBL_GENERATEONBOARDINGOFFBOARDING_POPUP_TITLE' => 'Generate Onboarding/Offboarding',
     'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_SELF' => 'Employee is not system User: ',
-    'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_EMPLOYEE_MANAGER' => 'Employee does not have Manager set: ',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_EMPLOYEE_MANAGER' => 'Manager is not set for: ',
     'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_ORGANIZATIONAL_UNIT_MANAGER' => 'The following Organizational Units do not have Manager set:',
 );
 
@@ -3689,7 +3689,7 @@ $app_strings['LBL_APPRAISAL_ITEM_ERROR'] = 'This field is required';
 $app_strings['LBL_APPRAISAL_ITEM_TYPE_ERROR'] = 'The recruitment appraisal may have positions only on competence subject';
 $app_strings['LBL_CHOOSE_PLAN'] = 'You must to choose plan';
 $app_strings['LBL_PLAN_NOT_CHOOSED'] = 'Plan is not choosed';
-$app_strings['LBL_CLOSE_PLAN_CONFIRM'] = 'Are you sure you want to approve this plan? This operation can not be undone.';
+$app_strings['LBL_CLOSE_PLAN_CONFIRM'] = 'Are you sure you want to approve this plan?';
 $app_strings['ERR_CLOSE_PLAN'] = 'You cannot approve this plan "{name}", because there are gaps between spent times or his time frames do not coincide with working times';
 $app_strings['LBL_PLAN_ONE_DAY'] = 'Work Schedule must spread in one day.';
 $app_strings['LBL_DIALOG_YES'] = 'Yes';
