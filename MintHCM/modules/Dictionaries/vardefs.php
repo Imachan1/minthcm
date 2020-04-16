@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,73 +41,59 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-$viewdefs['SpentTime'] = array(
-    'DetailView' => array(
-        'templateMeta' => array(
-            'form' => array(
-                'buttons' => array(
-                    'EDIT',
-                    'DELETE',
-                ),
-                'hidden' => array(
-                    '<input type="hidden" name="current_user_is_admin" id="current_user_is_admin" value="{$CURRENT_USER_IS_ADMIN}">',
-                ),
-            ),
-            'maxColumns' => '2',
-            'widths' => array(
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-            ),
-            'includes' => array(
-                array(
-                    'file' => 'include/javascript/moment.min.js',
-                ),
+$dictionary['Dictionaries'] = array(
+    'audited' => true,
+    'activity_enabled' => false,
+    'duplicate_merge' => true,
+    'favorites' => false,
+    'table' => 'dictionaries',
+    'fields' => array(
+        'is_active' => array(
+            'name' => 'is_active',
+            'massupdate' => false,
+            'vname' => 'LBL_IS_ACTIVE',
+            'type' => 'bool',
+            'source' => 'non-db',
+            'audited' => true,
+            'reportable' => true,
+            'default' => true,
+        ),
+        'list_type' => array(
+            'required' => true,
+            'name' => 'list_type',
+            'vname' => 'LBL_LIST_TYPE',
+            'type' => 'enum',
+            'massupdate' => true,
+            'audited' => true,
+            'reportable' => true,
+            'options' => 'list_type_list',
+            'default' => '',
+            'displayParams' => array(
+                'readonly' => true,
             ),
         ),
-        'panels' => array(
-            'default' => array(
-                array(
-                    'name',
-                ),
-                array(
-                    'employee_name',
-                    'assigned_user_name',
-                ),
-                array(
-                    'spent_time',
-                    '',
-                ),
-                array(
-                    'date_start',
-                    'date_end',
-                ),
-                array(
-                    'workschedule_name',
-                    'category',
-                ),
-                array(
-                    'description',
-                ),
-                array(
-                    array(
-                        'name' => 'date_entered',
-                        'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
-                        'label' => 'LBL_DATE_ENTERED',
-                    ),
-                    array(
-                        'name' => 'date_modified',
-                        'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
-                        'label' => 'LBL_DATE_MODIFIED',
-                    ),
-                ),
-            ),
+        'list_module' => array(
+            'name' => 'list_module',
+            'vname' => 'LBL_MODULE',
+            'type' => 'enum',
+            'massupdate' => false,
+            'audited' => true,
+            'len' => '100',
+            'reportable' => true,
+            //'function' => array('name' => 'getModuleList', 'include' => 'include/utils/getModuleList.php'),
         ),
     ),
+    'relationships' => array(
+
+    ),
+    'optimistic_locking' => true,
+    'unified_search' => true,
+);
+if (!class_exists('VardefManager')) {
+    require_once 'include/SugarObjects/VardefManager.php';
+}
+VardefManager::createVardef('Dictionaries', 'Dictionaries',
+    array(
+        'basic',
+    )
 );

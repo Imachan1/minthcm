@@ -42,73 +42,33 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
-$viewdefs['SpentTime'] = array(
-    'DetailView' => array(
-        'templateMeta' => array(
-            'form' => array(
-                'buttons' => array(
-                    'EDIT',
-                    'DELETE',
-                ),
-                'hidden' => array(
-                    '<input type="hidden" name="current_user_is_admin" id="current_user_is_admin" value="{$CURRENT_USER_IS_ADMIN}">',
-                ),
-            ),
-            'maxColumns' => '2',
-            'widths' => array(
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-            ),
-            'includes' => array(
-                array(
-                    'file' => 'include/javascript/moment.min.js',
-                ),
-            ),
-        ),
-        'panels' => array(
-            'default' => array(
-                array(
-                    'name',
-                ),
-                array(
-                    'employee_name',
-                    'assigned_user_name',
-                ),
-                array(
-                    'spent_time',
-                    '',
-                ),
-                array(
-                    'date_start',
-                    'date_end',
-                ),
-                array(
-                    'workschedule_name',
-                    'category',
-                ),
-                array(
-                    'description',
-                ),
-                array(
-                    array(
-                        'name' => 'date_entered',
-                        'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
-                        'label' => 'LBL_DATE_ENTERED',
-                    ),
-                    array(
-                        'name' => 'date_modified',
-                        'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
-                        'label' => 'LBL_DATE_MODIFIED',
-                    ),
-                ),
-            ),
-        ),
-    ),
-);
+global $mod_strings, $app_strings, $sugar_config;
+$module_name = "Dictionaries";
+if (ACLController::checkAccess($module_name, 'edit', true)) {
+    $module_menu[] = array(
+        'index.php?module=' . $module_name . '&action=EditView&return_module=' . $module_name . '&return_action=DetailView',
+        $mod_strings['LNK_NEW_RECORD'],
+        'Add',
+        $module_name,
+    );
+}
+if (ACLController::checkAccess($module_name, 'list', true)) {
+    $module_menu[] = array(
+        'index.php?module=' . $module_name . '&action=index&return_module=' . $module_name . '&return_action=DetailView',
+        $mod_strings['LNK_LIST'],
+        'View',
+        $module_name,
+    );
+}
+if (ACLController::checkAccess($module_name, 'import', true)) {
+    $module_menu[] = array(
+        'index.php?module=Import&action=Step1&import_module=' . $module_name . '&return_module=' . $module_name . '&return_action=index',
+        $app_strings['LBL_IMPORT'],
+        'Import',
+        $module_name,
+    );
+}

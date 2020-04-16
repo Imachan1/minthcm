@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,73 +41,42 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-$viewdefs['SpentTime'] = array(
-    'DetailView' => array(
-        'templateMeta' => array(
-            'form' => array(
-                'buttons' => array(
-                    'EDIT',
-                    'DELETE',
-                ),
-                'hidden' => array(
-                    '<input type="hidden" name="current_user_is_admin" id="current_user_is_admin" value="{$CURRENT_USER_IS_ADMIN}">',
-                ),
-            ),
-            'maxColumns' => '2',
-            'widths' => array(
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-            ),
-            'includes' => array(
-                array(
-                    'file' => 'include/javascript/moment.min.js',
-                ),
-            ),
-        ),
-        'panels' => array(
-            'default' => array(
-                array(
-                    'name',
-                ),
-                array(
-                    'employee_name',
-                    'assigned_user_name',
-                ),
-                array(
-                    'spent_time',
-                    '',
-                ),
-                array(
-                    'date_start',
-                    'date_end',
-                ),
-                array(
-                    'workschedule_name',
-                    'category',
-                ),
-                array(
-                    'description',
-                ),
-                array(
-                    array(
-                        'name' => 'date_entered',
-                        'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
-                        'label' => 'LBL_DATE_ENTERED',
-                    ),
-                    array(
-                        'name' => 'date_modified',
-                        'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
-                        'label' => 'LBL_DATE_MODIFIED',
-                    ),
-                ),
-            ),
-        ),
+$module_name = 'Dictionaries';
+$listViewDefs[$module_name] = array(
+    'NAME' => array(
+        'width' => '32%',
+        'label' => 'LBL_NAME',
+        'default' => true,
+        'link' => true,
+    ),
+    'LIST_TYPE' => array(
+        'type' => 'enum',
+        'label' => 'LBL_LIST_TYPE',
+        'width' => '10%',
+        'default' => true,
+    ),
+    'LIST_MODULE' => array(
+        'type' => 'readonly',
+        'label' => 'LBL_MODULE',
+        'width' => '10%',
+        'default' => true,
+    ),
+    'IS_ACTIVE' => array(
+        'type' => 'bool',
+        'label' => 'LBL_IS_ACTIVE',
+        'width' => '10%',
+        'default' => true,
+    ),
+    'DATE_MODIFIED' => array(
+        'type' => 'datetime',
+        'label' => 'LBL_DATE_MODIFIED',
+        'width' => '10%',
+        'default' => false,
+    ),
+    'DATE_ENTERED' => array(
+        'type' => 'datetime',
+        'label' => 'LBL_DATE_ENTERED',
+        'width' => '10%',
+        'default' => false,
     ),
 );

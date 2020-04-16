@@ -42,73 +42,50 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+class Dictionaries extends Basic
+{
 
-$viewdefs['SpentTime'] = array(
-    'DetailView' => array(
-        'templateMeta' => array(
-            'form' => array(
-                'buttons' => array(
-                    'EDIT',
-                    'DELETE',
-                ),
-                'hidden' => array(
-                    '<input type="hidden" name="current_user_is_admin" id="current_user_is_admin" value="{$CURRENT_USER_IS_ADMIN}">',
-                ),
-            ),
-            'maxColumns' => '2',
-            'widths' => array(
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-            ),
-            'includes' => array(
-                array(
-                    'file' => 'include/javascript/moment.min.js',
-                ),
-            ),
-        ),
-        'panels' => array(
-            'default' => array(
-                array(
-                    'name',
-                ),
-                array(
-                    'employee_name',
-                    'assigned_user_name',
-                ),
-                array(
-                    'spent_time',
-                    '',
-                ),
-                array(
-                    'date_start',
-                    'date_end',
-                ),
-                array(
-                    'workschedule_name',
-                    'category',
-                ),
-                array(
-                    'description',
-                ),
-                array(
-                    array(
-                        'name' => 'date_entered',
-                        'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
-                        'label' => 'LBL_DATE_ENTERED',
-                    ),
-                    array(
-                        'name' => 'date_modified',
-                        'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
-                        'label' => 'LBL_DATE_MODIFIED',
-                    ),
-                ),
-            ),
-        ),
-    ),
-);
+    public $new_schema = true;
+    public $module_dir = 'Dictionaries';
+    public $object_name = 'Dictionaries';
+    public $table_name = 'dictionaries';
+    public $importable = true;
+    public $id;
+    public $name;
+    public $date_entered;
+    public $date_modified;
+    public $modified_user_id;
+    public $modified_by_name;
+    public $created_by;
+    public $created_by_name;
+    public $description;
+    public $deleted;
+    public $created_by_link;
+    public $modified_user_link;
+
+    public function bean_implements($interface)
+    {
+        if ("ACL" === $interface) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set')
+    {
+        global $current_user;
+        if ($current_user->isAdmin()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function save($check_notify = false)
+    {
+        $this->list_module = $this->link_type;
+        $id = parent::save($check_notify);
+        return $id;
+    }
+
+}

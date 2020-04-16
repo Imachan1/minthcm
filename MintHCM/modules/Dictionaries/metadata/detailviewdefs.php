@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,17 +41,16 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-$viewdefs['SpentTime'] = array(
+$module_name = 'Dictionaries';
+$viewdefs[$module_name] = array(
     'DetailView' => array(
         'templateMeta' => array(
             'form' => array(
                 'buttons' => array(
                     'EDIT',
+                    'DUPLICATE',
                     'DELETE',
-                ),
-                'hidden' => array(
-                    '<input type="hidden" name="current_user_is_admin" id="current_user_is_admin" value="{$CURRENT_USER_IS_ADMIN}">',
+                    'FIND_DUPLICATES',
                 ),
             ),
             'maxColumns' => '2',
@@ -66,9 +64,15 @@ $viewdefs['SpentTime'] = array(
                     'field' => '30',
                 ),
             ),
-            'includes' => array(
-                array(
-                    'file' => 'include/javascript/moment.min.js',
+            'useTabs' => true,
+            'tabDefs' => array(
+                'DEFAULT' => array(
+                    'newTab' => true,
+                    'panelDefault' => 'expanded',
+                ),
+                'LBL_PANEL_ASSIGNMENT' => array(
+                    'newTab' => true,
+                    'panelDefault' => 'expanded',
                 ),
             ),
         ),
@@ -76,36 +80,25 @@ $viewdefs['SpentTime'] = array(
             'default' => array(
                 array(
                     'name',
+                    'is_active',
                 ),
                 array(
-                    'employee_name',
-                    'assigned_user_name',
+                    'list_type',
+                    array(
+                        'name' => 'list_module',
+                        'type' => 'readonly',
+                    ),
                 ),
-                array(
-                    'spent_time',
-                    '',
-                ),
-                array(
-                    'date_start',
-                    'date_end',
-                ),
-                array(
-                    'workschedule_name',
-                    'category',
-                ),
-                array(
-                    'description',
-                ),
+            ),
+            'LBL_PANEL_ASSIGNMENT' => array(
                 array(
                     array(
                         'name' => 'date_entered',
                         'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
-                        'label' => 'LBL_DATE_ENTERED',
                     ),
                     array(
                         'name' => 'date_modified',
                         'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
-                        'label' => 'LBL_DATE_MODIFIED',
                     ),
                 ),
             ),

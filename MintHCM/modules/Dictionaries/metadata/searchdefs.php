@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,73 +41,52 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-$viewdefs['SpentTime'] = array(
-    'DetailView' => array(
-        'templateMeta' => array(
-            'form' => array(
-                'buttons' => array(
-                    'EDIT',
-                    'DELETE',
-                ),
-                'hidden' => array(
-                    '<input type="hidden" name="current_user_is_admin" id="current_user_is_admin" value="{$CURRENT_USER_IS_ADMIN}">',
-                ),
+$module_name = 'Dictionaries';
+$searchdefs[$module_name] = array(
+    'layout' => array(
+        'basic_search' => array(
+            'name',
+            array(
+                'name' => 'is_active',
+                'label' => 'LBL_IS_ACTIVE',
+                'type' => 'bool',
             ),
-            'maxColumns' => '2',
-            'widths' => array(
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
+            array(
+                'name' => 'list_type',
+                'label' => 'LBL_LIST_TYPE',
+                'type' => 'enum',
             ),
-            'includes' => array(
-                array(
-                    'file' => 'include/javascript/moment.min.js',
-                ),
+            array(
+                'name' => 'module',
+                'label' => 'LBL_MODULE',
+                'type' => 'enum',
             ),
         ),
-        'panels' => array(
-            'default' => array(
-                array(
-                    'name',
-                ),
-                array(
-                    'employee_name',
-                    'assigned_user_name',
-                ),
-                array(
-                    'spent_time',
-                    '',
-                ),
-                array(
-                    'date_start',
-                    'date_end',
-                ),
-                array(
-                    'workschedule_name',
-                    'category',
-                ),
-                array(
-                    'description',
-                ),
-                array(
-                    array(
-                        'name' => 'date_entered',
-                        'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
-                        'label' => 'LBL_DATE_ENTERED',
-                    ),
-                    array(
-                        'name' => 'date_modified',
-                        'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
-                        'label' => 'LBL_DATE_MODIFIED',
-                    ),
-                ),
+        'advanced_search' => array(
+            'name',
+            array(
+                'name' => 'is_active',
+                'label' => 'LBL_IS_ACTIVE',
+                'type' => 'bool',
             ),
+            array(
+                'name' => 'list_type',
+                'label' => 'LBL_LIST_TYPE',
+                'type' => 'enum',
+            ),
+            array(
+                'name' => 'list_module',
+                'label' => 'LBL_MODULE',
+                'type' => 'enum',
+            ),
+        ),
+    ),
+    'templateMeta' => array(
+        'maxColumns' => '3',
+        'maxColumnsBasic' => '4',
+        'widths' => array(
+            'label' => '10',
+            'field' => '30',
         ),
     ),
 );
