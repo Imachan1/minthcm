@@ -2,7 +2,7 @@
     <b><%= APP.LBL_GENERATEONBOARDINGOFFBOARDING_TEMPLATE %>:</b>
     <div class="col-xs-12 col-sm-12 edit-view-field  yui-ac" type="parent" field="parent_name">
         <select name="parent_type" tabindex="0" id="parent_type" title="" class="vt_formulaSelector"
-            onchange="document.<%= form_name %>.parent_name.value = &quot;&quot;;document.<%= form_name %>.parent_id.value = &quot;&quot;; changeParentQS( &quot;parent_name&quot; ); checkParentType( document.<%= form_name %>.parent_type.value, document.<%= form_name %>.btn_parent_name );">
+            onchange="document.<%= form_name %>.parent_name.value = &quot;&quot;;document.<%= form_name %>.parent_id.value = &quot;&quot;; changeParentQS( &quot;parent_name&quot; ); checkParentType( document.<%= form_name %>.parent_type.value, document.<%= form_name %>.btn_parent_name ); <% if (is_employees == "true"){%>getOnboardingOffboardingNameForEmployees(document.<%= form_name %>.parent_type.value, <%= employee_id %>);<%}%>"<%= hide_dropdown %>>
             <%= parent_type_options %>
         </select>
         <input type="text" name="parent_name" id="parent_name" class="vt_formulaSelector sqsEnabled yui-ac-input" tabindex="0" size="" autocomplete="off" value="<%= parent_name %>">
