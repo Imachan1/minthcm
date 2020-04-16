@@ -80,7 +80,7 @@ $dictionary['Dictionaries'] = array(
             'audited' => true,
             'len' => '100',
             'reportable' => true,
-            'function' => array('name' => 'getModuleList', 'include' => 'include/utils/getModuleList.php'),
+            //'function' => array('name' => 'getModuleList', 'include' => 'include/utils/getModuleList.php'),
         ),
     ),
     'relationships' => array(
