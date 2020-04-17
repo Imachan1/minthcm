@@ -1459,7 +1459,7 @@ class SearchForm {
       if ( file_exists('custom/modules/' . $module . '/metadata/SearchFields.php') ) {
          require('custom/modules/' . $module . '/metadata/SearchFields.php');
       }
-      $sql = "SELECT id from users WHERE reports_to_id = {$current_user->id}";
+      $sql = "SELECT id from users WHERE reports_to_id = '{$current_user->id}'";
       if($db->getOne($sql)){
          $searchdefs[$module]['layout']['basic_search'][] = array('name' => 'my_subordinates', 'label' => 'LBL_SUBORDINATES_FILTER', 'type' => 'bool');
          $searchdefs[$module]['layout']['advanced_search'][] = array('name' => 'my_subordinates', 'label' => 'LBL_SUBORDINATES_FILTER', 'type' => 'bool');
