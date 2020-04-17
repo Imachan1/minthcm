@@ -162,7 +162,7 @@ $dictionary['Note'] = array(
   	'type'=>'function',
   	'function_class'=>'UploadFile',
   	'function_name'=>'get_upload_url',
-  	'function_params'=> array('$this'),
+  	'function_params'=> ['$this'],
   	'source'=>'function',
   	'reportable'=>false,
   	'comment' => 'Path to file (can be URL)',
@@ -178,6 +178,13 @@ $dictionary['Note'] = array(
     'reportable'=>true,
     'comment' => 'File name associated with the note (attachment)',
     'importable' => false,
+  ),
+  'filecontents' =>
+  array(
+    'name' => 'filecontents',
+    'vname' => 'LBL_FILE_CONTENTS',
+    'type' => 'varchar',
+    'source' => 'non-db',
   ),
   'parent_type'=>
   array(
