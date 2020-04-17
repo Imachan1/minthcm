@@ -7,9 +7,6 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
- *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
  * Free Software Foundation with the addition of the following permission added
@@ -35,11 +32,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
- * If the display of the logos is not reasonably feasible for technical reasons, the
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
- * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
+ * these Appropriate Legal Notices must retain the display of the "Powered by
+ * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
 /*
@@ -75,8 +71,10 @@ class NotesController extends SugarController
             $this->bean->file_mime_type = $upload_file->mime_type;
 
             $do_final_move = 1;
-        } else if (isset($_REQUEST['old_filename'])) {
-            $this->bean->filename = $_REQUEST['old_filename'];
+        } else {
+            if (isset($_REQUEST['old_filename'])) {
+                $this->bean->filename = $_REQUEST['old_filename'];
+            }
         }
 
         $check_notify = false;
@@ -89,8 +87,10 @@ class NotesController extends SugarController
 
         if ($do_final_move) {
             $upload_file->final_move($this->bean->id);
-        } else if (!empty($_REQUEST['old_id'])) {
-            $upload_file->duplicate_file($_REQUEST['old_id'], $this->bean->id, $this->bean->filename);
+        } else {
+            if (!empty($_REQUEST['old_id'])) {
+                $upload_file->duplicate_file($_REQUEST['old_id'], $this->bean->id, $this->bean->filename);
+            }
         }
     }
 
@@ -103,7 +103,5 @@ class NotesController extends SugarController
             echo $this->bean->deleteAttachment($_REQUEST['isDuplicate']) ? 'true' : 'false';
             sugar_cleanup(true);
         }
-
     }
-
 }

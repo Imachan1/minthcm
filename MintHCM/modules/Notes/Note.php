@@ -266,6 +266,22 @@ class Note extends File
         return $note_fields;
     }
 
+     /**
+     * Returns the content as string or false if there is no attachment or it
+     * couldn't be located.
+     *
+     * @return bool|string
+     */
+    public function getAttachmentContent()
+    {
+        $path = "upload://{$this->id}";
+        if (!file_exists($path)) {
+            return false;
+        }
+
+        return file_get_contents($path);
+    }
+
     public function listviewACLHelper()
     {
         $array_assign = parent::listviewACLHelper();
