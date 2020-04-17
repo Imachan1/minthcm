@@ -211,7 +211,7 @@ class GenerateOnboardingOffboarding
         global $timedate;
         $bean = BeanFactory::newBean('ExitInterviews');
         $bean->name = $element->name;
-        $bean->assigned_user_id = $element->users_id;
+        $bean->assigned_user_id = $element->user_id;
         $bean->employee_id = $this->employee_id;
         $date_start_object = new DateTime($this->date_start);
         $days_from_start = (int) $element->days_from_start;
