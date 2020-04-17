@@ -55,7 +55,6 @@ class CompetenciesController extends SugarController
             $duplicate_bean->load_relationship('skills');
             $duplicate_bean->load_relationship('attitudes');
             $this_bean = BeanFactory::getBean(static::TEMPLATE, $this->bean->id);
-            $duplicate_bean = BeanFactory::getBean(static::TEMPLATE, $template_id);
             $this_bean->load_relationship('knowledge');
             $this_bean->load_relationship('skills');
             $this_bean->load_relationship('attitudes');
