@@ -342,11 +342,11 @@ class WorkSchedules extends Basic
         $result = parent::ACLAccess($view, $is_owner);
         $user_controller = ControllerFactory::getController('Users');
         $subordinates = $user_controller::getIDOfSubordinates([$current_user->id]);
-        
+        $user_has_access = ACLAction::userHasAccess($current_user->id, $this->object_name, 'edit');
         if (in_array($view, array('edit', 'EditView', 'delete')) && $this->status == 'closed' && !$current_user->is_admin) {
             $result = false;
         }
-        if (!empty($this->assigned_user_id) && in_array($this->assigned_user_id, $subordinates)) {
+        if (!empty($this->assigned_user_id) && ($user_has_access || (in_array($this->assigned_user_id, $subordinates)))) {
             $result = true;
         }
         return $result;
