@@ -1432,6 +1432,7 @@ class SearchForm {
     * @param $module
     */
    public static function retrieveSearchDefs($module) {
+      global $current_user, $db;
       $searchdefs = array();
       $searchFields = array();
 
@@ -1458,15 +1459,18 @@ class SearchForm {
       if ( file_exists('custom/modules/' . $module . '/metadata/SearchFields.php') ) {
          require('custom/modules/' . $module . '/metadata/SearchFields.php');
       }
-      $searchdefs[$module]['layout']['basic_search'][] = array('name' => 'my_subordinates', 'label' => 'LBL_SUBORDINATES_FILTER', 'type' => 'bool');
-      $searchdefs[$module]['layout']['advanced_search'][] = array('name' => 'my_subordinates', 'label' => 'LBL_SUBORDINATES_FILTER', 'type' => 'bool');
-      $searchFields[$module]['my_subordinates'] = array(
-        'query_type' => 'default',
-        'db_field' => array('assigned_user_id'),
-        'my_subordinates' => true,
-        'vname' => 'LBL_SUBORDINATES_FILTER',
-        'type' => 'bool',
-      );
+      $sql = "SELECT id from users WHERE reports_to_id = {$current_user->id}";
+      if($db->getOne($sql)){
+         $searchdefs[$module]['layout']['basic_search'][] = array('name' => 'my_subordinates', 'label' => 'LBL_SUBORDINATES_FILTER', 'type' => 'bool');
+         $searchdefs[$module]['layout']['advanced_search'][] = array('name' => 'my_subordinates', 'label' => 'LBL_SUBORDINATES_FILTER', 'type' => 'bool');
+         $searchFields[$module]['my_subordinates'] = array(
+           'query_type' => 'default',
+           'db_field' => array('assigned_user_id'),
+           'my_subordinates' => true,
+           'vname' => 'LBL_SUBORDINATES_FILTER',
+           'type' => 'bool',
+         );
+      }
       return array( 'searchdefs' => $searchdefs, 'searchFields' => $searchFields );
    }
 

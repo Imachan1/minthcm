@@ -2123,6 +2123,7 @@ $app_strings = array(
     'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_SELF' => 'Employee is not system User: ',
     'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_EMPLOYEE_MANAGER' => 'Employee does not have Manager set: ',
     'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_ORGANIZATIONAL_UNIT_MANAGER' => 'The following Organizational Units do not have Manager set:',
+    'LBL_SUBORDINATES_FILTER' => 'Only My Subordinates',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
