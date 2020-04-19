@@ -312,7 +312,7 @@ $dictionary['SpentTime'] = array(
             'massupdate' => true,
             'reportable' => true,
             'audited' => true,
-            'function' => 'getSpentTimeCategory',
+            'function' => ['name' => 'getDictionary', 'params' => ['key' => 'SpentTime-category']],
         ),
         'workschedule_name' => array(
             'name' => 'workschedule_name',

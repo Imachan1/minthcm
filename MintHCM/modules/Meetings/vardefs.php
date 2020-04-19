@@ -566,7 +566,7 @@ $dictionary['Meeting'] = array(
          'comment' => 'Meeting type',
          'massupdate' => false,
          'audited' => true,
-         'function' => 'getMeetingTypes',
+         'function' => ['name' => 'getDictionary', 'params' => ['key' => 'Meetings-type']],
       ),
       'repeat_pane' =>array(
          'name' => 'repeat_pane',

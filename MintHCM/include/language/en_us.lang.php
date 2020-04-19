@@ -4099,8 +4099,8 @@ $app_list_strings['idea_status_list'] = array(
 
 $app_list_strings['list_type_list'] = array(
    '' => '',
-   'Meetings' => 'Meetings - Type',
-   'WorkSchedules' => 'Work Schedules - Category',
+   'Meetings-type' => 'Meetings - Type',
+   'SpentTime-category' => 'Spent Time - Category',
 );
 
 $app_list_strings['reservations_parent_type_list'] = array(

@@ -1,9 +1,10 @@
 <?php
 
-function getSpentTimeCategory()
+function getDictionary($params)
 {
     global $db;
-    $sql = "SELECT id, name FROM spenttime WHERE list_type LIKE 'SpentTime' AND is_active = 1 AND deleted = 0";
+    $field = $params['key'];
+    $sql = "SELECT id, name FROM dictionaries WHERE list_type LIKE '{$field}' AND is_active = 1 AND deleted = 0";
     $types = array();
     $result = $db->query($sql);
     while (($row = $db->fetchByAssoc($result)) != null) {
