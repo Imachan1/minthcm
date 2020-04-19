@@ -3933,9 +3933,9 @@ $app_list_strings['scoring_list'] = array(
 );
 $app_list_strings['employment_form_list'] = array(
    '' => '',
-   'UOP' => 'Contract of employment',
-   'UZ' => 'Contract of specific work',
-   'UOD' => 'Contract of commission',
+   'UOP' => 'Contract of Employment',
+   'UZ' => 'Contract of Specific Work',
+   'UOD' => 'Contract of Commission',
    'DG' => 'Business',
 );
 $app_list_strings['status_list'] = array(
