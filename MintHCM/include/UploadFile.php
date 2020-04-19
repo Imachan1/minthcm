@@ -132,7 +132,7 @@ class UploadFile
             $type = $document->module_dir;
         }
         $date = str_replace(" ","",$document->date_modified);
-        return "index.php?entryPoint=download&type=$type&id={$document->id}&date={}";
+        return "index.php?entryPoint=download&type=$type&id={$document->id}&date={$date}";
     }
 
     /**
