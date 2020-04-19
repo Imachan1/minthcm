@@ -134,4 +134,5 @@ $mod_strings = array(
     'LBL_TWO_WEEKS_ALERT' => "Note! You do not have a planned plan for a minimum of two weeks.",
     'LBL_APPROVED_ALERT' => "Note! Your work plan %s has not been approved by you.",
     'LBL_LIST_TITLE' => 'Work Schedule',
+    'LBL_SPENT_TIME_CATEGORY' => 'Category',
 );
