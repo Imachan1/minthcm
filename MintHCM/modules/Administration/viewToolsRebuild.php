@@ -68,6 +68,9 @@ try {
 */' . "\n");
 
     $phpcache = fopen('include/ViewTools/Expressions/cache.php', 'w');
+    fwrite($phpcache,
+        "<?php\n".'
+'."\n");
     $tmp_expression_list = array();
     //At first scan main Expressions folder
     $Expressionlist = scandir('include/ViewTools/Expressions/');
