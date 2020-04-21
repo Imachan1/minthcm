@@ -53,7 +53,6 @@ $dictionary['Dictionaries'] = array(
             'massupdate' => false,
             'vname' => 'LBL_IS_ACTIVE',
             'type' => 'bool',
-            'source' => 'non-db',
             'audited' => true,
             'reportable' => true,
             'default' => true,
@@ -80,7 +79,7 @@ $dictionary['Dictionaries'] = array(
             'audited' => true,
             'len' => '100',
             'reportable' => true,
-            //'function' => array('name' => 'getModuleList', 'include' => 'include/utils/getModuleList.php'),
+
         ),
     ),
     'relationships' => array(

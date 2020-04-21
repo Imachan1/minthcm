@@ -163,6 +163,7 @@ $app_list_strings = array(
       'DashboardManager' => 'Dashboard Manager',
       'DashboardBackups' => 'Dashboard Backups',
       'DashboardHistory' => 'Dashboard Deployment History',
+      'Dictionaries' => 'Dictionaries',
       'KReports' => 'Advanced Reports',
       'KTemplates' => 'Advanced Reports PDF Templates',
       'ScheduleReports' => 'Schedule Reports',

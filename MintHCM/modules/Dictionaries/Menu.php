@@ -42,33 +42,16 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
 global $mod_strings, $app_strings, $sugar_config;
-$module_name = "Dictionaries";
-if (ACLController::checkAccess($module_name, 'edit', true)) {
-    $module_menu[] = array(
-        'index.php?module=' . $module_name . '&action=EditView&return_module=' . $module_name . '&return_action=DetailView',
-        $mod_strings['LNK_NEW_RECORD'],
-        'Add',
-        $module_name,
-    );
+
+if (ACLController::checkAccess('Dictionaries', 'edit', true)) {
+    $module_menu[] = array('index.php?module=Dictionaries&action=EditView&return_module=Dictionaries&return_action=DetailView', $mod_strings['LNK_NEW_RECORD'], 'Add', 'Dictionaries');
 }
-if (ACLController::checkAccess($module_name, 'list', true)) {
-    $module_menu[] = array(
-        'index.php?module=' . $module_name . '&action=index&return_module=' . $module_name . '&return_action=DetailView',
-        $mod_strings['LNK_LIST'],
-        'View',
-        $module_name,
-    );
-}
-if (ACLController::checkAccess($module_name, 'import', true)) {
-    $module_menu[] = array(
-        'index.php?module=Import&action=Step1&import_module=' . $module_name . '&return_module=' . $module_name . '&return_action=index',
-        $app_strings['LBL_IMPORT'],
-        'Import',
-        $module_name,
-    );
+if (ACLController::checkAccess('Dictionaries', 'list', true)) {
+    $module_menu[] = array('index.php?module=Dictionaries&action=index&return_module=Dictionaries&return_action=DetailView', $mod_strings['LNK_LIST'], 'List', 'Dictionaries');
 }

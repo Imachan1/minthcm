@@ -83,7 +83,9 @@ class Dictionaries extends Basic
 
     public function save($check_notify = false)
     {
-        $this->list_module = $this->link_type;
+        $divided_key = explode("-", $this->list_type, 2);
+        $module_name = $divided_key[0];
+        $this->list_module = $module_name;
         $id = parent::save($check_notify);
         return $id;
     }

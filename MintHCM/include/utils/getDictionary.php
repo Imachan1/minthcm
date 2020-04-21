@@ -1,14 +1,13 @@
 <?php
 
-function getDictionary($params)
+function getDictionary($param, $name, $value, $view, $additional_params)
 {
     global $db;
-    $field = $params['key'];
-    $sql = "SELECT id, name FROM dictionaries WHERE list_type LIKE '{$field}' AND is_active = 1 AND deleted = 0";
+    $sql = "SELECT id, name FROM dictionaries WHERE list_type LIKE '{$additional_params}' AND is_active = 1 AND deleted = 0";
     $types = array();
     $result = $db->query($sql);
     while (($row = $db->fetchByAssoc($result)) != null) {
-        $types[$result['name']] = $result['name'];
+        $types[$row['name']] = $row['name'];
     }
 
     return $types;
