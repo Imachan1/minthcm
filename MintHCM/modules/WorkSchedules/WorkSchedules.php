@@ -338,7 +338,10 @@ class WorkSchedules extends Basic
 
     public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set')
     {
-        global $current_user;
+        global $current_user, $timedate;
+        $converted_date = $timedate->fromUserDate($this->schedule_date);
+        $schedule_month = $converted_date->month;
+        $current_month = $timedate->getNow()->month;
         $result = parent::ACLAccess($view, $is_owner);
         $user_controller = ControllerFactory::getController('Users');
         $subordinates = $user_controller::getIDOfSubordinates([$current_user->id]);
@@ -346,7 +349,7 @@ class WorkSchedules extends Basic
         if (in_array($view, array('edit', 'EditView', 'delete')) && $this->status == 'closed' && !$current_user->is_admin) {
             $result = false;
         }
-        if (!empty($this->assigned_user_id) && ($user_has_access || (in_array($this->assigned_user_id, $subordinates)))) {
+        if (!empty($this->assigned_user_id) && ($user_has_access || (in_array($this->assigned_user_id, $subordinates))) && ($schedule_month == $current_month)) {
             $result = true;
         }
         return $result;
