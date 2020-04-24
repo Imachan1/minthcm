@@ -1023,7 +1023,8 @@ class SearchForm {
                   continue;
                } else {
                   global $current_user;
-                $field_value = "SELECT id FROM users WHERE reports_to_id = {$current_user->id}";
+                  $uc = ControllerFactory::getController('Users');
+                  $field_value = "'" . implode("','", $uc::getIDOfSubordinates([$current_user->id])). "'";
                 $operator = 'in';
                }
             } elseif ( !empty($parms['closed_values']) && is_array($parms['closed_values']) ) {
