@@ -312,9 +312,9 @@ $dictionary['SpentTime'] = array(
             'massupdate' => true,
             'reportable' => true,
             'audited' => true,
-            'function' => ['name' => 'getDictionary', 
-         'additional_params' => 'Meetings-type',
-         'include' => 'include/utils/getDictionary.php'],
+            'function' => ['name' => 'getDictionary',
+                'additional_params' => 'SpentTime-category',
+                'include' => 'include/utils/getDictionary.php'],
         ),
         'workschedule_name' => array(
             'name' => 'workschedule_name',
