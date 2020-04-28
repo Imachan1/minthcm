@@ -138,7 +138,7 @@ generateOnboardingOffboarding = {
          employee_id: employee_id,
          employee_name: employee_name,
          parent_id: parent_id,
-         parent_name: parent_name
+         parent_name: parent_name,
       }
    },
    hideDropdown: function () {
@@ -178,6 +178,24 @@ generateOnboardingOffboarding = {
    onPopupShow: function () {
       this.prepareSqsObjects();
       this.prepareCalendar();
+      if (this.isEmployees()) {
+         $('#' + this.form_name + ' select#parent_type').change(this.getOnboardingOffboardingNameForEmployees.bind(this))
+         $('#' + this.form_name + ' select#parent_type').val('OnboardingTemplates')
+         viewTools.api.callCustomApi({
+            module: 'Positions',
+            action: 'getOnboardingOffboardingName',
+            dataPOST: {
+               boarding: 'OnboardingTemplates',
+               employee_id: $('input[name=record]').val(),
+            },
+            callback: function (data) {
+               if (data) {
+                  $('#' + this.form_name + ' #parent_id').val(data['parent_id']);
+                  $('#' + this.form_name + ' #parent_name').val(data['parent_name']);
+               }
+            }.bind(this)
+         });
+      }
    },
    prepareSqsObjects: function () {
       sqs_objects = [];
@@ -248,20 +266,20 @@ generateOnboardingOffboarding = {
          }.bind(this)
       });
    },
-   getOnboardingOffboardingNameForEmployees: function (boarding, employee_id) {
+   getOnboardingOffboardingNameForEmployees: function (e) {
       viewTools.api.callCustomApi({
          module: 'Positions',
          action: 'getOnboardingOffboardingName',
          dataPOST: {
-            boarding: boarding,
-            employee_id: employee_id
+            boarding: e.currentTarget.value,
+            employee_id: $('input[name=record]').val(),
          },
          callback: function (data) {
             if (data) {
                $('#' + this.form_name + ' #parent_id').val(data['parent_id']);
                $('#' + this.form_name + ' #parent_name').val(data['parent_name']);
             }
-         }
+         }.bind(this)
       });
    }
 };
