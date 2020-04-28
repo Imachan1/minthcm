@@ -13,7 +13,7 @@
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
- * Free Software Foundation with the addition of the following permission added
+ * Free Software Foundation wih the addition of the following permission added
  * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
  * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
  * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
@@ -80,7 +80,6 @@ $viewdefs[$module_name] = array(
                     'assigned_user_name',
                 ),
                 array(
-                    'work_date',
                     array(
                         'name' => 'workschedule_name',
                         'displayParams' => array(
@@ -92,6 +91,7 @@ $viewdefs[$module_name] = array(
                             'call_back_function' => 'set_return_overload',
                         ),
                     ),
+                    '',
                 ),
                 array(
                     'spent_time',

@@ -51,11 +51,6 @@ $listViewDefs[$module_name] = array(
         'label' => 'LBL_SPENT_TIME',
         'default' => true,
     ),
-    'WORK_DATE' => array(
-        'width' => '10%',
-        'label' => 'LBL_WORK_DATE',
-        'default' => true,
-    ),
     'TYPE' => array(
         'width' => '10%',
         'label' => 'LBL_SPENT_TIME_TYPE',
