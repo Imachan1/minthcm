@@ -47,22 +47,11 @@ require_once 'include/SugarFields/Fields/Base/SugarFieldBase.php';
 
 class SugarFieldBool extends SugarFieldBase
 {
-    /**
-     *
-     * @return The html for a drop down if the search field is not 'my_items_only' or a dropdown for all other fields.
-     *            This strange behavior arises from the special needs of PM. They want the my items to be checkboxes and all other boolean fields to be dropdowns.
-     * @author Navjeet Singh
-     * @param $parentFieldArray -
-     **/
+
     public function getSearchViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
     {
         $this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);
-        //If there was a type override to specifically render it as a boolean, show the EditView checkbox
-        if (preg_match("/(favorites|current_user|open)_only.*/", $vardef['name']) || $vardef['name'] == "my_subordinates") {
-            return $this->fetch($this->findTemplate('EditView'));
-        } else {
-            return $this->fetch($this->findTemplate('SearchView'));
-        }
+        return $this->fetch($this->findTemplate('EditView'));
     }
 
     /**

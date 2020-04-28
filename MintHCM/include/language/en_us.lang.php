@@ -1844,7 +1844,7 @@ $app_strings = array(
    'LBL_DASHLET_CONFIGURE_FILTERS' => 'Filters',
    'LBL_DASHLET_CONFIGURE_MY_ITEMS_ONLY' => 'Only My Items',
    'LBL_DASHLET_CONFIGURE_MY_FAVORITES' => 'Only My Favorites',
-   'LBL_DASHLET_CONFIGURE_MY_SUBORDINATES' => 'Only My Subordinates Items',
+   'LBL_DASHLET_CONFIGURE_MY_SUBORDINATES' => 'My Subordinates',
    'LBL_DASHLET_CONFIGURE_TITLE' => 'Title',
    'LBL_DASHLET_CONFIGURE_DISPLAY_ROWS' => 'Display Rows',
    // MySugar status strings
@@ -2124,7 +2124,7 @@ $app_strings = array(
     'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_SELF' => 'Employee is not system User: ',
     'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_EMPLOYEE_MANAGER' => 'Manager is not set for: ',
     'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_ORGANIZATIONAL_UNIT_MANAGER' => 'The following Organizational Units do not have Manager set:',
-    'LBL_SUBORDINATES_FILTER' => 'Only My Subordinates',
+    'LBL_SUBORDINATES_FILTER' => 'My Subordinates',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
