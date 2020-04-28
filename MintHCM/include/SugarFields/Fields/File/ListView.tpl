@@ -43,7 +43,7 @@
  */
 
 *}
-<a href="index.php?entryPoint=download&id={$parentFieldArray.ID}&type={if empty($vardef.displayParams.module)}{$displayParams.module}{else}{$vardef.displayParams.module}{/if}&date={$fields.date_modified.value}" class="tabDetailViewDFLink" target='_blank'>{sugar_fetch object=$parentFieldArray key=$col}
+<a href="index.php?entryPoint=download&id={$parentFieldArray.ID}&type={if empty($vardef.displayParams.module)}{$displayParams.module}{else}{$vardef.displayParams.module}{/if}" class="tabDetailViewDFLink" target='_blank'>{sugar_fetch object=$parentFieldArray key=$col}
 {if isset($vardef.allowEapm) && $vardef.allowEapm && isset($parentFieldArray.DOC_TYPE) }
 {capture name=imageNameCapture assign=imageName}
 {sugar_fetch object=$parentFieldArray key=DOC_TYPE}_image_inline.png
