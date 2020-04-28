@@ -82,7 +82,7 @@
 <input type="hidden" name="{{$idName}}_old_doctype" id="{{$idName}}_old_doctype" value="{$fields.{{$vardef.docType}}.value}">
 {{/if}}
 <span id="{{$idName}}_old" style="display:{if !$showRemove}none;{/if}">
-    <a href="index.php?entryPoint=download&id={$fields.{{$vardef.fileId}}.value}&type={{$vardef.linkModule}}" class="tabDetailViewDFLink">{{sugarvar key='value'}}</a>
+    <a href="index.php?entryPoint=download&id={$fields.{{$vardef.fileId}}.value}&type={{$vardef.linkModule}}&date={$fields.date_modified.value}" class="tabDetailViewDFLink">{{sugarvar key='value'}}</a>
 
     {{if isset($vardef.allowEapm) && $vardef.allowEapm}}
     {if isset($fields.{{$vardef.docType}}) && !empty($fields.{{$vardef.docType}}.value) && $fields.{{$vardef.docType}}.value != 'Sugar' && !empty($fields.{{$vardef.docUrl}}.value) }
