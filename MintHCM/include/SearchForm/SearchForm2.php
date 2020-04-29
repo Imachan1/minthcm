@@ -644,7 +644,7 @@ class SearchForm {
                   }
                }
             }
-
+            $additional_params = array();
             if ( isset($this->fieldDefs[$fvName]['function']) ) {
                $this->fieldDefs[$fvName]['type'] = 'multienum';
 
@@ -659,16 +659,21 @@ class SearchForm {
                } else {
                   $function_name = $this->fieldDefs[$fvName]['function'];
                }
-
+               if(!empty($this->fieldDefs[$fvName]['function']['additional_params'])){
+                  $additional_params = $this->fieldDefs[$fvName]['function']['additional_params'];
+               }
                if ( !empty($this->fieldDefs[$fvName]['function']['returns']) && $this->fieldDefs[$fvName]['function']['returns'] == 'html' ) {
                   if ( !empty($this->fieldDefs[$fvName]['function']['include']) ) {
                      require_once($this->fieldDefs[$fvName]['function']['include']);
                   }
-                  $value = call_user_func($function_name, $this->seed, $name, $value, $this->view);
+                  $value = call_user_func($function_name, $this->seed, $name, $value, $this->view, $additional_params);
                   $this->fieldDefs[$fvName]['value'] = $value;
                } else {
                   if ( !isset($function['params']) || !is_array($function['params']) ) {
-                     $this->fieldDefs[$fvName]['options'] = call_user_func($function_name, $this->seed, $name, $value, $this->view);
+                     if ( !empty($this->fieldDefs[$fvName]['function']['include']) ) {
+                        require_once($this->fieldDefs[$fvName]['function']['include']);
+                     }
+                     $this->fieldDefs[$fvName]['options'] = call_user_func($function_name, $this->seed, $name, $value, $this->view, $additional_params);
                   } else {
                      $this->fieldDefs[$fvName]['options'] = call_user_func_array($function_name, $function['params']);
                   }

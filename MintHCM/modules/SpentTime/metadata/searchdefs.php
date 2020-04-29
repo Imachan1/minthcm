@@ -85,6 +85,14 @@ $searchdefs[$module_name] = array(
                 'label' => 'LBL_SPENT_TIME_TYPE',
                 'type' => 'enum',
             ),
+            array(
+                'name' => 'category',
+                'label' => 'LBL_SPENT_TIME_CATEGORY',
+                'type' => 'enum',
+                'function' => ['name' => 'getDictionary',
+                    'additional_params' => 'SpentTime-category',
+                    'include' => 'include/utils/getDictionary.php'],
+            ),
             array
             (
                 'name' => 'assigned_user_id',
