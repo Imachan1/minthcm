@@ -8,7 +8,7 @@ function getDictionary($param, $name, $value, $view, $additional_params)
     $types[''] = '';
     $result = $db->query($sql);
     while (($row = $db->fetchByAssoc($result)) != null) {
-        $types[$row['name']] = $row['name'];
+        $types[$row['id']] = $row['name'];
     }
 
     return $types;
