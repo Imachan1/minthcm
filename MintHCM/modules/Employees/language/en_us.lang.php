@@ -167,7 +167,7 @@ $mod_strings = array(
     'LBL_COMPETENCYRATINGS' => 'Competency Ratings',
     'LBL_GOALS' => 'Goals',
     'LBL_APPRAISALS' => 'Appraisals',
-    'LBL_CREATE_APPRAISAL' => 'Create Apprisal',
+    'LBL_CREATE_APPRAISAL' => 'Create Appraisal',
     'LBL_CANDIDATE_EMPLOYEE_RELATE_FROM_EMPLOYEE' => 'Candidate',
     'LBL_ORGANIZATIONALUNITS_EMPLOYEES' => 'Organizational Units',
     'LBL_ORGANIZATIONALUNIT_NAME' => 'Organizational Unit',
@@ -193,4 +193,5 @@ $mod_strings = array(
     'LBL_RELATIONSHIP_TRAININGS_NAME' => 'Trainings',
     'LBL_FACTOR_AUTH' => 'Factor Auth',
     'LBL_FACTOR_AUTH_INTERFACE' => 'Factor Auth Interface',
+    'LBL_GENERATE_ONBOARDING_OFFBOARDING' => 'Generate Onboarding/Offboarding',
 );

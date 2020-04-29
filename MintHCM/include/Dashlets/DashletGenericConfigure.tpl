@@ -133,6 +133,16 @@
                         </td>
                     </tr>
                 {/if}
+                {if $showMySubordinates}
+                    <tr>
+                        <td scope='row'>
+                            {$strings.mySubordinates}
+                        </td>
+                        <td>
+                            <input type='checkbox' {if $mySubordinates == 'true'}checked{/if} name='mySubordinates' value='true'>
+                        </td>
+                    </tr>
+                {/if}
                 <tr>
                 {foreach name=searchIteration from=$searchFields key=name item=params}
                     <td  scope='row' valign='top'>

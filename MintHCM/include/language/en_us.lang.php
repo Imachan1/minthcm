@@ -163,6 +163,7 @@ $app_list_strings = array(
       'DashboardManager' => 'Dashboard Manager',
       'DashboardBackups' => 'Dashboard Backups',
       'DashboardHistory' => 'Dashboard Deployment History',
+      'Dictionaries' => 'Dictionaries',
       'KReports' => 'Advanced Reports',
       'KTemplates' => 'Advanced Reports PDF Templates',
       'ScheduleReports' => 'Schedule Reports',
@@ -1061,6 +1062,13 @@ $app_list_strings = array(
    'template_id_list' => array(
       'Default' => 'Default',
    ),
+   'kind_of_element_list' => array(
+      '' => '',
+      'self' => 'Self',
+      'employee_manager' => 'Employee Manager',
+      'organizational_unit_manager' => 'Organizational Unit Manager',
+      'specific_user' => 'Specific User',
+   ),
 );
 
 $app_strings = array(
@@ -1836,7 +1844,7 @@ $app_strings = array(
    'LBL_DASHLET_CONFIGURE_FILTERS' => 'Filters',
    'LBL_DASHLET_CONFIGURE_MY_ITEMS_ONLY' => 'Only My Items',
    'LBL_DASHLET_CONFIGURE_MY_FAVORITES' => 'Only My Favorites',
-   'LBL_DASHLET_CONFIGURE_MY_SUBORDINATES' => 'Only My Subordinates Items',
+   'LBL_DASHLET_CONFIGURE_MY_SUBORDINATES' => 'My Subordinates',
    'LBL_DASHLET_CONFIGURE_TITLE' => 'Title',
    'LBL_DASHLET_CONFIGURE_DISPLAY_ROWS' => 'Display Rows',
    // MySugar status strings
@@ -2107,8 +2115,16 @@ $app_strings = array(
     'LBL_NAV_TIME_TRACKING' => 'Time Tracking',
     'LBL_NAV_COMPANY_LIFE' => 'Company Life',
     'LBL_NAV_EMPLOYEE' => 'Employee',
-    
-
+    'LBL_GENERATEONBOARDINGOFFBOARDING_EMPLOYEE_NAME' => 'Employee',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_START_DATE' => 'Start Date',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_SUCCESS' => 'Generation has been started',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR' => 'Generation failed',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_TEMPLATE' => 'Template',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_POPUP_TITLE' => 'Generate',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_SELF' => 'Employee is not system User: ',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_EMPLOYEE_MANAGER' => 'Manager is not set for: ',
+    'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_ORGANIZATIONAL_UNIT_MANAGER' => 'The following Organizational Units do not have Manager set:',
+    'LBL_SUBORDINATES_FILTER' => 'My Subordinates',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
@@ -3675,7 +3691,7 @@ $app_strings['LBL_APPRAISAL_ITEM_ERROR'] = 'This field is required';
 $app_strings['LBL_APPRAISAL_ITEM_TYPE_ERROR'] = 'The recruitment appraisal may have positions only on competence subject';
 $app_strings['LBL_CHOOSE_PLAN'] = 'You must to choose plan';
 $app_strings['LBL_PLAN_NOT_CHOOSED'] = 'Plan is not choosed';
-$app_strings['LBL_CLOSE_PLAN_CONFIRM'] = 'Are you sure you want to approve this plan? This operation can not be undone.';
+$app_strings['LBL_CLOSE_PLAN_CONFIRM'] = 'Are you sure you want to approve this plan?';
 $app_strings['ERR_CLOSE_PLAN'] = 'You cannot approve this plan "{name}", because there are gaps between spent times or his time frames do not coincide with working times';
 $app_strings['LBL_PLAN_ONE_DAY'] = 'Work Schedule must spread in one day.';
 $app_strings['LBL_DIALOG_YES'] = 'Yes';
@@ -3918,9 +3934,9 @@ $app_list_strings['scoring_list'] = array(
 );
 $app_list_strings['employment_form_list'] = array(
    '' => '',
-   'UOP' => 'Contract of employment',
-   'UZ' => 'Contract of specific work',
-   'UOD' => 'Contract of commission',
+   'UOP' => 'Contract of Employment',
+   'UZ' => 'Contract of Specific Work',
+   'UOD' => 'Contract of Commission',
    'DG' => 'Business',
 );
 $app_list_strings['status_list'] = array(
@@ -4082,7 +4098,11 @@ $app_list_strings['idea_status_list'] = array(
    'rejected' => 'Rejected',
 );
 
-
+$app_list_strings['list_type_list'] = array(
+   '' => '',
+   'Meetings-type' => 'Meetings - Type',
+   'SpentTime-category' => 'Spent Time - Category',
+);
 
 $app_list_strings['reservations_parent_type_list'] = array(
    'Calls' => 'Calls',
