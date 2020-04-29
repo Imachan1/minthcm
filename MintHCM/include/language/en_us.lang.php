@@ -3987,6 +3987,7 @@ $app_list_strings['source_list'] = array(
    'linkedin' => 'LinkedIn',
    'nofluffjobs' => 'No Fluff Jobs',
    'not_applicable' => 'Not Applicable',
+   'RocketJobs' => 'RocketJobs',
    'other' => 'Other',
 );
 
