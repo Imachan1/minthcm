@@ -1851,13 +1851,13 @@
       ),
       'ExitInterviews' => 
       array (
-        'list' => '75',
-        'access' => '89',
-        'delete' => '75',
+        'list' => '90',
+        'access' => '90',
+        'delete' => '90',
         'massupdate' => '90',
-        'edit' => '75',
-        'view' => '75',
-        'export' => '75',
+        'edit' => '90',
+        'view' => '90',
+        'export' => '90',
         'import' => '90',
       ),
       'FP_Event_Locations' => 
