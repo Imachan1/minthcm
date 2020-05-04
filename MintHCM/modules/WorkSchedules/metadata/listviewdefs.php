@@ -91,6 +91,12 @@ $listViewDefs[$module_name] = array(
         'width' => '10%',
         'default' => false,
     ),
+    'SPENT_TIME_SETTLEMENT' => array(
+        'type' => 'float',
+        'label' => 'LBL_SPENT_TIME_SETTLEMENT',
+        'width' => '10%',
+        'default' => false,
+    ),
     'DELEGATION_DURATION' => array(
         'type' => 'float',
         'label' => 'LBL_DELEGATION_DURATION',
