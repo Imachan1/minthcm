@@ -3071,15 +3071,8 @@ $app_list_strings['product_category_dom']['Desktops'] = 'Desktops';
 $app_list_strings['product_category_dom'][''] = '';
 $app_list_strings['product_type_dom']['Good'] = 'Good';
 $app_list_strings['product_type_dom']['Service'] = 'Service';
-$app_list_strings['product_quote_parent_type_dom']['AOS_Quotes'] = 'Quotes';
-$app_list_strings['product_quote_parent_type_dom']['AOS_Invoices'] = 'Invoices';
 $app_list_strings['product_quote_parent_type_dom']['AOS_Contracts'] = 'Contracts';
-$app_list_strings['pdf_template_type_dom']['AOS_Quotes'] = 'Quotes';
-$app_list_strings['pdf_template_type_dom']['AOS_Invoices'] = 'Invoices';
 $app_list_strings['pdf_template_type_dom']['AOS_Contracts'] = 'Contracts';
-$app_list_strings['pdf_template_type_dom']['Accounts'] = 'Accounts';
-$app_list_strings['pdf_template_type_dom']['Contacts'] = 'Contacts';
-$app_list_strings['pdf_template_type_dom']['Leads'] = 'Leads';
 $app_list_strings['pdf_template_sample_dom'][''] = '';
 $app_list_strings['contract_status_list'] = array(
    'active' => 'Active',
@@ -4151,8 +4144,6 @@ $app_list_strings['pdf_tempate_type_list'] = array(
 $app_strings['LBL_PDF_TEMPLATE'] = 'Download PDF';
 
 $app_list_strings['pdf_module_list']=array (
-  'Accounts' => 'Accounts',
-  'Contacts' => 'Contacts',
   'Delegations' => 'Delegations',
 );
 

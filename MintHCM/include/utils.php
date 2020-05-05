@@ -5888,3 +5888,18 @@ if (!function_exists('getKReportsArrayList')) {
         return $return_array;
     }
 }
+
+if (!function_exists('getMintDisabledModulesList')){
+    function getMintDisabledModulesList(){
+        return [
+            'Accounts', 
+            'Opportunities',
+            'Leads',
+            'Contacts',
+            'Prospects',
+            'ProspectLists',
+            'Campaigns',
+            'CampaignLog',
+        ];
+    }
+}
