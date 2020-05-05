@@ -51,7 +51,7 @@ class SugarFieldBool extends SugarFieldBase
     public function getSearchViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
     {
         $this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);
-        if (preg_match("/(favorites|current_user|open)_only.*|.*subordinates.*/", $vardef['name']) || $vardef['name'] == "my_subordinates") {
+        if (preg_match("/(favorites|current_user|open)_only.*|.*subordinates.*/", $vardef['name'])) {
             return $this->fetch($this->findTemplate('EditView'));
         } else {
             return $this->fetch($this->findTemplate('SearchView'));
