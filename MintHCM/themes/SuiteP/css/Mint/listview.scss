@@ -130,3 +130,11 @@ div.list-view-rounded-corners > table, tr.pagination-unique {
 .selectActionsDisabled.show {
     display: inline-block !important;
 }
+
+.search.basic input[type=text]{
+    width: 100%;
+}
+
+.search.advanced input[id*="date"]{
+    width: 65%;
+}
