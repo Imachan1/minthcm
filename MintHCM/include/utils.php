@@ -5900,6 +5900,13 @@ if (!function_exists('getMintDisabledModulesList')){
             'ProspectLists',
             'Campaigns',
             'CampaignLog',
+            'AOS_Invoices',
+            'AOS_Products',
+            'AOS_Product_Categories',
+            'AOS_Products_Quotes',
+            'AOS_Line_Item_Groups',
+            'AOS_Quotes',
+            'AOS_Service_Quotes',
         ];
     }
 }
