@@ -45,6 +45,16 @@
 
 $layout_defs['Employees'] = array(
     'subpanel_setup' => array(
+        'subordinates_employee' => array(
+            'order' => 100,
+            'module' => 'Employees',
+            'subpanel_name' => 'default',
+            'sort_order' => 'asc',
+            'sort_by' => 'id',
+            'title_key' => 'LBL_SUBORDINATES',
+            'get_subpanel_data' => 'function:fetchAllSubordinates',
+            'top_buttons' => array(),
+        ),
         "spenttime" => array(
             'order' => 100,
             'module' => 'SpentTime',

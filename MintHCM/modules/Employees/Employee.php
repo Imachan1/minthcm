@@ -352,6 +352,12 @@ class Employee extends Person
         return $query;
     }
 
+    public function fetchAllSubordinates()
+    {
+        $query = "SELECT users.* FROM users WHERE users.deleted=0 AND users.reports_to_id='{$this->id}'";
+        return $query;
+    }
+
     public function bean_implements($interface)
     {
         $result = false;

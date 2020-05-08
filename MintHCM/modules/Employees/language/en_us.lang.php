@@ -194,4 +194,5 @@ $mod_strings = array(
     'LBL_FACTOR_AUTH' => 'Factor Auth',
     'LBL_FACTOR_AUTH_INTERFACE' => 'Factor Auth Interface',
     'LBL_GENERATE_ONBOARDING_OFFBOARDING' => 'Generate Onboarding/Offboarding',
+    'LBL_SUBORDINATES' => 'Subordinates',
 );
