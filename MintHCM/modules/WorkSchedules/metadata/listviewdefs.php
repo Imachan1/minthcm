@@ -91,6 +91,12 @@ $listViewDefs[$module_name] = array(
         'width' => '10%',
         'default' => false,
     ),
+    'SPENT_TIME' => array(
+        'type' => 'float',
+        'label' => 'LBL_SPENT_TIME',
+        'width' => '10%',
+        'default' => false,
+    ),
     'SPENT_TIME_SETTLEMENT' => array(
         'type' => 'float',
         'label' => 'LBL_SPENT_TIME_SETTLEMENT',
