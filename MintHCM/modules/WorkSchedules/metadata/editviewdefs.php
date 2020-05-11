@@ -126,16 +126,6 @@ $viewdefs[$module_name] = array(
                 ),
                 array(
                     array(
-                        'name' => 'spent_time',
-                        'type' => 'readonly',
-                    ),
-                    array(
-                        'name' => 'spent_time_settlement',
-                        'type' => 'readonly',
-                    ),
-                ),
-                array(
-                    array(
                         'name' => 'duration_hours',
                         'label' => 'LBL_DURATION',
                         'customCode' => '{include file="modules/WorkSchedules/tpls/DurationFieldEditView.tpl"}',
