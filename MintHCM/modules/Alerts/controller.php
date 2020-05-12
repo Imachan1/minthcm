@@ -46,10 +46,9 @@ class AlertsController extends SugarController
 {
     public function action_get()
     {
-        global $current_user, $app_strings, $app_list_strings;
+        global $current_user, $app_strings, $aclModuleList;
         $bean = BeanFactory::getBean('Alerts');
-        $modules = $app_list_strings['moduleList'];
-        $disabled_modules = ACLController::disabledModuleList($modules, 'access');
+        $disabled_modules = ACLController::disabledModuleList($aclModuleList, 'access');
         $disabled_modules_string = implode("','", $disabled_modules);
         $disabled_modules_string_with_quotes = "'" . $disabled_modules_string . "'";
         $this->view_object_map['Flash'] = '';
