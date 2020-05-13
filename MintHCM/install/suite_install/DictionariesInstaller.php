@@ -26,7 +26,7 @@ class DictionariesInstaller
         ('5431dc21-43bb-dccd-a6f8-5eb17c1a0c13', 'Job fairs', '2020-05-05 14:48:56', '2020-05-05 14:48:56', '1', '1', NULL, 0,  'Candidatures-source', 'Candidatures', 1),
         ('6569fd91-e751-e8cc-6b2d-5eb17c858eb8', 'LinkedIn', '2020-05-05 14:49:08', '2020-05-05 14:49:08', '1', '1', NULL, 0,  'Candidatures-source', 'Candidatures', 1),
         ('854006d0-e9b9-bdff-f04c-5eb17d40ac53', 'Indeed', '2020-05-05 14:49:38', '2020-05-05 14:49:38', '1', '1', NULL, 0,  'Candidatures-source', 'Candidatures', 1),
-        ('c4ba0266-f0ab-8540-d543-5eb17ce41615', 'Career\'s office', '2020-05-05 14:48:39', '2020-05-05 14:48:39', '1', '1', NULL, 0,  'Candidatures-source', 'Candidatures', 1),
+        ('c4ba0266-f0ab-8540-d543-5eb17ce41615', 'Career\'s Office', '2020-05-05 14:48:39', '2020-05-05 14:48:39', '1', '1', NULL, 0,  'Candidatures-source', 'Candidatures', 1),
         ('d7e51783-6f9a-a91b-aec0-5eb17cf093d0', 'Facebook', '2020-05-05 14:49:22', '2020-05-05 14:49:22', '1', '1', NULL, 0,  'Candidatures-source', 'Candidatures', 1),
         ('f30e8596-0769-42e9-92c8-c7d4710123f0', 'RocketJobs', '2020-05-05 14:49:22', '2020-05-05 14:49:22', '1', '1', NULL, 0,  'Candidatures-source', 'Candidatures', 1),
         ('e2324f8d-0a14-8ec3-164f-5eb17c3b28b3', 'Recommendation', '2020-05-05 14:47:57', '2020-05-05 14:47:57', '1', '1', NULL, 0,  'Candidatures-source', 'Candidatures', 1);";
