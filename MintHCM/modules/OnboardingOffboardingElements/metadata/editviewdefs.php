@@ -84,7 +84,7 @@ $viewdefs [$module_name] = array(
                     ),
                 ),
                 array(
-                    'organizationalunit_name',
+                    'securitygroup_name',
                     'user_name',
                 ),
                 array(

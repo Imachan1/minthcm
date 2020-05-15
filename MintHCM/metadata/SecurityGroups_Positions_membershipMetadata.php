@@ -45,25 +45,25 @@
  */
 
 // created: 2018-10-13 15:14:30 
-$dictionary["organizationalunits_news"] = array(
+$dictionary["securitygroups_positions_membership"] = array(
    'true_relationship_type' => 'many-to-many',
    'relationships' =>
    array(
-      'organizationalunits_news' =>
+      'securitygroups_positions_membership' =>
       array(
-         'lhs_module' => 'OrganizationalUnits',
-         'lhs_table' => 'organizationalunits',
+         'lhs_module' => 'SecurityGroups',
+         'lhs_table' => 'securitygroups',
          'lhs_key' => 'id',
-         'rhs_module' => 'News',
-         'rhs_table' => 'news',
+         'rhs_module' => 'Positions',
+         'rhs_table' => 'positions',
          'rhs_key' => 'id',
          'relationship_type' => 'many-to-many',
-         'join_table' => 'organizationalunits_news',
-         'join_key_lhs' => 'organizationalunit_id',
-         'join_key_rhs' => 'news_id',
+         'join_table' => 'securitygroups_positions_membership',
+         'join_key_lhs' => 'securitygroup_id',
+         'join_key_rhs' => 'position_id',
       ),
    ),
-   'table' => 'organizationalunits_news',
+   'table' => 'securitygroups_positions_membership',
    'fields' =>
    array(
       array(
@@ -83,12 +83,12 @@ $dictionary["organizationalunits_news"] = array(
          'required' => true,
       ),
       array(
-         'name' => 'organizationalunit_id',
+         'name' => 'securitygroup_id',
          'type' => 'varchar',
          'len' => 36,
       ),
       array(
-         'name' => 'news_id',
+         'name' => 'position_id',
          'type' => 'varchar',
          'len' => 36,
       ),
@@ -104,12 +104,12 @@ $dictionary["organizationalunits_news"] = array(
          ),
       ),
       array(
-         'name' => 'organizationalunits_news_id',
+         'name' => 'securitygroups_positions_id',
          'type' => 'alternate_key',
          'fields' =>
          array(
-            'organizationalunit_id',
-            'news_id',
+            'securitygroup_id',
+            'position_id',
          ),
       ),
    ),

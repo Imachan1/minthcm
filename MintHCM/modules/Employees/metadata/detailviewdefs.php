@@ -176,7 +176,7 @@ $viewdefs['Employees'] = array(
                     'phone_work',
                 ),
                 array(
-                    'organizationalunit_name',
+                    'securitygroup_name',
                     'phone_mobile',
                 ),
                 array(

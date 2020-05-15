@@ -42,38 +42,38 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-$module_name = 'OrganizationalUnits';
-$viewdefs[$module_name]['QuickCreate'] = array(
-   'templateMeta' => array(
-      'maxColumns' => '2',
-      'widths' => array(
-         array( 'label' => '10', 'field' => '30' ),
-         array( 'label' => '10', 'field' => '30' )
-      ),
-   ),
-   'panels' => array(
-      'default' => array(
-         array(
-            'name',
-            'type',
-         ),
-         array(
-            array(
-               'name' => 'parent_name',
-               'label' => 'LBL_MEMBER_OF'
-            ),
-            'assigned_user_name',
-         ),
-         array(
-            array(
-               'name' => 'current_manager_name',
-               'label' => 'LBL_CURRENT_MANAGER_NAME',
-            ),
-            array(
-               'name' => 'position_leader_name',
-               'label' => 'LBL_POSITION_LEADER_NAME'
-            ),
-         ),
-      ),
-   ),
-);
+
+class SecurityGroupsHooks
+{
+    public function addEmployee(&$bean, $event, $arguments)
+    {
+        if ($this->shouldWeAct($arguments)) {
+            $this->addUserToSg($bean,$arguments['related_id']);
+        }
+    }
+
+    public function removeEmployee($bean, $event, $arguments)
+    {
+        if ($this->shouldWeAct($arguments)) {
+            $this->removeUserFromSg($bean,$arguments['related_id']);
+        }
+    }
+
+    protected function shouldWeAct($arguments)
+    {
+        return ($arguments['relationship'] == 'securitygroups_employees' && $arguments['related_module'] == 'Employees' );
+    }
+
+    protected function addUserToSg($bean,$user_id)
+    {
+        $bean->load_relationship('users');
+        $bean->users->add($user_id);
+    }
+
+    protected function removeUserFromSg($bean,$user_id)
+    {
+        $bean->load_relationship('users');
+        $bean->users->remove($user_id);
+    }
+
+}

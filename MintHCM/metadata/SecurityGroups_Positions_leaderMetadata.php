@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,21 +43,80 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
-}
 
-$module_name = 'OrganizationalUnits';
-$object_name = 'OrganizationalUnits';
-$_module_name = 'organizationalunits';
-$popupMeta = array(
-   'moduleMain' => $module_name,
-   'varName' => $object_name,
-   'orderBy' => $_module_name . '.name',
-   'whereClauses' => array(
-      'name' => $_module_name . '.name',
-      'current_manager_name' => 'users.current_manager_name',
+$dictionary["securitygroups_positions_leader"] = array(
+   'true_relationship_type' => 'one-to-one',
+   'relationships' =>
+   array(
+      'securitygroups_positions_leader' =>
+      array(
+         'lhs_module' => 'SecurityGroups',
+         'lhs_table' => 'securitygroups',
+         'lhs_key' => 'id',
+         'rhs_module' => 'Positions',
+         'rhs_table' => 'positions',
+         'rhs_key' => 'id',
+         'relationship_type' => 'many-to-many',
+         'join_table' => 'securitygroups_positions_leader',
+         'join_key_lhs' => 'securitygroup_leader_id',
+         'join_key_rhs' => 'position_leader_id',
+      ),
    ),
-   'searchInputs' => array( $_module_name . '_number', 'name', 'priority', 'status', 'current_manager_name',
+   'table' => 'securitygroups_positions_leader',
+   'fields' =>
+   array(
+      array(
+         'name' => 'id',
+         'type' => 'varchar',
+         'len' => 36,
+      ),
+      array(
+         'name' => 'date_modified',
+         'type' => 'datetime',
+      ),
+      array(
+         'name' => 'deleted',
+         'type' => 'bool',
+         'len' => '1',
+         'default' => '0',
+         'required' => true,
+      ),
+      array(
+         'name' => 'securitygroup_leader_id',
+         'type' => 'varchar',
+         'len' => 36,
+      ),
+      array(
+         'name' => 'position_leader_id',
+         'type' => 'varchar',
+         'len' => 36,
+      ),
+   ),
+   'indices' =>
+   array(
+      array(
+         'name' => 'securitygroups_positions_leader_spk',
+         'type' => 'primary',
+         'fields' =>
+         array(
+            'id',
+         ),
+      ),
+      array(
+         'name' => 'securitygroups_lhs_alt',
+         'type' => 'index',
+         'fields' =>
+         array(
+            'securitygroup_leader_id',
+         ),
+      ),
+      array(
+         'name' => 'positions_rhs_alt',
+         'type' => 'index',
+         'fields' =>
+         array(
+            'position_leader_id',
+         ),
+      ),
    ),
 );

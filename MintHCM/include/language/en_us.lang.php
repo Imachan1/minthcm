@@ -146,7 +146,6 @@ $app_list_strings = array(
       'OnboardingOffboardingElements' => 'Onboarding/Offboarding Elements',
       'Onboardings' => 'Onboardings',
       'OnboardingTemplates' => 'Onboarding Templates',
-      'OrganizationalUnits' => 'Organizational Units',
       'PeriodsOfEmployment' => 'Periods of Employment',
       'Positions' => 'Positions',
       'Problems' => 'Problems',
@@ -2073,8 +2072,8 @@ $app_strings = array(
    'LBL_CONFIRM_OPT_IN_TOKEN' => 'Confirm Opt In Token',
    'ERR_OPT_IN_TPL_NOT_SET' => 'Opt In Email Template is not configured. Please set up in email settings.',
    'ERR_OPT_IN_RELATION_INCORRECT' => 'Opt In requires the email to be related to Account/Contact/Lead/Target',
-   'LBL_SECURITYGROUP_NONINHERITABLE' => 'Non-Inheritable Group',
-   'LBL_PRIMARY_GROUP' => "Primary Group",
+   'LBL_SECURITYGROUP_NONINHERITABLE' => 'Non-Inheritable Organizational Unit',
+   'LBL_PRIMARY_GROUP' => "Primary Organizational Unit",
    // footer
    'LBL_SUITE_TOP' => 'Back to top',
    'LBL_SUITE_SUPERCHARGED' => 'Supercharged by SuiteCRM',
@@ -2985,7 +2984,7 @@ $app_list_strings['aor_email_type_list']['Specify User'] = 'User';
 $app_list_strings['aor_email_type_list']['Users'] = 'Users';
 $app_list_strings['aor_assign_options']['all'] = 'ALL Users';
 $app_list_strings['aor_assign_options']['role'] = 'ALL Users in Role';
-$app_list_strings['aor_assign_options']['security_group'] = 'ALL Users in Security Group';
+$app_list_strings['aor_assign_options']['security_group'] = 'ALL Users in Organizational Unit';
 $app_list_strings['date_time_period_list']['today'] = 'Today';
 $app_list_strings['date_time_period_list']['yesterday'] = 'Yesterday';
 $app_list_strings['date_time_period_list']['this_week'] = 'This Week';
@@ -3123,7 +3122,7 @@ $app_list_strings['aow_condition_operator_list']['OR'] = 'OR';
 $app_list_strings['aow_condition_type_list']['Value'] = 'Value';
 $app_list_strings['aow_condition_type_list']['Field'] = 'Field';
 $app_list_strings['aow_condition_type_list']['Any_Change'] = 'Any Change';
-$app_list_strings['aow_condition_type_list']['SecurityGroup'] = 'In SecurityGroup';
+$app_list_strings['aow_condition_type_list']['SecurityGroup'] = 'In Organizational Unit';
 $app_list_strings['aow_condition_type_list']['Date'] = 'Date';
 $app_list_strings['aow_condition_type_list']['Multi'] = 'One of';
 $app_list_strings['aow_action_type_list']['Value'] = 'Value';
@@ -3463,10 +3462,10 @@ $app_strings['LBL_RESCHEDULE_HISTORY'] = 'Call attempt history';
 $app_strings['LBL_RESCHEDULE_COUNT'] = 'Call Attempts';
 
 //SecurityGroups
-$app_list_strings['moduleList']['SecurityGroups'] = 'Security Groups Management';
+$app_list_strings['moduleList']['SecurityGroups'] = 'Organizational Unit Management';
 $app_strings['LBL_LOGIN_AS'] = 'Login as ';
 $app_strings['LBL_LOGOUT_AS'] = 'Logout as ';
-$app_strings['LBL_SECURITYGROUP'] = 'Security Group';
+$app_strings['LBL_SECURITYGROUP'] = 'Organizational Unit';
 
 $app_list_strings['moduleList']['OutboundEmailAccounts'] = 'Outbound Email Accounts';
 
@@ -3824,12 +3823,14 @@ $app_list_strings['appraisals_status_list'] = array(
    'not_held' => 'Not held',
 );
 
-
 $app_list_strings['group_type_list'] = array(
    'standard' => 'Standard',
    'private' => 'Private',
+   'business_unit' => 'Business Unit',
+   'department' => 'Department',
+   'team' => 'Team',
+   'other' => 'Other'
 );
-
 
 $app_list_strings['daily_working_time_list'] = array(
    '' => '',
@@ -3845,15 +3846,6 @@ $app_list_strings['daily_working_time_list'] = array(
 
 
 
-
-
-$app_list_strings['unit_type_list'] = array(
-   '' => '',
-   'business_unit' => 'Business Unit',
-   'department' => 'Department',
-   'team' => 'Team',
-   'other' => 'Other'
-);
 $app_list_strings['training_status_list'] = array(
    'planned' => 'Planned',
    'held' => 'Held',

@@ -50,12 +50,13 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 
 require_once('modules/SugarFeed/feedLogicBase.php');
 
-class OrganizationalUnitsFeed extends FeedLogicBase {
+class SecurityGroupsFeed extends FeedLogicBase {
 
-   public $module = 'OrganizationalUnits';
+   public $module = 'SecurityGroups';
 
    public function pushFeed($bean, $event, $arguments) {
-      if ( empty($bean->fetched_row) && !isset($bean->feedPushed) ) {
+      global $current_user;
+      if ( empty($bean->fetched_row) && !isset($bean->feedPushed) && isset($current_user)) {
          $text = '{SugarFeed.LBL_CREATED_ORGANIZATIONALUNITS} [' . $bean->module_dir . ':' . $bean->id . ':' . $bean->name . ']';
          SugarFeed::pushFeed2($text, $bean);
          $bean->feedPushed = 1;

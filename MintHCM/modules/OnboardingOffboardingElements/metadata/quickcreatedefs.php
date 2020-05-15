@@ -75,7 +75,7 @@ $viewdefs[$module_name]['QuickCreate'] = array(
                 ),
             ),
             array(
-                'organizationalunit_name',
+                'securitygroup_name',
                 'user_name',
             ),
             array(

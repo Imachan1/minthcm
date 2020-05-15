@@ -1264,7 +1264,6 @@ function insert_default_settings() {
     'TermsOfEmployment',
     'PeriodsOfEmployment',
     'Trainings',
-    'OrganizationalUnits',
     'OnboardingTemplates',
     'OffboardingTemplates',
     'ExitInterviews',

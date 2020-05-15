@@ -18,6 +18,22 @@ $viewdefs[$module_name]['DetailView'] = array(
          ),
          array(
             array(
+               'name' => 'parent_name',
+               'label' => 'LBL_MEMBER_OF'
+            ),
+         ),
+         array(
+          array(
+             'name' => 'current_manager_name',
+             'label' => 'LBL_CURRENT_MANAGER_NAME',
+          ),
+          array(
+             'name' => 'position_leader_name',
+             'label' => 'LBL_POSITION_LEADER_NAME'
+          ),
+       ),
+         array(
+            array(
                'name' => 'date_entered',
                'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
                'label' => 'LBL_DATE_ENTERED',

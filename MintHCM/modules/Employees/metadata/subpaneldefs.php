@@ -233,14 +233,14 @@ $layout_defs['Employees'] = array(
                 ),
             ),
         ),
-        'organizationalunits' => array(
+        'securitygroups_managers' => array(
             'order' => 100,
-            'module' => 'OrganizationalUnits',
+            'module' => 'SecurityGroups',
             'subpanel_name' => 'default',
             'sort_order' => 'asc',
             'sort_by' => 'id',
-            'title_key' => 'LBL_RELATIONSHIP_ORGANIZATIONALUNITS_NAME',
-            'get_subpanel_data' => 'organizationalunits',
+            'title_key' => 'LBL_RELATIONSHIP_SECURITYGROUPS_NAME',
+            'get_subpanel_data' => 'securitygroups_managers',
             'top_buttons' => array(
                 array(
                     'widget_class' => 'SubPanelTopButtonQuickCreate',
