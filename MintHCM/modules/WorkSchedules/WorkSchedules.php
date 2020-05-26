@@ -374,33 +374,7 @@ class WorkSchedules extends Basic
         $result = $db->getOne($sql);
         return $result != 0;
     }
-
-    public function getOwnerWhere($user_id)
-    {
-        $controller = ControllerFactory::getController('Users');
-        $subordinates_ids = $controller::getIDOfSubordinates(array($user_id));
-        $parent = parent::getOwnerWhere($user_id);
-        if (!empty($subordinates_ids)) {
-            $return = "( $parent OR $this->table_name.assigned_user_id IN ('" . implode("','", $subordinates_ids) . "') ) ";
-        } else {
-            $return = $parent;
-        }
-        return $return;
-    }
-
-    public function isOwner($user_id)
-    {
-        $is_owner = parent::isOwner($user_id);
-        if (!$is_owner) {
-            $controller = ControllerFactory::getController('Users');
-            $subordinates_ids = $controller::getIDOfSubordinates(array($user_id));
-            if (in_array($this->assigned_user_id, $subordinates_ids)) {
-                $is_owner = true;
-            }
-        }
-        return $is_owner;
-    }
-
+    
     public function canBeConfirmed()
     {
         global $timedate;

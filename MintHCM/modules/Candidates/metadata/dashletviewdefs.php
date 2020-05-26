@@ -61,6 +61,10 @@ $dashletData['CandidatesDashlet']['searchFields'] = array(
    array(
       'default' => '',
    ),
+   'employee_name' =>
+   array(
+      'default' => '',
+   ),
    'last_name' =>
    array(
       'default' => '',
@@ -150,6 +154,11 @@ $dashletData['CandidatesDashlet']['columns'] = array(
       'label' => 'LBL_LIST_ASSIGNED_USER',
       'name' => 'assigned_user_name',
       'default' => false,
+   ),
+   'employee_name' => array(
+      'label' => 'LBL_EMPLOYEE_NAME',
+      'name' => 'employee_name',
+      'width' => '8%',
    ),
    'phone_mobile' =>
    array(

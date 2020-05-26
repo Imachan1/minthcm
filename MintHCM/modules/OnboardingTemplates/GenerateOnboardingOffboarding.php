@@ -101,8 +101,6 @@ class GenerateOnboardingOffboarding
         $bean->$relate_id_field_name = $this->template_id;
         $bean->assigned_user_id = $assigned_user_id;
         $bean->save();
-        $this->addSecurityGroupToRecord($bean,
-            $this->user_scheduled_onboarding->getUserPrivateGroup());
         $this->process = $bean;
     }
 
@@ -133,8 +131,6 @@ class GenerateOnboardingOffboarding
             default:
                 return false;
         }
-        return $this->addSecurityGroupToRecord($bean,
-            $this->user_scheduled_onboarding->getUserPrivateGroup());
     }
 
     protected function createTask($element)
@@ -202,8 +198,7 @@ class GenerateOnboardingOffboarding
             $meeting_bean->users->add($this->process->employee_id);
             $meeting_bean->users->add($element->user_id);
         }
-        $this->addSecurityGroupToRecord($meeting_bean,
-            $this->user_scheduled_onboarding->getUserPrivateGroup());
+
     }
 
     protected function createExitInterview($element)

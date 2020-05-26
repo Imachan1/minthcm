@@ -498,38 +498,6 @@ $dictionary['Candidates'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_CALLS',
         ),
-        'employees' => array(
-            'name' => 'employees',
-            'type' => 'link',
-            'relationship' => 'candidates_employees',
-            'source' => 'non-db',
-            'module' => 'Employees',
-            'bean_name' => 'Employee',
-            'vname' => 'LBL_CANDIDATE_EMPLOYEE_LINK_FROM_CANDIDATE',
-            'id_name' => 'employee_id',
-        ),
-        'employee_name' => array(
-            'name' => 'employee_name',
-            'type' => 'relate',
-            'source' => 'non-db',
-            'vname' => 'LBL_CANDIDATE_EMPLOYEE_RELATE_FROM_CANDIDATE',
-            'save' => true,
-            'id_name' => 'employee_id',
-            'link' => 'employees',
-            'table' => 'users',
-            'module' => 'Employees',
-            'rname' => 'name',
-        ),
-        'employee_id' => array(
-            'name' => 'employee_id',
-            'type' => 'link',
-            'relationship' => 'candidates_employees',
-            'source' => 'non-db',
-            'reportable' => false,
-            'side' => 'left',
-            'vname' => 'LBL_CANDIDATE_EMPLOYEE_ID_FROM_CANDIDATE',
-            'audited' => true,
-        ),
         "employeecertificates" => array(
             'name' => 'employeecertificates',
             'type' => 'link',
@@ -624,7 +592,7 @@ if (!class_exists('VardefManager')) {
     require_once 'include/SugarObjects/VardefManager.php';
 }
 VardefManager::createVardef('Candidates', 'Candidates',
-    array('basic', 'assignable', 'person', 'security_groups'));
+    array('basic', 'assignable', 'person', 'security_groups', 'employee_related'));
 
 $dictionary['Candidates']['fields']['date_reviewed']['audited'] = false;
 $dictionary['Candidates']['fields']['date_reviewed']['reportable'] = false;

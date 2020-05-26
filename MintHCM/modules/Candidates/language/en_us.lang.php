@@ -171,8 +171,5 @@ $mod_strings = array(
     'LBL_MEETINGS' => 'Meetings',
     'LBL_CALLS' => 'Calls',
     'LBL_CANDIDATES' => 'Candidates',
-    'LBL_CANDIDATE_EMPLOYEE_RELATE_FROM_CANDIDATE' => 'Employee',
-    'LBL_CANDIDATE_EMPLOYEE_ID_FROM_CANDIDATE' => 'Employee (ID)',
     'LBL_EMPLOYEECERTIFICATES' => 'Certificates',
-    'LBL_CANDIDATE_EMPLOYEE_LINK_FROM_CANDIDATE' => 'Candidate employee link from candidate',
 );

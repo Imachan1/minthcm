@@ -44,7 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-if ( !defined('sugarEntry') || !sugarEntry ) {
+if (!defined('sugarEntry') || !sugarEntry) {
    die('Not A Valid Entry Point');
 }
 
@@ -123,6 +123,13 @@ $listViewDefs[$module_name] = array(
       'default' => true,
       'enabled' => true,
       'link' => true,
+   ),
+   'EMPLOYEE_NAME' => array(
+      'width' => '9%',
+      'label' => 'LBL_EMPLOYEE_NAME',
+      'module' => 'Employees',
+      'id' => 'EMPLOYEE_ID',
+      'default' => true,
    ),
    'LBL_DATE_MODIFIED' => array(
       'label' => 'LBL_DATE_MODIFIED',

@@ -667,18 +667,6 @@ class User extends Person implements EmailInterface {
             'not match to User ID.');
       }
 
-      require_once 'modules/SecurityGroups/PrivateGroup.php';
-
-      if ( $setNewUserPreferences ) {
-         $private_group = new PrivateGroup($this);
-         $private_group->create();
-      }
-
-      if ( !$setNewUserPreferences && $this->reports_to_id != $this->fetched_row['reports_to_id'] ) {
-         $private_group = new PrivateGroup($this);
-         $private_group->update($this->reports_to_id, $this->fetched_row['reports_to_id']);
-      }
-
       // set some default preferences when creating a new user
       if ( $setNewUserPreferences ) {
          if ( !$this->getPreference('calendar_publish_key') ) {
@@ -2341,31 +2329,8 @@ EOQ;
       return $subTheme;
    }
 
-   public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set') {
-      $result = parent::ACLAccess($view, $is_owner, $in_group);
-      if ( isset($_REQUEST['module']) && $_REQUEST['module'] == 'SecurityGroups' && isset($_REQUEST['record']) && $this->isGroupPrivate($_REQUEST['record']) ) {
-         $result = false;
-      }
-      return $result;
-   }
-
-   public function isGroupPrivate($group_id) {
-      $group = BeanFactory::getBean('SecurityGroups', $group_id);
-      if ( $group && $group->id && $group->group_type == 'private' ) {
-         return true;
-      }
-      return false;
-   }
-
    public function mark_deleted($id) {
-      require_once 'modules/SecurityGroups/PrivateGroup.php';
-
-      $user = BeanFactory::getBean('Users');
-      if ( $user->retrieve($id) ) {
-         $private_group = new PrivateGroup($user);
-         $private_group->delete();
-      }
-      parent::mark_deleted($id);
+       parent::mark_deleted($id);
    }
 
    public function getUserSupervisiorID($id) {
@@ -2374,15 +2339,6 @@ EOQ;
          return $user->reports_to_id;
       }
       return null;
-   }
-
-   public function getUserPrivateGroup() {
-      if ( empty($this->user_private_group_id) ) {
-         $sql = "SELECT id FROM securitygroups WHERE group_type='private' AND deleted = 0 AND assigned_user_id = '{$this->id}'";
-         $result = $this->db->getOne($sql);
-         $this->user_private_group_id = ($result) ? $result : null;
-      }
-      return $this->user_private_group_id;
    }
 
 }
