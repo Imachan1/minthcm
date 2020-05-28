@@ -58,7 +58,7 @@ $dashletData['OnboardingOffboardingElementsDashlet']['searchFields'] = array(
     'type' => array('default' => ''),
     'days_from_start' => array('default' => ''),
     'user_name' => array('default' => ''),
-    'securitygroup_name' => array('default' => ''),
+    'securitygroup_unit_name' => array('default' => ''),
 );
 $dashletData['OnboardingOffboardingElementsDashlet']['columns']      = array(
     'name' => array(
