@@ -47,6 +47,7 @@
 if ( !defined('sugarEntry') ) {
    define('sugarEntry', true);
 }
+require_once 'include/Notifications/WebPushUserNewsNotification.php';
 
 class GenerateUsersNews {
 
@@ -103,6 +104,8 @@ class GenerateUsersNews {
          $users_news->assigned_user_id = $user->id;
          $users_news->assigned_user_name = $user->name;
          $users_news->save();
+
+         (new WebPushUserNewsNotification($users_news))->push();
       }
    }
 

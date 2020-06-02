@@ -46,7 +46,7 @@
 require_once 'include/Notifications/NotificationManager.php';
 require_once 'include/Notifications/NotificationAbstractClass.php';
 require_once 'include/Notifications/NotificationNull.php';
-
+require_once 'include/Notifications/WebPushBeanNotification.php';
 class Notification extends NotificationAbstractClass
 {
 
@@ -94,6 +94,8 @@ class Notification extends NotificationAbstractClass
             } else {
                 $bean->url_redirect = 'index.php?module=' . $bean->parent_type;
             }
+
+            (new WebPushBeanNotification($bean))->setUrl($bean->url_redirect)->push();
 
             $bean->save();
         } else {
