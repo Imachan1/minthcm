@@ -236,6 +236,7 @@ $enabled_tabs[] = 'Goals';
 $enabled_tabs[] = 'Appraisals';
 $enabled_tabs[] = 'News';
 $enabled_tabs[] = 'Ideas';
+$enabled_tabs[] = 'EmployeeInteractionTracking';
 $enabled_tabs[] = 'Conclusions';
 $enabled_tabs[] = 'ResponsibilityActivities';
 $enabled_tabs[] = 'Problems';
