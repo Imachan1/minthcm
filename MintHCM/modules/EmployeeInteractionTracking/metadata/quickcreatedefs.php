@@ -56,12 +56,12 @@ $viewdefs[$module_name]['QuickCreate'] = array(
    'panels' => array(
       'default' => array(
          array(
-            'name',
-            'assigned_user_name',
+            'date',
+            'employee_name',
          ),
          array(
-            'description',
-         ),         
+            'assigned_user_name',
+         ),
       ),
    ),
 );

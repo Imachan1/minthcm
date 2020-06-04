@@ -255,4 +255,36 @@ $layout_defs['Employees'] = array(
                 ),
             ),
         ),
+        'employeeinteractiontracking' => array(
+            'order' => 200,
+            'sort_order' => 'desc',
+            'sort_by' => 'date_entered',
+            'title_key' => 'LBL_EMPLOYEEINTERACTIONTRACKING',
+            'type' => 'collection',
+            'subpanel_name' => 'ee',   //this values is not associated with a physical file.
+            'header_definition_from_subpanel' => 'employeeinteractiontracking',
+            'module' => 'EmployeeInteractionTracking',
+
+            'top_buttons' => array(
+                array(
+                    'widget_class' => 'SubPanelTopButtonQuickCreate',
+                ),
+            ),
+
+            'collection_list' => array(
+                'employeeinteractiontracking' => array(
+                    'module' => 'EmployeeInteractionTracking',
+                    'subpanel_name' => 'default',
+                    'get_subpanel_data' => 'employeeinteractiontracking',
+                ),
+                'employeeinteractiontracking_assigned_user' => array(
+                    'module' => 'EmployeeInteractionTracking',
+                    'subpanel_name' => 'default',
+                    'get_subpanel_data' => 'function:get_employeeinteractiontracking_for_subpanel',
+                    'function_parameters' => array('get' => true),
+                    'generate_select' => true,
+                    'get_distinct_data' => true,
+                ),
+            ),
+        ),
     ));

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -43,42 +42,61 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+class EmployeeInteractionTracking extends Basic
+{
+    public $new_schema = true;
+    public $module_dir = 'EmployeeInteractionTracking';
+    public $object_name = 'EmployeeInteractionTracking';
+    public $table_name = 'employeeinteractiontracking';
+    public $importable = true;
+    public $id;
+    public $name;
+    public $date_entered;
+    public $date_modified;
+    public $modified_user_id;
+    public $modified_by_name;
+    public $created_by;
+    public $created_by_name;
+    public $description;
+    public $deleted;
+    public $created_by_link;
+    public $modified_user_link;
+    public $assigned_user_id;
+    public $assigned_user_name;
+    public $assigned_user_link;
+    public $SecurityGroups;
 
-class EmployeeInteractionTracking extends Basic {
+    public function bean_implements($interface)
+    {
+        $result = false;
+        if ($interface === 'ACL') {
+            $result = true;
+        }
+        return $result;
+    }
 
-   public $new_schema = true;
-   public $module_dir = 'EmployeeInteractionTracking';
-   public $object_name = 'EmployeeInteractionTracking';
-   public $table_name = 'employeeinteractiontracking';
-   public $importable = true;
-   public $id;
-   public $name;
-   public $date_entered;
-   public $date_modified;
-   public $modified_user_id;
-   public $modified_by_name;
-   public $created_by;
-   public $created_by_name;
-   public $description;
-   public $deleted;
-   public $created_by_link;
-   public $modified_user_link;
-   public $assigned_user_id;
-   public $assigned_user_name;
-   public $assigned_user_link;
-   public $SecurityGroups;
+    public function save($check_notify = false)
+    {
+        $this->setName();
+        return parent::save($check_notify);
+    }
 
-   public function bean_implements($interface) {
-      $result = false;
-      if ( $interface === 'ACL' ) {
-         $result = true;
-      } 
-      return $result;
-   }
-
-   public function save($check_notify = false) {
-//$this->name = '';
-      return parent::save($check_notify);
-   }
-
+    protected function setName()
+    {
+        if (empty($this->employee_name)) {
+            $employee = BeanFactory::getBean('Employees', $this->employee_id);
+            $employee_name = $employee->name;
+        } else {
+            $employee_name = $this->employee_name;
+        }
+        if (empty($this->assigned_user_name)) {
+            $employee_2 = BeanFactory::getBean('Employees', $this->assigned_user_id);
+            $assigned_user_name = $employee_2->name;
+        } else {
+            $assigned_user_name = $this->assigned_user_name;
+        }
+        $date_time = getDateTimeObject($this->date);
+        global $timedate;
+        $this->name = $date_time->format($timedate->get_db_date_format()).' - '.$assigned_user_name.' - '.$employee_name;
+    }
 }

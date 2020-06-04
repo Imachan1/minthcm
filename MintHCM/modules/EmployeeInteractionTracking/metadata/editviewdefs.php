@@ -68,8 +68,11 @@ $viewdefs[$module_name]['EditView'] = array(
       'default' =>
       array(
          array(
-            'name',
+            'date',
+         ),
+         array(
             'assigned_user_name',
+            'employee_name',
          ),
          array(
             'description',

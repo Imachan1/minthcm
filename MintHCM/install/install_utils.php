@@ -1278,7 +1278,6 @@ function insert_default_settings() {
     'Appraisals',
     'News',
     'Ideas',
-    'EmployeeInteractionTracking',
     'Conclusions',
     'ResponsibilityActivities',
     'Problems',

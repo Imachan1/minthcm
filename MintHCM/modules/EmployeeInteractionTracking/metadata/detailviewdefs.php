@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -43,67 +41,67 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
 $module_name = 'EmployeeInteractionTracking';
 $viewdefs[$module_name]['DetailView'] = array(
-   'templateMeta' => array(
-      'form' => array(
-         'buttons' => array(
-            'EDIT',
-            'DUPLICATE',
-            'DELETE',
-            'FIND_DUPLICATES',
-         )
-      ),
-      'maxColumns' => '2',
-      'widths' => array(
-         array( 'label' => '10', 'field' => '30' ),
-         array( 'label' => '10', 'field' => '30' )
-      ),
-      'useTabs' => true,
-      'tabDefs' =>
-      array(
-         'DEFAULT' =>
-         array(
-            'newTab' => true,
-            'panelDefault' => 'expanded',
-         ),
-         'LBL_EDITVIEW_PANEL1' =>
-         array(
-            'newTab' => true,
-            'panelDefault' => 'expanded',
-         ),
-      ),
-   ),
-   'panels' =>
-   array(
-      'default' =>
-      array(
-         array(
-            'name',
-         ),
-         array(
-            'description',
-         ),
-      ),
-      'lbl_editview_panel1' =>
-      array(
-         array(
-            'assigned_user_name',
-            '',
-         ),
-         array(
+    'templateMeta' => array(
+        'form' => array(
+            'buttons' => array(
+                'EDIT',
+                'DUPLICATE',
+                'DELETE',
+                'FIND_DUPLICATES',
+            )
+        ),
+        'maxColumns' => '2',
+        'widths' => array(
+            array('label' => '10', 'field' => '30'),
+            array('label' => '10', 'field' => '30')
+        ),
+        'useTabs' => true,
+        'tabDefs' =>
+        array(
+            'DEFAULT' =>
             array(
-               'name' => 'date_entered',
-               'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
-               'label' => 'LBL_DATE_ENTERED',
+                'newTab' => true,
+                'panelDefault' => 'expanded',
+            ),
+            'LBL_EDITVIEW_PANEL1' =>
+            array(
+                'newTab' => true,
+                'panelDefault' => 'expanded',
+            ),
+        ),
+    ),
+    'panels' =>
+    array(
+        'default' =>
+        array(
+            array(
+                'name',
+                'date',
             ),
             array(
-               'name' => 'date_modified',
-               'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
-               'label' => 'LBL_DATE_MODIFIED',
+                'assigned_user_name',
+                'employee_name',
             ),
-         ),
-      ),
-   ),
+            array(
+                'description',
+            ),
+        ),
+        'lbl_editview_panel1' =>
+        array(
+            array(
+                array(
+                    'name' => 'date_entered',
+                    'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
+                    'label' => 'LBL_DATE_ENTERED',
+                ),
+                array(
+                    'name' => 'date_modified',
+                    'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+                    'label' => 'LBL_DATE_MODIFIED',
+                ),
+            ),
+        ),
+    ),
 );

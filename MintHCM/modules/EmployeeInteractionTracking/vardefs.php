@@ -67,3 +67,6 @@ if (!class_exists('VardefManager')) {
     require_once 'include/SugarObjects/VardefManager.php';
 }
 VardefManager::createVardef('EmployeeInteractionTracking', 'EmployeeInteractionTracking', array('basic', 'assignable', 'employee_related', 'security_groups'));
+
+$dictionary["EmployeeInteractionTracking"]["fields"]["assigned_user_name"]["required"] = true;
+$dictionary["EmployeeInteractionTracking"]["fields"]["employee_name"]["required"] = true;
