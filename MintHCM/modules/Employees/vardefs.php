@@ -238,8 +238,8 @@ $dictionary["Employee"]["fields"]["applications"] = array(
     'side' => 'right',
     'vname' => 'LBL_APPLICATIONS_SUBPANEL',
 );
-$dictionary["Employee"]["fields"]["employeeinteractiontracking"] = array(
-    'name' => 'employeeinteractiontracking',
+$dictionary["Employee"]["fields"]["employeeinteractiontracking_employee"] = array(
+    'name' => 'employeeinteractiontracking_employee',
     'type' => 'link',
     'relationship' => 'employeeinteractiontracking_employee',
     'source' => 'non-db',

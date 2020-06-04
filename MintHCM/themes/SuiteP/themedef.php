@@ -118,6 +118,7 @@ $themedef = array(
         'workingmonths' => 'fa-calendar-week',
         'salaryranges' => 'fa-dollar-sign',
         'dictionaries' => 'fa-list',
+        'employeeinteractiontracking' => 'fa-handshake',
     ),
 );
 

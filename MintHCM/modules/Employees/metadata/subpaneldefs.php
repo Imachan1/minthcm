@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,7 +41,6 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
 $layout_defs['Employees'] = array(
     'subpanel_setup' => array(
         "spenttime" => array(
@@ -261,21 +259,19 @@ $layout_defs['Employees'] = array(
             'sort_by' => 'date_entered',
             'title_key' => 'LBL_EMPLOYEEINTERACTIONTRACKING',
             'type' => 'collection',
-            'subpanel_name' => 'ee',   //this values is not associated with a physical file.
-            'header_definition_from_subpanel' => 'employeeinteractiontracking',
+            'subpanel_name' => 'ee', //this values is not associated with a physical file.
+            'header_definition_from_subpanel' => 'employeeinteractiontracking_employee',
             'module' => 'EmployeeInteractionTracking',
-
             'top_buttons' => array(
                 array(
                     'widget_class' => 'SubPanelTopButtonQuickCreate',
                 ),
             ),
-
             'collection_list' => array(
-                'employeeinteractiontracking' => array(
+                'employeeinteractiontracking_employee' => array(
                     'module' => 'EmployeeInteractionTracking',
                     'subpanel_name' => 'default',
-                    'get_subpanel_data' => 'employeeinteractiontracking',
+                    'get_subpanel_data' => 'employeeinteractiontracking_employee',
                 ),
                 'employeeinteractiontracking_assigned_user' => array(
                     'module' => 'EmployeeInteractionTracking',
@@ -283,7 +279,6 @@ $layout_defs['Employees'] = array(
                     'get_subpanel_data' => 'function:get_employeeinteractiontracking_for_subpanel',
                     'function_parameters' => array('get' => true),
                     'generate_select' => true,
-                    'get_distinct_data' => true,
                 ),
             ),
         ),

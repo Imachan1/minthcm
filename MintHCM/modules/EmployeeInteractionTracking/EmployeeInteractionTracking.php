@@ -83,18 +83,10 @@ class EmployeeInteractionTracking extends Basic
 
     protected function setName()
     {
-        if (empty($this->employee_name)) {
-            $employee = BeanFactory::getBean('Employees', $this->employee_id);
-            $employee_name = $employee->name;
-        } else {
-            $employee_name = $this->employee_name;
-        }
-        if (empty($this->assigned_user_name)) {
-            $employee_2 = BeanFactory::getBean('Employees', $this->assigned_user_id);
-            $assigned_user_name = $employee_2->name;
-        } else {
-            $assigned_user_name = $this->assigned_user_name;
-        }
+        $employee = BeanFactory::getBean('Employees', $this->employee_id);
+        $employee_name = $employee->full_name;
+        $employee_2 = BeanFactory::getBean('Employees', $this->assigned_user_id);
+        $assigned_user_name = $employee_2->full_name;
         $date_time = getDateTimeObject($this->date);
         global $timedate;
         $this->name = $date_time->format($timedate->get_db_date_format()).' - '.$assigned_user_name.' - '.$employee_name;
