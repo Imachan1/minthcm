@@ -641,6 +641,17 @@
         'massupdate' => '90',
         'edit' => '90',
       ),
+      'EmployeeInteractionTracking' => 
+      array (
+        'view' => '90',
+        'export' => '90',
+        'import' => '90',
+        'access' => '89',
+        'list' => '90',
+        'delete' => '90',
+        'massupdate' => '90',
+        'edit' => '90',
+      ),
       'Improvements' => 
       array (
         'view' => '90',
@@ -1883,6 +1894,17 @@
         'massupdate' => '90',
       ),
       'Ideas' => 
+      array (
+        'import' => '90',
+        'delete' => '90',
+        'export' => '90',
+        'view' => '90',
+        'list' => '90',
+        'massupdate' => '90',
+        'access' => '89',
+        'edit' => '90',
+      ),
+      'EmployeeInteractionTracking' => 
       array (
         'import' => '90',
         'delete' => '90',
@@ -3143,6 +3165,17 @@
         'massupdate' => '-99',
         'delete' => '75',
       ),
+      'EmployeeInteractionTracking' => 
+      array (
+        'edit' => '90',
+        'import' => '90',
+        'view' => '90',
+        'export' => '-99',
+        'list' => '80',
+        'access' => '89',
+        'massupdate' => '-99',
+        'delete' => '75',
+      ),
       'Improvements' => 
       array (
         'delete' => '90',
@@ -4378,6 +4411,17 @@
         'list' => '90',
       ),
       'Ideas' => 
+      array (
+        'export' => '90',
+        'access' => '89',
+        'massupdate' => '90',
+        'delete' => '90',
+        'import' => '90',
+        'view' => '90',
+        'edit' => '80',
+        'list' => '90',
+      ),
+      'EmployeeInteractionTracking' => 
       array (
         'export' => '90',
         'access' => '89',
