@@ -336,7 +336,8 @@ window.viewTools.form = {
       viewTools.cache.formulaRequirements[handler.data( 'modulename' )][handler.attr( 'id' )] = required;
    },
    getCacheFieldRequirement: function ( handler ) {
-      if ( viewTools.cache.formulaRequirements[handler.data( 'modulename' )][handler.attr( 'id' )] !== undefined ) {
+      if ( viewTools.cache.formulaRequirements[handler.data( 'modulename' )] !== undefined
+              && viewTools.cache.formulaRequirements[handler.data( 'modulename' )][handler.attr( 'id' )] !== undefined ) {
          return viewTools.cache.formulaRequirements[handler.data( 'modulename' )][handler.attr( 'id' )];
       }
       return false;
