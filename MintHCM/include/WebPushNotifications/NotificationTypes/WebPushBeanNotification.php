@@ -1,5 +1,5 @@
 <?php
-require_once 'include/Notifications/WebPushNotification.php';
+require_once 'include/WebPushNotifications/WebPushNotification.php';
 class WebPushBeanNotification extends WebPushNotification
 {
     public function __construct(SugarBean $bean)
@@ -11,8 +11,4 @@ class WebPushBeanNotification extends WebPushNotification
         $this->url_redirect = '';
     }
 
-    public function setUrl($url){
-        $this->url_redirect = $url;
-        return $this;
-    }
 }

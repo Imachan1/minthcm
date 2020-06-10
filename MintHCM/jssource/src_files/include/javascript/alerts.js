@@ -243,7 +243,7 @@ Alerts.prototype.updateManager = function () {
          Alerts.prototype.redirectToLogin();
          return false;
       }
-      // evolpe begin #70313
+      // MintHCM #70313 end
       // Detect format and parse
       data = JSON.parse(data);
       if(!!data.mint && !!data.mint.notifications && data.mint.notifications.length>0){
@@ -258,7 +258,7 @@ Alerts.prototype.updateManager = function () {
       if(!!data.standard){
          data = data.standard;
       }   
-      // evolpe begin #70313
+      // MintHCM #70313 end
       
       // remove the jsAlert message
       for ( var replaceMessage in Alerts.prototype.replaceMessages ) {

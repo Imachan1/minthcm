@@ -52,9 +52,9 @@ class AlertsController extends SugarController
         $disabled_modules_string = implode("','", $disabled_modules);
         $disabled_modules_string_with_quotes = "'" . $disabled_modules_string . "'";
         $this->view_object_map['Flash'] = '';
-        // evolpe begin #70313
+        // MintHCM #70313 begin
         $this->view_object_map['Results'] = $bean->get_full_list("alerts.date_entered", "alerts.assigned_user_id = '" . $current_user->id . "' AND is_read != '1' AND ( type!= 'webpush' OR type IS NULL OR type ='') AND (parent_type NOT IN (" . $disabled_modules_string_with_quotes . ") OR parent_type IS NULL)");
-        // evolpe end #70313
+        // MintHCM #70313 end
         if ($this->view_object_map['Results'] == '') {
             $this->view_object_map['Flash'] = $app_strings['LBL_NOTIFICATIONS_NONE'];
         }

@@ -47,7 +47,7 @@
 if ( !defined('sugarEntry') ) {
    define('sugarEntry', true);
 }
-require_once 'include/Notifications/WebPushUserNewsNotification.php';
+require_once 'include/WebPushNotifications/NotificationTypes/WebPushUserNewsNotification.php';
 
 class GenerateUsersNews {
 

@@ -76,7 +76,7 @@ class AlertsViewDefault extends SugarView {
    public function display() {
       $this->ss->assign('Flash', $this->view_object_map['Flash']);
       $this->ss->assign('Results', $this->view_object_map['Results']);
-      // evolpe begin #70313
+      // MintHCM #70313 begin
       $standard = $this->ss->fetch('modules/Alerts/templates/default.tpl');
 
       $result = array(
@@ -84,7 +84,7 @@ class AlertsViewDefault extends SugarView {
          'mint' => array('notifications' => $this->bean->getWebPushNotifications()),
       );
       echo json_encode($result);
-      // evolpe end #70313
+      // MintHCM #70313 end
 
       die();
    }

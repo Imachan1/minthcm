@@ -46,7 +46,7 @@
 require_once 'include/Notifications/NotificationManager.php';
 require_once 'include/Notifications/NotificationAbstractClass.php';
 require_once 'include/Notifications/NotificationNull.php';
-require_once 'include/Notifications/WebPushBeanNotification.php';
+require_once 'include/WebPushNotifications/NotificationTypes/WebPushBeanNotification.php';
 class Notification extends NotificationAbstractClass
 {
 

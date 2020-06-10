@@ -1,5 +1,5 @@
 <?php
-require_once 'include/Notifications/WebPushNotifiable.php';
+require_once 'include/WebPushNotifications/WebPushNotifiable.php';
 abstract class WebPushNotification implements WebPushNotifiable
 {
     protected $title;
@@ -30,6 +30,11 @@ abstract class WebPushNotification implements WebPushNotifiable
     {
         return empty($this->url_redirect)? '': $this->url_redirect;
     }
+    
+    public function setUrl($url){
+        $this->url_redirect = $url;
+        return $this;
+    }
 
     public function push(){
         if($this->canBePushed()){
@@ -46,7 +51,7 @@ abstract class WebPushNotification implements WebPushNotifiable
     }
 
     protected function canBePushed(){
-        include 'include/Notifications/notify_config.php';
+        include 'include/WebPushNotifications/notify_config.php';
         if(in_array($this->bean->module_dir,$allow_alerts_from)){
             return true;
         }
