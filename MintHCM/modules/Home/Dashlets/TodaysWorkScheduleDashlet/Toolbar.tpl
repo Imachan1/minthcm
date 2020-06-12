@@ -6,7 +6,9 @@
          <tr>
             <td nowrap="nowrap">
                <span class="dateTime">
+                  <img src="themes/SuiteP/images/calendar_previous.png" style="color: black;">
                   <input class="date_input" autocomplete="off" type="text" size="11" maxlength="10">
+                  <img src="themes/SuiteP/images/calendar_next.png" style="color: black;">
                   <img src="themes/SuiteP/images/jscalendar.gif" alt="{$APP.twsdashlet_insert_date}" style="position:relative; top:4px" border="0">
                </span>
             </td>
