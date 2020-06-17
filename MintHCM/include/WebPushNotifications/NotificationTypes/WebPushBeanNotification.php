@@ -9,6 +9,11 @@ class WebPushBeanNotification extends WebPushNotification
         $this->body = $bean->description;
         $this->user_id = $bean->assigned_user_id;
         $this->url_redirect = '';
+
+        if($bean instanceof Alert){
+            $this->related_module = $bean->parent_type;
+            $this->related_id = $bean->parent_id;
+        }
     }
 
 }

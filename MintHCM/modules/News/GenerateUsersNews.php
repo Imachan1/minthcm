@@ -47,7 +47,7 @@
 if ( !defined('sugarEntry') ) {
    define('sugarEntry', true);
 }
-require_once 'include/WebPushNotifications/NotificationTypes/WebPushUserNewsNotification.php';
+require_once 'include/Notifications/Notification.php';
 
 class GenerateUsersNews {
 
@@ -91,12 +91,17 @@ class GenerateUsersNews {
       if ( $users_news && !empty($users_news->id) ) {
          $users_news->news_read = false;
          $users_news->save();
+
+         $override = ['description' => translate("LBL_NEW_USERS_NEWS_UPDATED", "News")];
+         (new Notification())->setRelatedBeanFromBean($users_news)->setAssignedUserId($users_news->assigned_user_id)->setName($users_news->news_name)->setType('UserNews')
+         ->simpleAlert(true,$override)->WebPush(false,true,$override);
       }
    }
 
    protected function createUsersNewsForUser($user_id) {
       $user = BeanFactory::getBean('Users', $user_id);
       $news = BeanFactory::getBean('News', $this->record_id);
+
       if ( $user && !empty($user->id) && $news && !empty($news->id) ) {
          $users_news = BeanFactory::newBean('UsersNews');
          $users_news->news_id = $news->id;
@@ -105,7 +110,10 @@ class GenerateUsersNews {
          $users_news->assigned_user_name = $user->name;
          $users_news->save();
 
-         (new WebPushUserNewsNotification($users_news))->push();
+         $override = ['description' => translate("LBL_NEW_USERS_NEWS", "News")];
+
+         (new Notification())->setRelatedBeanFromBean($news)->setAssignedUserId($user_id)->setName($users_news->news_name)->setType('UserNews')
+         ->simpleAlert(true,$override)->WebPush(false,true,$override);
       }
    }
 

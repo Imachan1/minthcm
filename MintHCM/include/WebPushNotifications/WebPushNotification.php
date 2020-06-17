@@ -7,6 +7,9 @@ abstract class WebPushNotification implements WebPushNotifiable
     protected $url_redirect;
     protected $user_id;
     protected $bean;
+    protected $type; // Type required for settings validation
+    protected $related_module;
+    protected $related_id;
 
     public function __construct($bean){
         $this->bean = $bean;
@@ -36,6 +39,10 @@ abstract class WebPushNotification implements WebPushNotifiable
         return $this;
     }
 
+    public function setType($type){
+        $this->type = $type;
+        return $this;
+    }
     public function push(){
         if($this->canBePushed()){
             $bean = BeanFactory::newBean('Alerts');
@@ -44,15 +51,20 @@ abstract class WebPushNotification implements WebPushNotifiable
             $bean->assigned_user_id = $this->getUserId();
             $bean->is_read = 0;
             $bean->type = "webpush";
-            $bean->alert_type = 'custom';
             $bean->url_redirect = $this->getRedirectUrl();
+            $bean->alert_type = $this->type;
+            if(!empty($this->related_module)){
+                $bean->parent_type = $this->related_module;
+                $bean->parent_id = $this->related_id;
+            }
+
             $bean->save();
         }
     }
 
     protected function canBePushed(){
         include 'include/WebPushNotifications/notify_config.php';
-        if(in_array($this->bean->module_dir,$allow_alerts_from)){
+        if(in_array($this->type,$allow_alerts_from)){
             return true;
         }
         return false;

@@ -1,3 +1,3 @@
 <?php
 
-$allow_alerts_from = ['UsersNews','Alerts'];
+$allow_alerts_from = ['WorkSchedulesDayValid','WorkSchedulesNotPlandForTwoWeeks','UserNews'];
