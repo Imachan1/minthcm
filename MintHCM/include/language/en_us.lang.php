@@ -4160,10 +4160,10 @@ $app_strings['LBL_SALARYRANGE_SUBPANEL_TITLE'] = 'Salary Ranges';
 $app_strings['LBL_GROUPTAB6_1574082086'] = 'Employer Branding';
 $app_strings['LBL_NAV_RECRUITMENT_EB'] = 'HR';
 $app_strings['LBL_GROUPTAB5_1574081775'] = 'Onboarding / Offboarding';
-$app_strings['LBL_GROUPTAB7_1574082257'] = 'Employee';
+$app_strings['LBL_NAV_EMPLOYEE'] = 'Employee';
 $app_strings['LBL_NAV_TIME_TRACKING'] = 'Time Management';
 $app_strings['LBL_NAV_RECRUITMENT_EB'] = 'HR';
-$app_strings['LBL_GROUPTAB4_1574081420'] = 'Definitions';
+$app_strings['LBL_NAV_DEFINITIONS'] = 'Definitions';
 
 $app_strings['LBL_ABSENCES_IN_OFFICE_DASHLET'] = 'Absences in Office';
 $app_strings['LBL_MY_DAILY_WORK_SCHEDULE_DASHLET'] = 'My Daily Work Schedule';
