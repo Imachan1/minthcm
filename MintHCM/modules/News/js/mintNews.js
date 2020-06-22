@@ -5,7 +5,7 @@ mintNews = {
    init: function () {
       var _this = this;
       _this.loadNews(_this);
-      if (undefined === $('#' + _this.id).get(0) && _this.news !== '') {
+      if (undefined === $('#' + _this.id).get(0) && _this.news.length > 0) {
          $('body').append('<div id="' + _this.id + '">' + _this.getBody(_this.getHTMLFromNews(_this)) + '</div>');
       }
       if ($('div.mintNews-boxes div.mintNews-announcement:visible').length === 0) {
