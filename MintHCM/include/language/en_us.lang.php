@@ -176,6 +176,7 @@ $app_list_strings = array(
       'Tasks' => 'Tasks',
       'SalaryRanges' => 'Salary Ranges',
       'EmployeeCertificates' => 'Employee Certificates',
+      'Comments' => 'Comments',
    ),
    'moduleListSingular' => array(
       'Home' => 'Home',
@@ -4194,3 +4195,17 @@ $app_strings['LBL_TERMS_OF_EMPLOYMENT_DASHLET'] = 'Terms Of Employment';
 $app_strings['LBL_MY_CALLS_DASHLET'] = 'My Calls';
 $app_strings['LBL_RECRUITMENTS_DASHLET'] = 'Recruitments';
 $app_strings['LBL_CANDIDATURES_DASHLET'] = 'Candidatures';
+
+$app_list_strings['record_type_display_comments'] = array(
+   'News' => 'News',
+);
+
+$app_list_strings['parent_type_display_comments'] = array(
+   'News' => 'News',
+);
+
+$app_strings['LBL_COMMENTS'] = "Comments";
+$app_strings['LBL_PANEL_COMMENTS'] = "Comments";
+$app_strings['LBL_YOUR_COMMENT'] = "Your Comment";
+$app_strings['LBL_YOUR_REPLY'] = "Your Reply";
+$app_strings['LBL_SEND_BUTTON_LABEL'] = "Send";
