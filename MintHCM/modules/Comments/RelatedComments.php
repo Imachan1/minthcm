@@ -47,7 +47,7 @@ function addComment(record, parent_id = null){
     var comment_text = encodeURIComponent(document.getElementById('comment_text').value);
 
     var params = "record="+record+"&module=Comments&return_module=$module_name&action=Save&return_id="+record+"&return_action=DetailView&relate_to=$module_name&relate_id="+record+"&offset=1&description="
-        + comment_text + "&parent_id=" + record + "&parent_type=$module_name&name=" + comment_text + "&assigned_user_id=$current_user->id";
+        + comment_text + "&parent_id=" + record + "&parent_type=$module_name&name=" + comment_text.substring(0,255) + "&assigned_user_id=$current_user->id";
     if (parent_id != null) {
         params += '&reply_to_id=' + parent_id;
     }
