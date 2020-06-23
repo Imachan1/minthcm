@@ -3826,7 +3826,6 @@ $app_list_strings['appraisals_status_list'] = array(
 );
 
 $app_list_strings['group_type_list'] = array(
-   'standard' => 'Standard',
    'private' => 'Private',
    'business_unit' => 'Business Unit',
    'department' => 'Department',

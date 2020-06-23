@@ -188,7 +188,7 @@ $dictionary["Employee"]["fields"]["securitygroups_managers"] = array(
     'source' => 'non-db',
     'module' => 'SecurityGroups',
     'bean_name' => 'SecurityGroup',
-    'vname' => 'LBL_RELATIONSHIP_SECURITYGROUPS_NAME',
+    'vname' => 'LBL_SECURITYGROUPS_MANAGERS',
     'side' => 'right',
 );
 
