@@ -52,7 +52,7 @@ require_once('include/Dashlets/Dashlet.php');
 class iFrameDashlet extends Dashlet {
     var $displayTpl = 'modules/Home/Dashlets/iFrameDashlet/display.tpl';
     var $configureTpl = 'modules/Home/Dashlets/iFrameDashlet/configure.tpl';
-    var $defaultURL = 'https://minthcm.org/news/';
+    var $defaultURL = 'https://minthcm.org/';
     var $url;
     protected $allowed_schemes = array("http", "https");
 
