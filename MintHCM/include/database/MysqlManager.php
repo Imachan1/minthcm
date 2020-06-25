@@ -521,8 +521,8 @@ class MysqlManager extends DBManager {
       }
 
       // cn: using direct calls to prevent this from spamming the Logs
-      mysql_query("SET CHARACTER SET utf8", $this->database);
-      $names = "SET NAMES 'utf8'";
+      mysql_query("SET CHARACTER SET ".$this->getDefaultCharacter(), $this->database);
+      $names = "SET NAMES '".$this->getDefaultCharacter()."'";
       $collation = $this->getOption('collation');
       if ( !empty($collation) ) {
          $names .= " COLLATE '$collation'";
@@ -730,16 +730,16 @@ class MysqlManager extends DBManager {
       // cn: bug 9873 - module tables do not get created in utf8 with assoc collation
       $collation = $this->getOption('collation');
       if ( empty($collation) ) {
-         $collation = 'utf8_general_ci';
+         $collation = $this->getDefaultCollation();
       }
-      $sql = "CREATE TABLE $tablename ($columns $keys) CHARACTER SET utf8 COLLATE $collation";
-
+      $character  = $this->getDefaultCharacter();
+      $sql = "CREATE TABLE $tablename ($columns $keys) CHARACTER SET {$character} COLLATE $collation";
       if ( !empty($engine) ) {
          $sql .= " ENGINE=$engine";
       }
-
       return $sql;
    }
+
 
    /**
     * Does this type represent text (i.e., non-varchar) value?
@@ -1084,7 +1084,10 @@ class MysqlManager extends DBManager {
     * @return string
     */
    public function getDefaultCollation() {
-      return "utf8_general_ci";
+      return "utf8mb4_general_ci";
+   }
+   protected function getDefaultCharacter(){
+      return 'utf8mb4';
    }
 
    /**
@@ -1394,12 +1397,12 @@ class MysqlManager extends DBManager {
     * @param string $dbname
     */
    public function createDatabase($dbname) {
-      $this->query("CREATE DATABASE `$dbname` CHARACTER SET utf8 COLLATE utf8_general_ci", true);
+      $this->query("CREATE DATABASE `$dbname` CHARACTER SET ".$this->getDefaultCharacter()." COLLATE ".$this->getDefaultCollation(), true);
    }
 
    public function preInstall() {
-      $db->query("ALTER DATABASE `{$setup_db_database_name}` DEFAULT CHARACTER SET utf8", true);
-      $db->query("ALTER DATABASE `{$setup_db_database_name}` DEFAULT COLLATE utf8_general_ci", true);
+      $db->query("ALTER DATABASE `{$setup_db_database_name}` DEFAULT CHARACTER SET ".$db->getDefaultCharacter(), true);
+      $db->query("ALTER DATABASE `{$setup_db_database_name}` DEFAULT COLLATE ".$db->getDefaultCollation(), true);
    }
 
    /**
