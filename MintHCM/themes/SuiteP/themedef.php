@@ -132,10 +132,10 @@ if (!empty($app_strings['LBL_SUBTHEMES'])) {
     );
     $themedef['config_options']['sub_themes']['default'] = 'Mint';
 }
-$custom_files = scandir('custom/themes/SuiteP/themdefs');
+$custom_files = scandir('custom/themes/SuiteP/themedefs');
 foreach($custom_files as $file_name){
-    preg_match('/^themdef[.]\w*\.php/', $file_name, $matches);
+    preg_match('/^themedef[.]\w*\.php/', $file_name, $matches);
     if(isset($matches[0])){
-        include 'custom/themes/SuiteP/themdefs/'.$file_name;
+        include 'custom/themes/SuiteP/themedefs/'.$file_name;
     }
 }
