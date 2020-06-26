@@ -521,12 +521,14 @@ class MysqlManager extends DBManager {
       }
 
       // cn: using direct calls to prevent this from spamming the Logs
-      mysql_query("SET CHARACTER SET ".$this->getDefaultCharacter(), $this->database);
-      $names = "SET NAMES '".$this->getDefaultCharacter()."'";
       $collation = $this->getOption('collation');
+      $character = $this->getCharacter($collation);
+      $names = "SET NAMES '{$character}'";
       if ( !empty($collation) ) {
          $names .= " COLLATE '$collation'";
       }
+      mysql_query("SET CHARACTER SET {$character}", $this->database);
+
       mysql_query($names, $this->database);
 
       if ( !$this->checkError('Could Not Connect:', $dieOnError) ) {
@@ -732,7 +734,7 @@ class MysqlManager extends DBManager {
       if ( empty($collation) ) {
          $collation = $this->getDefaultCollation();
       }
-      $character  = $this->getDefaultCharacter();
+      $character  = $this->getCharacter($collation);
       $sql = "CREATE TABLE $tablename ($columns $keys) CHARACTER SET {$character} COLLATE $collation";
       if ( !empty($engine) ) {
          $sql .= " ENGINE=$engine";
@@ -1089,6 +1091,15 @@ class MysqlManager extends DBManager {
    protected function getDefaultCharacter(){
       return 'utf8mb4';
    }
+   protected function getCharacter($collation=false){
+      $character = $this->getDefaultCharacter();
+      //if(isset($sugar_config['db']['dbconfigoption']['collation']) && $character !=$sugar_config['db']['dbconfigoption']['collation']){$character=$sugar_config['db']['dbconfigoption']['collation'];}
+      if($collation!==false && !empty($collation)  && strpos($collation,$character)===false){
+         $character = array_shift(explode('_',$collation));
+      }
+      return  $character;
+   }
+
 
    /**
     * List of available collation settings
