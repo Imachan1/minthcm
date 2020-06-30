@@ -18,7 +18,8 @@ abstract class NotificationAbstractClass
 
     protected $skip_uniq_validate = false;
 
-    public function saveAsAlert($description = true,$override = array()){
+    public function saveAsAlert($description = true, $override = array())
+    {
         // when abstract - not working
     }
     abstract public function setAssignedUserId($assigned_user_id);
@@ -41,6 +42,7 @@ abstract class NotificationAbstractClass
     public function disableUniqueValidation()
     {
         $this->skip_uniq_validate = true;
+        return $this;
     }
 
     public function setActive()
