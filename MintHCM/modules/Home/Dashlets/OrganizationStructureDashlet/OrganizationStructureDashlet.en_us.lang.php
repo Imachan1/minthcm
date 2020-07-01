@@ -49,8 +49,8 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 }
 
 $dashletStrings['OrganizationStructureDashlet'] = array(
-   'LBL_TITLE' => 'Absences in Office',
-   'LBL_DESCRIPTION' => 'Absences in Office',
+   'LBL_TITLE' => 'Organization Structure',
+   'LBL_DESCRIPTION' => 'Organization Structure',
    'LBL_SAVING' => 'Parsing ...',
    'LBL_SAVED' => 'Complete',
    'LBL_CONFIGURE_TITLE' => 'Title',

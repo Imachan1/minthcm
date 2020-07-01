@@ -111,7 +111,8 @@ class OrganizationStructureDashlet extends Dashlet
         $ss->assign('id', $this->id);
         $ss->assign('height', $this->height);
         $lang = strtolower(substr($GLOBALS['current_language'], 0, 2));
-        $ss->assign('lang', $lang);
+        $jsonTree = (new OrganizationStructure)-> getTree();
+        $ss->assign('jsonTree', $jsonTree);
         $str = $ss->fetch('modules/Home/Dashlets/OrganizationStructureDashlet/OrganizationStructureDashlet.tpl');
         return parent::display($this->dashletStrings['LBL_DBLCLICK_HELP']) . $str;
     }
@@ -132,9 +133,6 @@ class OrganizationStructureDashlet extends Dashlet
         $ss->assign('id', $this->id);
         $ss->assign('DASHLET_STRINGS', $this->dashletStrings);
         $ss->assign('title', $this->title);
-        $jsonTree = (new OrganizationStructure)-> getTree();
-        $ss->assign('jsonTree', $jsonTree);
-
         return parent::displayOptions() .
         $ss->fetch('modules/Home/Dashlets/OrganizationStructureDashlet/OrganizationStructureDashletOptions.tpl');
     }

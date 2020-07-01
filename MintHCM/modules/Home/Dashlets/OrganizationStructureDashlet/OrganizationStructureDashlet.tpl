@@ -1,5 +1,5 @@
-<div id='organizational-structure'></div>
-<link rel="stylesheet" href="modules/Home/Dashlets/OrganizationStructureDashlet/css/monthly.css">
+<div id='organizational-structure' style="height:{$height}" ></div>
+<link rel="stylesheet" href="modules/Home/Dashlets/OrganizationStructureDashlet/css/organizational-structure.css">
 {literal}
 <div class="chart Treant" id="organizational-structure"></div>
 <script src="modules/Home/Dashlets/OrganizationStructureDashlet/js/raphael.js"></script>

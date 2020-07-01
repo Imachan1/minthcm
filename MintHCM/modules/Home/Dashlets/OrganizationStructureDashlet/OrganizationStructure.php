@@ -47,13 +47,13 @@ class OrganizationStructure
 {
     protected function getQuery()
     {
-        $sql =
-            "SELECT
+        return "SELECT
                 concat('{\"name\":\"',ou.name,'\"}') as text
                 , ou.type AS 'HTMLclass'
                 , concat('_',md5(ou.id)) AS oid
                 , if(ou.parent_id is null or ou.parent_id='', '', concat('_',md5(ou.parent_id))) AS parent_id
                 , if(ou.parent_id is null or ou.parent_id='', '', concat('_',md5(ou.parent_id))) AS parent_id2
+                , if(ou.parent_id='', false, ou.type='department')  as  collapsed
             FROM organizationalunits ou
             WHERE ou.deleted=0
         UNION ALL
@@ -63,6 +63,7 @@ class OrganizationStructure
                 , concat('_',md5(concat(ou.id,u.id))) AS oid
                 , concat('_',md5( ou.id)) AS parent_id
                 , concat('_',md5( ou.id)) AS parent_id2
+                , '' as  collapsed
             FROM organizationalunits ou
             INNER JOIN users u ON ou.current_manager_id=u.id and u.deleted=0
             INNER JOIN positions p on u.position_id = p.id
@@ -74,6 +75,7 @@ class OrganizationStructure
                 , concat('_',md5(concat(ou.id,u.id))) AS oid
                 , concat('_',md5(concat(ou.id,u.reports_to_id))) AS parent_id
                 , concat('_',md5(concat(ou.id,ou.current_manager_id))) AS parent_id2
+                , '' as  collapsed
             FROM
                 organizationalunits ou
             INNER JOIN users u
@@ -81,14 +83,18 @@ class OrganizationStructure
             INNER JOIN positions p on u.position_id = p.id
             WHERE u.status='Active'
 ";
+
     }
     protected function getDateBySQL()
     {
+        global $db;
         $sql = $this->getQuery();
         $sql_result = $db->query($sql);
+        $ous = [];
         while ($row = $db->fetchByAssoc($sql_result)) {
             $ous[] = $row;
         };
+        return $ous;
     }
     protected function getDateArray()
     {
@@ -140,6 +146,7 @@ class OrganizationStructure
     }
     protected function getDate()
     {
+        return $this->getDateBySQL();
         return $this->getDateArray();
     }
 
@@ -173,16 +180,18 @@ class OrganizationStructure
         return $branch;
     }
 
-    protected function getTree()
+    public function getTree()
     {
         $organizationalunits = $this->getDate();
         array_walk($organizationalunits, function (&$element, $key) {
-            $t = json_decode(stripslashes($element["text"]));
+            $t = json_decode(stripslashes(htmlspecialchars_decode($element["text"])));
             if ($t) {
                 $element["text"] = $t;
             }
+            if (empty($element["collapsed"])) {
+                unset($element["collapsed"]);
+            }
         });
-
         $tree = $this->buildTree($organizationalunits);
         return json_encode($tree);
     }
