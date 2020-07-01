@@ -104,7 +104,15 @@ $dashlets_definitions = array(
         ),
         'fileLocation' => 'modules/Home/Dashlets/LeaveOfAbsenceDashlet/LeaveOfAbsenceDashlet.php',
     ),
-
+    'main_organization_structure_dashlet' => array(
+        'className' => 'OrganizationStructureDashlet',
+        'module' => 'Home',
+        'options' => array(
+            'title' => 'LBL_ORGANIZATION_STRUCTURE_DASHLET',
+            'autoRefresh' => '-1',
+        ),
+        'fileLocation' => 'modules/Home/Dashlets/OrganizationStructureDashlet/OrganizationStructureDashlet.php',
+    ),
     'main_daily_work_schedule_dashlet' => array(
         'className' => 'WorkSchedulesDashlet',
         'module' => 'WorkSchedules',
