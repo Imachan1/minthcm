@@ -42,7 +42,6 @@ $(document).ready(function () {
       if (date_start != false && date_end != false) {
          var diff_minutes = getMomentsDiffInSeconds(date_start, date_end) / 60;
          if (diff_minutes == 30) {
-            debugger;
             $('#previous_diff_minutes').val(30);
             updateDuration();
             updateDateEndByDuration();
