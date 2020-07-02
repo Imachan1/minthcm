@@ -54,16 +54,6 @@ class OrganizationStructureDashlet extends Dashlet
     protected $url = 'http://www.sugarcrm.com/crm/aggregator/rss/1';
     protected $height = '200'; // height of the pad
     protected $images_dir = 'modules/Home/Dashlets/OrganizationStructureDashlet/images';
-    protected $show_days_of_week = [
-        'sunday' => false, // 0 - sunday
-        'monday' => true,
-        'tuesday' => true,
-        'wednesday' => true,
-        'thursday' => true,
-        'friday' => true,
-        'saturday' => false, // 6 - saturday
-    ];
-    protected $first_day_of_week = 1;
 
     /**
      * Constructor
@@ -110,8 +100,10 @@ class OrganizationStructureDashlet extends Dashlet
         $ss->assign('DASHLET_STRINGS', $this->dashletStrings);
         $ss->assign('id', $this->id);
         $ss->assign('height', $this->height);
+        $ss->assign('rootElement', $this->getRootElement());
+
         $lang = strtolower(substr($GLOBALS['current_language'], 0, 2));
-        $jsonTree = (new OrganizationStructure)-> getTree();
+        $jsonTree = (new OrganizationStructure)->getTree();
         $ss->assign('jsonTree', $jsonTree);
         $str = $ss->fetch('modules/Home/Dashlets/OrganizationStructureDashlet/OrganizationStructureDashlet.tpl');
         return parent::display($this->dashletStrings['LBL_DBLCLICK_HELP']) . $str;
@@ -121,18 +113,41 @@ class OrganizationStructureDashlet extends Dashlet
     {
 
     }
+    public function getRootElement()
+    {
+        $logo = $this->getLogo();
+        if (!empty($logo)) {
+            return 'image: "' . $logo . '",HTMLclass: "rootWithImage" ';
+        }
+        $text = $this->getBrowserTitle();
+        if (!empty($text)) {
+            return 'text: {name: "' . $text . '"} ';
+        }
+    }
+    public function getBrowserTitle()
+    {
+        return (!empty($GLOBALS['system_config']->settings['system_name']) ? urlencode($GLOBALS['system_config']->settings['system_name']) : '');
+    }
+    public function getLogo()
+    {
+        $themeObject = SugarThemeRegistry::current();
+        $companyLogoURL = $themeObject->getImageURL('company_logo.png');
+        $companyLogoURL_arr = explode('?', $companyLogoURL);
+        $companyLogoURL = $companyLogoURL_arr[0];
+        return $companyLogoURL;
+    }
 
     /**
      * @see Dashlet::displayOptions()
      */
     public function displayOptions()
     {
-
         global $app_strings, $mod_strings;
         $ss = new Sugar_Smarty();
         $ss->assign('id', $this->id);
         $ss->assign('DASHLET_STRINGS', $this->dashletStrings);
         $ss->assign('title', $this->title);
+        $ss->assign('height', $this->height);
         return parent::displayOptions() .
         $ss->fetch('modules/Home/Dashlets/OrganizationStructureDashlet/OrganizationStructureDashletOptions.tpl');
     }
