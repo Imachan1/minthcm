@@ -3,15 +3,14 @@ mintNews = {
    id: "mintNews",
    news: [],
    init: function () {
-      var _this = this;
-      _this.loadNews(_this);
-      if (undefined === $('#' + _this.id).get(0) && _this.news.length > 0) {
-         $('body').append('<div id="' + _this.id + '">' + _this.getBody(_this.getHTMLFromNews(_this)) + '</div>');
+      this.loadNews();
+      if (undefined === $('#' + this.id).get(0) && this.news.length > 0) {
+         $('body').append('<div id="' + this.id + '">' + this.getBody(this.getHTMLFromNews()) + '</div>');
       }
       if ($('div.mintNews-boxes div.mintNews-announcement:visible').length === 0) {
          this.addCloseButton();
       }
-   },
+   }.bind(this),
    getBody: function (news) {
       var body = _.template('<div class="mintNews-container"><div class="mintNews-header"><%= title %></div><div class="mintNews-boxes"><%= news %></div></div>');
       return body({
@@ -19,25 +18,26 @@ mintNews = {
          news: news
       });
    },
-   loadNews: function (_this) {
+   loadNews: function () {
       viewTools.api.callCustomApi({
          module: 'UsersNews',
          action: 'getNewsForUser',
+         async: 'sync',
          callback: function (data) {
             if (!_.isEmpty(data)) {
                data.forEach(function (users_news) {
-                  _this.news.push(new News(users_news.news_type, users_news.id, users_news.name, users_news.content_of_announcement, viewTools.language.get('News', 'LBL_NEWS_' + users_news.news_type.toUpperCase() + '_BTN')));
+                  this.news.push(new News(users_news.news_type, users_news.id, users_news.name, users_news.content_of_announcement, viewTools.language.get('News', 'LBL_NEWS_' + users_news.news_type.toUpperCase() + '_BTN')));
                });
             }
-         }
+         }.bind(this)
       });
    },
-   getHTMLFromNews: function (_this) {
+   getHTMLFromNews: function () {
       var html = '';
-      _this.news.forEach(function (news_object) {
-         console.log(news_object.getBoxTemplate());
-         html += news_object.getBoxTemplate();
-      });
+      news_object.loadTpl();
+      this.news.forEach(function (news_object) {
+         html += news_object.getNewsBody();
+      }.bind(this));
       return html;
    },
    closeBox: function (record_id, type) {
@@ -62,7 +62,6 @@ mintNews = {
       $('#mintNews .mintNews-header').append('<span class="suitepicon suitepicon-action-clear" onclick="mintNews.close();"></span>');
    },
    close: function () {
-      var _this = this;
-      $('#' + _this.id).fadeOut();
-   }
+      $('#' + this.id).fadeOut();
+   }.bind(this)
 };
