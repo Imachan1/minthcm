@@ -47,15 +47,18 @@ class OrganizationStructure
 {
     protected function getQuery()
     {
+        //organizationalunits -> securitygroups
+        //ou.type -> group_type ='department', 'team'
+
         return "SELECT
                 concat('{\"name\":\"',ou.name,'\"}') as text
-                , ou.type AS 'HTMLclass'
+                , ou.group_type AS 'HTMLclass'
                 , concat('_',md5(ou.id)) AS oid
                 , if(ou.parent_id is null or ou.parent_id='', '', concat('_',md5(ou.parent_id))) AS parent_id
                 , if(ou.parent_id is null or ou.parent_id='', '', concat('_',md5(ou.parent_id))) AS parent_id2
-                , if(ou.parent_id='', false, ou.type='department')  as  collapsed
-            FROM organizationalunits ou
-            WHERE ou.deleted=0
+                , if(ou.parent_id='', false, ou.group_type='department')  as  collapsed
+            FROM securitygroups ou
+            WHERE ou.deleted=0 AND ou.group_type IN ('department', 'team')
         UNION ALL
             SELECT
                 concat('{\"name\":\"',p.name,'\",\"title\":\"',u.first_name, ' ',u.last_name,'\"}') as text ,
@@ -64,10 +67,10 @@ class OrganizationStructure
                 , concat('_',md5( ou.id)) AS parent_id
                 , concat('_',md5( ou.id)) AS parent_id2
                 , '' as  collapsed
-            FROM organizationalunits ou
+            FROM securitygroups ou
             INNER JOIN users u ON ou.current_manager_id=u.id and u.deleted=0
             INNER JOIN positions p on u.position_id = p.id
-            WHERE ou.deleted=0
+            WHERE ou.deleted=0  AND ou.group_type IN ('department', 'team')
         UNION ALL
             SELECT
                 concat('{\"name\":\"',p.name,'\",\"title\":\"',u.first_name, ' ',u.last_name,'\"}') as text
@@ -77,11 +80,11 @@ class OrganizationStructure
                 , concat('_',md5(concat(ou.id,ou.current_manager_id))) AS parent_id2
                 , '' as  collapsed
             FROM
-                organizationalunits ou
+                securitygroups ou
             INNER JOIN users u
                 ON u.organizationalunit_id = ou.id  and u.id !=ou.current_manager_id
             INNER JOIN positions p on u.position_id = p.id
-            WHERE u.status='Active'
+            WHERE u.status='Active'  AND ou.group_type IN ('department', 'team')
 ";
 
     }

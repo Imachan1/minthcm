@@ -1,4 +1,5 @@
-/* body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { margin:0; padding:0; }
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { margin:0; padding:0; }
 table { border-collapse:collapse; border-spacing:0; }
 fieldset,img { border:0; }
 address,caption,cite,code,dfn,em,strong,th,var { font-style:normal; font-weight:normal; }
@@ -6,32 +7,102 @@ caption,th { text-align:left; }
 h1,h2,h3,h4,h5,h6 { font-size:100%; font-weight:normal; }
 q:before,q:after { content:''; }
 abbr,acronym { border:0; }
-body { background: #fff; } */
+body { background: #fff; }
 
-.Treant { position: relative; overflow: hidden; padding: 0 !important; }
-.Treant > .node,
-.Treant > .pseudo { position: absolute; display: block; visibility: hidden; }
-.Treant.loaded .node,
-.Treant.loaded .pseudo { visibility: visible; }
-.Treant > .pseudo { width: 0; height: 0; border: none; padding: 0; }
-.Treant .collapse-switch { width: 3px; height: 3px; display: block; border: 1px solid black; position: absolute; top: 1px; right: 1px; cursor: pointer; }
-.Treant .collapsed .collapse-switch { background-color: #868DEE; }
-.Treant > .node img {	border: none; float: left; }
 
-.Treant > .node { padding: 3px; border: 1px solid #484848; border-radius: 3px; }
+.Treant {
+    position: relative;
+    overflow: hidden;
+    padding: 0 !important;
+}
+
+.Treant>.node, .Treant>.pseudo {
+    position: absolute;
+    display: block;
+    visibility: hidden;
+}
+
+.Treant.loaded .node, .Treant.loaded .pseudo {
+    visibility: visible;
+}
+
+.Treant>.pseudo {
+    width: 0;
+    height: 0;
+    border: none;
+    padding: 0;
+}
+
+.Treant .collapse-switch {
+    width: 3px;
+    height: 3px;
+    display: block;
+    border: 1px solid black;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    cursor: pointer;
+}
+
+.Treant .collapsed .collapse-switch {
+    background-color: #868DEE;
+}
+
+.Treant>.node img {
+    border: none;
+    float: left;
+}
+
+.Treant>.node {
+    padding: 3px;
+    border: 1px solid #484848;
+    border-radius: 3px;
+}
+
 /* .Treant > .node img { width: 100%; height: 100%; } */
-.Treant .collapse-switch { width: 10px; height: 10px; border: 1px solid red ; }
-.Treant .collapsed .collapse-switch { width: 10px; height: 10px; border: 1px solid blue ; }
-.Treant .node.collapsed { border: 2px solid #000;   }
+
+.Treant .collapse-switch {
+    width: 10px;
+    height: 10px;
+    border: 1px solid red;
+}
+
+.Treant .collapsed .collapse-switch {
+    width: 10px;
+    height: 10px;
+    border: 1px solid blue;
+}
+
+.Treant .node.collapsed {
+    border: 2px solid #000;
+}
+
 /* background-color: #f07c00;  */
-.Treant .node.collapsed .collapse-switch { background: none; }
 
+.Treant .node.collapsed .collapse-switch {
+    background: none;
+}
 
+.chart {
+    margin: 5px;
+    width: 100%;
+}
+.Treant  {
+    color: #000;
+}
 
-.chart { margin: 5px; width: 100%; }
-.Treant > p { font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; font-weight: bold; font-size: 12px; }
-
-.node-name { font-weight: bold;}
+.Treant>p {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+}
+.node-name {
+    font-weight: bold;
+    font-size: 12px;
+}
+.Treant p {
+    font-size: 12px;
+}
 
 .nodeExample1 {
     padding: 2px;
@@ -44,18 +115,20 @@ body { background: #fff; } */
     font-family: Tahoma;
     font-size: 12px;
 }
+
 .nodeExample1 img {
-    margin-right:  10px;
+    margin-right: 10px;
 }
-.node.nodeExample1.company,
-.company {
+
+.node.nodeExample1.company, .company {
     padding: 4px;
     width: 150px;
 }
-.node.nodeExample1.company img,
-.company img {
+
+.node.nodeExample1.company img, .company img {
     width: 150px;
 }
+
 .department {
     background-color: #D3D3C7;
     /* font-size: 18px;
@@ -63,8 +136,9 @@ body { background: #fff; } */
     height: auto;
     padding: 5px; */
 }
+
 .team {
-    background-color: #A2BDFD;
+    background-color: #eeeeee;
     /* font-size: 16px;
     width:auto;
     height: auto;
