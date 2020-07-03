@@ -57,12 +57,5 @@ $dashletStrings['OrganizationStructureDashlet'] = array(
    'LBL_DBLCLICK_HELP' => '',
    'LBL_SAVE_BUTTON_LABEL' => 'Save',
    'LBL_CONFIGURE_TITLE' => 'Dashlet Title',
-   'LBL_SHOW_DAYS_OF_WEEK' => 'Show Days of Week',
-   'LBL_SUNDAY' => 'Sunday',
-   'LBL_MONDAY' => 'Monday',
-   'LBL_TUESDAY' => 'Tuesday',
-   'LBL_WEDNESDAY' => 'Wednesday',
-   'LBL_THURSDAY' => 'Thursday',
-   'LBL_FRIDAY' => 'Friday',
-   'LBL_SATURDAY' => 'Saturday',
+   'LBL_USE_IMAGE' => 'Use Image in root',
 );

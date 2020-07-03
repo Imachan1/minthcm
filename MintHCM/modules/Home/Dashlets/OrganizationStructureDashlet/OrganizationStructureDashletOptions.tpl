@@ -66,6 +66,13 @@
                 </td>
             </tr>
             <tr>
+                <td valign='top' nowrap class='dataLabel'>{$DASHLET_STRINGS.LBL_USE_IMAGE}</td>
+                <td valign='top' class='dataField'>
+                    <input type="checkbox" id="use_image" name="use_image" value="true" {if $use_image==true}checked{/if}>
+                    {* <label for="use_image">{$DASHLET_STRINGS.LBL_SUNDAY}</label> *}
+                </td>
+            </tr>
+            <tr>
                 <td align="right" colspan="2">
                     <input type='submit' class='button' value='{$saveLbl}'>
                 </td>

@@ -53,6 +53,7 @@ class OrganizationStructureDashlet extends Dashlet
 {
     protected $url = 'http://www.sugarcrm.com/crm/aggregator/rss/1';
     protected $height = '200'; // height of the pad
+    protected $use_image = false;
     protected $images_dir = 'modules/Home/Dashlets/OrganizationStructureDashlet/images';
 
     /**
@@ -72,6 +73,9 @@ class OrganizationStructureDashlet extends Dashlet
 
         if (!empty($def['url'])) {
             $this->url = $def['url'];
+        }
+        if (!empty($def['use_image'])) {
+            $this->use_image = $def['use_image'];
         }
 
         if (!empty($def['title'])) {
@@ -99,6 +103,7 @@ class OrganizationStructureDashlet extends Dashlet
         $ss->assign('saved', $this->dashletStrings['LBL_SAVED']);
         $ss->assign('DASHLET_STRINGS', $this->dashletStrings);
         $ss->assign('id', $this->id);
+        $ss->assign('use_image', $this->use_image);
         $ss->assign('height', $this->height);
         $ss->assign('rootElement', $this->getRootElement());
 
@@ -115,9 +120,11 @@ class OrganizationStructureDashlet extends Dashlet
     }
     public function getRootElement()
     {
-        $logo = $this->getLogo();
-        if (!empty($logo)) {
-            return 'image: "' . $logo . '",HTMLclass: "rootWithImage" ';
+        if ($this->use_image) {
+            $logo = $this->getLogo();
+            if (!empty($logo)) {
+                return 'image: "' . $logo . '",HTMLclass: "rootWithImage" ';
+            }
         }
         $text = $this->getBrowserTitle();
         if (!empty($text)) {
