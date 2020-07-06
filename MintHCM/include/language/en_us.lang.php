@@ -344,7 +344,7 @@ $app_list_strings = array(
         'Closed Won' => 'Closed Won',
         'Closed Lost' => 'Closed Lost',
     ),
-    'sales_probability_dom' => // keys must be the same as sales_stage_domarray(
+    'sales_probability_dom' => array( // keys must be the same as sales_stage_dom
     'Prospecting' => '10',
     'Qualification' => '20',
     'Needs Analysis' => '25',

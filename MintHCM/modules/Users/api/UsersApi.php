@@ -2,9 +2,10 @@
 
 class UsersApi
 {
-    public function isUserAllowedToCreate()
+    public function isUserAllowedToCreateCalendarEvents()
     {
-        $test = ACLController::checkAccess('WorkSchedules', 'edit');
-        return ACLController::checkAccess('WorkSchedules', 'edit') && ACLController::checkAccess('Meetings', 'edit') && ACLController::checkAccess('Calls', 'edit');
+        return ACLController::checkAccess('WorkSchedules', 'edit')
+        || ACLController::checkAccess('Meetings', 'edit')
+        || ACLController::checkAccess('Calls', 'edit');
     }
 }
