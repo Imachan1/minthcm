@@ -1,6 +1,6 @@
 class News {
 
-    news_tpl = 'themes/SuiteP/modules/News/tpls/News.tpl';
+    news_tpl = 'index.php?module=News&action=getNewsTpl';
     constructor(type, record_id, name, content_of_announcement, button_text) {
         this.news_type = type;
         this.record_id = record_id;
