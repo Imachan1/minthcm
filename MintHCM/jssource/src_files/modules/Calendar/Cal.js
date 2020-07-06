@@ -1064,15 +1064,15 @@ $($.fullCalendar).ready(function () {
                }
                viewTools.api.callCustomApi({
                   module: 'Users',
-                  action: 'isUserAllowedToCreate',
-                  dataPOST: {
-                     user_id: user_id
-                  },
+                  action: 'isUserAllowedToCreateCalendarEvents',
                   callback: function (data) {
                      if (data) {
                         CAL.dialog_create(date_start, date_end, user_id);
                      } else {
-                        alert(viewTools.language.get('app_strings', 'LBL_CANNOT_CREATE_CALENDAR_EVENTS'));
+                        viewTools.GUI.statusBox.showStatus(
+                           viewTools.language.get('app_strings', 'LBL_CANNOT_CREATE_CALENDAR_EVENTS'),
+                           'notice'
+                        );
                      }
                   }
                });

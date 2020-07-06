@@ -214,3 +214,4 @@ function validateWorkScheduleCreatedByPeriodicity() {
         });
     }
     return result;
+}

@@ -237,15 +237,15 @@ CAL.remove_edit_dialog(); var cal_loaded = true; $($.fullCalendar).ready(functio
                     if ($(view.target).hasClass('fc-day-top') && date_duration <= 86400000) { var dateStr = $(view.target).attr('data-date'); var dateMoment = new moment(dateStr); var url = 'index.php?module=Calendar&action=index&view=agendaDay&year=' + dateMoment.format('YYYY') + '&month=' + dateMoment.format('MM') + '&day=' + dateMoment.format('DD') + '&hour=0'; window.location.href = url; return false; }
                     viewTools.api.callCustomApi({
                         module: 'Users',
-                        action: 'isUserAllowedToCreate',
-                        dataPOST: {
-                            user_id: user_id
-                        },
+                        action: 'isUserAllowedToCreateCalendarEvents',
                         callback: function (data) {
                             if (data) {
                                 CAL.dialog_create(date_start, date_end, user_id);
                             } else {
-                                alert(viewTools.language.get('app_strings', 'LBL_CANNOT_CREATE_CALENDAR_EVENTS'));
+                                viewTools.GUI.statusBox.showStatus(
+                                    viewTools.language.get('app_strings', 'LBL_CANNOT_CREATE_CALENDAR_EVENTS'),
+                                    'notice'
+                                );
                             }
                         }
                     });
