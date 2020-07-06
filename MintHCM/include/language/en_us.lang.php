@@ -4149,7 +4149,7 @@ $app_strings['LBL_PDF_TEMPLATE'] = 'Download PDF';
 
 $app_list_strings['pdf_module_list']=array (
   'Delegations' => 'Delegations',
-  'Employee' => 'Employees',
+  'Employees' => 'Employees',
 );
 
 $app_list_strings['alert_type_list'] = array(
