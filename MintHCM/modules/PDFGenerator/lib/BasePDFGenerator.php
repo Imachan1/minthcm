@@ -95,11 +95,6 @@ class BasePDFGenerator {
    }
 
    protected function getBean($module, $id, $parent_bean = null) {
-      global $beanList;
-      $bean_list_flipped = array_flip($beanList);
-      if ( in_array($module, $beanList) && isset($bean_list_flipped[$module]) ) {
-         $module = $bean_list_flipped[$module];
-      }
       $bean = BeanFactory::getBean($module, $id);
       $bean->load_relationships();
       $bean->call_custom_logic("before_pdf_generate", array( 'parent_bean' => $parent_bean ));
