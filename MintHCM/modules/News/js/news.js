@@ -1,6 +1,7 @@
 class News {
 
-    news_tpl = 'themes/SuiteP/modules/News/tpls/News.tpl';
+    tpl = 'themes/SuiteP/tpls/News.tpl';
+    static template;
 
     constructor(type, record_id, name, content_of_announcement, button_text) {
         this.news_type = type;
@@ -10,14 +11,8 @@ class News {
         this.button_text = button_text;
     }
 
-    getBoxTemplate() {
-        debugger;
-        return this.getNewsBody();
-    }
-
     getNewsBody() {
-        var body = this.loadTpl(this.news_tpl);
-        return body({
+        return this.loadTpl()({
             type: this.news_type,
             record_id: this.record_id,
             name: this.name,
@@ -26,15 +21,16 @@ class News {
         });
     }
 
-    loadTpl(tpl) {
-        var template = '';
-        $.ajax({
-            url: tpl,
-            success: function (result) {
-                template = result;
-            },
-            async: false,
-        });
-        return _.template(template);
+    loadTpl() {
+        if (!this.template) {
+            $.ajax({
+                url: this.tpl,
+                async: false,
+                success: function (result) {
+                    this.template = _.template(result);
+                }.bind(this),
+            });
+        }
+        return this.template;
     }
 }
