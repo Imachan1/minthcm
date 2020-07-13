@@ -55,7 +55,6 @@ class WorkSchedulesController extends SugarController
                 } else if (ACLController::checkAccess('Calls', 'edit')) {
                     SugarApplication::redirect('index.php?module=Calls&action=EditView&return_module=Home&date_start=' . $_GET['date_start'] . '&assigned_user_id=' . $_GET['assigned_user_id']);
                 }
-
             }
         }
         parent::process();

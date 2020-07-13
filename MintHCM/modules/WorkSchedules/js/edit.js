@@ -157,7 +157,6 @@ function createActivitySelectDialog() {
                 click: function () {
                     var date_start = convertDateFieldToMoment("date_start");
                     if ($('#previous_diff_minutes').val() == 30) {
-                        debugger;
                         var date_end = date_start.clone();
                         delete date_end._i;
                         date_end.add(1, 'h');
@@ -215,3 +214,4 @@ function validateWorkScheduleCreatedByPeriodicity() {
         });
     }
     return result;
+}
