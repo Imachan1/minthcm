@@ -52,12 +52,15 @@ class CommentsApi
 
     public function getRelatedNewsHTML($args)
     {
-        if (isset($args['module']) && isset($args['record_id'])) {
-            $bean = BeanFactory::getBean($args['module'], $args['record_id']);
-            if ($bean->id === $args['record_id']) {
-                return display_comments($bean);
+        if (isset($args['comments_module']) && isset($args['comments_record_id'])) {
+            $bean = BeanFactory::getBean($args['comments_module'], $args['comments_record_id']);
+            if ($bean->id === $args['comments_record_id']) {
+
+                echo display_comments_for_record($bean, $args['comments_record_id'], true);
+                //return '';
             }
         }
+        echo '';
         return '';
     }
 

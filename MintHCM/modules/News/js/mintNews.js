@@ -22,7 +22,15 @@ mintNews = {
          callback: function (data) {
             if (!_.isEmpty(data)) {
                data.forEach(function (users_news) {
-                  this.news.push(new News(users_news.news_type, users_news.id, users_news.name, users_news.content_of_announcement, viewTools.language.get('News', 'LBL_NEWS_' + users_news.news_type.toUpperCase() + '_BTN')));
+                  this.news.push(new News(
+                     users_news.news_type,
+                     users_news.id,
+                     users_news.name,
+                     users_news.content_of_announcement,
+                     viewTools.language.get('News', 'LBL_NEWS_' + users_news.news_type.toUpperCase() + '_BTN'),
+                     users_news.comments
+                  )
+                  );
                }.bind(this));
             }
          }.bind(this)

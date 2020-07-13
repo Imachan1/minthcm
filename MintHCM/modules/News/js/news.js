@@ -3,12 +3,13 @@ class News {
     tpl = 'themes/SuiteP/tpls/News.tpl';
     static template;
 
-    constructor(type, record_id, name, content_of_announcement, button_text) {
+    constructor(type, record_id, name, content_of_announcement, button_text, comments) {
         this.news_type = type;
         this.record_id = record_id;
         this.name = name;
         this.content_of_announcement = content_of_announcement;
         this.button_text = button_text;
+        this.comments = comments;
     }
 
     getNewsBody() {
@@ -18,6 +19,7 @@ class News {
             name: this.name,
             content_of_announcement: this.content_of_announcement,
             button_text: this.button_text,
+            comments: this.comments,
         });
     }
 
