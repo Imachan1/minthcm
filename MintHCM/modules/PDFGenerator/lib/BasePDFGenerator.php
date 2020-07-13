@@ -166,8 +166,6 @@ class BasePDFGenerator
     protected function parse($tpl_str, $bean, $relationship = "", $counter = 1, $depth = 0)
     {
         if ($tpl_str != '') {
-            require_once 'include/Sugar_Smarty.php';
-            $ss = new Sugar_Smarty();
             $field_defs = $bean->field_defs;
             usort($field_defs, 'BasePDFGenerator::sortByNameLength');
             $rel = $this->getRelationshipForParse($relationship);
@@ -176,20 +174,36 @@ class BasePDFGenerator
                 $bean->fixUpFormatting();
                 $field_defs = $bean->field_defs;
                 usort($field_defs, 'BasePDFGenerator::sortByNameLength');
+                //eVolpe #72254 START
+                $tpl_str = $this->parseSmarty($field_defs, $tpl_str);
+                //eVolpe #72254 END
                 foreach ($field_defs as &$field) {
                     if ($field['type'] == 'currency') {
                         $currency = new Currency();
                         $currency->retrieve($bean->currency_id);
                     }
-                    $ss->assign($field['name'], $this->prepareFieldValue($field, $bean));
                     $tpl_str = $this->prepareField($field, $bean, $tpl_str, $rel);
                 }
-                $tpl_str = $ss->fetch($this->pdftemplate->getFilename());
                 $tpl_str = $this->replaceCountAndCurrency($tpl_str, $relationship, $counter, $currency);
             }
         }
         return $tpl_str;
     }
+
+    //eVolpe #72254 START
+    protected function parseSmarty($field_defs, $tpl_str)
+    {
+
+        require_once 'include/Sugar_Smarty.php';
+        $ss = new Sugar_Smarty();
+
+        foreach ($field_defs as &$field) {
+            $ss->assign($field['name'], $this->prepareFieldValue($field, $bean));
+        }
+        $tpl_str = $ss->fetch($this->pdftemplate->getFilename());
+        return $tpl_str;
+    }
+    //eVolpe #72254 END
 
     protected function analize($tpl, $bean)
     {
@@ -384,9 +398,11 @@ class BasePDFGenerator
 
     public function prepareTplCode($pdftemplate)
     {
+        //Contrain #72254 START
         require_once 'include/Sugar_Smarty.php';
         $ss = new Sugar_Smarty();
         $ss_html = $ss->fetch($pdftemplate->getFilename());
+        //Contrain #72254 END
         $template = str_replace('&nbsp;', ' ', $ss_html);
 
         //$tpl2 = preg_replace(array('/<!--repeat[="_ A-Za-z0-9]+-->/e', '/<!--endrepeat-->/'), array('preg_replace(array("/<!--repeat/", "/-->/"), array("<repeat", ">"), "$0")', '</repeat>'), $template);

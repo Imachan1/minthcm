@@ -97,7 +97,7 @@ class PDFTemplates extends PDFTemplates_sugar
         }
         return $this;
     }
-
+    //eVolpe #72254 START
     public function getFilename()
     {
         $filename = "";
@@ -106,5 +106,6 @@ class PDFTemplates extends PDFTemplates_sugar
         }
         return $filename;
     }
+    //eVolpe #72254 END
 
 }
