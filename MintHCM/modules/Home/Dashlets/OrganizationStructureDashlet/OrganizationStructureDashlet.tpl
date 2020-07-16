@@ -1,7 +1,6 @@
 <div id='organizational-structure-{$id}' style="height:{$height}"></div>
 <link rel="stylesheet" href="modules/Home/Dashlets/OrganizationStructureDashlet/css/organizational-structure.css">
 {literal}
-    <div class="chart Treant" id="organizational-structure"></div>
     <script src="modules/Home/Dashlets/OrganizationStructureDashlet/js/raphael.js"></script>
     <script src="modules/Home/Dashlets/OrganizationStructureDashlet/js/Treant.js"></script>
     <script src="modules/Home/Dashlets/OrganizationStructureDashlet/js/jquery.min.js"></script>

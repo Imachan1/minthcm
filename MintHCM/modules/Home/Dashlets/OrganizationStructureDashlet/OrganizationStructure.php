@@ -49,7 +49,7 @@ class OrganizationStructure
     {
         //organizationalunits -> securitygroups
         //ou.type -> group_type ='department', 'team'
-
+        $siteURL = $GLOBALS['sugar_config']['site_url'];
         return "SELECT
                 concat('{\"name\":\"',ou.name,'\"}') as text
                 , ou.group_type AS 'HTMLclass'
@@ -61,8 +61,9 @@ class OrganizationStructure
             WHERE ou.deleted=0 AND ou.group_type IN ('department', 'team')
         UNION ALL
             SELECT
-                concat('{\"name\":\"',p.name,'\",\"title\":\"',u.first_name, ' ',u.last_name,'\"}') as text ,
-                ' '  AS 'HTMLclass'
+                -- concat('{\"name\":\"',p.name,'\",\"title\":\"',u.first_name, ' ',u.last_name,'\"}') as text
+                concat('{\"name\":\"',p.name,'\",\"title\": {\"val\": \"',u.first_name, ' ',u.last_name,'\", \"href\":\"{$siteURL}/index.php?module=Employees&action=DetailView&record=',u.id,'\"}}') as text
+                , ' '  AS 'HTMLclass'
                 , concat('_',md5(concat(ou.id,u.id))) AS oid
                 , concat('_',md5( ou.id)) AS parent_id
                 , concat('_',md5( ou.id)) AS parent_id2
@@ -73,8 +74,9 @@ class OrganizationStructure
             WHERE ou.deleted=0  AND ou.group_type IN ('department', 'team')
         UNION ALL
             SELECT
-                concat('{\"name\":\"',p.name,'\",\"title\":\"',u.first_name, ' ',u.last_name,'\"}') as text
-                , ' ' AS 'HTMLclass'
+                -- concat('{\"name\":\"',p.name,'\",\"title\":\"',u.first_name, ' ',u.last_name,'\"}') as text
+                concat('{\"name\":\"',p.name,'\",\"title\": {\"val\": \"',u.first_name, ' ',u.last_name,'\", \"href\":\"{$siteURL}/index.php?module=Employees&action=DetailView&record=',u.id,'\"}}') as text
+                , '-' AS 'HTMLclass'
                 , concat('_',md5(concat(ou.id,u.id))) AS oid
                 , concat('_',md5(concat(ou.id,u.reports_to_id))) AS parent_id
                 , concat('_',md5(concat(ou.id,ou.current_manager_id))) AS parent_id2
@@ -191,9 +193,11 @@ class OrganizationStructure
             if ($t) {
                 $element["text"] = $t;
             }
+
             if (empty($element["collapsed"])) {
                 unset($element["collapsed"]);
             }
+
         });
         $tree = $this->buildTree($organizationalunits);
         return json_encode($tree);
