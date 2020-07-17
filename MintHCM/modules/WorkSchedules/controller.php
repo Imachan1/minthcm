@@ -48,10 +48,17 @@ class WorkSchedulesController extends SugarController
 
     public function process()
     {
+        global $timedate;
         if (isset($_GET['redirected_from_calendar'])) {
             if (!ACLController::checkAccess('WorkSchedules', 'edit')) {
                 if (ACLController::checkAccess('Meetings', 'edit')) {
-                    SugarApplication::redirect('index.php?module=Meetings&action=EditView&return_module=Home&date_start=' . $_GET['date_start'] . '&date_end=' . $_GET['date_end'] . '&assigned_user_id=' . $_GET['assigned_user_id']);
+                    $date_diff = getDateTimeObject($timedate->to_db($_GET['date_end']))->diff(getDateTimeObject($timedate->to_db($_GET['date_start'])));
+                    if ($date_diff->i == 30 && $date_diff->h == 0) {
+                        $date_end = date_modify(getDateTimeObject($timedate->to_db($_GET['date_end'])), "+30 minutes");
+                        SugarApplication::redirect('index.php?module=Meetings&action=EditView&return_module=Home&date_start=' . $_GET['date_start'] . '&date_end=' . $date_end->date . '&assigned_user_id=' . $_GET['assigned_user_id']);
+                    } else {
+                        SugarApplication::redirect('index.php?module=Meetings&action=EditView&return_module=Home&date_start=' . $_GET['date_start'] . '&date_end=' . $_GET['date_end'] . '&assigned_user_id=' . $_GET['assigned_user_id']);
+                    }
                 } else if (ACLController::checkAccess('Calls', 'edit')) {
                     SugarApplication::redirect('index.php?module=Calls&action=EditView&return_module=Home&date_start=' . $_GET['date_start'] . '&assigned_user_id=' . $_GET['assigned_user_id']);
                 }
