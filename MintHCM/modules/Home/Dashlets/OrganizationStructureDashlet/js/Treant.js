@@ -1100,7 +1100,7 @@
 				// IMAGE
 				if(this.image) {
 					image = document.createElement('img');
-
+					image.className ="face"; // MintHCM
 					image.src = this.image;
 					node.appendChild(image);
 				}
@@ -1150,7 +1150,7 @@
 			// handle collapse switch
 			if (this.collapsed || (this.collapsable && this.childrenCount() && !this.stackParentId)) {
 				var my_switch = document.createElement('a');
-				
+
 				my_switch.className = "collapse-switch suitepicon suitepicon-action-above";
 				node.appendChild(my_switch);
 				this.addSwitchEvent(my_switch);

@@ -15,8 +15,8 @@
                         type: 'step'
                     },
                     node: {
-                        HTMLclass: 'nodeExample1',
-                        collapsable: true
+                        HTMLclass: 'osNode',
+                        collapsable: false
                     }
                 },
                 nodeStructure: {
