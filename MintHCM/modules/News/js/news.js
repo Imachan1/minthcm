@@ -18,6 +18,7 @@ class News {
             record_id: this.record_id,
             name: this.name,
             content_of_announcement: this.content_of_announcement,
+            announcement_label: viewTools.language.get('News', 'LBL_NEWS_ANNOUNCEMENT_BTN'),
             button_text: this.button_text,
             comments: this.comments,
         });

@@ -61,8 +61,9 @@ class DisplayCommentsClass
 
             $header = $name . ': ' . $comment->date_entered;
 
-            $html .= $this->commentBox($comment->id, $img, $header, $content);
-            if ($reply) {
+            if (!$reply) {
+                $html .= $this->commentBox($comment->id, $img, $header, $content);
+            } else {
                 $html .= $this->replyCommentBox($img, $header, $content);
             }
             if (!empty($replies)) {
