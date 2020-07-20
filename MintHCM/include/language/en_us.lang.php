@@ -2853,7 +2853,7 @@ $app_list_strings['emailTemplates_type_list_no_workflow'] = array(
 
 // knowledge base
 $app_list_strings['moduleList']['AOK_KnowledgeBase'] = 'Knowledge Base';
-$app_list_strings['moduleList']['AOK_Knowledge_Base_Categories'] = 'KB - Categories';
+$app_list_strings['moduleList']['AOK_Knowledge_Base_Categories'] = 'KB Categories';
 $app_list_strings['aok_status_list']['Draft'] = 'Draft';
 $app_list_strings['aok_status_list']['Expired'] = 'Expired';
 $app_list_strings['aok_status_list']['In_Review'] = 'In Review';
