@@ -25923,6 +25923,10 @@ input[type=text] {
             justify-content: center; } }
         #mintNews > div .mintNews-box-content .mintNews-box-button input {
           margin: 0; }
+    #mintNews > div .mintNews-box-comments {
+      height: 200px;
+      overflow: auto;
+      padding: 8px; }
   #mintNews .mintNews-announcement {
     background-color: #63c19a; }
     #mintNews .mintNews-announcement .mintNews-box-header {
