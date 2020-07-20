@@ -196,6 +196,15 @@ $dictionary['News'] = array(
                 'include' => 'modules/Comments/RelatedComments.php',
             ),
         ),
+        'reactions' => array(
+            'name' => 'reactions',
+            'type' => 'link',
+            'relationship' => 'news_reactions',
+            'module' => 'Reactions',
+            'bean_name' => 'Reactions',
+            'source' => 'non-db',
+            'vname' => 'LBL_REACTIONS',
+        ),
     ),
     'relationships' => array(
         'news_comments' => array(
@@ -204,6 +213,17 @@ $dictionary['News'] = array(
             'lhs_key' => 'id',
             'rhs_module' => 'Comments',
             'rhs_table' => 'comments',
+            'rhs_key' => 'parent_id',
+            'relationship_type' => 'one-to-many',
+            'relationship_role_column' => 'parent_type',
+            'relationship_role_column_value' => 'News',
+        ),
+        'news_reactions' => array(
+            'lhs_module' => 'News',
+            'lhs_table' => 'news',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Reactions',
+            'rhs_table' => 'reactions',
             'rhs_key' => 'parent_id',
             'relationship_type' => 'one-to-many',
             'relationship_role_column' => 'parent_type',

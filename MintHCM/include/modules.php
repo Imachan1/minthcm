@@ -609,6 +609,7 @@ $beanFiles['EmployeeCertificates'] = 'modules/EmployeeCertificates/EmployeeCerti
 $beanFiles['Dictionaries'] = 'modules/Dictionaries/Dictionaries.php';
 //
 $beanFiles['Comments'] = 'modules/Comments/Comments.php';
+$beanFiles['Reactions'] = 'modules/Reactions/Reactions.php';
 //
 
 $beanList['Skills'] = 'Skills';
@@ -677,6 +678,7 @@ $beanList['EmployeeCertificates'] = 'EmployeeCertificates';
 $beanList['Dictionaries'] = 'Dictionaries';
 //
 $beanList['Comments'] = 'Comments';
+$beanList['Reactions'] = 'Reactions';
 //
 $moduleList[] = 'ReservationsCalendar';
 $moduleList[] = 'ResponsibilityActivities';

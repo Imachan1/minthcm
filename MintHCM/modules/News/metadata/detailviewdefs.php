@@ -58,6 +58,9 @@ $viewdefs[$module_name] = array(
                         . '{include file="modules/News/tpls/ArchiveButton.tpl"}',
                     ),
                 ),
+                'links' => array(
+                    '<div class="reactionsWrapper"></div>',
+                ),
             ),
             'maxColumns' => '2',
             'widths' => array(
@@ -73,6 +76,9 @@ $viewdefs[$module_name] = array(
             'includes' => array(
                 array(
                     'file' => 'modules/News/js/view.detail.js',
+                ),
+                array(
+                    'file' => 'modules/Reactions/js/Reactions.js'
                 ),
             ),
             'useTabs' => true,

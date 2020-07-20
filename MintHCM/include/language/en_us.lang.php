@@ -177,6 +177,7 @@ $app_list_strings = array(
         'SalaryRanges' => 'Salary Ranges',
         'EmployeeCertificates' => 'Employee Certificates',
         'Comments' => 'Comments',
+        'Reactions' => 'Reactions',
     ),
     'moduleListSingular' => array(
         'Home' => 'Home',
@@ -4186,4 +4187,18 @@ $app_strings['LBL_PANEL_COMMENTS'] = "Comments";
 $app_strings['LBL_YOUR_COMMENT'] = "Your Comment";
 $app_strings['LBL_YOUR_REPLY'] = "Your Reply";
 $app_strings['LBL_SEND_BUTTON_LABEL'] = "Send";
+
+$app_list_strings['parent_type_display_reactions'] = array(
+   'News' => 'News',
+);
+
+$app_list_strings['reaction_type_list'] = array(
+   'like' => 'Like',
+   'dislike' => 'Dislike',
+);
+
+$app_list_strings['reaction_icons_list'] = array(
+   'like' => 'thumbs-up',
+   'dislike' => 'thumbs-down',
+);
  
