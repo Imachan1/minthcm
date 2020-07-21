@@ -174,9 +174,7 @@ class BasePDFGenerator
                 $bean->fixUpFormatting();
                 $field_defs = $bean->field_defs;
                 usort($field_defs, 'BasePDFGenerator::sortByNameLength');
-                //eVolpe #72254 START
                 $tpl_str = $this->parseSmarty($field_defs, $tpl_str);
-                //eVolpe #72254 END
                 foreach ($field_defs as &$field) {
                     if ($field['type'] == 'currency') {
                         $currency = new Currency();
@@ -190,7 +188,6 @@ class BasePDFGenerator
         return $tpl_str;
     }
 
-    //eVolpe #72254 START
     protected function parseSmarty($field_defs, $tpl_str)
     {
 
@@ -203,7 +200,6 @@ class BasePDFGenerator
         $tpl_str = $ss->fetch($this->pdftemplate->getFilename());
         return $tpl_str;
     }
-    //eVolpe #72254 END
 
     protected function analize($tpl, $bean)
     {
