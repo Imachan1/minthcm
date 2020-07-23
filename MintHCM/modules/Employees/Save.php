@@ -117,7 +117,6 @@ function populateFromRow(&$focus, $row)
         'description',
         'phone_home',
         'position_id',
-        'organizationalunit_id',
         'phone_mobile',
         'phone_work',
         'phone_other',
@@ -136,6 +135,10 @@ function populateFromRow(&$focus, $row)
 
     if (is_admin($GLOBALS['current_user'])) {
         $e_fields = array_merge($e_fields, array('employee_status'));
+    }
+    if (file_exists('custom/modules/Employees/whitelist_fields.php')) {
+        require_once 'custom/modules/Employees/whitelist_fields.php';
+        $e_fields = array_merge($e_fields, $whitelist_fields);
     }
     if (isset($row['Users0emailAddress0'])) {
         $row['email1'] = $row['Users0emailAddress0'];
