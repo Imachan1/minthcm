@@ -91,7 +91,7 @@ class OrganizationStructure
 ";
 
     }
-    protected function getDateBySQL()
+    protected function getDataBySQL()
     {
         global $db;
         $sql = $this->getQuery();
@@ -102,9 +102,9 @@ class OrganizationStructure
         };
         return $ous;
     }
-    protected function getDate()
+    protected function getData()
     {
-        return $this->getDateBySQL();
+        return $this->getDataBySQL();
     }
 
     protected function buildTree(array &$elements, $parentId = '', $parent2 = false)

@@ -67,7 +67,7 @@ class OrganizationStructureDashlet extends Dashlet
     {
         $this->loadLanguage('OrganizationStructureDashlet', 'modules/Home/Dashlets/'); // load the language strings here
 
-        if (!empty($def['height'])) { // set a default height if none is set
+        if (!empty($def['height'])) {
             $this->height = $def['height'];
         }
 
@@ -85,10 +85,10 @@ class OrganizationStructureDashlet extends Dashlet
         }
 
         $this->autoRefresh = false;
-        parent::__construct($id); // call parent constructor
+        parent::__construct($id);
 
-        $this->isConfigurable = false; // dashlet is configurable
-        $this->hasScript = true; // dashlet has javascript attached to it
+        $this->isConfigurable = false;
+        $this->hasScript = true;
     }
 
     /**
