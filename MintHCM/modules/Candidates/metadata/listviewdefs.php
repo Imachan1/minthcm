@@ -75,10 +75,10 @@ $listViewDefs [$module_name] = array(
       'width' => '10%',
       'default' => false,
    ),
-   'AGREE_CONTACT_FUTURE_RECRUITMENT' =>
+   'FUTURE_RECRUITMENT_CONTACT_AGREE' =>
    array(
       'width' => '5%',
-      'label' => 'LBL_AGREE_CONTACT_FUTURE_RECRUITMENT',
+      'label' => 'LBL_FUTURE_RECRUITMENT_CONTACT_AGREE',
       'link' => false,
       'default' => false,
 

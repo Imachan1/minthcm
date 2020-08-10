@@ -176,6 +176,15 @@ $searchdefs [$module_name] = array(
                'params' => array( false )
             )
          ),
+         'future_recruitment_contact_agree' =>
+         array(
+            'type' => 'bool',
+            'label' => 'LBL_FUTURE_RECRUITMENT_CONTACT_AGREE',
+            'sortable' => false,
+            'width' => '50%',
+            'default' => true,
+            'name' => 'future_recruitment_contact_agree',
+         ),
       ),
    ),
    'templateMeta' =>
