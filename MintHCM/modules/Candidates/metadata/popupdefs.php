@@ -55,12 +55,12 @@ $popupMeta = array(
       'created_by_name' => 'candidates.created_by_name',
       'favorites_only' => 'candidates.favorites_only',
       'relocation' => 'candidates.relocation',
-      'future_recruitment_contact_agree' => 'candidates.future_recruitment_contact_agree',
+      'recr_contact_agree' => 'candidates.recr_contact_agree',
    ),
    'searchInputs' => array(
       'first_name',
       'last_name',
-      'future_recruitment_contact_agree',
+      'recr_contact_agree',
       'address_city',
       'created_by_name',
       'email',
@@ -74,9 +74,9 @@ $popupMeta = array(
       'last_name' => array(
          'name' => 'last_name',
       ),
-      'future_recruitment_contact_agree' => [
-         'name' => 'future_recruitment_contact_agree',
-         'label' => 'LBL_FUTURE_RECRUITMENT_CONTACT_AGREE',
+      'recr_contact_agree' => [
+         'name' => 'recr_contact_agree',
+         'label' => 'LBL_RECR_CONTACT_AGREE',
          'type' => 'bool',
      ],
       'address_city' => array(
