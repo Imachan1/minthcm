@@ -49,6 +49,10 @@ $dashletData['CandidatesDashlet']['searchFields'] = array(
    array(
       'default' => '',
    ),
+   'recr_contact_agree' =>
+   array(
+      'default' => '',
+   ),
    'date_entered' =>
    array(
       'default' => '',
@@ -114,6 +118,13 @@ $dashletData['CandidatesDashlet']['columns'] = array(
       'link' => true,
       'default' => true,
       'name' => 'name',
+   ),
+   'recr_contact_agree' =>
+   array(
+      'width' => '5%',
+      'label' => 'LBL_DATE_ENTERED',
+      'default' => false,
+      'name' => 'recr_contact_agree',
    ),
    'date_entered' =>
    array(

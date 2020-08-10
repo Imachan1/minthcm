@@ -81,6 +81,7 @@ $mod_strings = array(
     'LBL_FIRST_NAME' => 'First Name',
     'LBL_LAST_NAME' => 'Last Name',
     'LBL_RECR_CONTACT_AGREE' => 'Processing Data in Future Recruitment',
+    'LBL_RECR_CONTACT_AGREE_SHORT' => 'Future Processing',
     'LBL_TITLE' => 'Title',
     'LBL_DEPARTMENT' => 'Department',
     'LBL_DO_NOT_CALL' => 'Do Not Call',
