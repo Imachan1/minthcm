@@ -75,6 +75,14 @@ $listViewDefs [$module_name] = array(
       'width' => '10%',
       'default' => false,
    ),
+   'AGREE_CONTACT_FUTURE_RECRUITMENT' =>
+   array(
+      'width' => '5%',
+      'label' => 'LBL_AGREE_CONTACT_FUTURE_RECRUITMENT',
+      'link' => false,
+      'default' => false,
+
+   ),
    'POTENTIAL' =>
    array(
       'type' => 'enum',

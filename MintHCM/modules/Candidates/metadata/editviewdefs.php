@@ -95,6 +95,12 @@ $viewdefs [$module_name] = array(
                   'label' => 'LBL_MOBILE_PHONE',
                ),
                array(
+                  'name' => 'agree_contact_future_recruitment',
+                  'label' => 'LBL_AGREE_CONTACT_FUTURE_RECRUITMENT',
+               ),
+            ),
+            array(
+               array(
                   'name' => 'email1',
                   'label' => 'LBL_EMAIL',
                ),
