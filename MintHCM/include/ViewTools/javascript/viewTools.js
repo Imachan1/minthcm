@@ -876,7 +876,7 @@ window.viewTools.formula = {
                var tmpFormulaType = 'normal';
                var tmpBracketCounter = 0;
 
-               for ( key in formula ) {
+               for(var key=0; key<formula.length;key++){
                   //Set analised sign
                   var tmpSign = formula[key];
                   for ( didx in duplicate_positions ) {
