@@ -40,8 +40,7 @@ if (!window.TWSDashlet) {
         });
         this.$calendarBefore.click(function () {
             var current_date = getDateObject(_this.$dateInput.val());
-            var new_date = new Date();
-            var next_date = new_date.setDate(current_date.getDate() - 1);
+            var next_date = current_date.setDate(current_date.getDate() - 1);
             var finished_date = new Date(next_date);
             var sugar_date = toSugarDate(finished_date);
             _this.$dateInput.val(sugar_date);
@@ -51,8 +50,7 @@ if (!window.TWSDashlet) {
         });
         this.$calendarNext.click(function () {
             var current_date = getDateObject(_this.$dateInput.val());
-            var new_date = new Date();
-            var next_date = new_date.setDate(current_date.getDate() + 1);
+            var next_date = current_date.setDate(current_date.getDate() + 1);
             var finished_date = new Date(next_date);
             var sugar_date = toSugarDate(finished_date);
             _this.$dateInput.val(sugar_date);
