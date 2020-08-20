@@ -58,6 +58,17 @@ $dictionary['Candidates'] = array(
     'activity_enabled' => false,
     'duplicate_merge' => true,
     'fields' => array(
+        'recr_contact_agree' => array(
+            'name' => 'recr_contact_agree',
+            'vname' => 'LBL_RECR_CONTACT_AGREE',
+            'label' => 'LBL_RECR_CONTACT_AGREE',
+            'type' => 'bool',
+            'importable' => 'true',
+            'reportable' => true,
+            'audited' => true,
+            'duplicate_merge' => 'enabled',    
+            'size' => 30,
+        ),
         'first_name' => array(
             'name' => 'first_name',
             'vname' => 'LBL_FIRST_NAME',
