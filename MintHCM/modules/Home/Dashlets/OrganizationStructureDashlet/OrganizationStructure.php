@@ -73,23 +73,22 @@ class OrganizationStructure
             WHERE ou.deleted=0  AND ou.group_type IN ('department', 'team')
         UNION ALL
             SELECT
-                -- CONCAT('{\"name\":\"',p.name,'\",\"title\":\"',u.first_name, ' ',u.last_name,'\"}') AS text
+                
                 CONCAT('{\"name\":\"',p.name,'\",\"title\": {\"val\": \"',u.first_name, ' ',u.last_name,'\", \"href\":\"{$siteURL}/index.php?module=Employees&action=DetailView&record=',u.id,'\"}}') AS text
                 , '-' AS 'HTMLclass'
                 , CONCAT('_',MD5(CONCAT(ou.id,u.id))) AS oid
                 , CONCAT('_',MD5(CONCAT(ou.id,u.reports_to_id))) AS parent_id
                 , CONCAT('_',MD5(CONCAT(ou.id,ou.current_manager_id))) AS parent_id2
                 , '' AS  collapsed
-                , '' AS image
+                
                 , IF(u.photo IS NOT NULL AND u.photo!='', CONCAT('{$siteURL}/index.php?entryPoint=download&type=Users&id=',u.id,'_photo&time=',now()),'') AS image
             FROM
                 securitygroups ou
             INNER JOIN users u
-                ON u.organizationalunit_id = ou.id  and u.id !=ou.current_manager_id
+                ON u.securitygroup_id = ou.id  and u.id !=ou.current_manager_id
             INNER JOIN positions p on u.position_id = p.id
             WHERE u.status='Active'  AND ou.group_type IN ('department', 'team')
 ";
-
     }
     protected function getDataBySQL()
     {
@@ -137,7 +136,7 @@ class OrganizationStructure
 
     public function getTree()
     {
-        $organizationalunits = $this->getDate();
+        $organizationalunits = $this->getData();
         $collapsable = false;
         $r = array_values(array_unique(array_column($organizationalunits, 'image')));
         if (count($r) == 0 || count($r) == 1 && empty($r[0])) {
@@ -149,12 +148,13 @@ class OrganizationStructure
             if ($t) {
                 $element["text"] = $t;
             }
-            if ($collapsable) {
-                unset($element["image"]);
-            } else {
-                unset($element["collapsed"]);
-                $element["collapsable"] = false;
-            }
+//            if ($collapsable) {
+//                unset($element["image"]);
+//            } else {
+//                unset($element["collapsed"]);
+//                $element["collapsable"] = false;
+//            }
+            $element["collapsable"] = true;
         }, $collapsable);
         $tree = $this->buildTree($organizationalunits);
         return json_encode($tree);

@@ -153,7 +153,12 @@ class OrganizationStructureDashlet extends Dashlet
         $ss = new Sugar_Smarty();
         $ss->assign('id', $this->id);
         $ss->assign('DASHLET_STRINGS', $this->dashletStrings);
+        $ss->assign('titleLbl', $this->dashletStrings['LBL_CONFIGURE_TITLE']);
+        $ss->assign('heightLbl', $this->dashletStrings['LBL_CONFIGURE_HEIGHT']);
+        $ss->assign('imageLbl', $this->dashletStrings['LBL_USE_IMAGE']);
+        $ss->assign('saveLbl', $this->dashletStrings['LBL_SAVE_BUTTON_LABEL']);
         $ss->assign('title', $this->title);
+        $ss->assign('use_image', $this->use_image);
         $ss->assign('height', $this->height);
         return parent::displayOptions() .
         $ss->fetch('modules/Home/Dashlets/OrganizationStructureDashlet/OrganizationStructureDashletOptions.tpl');
@@ -171,6 +176,7 @@ class OrganizationStructureDashlet extends Dashlet
         $options['title'] = $req['title'];
         $options['url'] = $req['url'];
         $options['height'] = $req['height'];
+        $options['use_image'] = $req['use_image'];
         $options['autoRefresh'] = 0;
         return $options;
     }

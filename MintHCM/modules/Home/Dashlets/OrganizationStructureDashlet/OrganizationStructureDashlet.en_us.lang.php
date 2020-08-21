@@ -58,4 +58,5 @@ $dashletStrings['OrganizationStructureDashlet'] = array(
    'LBL_SAVE_BUTTON_LABEL' => 'Save',
    'LBL_CONFIGURE_TITLE' => 'Dashlet Title',
    'LBL_USE_IMAGE' => 'Use Image in root',
+   'LBL_CONFIGURE_HEIGHT' => 'Height',
 );
