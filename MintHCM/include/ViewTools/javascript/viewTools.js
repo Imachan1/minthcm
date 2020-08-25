@@ -244,6 +244,19 @@ window.viewTools.form = {
    },
    focusOnFirstError: function () {
       $( '.validation-message' ).first().parent().find( '.vt_formulaSelector' ).focus();
+      viewTools.form.scrollToFirstError();
+   },
+   scrollToFirstError: function () {
+      if($( '.MintHCMPopup-body' ).length && $( '.MintHCMPopup-body' ).css('display') != 'none' ) {  // scroll in popup
+         $( '.MintHCMPopup-body' ).animate({
+            scrollTop: $( '.validation-message' ).first().parent().offset().top - $( '.MintHCMPopup-body' ).offset().top + $( '.MintHCMPopup-body' ).scrollTop()
+         }, 1000);
+      }
+      else {  // scroll in std editView
+         $( [document.documentElement, document.body] ).animate({
+            scrollTop: $( '.validation-message' ).first().parent().offset().top - $( '#toolbar' ).height() * 1.5
+         }, 1000);
+      }
    },
    getRecordId: function ( handler ) {
       if ( handler.data( 'recordid' ) !== undefined ) {
