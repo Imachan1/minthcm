@@ -20,7 +20,7 @@ class Attributes extends BaseOption
             ->setDefined('attributes')
             ->setAllowedTypes('attributes', 'array')
             ->setAllowedValues('attributes', $this->validatorFactory->createClosureForIterator([
-                new Assert\NotBlank(),
+                // new Assert\NotBlank(),
                 // new Assert\Regex([
                 //     'pattern' => Fields::REGEX_FIELD_PATTERN,
                 //     'match' => false,
