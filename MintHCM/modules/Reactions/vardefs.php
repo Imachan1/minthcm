@@ -15,15 +15,6 @@ $dictionary['Reactions'] = array(
             'importable' => 'required',
             'options' => 'reaction_type_list',
         ),
-        'active' => array(
-            'name' => 'active',
-            'vname' => 'LBL_ACTIVE',
-            'label' => 'LBL_ACTIVE',
-            'type' => 'bool',
-            'default' => 1,
-            'duplicate_merge' => 'disabled',
-            'size' => 30,
-        ),
         'parent_type' => array(
             'name' => 'parent_type',
             'vname' => 'LBL_PARENT_TYPE',

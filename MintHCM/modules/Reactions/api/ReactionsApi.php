@@ -7,7 +7,7 @@ class ReactionsApi
         $reactions = [];
         if (!empty($args['module_name']) && !empty($args['record_id'])) {
             $reactions_contoller = ControllerFactory::getController('Reactions');
-            $reactions = $reactions_contoller::getReactionForRecord($args['module_name'], $args['record_id']);
+            $reactions = $reactions_contoller::getReactionsForRecord($args['module_name'], $args['record_id']);
         }
         return $reactions;
     }

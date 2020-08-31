@@ -38,5 +38,4 @@ $mod_strings = array(
     "LBL_PARENT_NAME" => "Related to",
     "LBL_PARENT_ID" => "Related to (ID)",
     "LBL_REACTION_TYPE" => "Type",
-    "LBL_ACTIVE" => "Active",
 );
