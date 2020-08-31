@@ -1291,6 +1291,8 @@ function insert_default_settings() {
     'Attitudes',
     'SalaryRanges',
     'EmployeeCertificates',
+    'ProspectLists',
+    'Campaigns',
     );
 
    $hidden_subpanels = array (
