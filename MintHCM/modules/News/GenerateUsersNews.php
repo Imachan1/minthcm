@@ -66,7 +66,6 @@ class GenerateUsersNews
             $organizationalunits_controller = ControllerFactory::getController('SecurityGroups');
             $users_ids = $organizationalunits_controller->getActiveUsers($organizational_units_ids);
             $this->createOrUpdateUsersNews($users_ids);
-            $this->deleteUsersPrivateGroupsFromNews($users_ids);
         }
     }
 
@@ -120,15 +119,6 @@ class GenerateUsersNews
 
             (new Notification())->setRelatedBeanFromBean($news)->setAssignedUserId($user_id)->setName($users_news->news_name)->setType('UserNews')
                 ->simpleAlert(true, $override)->WebPush(false, true, $override);
-        }
-    }
-
-    protected function deleteUsersPrivateGroupsFromNews($users_ids)
-    {
-        $news = BeanFactory::getBean('News', $this->record_id);
-        if ($news && !empty($news->id) && $news->load_relationship('SecurityGroups')) {
-            $groups = $news->SecurityGroups->get();
-            $news->SecurityGroups->delete($this->getPrivateGroups($users_ids));
         }
     }
 
