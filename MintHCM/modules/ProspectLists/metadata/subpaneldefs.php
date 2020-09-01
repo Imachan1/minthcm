@@ -100,6 +100,18 @@ $layout_defs['ProspectLists'] = array(
                 array('widget_class' => 'SubPanelTopSelectButton', 'mode' => 'MultiSelect'),
             ),
         ),
+        'candidates' => array(
+            'order' => 40,
+            'module' => 'Candidates',
+            'sort_order' => 'asc',
+            'sort_by' => 'name',
+            'subpanel_name' => 'default',
+            'get_subpanel_data' => 'candidates',
+            'title_key' => 'LBL_CANDIDATES',
+            'top_buttons' => array(
+                array('widget_class' => 'SubPanelTopSelectButton', 'mode' => 'MultiSelect'),
+            ),
+        ),
         'accounts' => array(
             'order' => 40,
             'module' => 'Accounts',
