@@ -126,9 +126,9 @@ class DisplayCommentsClass
             return $this->noPhotoImageBox();
         } else {
             return <<<HTML
-            <span style="width: 3vw; height: 3vw; position: relative; border-radius: 50%; overflow: hidden; border:2px solid #aaaaaa;">
+            <span style="width: 3vw; height: 3vw; position: relative; border-radius: 50%; overflow: hidden; border:2px solid #aaaaaa; display: block;">
                 <img src="index.php?entryPoint=download&id={$assigned_user_id}_photo&type=Users"
-                style="max-width: 100%; vertical-align: middle; position: absolute; top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%);" >
+                style="max-height: 100%; vertical-align: middle; position: absolute; top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%);" >
                 </span>
 HTML;
         }
@@ -136,8 +136,8 @@ HTML;
     protected function noPhotoImageBox()
     {
         return <<<HTML
-        <span style="width: 3vw; height: 3vw; position: relative; border-radius: 50%; overflow: hidden; border:2px solid #aaaaaa;">
-            <img src="themes/SuiteP/images/no_photo.png" style="max-width: 100%; vertical-align: middle; position: absolute; top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%);" >
+        <span style="width: 3vw; height: 3vw; position: relative; border-radius: 50%; overflow: hidden; border:2px solid #aaaaaa; display: block;">
+            <img src="themes/SuiteP/images/no_photo.png" style="max-height: 100%; vertical-align: middle; position: absolute; top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%);" >
         </span>
 HTML;
     }
@@ -156,6 +156,7 @@ HTML;
     }
     protected function commentBox($comment_id, $img, $header, $content)
     {
+        $replay_text = translate('LBL_REPLY', 'Comments');
         return <<<HTML
         <div class="comment-container" data-comment-id="{$comment_id}"
         style="display: grid; grid-template-columns: repeat(10, 1fr); margin: 10px auto; grid-auto-rows: minmax(3vw, auto); grid-gap: 10px; background: #cccccc; border-radius: 4px; padding: 10px;">
@@ -163,7 +164,7 @@ HTML;
             <div class="comment" style="grid-column: 2/11;">
                 <div class="header" style="border-bottom: 1px solid #aaaaaa;">
                     $header
-                    <span class="action-menu" style="float: right;"><a class="reply" style="cursor: pointer;">Reply</a></span>
+                    <span class="action-menu" style="float: right;"><a class="reply" style="cursor: pointer;">{$replay_text}</a></span>
                 </div>
                 <div class="comment-text">$content</div>
             </div>
@@ -174,10 +175,10 @@ HTML;
     {
         return <<<HTML
         <div class="comment-form" style="margin: 10px auto; width: 100%;">
-            <form id='comments' enctype="multipart/form-data">
+            <form id='comments' name='comments' enctype="multipart/form-data">
                 <div><label for="comment_text">{$your_comment_str}</label></div>
-                <div style="margin: 5px auto; width: 100%;"><textarea id="comment_text" name="comment_text" cols="80" rows="4"></textarea></div>
-                <input type='button' value='$sendLbl' onclick="addComment('$record_id')" title="$sendLbl" name="button" />
+                <div style="margin: 5px auto; width: 100%;"><textarea id="comment_text" name="comment_text" cols="80" rows="4" style="max-width: 400px; max-height: 150px"></textarea></div>
+                <input type='button' value='$sendLbl' onclick="addComment.call(this, '$record_id')" title="$sendLbl" name="button" />
             </form>
         </div>
 HTML;
@@ -187,11 +188,12 @@ HTML;
         return <<<HTML
         <script>
             $(document).on('click', "a.reply", function() {
+                $('div.reply-form').remove();
                 var parent_id = $(this).parents("div.comment-container").attr("data-comment-id");
-                var reply_form = '<div class="reply-form" style="margin: 10px auto; width: 100%;"><form enctype="multipart/form-data">'
+                var reply_form = '<div class="reply-form" style="margin: 10px auto; width: 100%;"><form id="comments_replay" name="comments_replay" enctype="multipart/form-data">'
                 + '<div><label for="comment_text">'+SUGAR.language.get('app_strings', 'LBL_YOUR_REPLY')+'</label></div>'
-                + '<div style="margin: 5px auto; width: 100%;"><textarea id="comment_text" name="comment_text" cols="80" rows="4"></textarea></div>'
-                + '<input type="button" value="'+SUGAR.language.get('app_strings', 'LBL_SEND_BUTTON_LABEL')+'" onclick="addComment(\'{$record_id}\',\''+ parent_id +'\')" title="'+SUGAR.language.get('app_strings', 'LBL_SEND_BUTTON_LABEL')+'" name="button"> </input>'
+                + '<div style="margin: 5px auto; width: 100%;"><textarea id="comment_text" name="comment_text" cols="80" rows="4" style="max-width: 400px; max-height: 150px"></textarea></div>'
+                + '<input type="button" value="'+SUGAR.language.get('app_strings', 'LBL_SEND_BUTTON_LABEL')+'" onclick="addComment.call(this, \'{$record_id}\',\''+ parent_id +'\')" title="'+SUGAR.language.get('app_strings', 'LBL_SEND_BUTTON_LABEL')+'" name="button"> </input>'
                 + '</br></form></div>';
 
                 if ($(this).parents("div.comment-container").nextAll().filter("div.reply-form").length == 0) {
@@ -200,6 +202,12 @@ HTML;
             });
 
             function addComment(record, parent_id = null){
+                viewTools.GUI.fieldErrorUnmark();
+                var comment_text = encodeURIComponent(this.form.comment_text.value);
+                if(!comment_text.length) {
+                    viewTools.GUI.fieldErrorMark($(this.form.comment_text), viewTools.language.get('app_strings', 'ERR_MISSING_REQUIRED_FIELDS') + ' ' + viewTools.language.get('Comments', 'LBL_DESCRIPTION'));
+                    return;
+                }
                 loadingMessgPanl = new YAHOO.widget.SimpleDialog('loading', {
                     width: '200px',
                     close: true,
@@ -213,7 +221,6 @@ HTML;
                 loadingMessgPanl.setBody(SUGAR.language.get('app_strings', 'LBL_EMAIL_ONE_MOMENT'));
                 loadingMessgPanl.render(document.body);
                 loadingMessgPanl.show();
-                var comment_text = encodeURIComponent(document.getElementById('comment_text').value);
                 var params = "record="+record+"&module=Comments&return_module={$module_name}&action=Save&return_id="+record+"&return_action=DetailView&relate_to={$module_name}&relate_id="+record+"&offset=1&description="
                 + comment_text + "&parent_id=" + record + "&parent_type={$module_name}&name=" + comment_text.substring(0,255) + "&assigned_user_id={$current_user_id}";
                 if (parent_id != null) {

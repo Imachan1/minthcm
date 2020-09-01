@@ -33,9 +33,11 @@ $mod_strings = array(
     'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
     'LBL_COMMENTS_SUBPANEL_TITLE' => 'Comments',
     'LBL_NEW_FORM_TITLE' => 'New Comments',    
+    'LBL_REPLY' => "Reply",
     'LBL_REPLY_TO' => "Reply To",
     'LBL_REPLY_TO_ID' => "Reply To (ID)",
     'LBL_REPLY_TO_NAME' => "Reply TO",
     "LBL_REPLIES" => "Replies",
     "LBL_NEWS" => "News",
+    "LBL_LIST_RELATED_TO_ID" => "Related To (ID)",
 );

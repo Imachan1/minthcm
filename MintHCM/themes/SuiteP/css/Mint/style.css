@@ -25908,7 +25908,7 @@ input[type=text] {
   z-index: 9999;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   overflow-y: scroll; }
   #mintNews .close-button {
@@ -25919,7 +25919,6 @@ input[type=text] {
     font-size: 20px; }
   #mintNews > div {
     width: 1000px;
-    max-height: 500px;
     margin: 20px 0; }
     @media only screen and (max-width: 1024px) {
       #mintNews > div {

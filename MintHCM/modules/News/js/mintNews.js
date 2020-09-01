@@ -7,9 +7,6 @@ mintNews = {
       if (undefined === $('#' + this.id).get(0) && this.news.length > 0) {
          $('body').append('<div id="' + this.id + '">' + this.getHTMLFromNews() + '</div>');
       }
-      if (this.news.length > 5) {
-         $('#' + this.id).css('justify-content', 'flex-start');
-      }
       if ($('#' + this.id + ' div.mintNews-announcement:visible').length === 0) {
          this.addCloseButton();
       }
