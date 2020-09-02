@@ -138,6 +138,9 @@ $app_list_strings = array(
         'ExitInterviews' => 'Exit Interviews',
         'Goals' => 'Goals',
         'Ideas' => 'Ideas',
+        'Rooms' => 'Rooms',
+        'Workplaces' => 'Workplaces',
+        'Allocations' => 'Allocations',
         'EmployeeInteractionTracking' => 'Employee Interaction Tracking',
         'Improvements' => 'Improvements',
         'News' => 'News',
@@ -206,6 +209,9 @@ $app_list_strings = array(
         'Candidates' => 'Candidate',
         'Candidatures' => 'Candidature',
         'Ideas' => 'Idea',
+    	'Rooms' => 'Room',
+        'Allocations' => 'Allocation',
+        'Workplaces' => 'Workplace',
         'EmployeeInteractionTracking' => 'Employee Interaction Tracking',
         'Positions' => 'Position',
         'Recruitments' => 'Recruitment',
@@ -509,6 +515,9 @@ $app_list_strings = array(
         'Recruitments' => 'Recruitment',
         'Candidatures' => 'Candidature',
         'Candidates' => 'Candidate',
+        'Rooms' => 'Room',
+        'Workplaces' => 'Workplace',
+        'Allocations' => 'Allocation',
     ),
     'record_type_display_notes' => array(
         'Tasks' => 'Task',
@@ -3084,14 +3093,16 @@ $app_list_strings['contract_status_list'] = array(
     'pending' => 'Pending',
 );
 
-$app_list_strings['contract_type_list'] = array(
+$app_list_strings['reservation_type_list'] = array(
     '' => '',
-    'contract_of_employment' => 'Contract of Employment',
-    'contract_of_mandate' => 'Contract of Mandate',
-    'self_employment' => '3rd party - self employment',
-    'agency_outsourcing' => '3rd party - agency/outsourcing',
-    'contract_of_commission' => 'Contract of Commission',
-    'other' => 'Other',
+    'yes' => 'Yes',
+    'no' => 'No',
+);
+$app_list_strings['mode_list'] = array(
+    '' => '',
+    'permanent' => 'Permanent',
+    'rotational' => 'Rotational',
+    'hybrid' => 'Hybrid',
 );
 $app_strings['LBL_PRINT_AS_PDF'] = 'Print as PDF';
 $app_strings['LBL_SELECT_TEMPLATE'] = 'Please Select a Template';

@@ -255,14 +255,14 @@ $dictionary["Employee"]["fields"]["employeeinteractiontracking_assigned_user"] =
     'side' => 'right',
     'vname' => 'LBL_EMPLOYEEINTERACTIONTRACKING',
 );
-
-$dictionary["Employee"]["fields"]["prospect_lists"] = array(
-    'name' => 'prospect_lists',
+$dictionary["Employee"]["fields"]["allocations_employees"] = array(
+    'name' => "allocations_employees",
     'type' => 'link',
-    'relationship' => 'prospect_list_employees',
-    'module' => 'ProspectLists',
+    'relationship' => "allocations_employees",
     'source' => 'non-db',
-    'vname' => 'LBL_PROSPECT_LIST',
+    'module' => 'Allocations',                                          // nazwa modułu w relacji do obecnego (tu dla Contacts: Accounts)
+    'bean_name' => 'Allocations',       
+    'vname' => 'LBL_LINKED_ALLOCATIONS_TITLE',
 );
 
 $dictionary["Employee"]["audited"] = true;
