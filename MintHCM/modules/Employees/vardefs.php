@@ -256,6 +256,15 @@ $dictionary["Employee"]["fields"]["employeeinteractiontracking_assigned_user"] =
     'vname' => 'LBL_EMPLOYEEINTERACTIONTRACKING',
 );
 
+$dictionary["Employee"]["fields"]["prospect_lists"] = array(
+    'name' => 'prospect_lists',
+    'type' => 'link',
+    'relationship' => 'prospect_list_employees',
+    'module' => 'ProspectLists',
+    'source' => 'non-db',
+    'vname' => 'LBL_PROSPECT_LIST',
+);
+
 $dictionary["Employee"]["audited"] = true;
 $dictionary["Employee"]["fields"]["employee_status"]["audited"] = true;
 $dictionary["Employee"]["fields"]["first_name"]["audited"] = true;

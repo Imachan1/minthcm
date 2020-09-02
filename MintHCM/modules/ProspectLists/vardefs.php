@@ -227,6 +227,13 @@ $dictionary['ProspectList'] = array(
             'relationship' => 'prospect_list_candidates',
             'source' => 'non-db',
         ),
+        'employees' => array(
+            'name' => 'employees',
+            'vname' => 'LBL_EMPLOYEES',
+            'type' => 'link',
+            'relationship' => 'prospect_list_employees',
+            'source' => 'non-db',
+        ),
     ),
 
     'indices' => array(
