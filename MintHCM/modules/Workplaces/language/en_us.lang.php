@@ -70,4 +70,5 @@ $mod_strings = array(
     'LBL_RELATIONSHIP_ROOM_NAME' => 'Room',
     'LBL_RELATIONSHIP_ROOM_ID' => 'Room ID',
     'LBL_RELATIONSHIP_ALLOCATIONS' => 'Allocations',
+    'LBL_RELATIONSHIP_WORKSCHEDULES_NAME' => 'Work Schedules',
 );

@@ -177,15 +177,6 @@ $dictionary[$module_name] = array(
          ),
     ),
     'relationships' => array(
-        "users_ideas" => array(
-           'lhs_module' => 'Users',
-           'lhs_table' => 'users',
-           'lhs_key' => 'id',
-           'rhs_module' => 'Rooms',
-           'rhs_table' => 'rooms',
-           'rhs_key' => 'user_id',
-           'relationship_type' => 'one-to-many',
-        ),
         "securitygroups_rooms" => array(                  // nazwa relacji
             'lhs_module' => 'SecurityGroups',                     // nazwa pierwszego modułu
             'lhs_table' => 'securitygroups',                      // nazwa tablicy pierwszego modułu

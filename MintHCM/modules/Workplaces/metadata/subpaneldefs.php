@@ -81,3 +81,21 @@ $layout_defs["Workplaces"]["subpanel_setup"]['workplaces_allocations'] = array (
        ),
     ),
  );
+ $layout_defs["Workplaces"]["subpanel_setup"]['workplaces_workschedules'] = array (
+    'order' => 100,
+    'module' => 'WorkSchedules',                                  // nazwa drugiego modułu
+    'subpanel_name' => 'default',
+    'sort_order' => 'asc',
+    'sort_by' => 'id',
+    'title_key' => 'LBL_RELATIONSHIP_WORKSCHEDULES_NAME',         // etykieta nazwy subpanelu drugiego modułu pod formularzem pierwszego modułu
+    'get_subpanel_data' => 'workplaces_workschedules',             // nazwa pola link w ev_Oceans
+    'top_buttons' => array (
+       array (
+          'widget_class' => 'SubPanelTopButtonQuickCreate',
+       ),
+       array (
+          'widget_class' => 'SubPanelTopSelectButton',
+          'mode' => 'MultiSelect',
+       ),
+    ),
+ );

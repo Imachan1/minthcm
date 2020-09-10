@@ -79,25 +79,4 @@ class Rooms extends Basic {
          return false;
       }
    }
-   protected function addDecisionMakerPrivateGroup()
-   {
-       $user = BeanFactory::getBean('Users', $this->user_id);
-       if ($user && !empty($user->id) && $this->load_relationship('SecurityGroups')) {
-           $group_id = $user->getUserPrivateGroup();
-           if ($group_id) {
-               $this->SecurityGroups->add($group_id);
-           }
-       }
-   }
-   // public function save($check_notify = false) {
-
-   //    $update_periods = false;
-   //    $return_value = parent::save($check_notify);
-   //    return $return_value;
-   // }
-
-   // public function mark_deleted($id) {
-   //    parent::mark_deleted($id);
-   // }
-
 }

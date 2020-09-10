@@ -67,9 +67,7 @@ class Workplaces extends Basic {
    public $assigned_user_id;
    public $assigned_user_name;
    public $assigned_user_link;
-   //public $SecurityGroups;
    public $mode;
-   // public $room;
    
    public function bean_implements($interface) {
       if ( $interface === "ACL" ) {
@@ -79,22 +77,20 @@ class Workplaces extends Basic {
       }
    }
    public function save($check_notify = false) {
-      $update_periods = false;
       $return_value = parent::save($check_notify);
-      $this->recount_all();
+      $room_id=$this->room_id;
+      $this->recount($room_id);
       return $return_value;
    }
    public function mark_deleted($id) {
+      $room_id=$this->room_id;
       parent::mark_deleted($id);
-      $this->recount_all();
+      $this->recount($room_id);
    }
-   public function recount_all(){
-      $db = DBManagerFactory::getInstance();
-      $sql = "SELECT id FROM rooms";
-      $result = $db->query($sql);
-      while($row = $result->fetch_row()){
-         $this->recount_one($row[0]);
-      }
+   public function recount($room_id){
+      $this->recount_one($room_id);
+      $room_id=$this->fetched_row['room_id'];
+      if($room_id!=null)$this->recount_one($room_id);
    }
    public function recount_one($room_id){
       $db = DBManagerFactory::getInstance();
@@ -102,6 +98,8 @@ class Workplaces extends Basic {
          FROM workplaces 
          WHERE workplaces.room_id = '{$room_id}' AND deleted=0";
       $count = $db->getOne($query) ?? 0;
-      $db->query("UPDATE rooms SET number_of_seats='{$count}' WHERE id='{$room_id}'");
+      $room = BeanFactory::getBean('Rooms',$room_id);
+      $room->number_of_seats=$count;
+      $room->save();
    }
 }

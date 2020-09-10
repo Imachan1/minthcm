@@ -143,3 +143,13 @@ $dictionary["Workplaces"]["fields"]["workplaces_allocations"] = array (
     'vname' => 'LBL_RELATIONSHIP_ALLOCATIONS',   
     'side' => 'right',
  );
+ $dictionary["Workplaces"]["fields"]["workplaces_workschedules"] = array (
+    'name' => 'workplaces_workschedules',
+    'type' => 'link',
+    'relationship' => 'workplaces_workschedules',        // nazwa relacji
+    'source' => 'non-db',
+    'module' => 'WorkSchedules',                        // nazwa drugiego modułu
+    'bean_name' => 'WorkSchedules',                       // nazwa bean'a drugiego modułu
+    'vname' => 'LBL_RELATIONSHIP_WORKSCHEDULES_NAME',   // etykieta nazwy relacji (może być taka sama jak nazwa subpanelu drugiego modułu)
+    'side' => 'right',
+ );
