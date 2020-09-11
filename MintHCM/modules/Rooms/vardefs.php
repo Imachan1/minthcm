@@ -129,7 +129,7 @@ $dictionary[$module_name] = array(
             'vname' => 'LBL_RESERVATION_TYPE',
             'type' => 'enum',
             'massupdate' => '1',
-            'default' => '',
+            'default' => 'false',
             'no_default' => false,
             'comments' => '',
             'help' => '',
@@ -175,6 +175,37 @@ $dictionary[$module_name] = array(
             'type' => 'id',                                  // typ pola: id
             'vname' => 'LBL_RELATIONSHIP_SECURITY_GROUP_ID',       // etykieta id relacji
          ),
+         "rooms_resources" => array ( // nazwa relacji
+            'name' => 'rooms_resources',                              // nazwa relacji
+            'type' => 'link',
+            'relationship' => 'rooms_resources',                     // nazwa relacji
+            'source' => 'non-db',
+            'module' => 'Resources',                                    // nazwa przeciwnego modułu
+            'bean_name' => 'Resources',                                   // nazwa przeciwnego bean'a
+            'vname' => 'LBL_ROOMS_RESOURCES_TITLE',                  // nazwa etykiety relacji, może to być np. Powiązany błąd
+            'id_name' => 'resource_id',                                 // pole które będzie definiowało ID rekordu po drugiej stronie
+         ),
+          "resource_name" => array (  // nazwa pola z nazwą
+            'name' => 'resource_name',                          // nazwa pola z nazwą
+            'type' => 'relate',
+            'source' => 'non-db',                         // pole nie musi być przechowywane w bazie - odpowiada za to tabela pośrednia
+            'vname' => 'LBL_RESOURCE_NAME',                    // etykieta dla pola z nazwą, pole będzie głównie widocznym polem w widokach (np. Powiązany błąd)
+            'save' => true,
+            'id_name' => 'resource_id',                       // pole które będzie definiowało ID rekordu po drugiej stronie
+            'link' => 'rooms_resources',                     // nazwa relacji
+            'table' => 'resources',                              // nazwa tabeli dla przeciwnego modułu
+            'module' => 'Resources',                             // nazwa przeciwnego modułu
+            'rname' => 'name',                              // pole po drugiej stronie, które jest powiązane z tym polem
+          ),
+          "resource_id" => array ( // pole które będzie definiowało ID rekordu po drugiej stronie
+            'name' => 'resource_id',                                  // pole które będzie definiowało ID rekordu po drugiej stronie
+            'type' => 'link',
+            'relationship' => 'rooms_resources',                   // nazwa relacji
+            'source' => 'non-db',                                // pole nie musi być przechowywane w bazie - odpowiada za to tabela pośrednia
+            'reportable' => false,
+            'side' => 'left',
+            'vname' => 'LBL_RESOURCE_ID',                             // etykieta dla pola z id, może to być np. Powiązany błąd (ID)
+          ),
     ),
     'relationships' => array(
         "securitygroups_rooms" => array(                  // nazwa relacji

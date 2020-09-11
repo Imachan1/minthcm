@@ -71,4 +71,8 @@ $mod_strings = array(
     'LBL_RELATIONSHIP_WORKPLACES_NAME' => "Workplaces",
     'LBL_RELATIONSHIP_SECURITY_GROUP_NAME' => "Office",
     'LBL_RELATIONSHIP_SECURITY_GROUP_ID' => "Office ID",
+    'LBL_RESERVE' => 'Reserve',
+    'LBL_ROOMS_RESOURCES_TITLE' => 'Resources',
+    'LBL_RESOURCE_NAME' => 'Resource',
+    'LBL_RESOURCE_ID' => 'Resource ID',
 );

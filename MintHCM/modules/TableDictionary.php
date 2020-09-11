@@ -70,6 +70,7 @@ include "metadata/prospect_lists_prospectsMetaData.php";
 include "metadata/roles_modulesMetaData.php";
 include "metadata/roles_usersMetaData.php";
 include "metadata/allocations_employeesMetaData.php";
+include "metadata/rooms_resourcesMetaData.php";
 //include("metadata/project_relationMetaData.php");
 include "metadata/outboundEmailMetaData.php";
 include "metadata/addressBookMetaData.php";

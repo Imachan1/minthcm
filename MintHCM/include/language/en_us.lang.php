@@ -3094,9 +3094,8 @@ $app_list_strings['contract_status_list'] = array(
 );
 
 $app_list_strings['reservation_type_list'] = array(
-    '' => '',
-    'yes' => 'Yes',
-    'no' => 'No',
+    'false' => 'No',
+    'true' => 'Yes',
 );
 $app_list_strings['mode_list'] = array(
     '' => '',
@@ -3697,6 +3696,7 @@ $app_strings['LBL_APPRAISAL_ITEM_TYPE_ERROR'] = 'The recruitment appraisal may h
 $app_strings['LBL_CHOOSE_PLAN'] = 'You must to choose plan';
 $app_strings['LBL_PLAN_NOT_CHOOSED'] = 'Plan is not choosed';
 $app_strings['LBL_CLOSE_PLAN_CONFIRM'] = 'Are you sure you want to approve this plan?';
+$app_strings['LBL_CREATE_RESOURCE_CONFIRM'] = 'Are you sure you want to create resource from this record?';
 $app_strings['ERR_CLOSE_PLAN'] = 'You cannot approve this plan "{name}", because there are gaps between spent times or his time frames do not coincide with working times';
 $app_strings['ERR_CLOSE_PLAN_WORK'] = 'You cannot approve this plan "{name}", because workplace has not been selected.';
 $app_strings['LBL_PLAN_ONE_DAY'] = 'Work Schedule must spread in one day.';

@@ -79,4 +79,16 @@ class Rooms extends Basic {
          return false;
       }
    }
+
+   public function create_resource()
+   {
+      //resource: Name, Type (for reservation)
+      $name = $this->name;
+      $type = 'for_reservation';
+      $resource = BeanFactory::newBean('Resources');
+      $resource->name = $name;
+      $resource->type = $type;
+      $resource->save();
+      return true;
+   }
 }

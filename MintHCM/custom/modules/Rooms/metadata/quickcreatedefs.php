@@ -48,8 +48,7 @@ array (
         ),
         1 => 
         array (
-          0 => 'reservation_type',
-          1 => 
+          0 => 
           array (
             'name' => 'security_group_name',
             'label' => 'LBL_RELATIONSHIP_SECURITY_GROUP_NAME',
