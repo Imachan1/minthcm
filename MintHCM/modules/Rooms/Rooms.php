@@ -79,7 +79,29 @@ class Rooms extends Basic {
          return false;
       }
    }
-
+   public function save($check_notify = false) {
+      $return_value = parent::save($check_notify);
+      $this->load_relationship('rooms_resources');
+      $resources = $this->rooms_resources->getBeans();
+      if(!empty($resources)){
+         $resource=end($resources);
+         if($resource->name!=$this->name){
+            $resource->name=$this->name;
+            $resource->save();
+         }
+      }
+      return $return_value;
+   }
+   public function mark_deleted($id) {
+      $this->load_relationship('rooms_resources');
+      $resources = $this->rooms_resources->getBeans();
+      if(!empty($resources)){
+         $resource=end($resources);
+         $resource->type='not_for_reservation';
+         $resource->save();
+      }
+      parent::mark_deleted($id);
+   }
    public function create_resource()
    {
       //resource: Name, Type (for reservation)
@@ -89,6 +111,12 @@ class Rooms extends Basic {
       $resource->name = $name;
       $resource->type = $type;
       $resource->save();
+
+      $this->reservation_type='true';
+      $this->load_relationship('rooms_resources');
+      $this->rooms_resources->add($resource);
+      $this->save();
+
       return true;
    }
 }

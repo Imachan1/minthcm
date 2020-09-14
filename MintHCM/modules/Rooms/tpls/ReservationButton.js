@@ -38,6 +38,7 @@ function beforeCreateResource() {
    dialog_buttons[SUGAR.language.get( 'app_strings', 'LBL_DIALOG_YES' )] = function () {
       $( this ).dialog( "close" );
       createResource();
+      location.reload();
    };
    dialog_buttons[SUGAR.language.get( 'app_strings', 'LBL_DIALOG_NO' )] = function () {
       $( this ).dialog( "close" );
