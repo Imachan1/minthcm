@@ -1,5 +1,5 @@
 <?php
-$module_name = 'Rooms';
+$module_name = 'Resources';
 $viewdefs [$module_name] = 
 array (
   'DetailView' => 
@@ -16,7 +16,7 @@ array (
           3 => 'FIND_DUPLICATES',
           4 => 
           array (
-            'customCode' => '{include file="modules/Rooms/tpls/ReservationButton.tpl"}',
+            'customCode' => '{include file="modules/Resources/tpls/ShowReservationCalendarButton.tpl"}',
           ),
         ),
       ),
@@ -42,7 +42,7 @@ array (
           'newTab' => true,
           'panelDefault' => 'expanded',
         ),
-        'LBL_PANEL_ASSIGNMENT' => 
+        'LBL_EDITVIEW_PANEL1' => 
         array (
           'newTab' => true,
           'panelDefault' => 'expanded',
@@ -56,63 +56,41 @@ array (
         0 => 
         array (
           0 => 'name',
-          1 => 'assigned_user_name',
+          1 => 
+          array (
+            'name' => 'unavailable',
+            'label' => 'LBL_UNAVAILABLE',
+          ),
         ),
         1 => 
         array (
           0 => 
           array (
-            'name' => 'security_group_name',
-            'label' => 'LBL_RELATIONSHIP_SECURITY_GROUP_NAME',
+            'name' => 'type',
+            'studio' => 'visible',
+            'label' => 'LBL_TYPE',
           ),
           1 => 
           array (
-            'name' => 'number_of_seats',
-            'label' => 'LBL_NUMBER_OF_SEATS',
+            'name' => 'room_name',
+            'label' => 'LBL_ROOM_NAME',
           ),
         ),
         2 => 
         array (
-          0 => 
-          array (
-            'name' => 'room_surface',
-            'label' => 'LBL_ROOM_SURFACE',
-          ),
-          1 => 
-          array (
-            'name' => 'room_plan',
-            'studio' => 'visible',
-            'label' => 'LBL_ROOM_PLAN',
-          ),
+          0 => 'employee_name',
         ),
         3 => 
-        array (
-          0 => 'reservation_type',
-          1 => 
-          array (
-            'name' => 'resource_name',
-            'label' => 'LBL_RESOURCE_NAME',
-          ),
-        ),
-        4 => 
         array (
           0 => 'description',
         ),
       ),
-      'LBL_PANEL_ASSIGNMENT' => 
+      'lbl_editview_panel1' => 
       array (
         0 => 
         array (
-          0 => 
-          array (
-            'name' => 'created_by_name',
-            'label' => 'LBL_CREATED',
-          ),
-          1 => 
-          array (
-            'name' => 'modified_by_name',
-            'label' => 'LBL_MODIFIED_NAME',
-          ),
+          0 => 'assigned_user_name',
+          1 => '',
         ),
         1 => 
         array (
@@ -120,11 +98,13 @@ array (
           array (
             'name' => 'date_entered',
             'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
+            'label' => 'LBL_DATE_ENTERED',
           ),
           1 => 
           array (
             'name' => 'date_modified',
             'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+            'label' => 'LBL_DATE_MODIFIED',
           ),
         ),
       ),
