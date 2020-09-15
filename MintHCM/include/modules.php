@@ -600,13 +600,6 @@ $beanFiles['ScheduleReportsLogs'] = 'modules/ScheduleReportsLogs/ScheduleReports
 $beanFiles['KTemplates'] = 'modules/KTemplates/KTemplates.php';
 $beanFiles['PDFGenerator'] = 'modules/PDFGenerator/PDFGenerator.php';
 $beanFiles['PDFTemplates'] = 'modules/PDFTemplates/PDFTemplates.php';
-$beanFiles['GamePoints'] = 'modules/GamePoints/GamePoints.php';
-$beanFiles['GameAchievements'] = 'modules/GameAchievements/GameAchievements.php';
-$beanFiles['GameAchievementsConfig'] = 'modules/GameAchievementsConfig/GameAchievementsConfig.php';
-$beanFiles['GamePointCategories'] = 'modules/GamePointCategories/GamePointCategories.php';
-$beanFiles['Rewards'] = 'modules/Rewards/Rewards.php';
-$beanFiles['RewardsReceived'] = 'modules/RewardsReceived/RewardsReceived.php';
-$beanFiles['GameActivities'] = 'modules/GameActivities/GameActivities.php';
 //
 $beanFiles['Skills'] = 'modules/Skills/Skills.php';
 $beanFiles['Attitudes'] = 'modules/Attitudes/Attitudes.php';
@@ -673,14 +666,6 @@ $beanList['ScheduleReportsLogs'] = 'ScheduleReportsLogs';
 $beanList['KTemplates'] = 'KTemplates';
 $beanList['PDFGenerator'] = 'PDFGenerator';
 $beanList['PDFTemplates'] = 'PDFTemplates';
-$beanList['GamePoints'] = 'GamePoints';
-$beanList['GameAchievements'] = 'GameAchievements';
-$beanList['GameAchievementsConfig'] = 'GameAchievementsConfig';
-$beanList['GamePointCategories'] = 'GamePointCategories';
-$beanList['Rewards'] = 'Rewards';
-$beanList['RewardsReceived'] = 'RewardsReceived';
-$beanList['GameActivities'] = 'GameActivities';
-
 //
 $beanList['Skills'] = 'Skills';
 $beanList['Attitudes'] = 'Attitudes';
@@ -730,13 +715,6 @@ $moduleList[] = 'KTemplates';
 $moduleList[] = 'PDFTemplates';
 $moduleList[] = 'ScheduleReports';
 $moduleList[] = 'ScheduleReportsLogs';
-$moduleList[] = 'GamePoints';
-$moduleList[] = 'GameAchievements';
-$moduleList[] = 'GameAchievementsConfig';
-$moduleList[] = 'GamePointCategories';
-$moduleList[] = 'Rewards';
-$moduleList[] = 'RewardsReceived';
-$moduleList[] = 'GameActivities';
 //
 $moduleList[] = 'Skills';
 $moduleList[] = 'Attitudes';
