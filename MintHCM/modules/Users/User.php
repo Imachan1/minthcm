@@ -711,7 +711,12 @@ class User extends Person implements EmailInterface
 
         if ((isset($_POST['old_password']) || $this->portal_only) &&
             (isset($_POST['new_password']) && !empty($_POST['new_password'])) &&
-            (isset($_POST['password_change']) && 'true' === $_POST['password_change'])) {
+            /* MintHCM #74303 START */
+            //  (isset($_POST['password_change']) && $_POST['password_change'] === 'true') ) {
+            (isset($_POST['password_change']) && 'true' === $_POST['password_change'])
+            && (!isset($_POST['password_change_attempt_made']) || true !== $_POST['password_change_attempt_made'])) {
+            $_POST['password_change_attempt_made'] = true;
+            /* MintHCM #74303 END */
             if (!$this->change_password($_POST['old_password'], $_POST['new_password'])) {
                 if (isset($_POST['page']) && 'EditView' === $_POST['page']) {
                     SugarApplication::appendErrorMessage($this->error_string);

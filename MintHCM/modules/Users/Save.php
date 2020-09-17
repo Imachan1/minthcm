@@ -456,7 +456,12 @@ if (!$focus->verify_data()) {
     $new_pwd = '';
     if ((isset($_POST['old_password']) || $focus->portal_only) &&
         (isset($_POST['new_password']) && !empty($_POST['new_password'])) &&
-        (isset($_POST['password_change']) && 'true' == $_POST['password_change'])) {
+        /* MintHCM #74303 START */
+        // (isset($_POST['password_change']) && $_POST['password_change'] == 'true')) {
+        (isset($_POST['password_change']) && 'true' == $_POST['password_change'])
+        && (!isset($_POST['password_change_attempt_made']) || true !== $_POST['password_change_attempt_made'])) {
+        $_POST['password_change_attempt_made'] = true;
+        /* eVolpe #74303 END */
         if (!$focus->change_password($_POST['old_password'], $_POST['new_password'])) {
 
             if ($focus->error_string) {
