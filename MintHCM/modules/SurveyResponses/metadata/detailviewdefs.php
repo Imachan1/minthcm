@@ -1,9 +1,9 @@
 <?php
 $module_name = 'SurveyResponses';
-$viewdefs [$module_name] = array(
+$viewdefs[$module_name] = array(
     'DetailView' => array(
         'templateMeta' => array(
-            'form'       => array(
+            'form' => array(
                 'buttons' => array(
                     0 => 'EDIT',
                     1 => 'DUPLICATE',
@@ -12,7 +12,7 @@ $viewdefs [$module_name] = array(
                 ),
             ),
             'maxColumns' => '2',
-            'widths'     => array(
+            'widths' => array(
                 0 => array(
                     'label' => '10',
                     'field' => '30',
@@ -23,7 +23,7 @@ $viewdefs [$module_name] = array(
                 ),
             ),
         ),
-        'panels'       => array(
+        'panels' => array(
             'default' => array(
                 0 => array(
                     0 => 'name',
@@ -35,28 +35,36 @@ $viewdefs [$module_name] = array(
                 ),
                 2 => array(
                     0 => 'description',
-                    1 => array(
-                        'name' => 'contact_name',
-                    ),
-                ),
-                3 => array(
-                    0 => array(
-                        'name' => 'account_name',
-                    ),
+                    //MintHCM #74238 START
+                    //     1 => array(
+                    //         'name' => 'contact_name',
+                    //     ),
+                    // ),
+                    // 3 => array(
+                    //     0 => array(
+                    //         'name' => 'account_name',
+                    //     ),
+                    //MintHCM #74238 END
                     1 => array(
                         'name' => 'survey_name',
                     ),
                 ),
-                4 => array(
+                //MintHCM #74238 START
+                // 4 => array(
+                3 => array(
                     0 => 'campaign_name',
+                    1 => 'employee_name',
+                    //MintHCM #74238 END
                 ),
-                5 => array(
+                //MintHCM #74238 START
+                //5 => array(
+                4 => array(
+                    //MintHCM #74238 END
                     0 => array(
-                        'name' => 'question_responses_display'
+                        'name' => 'question_responses_display',
                     ),
                 ),
             ),
         ),
     ),
 );
-?>
