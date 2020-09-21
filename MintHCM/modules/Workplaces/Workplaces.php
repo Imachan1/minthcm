@@ -80,8 +80,8 @@ class Workplaces extends Basic {
       $prev_mode=$this->fetched_row['mode'];
       if($prev_mode!=null&&$prev_mode!=$this->mode){
          if($this->currentAllocation()){
-            SugarApplication::appendErrorMessage('record cannot be saved !!!'.$errorMsg);
-            return false;
+            SugarApplication::appendErrorMessage(translate("LBL_ERROR_ACTIVE_ALLOCATION"));
+            return;
          }
       }
       $room_id=$this->room_id;
