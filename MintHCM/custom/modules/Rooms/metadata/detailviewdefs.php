@@ -62,8 +62,9 @@ array (
         array (
           0 => 
           array (
-            'name' => 'security_group_name',
-            'label' => 'LBL_RELATIONSHIP_SECURITY_GROUP_NAME',
+            'name' => 'availability',
+            'studio' => 'visible',
+            'label' => 'LBL_STATUS',
           ),
           1 => 
           array (
@@ -95,6 +96,14 @@ array (
           ),
         ),
         4 => 
+        array (
+          0 => 
+          array (
+            'name' => 'security_group_name',
+            'label' => 'LBL_RELATIONSHIP_SECURITY_GROUP_NAME',
+          ),
+        ),
+        5 => 
         array (
           0 => 'description',
         ),

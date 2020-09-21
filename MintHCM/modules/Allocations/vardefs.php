@@ -50,7 +50,7 @@ $dictionary[$module_name] = array(
     'fields' => array(
         'mode' =>
         array(
-            'required' => true,
+            'required' => false,
             'name' => 'mode',
             'vname' => 'LBL_MODE',
             'type' => 'enum',
@@ -69,7 +69,7 @@ $dictionary[$module_name] = array(
             'merge_filter' => 'disabled',
             'len' => 100,
             'size' => '20',
-            'options' => 'mode_list',
+            'options' => 'allocation_mode_list',
             'studio' => 'visible',
             'dependency' => false,
         ),

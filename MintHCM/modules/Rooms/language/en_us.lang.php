@@ -75,4 +75,5 @@ $mod_strings = array(
     'LBL_ROOMS_RESOURCES_TITLE' => 'Resources',
     'LBL_RESOURCE_NAME' => 'Resource',
     'LBL_RESOURCE_ID' => 'Resource ID',
+    'LBL_STATUS' => 'Status',
 );

@@ -33,19 +33,13 @@ array (
     'width' => '10%',
     'default' => true,
   ),
-  'DATE_MODIFIED' => 
+  'AVAILABILITY' => 
   array (
-    'type' => 'datetime',
-    'label' => 'LBL_DATE_MODIFIED',
-    'width' => '10%',
+    'type' => 'enum',
     'default' => true,
-  ),
-  'DATE_ENTERED' => 
-  array (
-    'type' => 'datetime',
-    'label' => 'LBL_DATE_ENTERED',
+    'studio' => 'visible',
+    'label' => 'LBL_STATUS',
     'width' => '10%',
-    'default' => true,
   ),
   'ASSIGNED_USER_NAME' => 
   array (
@@ -78,6 +72,20 @@ array (
   array (
     'type' => 'float',
     'label' => 'LBL_ROOM_SURFACE',
+    'width' => '10%',
+    'default' => false,
+  ),
+  'DATE_MODIFIED' => 
+  array (
+    'type' => 'datetime',
+    'label' => 'LBL_DATE_MODIFIED',
+    'width' => '10%',
+    'default' => false,
+  ),
+  'DATE_ENTERED' => 
+  array (
+    'type' => 'datetime',
+    'label' => 'LBL_DATE_ENTERED',
     'width' => '10%',
     'default' => false,
   ),

@@ -3097,11 +3097,15 @@ $app_list_strings['reservation_type_list'] = array(
     'false' => 'No',
     'true' => 'Yes',
 );
-$app_list_strings['mode_list'] = array(
+$app_list_strings['workplace_mode_list'] = array(
     '' => '',
     'permanent' => 'Permanent',
     'rotational' => 'Rotational',
     'hybrid' => 'Hybrid',
+);
+$app_list_strings['allocation_mode_list'] = array(
+    'permanent' => 'Permanent',
+    'rotational' => 'Rotational',
 );
 $app_strings['LBL_PRINT_AS_PDF'] = 'Print as PDF';
 $app_strings['LBL_SELECT_TEMPLATE'] = 'Please Select a Template';
@@ -3839,6 +3843,12 @@ $app_list_strings['group_type_list'] = array(
     'department' => 'Department',
     'team' => 'Team',
     'other' => 'Other',
+);
+$app_list_strings['workplace_room_status'] = array(
+        '' => '',
+        'active' => 'Active',
+        'inactive' => 'Inactive',
+        'planned' => 'Planned',
 );
 
 $app_list_strings['daily_working_time_list'] = array(

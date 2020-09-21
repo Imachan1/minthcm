@@ -49,11 +49,25 @@ array (
           ),
           1 => 
           array (
-            'name' => 'room_name',
-            'label' => 'LBL_RELATIONSHIP_ROOM_NAME',
+            'name' => 'availability',
+            'studio' => 'visible',
+            'label' => 'LBL_STATUS',
           ),
         ),
         2 => 
+        array (
+          0 => 
+          array (
+            'name' => 'room_name',
+            'label' => 'LBL_RELATIONSHIP_ROOM_NAME',
+            'displayParams' => 
+            array (
+              'class' => 'sqsDisabled',
+              'initial_filter' => '&availability_advanced=active',
+            ),
+          ),
+        ),
+        3 => 
         array (
           0 => 'description',
         ),

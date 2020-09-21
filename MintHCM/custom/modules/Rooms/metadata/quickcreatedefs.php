@@ -53,6 +53,12 @@ array (
             'name' => 'security_group_name',
             'label' => 'LBL_RELATIONSHIP_SECURITY_GROUP_NAME',
           ),
+          1 => 
+          array (
+            'name' => 'availability',
+            'studio' => 'visible',
+            'label' => 'LBL_STATUS',
+          ),
         ),
         2 => 
         array (

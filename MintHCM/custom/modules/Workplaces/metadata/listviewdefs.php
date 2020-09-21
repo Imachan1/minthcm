@@ -26,12 +26,13 @@ array (
     'width' => '10%',
     'default' => true,
   ),
-  'DATE_MODIFIED' => 
+  'AVAILABILITY' => 
   array (
-    'type' => 'datetime',
-    'label' => 'LBL_DATE_MODIFIED',
-    'width' => '10%',
+    'type' => 'enum',
     'default' => true,
+    'studio' => 'visible',
+    'label' => 'LBL_STATUS',
+    'width' => '10%',
   ),
   'DATE_ENTERED' => 
   array (
@@ -64,6 +65,13 @@ array (
     'link' => true,
     'label' => 'LBL_MODIFIED_NAME',
     'id' => 'MODIFIED_USER_ID',
+    'width' => '10%',
+    'default' => false,
+  ),
+  'DATE_MODIFIED' => 
+  array (
+    'type' => 'datetime',
+    'label' => 'LBL_DATE_MODIFIED',
     'width' => '10%',
     'default' => false,
   ),

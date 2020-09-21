@@ -52,6 +52,12 @@ array (
               'initial_filter' => '&group_type=business_unit',
             ),
           ),
+          1 => 
+          array (
+            'name' => 'availability',
+            'studio' => 'visible',
+            'label' => 'LBL_STATUS',
+          ),
         ),
         2 => 
         array (

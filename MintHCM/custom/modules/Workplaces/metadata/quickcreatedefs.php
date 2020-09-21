@@ -51,11 +51,20 @@ array (
           0 => 'mode',
           1 => 
           array (
+            'name' => 'availability',
+            'studio' => 'visible',
+            'label' => 'LBL_STATUS',
+          ),
+        ),
+        2 => 
+        array (
+          0 => 
+          array (
             'name' => 'room_name',
             'label' => 'LBL_RELATIONSHIP_ROOM_NAME',
           ),
         ),
-        2 => 
+        3 => 
         array (
           0 => 'description',
         ),

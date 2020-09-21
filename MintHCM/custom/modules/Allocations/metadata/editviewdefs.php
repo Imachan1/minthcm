@@ -51,6 +51,9 @@ array (
           array (
             'name' => 'workplace_name',
             'label' => 'LBL_RELATIONSHIP_WORKPLACES',
+            'displayParams' => array (
+              'initial_filter' => '" + (this.form.{$fields.mode.name}.value == "permanent" ?  "&mode_advanced[]=permanent" : ("&mode_advanced[]=hybrid&mode_advanced[]=rotational") ) + "&availability_advanced=active',
+            ),
           ),
         ),
         2 => 
@@ -74,5 +77,3 @@ array (
     ),
   ),
 );
-;
-?>

@@ -138,6 +138,11 @@ array (
           array (
             'name' => 'workplace_name',
             'label' => 'LBL_RELATIONSHIP_WORKPLACE_NAME',
+            'displayParams' => 
+            array (
+              'class' => 'sqsDisabled',
+              'initial_filter' => '&availability_advanced=active',
+            ),
           ),
         ),
         6 => 

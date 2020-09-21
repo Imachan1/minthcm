@@ -77,9 +77,16 @@ class Workplaces extends Basic {
       }
    }
    public function save($check_notify = false) {
-      $return_value = parent::save($check_notify);
+      $prev_mode=$this->fetched_row['mode'];
+      if($prev_mode!=null&&$prev_mode!=$this->mode){
+         if($this->currentAllocation()){
+            SugarApplication::appendErrorMessage('record cannot be saved !!!'.$errorMsg);
+            return false;
+         }
+      }
       $room_id=$this->room_id;
       $this->recount($room_id);
+      $return_value = parent::save($check_notify);
       return $return_value;
    }
    public function mark_deleted($id) {
@@ -102,4 +109,27 @@ class Workplaces extends Basic {
       $room->number_of_seats=$count;
       $room->save();
    }
+   public function currentAllocation(){
+      $db = DBManagerFactory::getInstance();
+      global $timedate;
+      $db_format = $timedate->get_db_date_time_format();
+
+      $this->load_relationship('workplaces_allocations');
+      $allocations = $this->workplaces_allocations->getBeans();
+      $today = strtotime(date("Y-m-d"));
+
+      while(list($allocation_id,$allocation) = each($allocations)){
+         $start_date = strtotime($allocation->date_from);
+         $end_date = strtotime($allocation->date_to);
+          if($today>=$start_date){
+              if(!empty($end_date)){
+                  if($today<=$end_date){
+                      return true;
+                  }
+              }
+              else return true;
+          } 
+      }
+      return false;
+  }
 }
