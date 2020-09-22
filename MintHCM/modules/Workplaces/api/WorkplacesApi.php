@@ -43,52 +43,49 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-$layout_defs["Workplaces"]["subpanel_setup"] = array(
-    'securitygroups' => array(
-        'top_buttons' => array(
-            array(
-                'widget_class' => 'SubPanelTopSelectButton',
-                'popup_module' => 'SecurityGroups',
-                'mode' => 'MultiSelect'
-            ),
-        ),
-        'order' => 900,
-        'sort_by' => 'name',
-        'sort_order' => 'asc',
-        'module' => 'SecurityGroups',
-        'refresh_page' => 1,
-        'subpanel_name' => 'default',
-        'get_subpanel_data' => 'SecurityGroups',
-        'add_subpanel_data' => 'securitygroup_id',
-        'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
-    ),
-);
-$layout_defs["Workplaces"]["subpanel_setup"]['workplaces_allocations'] = array (
-    'order' => 100,
-    'module' => 'Allocations',                        
-    'subpanel_name' => 'default',
-    'sort_order' => 'asc',
-    'sort_by' => 'id',
-    'title_key' => 'LBL_RELATIONSHIP_ALLOCATIONS',         
-    'get_subpanel_data' => 'workplaces_allocations',           
-    'top_buttons' => array (
-    ),
- );
- $layout_defs["Workplaces"]["subpanel_setup"]['workplaces_workschedules'] = array (
-    'order' => 100,
-    'module' => 'WorkSchedules',                                  // nazwa drugiego modułu
-    'subpanel_name' => 'default',
-    'sort_order' => 'asc',
-    'sort_by' => 'id',
-    'title_key' => 'LBL_RELATIONSHIP_WORKSCHEDULES_NAME',         // etykieta nazwy subpanelu drugiego modułu pod formularzem pierwszego modułu
-    'get_subpanel_data' => 'workplaces_workschedules',             // nazwa pola link w ev_Oceans
-    'top_buttons' => array (
-       array (
-          'widget_class' => 'SubPanelTopButtonQuickCreate',
-       ),
-       array (
-          'widget_class' => 'SubPanelTopSelectButton',
-          'mode' => 'MultiSelect',
-       ),
-    ),
- );
+
+class WorkplacesApi {
+
+
+   public function canSelectRoom($room_id) {
+      $room = BeanFactory::getBean('Rooms',$room_id);
+      if($room->availability!='active')
+         return false;
+      else return true;
+   }
+
+   public function canChangeMode($id,$mode) {
+      $result = true;  
+      $workplace = BeanFactory::getBean('Workplaces',$id);
+      $prev_mode=$workplace->fetched_row['mode'];
+      if($prev_mode!=null&&$prev_mode!=$mode){
+         $result=$this->checkForCurrentAllocation($workplace);
+      }
+      return $result;
+   }
+
+
+   protected function checkForCurrentAllocation($workplace){
+      $db = DBManagerFactory::getInstance();
+      global $timedate;
+      $db_format = $timedate->get_db_date_time_format();
+
+      $workplace->load_relationship('workplaces_allocations');
+      $allocations = $workplace->workplaces_allocations->getBeans();
+      $today = strtotime(date("Y-m-d"));
+
+      while(list($allocation_id,$allocation) = each($allocations)){
+         $start_date = strtotime($allocation->date_from);
+         $end_date = strtotime($allocation->date_to);
+          if($today>=$start_date){
+              if(!empty($end_date)){
+                  if($today<=$end_date){
+                      return false;
+                  }
+              }
+              else return false;
+          } 
+      }
+      return true;
+  }
+}

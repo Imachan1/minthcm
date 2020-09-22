@@ -43,52 +43,55 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-$layout_defs["Workplaces"]["subpanel_setup"] = array(
-    'securitygroups' => array(
-        'top_buttons' => array(
-            array(
-                'widget_class' => 'SubPanelTopSelectButton',
-                'popup_module' => 'SecurityGroups',
-                'mode' => 'MultiSelect'
-            ),
-        ),
-        'order' => 900,
-        'sort_by' => 'name',
-        'sort_order' => 'asc',
-        'module' => 'SecurityGroups',
-        'refresh_page' => 1,
-        'subpanel_name' => 'default',
-        'get_subpanel_data' => 'SecurityGroups',
-        'add_subpanel_data' => 'securitygroup_id',
-        'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
-    ),
-);
-$layout_defs["Workplaces"]["subpanel_setup"]['workplaces_allocations'] = array (
-    'order' => 100,
-    'module' => 'Allocations',                        
-    'subpanel_name' => 'default',
-    'sort_order' => 'asc',
-    'sort_by' => 'id',
-    'title_key' => 'LBL_RELATIONSHIP_ALLOCATIONS',         
-    'get_subpanel_data' => 'workplaces_allocations',           
-    'top_buttons' => array (
-    ),
- );
- $layout_defs["Workplaces"]["subpanel_setup"]['workplaces_workschedules'] = array (
-    'order' => 100,
-    'module' => 'WorkSchedules',                                  // nazwa drugiego modułu
-    'subpanel_name' => 'default',
-    'sort_order' => 'asc',
-    'sort_by' => 'id',
-    'title_key' => 'LBL_RELATIONSHIP_WORKSCHEDULES_NAME',         // etykieta nazwy subpanelu drugiego modułu pod formularzem pierwszego modułu
-    'get_subpanel_data' => 'workplaces_workschedules',             // nazwa pola link w ev_Oceans
-    'top_buttons' => array (
-       array (
-          'widget_class' => 'SubPanelTopButtonQuickCreate',
-       ),
-       array (
-          'widget_class' => 'SubPanelTopSelectButton',
-          'mode' => 'MultiSelect',
-       ),
-    ),
- );
+
+class AllocationsApi {
+
+   public function checkWorkplacePeriods($workplace_id, $mode, $date_from, $date_to) {
+      $result = true;  
+      if($mode=='permanent'){
+        $result=$this->checkConcurrentPeriods($workplace_id, $date_from, $date_to);
+      }
+      return $result;
+   }
+   public function checkWorkplaceStatus($workplace_id, $mode)
+   {
+      $workplace = BeanFactory::getBean('Workplaces',$workplace_id);
+      if($workplace->availability!='active') 
+         return false;
+      else if ($workplace->mode=='permanent'&&$mode!='permanent')
+         return false;
+      else if ($mode=='rotational'&&$workplace->mode=='permanent')
+         return false;
+      else 
+         return true;
+   }
+   protected function checkConcurrentPeriods($workplace_id, $date_from, $date_to){
+    $db = DBManagerFactory::getInstance();
+    global $timedate;
+    $db_format = $timedate->get_db_date_time_format();
+
+    $workplace = BeanFactory::getBean('Workplaces',$workplace_id);
+    $workplace->load_relationship('workplaces_allocations');
+    $allocations = $workplace->workplaces_allocations->getBeans();
+
+    while(list($allocation_id,$allocation) = each($allocations)){
+       $start_date = strtotime($allocation->date_from);
+       $end_date = strtotime($allocation->date_to);
+       $from_date = strtotime($date_from);
+       $to_date = strtotime($date_to);
+       if(empty($end_date)&&empty($to_date)){
+           return false;
+       } else if (empty($end_date)&&!empty($to_date)){
+            if($from_date>$start_date||$to_date>$start_date)
+                return false;
+       } else if (!empty($end_date)&&empty($to_date)){
+            if($from_date<=$end_date)
+                return false;
+       } else {
+            if($end_date>=$from_date||$to_date>=$start_date)
+                return false;
+       }
+    }
+    return true;
+   }
+}

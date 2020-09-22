@@ -72,5 +72,6 @@ $mod_strings = array(
     'LBL_RELATIONSHIP_ALLOCATIONS' => 'Allocations',
     'LBL_RELATIONSHIP_WORKSCHEDULES_NAME' => 'Work Schedules',
     'LBL_STATUS' => 'Status',
-    'LBL_ERROR_ACTIVE_ALLOCATION' => "You can not change workplace's mode if there are active allocations.",
+    'LBL_ERR_CANT_CHANGE_MODE' => "You can not change workplace's mode if there are active allocations.",
+    'LBL_ERR_CANT_SELECT_ROOM' => "You can select only an active room."
 );

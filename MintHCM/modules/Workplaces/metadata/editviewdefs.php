@@ -60,10 +60,6 @@ array (
           array (
             'name' => 'room_name',
             'label' => 'LBL_RELATIONSHIP_ROOM_NAME',
-            'displayParams' => array (
-              'class' => 'sqsDisabled',
-              'initial_filter' => '&status=active',
-            ),
           ),
         ),
         3 => 

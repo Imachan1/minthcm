@@ -95,6 +95,7 @@ $dictionary[$module_name] = array(
             'size' => '20',
             'enable_range_search' => false,
             'precision' => '2',
+            'vt_validation' => "AEM(ifElse(or(empty(\$room_surface),equals(0,\$room_surface)),true,ifElse(greaterThan(\$room_surface, 0),true,false)),'LBL_NEGATIVE_SURFACE')",
         ),
         'room_plan' => 
         array (
@@ -191,6 +192,7 @@ $dictionary[$module_name] = array(
             'module' => 'SecurityGroups',                         // nazwa pierwszego modułu
             'table' => 'securitygroups',                          // nazwa tabeli pierwszego modułu 
             'rname' => 'name',
+            'vt_validation' => "AEM(callCustomApi(Rooms,canSelectSecurityGroup,\$security_group_id),'LBL_ERR_CANT_SELECT_SEC_GROUP')",
          ),
          "security_group_id" => array(
             'name' => 'security_group_id',                         // nazwa pola id, które będzie reprezentować relacja

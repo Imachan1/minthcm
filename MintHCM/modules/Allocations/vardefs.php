@@ -125,6 +125,10 @@ $dictionary[$module_name] = array(
             'module' => 'Workplaces',                         // nazwa pierwszego modułu
             'table' => 'workplaces',                          // nazwa tabeli pierwszego modułu 
             'rname' => 'name',
+            'vt_validation' => array(
+                "AEM(callCustomApi(Allocations,checkWorkplaceStatus,\$workplace_id,\$mode),'LBL_ERR_WORKPLACE_STATUS')",
+                "AEM(callCustomApi(Allocations,checkWorkplacePeriods,\$workplace_id,\$mode,\$date_from,\$date_to),'LBL_ERR_WORKPLACE_PERIODS')",
+            ),
          ),
          "workplace_id" => array(
             'name' => 'workplace_id',                         // nazwa pola id, które będzie reprezentować relacja

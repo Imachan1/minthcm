@@ -70,4 +70,6 @@ $mod_strings = array(
     'LBL_LINKED_USERS_TITLE' => 'Employees',
     'LNK_NEW_RECORD' => 'Create Allocations',
     'LNK_LIST' => 'View Allocations',
+    'LBL_ERR_WORKPLACE_PERIODS' => 'You can not select this workplace because it is occupied in the chosen period.',
+    'LBL_ERR_WORKPLACE_STATUS' => 'Status or mode of selected workplace do not match with current allocation.',
 );

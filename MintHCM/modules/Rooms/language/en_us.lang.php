@@ -76,4 +76,6 @@ $mod_strings = array(
     'LBL_RESOURCE_NAME' => 'Resource',
     'LBL_RESOURCE_ID' => 'Resource ID',
     'LBL_STATUS' => 'Status',
+    'LBL_NEGATIVE_SURFACE' => 'Room surface value must be positive.',
+    'LBL_ERR_CANT_SELECT_SEC_GROUP' => 'You can select only organizational units of business unit type.',
 );

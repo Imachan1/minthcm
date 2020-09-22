@@ -43,52 +43,13 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-$layout_defs["Workplaces"]["subpanel_setup"] = array(
-    'securitygroups' => array(
-        'top_buttons' => array(
-            array(
-                'widget_class' => 'SubPanelTopSelectButton',
-                'popup_module' => 'SecurityGroups',
-                'mode' => 'MultiSelect'
-            ),
-        ),
-        'order' => 900,
-        'sort_by' => 'name',
-        'sort_order' => 'asc',
-        'module' => 'SecurityGroups',
-        'refresh_page' => 1,
-        'subpanel_name' => 'default',
-        'get_subpanel_data' => 'SecurityGroups',
-        'add_subpanel_data' => 'securitygroup_id',
-        'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
-    ),
-);
-$layout_defs["Workplaces"]["subpanel_setup"]['workplaces_allocations'] = array (
-    'order' => 100,
-    'module' => 'Allocations',                        
-    'subpanel_name' => 'default',
-    'sort_order' => 'asc',
-    'sort_by' => 'id',
-    'title_key' => 'LBL_RELATIONSHIP_ALLOCATIONS',         
-    'get_subpanel_data' => 'workplaces_allocations',           
-    'top_buttons' => array (
-    ),
- );
- $layout_defs["Workplaces"]["subpanel_setup"]['workplaces_workschedules'] = array (
-    'order' => 100,
-    'module' => 'WorkSchedules',                                  // nazwa drugiego modułu
-    'subpanel_name' => 'default',
-    'sort_order' => 'asc',
-    'sort_by' => 'id',
-    'title_key' => 'LBL_RELATIONSHIP_WORKSCHEDULES_NAME',         // etykieta nazwy subpanelu drugiego modułu pod formularzem pierwszego modułu
-    'get_subpanel_data' => 'workplaces_workschedules',             // nazwa pola link w ev_Oceans
-    'top_buttons' => array (
-       array (
-          'widget_class' => 'SubPanelTopButtonQuickCreate',
-       ),
-       array (
-          'widget_class' => 'SubPanelTopSelectButton',
-          'mode' => 'MultiSelect',
-       ),
-    ),
- );
+
+class AllocationsLogicHooks {
+   public function permamentModeAllocationCheck($bean, $event, $arguments) {
+      if($bean->mode=='permanent'){
+        $bean->load_relationship('allocations_employees');
+        $bean->allocations_employees->delete($bean->id);
+      } 
+   }
+
+}
