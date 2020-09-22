@@ -15,7 +15,10 @@ if ($survey->status == 'Closed') {
     displayClosedPage($survey);
     exit();
 }
-if ($survey->status != 'Public') {
+//MintHCM #74241 START
+//if ($survey->status != 'Public') {
+if ($survey->status != 'Active') {
+    //MintHCM #74241 END
     header("HTTP/1.0 404 Not Found");
     exit();
 }

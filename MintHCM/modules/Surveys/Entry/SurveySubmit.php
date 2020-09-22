@@ -7,7 +7,10 @@ $survey = BeanFactory::getBean('Surveys', $surveyId);
 if (empty($survey->id)) {
     do404();
 }
-if ($survey->status != 'Public') {
+//MintHCM #74241 START
+//if ($survey->status != 'Public') {
+if ($survey->status != 'Active') {
+    //MintHCM #74241 END
     do404();
 }
 //MintHCM #74238 START
