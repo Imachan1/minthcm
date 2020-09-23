@@ -4,14 +4,9 @@
             <th>
                 {$mod.LBL_RESPONSE_ANSWER}
             </th>
-            {* MintHCM #74238 START *}
-            {* <th>
-                {$mod.LBL_RESPONSE_CONTACT}
-            </th> *}
             <th>
                 {$mod.LBL_RESPONSE_EMPLOYEE}
             </th>
-            {* MintHCM #74238 END *}
             <th>
                 {$mod.LBL_RESPONSE_TIME}
             </th>
@@ -21,16 +16,6 @@
                 <td>
                     {$response.answer}
                 </td>
-                {* MintHCM #74238 START *}
-                {* <td>
-                    {if $response.contact}
-                        <a href="index.php?module=Contacts&action=DetailView&record={$response.contact.id}">
-                            {$response.contact.name}
-                        </a>
-                    {else}
-                        {$mod.LBL_UNKNOWN_CONTACT}
-                    {/if}
-                </td> *}
                 <td>
                 {if $response.employee}
                     <a href="index.php?module=Employees&action=DetailView&record={$response.employee.id}">
@@ -38,7 +23,6 @@
                     </a>
                 {/if}
                 </td>
-                {* MintHCM #74238 END *}
                 <td>
                     {$response.time}
                 </td>

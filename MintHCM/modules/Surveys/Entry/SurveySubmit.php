@@ -13,10 +13,8 @@ if ($survey->status != 'Active') {
     //MintHCM #74241 END
     do404();
 }
-//MintHCM #74238 START
-//$contactId = !empty($_REQUEST['contact']) ? $_REQUEST['contact'] : '';
+
 $employeeId = !empty($_REQUEST['employee']) ? $_REQUEST['employee'] : '';
-//MintHCM #74238 END
 
 $trackerId = !empty($_REQUEST['tracker']) ? $_REQUEST['tracker'] : '';
 
@@ -24,10 +22,8 @@ require_once 'modules/Campaigns/utils.php';
 if ($trackerId) {
     log_campaign_activity($trackerId, 'Survey');
 }
-//MintHCM #74238 START
-//processSurvey($survey, $trackerId, $contactId, $_REQUEST);
+
 processSurvey($survey, $trackerId, $employeeId, $_REQUEST);
-//MintHCM #74238 END
 
 function getCampaignIdFromTracker($trackerId)
 {
@@ -45,44 +41,23 @@ EOF;
 
     return false;
 }
-//MintHCM #74238 START
-//function processSurvey(Surveys $survey, $trackerId, $contactId, $request) {
-//MintHCM #74238 END
+
 function processSurvey(Surveys $survey, $trackerId, $employeeId, $request)
 {
 // View Tools #52096 START
     // $contactName = 'Unknown Contact';
     // View Tools #52096 END
-    //MintHCM #74238 START
-    // global $sugar_config;
-    // $mod_strings_surveys = return_module_language($sugar_config['default_language'], $survey->module_name);
-    // $contactName = $mod_strings_surveys['LBL_UNKNOWN_CONTACT'];
-    //$accountId = '';
-    //MintHCM #74238 END
     $campaignId = '';
     if ($trackerId) {
         $campaignId = getCampaignIdFromTracker($trackerId);
     }
-    //MintHCM #74238 START
-    // if ( $contactId ) {
-    //     $contact = BeanFactory::getBean('Contacts', $contactId);
-    //     if ( !empty($contact->id) ) {
-    //        $contactName = $contact->name;
-    //        $accountId = $contact->account_id;
-    //     }
-    //  }
-    //MintHCM #74238 END
+
     $response = BeanFactory::newBean('SurveyResponses');
     $response->id = create_guid();
     $response->new_with_id = true;
-    //MintHCM #74238 START
-    // $response->name = $survey->name . ' - ' . $contactName;
-    // $response->contact_id = $contactId;
-    // $response->account_id = $accountId;
     $employee = BeanFactory::getBean('Employees', $employeeId);
     $response->name = $survey->name . ' - ' . $employee->name;
     $response->employee_id = $employeeId;
-    //MintHCM #74238 END
     $response->survey_id = $survey->id;
     $response->campaign_id = $campaignId;
     $response->happiness = -1;

@@ -46,32 +46,6 @@ require_once 'modules/AOP_Case_Updates/util.php';
 
 class SurveyResponses extends Basic
 {
-    //MintHCM #74238 START
-    // var $new_schema = true;
-    // var $module_dir = 'SurveyResponses';
-    // var $object_name = 'SurveyResponses';
-    // var $table_name = 'surveyresponses';
-    // var $importable = false;
-    // var $disable_row_level_security = true; // to ensure that modules created and deployed under CE will continue to function under team security if the instance is upgraded to PRO
-
-    // var $id;
-    // var $name;
-    // var $date_entered;
-    // var $date_modified;
-    // var $modified_user_id;
-    // var $modified_by_name;
-    // var $created_by;
-    // var $created_by_name;
-    // var $description;
-    // var $deleted;
-    // var $created_by_link;
-    // var $modified_user_link;
-    // var $assigned_user_id;
-    // var $assigned_user_name;
-    // var $assigned_user_link;
-    // var $SecurityGroups;
-
-    // function __construct()
     public $new_schema = true;
     public $module_dir = 'SurveyResponses';
     public $object_name = 'SurveyResponses';
@@ -97,14 +71,11 @@ class SurveyResponses extends Basic
     public $SecurityGroups;
 
     public function __construct()
-    //MintHCM #74238 END
     {
         parent::__construct();
     }
-    //MintHCM #74238 START
-    //function bean_implements($interface)
+
     public function bean_implements($interface)
-    //MintHCM #74238 END
     {
         switch ($interface) {
             case 'ACL':
@@ -122,28 +93,18 @@ class SurveyResponses extends Basic
         if ($this->email_response_sent) {
             return $res;
         }
-        //MintHCM #74238 START
-        //if (!$this->contact_id) {
+
         if (!$this->employee_id) {
-            //MintHCM #74238 END
             return $res;
         }
 
-        //MintHCM #74238 START
-        //$contact = BeanFactory::getBean('Contacts', $this->contact_id);
         $employee = BeanFactory::getBean('Employees', $this->employee_id);
-        //MintHCM #74238 END
 
-        //MintHCM #74238 START
-        //if (empty($contact->id)) {
         if (empty($employee->id)) {
-            //MintHCM #74238 END
             return $res;
         }
-        //MintHCM #74238 START
-        //$email = $contact->emailAddress->getPrimaryAddress($contact);
+
         $email = $employee->emailAddress->getPrimaryAddress($employee);
-        //MintHCM #74238 END
         if (!$email) {
             return $res;
         }
@@ -155,52 +116,34 @@ class SurveyResponses extends Basic
             //Create case
             $case = BeanFactory::newBean('Cases');
             $case->name = 'SurveyFollowup';
-            //MintHCM #74238 START
-            //$case->description = "Received the following dissatisfied response from " . $contact->name . "<br>";
             $case->description = "Received the following dissatisfied response from " . $employee->name . "<br>";
-            //MintHCM #74238 END
             $case->description .= $this->happiness_text;
             $case->from_negative_survey = true;
             $case->status = 'Open_New';
             $case->priority = 'P1';
             $case->type = 'User';
-            //MintHCM #74238 START
-            //$account = BeanFactory::getBean('Accounts',$contact->account_id);
-            // if (!empty($contact->assigned_user_id)) {
-            //     $case->assigned_user_id = $contact->assigned_user_id;
             if (!empty($employee->assigned_user_id)) {
                 $case->assigned_user_id = $employee->assigned_user_id;
-                //MintHCM #74238 END
                 $case->auto_assigned = true;
             }
             $case->save();
-            //MintHCM #74238 START
-            // $case->load_relationship('contacts');
-            // $case->contacts->add($contact);
             $case->load_relationship('employees');
             $case->employees->add($employee);
-            //MintHCM #74238 END
         }
         if (!$templateId) {
             return $res;
         }
-        //MintHCM #74238 START
-        //if ($this->sendEmail($contact, $email, $templateId, $case)) {
+
         if ($this->sendEmail($employee, $email, $templateId, $case)) {
-            //MintHCM #74238 END
             $this->email_response_sent = true;
             $this->save();
         }
 
         return $res;
     }
-    //MintHCM #74238 START
-    //private function sendEmail($contact, $email, $emailTemplateId, $case)
     private function sendEmail($employee, $email, $emailTemplateId, $case)
     {
-        //require_once("include/SugarPHPMailer.php");
         require_once "include/SugarPHPMailer.php";
-        //MintHCM #74238 END
         $mailer = new SugarPHPMailer();
         $admin = new Administration();
         $admin->retrieveSettings();
@@ -216,10 +159,7 @@ class SurveyResponses extends Basic
 
             return false;
         }
-        //MintHCM #74238 START
-        //$text = $this->populateTemplate($email_template, $contact, $case);
         $text = $this->populateTemplate($email_template, $employee, $case);
-        //MintHCM #74238 END
         $mailer->Subject = $text['subject'];
         $mailer->Body = $text['body'];
         $mailer->IsHTML(true);
@@ -234,25 +174,16 @@ class SurveyResponses extends Basic
 
             return false;
         } else {
-            //MintHCM #74238 START
-            //$this->logEmail($email, $mailer, $contact->id);
             $this->logEmail($email, $mailer, $employee->id);
-            //MintHCM #74238 END
 
             return true;
         }
     }
-    //MintHCM #74238 START
-    //private function populateTemplate(EmailTemplate $template, $contact, $case)
     private function populateTemplate(EmailTemplate $template, $employee, $case)
     {
-        //MintHCM #74238 END
         global $sugar_config;
         $beans = array(
-            //MintHCM #74238 START
-            //"Contacts" => $contact->id,
             "Employees" => $employee->id,
-            //MintHCM #74238 END
         );
         if ($case) {
             $beans['Cases'] = $case->id;
@@ -273,13 +204,10 @@ class SurveyResponses extends Basic
         return $ret;
     }
 
-    //MintHCM #74238 START
-    //private function logEmail($email, $mailer, $contactId = null)
     private function logEmail($email, $mailer, $employeeId = null)
     {
-        //require_once('modules/Emails/Email.php');
+
         require_once 'modules/Emails/Email.php';
-        //MintHCM #74238 END
         $emailObj = new Email();
         $emailObj->to_addrs = $email;
         $emailObj->type = 'out';
@@ -289,15 +217,10 @@ class SurveyResponses extends Basic
         $emailObj->description_html = $mailer->Body;
         $emailObj->from_addr = $mailer->From;
         isValidEmailAddress($emailObj->from_addr);
-        //MintHCM #74238 START
-        // if ($contactId) {
-        //     $emailObj->parent_type = "Contacts";
-        //     $emailObj->parent_id = $contactId;
         if ($employeeId) {
             $emailObj->parent_type = "Employees";
             $emailObj->parent_id = $employeeId;
         }
-        //MintHCM #74238 END
         $emailObj->date_sent_received = TimeDate::getInstance()->nowDb();
         $emailObj->modified_user_id = '1';
         $emailObj->created_by = '1';

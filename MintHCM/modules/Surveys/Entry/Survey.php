@@ -22,10 +22,8 @@ if ($survey->status != 'Active') {
     header("HTTP/1.0 404 Not Found");
     exit();
 }
-//MintHCM #74238 START
-//$contactId = $_REQUEST['contact'];
+
 $employeeId = $_REQUEST['employee'];
-//MintHCM #74238 END
 
 $trackerId = !empty($_REQUEST['tracker']) ? $_REQUEST['tracker'] : '';
 
