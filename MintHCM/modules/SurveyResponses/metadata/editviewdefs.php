@@ -23,29 +23,14 @@ $viewdefs[$module_name] = array(
                 ),
                 1 => array(
                     0 => 'description',
-                    //MintHCM #74238 START
-                    //     1 => array(
-                    //         'name' => 'contact_name',
-                    //     ),
-                    // ),
-                    // 2 => array(
-                    //     0 => array(
-                    //         'name' => 'account_name',
-                    //     ),
                     1 => array(
                         'name' => 'survey_name',
                     ),
-                    //MintHCM #74238 END
                 ),
-                //MintHCM #74238 START
-                // 3 => array(
-                //     0 => 'campaign_name',
-                // ),
                 2 => array(
                     0 => 'campaign_name',
                     1 => 'employee_name',
                 ),
-                //MintHCM #74238 END
             ),
         ),
     ),

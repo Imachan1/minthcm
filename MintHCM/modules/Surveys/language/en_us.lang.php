@@ -84,14 +84,8 @@ $mod_strings = array(
     'LBL_CHECKED' => 'Checked',
     'LBL_UNCHECKED' => 'Unchecked',
     'LBL_RESPONSE_ANSWER' => 'Answer',
-    //MintHCM #74238 START
-    //'LBL_RESPONSE_CONTACT' => 'Contact',
     'LBL_RESPONSE_EMPLOYEE' => 'Employee',
-    //MintHCM #74238 END
     'LBL_RESPONSE_TIME' => 'Date',
-    //MintHCM #74238 START
-    //'LBL_UNKNOWN_CONTACT' => 'Unknown',
-    //MintHCM #74238 END
     'LBL_RESPONSE_COUNT' => 'Count',
     'LBL_SUBMIT_TEXT' => 'Submit Text',
     'LBL_SATISFIED_TEXT' => 'Satisfied Text',
@@ -116,7 +110,4 @@ $mod_strings = array(
     'LBL_SURVEYS_SENT' => 'Surveys Sent',
     'LBL_DISTINCT_SURVEYS_SENT' => 'Distinct Surveys Sent',
     'LBL_OPTIONS' => 'Options',
-    //MintHCM #74238 START
-    //'LBL_UNKNOWN_CONTACT' => 'Unknown Contact',
-    //MintHCM #74238 END
 );

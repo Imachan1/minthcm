@@ -76,38 +76,6 @@ $dictionary['SurveyResponses'] = array(
             'type' => 'bool',
             'label' => 'LBL_EMAIL_RESPONSE_SENT',
         ),
-        //MintHCM #74238 START
-        // "account"                                 => array(
-        //     'name'         => 'account',
-        //     'type'         => 'link',
-        //     'relationship' => 'surveyresponses_accounts',
-        //     'source'       => 'non-db',
-        //     'module'       => 'Accounts',
-        //     'bean_name'    => 'Account',
-        //     'vname'        => 'LBL_SURVEYRESPONSES_ACCOUNTS_FROM_ACCOUNTS_TITLE',
-        //     'id_name'      => 'account_id',
-        //     'link_type'    => 'one',
-        //     'side'         => 'left',
-        // ),
-        // "account_name"                            => array(
-        //     'name'    => 'account_name',
-        //     'type'    => 'relate',
-        //     'source'  => 'non-db',
-        //     'vname'   => 'LBL_SURVEYRESPONSES_ACCOUNTS_FROM_ACCOUNTS_TITLE',
-        //     'save'    => true,
-        //     'id_name' => 'account_id',
-        //     'link'    => 'account',
-        //     'table'   => 'accounts',
-        //     'module'  => 'Accounts',
-        //     'rname'   => 'name',
-        // ),
-        // "account_id"                              => array(
-        //     'name'       => 'account_id',
-        //     'type'       => 'id',
-        //     'reportable' => false,
-        //     'vname'      => 'LBL_SURVEYRESPONSES_ACCOUNTS_FROM_SURVEYRESPONSES_TITLE',
-        // ),
-        //MintHCM #74238 END
         "campaign" => array(
             'name' => 'campaign',
             'type' => 'link',
@@ -138,42 +106,6 @@ $dictionary['SurveyResponses'] = array(
             'reportable' => false,
             'vname' => 'LBL_SURVEYRESPONSES_CAMPAIGNS_FROM_SURVEYRESPONSES_TITLE',
         ),
-        //MintHCM #74238 START
-        // "contact"                                 => array(
-        //     'name'         => 'contact',
-        //     'type'         => 'link',
-        //     'relationship' => 'surveyresponses_contacts',
-        //     'source'       => 'non-db',
-        //     'module'       => 'Contacts',
-        //     'bean_name'    => 'Contact',
-        //     'vname'        => 'LBL_SURVEYRESPONSES_CONTACTS_FROM_CONTACTS_TITLE',
-        //     'id_name'      => 'contact',
-        //     'link_type'    => 'one',
-        //     'side'         => 'left',
-        // ),
-        // "contact_name"                            => array(
-        //     'name'             => 'contact_name',
-        //     'type'             => 'relate',
-        //     'source'           => 'non-db',
-        //     'vname'            => 'LBL_SURVEYRESPONSES_CONTACTS_FROM_CONTACTS_TITLE',
-        //     'save'             => true,
-        //     'id_name'          => 'contact_id',
-        //     'link'             => 'contact',
-        //     'table'            => 'contacts',
-        //     'module'           => 'Contacts',
-        //     'rname'            => 'name',
-        //     'db_concat_fields' => array(
-        //         0 => 'first_name',
-        //         1 => 'last_name',
-        //     ),
-        // ),
-        // "contact_id"                              => array(
-        //     'name'       => 'contact_id',
-        //     'type'       => 'id',
-        //     'reportable' => false,
-        //     'vname'      => 'LBL_SURVEYRESPONSES_CONTACTS_FROM_SURVEYRESPONSES_TITLE',
-        // ),
-        //MintHCM #74238 END
         "surveyresponses_surveyquestionresponses" => array(
             'name' => 'surveyresponses_surveyquestionresponses',
             'type' => 'link',
@@ -232,7 +164,4 @@ $dictionary['SurveyResponses'] = array(
 if (!class_exists('VardefManager')) {
     require_once 'include/SugarObjects/VardefManager.php';
 }
-//MintHCM #74238 START
-//VardefManager::createVardef('SurveyResponses', 'SurveyResponses', array('basic', 'assignable', 'security_groups'));
 VardefManager::createVardef('SurveyResponses', 'SurveyResponses', array('basic', 'assignable', 'security_groups', 'employee_related'));
-//MintHCM #74238 END

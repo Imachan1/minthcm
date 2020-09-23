@@ -70,16 +70,10 @@ EOF;
                         }
                         $data[$questionId]['responses'][] = array(
                             'answer' => $dateStr,
-                            //MintHCM #74238 START
-                            // 'contact' => !empty($response->contact_id) ? array(
-                            //     'id'   => $response->contact_id,
-                            //     'name' => $response->contact_name
-                            // ) : false,
                             'employee' => !empty($response->employee_id) ? array(
                                 'id' => $response->employee_id,
                                 'name' => $response->employee_name,
                             ) : false,
-                            //MintHCM #74238 END
                             'time' => $questionResponse->date_entered,
                         );
 
@@ -118,16 +112,10 @@ EOF;
                     default:
                         $data[$questionId]['responses'][] = array(
                             'answer' => $questionResponse->answer,
-                            //MintHCM #74238 START
-                            // 'contact' => !empty($response->contact_id) ? array(
-                            //     'id'   => $response->contact_id,
-                            //     'name' => $response->contact_name
-                            // ) : false,
                             'employee' => !empty($response->employee_id) ? array(
                                 'id' => $response->employee_id,
                                 'name' => $response->employee_name,
                             ) : false,
-                            //MintHCM #74238 END
                             'time' => $questionResponse->date_entered,
                         );
                         break;
