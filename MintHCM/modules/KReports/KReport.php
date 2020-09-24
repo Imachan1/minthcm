@@ -822,11 +822,7 @@ class KReport extends SugarBean
                                $functionName = $this->fieldNameMap[$fieldID]['fields_name_map_entry']['function']['name'];
                                // Mint start #59232 #74399
                                // $fieldValue = $functionName(null, $this->fieldNameMap[$fieldID]['fieldname'], $fieldValue, '');
-                               $bean = BeanFactory::getBean($fieldArray['sugarRecordModule'], $fieldArray['sugarRecordId']);
-                               if (empty($bean)) {
-                                   $bean = null;
-                               }
-                               $function_result = $functionName($bean, $this->fieldNameMap[$fieldID]['fieldname'], $fieldValue, 'KReporterOptions');
+                                $function_result = formatEnumArray($functionName(null, $this->fieldNameMap[$fieldID]['fieldname'], $fieldValue, 'KReporterOptions'));
                                if (!empty($function_result)) {
                                    foreach ($function_result as $pair) {
                                        if (
