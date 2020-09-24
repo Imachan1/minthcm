@@ -70,6 +70,22 @@ $subpanel_layout = array(
          'width' => '10%',
          'default' => true,
       ),
+      'date_from' =>
+      array(
+         'type' => 'date',
+         'studio' => 'visible',
+         'vname' => 'LBL_DATE_FROM',
+         'width' => '10%',
+         'default' => true,
+      ),
+      'date_to' =>
+      array(
+         'type' => 'date',
+         'studio' => 'visible',
+         'vname' => 'LBL_DATE_TO',
+         'width' => '10%',
+         'default' => true,
+      ),
       'edit_button' =>
       array(
          'vname' => 'LBL_EDIT_BUTTON',

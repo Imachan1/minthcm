@@ -77,14 +77,12 @@ class WorkplacesApi {
       while(list($allocation_id,$allocation) = each($allocations)){
          $start_date = strtotime($allocation->date_from);
          $end_date = strtotime($allocation->date_to);
-          if($today>=$start_date){
-              if(!empty($end_date)){
-                  if($today<=$end_date){
-                      return false;
-                  }
-              }
-              else return false;
-          } 
+         if(empty($end_date)){
+            return false;
+         }else{
+            if($end_date>=$today)
+               return false;
+         }
       }
       return true;
   }

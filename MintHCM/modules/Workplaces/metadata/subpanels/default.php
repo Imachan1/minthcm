@@ -70,6 +70,14 @@ $subpanel_layout = array(
          'width' => '10%',
          'default' => true,
       ),
+      'availability' =>
+      array(
+         'type' => 'enum',
+         'studio' => 'visible',
+         'vname' => 'LBL_STATUS',
+         'width' => '10%',
+         'default' => true,
+      ),
       'edit_button' =>
       array(
          'vname' => 'LBL_EDIT_BUTTON',

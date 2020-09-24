@@ -74,6 +74,14 @@ $searchdefs [$module_name] = array(
             'default' => true,
             'name' => 'reservation_type',
          ),
+         'availability' => array(
+            'name' => 'availability',
+            'label' => 'LBL_STATUS',
+            'type' => 'enum',
+            'massupdate' => 'false',
+            'default' => true,
+            'studio' => 'visible',
+        ),
          'assigned_user_id' =>
          array(
             'name' => 'assigned_user_id',

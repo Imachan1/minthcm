@@ -62,12 +62,28 @@ $subpanel_layout = array(
          'width' => '45%',
          'default' => true,
       ),
+      'availability' =>
+      array(
+         'type' => 'enum',
+         'studio' => 'visible',
+         'vname' => 'LBL_STATUS',
+         'width' => '15%',
+         'default' => true,
+      ),
       'reservation_type' =>
       array(
          'type' => 'enum',
          'studio' => 'visible',
          'vname' => 'LBL_RESERVATION_TYPE',
-         'width' => '10%',
+         'width' => '20%',
+         'default' => true,
+      ),
+      'number_of_seats' =>
+      array(
+         'type' => 'int',
+         'studio' => 'visible',
+         'vname' => 'LBL_NUMBER_OF_SEATS',
+         'width' => '16%',
          'default' => true,
       ),
       'edit_button' =>

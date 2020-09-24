@@ -46,10 +46,10 @@
 
 class AllocationsApi {
 
-   public function checkWorkplacePeriods($workplace_id, $mode, $date_from, $date_to) {
+   public function checkWorkplacePeriods($id, $workplace_id, $mode, $date_from, $date_to) {
       $result = true;  
       if($mode=='permanent'){
-        $result=$this->checkConcurrentPeriods($workplace_id, $date_from, $date_to);
+        $result=$this->checkConcurrentPeriods($id,$workplace_id, $date_from, $date_to);
       }
       return $result;
    }
@@ -65,7 +65,7 @@ class AllocationsApi {
       else 
          return true;
    }
-   protected function checkConcurrentPeriods($workplace_id, $date_from, $date_to){
+   protected function checkConcurrentPeriods($id, $workplace_id, $date_from, $date_to){
     $db = DBManagerFactory::getInstance();
     global $timedate;
     $db_format = $timedate->get_db_date_time_format();
@@ -75,6 +75,8 @@ class AllocationsApi {
     $allocations = $workplace->workplaces_allocations->getBeans();
 
     while(list($allocation_id,$allocation) = each($allocations)){
+       if($allocation_id==$id)
+         continue;
        $start_date = strtotime($allocation->date_from);
        $end_date = strtotime($allocation->date_to);
        $from_date = strtotime($date_from);
@@ -88,7 +90,8 @@ class AllocationsApi {
             if($from_date<=$end_date)
                 return false;
        } else {
-            if($end_date>=$from_date||$to_date>=$start_date)
+            if(($end_date>=$from_date&&$start_date<=$from_date)||
+               ($end_date<=$from_date&&$start_date>=$from_date))
                 return false;
        }
     }

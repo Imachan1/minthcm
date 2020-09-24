@@ -20,14 +20,15 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'status' => 
+      'availability' => 
       array (
+        'name' => 'availability',
+        'label' => 'LBL_STATUS',
         'type' => 'enum',
+        'massupdate' => 'false',
         'default' => true,
         'studio' => 'visible',
-        'label' => 'LBL_STATUS',
         'width' => '10%',
-        'name' => 'status',
       ),
       'reservation_type' => 
       array (
@@ -66,6 +67,16 @@ array (
         'default' => true,
         'name' => 'reservation_type',
       ),
+      'availability' => 
+      array (
+        'name' => 'availability',
+        'label' => 'LBL_STATUS',
+        'type' => 'enum',
+        'massupdate' => 'false',
+        'default' => true,
+        'studio' => 'visible',
+        'width' => '10%',
+      ),
       'assigned_user_id' => 
       array (
         'name' => 'assigned_user_id',
@@ -81,15 +92,6 @@ array (
         ),
         'default' => true,
         'width' => '10%',
-      ),
-      'status' => 
-      array (
-        'type' => 'enum',
-        'default' => true,
-        'studio' => 'visible',
-        'label' => 'LBL_STATUS',
-        'width' => '10%',
-        'name' => 'status',
       ),
       'security_group_name' => 
       array (
