@@ -294,13 +294,5 @@ $layout_defs['Employees'] = array(
         'title_key' => 'LBL_LINKED_ALLOCATIONS_TITLE',                                // nazwa etykiety nazwy subpanelu
         'get_subpanel_data' => 'allocations_employees',                                // nazwa relacji
         'top_buttons' =>
-        array(
-           array(
-              'widget_class' => 'SubPanelTopButtonQuickCreate',                          // przycisk tworzenia nowego rekordu z poziomu subpanelu za pomocą QuickCreate
-           ),
-           array(
-              'widget_class' => 'SubPanelTopSelectButton',                               // przycisk masowych akcji zaznaczonych rekordów z poziomu subpanelu
-              'mode' => 'MultiSelect',
-           ),
-        ),
+        array(),
      );

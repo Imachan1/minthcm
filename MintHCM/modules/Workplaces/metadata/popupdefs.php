@@ -56,6 +56,7 @@ $popupMeta = array(
    'searchInputs' => array(
       'name',
       'mode',
+      'availability',
    ),
    'searchdefs' => array(
       'name' =>
@@ -71,20 +72,23 @@ $popupMeta = array(
          'width' => '10%',
          'name' => 'mode',
       ),
-      'assigned_user_id' =>
-      array(
-         'name' => 'assigned_user_id',
-         'label' => 'LBL_ASSIGNED_TO',
-         'type' => 'enum',
-         'function' =>
-         array(
-            'name' => 'get_user_array',
-            'params' =>
-            array(
-               0 => false,
-            ),
-         ),
-         'width' => '10%',
+      'availability' => 
+      array (
+        'type' => 'enum',
+        'studio' => 'visible',
+        'label' => 'LBL_STATUS',
+        'width' => '10%',
+        'name' => 'availability',
       ),
    ),
 );
+if(!empty($_REQUEST['for_employee_id'])){
+   global $current_user;
+   $popupMeta['whereStatement'] = "
+      workplaces.id IN (
+         SELECT workplace_id FROM allocations WHERE id IN (
+            SELECT allocation_id FROM allocations_employees WHERE employee_id={$_REQUEST['for_employee_id']} AND deleted=0
+         )
+      )
+   ";
+}

@@ -169,7 +169,8 @@ class SugarFieldRelate extends SugarFieldBase {
       $json = getJSONobj();
       $displayParams['popupData'] = '{literal}' . $json->encode($popup_request_data) . '{/literal}';
       // MintHCM START
-      $displayParams['initial_filter'] = '{literal}' . addslashes(trim($json->encode($displayParams['initial_filter'], JSON_HEX_TAG), '"')) . '{/literal}';
+      // #74195 - zakomentowanie ponizszej linii poniewaz dodawala zbedne slashe w urlce do popupu na zadanym initial_filter
+      // $displayParams['initial_filter'] = '{literal}' . addslashes(trim($json->encode($displayParams['initial_filter'], JSON_HEX_TAG), '"')) . '{/literal}';
       // MintHCM END
       if ( !isset($displayParams['readOnly']) ) {
          $displayParams['readOnly'] = '';

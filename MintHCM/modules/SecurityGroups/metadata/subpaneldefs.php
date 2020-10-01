@@ -112,13 +112,6 @@ $layout_defs["SecurityGroups"]["subpanel_setup"]['securitygroups_rooms'] = array
    'title_key' => 'LBL_RELATIONSHIP_ROOMS_NAME',         // etykieta nazwy subpanelu drugiego modułu pod formularzem pierwszego modułu
    'get_subpanel_data' => 'securitygroups_rooms',             
    'top_buttons' => array (
-      array (
-         'widget_class' => 'SubPanelTopButtonQuickCreate',
-      ),
-      array (
-         'widget_class' => 'SubPanelTopSelectButton',
-         'mode' => 'MultiSelect',
-      ),
    ),
 );
 $layout_defs['SecurityGroupRoles'] = array(

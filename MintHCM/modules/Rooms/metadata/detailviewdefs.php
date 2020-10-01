@@ -15,9 +15,9 @@ array (
           2 => 'DELETE',
           3 => 'FIND_DUPLICATES',
           4 => 
-            array(
-               'customCode' => '{include file="modules/Rooms/tpls/ReservationButton.tpl"}',
-            ),
+          array (
+            'customCode' => '{include file="modules/Rooms/tpls/ReservationButton.tpl"}',
+          ),
         ),
       ),
       'maxColumns' => '2',
@@ -62,8 +62,9 @@ array (
         array (
           0 => 
           array (
-            'name' => 'security_group_name',
-            'label' => 'LBL_RELATIONSHIP_SECURITY_GROUP_NAME',
+            'name' => 'availability',
+            'studio' => 'visible',
+            'label' => 'LBL_STATUS',
           ),
           1 => 
           array (
@@ -88,8 +89,21 @@ array (
         3 => 
         array (
           0 => 'reservation_type',
+          1 => 
+          array (
+            'name' => 'resource_name',
+            'label' => 'LBL_RESOURCE_NAME',
+          ),
         ),
         4 => 
+        array (
+          0 => 
+          array (
+            'name' => 'security_group_name',
+            'label' => 'LBL_RELATIONSHIP_SECURITY_GROUP_NAME',
+          ),
+        ),
+        5 => 
         array (
           0 => 'description',
         ),

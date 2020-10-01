@@ -101,4 +101,35 @@ class WorkSchedulesApi {
       return null;
    }
 
+   public function validateWorkplaceStatus($workplace_id){
+      $workplace = BeanFactory::getBean('Workplaces',$workplace_id);
+      if($workplace->availability=='active')
+         return true;
+      else 
+         return false;
+   }
+
+   public function validateWorkplaceAllocationPeriods($workplace_id,$date_start,$date_end){
+      $db = DBManagerFactory::getInstance();
+      global $timedate;
+      $db_format = $timedate->get_db_date_time_format();
+
+      $workplace = BeanFactory::getBean('Workplaces',$workplace_id);
+      $workplace->load_relationship('workplaces_allocations');
+      $allocations = $workplace->workplaces_allocations->getBeans();
+      while(list($allocation_id,$allocation) = each($allocations)){
+         //daty z planu pracy
+         $start_date = strtotime($date_start); 
+         $end_date = strtotime($date_end);
+         //daty z przydziałów
+         $from_date = strtotime($allocation->date_from);
+         $to_date = strtotime($allocation->date_to);
+         if(empty($to_date)){
+            if($start_date>=$from_date)
+               return true;
+         }else if ($start_date>=$from_date&&$end_date<=$to_date)
+            return true;
+      }
+      return false;
+   }
 }
