@@ -549,6 +549,14 @@ $dictionary['Candidates'] = array(
             'side' => 'right',
             'vname' => 'LBL_EMPLOYEECERTIFICATES',
         ),
+        'prospect_lists' => array(
+            'name' => 'prospect_lists',
+            'type' => 'link',
+            'relationship' => 'prospect_list_candidates',
+            'module' => 'ProspectLists',
+            'source' => 'non-db',
+            'vname' => 'LBL_PROSPECT_LIST',
+        ),
     ),
     'relationships' => array(
         'candidates_candidatures' =>
