@@ -72,9 +72,10 @@
         }
 
         .mintNews-box-comments {
-            height: 200px;
+            height: max-content;
             overflow: auto;
             padding: 8px;
+            max-height: 400px;
         }
     }
 
