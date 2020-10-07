@@ -119,8 +119,13 @@ EOHTML;
             (!ACLController::checkaccess('OffboardingTemplates','edit', true, 'module', true)) &&
             (!ACLController::checkaccess('OnboardingTemplates','edit', true, 'module', true)))
         {
-            unset($this->dv->defs['templateMeta']['form']['buttons'][5]);
+            $this->ss->assign('IS_APPROVED', false);
         }
+        else
+        {
+            $this->ss->assign('IS_APPROVED', true);
+        }
+
 
         $showDeleteButton = false;
         if (
