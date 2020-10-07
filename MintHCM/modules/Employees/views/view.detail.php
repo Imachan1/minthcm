@@ -115,6 +115,13 @@ EOHTML;
             $this->ss->assign('DISPLAY_DUPLICATE', true);
         }
 
+        if (
+            (!ACLController::checkaccess('OffboardingTemplates','edit', true, 'module', true)) &&
+            (!ACLController::checkaccess('OnboardingTemplates','edit', true, 'module', true)))
+        {
+            unset($this->dv->defs['templateMeta']['form']['buttons'][5]);
+        }
+
         $showDeleteButton = false;
         if (
             $_REQUEST['record'] != $GLOBALS['current_user']->id &&
