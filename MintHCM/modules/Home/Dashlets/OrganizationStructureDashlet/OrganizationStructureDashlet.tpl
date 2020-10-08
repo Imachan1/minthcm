@@ -1,7 +1,5 @@
 <div id='full-structure-dashlet' style="height:{$height}px;">
 
-{if $fullscreen == false}<input class="button" name="structure_full_screen" id="structure_full_screen" value="Otwórz na pełen ekran" onclick="var myWindow = window.open('index.php?entryPoint=OrganizationalStructure&id={$id}', '_blank');"
-style='position:absolute;z-index: 10;width: 209px;margin-top: 5px;margin-left: 5px;'>{/if}
 <div id='organizational-structure-{$id}' style="height:calc({$height}px - 20px);">
     <link rel="stylesheet" href="modules/Home/Dashlets/OrganizationStructureDashlet/css/organizational-structure.css">
     {if $fullscreen == true}
