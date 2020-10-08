@@ -176,8 +176,14 @@ a.node-title {
 }
 
 .rootWithImage img {
-    height: 100px;
-    width: 100px;
+    height: 100%;
+    width: 100%;
+}
+
+.rootWithImage img.face {
+    height: 100%;
+    width: 100%;
+    border-radius:0%;
 }
 
 img.face {
@@ -185,4 +191,13 @@ img.face {
     border-radius: 50%;
     height: 40px;
     object-fit: cover;
+}
+
+#structure_full_screen{
+    position:absolute;
+    z-index: 1;
+    width: 233px;
+    margin-top: 5px;
+    margin-left: 5px;
+	color: #ccc;
 }

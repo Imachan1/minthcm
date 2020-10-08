@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -59,4 +58,5 @@ $dashletStrings['OrganizationStructureDashlet'] = array(
    'LBL_CONFIGURE_TITLE' => 'Dashlet Title',
    'LBL_USE_IMAGE' => 'Use Image in root',
    'LBL_CONFIGURE_HEIGHT' => 'Height',
+    'LBL_BUTTON_OPEN_FULLSCREEN' => 'Open in Fullscreen',
 );
