@@ -51,7 +51,7 @@ require_once 'include/Sugar_Smarty.php';
 class OrganizationStructureDashlet extends Dashlet
 {
     protected $url = 'http://www.sugarcrm.com/crm/aggregator/rss/1';
-    protected $height = '200'; // height of the pad
+    protected $height = '680'; // height of the pad
     protected $use_image = false;
     protected $images_dir = 'modules/Home/Dashlets/OrganizationStructureDashlet/images';
 
@@ -105,6 +105,7 @@ class OrganizationStructureDashlet extends Dashlet
         $ss->assign('use_image', $this->use_image);
         $ss->assign('height', $this->height);
         $ss->assign('rootElement', $this->getRootElement());
+        $ss->assign('fullscreen', false);
 
         $lang = strtolower(substr($GLOBALS['current_language'], 0, 2));
         SugarAutoLoader::requireWithCustom('modules/Home/Dashlets/OrganizationStructureDashlet/OrganizationStructure.php');
@@ -132,7 +133,7 @@ class OrganizationStructureDashlet extends Dashlet
         }
         $text = $this->getBrowserTitle();
         if (!empty($text)) {
-            return 'text: {name: "' . $text . '"} ';
+            return 'text: {name: "' . $text . '" },HTMLclass: "rootNoImage" ';
         }
     }
     public function getBrowserTitle()
