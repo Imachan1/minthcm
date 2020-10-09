@@ -115,18 +115,6 @@ EOHTML;
             $this->ss->assign('DISPLAY_DUPLICATE', true);
         }
 
-        if (
-            (!ACLController::checkaccess('OffboardingTemplates','edit', true, 'module', true)) &&
-            (!ACLController::checkaccess('OnboardingTemplates','edit', true, 'module', true)))
-        {
-            $this->ss->assign('IF_USER_HAS_ACCESS_TO_ONBOARD_TEMPLATES_OR_OFFBOARD_TEMPLATES', false);
-        }
-        else
-        {
-            $this->ss->assign('IF_USER_HAS_ACCESS_TO_ONBOARD_TEMPLATES_OR_OFFBOARD_TEMPLATES', true);
-        }
-
-
         $showDeleteButton = false;
         if (
             $_REQUEST['record'] != $GLOBALS['current_user']->id &&
