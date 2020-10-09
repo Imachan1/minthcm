@@ -119,11 +119,11 @@ EOHTML;
             (!ACLController::checkaccess('OffboardingTemplates','edit', true, 'module', true)) &&
             (!ACLController::checkaccess('OnboardingTemplates','edit', true, 'module', true)))
         {
-            $this->ss->assign('IS_APPROVED', false);
+            $this->ss->assign('IF_USER_HAS_ACCESS_TO_ONBOARD_TEMPLATES_OR_OFFBOARD_TEMPLATES', false);
         }
         else
         {
-            $this->ss->assign('IS_APPROVED', true);
+            $this->ss->assign('IF_USER_HAS_ACCESS_TO_ONBOARD_TEMPLATES_OR_OFFBOARD_TEMPLATES', true);
         }
 
 
