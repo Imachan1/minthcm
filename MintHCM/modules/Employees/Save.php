@@ -117,6 +117,7 @@ function populateFromRow(&$focus, $row)
         'description',
         'phone_home',
         'position_id',
+        'organizationalunit_id',
         'phone_mobile',
         'phone_work',
         'phone_other',
@@ -130,15 +131,11 @@ function populateFromRow(&$focus, $row)
         'messenger_id',
         'messenger_type',
         'email1',
-        'securitygroup_id',
+        'photo',
     );
 
     if (is_admin($GLOBALS['current_user'])) {
         $e_fields = array_merge($e_fields, array('employee_status'));
-    }
-    if (file_exists('custom/modules/Employees/whitelist_fields.php')) {
-        require_once 'custom/modules/Employees/whitelist_fields.php';
-        $e_fields = array_merge($e_fields, $whitelist_fields);
     }
     if (isset($row['Users0emailAddress0'])) {
         $row['email1'] = $row['Users0emailAddress0'];
@@ -146,7 +143,10 @@ function populateFromRow(&$focus, $row)
     // Also add custom fields
     $sfh = new SugarFieldHandler();
     foreach ($focus->field_defs as $fieldName => $field) {
-        if (isset($field['source']) && $field['source'] == 'custom_fields') {
+        if (
+            (isset($field['source']) && $field['source'] == 'custom_fields')
+            || $fieldName == 'photo'
+        ) {
             $type = !empty($field['custom_type']) ? $field['custom_type'] : $field['type'];
             $sf = $sfh->getSugarField($type);
             if ($sf != null) {

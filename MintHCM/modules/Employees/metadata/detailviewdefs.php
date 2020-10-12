@@ -164,12 +164,15 @@ $viewdefs['Employees'] = array(
             ),
         ),
         'panels' => array(
-            'default' => array(
+            'LBL_DEFAULT' => array(
                 array(
                     'employee_status',
                 ),
                 array(
                     'name',
+                ),
+                array(
+                    'photo',
                 ),
                 array(
                     'position_name',
