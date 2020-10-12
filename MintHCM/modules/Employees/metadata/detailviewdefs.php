@@ -152,7 +152,7 @@ $viewdefs['Employees'] = array(
             ),
             'useTabs' => true,
             'tabDefs' => array(
-                'DEFAULT' => array(
+                'LBL_DEFAULT' => array(
                     'newTab' => true,
                     'panelDefault' => 'expanded',
                 ),
@@ -191,12 +191,10 @@ $viewdefs['Employees'] = array(
                     'phone_fax',
                 ),
                 array(
-                    'messenger_type',
-                    'messenger_id',
-                ),
-                array(
                     'email1',
                 ),
+            ),
+            'LBL_INFO' => array(
                 array(
                     'address_street',
                     array(
