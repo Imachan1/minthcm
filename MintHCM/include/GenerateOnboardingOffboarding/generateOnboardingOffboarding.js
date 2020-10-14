@@ -189,19 +189,19 @@ generateOnboardingOffboarding = {
       switch (module) {
          case 'Onboardings':
          case 'OnboardingTemplates':
-            x = 'OnboardingTemplates';
+            type_template = 'OnboardingTemplates';
             break;
 
          case 'Offboardings':
          case 'OffboardingTemplates':
-            x = 'OffboardingTemplates'
+            type_template = 'OffboardingTemplates'
             break;
 
          default:
             break;
       }
       for (let module_name in templates) {
-         selected = (x == module_name) ? ' selected' : '';
+         selected = (type_template == module_name) ? ' selected' : '';
          options += '<option value="' + module_name + '"' + selected + '>' + templates[module_name] + '</option>';
       }
       return options;
