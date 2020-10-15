@@ -23,7 +23,7 @@
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
- * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * this program; if not, see http:
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
  *
@@ -41,8 +41,7 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-$module_name              = 'Rooms';
-$dictionary[$module_name] = array(
+$dictionary['Rooms'] = array(
     'table' => 'rooms',
     'audited' => true,
     'inline_edit' => false,
@@ -171,76 +170,76 @@ $dictionary[$module_name] = array(
             'options' => 'workplace_room_status',
             'studio' => 'visible',
         ),
-        "securitygroups_rooms" => array(                  // nazwa relacji
-            'name' => 'securitygroups_rooms',                 // nazwa relacji
+        "securitygroups_rooms" => array(                  
+            'name' => 'securitygroups_rooms',                 
             'type' => 'link',
-            'relationship' => 'securitygroups_rooms',         // nazwa relacji
+            'relationship' => 'securitygroups_rooms',         
             'source' => 'non-db',
-            'module' => 'SecurityGroups',                         // nazwa pierwszego modułu
-            'bean_name' => 'SecurityGroup',                       // nazwa bean'a pierwszego modułu
-            'vname' => 'LBL_RELATIONSHIP_SECURITY_GROUP_NAME',     // etykieta relacji (może być taka sama jak nazwa pola relacyjnego pierwszego modułu)
-            'id_name' => 'security_group_id',                      // nazwa pola id, które będzie reprezentować relacja
+            'module' => 'SecurityGroups',                         
+            'bean_name' => 'SecurityGroup',                       
+            'vname' => 'LBL_RELATIONSHIP_SECURITY_GROUP_NAME',     
+            'id_name' => 'security_group_id',                      
          ),
-         "security_group_name" => array(                        // nazwa pola name
+         "security_group_name" => array(                        
             'required' => true,
-            'name' => 'security_group_name',                       // nazwa pola name
-            'type' => 'relate',                              // typ pola: relacja
+            'name' => 'security_group_name',                       
+            'type' => 'relate',                              
             'source' => 'non-db',
-            'vname' => 'LBL_RELATIONSHIP_SECURITY_GROUP_NAME',     // etykieta pola relacji (może być taka sama jak nazwa pola relacyjnego pierwszego modułu)
-            'id_name' => 'security_group_id',                      // nazwa pola id, które będzie reprezentować relacja
-            'link' => 'securitygroups_rooms',                 // nazwa relacji
-            'module' => 'SecurityGroups',                         // nazwa pierwszego modułu
-            'table' => 'securitygroups',                          // nazwa tabeli pierwszego modułu 
+            'vname' => 'LBL_RELATIONSHIP_SECURITY_GROUP_NAME',     
+            'id_name' => 'security_group_id',                      
+            'link' => 'securitygroups_rooms',                 
+            'module' => 'SecurityGroups',                         
+            'table' => 'securitygroups',                          
             'rname' => 'name',
             'vt_validation' => "AEM(callCustomApi(Rooms,canSelectSecurityGroup,\$security_group_id),'LBL_ERR_CANT_SELECT_SEC_GROUP')",
          ),
          "security_group_id" => array(
-            'name' => 'security_group_id',                         // nazwa pola id, które będzie reprezentować relacja
-            'relationship' => 'securitygroups_rooms',         // nazwa relacji
-            'type' => 'id',                                  // typ pola: id
-            'vname' => 'LBL_RELATIONSHIP_SECURITY_GROUP_ID',       // etykieta id relacji
+            'name' => 'security_group_id',                         
+            'relationship' => 'securitygroups_rooms',         
+            'type' => 'id',                                  
+            'vname' => 'LBL_RELATIONSHIP_SECURITY_GROUP_ID',       
          ),
-         "rooms_resources" => array ( // nazwa relacji
-            'name' => 'rooms_resources',                              // nazwa relacji
+         "rooms_resources" => array ( 
+            'name' => 'rooms_resources',                              
             'type' => 'link',
-            'relationship' => 'rooms_resources',                     // nazwa relacji
+            'relationship' => 'rooms_resources',                     
             'source' => 'non-db',
-            'module' => 'Resources',                                    // nazwa przeciwnego modułu
-            'bean_name' => 'Resources',                                   // nazwa przeciwnego bean'a
-            'vname' => 'LBL_ROOMS_RESOURCES_TITLE',                  // nazwa etykiety relacji, może to być np. Powiązany błąd
-            'id_name' => 'resource_id',                                 // pole które będzie definiowało ID rekordu po drugiej stronie
+            'module' => 'Resources',                                    
+            'bean_name' => 'Resources',                                   
+            'vname' => 'LBL_ROOMS_RESOURCES_TITLE',                  
+            'id_name' => 'resource_id',                                 
          ),
-          "resource_name" => array (  // nazwa pola z nazwą
-            'name' => 'resource_name',                          // nazwa pola z nazwą
+          "resource_name" => array (  
+            'name' => 'resource_name',                          
             'type' => 'relate',
-            'source' => 'non-db',                         // pole nie musi być przechowywane w bazie - odpowiada za to tabela pośrednia
-            'vname' => 'LBL_RESOURCE_NAME',                    // etykieta dla pola z nazwą, pole będzie głównie widocznym polem w widokach (np. Powiązany błąd)
+            'source' => 'non-db',                         
+            'vname' => 'LBL_RESOURCE_NAME',                    
             'save' => true,
-            'id_name' => 'resource_id',                       // pole które będzie definiowało ID rekordu po drugiej stronie
-            'link' => 'rooms_resources',                     // nazwa relacji
-            'table' => 'resources',                              // nazwa tabeli dla przeciwnego modułu
-            'module' => 'Resources',                             // nazwa przeciwnego modułu
-            'rname' => 'name',                              // pole po drugiej stronie, które jest powiązane z tym polem
+            'id_name' => 'resource_id',                       
+            'link' => 'rooms_resources',                     
+            'table' => 'resources',                              
+            'module' => 'Resources',                             
+            'rname' => 'name',                              
           ),
-          "resource_id" => array ( // pole które będzie definiowało ID rekordu po drugiej stronie
-            'name' => 'resource_id',                                  // pole które będzie definiowało ID rekordu po drugiej stronie
+          "resource_id" => array ( 
+            'name' => 'resource_id',                                  
             'type' => 'link',
-            'relationship' => 'rooms_resources',                   // nazwa relacji
-            'source' => 'non-db',                                // pole nie musi być przechowywane w bazie - odpowiada za to tabela pośrednia
+            'relationship' => 'rooms_resources',                   
+            'source' => 'non-db',                                
             'reportable' => false,
             'side' => 'left',
-            'vname' => 'LBL_RESOURCE_ID',                             // etykieta dla pola z id, może to być np. Powiązany błąd (ID)
+            'vname' => 'LBL_RESOURCE_ID',                             
           ),
     ),
     'relationships' => array(
-        "securitygroups_rooms" => array(                  // nazwa relacji
-            'lhs_module' => 'SecurityGroups',                     // nazwa pierwszego modułu
-            'lhs_table' => 'securitygroups',                      // nazwa tablicy pierwszego modułu
-            'lhs_key' => 'id',                               // pole id po którym ma zostać wybrany rekord z pierwszego modułu
-            'rhs_module' => 'Rooms',                     // nazwa drugiego modułu
-            'rhs_table' => 'rooms',                      // nazwa tablicy drugiego modułu
-            'rhs_key' => 'security_group_id',                      // nazwa pola id (kolumny), które zostanie utworzone w tablicy drugiego modułu, aby przechowywać id powiązanego rekordu pierwszego modułu
-            'relationship_type' => 'one-to-many',            // typ relacji
+        "securitygroups_rooms" => array(                  
+            'lhs_module' => 'SecurityGroups',                     
+            'lhs_table' => 'securitygroups',                      
+            'lhs_key' => 'id',                               
+            'rhs_module' => 'Rooms',                     
+            'rhs_table' => 'rooms',                      
+            'rhs_key' => 'security_group_id',                      
+            'relationship_type' => 'one-to-many',            
          ),
     ),
     'optimistic_locking' => true,
@@ -250,7 +249,7 @@ if (!class_exists('VardefManager')) {
     require_once('include/SugarObjects/VardefManager.php');
 }
 
-VardefManager::createVardef($module_name, $module_name,
+VardefManager::createVardef('Rooms', 'Rooms',
     array(
     'basic',
     'assignable',
@@ -265,10 +264,10 @@ $dictionary['Rooms']['fields']['name']['audited'] = true;
 $dictionary["Rooms"]["fields"]["rooms_workplaces"] = array (
     'name' => 'rooms_workplaces',
     'type' => 'link',
-    'relationship' => 'rooms_workplaces',        // nazwa relacji
+    'relationship' => 'rooms_workplaces',        
     'source' => 'non-db',
-    'module' => 'Workplaces',                        // nazwa drugiego modułu
-    'bean_name' => 'Workplaces',                       // nazwa bean'a drugiego modułu
-    'vname' => 'LBL_RELATIONSHIP_WORKPLACES_NAME',   // etykieta nazwy relacji (może być taka sama jak nazwa subpanelu drugiego modułu)
+    'module' => 'Workplaces',                        
+    'bean_name' => 'Workplaces',                       
+    'vname' => 'LBL_RELATIONSHIP_WORKPLACES_NAME',   
     'side' => 'right',
  );

@@ -47,8 +47,9 @@
 class RoomsApi {
    public function canSelectSecurityGroup($security_group_id) {
       $group = BeanFactory::getBean('SecurityGroups',$security_group_id);
-      if($group->group_type=='business_unit')
+      if(!empty($group) && $group->group_type=='business_unit'){
          return true;
-      else return false;
+      }
+      return false;
    }
 }

@@ -41,8 +41,7 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-$module_name              = 'Allocations';
-$dictionary[$module_name] = array(
+$dictionary['Allocations'] = array(
     'table' => 'allocations',
     'audited' => true,
     'inline_edit' => false,
@@ -166,7 +165,7 @@ if (!class_exists('VardefManager')) {
     require_once('include/SugarObjects/VardefManager.php');
 }
 
-VardefManager::createVardef($module_name, $module_name,
+VardefManager::createVardef('Allocations', 'Allocations',
     array(
     'basic',
     'assignable',
