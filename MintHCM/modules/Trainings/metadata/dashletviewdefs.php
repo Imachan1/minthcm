@@ -79,14 +79,6 @@ $dashletData['TrainingsDashlet']['searchFields'] = array(
    ),
 );
 $dashletData['TrainingsDashlet']['columns'] = array(
-   'name' =>
-   array(
-      'width' => '40%',
-      'label' => 'LBL_LIST_NAME',
-      'link' => true,
-      'default' => true,
-      'name' => 'name',
-   ),
    'status' =>
    array(
       'type' => 'enum',
