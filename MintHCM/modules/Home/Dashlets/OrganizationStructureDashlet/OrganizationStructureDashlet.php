@@ -47,12 +47,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once 'include/Dashlets/Dashlet.php';
 require_once 'include/Sugar_Smarty.php';
-require_once 'modules/Home/Dashlets/OrganizationStructureDashlet/OrganizationStructure.php';
 
 class OrganizationStructureDashlet extends Dashlet
 {
     protected $url = 'http://www.sugarcrm.com/crm/aggregator/rss/1';
-    protected $height = '200'; // height of the pad
+    protected $height = '680'; // height of the pad
     protected $use_image = false;
     protected $images_dir = 'modules/Home/Dashlets/OrganizationStructureDashlet/images';
 
@@ -106,9 +105,15 @@ class OrganizationStructureDashlet extends Dashlet
         $ss->assign('use_image', $this->use_image);
         $ss->assign('height', $this->height);
         $ss->assign('rootElement', $this->getRootElement());
+        $ss->assign('fullscreen', false);
 
         $lang = strtolower(substr($GLOBALS['current_language'], 0, 2));
-        $jsonTree = (new OrganizationStructure)->getTree();
+        SugarAutoLoader::requireWithCustom('modules/Home/Dashlets/OrganizationStructureDashlet/OrganizationStructure.php');
+        $class_name = 'OrganizationStructure';
+        if(class_exists('Custom'.$class_name)){
+            $class_name = 'CustomOrganizationStructure';
+        }
+        $jsonTree = (new $class_name)->getTree();
         $ss->assign('jsonTree', $jsonTree);
         $str = $ss->fetch('modules/Home/Dashlets/OrganizationStructureDashlet/OrganizationStructureDashlet.tpl');
         return parent::display($this->dashletStrings['LBL_DBLCLICK_HELP']) . $str;
@@ -128,7 +133,7 @@ class OrganizationStructureDashlet extends Dashlet
         }
         $text = $this->getBrowserTitle();
         if (!empty($text)) {
-            return 'text: {name: "' . $text . '"} ';
+            return 'text: {name: "' . $text . '" },HTMLclass: "rootNoImage" ';
         }
     }
     public function getBrowserTitle()
