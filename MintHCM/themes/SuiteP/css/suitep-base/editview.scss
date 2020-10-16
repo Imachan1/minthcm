@@ -1478,7 +1478,7 @@ td.edit.view td[align=right] {
 }
 
 #popup_query_form {
-  padding-left: 0;
+  padding-left: 20px;
   padding-right: 0;
 }
 
@@ -1820,7 +1820,7 @@ a.tabFormAdvLink:hover {
 .evenListRowS1 td,
 .oddListRowS1 td {
   color: $main-font-color;
-
+  padding-left: 20px;
 }
 
 .evenListRowS1 td {
@@ -4367,6 +4367,7 @@ tr:hover img.info {
 }
 
 h3 span {
+  padding-left: 20px;
   font-weight: bold;
 }
 
