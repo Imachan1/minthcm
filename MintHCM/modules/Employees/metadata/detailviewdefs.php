@@ -172,6 +172,9 @@ $viewdefs['Employees'] = array(
                     'name',
                 ),
                 array(
+                    'photo',
+                ),
+                array(
                     'position_name',
                     'phone_work',
                 ),
