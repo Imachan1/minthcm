@@ -74,6 +74,13 @@ $layout_defs["Workplaces"]["subpanel_setup"]['workplaces_allocations'] = array (
     'title_key' => 'LBL_RELATIONSHIP_ALLOCATIONS',         
     'get_subpanel_data' => 'workplaces_allocations',           
     'top_buttons' => array (
+        array(
+            'widget_class' => 'SubPanelTopSelectButton',
+            'mode' => 'MultiSelect',
+        ),
+        array(
+            'widget_class' => 'SubPanelTopButtonQuickCreate',
+        ),
     ),
  );
  $layout_defs["Workplaces"]["subpanel_setup"]['workplaces_workschedules'] = array (
