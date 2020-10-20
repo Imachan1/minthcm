@@ -48,8 +48,10 @@ $layout_defs["Workplaces"]["subpanel_setup"] = array(
         'top_buttons' => array(
             array(
                 'widget_class' => 'SubPanelTopSelectButton',
-                'popup_module' => 'SecurityGroups',
-                'mode' => 'MultiSelect'
+                'mode' => 'MultiSelect',
+            ),
+            array(
+                'widget_class' => 'SubPanelTopButtonQuickCreate',
             ),
         ),
         'order' => 900,
@@ -83,12 +85,5 @@ $layout_defs["Workplaces"]["subpanel_setup"]['workplaces_allocations'] = array (
     'title_key' => 'LBL_RELATIONSHIP_WORKSCHEDULES_NAME',         // etykieta nazwy subpanelu drugiego modułu pod formularzem pierwszego modułu
     'get_subpanel_data' => 'workplaces_workschedules',             // nazwa pola link w ev_Oceans
     'top_buttons' => array (
-       array (
-          'widget_class' => 'SubPanelTopButtonQuickCreate',
-       ),
-       array (
-          'widget_class' => 'SubPanelTopSelectButton',
-          'mode' => 'MultiSelect',
-       ),
     ),
  );
