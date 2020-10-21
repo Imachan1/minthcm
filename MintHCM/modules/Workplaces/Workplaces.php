@@ -78,8 +78,8 @@ class Workplaces extends Basic {
    }
    public function save($check_notify = false) {
       $room_id=$this->room_id;
-      $this->recount($room_id);
       $return_value = parent::save($check_notify);
+      $this->recount($room_id);
       return $return_value;
    }
    public function mark_deleted($id) {
@@ -87,19 +87,20 @@ class Workplaces extends Basic {
       parent::mark_deleted($id);
       $this->recount($room_id);
    }
-   public function recount($room_id){
-      $this->recount_one($room_id);
-      $room_id=$this->fetched_row['room_id'];
-      if($room_id!=null)$this->recount_one($room_id);
+   protected function recount($room_id) {
+      $this->recountOne($room_id);
+      if(!empty($this->fetched_row['room_id'] && $this->fetched_row['room_id'] != $room_id )) {
+        $this->recountOne($this->fetched_row['room_id']);
+      }
    }
-   public function recount_one($room_id){
+   protected function recountOne($room_id){
       $db = DBManagerFactory::getInstance();
       $query = "SELECT COUNT(id) 
          FROM workplaces 
          WHERE workplaces.room_id = '{$room_id}' AND deleted=0";
       $count = $db->getOne($query) ?? 0;
-      $room = BeanFactory::getBean('Rooms',$room_id);
-      $room->number_of_seats=$count;
+      $room = BeanFactory::getBean('Rooms', $room_id);
+      $room->number_of_seats = $count;
       $room->save();
    }
 }
