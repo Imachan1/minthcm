@@ -170,10 +170,12 @@ $dictionary["Workplaces"]["fields"]["workplaces_allocations"] = array (
  $dictionary["Workplaces"]["fields"]["workplaces_workschedules"] = array (
     'name' => 'workplaces_workschedules',
     'type' => 'link',
-    'relationship' => 'workplaces_workschedules',        // nazwa relacji
+    'relationship' => 'workplaces_workschedules',        
     'source' => 'non-db',
-    'module' => 'WorkSchedules',                        // nazwa drugiego modułu
-    'bean_name' => 'WorkSchedules',                       // nazwa bean'a drugiego modułu
-    'vname' => 'LBL_RELATIONSHIP_WORKSCHEDULES_NAME',   // etykieta nazwy relacji (może być taka sama jak nazwa subpanelu drugiego modułu)
+    'module' => 'WorkSchedules',                        
+    'bean_name' => 'WorkSchedules',                       
+    'vname' => 'LBL_RELATIONSHIP_WORKSCHEDULES_NAME',   
     'side' => 'right',
  );
+
+ $dictionary["Workplaces"]['indices'][] = array('name' => 'idx_del_room_id', 'type' => 'index', 'fields' => array( 'deleted','room_id'));
