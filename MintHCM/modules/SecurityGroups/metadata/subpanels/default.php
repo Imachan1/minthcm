@@ -19,7 +19,12 @@ $subpanel_layout = array(
 		 	'vname' => 'LBL_DESCRIPTION',
 			'width' => '9999%',
 			'sortable'=>false,
-		),
+        ),
+        'assigned_user_name' =>array(
+            'vname' => 'LBL_ASSIGNED_TO_NAME',
+            'default' => true,
+            'width' => '10%',
+      ),
 		'remove_button'=>array(
 			'widget_class' => 'SubPanelRemoveButton',
 		 	'module' => 'SecurityGroups',

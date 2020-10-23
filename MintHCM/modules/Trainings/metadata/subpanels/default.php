@@ -63,7 +63,7 @@ $subpanel_layout = array(
       array(
          'vname' => 'LBL_NAME',
          'widget_class' => 'SubPanelDetailViewLink',
-         'width' => '45%',
+         'width' => '25%',
          'default' => true,
       ),
       'status' =>
@@ -99,7 +99,7 @@ $subpanel_layout = array(
       'parent_name' =>
       array(
          'vname' => 'LBL_PARENT_NAME',
-         'width' => '25%',
+         'width' => '10%',
          'id' => 'parent_id',
          'widget_class' => 'SubPanelDetailViewLink',
          'target_record_key' => 'parent_id',
@@ -110,6 +110,12 @@ $subpanel_layout = array(
             1 => 'parent_type',
          ),
          'default' => true,
+      ),
+      'assigned_user_name' =>
+      array(
+        'vname' => 'LBL_ASSIGNED_TO_NAME',
+        'default' => true,
+        'width' => '10%',
       ),
       'parent_id' => array(
          'usage' => 'query_only',
