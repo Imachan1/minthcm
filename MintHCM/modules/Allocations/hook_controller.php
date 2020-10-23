@@ -52,4 +52,19 @@ class AllocationsLogicHooks {
       } 
    }
 
+    public function setAllocationName($bean, $event, $arguments) {
+        $name = $bean->workplace_name;
+        $name .= ' - ';
+        $user = BeanFactory::getBean('Users', $bean->assigned_user_id);
+        if($user) {
+            $name .= $user->full_name;
+        }
+        $name .= ' - ';
+        $name .= $bean->date_from;
+        if(!empty($bean->date_to)) {
+            $name .= ' - ';
+            $name .= $bean->date_to;
+        }
+        $bean->name = $name;
+    }
 }
