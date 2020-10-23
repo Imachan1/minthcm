@@ -75,3 +75,11 @@ option:checked {
         width: 72.25%
     }
 }
+
+input#btn_ConditionLine.button[type="button"] {
+    color: $color-mint-darkgreen-darker;
+}
+
+input#btn_ActionLine.button[type="button"] {
+    color: $color-mint-darkgreen-darker;
+}
