@@ -25590,11 +25590,13 @@ div.list-view-rounded-corners > table, tr.pagination-unique {
   width: 65%; }
 
 .chooserList .ui-sortable-handle {
-  border: 2px solid #b2b4b3;
-  border-radius: 10px;
-  padding: 5px;
-  margin-bottom: 5px;
-  background-color: #CCCCCC; }
+  border-radius: 3px;
+  padding: 9px;
+  margin-bottom: 8px;
+  background-color: #00BF93;
+  color: white;
+  box-shadow: 0 8px 6px -6px #ccc; 
+}
 
 input[type=button], input.button[type=button], input.button[type=submit] {
   background: #fff;
