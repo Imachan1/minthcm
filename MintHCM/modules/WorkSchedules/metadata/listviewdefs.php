@@ -83,7 +83,7 @@ array (
     'label' => 'LBL_RELATIONSHIP_WORKPLACE_NAME',
     'id' => 'WORKPLACE_ID',
     'width' => '10%',
-    'default' => false,
+    'default' => true,
   ),
 );
 ;

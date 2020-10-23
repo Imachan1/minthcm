@@ -72,10 +72,7 @@ $layout_defs["Allocations"]["subpanel_setup"] = array(
         'get_subpanel_data' => 'allocations_employees', 
         'top_buttons' =>
         array(
-            array(
-                'widget_class' => 'SubPanelTopSelectButton',                          
-                'mode' => 'MultiSelect',
-            ),
+
         ),
     ),
 );

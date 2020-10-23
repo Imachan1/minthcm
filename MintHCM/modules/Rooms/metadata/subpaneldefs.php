@@ -48,8 +48,10 @@ $layout_defs["Rooms"]["subpanel_setup"] = array(
         'top_buttons' => array(
             array(
                 'widget_class' => 'SubPanelTopSelectButton',
-                'popup_module' => 'SecurityGroups',
-                'mode' => 'MultiSelect'
+                'mode' => 'MultiSelect',
+            ),
+            array(
+                'widget_class' => 'SubPanelTopButtonQuickCreate',
             ),
         ),
         'order' => 900,
@@ -62,15 +64,18 @@ $layout_defs["Rooms"]["subpanel_setup"] = array(
         'add_subpanel_data' => 'securitygroup_id',
         'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
     ),
-    $layout_defs["Rooms"]["subpanel_setup"]['rooms_workplaces'] = array (
+    'rooms_workplaces' => array (
         'order' => 100,
-        'module' => 'Workplaces',                                  // nazwa drugiego modułu
+        'module' => 'Workplaces',                                  
         'subpanel_name' => 'default',
         'sort_order' => 'asc',
         'sort_by' => 'id',
-        'title_key' => 'LBL_RELATIONSHIP_WORKPLACES_NAME',         // etykieta nazwy subpanelu drugiego modułu pod formularzem pierwszego modułu
-        'get_subpanel_data' => 'rooms_workplaces',             // nazwa pola link w ev_Oceans
+        'title_key' => 'LBL_RELATIONSHIP_WORKPLACES_NAME',         
+        'get_subpanel_data' => 'rooms_workplaces',            
         'top_buttons' => array (
+                array(
+                    'widget_class' => 'SubPanelTopButtonQuickCreate',
+                ),
         ),
     ),
 );

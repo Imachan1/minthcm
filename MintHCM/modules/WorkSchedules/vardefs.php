@@ -514,7 +514,8 @@ $dictionary['WorkSchedules'] = array(
          'name' => 'workplace_id',                         // nazwa pola id, które będzie reprezentować relacja
          'relationship' => 'workplaces_workschedules',         // nazwa relacji
          'type' => 'id',                                  // typ pola: id
-         'vname' => 'LBL_RELATIONSHIP_WORKPLACE_ID',       // etykieta id relacji
+         'vname' => 'LBL_RELATIONSHIP_WORKPLACE_ID', 
+         'audited' => true,
       ),
    ),
    'relationships' => array(
