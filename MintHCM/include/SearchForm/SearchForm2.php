@@ -1471,11 +1471,22 @@ class SearchForm {
          $searchdefs[$module]['layout']['advanced_search'][] = array('name' => 'my_subordinates', 'label' => 'LBL_SUBORDINATES_FILTER', 'type' => 'bool');
          $searchFields[$module]['my_subordinates'] = array(
            'query_type' => 'default',
-           'db_field' => array('assigned_user_id'),
            'my_subordinates' => true,
            'vname' => 'LBL_SUBORDINATES_FILTER',
            'type' => 'bool',
          );
+         if($module == 'Employees') {
+            $searchFields[$module]['my_subordinates']['db_field'] = array('id');
+         }
+         else {
+            $bean = BeanFactory::getBean($module);
+            if(empty($bean->field_defs['employee_id'])) {
+               $searchFields[$module]['my_subordinates']['db_field'] = array('assigned_user_id');
+            }
+           else {
+               $searchFields[$module]['my_subordinates']['db_field'] = array('employee_id');
+           }
+         }
       }
       return array( 'searchdefs' => $searchdefs, 'searchFields' => $searchFields );
    }
