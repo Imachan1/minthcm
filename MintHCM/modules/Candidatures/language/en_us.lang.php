@@ -156,7 +156,7 @@ $mod_strings = array(
 
     'LBL_ALERT_TITLE' => 'Convert To Employee',
     'LBL_ALERT_LOGIN' => 'Login',
-    'LBL_ALERT_NOTE' => 'Note: If the input is filled system creates active user. If login is empty, the user is inactive.',
+    'LBL_ALERT_NOTE' => 'If you will choose Create User system creates active user. If you will choose Create Employee, the user is inactive.',
     'LBL_CREATE_USER' => 'Create User',
     'LBL_CREATE_EMPLOYEE' => 'Create Employee',
     'LBL_ERROR_LOGIN'=> 'You must enter a login',
