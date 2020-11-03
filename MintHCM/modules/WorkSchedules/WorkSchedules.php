@@ -426,25 +426,26 @@ class WorkSchedules extends Basic
                 if ($date_start == $row_ds) {
                     $date_start = DateTime::createFromFormat($db_format, $row['date_end']);
                 } else {
-                    return "3";
+                    $return = 0;
                     break;
                 }
             }
             $row_de = DateTime::createFromFormat($db_format, $last_row['date_end']);
             if ($return && $date_end != $row_de) {
-                return "3";
-
+                $return = 0;
             }
             $sql = "SELECT workplace_id FROM workschedules WHERE id ='{$this->id}'";
             if(($this->type==='office')&&(empty($this->db->getOne($sql)))){
-                return $this->checkAllocation();
+                $return = $this->checkAllocation();
             }
         }
-        return "1";
+        $return;
     }
+
     public function checkAllocation(){
         $db = DBManagerFactory::getInstance();
         global $timedate;
+        $return = 1;
         $db_format = $timedate->get_db_date_time_format();
 
         $sql = "SELECT date_start FROM workschedules WHERE id='{$this->id}' AND deleted=0";
@@ -457,22 +458,25 @@ class WorkSchedules extends Basic
         $result = $db->query($sql);
         $db_format = "Y-m-d";
         while ($row = $db->fetchByAssoc($result)) {
-            $allocation = BeanFactory::getBean('Allocations',$row['allocation_id']);
+            $allocation = BeanFactory::getBean('Allocations', $row['allocation_id']);
             $sql = "SELECT date_from, date_to FROM allocations WHERE id='{$allocation->id}' AND deleted=0";
             $result = $db->query($sql);
             $date_row = $db->fetchByAssoc($result);
             $start_date = DateTime::createFromFormat($db_format, $date_row['date_from']);
             $end_date = DateTime::createFromFormat($db_format, $date_row['date_to']);
-            if($work_date>=$start_date){
-                if(!empty($end_date)){
-                    if($work_date<=$end_date){
-                        return "2";
+            if($work_date>=$start_date) {
+                if(!empty($end_date)) {
+                    if($work_date<=$end_date) {
+                        $return = 0;
                     }
                 }
-                else return "2";
+                else {
+                    $return = 0;
+                    break;
+                }
             } 
         }
-        return "1";
+        $return;
     }
     public function confirm()
     {
