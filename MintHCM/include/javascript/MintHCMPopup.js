@@ -1,4 +1,3 @@
-var popup_arrays = [];
 var MintHCMPopup = function (title, body, buttons, options, onShow) {
     var classPopup = new MintHCMPopupClass(title,body,buttons,options,onShow);  
     return classPopup.init();
@@ -9,7 +8,6 @@ MintHCMPopup.close = function() {
 };
 
 class MintHCMPopupClass{
-
 
     constructor(title, body, buttons, options, onShow,load_id) {
         this.id = load_id || Date.now();
@@ -84,16 +82,17 @@ class MintHCMPopupClass{
 var showLoadingScreen = function (title,message) {
     var loading;
     if(message){
-        loading = new MintHCMPopupClass(title,"<div class='MintHCMPopup-load'><img src='themes/default/images/loading.gif' alt='loading'></img><div class='MintHCMPopup-load-message'><span>"+message+"</span></div></div>",'',{noCloseButton: true},'','load');
+        var body_html = "<div class='MintHCMPopup-load'><img src='themes/default/images/loading.gif' alt='loading'></img><div class='MintHCMPopup-load-message'><span>"+message+"</span></div></div>";
     }
     else{
-        loading = new MintHCMPopupClass(title,"<div class='MintHCMPopup-load'><img src='themes/default/images/loading.gif' alt='loading'></img></div>",'',{noCloseButton: true},'','load');   
+        var body_html = "<div class='MintHCMPopup-load'><img src='themes/default/images/loading.gif' alt='loading'></img></div>";
     }
+    loading = new MintHCMPopupClass(title,body_html,'',{noCloseButton: true},'','load');   
     loading.init();
     return true;
 };
-var closeLoadingScree = function () {
+var closeLoadingScreen = function () {
     $('#load').remove();
     return true;
-    };
+};
 
