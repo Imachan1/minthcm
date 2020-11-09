@@ -72,6 +72,11 @@ $viewdefs ['Employees'] = array(
                'panelDefault' => 'expanded',
             ),
          ),
+         'includes' => array(
+            array(
+                'file' => 'modules/Employees/js/view.edit.js',
+            ),
+        ),
       ),
       'panels' =>
       array(
@@ -79,6 +84,7 @@ $viewdefs ['Employees'] = array(
          array(
             array(
                'employee_status',
+               'photo',
             ),
             array(
                'first_name',
@@ -89,9 +95,6 @@ $viewdefs ['Employees'] = array(
                      'required' => true,
                   ),
                ),
-            ),
-            array(
-               'photo'
             ),
             array(
                array(

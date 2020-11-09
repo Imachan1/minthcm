@@ -130,7 +130,6 @@ function populateFromRow(&$focus, $row)
         'messenger_id',
         'messenger_type',
         'email1',
-        'photo',
         'securitygroup_id',
     );
 
@@ -149,8 +148,7 @@ function populateFromRow(&$focus, $row)
     foreach ($focus->field_defs as $fieldName => $field) {
         if (
             (isset($field['source']) && $field['source'] == 'custom_fields')
-            || $fieldName == 'photo'
-        ) {
+            || $fieldName == 'photo') {
             $type = !empty($field['custom_type']) ? $field['custom_type'] : $field['type'];
             $sf = $sfh->getSugarField($type);
             if ($sf != null) {
