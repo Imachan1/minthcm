@@ -4079,6 +4079,7 @@ $app_list_strings['list_type_list'] = array(
     'Meetings-type' => 'Meetings - Type',
     'SpentTime-category' => 'Spent Time - Category',
     'Candidatures-source' => 'Candidatures - Source',
+    'Documents-type' => 'Documents - Type',
 );
 
 $app_list_strings['reservations_parent_type_list'] = array(
