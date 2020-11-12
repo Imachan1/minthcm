@@ -760,16 +760,17 @@ option[selected] {
 }
 
 .edit tr td {
-  font-weight: normal;
-  vertical-align: top;
+    font-weight: normal;
+    vertical-align: top;
+    padding: 18px 0 18px 0;
 }
 
-.edit tr td[scope=row] {
-  padding: 0 10px 0 0;
-  line-height: 40px;
-  text-align: left;
-  height: 40px;
-  vertical-align: top;
+.edit tr td[scope="row"] {
+    padding: 12px 12px 0 0;
+    line-height: 40px;
+    text-align: left;
+    height: 40px;
+    vertical-align: top;
 }
 
 .edit tr th {
