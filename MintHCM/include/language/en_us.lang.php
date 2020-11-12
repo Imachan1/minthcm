@@ -3758,6 +3758,7 @@ $app_list_strings['workschedule_type_list'] = [
     'delegation' => 'Delegation',
     'holiday' => 'Holiday',
     'sick' => 'Sick',
+    'sick-care' => 'Sick - Care',
     'occasional_leave' => 'Occasional Leave',
     'leave_at_request' => 'Leave at Request',
     'overtime' => 'Free Overtime',
