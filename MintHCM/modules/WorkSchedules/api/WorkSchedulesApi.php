@@ -106,7 +106,7 @@ class WorkSchedulesApi
     public function validateWorkplaceStatus($workplace_id)
     {
         $workplace = BeanFactory::getBean('Workplaces', $workplace_id);
-        if (!$workplace || empty($workplace->id) || $workplace->availability == 'active') {
+        if (!$workplace || empty($workplace->id) || 'active' == $workplace->availability) {
             return true;
         } else {
             return false;
@@ -143,5 +143,22 @@ class WorkSchedulesApi
             }
         }
         return $return;
+    }
+
+    public function setAssignedWorkingRoom($args)
+    {
+        $db = \DBManagerFactory::getInstance();
+        $user_id = $db->quote($args['assigned_user_id']);
+        $result = [];
+
+        if (!empty($user_id)) {
+            $sqlResult = $db->query("SELECT id,name FROM workplaces WHERE assigned_user_id = '{$user_id}' AND availability = 'active' AND deleted = 0");
+        }
+        if (1 === $sqlResult->num_rows) {
+            $result = $db->fetchByAssoc($sqlResult);
+        } else {
+            return;
+        }
+        return $result;
     }
 }
