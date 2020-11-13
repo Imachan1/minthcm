@@ -49,7 +49,7 @@ function setAssignedWorkingRoom() {
         module: "WorkSchedules",
         action: "setAssignedWorkingRoom",
         dataType: "json",
-        async: false,
+        async: true,
         dataPOST: {
             assigned_user_id: assigned_user_id,
         },
