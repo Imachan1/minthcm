@@ -1293,6 +1293,10 @@ function insert_default_settings() {
     'EmployeeCertificates',
     'ProspectLists',
     'Campaigns',
+    'Allocations',
+    'Workplaces',
+    'Rooms',
+    'SecurityGroups',
     );
 
    $hidden_subpanels = array (

@@ -258,3 +258,14 @@ $dictionary['SecurityGroup'] = [
 ];
 require_once 'include/SugarObjects/VardefManager.php';
 VardefManager::createVardef('SecurityGroups', 'SecurityGroup', ['basic', 'assignable']);
+
+$dictionary["SecurityGroup"]["fields"]["securitygroups_rooms"] = array (
+    'name' => 'securitygroups_rooms',
+    'type' => 'link',
+    'relationship' => 'securitygroups_rooms',        // nazwa relacji
+    'source' => 'non-db',
+    'module' => 'Rooms',                        // nazwa drugiego modułu
+    'bean_name' => 'Rooms',                       // nazwa bean'a drugiego modułu
+    'vname' => 'LBL_RELATIONSHIP_ROOMS_NAME',   // etykieta nazwy relacji (może być taka sama jak nazwa subpanelu drugiego modułu)
+    'side' => 'right',
+ );

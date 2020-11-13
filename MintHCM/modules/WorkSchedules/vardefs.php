@@ -484,8 +484,51 @@ $dictionary['WorkSchedules'] = array(
          'isnull' => 'true',
          'dbType' => 'id',
       ),
+      "workplaces_workschedules" => array(                  // nazwa relacji
+         'name' => 'workplaces_workschedules',                 // nazwa relacji
+         'type' => 'link',
+         'relationship' => 'workplaces_workschedules',         // nazwa relacji
+         'source' => 'non-db',
+         'module' => 'Workplaces',                         // nazwa pierwszego modułu
+         'bean_name' => 'Workplaces',                       // nazwa bean'a pierwszego modułu
+         'vname' => 'LBL_RELATIONSHIP_WORKPLACE_NAME',     // etykieta relacji (może być taka sama jak nazwa pola relacyjnego pierwszego modułu)
+         'id_name' => 'workplace_id',                      // nazwa pola id, które będzie reprezentować relacja
+      ),
+      "workplace_name" => array(                        // nazwa pola name
+         'name' => 'workplace_name',                       // nazwa pola name
+         'type' => 'relate',                              // typ pola: relacja
+         'source' => 'non-db',
+         'vname' => 'LBL_RELATIONSHIP_WORKPLACE_NAME',     // etykieta pola relacji (może być taka sama jak nazwa pola relacyjnego pierwszego modułu)
+         'id_name' => 'workplace_id',                      // nazwa pola id, które będzie reprezentować relacja
+         'link' => 'workplaces_workschedules',                 // nazwa relacji
+         'module' => 'Workplaces',                         // nazwa pierwszego modułu
+         'table' => 'workplaces',                          // nazwa tabeli pierwszego modułu 
+         'rname' => 'name',
+         'vt_dependency' => "equals(\$type,'office')",
+         'vt_validation' => array(
+            "AEM(callCustomApi(WorkSchedules,validateWorkplaceStatus,\$workplace_id),'LBL_ERR_STATUS_NOT_ACTIVE')",
+            "AEM(callCustomApi(WorkSchedules,validateWorkplaceAllocationPeriods,\$workplace_id,\$date_start,\$date_end),'LBL_ERR_WORKPLACE_NOT_ACTIVE')",
+         ),
+      ),
+      "workplace_id" => array(
+         'name' => 'workplace_id',                         // nazwa pola id, które będzie reprezentować relacja
+         'relationship' => 'workplaces_workschedules',         // nazwa relacji
+         'type' => 'id',                                  // typ pola: id
+         'vname' => 'LBL_RELATIONSHIP_WORKPLACE_ID', 
+         'audited' => true,
+      ),
    ),
-   'relationships' => array(),
+   'relationships' => array(
+      "workplaces_workschedules" => array(                  // nazwa relacji
+         'lhs_module' => 'Workplaces',                     // nazwa pierwszego modułu
+         'lhs_table' => 'workplaces',                      // nazwa tablicy pierwszego modułu
+         'lhs_key' => 'id',                               // pole id po którym ma zostać wybrany rekord z pierwszego modułu
+         'rhs_module' => 'WorkSchedules',                     // nazwa drugiego modułu
+         'rhs_table' => 'workschedules',                      // nazwa tablicy drugiego modułu
+         'rhs_key' => 'workplace_id',                      // nazwa pola id (kolumny), które zostanie utworzone w tablicy drugiego modułu, aby przechowywać id powiązanego rekordu pierwszego modułu
+         'relationship_type' => 'one-to-many',            // typ relacji
+      ),
+   ),
    'optimistic_locking' => true,
    'unified_search' => true,
 );
