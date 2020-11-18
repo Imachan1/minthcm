@@ -63,6 +63,7 @@ class GenerateUsersNews {
          $organizationalunits_controller = ControllerFactory::getController('SecurityGroups');
          $users_ids = $organizationalunits_controller->getActiveUsers($organizational_units_ids);
          $this->createOrUpdateUsersNews($users_ids);
+         $this->addUsersPrivateGroupsToNews($users_ids);
       }
    }
 
@@ -103,6 +104,27 @@ class GenerateUsersNews {
          $users_news->assigned_user_name = $user->name;
          $users_news->save();
       }
+   }
+
+   protected function addUsersPrivateGroupsToNews($users_ids) {
+      $news = BeanFactory::getBean('News', $this->record_id);
+      if ( $news && !empty($news->id) && $news->load_relationship('SecurityGroups') ) {
+         $groups = $news->SecurityGroups->get();
+         $news->SecurityGroups->delete($groups);
+         array_push($users_ids, $news->assigned_user_id);
+         $news->SecurityGroups->add($this->getPrivateGroups($users_ids));
+      }
+   }
+
+   protected function getPrivateGroups($users_ids) {
+      global $db;
+      $results = array();
+      $sql = "SELECT id FROM securitygroups WHERE group_type='private' AND deleted = 0 AND assigned_user_id IN ('" . implode('\',\'', $users_ids) . "')";
+      $result = $db->query($sql);
+      while ( $row = $db->fetchByAssoc($result) ) {
+         $results[] = $row['id'];
+      }
+      return $results;
    }
 
 }

@@ -81,6 +81,9 @@
 
         </div>
     </div>
+    <!--  MintHCM start !-->
+    <script src="modules/Administration/js/repairPrivateSecurityGroups.js"></script>
+    <!--  MintHCM end !-->
 </div>
 
 

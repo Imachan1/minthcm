@@ -873,6 +873,7 @@ require_once 'modules/Schedulers/schedulers/GenerateAppraisalAppraisalItemsJob.p
 require_once 'modules/Schedulers/schedulers/GenerateOnboardingOffboardingJob.php';
 require_once 'modules/Schedulers/schedulers/GenerateUsersNewsJob.php';
 require_once 'modules/Schedulers/schedulers/MassConfirmationJob.php';
+require_once 'modules/Schedulers/schedulers/RepairPrivateGroupsJob.php';
 require_once 'modules/Schedulers/schedulers/UpdateNewsDisplayDate.php';
 require_once 'modules/Schedulers/schedulers/executeViewToolsQueue.php';
 require_once 'modules/Schedulers/schedulers/rebuildViewTools.php';

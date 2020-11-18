@@ -89,12 +89,24 @@ class Ideas extends Basic
         $if = new IdeasFeed();
         $if->pushFeed($this, null, null);
         if (!empty($this->user_id) && $this->user_id != $this->fetched_row['user_id']) {
+            $this->addDecisionMakerPrivateGroup();
             $description = $app_strings['LBL_ASSIGN_TO_IDEA'];
         } else {
             $description = $app_strings['LBL_IDEA_MODIFIED'];
         }
         $this->addDecisionMakerNotification($this->user_id, $description);
         $this->addDecisionMakerNotification($this->assigned_user_id, $description);
+    }
+
+    protected function addDecisionMakerPrivateGroup()
+    {
+        $user = BeanFactory::getBean('Users', $this->user_id);
+        if ($user && !empty($user->id) && $this->load_relationship('SecurityGroups')) {
+            $group_id = $user->getUserPrivateGroup();
+            if ($group_id) {
+                $this->SecurityGroups->add($group_id);
+            }
+        }
     }
 
     protected function addDecisionMakerNotification($user_id, $description)

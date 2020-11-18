@@ -44,41 +44,17 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
-}
+class RepairPrivateGroupsJob implements RunnableSchedulerJob {
 
-require_once('include/SugarQueue/SugarJobQueue.php');
-
-class SecurityGroupsController extends SugarController {
-
-   public function action_repair() {
-      global $current_user;
-      $jq = new SugarJobQueue();
-      $job = new SchedulersJob();
-      $job->name = "Repair Private Security Groups";
-      $job->target = "class::RepairPrivateGroupsJob";
-      $job->assigned_user_id = $current_user->id;
-
-      try {
-         $jq->submitJob($job);
-         echo 'Repair Private Security Groups job added to Queue.';
-      } catch ( Exception $ex ) {
-         $GLOBALS['log']->fatal($ex->getTraceAsString());
-      }
+   public function setJob(SchedulersJob $job) {
+      $this->job = $job;
    }
 
-   public function getActiveUsers($organizational_units_ids) {
-      global $db;
-      $results = array();
-      $sql = "SELECT id FROM users WHERE status='Active' AND deleted = 0";
-      if ( !empty($organizational_units_ids) ) {
-         $sql .= " AND securitygroup_id IN ('" . implode('\',\'', $organizational_units_ids) . "')";
-      }
-      $result = $db->query($sql);
-      while ( $row = $db->fetchByAssoc($result) ) {
-         $results[] = $row['id'];
-      }
-      return $results;
+   public function run($job_data) {
+      require_once('modules/SecurityGroups/RepairPrivateGroups.php');
+      $RPG = new RepairPrivateGroups();
+      $RPG->repair();
+      return true;
    }
+
 }
