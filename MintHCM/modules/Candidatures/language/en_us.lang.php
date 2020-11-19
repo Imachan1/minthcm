@@ -163,4 +163,5 @@ $mod_strings = array(
     'LBL_CREATE_EMPLOYEE' => 'Create Employee',
     'LBL_ERROR_LOGIN' => 'You must enter a login',
     'LBL_ERROR_INPUT_RADIO' => 'You must select one of the fields',
+    'LBL_INFO' => 'Select one of the following options:',
 );

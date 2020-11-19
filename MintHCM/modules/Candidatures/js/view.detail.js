@@ -14,7 +14,7 @@ convertToEmployee = {
     LBL_ALERT_CREATE_USER: viewTools.language.get('Candidatures','LBL_ALERT_CREATE_USER'),
     LBL_ALERT_CREATE_Employee: viewTools.language.get('Candidatures','LBL_ALERT_CREATE_Employee'),
     LBL_FAIL: viewTools.language.get('Candidatures', 'LBL_FAILED_CONVERTING_CANDIDATURE'),
-
+    LBL_INFO: viewTools.language.get('Candidatures', 'LBL_INFO'),
     initialize: function () {
         const _this = this;
         const recordData = _this.getRecordData();
@@ -34,6 +34,7 @@ convertToEmployee = {
             });
             </script>
             <div id="div_radio" >
+            <span id="info">${_this.LBL_INFO}</span>
             <form name="type">
             <input type="radio" name="convertType" value="createUser" id="createUser"/><labal for="createUser">${_this.LBL_CREATE_USER}</label>  
             <input type="radio" name="convertType" value="createEmployee" id="createEmployee"/><labal for="createEmployee">${_this.LBL_CREATE_EMPLOYEE} </label>  
@@ -45,7 +46,7 @@ convertToEmployee = {
             <input type="text" name="MintHCMPopup_login" id="MintHCMPopup_login"/>
             <form>
             </div>
-            <span>${_this.LBL_ALERT_NOTE}</span>
+            <span id="note"></span>
             <style>
                 .Input_login{
                     display: none;
@@ -128,30 +129,7 @@ convertToEmployee = {
             }
         });
     },
-    //TODO: Do pokazania i zdiagnozowania dlaczego nie działa poprawnie
-    // hideInput: function () { 
-    //     $('#input_login').hide()
-    //     return true
-    // },
-    // showInput: function () {
-    //     $('#input_login').show()
-    //     return true;
-    // },
-    // radioAction: function a() { 
 
-
-    //     $('input[type=radio][name=convertType]').change(function() {
-    //         if (this.value == 'createUser') {
-    //             this.hideInput
-    //             console.log("a") 
-    //         }
-    //         else if (this.value == 'createEmployee') {
-    //             this.showInput
-    //             console.log("b")
-    //          }
-    //     });
-
-    // }
 };
 
 
