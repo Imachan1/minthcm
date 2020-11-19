@@ -176,6 +176,8 @@ $app_list_strings = array(
         'Tasks' => 'Tasks',
         'SalaryRanges' => 'Salary Ranges',
         'EmployeeCertificates' => 'Employee Certificates',
+        'Comments' => 'Comments',
+        'Reactions' => 'Reactions',
     ),
     'moduleListSingular' => array(
         'Home' => 'Home',
@@ -4177,3 +4179,32 @@ $app_strings['LBL_MY_CALLS_DASHLET'] = 'My Calls';
 $app_strings['LBL_RECRUITMENTS_DASHLET'] = 'Recruitments';
 $app_strings['LBL_CANDIDATURES_DASHLET'] = 'Candidatures';
 $app_strings['LBL_CANNOT_CREATE_CALENDAR_EVENTS'] = 'You cannot create events for that calendar';
+
+$app_list_strings['record_type_display_comments'] = array(
+   'News' => 'News',
+);
+ 
+$app_list_strings['parent_type_display_comments'] = array(
+   'News' => 'News',
+);
+ 
+$app_strings['LBL_COMMENTS'] = "Comments";
+$app_strings['LBL_PANEL_COMMENTS'] = "Comments";
+$app_strings['LBL_YOUR_COMMENT'] = "Your Comment";
+$app_strings['LBL_YOUR_REPLY'] = "Your Reply";
+$app_strings['LBL_SEND_BUTTON_LABEL'] = "Send";
+
+$app_list_strings['parent_type_display_reactions'] = array(
+   'News' => 'News',
+);
+
+$app_list_strings['reaction_type_list'] = array(
+   'like' => 'Like',
+   'dislike' => 'Dislike',
+);
+
+$app_list_strings['reaction_icons_list'] = array(
+   'like' => 'thumbs-up',
+   'dislike' => 'thumbs-down',
+);
+ 
