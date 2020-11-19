@@ -11,7 +11,8 @@ convertToEmployee = {
     LBL_ALERT_NOTE: viewTools.language.get('Candidatures', 'LBL_ALERT_NOTE'),
     LBL_CREATE_USER: viewTools.language.get('Candidatures', 'LBL_CREATE_USER'),
     LBL_CREATE_EMPLOYEE: viewTools.language.get('Candidatures', 'LBL_CREATE_EMPLOYEE'),
-
+    LBL_ALERT_CREATE_USER: viewTools.language.get('Candidatures','LBL_ALERT_CREATE_USER'),
+    LBL_ALERT_CREATE_Employee: viewTools.language.get('Candidatures','LBL_ALERT_CREATE_Employee'),
     LBL_FAIL: viewTools.language.get('Candidatures', 'LBL_FAILED_CONVERTING_CANDIDATURE'),
 
     initialize: function () {
@@ -24,9 +25,11 @@ convertToEmployee = {
                 viewTools.GUI.fieldErrorUnmark()
                 if (this.value == 'createUser') {
                     $('#input_login').show()
+                    $('#note').text("${_this.LBL_ALERT_CREATE_USER}")
                 }
                 else if (this.value == 'createEmployee') {
                     $('#input_login').hide()
+                    $('#note').text("${_this.LBL_ALERT_CREATE_Employee}")
                  }
             });
             </script>
