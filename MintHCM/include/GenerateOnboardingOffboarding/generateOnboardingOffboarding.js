@@ -182,7 +182,7 @@ generateOnboardingOffboarding = {
    },
    getParentTypeOptions: function () {
       let selected = '';
-      const module = $('input[name=module]:not(.form-control)').val();
+      const module = $('input[name=module]:not(.form-control)').val().slice(0,-1) + "Templates";
       const templates = viewTools.language.get('app_list_strings', 'template_type_list');
       let options = '';
       for (let module_name in templates) {
