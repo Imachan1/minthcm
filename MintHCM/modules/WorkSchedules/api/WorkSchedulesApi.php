@@ -82,7 +82,7 @@ class WorkSchedulesApi {
          $date_interval = sprintf('+%d hour +%d minutes', $data['data']['duration_hours'], $data['data']['duration_minutes']);
          foreach ( $repeatArr as $repeat ) {
             $db_date_start = $timedate->to_db($repeat);
-            $db_date_end = $timedate->to_db(date('Y-m-d H:i', strtotime($date_interval, strtotime($db_date_start))));
+            $db_date_end = date('Y-m-d H:i', strtotime($date_interval, strtotime($db_date_start)));
             $query = "
                SELECT COUNT(id)
                FROM workschedules
