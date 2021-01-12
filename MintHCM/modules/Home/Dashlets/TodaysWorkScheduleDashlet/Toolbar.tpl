@@ -3,9 +3,9 @@
     <form onsubmit="return false" class="TWSToolbarForm">
         <table border="0" cellpadding="5" style="width:100%;">
             <tr>
-                <td nowrap="nowrap">
+                <td nowrap="nowrap" style="padding-right:30px;">
                     <span class="dateTime">
-                        <div class="monthHeader">
+                        <div class="monthHeader" style="display:inline">
                             <a href="#" class="calendar_before">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 10 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
                                     <g id="layer1" transform="translate(0,-1036.3622)">
@@ -19,7 +19,7 @@
                             </a>
                         </div>
                         <input class="date_input" autocomplete="off" type="text" size="11" maxlength="10">
-                        <div class="monthHeader">
+                        <div class="monthHeader" style="display:inline">
                             <a class="calendar_next" href="#">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
                                     <g id="layer1" transform="translate(0,-1036.3622)">
@@ -33,10 +33,10 @@
                         </div>
                     </span>
                 </td>
-                <td nowrap="nowrap">
-                    <img class="calendar_img" src="themes/SuiteP/images/jscalendar.gif" alt="{$APP.twsdashlet_insert_date}" style="margin-right:10px;margin-left:-15px;cursor:pointer;" border="0">
+                 <td nowrap="nowrap">
+                     <img class="calendar_img" src="themes/SuiteP/images/jscalendar.gif" alt="{$APP.twsdashlet_insert_date}" style="position:relative;margin-right:15px;margin-left:-15px;cursor:pointer;" border="0">
                 </td>
-                <td nowrap="nowrap"><select style="min-width:300px;"></select></td>
+                <td nowrap="nowrap" style="padding-left:20px;"><select style="min-width:300px;"></select></td>
                 <td nowrap="nowrap">
                     <img class="showPlanButton" src="themes/SuiteP/images/twsdashlet_show_24.png" alt="{$APP.twsdashlet_show}" title="{$APP.twsdashlet_show}" style="width:24px;height:24px;cursor:pointer;" border="0">
                 </td>
