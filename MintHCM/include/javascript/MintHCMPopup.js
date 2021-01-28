@@ -24,7 +24,7 @@ class MintHCMPopupClass {
                 $( '#' + this.id ).remove();
             }
             $( 'body' ).append( '<div class="MintHCMPopup" id="' + this.id + '">' + this.getBody() + '</div>' );
-            setTimeout( function () { //special timeout. Javasript has to wait on finishing append. So, does not remove the TimeOut (author; Michał Nowacki)
+            setTimeout( function () { //special timeout. Javasript has to wait on finishing append. So, does not remove the TimeOut
                 this.onShow();
             }.bind(this), 0 );
             if ( typeof this.options.noCloseButton !== 'undefined' && this.options.noCloseButton ) {
