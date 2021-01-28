@@ -15,7 +15,7 @@ class MintHCMPopupClass {
         this.body = body || "";
         this.buttons = buttons || [];
         this.options = options || {};
-        this.onShow = onShow || null;
+        this.onShow = onShow || function () {};
     }
 
     init() {
