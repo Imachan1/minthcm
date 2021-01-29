@@ -14216,9 +14216,6 @@ span.crumbLink {
   padding: 10px;
   margin: 5px 0 5px 0; }
 
-.view tr {
-  padding: 5px 0 5px 0;
-  height: 54px; }
 
 .view .pagination, .view .pagination tr {
   height: unset; }
@@ -15326,7 +15323,11 @@ select#sales_stage_advanced {
     margin-left: 8px; } }
 @media (min-width: 769px) {
   #BILLING_address_fieldset input[type=text] {
-    width: 90%; }
+    width: 90%; 
+  }
+  .view tr {
+    padding: 5px 0 5px 0;
+    height: 54px; }
 
   #SHIPPING_address_fieldset input[type=text] {
     width: 90%; }
@@ -15693,7 +15694,9 @@ hr {
 @media (max-width: 768px) {
   .View {
     border: 1px solid #cccccc; }
-
+    .view tr {
+      padding: 5px 0 5px 0;
+    }
   #month-tab {
     display: none; }
 
