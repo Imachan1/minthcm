@@ -138,7 +138,13 @@ $dashletData['CandidatesDashlet']['columns'] = array(
         'name' => 'assigned_user_name',
         'default' => false,
     ),
-    'phone_mobile' => array(
+   'employee_name' => array(
+      'label' => 'LBL_EMPLOYEE_NAME',
+      'name' => 'employee_name',
+      'width' => '8%',
+   ),
+   'phone_mobile' =>
+   array(
         'type' => 'phone',
         'label' => 'LBL_MOBILE_PHONE',
         'width' => '10%',

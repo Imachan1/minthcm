@@ -857,4 +857,4 @@ if (!class_exists('VardefManager')) {
     require_once 'include/SugarObjects/VardefManager.php';
 }
 VardefManager::createVardef('Candidatures', 'Candidatures',
-    array('basic', 'assignable', 'security_groups'));
+    array('basic', 'assignable', 'security_groups', 'employee_related'));
