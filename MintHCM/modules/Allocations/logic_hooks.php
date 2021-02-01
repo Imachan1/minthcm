@@ -45,14 +45,20 @@
  */
 
 $hook_version = 1;
-$hook_array = Array();
+$hook_array = array();
 
-$hook_array['before_relationship_add'] = Array();
-$hook_array['before_relationship_add'][] = Array( 1, 'Before relationship add', 'modules/Allocations/hook_controller.php', 'AllocationsLogicHooks', 'permamentModeAllocationCheck' );
+$hook_array['before_relationship_add'] = array();
+$hook_array['before_relationship_add'][] = array(
+     1, 
+     'Before relationship add', 
+     'modules/Allocations/hook_controller.php', 
+     'AllocationsLogicHooks', 
+     'before_relationship_add' 
+    );
 $hook_array['before_save'][] = array(
     1,
     'Allocations Before Save',
     'modules/Allocations/hook_controller.php',
     'AllocationsLogicHooks',
-    'setAllocationName',
+    'before_save',
 );

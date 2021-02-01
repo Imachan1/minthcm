@@ -504,7 +504,6 @@ $dictionary['WorkSchedules'] = array(
             'table' => 'workplaces', // nazwa tabeli pierwszego modułu
             'rname' => 'name',
             'vt_dependency' => "equals(\$type,'office')",
-            'vt_required' => "equals(\$type,'office')",
             'vt_validation' => array(
                 "AEM(callCustomApi(WorkSchedules,validateWorkplaceStatus,\$workplace_id),'LBL_ERR_STATUS_NOT_ACTIVE')",
                 "AEM(callCustomApi(WorkSchedules,validateWorkplaceAllocationPeriods,\$workplace_id,\$date_start,\$date_end),'LBL_ERR_WORKPLACE_NOT_ACTIVE')",

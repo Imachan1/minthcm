@@ -152,7 +152,23 @@ class WorkSchedulesApi
         $result = [];
 
         if (!empty($user_id)) {
-            $sqlResult = $db->query("SELECT id,name FROM workplaces WHERE assigned_user_id = '{$user_id}' AND availability = 'active' AND deleted = 0");
+            $sqlResult = $db->query("SELECT
+            WP.id,
+            WP.name
+         FROM
+             allocations AS AL
+         INNER JOIN workplaces AS WP
+         ON
+             AL.workplace_id = WP.id
+         WHERE
+             WP.deleted = 0
+            AND AL.deleted = 0
+            AND AL.assigned_user_id = 1
+            AND AL.mode = 'permanent'
+            AND WP.availability = 'active'
+            AND AL.date_from <= CURDATE() 
+            AND AL.date_to >= CURDATE() "
+            );
         }
         if (1 === $sqlResult->num_rows) {
             $result = $db->fetchByAssoc($sqlResult);
