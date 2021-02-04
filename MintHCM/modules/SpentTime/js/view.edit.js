@@ -1,5 +1,9 @@
 $( document ).ready( function () {
    checkComboDateStart();
+   if($('#EditView').parent().prop('className') == 'MintHCMPopup-body'){
+    $('div .buttons #SAVE').hide();
+    $('div .buttons #CANCEL').hide();
+}
 } );
 
 function checkComboDateStart() {
