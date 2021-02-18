@@ -1364,7 +1364,7 @@ function rebuildWithViewTools($set_developer_mode = null) {
     rebuildJSCompressedFiles();
     rebuildJSGroupingFiles();
     rebuildMinifiedJSFiles();
-    launchRebuildEvolpeTools();
+    launchRebuildViewTools();
     launchQuickRepairAndRebuild();
     if( !is_null($set_developer_mode) ){
         setConfig('developerMode', !!$set_developer_mode);
@@ -1384,7 +1384,7 @@ function launchQuickRepairAndRebuild() {
     $repair->repairAndClearAll(array('clearAll'), array(translate('LBL_ALL_MODULES')), $autoexecute, $show_output);
 }
 
-function launchRebuildEvolpeTools() {
+function launchRebuildViewTools() {
     if (php_sapi_name() == "cli") {
         include 'rebuild_vtools.php';
     } else {

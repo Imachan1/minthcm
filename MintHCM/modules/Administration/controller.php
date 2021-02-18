@@ -174,7 +174,7 @@ class AdministrationController extends SugarController
         }
     }
 
-    // eVolpe DateLastNextContact package start
+    //  DateLastNextContact package start
     public function action_DLNCSettings()
     {
         $this->view = "dlncsettings";
@@ -193,5 +193,5 @@ class AdministrationController extends SugarController
 
         SugarApplication::redirect("index.php?module=Administration&action=index");
     }
-    // eVolpe DateLastNextContact package end
+    //  DateLastNextContact package end
 }

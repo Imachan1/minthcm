@@ -17,12 +17,12 @@ class LastNextContactsPanelsEditor {
    public function addLastNextContactPanelForModule($module, $type) {
       $this->type = $type;
 
-      $this->eVolpeParseRecordView($module);
-      $this->eVolpeParseListView($module);
-      $this->eVolpeParseFiltersView($module);
+      $this->ParseRecordView($module);
+      $this->ParseListView($module);
+      $this->ParseFiltersView($module);
    }
 
-   protected function eVolpeParseRecordView($module) {
+   protected function ParseRecordView($module) {
       $view = 'recordview';
       if ( $this->CRM_version == 'SuiteCRM' ) {
          $view = 'detailview';
@@ -78,7 +78,7 @@ class LastNextContactsPanelsEditor {
       $this->record->handleSave(false);
    }
 
-   protected function eVolpeParseListView($module) {
+   protected function ParseListView($module) {
       $this->record = ParserFactory::getParser('listview', $module);
 
       if ( $this->CRM_version == 'SuiteCRM' ) {
@@ -111,7 +111,7 @@ class LastNextContactsPanelsEditor {
       }
    }
 
-   protected function eVolpeParseFiltersView($module) {
+   protected function ParseFiltersView($module) {
       $this->record = ParserFactory::getParser('advanced_search', $module);
 
       if ( $this->CRM_version == 'SuiteCRM' ) {
