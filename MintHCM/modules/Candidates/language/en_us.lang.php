@@ -174,4 +174,9 @@ $mod_strings = array(
     'LBL_CALLS' => 'Calls',
     'LBL_CANDIDATES' => 'Candidates',
     'LBL_EMPLOYEECERTIFICATES' => 'Certificates',
+    // DLNC start
+    'LBL_LAST_TIME_CONTACT' => 'Last time contact',
+    'LBL_DATE_PLANNED_CONTACT' => 'Date planned contact',
+    'LBL_LAST_NEXT_CONTACT_PANEL' => 'Contact with client',
+    // DLNC end
 );
