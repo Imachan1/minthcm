@@ -1,7 +1,5 @@
 <?php
 
-use Sugarcrm\Sugarcrm\Security\Csrf\CsrfAuthenticator;
-
 require_once 'include/MVC/View/views/view.edit.php';
 
 class AdministrationViewDlncsettings extends ViewEdit
@@ -37,10 +35,8 @@ class AdministrationViewDlncsettings extends ViewEdit
         $this->ev->ss = &$this->ss;
         $config->retrieveSettings('DLNC');
         $this->ev->ss->assign('DLNC_flag', $config->settings['DLNC_flag']);
-        $csrf = CsrfAuthenticator::getInstance();
-        $this->ev->ss->assign('csrf_token', $csrf->getFormToken());
 
-        $this->ev->setup($this->module, $this->bean, $metadataFile, SugarAutoLoader::existingCustomOne('include/EditView/EditView.tpl'));
+        $this->ev->setup($this->module, $this->bean, $metadataFile);
     }
 
     public function display()

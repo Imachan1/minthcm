@@ -8,7 +8,6 @@ $viewdefs[$module_name]['dlncsettings'] = array(
             'footerTpl' => 'include/EditView/footer.tpl',
             'hidden' => array(
                 '<input type="hidden" id="save_config" name="save_config" value="true">',
-                '<input type="hidden" id="csrf_token" name="csrf_token" value="{$csrf_token}"/>',
             ),
             'buttons' => array(
                 array(
@@ -27,6 +26,7 @@ $viewdefs[$module_name]['dlncsettings'] = array(
         'default' => array(
             array(
                 array(
+                    'name' => 'dlnc_flag',
                     'label' => 'LBL_DLNC_CHECKBOX',
                     'customCode' => '<input type="checkbox" id="dlnc_flag" name="dlnc_flag" value="1" {if $DLNC_flag}checked{/if} />',
                 ),
