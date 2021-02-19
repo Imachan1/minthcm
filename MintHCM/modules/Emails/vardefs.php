@@ -766,7 +766,7 @@ $dictionary['Email'] = array(
          'type' => 'index',
          'fields' => array('category_id')
       ),
-      array(
+      'dlnc_email' => array(
         'name' => 'dlnc_email',
         'type' => 'index',
         'fields' => array( 'id','deleted','status' ),
