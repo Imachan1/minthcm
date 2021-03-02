@@ -92,7 +92,7 @@ $dashletData['ReservationsDashlet']['columns'] = array(
    'resource_name' => array(
       'width' => '15',
       'label' => 'LBL_RESOURCES',
-      'default' => false
+      'default' => true
    ),
    'parent_name' => array(
       'width' => '25',
