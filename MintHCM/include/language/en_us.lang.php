@@ -4207,4 +4207,7 @@ $app_list_strings['reaction_icons_list'] = array(
    'like' => 'thumbs-up',
    'dislike' => 'thumbs-down',
 );
- 
+
+$app_strings['LNK_KANBAN'] = 'Board';
+$app_strings['ERR_KANBAN_COL_ERROR'] = 'Column for Kanban is not defined. Property "column" is missing for kanbanviewdefs.';
+$app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed'; 

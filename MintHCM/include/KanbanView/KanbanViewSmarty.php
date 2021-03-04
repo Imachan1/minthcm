@@ -41,42 +41,76 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
-/*
- * Created on May 14, 2007
- *
- * To change the template for this generated file go to
- * Window - Preferences - PHPeclipse - PHP - Code Templates
- */
- //format '<action_name>' => '<view_name>'
-$action_view_map['multieditview']= 'multiedit';
-$action_view_map['detailview']= 'detail';
-$action_view_map['editview']= 'edit';
-$action_view_map['listview']= 'list';
-$action_view_map['popup']= 'popup';
-$action_view_map['vcard']= 'vcard';
-$action_view_map['importvcard']= 'importvcard';
-$action_view_map['importvcardsave']= 'importvcardsave';
-$action_view_map['modulelistmenu']= 'modulelistmenu';
-$action_view_map['favorites']= 'favorites';
-$action_view_map['ajaxui']= 'ajaxui';
-$action_view_map['noaccess']= 'noaccess';
+class KanbanViewSmarty
+{
+    public $columns;
+    public $data;
+    public $ss; // the smarty object
+    public $tpl;
+    public $moduleString;
+    public $seed;
+    public $templateMeta = array();
 
-// SugarPDF
-$action_view_map['sugarpdf']= 'sugarpdf';
-$action_view_map['dc'] = 'dc';
-$action_view_map['dcajax'] = 'dcajax';
-$action_view_map['quick'] = 'quick';
-$action_view_map['quickcreate'] = 'quickcreate';
-$action_view_map['spot'] = 'spot';
-$action_view_map['gs'] = 'gs';
-$action_view_map['inlinefield'] = 'inlinefield';
-$action_view_map['inlinefieldsave'] = 'inlinefieldsave';
-$action_view_map['pluginlist'] = 'plugins';
-$action_view_map['downloadplugin'] = 'downloadplugin';
-$action_view_map['metadata'] = 'metadata';
+    /**
+     * Constructor, Smarty object immediately available after
+     *
+     */
+    public function __construct()
+    {
+        $this->ss = new Sugar_Smarty();
+    }
 
-$action_view_map['cubes'] = 'cubes';
-$action_view_map['debug'] = 'debug';
+    public function setup($seed, $file)
+    {
 
-$action_view_map['kanban']= 'kanban';
+        $this->seed = $seed;
+        $this->process($file);
+
+        return true;
+    }
+
+    /**
+     * Processes the request. Calls ListViewData process. Also assigns all lang strings, export links,
+     * This is called from ListViewDisplay
+     *
+     * @param file $file Template file to use
+     *
+     */
+    function process($file)
+    {
+        global $mod_strings;
+        global $app_strings;
+
+
+        $this->tpl = $file;
+
+        $this->ss->assign('module', $this->seed->module_name);
+        $this->ss->assign('sugarconfig', $this->displayColumns);
+        $this->ss->assign('displayColumns', $this->displayColumns);
+        $this->ss->assign('options', isset($this->templateMeta['options']) ? $this->templateMeta['options']
+                    : null);
+        $this->ss->assign('APP', $app_strings);
+        $this->ss->assign('MOD', $mod_strings);
+        $this->ss->assign('columns', $this->columns);
+        $this->ss->assign('data', $this->data);
+    }
+
+    /**
+     * Displays the xtpl, either echo or returning the contents
+     *
+     */
+    function display()
+    {
+        $this->ss->assign('json', json_encode($this->prepareData()));
+        return $this->ss->fetch($this->tpl);
+    }
+
+    protected function prepareData()
+    {
+        return $this->data;
+    }
+}
