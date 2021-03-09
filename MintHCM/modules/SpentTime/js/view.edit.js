@@ -237,14 +237,21 @@ $( document ).ready( function () {
              dataGET: {
                 record: workschedule_id
              },
-             callback: function ( call_constroller_data ) {
-                if ( $.isEmptyObject( call_constroller_data ) == false ) {
-                   updateDateStart( call_constroller_data.scheduleDateStart, call_constroller_data.scheduleDateLastMin );
-                   updateDateEnd( call_constroller_data.scheduleDateEnd, call_constroller_data.scheduleDateEndMin );
-                   setWorkDate();
+             callback: function (call_constroller_data) {
+                    if ($.isEmptyObject(call_constroller_data) == false) {
+                        function waitForDateTimeComboFields() {
+                            if ($('#date_start_hours').length <= 0) {
+                                window.setTimeout(waitForDateTimeComboFields.bind(this), 100);
+                            } else {
+                                updateDateStart(call_constroller_data.scheduleDateStart, call_constroller_data.scheduleDateLastMin);
+                                updateDateEnd(call_constroller_data.scheduleDateEnd, call_constroller_data.scheduleDateEndMin);
+                                setWorkDate();
+                            }
+                        };
+                        waitForDateTimeComboFields();
+                    }
                 }
-             }
-          } );
+            });
        } else {
           var current_date_time = moment();
           if ( current_date_time._d.toString() != "Invalid Date" ) {
