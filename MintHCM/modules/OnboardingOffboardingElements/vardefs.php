@@ -235,11 +235,6 @@ $dictionary['OnboardingOffboardingElements'] = array(
             'bean_name' => 'Trainings',
             'vname' => 'LBL_RELATIONSHIP_TRAININGS_NAME',
         ),
-        "Name" => array(
-            "name" => "name",
-            'vname' => 'LBL_NAME',
-            'len' => '255',
-        ),
     ),
     'relationships' => array(
         "users_onboardingoffboardingelements" => array(

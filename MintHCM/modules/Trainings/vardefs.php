@@ -271,11 +271,6 @@ $dictionary['Trainings'] = array(
             'rhs_key' => 'element_id',
             'relationship_type' => 'one-to-many',
         ),
-        "Name" => array(
-            "name" => "name",
-            'vname' => 'LBL_NAME',
-            'len' => '255',
-        ),
     ),
     'optimistic_locking' => true,
     'unified_search' => true,
