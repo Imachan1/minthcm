@@ -131,7 +131,6 @@ var MintHCMDynamicPopupView = {
 
         if(YAHOO.lang.trim(url) != "")
         {
-            debugger
             var con = YAHOO.util.Connect, ui = MintHCMDynamicPopupView;
 
           // ajaxUILoc XSS protection:
