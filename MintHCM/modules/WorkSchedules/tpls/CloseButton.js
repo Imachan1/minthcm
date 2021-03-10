@@ -103,6 +103,9 @@ function checkIfCanBeClosed() {
             else if(call_constroller_data == "2"){
                dialog.html( '<p>' + SUGAR.language.get( 'app_strings', 'ERR_CLOSE_PLAN_WORK' ).replace( '{name}', schedule_name ) + '</p>' ).dialog( {buttons: dialog_buttons} ).dialog( 'open' ).show();
             }
+            else if(call_constroller_data == "4"){
+               dialog.html( '<p>' + SUGAR.language.get( 'app_strings', 'ERR_WORKPLACE_IS_NOT_ACTIVE' ).replace( '{name}', schedule_name ) + '</p>' ).dialog( {buttons: dialog_buttons} ).dialog( 'open' ).show();
+            }
             result = false;
          }
       }

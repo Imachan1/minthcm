@@ -375,7 +375,7 @@ class WorkSchedules extends Basic
         $result = $db->getOne($sql);
         return $result != 0;
     }
-    
+
     public function canBeConfirmed()
     {
         global $timedate;
@@ -410,52 +410,53 @@ class WorkSchedules extends Basic
                 $return = 3;
             }
             $sql = "SELECT workplace_id FROM workschedules WHERE id ='{$this->id}'";
-            if(($this->type==='office')&&(!empty($this->db->getOne($sql))&&($return == 1))) {
-                $return = $this->checkAllocation();
+            $workplace_id = $this->db->getOne($sql);
+            if (($this->type === 'office') && (!empty($workplace_id) && ($return == 1))) {
+                $return = $this->checkAllocation($workplace_id);
             }
         }
         return $return;
     }
 
-    public function checkAllocation(){
+    protected function checkAllocation(string $workplace_id) {
         $db = DBManagerFactory::getInstance();
-        global $timedate;
+        $workplace = BeanFactory::getBean('Workplaces', $workplace_id);
+
         $return = 1;
-        $db_format = $timedate->get_db_date_time_format();
-
-        $sql = "SELECT date_start FROM workschedules WHERE id='{$this->id}' AND deleted=0";
+        $work_date = getDateTimeObject($this->date_start);
+        if ($workplace->mode == "permanent") {
+            $sql = "SELECT id FROM allocations WHERE assigned_user_id = '{$this->assigned_user_id}' AND deleted=0 AND workplace_id='{$workplace_id}'";
+        } else {
+            $sql = "SELECT ae.allocation_id id FROM allocations_employees ae
+LEFT JOIN allocations a ON a.id=ae.allocation_id AND a.deleted=0 AND a.workplace_id='{$workplace_id}'
+WHERE ae.employee_id='{$this->assigned_user_id}' AND ae.deleted=0";
+        }
         $result = $db->query($sql);
-        $date_row = $db->fetchByAssoc($result);
-        $work_date = DateTime::createFromFormat($db_format,$date_row['date_start']);
-
-
-        $sql = "SELECT allocation_id FROM allocations_employees WHERE employee_id='{$this->assigned_user_id}' AND deleted=0";
-        $result = $db->query($sql);
-        $db_format = "Y-m-d";
-        while ($row = $db->fetchByAssoc($result)) {
-            $allocation = BeanFactory::getBean('Allocations',$row['allocation_id']);
-            $sql = "SELECT date_from, date_to FROM allocations WHERE id='{$allocation->id}' AND deleted=0";
-            $result = $db->query($sql);
-            $date_row = $db->fetchByAssoc($result);
-            $start_date = DateTime::createFromFormat($db_format, $date_row['date_from']);
-            $end_date = DateTime::createFromFormat($db_format, $date_row['date_to']);
-            if($work_date>=$start_date){
-                if(!empty($end_date)) {
-                    if($work_date<=$end_date) {
-                        $return = 2;
+        if ($result->num_rows > 0) {
+            while ($row = $db->fetchByAssoc($result)) {
+                $allocation = BeanFactory::getBean('Allocations', $row['id']);
+                $start_date = getDateTimeObject($allocation->date_from);
+                $end_date = getDateTimeObject($allocation->date_to);
+                $start_date->setTime(0, 0, 0);
+                $end_date->setTime(23, 59, 0);
+                if ($work_date >= $start_date) {
+                    if (!empty($end_date)) {
+                        if ($work_date >= $end_date) {
+                            $return = 4;
+                        }
+                    } else {
+                        $return = 4;
+                        break;
                     }
                 }
-                else {
-                    $return = 2;
-                    break;
-                }
-            } 
+            }
+        } else {
+            $return = 4;
         }
         return $return;
     }
 
-    public function confirm()
-    {
+    public function confirm() {
         if ($this->canBeConfirmed() == 1) {
             $this->status = 'closed';
             return $this->save();
@@ -464,8 +465,7 @@ class WorkSchedules extends Basic
         }
     }
 
-    public function checkOwner()
-    {
+    public function checkOwner() {
         global $current_user;
         return $this->assigned_user_id == $current_user->id;
     }

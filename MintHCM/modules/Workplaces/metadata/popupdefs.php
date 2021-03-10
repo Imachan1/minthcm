@@ -83,11 +83,12 @@ $popupMeta = array(
    ),
 );
 if(!empty($_REQUEST['for_employee_id'])){
-    global $current_user;
+    global $db;
+    $employee_id = $db->quote($_REQUEST['for_employee_id']);
     $popupMeta['whereStatement'] = "
        workplaces.id IN (
-          SELECT workplace_id FROM allocations  WHERE assigned_user_id='{$_REQUEST['for_employee_id']}' OR id IN (
-             SELECT allocation_id FROM allocations_employees WHERE employee_id='{$_REQUEST['for_employee_id']}' AND deleted=0
+          SELECT workplace_id FROM allocations  WHERE assigned_user_id='{$employee_id}' OR id IN (
+             SELECT allocation_id FROM allocations_employees WHERE employee_id='{$employee_id}' AND deleted=0
           )
        )
     ";
