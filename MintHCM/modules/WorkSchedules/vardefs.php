@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -533,7 +532,7 @@ $dictionary['WorkSchedules'] = array(
    'unified_search' => true,
 );
 if ( !class_exists('VardefManager') ) {
-   require_once ('include/SugarObjects/VardefManager.php');
+    require_once 'include/SugarObjects/VardefManager.php';
 }
 VardefManager::createVardef('WorkSchedules', 'WorkSchedules', array(
    'basic',
