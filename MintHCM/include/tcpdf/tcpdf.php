@@ -7558,9 +7558,9 @@ class TCPDF {
 		$dest = strtoupper($dest);
 		if ($dest[0] != 'F') {
 			$name = preg_replace('/[\s]+/', '_', $name);
-			// eVolpe #77916 start
+			// MintHCM #77916 start
             //$name = preg_replace('/[^a-zA-Z0-9_\.-]/', '', $name);
-            // eVolpe #77916 end
+            // MintHCM #77916 end
 		}
 		if ($this->sign) {
 			// *** apply digital signature to the document ***
