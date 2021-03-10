@@ -422,6 +422,7 @@ $dictionary['Candidatures'] = array(
                 'include' => 'include/utils/getDictionary.php'],
             'studio' => 'visible',
             'dependency' => false,
+            'required' => true,
         ),
         'start_date' => array(
             'name' => 'start_date',

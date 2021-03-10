@@ -138,6 +138,9 @@ $app_list_strings = array(
         'ExitInterviews' => 'Exit Interviews',
         'Goals' => 'Goals',
         'Ideas' => 'Ideas',
+        'Rooms' => 'Rooms',
+        'Workplaces' => 'Workplaces',
+        'Allocations' => 'Allocations',
         'EmployeeInteractionTracking' => 'Employee Interaction Tracking',
         'Improvements' => 'Improvements',
         'News' => 'News',
@@ -208,6 +211,9 @@ $app_list_strings = array(
         'Candidates' => 'Candidate',
         'Candidatures' => 'Candidature',
         'Ideas' => 'Idea',
+    	'Rooms' => 'Room',
+        'Allocations' => 'Allocation',
+        'Workplaces' => 'Workplace',
         'EmployeeInteractionTracking' => 'Employee Interaction Tracking',
         'Positions' => 'Position',
         'Recruitments' => 'Recruitment',
@@ -511,6 +517,9 @@ $app_list_strings = array(
         'Recruitments' => 'Recruitment',
         'Candidatures' => 'Candidature',
         'Candidates' => 'Candidate',
+        'Rooms' => 'Room',
+        'Workplaces' => 'Workplace',
+        'Allocations' => 'Allocation',
     ),
     'record_type_display_notes' => array(
         'Tasks' => 'Task',
@@ -3086,14 +3095,19 @@ $app_list_strings['contract_status_list'] = array(
     'pending' => 'Pending',
 );
 
-$app_list_strings['contract_type_list'] = array(
+$app_list_strings['reservation_type_list'] = array(
+    'false' => 'No',
+    'true' => 'Yes',
+);
+$app_list_strings['workplace_mode_list'] = array(
     '' => '',
-    'contract_of_employment' => 'Contract of Employment',
-    'contract_of_mandate' => 'Contract of Mandate',
-    'self_employment' => '3rd party - self employment',
-    'agency_outsourcing' => '3rd party - agency/outsourcing',
-    'contract_of_commission' => 'Contract of Commission',
-    'other' => 'Other',
+    'permanent' => 'Permanent',
+    'rotational' => 'Rotational',
+    'hybrid' => 'Hybrid',
+);
+$app_list_strings['allocation_mode_list'] = array(
+    'permanent' => 'Permanent',
+    'rotational' => 'Rotational',
 );
 $app_strings['LBL_PRINT_AS_PDF'] = 'Print as PDF';
 $app_strings['LBL_SELECT_TEMPLATE'] = 'Please Select a Template';
@@ -3691,7 +3705,9 @@ $app_strings['LBL_APPRAISAL_ITEM_TYPE_ERROR'] = 'The recruitment appraisal may h
 $app_strings['LBL_CHOOSE_PLAN'] = 'You must to choose plan';
 $app_strings['LBL_PLAN_NOT_CHOOSED'] = 'Plan is not choosed';
 $app_strings['LBL_CLOSE_PLAN_CONFIRM'] = 'Are you sure you want to approve this plan?';
+$app_strings['LBL_CREATE_RESOURCE_CONFIRM'] = 'Are you sure you want to create resource from this record?';
 $app_strings['ERR_CLOSE_PLAN'] = 'You cannot approve this plan "{name}", because there are gaps between spent times or his time frames do not coincide with working times';
+$app_strings['ERR_CLOSE_PLAN_WORK'] = 'You cannot approve this plan "{name}", because workplace has not been selected.';
 $app_strings['LBL_PLAN_ONE_DAY'] = 'Work Schedule must spread in one day.';
 $app_strings['LBL_DIALOG_YES'] = 'Yes';
 $app_strings['LBL_DIALOG_NO'] = 'No';
@@ -3834,6 +3850,12 @@ $app_list_strings['group_type_list'] = array(
     'team' => 'Team',
     'other' => 'Other',
 );
+$app_list_strings['workplace_room_status'] = array(
+        '' => '',
+        'active' => 'Active',
+        'inactive' => 'Inactive',
+        'planned' => 'Planned',
+);
 
 $app_list_strings['daily_working_time_list'] = array(
     '' => '',
@@ -3951,30 +3973,6 @@ $app_list_strings['project_status_list'] = array(
     'plan' => 'Planned',
     'open' => 'Open',
     'close' => 'Closed',
-);
-
-$app_list_strings['source_list'] = array(
-    '' => '',
-    'Base' => 'Database of Candidates',
-    'CareersLibrary' => 'Career\'s Office',
-    'CodersLab' => 'CodersLab',
-    'EmployeeCommendation' => 'Employee Recommendation',
-    'GrowthPoland' => 'Growth Poland',
-    'Indeed' => 'Indeed',
-    'Jooble' => 'Jooble',
-    'LoboHR' => 'Lobo HR',
-    'Milado' => 'Milado',
-    'Pracapl' => 'Praca.pl',
-    'Pracujpl' => 'Pracuj.pl',
-    'Website' => 'Website',
-    'facebook' => 'Facebook',
-    'goldenline' => 'GoldenLine',
-    'justjoin.it' => 'justjoin.it',
-    'linkedin' => 'LinkedIn',
-    'nofluffjobs' => 'No Fluff Jobs',
-    'not_applicable' => 'Not Applicable',
-    'RocketJobs' => 'RocketJobs',
-    'other' => 'Other',
 );
 
 $app_list_strings['reason_for_rejection_list'] = array(
