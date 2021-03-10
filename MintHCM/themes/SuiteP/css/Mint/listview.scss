@@ -147,3 +147,6 @@ div.list-view-rounded-corners > table, tr.pagination-unique {
     color: white;
     box-shadow: 0 8px 6px -6px #ccc; 
   }
+div.chooserContent > .ui-sortable {
+    min-height: 40px;
+}
