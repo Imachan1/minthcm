@@ -5,52 +5,55 @@ $( document ).ready( function () {
         $('div .buttons #CANCEL').hide();
     }
  } );
+
  function checkComboDateStart() {
     
     if ( typeof combo_date_start !== 'undefined' ) {
-       lockFields();
- 
-       if ( $( "#current_user_is_admin" ).val() == false ) {
-          lockAssignedUser();
-       }
- 
+       lockFields()
+        setEvent();
        setDates();
- 
-       $( "#date_start_date" ).blur( function () {
-          setWorkDate();
-          
-          recalculateSpendTime();
-       } );
-       $( "#date_end_hours, #date_end_minutes, #date_end_meridiem" ).change( function () {
-          recalculateSpendTime();
-       } );
-       $( "#date_start_hours, #date_start_minutes, #date_start_meridiem" ).change( function () {
-           
-          recalculateSpendTime();
-       } );
-       $( "#spent_time" ).change( function () {
-          convertClockTimeToFloatTime( $( "#spent_time" ) );
-          parseTimeNumberValue( $( "#spent_time" ) );
-          recalculateDateEnd();
-       } );
-       $( "#remaining_hours" ).change( function () {
-          parseTimeNumberValue( $( "#remaining_hours" ) );
-          setDoneRatioByRemainingHours();
-       } );
-       $( "#done_ratio" ).change( function () {
-          setRemainingHoursByDoneRatio();
-       } );
-       $( "#spent_time" ).click( function () {
-          $( this ).select();
-       } );
-       $( "#remaining_hours" ).click( function () {
-          $( this ).select();
-       } );
+
     } else {
        setTimeout( checkComboDateStart, 1000 );
     }
  }
- 
+ function setEvent() {
+  
+        if ( $( "#current_user_is_admin" ).val() == false ) {
+           lockAssignedUser();
+        }
+        $( "#date_start_date" ).blur( function () {
+           setWorkDate();
+           
+           recalculateSpendTime();
+        } );
+        $( "#date_end_hours, #date_end_minutes, #date_end_meridiem" ).change( function () {
+           recalculateSpendTime();
+        } );
+        $( "#date_start_hours, #date_start_minutes, #date_start_meridiem" ).change( function () {
+            
+           recalculateSpendTime();
+        } );
+        $( "#spent_time" ).change( function () {
+           convertClockTimeToFloatTime( $( "#spent_time" ) );
+           parseTimeNumberValue( $( "#spent_time" ) );
+           recalculateDateEnd();
+        } );
+        $( "#remaining_hours" ).change( function () {
+           parseTimeNumberValue( $( "#remaining_hours" ) );
+           setDoneRatioByRemainingHours();
+        } );
+        $( "#done_ratio" ).change( function () {
+           setRemainingHoursByDoneRatio();
+        } );
+        $( "#spent_time" ).click( function () {
+           $( this ).select();
+        } );
+        $( "#remaining_hours" ).click( function () {
+           $( this ).select();
+        } );
+ }
+
  viewTools.form.beforeSave( function () {
     var result_1 = validateWorkSchedule();
     var result_2 = validateDates();
@@ -246,6 +249,7 @@ $( document ).ready( function () {
                                 updateDateStart(call_constroller_data.scheduleDateStart, call_constroller_data.scheduleDateLastMin);
                                 updateDateEnd(call_constroller_data.scheduleDateEnd, call_constroller_data.scheduleDateEndMin);
                                 setWorkDate();
+                                setEvent();
                             }
                         };
                         waitForDateTimeComboFields();
@@ -414,6 +418,9 @@ $( document ).ready( function () {
  
  function recalculateDateEnd() {
     var new_date = moment( $( "#date_start" ).val(), viewTools.date.getDateTimeFormat() );
+    if($('#EditView').parent().prop('className') == 'MintHCMPopup-body'){ 
+        new_date = moment( $( ".edit-view-row #date_start" ).val(),  viewTools.date.getDateTimeFormat());
+    }
     if ( new_date._d.toString() != "Invalid Date" ) {
        var spent_time = parseTimeNumberValue( $( "#spent_time" ) );
        var spent_time_float = unformatNumber( spent_time, num_grp_sep, dec_sep );

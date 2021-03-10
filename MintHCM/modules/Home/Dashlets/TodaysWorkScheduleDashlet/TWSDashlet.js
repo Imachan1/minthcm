@@ -123,7 +123,7 @@ if (!window.TWSDashlet) {
                             "workschedule_name":planName
                             },
                             postSaveCallback: function () {
-                                SUGAR.mySugar.retrieveDashlet( id.slice(15),'' );
+                                SUGAR.mySugar.retrieveDashlet( $('#dashlet_id').val() );
                                 return false;
                             }.bind(this),
                         
