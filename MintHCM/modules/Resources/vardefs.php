@@ -143,36 +143,36 @@ $dictionary['Resources'] = array(
          'source' => 'non-db',
          'vname' => 'LBL_CALLS',
       ),
-      "rooms_resources" => array ( // nazwa relacji
-         'name' => 'rooms_resources',                              // nazwa relacji
+      "rooms_resources" => array (
+         'name' => 'rooms_resources',
          'type' => 'link',
-         'relationship' => 'rooms_resources',                     // nazwa relacji
+         'relationship' => 'rooms_resources',
          'source' => 'non-db',
-         'module' => 'Rooms',                                    // nazwa przeciwnego modułu
-         'bean_name' => 'Rooms',                                   // nazwa przeciwnego bean'a
-         'vname' => 'LBL_ROOMS_RESOURCES_TITLE',                  // nazwa etykiety relacji, może to być np. Powiązany błąd
-         'id_name' => 'room_id',                                 // pole które będzie definiowało ID rekordu po drugiej stronie
+         'module' => 'Rooms',
+         'bean_name' => 'Rooms',
+         'vname' => 'LBL_ROOMS_RESOURCES_TITLE',
+         'id_name' => 'room_id',
       ),
-       "room_name" => array (  // nazwa pola z nazwą
-         'name' => 'room_name',                          // nazwa pola z nazwą
+       "room_name" => array (
+         'name' => 'room_name',
          'type' => 'relate',
-         'source' => 'non-db',                         // pole nie musi być przechowywane w bazie - odpowiada za to tabela pośrednia
-         'vname' => 'LBL_ROOM_NAME',                    // etykieta dla pola z nazwą, pole będzie głównie widocznym polem w widokach (np. Powiązany błąd)
+         'source' => 'non-db',
+         'vname' => 'LBL_ROOM_NAME',
          'save' => true,
-         'id_name' => 'room_id',                       // pole które będzie definiowało ID rekordu po drugiej stronie
-         'link' => 'rooms_resources',                     // nazwa relacji
-         'table' => 'rooms',                              // nazwa tabeli dla przeciwnego modułu
-         'module' => 'Rooms',                             // nazwa przeciwnego modułu
-         'rname' => 'name',                              // pole po drugiej stronie, które jest powiązane z tym polem
+         'id_name' => 'room_id',
+         'link' => 'rooms_resources',
+         'table' => 'rooms',
+         'module' => 'Rooms',
+         'rname' => 'name',
        ),
-       "room_id" => array ( // pole które będzie definiowało ID rekordu po drugiej stronie
-         'name' => 'room_id',                                  // pole które będzie definiowało ID rekordu po drugiej stronie
+       "room_id" => array (
+         'name' => 'room_id',
          'type' => 'link',
-         'relationship' => 'rooms_resources',                   // nazwa relacji
-         'source' => 'non-db',                                // pole nie musi być przechowywane w bazie - odpowiada za to tabela pośrednia
+         'relationship' => 'rooms_resources',
+         'source' => 'non-db',
          'reportable' => false,
          'side' => 'left',
-         'vname' => 'LBL_ROOM_ID',                             // etykieta dla pola z id, może to być np. Powiązany błąd (ID)
+         'vname' => 'LBL_ROOM_ID',
        ),
    ),
    'relationships' => array(),

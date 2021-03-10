@@ -93,7 +93,7 @@ $dashletData['ContractsDashlet']['searchFields'] = array(
    array(
       'default' => '',
    ),
-   'room_name' => array(                            // nazwa pola Oceanu
+   'room_name' => array(
       'default' => '',
    ),
 );
@@ -160,12 +160,12 @@ $dashletData['ContractsDashlet']['columns'] = array(
       'width' => '10%',
       'default' => false,
    ),
-   'room_name' => array(                            // nazwa pola Oceanu
-      'name' => 'room_name',                           // nazwa pola Oceanu
+   'room_name' => array(
+      'name' => 'room_name',
       'type' => 'relate',
       'link' => true,
-      'label' => 'LBL_RELATIONSHIP_ROOM_NAME',      // etykieta nazwy pola Oceanu
-      'id' => 'ROOM_ID',                               // pole id Oceanu pisane WIELKIMI LITERAMI
+      'label' => 'LBL_RELATIONSHIP_ROOM_NAME',
+      'id' => 'ROOM_ID',
       'width' => '10%',
       'default' => false,
    ),

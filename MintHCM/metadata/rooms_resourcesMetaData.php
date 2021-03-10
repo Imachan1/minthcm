@@ -45,25 +45,25 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$dictionary["rooms_resources"] = array(        // nazwa relacji
-    'true_relationship_type' => 'one-to-one',      // prawdziwy typ relacji (może się różnić od 'relationship_type' w innych relacjach)
+$dictionary["rooms_resources"] = array(
+    'true_relationship_type' => 'one-to-one',
     'from_studio' => true,
     'relationships' => array(
-       'rooms_resources' => array(                    // nazwa relacji
-          'lhs_module' => 'Rooms',                   // nazwa modułu lewej strony (JOIN)
-          'lhs_table' => 'rooms',                    // nazwa tablicy w/w modułu
-          'lhs_key' => 'id',                            // nazwa kolumny w/w tablicy będącej kluczem w relacji
-          'rhs_module' => 'Resources',                   // nazwa modułu prawej strony (JOIN)
-          'rhs_table' => 'resources',                    // nazwa tablicy w/w modułu
-          'rhs_key' => 'id',                            // nazwa kolumny w/w tablicy będącej kluczem w relacji
-          'relationship_type' => 'one-to-one',        // typ relacji
-          'join_table' => 'rooms_resources',          // nazwa nowej tabeli relacyjnej
-          'join_key_lhs' => 'room_id',           // nazwa kolumny w/w tabeli, w której przechowywane będą wartości kolumny podanej w 'lhs_key'
-          'join_key_rhs' => 'resource_id',           // nazwa kolumny w/w tabeli, w której przechowywane będą wartości kolumny podanej w 'rhs_key'
+       'rooms_resources' => array(
+          'lhs_module' => 'Rooms',
+          'lhs_table' => 'rooms',
+          'lhs_key' => 'id',
+          'rhs_module' => 'Resources',
+          'rhs_table' => 'resources',
+          'rhs_key' => 'id',
+          'relationship_type' => 'one-to-one',
+          'join_table' => 'rooms_resources',
+          'join_key_lhs' => 'room_id',
+          'join_key_rhs' => 'resource_id',
        ),
     ),
-    'table' => 'rooms_resources',                  // nazwa nowej tabeli relacyjnej
-    'fields' => array(                               // pola w/w tabeli
+    'table' => 'rooms_resources',
+    'fields' => array(
        array(
           'name' => 'id',
           'type' => 'varchar',
@@ -81,33 +81,33 @@ $dictionary["rooms_resources"] = array(        // nazwa relacji
           'required' => true,
        ),
        array(
-          'name' => 'room_id',                      // nazwa kolumny z 'join_key_lhs'
+          'name' => 'room_id',
           'type' => 'varchar',
           'len' => 36,
        ),
        array(
-          'name' => 'resource_id',                      // nazwa kolumny z 'join_key_rhs'
+          'name' => 'resource_id',
           'type' => 'varchar',
           'len' => 36,
        ),
     ),
-    'indices' => array(                              // założone indeksy na w/w tabelę
+    'indices' => array(
        array(
-          'name' => 'rooms_resources_spk',               // indeks kolumny id
+          'name' => 'rooms_resources_spk',
           'type' => 'primary',
           'fields' => array(
              'id',
           ),
        ),
        array(
-          'name' => 'rooms_lhs_alt',                    // indeks kolumny account_lhs_id
+          'name' => 'rooms_lhs_alt',
           'type' => 'index',
           'fields' => array(
              'room_id',
           ),
        ),
        array(
-          'name' => 'resources_rhs_alt',                    // indeks kolumny account_rhs_id
+          'name' => 'resources_rhs_alt',
           'type' => 'index',
           'fields' => array(
              'resource_id',

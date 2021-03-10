@@ -262,10 +262,10 @@ VardefManager::createVardef('SecurityGroups', 'SecurityGroup', ['basic', 'assign
 $dictionary["SecurityGroup"]["fields"]["securitygroups_rooms"] = array (
     'name' => 'securitygroups_rooms',
     'type' => 'link',
-    'relationship' => 'securitygroups_rooms',        // nazwa relacji
+    'relationship' => 'securitygroups_rooms',
     'source' => 'non-db',
-    'module' => 'Rooms',                        // nazwa drugiego modułu
-    'bean_name' => 'Rooms',                       // nazwa bean'a drugiego modułu
-    'vname' => 'LBL_RELATIONSHIP_ROOMS_NAME',   // etykieta nazwy relacji (może być taka sama jak nazwa subpanelu drugiego modułu)
+    'module' => 'Rooms',
+    'bean_name' => 'Rooms',
+    'vname' => 'LBL_RELATIONSHIP_ROOMS_NAME',
     'side' => 'right',
  );

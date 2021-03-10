@@ -255,13 +255,22 @@ $dictionary["Employee"]["fields"]["employeeinteractiontracking_assigned_user"] =
     'side' => 'right',
     'vname' => 'LBL_EMPLOYEEINTERACTIONTRACKING',
 );
+
+$dictionary["Employee"]["fields"]["prospect_lists"] = array(
+    'name' => 'prospect_lists',
+    'type' => 'link',
+    'relationship' => 'prospect_list_employees',
+    'module' => 'ProspectLists',
+    'source' => 'non-db',
+    'vname' => 'LBL_PROSPECT_LIST',
+);
 $dictionary["Employee"]["fields"]["allocations_employees"] = array(
     'name' => "allocations_employees",
     'type' => 'link',
     'relationship' => "allocations_employees",
     'source' => 'non-db',
-    'module' => 'Allocations',                                          // nazwa modułu w relacji do obecnego (tu dla Contacts: Accounts)
-    'bean_name' => 'Allocations',       
+    'module' => 'Allocations',
+    'bean_name' => 'Allocations',
     'vname' => 'LBL_LINKED_ALLOCATIONS_TITLE',
 );
 

@@ -147,6 +147,7 @@ class WorkSchedules extends Basic
                 $this->spent_time_settlement = 8;
                 break;
             case "sick":
+            case "sick-care":
             case "holiday":
             case "delegation":
             case 'office':
@@ -374,38 +375,12 @@ class WorkSchedules extends Basic
         $result = $db->getOne($sql);
         return $result != 0;
     }
-
-    public function getOwnerWhere($user_id)
-    {
-        $controller = ControllerFactory::getController('Users');
-        $subordinates_ids = $controller::getIDOfSubordinates(array($user_id));
-        $parent = parent::getOwnerWhere($user_id);
-        if (!empty($subordinates_ids)) {
-            $return = "( $parent OR $this->table_name.assigned_user_id IN ('" . implode("','", $subordinates_ids) . "') ) ";
-        } else {
-            $return = $parent;
-        }
-        return $return;
-    }
-
-    public function isOwner($user_id)
-    {
-        $is_owner = parent::isOwner($user_id);
-        if (!$is_owner) {
-            $controller = ControllerFactory::getController('Users');
-            $subordinates_ids = $controller::getIDOfSubordinates(array($user_id));
-            if (in_array($this->assigned_user_id, $subordinates_ids)) {
-                $is_owner = true;
-            }
-        }
-        return $is_owner;
-    }
-
+    
     public function canBeConfirmed()
     {
         global $timedate;
         $return = 1;
-        if (!in_array($this->type, ['holiday', 'sick', 'occasional_leave', 'overtime', 'excused_absence', 'leave_at_request'])) {
+        if (!in_array($this->type, ['holiday', 'sick', 'sick-care', 'occasional_leave', 'overtime', 'excused_absence', 'leave_at_request'])) {
 
             $db_format = $timedate->get_db_date_time_format();
 
@@ -426,25 +401,26 @@ class WorkSchedules extends Basic
                 if ($date_start == $row_ds) {
                     $date_start = DateTime::createFromFormat($db_format, $row['date_end']);
                 } else {
-                    return "3";
+                    $return = 3;
                     break;
                 }
             }
             $row_de = DateTime::createFromFormat($db_format, $last_row['date_end']);
             if ($return && $date_end != $row_de) {
-                return "3";
-
+                $return = 3;
             }
             $sql = "SELECT workplace_id FROM workschedules WHERE id ='{$this->id}'";
-            if(($this->type==='office')&&(empty($this->db->getOne($sql)))){
-                return $this->checkAllocation();
+            if(($this->type==='office')&&(!empty($this->db->getOne($sql))&&($return == 1))) {
+                $return = $this->checkAllocation();
             }
         }
-        return "1";
+        return $return;
     }
+
     public function checkAllocation(){
         $db = DBManagerFactory::getInstance();
         global $timedate;
+        $return = 1;
         $db_format = $timedate->get_db_date_time_format();
 
         $sql = "SELECT date_start FROM workschedules WHERE id='{$this->id}' AND deleted=0";
@@ -464,19 +440,23 @@ class WorkSchedules extends Basic
             $start_date = DateTime::createFromFormat($db_format, $date_row['date_from']);
             $end_date = DateTime::createFromFormat($db_format, $date_row['date_to']);
             if($work_date>=$start_date){
-                if(!empty($end_date)){
-                    if($work_date<=$end_date){
-                        return "2";
+                if(!empty($end_date)) {
+                    if($work_date<=$end_date) {
+                        $return = 2;
                     }
                 }
-                else return "2";
+                else {
+                    $return = 2;
+                    break;
+                }
             } 
         }
-        return "1";
+        return $return;
     }
+
     public function confirm()
     {
-        if ($this->canBeConfirmed()) {
+        if ($this->canBeConfirmed() == 1) {
             $this->status = 'closed';
             return $this->save();
         } else {

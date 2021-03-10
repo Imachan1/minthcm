@@ -179,6 +179,7 @@ include 'metadata/Skills_CompetenciesMetaData.php';
 include 'metadata/Attitudes_CompetenciesMetaData.php';
 //
 include 'metadata/Appraisals_EmployeesMetaData.php';
+include 'metadata/last_next_contacts_queueMetaData.php';
 if (file_exists('custom/application/Ext/TableDictionary/tabledictionary.ext.php')) {
     include 'custom/application/Ext/TableDictionary/tabledictionary.ext.php';
 }

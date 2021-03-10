@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,10 +36,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
- * If the display of the logos is not reasonably feasible for technical reasons, the
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -48,18 +48,19 @@ class WorkSchedulesApi
 
     public function canChangeTypeToWorkOff($id, $type)
     {
-        global $db;
-        $result = true;
-        $work_off_types = array(
-            'holiday',
-            'sick',
-            'occasional_leave',
-            'leave_at_request',
-            'overtime',
-            'excused_absence',
-        );
-        if (!empty($id) && !empty($type) && in_array($type, $work_off_types)) {
-            $sql = "
+      global $db;
+      $result = true;
+      $work_off_types = array(
+         'holiday',
+         'sick',
+         'sick-care',
+         'occasional_leave',
+         'leave_at_request',
+         'overtime',
+         'excused_absence',
+      );
+      if ( !empty($id) && !empty($type) && in_array($type, $work_off_types) ) {
+         $sql = "
             SELECT
                id
             FROM
@@ -67,41 +68,41 @@ class WorkSchedulesApi
             WHERE
                workschedule_id = '{$id}' AND
                deleted = 0";
-            if (!empty($db->getOne($sql))) {
-                $result = false;
-            }
-        }
-        return $result;
-    }
+         if ( !empty($db->getOne($sql)) ) {
+            $result = false;
+         }
+      }
+      return $result;
+   }
 
     public function checkWorkScheduleCreatedByPeriodicity($data)
     {
-        require_once 'modules/Calendar/CalendarUtils.php';
-        global $db, $timedate;
-        if (!empty($data['data']) && !empty($data['data']['date_start'])) {
-            $repeatArr = CalendarUtils::build_repeat_sequence($data['data']['date_start'], $data['data']);
-            $date_interval = sprintf('+%d hour +%d minutes', $data['data']['duration_hours'], $data['data']['duration_minutes']);
-            foreach ($repeatArr as $repeat) {
-                $db_date_start = $timedate->to_db($repeat);
-                $db_date_end = $timedate->to_db(date('Y-m-d H:i', strtotime($date_interval, strtotime($db_date_start))));
-                $query = "
+      require_once 'modules/Calendar/CalendarUtils.php';
+      global $db, $timedate;
+      if ( !empty($data['data']) && !empty($data['data']['date_start']) ) {
+         $repeatArr = CalendarUtils::build_repeat_sequence($data['data']['date_start'], $data['data']);
+         $date_interval = sprintf('+%d hour +%d minutes', $data['data']['duration_hours'], $data['data']['duration_minutes']);
+         foreach ( $repeatArr as $repeat ) {
+            $db_date_start = $timedate->to_db($repeat);
+            $db_date_end = date('Y-m-d H:i', strtotime($date_interval, strtotime($db_date_start)));
+            $query = "
                SELECT COUNT(id)
                FROM workschedules
                WHERE assigned_user_id = '{$data['data']['assigned_user_id']}'
-                 AND date_start < '{$db_date_end}'
+                 AND date_start < '{$db_date_end}'    
                  AND date_end > '{$db_date_start}'
                  AND deleted = 0
                ";
-                if (!empty($data['data']['record_id'])) {
-                    $query .= "AND id != '{$data['data']['record_id']}'";
-                }
-                if ($db->getOne($query) > 0) {
-                    return substr($repeat, 0, 10);
-                }
+            if ( !empty($data['data']['record_id']) ) {
+               $query .= "AND id != '{$data['data']['record_id']}'";
             }
-        }
-        return null;
-    }
+            if ( $db->getOne($query) > 0 ) {
+               return substr($repeat, 0, 10);
+            }
+         }
+      }
+      return null;
+   }
 
     public function validateWorkplaceStatus($workplace_id)
     {
@@ -110,7 +111,7 @@ class WorkSchedulesApi
             return true;
         } else {
             return false;
-        }
+}
 
     }
 

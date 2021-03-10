@@ -45,25 +45,25 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$dictionary["allocations_employees"] = array(        // nazwa relacji
-    'true_relationship_type' => 'many-to-many',      // prawdziwy typ relacji (może się różnić od 'relationship_type' w innych relacjach)
+$dictionary["allocations_employees"] = array(
+    'true_relationship_type' => 'many-to-many',
     'from_studio' => true,
     'relationships' => array(
-       'allocations_employees' => array(                    // nazwa relacji
-          'lhs_module' => 'Allocations',                   // nazwa modułu lewej strony (JOIN)
-          'lhs_table' => 'allocations',                    // nazwa tablicy w/w modułu
-          'lhs_key' => 'id',                            // nazwa kolumny w/w tablicy będącej kluczem w relacji
-          'rhs_module' => 'Employees',                   // nazwa modułu prawej strony (JOIN)
-          'rhs_table' => 'users',                    // nazwa tablicy w/w modułu
-          'rhs_key' => 'id',                            // nazwa kolumny w/w tablicy będącej kluczem w relacji
-          'relationship_type' => 'many-to-many',        // typ relacji
-          'join_table' => 'allocations_employees',          // nazwa nowej tabeli relacyjnej
-          'join_key_lhs' => 'allocation_id',           // nazwa kolumny w/w tabeli, w której przechowywane będą wartości kolumny podanej w 'lhs_key'
-          'join_key_rhs' => 'employee_id',           // nazwa kolumny w/w tabeli, w której przechowywane będą wartości kolumny podanej w 'rhs_key'
+       'allocations_employees' => array(
+          'lhs_module' => 'Allocations',
+          'lhs_table' => 'allocations',
+          'lhs_key' => 'id',
+          'rhs_module' => 'Employees',
+          'rhs_table' => 'users',
+          'rhs_key' => 'id',
+          'relationship_type' => 'many-to-many',
+          'join_table' => 'allocations_employees',
+          'join_key_lhs' => 'allocation_id',
+          'join_key_rhs' => 'employee_id',
        ),
     ),
-    'table' => 'allocations_employees',                  // nazwa nowej tabeli relacyjnej
-    'fields' => array(                               // pola w/w tabeli
+    'table' => 'allocations_employees',
+    'fields' => array(
        array(
           'name' => 'id',
           'type' => 'varchar',
@@ -81,33 +81,33 @@ $dictionary["allocations_employees"] = array(        // nazwa relacji
           'required' => true,
        ),
        array(
-          'name' => 'allocation_id',                      // nazwa kolumny z 'join_key_lhs'
+          'name' => 'allocation_id',
           'type' => 'varchar',
           'len' => 36,
        ),
        array(
-          'name' => 'employee_id',                      // nazwa kolumny z 'join_key_rhs'
+          'name' => 'employee_id',
           'type' => 'varchar',
           'len' => 36,
        ),
     ),
-    'indices' => array(                              // założone indeksy na w/w tabelę
+    'indices' => array(
        array(
-          'name' => 'allocations_users_spk',               // indeks kolumny id
+          'name' => 'allocations_users_spk',
           'type' => 'primary',
           'fields' => array(
              'id',
           ),
        ),
        array(
-          'name' => 'allocation_lhs_alt',                    // indeks kolumny account_lhs_id
+          'name' => 'allocation_lhs_alt',
           'type' => 'index',
           'fields' => array(
              'allocation_id',
           ),
        ),
        array(
-          'name' => 'user_rhs_alt',                    // indeks kolumny account_rhs_id
+          'name' => 'user_rhs_alt',
           'type' => 'index',
           'fields' => array(
              'employee_id',

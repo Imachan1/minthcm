@@ -92,7 +92,6 @@ function checkIfCanBeClosed() {
          id: workschedule_id
       },
       callback: function ( call_constroller_data ) {
-         debugger;
          if ( call_constroller_data != "1" ) {
             var dialog_buttons = {};
             dialog_buttons[SUGAR.language.get( 'app_strings', 'LBL_DIALOG_OK' )] = function () {

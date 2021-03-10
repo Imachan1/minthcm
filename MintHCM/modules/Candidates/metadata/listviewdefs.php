@@ -120,6 +120,13 @@ $listViewDefs [$module_name] = array(
       'width' => '10%',
       'default' => true,
    ),
+   'EMPLOYEE_NAME' => array(
+      'width' => '9%',
+      'label' => 'LBL_EMPLOYEE_NAME',
+      'module' => 'Employees',
+      'id' => 'EMPLOYEE_ID',
+      'default' => true,
+  ),
    'SKYPE' =>
    array(
       'label' => 'LBL_SKYPE',
