@@ -3708,6 +3708,7 @@ $app_strings['LBL_CLOSE_PLAN_CONFIRM'] = 'Are you sure you want to approve this 
 $app_strings['LBL_CREATE_RESOURCE_CONFIRM'] = 'Are you sure you want to create resource from this record?';
 $app_strings['ERR_CLOSE_PLAN'] = 'You cannot approve this plan "{name}", because there are gaps between spent times or his time frames do not coincide with working times';
 $app_strings['ERR_CLOSE_PLAN_WORK'] = 'You cannot approve this plan "{name}", because workplace has not been selected.';
+$app_strings['ERR_WORKPLACE_IS_NOT_ACTIVE'] = 'You cannot approve this plan "{name}", because workplace is not active.';
 $app_strings['LBL_PLAN_ONE_DAY'] = 'Work Schedule must spread in one day.';
 $app_strings['LBL_DIALOG_YES'] = 'Yes';
 $app_strings['LBL_DIALOG_NO'] = 'No';

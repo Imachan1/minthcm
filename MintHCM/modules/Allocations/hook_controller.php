@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,31 +36,44 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-class AllocationsLogicHooks {
-   public function permamentModeAllocationCheck($bean, $event, $arguments) {
-      if($bean->mode=='permanent'){
-        $bean->load_relationship('allocations_employees');
-        $bean->allocations_employees->delete($bean->id);
-      } 
-   }
+class AllocationsLogicHooks
+{
+    public function before_relationship_add($bean, $event, $arguments)
+    {
+        $this->permamentModeAllocationCheck($bean);
+    }
 
-    public function setAllocationName($bean, $event, $arguments) {
+    public function before_save($bean, $event, $arguments)
+    {
+        $this->permamentModeAllocationCheck($bean);
+        $this->setAllocationName($bean);
+    }
+
+    protected function permamentModeAllocationCheck($bean)
+    {
+        if ('permanent' == $bean->mode && $bean->load_relationship('allocations_employees')) {
+            $bean->allocations_employees->delete($bean->id);
+        }
+    }
+
+    protected function setAllocationName($bean)
+    {
         $name = $bean->workplace_name;
         $name .= ' - ';
         $user = BeanFactory::getBean('Users', $bean->assigned_user_id);
-        if($user) {
+        if ($user) {
             $name .= $user->full_name;
         }
         $name .= ' - ';
         $name .= $bean->date_from;
-        if(!empty($bean->date_to)) {
+        if (!empty($bean->date_to)) {
             $name .= ' - ';
             $name .= $bean->date_to;
         }
