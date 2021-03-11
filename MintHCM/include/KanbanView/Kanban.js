@@ -140,7 +140,7 @@ class Kanban {
                 result = result ? JSON.parse(result) : false;
                 if (result) {
                     this.updateItem(result, newOrder, newStatus);
-                    this.loadItems(); // updateItem usuwa nazwe zakwaterowania, wymagane uzycie loadItems
+                    this.loadItems();
                 } else {
                     this.showError();
                     this.restoreAfterError(oldOrder, newOrder, oldStatus, newStatus);

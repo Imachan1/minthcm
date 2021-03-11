@@ -3,7 +3,6 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
         <script type="text/javascript" src='{sugar_getjspath file="include/KanbanView/kanban-view.min.js"}'></script>
         <script type="text/javascript" src='{sugar_getjspath file="include/KanbanView/Kanban.js"}'></script>
-        <script type="text/javascript" src='{sugar_getjspath file="custom/themes/SuiteP/tpls/Shopping/ShoppingPopup.js"}'></script>
         {literal}
             <style>
                 kanban-view {
