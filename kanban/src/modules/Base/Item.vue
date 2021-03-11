@@ -1,27 +1,31 @@
 <template>
   <VCard
+    v-ripple="item.editable || item.detailview"
     :class="{
       'pa-2': true,
       'mb-2': true,
-      ...classesFromParent
+      'inactive': !item.editable && !item.detailview,
+      pointer: item.editable || item.detailview,
+      default: !item.editable && !item.detailview,
+      ...classesFromParent,
     }"
-    @click="$emit('item-click', item.id)"
+    @click="$emit('item-click', item)"
   >
-    {{item.name}}Base
+    {{ item.name }}
   </VCard>
 </template>
 
 <script>
-import { VCard } from 'vuetify/lib'
+import { VCard } from "vuetify/lib";
 
 export default {
-  name: 'Base-Item',
+  name: "Base-Item",
   props: {
     item: Object,
-    classesFromParent: Object
+    classesFromParent: Object,
   },
   components: {
-    VCard
-  }
-}
+    VCard,
+  },
+};
 </script>

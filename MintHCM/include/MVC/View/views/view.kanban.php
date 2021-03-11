@@ -180,5 +180,22 @@ class ViewKanban extends SugarView
             $this->kanbanViewProcess();
         }
     }
+    protected function _displayJavascript()
+    {
+        parent::_displayJavascript();
+        $this->displayCurrentUserDataJS();
+    }
 
+    protected function displayCurrentUserDataJS()
+    {
+        global $current_user;
+        $current_user->load_Relationship('aclroles');
+        $data = [
+            'id' => $current_user->id,
+            'first_name' => $current_user->first_name,
+            'last_name' => $current_user->last_name,
+            'roles' => $current_user->aclroles->get(),
+        ];
+        echo '<script>window.current_user = ' . json_encode($data) . ';</script>';
+    }
 }

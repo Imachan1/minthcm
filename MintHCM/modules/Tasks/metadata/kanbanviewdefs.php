@@ -11,9 +11,9 @@ $kanbanViewDefs[$module_name] = array(
     'order_field' => '',
     'columns' => $app_list_strings['task_status_dom'],
     'black_list' => array(
+        'Completed'
     ),
     'expired_excluded_columns' => array(
-        'Completed'
     ),
     'roles_actions' => array(
     ),
