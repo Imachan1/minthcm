@@ -41,36 +41,25 @@ array (
     array (
       'default' => 
       array (
-        0 => 
         array (
-          0 => 'name',
-          1 => 'assigned_user_name',
+          'assigned_user_name',
         ),
-        1 => 
         array (
-          0 => 'mode',
-          1 => 
+          'mode',
           array (
             'name' => 'workplace_name',
             'label' => 'LBL_RELATIONSHIP_WORKPLACES',
           ),
         ),
-        2 => 
         array (
-          0 => 
           array (
             'name' => 'date_from',
             'label' => 'LBL_DATE_FROM',
           ),
-          1 => 
           array (
             'name' => 'date_to',
             'label' => 'LBL_DATE_TO',
           ),
-        ),
-        3 => 
-        array (
-          0 => 'description',
         ),
       ),
     ),

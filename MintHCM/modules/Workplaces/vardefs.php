@@ -96,34 +96,34 @@ $dictionary['Workplaces'] = array(
             'options' => 'workplace_room_status',
             'studio' => 'visible',
         ),
-        "rooms_workplaces" => array(                  // nazwa relacji
-            'name' => 'rooms_workplaces',                 // nazwa relacji
+        "rooms_workplaces" => array(
+            'name' => 'rooms_workplaces',
             'type' => 'link',
-            'relationship' => 'rooms_workplaces',         // nazwa relacji
+            'relationship' => 'rooms_workplaces',
             'source' => 'non-db',
-            'module' => 'Rooms',                         // nazwa pierwszego modułu
-            'bean_name' => 'Rooms',                       // nazwa bean'a pierwszego modułu
-            'vname' => 'LBL_RELATIONSHIP_ROOM_NAME',     // etykieta relacji (może być taka sama jak nazwa pola relacyjnego pierwszego modułu)
-            'id_name' => 'room_id',                      // nazwa pola id, które będzie reprezentować relacja
+            'module' => 'Rooms',
+            'bean_name' => 'Rooms',
+            'vname' => 'LBL_RELATIONSHIP_ROOM_NAME',
+            'id_name' => 'room_id',
          ),
-         "room_name" => array(                        // nazwa pola name
+         "room_name" => array(
             'required' => true,
-            'name' => 'room_name',                       // nazwa pola name
-            'type' => 'relate',                              // typ pola: relacja
+            'name' => 'room_name',
+            'type' => 'relate',
             'source' => 'non-db',
-            'vname' => 'LBL_RELATIONSHIP_ROOM_NAME',     // etykieta pola relacji (może być taka sama jak nazwa pola relacyjnego pierwszego modułu)
-            'id_name' => 'room_id',                      // nazwa pola id, które będzie reprezentować relacja
-            'link' => 'rooms_workplaces',                 // nazwa relacji
-            'module' => 'Rooms',                         // nazwa pierwszego modułu
-            'table' => 'rooms',                          // nazwa tabeli pierwszego modułu 
+            'vname' => 'LBL_RELATIONSHIP_ROOM_NAME',
+            'id_name' => 'room_id',
+            'link' => 'rooms_workplaces',
+            'module' => 'Rooms',
+            'table' => 'rooms',
             'rname' => 'name',
             'vt_validation' => "AEM(callCustomApi(Workplaces,canSelectRoom,\$room_id),'LBL_ERR_CANT_SELECT_ROOM')",
          ),
          "room_id" => array(
-            'name' => 'room_id',                         // nazwa pola id, które będzie reprezentować relacja
-            'relationship' => 'rooms_workplaces',         // nazwa relacji
-            'type' => 'id',                                  // typ pola: id
-            'vname' => 'LBL_RELATIONSHIP_ROOM_ID',       // etykieta id relacji
+            'name' => 'room_id',
+            'relationship' => 'rooms_workplaces',
+            'type' => 'id',
+            'vname' => 'LBL_RELATIONSHIP_ROOM_ID',
          ),
     ),
     'relationships' => array(

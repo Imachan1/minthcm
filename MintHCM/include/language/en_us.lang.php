@@ -179,6 +179,8 @@ $app_list_strings = array(
         'Tasks' => 'Tasks',
         'SalaryRanges' => 'Salary Ranges',
         'EmployeeCertificates' => 'Employee Certificates',
+        'Comments' => 'Comments',
+        'Reactions' => 'Reactions',
     ),
     'moduleListSingular' => array(
         'Home' => 'Home',
@@ -3706,6 +3708,7 @@ $app_strings['LBL_CLOSE_PLAN_CONFIRM'] = 'Are you sure you want to approve this 
 $app_strings['LBL_CREATE_RESOURCE_CONFIRM'] = 'Are you sure you want to create resource from this record?';
 $app_strings['ERR_CLOSE_PLAN'] = 'You cannot approve this plan "{name}", because there are gaps between spent times or his time frames do not coincide with working times';
 $app_strings['ERR_CLOSE_PLAN_WORK'] = 'You cannot approve this plan "{name}", because workplace has not been selected.';
+$app_strings['ERR_WORKPLACE_IS_NOT_ACTIVE'] = 'You cannot approve this plan "{name}", because workplace is not active.';
 $app_strings['LBL_PLAN_ONE_DAY'] = 'Work Schedule must spread in one day.';
 $app_strings['LBL_DIALOG_YES'] = 'Yes';
 $app_strings['LBL_DIALOG_NO'] = 'No';
@@ -4175,3 +4178,32 @@ $app_strings['LBL_MY_CALLS_DASHLET'] = 'My Calls';
 $app_strings['LBL_RECRUITMENTS_DASHLET'] = 'Recruitments';
 $app_strings['LBL_CANDIDATURES_DASHLET'] = 'Candidatures';
 $app_strings['LBL_CANNOT_CREATE_CALENDAR_EVENTS'] = 'You cannot create events for that calendar';
+
+$app_list_strings['record_type_display_comments'] = array(
+   'News' => 'News',
+);
+ 
+$app_list_strings['parent_type_display_comments'] = array(
+   'News' => 'News',
+);
+ 
+$app_strings['LBL_COMMENTS'] = "Comments";
+$app_strings['LBL_PANEL_COMMENTS'] = "Comments";
+$app_strings['LBL_YOUR_COMMENT'] = "Your Comment";
+$app_strings['LBL_YOUR_REPLY'] = "Your Reply";
+$app_strings['LBL_SEND_BUTTON_LABEL'] = "Send";
+
+$app_list_strings['parent_type_display_reactions'] = array(
+   'News' => 'News',
+);
+
+$app_list_strings['reaction_type_list'] = array(
+   'like' => 'Like',
+   'dislike' => 'Dislike',
+);
+
+$app_list_strings['reaction_icons_list'] = array(
+   'like' => 'thumbs-up',
+   'dislike' => 'thumbs-down',
+);
+ 

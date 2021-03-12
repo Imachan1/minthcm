@@ -51,6 +51,7 @@ $layout_defs["Allocations"]["subpanel_setup"] = array(
                 'popup_module' => 'SecurityGroups',
                 'mode' => 'MultiSelect'
             ),
+            
         ),
         'order' => 900,
         'sort_by' => 'name',
@@ -72,7 +73,9 @@ $layout_defs["Allocations"]["subpanel_setup"] = array(
         'get_subpanel_data' => 'allocations_employees', 
         'top_buttons' =>
         array(
-
+            array(
+                'widget_class' => 'SubPanelTopSelectButtonForAllocations',
+            ),
         ),
     ),
 );

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -484,25 +483,25 @@ $dictionary['WorkSchedules'] = array(
          'isnull' => 'true',
          'dbType' => 'id',
       ),
-      "workplaces_workschedules" => array(                  // nazwa relacji
-         'name' => 'workplaces_workschedules',                 // nazwa relacji
+      "workplaces_workschedules" => array(
+         'name' => 'workplaces_workschedules',
          'type' => 'link',
-         'relationship' => 'workplaces_workschedules',         // nazwa relacji
+         'relationship' => 'workplaces_workschedules',
          'source' => 'non-db',
-         'module' => 'Workplaces',                         // nazwa pierwszego modułu
-         'bean_name' => 'Workplaces',                       // nazwa bean'a pierwszego modułu
-         'vname' => 'LBL_RELATIONSHIP_WORKPLACE_NAME',     // etykieta relacji (może być taka sama jak nazwa pola relacyjnego pierwszego modułu)
-         'id_name' => 'workplace_id',                      // nazwa pola id, które będzie reprezentować relacja
+         'module' => 'Workplaces',
+         'bean_name' => 'Workplaces',
+         'vname' => 'LBL_RELATIONSHIP_WORKPLACE_NAME',
+         'id_name' => 'workplace_id',
       ),
-      "workplace_name" => array(                        // nazwa pola name
-         'name' => 'workplace_name',                       // nazwa pola name
-         'type' => 'relate',                              // typ pola: relacja
+      "workplace_name" => array(
+         'name' => 'workplace_name',
+         'type' => 'relate',
          'source' => 'non-db',
-         'vname' => 'LBL_RELATIONSHIP_WORKPLACE_NAME',     // etykieta pola relacji (może być taka sama jak nazwa pola relacyjnego pierwszego modułu)
-         'id_name' => 'workplace_id',                      // nazwa pola id, które będzie reprezentować relacja
-         'link' => 'workplaces_workschedules',                 // nazwa relacji
-         'module' => 'Workplaces',                         // nazwa pierwszego modułu
-         'table' => 'workplaces',                          // nazwa tabeli pierwszego modułu 
+         'vname' => 'LBL_RELATIONSHIP_WORKPLACE_NAME',
+         'id_name' => 'workplace_id',
+         'link' => 'workplaces_workschedules',
+         'module' => 'Workplaces',
+         'table' => 'workplaces',
          'rname' => 'name',
          'vt_dependency' => "equals(\$type,'office')",
          'vt_validation' => array(
@@ -511,29 +510,29 @@ $dictionary['WorkSchedules'] = array(
          ),
       ),
       "workplace_id" => array(
-         'name' => 'workplace_id',                         // nazwa pola id, które będzie reprezentować relacja
-         'relationship' => 'workplaces_workschedules',         // nazwa relacji
-         'type' => 'id',                                  // typ pola: id
+         'name' => 'workplace_id',
+         'relationship' => 'workplaces_workschedules',
+         'type' => 'id',
          'vname' => 'LBL_RELATIONSHIP_WORKPLACE_ID', 
          'audited' => true,
       ),
    ),
    'relationships' => array(
-      "workplaces_workschedules" => array(                  // nazwa relacji
-         'lhs_module' => 'Workplaces',                     // nazwa pierwszego modułu
-         'lhs_table' => 'workplaces',                      // nazwa tablicy pierwszego modułu
-         'lhs_key' => 'id',                               // pole id po którym ma zostać wybrany rekord z pierwszego modułu
-         'rhs_module' => 'WorkSchedules',                     // nazwa drugiego modułu
-         'rhs_table' => 'workschedules',                      // nazwa tablicy drugiego modułu
-         'rhs_key' => 'workplace_id',                      // nazwa pola id (kolumny), które zostanie utworzone w tablicy drugiego modułu, aby przechowywać id powiązanego rekordu pierwszego modułu
-         'relationship_type' => 'one-to-many',            // typ relacji
+      "workplaces_workschedules" => array(
+         'lhs_module' => 'Workplaces',
+         'lhs_table' => 'workplaces',
+         'lhs_key' => 'id',
+         'rhs_module' => 'WorkSchedules',
+         'rhs_table' => 'workschedules',
+         'rhs_key' => 'workplace_id',
+         'relationship_type' => 'one-to-many',
       ),
    ),
    'optimistic_locking' => true,
    'unified_search' => true,
 );
 if ( !class_exists('VardefManager') ) {
-   require_once ('include/SugarObjects/VardefManager.php');
+    require_once 'include/SugarObjects/VardefManager.php';
 }
 VardefManager::createVardef('WorkSchedules', 'WorkSchedules', array(
    'basic',

@@ -108,7 +108,7 @@ class Resources extends Basic {
       $rooms = $this->rooms_resources->getBeans();
       if(!empty($rooms)){
          $room=end($rooms);
-         if($room->name!=$this->name){//zapobiega wpadnięciu w nieskończoną pętlę
+         if($room->name!=$this->name){
             $room->name=$this->name;
             $room->save();
          }

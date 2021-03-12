@@ -103,26 +103,26 @@ $dictionary['Allocations'] = array(
             'duplicate_merge' => 'enabled',
             'audited' => true,
         ),
-        "workplaces_allocations" => array(                  // nazwa relacji
-            'name' => 'workplaces_allocations',                 // nazwa relacji
+        "workplaces_allocations" => array(
+            'name' => 'workplaces_allocations',
             'type' => 'link',
-            'relationship' => 'workplaces_allocations',         // nazwa relacji
+            'relationship' => 'workplaces_allocations',
             'source' => 'non-db',
-            'module' => 'Workplaces',                         // nazwa pierwszego modułu
-            'bean_name' => 'Workplaces',                       // nazwa bean'a pierwszego modułu
-            'vname' => 'LBL_RELATIONSHIP_WORKPLACES',     // etykieta relacji (może być taka sama jak nazwa pola relacyjnego pierwszego modułu)
-            'id_name' => 'workplace_id',                      // nazwa pola id, które będzie reprezentować relacja
+            'module' => 'Workplaces',
+            'bean_name' => 'Workplaces',
+            'vname' => 'LBL_RELATIONSHIP_WORKPLACES',
+            'id_name' => 'workplace_id',
          ),
          "workplace_name" => array(                       
             'required' => true,
-            'name' => 'workplace_name',                       // nazwa pola name
-            'type' => 'relate',                              // typ pola: relacja
+            'name' => 'workplace_name',
+            'type' => 'relate',
             'source' => 'non-db',
-            'vname' => 'LBL_RELATIONSHIP_WORKPLACES',     // etykieta pola relacji (może być taka sama jak nazwa pola relacyjnego pierwszego modułu)
-            'id_name' => 'workplace_id',                      // nazwa pola id, które będzie reprezentować relacja
-            'link' => 'workplaces_allocations',                 // nazwa relacji
-            'module' => 'Workplaces',                         // nazwa pierwszego modułu
-            'table' => 'workplaces',                          // nazwa tabeli pierwszego modułu 
+            'vname' => 'LBL_RELATIONSHIP_WORKPLACES',
+            'id_name' => 'workplace_id',
+            'link' => 'workplaces_allocations',
+            'module' => 'Workplaces',
+            'table' => 'workplaces',
             'rname' => 'name',
             'vt_validation' => array(
                 "AEM(callCustomApi(Allocations,checkWorkplaceStatus,\$workplace_id,\$mode),'LBL_ERR_WORKPLACE_STATUS')",
@@ -130,10 +130,10 @@ $dictionary['Allocations'] = array(
             ),
          ),
          "workplace_id" => array(
-            'name' => 'workplace_id',                         // nazwa pola id, które będzie reprezentować relacja
-            'relationship' => 'workplaces_allocations',         // nazwa relacji
-            'type' => 'id',                                  // typ pola: id
-            'vname' => 'LBL_RELATIONSHIP_WORKPLACES_ID',       // etykieta id relacji
+            'name' => 'workplace_id',
+            'relationship' => 'workplaces_allocations',
+            'type' => 'id',
+            'vname' => 'LBL_RELATIONSHIP_WORKPLACES_ID',
          ),
          "allocations_employees" => array(
             'name' => 'allocations_employees',                          
@@ -146,17 +146,15 @@ $dictionary['Allocations'] = array(
          ),
     ),
     'relationships' => array(
-        //relacja 1:N do Miejsc Pracy (tutaj N)
-        "workplaces_allocations" => array(                  // nazwa relacji
-            'lhs_module' => 'Workplaces',                     // nazwa pierwszego modułu
-            'lhs_table' => 'workplaces',                      // nazwa tablicy pierwszego modułu
-            'lhs_key' => 'id',                               // pole id po którym ma zostać wybrany rekord z pierwszego modułu
-            'rhs_module' => 'Allocations',                     // nazwa drugiego modułu
-            'rhs_table' => 'allocations',                      // nazwa tablicy drugiego modułu
-            'rhs_key' => 'workplace_id',                      // nazwa pola id (kolumny), które zostanie utworzone w tablicy drugiego modułu, aby przechowywać id powiązanego rekordu pierwszego modułu
-            'relationship_type' => 'one-to-many',            // typ relacji
+        "workplaces_allocations" => array(
+            'lhs_module' => 'Workplaces',
+            'lhs_table' => 'workplaces',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Allocations',
+            'rhs_table' => 'allocations',
+            'rhs_key' => 'workplace_id',
+            'relationship_type' => 'one-to-many',
          ),
-        //relacja N:N do Pracownika
     ),
     'optimistic_locking' => true,
     'unified_search' => true,

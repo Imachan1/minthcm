@@ -285,14 +285,14 @@ $layout_defs['Employees'] = array(
             ),
         ),
     ));
-    $layout_defs["Employees"]["subpanel_setup"]['allocations_employees'] = array(   // nazwa relacji
+    $layout_defs["Employees"]["subpanel_setup"]['allocations_employees'] = array(
         'order' => 100,
-        'module' => 'Allocations',                                                    // nazwa modułu w którym ma znajdować się subpanel
-        'subpanel_name' => 'default',                                              // nazwa wykorzystywanego szablonu subpanelu (tu: domyślny dla Kontrahentów)
-        'sort_order' => 'asc',                                                     // sortowanie rekordów na subpanelu ('asc' - rosnąco, 'desc' - malejąco)
-        'sort_by' => 'id',                                                         // po jakim polu ma odbywać się sortowanie rekordów (tu: po kolumnie id w tabeli accounts_contacts)
-        'title_key' => 'LBL_LINKED_ALLOCATIONS_TITLE',                                // nazwa etykiety nazwy subpanelu
-        'get_subpanel_data' => 'allocations_employees',                                // nazwa relacji
+        'module' => 'Allocations',
+        'subpanel_name' => 'default',
+        'sort_order' => 'asc',
+        'sort_by' => 'id',
+        'title_key' => 'LBL_LINKED_ALLOCATIONS_TITLE',
+        'get_subpanel_data' => 'allocations_employees',
         'top_buttons' =>
         array(),
      );

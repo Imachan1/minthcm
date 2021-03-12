@@ -376,32 +376,6 @@ class WorkSchedules extends Basic
         return $result != 0;
     }
 
-    public function getOwnerWhere($user_id)
-    {
-        $controller = ControllerFactory::getController('Users');
-        $subordinates_ids = $controller::getIDOfSubordinates(array($user_id));
-        $parent = parent::getOwnerWhere($user_id);
-        if (!empty($subordinates_ids)) {
-            $return = "( $parent OR $this->table_name.assigned_user_id IN ('" . implode("','", $subordinates_ids) . "') ) ";
-        } else {
-            $return = $parent;
-        }
-        return $return;
-    }
-
-    public function isOwner($user_id)
-    {
-        $is_owner = parent::isOwner($user_id);
-        if (!$is_owner) {
-            $controller = ControllerFactory::getController('Users');
-            $subordinates_ids = $controller::getIDOfSubordinates(array($user_id));
-            if (in_array($this->assigned_user_id, $subordinates_ids)) {
-                $is_owner = true;
-            }
-        }
-        return $is_owner;
-    }
-
     public function canBeConfirmed()
     {
         global $timedate;
@@ -427,57 +401,63 @@ class WorkSchedules extends Basic
                 if ($date_start == $row_ds) {
                     $date_start = DateTime::createFromFormat($db_format, $row['date_end']);
                 } else {
-                    return "3";
+                    $return = 3;
                     break;
                 }
             }
             $row_de = DateTime::createFromFormat($db_format, $last_row['date_end']);
             if ($return && $date_end != $row_de) {
-                return "3";
-
+                $return = 3;
             }
             $sql = "SELECT workplace_id FROM workschedules WHERE id ='{$this->id}'";
-            if(($this->type==='office')&&(empty($this->db->getOne($sql)))){
-                return $this->checkAllocation();
+            $workplace_id = $this->db->getOne($sql);
+            if (($this->type === 'office') && (!empty($workplace_id) && ($return == 1))) {
+                $return = $this->checkAllocation($workplace_id);
             }
         }
-        return "1";
+        return $return;
     }
-    public function checkAllocation(){
+
+    protected function checkAllocation(string $workplace_id) {
         $db = DBManagerFactory::getInstance();
-        global $timedate;
-        $db_format = $timedate->get_db_date_time_format();
+        $workplace = BeanFactory::getBean('Workplaces', $workplace_id);
 
-        $sql = "SELECT date_start FROM workschedules WHERE id='{$this->id}' AND deleted=0";
+        $return = 1;
+        $work_date = getDateTimeObject($this->date_start);
+        if ($workplace->mode == "permanent") {
+            $sql = "SELECT id FROM allocations WHERE assigned_user_id = '{$this->assigned_user_id}' AND deleted=0 AND workplace_id='{$workplace_id}'";
+        } else {
+            $sql = "SELECT ae.allocation_id id FROM allocations_employees ae
+LEFT JOIN allocations a ON a.id=ae.allocation_id AND a.deleted=0 AND a.workplace_id='{$workplace_id}'
+WHERE ae.employee_id='{$this->assigned_user_id}' AND ae.deleted=0";
+        }
         $result = $db->query($sql);
-        $date_row = $db->fetchByAssoc($result);
-        $work_date = DateTime::createFromFormat($db_format,$date_row['date_start']);
-
-
-        $sql = "SELECT allocation_id FROM allocations_employees WHERE employee_id='{$this->assigned_user_id}' AND deleted=0";
-        $result = $db->query($sql);
-        $db_format = "Y-m-d";
-        while ($row = $db->fetchByAssoc($result)) {
-            $allocation = BeanFactory::getBean('Allocations',$row['allocation_id']);
-            $sql = "SELECT date_from, date_to FROM allocations WHERE id='{$allocation->id}' AND deleted=0";
-            $result = $db->query($sql);
-            $date_row = $db->fetchByAssoc($result);
-            $start_date = DateTime::createFromFormat($db_format, $date_row['date_from']);
-            $end_date = DateTime::createFromFormat($db_format, $date_row['date_to']);
-            if($work_date>=$start_date){
-                if(!empty($end_date)){
-                    if($work_date<=$end_date){
-                        return "2";
+        if ($result->num_rows > 0) {
+            while ($row = $db->fetchByAssoc($result)) {
+                $allocation = BeanFactory::getBean('Allocations', $row['id']);
+                $start_date = getDateTimeObject($allocation->date_from);
+                $end_date = getDateTimeObject($allocation->date_to);
+                $start_date->setTime(0, 0, 0);
+                $end_date->setTime(23, 59, 0);
+                if ($work_date >= $start_date) {
+                    if (!empty($end_date)) {
+                        if ($work_date >= $end_date) {
+                            $return = 4;
+                        }
+                    } else {
+                        $return = 4;
+                        break;
                     }
                 }
-                else return "2";
-            } 
+            }
+        } else {
+            $return = 4;
         }
-        return "1";
+        return $return;
     }
-    public function confirm()
-    {
-        if ($this->canBeConfirmed()) {
+
+    public function confirm() {
+        if ($this->canBeConfirmed() == 1) {
             $this->status = 'closed';
             return $this->save();
         } else {
@@ -485,8 +465,7 @@ class WorkSchedules extends Basic
         }
     }
 
-    public function checkOwner()
-    {
+    public function checkOwner() {
         global $current_user;
         return $this->assigned_user_id == $current_user->id;
     }

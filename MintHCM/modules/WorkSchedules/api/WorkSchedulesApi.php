@@ -84,7 +84,7 @@ class WorkSchedulesApi
          $date_interval = sprintf('+%d hour +%d minutes', $data['data']['duration_hours'], $data['data']['duration_minutes']);
          foreach ( $repeatArr as $repeat ) {
             $db_date_start = $timedate->to_db($repeat);
-            $db_date_end = $timedate->to_db(date('Y-m-d H:i', strtotime($date_interval, strtotime($db_date_start))));
+            $db_date_end = date('Y-m-d H:i', strtotime($date_interval, strtotime($db_date_start)));
             $query = "
                SELECT COUNT(id)
                FROM workschedules
@@ -107,7 +107,7 @@ class WorkSchedulesApi
     public function validateWorkplaceStatus($workplace_id)
     {
         $workplace = BeanFactory::getBean('Workplaces', $workplace_id);
-        if (!$workplace || empty($workplace->id) || $workplace->availability == 'active') {
+        if (!$workplace || empty($workplace->id) || 'active' == $workplace->availability) {
             return true;
         } else {
             return false;
@@ -144,5 +144,38 @@ class WorkSchedulesApi
             }
         }
         return $return;
+    }
+
+    public function setAssignedWorkingRoom($args)
+    {
+        $db = \DBManagerFactory::getInstance();
+        $user_id = $db->quote($args['assigned_user_id']);
+        $result = [];
+
+        if (!empty($user_id)) {
+            $sqlResult = $db->query("SELECT
+            WP.id,
+            WP.name
+         FROM
+             allocations AS AL
+         INNER JOIN workplaces AS WP
+         ON
+             AL.workplace_id = WP.id
+         WHERE
+             WP.deleted = 0
+            AND AL.deleted = 0
+            AND AL.assigned_user_id = 1
+            AND AL.mode = 'permanent'
+            AND WP.availability = 'active'
+            AND AL.date_from <= CURDATE() 
+            AND AL.date_to >= CURDATE() "
+            );
+}
+        if (1 === $sqlResult->num_rows) {
+            $result = $db->fetchByAssoc($sqlResult);
+        } else {
+            return;
+        }
+        return $result;
     }
 }

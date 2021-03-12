@@ -105,11 +105,11 @@ $layout_defs['SecurityGroups'] = array(
 );
 $layout_defs["SecurityGroups"]["subpanel_setup"]['securitygroups_rooms'] = array (
    'order' => 100,
-   'module' => 'Rooms',                                  // nazwa drugiego modułu
+   'module' => 'Rooms',
    'subpanel_name' => 'default',
    'sort_order' => 'asc',
    'sort_by' => 'id',
-   'title_key' => 'LBL_RELATIONSHIP_ROOMS_NAME',         // etykieta nazwy subpanelu drugiego modułu pod formularzem pierwszego modułu
+   'title_key' => 'LBL_RELATIONSHIP_ROOMS_NAME',
    'get_subpanel_data' => 'securitygroups_rooms',             
    'top_buttons' => array (
    ),

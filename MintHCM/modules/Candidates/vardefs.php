@@ -509,38 +509,6 @@ $dictionary['Candidates'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_CALLS',
         ),
-        'employees' => array(
-            'name' => 'employees',
-            'type' => 'link',
-            'relationship' => 'candidates_employees',
-            'source' => 'non-db',
-            'module' => 'Employees',
-            'bean_name' => 'Employee',
-            'vname' => 'LBL_CANDIDATE_EMPLOYEE_LINK_FROM_CANDIDATE',
-            'id_name' => 'employee_id',
-        ),
-        'employee_name' => array(
-            'name' => 'employee_name',
-            'type' => 'relate',
-            'source' => 'non-db',
-            'vname' => 'LBL_CANDIDATE_EMPLOYEE_RELATE_FROM_CANDIDATE',
-            'save' => true,
-            'id_name' => 'employee_id',
-            'link' => 'employees',
-            'table' => 'users',
-            'module' => 'Employees',
-            'rname' => 'name',
-        ),
-        'employee_id' => array(
-            'name' => 'employee_id',
-            'type' => 'link',
-            'relationship' => 'candidates_employees',
-            'source' => 'non-db',
-            'reportable' => false,
-            'side' => 'left',
-            'vname' => 'LBL_CANDIDATE_EMPLOYEE_ID_FROM_CANDIDATE',
-            'audited' => true,
-        ),
         "employeecertificates" => array(
             'name' => 'employeecertificates',
             'type' => 'link',
@@ -643,7 +611,7 @@ if (!class_exists('VardefManager')) {
     require_once 'include/SugarObjects/VardefManager.php';
 }
 VardefManager::createVardef('Candidates', 'Candidates',
-    array('basic', 'assignable', 'person', 'security_groups'));
+    array('basic', 'assignable', 'person', 'security_groups', 'employee_related'));
 
 $dictionary['Candidates']['fields']['date_reviewed']['audited'] = false;
 $dictionary['Candidates']['fields']['date_reviewed']['reportable'] = false;
@@ -651,3 +619,42 @@ $dictionary['Candidates']['fields']['lawful_basis_source']['audited'] = false;
 $dictionary['Candidates']['fields']['lawful_basis_source']['reportable'] = false;
 $dictionary['Candidates']['fields']['lawful_basis']['audited'] = false;
 $dictionary['Candidates']['fields']['lawful_basis']['reportable'] = false;
+
+// DLNC start
+$dictionary['Candidates']['fields']['last_time_contact'] = array(
+    'name' => 'last_time_contact',
+    'label' => 'LBL_LAST_TIME_CONTACT',
+    'vname' => 'LBL_LAST_TIME_CONTACT',
+    'required' => false,
+    'readonly' => true,
+    'type' => 'datetimecombo',
+    'audited' => false,
+    'massupdate' => false,
+    'options' => 'date_range_search_dom',
+    'importable' => false,
+    'duplicate_merge' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'enforced' => false,
+    'enable_range_search' => true,
+    'duplicate_on_record_copy' => 'no',
+ );
+ 
+ $dictionary['Candidates']['fields']['date_planned_contact'] = array(
+    'name' => 'date_planned_contact',
+    'label' => 'LBL_DATE_PLANNED_CONTACT',
+    'vname' => 'LBL_DATE_PLANNED_CONTACT',
+    'required' => false,
+    'readonly' => true,
+    'type' => 'datetimecombo',
+    'audited' => false,
+    'massupdate' => false,
+    'options' => 'date_range_search_dom',
+    'importable' => false,
+    'duplicate_merge' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'enable_range_search' => true,
+    'duplicate_on_record_copy' => 'no',
+ );
+ // DLNC end
