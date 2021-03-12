@@ -111,6 +111,12 @@ class SugarWidgetSubPanelDetailViewLink extends SugarWidgetField
         global $current_user;
         if (!empty($record) &&
             ($layout_def['DetailView'] && !$layout_def['owner_module'] || $layout_def['DetailView'] && !ACLController::moduleSupportsACL($layout_def['owner_module']) || ACLController::checkAccess($layout_def['owner_module'], 'view', $layout_def['owner_id'] == $current_user->id))) {
+            // MintHCM start #57627
+            if ( $layout_def['owner_module'] && !empty($layout_def['fields']['PARENT_ID']) && !empty($layout_def['fields']['PARENT_NAME']) && !empty($layout_def['fields']['PARENT_TYPE']) ) {
+                $module = $layout_def['fields']['PARENT_TYPE'];
+                $record = $layout_def['fields']['PARENT_ID'];
+            }
+            // MintHCM end #57627
             $link = ajaxLink("index.php?module=$module&action=$action&record={$record}{$parent}");
             if ('EAPM' == $module) {
                 $link = "index.php?module=$module&action=$action&record={$record}{$parent}";
