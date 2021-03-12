@@ -9977,6 +9977,8 @@ footer.collapsedSidebar {
 .globalLinks-desktop .suitepicon-action-current-user {
   font-size: 38px;
   font-weight: 400;
+  position: relative;
+  top: 6px;
 }
 
 .globalLinks-desktop:hover {
@@ -10731,7 +10733,7 @@ footer.collapsedSidebar {
     border-radius: 0;
     width: 28px;
     height: 28px;
-    background-color: #BDD9BF;
+    background-color: #009976;
     line-height: 40px;
     font-size: 20px;
     color: #ffffff;
@@ -10775,7 +10777,7 @@ footer.collapsedSidebar {
   }
 
   .desktop_notifications .alertsButton {
-    background-color: #BDD9BF;
+    background-color: #009976;
     border: none;
     box-shadow: none;
     color: #ffffff;
@@ -10820,7 +10822,7 @@ footer.collapsedSidebar {
   }
 
   .mobile-bar {
-    background-color: #BDD9BF;
+    background-color: #009976;
     padding: 0 20px 0 0;
     margin-top: 0;
     width: 100%;
@@ -11067,6 +11069,8 @@ footer.collapsedSidebar {
 
   .globalLinks-mobile .suitepicon-action-current-user {
     font-size: 40px;
+    position: relative;
+    top: 6px;
   }
 
   .globalLinks-mobile > .btn > .current-user-avatar {
