@@ -121,7 +121,7 @@ $themedef = array(
         'kreports' => 'fa-chart-bar',
         'rooms' => 'fa-door-open',
         'allocations' => 'fa-sign-in-alt',
-        'rooms' => 'fa-door-open',
+        'workplaces' => 'fa-pencil-ruler',
     ),
 );
 
