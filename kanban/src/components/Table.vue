@@ -2,7 +2,7 @@
   <VContainer fluid>
     <VRow no-gutters>
       <VCol
-        v-for="(name,key) in defs.columns"
+        v-for="(name, key) in defs.columns"
         :key="key"
         :class="{
           'column-name': true,
@@ -14,12 +14,12 @@
           inactive: !canUserDropItemIntoColumn(key)
         }"
       >
-        <p class="ma-0 font-weight-bold text-center">{{name}}</p>
+        <p class="ma-0 font-weight-bold text-center">{{ name }}</p>
       </VCol>
     </VRow>
     <VRow no-gutters>
       <VCol
-        v-for="(name,key) in defs.columns"
+        v-for="(name, key) in defs.columns"
         :key="key"
         :class="{
           'pa-2': true,
@@ -27,16 +27,13 @@
           inactive: !canUserDropItemIntoColumn(key)
         }"
       >
-        <Skeleton
-          v-if="loading"
-          :count="Math.floor(Math.random() * 5) + 1"
-        />
+        <Skeleton v-if="loading" :count="Math.floor(Math.random() * 5) + 1" />
         <draggable
           v-model="items[key]"
           v-bind="dragOptions"
           :group="{
             name: 'columns',
-            put: (to) => canUserDropItemIntoColumn(to.el.dataset.column)
+            put: to => canUserDropItemIntoColumn(to.el.dataset.column)
           }"
           @start="onDragStart"
           @end="onDragEnd"
@@ -52,15 +49,15 @@
               :item="item"
               :defs="defs"
               :classesFromParent="{
-                item: canUserDragItemFromColumn(key),
+                item: canUserDragItemFromColumn(key)
               }"
-              @item-cart-click="(itemID) => $emit('item-cart-click', itemID)"
-              @item-click="(item) => $emit('item-click', item)"
+              @item-cart-click="itemID => $emit('item-cart-click', itemID)"
+              @item-click="item => $emit('item-click', item)"
             />
           </transition-group>
         </draggable>
         <VCard
-          v-if="!loading && canUserCreateItem(key)"
+          v-if="!loading"
           :class="{
             'pa-1': true,
             'text-center': true,
@@ -68,9 +65,7 @@
           }"
           @click="$emit('item-add', key)"
         >
-          <VIcon>
-            mdi-plus-circle
-          </VIcon>
+          <VIcon>mdi-plus-circle</VIcon>
         </VCard>
       </VCol>
     </VRow>
@@ -124,18 +119,10 @@ export default {
   methods: {
     onDragStart (evt) {
       this.drag = true
-      if (this.defs.roles_actions) {
+      if (this.defs.actions) {
         const from = evt.from.dataset.column
-        for (const i in this.defs.current_user.roles) {
-          const userRole = this.defs.current_user.roles[i]
-          if (Object.keys(this.defs.roles_actions).indexOf(userRole) !== -1 &&
-            this.defs.roles_actions[userRole].length !== 0) {
-            this.dropColumns = [
-              from,
-              ...this.defs.roles_actions[userRole][from]
-            ]
-            break
-          }
+        if (this.defs.actions.length !== 0) {
+          this.dropColumns = [from, ...this.defs.actions[from]]
         }
       }
     },
@@ -145,24 +132,21 @@ export default {
       this.$emit(
         'item-change',
         evt.item._underlying_vm_.id,
-        (evt.oldIndex + 1),
-        (evt.newIndex + 1),
+        evt.oldIndex + 1,
+        evt.newIndex + 1,
         evt.from.dataset.column,
         evt.to.dataset.column
       )
     },
     canUserDragItemFromColumn (columnName) {
       let result = false
-      if (this.defs.roles_actions) {
+      if (this.defs.actions) {
         if (!this.drag) {
-          for (const i in this.defs.current_user.roles) {
-            const userRole = this.defs.current_user.roles[i]
-            if (Object.keys(this.defs.roles_actions).indexOf(userRole) !== -1 && (
-              this.defs.roles_actions[userRole].length === 0 ||
-              Object.keys(this.defs.roles_actions[userRole]).indexOf(columnName) !== -1)) {
-              result = true
-              break
-            }
+          if (
+            this.defs.actions.length === 0 ||
+            Object.keys(this.defs.actions).indexOf(columnName) !== -1
+          ) {
+            result = true
           }
         } else {
           result = this.canUserDropItemIntoColumn(columnName)
@@ -172,21 +156,6 @@ export default {
     },
     canUserDropItemIntoColumn (columnName) {
       return !this.dropColumns || this.dropColumns.indexOf(columnName) !== -1
-    },
-    canUserCreateItem (columnName) {
-      let result = false
-      if (this.defs.roles_allow_create) {
-        for (const i in this.defs.current_user.roles) {
-          const userRole = this.defs.current_user.roles[i]
-          if (Object.keys(this.defs.roles_allow_create).indexOf(userRole) !== -1 && (
-            this.defs.roles_allow_create[userRole].length === 0 ||
-            this.defs.roles_allow_create[userRole].indexOf(columnName) !== -1)) {
-            result = true
-            break
-          }
-        }
-      }
-      return result
     }
   }
 }
@@ -200,7 +169,8 @@ export default {
   border-radius: 4px 4px 0 0;
   height: auto;
 }
-.col.inactive, .inactive {
+.col.inactive,
+.inactive {
   border-radius: 0 0 4px 4px;
   background-color: #dddddd;
   height: max-content;

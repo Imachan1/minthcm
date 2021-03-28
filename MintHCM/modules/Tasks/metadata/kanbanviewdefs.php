@@ -13,11 +13,28 @@ $kanbanViewDefs[$module_name] = array(
     'black_list' => array(
         'Completed'
     ),
-    'expired_excluded_columns' => array(
-    ),
-    'roles_actions' => array(
-    ),
-    'roles_allow_create' => array(
+    'expired_excluded_columns' => array(),
+    'actions' => array(
+        'Not Started' => array(
+            'In Progress',
+            'Pending Input',
+            'Deferred',
+        ),
+        'In Progress' => array(
+            'Not Started',
+            'Pending Input',
+            'Deferred',
+        ),
+        'Pending Input' => array(
+            'Not Started',
+            'In Progress',
+            'Deferred',
+        ),
+        'Deferred' => array(
+            'Not Started',
+            'In Progress',
+            'Pending Input',
+        ),
     ),
     'required_fields' => array(
         'name'
