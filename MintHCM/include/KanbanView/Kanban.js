@@ -26,7 +26,6 @@ class Kanban {
         this.component.$on('item-click', this.handleItemClick.bind(this));
         this.component.$on('item-add', this.handleItemAdd.bind(this));
         this.component.$on('item-change', this.handleItemChange.bind(this));
-        this.component.$on('item-cart-click', this.showShoppingPopup.bind(this));
     }
     handleItemClick (item) {
         if(item.id == undefined){
@@ -189,9 +188,6 @@ class Kanban {
             'error',
             2000
         );
-    }
-    showShoppingPopup (itemID) {
-        window.ShoppingPopup.init(itemID);
     }
 }
 window.Kanban = Kanban;
