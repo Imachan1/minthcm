@@ -320,6 +320,12 @@ class Employee extends Person implements EmailInterface
                 return false;
             }
         }
+        // eVolpe 77675 start
+        if ($this->reports_to_id != $this->fetched_row['reports_to_id']) {
+            $private_group = new PrivateGroup($this);
+            $private_group->update($this->reports_to_id, $this->fetched_row['reports_to_id']);
+        }
+        // eVolpe 77675 end
 
         return parent::save($check_notify);
     }
