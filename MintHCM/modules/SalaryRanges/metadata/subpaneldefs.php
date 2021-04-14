@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,7 +9,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,40 +37,31 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
- * If the display of the logos is not reasonably feasible for technical reasons, the
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-// created: 2015-04-29 15:00:21
-$searchFields['SalaryRanges'] = array(
-    'position_name' => array(
-        'query_type' => 'default',
-    ),
-    'start_range_start_date' => 
-    array (
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true,
-    ),
-    'end_range_start_date' => 
-    array (
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true,
-    ),
-    'start_range_end_date' => 
-    array (
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true,
-    ),
-    'end_range_end_date' => 
-    array (
-      'query_type' => 'default',
-      'enable_range_search' => true,
-      'is_date_field' => true,
+$layout_defs["SalaryRanges"]["subpanel_setup"] = array(
+    'securitygroups' => array(
+        'top_buttons' => array(
+            array(
+                'widget_class' => 'SubPanelTopSelectButton',
+                'mode' => 'MultiSelect',
+            ),
+            array(
+                'widget_class' => 'SubPanelTopButtonQuickCreate',
+            ),
+        ),
+        'order' => 900,
+        'sort_by' => 'name',
+        'sort_order' => 'asc',
+        'module' => 'SecurityGroups',
+        'refresh_page' => 1,
+        'subpanel_name' => 'default',
+        'get_subpanel_data' => 'SecurityGroups',
+        'add_subpanel_data' => 'securitygroup_id',
+        'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
     ),
 );
