@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,7 +9,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,55 +37,31 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
- * If the display of the logos is not reasonably feasible for technical reasons, the
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
-/*
- * Your installation or use of this SugarCRM file is subject to the applicable
- * terms available at
- * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
- * If you do not agree to all of the applicable terms or do not have the
- * authority to bind the entity as an authorized representative, then do not
- * install or use this SugarCRM file.
- *
- * Copyright (C) SugarCRM Inc. All rights reserved.
- */
-
-$subpanel_layout = array(
-    'top_buttons' => array(
-        array('widget_class' => 'SubPanelTopCreateButton'),
-    ),
-    'where' => '',
-    'list_fields' => array(
-        'name' => array(
-            'name' => 'name',
-            'vname' => 'LBL_NAME',
-            'widget_class' => 'SubPanelDetailViewLink',
+$layout_defs["SalaryRanges"]["subpanel_setup"] = array(
+    'securitygroups' => array(
+        'top_buttons' => array(
+            array(
+                'widget_class' => 'SubPanelTopSelectButton',
+                'mode' => 'MultiSelect',
+            ),
+            array(
+                'widget_class' => 'SubPanelTopButtonQuickCreate',
+            ),
         ),
-        'start_date' => array(
-            'name' => 'start_date',
-            'vname' => 'LBL_START_DATE',
-        ),
-        'end_date' => array(
-            'name' => 'end_date',
-            'vname' => 'LBL_END_DATE',
-        ),
-        'edit_button' => array(
-            'vname' => 'LBL_EDIT_BUTTON',
-            'widget_class' => 'SubPanelEditButton',
-            'module' => 'SalaryRanges',
-        ),
-        'remove_button' => array(
-            'vname' => 'LBL_REMOVE',
-            'widget_class' => 'SubPanelDeleteButton',
-            'module' => 'SalaryRanges',
-        ),
+        'order' => 900,
+        'sort_by' => 'name',
+        'sort_order' => 'asc',
+        'module' => 'SecurityGroups',
+        'refresh_page' => 1,
+        'subpanel_name' => 'default',
+        'get_subpanel_data' => 'SecurityGroups',
+        'add_subpanel_data' => 'securitygroup_id',
+        'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
     ),
 );

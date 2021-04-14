@@ -55,12 +55,48 @@ $searchdefs[$module_name] = array(
 
         ),
         'advanced_search' => array(
+            'name',
             'position_name' => array(
                 'label' => 'LBL_POSITION_NAME',
                 'type' => 'relate',
                 'width' => '10%',
                 'default' => true,
                 'name' => 'position_name',
+            ),
+            'start_date' => array(
+                'label' => 'LBL_START_DATE',
+                'type' => 'date',
+                'width' => '10%',
+                'default' => true,
+                'name' => 'start_date',
+            ),
+            'end_date' => array(
+                'label' => 'LBL_END_DATE',
+                'type' => 'date',
+                'width' => '10%',
+                'default' => true,
+                'name' => 'end_date',
+            ),
+            'date_modified' => array(
+                'label' => 'LBL_DATE_MODIFIED',
+                'type' => 'date',
+                'width' => '10%',
+                'default' => true,
+                'name' => 'date_modified',
+            ),
+            'created_by' => array(
+                'label' => 'LBL_CREATED_USER',
+                'type' => 'assigned_user_name',
+                'width' => '10%',
+                'default' => true,
+                'name' => 'created_by',
+            ),
+            'modified_user_id' => array(
+                'type' => 'assigned_user_name',
+                'label' => 'LBL_MODIFIED',
+                'width' => '10%',
+                'default' => true,
+                'name' => 'modified_user_id',
             ),
 
         ),
