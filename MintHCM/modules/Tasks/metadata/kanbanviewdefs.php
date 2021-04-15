@@ -17,26 +17,26 @@ $kanbanViewDefs[$module_name] = array(
     'allow_create' => ACLController::checkAccess('Tasks', 'edit', true),
     //In case you want to block the dragging of item from one column or another, make change in 'actions'
     'actions' => array(
-        'Not Started' => array(
-            'In Progress',
-            'Pending Input',
-            'Deferred',
-        ),
-        'In Progress' => array(
-            'Not Started',
-            'Pending Input',
-            'Deferred',
-        ),
-        'Pending Input' => array(
-            'Not Started',
-            'In Progress',
-            'Deferred',
-        ),
-        'Deferred' => array(
-            'Not Started',
-            'In Progress',
-            'Pending Input',
-        ),
+        // 'Not Started' => array(
+        //     'In Progress',
+        //     'Pending Input',
+        //     'Deferred',
+        // ),
+        // 'In Progress' => array(
+        //     'Not Started',
+        //     'Pending Input',
+        //     'Deferred',
+        // ),
+        // 'Pending Input' => array(
+        //     'Not Started',
+        //     'In Progress',
+        //     'Deferred',
+        // ),
+        // 'Deferred' => array(
+        //     'Not Started',
+        //     'In Progress',
+        //     'Pending Input',
+        // ),
     ),
     'required_fields' => array(
         'name'
