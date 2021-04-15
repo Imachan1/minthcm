@@ -141,6 +141,7 @@ SugarWidgetListView.prototype.display = function () {
 }
 // MintHCM #43484 Start
 SugarWidgetSchedulerAttendees.get_users = function (list_row) {
+    
     if (typeof (GLOBAL_REGISTRY.result_list[list_row]) != 'undefined') {
         viewTools.api.callCustomApi( {
             module: 'Meetings',
@@ -168,7 +169,6 @@ SugarWidgetSchedulerAttendees.get_users = function (list_row) {
 SugarWidgetSchedulerAttendees.userOnList = function (id){
     var user_on_list = false;
     for(var i = 0; i<GLOBAL_REGISTRY.focus.users_arr.length; i++){
-        debugger;
         if(GLOBAL_REGISTRY.focus.users_arr[i].fields.id == id){
             user_on_list = true;
             break;
@@ -1096,7 +1096,9 @@ SugarWidgetSchedulerAttendees.form_add_attendee = function (list_row) {
 
 
     // MintHCM #43484 Start
-    SugarWidgetSchedulerAttendees.get_users(list_row);
+    if(GLOBAL_REGISTRY.result_list[list_row].module == 'SecurityGroup'){
+        SugarWidgetSchedulerAttendees.get_users(list_row);
+    }
         // MintHCM #43484 End
     GLOBAL_REGISTRY.scheduler_attendees_obj.display();
 }

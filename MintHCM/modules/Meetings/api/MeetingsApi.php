@@ -6,12 +6,15 @@ class MeetingsApi
     public function getUsers($args)
     {
         $users_bean = BeanFactory::getBean('Users');
-        $list = $users_bean->get_list(
-            "",
-            "users.securitygroup_id = '{$args['id']}' "
-        );
+        if(!empty($args['id']) && is_string($args['id'])){
+            $list = $users_bean->get_list(
+                "",
+                "users.securitygroup_id = '{$users_bean->db->quote($args['id'])}' "
+            );
+        }
+        $users_id=[];
         foreach ($list['list'] as $key => $value) {
-            $users_id = array( 
+            $users_id[] = array( 
                 'id'=>$value->id,
                 'full_name'=>$value->full_name,
                 'phone_work'=>$value->phone_work,
