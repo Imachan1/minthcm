@@ -14,6 +14,8 @@ $kanbanViewDefs[$module_name] = array(
         'Completed'
     ),
     'expired_excluded_columns' => array(),
+    'allow_create' => ACLController::checkAccess('Tasks', 'edit', true),
+    //In case you want to block the dragging of item from one column or another, make change in 'actions'
     'actions' => array(
         'Not Started' => array(
             'In Progress',

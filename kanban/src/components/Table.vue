@@ -57,7 +57,7 @@
           </transition-group>
         </draggable>
         <VCard
-          v-if="!loading"
+          v-if="!loading && canUserCreateItem()"
           :class="{
             'pa-1': true,
             'text-center': true,
@@ -156,6 +156,13 @@ export default {
     },
     canUserDropItemIntoColumn (columnName) {
       return !this.dropColumns || this.dropColumns.indexOf(columnName) !== -1
+    },
+    canUserCreateItem () {
+      let result = false
+      if (this.defs.allow_create) {
+        result = true
+      }
+      return result
     }
   }
 }
