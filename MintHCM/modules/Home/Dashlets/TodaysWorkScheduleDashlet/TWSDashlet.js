@@ -108,12 +108,9 @@ if (!window.TWSDashlet) {
                     alert(SUGAR.language.get('app_strings', 'LBL_CANNOT_ADD_TIME_FOR_PREV_MONTHS'));
                 } else {
                     var planName = _this.getCurrentPlanValue('name') || '';
-                    //open("index.php?module=SpentTime&action=EditView&" +
-// "workschedule_id=" + planId + "&workschedule_name=" + planName +
-// "&return_module=Home&return_action=index", '_self');
 
                     MintHCMDynamicPopupView.init(
-                        "Plan pracy",
+                        SUGAR.language.get('app_strings', 'WorkSchedules'),
                         'SpentTime',
                         "",
                         {
