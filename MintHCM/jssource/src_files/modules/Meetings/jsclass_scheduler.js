@@ -169,8 +169,6 @@ SugarWidgetSchedulerSearch.prototype.load = function ( parentNode ) {
 
 SugarWidgetSchedulerSearch.submit = function ( form ) {
 
-   SugarWidgetSchedulerSearch.hideCreateForm();
-
    //construct query obj:
    var conditions = new Array();
 
