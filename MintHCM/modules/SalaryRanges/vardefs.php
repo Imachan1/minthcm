@@ -388,10 +388,10 @@ VardefManager::createVardef('SalaryRanges', 'SalaryRanges', array('basic', 'assi
 
 $dictionary['SalaryRanges']['fields']['name']['vt_readonly'] = true;
 $dictionary['SalaryRanges']['fields']['name']['audited'] = false;
-// $dictionary['SalaryRanges']['fields']['name']['related_fields'] = array(
-//     'position_name',
-//     'start_date',
-//     'end_date',
-// );
+$dictionary['SalaryRanges']['fields']['name']['related_fields'] = array(
+    'position_name',
+    'start_date',
+    'end_date',
+);
 $dictionary['SalaryRanges']['fields']['name']['disable_num_format'] = 1;
 $dictionary['SalaryRanges']['fields']['description']['audited'] = true;

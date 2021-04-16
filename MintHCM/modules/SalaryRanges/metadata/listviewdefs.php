@@ -113,17 +113,20 @@ $listViewDefs[$module_name] = array(
         'name' => 'DATE_MODIFIED',
     ),
     'MODIFIED_BY_NAME' => array(
-        'width' => '5',
-        'label' => 'LBL_MODIFIED'
+        'width' => '5%',
+        'label' => 'LBL_MODIFIED',
+        'default' => false,
+        'name' => 'modified_by_name',
     ),
-    'CREATED_BY' => array(
+    'CREATED_BY_NAME' => array(
         'label' => 'LBL_CREATED_USER',
         'width' => '10%',
         'default' => false,
-        'name' => 'created_by',
+        'name' => 'CREATED_BY_NAME',
     ),
     'DATE_ENTERED' => array(
-        'width' => '10',
-        'label' => 'LBL_DATE_ENTERED'
+        'width' => '10%',
+        'label' => 'LBL_DATE_ENTERED',
+        'default' => false,
     ),
 );
