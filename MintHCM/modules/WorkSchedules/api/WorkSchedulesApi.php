@@ -178,4 +178,14 @@ class WorkSchedulesApi
         }
         return $result;
     }
+
+    public function canChangeWorkScheduleStatus($id, $status)
+    {
+        $return = true;
+        $work_schedule = BeanFactory::getBean('WorkSchedules', $id);
+        if ($status == 'closed' && $work_schedule->canBeConfirmed() != "1") {
+            $return = false;
+        }
+        return $return;
+    }
 }
