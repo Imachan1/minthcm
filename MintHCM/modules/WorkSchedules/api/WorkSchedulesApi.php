@@ -178,4 +178,16 @@ class WorkSchedulesApi
         }
         return $result;
     }
+
+    // MintHCM #66889 START
+    public function validateDelegationDurationValue($delegation_duration)
+    {
+        if (is_numeric($delegation_duration) && $delegation_duration >= 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    // MintHCM #66889 END
 }
