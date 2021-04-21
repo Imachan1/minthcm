@@ -10552,8 +10552,8 @@ footer.collapsedSidebar {
     margin: 0;
   }
   .mobile-bar > .toolbar > .navbar-nav .btn {
-    margin-bottom: 0;
     margin-right: 0;
+    box-shadow: none;
   }
 
   .modulelinks .dropdown-menu {
@@ -10735,8 +10735,10 @@ footer.collapsedSidebar {
     height: 28px;
     background-color: #009976;
     line-height: 40px;
-    font-size: 20px;
+    font-size: 30px;
     color: #ffffff;
+    margin-bottom: 22px;
+    margin-left: -15px;
   }
 
   .desktop_notifications > button {
@@ -10923,6 +10925,7 @@ footer.collapsedSidebar {
     padding: 0;
     line-height: normal;
     background-size: 40px auto;
+    box-shadow: none;
   }
 
   .tablet-bar > .toolbar > li > .btn.alertsButton {
