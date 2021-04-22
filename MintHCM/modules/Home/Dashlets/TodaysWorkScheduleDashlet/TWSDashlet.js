@@ -109,8 +109,8 @@ if (!window.TWSDashlet) {
                 } else {
                     var planName = _this.getCurrentPlanValue('name') || '';
 
-                    MintHCMDynamicPopupView.init(
-                        SUGAR.language.get('app_strings', 'WorkSchedules'),
+                    MintHCMDynamicPopupView.init(        
+                        SUGAR.language.get('app_strings', 'LBL_WORKSCHEDULES'),
                         'SpentTime',
                         "",
                         {
