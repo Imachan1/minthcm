@@ -477,12 +477,14 @@ WHERE ae.employee_id='{$this->assigned_user_id}' AND ae.deleted=0";
     // MintHCM #76236 START
     protected function disableAlertForConfirmedWorkSchedule()
     {
-        $sql = "SELECT id FROM alerts WHERE parent_id ='{$this->id}' AND is_read = '0' AND deleted = '0'";
-        $result = $this->db->query($sql);
-        while ($row = $this->db->fetchByAssoc($result)) {
-            $alert = BeanFactory::getBean('Alerts', $row['id']);
-            $alert->is_read = "1";
-            $alert->save();
+        if (!empty($this->id)) {
+            $sql = "SELECT id FROM alerts WHERE parent_id ='{$this->id}' AND alert_type = 'WorkSchedulesDayValid' AND parent_type = 'WorkSchedules' AND is_read = '0' AND deleted = '0'";
+            $result = $this->db->query($sql);
+            while ($row = $this->db->fetchByAssoc($result)) {
+                $alert = BeanFactory::getBean('Alerts', $row['id']);
+                $alert->is_read = "1";
+                $alert->save();
+            }
         }
     }
     // MintHCM #76236 END
