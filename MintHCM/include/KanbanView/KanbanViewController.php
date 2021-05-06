@@ -27,28 +27,45 @@ class KanbanViewController
 
     public function getItems()
     {
+        $assigned_user_ids = [];
         $items = $this->getEmptyColumnsArray();
         $order_by = $this->getOrderBy();
         $where = $this->getWhere();
-        $records  = $this->bean->get_full_list($order_by, $where);
-        if($records == null){
+        $records = $this->bean->get_full_list($order_by, $where);
+        if ($records == null) {
             $where = $this->getWhereWithTable();
-            $records  = $this->bean->get_full_list($order_by, $where);  
+            $records = $this->bean->get_full_list($order_by, $where);
         }
         foreach ($records as $bean) {
             $items[$bean->{$this->defs['columns_field']}][] = $this->beanToArray($bean);
+            if ($bean->assigned_user_id && !in_array($bean->assigned_user_id, $assigned_user_ids)) {
+                $assigned_user_ids[] = $bean->assigned_user_id;
+            }
+        }
+        if (!empty($assigned_user_ids)) {
+            $assigned_users = $this->getUsersNames($assigned_user_ids);
+            foreach ($items as &$item) {
+                for ($i = 0; $i < count($item); $i++) {
+                    if (!empty($item[$i]['assigned_user_id'])) {
+                        $item[$i]['assigned_user_name'] = $assigned_users[$item[$i]['assigned_user_id']] ?? '';
+                    }
+                }
+            }
         }
         echo json_encode($items);
     }
 
     protected function beanToArray($bean)
     {
+        global $app_list_strings;
         return array_merge(
             $bean->toArray(true),
             [
                 'module_name' => $bean->module_name,
                 'editable' => $bean->ACLAccess('edit'),
-                'detailview' =>  $bean->ACLAccess('view'),
+                'detailview' => $bean->ACLAccess('view'),
+                'translated_priority' => $app_list_strings['task_priority_dom'][$bean->priority],
+                'assigned_user_name' => '',
             ]
         );
     }
@@ -60,7 +77,7 @@ class KanbanViewController
 
     protected function getWhere()
     {
-        
+
         return !empty($this->defs['black_list']) ? "({$this->defs['columns_field']} NOT IN ('" . implode("','", $this->defs['black_list']) . "'))" : "";
     }
 
@@ -77,6 +94,18 @@ class KanbanViewController
             ),
             []
         );
+    }
+
+    // return array <id> => <name>
+    protected function getUsersNames($users_ids)
+    {
+        $users_names = [];
+        $sql = "SELECT id, first_name, last_name FROM users WHERE deleted = 0 AND id IN ( '" . implode("','", $users_ids) . "' )";
+        $result = $this->bean->db->query($sql);
+        while ($row = $this->bean->db->fetchByAssoc($result)) {
+            $users_names[$row['id']] = $row['first_name'] . ' ' . $row['last_name'];
+        }
+        return $users_names;
     }
 
     public function saveItem($args)
@@ -153,6 +182,5 @@ class KanbanViewController
     {
         $this->bean->{$this->defs['order_field']} = '';
     }
-
 
 }

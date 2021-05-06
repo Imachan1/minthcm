@@ -51,7 +51,6 @@
               :classesFromParent="{
                 item: canUserDragItemFromColumn(key)
               }"
-              @item-cart-click="itemID => $emit('item-cart-click', itemID)"
               @item-click="item => $emit('item-click', item)"
             />
           </transition-group>

@@ -83,6 +83,7 @@
                     {* MintHCM #81007 START*}
                     {/if}
                     {* MintHCM #81007 END*}
+                    {/if}
                 </form>
 
             </div>

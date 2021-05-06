@@ -6,7 +6,6 @@
       @item-change="(itemID, oldOrder, newOrder, oldStatus, newStatus) => $emit('item-change', itemID, oldOrder, newOrder, oldStatus, newStatus)"
       @item-add="(key) => $emit('item-add', key)"
       @item-click="(itemID) => $emit('item-click', itemID)"
-      @item-cart-click="(itemID) => $emit('item-cart-click', itemID)"
     />
   </VApp>
 </template>

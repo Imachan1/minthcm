@@ -6,7 +6,6 @@
       :item="item"
       :defs="defs"
       :classesFromParent="classesFromParent"
-      @item-cart-click="(itemID) => $emit('item-cart-click', itemID)"
       @item-click="(item) => $emit('item-click', item)"
     />
   </keep-alive>
