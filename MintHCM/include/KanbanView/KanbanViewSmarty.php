@@ -1,4 +1,4 @@
-{*
+<?php
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -41,41 +41,76 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
-*}
+class KanbanViewSmarty
+{
+    public $columns;
+    public $data;
+    public $ss; // the smarty object
+    public $tpl;
+    public $moduleString;
+    public $seed;
+    public $templateMeta = array();
 
-<script language="javascript">
-    var _form_id = '{$form_id}';
-    {literal}
-    SUGAR.util.doWhen(function(){
-        _form_id = (_form_id == '') ? 'EditView' : _form_id;
-        return document.getElementById(_form_id) != null;
-    }, SUGAR.themes.actionMenu);
-    {/literal}
-</script>
-{assign var='place' value="_FOOTER"} <!-- to be used for id for buttons with custom code in def files-->
-{{if empty($form.button_location) || $form.button_location == 'bottom'}}
+    /**
+     * Constructor, Smarty object immediately available after
+     *
+     */
+    public function __construct()
+    {
+        $this->ss = new Sugar_Smarty();
+    }
 
-{* MintHCM #81007 START*}
-{if empty($smarty.request.minthcm_popup)}
-{* MintHCM #81007 END*}
-{{sugar_include type='smarty' file='include/EditView/actions_buttons.tpl'}}
-{* MintHCM #81007 START*}
-{/if}
-{* MintHCM #81007 END*}
-{{/if}}
-</form>
-{{if $externalJSFile}}
-{sugar_include include=$externalJSFile}
-{{/if}}
+    public function setup($seed, $file)
+    {
 
-{$set_focus_block}
+        $this->seed = $seed;
+        $this->process($file);
 
-{{if isset($scriptBlocks)}}
-<!-- Begin Meta-Data Javascript -->
-{{$scriptBlocks}}
-<!-- End Meta-Data Javascript -->
-{{/if}}
-<script>SUGAR.util.doWhen("document.getElementById('EditView') != null",
-        function(){ldelim}SUGAR.util.buildAccessKeyLabels();{rdelim});
-</script>
+        return true;
+    }
+
+    /**
+     * Processes the request. Calls ListViewData process. Also assigns all lang strings, export links,
+     * This is called from ListViewDisplay
+     *
+     * @param file $file Template file to use
+     *
+     */
+    function process($file)
+    {
+        global $mod_strings;
+        global $app_strings;
+
+
+        $this->tpl = $file;
+
+        $this->ss->assign('module', $this->seed->module_name);
+        $this->ss->assign('sugarconfig', $this->displayColumns);
+        $this->ss->assign('displayColumns', $this->displayColumns);
+        $this->ss->assign('options', isset($this->templateMeta['options']) ? $this->templateMeta['options']
+                    : null);
+        $this->ss->assign('APP', $app_strings);
+        $this->ss->assign('MOD', $mod_strings);
+        $this->ss->assign('columns', $this->columns);
+        $this->ss->assign('data', $this->data);
+    }
+
+    /**
+     * Displays the xtpl, either echo or returning the contents
+     *
+     */
+    function display()
+    {
+        $this->ss->assign('json', json_encode($this->prepareData()));
+        return $this->ss->fetch($this->tpl);
+    }
+
+    protected function prepareData()
+    {
+        return $this->data;
+    }
+}
