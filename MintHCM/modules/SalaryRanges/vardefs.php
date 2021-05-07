@@ -57,6 +57,8 @@ $dictionary['SalaryRanges'] = array(
                 'compareto' => 'end_date',
                 'blank' => true,
             ),
+            'enable_range_search' => true,
+            'options' => 'date_range_search_dom',
         ),
         'end_date' => array(
             'name' => 'end_date',
@@ -67,6 +69,7 @@ $dictionary['SalaryRanges'] = array(
             'reportable' => true,
             'audited' => true,
             'enable_range_search' => true,
+            'options' => 'date_range_search_dom',
         ),
         'gross_value_from' => array(
             'name' => 'gross_value_from',

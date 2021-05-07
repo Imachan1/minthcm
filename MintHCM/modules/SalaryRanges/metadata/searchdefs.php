@@ -91,6 +91,13 @@ $searchdefs[$module_name] = array(
                 'default' => true,
                 'name' => 'created_by',
             ),
+            'date_entered'=>array(
+                'label' => 'LBL_DATE_ENTERED',
+                'type' => 'date',
+                'width' => '10%',
+                'default' => true,
+                'name' => 'date_entered', 
+            ),
             'modified_user_id' => array(
                 'type' => 'assigned_user_name',
                 'label' => 'LBL_MODIFIED',

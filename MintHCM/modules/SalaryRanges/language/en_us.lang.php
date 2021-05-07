@@ -57,6 +57,6 @@ $mod_strings = array(
     'LBL_POSITION_NAME' => 'Position',
     'LBL_RECORDVIEW_PANEL1' => 'BASIC',
     'LBL_OTHER'=>'Other',
-    'LBL_DATAILS'=>'Datails'
+    'LBL_DETAILS'=>'Details'
 
 );

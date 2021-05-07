@@ -72,7 +72,7 @@ $viewdefs[$module_name] = array(
                     'newTab' => true,
                     'panelDefault' => 'expanded',
                 ),
-                'LBL_DATAILS' => array(
+                'LBL_DETAILS' => array(
                     'newTab' => true,
                     'panelDefault' => 'expanded',
                 ),
@@ -93,7 +93,7 @@ $viewdefs[$module_name] = array(
                     'end_date',
                 ),
             ),
-            'LBL_DATAILS'=>array(
+            'LBL_DETAILS'=>array(
                 array(
                     'net_value_from',
                     'net_value_to',
