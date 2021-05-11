@@ -47,6 +47,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once 'include/SugarObjects/templates/person/Person.php';
 require_once __DIR__ . '/../../include/EmailInterface.php';
+// eVolpe #77675 start
+require_once 'modules/SecurityGroups/PrivateGroup.php';
+// eVolpe #77675 end
 
 // Employee is used to store customer information.
 class Employee extends Person implements EmailInterface
