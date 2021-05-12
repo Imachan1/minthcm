@@ -1034,6 +1034,13 @@ $app_list_strings = array(
         'next_year' => 'Next Year',
         'between' => 'Is Between',
         'over_n_months_ago' => 'More Than n Months Ago',
+        'last_week' => 'Last Week',
+        'this_week' => 'This Week',
+        'next_week' => 'Next Week',
+        'in_the_past' => 'In The Past',
+        'in_the_future' => 'In The Future',
+        'last_n_days' => 'Last n Days',
+        'next_n_days' => 'Next n Days',
     ),
     'numeric_range_search_dom' => array(
         '=' => 'Equals',
