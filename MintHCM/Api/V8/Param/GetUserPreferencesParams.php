@@ -68,7 +68,7 @@ class GetUserPreferencesParams extends BaseParam
     }
 
     /**
-     * 
+     *
      * @param OptionsResolver $resolver
      */
     protected function configureParameters(OptionsResolver $resolver)

@@ -10,6 +10,12 @@ class Filter
     const OP_GTE = '>=';
     const OP_LT = '<';
     const OP_LTE = '<=';
+    const OP_LIKE = 'LIKE';
+    // MintHCM Start #84318
+    const OP_NOT_LIKE = 'NOT LIKE';
+    const OP_IN = 'IN';
+    const OP_NOT_IN = 'NOT IN';
+    // MintHCM End #84318
 
     const OP_AND = 'AND';
     const OP_OR = 'OR';
@@ -43,9 +49,10 @@ class Filter
             unset($params['operator']);
         }
 
+        $params = $this->addDeletedParameter($params);
         $where = [];
         foreach ($params as $field => $expr) {
-            if (!property_exists($bean, $field)) {
+            if (empty($bean->field_defs[$field])) {
                 throw new \InvalidArgumentException(sprintf(
                     'Filter field %s in %s module is not found',
                     $field,
@@ -64,12 +71,29 @@ class Filter
                     $bean->getTableName(),
                     $field,
                     constant(sprintf('%s::OP_%s', self::class, strtoupper($op))),
-                    $this->db->quoted($value)
+                    $this->parseValues($op, $value) // MintHCM #84318
                 );
             }
         }
-
+         
         return implode(sprintf(' %s ', $operator), $where);
+    }
+
+    /**
+     * Only return deleted records if they were explicitly requested
+     *
+     * @param array $params
+     * @return array
+     */
+    protected function addDeletedParameter(array $params)
+    {
+        if (!array_key_exists('deleted', $params)) {
+            $params['deleted'] = [
+                'eq' => 0,
+            ];
+        }
+
+        return $params;
     }
 
     /**
@@ -86,4 +110,16 @@ class Filter
             );
         }
     }
+
+    // MintHCM Start #84318
+    protected function parseValues($operator, $value)
+    {
+        switch ($operator) {
+            case 'in':
+            case 'not_in':
+                return '("' . implode('","', explode(',', $value)) . '")';
+        }
+        return $this->db->quoted($value);
+    }
+    // MintHCM End #84318
 }

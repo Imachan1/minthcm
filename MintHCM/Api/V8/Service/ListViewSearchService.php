@@ -75,7 +75,7 @@ class ListViewSearchService
     /**
      * @var BeanManager
      */
-    private $beanManager;
+    protected $beanManager;
 
     /**
      * @param BeanManager $beanManager
@@ -130,7 +130,7 @@ class ListViewSearchService
         $searchDefs = SearchForm::retrieveSearchDefs($moduleName);
         
         // get list view defs
-        $displayColumns = ListViewFacade::getDisplayColumns($moduleName);
+        // $displayColumns = ListViewFacade::getDisplayColumns($moduleName); MintHCM #84318
         
         // simplified data struct
         
@@ -142,14 +142,16 @@ class ListViewSearchService
             'fields' => $searchDefs['searchFields'][$moduleName]
         ];
         
+        /* MintHCM Start #84318
         // translations
         
         $trans = new LangText(null, null, LangText::USING_ALL_STRINGS, true, false, $moduleName);
         
-        
+
         $data = $this->getDataTranslated($trans, $data, 'basic', 'label', $displayColumns);
         $data = $this->getDataTranslated($trans, $data, 'advanced', 'label', $displayColumns);
         $data = $this->getDataTranslated($trans, $data, 'fields', 'vname', $displayColumns);
+        MintHCM End #84318 */
         
         // generate response
         

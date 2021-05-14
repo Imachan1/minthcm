@@ -42,52 +42,24 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-namespace Api\V8\Controller;
+namespace SuiteCRM\Exception;
 
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
-
-use Api\V8\Service\UserService;
-use Exception;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use SuiteCRM\Enumerator\ExceptionCode;
 
 /**
- * UserController
- *
- * @author gyula
+ * Class NotAllowedException
+ * @package SuiteCRM\Exception
  */
-class UserController extends BaseController
+class NotAllowedException extends Exception
 {
-    
     /**
-     * @var UserService
+     * NotAllowedException constructor.
+     * @param string $message
+     * @param int $code
+     * @param null $previous
      */
-    protected $userService;
-    
-    /**
-     * @param UserService $userService
-     */
-    public function __construct(UserService $userService)
+    public function __construct($message = '', $code = ExceptionCode::API_CONTENT_NEGOTIATION_FAILED, $previous = null)
     {
-        $this->userService = $userService;
-    }
-    
-    /**
-     *
-     * @param Request $request
-     * @param Response $response
-     * @param array $args
-     * @return Response
-     */
-    public function getCurrentUser(Request $request, Response $response, array $args)
-    {
-        try {
-            $jsonResponse = $this->userService->getCurrentUser($request);
-            return $this->generateResponse($response, $jsonResponse, 200);
-        } catch (Exception $exception) {
-            return $this->generateErrorResponse($response, $exception, 400);
-        }
+        parent::__construct('[Not Allowed] ' . $message, $code, $previous);
     }
 }
