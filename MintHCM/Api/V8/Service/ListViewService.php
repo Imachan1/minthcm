@@ -72,7 +72,7 @@ class ListViewService
      *
      * @var array
      */
-    private static $listViewColumnInterface = [
+    protected static $listViewColumnInterface = [
         'fieldName' => '',
         'width' => '',
         'label' => '',
@@ -87,22 +87,22 @@ class ListViewService
     /**
      * @var BeanManager
      */
-    private $beanManager;
+    protected $beanManager;
 
     /**
      * @var AttributeObjectHelper
      */
-    private $attributeHelper;
+    protected $attributeHelper;
 
     /**
      * @var RelationshipObjectHelper
      */
-    private $relationshipHelper;
+    protected $relationshipHelper;
 
     /**
      * @var PaginationObjectHelper
      */
-    private $paginationHelper;
+    protected $paginationHelper;
 
     /**
      * @param BeanManager $beanManager
@@ -131,19 +131,23 @@ class ListViewService
     {
         $moduleName = $params->getModuleName();
         /** @var SugarBean */
+        /* MintHCM Start #84318
         $bean = \BeanFactory::getBean($moduleName);
         
         $text = new LangText(null, null, LangText::USING_ALL_STRINGS, true, false, $moduleName);
+        MintHCM End #84318 */
         $displayColumns = ListViewFacade::getDisplayColumns($moduleName);
         $data = [];
         foreach ($displayColumns as $key => $column) {
             $column = array_merge(self::$listViewColumnInterface, $column);
+            /* MintHCM Start #84318
             $column['fieldName'] = $key; // get the vardef instead this "intuitive fieldName"
             $translated = $text->getText($column['label']);
             if (!$translated) {
                 $translated = $text->getText($bean->field_name_map[strtolower($key)]['vname']);
             }
             $column['label'] = $translated ? $translated : $column['label'];
+            MintHCM End #84318 */ 
             
             // TODO: validate the column name (for e.g label and name should be requered etc...) also check the ListViewColumnInterface keys are match..
             $data[] = $column;

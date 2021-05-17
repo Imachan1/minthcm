@@ -4,11 +4,12 @@ use Api\V8\Controller;
 use Api\V8\Service\ListViewSearchService;
 use Api\V8\Service\ListViewService;
 use Api\V8\Service\LogoutService;
+use Api\V8\Service\MetaService;
 use Api\V8\Service\ModuleService;
 use Api\V8\Service\RelationshipService;
 use Api\V8\Service\UserPreferencesService;
 use Api\V8\Service\UserService;
-use Interop\Container\ContainerInterface as Container;
+use Psr\Container\ContainerInterface as Container;
 use League\OAuth2\Server\ResourceServer;
 
 use Api\Core\Loader\CustomLoader;
@@ -27,6 +28,11 @@ return CustomLoader::mergeCustomArray([
     Controller\UserController::class => function (Container $container) {
         return new Controller\UserController(
             $container->get(UserService::class)
+        );
+    },
+    Controller\MetaController::class => function (Container $container) {
+        return new Controller\MetaController(
+            $container->get(MetaService::class)
         );
     },
     Controller\ListViewController::class => function (Container $container) {

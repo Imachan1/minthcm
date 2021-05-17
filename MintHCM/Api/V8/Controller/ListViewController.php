@@ -52,7 +52,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 use Api\V8\Param\ListViewColumnsParams;
 use Api\V8\Service\ListViewService;
-use Api\V8\Service\ModuleService;
 use Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -68,7 +67,7 @@ class ListViewController extends BaseController
     /**
      * @var ListViewService
      */
-    private $listViewService;
+    protected $listViewService;
 
     /**
      * @param ListViewService $listViewService
@@ -79,7 +78,7 @@ class ListViewController extends BaseController
     }
     
     /**
-     * 
+     *
      * @param Request $request
      * @param Response $response
      * @param array $args

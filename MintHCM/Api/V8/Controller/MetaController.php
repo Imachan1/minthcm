@@ -7,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -35,10 +35,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -48,32 +48,32 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+use Api\V8\Param\GetFieldListParams;
+use Api\V8\Service\MetaService;
 use Api\V8\Service\UserService;
 use Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
 /**
- * UserController
- *
- * @author gyula
+ * MetaController
  */
-class UserController extends BaseController
+class MetaController extends BaseController
 {
-    
+
     /**
      * @var UserService
      */
-    protected $userService;
-    
+    private $metaService;
+
     /**
-     * @param UserService $userService
+     * @param MetaService $metaService
      */
-    public function __construct(UserService $userService)
+    public function __construct(MetaService $metaService)
     {
-        $this->userService = $userService;
+        $this->metaService = $metaService;
     }
-    
+
     /**
      *
      * @param Request $request
@@ -81,10 +81,46 @@ class UserController extends BaseController
      * @param array $args
      * @return Response
      */
-    public function getCurrentUser(Request $request, Response $response, array $args)
+    public function getModuleList(Request $request, Response $response, array $args)
     {
         try {
-            $jsonResponse = $this->userService->getCurrentUser($request);
+            $jsonResponse = $this->metaService->getModuleList($request);
+
+            return $this->generateResponse($response, $jsonResponse, 200);
+        } catch (Exception $exception) {
+            return $this->generateErrorResponse($response, $exception, 400);
+        }
+    }
+
+    /**
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @param GetFieldListParams $fieldListParams
+     * @return Response
+     */
+    public function getFieldList(Request $request, Response $response, array $args, GetFieldListParams $fieldListParams)
+    {
+        try {
+            $jsonResponse = $this->metaService->getFieldList($request, $fieldListParams);
+
+            return $this->generateResponse($response, $jsonResponse, 200);
+        } catch (Exception $exception) {
+            return $this->generateErrorResponse($response, $exception, 400);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function getSwaggerSchema(Request $request, Response $response)
+    {
+        try {
+            $jsonResponse = $this->metaService->getSwaggerSchema();
+
             return $this->generateResponse($response, $jsonResponse, 200);
         } catch (Exception $exception) {
             return $this->generateErrorResponse($response, $exception, 400);
