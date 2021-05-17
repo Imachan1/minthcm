@@ -6,9 +6,9 @@ if (!defined('sugarEntry')) {
 
 header('Content-Type: application/vnd.api+json');
 
-$action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
-$language = filter_input(INPUT_POST, 'language', FILTER_SANITIZE_STRING);
-$module = filter_input(INPUT_POST, 'module', FILTER_SANITIZE_STRING);
+$action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
+$language = filter_input(INPUT_GET, 'language', FILTER_SANITIZE_STRING);
+$module = filter_input(INPUT_GET, 'module', FILTER_SANITIZE_STRING);
 
 if (empty($action)) {
     http_response_code(400);
