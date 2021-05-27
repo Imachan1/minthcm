@@ -1,6 +1,8 @@
 <?php
 
+use Api\Core\Loader\CustomLoader;
 use Api\V8\Controller;
+use Api\V8\Service\FileService;
 use Api\V8\Service\ListViewSearchService;
 use Api\V8\Service\ListViewService;
 use Api\V8\Service\LogoutService;
@@ -9,10 +11,8 @@ use Api\V8\Service\ModuleService;
 use Api\V8\Service\RelationshipService;
 use Api\V8\Service\UserPreferencesService;
 use Api\V8\Service\UserService;
-use Psr\Container\ContainerInterface as Container;
 use League\OAuth2\Server\ResourceServer;
-
-use Api\Core\Loader\CustomLoader;
+use Psr\Container\ContainerInterface as Container;
 
 return CustomLoader::mergeCustomArray([
     Controller\ListViewSearchController::class => function (Container $container) {
@@ -54,6 +54,11 @@ return CustomLoader::mergeCustomArray([
     Controller\RelationshipController::class => function (Container $container) {
         return new Controller\RelationshipController(
             $container->get(RelationshipService::class)
+        );
+    },
+    Controller\FileController::class => function (Container $container) {
+        return new Controller\FileController(
+            $container->get(FileService::class)
         );
     },
 ], basename(__FILE__));

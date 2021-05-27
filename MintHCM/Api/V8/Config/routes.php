@@ -1,5 +1,6 @@
 <?php
 
+use Api\Core\Loader\CustomLoader;
 use Api\V8\Controller\LogoutController;
 use Api\V8\Factory\ParamsMiddlewareFactory;
 use Api\V8\Param;
@@ -7,7 +8,6 @@ use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Middleware\AuthorizationServerMiddleware;
 use League\OAuth2\Server\Middleware\ResourceServerMiddleware;
 use League\OAuth2\Server\ResourceServer;
-use Api\Core\Loader\CustomLoader;
 
 $app->group('', function () use ($app) {
     /**
@@ -119,10 +119,18 @@ $app->group('', function () use ($app) {
                 'Api\V8\Controller\RelationshipController:deleteRelationship'
             )
             ->add($paramsMiddlewareFactory->bind(Param\DeleteRelationshipParams::class));
-        // add custom routes        
+
+        $app
+            ->post('/module/{moduleName}/{id}/file/send', 'Api\V8\Controller\FileController:uploadFile')
+            ->add($paramsMiddlewareFactory->bind(Param\UploadFileParams::class));
+
+        $app
+            ->get('/module/{moduleName}/{id}/file/preview', 'Api\V8\Controller\FileController:imagePreview')
+            ->add($paramsMiddlewareFactory->bind(Param\ImagePreviewParams::class));
+
+        // add custom routes
         $app->group('/custom', function () use ($app) {
             $app = CustomLoader::loadCustomRoutes($app);
         });
     })->add(new ResourceServerMiddleware($app->getContainer()->get(ResourceServer::class)));
 });
-

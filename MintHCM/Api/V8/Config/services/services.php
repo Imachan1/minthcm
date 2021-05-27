@@ -61,4 +61,11 @@ return CustomLoader::mergeCustomArray([
             $container->get(PaginationObjectHelper::class)
         );
     },
+    Service\FileService::class => function (Container $container) {
+        return new Service\FileService(
+            $container->get(BeanManager::class),
+            $container->get(AttributeObjectHelper::class),
+            $container->get(RelationshipObjectHelper::class)
+        );
+    },
 ], basename(__FILE__));

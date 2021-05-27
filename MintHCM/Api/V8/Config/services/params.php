@@ -85,4 +85,16 @@ return CustomLoader::mergeCustomArray([
             $container->get(BeanManager::class)
         );
     },
+    Param\UploadFileParams::class => function (Container $container) {
+        return new Param\UploadFileParams(
+            $container->get(ValidatorFactory::class),
+            $container->get(BeanManager::class)
+        );
+    },
+    Param\ImagePreviewParams::class => function (Container $container) {
+        return new Param\ImagePreviewParams(
+            $container->get(ValidatorFactory::class),
+            $container->get(BeanManager::class)
+        );
+    },
 ], basename(__FILE__));
