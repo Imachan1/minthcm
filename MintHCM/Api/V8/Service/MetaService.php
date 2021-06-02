@@ -46,9 +46,11 @@ namespace Api\V8\Service;
 
 use Api\V8\BeanDecorator\BeanManager;
 use Api\V8\Helper\ModuleListProvider;
+use Api\V8\Helper\VarDefHelper;
 use Api\V8\JsonApi\Response\AttributeResponse;
 use Api\V8\JsonApi\Response\DataResponse;
 use Api\V8\JsonApi\Response\DocumentResponse;
+use Api\V8\Param\GetModuleMetaParams;
 use Api\V8\Param\GetFieldListParams;
 use Slim\Http\Request;
 use SuiteCRM\Exception\Exception;
@@ -70,6 +72,7 @@ class MetaService
      * @var ModuleListProvider
      */
     private $moduleListProvider;
+    private $varDefHelper;
 
     private static $allowedVardefFields = [
         'type',
@@ -81,7 +84,7 @@ class MetaService
         'precision',
         'comments',
         'required',
-        'vname' // MintHCM #84318
+        'vname', // MintHCM #84318
     ];
 
     /**
@@ -90,10 +93,12 @@ class MetaService
      */
     public function __construct(
         BeanManager $beanManager,
-        ModuleListProvider $moduleListProvider
+        ModuleListProvider $moduleListProvider,
+        VarDefHelper $varDefHelper
     ) {
         $this->beanManager = $beanManager;
         $this->moduleListProvider = $moduleListProvider;
+        $this->varDefHelper = $varDefHelper;
     }
 
     /**
@@ -222,5 +227,109 @@ class MetaService
         }
 
         return json_decode($swaggerFile, true);
+    }
+
+    public function getEditViewMeta(Request $request, GetModuleMetaParams $moduleMetaParams)
+    {
+        $module = $moduleMetaParams->getModuleName();
+        
+        $ve = new \ViewEdit;
+        $ve->module = $module;
+        require_once $ve->getMetaDataFile();
+
+        $bean = \BeanFactory::newBean($module);
+        $module_fields = $this->varDefHelper->getModuleVardefs($bean);
+
+        $response = new DocumentResponse();
+        $response->setData($this->mergeModuleFields($viewdefs[$module]['EditView']['panels'],$module_fields));
+        return $response;
+    }
+
+    public function getDetailViewMeta(Request $request, GetModuleMetaParams $moduleMetaParams)
+    {
+        $module = $moduleMetaParams->getModuleName();
+
+        $ve = new \ViewDetail;
+        $ve->module = $module;
+        require_once $ve->getMetaDataFile();
+        require_once 'include/SubPanel/SubPanelDefinitions.php';
+
+        $bean = $this->beanManager->newBeanSafe($module);
+        $module_fields = $this->varDefHelper->getModuleVardefs($bean);
+
+        $data = [];
+        $data['detailview'] = $this->mergeModuleFields($viewdefs[$module]['DetailView']['panels'],$module_fields);
+        $data['subpanels'] = $this->getSubpanelSetup(new \SubPanelDefinitions($bean, $module));
+
+        $response = new DocumentResponse();
+        $response->setData($data);
+        return $response;
+    }
+
+    protected function mergeModuleFields($array, $module_fields)
+    {
+        foreach ($array as $panel => $fields) {
+            foreach ($fields as $arr_key => $field) {
+                foreach ($field as $k => $v) {
+                    if (!is_array($v) && !empty($module_fields[$v])) {
+                        $array[$panel][$arr_key][$k] = $module_fields[$v]; 
+                        $array[$panel][$arr_key][$k]['label'] = $array[$panel][$arr_key][$k]['vname'];
+                        unset($array[$panel][$arr_key][$k]['vname']);
+                        continue;
+                    }
+                    if(empty($module_fields[$v['name']])){
+                        continue;
+                    }
+                    if(empty($array[$panel][$arr_key][$k]['label'])){
+                        $array[$panel][$arr_key][$k]['label'] = $module_fields[$v['name']]['vname'];
+                    } 
+                    unset($module_fields[$v['name']]['vname']);
+                    $array[$panel][$arr_key][$k] += $module_fields[$v['name']];
+                }
+            }
+        }
+        return $array;
+    }
+
+    protected function mergeSubpanelFields($array, $module_fields)
+    {
+        foreach ($array as $k => $v) {
+            if (!is_array($v) && !empty($module_fields[$v])) {
+                $array[$k] = $module_fields[$v];
+                $array[$k]['label'] = $array[$k]['vname'];
+                unset($array[$k]['vname']);
+                continue;
+            }
+            if(empty($module_fields[$k])){
+                unset($array[$k]);
+                continue;
+            }
+            if(!empty($array[$k]['vname'])){
+                $array[$k]['label'] = $array[$k]['vname'];
+                unset($array[$k]['vname']);
+            } else {
+                if(!empty($module_fields[$k]['vname'])){
+                    $array[$k]['label'] = $module_fields[$k]['vname'];
+                }
+            }
+            unset($module_fields[$k]['vname']);
+            $array[$k] += $module_fields[$k];
+        }                    
+        return $array;
+    }
+
+    protected function getSubpanelSetup($sb)
+    {
+        $array = [];
+        foreach ($sb->layout_defs['subpanel_setup'] as $name => $defs) {
+            $module_bean = \BeanFactory::newBean($defs['module']);
+            $array[$name]['properties'] = $defs;
+            if(!empty($module_bean) && $module_bean instanceof \SugarBean){
+                $array[$name]['columns'] = $this->mergeSubpanelFields(($sb->load_subpanel($name))->panel_definition['list_fields'], $this->getModuleFields($module_bean));
+            } else {
+                $array[$name]['columns'] = ($sb->load_subpanel($name))->panel_definition['list_fields'];    
+            }
+        }
+        return $array;
     }
 }

@@ -389,6 +389,7 @@ class ComposerStaticInit39ad14f11ae792001fdf64c62743e5c7
         'Api\\V8\\Param\\UpdateModuleParams' => __DIR__ . '/../..' . '/Api/V8/Param/UpdateModuleParams.php',
         'Api\\V8\\Param\\ImagePreviewParams' => __DIR__ . '/../..' . '/Api/V8/Param/ImagePreviewParams.php',
         'Api\\V8\\Param\\UploadFileParams' => __DIR__ . '/../..' . '/Api/V8/Param/UploadFileParams.php',
+        'Api\\V8\\Param\\GetModuleMetaParams' => __DIR__ . '/../..' . '/Api/V8/Param/GetModuleMetaParams.php',
         'Api\\V8\\Service\\ListViewSearchService' => __DIR__ . '/../..' . '/Api/V8/Service/ListViewSearchService.php',
         'Api\\V8\\Service\\ListViewService' => __DIR__ . '/../..' . '/Api/V8/Service/ListViewService.php',
         'Api\\V8\\Service\\LogoutService' => __DIR__ . '/../..' . '/Api/V8/Service/LogoutService.php',
