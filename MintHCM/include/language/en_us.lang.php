@@ -4207,3 +4207,12 @@ $app_list_strings['reaction_icons_list'] = array(
    'dislike' => 'thumbs-down',
 );
  
+$app_strings['LBL_PASSWORD_LOGIN_ERROR_USER'] = 'Missing username and password';
+$app_strings['LBL_LOGIN_ERROR_USER'] = 'Username is missing';
+$app_strings['LBL_PASSWORD_ERROR_USER'] = 'The password is missing';
+$app_strings['LBL_BAD_LOGIN_PASSWORD'] = 'Incorrect username or password';
+$app_strings['LBL_USERNAME'] = 'Username';
+$app_strings['LBL_PASSWORD'] = 'Password';
+$app_strings['LBL_WELCOME'] = 'Welcome';
+$app_strings['LBL_NO_LANGUAGES'] = 'No languages ​​available';
+$app_strings['LBL_NETWORK_ERROR'] = 'Network error';
