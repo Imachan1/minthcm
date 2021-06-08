@@ -4216,3 +4216,5 @@ $app_strings['LBL_PASSWORD'] = 'Password';
 $app_strings['LBL_WELCOME'] = 'Welcome';
 $app_strings['LBL_NO_LANGUAGES'] = 'No languages ​​available';
 $app_strings['LBL_NETWORK_ERROR'] = 'Network error';
+$app_strings['LBL_LOGIN'] = 'Sign In';
+$app_strings['LBL_DASHBOARD'] = 'Dashboard';
