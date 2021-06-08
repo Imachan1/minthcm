@@ -333,7 +333,7 @@ $dictionary['SpentTime'] = array(
         ),
         'workschedule_id' => array(
             'name' => 'workschedule_id',
-            'type' => 'link',
+            'type' => 'id',
             'relationship' => 'workschedules_spenttime',
             'source' => 'non-db',
             'reportable' => false,
