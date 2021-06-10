@@ -114,16 +114,16 @@ convertToEmployee = {
         };
     },
 
-    ajaxRequest: function (record_id, module_name, login, LBL_FAIL, convertType) {
+    ajaxRequest: function (record_id, module_name, login, LBL_FAIL, convert_type) {
         const ajax_link = `index.php?sugar_body_only=1&action=${this.action_name}&module=${module_name}&record_id=${record_id}&login=${login}`;
 
         $.ajax({
             type: "GET",
             url: ajax_link,
             success: function (id) {
-                if (convertType == "createEmployee") {
+                if (convert_type == "createEmployee") {
                     window.location.href = `index.php?module=Employees&return_module=Employees&action=DetailView&record=${id}`;
-                } else if (convertType == "createUser") {
+                } else if (convert_type == "createUser") {
                     window.location.href = `index.php?module=Users&return_module=Users&action=DetailView&record=${id}`;
                 }
             },
