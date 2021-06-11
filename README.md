@@ -37,7 +37,7 @@ We don't have any rigid rules. We don't want to cut back your creativity in deve
 
 ## Requirements 💻
 
-MintHCM requirements: **PHP 7.1** and **MySQL 5.5-5.7** or **MariaDB 10**. All web browsers with Chromium and Firefox are supported by MintHCM. <br> Unfortunately, it doesn't support IE 😭 
+MintHCM requirements: **PHP 7.1-7.3** and **MySQL 5.7** or **MariaDB 10**. All web browsers with Chromium and Firefox are supported by MintHCM. <br> Unfortunately, it doesn't support IE 😭 
 
 ## License 🌐
 
