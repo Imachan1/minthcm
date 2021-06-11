@@ -198,6 +198,7 @@ $dictionary['WorkSchedules'] = array(
          'options' => 'workschedules_status_dom',
          'studio' => 'visible',
          'dependency' => false,
+         'vt_validation' => "AEM(callCustomApi(WorkSchedules,canChangeWorkScheduleStatus,\$id, \$status),'LBL_ERR_CANNOT_CHANGE_WORK_SCHEDULE_STATUS')",
       ),
       'supervisor_acceptance' => array(
          'required' => false,

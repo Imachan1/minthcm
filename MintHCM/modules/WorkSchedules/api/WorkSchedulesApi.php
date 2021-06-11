@@ -170,12 +170,22 @@ class WorkSchedulesApi
             AND AL.date_from <= CURDATE() 
             AND AL.date_to >= CURDATE() "
             );
-        }
+}
         if (1 === $sqlResult->num_rows) {
             $result = $db->fetchByAssoc($sqlResult);
         } else {
             return;
         }
         return $result;
+    }
+
+    public function canChangeWorkScheduleStatus($id, $status)
+    {
+        $return = true;
+        $work_schedule = BeanFactory::getBean('WorkSchedules', $id);
+        if ($status == 'closed' && $work_schedule->canBeConfirmed() != "1") {
+            $return = false;
+        }
+        return $return;
     }
 }
