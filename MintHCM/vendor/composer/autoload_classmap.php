@@ -82,6 +82,7 @@ return array(
     'Api\\V8\\Param\\UpdateModuleParams' => $baseDir . '/Api/V8/Param/UpdateModuleParams.php',
     'Api\\V8\\Param\\ImagePreviewParams' => $baseDir . '/Api/V8/Param/ImagePreviewParams.php',
     'Api\\V8\\Param\\UploadFileParams' => $baseDir . '/Api/V8/Param/UploadFileParams.php',
+    'Api\\V8\\Param\\GetModuleMetaParams' => $baseDir . '/Api/V8/Param/GetModuleMetaParams.php',
     'Api\\V8\\Service\\ListViewSearchService' => $baseDir . '/Api/V8/Service/ListViewSearchService.php',
     'Api\\V8\\Service\\ListViewService' => $baseDir . '/Api/V8/Service/ListViewService.php',
     'Api\\V8\\Service\\LogoutService' => $baseDir . '/Api/V8/Service/LogoutService.php',

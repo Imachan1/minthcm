@@ -45,6 +45,7 @@
 namespace Api\V8\Service;
 
 use Api\V8\BeanDecorator\BeanManager;
+use Api\V8\Helper\VarDefHelper;
 use Api\V8\JsonApi\Helper\AttributeObjectHelper;
 use Api\V8\JsonApi\Helper\PaginationObjectHelper;
 use Api\V8\JsonApi\Helper\RelationshipObjectHelper;
@@ -77,6 +78,8 @@ class ListViewSearchService
      */
     protected $beanManager;
 
+    private $varDefHelper;
+
     /**
      * @param BeanManager $beanManager
      * @param AttributeObjectHelper $attributeHelper
@@ -84,9 +87,11 @@ class ListViewSearchService
      * @param PaginationObjectHelper $paginationHelper
      */
     public function __construct(
-        BeanManager $beanManager
+        BeanManager $beanManager,
+        VarDefHelper $varDefHelper
     ) {
         $this->beanManager = $beanManager;
+        $this->varDefHelper = $varDefHelper;
     }
     
     /**
@@ -128,19 +133,25 @@ class ListViewSearchService
         
         $moduleName = $params->getModuleName();
         $searchDefs = SearchForm::retrieveSearchDefs($moduleName);
-        
+
+        //MintHCM Start #84951
+        $bean = $this->beanManager->newBeanSafe($moduleName);
+        $module_fields = $this->varDefHelper->getModuleVardefs($bean);
+         
         // get list view defs
         // $displayColumns = ListViewFacade::getDisplayColumns($moduleName); MintHCM #84318
-        
+         
         // simplified data struct
-        
+         
         $data = [
             'module' => $moduleName,
             'templateMeta' => $searchDefs['searchdefs'][$moduleName]['templateMeta'],
-            'basic' => array_values($searchDefs['searchdefs'][$moduleName]['layout']['basic_search']),
-            'advanced' => array_values($searchDefs['searchdefs'][$moduleName]['layout']['advanced_search']),
+            'basic' => $this->mergeModuleFields(array_values($searchDefs['searchdefs'][$moduleName]['layout']['basic_search']),$module_fields),
+            'advanced' => $this->mergeModuleFields(array_values($searchDefs['searchdefs'][$moduleName]['layout']['advanced_search']),$module_fields),
             'fields' => $searchDefs['searchFields'][$moduleName]
         ];
+ 
+        //MintHCM End #84951
         
         /* MintHCM Start #84318
         // translations
@@ -162,5 +173,27 @@ class ListViewSearchService
         $response = new DocumentResponse();
         $response->setData($dataResponse);
         return $response;
+    }
+
+    protected function mergeModuleFields($array, $module_fields)
+    {
+        foreach ($array as $k => $v) {
+            if (!is_array($v) && !empty($module_fields[$v])) {
+                $array[$k] = $module_fields[$v];
+                $array[$k]['label'] = $array[$k]['vname'];
+                unset($array[$k]['vname']);
+                continue;
+            }
+            if(empty($module_fields[$v['name']])){
+                unset($array[$k]);
+                continue;
+            }
+            if(empty($array[$k]['label'])){
+                $array[$k]['label'] = $module_fields[$v['name']]['vname'];
+            } 
+            unset($module_fields[$v['name']]['vname']);
+            $array[$k] += $module_fields[$v['name']];
+        }                    
+        return $array;
     }
 }

@@ -21,4 +21,19 @@ class VarDefHelper
 
         return $relations;
     }
+    /**
+     * @param $bean
+     *
+     * @return array of modules vardefs
+     */
+    // MintHCM Start #84951
+    public function getModuleVardefs($bean)
+    {
+        $arr = [];
+        if (!empty($bean) && $bean instanceof \SugarBean) {
+            $arr = $bean->getFieldDefinitions();
+        }
+        return $arr;
+    }
+    // MintHCM End #84951
 }

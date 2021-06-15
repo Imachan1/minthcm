@@ -128,6 +128,14 @@ $app->group('', function () use ($app) {
             ->get('/module/{moduleName}/{id}/file/preview', 'Api\V8\Controller\FileController:imagePreview')
             ->add($paramsMiddlewareFactory->bind(Param\ImagePreviewParams::class));
 
+        $app
+            ->get('/editview/{moduleName}', 'Api\V8\Controller\MetaController:getEditViewMeta')
+            ->add($paramsMiddlewareFactory->bind(Param\GetModuleMetaParams::class));
+
+        $app
+            ->get('/detailview/{moduleName}', 'Api\V8\Controller\MetaController:getDetailViewMeta')
+            ->add($paramsMiddlewareFactory->bind(Param\GetModuleMetaParams::class));
+
         // add custom routes
         $app->group('/custom', function () use ($app) {
             $app = CustomLoader::loadCustomRoutes($app);
