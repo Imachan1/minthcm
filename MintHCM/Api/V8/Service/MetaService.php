@@ -325,7 +325,7 @@ class MetaService
             $module_bean = \BeanFactory::newBean($defs['module']);
             $array[$name]['properties'] = $defs;
             if(!empty($module_bean) && $module_bean instanceof \SugarBean){
-                $array[$name]['columns'] = $this->mergeSubpanelFields(($sb->load_subpanel($name))->panel_definition['list_fields'], $this->getModuleFields($module_bean));
+                $array[$name]['columns'] = $this->mergeSubpanelFields(($sb->load_subpanel($name))->panel_definition['list_fields'], $this->varDefHelper->getModuleVardefs($module_bean));
             } else {
                 $array[$name]['columns'] = ($sb->load_subpanel($name))->panel_definition['list_fields'];    
             }
