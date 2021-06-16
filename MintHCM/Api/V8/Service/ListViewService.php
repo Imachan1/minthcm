@@ -80,7 +80,7 @@ class ListViewService
         'default' => false,
         'module' => '',
         'id' => '',
-        'sortable' => false,
+        // 'sortable' => false,
         'customCode' => '', // deprecated from legacy (using only on PHP front-end)
     ];
     
