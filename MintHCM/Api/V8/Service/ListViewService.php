@@ -45,6 +45,7 @@
 namespace Api\V8\Service;
 
 use Api\V8\BeanDecorator\BeanManager;
+use Api\V8\Helper\VarDefHelper;
 use Api\V8\JsonApi\Helper\AttributeObjectHelper;
 use Api\V8\JsonApi\Helper\PaginationObjectHelper;
 use Api\V8\JsonApi\Helper\RelationshipObjectHelper;
@@ -104,6 +105,8 @@ class ListViewService
      */
     protected $paginationHelper;
 
+    private $varDefHelper;
+
     /**
      * @param BeanManager $beanManager
      * @param AttributeObjectHelper $attributeHelper
@@ -114,12 +117,14 @@ class ListViewService
         BeanManager $beanManager,
         AttributeObjectHelper $attributeHelper,
         RelationshipObjectHelper $relationshipHelper,
-        PaginationObjectHelper $paginationHelper
+        PaginationObjectHelper $paginationHelper,
+        VarDefHelper $varDefHelper
     ) {
         $this->beanManager = $beanManager;
         $this->attributeHelper = $attributeHelper;
         $this->relationshipHelper = $relationshipHelper;
         $this->paginationHelper = $paginationHelper;
+        $this->varDefHelper = $varDefHelper;
     }
 
     /**
@@ -131,9 +136,11 @@ class ListViewService
     {
         $moduleName = $params->getModuleName();
         /** @var SugarBean */
+        // MintHCM Start #84951
+        $bean = $this->beanManager->newBeanSafe($moduleName);
+        $fields = $this->varDefHelper->getModuleVardefs($bean);
+        // MintHCM End #84951
         /* MintHCM Start #84318
-        $bean = \BeanFactory::getBean($moduleName);
-        
         $text = new LangText(null, null, LangText::USING_ALL_STRINGS, true, false, $moduleName);
         MintHCM End #84318 */
         $displayColumns = ListViewFacade::getDisplayColumns($moduleName);
@@ -150,6 +157,20 @@ class ListViewService
             MintHCM End #84318 */ 
             
             // TODO: validate the column name (for e.g label and name should be requered etc...) also check the ListViewColumnInterface keys are match..
+            // MintHCM Start #84951
+            if (!empty($fields)) {
+                $field = $fields[strtolower($key)];
+                if(empty($field) || empty($field['name'])){
+                    continue;
+                }
+                unset($column['fieldName']);
+                $column['name'] = $field['name'];
+                $column['type'] = $field['type'];
+                if (empty($column['label'])) {
+                    $column['label'] = $field['vname'];
+                }
+            }
+            //MintHCM End #84951
             $data[] = $column;
         }
         $response = new AttributeResponse($data);

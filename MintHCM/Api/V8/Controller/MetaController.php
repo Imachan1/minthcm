@@ -48,6 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+use Api\V8\Param\GetModuleMetaParams;
 use Api\V8\Param\GetFieldListParams;
 use Api\V8\Service\MetaService;
 use Api\V8\Service\UserService;
@@ -120,6 +121,28 @@ class MetaController extends BaseController
     {
         try {
             $jsonResponse = $this->metaService->getSwaggerSchema();
+
+            return $this->generateResponse($response, $jsonResponse, 200);
+        } catch (Exception $exception) {
+            return $this->generateErrorResponse($response, $exception, 400);
+        }
+    }
+
+    public function getEditViewMeta(Request $request, Response $response, array $args, GetModuleMetaParams $moduleMetaParams)
+    {
+        try {
+            $jsonResponse = $this->metaService->getEditViewMeta($request, $moduleMetaParams);
+
+            return $this->generateResponse($response, $jsonResponse, 200);
+        } catch (Exception $exception) {
+            return $this->generateErrorResponse($response, $exception, 400);
+        }
+    }
+
+    public function getDetailViewMeta(Request $request, Response $response, array $args, GetModuleMetaParams $moduleMetaParams)
+    {
+        try {
+            $jsonResponse = $this->metaService->getDetailViewMeta($request, $moduleMetaParams);
 
             return $this->generateResponse($response, $jsonResponse, 200);
         } catch (Exception $exception) {

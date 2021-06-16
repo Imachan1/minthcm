@@ -97,4 +97,10 @@ return CustomLoader::mergeCustomArray([
             $container->get(BeanManager::class)
         );
     },
+    Param\GetModuleMetaParams::class => function (Container $container) {
+        return new Param\GetModuleMetaParams(
+            $container->get(ValidatorFactory::class),
+            $container->get(BeanManager::class)
+        );
+    },
 ], basename(__FILE__));
