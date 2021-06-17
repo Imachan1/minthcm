@@ -47,4 +47,5 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 $minthcm_version = '3.1.0';
+$this->assign('minthcm_version', $minthcm_version);
 $minthcm_timestamp = '2021-06-11-09:00:00';
