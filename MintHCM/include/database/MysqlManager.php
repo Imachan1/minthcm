@@ -1445,10 +1445,10 @@ class MysqlManager extends DBManager {
            return array( 'ERR_DB_MYSQL_VERSION', $db_version );
         }
         $db_provider = $this->versionName();
-        if($db_provider==='maria' &&  version_compare($db_version, '10') > 0 ) {
+        if('maria'===$db_provider &&  version_compare($db_version, '10') > 0 ) {
               return array( 'ERR_DB_MYSQL_VERSION', $db_version );
         }
-        if($db_provider==='mysql' &&  version_compare($db_version, '5.7.25-28') > 0 ) {
+        if('mysql'===$db_provider &&  version_compare($db_version, '5.7.25-28') > 0 ) {
           return array( 'ERR_DB_MYSQL_VERSION', $db_version );
        }
         return true;
@@ -1459,10 +1459,10 @@ class MysqlManager extends DBManager {
     public function versionName() {
         $result = $this->getOne("SELECT @version_comment ");
         $db_sub_provider = strtolower(is_array($result)?join(",",$result):$result) ;
-        if(strpos($db_sub_provider,'mariadb')==-1){
+        if(-1===strpos($db_sub_provider,'mariadb')){
             return 'maria';
         }
-        elseif(strpos($db_sub_provider,'percona')==-1){
+        elseif(-1===strpos($db_sub_provider,'percona')){
             return 'mysql';
         }
         return 'mysql';
