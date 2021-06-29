@@ -1,19 +1,8 @@
-$('#photo_file').change(function () {
-    $('#photo').val($('#photo_file').val().replace("C:\\fakepath\\", ""));
-});
-
-$(document).ready(function () {
-    $('#remove_button').prop("onclick", null).off("click");
-    $('#remove_button').click(function () {
-        window.onbeforeunload = null;
-        SUGAR.field.file.deleteAttachment("photo", "", this);
-    });
-});
-
 
 function getSupervisedUnitsIfEmployeeIsSupervisor() {
+    let status = $('select[name="status"] option:selected').val();
     let employee_status = $('select[name="employee_status"] option:selected').val();
-    if (employee_status != 'Active') {
+    if (employee_status != 'Active' || status != 'Active') {
         let employee_id = $('#record').val();
         viewTools.api.callCustomApi({
             module: 'Employees',
@@ -23,7 +12,8 @@ function getSupervisedUnitsIfEmployeeIsSupervisor() {
             callback: function (response) {
                 if (response != false) {
                     displayConfirmationWindow(response);
-                } else {
+                }
+                else {
                     SUGAR.ajaxUI.submitForm("EditView");
                     return false;
                 }
@@ -47,7 +37,7 @@ function displayConfirmationWindow(response) {
     else {
         dialog_div = $('<div>').css('display', 'none').html('The employee you want to deactivate is the current manager of the unit</br>' + units_links + 'In order to correctly generate the organizational structure of the department, a new manager should be indicated. Do you want to continue with deactivation?')
     }
-    
+
     dialog_div.dialog({
         resizable: false,
         height: 250,
@@ -55,14 +45,14 @@ function displayConfirmationWindow(response) {
         modal: true,
         buttons: [
             {
-                text: viewTools.language.get('Employees', 'LBL_EMPLOYEES_CONFIRMATION_BUTTON_CONFIRM'),
+                text: viewTools.language.get('Users', 'LBL_USERS_CONFIRMATION_BUTTON_CONFIRM'),
                 click: function () {
                     $(this).dialog("close");
-                    runEmployeesForceSave();
+                    runUsersForceSave();
                 },
             },
             {
-                text: viewTools.language.get('Employees', 'LBL_EMPLOYEES_CONFIRMATION_BUTTON_CANCEL'),
+                text: viewTools.language.get('Users', 'LBL_USERS_CONFIRMATION_BUTTON_CANCEL'),
                 click: function () {
                     $(this).dialog("close");
                 },
@@ -71,7 +61,7 @@ function displayConfirmationWindow(response) {
   });
 }
 
-function runEmployeesForceSave() {
+function runUsersForceSave() {
     SUGAR.ajaxUI.submitForm("EditView");
     return false;
 }
