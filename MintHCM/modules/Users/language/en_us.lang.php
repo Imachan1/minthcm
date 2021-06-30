@@ -698,4 +698,6 @@ $mod_strings = array(
     'LBL_FACTOR_AUTH' => 'Factor Auth',
     'LBL_FACTOR_AUTH_INTERFACE' => 'Factor Auth Interface',
     'LBL_BUSINESS_ROLE' => 'Business role',
+    'LBL_USERS_CONFIRMATION_BUTTON_CONFIRM' => 'YES',
+    'LBL_USERS_CONFIRMATION_BUTTON_CANCEL' => 'NO',
 ); // END STRINGS DEFS

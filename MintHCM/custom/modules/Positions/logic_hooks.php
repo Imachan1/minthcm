@@ -10,5 +10,7 @@ $hook_array['before_save'][] = Array(1, 'Positions push feed', 'modules/Position
 if(!isset($hook_array['after_relationship_add'])){ $hook_array['after_relationship_add'] = Array(); }
 $hook_array['after_relationship_add'][] = Array(99, 'Add Unit to Employees', 'modules/Positions/logic_hooks/afterRelationshipAdd.php','afterRelationshipAdd', 'after_relationship_add'); 
 
+if(!isset($hook_array['after_relationship_delete'])){ $hook_array['after_relationship_delete'] = Array(); }
+$hook_array['after_relationship_delete'][] = Array(99, 'Delete Unit in Employees', 'modules/Positions/logic_hooks/afterRelationshipDelete.php','afterRelationshipDelete', 'after_relationship_delete'); 
 
 ?>
