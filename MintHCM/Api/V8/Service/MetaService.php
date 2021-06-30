@@ -300,6 +300,9 @@ class MetaService
                 unset($array[$k]['vname']);
                 continue;
             }
+            if (in_array($k, ['edit_button', 'remove_button'])) {
+                continue;
+            }
             if(empty($module_fields[$k])){
                 unset($array[$k]);
                 continue;
