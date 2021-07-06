@@ -4218,3 +4218,5 @@ $app_strings['LBL_NO_LANGUAGES'] = 'No languages ​​available';
 $app_strings['LBL_NETWORK_ERROR'] = 'Network error';
 $app_strings['LBL_LOGIN'] = 'Sign In';
 $app_strings['LBL_DASHBOARD'] = 'Dashboard';
+$app_strings['LBL_RESET'] = 'Reset';
+$app_strings['LBL_NO_FILTERS'] = 'No Filters';
