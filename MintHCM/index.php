@@ -51,6 +51,10 @@ $startTime = microtime(true);
 require_once 'include/entryPoint.php';
 ob_start();
 require_once 'include/MVC/SugarApplication.php';
+
+require_once('include/SugarMetric/Manager.php');
+SugarMetric_Manager::getInstance()->setMetricClass('background')->setTransactionName('index');
+
 $app = new SugarApplication();
 $app->startSession();
 $app->execute();
