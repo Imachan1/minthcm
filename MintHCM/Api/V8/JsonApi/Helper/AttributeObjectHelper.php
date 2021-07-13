@@ -29,6 +29,9 @@ class AttributeObjectHelper
     {
         $bean->fixUpFormatting();
 
+        $current_time_zone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+
         // using the ISO 8601 format for dates
         $attributes = array_map(function ($value) {
             return is_string($value)
@@ -37,6 +40,8 @@ class AttributeObjectHelper
                     : $value)
                 : $value;
         }, $bean->toArray());
+
+        date_default_timezone_set($current_time_zone);
 
         if ($fields !== null) {
             $attributes = array_intersect_key($attributes, array_flip($fields));
