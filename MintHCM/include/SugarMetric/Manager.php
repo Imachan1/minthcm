@@ -89,7 +89,7 @@ class SugarMetric_Manager
         if (self::$instance === null) {
             self::$instance = new SugarMetric_Manager();
         }
-        $GLOBALS['log']->fatal('Manager::getInstance');
+        $GLOBALS['log']->debug('Manager::getInstance');
         return self::$instance;
     }
 
@@ -128,7 +128,7 @@ class SugarMetric_Manager
      */
     public function setTransactionName($name = '')
     {
-        $GLOBALS['log']->fatal('Manager::setTransactionName');
+        $GLOBALS['log']->debug('Manager::setTransactionName');
         foreach ($this->metricProviders as $provider) {
             $provider->setTransactionName($name);
         }
@@ -156,7 +156,7 @@ class SugarMetric_Manager
      */
     public function setMetricClass($name)
     {
-        $GLOBALS['log']->fatal('Manager::setMetricClass');
+        $GLOBALS['log']->debug('Manager::setMetricClass');
         foreach ($this->metricProviders as $provider) {
             $provider->setMetricClass($name);
         }
