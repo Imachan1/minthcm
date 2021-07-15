@@ -166,6 +166,7 @@ class ListViewService
                 unset($column['fieldName']);
                 $column['name'] = $field['name'];
                 $column['type'] = $field['type'];
+                $column['options'] = $field['options'];
                 if (empty($column['label'])) {
                     $column['label'] = $field['vname'];
                 }
