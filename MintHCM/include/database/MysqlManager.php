@@ -1441,14 +1441,14 @@ class MysqlManager extends DBManager {
         if ( empty($db_version) ) {
            return array( 'ERR_DB_VERSION_FAILURE' );
         }
-        if ( version_compare($db_version, '4.1.2') < 0 ) {
+        if ( version_compare($db_version, '5.6') < 0 ) {
            return array( 'ERR_DB_MYSQL_VERSION', $db_version );
         }
         $db_provider = $this->versionName();
-        if('maria'===$db_provider &&  version_compare($db_version, '10') > 0 ) {
+        if('maria'===$db_provider &&  version_compare($db_version, '10.2') >= 0 ) {
               return array( 'ERR_DB_MYSQL_VERSION', $db_version );
         }
-        if('mysql'===$db_provider &&  version_compare($db_version, '5.7.25-28') > 0 ) {
+        if('mysql'===$db_provider &&  version_compare($db_version, '8.0.0') >= 0 ) {
           return array( 'ERR_DB_MYSQL_VERSION', $db_version );
        }
         return true;
