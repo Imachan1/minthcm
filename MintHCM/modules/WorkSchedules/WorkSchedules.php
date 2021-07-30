@@ -177,6 +177,10 @@ class WorkSchedules extends Basic
             $this->UnpinCycle();
         }
 
+        // MintHCM #76236 START
+        $this->disableAlertForConfirmedWorkSchedule();
+        // MintHCM #76236 END
+
         $this->beforeSave();
 
         if (empty($this->date_end) || empty($this->date_start)) {
@@ -469,5 +473,20 @@ WHERE ae.employee_id='{$this->assigned_user_id}' AND ae.deleted=0";
         global $current_user;
         return $this->assigned_user_id == $current_user->id;
     }
+
+    // MintHCM #76236 START
+    protected function disableAlertForConfirmedWorkSchedule()
+    {
+        if (!empty($this->id)) {
+            $sql = "SELECT id FROM alerts WHERE parent_id ='{$this->id}' AND alert_type = 'WorkSchedulesDayValid' AND parent_type = 'WorkSchedules' AND is_read = '0' AND deleted = '0'";
+            $result = $this->db->query($sql);
+            while ($row = $this->db->fetchByAssoc($result)) {
+                $alert = BeanFactory::getBean('Alerts', $row['id']);
+                $alert->is_read = "1";
+                $alert->save();
+            }
+        }
+    }
+    // MintHCM #76236 END
 
 }

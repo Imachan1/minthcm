@@ -11,8 +11,8 @@ convertToEmployee = {
     LBL_ALERT_NOTE: viewTools.language.get('Candidatures', 'LBL_ALERT_NOTE'),
     LBL_CREATE_USER: viewTools.language.get('Candidatures', 'LBL_CREATE_USER'),
     LBL_CREATE_EMPLOYEE: viewTools.language.get('Candidatures', 'LBL_CREATE_EMPLOYEE'),
-    LBL_ALERT_CREATE_USER: viewTools.language.get('Candidatures','LBL_ALERT_CREATE_USER'),
-    LBL_ALERT_CREATE_Employee: viewTools.language.get('Candidatures','LBL_ALERT_CREATE_Employee'),
+    LBL_ALERT_CREATE_USER: viewTools.language.get('Candidatures', 'LBL_ALERT_CREATE_USER'),
+    LBL_ALERT_CREATE_Employee: viewTools.language.get('Candidatures', 'LBL_ALERT_CREATE_Employee'),
     LBL_FAIL: viewTools.language.get('Candidatures', 'LBL_FAILED_CONVERTING_CANDIDATURE'),
     LBL_INFO: viewTools.language.get('Candidatures', 'LBL_INFO'),
     initialize: function () {
@@ -75,10 +75,10 @@ convertToEmployee = {
             }
             else if (convertType == "createEmployee") {
                 login = "";
-                _this.ajaxRequest(recordData.record_id, recordData.module_name, login, _this.LBL_FAIL);
+                _this.ajaxRequest(recordData.record_id, recordData.module_name, login, _this.LBL_FAIL, convertType);
             }
             else {
-                _this.ajaxRequest(recordData.record_id, recordData.module_name, login, _this.LBL_FAIL);
+                _this.ajaxRequest(recordData.record_id, recordData.module_name, login, _this.LBL_FAIL, convertType);
             }
         }
 
@@ -114,14 +114,18 @@ convertToEmployee = {
         };
     },
 
-    ajaxRequest: function (record_id, module_name, login, LBL_FAIL) {
+    ajaxRequest: function (record_id, module_name, login, LBL_FAIL, convert_type) {
         const ajax_link = `index.php?sugar_body_only=1&action=${this.action_name}&module=${module_name}&record_id=${record_id}&login=${login}`;
 
         $.ajax({
             type: "GET",
             url: ajax_link,
             success: function (id) {
-                window.location.href = `index.php?module=Employees&return_module=Employees&action=DetailView&record=${id}`;
+                if (convert_type == "createEmployee") {
+                    window.location.href = `index.php?module=Employees&return_module=Employees&action=DetailView&record=${id}`;
+                } else if (convert_type == "createUser") {
+                    window.location.href = `index.php?module=Users&return_module=Users&action=DetailView&record=${id}`;
+                }
             },
             error: function (jqXHR, exception) {
                 viewTools.GUI.statusBox.showStatus(LBL_FAIL, 'error', 3500);

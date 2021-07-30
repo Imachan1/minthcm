@@ -170,7 +170,7 @@ class WorkSchedulesApi
             AND AL.date_from <= CURDATE() 
             AND AL.date_to >= CURDATE() "
             );
-        }
+}
         if (1 === $sqlResult->num_rows) {
             $result = $db->fetchByAssoc($sqlResult);
         } else {
@@ -178,4 +178,24 @@ class WorkSchedulesApi
         }
         return $result;
     }
-}
+
+    public function canChangeWorkScheduleStatus($id, $status)
+    {
+        $return = true;
+        $work_schedule = BeanFactory::getBean('WorkSchedules', $id);
+        if ($status == 'closed' && $work_schedule->canBeConfirmed() != "1") {
+            $return = false;
+        }
+
+        return $return;
+    }    public function validateDelegationDurationValue($delegation_duration)
+    {
+        if (is_numeric($delegation_duration) && $delegation_duration >= 0) {
+            return true;
+
+        }
+
+        else {
+            return false;
+        }
+    }}
