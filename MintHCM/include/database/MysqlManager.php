@@ -1436,16 +1436,37 @@ class MysqlManager extends DBManager {
     * Check DB version
     * @see DBManager::canInstall()
     */
-   public function canInstall() {
-      $db_version = $this->version();
-      if ( empty($db_version) ) {
-         return array( 'ERR_DB_VERSION_FAILURE' );
-      }
-      if ( version_compare($db_version, '4.1.2') < 0 ) {
-         return array( 'ERR_DB_MYSQL_VERSION', $db_version );
-      }
-      return true;
-   }
+    public function canInstall() {
+        $db_version = $this->version();
+        if ( empty($db_version) ) {
+           return array( 'ERR_DB_VERSION_FAILURE' );
+        }
+        if ( version_compare($db_version, '5.6') < 0 ) {
+           return array( 'ERR_DB_MYSQL_VERSION', $db_version );
+        }
+        $db_provider = $this->versionName();
+        if('maria'===$db_provider &&  version_compare($db_version, '10.2') >= 0 ) {
+              return array( 'ERR_DB_MYSQL_VERSION', $db_version );
+        }
+        if('mysql'===$db_provider &&  version_compare($db_version, '8.0.0') >= 0 ) {
+          return array( 'ERR_DB_MYSQL_VERSION', $db_version );
+       }
+        return true;
+     }
+   /**
+    * @see DBManager::version()
+    */
+    public function versionName() {
+        $result = $this->getOne("SELECT @version_comment ");
+        $db_sub_provider = strtolower(is_array($result)?join(",",$result):$result) ;
+        if(-1===strpos($db_sub_provider,'mariadb')){
+            return 'maria';
+        }
+        elseif(-1===strpos($db_sub_provider,'percona')){
+            return 'mysql';
+        }
+        return 'mysql';
+     }
 
    public function installConfig() {
       return array(
