@@ -196,7 +196,9 @@ generateOnboardingOffboarding = {
          case 'OffboardingTemplates':
             type_template = 'OffboardingTemplates'
             break;
-
+        case 'EmployeeTemplates':
+            type_template = '';
+            break;
          default:
             break;
       }

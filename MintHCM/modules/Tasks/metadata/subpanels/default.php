@@ -128,7 +128,6 @@ $subpanel_layout = array(
             'force_exists' => true,
         ),
 
-<<<<<<< HEAD
 	'top_buttons' => array(
         array (
 	 		 'widget_class'=>'SubPanelTopCreateButton',
@@ -200,10 +199,6 @@ $subpanel_layout = array(
 			'force_exists'=>true
 			),	
 				
-				
+        ),
 	),
 );		
-=======
-    ),
-);
->>>>>>> feature/75165
