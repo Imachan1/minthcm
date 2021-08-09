@@ -47,7 +47,6 @@
 </div>
 <!-- END of container-fluid, pageContainer divs -->
 <!-- Start Footer Section -->
-{include_php file='minthcm_version.php'} 
 {if $AUTHENTICATED}
     <!-- Start generic footer -->
     <footer>
@@ -73,7 +72,7 @@
         </div>
         <div class="footer_right">
             <a onclick="SUGAR.util.top();" href="javascript:void(0)">{$APP.LBL_SUITE_TOP}<span class="suitepicon suitepicon-action-above"></span> </a>
-            <span style="margin-left: 5px; color: #000;">v {$minthcm_version}</span> 
+            <span style="margin-left: 5px; color: #000;">v {$MINTHCM_VERSION}</span> 
         </div>
     </footer>
     <!-- END Generic Footer -->
