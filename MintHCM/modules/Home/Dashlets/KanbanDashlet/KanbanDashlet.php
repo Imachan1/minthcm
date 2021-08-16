@@ -9,7 +9,7 @@ require_once 'include/Sugar_Smarty.php';
 
 class KanbanDashlet extends Dashlet
 {
-    public $kanban_module = 'Tasks'; // module to display in kanban
+    public $kanban_module = 'Tasks'; 
 
     public function __construct($id, $def)
     {
