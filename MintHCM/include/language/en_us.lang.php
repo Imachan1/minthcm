@@ -4226,3 +4226,5 @@ $app_strings['LBL_RECORD_SAVE_SUCCESS'] = 'Record was successfully saved';
 $app_strings['LBL_RECORD_SAVE_FAILURE'] = 'The record could not be saved';
 $app_strings['LBL_RELATION_SAVE_FAILURE'] = 'The record could not be linked';
 $app_strings['LBL_RELATION_SAVE_SUCCESS'] = 'The record has been linked';
+$app_strings['LBL_COUNTRY_CODE'] = 'Country code';
+$app_strings['LBL_ERR_AT_LEAST_3_CHAR'] = 'Enter at least 3 characters';
