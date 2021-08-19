@@ -4228,3 +4228,5 @@ $app_strings['LBL_RELATION_SAVE_FAILURE'] = 'The record could not be linked';
 $app_strings['LBL_RELATION_SAVE_SUCCESS'] = 'The record has been linked';
 $app_strings['LBL_COUNTRY_CODE'] = 'Country code';
 $app_strings['LBL_ERR_AT_LEAST_3_CHAR'] = 'Enter at least 3 characters';
+$app_strings['LBL_RELATION_TYPE'] = 'Relation type';
+$app_strings['LBL_RELATION_NAME'] = 'Relation name';
