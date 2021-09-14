@@ -7537,7 +7537,8 @@ footer.collapsedSidebar {
 
 .desktop_notifications .has-alerts p {
   padding: 8px 15px 8px 15px;
-  margin: 0; }
+  margin: 0; 
+  word-break: break-word;}
 
 .desktop_notifications .has-alerts .alert-header {
   font-size: 14px;
@@ -12074,7 +12075,8 @@ slot {
 .detail-view-field span {
   line-height: normal;
   display: inline-block;
-  vertical-align: middle; }
+  vertical-align: middle; 
+  word-break: break-word; }
 
 .detail-view-field a {
   font-weight: 700; }
