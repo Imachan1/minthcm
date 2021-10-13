@@ -31,12 +31,8 @@ function displayConfirmationWindow(response) {
     for (const [key, value] of Object.entries(response)) {
         units_links += '<a href="' + location["href"] + '?module=SecurityGroups&action=DetailView&record=' + key + '" target="_blank">' + value + '</a></br>';
     }
-    if ($('html').is(':lang(pl_PL)')) {
-        dialog_div = $('<div>').css('display', 'none').html('Pracownik, którego chcesz dezaktywować jest aktualnym kierownikiem jednostki</br>' + units_links + 'Aby poprawnie wygenerować strukturę organizacyjną działu, należy wskazać nowego kierownika. Czy chcesz kontynuować dezaktywację?')
-    }
-    else {
-        dialog_div = $('<div>').css('display', 'none').html('The employee you want to deactivate is the current manager of the unit</br>' + units_links + 'In order to correctly generate the organizational structure of the department, a new manager should be indicated. Do you want to continue with deactivation?')
-    }
+    var question = viewTools.language.get('Users', 'LBL_USER_DEACTIVE_SUPERVISOR');
+    dialog_div = $('<div>').css('display', 'none').html(question.replace('<URL>',units_links));
 
     dialog_div.dialog({
         resizable: false,
