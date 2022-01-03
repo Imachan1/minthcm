@@ -165,4 +165,5 @@ $mod_strings = array(
     'LBL_ADD_INVITEE' => 'Add Invitees/Resources',
     'LBL_FIRST_NAME' => 'First Name/Resource Name',
     'LBL_LIST_TITLE' => 'Call',
+    'LBL_CALL' => 'Call',
 );

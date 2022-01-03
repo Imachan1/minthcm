@@ -69,6 +69,7 @@ $mod_strings = array(
    'LBL_HOURS_MINS' => '(hours/minutes)',
    'LBL_INVITEE' => 'Invitees',
    'LBL_LAST_NAME' => 'Last Name',
+   'LBL_ASSIGNED_TO' => 'Assigned to:',
    'LBL_ASSIGNED_TO_NAME' => 'Assigned to:',
    'LBL_LIST_ASSIGNED_TO_NAME' => 'Assigned User',
    'LBL_LIST_CLOSE' => 'Close',
@@ -177,4 +178,5 @@ $mod_strings = array(
    'LBL_ADD_INVITEE' => 'Add Invitees/Resources',
    'LBL_FIRST_NAME' => 'First Name/Resource Name',
    'LBL_LIST_TITLE' => 'Meeting',
+   'LBL_MEETING' => 'Meeting',
 );
