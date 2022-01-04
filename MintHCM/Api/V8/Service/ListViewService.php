@@ -172,6 +172,10 @@ class ListViewService
                 if (empty($column['label'])) {
                     $column['label'] = $field['vname'];
                 }
+                if ($field['type'] === 'relate' && !empty($field['module']) && !empty($field['id_name'])) {
+                    $column['module'] = $field['module'] ?? '';
+                    $column['id_name'] = $field['id_name'] ?? '';
+                }
             }
             //MintHCM End #84951
             $data[] = $column;
