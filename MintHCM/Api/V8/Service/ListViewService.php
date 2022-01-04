@@ -172,7 +172,7 @@ class ListViewService
                 if (empty($column['label'])) {
                     $column['label'] = $field['vname'];
                 }
-                if ($field['type'] === 'related' && !empty($field['module']) && !empty($field['id_name'])) {
+                if ($field['type'] === 'relate' && !empty($field['module']) && !empty($field['id_name'])) {
                     $column['module'] = $field['module'] ?? '';
                     $column['id_name'] = $field['id_name'] ?? '';
                 }
