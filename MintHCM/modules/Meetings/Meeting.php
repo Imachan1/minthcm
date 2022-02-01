@@ -118,6 +118,7 @@ class Meeting extends SugarBean {
    public $cached_get_users = null;
    public $new_schema = true;
    public $date_changed = false;
+   public $repeat_parent_id;
 
    /**
     * sole constructor
