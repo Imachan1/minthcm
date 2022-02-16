@@ -4345,3 +4345,5 @@ $app_strings['LBL_INSTANCE_ERROR'] = 'Instance address field is required';
 $app_strings['LBL_INSTANCE_ADDRESS'] = 'Instance address'; 
 $app_strings['LBL_ARE_YOU_SURE_TO_CLEAR_APP_DATA'] = 'Are You Sure You Want To Clear App Data?';
 $app_strings['LBL_CLEAR_APP_DATA'] = 'Clear App Data';
+$app_strings['LBL_CHANGE_LANGUAGE'] = 'Change Language';
+$app_strings['LBL_APP_VERSION'] = 'App Version';
