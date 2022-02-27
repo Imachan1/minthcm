@@ -199,7 +199,7 @@ class WorkSchedulesApi
 
     public function validateDelegationDurationValue($args)
     {
-        $delegation_duration = $args['delegation_duration'];
+        $delegation_duration = unformat_number($args['delegation_duration']);
         if (!empty($delegation_duration)) {
             if (is_numeric($delegation_duration) && $delegation_duration >= 0) {
                 return true;
