@@ -440,14 +440,16 @@ WHERE ae.employee_id='{$this->assigned_user_id}' AND ae.deleted=0";
                 $start_date = getDateTimeObject($allocation->date_from);
                 $end_date = getDateTimeObject($allocation->date_to);
                 $start_date->setTime(0, 0, 0);
-                $end_date->setTime(23, 59, 0);
+                if(!empty()){
+                    $end_date->setTime(23, 59, 0);
+                }
                 if ($work_date >= $start_date) {
                     if (!empty($end_date)) {
                         if ($work_date >= $end_date) {
                             $return = 4;
                         }
                     } else {
-                        $return = 4;
+                        $return = 1;
                         break;
                     }
                 }
