@@ -54,9 +54,9 @@ $( document ).ready( function () {
         } );
  }
 
- viewTools.form.beforeSave( function () {
+ viewTools.form.beforeSave( function (form_name) {
     var result_1 = validateWorkSchedule();
-    var result_2 = validateDates();
+    var result_2 = validateDates(form_name);
     var result_6 = validateDescription();
  
     return result_1 && result_2 && result_6;
@@ -86,7 +86,7 @@ $( document ).ready( function () {
     return result;
  }
  
- function validateDates() {
+ function validateDates(form_name) {
     var result_1 = true;
     var result_2 = true;
     var result_3 = true;
@@ -97,8 +97,8 @@ $( document ).ready( function () {
        var work_schedule_datetime_start = work_schedules_dates.work_schedule_datetime_start;
        var work_schedule_datetime_end = work_schedules_dates.work_schedule_datetime_end;
        result_1 = validateWorkDateEqualsToDateStart();
-       result_2 = validateDateFieldIDIsInWorkDates( "date_start", work_schedule_datetime_start, work_schedule_datetime_end );
-       result_3 = validateDateFieldIDIsInWorkDates( "date_end", work_schedule_datetime_start, work_schedule_datetime_end );
+       result_2 = validateDateFieldIDIsInWorkDates( "#" + form_name + " #date_start", work_schedule_datetime_start, work_schedule_datetime_end );
+       result_3 = validateDateFieldIDIsInWorkDates( "#" + form_name + " #date_end", work_schedule_datetime_start, work_schedule_datetime_end );
        result_4 = validateUniqueSpentTime();
     }
  
@@ -174,14 +174,14 @@ $( document ).ready( function () {
     return result;
  }
  
- function validateDateFieldIDIsInWorkDates( date_field_id, work_schedule_datetime_start, work_schedule_datetime_end ) {
+ function validateDateFieldIDIsInWorkDates( date_field_selector, work_schedule_datetime_start, work_schedule_datetime_end ) {
     var result = true;
-    var spendtime_datetime_start = convertDateTimeStringToMoment( $( "#" + date_field_id ).val() );
+    var spendtime_datetime_start = convertDateTimeStringToMoment( $( date_field_selector ).val() );
     var work_datetime_start = convertDateTimeStringToMoment( work_schedule_datetime_start );
     var work_datetime_end = convertDateTimeStringToMoment( work_schedule_datetime_end );
     if ( spendtime_datetime_start != false && work_datetime_start != false && work_datetime_end != false ) {
        if ( spendtime_datetime_start.format( "YYYY-MM-DD" ) != work_datetime_start.format( "YYYY-MM-DD" ) && spendtime_datetime_start.format( "YYYY-MM-DD" ) != work_datetime_end.format( "YYYY-MM-DD" ) ) {
-          viewTools.GUI.fieldErrorMark( $( "#" + date_field_id ), SUGAR.language.get( 'SpentTime', 'LBL_ERR_DATE_ARE_NOT_BETWEEN_WORK_SCHEDULES_DATES' ) );
+          viewTools.GUI.fieldErrorMark( $( date_field_selector ), SUGAR.language.get( 'SpentTime', 'LBL_ERR_DATE_ARE_NOT_BETWEEN_WORK_SCHEDULES_DATES' ) );
           result = false;
        }
     }
