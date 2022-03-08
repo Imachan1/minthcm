@@ -34,7 +34,7 @@ var MintHCMDynamicPopupView = {
         let validation_is_ok = true;
         for (let key = 0; key < viewTools.cache.form_beforeSave_enforced.length; key++) {
             var tmp_function = viewTools.cache.form_beforeSave_enforced[key];
-            if (tmp_function() === false) {
+            if (tmp_function(this.formname) === false) {
                 validation_is_ok = false;
                 viewTools.form.error_count++;
             }
