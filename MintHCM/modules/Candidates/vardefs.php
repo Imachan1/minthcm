@@ -631,7 +631,7 @@ if (!class_exists('VardefManager')) {
     require_once 'include/SugarObjects/VardefManager.php';
 }
 VardefManager::createVardef('Candidates', 'Candidates',
-    array('basic', 'assignable', 'person', 'security_groups', 'employee_related'));
+    array('basic', 'assignable', 'person', 'security_groups'));
 
 $dictionary['Candidates']['fields']['date_reviewed']['audited'] = false;
 $dictionary['Candidates']['fields']['date_reviewed']['reportable'] = false;
