@@ -4384,3 +4384,7 @@ $app_strings['LBL_END_OF_MONTH'] = 'Till the end of the month';
 $app_strings['LBL_END_OF_YEAR'] = 'Till the end of the year';
 $app_strings['LBL_TIMES'] = 'Times';
 $app_strings['LBL_UNTIL'] = 'Until';
+$app_strings['LBL_TIME_EXTENDS_SCHEDULE'] = 'This time exceeds work schedule';
+$app_strings['LBL_TIME_OVERLAPS'] = 'Spent time overlaps';
+$app_strings['LBL_START_TIME'] = 'Start time';
+$app_strings['LBL_END_TIME'] = 'End time';
