@@ -448,6 +448,13 @@ $dictionary['User'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_MEETINGS',
         ),
+        'tasks' => array(
+            'name' => 'tasks',
+            'type' => 'link',
+            'relationship' => 'tasks_assigned_user',
+            'source' => 'non-db',
+            'vname' => 'LBL_TASKS',
+        ),
         'contacts_sync' => array(
             'name' => 'contacts_sync',
             'type' => 'link',
