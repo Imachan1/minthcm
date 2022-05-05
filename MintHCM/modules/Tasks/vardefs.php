@@ -166,6 +166,13 @@ $dictionary['Task'] = array(
             'required' => 'true',
             'audited' => true,
         ),
+        'users' => array(
+            'name' => 'users',
+            'type' => 'link',
+            'relationship' => 'tasks_assigned_user',
+            'source' => 'non-db',
+            'vname' => 'LBL_USER',
+        ),
         'accounts' => array(
             'name' => 'accounts',
             'type' => 'link',
