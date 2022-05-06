@@ -37,7 +37,7 @@ class AttributeObjectHelper
             return is_string($value)
                 ? (\DateTime::createFromFormat('Y-m-d H:i:s', $value)
                     ? date(\DateTime::ATOM, strtotime($value))
-                    : $value)
+                    : html_entity_decode(htmlspecialchars_decode($value), ENT_QUOTES))
                 : $value;
         }, $bean->toArray());
 
