@@ -4266,6 +4266,9 @@ $app_strings['LBL_CERTIFICATE'] = 'Certificate';
 $app_strings['LBL_CERTIFICATES'] = 'Certificates';
 
 $app_strings['LBL_CANNOT_CREATE_CALENDAR_EVENTS'] = 'You cannot create events for that calendar';
+$app_strings['LBL_INSTANCE_ADDRESS'] = 'Server Address';
+$app_strings['LBL_UNSAVED_WARNING'] = 'Warning! You are trying to leave unsaved record. Continue?';
+$app_strings['LBL_BAD_REQUEST_INSTANCE'] = 'Bad request, check server properties';
 
 $app_list_strings['record_type_display_comments'] = array(
    'News' => 'News',
