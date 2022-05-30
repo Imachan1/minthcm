@@ -15,6 +15,7 @@ use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\ResourceServer;
 use Api\Core\Loader\CustomLoader;
+use Api\V8\OAuth2\Grant\MobileGrant;
 
 return CustomLoader::mergeCustomArray([
     AuthorizationServer::class => function (Container $container) {
@@ -59,6 +60,16 @@ return CustomLoader::mergeCustomArray([
             ),
             new \DateInterval('PT1H')
         );
+
+        // Mobile grant
+        $server->enableGrantType(
+            new MobileGrant(
+                new UserRepository($container->get(BeanManager::class)), 
+                new RefreshTokenRepository($container->get(BeanManager::class))
+            ),
+            new \DateInterval('PT1H')
+        );
+
 
         $refreshGrant = new RefreshTokenGrant(
             new RefreshTokenRepository($container->get(BeanManager::class))

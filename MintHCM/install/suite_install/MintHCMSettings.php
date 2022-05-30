@@ -60,4 +60,15 @@ function installMintHCMSettings()
 
     ksort($sugar_config);
     write_array_to_file('sugar_config', $sugar_config, 'config.php');
+
+    addMobileTokenClient();
+}
+
+function addMobileTokenClient() {
+    global $db;
+    $hash = hash('sha256', 'c301c0a6d4619bcb268fd474004634d6081d2197ce41f0d05c0bb789da01b696');
+    $db->query(
+        "INSERT INTO `oauth2clients` (`id`, `name`, `date_entered`, `date_modified`, `modified_user_id`, `created_by`, `description`, `deleted`, `secret`, `redirect_url`, `is_confidential`, `allowed_grant_type`, `duration_value`, `duration_amount`, `duration_unit`, `assigned_user_id`) VALUES
+        ('mobile',	'Mobile Token Client',	NULL,	NULL,	NULL,	NULL,	NULL,	0, '${$hash}',	NULL,	1,	'mobile',	60,	1,	'minute',	NULL);"
+    );
 }

@@ -52,6 +52,7 @@ return array(
     'Api\\V8\\OAuth2\\Repository\\RefreshTokenRepository' => $baseDir . '/Api/V8/OAuth2/Repository/RefreshTokenRepository.php',
     'Api\\V8\\OAuth2\\Repository\\ScopeRepository' => $baseDir . '/Api/V8/OAuth2/Repository/ScopeRepository.php',
     'Api\\V8\\OAuth2\\Repository\\UserRepository' => $baseDir . '/Api/V8/OAuth2/Repository/UserRepository.php',
+    'Api\\V8\\OAuth2\\Grant\\MobileGrant' => $baseDir . '/Api/V8/OAuth2/Grant/MobileGrant.php',
     'Api\\V8\\Param\\BaseParam' => $baseDir . '/Api/V8/Param/BaseParam.php',
     'Api\\V8\\Param\\CreateModuleDataParams' => $baseDir . '/Api/V8/Param/CreateModuleDataParams.php',
     'Api\\V8\\Param\\CreateModuleParams' => $baseDir . '/Api/V8/Param/CreateModuleParams.php',

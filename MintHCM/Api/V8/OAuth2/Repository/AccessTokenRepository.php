@@ -65,6 +65,9 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
             case 'password':
                 $userId = $accessTokenEntity->getUserIdentifier();
                 break;
+            case 'mobile':
+                $userId = $accessTokenEntity->getUserIdentifier();
+                break;
             case 'client_credentials':
                 $userId = $client->assigned_user_id;
                 break;

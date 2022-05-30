@@ -359,6 +359,7 @@ class ComposerStaticInit39ad14f11ae792001fdf64c62743e5c7
         'Api\\V8\\OAuth2\\Repository\\RefreshTokenRepository' => __DIR__ . '/../..' . '/Api/V8/OAuth2/Repository/RefreshTokenRepository.php',
         'Api\\V8\\OAuth2\\Repository\\ScopeRepository' => __DIR__ . '/../..' . '/Api/V8/OAuth2/Repository/ScopeRepository.php',
         'Api\\V8\\OAuth2\\Repository\\UserRepository' => __DIR__ . '/../..' . '/Api/V8/OAuth2/Repository/UserRepository.php',
+        'Api\\V8\\OAuth2\\Grant\\MobileGrant' => __DIR__ . '/../..' . '/Api/V8/OAuth2/Grant/MobileGrant.php',
         'Api\\V8\\Param\\BaseParam' => __DIR__ . '/../..' . '/Api/V8/Param/BaseParam.php',
         'Api\\V8\\Param\\CreateModuleDataParams' => __DIR__ . '/../..' . '/Api/V8/Param/CreateModuleDataParams.php',
         'Api\\V8\\Param\\CreateModuleParams' => __DIR__ . '/../..' . '/Api/V8/Param/CreateModuleParams.php',
