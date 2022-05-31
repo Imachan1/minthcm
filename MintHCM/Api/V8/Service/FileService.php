@@ -42,6 +42,9 @@ class FileService
             if (in_array($module_name, ['Users', 'Employees'])) {
                 $bean->photo = $file->get_stored_file_name();
                 $id .= '_photo';
+            } elseif ($module_name === 'Rooms') {
+                $bean->room_plan = $file->get_stored_file_name();
+                $id .= '_room_plan';
             } else {
                 $bean->uploadfile = $file->get_stored_file_name();
                 $bean->file_mime_type = $file->get_mime_type();
@@ -86,6 +89,9 @@ class FileService
             case (in_array($bean->module_name, ['Users', 'Employees'])):
                 return $bean->photo;
                 break;
+            case 'Rooms': 
+                return $bean->room_plan;
+                break;    
             default:
                 return $bean->filename;
                 break;
@@ -98,6 +104,9 @@ class FileService
             case (in_array($module, ['Users', 'Employees'])):
                 return '_photo';
                 break;
+            case 'Rooms':
+                return '_room_plan';
+                break;
             default:
                 return '';
                 break;
@@ -107,7 +116,7 @@ class FileService
     protected function getContentType($module, $bean)
     {
         switch ($module) {
-            case (in_array($module, ['Users', 'Employees'])):
+            case (in_array($module, ['Users', 'Employees', 'Rooms'])):
                 return 'image/jpeg';
                 break;
             default:
