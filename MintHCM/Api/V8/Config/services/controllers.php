@@ -11,6 +11,7 @@ use Api\V8\Service\ModuleService;
 use Api\V8\Service\RelationshipService;
 use Api\V8\Service\UserPreferencesService;
 use Api\V8\Service\UserService;
+use Api\V8\Service\CalendarDataService;
 use League\OAuth2\Server\ResourceServer;
 use Psr\Container\ContainerInterface as Container;
 
@@ -59,6 +60,11 @@ return CustomLoader::mergeCustomArray([
     Controller\FileController::class => function (Container $container) {
         return new Controller\FileController(
             $container->get(FileService::class)
+        );
+    },
+    Controller\CalendarDataController::class => function (Container $container) {
+        return new Controller\CalendarDataController(
+            $container->get(CalendarDataService::class)
         );
     },
 ], basename(__FILE__));
