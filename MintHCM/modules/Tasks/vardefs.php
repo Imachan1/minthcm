@@ -292,6 +292,7 @@ $dictionary['Task'] = array(
             'fields' => array('parent_id', 'parent_type', 'deleted'),
         ),
         array('name' => 'idx_task_assigned', 'type' => 'index', 'fields' => array('assigned_user_id')),
+        array('name' => 'idx_task_date_start', 'type' => 'index', 'fields' => array('date_start')),
         array('name' => 'idx_task_status', 'type' => 'index', 'fields' => array('status')),
     )
 
