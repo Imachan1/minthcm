@@ -807,10 +807,24 @@
                                                                                                             {/foreach}
                                                                                                             </div>
 
+                                                                                                            <!-- MintHCM #100495 START -->
+                                                                                                            <!--
                                                                                                             <div id="recentlyViewedSidebar" class="recentlyViewedSidebar">
+                                                                                                            -->
+                                                                                                            <div id="recentlyViewedSidebar" class="recentlyViewedSidebar" style="
+                                                                                                                {if is_array($favoriteRecords) && count($favoriteRecords) > 0}
+                                                                                                                    height:70%;
+                                                                                                                {else}
+                                                                                                                    height:100%;
+                                                                                                                {/if}
+                                                                                                            ">
+                                                                                                            <!-- MintHCM #100495 END -->
                                                                                                                 {if is_array($recentRecords) && count($recentRecords) > 0}
                                                                                                                     <h2 class="recent_h3">{$APP.LBL_LAST_VIEWED}</h2>
                                                                                                                 {/if}
+                                                                                                                <!-- MintHCM #100495 START -->
+                                                                                                                <div class='hiddenScroll'>
+                                                                                                                <!-- MintHCM #100495 END -->
                                                                                                                 <ul class="nav nav-pills nav-stacked">
                                                                                                                     {foreach from=$recentRecords item=item name=lastViewed}
                                                                                                                         {if $item.module_name != 'Emails' && $item.module_name != 'InboundEmail' && $item.module_name != 'EmailAddresses'}<!--Check to ensure that recently viewed emails or email addresses are not displayed in the recently viewed panel.-->
@@ -831,14 +845,36 @@
                                                                                                                         {/if}
                                                                                                                     {/foreach}
                                                                                                                 </ul>
+                                                                                                                <!-- MintHCM #100495 START -->
+                                                                                                                </div>
+                                                                                                                <!-- MintHCM #100495 END -->
                                                                                                             </div>
+                                                                                                            <!-- MintHCM #100495 START -->
+                                                                                                            <!--
                                                                                                             <div id="favoritesSidebar" class="favoritesSidebar">
+                                                                                                            -->
+                                                                                                            <div id="favoritesSidebar" class="favoritesSidebar" style="
+                                                                                                                {if is_array($recentRecords) && count($recentRecords) > 0}
+                                                                                                                    height:28%;
+                                                                                                                {else}
+                                                                                                                    height:100%;
+                                                                                                                {/if}
+                                                                                                            ">
+                                                                                                            <!-- MintHCM #100495 END -->
                                                                                                                 {if is_array($favoriteRecords) && count($favoriteRecords) > 0}
                                                                                                                     <h2 class="recent_h3">{$APP.LBL_FAVORITES}</h2>
                                                                                                                 {/if}
+                                                                                                                <!-- MintHCM #100495 START -->
+                                                                                                                <div class='hiddenScroll'>
+                                                                                                                <!-- MintHCM #100495 END -->
                                                                                                                 <ul class="nav nav-pills nav-stacked">
                                                                                                                     {foreach from=$favoriteRecords item=item name=lastViewed}
+                                                                                                                        <!-- MintHCM #100495 START -->
+                                                                                                                        <!--
                                                                                                                         {if $smarty.foreach.lastViewed.index < 5}
+                                                                                                                        -->
+                                                                                                                        {if $smarty.foreach.lastViewed.index < 10}
+                                                                                                                        <!-- MintHCM #100495 END -->
                                                                                                                             <div class="recently_viewed_link_container_sidebar">
                                                                                                                                 <li class="recentlinks" role="presentation">
                                                                                                                                     <a title="{$item.module_name}" accessKey="{$smarty.foreach.lastViewed.iteration}" href="{sugar_link module=$item.module_name action='DetailView' record=$item.id link_only=1}" class="favorite-links-detail">
@@ -851,8 +887,51 @@
                                                                                                                         {/if}
                                                                                                                     {/foreach}
                                                                                                                 </ul>
+                                                                                                            <!-- MintHCM #100495 START -->
+                                                                                                            </div>
+                                                                                                            <!-- MintHCM #100495 END -->
                                                                                                             </div>
                                                                                                         </div>
+
+                                                                                                        {* MintHCM #100495 START *}
+                                                                                                        {literal}
+                                                                                                            <style type="text/css">
+                                                                                                                div.sidebar {
+                                                                                                                    display: flex;
+                                                                                                                    flex-direction: column;
+                                                                                                                }
+
+                                                                                                                #recentlyAndFavorites {
+                                                                                                                    flex-grow: 1;
+                                                                                                                    overflow-y: hidden;
+                                                                                                                }
+
+                                                                                                                #recentlyAndFavorites #recentlyViewedSidebar {
+                                                                                                                    display: flex;
+                                                                                                                    flex-direction: column;
+                                                                                                                }
+
+                                                                                                                #recentlyAndFavorites #favoritesSidebar {
+                                                                                                                    display: flex;
+                                                                                                                    flex-direction: column;
+                                                                                                                }
+
+                                                                                                                div.hiddenScroll {
+                                                                                                                    overflow-y: scroll;
+                                                                                                                    -ms-overflow-style: none;
+                                                                                                                    /* for Internet Explorer, Edge */
+                                                                                                                    scrollbar-width: none;
+                                                                                                                    /* for Firefox */
+                                                                                                                }
+
+                                                                                                                div.hiddenScroll::-webkit-scrollbar {
+                                                                                                                    display: none;
+                                                                                                                    /* for Chrome, Safari, and Opera */
+                                                                                                                }
+                                                                                                            </style>
+                                                                                                        {/literal}
+                                                                                                        {* MintHCM #100495 END *}
+
                                                                                                         <!--</div>-->
                                                                                                     </div>
                                                                                                     <!--End Responsive Sidebar -->

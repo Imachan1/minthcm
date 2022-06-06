@@ -350,7 +350,7 @@ function get_sugar_config_defaults()
             ),
         ),
         'google_auth_json' => '',
-        'history_max_viewed' => 50,
+        'history_max_viewed' => 20, // MintHCM #100495
         'installer_locked' => true,
         'import_max_records_per_file' => 100,
         'import_max_records_total_limit' => '',
@@ -380,7 +380,7 @@ function get_sugar_config_defaults()
             'h:i A' => '11:00 PM',
             'H.i' => '23.00', 'h.ia' => '11.00pm', 'h.iA' => '11.00PM', 'h.i a' => '11.00 pm',
             'h.i A' => '11.00 PM'),
-        'tracker_max_display_length' => 15,
+        'tracker_max_display_length' => 25, // MintHCM #100495
         'translation_string_prefix' => return_session_value_or_default('translation_string_prefix',
             false),
         'upload_badext' => array(
