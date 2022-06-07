@@ -4,11 +4,11 @@ namespace Api\V8\Param;
 use Api\V8\Param\Options as ParamOption;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CalendarDataParams extends BaseParam
+class MonthInfoParams extends BaseParam
 {
-    public function getId()
+    public function getEmployeeId()
     {
-        return $this->parameters['id'];
+        return $this->parameters['employeeId'];
     }
 
     public function getDate()
@@ -21,7 +21,7 @@ class CalendarDataParams extends BaseParam
         $this->setOptions(
             $resolver,
             [
-                ParamOption\Id::class,
+                ParamOption\EmployeeId::class,
                 ParamOption\Date::class
             ]
         );

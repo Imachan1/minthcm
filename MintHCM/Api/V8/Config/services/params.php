@@ -103,8 +103,8 @@ return CustomLoader::mergeCustomArray([
             $container->get(BeanManager::class)
         );
     },
-    Param\CalendarDataParams::class => function (Container $container) {
-        return new Param\CalendarDataParams(
+    Param\MonthInfoParams::class => function (Container $container) {
+        return new Param\MonthInfoParams(
             $container->get(ValidatorFactory::class),
             $container->get(BeanManager::class)
         );

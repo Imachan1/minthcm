@@ -65,8 +65,8 @@ return CustomLoader::mergeCustomArray([
             $container->get(PaginationObjectHelper::class)
         );
     },
-    Service\CalendarDataService::class => function (Container $container) {
-        return new Service\CalendarDataService(
+    Service\MonthInfoService::class => function (Container $container) {
+        return new Service\MonthInfoService(
             $container->get(BeanManager::class),
             $container->get(AttributeObjectHelper::class),
             $container->get(RelationshipObjectHelper::class)

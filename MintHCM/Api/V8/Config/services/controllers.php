@@ -11,7 +11,7 @@ use Api\V8\Service\ModuleService;
 use Api\V8\Service\RelationshipService;
 use Api\V8\Service\UserPreferencesService;
 use Api\V8\Service\UserService;
-use Api\V8\Service\CalendarDataService;
+use Api\V8\Service\MonthInfoService;
 use League\OAuth2\Server\ResourceServer;
 use Psr\Container\ContainerInterface as Container;
 
@@ -62,9 +62,9 @@ return CustomLoader::mergeCustomArray([
             $container->get(FileService::class)
         );
     },
-    Controller\CalendarDataController::class => function (Container $container) {
-        return new Controller\CalendarDataController(
-            $container->get(CalendarDataService::class)
+    Controller\MonthInfoController::class => function (Container $container) {
+        return new Controller\MonthInfoController(
+            $container->get(MonthInfoService::class)
         );
     },
 ], basename(__FILE__));
