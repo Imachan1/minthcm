@@ -211,7 +211,7 @@ $app_list_strings = array(
         'Candidates' => 'Candidate',
         'Candidatures' => 'Candidature',
         'Ideas' => 'Idea',
-    	'Rooms' => 'Room',
+        'Rooms' => 'Room',
         'Allocations' => 'Allocation',
         'Workplaces' => 'Workplace',
         'EmployeeInteractionTracking' => 'Employee Interaction Tracking',
@@ -3859,10 +3859,10 @@ $app_list_strings['group_type_list'] = array(
     'other' => 'Other',
 );
 $app_list_strings['workplace_room_status'] = array(
-        '' => '',
-        'active' => 'Active',
-        'inactive' => 'Inactive',
-        'planned' => 'Planned',
+    '' => '',
+    'active' => 'Active',
+    'inactive' => 'Inactive',
+    'planned' => 'Planned',
 );
 
 $app_list_strings['daily_working_time_list'] = array(
@@ -4190,13 +4190,13 @@ $app_strings['LBL_UNSAVED_WARNING'] = 'Warning! You are trying to leave unsaved 
 $app_strings['LBL_BAD_REQUEST_INSTANCE'] = 'Bad request, check server properties';
 
 $app_list_strings['record_type_display_comments'] = array(
-   'News' => 'News',
+    'News' => 'News',
 );
- 
+
 $app_list_strings['parent_type_display_comments'] = array(
-   'News' => 'News',
+    'News' => 'News',
 );
- 
+
 $app_strings['LBL_COMMENTS'] = "Comments";
 $app_strings['LBL_PANEL_COMMENTS'] = "Comments";
 $app_strings['LBL_YOUR_COMMENT'] = "Your Comment";
@@ -4204,19 +4204,24 @@ $app_strings['LBL_YOUR_REPLY'] = "Your Reply";
 $app_strings['LBL_SEND_BUTTON_LABEL'] = "Send";
 
 $app_list_strings['parent_type_display_reactions'] = array(
-   'News' => 'News',
+    'News' => 'News',
 );
 
 $app_list_strings['reaction_type_list'] = array(
-   'like' => 'Like',
-   'dislike' => 'Dislike',
+    'like' => 'Like',
+    'dislike' => 'Dislike',
 );
 
 $app_list_strings['reaction_icons_list'] = array(
-   'like' => 'thumbs-up',
-   'dislike' => 'thumbs-down',
+    'like' => 'thumbs-up',
+    'dislike' => 'thumbs-down',
+);
+
+$app_list_strings['parent_type_display_for_candidatures'] = array(
+    'Candidates' => 'Candidate',
+    'Employees' => 'Employee',
 );
 
 $app_strings['LNK_KANBAN'] = 'Board';
 $app_strings['ERR_KANBAN_COL_ERROR'] = 'Column for Kanban is not defined. Property "column" is missing for kanbanviewdefs.';
-$app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed'; 
+$app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed';
