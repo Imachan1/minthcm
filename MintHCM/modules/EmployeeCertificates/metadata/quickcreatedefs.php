@@ -75,7 +75,7 @@ $viewdefs[$module_name]['QuickCreate'] = array(
                 ),
             ),
             array(
-                'candidate_name',
+                'parent_name',
                 'employee_name',
             ),
             array(

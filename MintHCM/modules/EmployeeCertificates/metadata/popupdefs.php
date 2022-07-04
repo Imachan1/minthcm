@@ -52,7 +52,7 @@ $popupMeta = array(
         'start_date' => 'employeecertificates.start_date',
         'end_date' => 'employeecertificates.end_date',
         'status' => 'cemployeeertificates.status',
-        'candidate_name' => 'candidates.candidate_name',
+        'parent_name' => 'candidates.parent_name',
         'certificate_name' => 'certificates.certificate_name',
     ),
     'searchInputs' => array(
@@ -60,7 +60,7 @@ $popupMeta = array(
         'start_date',
         'end_date',
         'status',
-        'candidate_name',
+        'parent_name',
         'certificate_name',
     ),
     'searchdefs' => array(
@@ -101,13 +101,13 @@ $popupMeta = array(
             'default' => true,
             'width' => '10%',
         ),
-        'candidate_name' => array(
+        'parent_name' => array(
             'type' => 'relate',
             'link' => true,
             'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
-            'id' => 'CANDIDATE_ID',
+            'id' => 'PARENT_ID',
             'width' => '10%',
-            'name' => 'candidate_name',
+            'name' => 'parent_name',
         ),
         'certificate_name' => array(
             'type' => 'relate',
@@ -154,14 +154,14 @@ $popupMeta = array(
             'default' => true,
             'name' => 'employee_name',
         ),
-        'CANDIDATE_NAME' => array(
+        'PARENT_NAME' => array(
             'type' => 'relate',
             'link' => true,
             'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
-            'id' => 'CANDIDATE_ID',
+            'id' => 'PARENT_ID',
             'width' => '10%',
             'default' => true,
-            'name' => 'candidate_name',
+            'name' => 'parent_name',
         ),
         'CERTIFICATE_NAME' => array(
             'type' => 'relate',

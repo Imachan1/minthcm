@@ -87,14 +87,14 @@ $viewdefs[$module_name] = array(
                 ),
                 array(
                     array(
-                        'name' => 'candidate_name',
+                        'name' => 'parent_name',
                         'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
                     ),
                     'employee_name',
                 ),
                 array(
-                    'description'
-                )
+                    'description',
+                ),
             ),
             'LBL_RECORDVIEW_PANEL' => array(
                 array(

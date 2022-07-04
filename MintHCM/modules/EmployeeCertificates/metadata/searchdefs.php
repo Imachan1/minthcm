@@ -100,14 +100,14 @@ $searchdefs[$module_name] = array(
                 'default' => true,
                 'name' => 'date_modified',
             ),
-            'candidate_name' => array(
+            'parent_name' => array(
                 'type' => 'relate',
                 'link' => true,
                 'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
-                'id' => 'CANDIDATE_ID',
+                'id' => 'PARENT_ID',
                 'width' => '10%',
                 'default' => true,
-                'name' => 'candidate_name',
+                'name' => 'parent_name',
             ),
             'employee_name' => array(
                 'name' => 'employee_name',

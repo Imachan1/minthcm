@@ -49,7 +49,7 @@ $popupMeta = array(
     'orderBy' => 'candidatures.name',
     'whereClauses' => array(
         'name' => 'candidatures.name',
-        'candidate_name' => 'candidatures.candidate_name',
+        'parent_name' => 'candidatures.parent_name',
         'status' => 'candidatures.status',
         'source' => 'candidatures.source',
         'assigned_user_id' => 'candidatures.assigned_user_id',
@@ -57,7 +57,7 @@ $popupMeta = array(
     ),
     'searchInputs' => array(
         'name',
-        'candidate_name',
+        'parent_name',
         'status',
         'source',
         'assigned_user_id',
@@ -137,7 +137,7 @@ $popupMeta = array(
             'id' => 'CANDIDATES_CANDIDATURESCANDIDATES_IDA',
             'sortable' => false,
             'default' => true,
-            'name' => 'candidate_name',
+            'name' => 'parent_name',
         ),
         'NET_AMOUNT' => array(
             'related_fields' => array(
