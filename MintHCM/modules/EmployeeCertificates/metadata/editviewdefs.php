@@ -87,7 +87,7 @@ $viewdefs[$module_name] = array(
                 ),
                 array(
                     array(
-                        'name' => 'parent_name',
+                        'name' => 'candidate_name',
                         'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
                     ),
                     'employee_name',

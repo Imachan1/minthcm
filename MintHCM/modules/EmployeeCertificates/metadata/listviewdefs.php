@@ -74,11 +74,11 @@ $listViewDefs[$module_name] = array(
         'width' => '10%',
         'default' => true,
     ),
-    'PARENT_NAME' => array(
+    'CANDIDATE_NAME' => array(
         'type' => 'relate',
         'link' => true,
         'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
-        'id' => 'PARENT_ID',
+        'id' => 'CANDIDATE_ID',
         'width' => '10%',
         'default' => true,
     ),

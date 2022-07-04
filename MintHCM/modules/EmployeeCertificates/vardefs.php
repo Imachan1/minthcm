@@ -105,14 +105,14 @@ $dictionary['EmployeeCertificates'] = array(
             'module' => 'Candidates',
             'bean_name' => 'Candidates',
             'vname' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
-            'id_name' => 'parent_id',
+            'id_name' => 'candidate_id',
         ),
-        "parent_name" => array(
-            'name' => 'parent_name',
+        "candidate_name" => array(
+            'name' => 'candidate_name',
             'type' => 'relate',
             'source' => 'non-db',
             'vname' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
-            'id_name' => 'parent_id',
+            'id_name' => 'candidate_id',
             'link' => 'candidate',
             'module' => 'Candidates',
             'table' => 'candidates',
@@ -123,10 +123,10 @@ $dictionary['EmployeeCertificates'] = array(
             'reportable' => true,
             'massupdate' => false,
             'duplicate_merge' => 'enabled',
-            'vt_validation' => 'AEM(ifElse(and(empty($parent_id),empty($employee_id)),false,true), \'LBL_CANDIDATE_OR_EMPLOYEE_HAVE_TO_BE_SET\')',
+            'vt_validation' => 'AEM(ifElse(and(empty($candidate_id),empty($employee_id)),false,true), \'LBL_CANDIDATE_OR_EMPLOYEE_HAVE_TO_BE_SET\')',
         ),
-        "parent_id" => array(
-            'name' => 'parent_id',
+        "candidate_id" => array(
+            'name' => 'candidate_id',
             'relationship' => 'candidates_employeecertificates',
             'type' => 'id',
             'vname' => 'LBL_RELATIONSHIP_CANDIDATE_ID',
@@ -204,7 +204,7 @@ $dictionary['EmployeeCertificates'] = array(
             'lhs_key' => 'id',
             'rhs_module' => 'EmployeeCertificates',
             'rhs_table' => 'employeecertificates',
-            'rhs_key' => 'parent_id',
+            'rhs_key' => 'candidate_id',
             'relationship_type' => 'one-to-many',
         ),
         "certificates_employeecertificates" => array(
@@ -237,7 +237,7 @@ VardefManager::createVardef('EmployeeCertificates', 'EmployeeCertificates',
     array('basic', 'assignable', 'security_groups', 'employee_related'));
 
 $dictionary['EmployeeCertificates']['fields']['name']['vt_readonly'] = "true";
-$dictionary['EmployeeCertificates']['fields']['name']['vt_calculated'] = 'concat($certificate_name,\' - \',ifElse(empty($employee_id),$parent_name,$employee_name))';
+$dictionary['EmployeeCertificates']['fields']['name']['vt_calculated'] = 'concat($certificate_name,\' - \',ifElse(empty($employee_id),$candidate_name,$employee_name))';
 $dictionary['EmployeeCertificates']['fields']['name']['audited'] = false;
 $dictionary['EmployeeCertificates']['fields']['name']['related_fields'] = array(
     'certificate_name',
@@ -245,5 +245,5 @@ $dictionary['EmployeeCertificates']['fields']['name']['related_fields'] = array(
 );
 $dictionary['EmployeeCertificates']['fields']['employee_name']['required'] = false;
 $dictionary['EmployeeCertificates']['fields']['employee_name']['audited'] = true;
-$dictionary['EmployeeCertificates']['fields']['employee_name']['vt_validation'] = 'AEM(ifElse(and(empty($parent_id),empty($employee_id)),false,true), \'LBL_CANDIDATE_OR_EMPLOYEE_HAVE_TO_BE_SET\')';
+$dictionary['EmployeeCertificates']['fields']['employee_name']['vt_validation'] = 'AEM(ifElse(and(empty($candidate_id),empty($employee_id)),false,true), \'LBL_CANDIDATE_OR_EMPLOYEE_HAVE_TO_BE_SET\')';
 $dictionary['EmployeeCertificates']['fields']['employee_id']['audited'] = false;
