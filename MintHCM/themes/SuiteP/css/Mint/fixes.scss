@@ -1,0 +1,30 @@
+.quickcreate-link {
+    display: flex !important;
+    align-items: center;
+}
+
+.toolbar .suitepicon:before {
+    vertical-align: middle;
+}
+
+.user-menu-button .suitepicon-action-caret {
+    display: inline-block;
+    transform: translateY(-3px);
+}
+
+.usermenucollapsed {
+    box-shadow: none;
+}
+
+.tablet-bar > .toolbar > li > .btn.alertsButton {
+    padding: 0;
+}
+
+.desktop-bar > .toolbar > li > .btn {
+    height: auto;
+    width: auto;
+}
+
+.desktop-bar > .toolbar > li > .btn.alertsButton {
+    padding: 0;
+}
