@@ -1,290 +1,120 @@
 class ESList {
     constructor(defs, module) {
-        this.defs = defs;
+        this.defs = defs.columns;
         this.module = module;
         this.component = document.querySelector('es-list').vueComponent;
-        // this.url = 'https://bartanowiczs71.int.evolpe.net/minthcm/index.php?entryPoint=elasticSearchTests&module=Calls';
-        this.mappings = {
-            "3a5a56a18649bae4f6e1e669917855d7_shared": {
-                "mappings": {
-                    "Calls": {
-                        "_meta": {
-                            "last_index": "2022-08-21 23:24:40"
-                        },
-                        "properties": {
-                            "date_end": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "date_start": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "description": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "direction": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "duration_hours": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "duration_minutes": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "email_reminder_sent": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "email_reminder_time": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "meta": {
-                                "properties": {
-                                    "assigned": {
-                                        "properties": {
-                                            "user_id": {
-                                                "type": "text",
-                                                "fields": {
-                                                    "keyword": {
-                                                        "type": "keyword",
-                                                        "ignore_above": 256
-                                                    }
-                                                }
-                                            },
-                                            "user_name": {
-                                                "type": "text",
-                                                "fields": {
-                                                    "keyword": {
-                                                        "type": "keyword",
-                                                        "ignore_above": 256
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "created": {
-                                        "properties": {
-                                            "date": {
-                                                "type": "date",
-                                                "format": "yyyy-MM-dd HH:mm:ss"
-                                            },
-                                            "user_id": {
-                                                "type": "text",
-                                                "fields": {
-                                                    "keyword": {
-                                                        "type": "keyword",
-                                                        "ignore_above": 256
-                                                    }
-                                                }
-                                            },
-                                            "user_name": {
-                                                "type": "text",
-                                                "fields": {
-                                                    "keyword": {
-                                                        "type": "keyword",
-                                                        "ignore_above": 256
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "modified": {
-                                        "properties": {
-                                            "date": {
-                                                "type": "text",
-                                                "fields": {
-                                                    "keyword": {
-                                                        "type": "keyword",
-                                                        "ignore_above": 256
-                                                    }
-                                                }
-                                            },
-                                            "user_id": {
-                                                "type": "text",
-                                                "fields": {
-                                                    "keyword": {
-                                                        "type": "keyword",
-                                                        "ignore_above": 256
-                                                    }
-                                                }
-                                            },
-                                            "user_name": {
-                                                "type": "text",
-                                                "fields": {
-                                                    "keyword": {
-                                                        "type": "keyword",
-                                                        "ignore_above": 256
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            "name": {
-                                "properties": {
-                                    "first": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        },
-                                        "copy_to": [
-                                            "named"
-                                        ]
-                                    },
-                                    "last": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        },
-                                        "copy_to": [
-                                            "named"
-                                        ]
-                                    },
-                                    "name": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        },
-                                        "copy_to": [
-                                            "named"
-                                        ]
-                                    }
-                                }
-                            },
-                            "named": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "parent": {
-                                "properties": {
-                                    "id": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            "parent_type": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "reminder_time": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "repeat_interval": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        let wrapper = [];
+        wrapper.push(this.defs);
+        this.defs = wrapper;
     }
 
     init() {
         this.setEvents();
-        // this.getResults({ 'page': 1, 'itemsPerPage': 10, sortBy: '' });
+        this.setLabels(this.defs, this.module);
+        this.setHeaders();
         this.getResults({ 'page': 1, 'itemsPerPage': 10, sortBy: '' });
+        this.getMappings();
     }
 
     setEvents() {
         this.component.$on('getResults', (params) => {
             this.getResults(params)
         });
+        this.component.$on('deleteAll', (data) => {
+            data.page = 1;
+            data.itemsPerPage = 10000;
+            this.getIdsForMassUpdate(data);
+        });
+        this.component.$on('deleteThisPage', (data) => {
+            this.massUpdate(data.IDs);
+        });
     }
 
     setLabels(defs, module) {
         let sugarLabels = SUGAR.language.languages[module];
 
-        for (const value of Object.values(defs)) {
+        for (let value of Object.values(defs[0])) {
             value.label = sugarLabels[value.label];
         }
+        this.component.$data.defs = this.defs;
 
-        console.log(defs);
+        return;
+    }
 
-        return defs;
+    setHeaders() {
+        let keys = Object.keys(this.defs[0]);
+        let slots = [];
+        let headers = [];
+        let item = {};
+
+        for (let i = 0; i < keys.length; i++) {
+            let key = keys[i];
+
+            if (this.defs[0][key].default) {
+                item.text = this.defs[0][key].label;
+                item.value = keys[i].toLocaleLowerCase();
+
+                if (this.defs[0][key].link) {
+                    slots.push(keys[i].toLocaleLowerCase());
+                }
+                if (this.defs[0][key].sortable || !('sortable' in this.defs[0][key])) {
+                    item.sortable = true;
+                } else {
+                    item.sortable = false;
+                }
+
+                headers.push(item);
+                item = {};
+            }
+        }
+
+        headers.push({ text: 'Akcje', value: 'Akcje', sortable: false, align: 'end' });
+
+        this.component.$data.headers = headers;
+        this.component.$data.slots = slots;
+
+        return;
+    }
+
+    getMappings() {
+        viewTools.api.callController({
+            module: this.module,
+            action: 'ESList',
+            dataGET: { module: this.module },
+            dataPOST: { function_name: 'getMappings' },
+            callback: function (data) {
+                this.mappings = Object.values(JSON.parse(JSON.parse(data)))[0].mappings[this.module].properties;
+            }.bind(this)
+        });
+    }
+
+    getIdsForMassUpdate(params) {
+        viewTools.api.callController({
+            module: this.module,
+            action: 'ESList',
+            dataGET: params,
+            dataPOST: { function_name: 'getIDsForMassUpdate' },
+            callback: function (data) {
+                data = JSON.parse(data);
+                this.massUpdate(data.Calls);
+            }.bind(this)
+        });
+    }
+
+
+    massUpdate(IDs) {
+        viewTools.api.callController({
+            module: this.module,
+            action: 'ESList',
+            dataGET: {},
+            dataPOST: { function_name: 'massUpdate', IDs: IDs, action_name: 'delete' },
+            callback: function (data) {
+                data = JSON.parse(data);
+                if (data.success) {
+                    location.reload();
+                }
+            }.bind(this)
+        });               
     }
 
     getResults(params) {
@@ -298,8 +128,6 @@ class ESList {
             callback: function (data) {
                 data = JSON.parse(data);
 
-                this.setLabels(this.defs.columns, this.module);
-
                 this.component.$data.totalResults = data.total;
                 this.component.$data.results = data.results;
             }.bind(this)
@@ -308,10 +136,13 @@ class ESList {
 
     setParams(params) {
         let viewToolsParams = {};
+
+        viewToolsParams.myObjects = 'myObjects' in params ? params.myObjects : false;
+        viewToolsParams.searchPhrase = 'searchPhrase' in params ? params.searchPhrase : '';
         viewToolsParams.page = params.page;
         viewToolsParams.itemsPerPage = params.itemsPerPage;
         if (params.sortBy[0]) {
-            let sortBy = this.columnNameInMappings(params.sortBy[0]);
+            let sortBy = this.fieldNameInMappings(params.sortBy[0]);
             viewToolsParams.sortBy = sortBy;
             viewToolsParams.sortOrder = params.sortDesc[0] ? 'desc' : 'asc';
         }
@@ -319,52 +150,29 @@ class ESList {
         return viewToolsParams;
     }
 
-    // getResults(params) {
-    //     this.component.$data.loading = true;
-    //     let urlWithParams = this.addParamsToUrl(params);
+    fieldNameInMappings(column) {
+        let fieldName;
+        if (column == 'name') fieldName = 'named';
+        else if (this.mappings.hasOwnProperty(column)) fieldName = column;
 
-    //     console.log(urlWithParams);
-
-    //     fetch(urlWithParams)
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             this.component.$data.totalResults = data.total;
-    //             this.component.$data.results = data.results;
-    //         });
-    //     this.component.$data.loading = false;
-    // }
-
-    // addParamsToUrl(params) {
-    //     let urlWithParams = new URL(this.url);
-    //     urlWithParams.searchParams.append('page', params.page);
-    //     urlWithParams.searchParams.append('perPage', params.itemsPerPage);
-
-    //     if (params.sortBy[0]) {
-    //         let sortBy = this.columnNameInMappings(params.sortBy[0]);
-    //         urlWithParams.searchParams.append('sortBy', sortBy);
-    //         urlWithParams.searchParams.append('sortOrder', params.sortDesc[0] ? 'desc' : 'asc');
-    //     }
-
-    //     return urlWithParams.toString();
-    // }
-
-    columnNameInMappings(column) {
-        if (Object.values(this.mappings)[0].mappings.Calls.properties.hasOwnProperty(column)) return column;
-
-        if (column == 'name') return 'named';
-        
-        if (column == 'date_entered') return 'meta.created.date';
-        if (column == 'created_by') return 'meta.created.user_id';
-        if (column == 'date_modified') return 'meta.modified.date';
-        if (column == 'modified_user_id') return 'meta.modified.user_id';
-        if (column == 'assigned_user_id') return 'meta.assigned.user_id';
-        if (column == 'modified_by_name') return 'meta.modified.user_name';
-        if (column == 'created_by_name') return 'meta.created.user_name';
-        if (column == 'assigned_user_name') return 'meta.assigned.user_name';
-
+        else if (column == 'date_entered') return 'meta.created.date';
+        else if (column == 'created_by') return 'meta.created.user_id.keyword';
+        else if (column == 'date_modified') return 'meta.modified.date';
+        else if (column == 'modified_user_id') return 'meta.modified.user_id.keyword';
+        else if (column == 'assigned_user_id') return 'meta.assigned.user_id.keyword';
+        else if (column == 'modified_by_name') return 'meta.modified.user_name.keyword';
+        else if (column == 'created_by_name') return 'meta.created.user_name.keyword';
+        else if (column == 'assigned_user_name') return 'meta.assigned.user_name.keyword';
         else {
             console.log('wartosc niestandardowa');
             return '';
+        }
+
+        if (this.mappings[fieldName].type === 'date') {
+            return fieldName;
+        } else {
+            fieldName = fieldName + '.keyword';
+            return fieldName;
         }
     }
 }

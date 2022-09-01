@@ -120,6 +120,13 @@ $mod_strings = array(
     'LBL_REMOVE' => 'Remove',
     'LBL_ACCEPT_STATUS' => 'Accept Status',
     'LBL_ACCEPT_LINK' => 'Accept Link',
+
+    'LNK_ES_CALLS_LIST' => 'View ES Calls',
+    'LNK_ES_TASKS_LIST' => 'View ES Tasks',
+    'LNK_ES_CANDIDATES_LIST' => 'View ES Candidates',
+    'LNK_ES_CANDIDATURES_LIST' => 'View ES Candidatures',
+    'LNK_ES_POSITIONS_LIST' => 'View ES Positions',
+    'LNK_ES_RECRUITMENTS_LIST' => 'View ES Recruitments',
     // create invitee functionality
     'LBL_CREATE_INVITEE' => 'Create an invitee',
     'LBL_CREATE_CONTACT' => 'As Contact',

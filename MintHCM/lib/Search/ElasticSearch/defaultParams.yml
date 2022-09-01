@@ -10,6 +10,18 @@ name_fields: &name_fields
 mappings:
   _default_:
     properties:
+      meta:
+        properties:
+          created:
+            properties:
+              date:
+                type: date
+                format: yyyy-MM-dd HH:mm:ss
+          modified:
+            properties:
+              date:
+                type: date
+                format: yyyy-MM-dd HH:mm:ss
       name:
         properties:
           name: *name_fields
@@ -18,3 +30,22 @@ mappings:
       named:
         type: text
         fields: *fields
+  Calls:
+    properties:
+      date_end:
+        type: date
+        format: yyyy-MM-dd HH:mm:ss
+      date_start:
+        type: date
+        format: yyyy-MM-dd HH:mm:ss
+      duration_hours:
+        type: short
+      duration_minutes:
+        type: short
+
+
+
+
+
+
+

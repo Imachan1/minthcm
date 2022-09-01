@@ -126,4 +126,5 @@ $mod_strings = array(
     'LBL_TERMSOFEMPLOYMENT_SUBPANEL_TITLE' => 'Terms of Employment',
     'LBL_OFFBOARDINGTEMPLATE_NAME' => 'Offboarding Template Name',
     'LBL_ONBOARDINGTEMPLATE_NAME' => 'Onboarding Template Name',
+    'LNK_ES_POSITIONS_LIST' => 'View ES Positions',
 );

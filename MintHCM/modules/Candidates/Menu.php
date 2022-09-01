@@ -45,19 +45,10 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
-
- * Description:  TODO To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 
 global $mod_strings, $app_strings;
-
-if (ACLController::checkAccess('Meetings', 'edit', true)) $module_menu[] = array("index.php?module=Meetings&action=EditView&return_module=Meetings&return_action=DetailView", $mod_strings['LNK_NEW_MEETING'], "Schedule_Meeting");
-if (ACLController::checkAccess('Meetings', 'list', true)) $module_menu[] = array("index.php?module=Meetings&action=index&return_module=Meetings&return_action=DetailView", $mod_strings['LNK_MEETING_LIST'], "List");
-if (ACLController::checkAccess('Meetings', 'import', true)) $module_menu[] = array("index.php?module=Import&action=Step1&import_module=Meetings&return_module=Meetings&return_action=index", $mod_strings['LNK_IMPORT_MEETINGS'], "Import", 'Meetings');
-if (ACLController::checkAccess('Meetings', 'list', true)) $module_menu[] = array("index.php?module=Meetings&action=ESListView", $mod_strings['LNK_ES_MEETINGS_LIST'], "List");
+if (ACLController::checkAccess('CANDIDATES', 'edit', true)) $module_menu[] = array("index.php?module=Candidates&action=EditView&return_module=Candidates&return_action=DetailView", $mod_strings['LNK_NEW_RECORD'], "Create");
+if (ACLController::checkAccess('CANDIDATES', 'list', true)) $module_menu[] = array("index.php?module=Candidates&action=index&return_module=Candidates&return_action=DetailView", $mod_strings['LNK_LIST'], "List");
+if (ACLController::checkAccess('CANDIDATES', 'import', true)) $module_menu[] = array("index.php?module=Import&action=Step1&import_module=Candidates&return_module=Candidates&return_action=index", $mod_strings['LNK_IMPORT_CANDIDATES'], "Import", 'Contacts');
+if (ACLController::checkAccess('CANDIDATES', 'list', true)) $module_menu[] = array("index.php?module=Candidates&action=ESListView", $mod_strings['LNK_ES_CANDIDATES_LIST'], "List");
 
