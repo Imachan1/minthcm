@@ -7,18 +7,13 @@
 </template>
 
 <script>
-import EsList from './components/es-list';
-import data from './data'
+import esList from './components/es-list';
 
 export default {
   name: 'App',
 
   components: {
-    EsList
-  },
-
-  data: () => ({
-    data: data
-  }),
+    esList
+  }
 };
 </script>
