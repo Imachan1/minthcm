@@ -18,8 +18,8 @@ class ESListViewController
     protected function loadDefs()
     {
         $defs = [];
-        require_once 'include/MVC/View/views/view.ESListView.php';
-        $kv = new ViewESList();
+        require_once 'include/MVC/View/views/view.eslistview.php';
+        $kv = new ViewEslistview();
         $kv->type = 'ESlist';
         $kv->module = $this->bean->module_name;
         $metadataFile = $kv->getMetaDataFile();

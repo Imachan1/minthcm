@@ -1183,4 +1183,33 @@ class SugarController
     }
     //MintHCM End
 
+    public function action_ESList()
+    {
+        $module_path = "modules/{$this->bean->module_dir}/ESListViewController.php";
+        $include_path = "include/ESListView/ESListViewController.php";
+        if (file_exists('custom/'.$module_path)) {
+            require_once 'custom/'.$module_path;
+            $class_name = 'Custom'.$this->bean->object_name.'ESListViewController';
+        } else if (file_exists($module_path)) {
+            require_once $module_path;
+            $class_name = $this->bean->object_name.'ESListViewController';
+        }if (file_exists('custom/'.$include_path)) {
+            require_once 'custom/'.$include_path;
+            $class_name = 'CustomESListViewController';
+        } else if (file_exists($include_path)) {
+            require_once $include_path;
+            $class_name = 'ESListViewController';
+        }
+        if (class_exists($class_name)) {
+            $object = new $class_name($this->bean);
+        } else {
+            sugar_die('Class does not exist: '.$class_name);
+        }
+        $action = $_REQUEST['function_name'];
+        if (method_exists($object, $action)) {
+            return json_encode($object->$action($_REQUEST));
+        } else {
+            sugar_die('Class does not have function: '.$class_name.'->'.$action);
+        }
+    }
 }

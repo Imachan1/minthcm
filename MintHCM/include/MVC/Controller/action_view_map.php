@@ -80,3 +80,4 @@ $action_view_map['cubes'] = 'cubes';
 $action_view_map['debug'] = 'debug';
 
 $action_view_map['kanban']= 'kanban';
+$action_view_map['eslistview']= 'eslistview';
