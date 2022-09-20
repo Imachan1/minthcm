@@ -19,8 +19,8 @@ class CandidaturesApi
 
         $candidatureBean = BeanFactory::getBean('Candidatures');
         $candidaturesList = $candidatureBean->get_list(
-            'candidate_id',
-            'candidate_id = ' . "'{$candidature->candidate_id}'"
+            'candidate_name',
+            "candidate_name = '$candidature->candidate_name'",
         );
         if (
             !empty($candidaturesList)

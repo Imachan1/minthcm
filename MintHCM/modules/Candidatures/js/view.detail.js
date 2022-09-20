@@ -71,11 +71,12 @@ convertToEmployee = {
                 viewTools.GUI.fieldErrorMark($('#createUser'), viewTools.language.get('Candidatures', 'LBL_ERROR_INPUT_RADIO'));
             } else if (convertType == "createUser") {
                 if(login == ""){
+                    viewTools.GUI.fieldErrorUnmark();
                     viewTools.GUI.fieldErrorMark($("#MintHCMPopup_login"), viewTools.language.get('Candidatures', 'LBL_ERROR_LOGIN'));
                 } else if (_this.checkUserDuplicate(login)) {
+                    viewTools.GUI.fieldErrorUnmark();
                     viewTools.GUI.fieldErrorMark($("#MintHCMPopup_login"), viewTools.language.get('Candidatures', 'LBL_ERROR_LOGIN_DUPLICATE'));
                 } else {
-                    _this.setStatusHiredAndRejected(recordData.record_id);
                     _this.ajaxRequest(recordData.record_id, recordData.module_name, login, _this.LBL_FAIL, convertType);
                 }
             }
@@ -85,7 +86,6 @@ convertToEmployee = {
                 _this.ajaxRequest(recordData.record_id, recordData.module_name, login, _this.LBL_FAIL, convertType);
             }
         }
-
 
         function callbackButtonCancel() {
             MintHCMPopup.close();
@@ -151,7 +151,7 @@ convertToEmployee = {
         $.ajax({
             type: "GET",
             url: ajax_link,
-            async:false,
+            async: false,
             success: function (id) {
                 if (convert_type == "createEmployee") {
                     window.location.href = `index.php?module=Employees&return_module=Employees&action=DetailView&record=${id}`;
