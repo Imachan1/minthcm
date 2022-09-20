@@ -2297,7 +2297,12 @@ class KReportRenderer
                 $fielName = $this->report->fieldNameMap[$fieldid]['fields_name_map_entry']['function']['include'];
                 require_once $fielName;
                 $functionName = $this->report->fieldNameMap[$fieldid]['fields_name_map_entry']['function']['name'];
-                $fieldValue = $functionName(null, $this->report->fieldNameMap[$fieldid]['fieldname'], $record[$fieldid]);
+                if(isset($this->report->fieldNameMap[$fieldid]['fields_name_map_entry']['function']['additional_params'])) {
+                    $options_list = $functionName(null, null, null, null, $this->report->fieldNameMap[$fieldid]['fields_name_map_entry']['function']['additional_params']);
+                    $fieldValue = $options_list[$record[$fieldid]];
+                } else {
+                    $fieldValue = $functionName(null, $this->report->fieldNameMap[$fieldid]['fieldname'], $record[$fieldid]);
+                }
             } else {
                 // Mint start #41967
                 $fieldValue = $app_list_strings[$field_list][$record[$fieldid]];
