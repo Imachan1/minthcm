@@ -57,12 +57,12 @@ $ESListViewDefs[$module_name] = array(
             'width' => '10%',
             'default' => false,
         ),
-        'LBL_LAST_TIME_CONTACT' => array(
+        'LAST_TIME_CONTACT' => array(
             'label' => 'LBL_LAST_TIME_CONTACT',
             'width' => '10%',
             'default' => false,
         ),
-        'LBL_DATE_PLANNED_CONTACT' => array(
+        'DATE_PLANNED_CONTACT' => array(
             'label' => 'LBL_DATE_PLANNED_CONTACT',
             'width' => '10%',
             'default' => false,

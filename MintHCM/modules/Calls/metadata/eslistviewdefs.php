@@ -59,7 +59,6 @@ $ESListViewDefs[$module_name] = array(
             'link' => true
         ),
         'STATUS' => array(
-            'type' => 'ColoredActivityStatus',
             'width' => '10%',
             'label' => 'LBL_STATUS',
             'link' => false,
@@ -69,6 +68,33 @@ $ESListViewDefs[$module_name] = array(
             'width' => '10%',
             'label' => 'LBL_DATE_ENTERED',
             'default' => true
-        )
-    )
+        ),
+    ),
+    'search' => array(
+        'date_entered' => array(
+            'type' => 'date',
+            'label' => 'LBL_DATE_ENTERED',
+            'key' => 'meta.created.date'
+        ),
+        'date_start' => array(
+            'type' => 'date',
+            'label' => 'LBL_LIST_DATE',
+            'key' => 'date_start'
+        ),
+        'date_end' => array(
+            'type' => 'date',
+            'label' => 'LBL_DATE_END',
+            'key' => 'date_end'
+        ),
+        'direction' => array(
+            'type' => 'enum',
+            'label' => 'LBL_DIRECTION',
+            'key' => 'direction.keyword'
+        ),
+        'status' => array(
+            'type' => 'enum',
+            'label' => 'LBL_STATUS',
+            'key' => 'status.keyword'
+        ),
+    ),
 );

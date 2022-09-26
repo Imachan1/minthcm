@@ -4,13 +4,17 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "build:mint": "vue-cli-service build --target wc --name es-list \"src/es-list.vue\" && cp \"dist/es-list.min.js\" ../MintHCM/include/ESListView/eslist-view.min.js",
+    "build:remote": "npm run build:mint && bash copy.sh"
   },
   "dependencies": {
     "@mdi/font": "^7.0.96",
     "core-js": "^3.8.3",
+    "moment": "^2.29.4",
     "vue": "^2.6.14",
-    "vuetify": "^2.6.0"
+    "vuetify": "^2.6.0",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",

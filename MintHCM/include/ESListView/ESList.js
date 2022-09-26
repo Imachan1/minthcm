@@ -1,79 +1,26 @@
 class ESList {
-    constructor(defs, module) {
-        this.defs = defs.columns;
-        this.module = module;
+    constructor() {
         this.component = document.querySelector('es-list').vueComponent;
-        let wrapper = [];
-        wrapper.push(this.defs);
-        this.defs = wrapper;
+        this.columns = this.component.$store.state.columns;
+        this.module = this.component.$store.state.module;
     }
 
     init() {
-        this.setEvents();
-        this.setLabels(this.defs, this.module);
-        this.setHeaders();
-        this.getResults({ 'page': 1, 'itemsPerPage': 10, sortBy: '' });
-        this.getMappings();
+        this.setEvents()
+        this.getResults()
+        this.getMappings()
     }
 
     setEvents() {
-        this.component.$on('getResults', (params) => {
-            this.getResults(params)
-        });
-        this.component.$on('deleteAll', (data) => {
+        this.component.$root.$on('getResults', this.getResults.bind(this));
+        this.component.$root.$on('deleteAll', (data) => {
             data.page = 1;
             data.itemsPerPage = 10000;
             this.getIdsForMassUpdate(data);
         });
-        this.component.$on('deleteThisPage', (data) => {
+        this.component.$root.$on('deleteThisPage', (data) => {
             this.massUpdate(data.IDs);
         });
-    }
-
-    setLabels(defs, module) {
-        let sugarLabels = SUGAR.language.languages[module];
-
-        for (let value of Object.values(defs[0])) {
-            value.label = sugarLabels[value.label];
-        }
-        this.component.$data.defs = this.defs;
-
-        return;
-    }
-
-    setHeaders() {
-        let keys = Object.keys(this.defs[0]);
-        let slots = [];
-        let headers = [];
-        let item = {};
-
-        for (let i = 0; i < keys.length; i++) {
-            let key = keys[i];
-
-            if (this.defs[0][key].default) {
-                item.text = this.defs[0][key].label;
-                item.value = keys[i].toLocaleLowerCase();
-
-                if (this.defs[0][key].link) {
-                    slots.push(keys[i].toLocaleLowerCase());
-                }
-                if (this.defs[0][key].sortable || !('sortable' in this.defs[0][key])) {
-                    item.sortable = true;
-                } else {
-                    item.sortable = false;
-                }
-
-                headers.push(item);
-                item = {};
-            }
-        }
-
-        headers.push({ text: 'Akcje', value: 'Akcje', sortable: false, align: 'end' });
-
-        this.component.$data.headers = headers;
-        this.component.$data.slots = slots;
-
-        return;
     }
 
     getMappings() {
@@ -83,7 +30,7 @@ class ESList {
             dataGET: { module: this.module },
             dataPOST: { function_name: 'getMappings' },
             callback: function (data) {
-                this.mappings = Object.values(JSON.parse(JSON.parse(data)))[0].mappings[this.module].properties;
+                this.mappings = Object.values(JSON.parse(data))[0].mappings[this.module].properties;
             }.bind(this)
         });
     }
@@ -101,7 +48,6 @@ class ESList {
         });
     }
 
-
     massUpdate(IDs) {
         viewTools.api.callController({
             module: this.module,
@@ -117,63 +63,65 @@ class ESList {
         });               
     }
 
-    getResults(params) {
-        let viewToolsParams = this.setParams(params);
-
+    getResults() {
         viewTools.api.callController({
             module: this.module,
             action: 'ESList',
-            dataGET: viewToolsParams,
-            dataPOST: { function_name: 'getResults' },
+            dataGET: this.getParams(),
+            dataPOST: {
+                function_name: 'getResults',
+                filters: this.component.$store.state.options.filters
+            },
             callback: function (data) {
                 data = JSON.parse(data);
-
                 this.component.$data.totalResults = data.total;
                 this.component.$data.results = data.results;
+                this.component.$store.commit('setData', data)
             }.bind(this)
         });
     }
 
-    setParams(params) {
-        let viewToolsParams = {};
-
-        viewToolsParams.myObjects = 'myObjects' in params ? params.myObjects : false;
-        viewToolsParams.searchPhrase = 'searchPhrase' in params ? params.searchPhrase : '';
-        viewToolsParams.page = params.page;
-        viewToolsParams.itemsPerPage = params.itemsPerPage;
-        if (params.sortBy[0]) {
-            let sortBy = this.fieldNameInMappings(params.sortBy[0]);
-            viewToolsParams.sortBy = sortBy;
-            viewToolsParams.sortOrder = params.sortDesc[0] ? 'desc' : 'asc';
+    getParams() {
+        const options = this.component.$store.state.options
+        const params = {
+            page: options.page,
+            itemsPerPage: options.itemsPerPage,
+            myObjects: !!options.myObjects,
+            searchPhrase: options.searchPhrase ?? '',
         }
-
-        return viewToolsParams;
+        if (options.sortBy) {
+            params.sortBy = this.fieldNameInMappings(options.sortBy);
+            params.sortOrder = options.sortOrder;
+        }
+        return params;
     }
 
     fieldNameInMappings(column) {
-        let fieldName;
-        if (column == 'name') fieldName = 'named';
-        else if (this.mappings.hasOwnProperty(column)) fieldName = column;
-
-        else if (column == 'date_entered') return 'meta.created.date';
-        else if (column == 'created_by') return 'meta.created.user_id.keyword';
-        else if (column == 'date_modified') return 'meta.modified.date';
-        else if (column == 'modified_user_id') return 'meta.modified.user_id.keyword';
-        else if (column == 'assigned_user_id') return 'meta.assigned.user_id.keyword';
-        else if (column == 'modified_by_name') return 'meta.modified.user_name.keyword';
-        else if (column == 'created_by_name') return 'meta.created.user_name.keyword';
-        else if (column == 'assigned_user_name') return 'meta.assigned.user_name.keyword';
-        else {
-            console.log('wartosc niestandardowa');
-            return '';
+        const map = {
+            name: 'name.name.keyword',
+            primary_address_city: 'address.alt.city.keyword',
+            primary_address_state: 'address.alt.state.keyword',
+            primary_address_postalcode: 'address.alt.postalcode.keyword',
+            primary_address_street: 'address.alt.street.keyword',
+            primary_address_country: 'address.alt.country.keyword',
+            first_name: 'name.first.keyword',
+            last_name: 'name.last.keyword',
+            date_entered: 'meta.created.date',
+            created_by: 'meta.created.user_id.keyword',
+            date_modified: 'meta.modified.date',
+            modified_user_id: 'meta.modified.user_id.keyword',
+            assigned_user_id: 'meta.assigned.user_id.keyword',
+            modified_by_name: 'meta.modified.user_name.keyword',
+            created_by_name: 'meta.created.user_name.keyword',
+            assigned_user_name: 'meta.assigned.user_name.keyword',
+            phone_mobile: 'phone.mobile.keyword',
         }
-
-        if (this.mappings[fieldName].type === 'date') {
-            return fieldName;
-        } else {
-            fieldName = fieldName + '.keyword';
-            return fieldName;
+        if (map[column]) {
+            return map[column]
+        } else if (this.mappings[column]) {
+            return ['date', 'boolean'].includes(this.mappings[column].type) ? column : `${column}.keyword`
         }
+        return ''
     }
 }
 

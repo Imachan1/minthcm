@@ -48,7 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 class ESListViewSmarty
 {
     public $columns;
-    public $data;
+    public $search;
     public $ss; // the smarty object
     public $tpl;
     public $moduleString;
@@ -82,21 +82,9 @@ class ESListViewSmarty
      */
     function process($file)
     {
-        global $mod_strings;
-        global $app_strings;
-
-
         $this->tpl = $file;
-
         $this->ss->assign('module', $this->seed->module_name);
-        $this->ss->assign('sugarconfig', $this->displayColumns);
-        $this->ss->assign('displayColumns', $this->displayColumns);
-        $this->ss->assign('options', isset($this->templateMeta['options']) ? $this->templateMeta['options']
-                    : null);
-        $this->ss->assign('APP', $app_strings);
-        $this->ss->assign('MOD', $mod_strings);
-        $this->ss->assign('columns', $this->columns);
-        $this->ss->assign('data', $this->data);
+        $this->assignUserPreferences();
     }
 
     /**
@@ -111,6 +99,52 @@ class ESListViewSmarty
 
     protected function prepareData()
     {
-        return $this->data;
+        return [
+            'columns' => $this->columns,
+            'search' => $this->search,
+        ];
+    }
+
+    protected function assignUserPreferences()
+    {
+        global $current_user;
+        $test = [
+            'saved_filters' => [
+                [
+                    'name' => 'Mój filtr 1',
+                    'filters' => [
+                        [
+                            'field' => 'date_end',
+                            'op' => 'next_30_days'
+                        ]
+                    ]
+                ],
+                [
+                    'name' => 'Ostatnie rozmowy',
+                    'filters' => [
+                        [
+                            'field' => 'date_entered',
+                            'op' => 'last_7_days',
+                        ],
+                        [
+                            'field' => 'date_start',
+                            'op' => 'last_30_days',
+                        ]
+                    ]
+                ],
+                [
+                    'name' => 'Rozmowy wychodzące',
+                    'filters' => [
+                        [
+                            'field' => 'status',
+                            'op' => 'equals'
+                        ]
+                    ]
+                ],
+            ]
+        ];
+        (new UserPreference($current_user))->setPreference($this->seed->module_name, $test, 'eslist');
+        $preferences = (new UserPreference($current_user))->getPreference($this->seed->module_name, 'eslist');
+        $this->ss->assign('preferences', json_encode($preferences));
     }
 }

@@ -4210,3 +4210,23 @@ $app_list_strings['reaction_icons_list'] = array(
 $app_strings['LNK_KANBAN'] = 'Board';
 $app_strings['ERR_KANBAN_COL_ERROR'] = 'Column for Kanban is not defined. Property "column" is missing for kanbanviewdefs.';
 $app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed'; 
+
+// ESList (todo: dac do osobnego pliku en/pl i nazwy LBL_ESLIST_...)
+$app_strings['LBL_SAVE_FILTER'] = 'Zapisz filtr';
+$app_strings['LBL_FILTER_NAME'] = 'Nazwa filtru';
+$app_strings['LBL_SAVED_FILTERS'] = 'Zapisane filtry';
+$app_strings['LBL_ADD_FILTER'] = 'Dodaj filtr';
+$app_strings['LBL_COLUMNS'] = 'Kolumny';
+$app_strings['LBL_MY_OBJECTS'] = 'Tylko moje obiekty';
+$app_strings['LBL_MASS_ACTION'] = 'Akcja masowa';
+$app_strings['LBL_COLUMNS_MANAGEMENT'] = 'Zarządzanie kolumnami';
+$app_strings['LBL_HIDDEN_COLUMNS'] = 'Ukryte kolumny';
+$app_strings['LBL_VISIBLE_COLUMNS'] = 'Widoczne kolumny';
+$app_strings['LBL_FIELD'] = 'Pole';
+$app_strings['LBL_OPERATOR'] = 'Operator';
+$app_strings['LBL_VALUE'] = 'Wartość';
+$app_strings['LBL_ACTIONS'] = 'Akcje';
+$app_strings['LBL_CHOOSE_MULTIPLE'] = 'Wybierz wiele';
+$app_strings['LBL_ITEMS_PER_PAGE'] = 'Widocznych rekordów:';
+$app_strings['LBL_PAGE_TEXT'] = 'z';
+$app_strings['LBL_REQUIRED_FIELD_ERROR'] = 'Pole jest wymagane';

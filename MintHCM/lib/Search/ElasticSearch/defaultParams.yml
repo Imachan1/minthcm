@@ -25,27 +25,57 @@ mappings:
       name:
         properties:
           name: *name_fields
-          first: *name_fields
-          last: *name_fields
       named:
         type: text
         fields: *fields
   Calls:
     properties:
-      date_end:
-        type: date
-        format: yyyy-MM-dd HH:mm:ss
+      parent_name: 
+        type: text
+        fields: *fields
+      status: 
+        type: text
+        fields: *fields
       date_start:
         type: date
         format: yyyy-MM-dd HH:mm:ss
-      duration_hours:
-        type: short
-      duration_minutes:
-        type: short
-
-
-
-
-
-
-
+      date_end:
+        type: date
+        format: yyyy-MM-dd HH:mm:ss
+  Candidates:
+    properties:
+      name:
+        properties:
+          first:
+            type: text
+            fields: *fields
+          last:
+            type: text
+            fields: *fields
+      address:
+        properties:
+          alt:
+            properties:
+              state:
+                type: text
+                fields: *fields
+              street:
+                type: text
+                fields: *fields
+          primary:
+            properties:
+              street:
+                type: text
+                fields: *fields
+      recr_contact_agree:
+        type: boolean
+      relocation:
+        type: boolean
+      collaboration:
+        type: boolean
+      last_time_contact:
+        type: date
+        format: yyyy-MM-dd HH:mm:ss
+      date_planned_contact:
+        type: date
+        format: yyyy-MM-dd HH:mm:ss

@@ -34,8 +34,8 @@ class ESListViewController
     public function getMappings()
     {
         $module = $this->bean->module_name;
-        $mappings = file_get_contents('http://10.8.0.103:9205/3a5a56a18649bae4f6e1e669917855d7_shared/_mappings/' . $module);
-        echo json_encode($mappings);
+        $mappings = file_get_contents('http://10.8.0.103:9205/ecc3aab136efd8f791a90c11b95afad8_shared/_mappings/' . $module);
+        echo $mappings;
     }
 
     public function massUpdate()
@@ -53,50 +53,50 @@ class ESListViewController
         echo json_encode(['success' => true]);
     }
 
-    public function getIDsForMassUpdate()
-    {
-        global $current_user;
-        $query = null;
-        $engine = 'ElasticSearchEngine';
+    // public function getIDsForMassUpdate()
+    // {
+    //     global $current_user;
+    //     $query = null;
+    //     $engine = 'ElasticSearchEngine';
 
-        $per_page = isset($_GET['itemsPerPage']) ? $_GET['itemsPerPage'] : 10;
-        $page = isset($_GET['page']) ? $_GET['page'] : 1;
-        $module = isset($_GET['module']) ? $_GET['module'] : '';
-        $column = isset($_GET['sortBy']) ? $_GET['sortBy'] : '';
-        $direction = isset($_GET['sortOrder']) ? $_GET['sortOrder'] : 'asc';
+    //     $per_page = isset($_GET['itemsPerPage']) ? $_GET['itemsPerPage'] : 10;
+    //     $page = isset($_GET['page']) ? $_GET['page'] : 1;
+    //     $module = isset($_GET['module']) ? $_GET['module'] : '';
+    //     $column = isset($_GET['sortBy']) ? $_GET['sortBy'] : '';
+    //     $direction = isset($_GET['sortOrder']) ? $_GET['sortOrder'] : 'asc';
 
-        $options = [
-            'filter_by_module' => true,
-            'module' => $module,
-            'myObjects' => isset($_GET['myObjects']) ? $_GET['myObjects'] : '',
-            'searchPhrase' => isset($_GET['searchPhrase']) ? $_GET['searchPhrase'] : '',
-            'sorting' => [
-                'column' => $column,
-                'direction' => $direction
-            ],
-            'filters' => []
-        ];
+    //     $options = [
+    //         'filter_by_module' => true,
+    //         'module' => $module,
+    //         'myObjects' => isset($_GET['myObjects']) ? $_GET['myObjects'] : '',
+    //         'searchPhrase' => isset($_GET['searchPhrase']) ? $_GET['searchPhrase'] : '',
+    //         'sorting' => [
+    //             'column' => $column,
+    //             'direction' => $direction
+    //         ],
+    //         'filters' => []
+    //     ];
 
-        if ($options['myObjects'] === 'true') {
-            array_push($options['filters'], ['term' => ['meta.assigned.user_id' => $current_user->id]]);
-        }
+    //     if ($options['myObjects'] === 'true') {
+    //         array_push($options['filters'], ['term' => ['meta.assigned.user_id' => $current_user->id]]);
+    //     }
 
-        if (strlen($options['searchPhrase'])) {
-            array_push($options['filters'], ['match' => ['_all' => $options['searchPhrase']]]);
-        }
+    //     if (strlen($options['searchPhrase'])) {
+    //         array_push($options['filters'], ['match' => ['_all' => $options['searchPhrase']]]);
+    //     }
 
-        try {
-            $query = SearchQuery::fromString($query, $per_page, $page, $engine, $options);
-            $results = SearchWrapper::search($query->getEngine(), $query);
-            $IDs = $results->getHits();
+    //     try {
+    //         $query = SearchQuery::fromString($query, $per_page, $page, $engine, $options);
+    //         $results = SearchWrapper::search($query->getEngine(), $query);
+    //         $IDs = $results->getHits();
 
-            echo json_encode($IDs);
-        } catch (Exception $exception) {
-            $this->handleThrowable($exception, $query);
-        } catch (Throwable $throwable) {
-            $this->handleThrowable($throwable, $query);
-        }
-    }
+    //         echo json_encode($IDs);
+    //     } catch (Exception $exception) {
+    //         $this->handleThrowable($exception, $query);
+    //     } catch (Throwable $throwable) {
+    //         $this->handleThrowable($throwable, $query);
+    //     }
+    // }
 
     public function getResults()
     {
@@ -109,7 +109,7 @@ class ESListViewController
         $module = isset($_GET['module']) ? $_GET['module'] : '';
         $column = isset($_GET['sortBy']) ? $_GET['sortBy'] : '';
         $direction = isset($_GET['sortOrder']) ? $_GET['sortOrder'] : 'asc';
-
+        
         $options = [
             'filter_by_module' => true,
             'module' => $module,
@@ -119,7 +119,7 @@ class ESListViewController
                 'column' => $column,
                 'direction' => $direction
             ],
-            'filters' => []
+            'filters' => $_REQUEST['filters'] ?? []
         ];
 
         if ($options['myObjects'] === 'true') {
@@ -127,7 +127,7 @@ class ESListViewController
         }
 
         if (strlen($options['searchPhrase'])) {
-            array_push($options['filters'], ['match' => ['_all' => $options['searchPhrase']]]);
+            array_push($options['filters'], ['wildcard' => ['name.name' => $options['searchPhrase']]]);
         }
 
         try {
@@ -153,6 +153,7 @@ class ESListViewController
             $data['results'] = $results;
 
             echo json_encode($data);
+            exit;
         } catch (Exception $exception) {
             $this->handleThrowable($exception, $query);
         } catch (Throwable $throwable) {
