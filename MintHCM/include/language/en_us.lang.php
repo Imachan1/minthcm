@@ -2148,6 +2148,8 @@ $app_strings = array(
     'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_EMPLOYEE_MANAGER' => 'Manager is not set for: ',
     'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_ORGANIZATIONAL_UNIT_MANAGER' => 'The following Organizational Units do not have Manager set:',
     'LBL_SUBORDINATES_FILTER' => 'My Subordinates',
+    'LBL_SHOW_MORE' => 'Show More',
+    'LBL_SHOW_LESS' => 'Show Less'
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
