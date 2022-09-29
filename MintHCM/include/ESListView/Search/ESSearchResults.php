@@ -118,5 +118,20 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
         }
         return $beans;
     }
-
+    protected function updateObjLinks(SugarBean $obj, &$fieldDef)
+    {
+        if ($fieldDef['type'] == 'relate' && isset($fieldDef['link']) && isset($fieldDef['id_name']) && $fieldDef['id_name']) {
+            $relId = $this->getRelatedId($obj, $fieldDef['id_name'], $fieldDef['link']);
+            $obj->{$fieldDef['name']."_link"} = $this->getHrefLink($obj->{$fieldDef['name']}, $fieldDef['module'], $relId, 'DetailView');
+        } elseif ($fieldDef['name'] == 'name') {
+            $obj->{$fieldDef['name']."_link"} = $this->getHrefLink($obj->{$fieldDef['name']}, $obj->module_name, $obj->id, 'DetailView');
+        }
+        return $obj;
+    }
+        protected function getHrefLink($label, $module, $record, $action)
+    {
+        global $sugar_config;
+        $link = "index.php?action={$action}&module={$module}&record={$record}";
+        return $link;
+    }
 }
