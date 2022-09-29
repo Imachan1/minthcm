@@ -4,13 +4,13 @@
         :items="data.records"
         class="es-list-table elevation-1"
         @update:options="updateOptions"
+        :options.sync="options"
         :footer-props="{
             itemsPerPageOptions: [5, 10, 20, 30, 40, 50],
-            showFirstLastPage: true,
             firstIcon: 'mdi-page-first',
             lastIcon: 'mdi-page-last',
             itemsPerPageText: label('LBL_ITEMS_PER_PAGE'),
-            pageText: `{0}-{1} ${label('LBL_PAGE_TEXT')} {2}`
+            pageText: pageText,
         }"
         :header-props="{
             sortIcon: 'mdi-menu-up',
@@ -42,24 +42,31 @@ import { mapState, mapGetters } from 'vuex'
 export default {
     data: () => ({
         selected: [],
+        options: {},
     }),
     computed: {
         ...mapState({
-            data: (state) => state.data
+            data: (state) => state.data,
+            pageText(state) {
+                const isOverflow = state.data.total > (this.options.page * this.options.itemsPerPage)
+                const pageText = `{0} - {1} ${this.label('LBL_PAGE_TEXT')} {2}`
+                return isOverflow ? `${pageText}+` : pageText
+            }
         }),
         ...mapGetters({
             headers: 'headers',
             label: 'getLabel',
             links: 'links',
-        })
+        }),
     },
     methods: {
         updateOptions(newOptions) {
+            console.log('updateOptions', newOptions, this.options)
             this.$store.commit('setOptions', {
                 page: newOptions.page,
                 itemsPerPage: newOptions.itemsPerPage,
                 sortBy: newOptions.sortBy[0] ?? '',
-                sortOrder: newOptions.sortDesc[0] ? 'desc' : 'asc'
+                sortOrder: newOptions.sortDesc[0] ? 'desc' : 'asc',
             })
             this.$root.$emit('getResults')
         },

@@ -20,8 +20,9 @@
             item-value="key"
         />
         <component
-            v-for="(input, index) in valueInputs"
-            :key="index"
+            v-for="input in valueInputs"
+            :key="input.id"
+            :fieldDefs="fieldDefs"
             :input="input"
             :is="getInputComponent(input.type)"
         />
@@ -70,7 +71,10 @@ export default {
             if (!this.operator) {
                 return []
             }
-            return this.operators[this.operator]?.inputs ?? []
+            let id = new Date().getTime()
+            return [
+                ...(this.operators[this.operator]?.inputs ?? [])
+            ].map(x => ({...x, id: ++id}))
         }
     },
     methods: {

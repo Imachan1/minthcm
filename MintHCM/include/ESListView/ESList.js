@@ -74,9 +74,13 @@ class ESList {
             },
             callback: function (data) {
                 data = JSON.parse(data);
-                this.component.$data.totalResults = data.total;
-                this.component.$data.results = data.results;
-                this.component.$store.commit('setData', data)
+                this.component.$store.commit('setData', {
+                    records: data.results || [],
+                    total: data.total || 0,
+                })
+                this.component.$store.commit('setOptions', {
+                    offset: data.offset || 0,
+                })
             }.bind(this)
         });
     }
@@ -88,6 +92,7 @@ class ESList {
             itemsPerPage: options.itemsPerPage,
             myObjects: !!options.myObjects,
             searchPhrase: options.searchPhrase ?? '',
+            offset: options.page === 1 ? 0 : options.offset,
         }
         if (options.sortBy) {
             params.sortBy = this.fieldNameInMappings(options.sortBy);

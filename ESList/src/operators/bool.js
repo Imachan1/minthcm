@@ -1,14 +1,14 @@
 export default {
-    equals: {
-        label: 'LBL_EQUALS',
-        inputs: [
-            { type: 'enum', options: 'yes_no_list', operator: '=' }
+    yes: {
+        label: 'LBL_YES',
+        filters: [
+            { op: 'term', value: true }
         ]
     },
-    not_equals: {
-        label: 'LBL_NOT_EQUALS',
-        inputs: [
-            { type: 'enum', options: 'yes_no_list', operator: '!=' }
+    no: {
+        label: 'LBL_NO',
+        filters: [
+            { op: 'term', value: false }
         ]
     },
 }

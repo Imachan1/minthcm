@@ -87,7 +87,8 @@ export default {
         filter() {
             this.$store.commit('setOptions', {
                 myObjects: this.myObjects,
-                searchPhrase: this.searchPhrase
+                searchPhrase: this.searchPhrase,
+                page: 1,
             })
             if (this.$refs.filters) {
                 const filters = []

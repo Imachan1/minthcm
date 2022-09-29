@@ -14,6 +14,7 @@ export default new Vuex.Store({
         options: {
             page: 1,
             itemsPerPage: 10,
+            offset: 0,
             sortBy: '',
             sortOrder: 'asc',
             myObjects: false,
@@ -37,11 +38,8 @@ export default new Vuex.Store({
         setUserColumns(state, columns) {
             state.userColumns = columns
         },
-        setData(state, { total, results }) {
-            state.data = {
-                total: total,
-                records: results || [],
-            }
+        setData(state, data) {
+            state.data = data
         },
         setFilters(state, filters) {
             state.options = {
@@ -53,7 +51,6 @@ export default new Vuex.Store({
         setOptions(state, options) {
             state.options = {
                 ...state.options,
-                page: 1,
                 ...options,
             }
         }
