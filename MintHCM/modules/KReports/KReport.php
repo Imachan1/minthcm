@@ -463,12 +463,14 @@ class KReport extends SugarBean
         //        }
         parent::save($checkNotify);
 
-        switch ($sugar_config['KReports']['authCheck']) {
-            case 'SecurityGroups':
-                $this->db->query("DELETE FROM securitygroups_records WHERE record_id = '" . $this->id . "'");
-                $this->db->query("INSERT INTO securitygroups_records (id, securitygroup_id, record_id, module, modified_user_id, created_by, deleted) values ('" . create_guid() . "', '" . $_REQUEST['authaccess_id'] . "', '" . $this->id . "', 'KReports', '" . $GLOBALS['current_user']->id . "', '" . $GLOBALS['current_user']->id . "', 0)");
-                break;
-        }
+        //MintHCM #107136 start
+        // switch ($sugar_config['KReports']['authCheck']) {
+        //     case 'SecurityGroups':
+        //         $this->db->query("DELETE FROM securitygroups_records WHERE record_id = '" . $this->id . "'");
+        //         $this->db->query("INSERT INTO securitygroups_records (id, securitygroup_id, record_id, module, modified_user_id, created_by, deleted) values ('" . create_guid() . "', '" . $_REQUEST['authaccess_id'] . "', '" . $this->id . "', 'KReports', '" . $GLOBALS['current_user']->id . "', '" . $GLOBALS['current_user']->id . "', 0)");
+        //         break;
+        // }
+        //MintHCM #107136 end
     }
 
     //2013-02-02 added html formattng support to the description if it is in the listview
