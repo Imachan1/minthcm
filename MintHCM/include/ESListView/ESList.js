@@ -78,9 +78,9 @@ class ESList {
                     records: data.results || [],
                     total: data.total || 0,
                 })
-                this.component.$store.commit('setOffset', {
-                    offset: data.offset || 1,
-                })
+                if (data.offset) {
+                    this.component.$store.commit('setOffset', data.offset)
+                }
             }.bind(this)
         });
     }
