@@ -129,7 +129,7 @@ class ElasticSearchEngine extends SearchEngine
     *
     * @return array
     */
-   private function createSearchParams($query)
+   protected function createSearchParams($query)  //MintHCM
    {
       if ($query->getOptions()['filter_by_module']) {
          $params = [
@@ -181,7 +181,7 @@ class ElasticSearchEngine extends SearchEngine
       return $params;
    }
 
-   private function addPagination($params, $from, $size)
+   protected function addPagination($params, $from, $size) //MintHCM
    {
       if (isset($from) && isset($size)) {
          $params['body']['from'] = ($from - 1) * $size;
@@ -223,7 +223,7 @@ class ElasticSearchEngine extends SearchEngine
     *
     * @return array
     */
-   private function runElasticSearch($params)
+   protected function runElasticSearch($params) //MintHCM
    {
       try {
          $results = $this->client->search($params);
@@ -244,7 +244,7 @@ class ElasticSearchEngine extends SearchEngine
     *
     * @return array
     */
-   private function parseHits($hits)
+   protected function parseHits($hits) //MintHCM
    {
       $hitsArray = $hits['hits']['hits'];
 
