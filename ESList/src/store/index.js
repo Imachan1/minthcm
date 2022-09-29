@@ -56,6 +56,9 @@ export default new Vuex.Store({
         },
         setOffset(state, offset) {
             state.options.pageOffsetMap[state.options.page] = offset
+        },
+        resetOffset(state) {
+            state.options.pageOffsetMap = {}
         }
     },
     actions: {

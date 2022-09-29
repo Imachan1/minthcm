@@ -95,6 +95,8 @@ class ESList {
         }
         if (params.page !== 1 && options.pageOffsetMap[options.page - 1]) {
             params.offset = options.pageOffsetMap[options.page - 1]
+        } else {
+            this.component.$store.commit('resetOffset')
         }
         if (options.sortBy) {
             params.sortBy = this.fieldNameInMappings(options.sortBy);
