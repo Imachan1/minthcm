@@ -14,7 +14,7 @@ export default new Vuex.Store({
         options: {
             page: 1,
             itemsPerPage: 10,
-            offset: 0,
+            pageOffsetMap: {},
             sortBy: '',
             sortOrder: 'asc',
             myObjects: false,
@@ -53,6 +53,12 @@ export default new Vuex.Store({
                 ...state.options,
                 ...options,
             }
+        },
+        setOffset(state, offset) {
+            state.options.pageOffsetMap[state.options.page] = offset
+        },
+        resetOffset(state) {
+            state.options.pageOffsetMap = {}
         }
     },
     actions: {

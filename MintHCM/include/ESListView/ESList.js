@@ -78,9 +78,9 @@ class ESList {
                     records: data.results || [],
                     total: data.total || 0,
                 })
-                this.component.$store.commit('setOptions', {
-                    offset: data.offset || 0,
-                })
+                if (data.offset) {
+                    this.component.$store.commit('setOffset', data.offset)
+                }
             }.bind(this)
         });
     }
@@ -92,7 +92,11 @@ class ESList {
             itemsPerPage: options.itemsPerPage,
             myObjects: !!options.myObjects,
             searchPhrase: options.searchPhrase ?? '',
-            offset: options.page === 1 ? 0 : options.offset,
+        }
+        if (params.page !== 1 && options.pageOffsetMap[options.page - 1]) {
+            params.offset = options.pageOffsetMap[options.page - 1]
+        } else {
+            this.component.$store.commit('resetOffset')
         }
         if (options.sortBy) {
             params.sortBy = this.fieldNameInMappings(options.sortBy);
