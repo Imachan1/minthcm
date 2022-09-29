@@ -106,6 +106,7 @@ class ESListViewController
 
         $per_page = isset($_GET['itemsPerPage']) ? $_GET['itemsPerPage'] : 10;
         $offset = isset($_GET['offset']) ? $_GET['offset'] : 1;
+        $page = isset($_GET['page']) ? $_GET['page'] : 1;
         $module = isset($_GET['module']) ? $_GET['module'] : '';
         $column = isset($_GET['sortBy']) ? $_GET['sortBy'] : '';
         $direction = isset($_GET['sortOrder']) ? $_GET['sortOrder'] : 'asc';
@@ -129,37 +130,52 @@ class ESListViewController
         if (strlen($options['searchPhrase'])) {
             array_push($options['filters'], ['wildcard' => ['name.name' => $options['searchPhrase']]]);
         }
-
         try {
-            $query = SearchQuery::fromString($query, $per_page + 1, $offset, $engine, $options);
-            $results = SearchWrapper::search($query->getEngine(), $query);
-            $beans = $results->getHitsAsBeans();
-            $total = $results->getTotal();
-
-            
+            $i = 0;
+            $selected_records = 0;
             $results = [];
-            $records = 0;
-            foreach ($beans as $bean => $data) {
-                
-                if(count($data) > $per_page){
-                    array_pop($data);
-                }
-                foreach ($data as $item) {
-                    $records++;
-                    $columns = $item->column_fields;
-                    $row = [];
-                    foreach ($columns as $column) {
-                        $row[$column] = $item->$column;
+            $add_to_offset = 0;
+            $total = $per_page;
+            while ($selected_records < $per_page + 1 && $total >= $per_page) {
+                list($beans, $query_results) = $this->getRecordsFromElasticSearch($query, $per_page +1, $offset + ($per_page * $i), $engine, $options);
+                $total = $query_results->getTotal();
+
+                foreach ($beans as $bean => $data) {
+                    foreach ($data as $item) {
+                        if (count($results) < $per_page){
+                            $add_to_offset++;
+                        }
+                        if (count($results) <= $per_page && $item) {
+                            $columns = $item->column_fields;
+                            $row = [];
+                            foreach ($columns as $column) {
+                                $row[$column] = $item->$column;
+                                if(isset($item->{$column."_link"})){
+                                    $row[$column."_link"] = $item->{$column."_link"};
+                                }
+                            }
+                            $row['acl_access'] = $item->acl_access;
+                            if (!isset($results[$row['id']])) {
+                                $results[$row['id']] = $row;
+                                $selected_records++;
+                            }
+                        }
                     }
-                    $row['acl_access'] = $item->acl_access;
-                    array_push($results, $row);
                 }
+                $i++;
+            }
+            if($selected_records > $per_page){
+                $next_page_exists = true;
+            }
+            if (count($results) > $per_page) {
+                array_pop($results);
             }
 
+
             $data = [];
-            $data['total'] = $total;
-            $data['offset'] = $offset + $records;
-            $data['results'] = $results;
+            $data['total'] = ($page - 1) * $per_page + count($results) + $next_page_exists;
+            $data['offset'] = $offset + $add_to_offset;
+            $data['results'] = array_values($results);
 
             echo json_encode($data);
             exit;
@@ -168,6 +184,13 @@ class ESListViewController
         } catch (Throwable $throwable) {
             $this->handleThrowable($throwable, $query);
         }
+    }
+
+    protected function getRecordsFromElasticSearch($query, $per_page, $offset, $engine, $options) {
+        $search_query = SearchQuery::fromString($query, $per_page , $offset, $engine, $options);
+        $results = SearchWrapper::search($search_query->getEngine(), $search_query);
+        $beans = $results->getHitsAsBeans();
+        return [$beans, $results];
     }
 
     public function handleThrowable($throwable, SearchQuery $query)

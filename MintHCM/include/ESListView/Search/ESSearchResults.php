@@ -32,6 +32,7 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
                 $obj->load_relationships();
 
                 if (!$this->handleOwner($obj)) {
+                    $parsed[$module][] = false;
                     continue;
                 }
                 $fieldDefs = $obj->getFieldDefinitions();
@@ -39,7 +40,7 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
 
                 $parsed[$module][] = $objUpdatedLinks;
             }
-            $parsed[$module] = $this->handleSG($parsed[$module]);
+            $parsed[$module] = $this->handleSG($parsed[$module], $module);
         }
         $this->hits_after_acl = $parsed;
         $this->addACLAccessInfo();
@@ -50,14 +51,17 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
     protected function addACLAccessInfo(){
         foreach ($this->hits_after_acl as $module => $beans) {
             foreach ((array) $beans as $bean) {
-                $bean->acl_access = [
-                    'edit' => $bean->ACLAccess('edit'),
-                    'view' => $bean->ACLAccess('view'),
-                    'delete' => $bean->ACLAccess('delete')
-                ];
+                if ($bean) {
+                    $bean->acl_access = [
+                        'edit' => $bean->ACLAccess('edit'),
+                        'view' => $bean->ACLAccess('view'),
+                        'delete' => $bean->ACLAccess('delete')
+                    ];
+                }
             }
         }
     }
+
     public function getTotal() {
         $total = 0;
         foreach ($this->hits_after_acl as $module_name => $beans) {
@@ -77,9 +81,9 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
         return true;
     }
     
-    protected function handleSG($beans) {
+    protected function handleSG($beans, $module) {
         if (count($beans) > 0) {
-            $obj = $beans[0];
+            $obj = BeanFactory::newBean($module);
             if ($obj->bean_implements('ACL') && ACLController::requireSecurityGroup($obj->module_dir, 'list')) {
                 require_once('modules/SecurityGroups/SecurityGroup.php');
                 global $current_user;
@@ -111,6 +115,8 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
                 foreach($beans as $bean){
                     if(in_array($bean->id, $access_id)){
                         $new_beans_array[] = $bean;
+                    } else {
+                        $new_beans_array[] = false;
                     }
                 }
                 return $new_beans_array;
