@@ -102,10 +102,10 @@ class ESListViewController
     {
         global $current_user;
         $query = null;
-        $engine = 'ElasticSearchEngine';
+        $engine = 'ESElasticSearchEngine';
 
         $per_page = isset($_GET['itemsPerPage']) ? $_GET['itemsPerPage'] : 10;
-        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+        $offset = isset($_GET['offset']) ? $_GET['offset'] : 1;
         $module = isset($_GET['module']) ? $_GET['module'] : '';
         $column = isset($_GET['sortBy']) ? $_GET['sortBy'] : '';
         $direction = isset($_GET['sortOrder']) ? $_GET['sortOrder'] : 'asc';
@@ -131,25 +131,34 @@ class ESListViewController
         }
 
         try {
-            $query = SearchQuery::fromString($query, $per_page, $page, $engine, $options);
+            $query = SearchQuery::fromString($query, $per_page + 1, $offset, $engine, $options);
             $results = SearchWrapper::search($query->getEngine(), $query);
             $beans = $results->getHitsAsBeans();
             $total = $results->getTotal();
 
+            
             $results = [];
+            $records = 0;
             foreach ($beans as $bean => $data) {
+                
+                if(count($data) > $per_page){
+                    array_pop($data);
+                }
                 foreach ($data as $item) {
+                    $records++;
                     $columns = $item->column_fields;
                     $row = [];
                     foreach ($columns as $column) {
                         $row[$column] = $item->$column;
                     }
+                    $row['acl_access'] = $item->acl_access;
                     array_push($results, $row);
                 }
             }
 
             $data = [];
             $data['total'] = $total;
+            $data['offset'] = $offset + $records;
             $data['results'] = $results;
 
             echo json_encode($data);
