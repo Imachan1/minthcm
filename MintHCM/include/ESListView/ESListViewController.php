@@ -139,7 +139,7 @@ class ESListViewController
             while ($selected_records < $per_page + 1 && $total >= $per_page) {
                 list($beans, $query_results) = $this->getRecordsFromElasticSearch($query, $per_page +1, $offset + ($per_page * $i), $engine, $options);
                 $total = $query_results->getTotal();
-
+                $add_to_offset = 0;
                 foreach ($beans as $bean => $data) {
                     foreach ($data as $item) {
                         if (count($results) < $per_page){
@@ -174,7 +174,7 @@ class ESListViewController
 
             $data = [];
             $data['total'] = ($page - 1) * $per_page + count($results) + $next_page_exists;
-            $data['offset'] = $offset + $add_to_offset;
+            $data['offset'] = $offset + ($per_page * ($i-1)) + $add_to_offset;
             $data['results'] = array_values($results);
 
             echo json_encode($data);
