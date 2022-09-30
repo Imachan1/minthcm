@@ -49,7 +49,7 @@ $ESListViewDefs[$module_name] = array(
             'label' => 'LBL_BIRTHDATE',
             'type' => 'date',
             'width' => '10%',
-            'default' => false,
+            'default' => true,
         ),
         'RELOCATION' => array(
             'label' => 'LBL_RELOCATION',
@@ -161,5 +161,31 @@ $ESListViewDefs[$module_name] = array(
             'width' => '10%',
             'default' => false,
         ),
-    )
+    ),
+    'search' => [
+        'last_time_contact' => [
+            'type' => 'date',
+            'key' => 'last_time_contact',
+        ],
+        'date_planned_contact' => [
+            'type' => 'date',
+            'key' => 'date_planned_contact',
+        ],
+        'phone_mobile' => [
+            'type' => 'text',
+            'key' => 'phone.mobile',
+        ],
+        'potential' => [
+            'type' => 'enum',
+            'key' => 'potential.keyword',
+        ],
+        'birthdate' => [
+            'type' => 'date',
+            'key' => 'birthdate',
+        ],
+        'relocation' => [
+            'type' => 'bool',
+            'key' => 'relocation'
+        ]
+    ]
 );

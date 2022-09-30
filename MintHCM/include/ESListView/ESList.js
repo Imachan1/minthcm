@@ -106,6 +106,7 @@ class ESList {
     }
 
     fieldNameInMappings(column) {
+        console.log(this.mappings)
         const map = {
             name: 'name.name.keyword',
             primary_address_city: 'address.alt.city.keyword',

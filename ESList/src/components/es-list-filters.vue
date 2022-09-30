@@ -94,7 +94,7 @@ export default {
                 const filters = []
                 this.$refs.filters.forEach(filter => {
                     if (filter.isValid()) {
-                        filters.push(...filter.getQSL())
+                        filters.push(...filter.getDSL())
                     }
                 })
                 console.log(filters)

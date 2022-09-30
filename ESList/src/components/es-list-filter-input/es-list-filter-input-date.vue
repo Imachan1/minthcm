@@ -8,7 +8,7 @@
     >
         <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                v-model="date"
+                v-model="value"
                 dense
                 outlined
                 style="max-width:200px"
@@ -21,7 +21,7 @@
             />
         </template>
         <v-date-picker
-            v-model="date"
+            v-model="value"
             no-title
             @input="menu = false"
             locale="pl"
@@ -40,7 +40,7 @@ export default {
         input: { type: Object }
     },
     data: () => ({
-        date: null,
+        value: null,
         menu: false
     }),
     computed: {

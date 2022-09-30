@@ -5,7 +5,7 @@ export default {
             { type: 'select', label: 'LBL_VALUE' }
         ],
         filters: [
-            { op: 'term', value: 'Held' }
+            { op: 'term', value: '{0}' }
         ]
     },
     not_equal: {

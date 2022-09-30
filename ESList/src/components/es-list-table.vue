@@ -61,7 +61,6 @@ export default {
     },
     methods: {
         updateOptions(newOptions) {
-            console.log('updateOptions', newOptions, this.options)
             this.$store.commit('setOptions', {
                 page: newOptions.page,
                 itemsPerPage: newOptions.itemsPerPage,

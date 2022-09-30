@@ -1,6 +1,7 @@
 <template>
     <v-col cols="auto" class="pa-0">
         <v-select
+            v-model="value"
             class="es-list-filter-input-select"
             :items="getList(fieldDefs.options)"
             dense
@@ -23,13 +24,13 @@ export default {
         input: { type: Object },
         fieldDefs: { type: Object },
     },
+    data: () => ({
+        value: null
+    }),
     computed: {
         ...mapGetters({
             label: 'getLabel'
         })
-    },
-    mounted() {
-        console.log(this.input)
     },
     methods: {
         getList(list) {

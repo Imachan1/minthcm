@@ -20,6 +20,7 @@
             item-value="key"
         />
         <component
+            ref="values"
             v-for="input in valueInputs"
             :key="input.id"
             :fieldDefs="fieldDefs"
@@ -42,7 +43,6 @@ export default {
         return {
             field: this.filter.field,
             operator: this.filter.op,
-            value: null,
         }
     },
     computed: {
@@ -83,13 +83,26 @@ export default {
                 SUGAR.language.languages['app_list_strings'][list] ?? {}
             ).map(([value, text]) => ({ value, text }))
         },
-        getQSL() {
+        getDSL() {
             const op = operatorDefs[this.fieldDefs.type]?.[this.operator]
             return op.filters.map(f => ({
                 [f.op]: {
-                    [this.fieldDefs.key]: f.value
+                    [this.fieldDefs.key]: this.replacePlaceholders(f.value)
                 }
             }))
+        },
+        replacePlaceholders(value) {
+            value = JSON.stringify(value)
+            console.log('stringified', value)
+            const values = this.getValues()
+            values.forEach((v, i) => {
+                value = value.replaceAll(`{${i}}`, v)
+            })
+            console.log('parsed', JSON.parse(value))
+            return JSON.parse(value)
+        },
+        getValues() {
+            return this.$refs.values?.map(v => v.$data.value) ?? []
         },
         isValid() {
             if (!this.field || !this.operator) {
@@ -107,7 +120,6 @@ export default {
     watch: {
         field() {
             this.operator = null
-            this.value = null
             this.$emit('filter-changed')
         },
         operator() {

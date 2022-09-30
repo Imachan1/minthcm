@@ -69,6 +69,10 @@ $ESListViewDefs[$module_name] = array(
             'label' => 'LBL_DATE_ENTERED',
             'default' => true
         ),
+        'duration_minutes' => [
+            'label' => 'LBL_DURATION_MINUTES',
+            'default' => true,
+        ],
     ),
     'search' => array(
         'date_entered' => array(
@@ -95,6 +99,10 @@ $ESListViewDefs[$module_name] = array(
             'type' => 'enum',
             'label' => 'LBL_STATUS',
             'key' => 'status.keyword'
+        ),
+        'duration_minutes' => array(
+            'type' => 'numeric',
+            'key' => 'duration_minutes'
         ),
     ),
 );

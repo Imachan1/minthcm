@@ -2,25 +2,25 @@ export default {
     last_7_days: {
         label: 'LBL_LAST_7_DAYS',
         filters: [
-            { op: 'range', value: { gte: 'now-7d', lte: 'now' }}
+            { op: 'range', value: { gte: 'now-7d/d', lte: 'now/d' }}
         ]
     },
     next_7_days: {
         label: 'LBL_NEXT_7_DAYS',
         filters: [
-            { op: 'range', value: { gte: 'now', lte: 'now+7d' }}
+            { op: 'range', value: { gte: 'now/d', lte: 'now+7d/d' }}
         ]
     },
     last_30_days: {
         label: 'LBL_LAST_30_DAYS',
         filters: [
-            { op: 'range', value: { gte: 'now-30d', lte: 'now' }}
+            { op: 'range', value: { gte: 'now-30d/d', lte: 'now/d' }}
         ]
     },
     next_30_days: {
         label: 'LBL_NEXT_30_DAYS',
         filters: [
-            { op: 'range', value: { gte: 'now', lte: 'now+30d' }}
+            { op: 'range', value: { gte: 'now/d', lte: 'now+30d/d' }}
         ]
     },
     after: {
@@ -30,6 +30,15 @@ export default {
         ],
         filters: [
             { op: 'range', value: { gte: '{0}' }}
+        ]
+    },
+    before: {
+        label: 'LBL_BEFORE',
+        inputs: [
+            { type: 'date',label: 'LBL_DATE' }
+        ],
+        filters: [
+            { op: 'range', value: { lte: '{0}' }}
         ]
     },
     between: {

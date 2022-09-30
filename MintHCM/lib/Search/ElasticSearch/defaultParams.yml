@@ -16,12 +16,12 @@ mappings:
             properties:
               date:
                 type: date
-                format: yyyy-MM-dd HH:mm:ss
+                format: yyyy-MM-dd HH:mm:ss||yyyy-MM-dd
           modified:
             properties:
               date:
                 type: date
-                format: yyyy-MM-dd HH:mm:ss
+                format: yyyy-MM-dd HH:mm:ss||yyyy-MM-dd
       name:
         properties:
           name: *name_fields
@@ -36,10 +36,10 @@ mappings:
         fields: *fields
       date_start:
         type: date
-        format: yyyy-MM-dd HH:mm:ss
+        format: yyyy-MM-dd HH:mm:ss||yyyy-MM-dd
       date_end:
         type: date
-        format: yyyy-MM-dd HH:mm:ss
+        format: yyyy-MM-dd HH:mm:ss||yyyy-MM-dd
   Candidates:
     properties:
       address:
@@ -62,7 +62,7 @@ mappings:
         type: boolean
       last_time_contact:
         type: date
-        format: yyyy-MM-dd HH:mm:ss
+        format: yyyy-MM-dd HH:mm:ss||yyyy-MM-dd
       date_planned_contact:
         type: date
-        format: yyyy-MM-dd HH:mm:ss
+        format: yyyy-MM-dd HH:mm:ss||yyyy-MM-dd
