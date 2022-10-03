@@ -4252,3 +4252,5 @@ $app_strings['LBL_GREATER_THAN'] = 'Większe od';
 $app_strings['LBL_LESS_THAN'] = 'Mniejsze od';
 $app_strings['LBL_VALUE_FROM'] = 'Od';
 $app_strings['LBL_VALUE_TO'] = 'Do';
+$app_strings['LBL_DEFAULT'] = 'Przywróć domyślne';
+$app_strings['LBL_SAVE'] = 'Zapisz';

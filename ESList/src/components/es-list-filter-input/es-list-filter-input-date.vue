@@ -8,11 +8,11 @@
     >
         <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                v-model="value"
+                v-model="input.value"
                 dense
                 outlined
                 style="max-width:200px"
-                :label="label(input.label)"
+                :label="$store.getters['getLabel'](input.label)"
                 prepend-inner-icon="mdi-calendar"
                 v-bind="attrs"
                 v-on="on"
@@ -21,33 +21,27 @@
             />
         </template>
         <v-date-picker
-            v-model="value"
+            v-model="input.value"
             no-title
             @input="menu = false"
             locale="pl"
             first-day-of-week="1"
             show-week
             locale-first-day-of-year="4"
+            color="rgba(0, 0, 0, 0.4)"
+
         />
     </v-menu>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
     props: {
         input: { type: Object }
     },
     data: () => ({
-        value: null,
         menu: false
     }),
-    computed: {
-        ...mapGetters({
-            label: 'getLabel'
-        })
-    }
 }
 </script>
 

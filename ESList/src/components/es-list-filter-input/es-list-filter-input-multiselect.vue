@@ -7,6 +7,9 @@
             dense
             style="width: fit-content"
             :label="label(input.label)"
+            multiple
+            small-chips
+            deletable-chips
             outlined
             hide-details
         />

@@ -1,4 +1,4 @@
-{if empty($json)}
+{if empty($defs)}
     <p class="error">{$APP.ERR_ESLIST_COL_ERROR}</p>
 {else}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
@@ -7,9 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <script type="text/javascript" src='{sugar_getjspath file="include/ESListView/eslist-view.min.js"}'></script>
     <script type="text/javascript" src='{sugar_getjspath file="include/ESListView/ESList.js"}'></script>
+    
     <div id="es-list-slot"></div>
+    
     <script type="text/javascript" defer>
-        const defs = {$json};
+        const defs = {$defs};
         const module = '{$module}';
         const preferences = {$preferences};
         const webComponent = document.createElement('es-list');

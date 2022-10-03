@@ -139,6 +139,9 @@ class ElasticSearchEngine extends SearchEngine
                   'bool' => [
                      'filter' => [
                         //
+                     ],
+                     'must_not' => [
+                        //
                      ]
                   ]
                ]
@@ -210,7 +213,8 @@ class ElasticSearchEngine extends SearchEngine
    private function addFilters($params, $data)
    {
          if (isset($data)) {
-         $params['body']['query']['bool']['filter'] = $data;
+         $params['body']['query']['bool']['filter'] = $data['filter'];
+         $params['body']['query']['bool']['must_not'] = $data['must_not'];
       }
 
       return $params;

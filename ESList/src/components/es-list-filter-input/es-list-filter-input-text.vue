@@ -1,6 +1,6 @@
 <template>
     <v-text-field
-        v-model="value"
+        v-model="input.value"
         dense
         outlined
         hide-details
@@ -14,9 +14,6 @@ export default {
     props: {
         input: { type: Object },
     },
-    data: () => ({
-        value: null
-    })
 }
 </script>
 

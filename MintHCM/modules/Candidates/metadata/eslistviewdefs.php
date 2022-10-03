@@ -186,6 +186,10 @@ $ESListViewDefs[$module_name] = array(
         'relocation' => [
             'type' => 'bool',
             'key' => 'relocation'
-        ]
+        ],
+        'date_entered' => [
+            'type' => 'date',
+            'key' => 'meta.created.date',
+        ],
     ]
 );

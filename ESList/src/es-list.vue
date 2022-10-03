@@ -23,7 +23,11 @@ export default {
     vuetify,
     components: { ESListFilters, ESListHeader, ESListTable },
     mounted() {
+        this.$store.commit('resetState')
         const data = document.querySelector('es-list').data // data passed from smarty
+        this.$store.commit('setModule', data.module)
+        this.$store.commit('setDefs', data.defs)
+        this.$store.commit('setPreferences', data.preferences)
         this.$store.commit('setModule', data.module)
         this.$store.commit('setColumns', data.defs.columns)
         this.$store.commit('setSearch', data.defs.search)
@@ -78,5 +82,10 @@ export default {
 
 .v-input__slot {
     margin: 0 !important;
+}
+
+.theme--dark.v-btn.v-btn--disabled.v-btn--has-bg {
+    background-color: hsla(0, 0%, 50%, .5) !important;
+    color: #eee !important;
 }
 </style>

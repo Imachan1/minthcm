@@ -43,9 +43,7 @@
  */
 require_once('include/MVC/View/SugarView.php');
 
-require_once('include/ESListView/ESListViewSmarty.php');
-
-class ViewEslistview extends SugarView
+class ViewEslistView extends SugarView
 {
     /**
      * @var string $type
@@ -53,14 +51,11 @@ class ViewEslistview extends SugarView
     public $type = 'ESList';
 
     /**
-     * @var ESListViewSmarty $kv
-     */
-    public $kv;
-
-    /**
      * @var SugarBean
      */
     public $seed;
+
+    public $ss; // smarty object
 
     /**
      * @var array $ESListViewDefs
@@ -68,84 +63,121 @@ class ViewEslistview extends SugarView
     public $ESListViewDefs;
 
     /**
-     * ViewKanban constructor.
+     * ESListView constructor.
      */
     public function __construct()
     {
         parent::__construct();
     }
 
-    /**
-     * Prepare Kanban View
-     */
-    public function ESListViewPrepare()
+    public function display()
     {
-        $module = isset($GLOBALS['module']) ? $GLOBALS['module'] : null;
+        if (!$this->bean || !$this->bean->ACLAccess('list')) {
+            ACLController::displayNoAccess();
+        } else {
+            $this->prepareESListView();
+            $this->ss = new Sugar_Smarty();
+            $this->ss->assign('defs', $this->prepareDefs());
+            $this->ss->assign('module', $this->bean->module_name);
+            $this->ss->assign('preferences', $this->prepareUserPreferences());
+            echo $this->ss->fetch($this->getTplFile());
+        }
+    }
 
-        if (!isset($module)) {
-            LoggerManager::getLogger()->fatal('Undefined module for kanban view prepare');
+    protected function prepareESListView()
+    {
+        if (!isset($this->bean->module_name)) {
+            LoggerManager::getLogger()->fatal('Undefined module for eslist view');
             return false;
         }
-
         $metadataFile = $this->getMetaDataFile();
-
         if (!file_exists($metadataFile)) {
             sugar_die(sprintf($GLOBALS['app_strings']['LBL_NO_ACTION'], $this->do_action));
         }
-
         require($metadataFile);
-
         $this->ESListViewDefs = $ESListViewDefs;
 
-        $this->seed = $this->bean;
+        require('include/ESListView/eslist.map.php');
+        $this->eslistmap = $eslistmap;
+        $mappings = json_decode(file_get_contents('http://10.8.0.103:9205/ecc3aab136efd8f791a90c11b95afad8_shared/_mappings/' . $this->bean->module_name), true);
+        $this->mappings = array_values($mappings)[0]['mappings'][$this->bean->module_name]['properties'];
+    }
 
-        $data = $this->ESListViewDefs[$module];
-        $columns = $this->ESListViewDefs[$module]['columns'];
+    protected function prepareDefs()
+    {
+        return json_encode([
+            'columns' => $this->prepareColumnsDefs(),
+            'search' => $this->prepareSearchDefs(),
+        ]);
+    }
+
+    protected function prepareColumnsDefs()
+    {
+        global $mod_strings;
+        $columns = $this->ESListViewDefs[$this->module]['columns'];
         if (empty($columns)) {
-            LoggerManager::getLogger()->fatal('Columns for Kanban View is not defined');
-        } else {
-            $columns = array_change_key_case($columns, CASE_LOWER);
+            LoggerManager::getLogger()->fatal('Columns for ESList View are not defined');
+            return false;
         }
-        $search = $this->ESListViewDefs[$module]['search'] ?? [];
+        $columns = array_change_key_case($columns, CASE_LOWER);
+        foreach ($columns as $field => $defs) {
+            $columns[$field]['name'] = $defs['name'] ?? $field;
+            $columns[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field];
+            if (empty($columns[$field]['key'])) {
+                $columns[$field]['key'] = $field;
+                if ($this->mappings[$field] && !in_array($this->mappings[$field]['type'], ['date', 'boolean'])) {
+                    $columns[$field]['key'] .= '.keyword';
+                }
+            }
+            if (empty($this->bean->field_name_map[$field])) {
+                continue;
+            }
+            $field_defs = $this->bean->field_name_map[$field];
+            $columns[$field]['type'] = $defs['type'] ?? $field_defs['type'];
+            $columns[$field]['options'] = $field_defs['options'];
+            $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
+            $columns[$field]['label'] = $mod_strings[$label] ?? $label;
+        }
+        return $columns;
+    }
+
+    protected function prepareSearchDefs()
+    {
+        global $mod_strings;
+        $search = $this->ESListViewDefs[$this->module]['search'];
+        if (empty($search)) {
+            return false;
+        }
         $search = array_change_key_case($search, CASE_LOWER);
         foreach ($search as $field => $defs) {
+            $search[$field]['name'] = $defs['name'] ?? $field;
+            $search[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field];
+            if (empty($search[$field]['key'])) {
+                $search[$field]['key'] = $field;
+                if ($this->mappings[$field] && !in_array($this->mappings[$field]['type'], ['date', 'boolean'])) {
+                    $search[$field]['key'] .= '.keyword';
+                }
+            }
             if (empty($this->bean->field_name_map[$field])) {
                 continue;
             }
             $field_defs = $this->bean->field_name_map[$field];
             $search[$field]['type'] = $defs['type'] ?? $field_defs['type'];
-            $search[$field]['name'] = $defs['name'] ?? $field;
             $search[$field]['options'] = $field_defs['options'];
-            $search[$field]['label'] = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
+            $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
+            $search[$field]['label'] = $mod_strings[$label] ?? $label;
         }
-
-        if (!isset($this->kv) || !$this->kv) {
-            $this->kv = new stdClass();
-        }
-
-        if (!isset($this->kv)) {
-            $this->kv = new stdClass();
-            LoggerManager::getLogger()->warn('Kanban view is not defined');
-        }
-
-        $this->kv->columns = $columns;
-        $this->kv->search = $search;
-        $this->kv->data = $data;
-
-        $this->module = $module;
+        return $search;
     }
 
-    /**
-     * Process Kanban View
-     */
-    public function kanbanViewProcess()
+    protected function prepareUserPreferences()
     {
-
-        $this->kv->setup($this->seed, $this->getTplFile());
-        echo $this->kv->display();
+        global $current_user;
+        $preferences = (new UserPreference($current_user))->getPreference($this->bean->module_name, 'eslist');
+        return json_encode($preferences);
     }
 
-    public function getTplFile()
+    protected function getTplFile()
     {
         $module_path = 'modules/'.$this->module.'/include/ESListView/ESListViewGeneric.tpl';
         if (file_exists('custom/'.$module_path)) {
@@ -161,44 +193,5 @@ class ViewEslistview extends SugarView
         }
         $GLOBALS['log']->fatal("ESList TPL file does not exist");
         return '';
-    }
-
-    /**
-     * Setup View
-     */
-    public function preDisplay()
-    {
-        $this->kv = new ESListViewSmarty();
-    }
-
-    /**
-     * Display View
-     */
-    public function display()
-    {
-        if (!$this->bean || !$this->bean->ACLAccess('list')) {
-            ACLController::displayNoAccess();
-        } else {
-            $this->ESListViewPrepare();
-            $this->kanbanViewProcess();
-        }
-    }
-    protected function _displayJavascript()
-    {
-        parent::_displayJavascript();
-        $this->displayCurrentUserDataJS();
-    }
-
-    protected function displayCurrentUserDataJS()
-    {
-        global $current_user;
-        $current_user->load_Relationship('aclroles');
-        $data = [
-            'id' => $current_user->id,
-            'first_name' => $current_user->first_name,
-            'last_name' => $current_user->last_name, 
-            'roles' => $current_user->aclroles->get(),
-        ];
-        echo '<script>window.current_user = ' . json_encode($data) . ';</script>';
     }
 }

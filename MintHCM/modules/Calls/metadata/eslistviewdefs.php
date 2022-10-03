@@ -18,15 +18,6 @@ $ESListViewDefs[$module_name] = array(
             'link' => false,
             'default' => true,
         ),
-        'CONTACT_NAME' => array(
-            'width' => '20%',
-            'label' => 'LBL_LIST_CONTACT',
-            'link' => true,
-            'id' => 'CONTACT_ID',
-            'module' => 'Contacts',
-            'default' => true,
-            'ACLTag' => 'CONTACT',
-        ),
         'PARENT_NAME' => array(
             'width' => '20%',
             'label' => 'LBL_LIST_RELATED_TO',
@@ -78,31 +69,25 @@ $ESListViewDefs[$module_name] = array(
         'date_entered' => array(
             'type' => 'date',
             'label' => 'LBL_DATE_ENTERED',
-            'key' => 'meta.created.date'
         ),
         'date_start' => array(
             'type' => 'date',
             'label' => 'LBL_LIST_DATE',
-            'key' => 'date_start'
         ),
         'date_end' => array(
             'type' => 'date',
             'label' => 'LBL_DATE_END',
-            'key' => 'date_end'
         ),
         'direction' => array(
             'type' => 'enum',
             'label' => 'LBL_DIRECTION',
-            'key' => 'direction.keyword'
         ),
         'status' => array(
             'type' => 'enum',
             'label' => 'LBL_STATUS',
-            'key' => 'status.keyword'
         ),
         'duration_minutes' => array(
             'type' => 'numeric',
-            'key' => 'duration_minutes'
         ),
     ),
 );

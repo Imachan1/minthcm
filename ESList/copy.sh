@@ -7,6 +7,4 @@ cp ../MintHCM/modules/Calls/metadata/eslistviewdefs.php $remote_path/modules/Cal
 cp ../MintHCM/modules/Candidates/metadata/eslistviewdefs.php $remote_path/modules/Candidates/metadata/eslistviewdefs.php;
 cp ../MintHCM/include/language/en_us.lang.php $remote_path/include/language/en_us.lang.php;
 cp ../MintHCM/lib/Search/ElasticSearch/defaultParams.yml $remote_path/lib/Search/ElasticSearch/defaultParams.yml;
-
-
-
+cp ../MintHCM/lib/Search/ElasticSearch/ElasticSearchEngine.php $remote_path/lib/Search/ElasticSearch/ElasticSearchEngine.php;

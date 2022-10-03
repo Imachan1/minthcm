@@ -7,7 +7,16 @@
             />
         </v-scale-transition>
         <div class="es-list-header">
+            <v-btn 
+                @click="filter"
+                :disabled="$store.state.isLoading"
+                dark
+                color="#009976"
+            >
+                {{ label('LBL_FILTER') }}
+            </v-btn>
             <v-select
+                v-if="false /*todo*/"
                 @change="null"
                 :value="null"
                 :items="[]"
@@ -19,7 +28,7 @@
                 hide-details
             />
             <v-select
-                v-show="true"
+                v-show="false /*todo*/"
                 @change="null"
                 :value="null"
                 :items="[]"
@@ -57,6 +66,12 @@ export default {
         ...mapGetters({
             label: 'getLabel'
         })
+    },
+    methods: {
+        filter() {
+            this.$store.commit('setOptions', { page: 1 })
+            this.$root.$emit('getResults')
+        }
     }
 }
 </script>

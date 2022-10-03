@@ -21,7 +21,7 @@ export default {
     contain: {
         label: 'LBL_CONTAIN',
         inputs: [
-            { type: 'select', label: 'LBL_VALUES', options: { multi: true } }
+            { type: 'multiselect', label: 'LBL_VALUES', options: { multi: true } }
         ],
         filters: [
             { op: 'terms', value: '{0}' }
@@ -31,7 +31,7 @@ export default {
         label: 'LBL_NOT_CONTAIN',
         not: true,
         inputs: [
-            { type: 'select', label: 'LBL_VALUES', options: { multi: true } }
+            { type: 'multiselect', label: 'LBL_VALUES', options: { multi: true } }
         ],
         filters: [
             { op: 'terms', value: '{0}' }

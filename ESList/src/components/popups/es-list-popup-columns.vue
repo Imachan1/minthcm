@@ -2,9 +2,7 @@
     <ESListPopup
         :title="label('LBL_COLUMNS_MANAGEMENT')"
         @close-popup="$emit('close-popup')"
-        :style="{
-            minWidth: '700px'
-        }"
+        :style="{ minWidth: '700px' }"
     >
         <div class="es-list-columns">
             <div class="es-list-column">
@@ -17,14 +15,22 @@
                 >
                     <div
                         v-for="col in hiddenColumns"
-                        :key="col"
-                        v-text="label(columns[col].label)"
+                        :key="col.name"
+                        v-text="col.label"
                         class="es-list-column-chip"
                         style="background: #ddd; color: black"
                         draggable
-                        @dragstart="startDrag($event, col)"
+                        @dragstart="startDrag($event, col.name)"
                     />
                 </div>
+                <v-text-field
+                    ref="filterInput"
+                    v-model="columnsSearchPhrase"
+                    class="mt-4"
+                    dense
+                    outlined
+                    :label="label('LBL_FILTER')"
+                />
             </div>
             <div class="es-list-column">
                 <span v-text="label('LBL_VISIBLE_COLUMNS')" />
@@ -36,26 +42,28 @@
                 >
                     <div
                         v-for="col in visibleColumns"
-                        :key="col"
-                        v-text="label(columns[col].label)"
+                        :key="col.name"
+                        v-text="col.label"
                         class="es-list-column-chip"
                         style="background: #009976; color: white"
                         draggable
-                        @dragstart="startDrag($event, col)"
+                        @dragstart="startDrag($event, col.name)"
                     />
                 </div>
             </div>
         </div>
-        <v-divider class="mt-8" />
+        <v-divider class="mt-4" />
         <div class="es-list-columns-buttons mt-4">
             <v-btn @click="$emit('close-popup')" outlined color="#009976" v-text="label('LBL_CANCEL')" />
+            <v-btn @click="setDefaultColumns" outlined color="#009976" class="ms-auto" v-text="label('LBL_DEFAULT')" />
             <v-btn @click="applyColumns" dark color="#009976" v-text="label('LBL_SAVE')" />
         </div>
     </ESListPopup>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
+import { standardizeText } from '../../helpers'
 import ESListPopup from './es-list-popup'
 
 export default {
@@ -63,46 +71,49 @@ export default {
         ESListPopup
     },
     data: () => ({
-        visibleColumns: []
+        visibleColumns: [],
+        columnsSearchPhrase: '',
     }),
     computed: {
-        ...mapState({
-            columns: (state) => state.columns
-        }),
         ...mapGetters({
             label: 'getLabel',
-            headers: 'headers'
+            allColumns: 'allColumns',
         }),
-        allColumns() {
-            return Object.keys(this.columns)
+        standardizedColumnsSearchPhrase() {
+            return standardizeText(this.columnsSearchPhrase)
         },
         hiddenColumns() {
-            return this.allColumns.filter(col => !this.visibleColumns.includes(col))
+            return this.allColumns
+                .filter(col => !this.visibleColumns.find(c => c.name === col.name))
+                .filter(col => (!this.standardizedColumnsSearchPhrase || standardizeText(col.label).includes(this.standardizedColumnsSearchPhrase)))
         }
     },
     mounted () {
-        this.visibleColumns = this.allColumns.filter(col => this.headers.find(h => h.value === col))
+        this.visibleColumns = [...this.$store.getters['visibleColumns']]
+        this.$refs.filterInput.focus()
     },
     methods: {
-        startDrag(e, col) {
+        startDrag(e, colName) {
             e.dataTransfer.dropEffect = 'move'
             e.dataTransfer.effectAllowed = 'move'
-            e.dataTransfer.setData('col', col)
+            e.dataTransfer.setData('colName', colName)
         },
         onDrop(e, list) {
-            const col = e.dataTransfer.getData('col')
-            if (list === 'hidden-columns' && this.visibleColumns.includes(col)) {
-                this.visibleColumns = this.visibleColumns.filter(c => c !== col)
-            } else if (list === 'visible-columns' && !this.visibleColumns.includes(col)) {
-                this.visibleColumns.push(col)
+            const colName = e.dataTransfer.getData('colName')
+            if (list === 'hidden-columns') {
+                this.visibleColumns = this.visibleColumns.filter(c => c.name !== colName)
+            } else if (list === 'visible-columns' && !this.visibleColumns.find(c => c.name === colName)) {
+                this.visibleColumns.push(this.allColumns.find(c => c.name === colName))
             }
         },
         applyColumns() {
-            const columns = {}
-            this.visibleColumns.forEach(key => {
-                columns[key] = this.columns[key]
-            })
-            this.$store.commit('setUserColumns', columns)
+            this.$store.commit('setColumnsPreference', this.visibleColumns.map(col => col.name))
+            this.$root.$emit('savePreferences')
+            this.$emit('close-popup')
+        },
+        setDefaultColumns() {
+            this.$store.commit('setDefaultColumns')
+            this.$root.$emit('savePreferences')
             this.$emit('close-popup')
         }
     }
@@ -134,12 +145,12 @@ export default {
     flex-direction: column;
     gap: 4px;
     box-shadow: 0 2px 6px #0003;
-    height: 300px;
+    height: 350px;
     overflow: auto;
 }
 .es-list-columns-buttons {
     display: flex;
     gap: 16px;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 </style>

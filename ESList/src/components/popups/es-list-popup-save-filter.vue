@@ -5,6 +5,7 @@
         :style="{ minWidth: '350px' }"
     >
         <v-text-field
+            ref="input"
             v-model="filterName"
             :label="label('LBL_FILTER_NAME')"
             outlined
@@ -34,10 +35,13 @@ export default {
             label: 'getLabel'
         })
     },
+    mounted() {
+        this.$refs.input.focus()
+    },
     methods: {
         save() {
             if (this.validate()) {
-                console.log('save filter', this.filterName.trim())
+                this.$emit('save-filter', this.filterName.trim())
             }
         },
         validate() {
@@ -57,6 +61,6 @@ export default {
 .es-list-popup-save-filter-buttons {
     display: flex;
     gap: 16px;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 </style>

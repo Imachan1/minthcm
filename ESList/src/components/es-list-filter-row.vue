@@ -1,28 +1,33 @@
 <template>
     <div class="es-list-filter-row">
+        <v-icon @click="$emit('delete-filter-row', row)">mdi-close</v-icon>
         <v-autocomplete
-            v-model="field"
-            :items="fieldsItems"
-            dense
+            v-model="row.field"
+            @change="handleFieldChange"
+            :filter="fieldsAutocompleteFilter"
+            :items="filterableFields"
+            item-value="name"
+            item-text="label"
             :label="label('LBL_FIELD')"
+            dense
             outlined
             hide-details
         />
         <v-select
-            v-if="field"
-            v-model="operator"
+            v-if="row.field"
+            v-model="row.operator"
+            @change="handleOperatorChange"
             :items="operatorItems"
-            dense
+            item-value="key"
+            item-text="label"
             :label="label('LBL_OPERATOR')"
+            dense
             outlined
             hide-details
-            item-text="label"
-            item-value="key"
         />
         <component
-            ref="values"
-            v-for="input in valueInputs"
-            :key="input.id"
+            v-for="input in row.inputs"
+            :key="input"
             :fieldDefs="fieldDefs"
             :input="input"
             :is="getInputComponent(input.type)"
@@ -32,100 +37,60 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import { standardizeText } from '../helpers'
 import * as operatorDefs from '../operators'
 import * as inputDefs from './es-list-filter-input'
 
 export default {
     props: {
-        filter: { type: Object, required: true }
-    },
-    data() {
-        return {
-            field: this.filter.field,
-            operator: this.filter.op,
-        }
+        row: { type: Object, required: true }
     },
     computed: {
         ...mapState({
-            fieldsItems(state) {
-                return Object.values(state.search).map(x => ({ value: x.name, text: this.label(x.label) }))
-            },
             fieldDefs(state) {
-                return this.field ? state.search[this.field] : {}
-            },
-            operators(state) {
-                if (!this.field) {
-                    return {}
-                }
-                const type = state.search[this.field]?.type
-                return operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
+                return this.row.field ? state.defs.search[this.row.field] : {}
             },
         }),
         ...mapGetters({
-            label: 'getLabel'
+            label: 'getLabel',
+            filterableFields: 'filterableFields',
         }),
-        operatorItems() {
-            return Object.entries(this.operators).map(([key, op]) => ({ key, label: this.label(op.label) }))
-        },
-        valueInputs() {
-            if (!this.operator) {
-                return []
+        operatorList() {
+            if (!this.row.field) {
+                return {}
             }
-            let id = new Date().getTime()
-            return [
-                ...(this.operators[this.operator]?.inputs ?? [])
-            ].map(x => ({...x, id: ++id}))
-        }
+            const type = this.fieldDefs.type
+            return operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
+        },
+        operatorItems() {
+            return Object.entries(this.operatorList).map(([key, op]) => ({ key, label: this.label(op.label) }))
+        },
     },
     methods: {
-        getList(list) {
-            return Object.entries(
-                SUGAR.language.languages['app_list_strings'][list] ?? {}
-            ).map(([value, text]) => ({ value, text }))
-        },
-        getDSL() {
-            const op = operatorDefs[this.fieldDefs.type]?.[this.operator]
-            return op.filters.map(f => ({
-                [f.op]: {
-                    [this.fieldDefs.key]: this.replacePlaceholders(f.value)
-                }
-            }))
-        },
-        replacePlaceholders(value) {
-            value = JSON.stringify(value)
-            console.log('stringified', value)
-            const values = this.getValues()
-            values.forEach((v, i) => {
-                value = value.replaceAll(`{${i}}`, v)
-            })
-            console.log('parsed', JSON.parse(value))
-            return JSON.parse(value)
-        },
-        getValues() {
-            return this.$refs.values?.map(v => v.$data.value) ?? []
-        },
-        isValid() {
-            if (!this.field || !this.operator) {
-                return false
+        handleFieldChange() {
+            if (!this.row.field || !this.operatorList[this.row.operator]) {
+                this.row.operator = null
+                this.row.inputs = []
             }
-            return true
+        },
+        handleOperatorChange() {
+            if (!this.row.operator || !this.operatorList[this.row.operator].inputs) {
+                this.row.inputs = [] // todo: czyscic value tylko roznych typow, albo jak zniknie
+            } else {
+                this.row.inputs = this.operatorList[this.row.operator].inputs.map(i => ({
+                    type: i.type,
+                    value: null,
+                    label: this.label(i.label),
+                }))
+            }
+        },
+        fieldsAutocompleteFilter (field, searchText) {
+            return standardizeText(field.label).includes(standardizeText(searchText))
         },
         getInputComponent(type) {
-            if (inputDefs[type]) {
-                return inputDefs[type]
-            }
-            return null
-        }
-    },
-    watch: {
-        field() {
-            this.operator = null
-            this.$emit('filter-changed')
+            return inputDefs[type] ? inputDefs[type] : null
         },
-        operator() {
-            this.$emit('filter-changed')
-        }
-    }
+    },
 }
 </script>
 

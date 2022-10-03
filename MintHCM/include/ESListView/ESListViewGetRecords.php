@@ -29,10 +29,10 @@ class ESListViewGetRecords {
         ];
         if ($arguments['myObjects'] === 'true') {
             global $current_user;
-            array_push($options['filters'], ['term' => ['meta.assigned.user_id' => $current_user->id]]);
+            $options['filters']['filter'][] = ['term' => ['meta.assigned.user_id' => $current_user->id]];
         }
         if (strlen($options['searchPhrase'])) {
-            array_push($options['filters'], ['wildcard' => ['name.name' => $options['searchPhrase']]]);
+            $options['filters']['filter'][] = ['wildcard' => ['name.name' => $options['searchPhrase']]];
         }
         $this->options = $options;
         $this->itemsPerPage = $itemsPerPage;
