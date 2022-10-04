@@ -22,15 +22,11 @@ export default {
     store,
     vuetify,
     components: { ESListFilters, ESListHeader, ESListTable },
-    mounted() {
+    created() {
         this.$store.commit('resetState')
         const data = document.querySelector('es-list').data // data passed from smarty
         this.$store.commit('setModule', data.module)
         this.$store.commit('setDefs', data.defs)
-        this.$store.commit('setPreferences', data.preferences)
-        this.$store.commit('setModule', data.module)
-        this.$store.commit('setColumns', data.defs.columns)
-        this.$store.commit('setSearch', data.defs.search)
         this.$store.commit('setPreferences', data.preferences)
     },
 }

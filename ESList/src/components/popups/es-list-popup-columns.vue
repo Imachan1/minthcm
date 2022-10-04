@@ -108,12 +108,12 @@ export default {
         },
         applyColumns() {
             this.$store.commit('setColumnsPreference', this.visibleColumns.map(col => col.name))
-            this.$root.$emit('savePreferences')
+            this.$store.dispatch('savePreferences')
             this.$emit('close-popup')
         },
         setDefaultColumns() {
             this.$store.commit('setDefaultColumns')
-            this.$root.$emit('savePreferences')
+            this.$store.dispatch('savePreferences')
             this.$emit('close-popup')
         }
     }

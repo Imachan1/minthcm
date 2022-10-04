@@ -10,9 +10,8 @@
         </v-scale-transition>
         <v-data-table
             :headers="headers"
-            :items="data.records"
+            :items="data.results"
             class="es-list-table elevation-1"
-            @update:options="updateOptions"
             :options.sync="options"
             :footer-props="{
                 itemsPerPageOptions: [5, 10, 20, 30, 40, 50],
@@ -100,17 +99,16 @@ export default {
             openDetailViewInNewTab: 'openDetailViewInNewTab',
             openEditViewInNewTab: 'openEditViewInNewTab',
         }),
-        updateOptions(newOptions) {
-            this.$store.commit('setOptions', {
-                page: newOptions.page,
-                itemsPerPage: newOptions.itemsPerPage,
-                sortBy: this.columnsDefs[newOptions.sortBy[0]]?.key ?? '',
-                sortOrder: newOptions.sortDesc[0] ? 'desc' : 'asc',
-            })
-            this.$root.$emit('getResults')
-        },
         openDeleteConfirmationPopup(data) {
             this.deleteConfirmationPopupData = data
+        }
+    },
+    watch: {
+        options: {
+            handler() {
+                this.$store.dispatch('getData')
+            },
+            deep: true
         }
     }
 }

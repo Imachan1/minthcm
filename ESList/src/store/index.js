@@ -1,28 +1,18 @@
 import Vuex from 'vuex'
+import axios from 'axios'
 
 const getDefaultState = () => ({
+    url: 'index.php?action=ESList',
     module: '',
     defs: { columns: {}, search: {} }, // defs from eslistsviewdefs.php
     preferences: {},
     isLoading: false,
-    data: {
-        total: 0,
-        records: []
-    },
-    options: {
-        page: 1,
-        itemsPerPage: 10,
-        pageOffsetMap: {},
-        sortBy: '',
-        sortOrder: 'asc',
-        myObjects: false,
-        searchPhrase: '',
-        filters: { filter: [], must_not: [] },
-    },
-    tableOptions: {
-        page: 1,
-        itemsPerPage: 10,
-    }
+    tableOptions: {}, // v-data-table options (synced)
+    data: { total: 0, results: [] },
+    pageOffsetMap: {},
+    myObjects: false,
+    searchPhrase: '',
+    filters: { filter: [], must_not: [] },
 })
 
 export default new Vuex.Store({
@@ -38,7 +28,13 @@ export default new Vuex.Store({
             state.defs = defs
         },
         setPreferences(state, preferences) {
-            state.preferences = preferences
+            state.preferences = preferences || {}
+        },
+        setSearchPhrase(state, searchPhrase) {
+            state.searchPhrase = searchPhrase
+        },
+        setMyObjects(state, myObjects) {
+            state.myObjects = myObjects
         },
         setColumnsPreference(state, columns) {
             Vue.set(state.preferences, 'columns', columns)
@@ -53,16 +49,12 @@ export default new Vuex.Store({
             state.data = data
         },
         setFilters(state, filters) {
-            state.options = {
-                ...state.options,
-                page: 1,
-                filters: filters || {}
-            }
+            state.filters = filters
         },
-        setOptions(state, options) {
-            state.options = {
-                ...state.options,
-                ...options,
+        updateTable(state) { // triggers getData
+            state.tableOptions = {
+                ...state.tableOptions,
+                page: 1,
             }
         },
         setTableOptions(state, options) {
@@ -72,10 +64,10 @@ export default new Vuex.Store({
             }
         },
         setOffset(state, offset) {
-            state.options.pageOffsetMap[state.options.page] = offset
-        },
-        resetOffset(state) {
-            state.options.pageOffsetMap = {}
+            if (state.tableOptions.page === 1) {
+                state.pageOffsetMap = {}
+            }
+            state.pageOffsetMap[state.tableOptions.page] = offset
         },
         addSavedFilter(state, filter) {
             if (!state.preferences) {
@@ -103,6 +95,34 @@ export default new Vuex.Store({
         },
     },
     actions: {
+        async callController({ state }, data) {
+            try {
+                const result = await axios.post(state.url, { module: state.module, ...data })
+                return result.data
+            } catch (err) {
+                console.error(err)
+                return false
+            }
+        },
+        async getData({ getters, commit, dispatch }) {
+            commit('setIsLoading', true)
+            const data = await dispatch('callController', {
+                function_name: 'getResults',
+                ...getters.params,
+            })
+            if (data) {
+                const { results, total, offset } = data
+                commit('setData', { results, total })
+                commit('setOffset', offset)
+            }
+            commit('setIsLoading', false)
+        },
+        async savePreferences({ state, dispatch }) {
+            await dispatch('callController', {
+                function_name: 'savePreferences',
+                preferences: state.preferences,
+            })
+        },
         openDetailViewInNewTab({ state }, { recordId, module }) {
             if (recordId) {
                 window.open(`index.php?module=${module || state.module}&action=DetailView&record=${recordId}`, '_blank')
@@ -119,6 +139,16 @@ export default new Vuex.Store({
         getAppLabel: () => (label) => SUGAR.language.languages['app_strings']?.[label],
         getOptionsLabels: () => (options) => SUGAR.language.languages['app_list_strings']?.[options] || [],
         getLabel: (state, getters) => (label) => getters.getModuleLabel(label) || getters.getAppLabel(label) || label,
+        params: (state) => ({
+            page: state.tableOptions.page,
+            itemsPerPage: state.tableOptions.itemsPerPage,
+            myObjects: state.myObjects,
+            searchPhrase: state.searchPhrase,
+            filters: state.filters,
+            offset: state.pageOffsetMap[state.tableOptions.page - 1],
+            sortBy: state.defs.columns[state.tableOptions.sortBy[0]]?.key,
+            sortOrder: state.tableOptions.sortDesc[0] ? 'desc' : 'asc',
+        }),
         allColumns(state) {
             return Object.values(state.defs.columns)
                 .sort((a, b) => a.label.localeCompare(b.label, 'pl'))
@@ -182,12 +212,6 @@ export default new Vuex.Store({
                 booleans: getters.booleans,
                 lists: getters.lists,
             }
-        },
-        savedFiltersItems(state) {
-            if (state.preferences?.saved_filters?.length) {
-                return state.preferences.saved_filters.map(x => x.name)
-            }
-            return []
         },
     }
 })

@@ -69,8 +69,7 @@ export default {
     },
     methods: {
         filter() {
-            this.$store.commit('setOptions', { page: 1 })
-            this.$root.$emit('getResults')
+            this.$store.commit('updateTable')
         }
     }
 }

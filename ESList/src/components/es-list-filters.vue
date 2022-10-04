@@ -82,25 +82,24 @@ export default {
         }),
         searchPhrase: {
             get() {
-                return this.$store.state.options.searchPhrase
+                return this.$store.state.searchPhrase
             },
             set(val) {
-                this.$store.commit('setOptions', { searchPhrase: val })
+                this.$store.commit('setSearchPhrase', val)
             }
         },
         myObjects: {
             get() {
-                return this.$store.state.options.myObjects
+                return this.$store.state.myObjects
             },
             set(val) {
-                this.$store.commit('setOptions', { myObjects: val })
+                this.$store.commit('setMyObjects', val)
             }
         },
     },
     methods: {
         updateOptions() {
-            this.$store.commit('setOptions', { page: 1 }),
-            this.$root.$emit('getResults')
+            this.$store.commit('updateTable')
         },
         showSaveFilterPopup() {
             this.saveFilterPopupVisible = true
@@ -108,9 +107,9 @@ export default {
         saveFilter(filterName) {
             this.$store.commit('addSavedFilter', {
                 name: filterName,
-                filters: this.getFilters(),
+                filters: this.filterRows,
             })
-            this.$root.$emit('savePreferences')
+            this.$store.dispatch('savePreferences')
             this.activeFilter = filterName
             this.saveFilterPopupVisible = false
         },
@@ -125,14 +124,12 @@ export default {
         deleteFilterRow(row) {
             this.filterRows = this.filterRows.filter(filterRow => filterRow !== row)
         },
-        applySavedFilter(filterName) {
+        async applySavedFilter(filterName) {
             let savedFilter = this.$store.state.preferences['saved_filters'].find(f => f.name === filterName)
             savedFilter = savedFilter?.filters ?? []
-            const filters = []
-            savedFilter.forEach(f => {
-                filters.push({...f})
-            })
-            this.filterRows = filters
+            this.filterRows = structuredClone(savedFilter)
+            await this.$nextTick()
+            this.$store.commit('updateTable')
         },
         getOperator(field, operator) {
             const type = this.$store.state.defs.search[field].type
@@ -161,27 +158,30 @@ export default {
                 value = value.replaceAll(`"{${i}}"`, JSON.stringify(input.value))
             })
             return JSON.parse(value)
+        },
+        setFilters(filterRows) {
+            const query = { filter: [], must_not: [] }
+            filterRows
+                .filter(this.isFilterRowValid)
+                .forEach(row => {
+                    const operator = this.getOperator(row.field, row.operator)
+                    const filterType = operator.not ? 'must_not' : 'filter'
+                    const esKey = this.$store.state.defs.search[row.field].key
+                    operator.filters.forEach(f => {
+                        query[filterType].push({
+                            [f.op]: {
+                                [esKey]: this.replacePlaceholders(f.value, row.inputs)
+                            }
+                        })
+                    })
+                })
+            this.$store.commit('setFilters', query)
         }
     },
     watch: {
         filterRows: {
             handler(newFilterRows) {
-                const query = { filter: [], must_not: [] }
-                newFilterRows
-                    .filter(this.isFilterRowValid)
-                    .forEach(row => {
-                        const operator = this.getOperator(row.field, row.operator)
-                        const filterType = operator.not ? 'must_not' : 'filter'
-                        const esKey = this.$store.state.defs.search[row.field].key
-                        operator.filters.forEach(f => {
-                            query[filterType].push({
-                                [f.op]: {
-                                    [esKey]: this.replacePlaceholders(f.value, row.inputs)
-                                }
-                            })
-                        })
-                    })
-                this.$store.commit('setFilters', query)
+                this.setFilters(newFilterRows)
             },
             deep: true,
         }

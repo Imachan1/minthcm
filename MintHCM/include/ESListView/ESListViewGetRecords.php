@@ -27,9 +27,9 @@ class ESListViewGetRecords {
             ],
             'filters' => $arguments['filters'] ?? []
         ];
-        if ($arguments['myObjects'] === 'true') {
+        if ($arguments['myObjects'] === true) {
             global $current_user;
-            $options['filters']['filter'][] = ['term' => ['meta.assigned.user_id' => $current_user->id]];
+            $options['filters']['filter'][] = ['term' => ['meta.assigned.user_name' => $current_user->user_name]];
         }
         if (strlen($options['searchPhrase'])) {
             $options['filters']['filter'][] = ['wildcard' => ['name.name' => $options['searchPhrase']]];
@@ -58,7 +58,7 @@ class ESListViewGetRecords {
             array_pop($this->results);
         }
         $total_records = ($this->page - 1) * $this->itemsPerPage + count($this->results) + $next_page_exists;
-        $offset = $this->offset + ($this->itemsPerPage * ($number_of_request_into_elasticsearch - 1)) + $this->add_to_offset;
+        $offset = $this->offset + ($this->itemsPerPage * ($number_of_request_into_elasticsearch - 1)) + $this->add_to_offset + 1;
         return [$total_records, $offset, array_values($this->results)];
     }
 

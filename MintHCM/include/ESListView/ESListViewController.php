@@ -29,11 +29,11 @@ class ESListViewController {
         echo json_encode(['success' => true]);
     }
 
-    public function getResults() {
-        $get_records = new ESListViewGetRecords($_GET['module'], $_GET['itemsPerPage'], $_GET['offset'], $_GET['page'], $_GET['sortBy'], $_GET['sortOrder'], [
-            'myObjects' => $_GET['myObjects'] ?? '',
-            'searchPhrase' => $_GET['searchPhrase'] ?? '',
-            'filters' => $_REQUEST['filters'] ?? [],
+    public function getResults($options) {
+        $get_records = new ESListViewGetRecords($options['module'], $options['itemsPerPage'], $options['offset'], $options['page'], $options['sortBy'], $options['sortOrder'], [
+            'myObjects' => $options['myObjects'],
+            'searchPhrase' => $options['searchPhrase'] ?? '',
+            'filters' => $options['filters'] ?? [],
         ]);
         try {
             list($total, $offset, $results) = $get_records->get();
@@ -51,10 +51,10 @@ class ESListViewController {
         $handler->handle();
     }
 
-    public function savePreferences() {
+    public function savePreferences($data) {
         global $current_user;
-        $module = $_REQUEST['module'];
-        $preferences = $_REQUEST['preferences'];
+        $module = $data['module'];
+        $preferences = $data['preferences'];
         if (!empty($preferences) && is_array($preferences) && !empty($module)) {
             (new UserPreference($current_user))->setPreference($module, $preferences, 'eslist');
         }

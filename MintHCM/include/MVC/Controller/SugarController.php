@@ -1205,9 +1205,14 @@ class SugarController
         } else {
             sugar_die('Class does not exist: '.$class_name);
         }
-        $action = $_REQUEST['function_name'];
+        if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
+            $data = json_decode(file_get_contents('php://input'), true);
+        } else {
+            $data = $_REQUEST;
+        }
+        $action = $data['function_name'];
         if (method_exists($object, $action)) {
-            return json_encode($object->$action($_REQUEST));
+            return json_encode($object->$action($data));
         } else {
             sugar_die('Class does not have function: '.$class_name.'->'.$action);
         }
