@@ -7,14 +7,7 @@
             />
         </v-scale-transition>
         <div class="es-list-header">
-            <v-btn 
-                @click="filter"
-                :disabled="$store.state.isLoading"
-                dark
-                color="#009976"
-            >
-                {{ label('LBL_FILTER') }}
-            </v-btn>
+            <span v-text="'Akcje masowe (coming soon)'" style="opacity:.5;user-select:none" />
             <v-select
                 v-if="false /*todo*/"
                 @change="null"
@@ -67,11 +60,6 @@ export default {
             label: 'getLabel'
         })
     },
-    methods: {
-        filter() {
-            this.$store.commit('updateTable')
-        }
-    }
 }
 </script>
 

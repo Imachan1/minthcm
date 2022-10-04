@@ -25,6 +25,7 @@
             }"
             checkbox-color="#009976"
             item-key="id"
+            must-sort
             v-model="selected"
             :single-select="false"
             :loading="isLoading"

@@ -1,16 +1,14 @@
 <template>
-    <v-col cols="auto" class="pa-0">
-        <v-select
-            v-model="input.value"
-            class="es-list-filter-input-select"
-            :items="getList(fieldDefs.options)"
-            dense
-            style="width: fit-content"
-            :label="label(input.label)"
-            outlined
-            hide-details
-        />
-    </v-col>
+    <v-select
+        v-model="input.value"
+        class="es-list-filter-input-select"
+        :items="getList(fieldDefs.options)"
+        dense
+        style="width: fit-content"
+        :label="label(input.label)"
+        outlined
+        hide-details
+    />
 </template>
 
 <script>
@@ -40,9 +38,6 @@ export default {
 .es-list-filter-input-select {
     .v-select__selections input {
         display: none;
-    }
-    &.v-select {
-        min-width: 200px;
     }
 }
 </style>

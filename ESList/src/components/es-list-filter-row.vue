@@ -1,37 +1,41 @@
 <template>
     <div class="es-list-filter-row">
-        <v-icon @click="$emit('delete-filter-row', row)">mdi-close</v-icon>
-        <v-autocomplete
-            v-model="row.field"
-            @change="handleFieldChange"
-            :filter="fieldsAutocompleteFilter"
-            :items="filterableFields"
-            item-value="name"
-            item-text="label"
-            :label="label('LBL_FIELD')"
-            dense
-            outlined
-            hide-details
-        />
-        <v-select
-            v-if="row.field"
-            v-model="row.operator"
-            @change="handleOperatorChange"
-            :items="operatorItems"
-            item-value="key"
-            item-text="label"
-            :label="label('LBL_OPERATOR')"
-            dense
-            outlined
-            hide-details
-        />
-        <component
-            v-for="input in row.inputs"
-            :key="input"
-            :fieldDefs="fieldDefs"
-            :input="input"
-            :is="getInputComponent(input.type)"
-        />
+        <div class="es-list-filter-row" style="width:100%">
+            <v-autocomplete
+                class="col col-3"
+                v-model="row.field"
+                @change="handleFieldChange"
+                :filter="fieldsAutocompleteFilter"
+                :items="filterableFields"
+                item-value="name"
+                item-text="label"
+                :label="label('LBL_FIELD')"
+                dense
+                outlined
+                hide-details
+            />
+            <v-select
+                class="col col-3"
+                v-if="row.field"
+                v-model="row.operator"
+                @change="handleOperatorChange"
+                :items="operatorItems"
+                item-value="key"
+                item-text="label"
+                :label="label('LBL_OPERATOR')"
+                dense
+                outlined
+                hide-details
+            />
+            <component
+                v-for="input in row.inputs"
+                :key="input"
+                :fieldDefs="fieldDefs"
+                :input="input"
+                :is="getInputComponent(input.type)"
+            />
+        </div>
+        <v-icon @click="$emit('delete-filter-row', row)" class="ms-auto">mdi-close</v-icon>
     </div>
 </template>
 
@@ -98,10 +102,5 @@ export default {
 .es-list-filter-row {
     display: flex;
     gap: 16px;
-
-    .v-select {
-        flex: 0 auto;
-        width: 200px;
-    }
 }
 </style>

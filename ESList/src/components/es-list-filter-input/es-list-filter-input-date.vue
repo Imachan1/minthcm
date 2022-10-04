@@ -11,7 +11,6 @@
                 v-model="input.value"
                 dense
                 outlined
-                style="max-width:200px"
                 :label="$store.getters['getLabel'](input.label)"
                 prepend-inner-icon="mdi-calendar"
                 v-bind="attrs"

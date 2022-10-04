@@ -4,7 +4,6 @@
         dense
         outlined
         hide-details
-        style="max-width: 200px"
         :label="$store.getters['getLabel'](input.label)"
     />
 </template>

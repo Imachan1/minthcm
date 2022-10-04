@@ -6,6 +6,25 @@
     >
         <div class="es-list-columns">
             <div class="es-list-column">
+                <span v-text="label('LBL_VISIBLE_COLUMNS')" />
+                <div
+                    class="columns-container"
+                    @dragover.prevent
+                    @dragenter.prevent
+                    @drop="onDrop($event, 'visible-columns')"
+                >
+                    <div
+                        v-for="col in visibleColumns"
+                        :key="col.name"
+                        v-text="col.label"
+                        class="es-list-column-chip"
+                        style="background: #009976; color: white"
+                        draggable
+                        @dragstart="startDrag($event, col.name)"
+                    />
+                </div>
+            </div>
+            <div class="es-list-column">
                 <span v-text="label('LBL_HIDDEN_COLUMNS')" />
                 <div
                     class="columns-container"
@@ -31,25 +50,6 @@
                     outlined
                     :label="label('LBL_FILTER')"
                 />
-            </div>
-            <div class="es-list-column">
-                <span v-text="label('LBL_VISIBLE_COLUMNS')" />
-                <div
-                    class="columns-container"
-                    @dragover.prevent
-                    @dragenter.prevent
-                    @drop="onDrop($event, 'visible-columns')"
-                >
-                    <div
-                        v-for="col in visibleColumns"
-                        :key="col.name"
-                        v-text="col.label"
-                        class="es-list-column-chip"
-                        style="background: #009976; color: white"
-                        draggable
-                        @dragstart="startDrag($event, col.name)"
-                    />
-                </div>
             </div>
         </div>
         <v-divider class="mt-4" />
@@ -120,13 +120,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .es-list-columns {
     display: flex;
     gap: 16px;
 }
 .es-list-column {
     width: 100%;
+    &>span {
+        user-select: none;
+    }
 }
 .es-list-column-chip {
     border-radius: 100px;

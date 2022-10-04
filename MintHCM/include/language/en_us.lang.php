@@ -4212,7 +4212,7 @@ $app_strings['ERR_KANBAN_COL_ERROR'] = 'Column for Kanban is not defined. Proper
 $app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed'; 
 
 // ESList (todo: dac do osobnego pliku en/pl i nazwy LBL_ESLIST_...)
-$app_strings['LBL_SAVE_FILTER'] = 'Zapisz filtr';
+$app_strings['LBL_SAVE_FILTER'] = 'Zapisz filtry';
 $app_strings['LBL_FILTER_NAME'] = 'Nazwa filtru';
 $app_strings['LBL_SAVED_FILTERS'] = 'Zapisane filtry';
 $app_strings['LBL_ADD_FILTER'] = 'Dodaj filtr';

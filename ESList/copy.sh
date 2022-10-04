@@ -1,5 +1,5 @@
 #!/bin/bash
-remote_path=/z/www/minthcmeslist
+remote_path=/mnt/trudzinskim73/www/minthcmeslist
 
 cp ../MintHCM/include/ESListView $remote_path/include/ -r;
 cp ../MintHCM/include/MVC/View/views/view.eslistview.php $remote_path/include/MVC/View/views/view.eslistview.php;

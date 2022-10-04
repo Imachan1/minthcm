@@ -8,46 +8,53 @@
             />
         </v-scale-transition>
         <div class="es-list-filters-nav">
-            <v-select
-                v-model="activeFilter"
-                dense
-                class="flex-grow-0"
-                :items="userFilters"
-                item-text="name"
-                item-value="name"
-                @change="applySavedFilter"
-                :label="label('LBL_SAVED_FILTERS')"
-                outlined
-                append-icon="mdi-chevron-down"
-                hide-details
-            />
-            <v-btn @click="addFilter" class="" dark color="#009976">
-                <v-icon dense left>mdi-plus</v-icon>
-                {{ label('LBL_ADD_FILTER') }}
-            </v-btn>
-            <v-btn @click="showSaveFilterPopup" outlined rounded text icon tile plain class="mr-4">
-                <v-icon>mdi-content-save-outline</v-icon>
-            </v-btn>
-            <v-switch
-                v-model="myObjects"
-                @change="updateOptions"
-                color="#009976"
-                class="pa-0 ma-0 mr-4 v-input--reverse"
-                :label="label('LBL_MY_OBJECTS')"
-                hide-details
-            />
             <v-text-field
+                class="col"
+                :class="[$vuetify.breakpoint.xl ? 'col-6' : 'col-4']"
                 v-model="searchPhrase"
                 @keyup.enter="updateOptions"
                 dense
                 :label="label('LBL_SEARCH')"
                 outlined
                 prepend-inner-icon="mdi-magnify"
-                class="flex-grow-1"
                 hide-details
             />
+            <div
+                class="col es-list-filters-nav"
+                :class="[$vuetify.breakpoint.xl ? 'col-6' : 'col-8']"
+            >
+                <v-switch
+                    v-model="myObjects"
+                    @change="updateOptions"
+                    color="#009976"
+                    class="pa-0 ma-0 v-input--reverse"
+                    :label="label('LBL_MY_OBJECTS')"
+                    hide-details
+                />
+                <v-btn @click="addFilter" class="" dark color="#009976">
+                    <v-icon dense left>mdi-plus</v-icon>
+                    {{ label('LBL_ADD_FILTER') }}
+                </v-btn>
+                <v-btn @click="showSaveFilterPopup" disabled outlined text color="#009976">
+                    <v-icon dense left>mdi-content-save-outline</v-icon>
+                    {{ label('LBL_SAVE_FILTER') }}
+                </v-btn>
+                <v-select
+                    class="mr-4"
+                    v-model="activeFilter"
+                    dense
+                    :items="userFilters"
+                    item-text="name"
+                    item-value="name"
+                    @change="applySavedFilter"
+                    :label="label('LBL_SAVED_FILTERS')"
+                    outlined
+                    append-icon="mdi-chevron-down"
+                    hide-details
+                />
+            </div>
         </div>
-        <div class="es-list-filters mt-6">
+        <div v-if="filterRows.length" class="es-list-filters mt-6">
             <ESListFilterRow
                 v-for="row in filterRows"
                 :key="row"

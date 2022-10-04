@@ -1,19 +1,17 @@
 <template>
-    <v-col cols="auto" class="pa-0">
-        <v-select
-            v-model="input.value"
-            class="es-list-filter-input-select"
-            :items="getList(fieldDefs.options)"
-            dense
-            style="width: fit-content"
-            :label="label(input.label)"
-            multiple
-            small-chips
-            deletable-chips
-            outlined
-            hide-details
-        />
-    </v-col>
+    <v-select
+        v-model="input.value"
+        class="es-list-filter-input-multiselect"
+        :items="getList(fieldDefs.options)"
+        dense
+        style="width: fit-content"
+        :label="label(input.label)"
+        multiple
+        small-chips
+        deletable-chips
+        outlined
+        hide-details
+    />
 </template>
 
 <script>
@@ -40,12 +38,12 @@ export default {
 </script>
 
 <style lang="scss">
-.es-list-filter-input-select {
+.es-list-filter-input-multiselect {
     .v-select__selections input {
         display: none;
     }
-    &.v-select {
-        min-width: 200px;
+    .v-chip--select {
+        margin: 4px !important;
     }
 }
 </style>
