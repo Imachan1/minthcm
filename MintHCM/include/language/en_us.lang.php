@@ -3967,15 +3967,14 @@ $app_list_strings['status_list'] = array(
     'InProgress' => 'CV Acceptance',
     'MeetingAdditional' => 'Meeting - Additional',
     'MeetingPrimary' => 'Meeting - Preliminary',
-    'MeetingTask' => 'Meeting - Task',
     'Negotation' => 'Negotations',
     'New' => 'New',
     'Offer' => 'Make an Offer',
-    'PracticalTask' => 'Practical Task',
+    'PracticalTask' => 'Recruitment Task',
     'Preselection' => 'Preselection',
     'Rejected' => 'Rejected',
-    'Scored' => 'Scored Stage 1',
-    'Scored2' => 'Scored Stage 2',
+    'Scored' => 'Task Scored',
+    'Scored2' => 'After Preliminary Meeting',
 );
 
 $app_list_strings['project_status_list'] = array(
