@@ -72,11 +72,11 @@ var MintHCMDynamicPopupView = {
             let buttons =  [];
             if(!this.options.isDetailView){
                 buttons.push({
-                    text: viewTools.language.get('app_strings', 'LBL_SAVE_BUTTON_LABEL'), class: "primary", click: this.save.bind(this),
+                    text: viewTools.language.get('app_strings', 'LBL_SAVE_BUTTON_LABEL'), class: "primary", accesskey: "a", click: this.save.bind(this),
                  });
             }
             buttons.push({
-                text: viewTools.language.get('app_strings', 'LBL_CANCEL_BUTTON_LABEL'), class: "", click: this.close.bind(this)
+                text: viewTools.language.get('app_strings', 'LBL_CANCEL_BUTTON_LABEL'), class: "", accesskey: "l", click: this.close.bind(this)
              });
              if(this.options.isDetailView){
                 cont = cont.replace(/\#content /g,".MintHCMPopup-body ");
