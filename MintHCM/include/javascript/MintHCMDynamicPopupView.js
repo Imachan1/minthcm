@@ -1,6 +1,7 @@
 var MintHCMDynamicPopupView = {
     popup : null,
     init : function (title, module_name, record_id, options) {
+        viewTools.cache.form_beforeSave_enforced = [];
         let viewtype = 'EditView';
         let formname = 'EditView';
         this.options = options || {};
