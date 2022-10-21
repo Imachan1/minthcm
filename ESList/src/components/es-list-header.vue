@@ -15,7 +15,7 @@
                 :items="[]"
                 dense
                 class=""
-                :label="label('LBL_CHOOSE_MULTIPLE')"
+                :label="label('LBL_ESLIST_CHOOSE_MULTIPLE')"
                 outlined
                 append-icon="mdi-chevron-down"
                 hide-details
@@ -27,7 +27,7 @@
                 :items="[]"
                 dense
                 class=""
-                :label="label('LBL_MASS_ACTION')"
+                :label="label('LBL_ESLIST_MASS_ACTION')"
                 outlined
                 append-icon="mdi-chevron-down"
                 hide-details
@@ -35,12 +35,11 @@
             <v-btn
                 small
                 class="ms-auto"
-                color="#009976"
                 outlined
                 @click="columnsPopupVisible = true"
             >
                 <v-icon left>mdi-playlist-plus</v-icon>
-                {{ label('LBL_COLUMNS') }}
+                {{ label('LBL_ESLIST_COLUMNS') }}
             </v-btn>
         </div>
     </div>

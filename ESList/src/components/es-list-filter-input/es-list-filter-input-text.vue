@@ -1,10 +1,12 @@
 <template>
     <v-text-field
-        v-model="input.value"
+        v-model="val"
+        @input="handleInput"
+        @keyup.enter="handleKeyEnter"
         dense
         outlined
         hide-details
-        :label="$store.getters['getLabel'](input.label)"
+        :label="input.label"
     />
 </template>
 
@@ -13,6 +15,24 @@ export default {
     props: {
         input: { type: Object },
     },
+    data() {
+        return {
+            val: this.input.value,
+            debounceTimeout: null,
+        }
+    },
+    methods: {
+        handleKeyEnter() {
+            clearTimeout(this.debounceTimeout)
+            this.input.value = this.val
+        },
+        handleInput() {
+            clearTimeout(this.debounceTimeout)
+            this.debounceTimeout = setTimeout(() => {
+                this.input.value = this.val
+            }, 1000)
+        }
+    }
 }
 </script>
 

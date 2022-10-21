@@ -11,11 +11,12 @@
                 v-model="input.value"
                 dense
                 outlined
-                :label="$store.getters['getLabel'](input.label)"
+                :label="input.label"
                 prepend-inner-icon="mdi-calendar"
                 v-bind="attrs"
                 v-on="on"
                 autocomplete="off"
+                :error="!isValidDate"
                 hide-details
             />
         </template>
@@ -41,6 +42,11 @@ export default {
     data: () => ({
         menu: false
     }),
+    computed: {
+        isValidDate() {
+            return !this.input.value || this.input.value.length === 10
+        }
+    }
 }
 </script>
 

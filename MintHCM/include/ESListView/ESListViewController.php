@@ -59,4 +59,8 @@ class ESListViewController {
             (new UserPreference($current_user))->setPreference($module, $preferences, 'eslist');
         }
     }
+
+    public function updatePreferences($data) {
+        
+    }
 }

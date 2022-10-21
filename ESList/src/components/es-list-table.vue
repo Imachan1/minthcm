@@ -1,57 +1,61 @@
 <template>
     <div>
         <v-scale-transition origin="center center 0">
-            <ESListPopupDeletePrompt
+            <ESListPopupConfirm
                 v-if="deleteConfirmationPopupData"
-                :id="deleteConfirmationPopupData.id"
-                :name="deleteConfirmationPopupData.name"
+                :body="`${label('LBL_ESLIST_DELETE_RECORD_CONFIRM_BODY')} ${deleteConfirmationPopupData.name}`"
+                @confirm="deleteRecord"
                 @close-popup="deleteConfirmationPopupData = null"
             />
         </v-scale-transition>
         <v-data-table
             :headers="headers"
-            :items="data.results"
+            :items="parsedResults"
             class="es-list-table elevation-1"
             :options.sync="options"
             :footer-props="{
-                itemsPerPageOptions: [5, 10, 20, 30, 40, 50],
+                itemsPerPageOptions: $store.state.config.config.itemsPerPageOptions,
                 firstIcon: 'mdi-page-first',
                 lastIcon: 'mdi-page-last',
-                itemsPerPageText: label('LBL_ITEMS_PER_PAGE'),
+                itemsPerPageText: label('LBL_ESLIST_ITEMS_PER_PAGE'),
                 pageText: pageText,
             }"
             :header-props="{
                 sortIcon: 'mdi-menu-up',
             }"
-            checkbox-color="#009976"
+            checkbox-:color=""
             item-key="id"
             must-sort
             v-model="selected"
             :single-select="false"
             :loading="isLoading"
-            :loading-text="label('LBL_LOADING')"
+            :loading-text="label('LBL_ESLIST_LOADING')"
+            :no-data-text="label('LBL_ESLIST_TABLE_NO_DATA')"
             :server-items-length="data.total"
         >
             <template v-slot:item.actions="{item}">
                 <div class="d-flex justify-end" style="gap: 8px">
-                    <v-icon v-if="item.acl_access.edit" @click="openEditViewInNewTab({ recordId: item.id })" small>mdi-pencil</v-icon>
-                    <v-icon v-if="item.acl_access.view" @click="openDetailViewInNewTab({ recordId: item.id })" small>mdi-eye</v-icon>
-                    <v-icon v-if="item.acl_access.delete" @click="openDeleteConfirmationPopup({ id: item.id, name: item.name })" small>mdi-delete</v-icon>
+                    <v-icon v-if="item.acl_access.edit" @click="openEditViewInNewTab({ recordId: item.id })" :color="$store.state.config.theme.color['action-icon']" small>mdi-pencil</v-icon>
+                    <v-icon v-if="item.acl_access.view" @click="openDetailViewInNewTab({ recordId: item.id })" :color="$store.state.config.theme.color['action-icon']" small>mdi-eye</v-icon>
+                    <v-icon v-if="item.acl_access.delete" @click="openDeleteConfirmationPopup({ id: item.id, name: item.name })" :color="$store.state.config.theme.color['action-icon']" small>mdi-delete</v-icon>
                 </div>
             </template>
             <template v-for="link in customFields.links" v-slot:[`item.${link.nameField}`]="{item}">
                 <span :key="link.nameField">
-                    <a v-if="item[link.urlField]" :href="item[link.urlField]" v-html="item[link.nameField]" class="custom-link" />
-                    <span v-else v-html="item[link.nameField]" />
+                    <a v-if="item[link.urlField]" :href="item[link.urlField]" v-text="item[link.nameField]" />
+                    <span v-else v-text="item[link.nameField]" />
                 </span>
             </template>
             <template v-for="list in customFields.lists" v-slot:[`item.${list.field}`]="{item}">
                 <span :key="list.field" v-text="list.options[item[list.field]]" />
             </template>
             <template v-for="bool in customFields.booleans" v-slot:[`item.${bool}`]="{item}">
-                <v-icon :key="bool">
+                <v-icon :key="bool" :color="$store.state.config.theme.color['boolean-icon']">
                     {{ (item[bool] && item[bool] !== '0') ? 'mdi-checkbox-marked-circle': 'mdi-close' }}
                 </v-icon>
+            </template>
+            <template v-for="date in customFields.dates" v-slot:[`item.${date}`]="{item}">
+                <span :key="date" v-text="formatDate(item[date])" />
             </template>
             <template v-slot:header.data-table-select>
             </template>
@@ -61,10 +65,10 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
-import ESListPopupDeletePrompt from './popups/es-list-popup-delete-prompt'
+import ESListPopupConfirm from './popups/es-list-popup-confirm'
 
 export default {
-    components: { ESListPopupDeletePrompt },
+    components: { ESListPopupConfirm },
     data: () => ({
         selected: [],
         deleteConfirmationPopupData: null,
@@ -74,7 +78,7 @@ export default {
             data: (state) => state.data,
             pageText(state) {
                 const isOverflow = state.data.total > (this.options.page * this.options.itemsPerPage)
-                const pageText = `{0} - {1} ${this.label('LBL_PAGE_TEXT')} {2}`
+                const pageText = `{0} - {1} ${this.label('LBL_ESLIST_PAGE_TEXT')} {2}`
                 return isOverflow ? `${pageText}+` : pageText
             },
             module: (state) => state.module,
@@ -85,6 +89,7 @@ export default {
             headers: 'headers',
             customFields: 'customFields',
             label: 'getLabel',
+            parsedResults: 'parsedResults',
         }),
         options: {
             get() {
@@ -102,6 +107,25 @@ export default {
         }),
         openDeleteConfirmationPopup(data) {
             this.deleteConfirmationPopupData = data
+        },
+        async deleteRecord() {
+            if (this.deleteConfirmationPopupData?.id) {
+                await this.$store.dispatch('deleteRecord', this.deleteConfirmationPopupData.id)
+                this.$store.dispatch('getData')
+            }
+            this.deleteConfirmationPopupData = null
+        },
+        formatDate(date) {
+            if (!date) {
+                return ''
+            }
+            if (date.length === 10) { // db date
+                return window.moment(date, 'YYYY-MM-DD').format(window.viewTools.date.getDateFormat())
+            }
+            if (date.length === 19) { // db datetime
+                return window.moment(date, 'YYYY-MM-DD HH:mm:ss').format(window.viewTools.date.getDateTimeFormat())
+            }
+            return ''
         }
     },
     watch: {
@@ -118,26 +142,23 @@ export default {
 <style lang="scss">
 .es-list-table {
     a {
-        color: #009976 !important;
         text-decoration: none;
     }
     tbody tr td {
         text-align: left;
         font-size: 14px !important;
-        font-family: "Roboto", sans-serif !important;
+        font-family: var(--font-body);
         letter-spacing: 0.25px !important;
         color: #00000099;
     }
 
     .v-data-footer__select {
-        font-family: 'Roboto', sans-serif !important;
         font-size: 12px !important;
         letter-spacing: .4px !important;
     }
     .v-data-table-header th span {
         text-align: left;
         font-size: 12px !important;
-        font-family: "Roboto", sans-serif !important;
         letter-spacing: .4px !important;
         color: #00000061;
     }
@@ -145,20 +166,14 @@ export default {
     .v-data-table-header .active span {
         text-align: left;
         font-size: 12px !important;
-        font-family: "Roboto", sans-serif !important;
         letter-spacing: .4px !important;
         color: #00000099;
     }
-    tbody tr td:nth-child(2) {
+    tbody tr td:nth-child(1) {
         text-align: left;
         font-size: 16px !important;
-        font-family: "Roboto", sans-serif !important;
         letter-spacing: 0.14px !important;
         color: #000000DE;
-    }
-
-    tbody > tr > td .v-icon::before {
-        color: #009976;
     }
 
     .v-data-footer__icons-before {
@@ -168,7 +183,6 @@ export default {
     .v-data-footer__pagination {
         order: 2;
         margin: 10px !important;
-        font-family: 'Roboto', sans-serif !important;
         font-size: 12px !important;
         letter-spacing: .4px !important;
     }
@@ -178,10 +192,10 @@ export default {
     }
 
     .v-progress-linear__indeterminate.short.primary {
-        background: #009976;
+        background: var(--color-loader);
     }
     .v-progress-linear__indeterminate.long.primary {
-        background: #009976;
+        background: var(--color-loader);
     }
 }
 </style>

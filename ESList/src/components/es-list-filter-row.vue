@@ -9,7 +9,8 @@
                 :items="filterableFields"
                 item-value="name"
                 item-text="label"
-                :label="label('LBL_FIELD')"
+                :label="label('LBL_ESLIST_FIELD')"
+                :no-data-text="label('LBL_ESLIST_NO_DATA')"
                 dense
                 outlined
                 hide-details
@@ -22,7 +23,7 @@
                 :items="operatorItems"
                 item-value="key"
                 item-text="label"
-                :label="label('LBL_OPERATOR')"
+                :label="label('LBL_ESLIST_OPERATOR')"
                 dense
                 outlined
                 hide-details

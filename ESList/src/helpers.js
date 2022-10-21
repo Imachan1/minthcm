@@ -15,6 +15,9 @@ const standardizationTable = [
 ]
   
 export const standardizeText = text => {
+    if (!text) {
+        return ''
+    }
     let standardized = text.toLowerCase().trim()
     standardizationTable.forEach(rule => {
         standardized = standardized.replaceAll(rule.from, rule.to)

@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app :style="cssProps">
         <v-main>
             <div class="elevation-3 mb-2">
                 <ESListFilters />
@@ -24,32 +24,94 @@ export default {
     components: { ESListFilters, ESListHeader, ESListTable },
     created() {
         this.$store.commit('resetState')
-        const data = document.querySelector('es-list').data // data passed from smarty
+        const data = document.querySelector('es-list').data // data passed from smarty (ESListViewGeneric.tpl)
         this.$store.commit('setModule', data.module)
         this.$store.commit('setDefs', data.defs)
         this.$store.commit('setPreferences', data.preferences)
+        this.$store.commit('setConfig', data.config)
+        this.setInitialOptions(data)
+        
     },
+    computed: {
+        cssProps() {
+            const cssProps = {}
+            const theme = this.$store.state.config.theme
+            for (const property in theme) {
+                for (const object in theme[property]) {
+                    cssProps[`--${property}-${object}`] = theme[property][object]
+                }
+            }
+            return cssProps
+        }
+    },
+    methods: {
+        setInitialOptions(data) {
+            let itemsPerPage = data.preferences?.items_per_page || 10
+            if (!data.config.config.itemsPerPageOptions.includes(itemsPerPage)) {
+                itemsPerPage = data.config.config.itemsPerPageOptions[0]
+            }
+            this.$store.commit('setTableOptions', { itemsPerPage })
+        }
+    }
 }
 </script>
 <style lang="scss">
 @import "../node_modules/vuetify/dist/vuetify.min.css";
 @import url("https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css");
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap');
 
 // global styles
 .v-application--wrap {
     min-height: auto;
 }
 
+.v-application {
+    [class*='text-'] {
+        font-family: var(--font-body), sans-serif !important;
+    }
+    font-family: var(--font-body), sans-serif !important;
+}
+
 .v-application .v-btn {
+    font-family: var(--font-btn), sans-serif !important;
     font-size: 12px !important;
     font-weight: 700;
+
+    &.primary {
+        background-color: var(--color-btn-primary--bg);
+        color: var(--color-btn-primary--text);
+    }
+    &.v-btn--outlined {
+        background-color: var(--color-btn-secondary--bg);
+        color: var(--color-btn-secondary--text);
+        border-color: var(--color-btn-secondary--outline);
+    }
+}
+
+.v-application a {
+    text-decoration: none;
+    color: var(--color-text--link)
+}
+
+.v-application .v-list-item__title {
+    font-family: var(--font-body), sans-serif !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+}
+
+.v-application .v-input--switch {
+    .v-input--selection-controls__input {
+        margin-right: 16px;
+    }
 }
 
 .v-application .text-body-1 {
     font-size: 16px !important;
     line-height: 1.5;
     letter-spacing: .5px;
+}
+
+.v-application .v-date-picker-header__value {
+    font-size: 12px !important;
 }
 
 .error--text {
@@ -65,13 +127,7 @@ export default {
     }
 }
 
-.v-list-item__content .v-list-item__title {
-    font-family: 'Roboto', sans-serif !important;
-    font-size: 13px !important;
-}
-
 .v-select__selection {
-    font-family: 'Roboto', sans-serif !important;
     font-size: 12px !important;
     letter-spacing: .4px !important;
 }

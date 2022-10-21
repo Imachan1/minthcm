@@ -1,0 +1,24 @@
+{
+    "font": {
+        "primary": "Catamaran",
+        "secondary": "Montserrat"
+    },
+    "color": {
+        "primary--lighter": "#8796c6",
+        "primary--light": "#5e72b3",
+        "primary": "#3750A0",
+        "primary--dark": "#2c4080",
+        "primary--darker": "#213060",
+        "secondary--lighter": "#f69c8d",
+        "secondary--light": "#f37a66",
+        "secondary": "#F05A41",
+        "secondary--dark": "#c04834",
+        "secondary--darker": "#903627",
+        "light": "#FFFFFF",
+        "dark": "rgba(0, 0, 0, .87)",
+        "gray--light": "#DDDDDD",
+        "gray": "#999999",
+        "disabled": "#00000033",
+        "error": "#FF0000"
+    }
+}

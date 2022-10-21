@@ -5,24 +5,17 @@
         :items="getList(fieldDefs.options)"
         dense
         style="width: fit-content"
-        :label="label(input.label)"
+        :label="input.label"
         outlined
         hide-details
     />
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
     props: {
         input: { type: Object, required: true },
         fieldDefs: { type: Object },
-    },
-    computed: {
-        ...mapGetters({
-            label: 'getLabel'
-        })
     },
     methods: {
         getList(list) {
@@ -35,9 +28,5 @@ export default {
 </script>
 
 <style lang="scss">
-.es-list-filter-input-select {
-    .v-select__selections input {
-        display: none;
-    }
-}
+
 </style>

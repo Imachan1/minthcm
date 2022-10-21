@@ -32,7 +32,8 @@ class ESListViewGetRecords {
             $options['filters']['filter'][] = ['term' => ['meta.assigned.user_name' => $current_user->user_name]];
         }
         if (strlen($options['searchPhrase'])) {
-            $options['filters']['filter'][] = ['match' => ['_all' => $options['searchPhrase']]];
+            $searchPhrase = strtolower($options['searchPhrase']) . '*';
+            $options['filters']['filter'][] = ['wildcard' => ['_all' => $searchPhrase]];
         }
         $this->options = $options;
         $this->itemsPerPage = $itemsPerPage;

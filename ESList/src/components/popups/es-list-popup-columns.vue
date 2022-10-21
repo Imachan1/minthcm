@@ -1,46 +1,54 @@
 <template>
     <ESListPopup
-        :title="label('LBL_COLUMNS_MANAGEMENT')"
+        :title="label('LBL_ESLIST_COLUMNS_MANAGEMENT')"
         @close-popup="$emit('close-popup')"
         :style="{ minWidth: '700px' }"
     >
         <div class="es-list-columns">
             <div class="es-list-column">
-                <span v-text="label('LBL_VISIBLE_COLUMNS')" />
+                <span v-text="label('LBL_ESLIST_VISIBLE_COLUMNS')" />
                 <div
                     class="columns-container"
-                    @dragover.prevent
+                    @dragover.prevent="onVisibleColumnsDragOver"
                     @dragenter.prevent
                     @drop="onDrop($event, 'visible-columns')"
                 >
                     <div
                         v-for="col in visibleColumns"
                         :key="col.name"
-                        v-text="col.label"
-                        class="es-list-column-chip"
-                        style="background: #009976; color: white"
+                        class="es-list-column-chip visible"
+                        :class="{ 'dragged': col.name === draggedColumnName }"
                         draggable
                         @dragstart="startDrag($event, col.name)"
-                    />
+                    >
+                        <span v-text="col.label" />
+                        <v-btn @click="moveColumnToHidden(col.name)" x-small icon :color="$store.state.config.theme.color['popup-column-visible--text']">
+                            <v-icon>mdi-minus</v-icon>
+                        </v-btn>
+                    </div>
                 </div>
             </div>
             <div class="es-list-column">
-                <span v-text="label('LBL_HIDDEN_COLUMNS')" />
+                <span v-text="label('LBL_ESLIST_HIDDEN_COLUMNS')" />
                 <div
                     class="columns-container"
                     @dragover.prevent
-                    @dragenter.prevent
+                    @dragenter.prevent="onHiddenColumnsDragEnter"
                     @drop="onDrop($event, 'hidden-columns')"
                 >
                     <div
                         v-for="col in hiddenColumns"
                         :key="col.name"
-                        v-text="col.label"
                         class="es-list-column-chip"
-                        style="background: #ddd; color: black"
+                        :class="{ 'dragged': col.name === draggedColumnName }"
                         draggable
                         @dragstart="startDrag($event, col.name)"
-                    />
+                    >
+                        <span v-text="col.label" />
+                        <v-btn @click="moveColumnToVisible(col.name)" x-small icon :color="$store.state.config.theme.color['popup-column-hidden--text']">
+                            <v-icon>mdi-plus</v-icon>
+                        </v-btn>
+                    </div>
                 </div>
                 <v-text-field
                     ref="filterInput"
@@ -48,15 +56,15 @@
                     class="mt-4"
                     dense
                     outlined
-                    :label="label('LBL_FILTER')"
+                    :label="label('LBL_ESLIST_FILTER')"
                 />
             </div>
         </div>
         <v-divider class="mt-4" />
         <div class="es-list-columns-buttons mt-4">
-            <v-btn @click="$emit('close-popup')" outlined color="#009976" v-text="label('LBL_CANCEL')" />
-            <v-btn @click="setDefaultColumns" outlined color="#009976" class="ms-auto" v-text="label('LBL_DEFAULT')" />
-            <v-btn @click="applyColumns" dark color="#009976" v-text="label('LBL_SAVE')" />
+            <v-btn @click="$emit('close-popup')" outlined v-text="label('LBL_ESLIST_CANCEL')" />
+            <v-btn @click="setDefaultColumns" outlined class="ms-auto" v-text="label('LBL_ESLIST_DEFAULT')" />
+            <v-btn @click="applyColumns" color="primary" v-text="label('LBL_ESLIST_SAVE')" />
         </div>
     </ESListPopup>
 </template>
@@ -67,12 +75,11 @@ import { standardizeText } from '../../helpers'
 import ESListPopup from './es-list-popup'
 
 export default {
-    components: {
-        ESListPopup
-    },
+    components: { ESListPopup },
     data: () => ({
         visibleColumns: [],
         columnsSearchPhrase: '',
+        draggedColumnName: null,
     }),
     computed: {
         ...mapGetters({
@@ -93,16 +100,37 @@ export default {
         this.$refs.filterInput.focus()
     },
     methods: {
+        onVisibleColumnsDragOver(e) {
+            this.moveColumnToVisible(this.draggedColumnName)
+            if (e.path[0] && e.path[0].classList.contains('es-list-column-chip') && !e.path[0].classList.contains('dragged')) {
+                this.moveColumnToHidden(this.draggedColumnName)
+                const index = [...e.path[0].parentNode.children].indexOf(e.path[0])
+                this.visibleColumns.splice(index, 0, this.allColumns.find(c => c.name === this.draggedColumnName))
+            }
+        },
+        onHiddenColumnsDragEnter() {
+            this.moveColumnToHidden(this.draggedColumnName)
+        },
         startDrag(e, colName) {
             e.dataTransfer.dropEffect = 'move'
             e.dataTransfer.effectAllowed = 'move'
             e.dataTransfer.setData('colName', colName)
+            this.draggedColumnName = colName
         },
         onDrop(e, list) {
+            this.draggedColumnName = null
             const colName = e.dataTransfer.getData('colName')
             if (list === 'hidden-columns') {
-                this.visibleColumns = this.visibleColumns.filter(c => c.name !== colName)
-            } else if (list === 'visible-columns' && !this.visibleColumns.find(c => c.name === colName)) {
+                this.moveColumnToHidden(colName)
+            } else if (list === 'visible-columns') {
+                this.moveColumnToVisible(colName)
+            }
+        },
+        moveColumnToHidden(colName) {
+            this.visibleColumns = this.visibleColumns.filter(c => c.name !== colName)
+        },
+        moveColumnToVisible(colName) {
+            if (!this.visibleColumns.find(c => c.name === colName)) {
                 this.visibleColumns.push(this.allColumns.find(c => c.name === colName))
             }
         },
@@ -132,13 +160,30 @@ export default {
     }
 }
 .es-list-column-chip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-radius: 100px;
-    background: #ddd;
-    padding: 4px 16px;
+    background: var(--color-popup-column-hidden--bg);
+    color: var(--color-popup-column-hidden--text);
+    padding: 4px 12px 4px 16px;
     cursor: grab;
     user-select: none;
     box-shadow: 0 1px 3px #0003;
     transform: translate(0, 0); /* trick to get rid of white corners during drag */
+    opacity: .92;
+    transition: opacity 200ms;
+
+    &:hover {
+        opacity: 1;
+    }
+    &.visible {
+        background: var(--color-popup-column-visible--bg);
+        color: var(--color-popup-column-visible--text);
+    }
+    &.dragged {
+        opacity: .5;
+    }
 }
 .columns-container {
     border: thin solid #0003;
@@ -150,6 +195,15 @@ export default {
     box-shadow: 0 2px 6px #0003;
     height: 350px;
     overflow: auto;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+        height: 8px;
+        background: var(--color-scroll--bg);
+    }
+    &::-webkit-scrollbar-thumb {
+        background: var(--color-scroll--fg);
+    }
 }
 .es-list-columns-buttons {
     display: flex;

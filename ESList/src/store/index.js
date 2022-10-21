@@ -1,11 +1,13 @@
 import Vuex from 'vuex'
 import axios from 'axios'
+import he from 'he'
 
 const getDefaultState = () => ({
     url: 'index.php?action=ESList',
     module: '',
     defs: { columns: {}, search: {} }, // defs from eslistsviewdefs.php
     preferences: {},
+    config: {},
     isLoading: false,
     tableOptions: {}, // v-data-table options (synced)
     data: { total: 0, results: [] },
@@ -13,6 +15,7 @@ const getDefaultState = () => ({
     myObjects: false,
     searchPhrase: '',
     filters: { filter: [], must_not: [] },
+    getDataAbortController: new AbortController() // used to cancel getData request
 })
 
 export default new Vuex.Store({
@@ -29,6 +32,9 @@ export default new Vuex.Store({
         },
         setPreferences(state, preferences) {
             state.preferences = preferences || {}
+        },
+        setConfig(state, config) {
+            state.config = config
         },
         setSearchPhrase(state, searchPhrase) {
             state.searchPhrase = searchPhrase
@@ -62,6 +68,7 @@ export default new Vuex.Store({
                 ...state.tableOptions,
                 ...options,
             }
+            state.preferences.items_per_page = options.itemsPerPage
         },
         setOffset(state, offset) {
             if (state.tableOptions.page === 1) {
@@ -93,34 +100,61 @@ export default new Vuex.Store({
                 }
             }
         },
+        deleteSavedFilter(state, filterName) {
+            state.preferences = {
+                ...state.preferences,
+                saved_filters: state.preferences.saved_filters.filter(f => f.name !== filterName)
+            }
+        },
+        cancelGetDataRequest(state) {
+            state.getDataAbortController.abort()
+            state.getDataAbortController = new AbortController()
+        },
     },
     actions: {
         async callController({ state }, data) {
             try {
-                const result = await axios.post(state.url, { module: state.module, ...data })
+                const result = await axios.post(state.url, { module: state.module, ...data }, { signal: state.getDataAbortController.signal })
                 return result.data
             } catch (err) {
-                console.error(err)
-                return false
+                return { err }
             }
         },
         async getData({ getters, commit, dispatch }) {
+            commit('cancelGetDataRequest')
             commit('setIsLoading', true)
+            const startTime = new Date().getTime()
             const data = await dispatch('callController', {
                 function_name: 'getResults',
                 ...getters.params,
             })
-            if (data) {
+            const requestTime = new Date().getTime() - startTime // ms
+            if (data.err?.code === 'ERR_CANCELED') {
+                return // do nothing on cancel request
+            }
+            if (data && !data.err) {
                 const { results, total, offset } = data
                 commit('setData', { results, total })
                 commit('setOffset', offset)
             }
-            commit('setIsLoading', false)
+            const loadingAnimationCycle = 1100 // ms
+            if (requestTime >= loadingAnimationCycle) {
+                commit('setIsLoading', false)
+            } else {
+                // if request is faster than one cycle of animation, force one full cycle of loading animation
+                setTimeout(() => { commit('setIsLoading', false) }, loadingAnimationCycle - requestTime)
+            }
         },
         async savePreferences({ state, dispatch }) {
             await dispatch('callController', {
                 function_name: 'savePreferences',
                 preferences: state.preferences,
+            })
+        },
+        async deleteRecord({ dispatch }, id) {
+            await dispatch('callController', {
+                function_name: 'deleteRecord',
+                record_id: id,
             })
         },
         openDetailViewInNewTab({ state }, { recordId, module }) {
@@ -151,11 +185,11 @@ export default new Vuex.Store({
         }),
         allColumns(state) {
             return Object.values(state.defs.columns)
-                .sort((a, b) => a.label.localeCompare(b.label, 'pl'))
+                .sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
         },
         filterableFields(state) {
             return Object.values(state.defs.search)
-                .sort((a, b) => a.label.localeCompare(b.label, 'pl'))
+                .sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
         },
         visibleColumns(state) {
             if (state.preferences.columns && state.preferences.columns.length) {
@@ -179,7 +213,7 @@ export default new Vuex.Store({
             }))
             headers.push({
                 value: 'actions',
-                text: getters.getLabel('LBL_ACTIONS'),
+                text: getters.getLabel('LBL_ESLIST_ACTIONS'),
                 sortable: false,
                 align: 'end'
             })
@@ -206,12 +240,33 @@ export default new Vuex.Store({
                     options: getters.getOptionsLabels(col.options)
                 }))
         },
+        dates(state) {
+            return Object.values(state.defs.columns)
+                .filter(col => ['date', 'datetime', 'datetimecombo'].includes(col.type))
+                .map(col => col.name)
+        },
         customFields(state, getters) {
             return {
                 links: getters.links,
                 booleans: getters.booleans,
                 lists: getters.lists,
+                dates: getters.dates,
             }
         },
+        parsedResults(state) {
+            const results = []
+            if (state.data?.results?.length) {
+                state.data.results.forEach(result => {
+                    const item = { ...result }
+                    for (const col in item) {
+                        if (typeof item[col] === 'string') {
+                            item[col] = he.decode(item[col])
+                        }
+                    }
+                    results.push(item)
+                })
+            }
+            return results
+        }
     }
 })

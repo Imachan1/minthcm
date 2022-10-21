@@ -1,21 +1,21 @@
 <template>
     <ESListPopup
-        :title="label('LBL_SAVE_FILTER')"
+        :title="label('LBL_ESLIST_SAVE_FILTER')"
         @close-popup="$emit('close-popup')"
         :style="{ minWidth: '350px' }"
     >
         <v-text-field
             ref="input"
             v-model="filterName"
-            :label="label('LBL_FILTER_NAME')"
+            :label="label('LBL_ESLIST_FILTER_NAME')"
             outlined
             dense
             :error-messages="errorMsg"
         />
         <v-divider class="mt-4" />
         <div class="es-list-popup-save-filter-buttons mt-4">
-            <v-btn @click="$emit('close-popup')" outlined color="#009976" v-text="label('LBL_CANCEL')" />
-            <v-btn @click="save" dark color="#009976" v-text="label('LBL_SAVE')" />
+            <v-btn @click="$emit('close-popup')" outlined v-text="label('LBL_ESLIST_CANCEL')" />
+            <v-btn @click="save" color="primary" v-text="label('LBL_ESLIST_SAVE')" />
         </div>
     </ESListPopup>
 </template>
@@ -26,10 +26,15 @@ import ESListPopup from './es-list-popup'
 
 export default {
     components: { ESListPopup },
-    data: () => ({
-        filterName: '',
-        errorMsg: '',
-    }),
+    props: {
+        initialFilterName: { type: String }
+    },
+    data() {
+        return {
+            filterName: this.initialFilterName,
+            errorMsg: '',
+        }
+    },
     computed: {
         ...mapGetters({
             label: 'getLabel'
@@ -48,7 +53,7 @@ export default {
             this.errorMsg = ''
             let valid = true
             if (!this.filterName?.trim()) {
-                this.errorMsg = this.label('LBL_REQUIRED_FIELD_ERROR')
+                this.errorMsg = this.label('LBL_ESLIST_REQUIRED_FIELD_ERROR')
                 valid = false
             }
             return valid

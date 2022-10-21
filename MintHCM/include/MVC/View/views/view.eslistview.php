@@ -77,6 +77,7 @@ class ViewEslistView extends SugarView
         } else {
             $this->prepareESListView();
             $this->ss = new Sugar_Smarty();
+            $this->ss->assign('config', $this->prepareConfig());
             $this->ss->assign('defs', $this->prepareDefs());
             $this->ss->assign('module', $this->bean->module_name);
             $this->ss->assign('preferences', $this->prepareUserPreferences());
@@ -101,6 +102,22 @@ class ViewEslistView extends SugarView
         $this->eslistmap = $eslistmap;
         $mappings = json_decode(file_get_contents('http://10.8.0.103:9205/ecc3aab136efd8f791a90c11b95afad8_shared/_mappings/' . $this->bean->module_name), true);
         $this->mappings = array_values($mappings)[0]['mappings'][$this->bean->module_name]['properties'];
+    }
+
+    protected function prepareConfig()
+    {
+        $config = json_decode(file_get_contents('include/ESListView/config-mint/eslist.config.json'), true);
+        $variables = json_decode(file_get_contents('include/ESListView/config-mint/eslist.variables.json'), true);
+        $theme = json_decode(file_get_contents('include/ESListView/config-mint/eslist.theme.json'), true);
+        foreach ($theme as $property => $objects) {
+            foreach ($objects as $object => $value) {
+                $theme[$property][$object] = $variables[$property][$value];
+            }
+        }
+        return json_encode([
+            'config' => $config,
+            'theme' => $theme,
+        ]);
     }
 
     protected function prepareDefs()

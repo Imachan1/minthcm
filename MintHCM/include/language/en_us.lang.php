@@ -4213,8 +4213,13 @@ $app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed';
 
 // ESList (todo: dac do osobnego pliku en/pl i nazwy LBL_ESLIST_...)
 $app_strings['LBL_SAVE_FILTER'] = 'Zapisz filtry';
-$app_strings['LBL_FILTER_NAME'] = 'Nazwa filtru';
+$app_strings['LBL_FILTER_NAME'] = 'Nazwa filtrów';
 $app_strings['LBL_SAVED_FILTERS'] = 'Zapisane filtry';
+$app_strings['LBL_SAVED_FILTERS_NO_DATA'] = 'Brak zapisanych filtrów';
+$app_strings['LBL_DELETE_FILTER_CONFIRM_BODY'] = 'Czy napewno chcesz usunąć filtr:';
+$app_strings['LBL_DELETE_RECORD_CONFIRM_BODY'] = 'Czy napewno chcesz usunąć rekord:';
+$app_strings['LBL_POPUP_CONFIRM_DEFAULT_TITLE'] = 'Potwierdź akcję';
+$app_strings['LBL_TABLE_NO_DATA'] = 'Brak rekordów spełniających podane kryteria';
 $app_strings['LBL_ADD_FILTER'] = 'Dodaj filtr';
 $app_strings['LBL_COLUMNS'] = 'Kolumny';
 $app_strings['LBL_MY_OBJECTS'] = 'Tylko moje obiekty';
@@ -4254,3 +4259,4 @@ $app_strings['LBL_VALUE_FROM'] = 'Od';
 $app_strings['LBL_VALUE_TO'] = 'Do';
 $app_strings['LBL_DEFAULT'] = 'Przywróć domyślne';
 $app_strings['LBL_SAVE'] = 'Zapisz';
+$app_strings['LBL_TEXT'] = 'Tekst';

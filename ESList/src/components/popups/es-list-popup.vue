@@ -56,6 +56,7 @@ export default {
     justify-content: space-between;
 }
 .es-list-popup-title {
+    font-family: var(--font-popup-title);
     font-size: 18px;
     font-weight: 700;
 }

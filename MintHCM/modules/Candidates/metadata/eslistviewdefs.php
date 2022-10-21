@@ -18,18 +18,10 @@ $ESListViewDefs[$module_name] = array(
             ),
             'width' => '10%',
         ),
-        'EMAIL1' => array(
-            'width' => '15%',
-            'label' => 'LBL_EMAIL_ADDRESS',
-            'sortable' => false,
-            'link' => true,
-            'customCode' => '{$EMAIL1_LINK}',
-            'default' => true,
-        ),
         'PHONE_MOBILE' => array(
             'label' => 'LBL_MOBILE_PHONE',
             'width' => '10%',
-            'default' => false,
+            'default' => true,
         ),
         'RECR_CONTACT_AGREE' => array(
             'width' => '5%',
@@ -79,14 +71,6 @@ $ESListViewDefs[$module_name] = array(
             'id' => 'ASSIGNED_USER_ID',
             'width' => '10%',
             'default' => true,
-        ),
-        'EMPLOYEE_NAME' => array(
-            'width' => '9%',
-            'label' => 'LBL_EMPLOYEE_NAME',
-            'module' => 'Employees',
-            'id' => 'EMPLOYEE_ID',
-            'default' => true,
-            'link' => true
         ),
         'SKYPE' => array(
             'label' => 'LBL_SKYPE',
@@ -165,31 +149,24 @@ $ESListViewDefs[$module_name] = array(
     'search' => [
         'last_time_contact' => [
             'type' => 'date',
-            'key' => 'last_time_contact',
         ],
         'date_planned_contact' => [
             'type' => 'date',
-            'key' => 'date_planned_contact',
         ],
         'phone_mobile' => [
             'type' => 'text',
-            'key' => 'phone.mobile',
         ],
         'potential' => [
             'type' => 'enum',
-            'key' => 'potential.keyword',
         ],
         'birthdate' => [
             'type' => 'date',
-            'key' => 'birthdate',
         ],
         'relocation' => [
             'type' => 'bool',
-            'key' => 'relocation'
         ],
         'date_entered' => [
             'type' => 'date',
-            'key' => 'meta.created.date',
         ],
     ]
 );
