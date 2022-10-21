@@ -5,7 +5,7 @@ export default {
             { type: 'text', label: 'LBL_ESLIST_TEXT' }
         ],
         filters: [
-            { op: 'match', value: '{0}' }
+            { op: 'match', value: { query: '{0}', operator: 'and' } }
         ]
     },
     search_not: {
@@ -15,7 +15,7 @@ export default {
             { type: 'text', label: 'LBL_ESLIST_TEXT' }
         ],
         filters: [
-            { op: 'match', value: '{0}' }
+            { op: 'match', value: { query: '{0}', operator: 'and' } }
         ]
     }
 }
