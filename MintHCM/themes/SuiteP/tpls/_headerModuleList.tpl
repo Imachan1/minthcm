@@ -870,9 +870,9 @@
                                                                                                                 <ul class="nav nav-pills nav-stacked">
                                                                                                                     {foreach from=$favoriteRecords item=item name=lastViewed}
                                                                                                                         <!-- MintHCM #100495 START -->
-                                                                                                                        <!--
+                                                                                                                        {*}
                                                                                                                         {if $smarty.foreach.lastViewed.index < 5}
-                                                                                                                        -->
+                                                                                                                        *}
                                                                                                                         {if $smarty.foreach.lastViewed.index < 10}
                                                                                                                         <!-- MintHCM #100495 END -->
                                                                                                                             <div class="recently_viewed_link_container_sidebar">
