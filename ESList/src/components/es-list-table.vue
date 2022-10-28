@@ -35,9 +35,14 @@
         >
             <template v-slot:item.actions="{item}">
                 <div class="d-flex justify-end" style="gap: 8px">
-                    <v-icon v-if="item.acl_access.edit" @click="openEditViewInNewTab({ recordId: item.id })" :color="$store.state.config.theme.color['action-icon']" small>mdi-pencil</v-icon>
-                    <v-icon v-if="item.acl_access.view" @click="openDetailViewInNewTab({ recordId: item.id })" :color="$store.state.config.theme.color['action-icon']" small>mdi-eye</v-icon>
-                    <v-icon v-if="item.acl_access.delete" @click="openDeleteConfirmationPopup({ id: item.id, name: item.name })" :color="$store.state.config.theme.color['action-icon']" small>mdi-delete</v-icon>
+                    <v-icon
+                        v-for="action in getItemActions(item)"
+                        @click="action.onClick(item)"
+                        :color="$store.state.config.theme.color['action-icon']"
+                        small
+                    >
+                        {{ action.icon }}
+                    </v-icon>
                 </div>
             </template>
             <template v-for="link in customFields.links" v-slot:[`item.${link.nameField}`]="{item}">
@@ -69,10 +74,26 @@ import ESListPopupConfirm from './popups/es-list-popup-confirm'
 
 export default {
     components: { ESListPopupConfirm },
-    data: () => ({
-        selected: [],
-        deleteConfirmationPopupData: null,
-    }),
+    data() {
+        return {
+            selected: [],
+            deleteConfirmationPopupData: null,
+            coreActions: {
+                edit: {
+                    icon: 'mdi-pencil',
+                    onClick: (item) => this.openEditViewInNewTab({ recordId: item.id }),
+                },
+                view: {
+                    icon: 'mdi-eye',
+                    onClick: (item) => this.openDetailViewInNewTab({ recordId: item.id }),
+                },
+                delete: {
+                    icon: 'mdi-delete',
+                    onClick: (item) => this.openDeleteConfirmationPopup({ id: item.id, name: item.name }),
+                }
+            }
+        }
+    },
     computed: {
         ...mapState({
             data: (state) => state.data,
@@ -83,7 +104,8 @@ export default {
             },
             module: (state) => state.module,
             columnsDefs: (state) => state.defs.columns,
-            isLoading: (state) => state.isLoading
+            isLoading: (state) => state.isLoading,
+            actions: (state) => state.config.config.actions
         }),
         ...mapGetters({
             headers: 'headers',
@@ -126,6 +148,19 @@ export default {
                 return window.moment(date, 'YYYY-MM-DD HH:mm:ss').format(window.viewTools.date.getDateTimeFormat())
             }
             return ''
+        },
+        getItemActions(item) {
+            return this.actions
+                .filter(action => typeof action !== 'string' || item.acl_access[action])
+                .map(action => {
+                    if (typeof action === 'string') {
+                        return this.coreActions[action]
+                    }
+                    return {
+                        ...action,
+                        onClick: (item) => eval(action.onClick)(item)
+                    }
+                })
         }
     },
     watch: {
