@@ -139,7 +139,13 @@ array (
             'name' => 'name',
             'label' => 'LBL_SUBJECT',
           ),
-          1 => 'status',
+          1 =>
+        //MintHCM #102684 START
+            array(
+                'name' => 'status',
+                'type' => 'ColoredEnum',
+            ),
+        //MintHCM #102684 END
         ),
         1 => 
         array (

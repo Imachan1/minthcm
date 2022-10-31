@@ -141,7 +141,12 @@ $viewdefs[$module_name]['DetailView'] = array(
             'name',
          ),
          array(
-            'status',
+            //MintHCM #102684 START
+            array(
+                'name' => 'status',
+                'type' => 'ColoredEnum',
+            ),
+            //MintHCM #102684 END
             'to_decision',
          ),
          array(

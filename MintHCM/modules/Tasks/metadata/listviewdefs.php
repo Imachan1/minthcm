@@ -107,7 +107,11 @@ $listViewDefs['Tasks'] = array(
         'width' => '10', 
         'label' => 'LBL_LIST_STATUS', 
         'link' => false,
-        'default' => false),
+        'default' => false,
+    //MintHCM #102684 START
+        'type' => 'ColoredEnum',  
+    ),
+    //MintHCM #102684 END
 	'DATE_ENTERED' => array (
 	    'width' => '10',
 	    'label' => 'LBL_DATE_ENTERED',
