@@ -42,8 +42,7 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-if (!defined('sugarEntry') || !sugarEntry) {
+if ( !defined('sugarEntry') || !sugarEntry ) {
    die('Not A Valid Entry Point');
 }
 
@@ -93,7 +92,6 @@ class ElasticSearchEngine extends SearchEngine
       $results = $this->parseHits($hits);
       $end = microtime(true);
       $searchTime = ($end - $start);
-
       return new SearchResults($results, true, $searchTime, $hits['hits']['total']);
    }
 
@@ -153,20 +151,20 @@ class ElasticSearchEngine extends SearchEngine
          $params = $this->addSorting($params, $query->getOptions()['sorting']);
          $params = $this->addFilters($params, $query->getOptions()['filters']);
       } else {
-         $params = [
-            'index' => $this->index,
-            'body' => [
-               'stored_fields' => [],
-               'from' => $query->getFrom(),
-               'size' => $query->getSize(),
-               'query' => [
-                  'query_string' => [
-                     'query' => $query->getSearchString(),
+      $params = [
+         'index' => $this->index,
+         'body' => [
+            'stored_fields' => [],
+            'from' => $query->getFrom(),
+            'size' => $query->getSize(),
+            'query' => [
+               'query_string' => [
+                  'query' => $query->getSearchString(),
                      'fields' => ['name.*^5', '_all'],
-                     'analyzer' => 'standard',
-                     'default_operator' => 'OR',
-                     'minimum_should_match' => '66%',
-                  ],
+                  'analyzer' => 'standard',
+                  'default_operator' => 'OR',
+                  'minimum_should_match' => '66%',
+               ],
                ]
             ]
          ];
@@ -203,7 +201,7 @@ class ElasticSearchEngine extends SearchEngine
             $column ? $column : '_score' => [
                'order' => $direction ? $direction : 'asc'
             ]
-         ];
+      ];
          $params['body']['sort'] = $parsedData;
       }
 

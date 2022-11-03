@@ -1212,7 +1212,8 @@ class SugarController
         }
         $action = $data['function_name'];
         if (method_exists($object, $action)) {
-            return json_encode($object->$action($data));
+            echo json_encode($object->$action($data));
+            exit;
         } else {
             sugar_die('Class does not have function: '.$class_name.'->'.$action);
         }

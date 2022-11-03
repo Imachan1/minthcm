@@ -4,12 +4,14 @@ use SuiteCRM\Search\SearchQuery;
 use SuiteCRM\Search\SearchWrapper;
 use SuiteCRM\Search\UI\SearchThrowableHandler;
 use MassUpdate;
+use SuiteCRM\Search\ElasticSearch\ElasticSearchIndexer;
 
 require_once 'include/ESListView/ESListViewGetRecords.php';
+require_once 'lib/Search/ElasticSearch/ElasticSearchIndexer.php';
 
 class ESListViewController {
 
-    protected $bean, $query, $per_page, $page, $engine, $options;
+    protected $bean, $query, $per_page, $page, $engine, $options, $metadata;
 
     public function __construct($bean) {
         $this->bean = $bean;
@@ -30,19 +32,24 @@ class ESListViewController {
     }
 
     public function getResults($options) {
-        $get_records = new ESListViewGetRecords($options['module'], $options['itemsPerPage'], $options['offset'], $options['page'], $options['sortBy'], $options['sortOrder'], [
+        $this->loadMetadataFile($options['module']);
+        $module_name = $this->metadata['es_module'] ?? $options['module'];
+        $get_records = new ESListViewGetRecords($module_name, $options['itemsPerPage'], $options['offset'], $options['page'], $options['sortBy'], $options['sortOrder'], [
             'myObjects' => $options['myObjects'],
             'searchPhrase' => $options['searchPhrase'] ?? '',
+            'defaultFilters' => !empty($this->metadata['query']) ? $this->metadata['query'] : null,
             'filters' => $options['filters'] ?? [],
         ]);
         try {
             list($total, $offset, $results) = $get_records->get();
-            echo json_encode(['total' => $total,'offset' => $offset,'results' => $results]);
-            exit;
+            $this->updatePreferences($options);
+            return ['total' => $total,'offset' => $offset,'results' => $results];
         } catch (Exception $exception) {
-            $this->handleThrowable($exception, $query);
+            $GLOBALS['log']->fatal($exception->getMessage());
+            return false;
         } catch (Throwable $throwable) {
-            $this->handleThrowable($throwable, $query);
+            $GLOBALS['log']->fatal($throwable->getMessage());
+            return false;
         }
     }
 
@@ -58,9 +65,56 @@ class ESListViewController {
         if (!empty($preferences) && is_array($preferences) && !empty($module)) {
             (new UserPreference($current_user))->setPreference($module, $preferences, 'eslist');
         }
+        return true;
     }
 
     public function updatePreferences($data) {
-        
+        if (empty($data['module']) || empty($data['itemsPerPage'])) {
+            return false;
+        }
+        global $current_user;
+        $preferences = (new UserPreference($current_user))->getPreference($data['module'], 'eslist');
+        if (
+            empty($preferences['items_per_page'])
+            || $data['itemsPerPage'] != $preferences['items_per_page']
+        ) {
+            $preferences['items_per_page'] = $data['itemsPerPage'];
+            $this->savePreferences([
+                'module' => $data['module'],
+                'preferences' => $preferences,
+            ]);
+        }
+    }
+
+    public function deleteRecord($data) {
+        if (empty($data['module']) || empty($data['record_id'])) {
+            return false;
+        }
+        $this->loadMetadataFile($data['module']);
+        $module_name = $this->metadata['es_module'] ?? $data['module'];
+        $bean = BeanFactory::getBean($module_name, $data['record_id']);
+        if (empty($bean->id) || !$bean->ACLAccess('delete')) {
+            return false;
+        }
+        $bean->mark_deleted($data['record_id']);
+        return true;
+    }
+
+    protected function loadMetadataFile($module) {
+        if (!empty($this->metadata)) {
+            return;
+        }
+        $metadata_file = null;
+        $defs_path = 'modules/' . $module . '/metadata/eslistviewdefs.php';
+        if (file_exists('custom/' . $defs_path)) {
+            $metadata_file = 'custom/' . $defs_path;
+        } else if (file_exists($defs_path)) {
+            $metadata_file = $defs_path;
+        }
+        if (!$metadata_file) {
+            return;
+        }
+        require_once $metadata_file;
+        $this->metadata = $ESListViewDefs[$module];
     }
 }

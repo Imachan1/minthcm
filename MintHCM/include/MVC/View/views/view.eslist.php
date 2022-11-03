@@ -43,7 +43,7 @@
  */
 require_once('include/MVC/View/SugarView.php');
 
-class ViewEslistView extends SugarView
+class ViewESList extends SugarView
 {
     /**
      * @var string $type
@@ -87,6 +87,7 @@ class ViewEslistView extends SugarView
 
     protected function prepareESListView()
     {
+        global $sugar_config;
         if (!isset($this->bean->module_name)) {
             LoggerManager::getLogger()->fatal('Undefined module for eslist view');
             return false;
@@ -100,15 +101,24 @@ class ViewEslistView extends SugarView
 
         require('include/ESListView/eslist.map.php');
         $this->eslistmap = $eslistmap;
-        $mappings = json_decode(file_get_contents('http://10.8.0.103:9205/ecc3aab136efd8f791a90c11b95afad8_shared/_mappings/' . $this->bean->module_name), true);
-        $this->mappings = array_values($mappings)[0]['mappings'][$this->bean->module_name]['properties'];
+
+        $host = $sugar_config['search']['ElasticSearch']['host'];
+        $index = $sugar_config['unique_key'] . '_shared';
+        $es_module = $ESListViewDefs[$this->module]['es_module'] ?? $this->module;
+        $mappings = json_decode(file_get_contents("{$host}/{$index}/_mappings/{$es_module}"), true);
+        $this->mappings = array_values($mappings)[0]['mappings'][$es_module];
     }
 
     protected function prepareConfig()
     {
-        $config = json_decode(file_get_contents('include/ESListView/config-mint/eslist.config.json'), true);
-        $variables = json_decode(file_get_contents('include/ESListView/config-mint/eslist.variables.json'), true);
-        $theme = json_decode(file_get_contents('include/ESListView/config-mint/eslist.theme.json'), true);
+        $config = json_decode(file_get_contents('include/ESListView/config/eslist.config.json'), true);
+        $variables = json_decode(file_get_contents('include/ESListView/config/eslist.variables.json'), true);
+        $theme = json_decode(file_get_contents('include/ESListView/config/eslist.theme.json'), true);
+
+        if (isset($this->ESListViewDefs[$this->module]['actions'])) {
+            $config['actions'] = $this->ESListViewDefs[$this->module]['actions'] ?? [];
+        }
+
         foreach ($theme as $property => $objects) {
             foreach ($objects as $object => $value) {
                 $theme[$property][$object] = $variables[$property][$value];
@@ -130,7 +140,7 @@ class ViewEslistView extends SugarView
 
     protected function prepareColumnsDefs()
     {
-        global $mod_strings;
+        global $mod_strings, $app_strings;
         $columns = $this->ESListViewDefs[$this->module]['columns'];
         if (empty($columns)) {
             LoggerManager::getLogger()->fatal('Columns for ESList View are not defined');
@@ -138,51 +148,63 @@ class ViewEslistView extends SugarView
         }
         $columns = array_change_key_case($columns, CASE_LOWER);
         foreach ($columns as $field => $defs) {
-            $columns[$field]['name'] = $defs['name'] ?? $field;
-            $columns[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field];
-            if (empty($columns[$field]['key'])) {
-                $columns[$field]['key'] = $field;
-                if ($this->mappings[$field] && !in_array($this->mappings[$field]['type'], ['date', 'boolean'])) {
-                    $columns[$field]['key'] .= '.keyword';
-                }
-            }
             if (empty($this->bean->field_name_map[$field])) {
+                $GLOBALS['log']->fatal('[ESListView] prepareColumnsDefs: brak definicji pola ' . $field);
+                unset($columns[$field]);
                 continue;
             }
             $field_defs = $this->bean->field_name_map[$field];
+            if (
+                !empty($field_defs['has_access']['function'])
+                && function_exists($field_defs['has_access']['function'])
+                && !$field_defs['has_access']['function']()
+            ) {
+                unset($columns[$field]);
+                continue;
+            }
+            $columns[$field]['name'] = $defs['name'] ?? $field;
+            $columns[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field] ?? $field;
+            $fieldProps = $this->getMappedFieldProps($columns[$field]['key']);
+            if (!empty($fieldProps) && $fieldProps['type'] === 'text') {
+                $columns[$field]['key'] .= '.keyword';
+            }
             $columns[$field]['type'] = $defs['type'] ?? $field_defs['type'];
             $columns[$field]['options'] = $field_defs['options'];
             $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
-            $columns[$field]['label'] = $mod_strings[$label] ?? $label;
+            $columns[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
         }
         return $columns;
     }
 
     protected function prepareSearchDefs()
     {
-        global $mod_strings;
+        global $mod_strings, $app_strings;
         $search = $this->ESListViewDefs[$this->module]['search'];
         if (empty($search)) {
             return false;
         }
         $search = array_change_key_case($search, CASE_LOWER);
         foreach ($search as $field => $defs) {
-            $search[$field]['name'] = $defs['name'] ?? $field;
-            $search[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field];
-            if (empty($search[$field]['key'])) {
-                $search[$field]['key'] = $field;
-                if ($this->mappings[$field] && !in_array($this->mappings[$field]['type'], ['date', 'boolean'])) {
-                    $search[$field]['key'] .= '.keyword';
-                }
-            }
             if (empty($this->bean->field_name_map[$field])) {
+                $GLOBALS['log']->fatal('[ESListView] prepareSearchDefs: brak definicji pola ' . $field);
+                unset($search[$field]);
                 continue;
             }
             $field_defs = $this->bean->field_name_map[$field];
+            if (
+                !empty($field_defs['has_access']['function'])
+                && function_exists($field_defs['has_access']['function'])
+                && !$field_defs['has_access']['function']()
+            ) {
+                unset($search[$field]);
+                continue;
+            }
+            $search[$field]['name'] = $defs['name'] ?? $field;
+            $search[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field] ?? $field;
             $search[$field]['type'] = $defs['type'] ?? $field_defs['type'];
             $search[$field]['options'] = $field_defs['options'];
             $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
-            $search[$field]['label'] = $mod_strings[$label] ?? $label;
+            $search[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
         }
         return $search;
     }
@@ -210,5 +232,28 @@ class ViewEslistView extends SugarView
         }
         $GLOBALS['log']->fatal("ESList TPL file does not exist");
         return '';
+    }
+
+    protected function getMappedFieldProps($key) {
+        if (empty($this->mappings) || empty($key)) {
+            return null;
+        }
+        $nestedProps = explode('.', $key);
+        $fieldProps = $this->mappings;
+        foreach ($nestedProps as $prop) {
+            if (empty($fieldProps['properties'][$prop])) {
+                return null;
+            }
+            $fieldProps = $fieldProps['properties'][$prop];
+        }
+        return $fieldProps;
+    }
+
+    protected function prepareLabel($label) {
+        $label = trim($label);
+        if (in_array(substr($label, -1), [':', '.'])) {
+            $label = substr($label, 0, -1);
+        }
+        return $label;
     }
 }

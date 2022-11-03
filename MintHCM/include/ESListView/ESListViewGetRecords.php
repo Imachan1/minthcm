@@ -32,8 +32,15 @@ class ESListViewGetRecords {
             $options['filters']['filter'][] = ['term' => ['meta.assigned.user_name' => $current_user->user_name]];
         }
         if (strlen($options['searchPhrase'])) {
-            $searchPhrase = strtolower($options['searchPhrase']) . '*';
+            $searchPhrase = str_replace('+', '', $options['searchPhrase']);
+            $searchPhrase = strtolower($searchPhrase) . '*';
             $options['filters']['filter'][] = ['wildcard' => ['_all' => $searchPhrase]];
+        }
+        if (!empty($arguments['defaultFilters']['filter'])) {
+            array_push($options['filters']['filter'], ...$arguments['defaultFilters']['filter']);
+        }
+        if (!empty($arguments['defaultFilters']['must_not'])) {
+            array_push($options['filters']['must_not'], ...$arguments['defaultFilters']['must_not']);
         }
         $this->options = $options;
         $this->itemsPerPage = $itemsPerPage;

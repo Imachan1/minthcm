@@ -275,7 +275,12 @@ class ElasticSearchIndexer extends AbstractIndexer {
    /** @inheritdoc */
    public function indexBean(SugarBean $bean) {
       $this->logger->debug("Indexing {$bean->module_name}($bean->name)");
-
+      // minthcm start (todo: refactor)
+      $beans = $bean->get_full_list('', " {$bean->table_name}.id = '{$bean->id}'");
+      if (!empty($beans[0]->id)) {
+         $bean = $beans[0];
+      }
+      // minthcm end
       $args = $this->makeIndexParamsFromBean($bean);
 
       $this->client->index($args);

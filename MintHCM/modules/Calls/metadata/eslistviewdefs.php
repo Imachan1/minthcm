@@ -4,90 +4,40 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 $module_name = 'Calls';
-$ESListViewDefs[$module_name] = array(
-    'columns' => array(
-        'NAME' => array(
-            'width' => '40%',
-            'label' => 'LBL_LIST_SUBJECT',
+$ESListViewDefs[$module_name] = [
+    'columns' => [
+        'name' => [
             'link' => true,
-            'default' => true,
-        ),
-        'DIRECTION' => array(
-            'width' => '10%',
-            'label' => 'LBL_LIST_DIRECTION',
-            'link' => false,
-            'default' => true,
-        ),
-        'PARENT_NAME' => array(
-            'width' => '20%',
-            'label' => 'LBL_LIST_RELATED_TO',
-            'dynamic_module' => 'PARENT_TYPE',
-            'id' => 'PARENT_ID',
-            'link' => true,
-            'default' => true,
-            'sortable' => false,
-            'ACLTag' => 'PARENT',
-            'related_fields' => array(
-                'parent_id',
-                'parent_type',
-            ),
-        ),
-        'DATE_START' => array(
-            'width' => '15%',
-            'label' => 'LBL_LIST_DATE',
-            'link' => false,
-            'default' => true,
-            'related_fields' => array(
-                'time_start',
-            ),
-        ),
-        'ASSIGNED_USER_NAME' => array(
-            'width' => '2%',
-            'label' => 'LBL_LIST_ASSIGNED_TO_NAME',
-            'module' => 'Employees',
-            'id' => 'ASSIGNED_USER_ID',
-            'default' => true,
-            'link' => true
-        ),
-        'STATUS' => array(
-            'width' => '10%',
-            'label' => 'LBL_STATUS',
-            'link' => false,
-            'default' => false,
-        ),
-        'DATE_ENTERED' => array(
-            'width' => '10%',
-            'label' => 'LBL_DATE_ENTERED',
-            'default' => true
-        ),
-        'duration_minutes' => [
-            'label' => 'LBL_DURATION_MINUTES',
             'default' => true,
         ],
-    ),
-    'search' => array(
-        'date_entered' => array(
-            'type' => 'date',
-            'label' => 'LBL_DATE_ENTERED',
-        ),
-        'date_start' => array(
-            'type' => 'date',
-            'label' => 'LBL_LIST_DATE',
-        ),
-        'date_end' => array(
-            'type' => 'date',
-            'label' => 'LBL_DATE_END',
-        ),
-        'direction' => array(
-            'type' => 'enum',
-            'label' => 'LBL_DIRECTION',
-        ),
-        'status' => array(
-            'type' => 'enum',
-            'label' => 'LBL_STATUS',
-        ),
-        'duration_minutes' => array(
-            'type' => 'numeric',
-        ),
-    ),
-);
+        'direction' => [
+            'default' => true,
+        ],
+        'parent_name' => [
+            'link' => true,
+            'default' => true,
+        ],
+        'date_start' => [
+            'default' => true,
+        ],
+        'assigned_user_name' => [
+            'link' => true,
+            'default' => true,
+        ],
+        'status' => [],
+        'date_entered' => [
+            'default' => true,
+        ],
+        'duration_minutes' => [
+            'default' => true,
+        ],
+    ],
+    'search' => [
+        'date_entered' => [],
+        'date_start' => [],
+        'date_end' => [],
+        'direction' => [],
+        'status' => [],
+        'duration_minutes' => [],
+    ],
+];

@@ -15,19 +15,21 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
         $parsed = [];
 
         foreach ($hits as $module => $beans) {
+            $beans_arr = $this->getBeans($beans, $module);
             foreach ((array) $beans as $bean) {
-                $obj = BeanFactory::getBean($module, $bean);
+                $obj = $beans_arr[$bean];
 
                 // if a search found a bean but MintHCM does not, it could happens
                 // maybe the bean is deleted but elsasticsearch is not re-indexing yet.
                 // so at this point we trying to rebuild the index and try again to get bean:
                 if (!$obj) {
-                    ElasticSearch\ElasticSearchIndexer::repairElasticsearchIndex();
+                    SuiteCRM\Search\ElasticSearch\ElasticSearchIndexer::repairElasticsearchIndex();
                     $obj = BeanFactory::getBean($module, $bean);
                 }
 
-                if (!$obj) {
-                    throw new Exception('Error retrieveing bean: ' . $module . ' [' . $bean . ']');
+                if (!$obj) { // record is probably deleted but still indexed
+                    $parsed[$module][] = false;
+                    continue; 
                 }
                 $obj->load_relationships();
 
@@ -47,6 +49,15 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
         return $parsed;
     }
     
+    protected function getBeans($beans_ids, $module) {
+        $focus = BeanFactory::newBean($module);
+        $beans = $focus->get_full_list('', " {$focus->table_name}.id IN ('" . implode("','", $beans_ids) . "')");
+        $beans_arr = [];
+        foreach ($beans as $bean) {
+            $beans_arr[$bean->id] = $bean;
+        }
+        return $beans_arr;
+    }
     
     protected function addACLAccessInfo(){
         foreach ($this->hits_after_acl as $module => $beans) {
