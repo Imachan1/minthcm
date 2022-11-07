@@ -116,5 +116,6 @@ $mod_strings = array(
     'LBL_SURVEY_RETURN_BUTTON' => 'Return to system',
     'LBL_SURVEY_ALREADY_FILLED' => 'This survey has already been completed by you',
     'LBL_SURVEY_EMPLOYEE_NOT_EXSIST' => 'Sorry, you do not have access to this survey',
+    'LBL_SURVEY_YOUR_ANSWER_PLACEHOLDER' => 'Your answer',
     //MintHCM #102681 END
 );

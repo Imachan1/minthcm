@@ -331,7 +331,7 @@ function displayTextField($question)
     //MintHCM #102681 START
     $question->id .
         "]'  type='text'
-        placeholder='Twoja odpowiedź'
+        placeholder='".translate('LBL_SURVEY_YOUR_ANSWER_PLACEHOLDER', 'Surveys')."'
         />";
     //MintHCM #102681 END
 }
