@@ -434,6 +434,13 @@ function get_sugar_config_defaults()
             'systexpirationtime' => '7',
             'systexpirationtype' => '1',
             'systexpirationlogin' => '',
+            // MintHCM #103191 start
+            'minpwdlength' => 8,
+            'oneupper' => true,
+            'onelower' => true,
+            'onenumber' => true,
+            'onespecial' => true,
+            // MintHCM #103191 end
         ) : $passwordsetting,
         'use_real_names' => true,
         'search_wildcard_infront' => false,
