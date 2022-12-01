@@ -278,6 +278,9 @@
                                                                                         {/foreach}
                                                                                             {foreach from=$groupTabs item=modules key=group name=groupList}
                                                                                                 {capture name=extraparams assign=extraparams}parentTab={$group}{/capture}
+                                                                                                {* MintHCM #102680 START *}
+                                                                                                {if count($moduleExtraMenu) > 0 || count($modules) > 0}
+                                                                                                {* MintHCM #102680 END *}
                                                                                                 <li class="topnav {if $smarty.foreach.groupList.last}all{/if}">
                                                                                                     <span class="notCurrentTabLeft">&nbsp;</span><span class="notCurrentTab">
                                                                                                         <a href="#" id="grouptab_{$smarty.foreach.groupList.index}" class="dropdown-toggle grouptab"
@@ -297,6 +300,9 @@
                                                                                                             {/foreach}
                                                                                                         </ul>
                                                                                                 </li>
+                                                                                                {* MintHCM #102680 START *}
+                                                                                                {/if}
+                                                                                                {* MintHCM #102680 END *}
                                                                                             {/foreach}
                                                                                         </ul>
                                                                                         {* 7.8 Hide filter menu items when the window is too small to display them *}
