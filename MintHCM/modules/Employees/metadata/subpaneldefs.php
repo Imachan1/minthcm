@@ -302,15 +302,29 @@ $layout_defs['Employees'] = array(
                 ),
             ),
         ),
-    ));
-    $layout_defs["Employees"]["subpanel_setup"]['allocations_employees'] = array(
-        'order' => 100,
-        'module' => 'Allocations',
-        'subpanel_name' => 'default',
-        'sort_order' => 'asc',
-        'sort_by' => 'id',
-        'title_key' => 'LBL_LINKED_ALLOCATIONS_TITLE',
-        'get_subpanel_data' => 'allocations_employees',
-        'top_buttons' =>
-        array(),
-     );
+        'candidatures' => array(
+            'order' => 100,
+            'module' => 'Candidatures',
+            'subpanel_name' => 'default',
+            'sort_order' => 'desc',
+            'sort_by' => 'date_modified',
+            'title_key' => 'LBL_CANDIDATURES',
+            'get_subpanel_data' => 'candidatures',
+            'top_buttons' => array(
+                array(
+                    'widget_class' => 'SubPanelTopButtonQuickCreate',
+                ),
+            ),
+        ),
+    ),
+);
+$layout_defs["Employees"]["subpanel_setup"]['allocations_employees'] = array(
+    'order' => 100,
+    'module' => 'Allocations',
+    'subpanel_name' => 'default',
+    'sort_order' => 'asc',
+    'sort_by' => 'id',
+    'title_key' => 'LBL_LINKED_ALLOCATIONS_TITLE',
+    'get_subpanel_data' => 'allocations_employees',
+    'top_buttons' => array(),
+);
