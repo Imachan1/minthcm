@@ -3967,15 +3967,14 @@ $app_list_strings['status_list'] = array(
     'InProgress' => 'CV Acceptance',
     'MeetingAdditional' => 'Meeting - Additional',
     'MeetingPrimary' => 'Meeting - Preliminary',
-    'MeetingTask' => 'Meeting - Task',
     'Negotation' => 'Negotations',
     'New' => 'New',
     'Offer' => 'Make an Offer',
-    'PracticalTask' => 'Practical Task',
+    'PracticalTask' => 'Recruitment Task',
     'Preselection' => 'Preselection',
     'Rejected' => 'Rejected',
-    'Scored' => 'Scored Stage 1',
-    'Scored2' => 'Scored Stage 2',
+    'Scored' => 'Task Scored',
+    'Scored2' => 'After Preliminary Meeting',
 );
 
 $app_list_strings['project_status_list'] = array(
@@ -4219,8 +4218,14 @@ $app_list_strings['reaction_icons_list'] = array(
    'dislike' => 'thumbs-down',
 );
 
+$app_list_strings['parent_type_display_for_candidatures'] = array(
+    'Candidates' => 'Candidate',
+    'Employees' => 'Employee',
+);
+
 $app_strings['LNK_KANBAN'] = 'Board';
 $app_strings['ERR_KANBAN_COL_ERROR'] = 'Column for Kanban is not defined. Property "column" is missing for kanbanviewdefs.';
-$app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed'; 
 
 $app_strings['LBL_WORKSCHEDULES'] = 'Work Schedules';
+$app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed';
+$app_strings['LBL_DASHLETS_PROCESSING'] = 'Dashlet Processing...';

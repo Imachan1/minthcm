@@ -352,7 +352,6 @@ SugarWidgetSchedulerSearch.prototype.display = function () {
    div.style.height = '100%';
    div.style.display = 'none';
    this.parentNode.appendChild( div );
-   
    this.list_view = new SugarWidgetListView();
    this.list_view.load( div );
 }
