@@ -54,13 +54,17 @@ $( document ).ready( function () {
         } );
  }
 
- viewTools.form.beforeSave( function (form_name) {
-    var result_1 = validateWorkSchedule(form_name);
-    var result_2 = validateDates(form_name);
-    var result_6 = validateDescription(form_name);
+ if (!window.spentTimeSaveHandlerAlreadyInitialized) {
+    viewTools.form.beforeSave( function (form_name) {
+        var result_1 = validateWorkSchedule(form_name);
+        var result_2 = validateDates(form_name);
+        var result_6 = validateDescription(form_name);
+    
+        return result_1 && result_2 && result_6;
+    } );
+    window.spentTimeSaveHandlerAlreadyInitialized = true;
+ }
  
-    return result_1 && result_2 && result_6;
- } );
  
  function validateWorkSchedule(form_name) {
     var result = false;
