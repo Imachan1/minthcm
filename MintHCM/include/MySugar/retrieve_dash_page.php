@@ -282,7 +282,7 @@ foreach ($pages[$activePage]['columns'] as $colNum => $column) {
                     }
 
                     // MintHCM #94842 START
-                    echo '<script type="text/javascript">SUGAR.mySugar.retrieveDashlet("'.$id.'")</script>';
+                    echo '<script type="text/javascript"> setTimeout(function(){SUGAR.mySugar.retrieveDashlet("'.$id.'")},100)</script>';
                     // MintHCM #94842 STOP
                 } catch (Exception $ex) {
                     $display[$colNum]['dashlets'][$id]['display']       = $ex->getMessage();
