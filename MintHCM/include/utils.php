@@ -4491,6 +4491,10 @@ function rebuildConfigFile($sugar_config, $sugar_version)
     // need to override version with default no matter what
     $sugar_config['sugar_version'] = $sugar_version;
 
+    if(!empty($apache_user = getApacheUser())){
+        $sugar_config['cron']['allowed_cron_users'][] = $apache_user;
+    }
+
     ksort($sugar_config);
 
     if (write_array_to_file('sugar_config', $sugar_config, 'config.php')) {
@@ -5846,6 +5850,19 @@ function kreport_getEmailTemplateArray()
     }
     return $new_array;
 }
+
+function getApacheUser()
+{
+    $apache_user = trim(exec("ps -ef | egrep '(httpd|apache2|apache)' | grep -v root | head -n1 | awk '{print $1}'"));
+    if(
+        empty($apache_user)
+        || 'root' == $apache_user
+    ){
+        return '';
+    }
+    return $apache_user;
+}
+
 if (!function_exists('getKReportsArrayList')) {
 
     function getKReportsArrayList($bean = null, $field_name = null,
