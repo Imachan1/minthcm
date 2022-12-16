@@ -517,6 +517,33 @@ $dictionary['WorkSchedules'] = array(
          'audited' => true,
       ),
    ),
+   'indices' => array(
+      array(
+        'name' => 'idx_workschedule_name',
+        'type' => 'index',
+        'fields' => array('name'),
+      ),
+      array(
+        'name' => 'idx_workschedule_type',
+        'type' => 'index',
+        'fields' => array('type'),
+      ),
+      array(
+        'name' => 'idx_workschedule_status',
+        'type' => 'index',
+        'fields' => array('status'),
+      ),
+      array(
+        'name' => 'idx_workschedule_date_start',
+        'type' => 'index',
+        'fields' => array('date_start'),
+      ),
+      array(
+        'name' => 'idx_workschedule_date_end',
+        'type' => 'index',
+        'fields' => array('date_end'),
+      ),
+   ),
    'relationships' => array(
       "workplaces_workschedules" => array(
          'lhs_module' => 'Workplaces',

@@ -41,6 +41,13 @@ $app->group('', function () use ($app) {
             ->add($paramsMiddlewareFactory->bind(Param\GetUserPreferencesParams::class));
 
         /**
+         * Get month info data for calendar using employee ID and date
+         */
+        $app
+            ->get('/custom/getCalendarData/{employeeId}/{date}', 'Api\V8\Controller\MonthInfoController:getMonthInfo')
+            ->add($paramsMiddlewareFactory->bind(Param\MonthInfoParams::class));
+
+        /**
          * Get swagger schema
          */
         $app->get('/meta/swagger.json', 'Api\V8\Controller\MetaController:getSwaggerSchema');

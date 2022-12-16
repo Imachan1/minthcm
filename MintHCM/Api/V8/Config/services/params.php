@@ -103,4 +103,10 @@ return CustomLoader::mergeCustomArray([
             $container->get(BeanManager::class)
         );
     },
+    Param\MonthInfoParams::class => function (Container $container) {
+        return new Param\MonthInfoParams(
+            $container->get(ValidatorFactory::class),
+            $container->get(BeanManager::class)
+        );
+    },
 ], basename(__FILE__));

@@ -565,6 +565,21 @@ $dictionary['Call'] = array(
          'fields' => array('date_start'),
       ),
       array(
+         'name' => 'idx_calls_date_end',
+         'type' => 'index',
+         'fields' => array('date_end'),
+      ),
+      array(
+         'name' => 'idx_calls_duration_minutes',
+         'type' => 'index',
+         'fields' => array('duration_minutes'),
+      ),
+      array(
+         'name' => 'idx_calls_duration_hours',
+         'type' => 'index',
+         'fields' => array('duration_hours'),
+      ),
+      array(
          'name' => 'idx_calls_par_del',
          'type' => 'index',
          'fields' => array('parent_id', 'parent_type', 'deleted')
