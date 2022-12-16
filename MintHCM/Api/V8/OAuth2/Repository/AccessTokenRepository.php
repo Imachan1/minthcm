@@ -63,8 +63,6 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
 
         switch ($client->allowed_grant_type) {
             case 'password':
-                $userId = $accessTokenEntity->getUserIdentifier();
-                break;
             case 'mobile':
                 $userId = $accessTokenEntity->getUserIdentifier();
                 break;
