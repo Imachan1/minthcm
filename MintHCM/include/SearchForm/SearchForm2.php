@@ -242,7 +242,11 @@ class SearchForm {
                   $this->th->ss->assign('SHOWSSDIV', 'no');
                   $this->th->ss->assign('DISPLAYSS', 'display:none');
                }
+            // MintHCM #92823 START
+            } elseif('basic' == $viewName) {
+                $this->th->ss->assign('DISPLAY_COLUMNS', $_REQUEST['displayColumns']);
             }
+            // MintHCM #92823 END
          } else {
             $this->tabs[$tabkey]['displayDiv'] = 'display:none';
          }
