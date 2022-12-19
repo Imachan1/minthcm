@@ -155,6 +155,8 @@ class GenerateOnboardingOffboarding
         $bean->parent_id = $this->process->id;
         $bean->save();
         $this->addSecurityGroupToRecord($bean,
+        (BeanFactory::getBean('Users',$bean->employee_id))->getUserPrivateGroup());
+        $this->addSecurityGroupToRecord($bean,
         $this->user_scheduled_onboarding->getUserPrivateGroup());
         return $bean;
     }
