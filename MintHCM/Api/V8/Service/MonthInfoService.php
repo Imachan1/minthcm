@@ -51,7 +51,8 @@ class MonthInfoService
             while (($row = $db->fetchByAssoc($module_data)) != null) {
                 $data[][$value] = [
                     'id' => $row['id'],
-                    'attributes' => array_slice($row, 1), 
+                    'type' => ($key === 'WorkSchedules') ? $key : ucfirst($value),
+                    'attributes' => array_slice($row, 1),
                 ];
             }
         }
