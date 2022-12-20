@@ -34,7 +34,7 @@ class MonthInfoService
             'WorkSchedules' => 'workSchedule',
             'Meetings' => 'meeting',
             'Calls' => 'call',
-            'Tasks' => 'task',       
+            'Tasks' => 'task',
         ];
 
         $data = [];
@@ -46,23 +46,34 @@ class MonthInfoService
         $start_date = date($date_format, $start_time);
         $end_date = date($date_format, $end_time);
 
+        $current_time_zone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+
         foreach ($modules as $key => $value) {
             $module_data = $db->query($this->getModuleIds($employee_id, $start_date, $end_date, $key));
             while (($row = $db->fetchByAssoc($module_data)) != null) {
                 $data[][$value] = [
                     'id' => $row['id'],
                     'type' => ($key === 'WorkSchedules') ? $key : ucfirst($value),
-                    'attributes' => array_slice($row, 1),
+                    'attributes' => array_map(function ($value) {
+                        return is_string($value)
+                        ? (\DateTime::createFromFormat('Y-m-d H:i:s', $value)
+                            ? date(\DateTime::ATOM, strtotime($value))
+                            : html_entity_decode(htmlspecialchars_decode($value), ENT_QUOTES))
+                        : $value;
+                    }, array_slice($row, 1)),
                 ];
             }
         }
 
+        date_default_timezone_set($current_time_zone);
+
         return $data;
     }
 
-    protected function getModuleIds($employee_id, $start_date, $end_date, $module) 
+    protected function getModuleIds($employee_id, $start_date, $end_date, $module)
     {
-        switch($module) {
+        switch ($module) {
             case 'WorkSchedules':
                 $sql_query = "SELECT id, name, type, status, date_start, date_end
                     FROM workschedules
