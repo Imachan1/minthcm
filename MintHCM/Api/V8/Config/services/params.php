@@ -3,7 +3,7 @@
 use Api\V8\BeanDecorator\BeanManager;
 use Api\V8\Factory\ValidatorFactory;
 use Api\V8\Param;
-use Interop\Container\ContainerInterface as Container;
+use Psr\Container\ContainerInterface as Container;
 use Api\Core\Loader\CustomLoader;
 
 return CustomLoader::mergeCustomArray([
@@ -67,8 +67,44 @@ return CustomLoader::mergeCustomArray([
             $container->get(BeanManager::class)
         );
     },
+    Param\CreateRelationshipByLinkParams::class => function (Container $container) {
+        return new Param\CreateRelationshipByLinkParams(
+            $container->get(ValidatorFactory::class),
+            $container->get(BeanManager::class)
+        );
+    },
     Param\DeleteRelationshipParams::class => function (Container $container) {
         return new Param\DeleteRelationshipParams(
+            $container->get(ValidatorFactory::class),
+            $container->get(BeanManager::class)
+        );
+    },
+    Param\GetFieldListParams::class => function (Container $container) {
+        return new Param\GetFieldListParams(
+            $container->get(ValidatorFactory::class),
+            $container->get(BeanManager::class)
+        );
+    },
+    Param\UploadFileParams::class => function (Container $container) {
+        return new Param\UploadFileParams(
+            $container->get(ValidatorFactory::class),
+            $container->get(BeanManager::class)
+        );
+    },
+    Param\ImagePreviewParams::class => function (Container $container) {
+        return new Param\ImagePreviewParams(
+            $container->get(ValidatorFactory::class),
+            $container->get(BeanManager::class)
+        );
+    },
+    Param\GetModuleMetaParams::class => function (Container $container) {
+        return new Param\GetModuleMetaParams(
+            $container->get(ValidatorFactory::class),
+            $container->get(BeanManager::class)
+        );
+    },
+    Param\MonthInfoParams::class => function (Container $container) {
+        return new Param\MonthInfoParams(
             $container->get(ValidatorFactory::class),
             $container->get(BeanManager::class)
         );

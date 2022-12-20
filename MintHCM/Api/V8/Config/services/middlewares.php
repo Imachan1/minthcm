@@ -9,11 +9,13 @@ use Api\V8\OAuth2\Repository\ClientRepository;
 use Api\V8\OAuth2\Repository\RefreshTokenRepository;
 use Api\V8\OAuth2\Repository\ScopeRepository;
 use Api\V8\OAuth2\Repository\UserRepository;
-use Interop\Container\ContainerInterface as Container;
+use Psr\Container\ContainerInterface as Container;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\PasswordGrant;
+use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\ResourceServer;
 use Api\Core\Loader\CustomLoader;
+use Api\V8\OAuth2\Grant\MobileGrant;
 
 return CustomLoader::mergeCustomArray([
     AuthorizationServer::class => function (Container $container) {
@@ -33,7 +35,16 @@ return CustomLoader::mergeCustomArray([
             sprintf('file://%s/%s', $baseDir, ApiConfig::OAUTH2_PRIVATE_KEY),
             sprintf('file://%s/%s', $baseDir, ApiConfig::OAUTH2_PUBLIC_KEY)
         );
-        $server->setEncryptionKey(ApiConfig::OAUTH2_ENCRYPTION_KEY);
+        $oauth2EncKey = isset($GLOBALS['sugar_config']['oauth2_encryption_key'])
+            ? $GLOBALS['sugar_config']['oauth2_encryption_key'] : '';
+        if (empty($oauth2EncKey)) {
+            $oauth2EncKey = 'SCRM-DEFK';
+            if (isset($GLOBALS['log'])) {
+                $GLOBALS['log']->fatal('WARNING: `oauth2_encryption_key` not set in config.php');
+            }
+        }
+
+        $server->setEncryptionKey($oauth2EncKey);
 
         // Client credentials grant
         $server->enableGrantType(
@@ -47,6 +58,27 @@ return CustomLoader::mergeCustomArray([
                 new UserRepository($container->get(BeanManager::class)),
                 new RefreshTokenRepository($container->get(BeanManager::class))
             ),
+            new \DateInterval('PT1H')
+        );
+
+        // Mobile grant
+        $server->enableGrantType(
+            new MobileGrant(
+                new UserRepository($container->get(BeanManager::class)), 
+                new RefreshTokenRepository($container->get(BeanManager::class))
+            ),
+            new \DateInterval('PT1H')
+        );
+
+
+        $refreshGrant = new RefreshTokenGrant(
+            new RefreshTokenRepository($container->get(BeanManager::class))
+        );
+
+        $refreshGrant->setRefreshTokenTTL(new \DateInterval('P1M'));
+
+        $server->enableGrantType(
+            $refreshGrant,
             new \DateInterval('PT1H')
         );
 

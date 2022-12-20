@@ -67,7 +67,7 @@ class UserPreferencesService
     /**
      * @var BeanManager
      */
-    private $beanManager;
+    protected $beanManager;
 
     /**
      * @param BeanManager $beanManager

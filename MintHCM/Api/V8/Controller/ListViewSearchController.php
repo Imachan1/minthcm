@@ -67,7 +67,7 @@ class ListViewSearchController extends BaseController
     /**
      * @var ListViewSearchService
      */
-    private $listViewSearchService;
+    protected $listViewSearchService;
 
     /**
      * @param ListViewSearchService $listViewSearchService

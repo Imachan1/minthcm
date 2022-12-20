@@ -45,6 +45,7 @@
 namespace Api\V8\Service;
 
 use Api\V8\BeanDecorator\BeanManager;
+use Api\V8\Helper\VarDefHelper;
 use Api\V8\JsonApi\Helper\AttributeObjectHelper;
 use Api\V8\JsonApi\Helper\PaginationObjectHelper;
 use Api\V8\JsonApi\Helper\RelationshipObjectHelper;
@@ -72,7 +73,7 @@ class ListViewService
      *
      * @var array
      */
-    private static $listViewColumnInterface = [
+    protected static $listViewColumnInterface = [
         'fieldName' => '',
         'width' => '',
         'label' => '',
@@ -80,29 +81,31 @@ class ListViewService
         'default' => false,
         'module' => '',
         'id' => '',
-        'sortable' => false,
+        // 'sortable' => false,
         'customCode' => '', // deprecated from legacy (using only on PHP front-end)
     ];
     
     /**
      * @var BeanManager
      */
-    private $beanManager;
+    protected $beanManager;
 
     /**
      * @var AttributeObjectHelper
      */
-    private $attributeHelper;
+    protected $attributeHelper;
 
     /**
      * @var RelationshipObjectHelper
      */
-    private $relationshipHelper;
+    protected $relationshipHelper;
 
     /**
      * @var PaginationObjectHelper
      */
-    private $paginationHelper;
+    protected $paginationHelper;
+
+    private $varDefHelper;
 
     /**
      * @param BeanManager $beanManager
@@ -114,12 +117,14 @@ class ListViewService
         BeanManager $beanManager,
         AttributeObjectHelper $attributeHelper,
         RelationshipObjectHelper $relationshipHelper,
-        PaginationObjectHelper $paginationHelper
+        PaginationObjectHelper $paginationHelper,
+        VarDefHelper $varDefHelper
     ) {
         $this->beanManager = $beanManager;
         $this->attributeHelper = $attributeHelper;
         $this->relationshipHelper = $relationshipHelper;
         $this->paginationHelper = $paginationHelper;
+        $this->varDefHelper = $varDefHelper;
     }
 
     /**
@@ -131,21 +136,48 @@ class ListViewService
     {
         $moduleName = $params->getModuleName();
         /** @var SugarBean */
-        $bean = \BeanFactory::getBean($moduleName);
-        
+        // MintHCM Start #84951
+        $bean = $this->beanManager->newBeanSafe($moduleName);
+        $fields = $this->varDefHelper->getModuleVardefs($bean);
+        // MintHCM End #84951
+        /* MintHCM Start #84318
         $text = new LangText(null, null, LangText::USING_ALL_STRINGS, true, false, $moduleName);
+        MintHCM End #84318 */
         $displayColumns = ListViewFacade::getDisplayColumns($moduleName);
         $data = [];
         foreach ($displayColumns as $key => $column) {
             $column = array_merge(self::$listViewColumnInterface, $column);
+            /* MintHCM Start #84318
             $column['fieldName'] = $key; // get the vardef instead this "intuitive fieldName"
             $translated = $text->getText($column['label']);
             if (!$translated) {
                 $translated = $text->getText($bean->field_name_map[strtolower($key)]['vname']);
             }
             $column['label'] = $translated ? $translated : $column['label'];
+            MintHCM End #84318 */ 
             
             // TODO: validate the column name (for e.g label and name should be requered etc...) also check the ListViewColumnInterface keys are match..
+            // MintHCM Start #84951
+            if (!empty($fields)) {
+                $field = $fields[strtolower($key)];
+                if(empty($field) || empty($field['name'])){
+                    continue;
+                }
+                unset($column['fieldName']);
+                $column['name'] = $field['name'];
+                $column['type'] = $field['type'];
+                if (!empty($field['options'])) {
+                    $column['options'] = $field['options'];
+                }
+                if (empty($column['label'])) {
+                    $column['label'] = $field['vname'];
+                }
+                if ($field['type'] === 'relate' && !empty($field['module']) && !empty($field['id_name'])) {
+                    $column['module'] = $field['module'] ?? '';
+                    $column['id_name'] = $field['id_name'] ?? '';
+                }
+            }
+            //MintHCM End #84951
             $data[] = $column;
         }
         $response = new AttributeResponse($data);

@@ -699,4 +699,8 @@ $mod_strings = array(
     'LBL_FACTOR_AUTH' => 'Factor Auth',
     'LBL_FACTOR_AUTH_INTERFACE' => 'Factor Auth Interface',
     'LBL_BUSINESS_ROLE' => 'Business role',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Management of organizational units',
+    'LBL_CLEAR_APP_DATA' => 'Clear app data',
+    'LBL_ARE_YOU_SURE_TO_CLEAR_APP_DATA' => 'Are you sure you want to clear app data?',
+
 ); // END STRINGS DEFS
