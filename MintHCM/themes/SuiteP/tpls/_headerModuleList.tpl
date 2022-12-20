@@ -116,7 +116,9 @@
                                             {foreach from=$recentRecords item=item name=lastViewed }
                                                 {if $smarty.foreach.lastViewed.iteration < 4} {* limit to 3 results *}
                                                         <li class="recentlinks" role="presentation">
-                                                            <a title="{$item.module_name}"
+                                                            {* MINTHCM  #100529 START *}
+                                                            <a title="{$item.item_summary}"
+                                                            {* MINTHCM  #100529 END *}
                                                                accessKey="{$smarty.foreach.lastViewed.iteration}"
                                                                href="{sugar_link module=$item.module_name action='DetailView' record=$item.item_id link_only=1}" class="recent-links-detail">
                                                                 <span class="{get_module_icon_class module_name=$item.module_name}"></span>
@@ -139,7 +141,9 @@
                                                                 {foreach from=$favoriteRecords item=item name=lastViewed}
                                                                     {if $smarty.foreach.lastViewed.iteration < 4} {* limit to 3 results *}
                                                                             <li class="favoritelinks" role="presentation">
-                                                                                <a title="{$item.module_name}"
+                                                                                {* MINTHCM  #100529 START *}
+                                                                                <a title="{$item.item_summary}"
+                                                                                {* MINTHCM  #100529 END *}
                                                                                    accessKey="{$smarty.foreach.lastViewed.iteration}"
                                                                                    href="{sugar_link module=$item.module_name action='DetailView' record=$item.id link_only=1}"  class="favorite-links-detail">
                                                                                     <span class="{get_module_icon_class module_name=$item.module_name}"></span>
@@ -223,7 +227,9 @@
                                                                                                     {foreach from=$recentRecords item=item name=lastViewed}
                                                                                                         {if $item.module_name == $name and $submoduleRecentRecords < 3}
                                                                                                             <li class="recentlinks" role="presentation">
-                                                                                                                <a title="{$item.module_name}"
+                                                                                                                {* MINTHCM  #100529 START *}
+                                                                                                                <a title="{$item.item_summary}"
+                                                                                                                {* MINTHCM  #100529 END *}
                                                                                                                    accessKey="{$smarty.foreach.lastViewed.iteration}"
                                                                                                                    href="{sugar_link module=$item.module_name action='DetailView' record=$item.item_id link_only=1}" class="recent-links-detail">
 
@@ -255,7 +261,9 @@
                                                                                                     {foreach from=$favoriteRecords item=item name=lastViewed}
                                                                                                         {if $item.module_name == $name and $submoduleFavoriteRecords < 3}
                                                                                                             <li class="favoritelinks" role="presentation">
-                                                                                                                <a title="{$item.module_name}"
+                                                                                                                {* MINTHCM  #100529 START *}
+                                                                                                                <a title="{$item.item_summary}"
+                                                                                                                {* MINTHCM  #100529 END *}
                                                                                                                    accessKey="{$smarty.foreach.lastViewed.iteration}"
                                                                                                                    href="{sugar_link module=$item.module_name action='DetailView' record=$item.id link_only=1}" class="favorite-links-detail">
                                                                                                                     <span class="{get_module_icon_class module_name=$item.module_name}"></span>
@@ -376,7 +384,9 @@
                                                                                                                         {foreach from=$recentRecords item=item name=lastViewed}
                                                                                                                             {if $item.module_name == $submodule and $submoduleRecentRecords < 3}
                                                                                                                                 <li class="recentlinks" role="presentation">
-                                                                                                                                    <a title="{$item.module_name}"
+                                                                                                                                    {* MINTHCM  #100529 START *}
+                                                                                                                                    <a title="{$item.item_summary}"
+                                                                                                                                    {* MINTHCM  #100529 END *}
                                                                                                                                        accessKey="{$smarty.foreach.lastViewed.iteration}"
                                                                                                                                        href="{sugar_link module=$item.module_name action='DetailView' record=$item.item_id link_only=1}" class="recent-links-detail">
                                                                                                                                         <span aria-hidden="true">{$item.item_summary_short}</span>
@@ -403,7 +413,9 @@
                                                                                                                         {foreach from=$favoriteRecords item=item name=lastViewed}
                                                                                                                             {if $item.module_name == $submodule and $submoduleFavoriteRecords < 3}
                                                                                                                                 <li class="favoritelinks" role="presentation">
-                                                                                                                                    <a title="{$item.module_name}"
+                                                                                                                                    {* MINTHCM  #100529 START *}
+                                                                                                                                    <a title="{$item.item_summary}"
+                                                                                                                                    {* MINTHCM  #100529 END *}
                                                                                                                                        accessKey="{$smarty.foreach.lastViewed.iteration}"
                                                                                                                                        href="{sugar_link module=$item.module_name action='DetailView' record=$item.id link_only=1}" class="favorite-links-detail">
                                                                                                                                         <span aria-hidden="true">{$item.item_summary_short}</span>
@@ -823,7 +835,9 @@
                                                                                                                             {if $smarty.foreach.lastViewed.index < 5}
                                                                                                                                 <div class="recently_viewed_link_container_sidebar">
                                                                                                                                     <li class="recentlinks" role="presentation">
-                                                                                                                                        <a title="{$item.module_name}"
+                                                                                                                                        {* MINTHCM  #100529 START *}
+                                                                                                                                        <a title="{$item.item_summary}"
+                                                                                                                                        {* MINTHCM  #100529 END *}
                                                                                                                                            accessKey="{$smarty.foreach.lastViewed.iteration}"
                                                                                                                                            href="{sugar_link module=$item.module_name action='DetailView' record=$item.item_id link_only=1}"
                                                                                                                                            class="recent-links-detail">
@@ -847,7 +861,9 @@
                                                                                                                         {if $smarty.foreach.lastViewed.index < 5}
                                                                                                                             <div class="recently_viewed_link_container_sidebar">
                                                                                                                                 <li class="recentlinks" role="presentation">
-                                                                                                                                    <a title="{$item.module_name}" accessKey="{$smarty.foreach.lastViewed.iteration}" href="{sugar_link module=$item.module_name action='DetailView' record=$item.id link_only=1}" class="favorite-links-detail">
+                                                                                                                                    {* MINTHCM  #100529 START *}
+                                                                                                                                    <a title="{$item.item_summary}" accessKey="{$smarty.foreach.lastViewed.iteration}" href="{sugar_link module=$item.module_name action='DetailView' record=$item.id link_only=1}" class="favorite-links-detail">
+                                                                                                                                    {* MINTHCM  #100529 END *}
                                                                                                                                         <span class="{get_module_icon_class module_name=$item.module_name}"></span>
                                                                                                                                         <span aria-hidden="true">{$item.item_summary_short}</span>
                                                                                                                                     </a>
