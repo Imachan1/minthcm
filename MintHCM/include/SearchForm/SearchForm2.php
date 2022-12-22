@@ -1451,7 +1451,7 @@ class SearchForm {
                         $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
                         $end_week = $current_date->modify("next saturday");
                         $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
-                        $where .= "($db_field >= {$formatted_start_week} AND $db_field <= {$formatted_end_week})";
+                        $where .= "($db_field >= '{$formatted_start_week}' AND $db_field <= '{$formatted_end_week}' )";
                         break;
                      case 'next_week':
                         global $timedate, $current_user;
@@ -1466,7 +1466,7 @@ class SearchForm {
                         $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
                         $end_week = $next_week->modify("next saturday");
                         $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
-                        $where .= "($db_field >= {$formatted_start_week} AND $db_field <= {$formatted_end_week})";
+                        $where .= "($db_field >= '{$formatted_start_week}' AND $db_field <= '{$formatted_end_week}')";
                         break;
                      case 'in_the_past':
                         global $timedate, $current_user;
@@ -1477,7 +1477,7 @@ class SearchForm {
                         }
                         $current_date = new DateTime($start, new DateTimeZone($tz));
                         $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
-                        $where .= "$db_field < $formatted_current_date";
+                        $where .= "$db_field < '$formatted_current_date'";
                         break;
                      case 'in_the_future':
                         global $timedate, $current_user;
@@ -1488,7 +1488,7 @@ class SearchForm {
                         }
                         $current_date = new DateTime($start, new DateTimeZone($tz));
                         $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
-                        $where .= "$db_field > $formatted_current_date";
+                        $where .= "$db_field > '$formatted_current_date'";
                         break;
                      case 'last_n_days':
                         global $timedate, $current_user;
@@ -1498,11 +1498,11 @@ class SearchForm {
                             $tz = 'Europe/Warsaw';
                         }
                         $current_date = new DateTime($start, new DateTimeZone($tz));
+                        $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
                         $field_value = (int) $field_value;
                         $modify_date = $current_date->modify("-{$field_value} days");
                         $formatted_date = $modify_date->format($timedate->get_db_date_time_format());
-                        $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
-                        $where .= "($db_field >= {$formatted_date} AND $db_field <= {$formatted_current_date})";
+                        $where .= "($db_field >= '{$formatted_date}' AND $db_field <= '{$formatted_current_date}')";
                         break;
                      case 'next_n_days':
                         global $timedate, $current_user;
@@ -1512,11 +1512,11 @@ class SearchForm {
                             $tz = 'Europe/Warsaw';
                         }
                         $current_date = new DateTime($start, new DateTimeZone($tz));
+                        $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
                         $field_value = (int) $field_value;
                         $modify_date = $current_date->modify("+{$field_value} days");
                         $formatted_date = $modify_date->format($timedate->get_db_date_time_format());
-                        $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
-                        $where .= "($db_field >= {$formatted_current_date} AND $db_field <= {$formatted_date})";
+                        $where .= "($db_field >= '{$formatted_current_date}' AND $db_field <= '{$formatted_date}')";
                         break;
                      //MintHCM #69594 END
                   }
