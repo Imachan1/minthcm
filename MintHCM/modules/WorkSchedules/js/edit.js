@@ -301,9 +301,8 @@ function createActivitySelectDialog() {
 function validateWorkScheduleCreatedByPeriodicity() {
     let result = true;
     let type = $("select[name=repeat_type]").val();
-    let repeat_end_type = document.querySelector('input[name="repeat_end_type"]:checked').value;
+    let repeat_end_type = document.querySelector('input[name="repeat_end_type"]:checked')?.value ?? "";
     if (type !== "") {
-        debugger;
         var data = {
             type: type,
             interval: $("select[name=repeat_interval]").val(),
