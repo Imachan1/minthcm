@@ -103,6 +103,7 @@ class GenerateOnboardingOffboarding
         $bean->save();
         $this->addSecurityGroupToRecord($bean,
             $this->user_scheduled_onboarding->getUserPrivateGroup());
+        $this->addSecurityGroupToEmployee($bean);
         $this->process = $bean;
     }
 
@@ -114,6 +115,21 @@ class GenerateOnboardingOffboarding
         } else {
             $GLOBALS['log']->fatal("Unable to load relationship {$sg_relation_name} for {$bean->object_name}");
             return false;
+        }
+    }
+
+    protected function addSecurityGroupToEmployee($bean)
+    {
+        if (!empty($bean->employee_id)) {
+            /** @var Employee|User $employee */
+            $employee = BeanFactory::getBean('Users', $bean->employee_id);
+            if (
+                !empty($employee)
+                && $employee->id === $bean->employee_id
+                && !empty($user_private_group_id = $employee->getUserPrivateGroup())
+            ) {
+                $this->addSecurityGroupToRecord($bean, $user_private_group_id);
+            }
         }
     }
 
@@ -154,17 +170,7 @@ class GenerateOnboardingOffboarding
         $bean->parent_type = $this->process->module_name;
         $bean->parent_id = $this->process->id;
         $bean->save();
-        if (!empty($bean->employee_id)) {
-            /** @var Employee|User $employee */
-            $employee = BeanFactory::getBean('Users', $bean->employee_id);
-            if (
-                !empty($employee)
-                && $employee->id === $bean->employee_id
-                && !empty($user_private_group_id = $employee->getUserPrivateGroup())
-            ) {
-                $this->addSecurityGroupToRecord($bean, $user_private_group_id);
-            }
-        }
+        $this->addSecurityGroupToEmployee($bean);
         $this->addSecurityGroupToRecord($bean, $this->user_scheduled_onboarding->getUserPrivateGroup());
         return $bean;
     }
