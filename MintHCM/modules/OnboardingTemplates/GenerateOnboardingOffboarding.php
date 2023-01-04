@@ -78,7 +78,7 @@ class GenerateOnboardingOffboarding
     public function generate()
     {
         $template = BeanFactory::getBean($this->module_name, $this->template_id);
-        if ($this->module_name == 'OnboardingTemplates') {
+        if ('OnboardingTemplates' == $this->module_name) {
             $this->createProcess('Onboardings', 'onboardingtemplate_id',
                 $template->assigned_user_id);
         } else {
@@ -154,14 +154,18 @@ class GenerateOnboardingOffboarding
         $bean->parent_type = $this->process->module_name;
         $bean->parent_id = $this->process->id;
         $bean->save();
-        if(!empty($bean->employee_id)){
-            $employee = BeanFactory::getBean('Users',$bean->employee_id);
-            if(!empty($employee) && $employee->id === $bean->employee_id && !empty($employee->getUserPrivateGroup())){
-                $this->addSecurityGroupToRecord($bean,$employee->getUserPrivateGroup());   
+        if (!empty($bean->employee_id)) {
+            /** @var Employee|User $employee */
+            $employee = BeanFactory::getBean('Users', $bean->employee_id);
+            if (
+                !empty($employee)
+                && $employee->id === $bean->employee_id
+                && !empty($user_private_group_id = $employee->getUserPrivateGroup())
+            ) {
+                $this->addSecurityGroupToRecord($bean, $user_private_group_id);
             }
         }
-        $this->addSecurityGroupToRecord($bean,
-        $this->user_scheduled_onboarding->getUserPrivateGroup());
+        $this->addSecurityGroupToRecord($bean, $this->user_scheduled_onboarding->getUserPrivateGroup());
         return $bean;
     }
 
@@ -185,7 +189,7 @@ class GenerateOnboardingOffboarding
         $bean->parent_id = $this->process->id;
         $bean->save();
         $this->addSecurityGroupToRecord($bean,
-        $this->user_scheduled_onboarding->getUserPrivateGroup());
+            $this->user_scheduled_onboarding->getUserPrivateGroup());
         return $bean;
     }
 
@@ -203,7 +207,7 @@ class GenerateOnboardingOffboarding
         $meeting_bean->date_start = $date_start_object->format($timedate->get_db_date_time_format());
         $duration_hours = (int) $element->task_duration_hours;
         $duration_minutes = (int) $element->task_duration_minutes;
-        $meeting_bean->duration_hours =$duration_hours;
+        $meeting_bean->duration_hours = $duration_hours;
         $meeting_bean->duration_minutes = $duration_minutes;
         $meeting_bean->date_end = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
         $meeting_bean->parent_type = $this->process->module_name;
@@ -232,7 +236,7 @@ class GenerateOnboardingOffboarding
         $duration_hours = (int) $element->task_duration_hours;
         $duration_minutes = (int) $element->task_duration_minutes;
         $bean->date_end = $date_start_object->modify("+{$duration_hours} hours {$duration_minutes} minutes")->format($timedate->get_db_date_time_format());
-        if ($this->process->module_name == 'Offboardings') {
+        if ('Offboardings' == $this->process->module_name) {
             $bean->offboarding_id = $this->process->id;
         }
         $bean->save();
