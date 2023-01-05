@@ -4229,3 +4229,28 @@ $app_strings['ERR_KANBAN_COL_ERROR'] = 'Column for Kanban is not defined. Proper
 $app_strings['LBL_WORKSCHEDULES'] = 'Work Schedules';
 $app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed';
 $app_strings['LBL_DASHLETS_PROCESSING'] = 'Dashlet Processing...';
+
+$app_strings['LBL_WORKSCHEDULES'] = 'Work Schedules';
+
+$app_strings['LBL_EMAIL_AUTHORIZE'] = 'Authorize';
+$app_strings['LBL_EMAIL_AUTHORIZED'] = 'Authorized';
+$app_strings['LBL_EMAIL_NOT_AUTHORIZED'] = 'Not Authorized';
+$app_strings['LBL_EMAIL_AUTH_WARNING'] = 'An administrator must configure the {0} Connector via Admin > Connectors before you can set up this account.';
+
+$app_strings['LBL_SMTPTYPE_MICROSOFT'] = 'Microsoft';
+$app_strings['LBL_SMTPTYPE_GMAIL'] = 'Google Basic Authentication';
+$app_strings['LBL_SMTPTYPE_EXCHANGE'] = 'Exchange Basic Authentication';
+$app_strings['LBL_SMTPTYPE_GOOGLE_OAUTH2'] = 'Google';
+$app_strings['LBL_SMTPTYPE_EXCHANGE_ONLINE'] = 'Exchange Online';
+
+$app_strings['LBL_EMAIL_PLEASE_AUTHORIZE_TESTING'] = 'Account Not Authorized';
+$app_strings['LBL_EMAIL_ACCOUNT_NOT_AUTHORIZED'] = 'Account Not Authorized';
+$app_strings['LBL_EMAIL_PLEASE_AUTHORIZE'] = 'Please authorize the account before saving.';
+
+$app_list_strings['dom_imaptype_options'] = array(
+    'google_oauth2' => 'Google Mail',
+    'exchange_online' => 'Exchange Online',
+    'other' => 'Other',
+);
+
+$app_strings['LBL_RN_108842_SETOAUTH2MAILINGCONFIGURATION'] = 'Configure oauth2 mailing';
