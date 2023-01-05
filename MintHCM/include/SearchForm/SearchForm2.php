@@ -415,6 +415,11 @@ class SearchForm {
                   }
                   $value = implode(', ', $values);
                }
+                // MintHCM #69594  START
+               else if($value[0] == '[' && $value[strlen($value) - 1] == ']'){
+                    $value = $defs['options'][substr($value, 1, -1)];
+                }
+                // MintHCM #69594 END
                $data[$labelText] = $type == 'bool' ? '&#10004' : $value;
             }
          }
