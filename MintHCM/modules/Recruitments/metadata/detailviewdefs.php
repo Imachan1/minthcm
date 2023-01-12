@@ -87,12 +87,7 @@ $viewdefs[$module_name]['DetailView'] = array(
             'end_date'
          ),
          array(
-            //MintHCM #102684 START
-            array(
-                'name' => 'project_status',
-                'type' => 'ColoredEnum',
-            ),
-            //MintHCM #102684 END
+            'project_status',
             'position_name'
          ),
          array(

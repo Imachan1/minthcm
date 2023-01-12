@@ -49,25 +49,26 @@ class SugarFieldColoredEnum extends SugarFieldEnum
 
     public function getListViewSmarty($parentFieldArray, $vardef, $displayParams, $col)
     {
+        global $app_list_strings;
         $tabindex = 1;
         //fixing bug #46666: don't need to format enum and radioenum fields
         //because they are already formated in SugarBean.php in the function get_list_view_array() as fix of bug #21672
-        if ($this->type != 'Enum' && $this->type != 'Radioenum') {
+        if ('Enum' != $this->type && 'Radioenum' != $this->type) {
             $parentFieldArray = $this->setupFieldArray($parentFieldArray, $vardef);
 
         } else {
             $vardef['name'] = strtoupper($vardef['name']);
         }
 
-        $fieldKey = '';
-        if ($this->type == "ColoredEnum") {
-            global $app_list_strings;
-            if (!empty($app_list_strings[$vardef['options']])) {
-                $statuses = $app_list_strings[$vardef['options']];
-                $fieldKey = array_flip($statuses)[$parentFieldArray[$vardef['name']]] ?? '';
-            } elseif (!empty($vardef['options_list'])) {
-                $fieldKey = $parentFieldArray[$vardef['name']];
-            }
+        $value_color = '';
+        if (
+            "ColoredEnum" == $this->type
+            && isset($parentFieldArray[$vardef['name']])
+            && !empty($app_list_strings[$vardef['options']])
+            && !empty($app_list_strings[$vardef['options'] . '_coloredenum'])
+        ) {
+            $value = array_flip($app_list_strings[$vardef['options']])[$parentFieldArray[$vardef['name']]] ?? '';
+            $value_color = $app_list_strings[$vardef['options'] . "_coloredenum"][$value] ?? '';
         }
 
         $this->setup($parentFieldArray, $vardef, $displayParams, $tabindex, false);
@@ -75,9 +76,27 @@ class SugarFieldColoredEnum extends SugarFieldEnum
         $this->ss->left_delimiter = '{';
         $this->ss->right_delimiter = '}';
         $this->ss->assign('col', $vardef['name']);
-        $this->ss->assign('fieldKey', $fieldKey);
-
+        $this->ss->assign('value_color', $value_color);
         return $this->fetch($this->findTemplate('ListView'));
+    }
+
+    public function getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
+    {
+        global $app_list_strings;
+        $value_color = '';
+        if (
+            "ColoredEnum" == $this->type
+            && isset($vardef['name'])
+        ) {
+            $bean = BeanFactory::getBean($vardef['coloredenum_module']);
+            if(!empty($bean)){
+                $vardef_options = $bean->field_defs[$vardef['name']]['options'] ?? '';
+                $value_color = $app_list_strings[$vardef_options . "_coloredenum"][$vardef['value']] ?? '';
+            }
+        }
+        $displayParams['value_color'] = $value_color;
+        return parent::getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex);
+
     }
 
 }

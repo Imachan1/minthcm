@@ -71,9 +71,6 @@ $listViewDefs[$module_name] = array(
         'label' => 'LBL_STATUS',
         'enabled' => true,
         'default' => true,
-        //MintHCM #102684 START
-        'type' => 'ColoredEnum',
-        //MintHCM #102684 END
     ),
     'to_decision' => array(
         'name' => 'to_decision',

@@ -83,9 +83,6 @@ $listViewDefs[$module_name] = array(
         'enabled' => true,
         'default' => true,
         'width' => '10%',
-        //MintHCM #102684 START
-        'type' => 'ColoredEnum',
-        //MintHCM #102684 END
     ),
     'START_DATE' => array(
         'name' => 'start_date',

@@ -529,6 +529,10 @@ class SugarBean {
                   if ( isset($this->$field) ) {
                      break;
                   }
+                // MintHCM #102684 START
+                case 'ColoredEnum':
+                    $this->field_defs[$field]['coloredenum_module'] = $this->module_name;
+                // MintHCM #102684 END
                default:
                   if ( isset($value['default']) && $value['default'] !== '' ) {
                      $this->$field = htmlentities($value['default'], ENT_QUOTES, 'UTF-8');
