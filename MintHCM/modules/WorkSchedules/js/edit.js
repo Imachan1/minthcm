@@ -10,9 +10,17 @@ $(document).ready(function () {
         })
         .change();
 
-    if ($("#type :selected").val() === "office") {
+    if (
+        $("#type").val() == "office"
+        && $('#record').val() == ''
+    ) {
         setAssignedWorkingRoom();
     }
+    $("#type").change(() => {
+        if ($("#type :selected").val() === "office") {
+            setAssignedWorkingRoom();
+        }
+    });
 });
 
 if (!window.workSchedulerSaveHandlerAlreadyInitialized) {
@@ -40,12 +48,6 @@ function isUserAdmin() {
     return $("#current_user_is_admin").val() == true;
 }
 
-$("#type").change(() => {
-    if ($("#type :selected").val() === "office") {
-        setAssignedWorkingRoom();
-    }
-});
-
 function setAssignedWorkingRoom() {
     let assigned_user_id = $("#assigned_user_id").val();
     viewTools.api.callCustomApi({
@@ -56,16 +58,18 @@ function setAssignedWorkingRoom() {
         dataPOST: {
             assigned_user_id: assigned_user_id,
         },
-        callback: function ( name, id ) {
-            try {
-                if (id !== "" && name !== "") {
-                    $("#workplace_id").val(id);
-                    $("#workplace_name").val(name);
-                }
-            } catch (error) {
-                return;
+        callback: function ( response ) {
+            if(
+                response !== undefined
+                && response.id !== undefined
+                && response.name !== undefined
+                && response.id !== ''
+                && response.name !== ''
+            ){
+                $("#workplace_id").val(response.id);
+                $("#workplace_name").val(response.name);
             }
-        },
+        }
     });
 }
 
