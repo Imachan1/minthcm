@@ -178,7 +178,7 @@ class SugarFieldRelate extends SugarFieldBase {
             $displayParams['initial_filter'] .= "&group_type_advanced[]={$group_type}";
         }
       }
-
+      // MintHCM END
       if ( !isset($displayParams['readOnly']) ) {
          $displayParams['readOnly'] = '';
       } else {
