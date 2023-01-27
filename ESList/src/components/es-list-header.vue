@@ -7,19 +7,27 @@
             />
         </v-scale-transition>
         <div class="es-list-header">
-            <span v-text="'Akcje masowe (coming soon)'" style="opacity:.5;user-select:none" />
-            <v-select
-                v-if="false /*todo*/"
-                @change="null"
-                :value="null"
-                :items="[]"
-                dense
-                class=""
-                :label="label('LBL_ESLIST_CHOOSE_MULTIPLE')"
-                outlined
-                append-icon="mdi-chevron-down"
-                hide-details
-            />
+        <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="on"
+                >
+                {{ label('LBL_ESLIST_MASS_ACTION') }}
+                </v-btn>
+            </template>
+            <v-list>
+                <v-list-item
+                v-for="(item, index) in mass_actions"
+                :key="index"
+                @click="performMassAction(item.action)"
+                >
+                <v-list-item-title>{{ label(item.label) }}</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
             <v-select
                 v-show="false /*todo*/"
                 @change="null"
@@ -46,7 +54,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import ESListPopupColumns from './popups/es-list-popup-columns'
 
 export default {
@@ -55,9 +63,18 @@ export default {
         columnsPopupVisible: false
     }),
     computed: {
+        ...mapState({
+            mass_actions: (state) => state.config.config.mass_actions,
+            selected: (state) => state.selected,
+        }),
         ...mapGetters({
             label: 'getLabel'
-        })
+        }),
+    },
+    methods: {
+        performMassAction (action) {
+            new Function('value', `${action}(value)`)(this.selected)
+        }
     },
 }
 </script>

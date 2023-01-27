@@ -15,7 +15,8 @@ const getDefaultState = () => ({
     myObjects: false,
     searchPhrase: '',
     filters: { filter: [], must_not: [] },
-    getDataAbortController: new AbortController() // used to cancel getData request
+    getDataAbortController: new AbortController(), // used to cancel getData request
+    selected: [],
 })
 
 export default new Vuex.Store({
@@ -109,6 +110,9 @@ export default new Vuex.Store({
         cancelGetDataRequest(state) {
             state.getDataAbortController.abort()
             state.getDataAbortController = new AbortController()
+        },
+        setSelected(state, selected) {
+            state.selected = selected
         },
     },
     actions: {

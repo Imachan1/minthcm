@@ -32,6 +32,7 @@
             :loading-text="label('LBL_ESLIST_LOADING')"
             :no-data-text="label('LBL_ESLIST_TABLE_NO_DATA')"
             :server-items-length="data.total"
+            show-select
         >
             <template v-slot:item.actions="{item}">
                 <div class="d-flex justify-end" style="gap: 8px">
@@ -76,7 +77,6 @@ export default {
     components: { ESListPopupConfirm },
     data() {
         return {
-            selected: [],
             deleteConfirmationPopupData: null,
             coreActions: {
                 edit: {
@@ -120,6 +120,14 @@ export default {
             set(val) {
                 this.$store.commit('setTableOptions', val)
             },
+        },
+        selected: {
+            get () {
+                return this.$store.state.selected
+            },
+            set (val) {
+                this.$store.commit('setSelected', val)
+            }
         }
     },
     methods: {
