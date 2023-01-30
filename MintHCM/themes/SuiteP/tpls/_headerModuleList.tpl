@@ -808,16 +808,9 @@
                                                                                                             </div>
 
                                                                                                             <!-- MintHCM #100495 START -->
-                                                                                                            <!--
+                                                                                                            
                                                                                                             <div id="recentlyViewedSidebar" class="recentlyViewedSidebar">
-                                                                                                            -->
-                                                                                                            <div id="recentlyViewedSidebar" class="recentlyViewedSidebar" style="
-                                                                                                                {if is_array($favoriteRecords) && count($favoriteRecords) > 0}
-                                                                                                                    height:70%;
-                                                                                                                {else}
-                                                                                                                    height:100%;
-                                                                                                                {/if}
-                                                                                                            ">
+   
                                                                                                             <!-- MintHCM #100495 END -->
                                                                                                                 {if is_array($recentRecords) && count($recentRecords) > 0}
                                                                                                                     <h2 class="recent_h3">{$APP.LBL_LAST_VIEWED}</h2>
@@ -828,7 +821,7 @@
                                                                                                                 <ul class="nav nav-pills nav-stacked">
                                                                                                                     {foreach from=$recentRecords item=item name=lastViewed}
                                                                                                                         {if $item.module_name != 'Emails' && $item.module_name != 'InboundEmail' && $item.module_name != 'EmailAddresses'}<!--Check to ensure that recently viewed emails or email addresses are not displayed in the recently viewed panel.-->
-                                                                                                                            {if $smarty.foreach.lastViewed.index < 5}
+                                                                                                                            {if $smarty.foreach.lastViewed.index <= 20}
                                                                                                                                 <div class="recently_viewed_link_container_sidebar">
                                                                                                                                     <li class="recentlinks" role="presentation">
                                                                                                                                         <a title="{$item.module_name}"
