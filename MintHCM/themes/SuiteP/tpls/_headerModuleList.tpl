@@ -873,7 +873,7 @@
                                                                                                                         {*}
                                                                                                                         {if $smarty.foreach.lastViewed.index < 5}
                                                                                                                         *}
-                                                                                                                        {if $smarty.foreach.lastViewed.index < 10}
+                                                                                                                        {if $smarty.foreach.lastViewed.index <= 20}
                                                                                                                         <!-- MintHCM #100495 END -->
                                                                                                                             <div class="recently_viewed_link_container_sidebar">
                                                                                                                                 <li class="recentlinks" role="presentation">
