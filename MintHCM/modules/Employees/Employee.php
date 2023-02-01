@@ -384,5 +384,12 @@ class Employee extends Person implements EmailInterface
         return $return_array;
     }
 
+    protected function postSave()
+    {
+        if($this->securitygroup_id != $this->fetched_row['securitygroup_id'] && empty($this->securitygroup_id)){
+            $this->load_relationship('SecurityGroups');
+            $this->SecurityGroups->delete($this->fetched_row['securitygroup_id']);
+        }
+    }
     // MintHCM end
 }
