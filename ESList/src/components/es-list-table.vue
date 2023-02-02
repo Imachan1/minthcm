@@ -64,6 +64,9 @@
             </template>
             <template v-slot:header.data-table-select>
             </template>
+            <template v-for="multienum in customFields.multienums" v-slot:[`item.${multienum.field}`]="{item}">
+                <span :key="multienum.field" v-text="formatMultienum(item[multienum.field], multienum.options)" />
+            </template>
         </v-data-table>
     </div>
 </template>
@@ -161,6 +164,9 @@ export default {
                         onClick: (item) => eval(action.onClick)(item)
                     }
                 })
+        },
+        formatMultienum(value, labels) {
+            return value.replaceAll('^', '').split(',').filter(label => label in labels).map(label => labels[label]).join(', ');
         }
     },
     watch: {

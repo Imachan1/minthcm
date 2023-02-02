@@ -7,6 +7,7 @@
     "build": "vue-cli-service build",
     "build:mint": "vue-cli-service build --target wc --name es-list \"src/es-list.vue\" && cp \"dist/es-list.min.js\" ../MintHCM/include/ESListView/eslist-view.min.js",
     "build:remote": "npm run build:mint && bash copy.sh"
+    // "build:remote": "npm run build:mint && cp dist/es-list.min.js /Volumes/bartanowiczs/bartanowiczs732/www/contrain_preprod/include/ESListView/eslist-view.min.js"
   },
   "dependencies": {
     "@mdi/font": "^7.0.96",

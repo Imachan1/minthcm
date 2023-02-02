@@ -240,6 +240,14 @@ export default new Vuex.Store({
                     options: getters.getOptionsLabels(col.options)
                 }))
         },
+        multienums(state, getters) {
+            return Object.values(state.defs.columns)
+                .filter(col => col.type === 'multienum' && col.options)
+                .map(col => ({
+                    field: col.name,
+                    options: getters.getOptionsLabels(col.options)
+                }))
+        },
         dates(state) {
             return Object.values(state.defs.columns)
                 .filter(col => ['date', 'datetime', 'datetimecombo'].includes(col.type))
@@ -251,6 +259,7 @@ export default new Vuex.Store({
                 booleans: getters.booleans,
                 lists: getters.lists,
                 dates: getters.dates,
+                multienums: getters.multienums,
             }
         },
         parsedResults(state) {
