@@ -112,6 +112,7 @@ class ViewESList extends SugarView
     protected function prepareConfig()
     {
         $config = json_decode(file_get_contents('include/ESListView/config/eslist.config.json'), true);
+        $config['itemsPerPageOptions'] = $this->prepareItemsPerPageOtions($config['itemsPerPageOptions']);
         $variables = json_decode(file_get_contents('include/ESListView/config/eslist.variables.json'), true);
         $theme = json_decode(file_get_contents('include/ESListView/config/eslist.theme.json'), true);
 
@@ -255,5 +256,23 @@ class ViewESList extends SugarView
             $label = substr($label, 0, -1);
         }
         return $label;
+    }
+
+    protected function prepareItemsPerPageOtions($options) {
+        global $sugar_config;
+        $maxItemsPerPage = $sugar_config['list_max_entries_per_page'] ?? 20;
+        $options = $options ?? [5, 10, 20, 50, 100, 200, 500, 1000];
+        foreach ($options as $key => $option) {
+            if ($option > $maxItemsPerPage) {
+                array_splice($options, $key);
+                $options[$key] = $maxItemsPerPage;
+                return $options;
+            }
+        }
+        if (end($options) < $maxItemsPerPage) {
+            array_push($options, $maxItemsPerPage);
+        }
+
+        return $options;
     }
 }
