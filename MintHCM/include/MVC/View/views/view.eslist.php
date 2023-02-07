@@ -111,13 +111,13 @@ class ViewESList extends SugarView
 
     protected function prepareConfig()
     {
-        $config = json_decode(file_get_contents('include/ESListView/config/eslist.config.json'), true);
-        $config['itemsPerPageOptions'] = $this->prepareItemsPerPageOtions($config['itemsPerPageOptions']);
+        $this->config = json_decode(file_get_contents('include/ESListView/config/eslist.config.json'), true);
+        $this->config['itemsPerPageOptions'] = $this->prepareItemsPerPageOptions();
         $variables = json_decode(file_get_contents('include/ESListView/config/eslist.variables.json'), true);
         $theme = json_decode(file_get_contents('include/ESListView/config/eslist.theme.json'), true);
 
         if (isset($this->ESListViewDefs[$this->module]['actions'])) {
-            $config['actions'] = $this->ESListViewDefs[$this->module]['actions'] ?? [];
+            $this->config['actions'] = $this->ESListViewDefs[$this->module]['actions'] ?? [];
         }
 
         foreach ($theme as $property => $objects) {
@@ -126,7 +126,7 @@ class ViewESList extends SugarView
             }
         }
         return json_encode([
-            'config' => $config,
+            'config' => $this->config,
             'theme' => $theme,
         ]);
     }
@@ -258,10 +258,10 @@ class ViewESList extends SugarView
         return $label;
     }
 
-    protected function prepareItemsPerPageOtions($options) {
+    protected function prepareItemsPerPageOptions() {
         global $sugar_config;
-        $maxItemsPerPage = $sugar_config['list_max_entries_per_page'] ?? 20;
-        $options = $options ?? [5, 10, 20, 50, 100, 200, 500, 1000];
+        $maxItemsPerPage = $sugar_config['list_max_entries_per_page'] ?? $this->config['maxItemsPerPage'];
+        $options = $this->config['itemsPerPageOptions'];
         foreach ($options as $key => $option) {
             if ($option > $maxItemsPerPage) {
                 array_splice($options, $key);
