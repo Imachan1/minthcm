@@ -260,7 +260,7 @@ class ViewESList extends SugarView
 
     protected function prepareItemsPerPageOptions() {
         global $sugar_config;
-        $maxItemsPerPage = $sugar_config['list_max_entries_per_page'] ?? $this->config['maxItemsPerPage'];
+        $maxItemsPerPage = $sugar_config['list_max_entries_per_page'] ?? $this->config['defaultMaxItemsPerPage'];
         $options = $this->config['itemsPerPageOptions'];
         foreach ($options as $key => $option) {
             if ($option > $maxItemsPerPage) {
