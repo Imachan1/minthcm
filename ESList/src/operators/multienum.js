@@ -5,7 +5,7 @@ export default {
             { type: 'select', label: 'LBL_ESLIST_VALUES' }
         ],
         filters: [
-            { op: 'wildcard', value: '*{0}*' }
+            { op: 'wildcard', value: '*^{0}^*' }
         ]
     },
     not_contain: {
@@ -15,7 +15,7 @@ export default {
             { type: 'select', label: 'LBL_ESLIST_VALUES' }
         ],
         filters: [
-            { op: 'wildcard', value: '*{0}*' }
+            { op: 'wildcard', value: '*^{0}^*' }
         ]
     },
 }
