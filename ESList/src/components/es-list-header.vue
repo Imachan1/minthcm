@@ -7,31 +7,31 @@
             />
         </v-scale-transition>
         <div class="es-list-header">
-            <span v-text="'Akcje masowe (coming soon)'" style="opacity:.5;user-select:none" />
-            <v-select
-                v-if="false /*todo*/"
-                @change="null"
-                :value="null"
-                :items="[]"
-                dense
-                class=""
-                :label="label('LBL_ESLIST_CHOOSE_MULTIPLE')"
-                outlined
-                append-icon="mdi-chevron-down"
-                hide-details
-            />
-            <v-select
-                v-show="false /*todo*/"
-                @change="null"
-                :value="null"
-                :items="[]"
-                dense
-                class=""
-                :label="label('LBL_ESLIST_MASS_ACTION')"
-                outlined
-                append-icon="mdi-chevron-down"
-                hide-details
-            />
+            <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        v-if="massActions?.length"
+                        small
+                        color="primary"
+                        dark
+                        v-bind="attrs"
+                        v-on="on"
+                        :disabled="!selected?.length"
+                    >
+                        {{ label('LBL_ESLIST_MASS_ACTION') }}
+                        <v-icon right>mdi-triangle-small-down</v-icon>
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item
+                        v-for="(item, index) in massActions"
+                        :key="index"
+                        @click="performMassAction(item.action)"
+                    >
+                        <v-list-item-title>{{ label(item.label) }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
             <v-btn
                 small
                 class="ms-auto"
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import ESListPopupColumns from './popups/es-list-popup-columns'
 
 export default {
@@ -55,9 +55,19 @@ export default {
         columnsPopupVisible: false
     }),
     computed: {
+        ...mapState({
+            massActions: (state) => state.config.config.mass_actions,
+            selected: (state) => state.selected,
+            module: (state) => state.module,
+        }),
         ...mapGetters({
             label: 'getLabel'
-        })
+        }),
+    },
+    methods: {
+        performMassAction (action) {
+            new Function('value', `${action}(value)`)(this.selected, this.module)
+        }
     },
 }
 </script>
