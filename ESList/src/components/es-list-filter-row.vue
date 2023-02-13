@@ -73,10 +73,8 @@ export default {
     },
     methods: {
         handleFieldChange() {
-            if (!this.row.field || !this.operatorList[this.row.operator]) {
-                this.row.operator = null
-                this.row.inputs = []
-            }
+            this.row.operator = null
+            this.row.inputs = []
         },
         handleOperatorChange() {
             if (!this.row.operator || !this.operatorList[this.row.operator].inputs) {

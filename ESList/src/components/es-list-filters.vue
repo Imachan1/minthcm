@@ -205,7 +205,11 @@ export default {
             }
             let value = JSON.stringify(placeholders)
             inputs.forEach((input, i) => {
-                value = value.replaceAll(`{${i}}`, input.value)
+                if (value.includes(`"{${i}}"`)) {
+                    value = value.replaceAll(`"{${i}}"`, JSON.stringify(input.value))
+                } else {
+                    value = value.replaceAll(`{${i}}`, input.value)
+                }
             })
             return JSON.parse(value)    
         },
