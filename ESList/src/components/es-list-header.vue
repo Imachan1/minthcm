@@ -7,39 +7,31 @@
             />
         </v-scale-transition>
         <div class="es-list-header">
-        <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                color="primary"
-                dark
-                v-bind="attrs"
-                v-on="on"
-                >
-                {{ label('LBL_ESLIST_MASS_ACTION') }}
-                </v-btn>
-            </template>
-            <v-list>
-                <v-list-item
-                v-for="(item, index) in mass_actions"
-                :key="index"
-                @click="performMassAction(item.action)"
-                >
-                <v-list-item-title>{{ label(item.label) }}</v-list-item-title>
-                </v-list-item>
-            </v-list>
-        </v-menu>
-            <v-select
-                v-show="false /*todo*/"
-                @change="null"
-                :value="null"
-                :items="[]"
-                dense
-                class=""
-                :label="label('LBL_ESLIST_MASS_ACTION')"
-                outlined
-                append-icon="mdi-chevron-down"
-                hide-details
-            />
+            <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        v-if="massActions?.length"
+                        small
+                        color="primary"
+                        dark
+                        v-bind="attrs"
+                        v-on="on"
+                        :disabled="!selected?.length"
+                    >
+                        {{ label('LBL_ESLIST_MASS_ACTION') }}
+                        <v-icon right>mdi-triangle-small-down</v-icon>
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item
+                        v-for="(item, index) in massActions"
+                        :key="index"
+                        @click="performMassAction(item.action)"
+                    >
+                        <v-list-item-title>{{ label(item.label) }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
             <v-btn
                 small
                 class="ms-auto"
@@ -64,8 +56,9 @@ export default {
     }),
     computed: {
         ...mapState({
-            mass_actions: (state) => state.config.config.mass_actions,
+            massActions: (state) => state.config.config.mass_actions,
             selected: (state) => state.selected,
+            module: (state) => state.module,
         }),
         ...mapGetters({
             label: 'getLabel'
@@ -73,7 +66,7 @@ export default {
     },
     methods: {
         performMassAction (action) {
-            new Function('value', `${action}(value)`)(this.selected)
+            new Function('value', `${action}(value)`)(this.selected, this.module)
         }
     },
 }

@@ -32,7 +32,7 @@
             :loading-text="label('LBL_ESLIST_LOADING')"
             :no-data-text="label('LBL_ESLIST_TABLE_NO_DATA')"
             :server-items-length="data.total"
-            show-select
+            :show-select="massActions?.length"
         >
             <template v-slot:item.actions="{item}">
                 <div class="d-flex justify-end" style="gap: 8px">
@@ -105,7 +105,8 @@ export default {
             module: (state) => state.module,
             columnsDefs: (state) => state.defs.columns,
             isLoading: (state) => state.isLoading,
-            actions: (state) => state.config.config.actions
+            actions: (state) => state.config.config.actions,
+            massActions: (state) => state.config.config.mass_actions,
         }),
         ...mapGetters({
             headers: 'headers',
