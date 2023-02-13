@@ -199,7 +199,7 @@ export default {
             }
             return true
         },
-        replacePlaceholders(placeholders, inputs, operator) {
+        replacePlaceholders(placeholders, inputs) {
             if (!inputs || !inputs.length) {
                 return placeholders
             }
@@ -207,9 +207,6 @@ export default {
             inputs.forEach((input, i) => {
                 value = value.replaceAll(`"{${i}}"`, JSON.stringify(input.value))
             })
-            if (operator == 'wildcard') {
-                value = JSON.stringify('*' + JSON.parse(value) + '*')
-            }
             return JSON.parse(value)    
         },
         setFilters(filterRows) {
@@ -219,14 +216,11 @@ export default {
                 .forEach(row => {
                     const operator = this.getOperator(row.field, row.operator)
                     const filterType = operator.not ? 'must_not' : 'filter'
-                    let esKey = this.$store.state.defs.search[row.field].key
+                    const esKey = this.$store.state.defs.search[row.field].key
                     operator.filters.forEach(f => {
-                        if (f.op == 'wildcard') {
-                            esKey = esKey + '.keyword'
-                        }
                         query[filterType].push({
                             [f.op]: {
-                                [esKey]: this.replacePlaceholders(f.value, row.inputs, f.op)
+                                [esKey]: this.replacePlaceholders(f.value, row.inputs)
                             }
                         })
                     })
