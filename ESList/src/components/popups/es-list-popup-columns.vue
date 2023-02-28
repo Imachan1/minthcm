@@ -102,9 +102,10 @@ export default {
     methods: {
         onVisibleColumnsDragOver(e) {
             this.moveColumnToVisible(this.draggedColumnName)
-            if (e.path[0] && e.path[0].classList.contains('es-list-column-chip') && !e.path[0].classList.contains('dragged')) {
+            const path = e.composedPath()
+            if (path[0] && path[0].classList.contains('es-list-column-chip') && !path[0].classList.contains('dragged')) {
                 this.moveColumnToHidden(this.draggedColumnName)
-                const index = [...e.path[0].parentNode.children].indexOf(e.path[0])
+                const index = [...path[0].parentNode.children].indexOf(path[0])
                 this.visibleColumns.splice(index, 0, this.allColumns.find(c => c.name === this.draggedColumnName))
             }
         },
