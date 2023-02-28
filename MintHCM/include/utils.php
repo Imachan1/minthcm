@@ -380,7 +380,9 @@ function get_sugar_config_defaults()
             'h:i A' => '11:00 PM',
             'H.i' => '23.00', 'h.ia' => '11.00pm', 'h.iA' => '11.00PM', 'h.i a' => '11.00 pm',
             'h.i A' => '11.00 PM'),
-        'tracker_max_display_length' => 15,
+        // MINTHCM #100529 START
+        'tracker_max_display_length' => 22,
+        // MINTHCM #100529 END
         'translation_string_prefix' => return_session_value_or_default('translation_string_prefix',
             false),
         'upload_badext' => array(
@@ -434,6 +436,13 @@ function get_sugar_config_defaults()
             'systexpirationtime' => '7',
             'systexpirationtype' => '1',
             'systexpirationlogin' => '',
+            // MintHCM #103191 start
+            'minpwdlength' => 8,
+            'oneupper' => true,
+            'onelower' => true,
+            'onenumber' => true,
+            'onespecial' => true,
+            // MintHCM #103191 end
         ) : $passwordsetting,
         'use_real_names' => true,
         'search_wildcard_infront' => false,
@@ -4491,6 +4500,10 @@ function rebuildConfigFile($sugar_config, $sugar_version)
     // need to override version with default no matter what
     $sugar_config['sugar_version'] = $sugar_version;
 
+    if(!empty($apache_user = getApacheUser())){
+        $sugar_config['cron']['allowed_cron_users'][] = $apache_user;
+    }
+
     ksort($sugar_config);
 
     if (write_array_to_file('sugar_config', $sugar_config, 'config.php')) {
@@ -5846,6 +5859,19 @@ function kreport_getEmailTemplateArray()
     }
     return $new_array;
 }
+
+function getApacheUser()
+{
+    $apache_user = trim(exec("ps -ef | egrep '(httpd|apache2|apache)' | grep -v root | head -n1 | awk '{print $1}'"));
+    if(
+        empty($apache_user)
+        || 'root' == $apache_user
+    ){
+        return '';
+    }
+    return $apache_user;
+}
+
 if (!function_exists('getKReportsArrayList')) {
 
     function getKReportsArrayList($bean = null, $field_name = null,

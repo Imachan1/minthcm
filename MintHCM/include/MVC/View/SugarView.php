@@ -693,6 +693,12 @@ class SugarView
                 }
                 $extraTabs = array();
 
+                // MintHCM #102680 START
+                if($max_tabs < 8){
+                    $max_tabs = 8;
+                }
+                // MintHCM #102680 END
+
                 // Split it in to the tabs that go across the top, and the ones that are on the extra menu.
                 if (count($topTabs) > $max_tabs) {
                     $extraTabs = array_splice($topTabs, $max_tabs);

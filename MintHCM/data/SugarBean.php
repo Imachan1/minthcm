@@ -3168,7 +3168,10 @@ class SugarBean {
       if ( in_array('set_notification_body', get_class_methods($this)) ) {
          $xtpl = $this->set_notification_body($xtpl, $this);
       } else {
-         $xtpl->assign("OBJECT", translate('LBL_MODULE_NAME', $this->module_name));
+        // MintHCM #75607 START
+        //$xtpl->assign("OBJECT", translate('LBL_MODULE_NAME', $this->module_name));
+        $xtpl->assign("OBJECT", return_app_list_strings_language($current_language)['moduleList'][$this->module_name] ?? $this->module_name);
+        // MintHCM #75607 END
          $template_name = "Default";
       }
       if ( !empty($_SESSION["special_notification"]) && $_SESSION["special_notification"] ) {
