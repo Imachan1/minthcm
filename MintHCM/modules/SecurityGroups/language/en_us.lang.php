@@ -138,4 +138,5 @@ $mod_strings = array(
 
    'LBL_RELATIONSHIP_ROOMS_NAME' => 'Rooms',
    'LBL_EMPLOYEES_IN_DEPARTEMENTS' => 'Employees in the Department',
+   'LBL_PARENT_GROUP_ERROR' => 'Selected Group is a child Unit of this Group',
 );
