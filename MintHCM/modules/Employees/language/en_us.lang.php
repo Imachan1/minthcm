@@ -200,4 +200,5 @@ $mod_strings = array(
 
     'LBL_LINKED_ALLOCATIONS_TITLE' => 'Allocations',
     'LBL_TRAININGS' => 'Trainings',
+    'LBL_CANDIDATURES' => 'Candidatures',
 );
