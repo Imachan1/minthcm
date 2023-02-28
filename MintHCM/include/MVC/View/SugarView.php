@@ -582,6 +582,14 @@ class SugarView
 	    $tracker = BeanFactory::getBean('Trackers');
 	    $history = $tracker->get_recently_viewed($current_user->id);
 	    $ss->assign("recentRecords", $this->processRecentRecords($history));
+
+        // MintHCM #100495 START
+        $title = $this->bean->name ? $this->bean->name . " » " : '';
+        $title .= $this->action == "EditView" && empty($this->bean->id) ? $app_strings['LNK_CREATE'] . " » " : '';
+        $title .= $app_list_strings['moduleList'][$this->bean->module_name] ? $app_list_strings['moduleList'][$this->bean->module_name] . " » " : '';
+        $title .= $app_strings['LBL_BROWSER_TITLE'];
+        $ss->assign('TITLE', $title);
+        // MintHCM #100495 END
 	}
 
         $bakModStrings = $mod_strings;
