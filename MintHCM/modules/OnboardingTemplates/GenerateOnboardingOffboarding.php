@@ -193,6 +193,7 @@ class GenerateOnboardingOffboarding
         $bean->training_type = "internal";
         $bean->parent_type = $this->process->module_name;
         $bean->parent_id = $this->process->id;
+        $bean->element_id = $element->id;
         $bean->save();
         $this->addSecurityGroupToRecord($bean,
             $this->user_scheduled_onboarding->getUserPrivateGroup());
