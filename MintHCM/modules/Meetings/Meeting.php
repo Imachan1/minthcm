@@ -266,7 +266,7 @@ class Meeting extends SugarBean {
       $return_id = parent::save($check_notify);
 
       if ( $this->shouldBeProcessedApi() ) {
-         $this->saveRepeatlyApi();
+         // $this->saveRepeatlyApi(); //CR komentuje to bo spotkania w Mincie się tworzą cyklicznie przy kazdej edycji
       }
 
       if ($this->status != $bean->fetched_row['status'] && $this->status == 'Held') {
