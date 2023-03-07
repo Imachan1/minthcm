@@ -36,8 +36,8 @@ function displayConfirmationWindow(response) {
 
     dialog_div.dialog({
         resizable: false,
-        height: 250,
-        width: 400,
+        height: 300,
+        width: 500,
         modal: true,
         buttons: [
             {
