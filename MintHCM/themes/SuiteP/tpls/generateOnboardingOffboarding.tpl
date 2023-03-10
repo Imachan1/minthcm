@@ -19,7 +19,7 @@
     </div>
     <br />
     <b><%= APP.LBL_GENERATEONBOARDINGOFFBOARDING_EMPLOYEE_NAME %>:</b>
-    <div class="col-xs-12 col-sm-12 edit-view-field  yui-ac" type="relate" field="<%= relate_field_name %>_name">
+    <div id="related-employee-0" type="relate" field="<%= relate_field_name %>_name">
         <input type="text" name="<%= relate_field_name %>_name" class="vt_formulaSelector sqsEnabled yui-ac-input" tabindex="" id="<%= relate_field_name %>_name" size="" value="<%= employee_name %>" title="" autocomplete="off">
         <input class="vt_formulaSelector" type="hidden" name="<%= relate_field_name %>_id" id="<%= relate_field_name %>_id" value="<%= employee_id %>">
         <span class="id-ff multiple">
@@ -28,12 +28,17 @@
                 <img src="themes/SuiteP/images/id-ff-select.png">
             </button>
             <button type="button" name="btn_clr_<%= relate_field_name %>_name" id="btn_clr_<%= relate_field_name %>_name" tabindex="" title="Wyczyść użytkownika" class="button lastChild" onclick="SUGAR.clearRelateField( this.form, '<%= relate_field_name %>_name', '<%= relate_field_name %>_id' );
-                   $( '#<%= relate_field_name %>_name,#<%= relate_field_name %>_id' ).blur();" value="Wyczyść użytkownika">
+                $( '#<%= relate_field_name %>_name,#<%= relate_field_name %>_id' ).blur();" value="Wyczyść użytkownika">
                 <img src="themes/SuiteP/images/id-ff-clear.png">
             </button>
-        </span>
+            <button type="button" name="btn_add_next_employee_field" id="btn_add_next_employee_field" tabindex="" title="Dodaj kolejnego użytkownika" class="button lastChild" onclick="addRelatedField();
+                $( '#<%= relate_field_name %>_name,#<%= relate_field_name %>_id' ).blur();" value="Dodaj kolejnego użytkownika">
+                <span class="suitepicon suitepicon-action-plus"></span>
+            </button>
+        </span> 
     </div>
-    <br />
+
+    <div>
     <b><%= APP.LBL_GENERATEONBOARDINGOFFBOARDING_START_DATE %>:</b>
     <div class="col-xs-12 col-sm-12 edit-view-field" type="datetimecombo" field="goo_date_start" style="margin-top: 7px">
         <table border="0" cellpadding="0" cellspacing="0" class="dateTime">
@@ -54,3 +59,28 @@
         <input type="hidden" class="DateTimeCombo" id="goo_date_start" name="goo_date_start" value="">
     </div>
 </form>
+
+<script type="text/javascript">
+
+    var relatedEmployeeId = 0;
+
+    function addRelatedField() {
+        nextRelatedEmployeeId = relatedEmployeeId + 1; 
+        let html = '';
+        html += '<div id="related-employee-' + nextRelatedEmployeeId + '" type="relate" field="<%= relate_field_name %>_name_' + nextRelatedEmployeeId + '">';
+        html += '<input type="text" name="<%= relate_field_name %>_name' + nextRelatedEmployeeId + '" class="vt_formulaSelector sqsEnabled yui-ac-input" tabindex="" id="<%= relate_field_name %>_name' + nextRelatedEmployeeId + '" size="" value="<%= employee_name %>" title="" autocomplete="off">';
+        html += '<input class="vt_formulaSelector" type="hidden" name="<%= relate_field_name %>_id' + nextRelatedEmployeeId + '" id="<%= relate_field_name %>_id' + nextRelatedEmployeeId + '" value="<%= employee_id %>">';
+        html += '<span class="id-ff multiple">';
+        html += '<button type="button" name="btn_<%= relate_field_name %>_name' + nextRelatedEmployeeId + '" id="btn_<%= relate_field_name %>_name' + nextRelatedEmployeeId + '" tabindex="" title="Wybierz użytkownika" class="button firstChild" value="Wybierz użytkownika" onclick="open_popup( \'<%= relate_field_target_module %>\', 600, 400, \'&employee_status_advanced[]=Active\', true, false, {&quot;call_back_function&quot;:&quot;viewTools.form.function.set_return&quot;,&quot;form_name&quot;:&quot;<%= form_name %>&quot;,&quot;field_to_name_array&quot;:{&quot;id&quot;:&quot;<%= relate_field_name %>_id' + nextRelatedEmployeeId + '&quot;,&quot;name&quot;:&quot;<%= relate_field_name %>_name' + nextRelatedEmployeeId + '&quot;}}, \'single\', true );"><img src="themes/SuiteP/images/id-ff-select.png"></button>';
+        html += '<button type="button" name="btn_clr_<%= relate_field_name %>_name' + nextRelatedEmployeeId + '" id="btn_clr_<%= relate_field_name %>_name' + nextRelatedEmployeeId + '" tabindex="" title="Wyczyść użytkownika" class="button lastChild" onclick="SUGAR.clearRelateField( this.form, \'<%= relate_field_name %>_name' + nextRelatedEmployeeId + '\', \'<%= relate_field_name %>_id' + nextRelatedEmployeeId + '\' );$( \'#<%= relate_field_name %>_name,#<%= relate_field_name %>_id\' ).blur();" value="Wyczyść użytkownika"><img src="themes/SuiteP/images/id-ff-clear.png"></button>';
+        html += '<button type="button" name="btn_delete_employee_field" id="btn_delete_employee_field" tabindex="" title="Usuń użytkownika" class="button lastChild" onclick="deleteRelateField(' + nextRelatedEmployeeId + '); $( \'#<%= relate_field_name %>_name,#<%= relate_field_name %>_id\' ).blur();" value="Usuń użytkownika"><span class="suitepicon suitepicon-action-minus"></span></button>';
+        html += '</span></div>';
+
+        $('[id^="related-employee-"]').last().after(html);
+        relatedEmployeeId++;
+    }
+
+    function deleteRelateField(relatedEmployeeId) {
+        $("#related-employee-" + relatedEmployeeId + "").remove();
+    }
+</script>

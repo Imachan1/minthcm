@@ -17,11 +17,11 @@ generateOnboardingOffboarding = {
                text: "OK",
                class: "primary",
                click: function () {
-                  this.valid(function (employee_id, date_start, parent_id) {
+                  this.valid(function (employees_ids, date_start, parent_id) {
                      this.sendRecords(
                         $('#' + this.form_name + ' #parent_type').val(),
                         parent_id,
-                        employee_id,
+                        employees_ids,
                         date_start);
                      MintHCMPopup.close();
                   }.bind(this));
@@ -32,13 +32,21 @@ generateOnboardingOffboarding = {
          );
       }.bind(this));
    },
+   getEmployeesIds: function () {
+      let employeesIds = []; 
+      $('#' + this.form_name + ' [id^="employee_id"]').each(function () {
+        employeesIds.push(this.value);
+      });
+      return employeesIds;
+   },
    valid: function (callback) {
       let result = true;
       viewTools.GUI.fieldErrorUnmark();
+      let employees_ids = this.getEmployeesIds();
       let employee_field = $('#' + this.form_name + ' #' + this.relate_field_name + '_id');
       let date_start = $('#' + this.form_name + ' #goo_date_start');
       let parent_id = $('#' + this.form_name + ' #parent_id');
-      if (_.isEmpty(employee_field.val())) {
+      if (_.isEmpty(employees_ids)) {
          viewTools.GUI.fieldErrorMark(employee_field, viewTools.language.get('app_strings', 'ERR_MISSING_REQUIRED_FIELDS') + ' ' + viewTools.language.get('app_strings', 'LBL_GENERATEONBOARDINGOFFBOARDING_EMPLOYEE_NAME'));
          result = false;
       }
@@ -54,11 +62,11 @@ generateOnboardingOffboarding = {
          result = false;
       }
       if (result) {
-         callback(employee_field.val(), date_start.val(), parent_id.val());
+         callback(employees_ids, date_start.val(), parent_id.val());
       }
    },
-   sendRecords: function (module_name, template_id, employee_id, date_start) {
-      let url_ = "index.php?entryPoint=" + this.entrypoint + "&module_name=" + module_name + "&template_id=" + template_id + "&employee_id=" + employee_id + "&date_start=" + date_start;
+   sendRecords: function (module_name, template_id, employees_ids, date_start) {
+      let url_ = "index.php?entryPoint=" + this.entrypoint + "&module_name=" + module_name + "&template_id=" + template_id + "&employees_ids=" + employees_ids.join() + "&date_start=" + date_start;
       $.ajax({
          type: "POST",
          async: true,
