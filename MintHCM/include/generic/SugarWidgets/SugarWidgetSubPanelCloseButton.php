@@ -70,6 +70,11 @@ class SugarWidgetSubPanelCloseButton extends SugarWidgetField
 			case 'Tasks':
 				$new_status = 'Completed';
 				break;
+            /* MintHCM #114934 START */
+            case 'Trainings':
+                $new_status = 'held';
+                break;
+            /* MintHCM #114934 END */
 		}
         
 		if ($layout_def['EditView']) {
