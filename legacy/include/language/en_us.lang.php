@@ -4856,3 +4856,12 @@ $app_strings['LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS'] = 'Get notified if W
 $app_strings['LBL_WORKSCHEDULESACCEPTANCE'] = 'Get notified if the work schedule is approved by the supervisor';
 $app_strings['LBL_CLEAR_BUTTON_KANBAN_LABEL'] = 'Clear Filters';
 $app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';
+$app_strings['LBL_MY_SPENT_TIME_DASHLET'] = 'Spent Time';
+
+$app_list_strings['spenttime_type_dom'] = array(
+    'break' => 'Break',
+    'work' => 'Work',
+    'other' => 'Other',
+);
+
+$app_strings['LBL_ERR_CANNOT_CHANGE_WORK_SCHEDULE_STATUS'] = 'You cannot change status to "Closed" because there are gaps between spent times or his time frames do not coincide with working times';
