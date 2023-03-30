@@ -251,6 +251,7 @@ export default {
                     this.activeFilter = null
                 }
                 this.setFilters(newFilterRows)
+                this.$store.commit('setFiltersHeight', this.filterRows.length * 56)
             },
             deep: true,
         }

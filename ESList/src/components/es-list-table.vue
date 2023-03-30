@@ -9,6 +9,7 @@
             />
         </v-scale-transition>
         <v-data-table
+            :height="calculateListHeight()"
             :headers="headers"
             :items="parsedResults"
             class="es-list-table elevation-1"
@@ -94,7 +95,7 @@ export default {
                     icon: 'mdi-delete',
                     onClick: (item) => this.openDeleteConfirmationPopup({ id: item.id, name: item.name }),
                 }
-            }
+            },
         }
     },
     computed: {
@@ -132,6 +133,11 @@ export default {
             set (val) {
                 this.$store.commit('setSelected', val)
             }
+        },
+        filtersHeight: {
+            get () {
+                return this.$store.state.filtersHeight
+            },
         }
     },
     methods: {
@@ -176,7 +182,13 @@ export default {
         },
         formatMultienum(value, labels) {
             return value.replaceAll('^', '').split(',').filter(label => label in labels).map(label => labels[label]).join(', ');
-        }
+        },
+        calculateListHeight() {
+            const filtersHeight = this.filtersHeight;
+            const otherElementsFixedHeight = 358
+            const busySpace = filtersHeight + otherElementsFixedHeight
+            return `calc(100vh - ${busySpace}px)` 
+        },
     },
     watch: {
         options: {
@@ -246,6 +258,19 @@ export default {
     }
     .v-progress-linear__indeterminate.long.primary {
         background: var(--color-loader);
+    }
+    
+    table > tbody > tr > td:nth-child(2),
+    table > thead > tr > th:nth-child(2) {
+        position: sticky !important;
+        position: -webkit-sticky !important;
+        left: 0;
+        background: white;
+    }
+    table > tbody > tr > td:nth-child(2):hover,
+    table > tbody > tr:hover td:nth-child(2),
+    table > tbody > tr:hover {
+        background: #F5F5F5!important;
     }
 }
 </style>

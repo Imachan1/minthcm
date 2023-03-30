@@ -17,6 +17,7 @@ const getDefaultState = () => ({
     filters: { filter: [], must_not: [] },
     getDataAbortController: new AbortController(), // used to cancel getData request
     selected: [],
+    filtersHeight: 0,
 })
 
 export default new Vuex.Store({
@@ -114,6 +115,9 @@ export default new Vuex.Store({
         setSelected(state, selected) {
             state.selected = selected
         },
+        setFiltersHeight(state, filtersHeight) {
+            state.filtersHeight = filtersHeight
+        }
     },
     actions: {
         async callController({ state }, data) {
