@@ -218,6 +218,7 @@ export default new Vuex.Store({
                 value: col.name,
                 text: col.label,
                 sortable: !(col.sortable === false),
+                class: col.name == 'name' ? 'stickyColumn' : ''
             }))
             headers.push({
                 value: 'actions',

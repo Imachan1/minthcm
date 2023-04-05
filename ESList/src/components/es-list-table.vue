@@ -9,7 +9,8 @@
             />
         </v-scale-transition>
         <v-data-table
-            :height="calculateListHeight()"
+            ref="table"
+            :height="calculatedListHeight"
             :headers="headers"
             :items="parsedResults"
             class="es-list-table elevation-1"
@@ -48,7 +49,7 @@
                 </div>
             </template>
             <template v-for="link in customFields.links" v-slot:[`item.${link.nameField}`]="{item}">
-                <span :key="link.nameField">
+                <span :key="link.nameField" :class="link.nameField == 'name' ? 'stickyColumn' : ''">
                     <a v-if="item[link.urlField]" :href="item[link.urlField]" v-text="item[link.nameField]" />
                     <span v-else v-text="item[link.nameField]" />
                 </span>
@@ -111,6 +112,7 @@ export default {
             isLoading: (state) => state.isLoading,
             actions: (state) => state.config.config.actions,
             massActions: (state) => state.config.config.mass_actions,
+            filtersHeight: (state) => state.filtersHeight,
         }),
         ...mapGetters({
             headers: 'headers',
@@ -134,10 +136,9 @@ export default {
                 this.$store.commit('setSelected', val)
             }
         },
-        filtersHeight: {
-            get () {
-                return this.$store.state.filtersHeight
-            },
+        calculatedListHeight() {
+            const busySpace = this.filtersHeight + this.$store.state.config.config.otherElementsFixedHeight
+            return `calc(100vh - ${busySpace}px)` 
         }
     },
     methods: {
@@ -183,12 +184,6 @@ export default {
         formatMultienum(value, labels) {
             return value.replaceAll('^', '').split(',').filter(label => label in labels).map(label => labels[label]).join(', ');
         },
-        calculateListHeight() {
-            const filtersHeight = this.filtersHeight;
-            const otherElementsFixedHeight = 358
-            const busySpace = filtersHeight + otherElementsFixedHeight
-            return `calc(100vh - ${busySpace}px)` 
-        },
     },
     watch: {
         options: {
@@ -197,7 +192,7 @@ export default {
             },
             deep: true
         }
-    }
+    },
 }
 </script>
 
@@ -260,17 +255,36 @@ export default {
         background: var(--color-loader);
     }
     
-    table > tbody > tr > td:nth-child(2),
-    table > thead > tr > th:nth-child(2) {
+    table > tbody > tr > td:has(.stickyColumn),
+    table > thead > tr > .stickyColumn {
         position: sticky !important;
         position: -webkit-sticky !important;
         left: 0;
         background: white;
+        z-index: 7!important;
     }
-    table > tbody > tr > td:nth-child(2):hover,
-    table > tbody > tr:hover td:nth-child(2),
-    table > tbody > tr:hover {
+    table > tbody > tr > td:has(.stickyColumn):hover,
+    table > tbody > tr:hover td:has(.stickyColumn),
+    table > tbody > tr:hover,
+    .v-data-table__selected,
+    .v-data-table__selected > td
+     {
         background: #F5F5F5!important;
+    }
+
+    .v-data-table__wrapper::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        border-radius: 10px;
+    }
+
+    .v-data-table__wrapper::-webkit-scrollbar-thumb {
+        background: #3750a0;
+        border-radius: 10px;
+    }
+
+    .v-data-table__wrapper::-webkit-scrollbar-track {
+        border-radius: 10px;
     }
 }
 </style>

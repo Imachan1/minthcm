@@ -81,7 +81,7 @@
                 </v-select>
             </div>
         </div>
-        <div v-if="filterRows.length" class="es-list-filters mt-6">
+        <div ref="filterRows" v-if="filterRows.length" class="es-list-filters mt-6">
             <ESListFilterRow
                 v-for="row in filterRows"
                 :key="row"
@@ -251,7 +251,7 @@ export default {
                     this.activeFilter = null
                 }
                 this.setFilters(newFilterRows)
-                this.$store.commit('setFiltersHeight', this.filterRows.length * 56)
+                this.$store.commit('setFiltersHeight', this.$refs.filterRows?.getBoundingClientRect().height ?? 0)
             },
             deep: true,
         }
