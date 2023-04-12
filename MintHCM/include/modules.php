@@ -239,7 +239,7 @@ $modInvisList = array(
     'UpgradeWizard',
     'Trackers',
     'Connectors',
-    'Employees',
+    // 'Employees', // MintHCM #116668
     'Calendar',
     'Releases',
     'Sync',

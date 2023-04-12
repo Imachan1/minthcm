@@ -1297,6 +1297,7 @@ function insert_default_settings() {
     'Workplaces',
     'Rooms',
     'SecurityGroups',
+    'Employees', // MintHCM #116668
     );
 
    $hidden_subpanels = array (
