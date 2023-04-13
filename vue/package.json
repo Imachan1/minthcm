@@ -1,0 +1,47 @@
+{
+  "name": "mintvue",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vite preview",
+    "build": "vite build",
+    "lint": "vue-cli-service lint",
+    "dev": "vite",
+    "build:repo": "npm run build && rm ../assets -rf && cp -r dist/* ../",
+    "build:mint": "npm run build && ssh -p 50022 root@localhost 'rm /var/www/test123/assets -rf' && scp -P 50022 -r dist/* root@localhost:/var/www/test123"
+  },
+  "dependencies": {
+    "@mdi/font": "5.9.55",
+    "axios": "^1.3.5",
+    "core-js": "^3.30.0",
+    "pinia": "^2.0.34",
+    "roboto-fontface": "*",
+    "vue": "^3.2.47",
+    "vue-router": "^4.1.6",
+    "vuetify": "npm:@vuetify/nightly@next",
+    "webfontloader": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/webfontloader": "^1.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "@vitejs/plugin-vue": "^3.0.3",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-typescript": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/eslint-config-typescript": "^9.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^8.0.3",
+    "prettier": "^2.8.7",
+    "sass": "^1.60.0",
+    "sass-loader": "^13.2.2",
+    "typescript": "~4.5.5",
+    "vite": "^3.0.8",
+    "vite-plugin-vuetify": "^1.0.0-alpha.12",
+    "vue-cli-plugin-vuetify": "~2.5.8"
+  }
+}

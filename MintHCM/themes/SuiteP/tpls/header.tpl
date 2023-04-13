@@ -47,7 +47,7 @@
 <body onMouseOut="closeMenus();">
 
 {if $AUTHENTICATED}
-    <div id="ajaxHeader">
+    <div id="ajaxHeader" style="display:none /*#Mint-Vue*/">
         {include file="_headerModuleList.tpl" theme_template=true}
     </div>
 {/if}
@@ -66,7 +66,7 @@
 {/literal}
 <!-- Start of page content -->
 {if $AUTHENTICATED}
-<div id="bootstrap-container"
+<div id="bootstrap-container" style="margin-top:0px;margin-left:0px;width:100% /*#Mint-Vue*/"
      class="{if $THEME_CONFIG.display_sidebar && $smarty.cookies.sidebartoggle != 'collapsed'}col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2{/if} main bootstrap-container">
     <div id="content" class="content">
         <div id="pagecontent" class=".pagecontent">
