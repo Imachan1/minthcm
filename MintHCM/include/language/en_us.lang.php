@@ -4299,15 +4299,20 @@ $app_list_strings['reaction_icons_list'] = array(
    'dislike' => 'thumbs-down',
 );
  
-$app_strings['LBL_PASSWORD_LOGIN_ERROR_USER'] = 'Missing username and password';
-$app_strings['LBL_LOGIN_ERROR_USER'] = 'Username is missing';
-$app_strings['LBL_PASSWORD_ERROR_USER'] = 'The password is missing';
+$app_strings['LBL_APP_PLEASE_FILL_IT'] = 'Please fill it in.';
+$app_strings['LBL_APP_PLEASE_FILL_THEM'] = 'Please fill them in.';
+$app_strings['LBL_PASSWORD_LOGIN_ERROR_USER'] = 'The username and password are required.';
+$app_strings['LBL_LOGIN_ERROR_USER'] = 'The username is required.';
+$app_strings['LBL_PASSWORD_ERROR_USER'] = 'The password is required.';
 $app_strings['LBL_BAD_LOGIN_PASSWORD'] = 'Incorrect username or password';
 $app_strings['LBL_USERNAME'] = 'Username';
 $app_strings['LBL_PASSWORD'] = 'Password';
 $app_strings['LBL_WELCOME'] = 'Welcome';
 $app_strings['LBL_NO_LANGUAGES'] = 'No languages ​​available';
 $app_strings['LBL_NETWORK_ERROR'] = 'Network error';
+$app_strings['LBL_APP_LOGIN_FAILED'] = "Login failed";
+$app_strings['LBL_APP_NETWORK'] = "Could not find the server. Check internet connection or try providing another address.";
+$app_strings['LBL_APP_BAD_LOGIN_PASSWORD'] = "Incorrect username or password. Try another one.";
 $app_strings['LBL_LOGIN'] = 'Sign In';
 $app_strings['LBL_DASHBOARD'] = 'Dashboard';
 $app_strings['LBL_RESET'] = 'Reset';
