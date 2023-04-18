@@ -145,44 +145,6 @@ class WorkSchedulesApi
         return $return;
     }
 
-    public function setAssignedWorkingRoom($args)
-    {
-        $db = \DBManagerFactory::getInstance();
-        $user_id = $db->quote($args['assigned_user_id']);
-        if (!empty($user_id)) {
-            $query = $db->query("SELECT
-                    wp.id
-                    , wp.name
-                FROM
-                    workplaces AS wp
-                INNER JOIN
-                    allocations AS al
-                    ON
-                        al.deleted = '0'
-                        AND al.workplace_id = wp.id
-                        AND al.assigned_user_id = '{$user_id}'
-                        AND al.mode = 'permanent'
-                        AND al.date_from <= CURDATE()
-                        AND (
-                            al.date_to IS NULL
-                            OR al.date_to >= CURDATE()
-                        )
-                WHERE
-                    wp.deleted = '0'
-            ");
-            while ($row = $db->fetchByAssoc($query)) {
-                return [
-                    'id' => $row['id'],
-                    'name' => $row['name'],
-                ];
-            }
-        }
-        return [
-            'id' => '',
-            'name' => '',
-        ];
-    }
-
     public function canChangeWorkScheduleStatus($args)
     {
         $id = $args['id'];
@@ -209,6 +171,33 @@ class WorkSchedulesApi
         } else {
             return true;
         }
+    }
+
+
+    public function getWorkplaces($args) {
+        $assigned_user_id = $args;
+        if (is_array($args)) {
+            $assigned_user_id = $args['assigned_user_id'];
+        }
+        $db = DBManagerFactory::getInstance();
+        $sql = "SELECT DISTINCT w.id, w.name FROM allocations a
+                  INNER JOIN workplaces w ON a.workplace_id = w.id AND a.assigned_user_id = {$assigned_user_id} AND a.workplace_id = w.id AND w.deleted = 0 AND w.availability = 'active'
+                  WHERE a.deleted = 0 AND (UTC_TIMESTAMP() BETWEEN a.date_from AND a.date_to)
+                ";
+        $result = [];
+        $query = $db->query($sql);
+        while ($row = $db->fetchByAssoc($query)) {
+            array_push($result, $row);
+        }
+        return $result;
+    }
+
+    public function hasAtLeastOneActiveWorkplace($args) {
+        $workplaces = $this->getWorkplaces($args);
+        if (empty($workplaces)) {
+            return false;
+        }
+        return true;
     }
 }
 

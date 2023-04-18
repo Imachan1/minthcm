@@ -45,6 +45,7 @@
 
 require_once 'include/CalendarActivities/CalendarActivities.php';
 require_once 'include/DateFunctions/DateFormatter.php';
+require_once 'modules/WorkSchedules/api/WorkSchedulesApi.php';
 
 class WorkSchedules extends Basic
 {
@@ -415,6 +416,12 @@ class WorkSchedules extends Basic
             $workplace_id = $this->db->getOne($sql);
             if (($this->type === 'office') && (!empty($workplace_id) && ($return == 1))) {
                 $return = $this->checkAllocation($workplace_id);
+            }
+            if (($this->type === 'office') && (empty($workplace_id) && ($return == 1))) {
+                $has_allocation = (new WorkSchedulesApi())->hasAtLeastOneActiveWorkplace($this->assigned_user_id);
+                if ($has_allocation) {
+                    $return = 5;
+                }
             }
         }
         return $return;
