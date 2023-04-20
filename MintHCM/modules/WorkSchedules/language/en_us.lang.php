@@ -140,4 +140,5 @@ $mod_strings = array(
     'LBL_RELATIONSHIP_WORKPLACE_ID' => 'Workplace ID',
     'LBL_ERR_STATUS_NOT_ACTIVE' => 'Selected Workplace must be active.',
     'LBL_ERR_WORKPLACE_NOT_ACTIVE' => 'Selected Workplace does not have valid allocation for you.',
+    'LBL_START_END_TIME' => 'Start & end time',
 );
