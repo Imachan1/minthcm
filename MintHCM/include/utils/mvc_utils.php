@@ -126,6 +126,19 @@ function ajaxBannedModules(){
     return $bannedModules;
 }
 
+// mint start
+function ajaxBannedActions()
+{
+    $bannedActions = [
+        'eslistview',
+    ];
+    if (!empty($GLOBALS['sugar_config']['addAjaxBannedActions'])) {
+        $bannedActions = array_merge($bannedActions, $GLOBALS['sugar_config']['addAjaxBannedActions']);
+    }
+    return $bannedActions;
+}
+// mint stop
+
 function ajaxLink($url)
 {
     global $sugar_config;
@@ -133,12 +146,15 @@ function ajaxLink($url)
     $javascriptMatch = array();
 
     preg_match('/module=([^&]*)/i', $url, $match);
+    preg_match('/action=([^&]*)/i', $url, $actionMatch); // Mint
     preg_match('/^javascript/i', $url, $javascriptMatch);
 
     if(!empty($sugar_config['disableAjaxUI'])){
         return $url;
     }
     else if(isset($match[1]) && in_array($match[1], ajaxBannedModules())){
+        return $url;
+    } else if (isset($actionMatch[1]) && in_array(strtolower($actionMatch[1]), ajaxBannedActions())) { // Mint
         return $url;
     }
     //Don't modify javascript calls.

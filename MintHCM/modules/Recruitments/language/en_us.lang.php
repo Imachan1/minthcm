@@ -133,4 +133,5 @@ $mod_strings = array(
    'LBL_CURRENCY_RATE' => 'Currency Rate',
    'LBL_SHOW_MORE_INFORMATION' => 'Other',
    'LBL_RECRUITMENTS_ACTIVITIES_EMAILS_FROM_EMAILS_TITLE' => 'E-mails',
+   'LNK_ES_RECRUITMENTS_LIST' => 'View ES Recruitments',
 );

@@ -21,7 +21,7 @@ window.viewTools.api = {
                input.dataType = "text";
             }
             //Check async - false by default
-            if ( input.async === undefined || input.async != true || input.async != false ) {
+            if ( input.async === undefined || input.async != true) {
                input.async = false;
             }
             //Prepare URL_DATA

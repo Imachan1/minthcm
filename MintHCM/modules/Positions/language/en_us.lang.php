@@ -129,4 +129,5 @@ $mod_strings = array(
     'LBL_PARENT_SUPERVISION_ERROR' => 'Selected Position is a child Unit of this Position',
     'LBL_OFFBOARDINGTEMPLATE_ID' => 'Offboarding Template (ID)',
     'LBL_ONBOARDINGTEMPLATE_ID' => 'Onboarding Template (ID)',
+    'LNK_ES_POSITIONS_LIST' => 'View ES Positions',
 );

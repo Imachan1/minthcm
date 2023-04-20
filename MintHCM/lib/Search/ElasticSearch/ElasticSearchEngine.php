@@ -57,7 +57,8 @@ use SuiteCRM\Search\SearchResults;
 /**
  * SearchEngine that use Elasticsearch index for performing almost real-time search.
  */
-class ElasticSearchEngine extends SearchEngine {
+class ElasticSearchEngine extends SearchEngine
+{
 
    /** @var Client */
    private $client;
@@ -69,9 +70,10 @@ class ElasticSearchEngine extends SearchEngine {
     *
     * @param Client|null $client
     */
-   public function __construct(Client $client = null) {
+   public function __construct(Client $client = null)
+   {
       // View Tools start #60464
-      if ( !empty($GLOBALS['sugar_config']['unique_key']) ) {
+      if (!empty($GLOBALS['sugar_config']['unique_key'])) {
          $this->setIndex($GLOBALS['sugar_config']['unique_key'] . '_shared');
       }
       // View Tools end #60464
@@ -81,7 +83,8 @@ class ElasticSearchEngine extends SearchEngine {
    /**
     * @inheritdoc
     */
-   public function search(SearchQuery $query) {
+   public function search(SearchQuery $query)
+   {
       $this->validateQuery($query);
       $params = $this->createSearchParams($query);
       $start = microtime(true);
@@ -95,21 +98,24 @@ class ElasticSearchEngine extends SearchEngine {
    /**
     * @return string
     */
-   public function getIndex() {
+   public function getIndex()
+   {
       return $this->index;
    }
 
    /**
     * @param string $index
     */
-   public function setIndex($index) {
+   public function setIndex($index)
+   {
       $this->index = $index;
    }
 
    /**
     * @param SearchQuery $query
     */
-   protected function validateQuery(SearchQuery &$query) {
+   protected function validateQuery(SearchQuery &$query)
+   {
       $query->trim();
       $query->convertEncoding();
    }
@@ -121,7 +127,30 @@ class ElasticSearchEngine extends SearchEngine {
     *
     * @return array
     */
-   private function createSearchParams($query) {
+   protected function createSearchParams($query)  //MintHCM
+   {
+      if ($query->getOptions()['filter_by_module']) {
+         $params = [
+            'index' => $this->index,
+            'body' => [
+               'query' => [
+                  'bool' => [
+                     'filter' => [
+                        //
+                     ],
+                     'must_not' => [
+                        //
+                     ]
+                  ]
+               ]
+            ]
+         ];
+
+         $params = $this->addFilterByModule($params, $query->getOptions()['module']);
+         $params = $this->addPagination($params, $query->getFrom(), $query->getSize());
+         $params = $this->addSorting($params, $query->getOptions()['sorting']);
+         $params = $this->addFilters($params, $query->getOptions()['filters']);
+      } else {
       $params = [
          'index' => $this->index,
          'body' => [
@@ -131,14 +160,60 @@ class ElasticSearchEngine extends SearchEngine {
             'query' => [
                'query_string' => [
                   'query' => $query->getSearchString(),
-                  'fields' => [ 'name.*^5', '_all' ],
+                     'fields' => ['name.*^5', '_all'],
                   'analyzer' => 'standard',
                   'default_operator' => 'OR',
                   'minimum_should_match' => '66%',
                ],
-            ],
-         ],
+               ]
+            ]
+         ];
+      }
+
+      return $params;
+   }
+
+   private function addFilterByModule($params, $data)
+   {
+      if (isset($data)) {
+         $params['type'] = $data;
+      }
+
+      return $params;
+   }
+
+   protected function addPagination($params, $from, $size) //MintHCM
+   {
+      if (isset($from) && isset($size)) {
+         $params['body']['from'] = ($from - 1) * $size;
+         $params['body']['size'] = $size;
+      }
+
+      return $params;
+   }
+
+   private function addSorting($params, $data)
+   {
+      if (isset($data)) {
+         $column = $data['column'];
+         $direction = $data['direction'];
+         $parsedData = [
+            $column ? $column : '_score' => [
+               'order' => $direction ? $direction : 'asc'
+            ]
       ];
+         $params['body']['sort'] = $parsedData;
+      }
+
+      return $params;
+   }
+
+   private function addFilters($params, $data)
+   {
+         if (isset($data)) {
+         $params['body']['query']['bool']['filter'] = $data['filter'];
+         $params['body']['query']['bool']['must_not'] = $data['must_not'];
+      }
 
       return $params;
    }
@@ -150,10 +225,13 @@ class ElasticSearchEngine extends SearchEngine {
     *
     * @return array
     */
-   private function runElasticSearch($params) {
+   protected function runElasticSearch($params) //MintHCM
+   {
       try {
          $results = $this->client->search($params);
-      } /** @noinspection PhpRedundantCatchClauseInspection */ catch ( BadRequest400Exception $exception ) {
+      }
+      /** @noinspection PhpRedundantCatchClauseInspection */
+      catch (BadRequest400Exception $exception) {
          throw new SearchInvalidRequestException('The query was not valid.');
       }
 
@@ -168,16 +246,16 @@ class ElasticSearchEngine extends SearchEngine {
     *
     * @return array
     */
-   private function parseHits($hits) {
+   protected function parseHits($hits) //MintHCM
+   {
       $hitsArray = $hits['hits']['hits'];
 
       $results = [];
 
-      foreach ( $hitsArray as $hit ) {
+      foreach ($hitsArray as $hit) {
          $results[$hit['_type']][] = $hit['_id'];
       }
 
       return $results;
    }
-
 }
