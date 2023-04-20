@@ -179,11 +179,15 @@ class WorkSchedulesApi
         if (is_array($args)) {
             $assigned_user_id = $args['assigned_user_id'];
         }
+        //CR brak obsługi danych wejściowych. A jak $assigned_user_id jest puste to co wtedy?
         $db = DBManagerFactory::getInstance();
         $sql = "SELECT DISTINCT w.id, w.name FROM allocations a
                   INNER JOIN workplaces w ON a.workplace_id = w.id AND a.assigned_user_id = {$assigned_user_id} AND a.workplace_id = w.id AND w.deleted = 0 AND w.availability = 'active'
                   WHERE a.deleted = 0 AND (UTC_TIMESTAMP() BETWEEN a.date_from AND a.date_to)
-                ";
+                ";//CR SQL podante na injection -> użyć $db->quoted();
+                //CR ta SQL sprawdza tylkopernamentnie przypisane stanowiska? A rotacyjne?
+        //CR uważam, że sama funkcja powinna być osadzona w obiekcie pracownika by można było zapisać:
+        //$employee->getActiveWorkplaces();
         $result = [];
         $query = $db->query($sql);
         while ($row = $db->fetchByAssoc($query)) {

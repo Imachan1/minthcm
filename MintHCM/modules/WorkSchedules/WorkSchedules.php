@@ -412,13 +412,15 @@ class WorkSchedules extends Basic
             if ($return && $date_end != $row_de) {
                 $return = 3;
             }
-            $sql = "SELECT workplace_id FROM workschedules WHERE id ='{$this->id}'";
+            $sql = "SELECT workplace_id FROM workschedules WHERE id ='{$this->id}'"; //CR po co te zapytanie?
             $workplace_id = $this->db->getOne($sql);
+            //CR można sprawdzić to poprzez !empty($this->workplace_id)
             if (($this->type === 'office') && (!empty($workplace_id) && ($return == 1))) {
-                $return = $this->checkAllocation($workplace_id);
+                $return = $this->checkAllocation($workplace_id); //CR tu jest jedno sprawdzenie alokacji
             }
             if (($this->type === 'office') && (empty($workplace_id) && ($return == 1))) {
-                $has_allocation = (new WorkSchedulesApi())->hasAtLeastOneActiveWorkplace($this->assigned_user_id);
+                $has_allocation = (new WorkSchedulesApi())->hasAtLeastOneActiveWorkplace($this->assigned_user_id); //CR a tu drugie. Powinna być jedna funkcja od ich weryfikacji
+                //CR jeżeli z Bean odwołujesz się co API to wiedz że coś jest nie tak z architekturą
                 if ($has_allocation) {
                     $return = 5;
                 }
