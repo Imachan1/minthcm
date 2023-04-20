@@ -17,17 +17,4 @@ import LoadingScreen from '@/components/LoadingScreen.vue'
 const backend = useBackendStore()
 const ux = useUxStore()
 backend.init()
-console.log(import.meta.env)
-console.log('process', window.process?.env)
 </script>
-
-<style lang="scss">
-// global styles
-html {
-    overflow-y: auto !important;
-}
-a {
-    color: inherit;
-    text-decoration: none;
-}
-</style>

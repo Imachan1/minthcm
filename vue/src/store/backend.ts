@@ -3,6 +3,8 @@ import { defineStore } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '@/composables/useApi'
 import { useAuthStore } from './auth'
+import { useUrlStore } from './url'
+import { useAlertsStore } from './alerts'
 
 interface Favorite {
     id: string
@@ -16,24 +18,35 @@ interface Recent {
     item_summary: string
 }
 
-interface Tab {
-    label: string
-    modules: object
-}
-
 interface Language {
     app_strings: { [key: string]: string }
     app_list_strings: { [key: string]: object }
     modules: { [key: string]: { [key: string]: string } }
 }
 
+interface ModuleAction {
+    title: string
+    icon: string
+    url: string
+    options: []
+}
+
+interface Module {
+    key: string
+    label: string
+    icon: string
+    actions: ModuleAction[]
+}
+
 export const useBackendStore = defineStore('backend', () => {
     const initialLoading = ref(true)
     const favorites = ref<Favorite[]>([])
     const recents = ref<Recent[]>([])
-    const tabs = ref<Tab[]>([])
+    const modules = ref<Module[]>([])
     const route = useRoute()
     const router = useRouter()
+    const url = useUrlStore()
+    const alerts = useAlertsStore()
 
     const lang = ref<Language>({
         app_strings: {},
@@ -45,10 +58,10 @@ export const useBackendStore = defineStore('backend', () => {
         return (label: string, module?: string) => {
             let lbl = ''
             if (module) {
-                lbl = lang.value.modules[module]?.[label]
+                lbl = lang.value.modules?.[module]?.[label]
             }
             if (!lbl) {
-                lbl = lang.value.app_strings[label]
+                lbl = lang.value.app_strings?.[label]
             }
             return lbl || label
         }
@@ -63,7 +76,7 @@ export const useBackendStore = defineStore('backend', () => {
         lang.value = initData.data?.lang ?? {}
         favorites.value = initData.data?.favorites ?? []
         recents.value = initData.data?.recents ?? []
-        tabs.value = initData.data?.tabs ?? []
+        modules.value = initData.data?.modules ?? []
         console.log('route', route)
         if (route.meta.auth !== false && !auth.user?.id) {
             router.push({ name: 'login' })
@@ -77,15 +90,21 @@ export const useBackendStore = defineStore('backend', () => {
                 router.push('/')
             }
         }
+        alerts.init()
         initialLoading.value = false
     }
+
+    const activeModule = computed(() => {
+        return modules.value.find((m) => m.key === url.module)
+    })
 
     return {
         init,
         initialLoading,
         favorites,
         recents,
-        tabs,
         label,
+        modules,
+        activeModule,
     }
 })

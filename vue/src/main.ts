@@ -4,6 +4,7 @@ import router from './router'
 import pinia from './store'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
+import './main.scss'
 
 loadFonts()
 

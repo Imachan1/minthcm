@@ -1,11 +1,11 @@
 <template>
-    <DefaultLayoutNavbar />
+    <DefaultLayoutTopbar />
     <DefaultLayoutSidebar />
     <slot></slot>
 </template>
 
 <script setup lang="ts">
-import DefaultLayoutNavbar from './DefaultLayoutNavbar.vue'
+import DefaultLayoutTopbar from './DefaultLayoutTopbar.vue'
 import DefaultLayoutSidebar from './DefaultLayoutSidebar.vue'
 </script>
 

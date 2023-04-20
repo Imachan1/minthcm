@@ -6,12 +6,12 @@ import { useBackendStore } from '@/store/backend'
 import { useAuthStore } from '@/store/auth'
 
 const routes: Array<RouteRecordRaw> = [
-    // {
-    //     path: '/',
-    //     name: 'dashboard',
-    //     component: DashboardView,
-    //     alias: '/Home',
-    // },
+    {
+        path: '/',
+        name: 'dashboard',
+        component: LegacyView, //todo: dashboard
+        alias: '/Home',
+    },
     {
         path: '/Users/Login',
         name: 'login',
@@ -36,12 +36,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/EditView/EditView.vue'),
         alias: '/:module/EditView',
     },
-    // {
-    //     path: '/:module',
-    //     name: 'list',
-    //     component: () => import('../views/ListView/ListView.vue'),
-    //     alias: '/:module/index',
-    // },
+    {
+        path: '/:module',
+        name: 'list',
+        component: () => import('../views/ListView/ListView.vue'),
+        alias: '/:module/index',
+    },
     {
         path: '/:catchAll(.*)',
         name: 'legacy',
@@ -55,7 +55,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-    console.log('router beforeEach')
     const backend = useBackendStore()
     const auth = useAuthStore()
     if (backend.initialLoading) {
@@ -69,11 +68,11 @@ router.beforeEach((to, from) => {
     }
 })
 
-// router.afterEach((to, from) => {
-//     if (to.name === 'legacy' && from.name === 'legacy') {
-//         router.go(0)
-//         return
-//     }
-// })
+router.afterEach((to, from) => {
+    if (to.name === 'legacy' && from.name === 'legacy') {
+        router.go(0)
+        return
+    }
+})
 
 export default router
