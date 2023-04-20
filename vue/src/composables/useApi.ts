@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 axios.defaults.baseURL = import.meta.env.BASE_URL
-
+;(window as any).axios = axios
 interface Request {
     url: string
     method?: string
