@@ -120,10 +120,7 @@ class CalendarDashlet extends Dashlet
         $cal_strings = return_module_language($current_language, 'Calendar');
 
         if (!ACLController::checkAccess('Calendar', 'list', true)) {
-            /* MintHCM #84212 START */
-            //ACLController::displayNoAccess(true);
             ACLController::displayNoAccess(false);
-            /* MintHCM #84212 END */  
         }
 
         $cal = new Calendar($this->view);
