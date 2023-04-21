@@ -30,8 +30,17 @@ html {
     }
 }
 
-.v-btn.bg-secondary {
-    --v-theme-overlay-multiplier: 0 !important;
+// scrollbar
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: rgb(var(--v-theme-surface)); 
+}
+::-webkit-scrollbar-thumb {
+    background: rgb(var(--v-theme-primary)); 
+    border-radius: 5px;
 }
 
 // list animation

@@ -13,6 +13,12 @@ const routes: Array<RouteRecordRaw> = [
         alias: '/Home',
     },
     {
+        path: '/Administration',
+        name: 'administration',
+        component: LegacyView, //todo
+        alias: '/Admin',
+    },
+    {
         path: '/Users/Login',
         name: 'login',
         component: LoginView,
