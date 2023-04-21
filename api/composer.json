@@ -1,0 +1,14 @@
+{
+    "autoload": {
+        "psr-4": {
+            "MintHCM\\Api\\": "app/",
+            "MintHCM\\custom\\Api\\": "custom/app/",
+            "MintHCM\\Modules\\": "modules/",
+            "MintHCM\\custom\\Modules\\": "custom/modules/"
+        }
+    },
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.5"
+    }
+}

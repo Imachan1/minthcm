@@ -1,0 +1,16 @@
+<?php
+
+use MintHCM\Modules\Trackers\api\controllers\ListAction;
+
+$routes = array(
+    "detail" => array(),
+    "list" => array(
+        "method" => "GET",
+        "path" => "",
+        "class" => ListAction::class,
+        "desc" => "Get modules list",
+        "options" => array(
+            'auth' => true,
+        ),
+    ),
+);
