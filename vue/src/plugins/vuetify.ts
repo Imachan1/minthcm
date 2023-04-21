@@ -2,8 +2,18 @@ import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
 import { createVuetify } from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
 
 export default createVuetify({
+    icons: {
+        defaultSet: 'mdi',
+        sets: { mdi },
+        aliases: {
+            ...aliases,
+            sortAsc: 'mdi-chevron-up',
+            sortDesc: 'mdi-chevron-down',
+        },
+    },
     theme: {
         defaultTheme: 'light',
         themes: {

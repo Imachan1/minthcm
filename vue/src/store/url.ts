@@ -49,6 +49,9 @@ export const useUrlStore = defineStore('url', () => {
 
     function fromLegacyUrl(url: string | URL) {
         if (typeof url === 'string') {
+            if (url.slice(0, 3) !== 'http') {
+                url = `${location.origin}/${url}`
+            }
             url = new URL(url)
         }
         const pathParams = {

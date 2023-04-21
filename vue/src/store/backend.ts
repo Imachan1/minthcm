@@ -106,5 +106,6 @@ export const useBackendStore = defineStore('backend', () => {
         label,
         modules,
         activeModule,
+        lang,
     }
 })
