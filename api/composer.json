@@ -2,9 +2,9 @@
     "autoload": {
         "psr-4": {
             "MintHCM\\Api\\": "app/",
-            "MintHCM\\custom\\Api\\": "custom/app/",
+            "MintHCM\\Custom\\Api\\": "custom/app/",
             "MintHCM\\Modules\\": "modules/",
-            "MintHCM\\custom\\Modules\\": "custom/modules/"
+            "MintHCM\\Custom\\Modules\\": "custom/modules/"
         }
     },
     "require": {

@@ -81,8 +81,6 @@ class RouteManager
         }
 
         $route->setName($route_name);
-        //setOptions
-        //setValidationParams
     }
 
     protected function addRoute($route)

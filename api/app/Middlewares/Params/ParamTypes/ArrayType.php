@@ -13,7 +13,7 @@ class ArrayType extends ParamType
 
     protected function parseValue($value)
     {
-        if(is_string($value)) {
+        if (is_string($value)) {
             $value = explode(',', $value);
         }
         return $value;

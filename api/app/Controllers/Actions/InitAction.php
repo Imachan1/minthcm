@@ -2,24 +2,25 @@
 
 namespace MintHCM\Api\Controllers\Actions;
 
+use MintHCM\Api\Controllers\Actions\LanguagesAction;
+use MintHCM\Api\Controllers\Actions\PreferencesAction;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
-use MintHCM\Api\Controllers\Actions\LanguagesAction;
 
 class InitAction
 {
-
     public function __invoke(Request $request, Response $response, array $args): Response
     {
         $response = $response->withHeader('Content-type', 'application/json');
 
-        $current_user_preferences = $this->getUserAllPreferences();
         $response_body = array();
         $response_body['user'] = $this->getCurrentUserData();
-        $response_body['preferences'] = $this->getUserPreferences($current_user_preferences);
-        $response_body['global'] = $this->getGlobalSettings();
-        $response_body['langugages'] = $this->getLanguages();
+        $preferences = $this->getPreferences();
+        $response_body['preferences'] = $preferences['preferences'];
+        $response_body['global'] = $preferences['global'];
+        $response_body['languages'] = $this->getLanguages();
         $response_body['modules'] = $this->getModuleList();
+        $response_body['quick_create'] = $this->getQuickCreate();
 
         $response->getBody()->write(json_encode($response_body));
         return $response;
@@ -41,50 +42,10 @@ class InitAction
         );
     }
 
-    private function getUserPreferences(array $current_user_preferences)
+    private function getPreferences()
     {
-        return array(
-            'date_format' => $current_user_preferences['global']['datef'] ?? '',
-            'time_format' => $current_user_preferences['global']['timef'] ?? '',
-            'name_format' => $current_user_preferences["global"]["default_locale_name_format"],
-        );
-    }
-
-    private function getUserAllPreferences()
-    {
-        global $current_user, $sugar_config;
-        if (empty($current_user->id)) {
-            return array();
-        }
-
-        $db = \DBManagerFactory::getInstance();
-        $result = $db->query("SELECT contents, category FROM user_preferences WHERE assigned_user_id='$current_user->id' AND deleted = 0", false, 'Failed to load user preferences');
-        $preferences = [];
-        while ($row = $db->fetchByAssoc($result)) {
-            $category = $row['category'];
-            $preferences[$category] = unserialize(base64_decode($row['contents']));
-        }
-        return $preferences;
-    }
-
-    private function getGlobalSettings()
-    {
-        global $sugar_config;
-        return array(
-            'calendar' => $sugar_config['calendar'],
-            'currency' => $sugar_config['currency'],
-            'date_format' => $sugar_config['datef'],
-            'time_format' => $sugar_config['timef'],
-            'default_date_format' => $sugar_config["default_date_format"],
-            'default_time_format' => $sugar_config["default_time_format"],
-            'default_language' => $sugar_config["default_language"],
-            'languages' => $sugar_config["languages"],
-            'date_formats' => $sugar_config["date_formats"],
-            'time_formats' => $sugar_config["time_formats"],
-            'name_format' => $sugar_config["default_locale_name_format"],
-            'name_formats' => $sugar_config["name_formats"],
-
-        );
+        $pref_action = new PreferencesAction();
+        return $pref_action->getPreferences();
     }
 
     private function getLanguages()
@@ -97,13 +58,80 @@ class InitAction
     {
         global $current_user, $app_list_strings;
         $modules = query_module_access_list($current_user);
+        $modules_icons = include "constants/module_icons.php";
+        $action_icons = include "constants/menu_icons.php";
         $response = array();
-        if(!is_array($modules)) return $response;
-        foreach($modules as $module) {
+        if (!is_array($modules)) {
+            return $response;
+        }
+
+        foreach ($modules as $module) {
             $response[] = array(
                 "name" => $app_list_strings['moduleList'][$module],
                 "label" => $module,
-                "icon" => "",
+                "icon" => $modules_icons[$label] ?? $modules_icons['default'],
+                "actions" => 'Home' === $module ? $this->getHomeActions() : $this->getModuleMenu($module, $action_icons),
+            );
+        }
+        return $response;
+    }
+
+    private function getHomeActions()
+    {
+        $pref_action = new PreferencesAction();
+        $user_pref = $pref_action->getUserAllPreferences();
+
+        $response = array();
+        if (empty($user_pref["Home"]["pages"])) {
+            return $response;
+        }
+
+        foreach ($user_pref["Home"]["pages"] as $page) {
+            $response[] = array(
+                "dashboard_label" => $page['pageTitleLabel'] ?? "",
+                "dashboard_name" => $page['pageTitle'] ?? "",
+            );
+        }
+        return $response;
+    }
+
+    private function getModuleMenu($module, $icons)
+    {
+        chdir('../legacy/');
+        $sugar_view = new \SugarView();
+        $menu = $sugar_view->getMenu($module);
+        chdir('../api/');
+
+        $response = array();
+        foreach ($menu as $item) {
+            $row = array(
+                "url" => $item[0],
+                "name" => $item[1],
+                "action" => $item[2],
+                "icon" => $icons[strtolower($item[2])] ?? $icons['default'],
+            );
+            if (isset($item[3])) {
+                $row['module'] = $item[3];
+            }
+            $response[] = $row;
+        }
+
+        return $response;
+    }
+
+    private function getQuickCreate()
+    {
+        $modules = include "constants/quick_create.php";
+        $response = array();
+
+        if (!is_array($modules)) {
+            return $response;
+        }
+
+        foreach ($modules as $module => $name) {
+            $response[] = array(
+                "module" => $module,
+                "name" => $name,
             );
         }
         return $response;
