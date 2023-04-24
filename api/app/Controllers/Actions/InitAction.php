@@ -69,7 +69,7 @@ class InitAction
             $response[] = array(
                 "name" => $app_list_strings['moduleList'][$module],
                 "label" => $module,
-                "icon" => $modules_icons[$label] ?? $modules_icons['default'],
+                "icon" => $modules_icons[$module] ?? $modules_icons['default'],
                 "actions" => 'Home' === $module ? $this->getHomeActions() : $this->getModuleMenu($module, $action_icons),
             );
         }
