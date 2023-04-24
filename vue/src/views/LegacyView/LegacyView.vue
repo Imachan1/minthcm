@@ -27,6 +27,9 @@ onBeforeUnmount(() => {
 })
 
 function handleMessageEvent(e: MessageEvent) {
+    if (!e.data || typeof e.data !== 'string' || e.data.slice(0, 3) !== 'http') {
+        return
+    }
     const path = url.fromLegacyUrl(e.data)
     if (route.path === path) {
         return

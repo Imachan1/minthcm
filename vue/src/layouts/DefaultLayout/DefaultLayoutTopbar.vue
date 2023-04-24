@@ -3,7 +3,7 @@
         <router-link class="img-logo" to="/">
             <img src="../../assets/mint_logo_white.svg" />
         </router-link>
-        <div style="width:40ch">
+        <div style="width: 40ch">
             <v-text-field
                 v-model="searchQuery"
                 class="search-field"
@@ -38,12 +38,21 @@
                     :variant="isActive ? 'elevated' : 'tonal'"
                 />
             </template>
-            <v-list>
-                <v-list-item title="Action 1" />
-                <v-list-item title="Action 2" />
-                <v-list-item title="Action 3" />
-                <v-list-item title="Action 4" />
-            </v-list>
+            <MintMenuList :items="backend.quickCreate" />
+            <!-- <v-list nav color="secondary" density="compact" class="menu-list">
+                <v-list-item
+                    v-for="qc in backend.quickCreate"
+                    :key="qc.module"
+                    :to="`/${qc.module}/EditView`"
+                >
+                    <template #prepend>
+                        <v-icon size="16" icon="mdi-pencil" />
+                    </template>
+                    <v-list-item-title>
+                        {{ qc.module }}
+                    </v-list-item-title>
+                </v-list-item>
+            </v-list> -->
         </v-menu>
 
         <v-menu offset="16" :close-on-content-click="false">
@@ -90,25 +99,19 @@
                     <template #prepend>
                         <v-icon size="16" icon="mdi-account" />
                     </template>
-                    <v-list-item-title>
-                        Profile
-                    </v-list-item-title>
+                    <v-list-item-title> Profile </v-list-item-title>
                 </v-list-item>
                 <v-list-item to="/Administration">
                     <template #prepend>
                         <v-icon size="16" icon="mdi-cog" />
                     </template>
-                    <v-list-item-title>
-                        Administration
-                    </v-list-item-title>
+                    <v-list-item-title> Administration </v-list-item-title>
                 </v-list-item>
                 <v-list-item to="/Users/Logout">
                     <template #prepend>
                         <v-icon size="16" icon="mdi-logout" />
                     </template>
-                    <v-list-item-title>
-                        Logout
-                    </v-list-item-title>
+                    <v-list-item-title> Logout </v-list-item-title>
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -118,13 +121,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useBackendStore } from '@/store/backend'
 import { useAuthStore } from '@/store/auth'
 import { useAlertsStore } from '@/store/alerts'
 import DefaultLayoutAlerts from './DefaultLayoutAlerts.vue'
+import MintMenuList from '@/components/MintMenuList.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
 const alerts = useAlertsStore()
+const backend = useBackendStore()
 
 const initialQuery = new URL(location.href).searchParams.get('query_string')
 const searchQuery = ref(initialQuery ?? '')
@@ -145,7 +151,7 @@ function search() {
 .top-bar {
     z-index: 1990;
     position: fixed;
-    height: 60px;
+    height: 72px;
     background: rgb(var(--v-theme-surface));
     width: 100%;
     display: flex;
@@ -164,14 +170,13 @@ function search() {
 }
 .img-logo {
     background: rgb(var(--v-theme-primary));
-    min-height: 60px;
-    height: 60px;
+    min-height: 72px;
+    height: 72px;
     width: 260px;
     z-index: 1000;
-    text-align: center;
     img {
-        padding: 12px 0px;
-        height: 60px;
+        padding: 12px 16px;
+        height: 58px;
     }
 }
 .search-field {
@@ -196,7 +201,6 @@ function search() {
     text-transform: capitalize;
 
     .v-icon {
-
     }
 }
 </style>

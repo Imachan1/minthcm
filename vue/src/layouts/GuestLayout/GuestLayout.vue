@@ -20,7 +20,7 @@
     width: 100%;
     color: white;
     background: rgb(var(--v-theme-primary));
-    height: 60px;
+    height: 72px;
     display: flex;
     padding: 0 16px;
     gap: 16px;

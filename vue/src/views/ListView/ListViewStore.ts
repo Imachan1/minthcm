@@ -25,7 +25,7 @@ export const useListViewStore = defineStore('listview', () => {
     const isLoading = ref(false)
 
     async function init() {
-        const result = await axios.post('index.php?action=ESList', {
+        const result = await axios.post('/legacy/index.php?action=ESList', {
             module: url.module,
             function_name: 'getInitialData',
         })
@@ -40,7 +40,7 @@ export const useListViewStore = defineStore('listview', () => {
     async function getData() {
         console.log('getData')
         isLoading.value = true
-        const result = await axios.post('index.php?action=ESList', {
+        const result = await axios.post('/legacy/index.php?action=ESList', {
             module: url.module,
             function_name: 'getResults',
             page: 1,

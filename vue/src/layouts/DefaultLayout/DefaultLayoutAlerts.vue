@@ -1,16 +1,16 @@
 <template>
     <v-list class="py-4">
-        <v-list-item v-for="alert in alerts.alerts" :key="alert.id">
+        <v-list-item v-for="alert in alerts.sortedAlerts" :key="alert.id">
             <div
                 class="alert"
                 v-ripple="{ class: 'text-primary' }"
                 :class="{ 'alert-faded': alert.is_read }"
             >
                 <div class="alert-body">
-                    <span class="alert-title" v-text="alert.title" />
+                    <span class="alert-title" v-text="alert.description" />
                     <span
                         class="alert-date"
-                        v-text="toRelativeDate(alert.date)"
+                        v-text="toRelativeDate(alert.date_entered)"
                     />
                 </div>
                 <div class="alert-nav">
@@ -20,7 +20,7 @@
                         variant="text"
                         density="comfortable"
                         color="secondary"
-                        @click.stop="null"
+                        @click.stop="alerts.close(alert.id)"
                     />
                     <v-btn
                         v-if="!alert.is_read"
@@ -30,7 +30,7 @@
                         size="small"
                         density="compact"
                         color="error"
-                        @click.stop="null"
+                        @click.stop="alerts.markRead(alert.id)"
                     />
                 </div>
             </div>
@@ -56,6 +56,7 @@ function toRelativeDate(date: string) {
 <style scoped lang="scss">
 .alert {
     display: flex;
+    justify-content: space-between;
     gap: 8px;
     border-radius: 8px;
     cursor: pointer;
@@ -85,7 +86,7 @@ function toRelativeDate(date: string) {
 
     .alert-nav {
         display: flex;
-        gap: 4px;
+        gap: 2px;
         flex-direction: column;
         align-items: center;
 

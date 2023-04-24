@@ -8,4 +8,8 @@ import './main.scss'
 
 loadFonts()
 
-createApp(App).use(router).use(vuetify).use(pinia).mount('#app')
+const app = createApp(App)
+
+app.use(router).use(vuetify).use(pinia)
+
+app.mount('#app')

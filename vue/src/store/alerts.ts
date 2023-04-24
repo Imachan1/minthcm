@@ -1,11 +1,15 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import axios from 'axios'
 
 interface Alert {
     id: string
-    title: string
-    date: string
+    name: string
+    description: string
+    date_entered: string
     is_read: boolean
+    parent_id: string
+    parent_type: string
 }
 
 export const useAlertsStore = defineStore('alerts', () => {
@@ -23,38 +27,42 @@ export const useAlertsStore = defineStore('alerts', () => {
             return
         }
         isFetching.value = true
-        setTimeout(() => {
-            alerts.value = [
-                {
-                    id: '1',
-                    title: 'Your work schedule from 12.04 has not been confirmed. Bla bla bla bla bla.',
-                    date: '2023-04-19 13:25:00',
-                    is_read: false,
-                },
-                {
-                    id: '2',
-                    title: 'Your work schedule from 11.04 has not been confirmed. Bla bla bla bla bla.',
-                    date: '2023-04-15 23:30:00',
-                    is_read: true,
-                },
-                {
-                    id: '3',
-                    title: 'Your work schedule from 10.04 has not been confirmed. Bla bla bla bla bla. Your work schedule from 10.04 has not been confirmed. Bla bla bla bla bla.',
-                    date: '2023-01-14 05:45:37',
-                    is_read: false,
-                },
-            ]
-            isFetching.value = false
-        }, 3000)
+        const response = await axios.get('/api/Alerts')
+        console.log('alerts', response.data)
+        alerts.value = response.data
+        isFetching.value = false
+    }
+
+    async function markRead(id: string) {
+        const response = await axios.patch(`/api/Alerts/${id}`, {
+            is_read: true,
+        })
+        fetchAlerts()
+        console.log('markRead', response)
+    }
+
+    async function close(id: string) {
+        const response = await axios.patch(`/api/Alerts/${id}`, {
+            is_closed: true,
+        })
+        fetchAlerts()
+        console.log('close', response)
     }
 
     const unreadAlertsCount = computed(() => {
         return alerts.value.filter((alert) => !alert.is_read).length
     })
 
+    const sortedAlerts = computed(() => {
+        return [...alerts.value].sort((a, b) => a.date_entered < b.date_entered ? 1 : -1)
+    })
+
     return {
         init,
+        markRead,
+        close,
         alerts,
         unreadAlertsCount,
+        sortedAlerts,
     }
 })

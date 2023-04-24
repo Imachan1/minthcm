@@ -46,6 +46,7 @@ class ListAction
                 'parent_id' => $alert->parent_id,
                 'type' => $alert->type,
                 'target_module' => $alert->target_module,
+                'date_entered' => $alert->date_entered,
             );
 
         }

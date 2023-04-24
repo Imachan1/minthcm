@@ -2,8 +2,9 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-interface User {
+export interface User {
     id: string
+    is_admin: boolean
     first_name: string
     last_name: string
     full_name: string

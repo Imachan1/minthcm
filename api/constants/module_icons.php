@@ -42,7 +42,7 @@ return array(
     "OffboardingTemplates" => "clipboard-arrow-left",
     "ExitInterviews" => "account-remove",
     "Delegations" => "airplane",
-    "WorkSchedules" => "brief-clock",
+    "WorkSchedules" => "briefcase-clock",
     "Reservations" => "calendar-check",
     "Resources" => "package-variant",
     "Trainings" => "school",
@@ -70,5 +70,5 @@ return array(
     "EmployeeInteractionTracking" => "handshake",
     "KReports" => "chart-bar",
     "Calendar" => "calendar-blank",
-    "default" => "heart",
+    "default" => "star",
 );

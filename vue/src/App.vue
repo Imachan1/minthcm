@@ -2,7 +2,7 @@
     <v-app>
         <LoadingScreen v-if="backend.initialLoading" />
         <component v-else :is="ux.layout">
-            <v-main style="margin-top: 60px">
+            <v-main style="margin-top: 72px">
                 <router-view />
             </v-main>
         </component>

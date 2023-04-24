@@ -9,7 +9,7 @@
         floating
     >
         <v-list
-            v-if="backend.activeModule?.actions"
+            v-if="backend.activeModule?.label !== 'Home' && backend.activeModule?.actions"
             nav
             bg-color="primary"
             class="nav-list flex-shrink-0"
@@ -17,15 +17,15 @@
         >
             <v-list-item
                 v-for="action in backend.activeModule.actions"
-                :key="action.title"
+                :key="action.action"
                 class="nav-item"
-                :prepend-icon="action.icon"
-                :value="action.title"
+                :prepend-icon="`mdi-${action.icon}`"
+                :value="action.action"
                 :to="action.url"
                 :active="false"
             >
                 <v-list-item-title class="nav-title">
-                    {{ action.title }}
+                    {{ action.name }}
                 </v-list-item-title>
                 <template v-if="action.options" #append>
                     <v-menu>
@@ -67,19 +67,19 @@
                     <v-list-item
                         class="nav-item"
                         v-for="filteredModule in filteredModules"
-                        :key="filteredModule.key"
-                        :value="filteredModule.key"
-                        :to="`/${filteredModule.key}`"
-                        :active="filteredModule.key === url.module"
+                        :key="filteredModule.label"
+                        :value="filteredModule.label"
+                        :to="`/${filteredModule.label}`"
+                        :active="filteredModule.label === url.module"
                         color="secondary"
                     >
                         <template #prepend>
-                            <v-icon :icon="filteredModule.icon" />
+                            <v-icon :icon="`mdi-${filteredModule.icon}`" />
                         </template>
                         <v-list-item-title>
-                            {{ filteredModule.label }}
+                            {{ filteredModule.name }}
                         </v-list-item-title>
-                        <template #append>
+                        <template #append v-if="filteredModule.label !== 'Home'">
                             <v-menu>
                                 <template v-slot:activator="{ props }">
                                     <v-btn
@@ -100,15 +100,15 @@
                                 >
                                     <v-list-item
                                         v-for="action in filteredModule.actions"
-                                        :key="action.title"
+                                        :key="action.action"
                                         :to="action.url"
                                         :active="false"
                                     >
                                         <template #prepend>
-                                            <v-icon size="16" :icon="action.icon" />
+                                            <v-icon size="16" :icon="`mdi-${action.icon}`" />
                                         </template>
                                         <v-list-item-title>
-                                            {{ action.title }}
+                                            {{ action.name }}
                                         </v-list-item-title>
                                     </v-list-item>
                                 </v-list>
@@ -128,7 +128,7 @@
                 <v-expansion-panel-text>
                     <v-list nav class="nav-list" density="compact">
                         <v-list-item
-                            v-for="recent in backend.recents"
+                            v-for="recent in recents.recents"
                             :key="recent.item_id"
                             prepend-icon="mdi-clock"
                             :title="recent.item_summary"
@@ -147,7 +147,7 @@
                 <v-expansion-panel-text>
                     <v-list nav class="nav-list" density="compact">
                         <v-list-item
-                            v-for="favorite in backend.favorites"
+                            v-for="favorite in favorites.favorites"
                             :key="favorite.id"
                             prepend-icon="mdi-heart"
                             :title="favorite.item_summary"
@@ -166,9 +166,13 @@
 import { ref, computed } from 'vue'
 import { useBackendStore } from '@/store/backend'
 import { useUrlStore } from '@/store/url'
+import { useFavoritesStore } from '@/store/favorites'
+import { useRecentsStore } from '@/store/recents'
 
 const backend = useBackendStore()
 const url = useUrlStore()
+const favorites = useFavoritesStore()
+const recents = useRecentsStore()
 
 const filterModulesQuery = ref('')
 const filteredModules = computed(() => {
@@ -176,13 +180,13 @@ const filteredModules = computed(() => {
     if (!query) {
         return backend.modules
     }
-    return backend.modules.filter((m) => m.label.toLowerCase().includes(query))
+    return backend.modules.filter((m) => m.name.toLowerCase().includes(query))
 })
 </script>
 <style lang="scss">
 .drawer-nav {
-    top: 60px !important;
-    max-height: calc(100vh - 60px);
+    top: 72px !important;
+    max-height: calc(100vh - 72px);
     backdrop-filter: blur(10px);
     .v-navigation-drawer__content {
         display: flex;
@@ -216,6 +220,9 @@ const filteredModules = computed(() => {
 }
 .nav-accordion {
     white-space: nowrap;
+    box-shadow: 0 0 1rem #0003;
+    color: rgb(var(--v-theme-secondary));
+    font-weight: 600;
     :deep(.v-expansion-panel) {
         border-radius: 0px;
     }
@@ -229,6 +236,9 @@ const filteredModules = computed(() => {
         padding-left: 16px;
         padding-right: 16px;
     }
+    :deep(.v-list-item-title) {
+        font-weight: 600;
+    }
 }
 
 .nav-item {
@@ -236,7 +246,7 @@ const filteredModules = computed(() => {
     border-radius: 0px 20px 20px 0px;
     &:hover {
         transform: translateX(-8px);
-        background: #0004;
+        background: #0000001f;
     }
     &:hover .nav-title {
         color: white;
@@ -262,6 +272,7 @@ const filteredModules = computed(() => {
         font-size: 1rem;
         font-weight: 600;
         color: rgb(var(--v-theme-secondary));
+        line-height: 1.5;
     }
     .v-icon {
         color: rgb(var(--v-theme-secondary));

@@ -36,12 +36,12 @@ const routes: Array<RouteRecordRaw> = [
     //     name: 'detail',
     //     component: () => import('../views/DetailView/DetailView.vue'),
     // },
-    {
-        path: '/:module/EditView/:record',
-        name: 'edit',
-        component: () => import('../views/EditView/EditView.vue'),
-        alias: '/:module/EditView',
-    },
+    // {
+    //     path: '/:module/EditView/:record',
+    //     name: 'edit',
+    //     component: () => import('../views/EditView/EditView.vue'),
+    //     alias: '/:module/EditView',
+    // },
     {
         path: '/:module',
         name: 'list',
