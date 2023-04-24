@@ -64,12 +64,7 @@ async function handleSubmit() {
         isSubmiting.value = false
         return
     }
-    const formData = new FormData()
-    formData.append('user_name', username.value)
-    formData.append('username_password', password.value)
-    formData.append('module', 'Users')
-    formData.append('action', 'Authenticate')
-    await axios.post('index.php', formData)
+    await auth.authenticate(username.value, password.value)
     await backend.init()
     if (!auth.user?.id) {
         usernameError.value = 'Niepoprawny login lub hasło'

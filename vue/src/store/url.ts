@@ -23,7 +23,7 @@ export const useUrlStore = defineStore('url', () => {
     })
 
     function toLegacyUrl(url: string | URL) {
-        const base = import.meta.env.BASE_URL + 'index.php'
+        const base = import.meta.env.BASE_URL + 'legacy/index.php'
         if (typeof url === 'string') {
             url = new URL(url)
         }

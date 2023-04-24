@@ -28,12 +28,13 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '/index.php': process.env.PROXY_URL ?? '',
-            '/themes': process.env.PROXY_URL ?? '',
-            '/include': process.env.PROXY_URL ?? '',
-            '/cache': process.env.PROXY_URL ?? '',
-            '/custom': process.env.PROXY_URL ?? '',
-            '/modules': process.env.PROXY_URL ?? '',
+            '/api': process.env.PROXY_URL ?? '',
+            '/legacy/index.php': process.env.PROXY_URL ?? '',
+            '/legacy/themes': process.env.PROXY_URL ?? '',
+            '/legacy/include': process.env.PROXY_URL ?? '',
+            '/legacy/cache': process.env.PROXY_URL ?? '',
+            '/legacy/custom': process.env.PROXY_URL ?? '',
+            '/legacy/modules': process.env.PROXY_URL ?? '',
         },
     },
     /* remove the need to specify .vue files https://vitejs.dev/config/#resolve-extensions

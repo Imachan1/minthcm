@@ -70,7 +70,7 @@ export const useBackendStore = defineStore('backend', () => {
     async function init() {
         const auth = useAuthStore()
         const api = useApi()
-        const initData = await api.get('index.php?entryPoint=MintVue')
+        const initData = await api.get('/legacy/index.php?entryPoint=MintVue')
         console.log('initData', initData.data)
         auth.user = initData.data?.user ?? {}
         lang.value = initData.data?.lang ?? {}

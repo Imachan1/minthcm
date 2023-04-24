@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import axios from 'axios'
 
 interface User {
     id: string
@@ -12,7 +13,12 @@ export const useAuthStore = defineStore('auth', () => {
     const user = ref<User | null>(null)
 
     async function authenticate(username: string, password: string) {
-        console.log('authenticate', username, password)
+        const response = await axios.post('/api/login', {
+            username,
+            password,
+        })
+        console.log('auth', response)
+        // console.log('authenticate', username, password)
     }
 
     async function logout() {
