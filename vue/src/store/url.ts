@@ -66,7 +66,7 @@ export const useUrlStore = defineStore('url', () => {
         let path = '/'
         if (pathParams.module) {
             path += pathParams.module
-            if (pathParams.action) {
+            if (pathParams.action && pathParams.action !== 'index') {
                 path += `/${pathParams.action}`
                 if (pathParams.record) {
                     path += `/${pathParams.record}`

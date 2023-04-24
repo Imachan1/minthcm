@@ -21,7 +21,7 @@
                 class="nav-item"
                 :prepend-icon="`mdi-${action.icon}`"
                 :value="action.action"
-                :to="action.url"
+                :to="url.fromLegacyUrl(action.url)"
                 :active="false"
             >
                 <v-list-item-title class="nav-title">

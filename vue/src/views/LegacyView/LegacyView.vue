@@ -27,7 +27,7 @@ onBeforeUnmount(() => {
 })
 
 function handleMessageEvent(e: MessageEvent) {
-    if (!e.data || typeof e.data !== 'string' || e.data.slice(0, 3) !== 'http') {
+    if (!e.data || typeof e.data !== 'string' || e.data.slice(0, 4) !== 'http') {
         return
     }
     const path = url.fromLegacyUrl(e.data)
@@ -54,7 +54,7 @@ function handleLegacyUrlChange(e: Event) {
     if (routeName === 'login') {
         auth.user = null
     }
-    if (!['legacy', 'dashboard'].includes(routeName)) {
+    if (!['legacy', 'dashboard', 'administration'].includes(routeName)) {
         router.push(path)
     } else {
         // router.push(path) /* problem: podwójny reload legacy => legacy */

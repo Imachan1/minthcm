@@ -9,14 +9,20 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
         name: 'dashboard',
-        component: LegacyView, //todo: dashboard
+        component: LegacyView,
         alias: '/Home',
+        meta: {
+            isLegacy: true,
+        },
     },
     {
         path: '/Administration',
         name: 'administration',
-        component: LegacyView, //todo
+        component: LegacyView,
         alias: '/Admin',
+        meta: {
+            isLegacy: true,
+        },
     },
     {
         path: '/Users/Login',
@@ -52,6 +58,9 @@ const routes: Array<RouteRecordRaw> = [
         path: '/:catchAll(.*)',
         name: 'legacy',
         component: LegacyView,
+        meta: {
+            isLegacy: true,
+        },
     },
 ]
 
@@ -75,7 +84,7 @@ router.beforeEach((to, from) => {
 })
 
 router.afterEach((to, from) => {
-    if (to.name === 'legacy' && from.name === 'legacy') {
+    if (to.meta?.isLegacy && from.meta?.isLegacy) {
         router.go(0)
         return
     }
