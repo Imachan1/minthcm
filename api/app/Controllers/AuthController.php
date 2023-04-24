@@ -11,7 +11,9 @@ class AuthController
 
     public function login(Request $request, Response $response, array $args): Response
     {
-        $params = $request->getParsedBody();
+        $username = $request->getAttribute('username');
+        $password = $request->getAttribute('password');
+
         chdir('../legacy/');
         require_once 'include/MVC/SugarApplication.php';
         $app = new \SugarApplication();
@@ -19,13 +21,14 @@ class AuthController
         require_once 'modules/Users/authentication/SugarAuthenticate/SugarAuthenticateUser.php';
         require_once 'modules/Users/authentication/AuthenticationController.php';
         $sugar_auth = \AuthenticationController::getInstance();
-        $loginSuccess = $sugar_auth->login($params['username'], $params['password']);
+        $loginSuccess = $sugar_auth->login($username, $password);
         chdir('../api/');
 
         if (!$loginSuccess) {
             throw new HttpUnauthorizedException($request);
         }
 
+        $response = $response->withHeader('Content-type', 'application/json');
         $data = json_encode(['message' => 'Login success']);
         $response->getBody()->write($data);
         return $response;

@@ -3,10 +3,9 @@
 namespace MintHCM\Api\Middlewares\Params;
 
 use MintHCM\Api\Middlewares\Middleware;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\Exception\HttpUnauthorizedException;
 use Slim\Exception\HttpBadRequestException;
 
 class ParamsMiddleware extends Middleware
@@ -28,8 +27,8 @@ class ParamsMiddleware extends Middleware
     {
         $route = $this->getRoute($request);
         $path_params = $route->getArguments();
-        foreach($params_data as $name=>$data) {
-            if(!$data || !is_array($data) || !class_exists($data['type'])) {
+        foreach ($params_data as $name => $data) {
+            if (!$data || !is_array($data) || !class_exists($data['type'])) {
                 throw new HttpBadRequestException($request);
             }
             $class = new $data['type'];
@@ -38,20 +37,20 @@ class ParamsMiddleware extends Middleware
         }
     }
 
-    protected function validationParams (Request &$request, array $params, array $params_data, string $type)
+    protected function validationParams(Request &$request, array $params, array $params_data, string $type)
     {
         $globalParams = $this->getGlobalAcceptedParams($type);
         $params = array_diff_key($params, array_fill_keys($globalParams, $globalParams));
-        if(empty($params_data) && !empty($params)) {
+        if (empty($params_data) && !empty($params)) {
             throw new HttpBadRequestException($request);
         }
 
         $empty_params_data = array_fill_keys(array_keys($params_data), null);
         $merged_params = array_merge($empty_params_data, $params);
 
-        foreach($merged_params as $name=>$value) {
+        foreach ($merged_params as $name => $value) {
             $data = $params_data[$name] ?? false;
-            if(!$data || !is_array($data) || !class_exists($data['type'])) {
+            if (!$data || !is_array($data) || !class_exists($data['type'])) {
                 throw new HttpBadRequestException($request);
             }
             $class = new $data['type'];
@@ -63,12 +62,8 @@ class ParamsMiddleware extends Middleware
 
     protected function getGlobalAcceptedParams(string $type): array
     {
-        if($type === "queryParams") {
-            return array("XDEBUG_SESSION_START");
-        }
-        if($type === "bodyParams") {
-            return array();
-        }
-        return array();
+        $global_params = include "app/Constansts/global_params.php";
+
+        return $global_params[$type] ?? array();
     }
 }

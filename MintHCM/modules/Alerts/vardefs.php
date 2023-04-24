@@ -54,6 +54,13 @@ $dictionary['Alert'] = array(
          'massupdate' => false,
          'studio' => 'false',
       ),
+      'is_closed' => array(
+        'name' => 'is_closed',
+        'vname' => 'LBL_IS_CLOSED',
+        'type' => 'bool',
+        'massupdate' => false,
+        'studio' => 'false',
+     ),
       'target_module' => array(
          'name' => 'target_module',
          'vname' => 'LBL_TYPE',
