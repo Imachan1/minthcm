@@ -97,18 +97,15 @@ function checkIfCanBeClosed() {
             dialog_buttons[SUGAR.language.get( 'app_strings', 'LBL_DIALOG_OK' )] = function () {
                $( this ).dialog( "close" );
             };
-            if(call_constroller_data == "3"){
-               dialog.html( '<p>' + SUGAR.language.get( 'app_strings', 'ERR_CLOSE_PLAN' ).replace( '{name}', schedule_name ) + '</p>' ).dialog( {buttons: dialog_buttons} ).dialog( 'open' ).show();
-            }
-            else if(call_constroller_data == "2"){
-               dialog.html( '<p>' + SUGAR.language.get( 'app_strings', 'ERR_CLOSE_PLAN_WORK' ).replace( '{name}', schedule_name ) + '</p>' ).dialog( {buttons: dialog_buttons} ).dialog( 'open' ).show();
-            }
-            else if(call_constroller_data == "4"){
-               dialog.html( '<p>' + SUGAR.language.get( 'app_strings', 'ERR_WORKPLACE_IS_NOT_ACTIVE' ).replace( '{name}', schedule_name ) + '</p>' ).dialog( {buttons: dialog_buttons} ).dialog( 'open' ).show();
-            }
-            else if(call_constroller_data == "5"){
-                dialog.html( '<p>' + SUGAR.language.get( 'app_strings', 'ERR_WORKPLACE_REQUIRED_IF_ASSIGNED_TO_USER' ).replace( '{name}', schedule_name ) + '</p>' ).dialog( {buttons: dialog_buttons} ).dialog( 'open' ).show();
-            }
+            if(call_constroller_data == "2"){
+                dialog.html( '<p>' + viewTools.language.get( 'WorkSchedules', 'ERR_SPENT_TIMES_DO_NOT_OVERLAP_WITH_WORK_SCHEDULE' ).replace( '{name}', schedule_name ) + '</p>' ).dialog( {buttons: dialog_buttons} ).dialog( 'open' ).show();
+             }
+             if(call_constroller_data == "3"){
+                 dialog.html( '<p>' + viewTools.language.get( 'WorkSchedules', 'ERR_WORKPLACE_IS_REQUIRED' ).replace( '{name}', schedule_name ) + '</p>' ).dialog( {buttons: dialog_buttons} ).dialog( 'open' ).show();
+              }
+             else if(call_constroller_data == "4"){
+                dialog.html( '<p>' + viewTools.language.get( 'WorkSchedules', 'ERR_WORKPLACE_IS_NOT_ACTIVE' ).replace( '{name}', schedule_name ) + '</p>' ).dialog( {buttons: dialog_buttons} ).dialog( 'open' ).show();
+             }
             result = false;
          }
       }

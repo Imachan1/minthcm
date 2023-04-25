@@ -44,8 +44,9 @@
  */
 
 $mod_strings = array(
-    'ERR_CLOSE_PLAN' => 'You cannot approve this plan, because there are gaps between Spent times or its time frames do not coincide with related working times',
-    'ERR_CLOSE_PLAN_WORK' => 'You cannot approve this plan, because workplace has not been selected.',
+    'ERR_SPENT_TIMES_DO_NOT_OVERLAP_WITH_WORK_SCHEDULE' => 'You cannot approve this plan "{name}", because there are gaps between spent times or his time frames do not coincide with working times',
+    'ERR_WORKPLACE_IS_REQUIRED' => 'You cannot approve this plan "{name}", because workplace has not been selected.',
+    'ERR_WORKPLACE_IS_NOT_ACTIVE' => 'You cannot approve this plan "{name}", because workplace is not active.',
     'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
     'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
     'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
