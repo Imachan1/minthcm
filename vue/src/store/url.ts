@@ -28,9 +28,9 @@ export const useUrlStore = defineStore('url', () => {
             url = new URL(url)
         }
         const path = url.pathname.split('/')
-        const module = path[1]
-        const action = path[2]
-        const record = path[3]
+        const module = path[2]
+        const action = path[3]
+        const record = path[4]
         const legacyUrl = new URL(url.origin + base)
         if (module) {
             legacyUrl.searchParams.set('module', module)
@@ -44,6 +44,7 @@ export const useUrlStore = defineStore('url', () => {
         url.searchParams.forEach((value, param) => {
             legacyUrl.searchParams.set(param, value)
         })
+        console.log('legacyUrl', legacyUrl.href)
         return legacyUrl.href
     }
 

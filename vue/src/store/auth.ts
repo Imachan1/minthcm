@@ -23,8 +23,8 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     async function logout() {
-        user.value = null
-        console.log('logout')
+        const response = await axios.post('/api/logout')
+        location.href = '/test123'
     }
 
     return {

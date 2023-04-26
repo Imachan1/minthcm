@@ -27,33 +27,15 @@
             />
         </v-slide-x-transition>
         <v-spacer />
+        <MintButton text="Edit" />
         <v-menu offset="16">
             <template v-slot:activator="{ props, isActive }">
-                <v-btn
-                    v-bind="props"
-                    size="small"
-                    density="comfortable"
-                    color="secondary"
-                    icon="mdi-plus"
-                    :variant="isActive ? 'elevated' : 'tonal'"
-                />
+                <MintButton v-bind="props" icon="mdi-plus" :active="isActive" />
             </template>
             <MintMenuList :items="backend.quickCreate" />
-            <!-- <v-list nav color="secondary" density="compact" class="menu-list">
-                <v-list-item
-                    v-for="qc in backend.quickCreate"
-                    :key="qc.module"
-                    :to="`/${qc.module}/EditView`"
-                >
-                    <template #prepend>
-                        <v-icon size="16" icon="mdi-pencil" />
-                    </template>
-                    <v-list-item-title>
-                        {{ qc.module }}
-                    </v-list-item-title>
-                </v-list-item>
-            </v-list> -->
         </v-menu>
+
+        <MintButton icon="mdi-apps" />
 
         <v-menu offset="16" :close-on-content-click="false">
             <template v-slot:activator="{ props, isActive }">
@@ -64,57 +46,12 @@
                     location="bottom end"
                     :model-value="alerts.unreadAlertsCount > 0"
                 >
-                    <v-btn
-                        size="small"
-                        density="comfortable"
-                        color="secondary"
-                        icon="mdi-bell"
-                        :variant="isActive ? 'elevated' : 'tonal'"
-                    >
-                    </v-btn>
+                    <MintButton icon="mdi-bell" :active="isActive" />
                 </v-badge>
             </template>
             <DefaultLayoutAlerts />
         </v-menu>
-        <v-menu offset="16">
-            <template v-slot:activator="{ props, isActive }">
-                <v-btn
-                    class="user-btn"
-                    size="small"
-                    v-bind="props"
-                    rounded="xl"
-                    color="secondary"
-                    :variant="isActive ? 'elevated' : 'tonal'"
-                >
-                    <template #default>
-                        {{ auth.user?.first_name || auth.user?.last_name }}
-                    </template>
-                    <template #prepend>
-                        <v-icon size="20" icon="mdi-account" />
-                    </template>
-                </v-btn>
-            </template>
-            <v-list nav color="secondary" density="compact" class="menu-list">
-                <v-list-item to="/user">
-                    <template #prepend>
-                        <v-icon size="16" icon="mdi-account" />
-                    </template>
-                    <v-list-item-title> Profile </v-list-item-title>
-                </v-list-item>
-                <v-list-item to="/Administration">
-                    <template #prepend>
-                        <v-icon size="16" icon="mdi-cog" />
-                    </template>
-                    <v-list-item-title> Administration </v-list-item-title>
-                </v-list-item>
-                <v-list-item to="/Users/Logout">
-                    <template #prepend>
-                        <v-icon size="16" icon="mdi-logout" />
-                    </template>
-                    <v-list-item-title> Logout </v-list-item-title>
-                </v-list-item>
-            </v-list>
-        </v-menu>
+        <DefaultLayoutUser />
     </nav>
 </template>
 
@@ -122,13 +59,13 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useBackendStore } from '@/store/backend'
-import { useAuthStore } from '@/store/auth'
 import { useAlertsStore } from '@/store/alerts'
 import DefaultLayoutAlerts from './DefaultLayoutAlerts.vue'
+import DefaultLayoutUser from './DefaultLayoutUser.vue'
 import MintMenuList from '@/components/MintMenuList.vue'
+import MintButton from '@/components/MintButton.vue'
 
 const router = useRouter()
-const auth = useAuthStore()
 const alerts = useAlertsStore()
 const backend = useBackendStore()
 

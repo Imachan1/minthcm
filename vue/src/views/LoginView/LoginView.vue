@@ -76,7 +76,7 @@ async function handleSubmit() {
 <style scoped lang="scss">
 .login-view {
     background: #fff;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 112px);
     width: 100%;
     display: flex;
     flex-direction: column;

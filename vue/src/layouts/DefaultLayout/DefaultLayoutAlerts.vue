@@ -1,40 +1,43 @@
 <template>
     <v-list class="py-4">
-        <v-list-item v-for="alert in alerts.sortedAlerts" :key="alert.id">
-            <div
-                class="alert"
-                v-ripple="{ class: 'text-primary' }"
-                :class="{ 'alert-faded': alert.is_read }"
-            >
-                <div class="alert-body">
-                    <span class="alert-title" v-text="alert.description" />
-                    <span
-                        class="alert-date"
-                        v-text="toRelativeDate(alert.date_entered)"
-                    />
+        <template v-if="alerts.sortedAlerts?.length">
+            <v-list-item v-for="alert in alerts.sortedAlerts" :key="alert.id">
+                <div
+                    class="alert"
+                    v-ripple="{ class: 'text-primary' }"
+                    :class="{ 'alert-faded': alert.is_read }"
+                >
+                    <div class="alert-body">
+                        <span class="alert-title" v-text="alert.description" />
+                        <span
+                            class="alert-date"
+                            v-text="toRelativeDate(alert.date_entered)"
+                        />
+                    </div>
+                    <div class="alert-nav">
+                        <v-btn
+                            class="alert-delete-btn"
+                            icon="mdi-close"
+                            variant="text"
+                            density="comfortable"
+                            color="secondary"
+                            @click.stop="alerts.close(alert.id)"
+                        />
+                        <v-btn
+                            v-if="!alert.is_read"
+                            class="alert-not-read-dot"
+                            icon="mdi-circle"
+                            variant="text"
+                            size="small"
+                            density="compact"
+                            color="error"
+                            @click.stop="alerts.markRead(alert.id)"
+                        />
+                    </div>
                 </div>
-                <div class="alert-nav">
-                    <v-btn
-                        class="alert-delete-btn"
-                        icon="mdi-close"
-                        variant="text"
-                        density="comfortable"
-                        color="secondary"
-                        @click.stop="alerts.close(alert.id)"
-                    />
-                    <v-btn
-                        v-if="!alert.is_read"
-                        class="alert-not-read-dot"
-                        icon="mdi-circle"
-                        variant="text"
-                        size="small"
-                        density="compact"
-                        color="error"
-                        @click.stop="alerts.markRead(alert.id)"
-                    />
-                </div>
-            </div>
-        </v-list-item>
+            </v-list-item>
+        </template>
+        <span v-else v-text="'No alerts'" class="pa-4" />
     </v-list>
 </template>
 

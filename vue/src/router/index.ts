@@ -48,12 +48,12 @@ const routes: Array<RouteRecordRaw> = [
     //     component: () => import('../views/EditView/EditView.vue'),
     //     alias: '/:module/EditView',
     // },
-    {
-        path: '/:module',
-        name: 'list',
-        component: () => import('../views/ListView/ListView.vue'),
-        alias: '/:module/index',
-    },
+    // {
+    //     path: '/:module',
+    //     name: 'list',
+    //     component: () => import('../views/ListView/ListView.vue'),
+    //     alias: '/:module/index',
+    // },
     {
         path: '/:catchAll(.*)',
         name: 'legacy',

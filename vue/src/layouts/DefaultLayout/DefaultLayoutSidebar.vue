@@ -5,7 +5,7 @@
         :rail="$vuetify.display.mdAndDown"
         permanent
         width="260"
-        color="#d5e6e4dd"
+        :color="$vuetify.display.mdAndDown ? '#d5e6e4dd' : '#00000010'"
         floating
     >
         <v-list
@@ -61,7 +61,7 @@
                 <v-icon icon="mdi-magnify" />
             </template>
         </v-text-field>
-        <v-list nav class="nav-list nav-list-blurred flex-grow-1">
+        <v-list nav class="nav-list nav-list-blurred flex-grow-1" style="min-height:80px">
             <transition-group name="list" tag="ul">
                 <template v-if="filteredModules.length">
                     <v-list-item
@@ -69,7 +69,7 @@
                         v-for="filteredModule in filteredModules"
                         :key="filteredModule.label"
                         :value="filteredModule.label"
-                        :to="`/${filteredModule.label}`"
+                        :to="!['Calls', 'Candidates', 'Meetings', 'Tasks', 'Candidatures', 'Positions', 'Recruitments'].includes(filteredModule.label) ? `/${filteredModule.label}` : `/${filteredModule.label}/ESListView`"
                         :active="filteredModule.label === url.module"
                         color="secondary"
                     >
@@ -128,7 +128,7 @@
                 <v-expansion-panel-text>
                     <v-list nav class="nav-list" density="compact">
                         <v-list-item
-                            v-for="recent in recents.recents"
+                            v-for="recent in recents.recents?.slice(0, 9) ?? []"
                             :key="recent.item_id"
                             prepend-icon="mdi-clock"
                             :title="recent.item_summary"
