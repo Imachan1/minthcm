@@ -40,11 +40,34 @@
                     {else}
                         <div class="panel-body panel-collapse collapse" id="subpanel_{$subpanel_tab}">
                         {/if}
+                        {if $subpanel_tabs_properties.$i.dropzone == true}
+                            <div id="dZUpload" class="dropzone needsclick dz-clickable">
+                                <div class="dz-message needsclick">
+                                    <div class="dz-button"><span class="fas fa-plus-circle"></span></div>
+                                    <span class="note needsclick">
+                                        {sugar_translate label='dropzone_labels' module='app_list_strings' select='dictDefaultMessage'}
+                                    </span>
+                                </div>
+                            </div>
+                            <link rel="stylesheet" type="text/css" href="{sugar_getjspath file="include/Dropzone/dropzone.min.css"}" />
+                            <link rel="stylesheet" type="text/css" href="{sugar_getjspath file="include/Dropzone/files.css"}" />
+                            <script type="text/javascript">
+                                {literal}
+                                    $(document).ready(function() {
+                                        const module = $("form[name='DetailView'] input[name='module']").val();
+                                        const record = $("form[name='DetailView'] input[name='record']").val();
+                                        window.documentFiles = new PhotosFiles(record, module, {}, true);
+                                        window.documentFiles.init();
+                                    });
+                                {/literal}
+                            </script>
+                        {else}
                         <div class="tab-content">
                             <div id="list_subpanel_{$subpanel_tab}">
                                 {$subpanel_tabs_properties.$i.subpanel_body}
                             </div>
                         </div>
+                        {/if}
                     </div>
                 </div>
         </li>
