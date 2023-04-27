@@ -286,6 +286,7 @@ HTML;
                                     comments_module: '{$module_name}',
                                 },
                                 callback: function (data) {
+                                    data = data.slice(0, -2);
                                     $('[comment-for-id='+record+']').html(data);
                                     loadingMessgPanl.hide();
                                 }
