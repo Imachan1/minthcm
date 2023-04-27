@@ -739,6 +739,7 @@ $moduleList[] = 'Attitudes';
 $moduleList[] = 'Knowledge';
 $moduleList[] = 'SalaryRanges';
 $moduleList[] = 'EmployeeCertificates';
+$moduleList[] = 'Employees';  // MintHCM #116668
 //
 if (file_exists('include/modules_override.php')) {
     include 'include/modules_override.php';
