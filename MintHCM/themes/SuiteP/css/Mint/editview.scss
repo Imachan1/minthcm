@@ -84,7 +84,7 @@ input#btn_ActionLine.button[type="button"] {
     color: $color-mint-darkgreen-darker;
 }
 
-.edit-view-row .edit-view-row-item .label {
+.edit-view-row .edit-view-row-item .label, .edit-view-field label {
     color: #000;
     font-weight: 100;
 }
