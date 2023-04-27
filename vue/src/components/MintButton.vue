@@ -8,7 +8,7 @@
             props.active && 'active',
         ]"
         v-ripple="!disabled"
-        :icon="props.icon && !props.text ? props.icon : false"
+        :disabled="disabled"
     >
         <v-icon v-if="props.icon" :icon="props.icon" size="24" />
         <span v-if="props.text" v-text="props.text" />
@@ -22,7 +22,7 @@ interface Props {
     icon?: string
     text?: string
     tooltip?: string
-    variant?: 'text' | 'regular' | 'primary'
+    variant?: 'text' | 'regular' | 'primary' | 'nav'
     size?: 'small' | 'medium' | 'large'
     disabled?: boolean
     active?: boolean
@@ -42,13 +42,16 @@ const isIcon = computed(() => props.icon && !props.text)
 .mint-button {
     border-radius: 50px;
     font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.47px;
     transition: all 150ms ease-in-out;
     cursor: pointer;
-    padding: 4px 12px;
+    padding: 7px 14px 7px 14px;
     text-transform: uppercase;
     display: flex;
     align-items: center;
     gap: 8px;
+    white-space: nowrap;
 
     &:focus-visible {
         outline: thin solid #0002;
@@ -81,13 +84,13 @@ const isIcon = computed(() => props.icon && !props.text)
         background: #e0e0e0;
     }
     &.active {
-        color: white;
+        color: #f5fbfa;
         background: rgb(var(--v-theme-secondary));
     }
 }
 
 .mint-button-primary {
-    color: white;
+    color: #f5fbfa;
     background: rgb(var(--v-theme-secondary));
     &:hover {
         background: rgb(var(--v-theme-secondary-dark));
@@ -96,6 +99,24 @@ const isIcon = computed(() => props.icon && !props.text)
         cursor: default;
         color: #e0e0e0;
         background: #8b8b8b;
+    }
+}
+
+.mint-button-nav {
+    color: rgb(var(--v-theme-secondary));
+    background: #f5fbfa;
+    &:hover {
+        color: rgb(var(--v-theme-secondary-dark));
+        background: #e0ece9;
+    }
+    &.disabled {
+        cursor: default;
+        color: #8b8b8b;
+        background: #e0e0e0;
+    }
+    &.active {
+        color: #f5fbfa;
+        background: rgb(var(--v-theme-secondary));
     }
 }
 

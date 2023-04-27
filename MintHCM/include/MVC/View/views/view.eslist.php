@@ -263,14 +263,18 @@ class ViewESList extends SugarView
         $maxItemsPerPage = $sugar_config['list_max_entries_per_page'] ?? $this->config['defaultMaxItemsPerPage'];
         $options = $this->config['itemsPerPageOptions'];
         foreach ($options as $key => $option) {
-            if ($option > $maxItemsPerPage) {
+            if ($option['value'] > $maxItemsPerPage) {
                 array_splice($options, $key);
-                $options[$key] = $maxItemsPerPage;
+                $options[$key]['value'] = $maxItemsPerPage;
+                $options[$key]['title'] = (string)$maxItemsPerPage;
                 return $options;
             }
         }
-        if (end($options) < $maxItemsPerPage) {
-            array_push($options, $maxItemsPerPage);
+        if (end($options)['value'] < $maxItemsPerPage) {
+            array_push($options, [
+                'value' => $maxItemsPerPage,
+                'title' => (string)$maxItemsPerPage,
+            ]);
         }
 
         return $options;

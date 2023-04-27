@@ -11,7 +11,7 @@ process.env = {
 }
 
 export default defineConfig({
-    base: '/',
+    base: '/minthcm/',
     plugins: [
         vue(),
         vuetify({
@@ -27,9 +27,18 @@ export default defineConfig({
         },
     },
     server: {
+        base: '/minthcm',
         proxy: {
-            '/api': process.env.PROXY_URL ?? '',
-            '/legacy': process.env.PROXY_URL ?? '',
+            '/minthcm/api': {
+                target: process.env.PROXY_URL ?? '',
+                rewrite: (path) => path.replace('/minthcm', ''),
+                changeOrigin: true,
+            },
+            '/minthcm/legacy': {
+                target: process.env.PROXY_URL ?? '',
+                rewrite: (path) => path.replace('/minthcm', ''),
+                changeOrigin: true,
+            },
         },
     },
     /* remove the need to specify .vue files https://vitejs.dev/config/#resolve-extensions

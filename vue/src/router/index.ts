@@ -4,6 +4,7 @@ import LoginView from '@/views/LoginView/LoginView.vue'
 import LegacyView from '@/views/LegacyView/LegacyView.vue'
 import { useBackendStore } from '@/store/backend'
 import { useAuthStore } from '@/store/auth'
+import { useLanguagesStore } from '@/store/languages'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -32,11 +33,6 @@ const routes: Array<RouteRecordRaw> = [
             auth: false,
         },
     },
-    {
-        path: '/user',
-        name: 'user',
-        component: () => import('@/views/UserProfileView/UserProfileView.vue'),
-    },
     // {
     //     path: '/:module/DetailView/:record',
     //     name: 'detail',
@@ -48,12 +44,12 @@ const routes: Array<RouteRecordRaw> = [
     //     component: () => import('../views/EditView/EditView.vue'),
     //     alias: '/:module/EditView',
     // },
-    // {
-    //     path: '/:module',
-    //     name: 'list',
-    //     component: () => import('../views/ListView/ListView.vue'),
-    //     alias: '/:module/index',
-    // },
+    {
+        path: '/:module/ESListView',
+        name: 'list',
+        component: () => import('../views/ListView/ListView.vue'),
+        // alias: '/:module/index',
+    },
     {
         path: '/:catchAll(.*)',
         name: 'legacy',
@@ -84,6 +80,10 @@ router.beforeEach((to, from) => {
 })
 
 router.afterEach((to, from) => {
+    const languages = useLanguagesStore()
+    if (to.params?.module && !languages.languages.modules[to.params.module]) {
+        languages.fetchModuleLanguage(to.params.module)
+    }
     if (to.meta?.isLegacy && from.meta?.isLegacy) {
         router.go(0)
         return

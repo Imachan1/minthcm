@@ -1,29 +1,37 @@
 <template>
     <div class="list-header">
-        <v-btn
+        <MintButton
             class="ms-auto"
-            color="secondary"
-            prepend-icon="mdi-playlist-plus"
-            @click="asdfg"
-        >
-            <span v-text="'LBL_ESLIST_COLUMNS'" />
-        </v-btn>
+            icon="mdi-playlist-plus"
+            :text="languages.label('LBL_ESLIST_COLUMNS')"
+            @click="showColumnsPopup"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
+import MintButton from '@/components/MintButton.vue'
 import { useListViewStore } from './ListViewStore'
+import { useLanguagesStore } from '@/store/languages'
+import { usePopupsStore } from '@/store/popups'
+import ListViewColumnsPopup from './ListViewColumnsPopup.vue'
 
 const store = useListViewStore()
-function asdfg() {
-    console.log('asdfg')
+const languages = useLanguagesStore()
+const popups = usePopupsStore()
+
+function showColumnsPopup() {
+    popups.showPopup({
+        title: languages.label('LBL_ESLIST_COLUMNS_MANAGEMENT'),
+        component: ListViewColumnsPopup,
+        icon: 'mdi-playlist-plus',
+    })
 }
 </script>
 
 <style scoped lang="scss">
 .list-header {
     width: 100%;
-    background: rgb(var(--v-theme-surface));
     display: flex;
     align-items: center;
     gap: 16px;

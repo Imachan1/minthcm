@@ -79,7 +79,7 @@
                         <v-list-item-title>
                             {{ filteredModule.name }}
                         </v-list-item-title>
-                        <template #append v-if="filteredModule.label !== 'Home'">
+                        <template #append v-if="filteredModule.label !== 'Home' && filteredModule.actions?.length">
                             <v-menu>
                                 <template v-slot:activator="{ props }">
                                     <v-btn
@@ -101,7 +101,7 @@
                                     <v-list-item
                                         v-for="action in filteredModule.actions"
                                         :key="action.action"
-                                        :to="action.url"
+                                        :to="url.fromLegacyUrl(action.url)"
                                         :active="false"
                                     >
                                         <template #prepend>
@@ -185,8 +185,8 @@ const filteredModules = computed(() => {
 </script>
 <style lang="scss">
 .drawer-nav {
-    top: 72px !important;
-    max-height: calc(100vh - 72px);
+    top: var(--v-top-nav-height) !important;
+    max-height: calc(100vh - var(--v-top-nav-height));
     backdrop-filter: blur(10px);
     .v-navigation-drawer__content {
         display: flex;

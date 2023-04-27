@@ -1,9 +1,11 @@
 <template>
     <v-app>
+        <MintOverlay />
+        <MintPopups />
         <LoadingScreen v-if="backend.initialLoading" />
         <component v-else :is="ux.layout">
-            <v-main style="margin-top: 72px">
-                <router-view />
+            <v-main style="margin-top: var(--v-top-nav-height)">
+                <router-view :key="$route.fullPath" />
             </v-main>
         </component>
     </v-app>
@@ -12,7 +14,9 @@
 <script setup lang="ts">
 import { useBackendStore } from '@/store/backend'
 import { useUxStore } from '@/store/ux'
+import MintPopups from '@/components/MintPopups.vue'
 import LoadingScreen from '@/components/LoadingScreen.vue'
+import MintOverlay from './components/MintOverlay.vue'
 
 const backend = useBackendStore()
 const ux = useUxStore()

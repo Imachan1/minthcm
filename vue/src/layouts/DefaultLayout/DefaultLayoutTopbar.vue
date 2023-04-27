@@ -27,15 +27,15 @@
             />
         </v-slide-x-transition>
         <v-spacer />
-        <MintButton text="Edit" />
         <v-menu offset="16">
             <template v-slot:activator="{ props, isActive }">
-                <MintButton v-bind="props" icon="mdi-plus" :active="isActive" />
+                <MintButton v-bind="props" variant="nav" icon="mdi-plus" :active="isActive" />
             </template>
             <MintMenuList :items="backend.quickCreate" />
         </v-menu>
 
-        <MintButton icon="mdi-apps" />
+        <MintButton icon="mdi-apps" variant="nav" @click="showModulesPopup"
+        :active="!!popups.popups.find(p => p.component === DefaultLayoutModulesPopup)" />
 
         <v-menu offset="16" :close-on-content-click="false">
             <template v-slot:activator="{ props, isActive }">
@@ -46,7 +46,7 @@
                     location="bottom end"
                     :model-value="alerts.unreadAlertsCount > 0"
                 >
-                    <MintButton icon="mdi-bell" :active="isActive" />
+                    <MintButton icon="mdi-bell" variant="nav" :active="isActive" />
                 </v-badge>
             </template>
             <DefaultLayoutAlerts />
@@ -60,14 +60,17 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useBackendStore } from '@/store/backend'
 import { useAlertsStore } from '@/store/alerts'
+import { usePopupsStore } from '@/store/popups'
 import DefaultLayoutAlerts from './DefaultLayoutAlerts.vue'
 import DefaultLayoutUser from './DefaultLayoutUser.vue'
 import MintMenuList from '@/components/MintMenuList.vue'
 import MintButton from '@/components/MintButton.vue'
+import DefaultLayoutModulesPopup from './DefaultLayoutModulesPopup.vue'
 
 const router = useRouter()
 const alerts = useAlertsStore()
 const backend = useBackendStore()
+const popups = usePopupsStore()
 
 const initialQuery = new URL(location.href).searchParams.get('query_string')
 const searchQuery = ref(initialQuery ?? '')
@@ -82,13 +85,21 @@ function search() {
         )
     }
 }
+
+function showModulesPopup() {
+    popups.showPopup({
+        title: 'All modules',
+        icon: 'mdi-apps',
+        component: DefaultLayoutModulesPopup,
+    })
+}
 </script>
 
 <style scoped lang="scss">
 .top-bar {
     z-index: 1990;
     position: fixed;
-    height: 72px;
+    height: var(--v-top-nav-height);
     background: rgb(var(--v-theme-surface));
     width: 100%;
     display: flex;
@@ -107,8 +118,8 @@ function search() {
 }
 .img-logo {
     background: rgb(var(--v-theme-primary));
-    min-height: 72px;
-    height: 72px;
+    min-height: var(--v-top-nav-height);
+    height: var(--v-top-nav-height);
     width: 260px;
     z-index: 1000;
     img {
@@ -134,10 +145,4 @@ function search() {
     }
 }
 
-.user-btn {
-    text-transform: capitalize;
-
-    .v-icon {
-    }
-}
 </style>

@@ -33,7 +33,7 @@
                 required
             />
             <v-btn type="submit" color="primary" :loading="isSubmiting">
-                {{ backend.label('LBL_LOGIN_BUTTON_TITLE', 'Users') }}
+                {{ languages.label('LBL_LOGIN_BUTTON_TITLE', 'Users') }}
             </v-btn>
         </v-form>
     </div>
@@ -43,9 +43,11 @@
 import axios from 'axios'
 import { ref } from 'vue'
 import { useBackendStore } from '@/store/backend'
+import { useLanguagesStore } from '@/store/languages'
 import { useAuthStore } from '@/store/auth'
 
 const backend = useBackendStore()
+const languages = useLanguagesStore()
 const auth = useAuthStore()
 
 const form = ref<HTMLFormElement | null>(null)

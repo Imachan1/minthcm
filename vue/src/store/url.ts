@@ -49,7 +49,6 @@ export const useUrlStore = defineStore('url', () => {
     }
 
     function fromLegacyUrl(url: string | URL) {
-        console.log('fromLegacy', url)
         if (typeof url === 'string') {
             if (url.slice(0, 3) !== 'http') {
                 url = `${location.origin}/${url}`

@@ -25,6 +25,9 @@ export default createVuetify({
                     secondary: '#145d7b',
                     'secondary-dark': '#08384B',
                 },
+                variables: {
+                    'top-nav-height': '72px',
+                },
             },
             dark: {
                 dark: true,
@@ -32,6 +35,10 @@ export default createVuetify({
                     primary: '#00654e',
                     'primary-light': '#e0ecea',
                     secondary: '#145d7b',
+                    'secondary-dark': '#08384B',
+                },
+                variables: {
+                    'top-nav-height': '72px',
                 },
             },
         },

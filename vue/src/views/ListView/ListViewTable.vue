@@ -3,10 +3,12 @@
         class="list-table"
         :headers="store.headers"
         :items="store.results"
+        :items-length="store.itemsLength"
         :loading="store.isLoading"
-        height="calc(100vh - 300px)"
+        height="calc(100vh - 400px)"
         fixed-header
         must-sort
+        @update:options="store.options = $event"
     >
         <template
             v-for="link in store.customFields.links"
@@ -75,19 +77,39 @@
                 </v-icon>
             </div>
         </template>
+        <template #bottom>
+            <VDataTableFooter
+                :items-per-page-options="
+                    store.config?.config?.itemsPerPageOptions
+                "
+                v-bind:items-per-page-text="
+                    languages.label('LBL_ESLIST_ITEMS_PER_PAGE')
+                "
+                :page-text="pageText"
+            />
+        </template>
     </v-data-table-server>
 </template>
 
 <script setup lang="ts">
-import { VDataTableServer } from 'vuetify/labs/VDataTable'
+import { computed } from 'vue'
+import { VDataTableServer, VDataTableFooter } from 'vuetify/labs/VDataTable'
 import { DateTime } from 'luxon'
 import { useRouter } from 'vue-router'
 import { useListViewStore } from './ListViewStore'
+import { useLanguagesStore } from '@/store/languages'
 import { useUrlStore } from '@/store/url'
 
 const router = useRouter()
 const store = useListViewStore()
 const url = useUrlStore()
+const languages = useLanguagesStore()
+
+const pageText = computed(() => {
+    const isOverflow = store.itemsLength > (store.options.page * store.options.itemsPerPage)
+    const pageText = `{0} - {1} ${languages.label('LBL_ESLIST_PAGE_TEXT')} {2}`
+    return isOverflow ? `${pageText}+` : pageText
+})
 
 const coreActions = {
     edit: {
@@ -150,6 +172,12 @@ function formatMultienum(value, labels) {
     a {
         text-decoration: none;
         color: rgb(var(--v-theme-secondary));
+    }
+    :deep(.v-data-table-footer__pagination) {
+        button:first-child,
+        button:last-child {
+            display: none;
+        }
     }
 }
 </style>

@@ -7,14 +7,9 @@ import { useUrlStore } from './url'
 import { useAlertsStore } from './alerts'
 import { useFavoritesStore } from './favorites'
 import { useRecentsStore } from './recents'
+import { useLanguagesStore, Languages } from './languages'
 import axios, { AxiosError } from 'axios'
 import { MenuListItem } from '@/components/MintMenuList.vue'
-
-interface Language {
-    app_strings: { [key: string]: string }
-    app_list_strings: { [key: string]: object }
-    modules: { [key: string]: { [key: string]: string } }
-}
 
 interface ModuleAction {
     name: string
@@ -24,7 +19,7 @@ interface ModuleAction {
     options: []
 }
 
-interface Module {
+export interface Module {
     key: string
     label: string
     name: string
@@ -39,7 +34,7 @@ interface QuickCreate {
 
 interface InitResponse {
     user: User
-    languages: Language
+    languages: Languages
     modules: Module[]
     quick_create: QuickCreate[]
 }
@@ -54,25 +49,7 @@ export const useBackendStore = defineStore('backend', () => {
     const alerts = useAlertsStore()
     const favorites = useFavoritesStore()
     const recents = useRecentsStore()
-
-    const lang = ref<Language>({
-        app_strings: {},
-        app_list_strings: {},
-        modules: {},
-    })
-
-    const label = computed(() => {
-        return (label: string, module?: string) => {
-            let lbl = ''
-            if (module) {
-                lbl = lang.value.modules?.[module]?.[label]
-            }
-            if (!lbl) {
-                lbl = lang.value.app_strings?.[label]
-            }
-            return lbl || label
-        }
-    })
+    const languages = useLanguagesStore()
 
     async function init() {
         const auth = useAuthStore()
@@ -81,9 +58,11 @@ export const useBackendStore = defineStore('backend', () => {
             const initData = await axios.get<InitResponse>('/api/init')
             console.log('initData', initData.data)
             auth.user = initData.data?.user ?? {}
-            lang.value.app_strings = initData.data.languages?.app_strings
-            lang.value.app_list_strings =
-                initData.data.languages?.app_list_strings
+            languages.languages = {
+                app_strings: initData.data.languages?.app_strings ?? {},
+                app_list_strings: initData.data.languages?.app_list_strings ?? {},
+                modules: {},
+            }
             modules.value = initData.data?.modules ?? []
             quickCreate.value =
                 initData.data?.quick_create?.map((qc) => ({
@@ -115,10 +94,13 @@ export const useBackendStore = defineStore('backend', () => {
             if ((err as AxiosError).response?.status === 401) {
                 const loginData = (await api.get('/api/login')).data
                 console.log('loginData', loginData)
-                lang.value.app_strings = loginData.languages?.app_strings
-                lang.value.app_list_strings =
-                    loginData.languages?.app_list_strings
-                lang.value.modules['Users'] = loginData.languages?.Users
+                languages.languages = {
+                    app_strings: loginData.languages?.app_strings ?? {},
+                    app_list_strings: loginData.languages?.app_list_strings ?? {},
+                    modules: {
+                        Users: loginData.languages?.Users ?? {},
+                    },
+                }
                 router.push({ name: 'login' })
             }
         } finally {
@@ -133,10 +115,8 @@ export const useBackendStore = defineStore('backend', () => {
     return {
         init,
         initialLoading,
-        label,
         modules,
         quickCreate,
         activeModule,
-        lang,
     }
 })

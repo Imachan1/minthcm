@@ -14,17 +14,22 @@ export const useAuthStore = defineStore('auth', () => {
     const user = ref<User | null>(null)
 
     async function authenticate(username: string, password: string) {
-        const response = await axios.post('/api/login', {
-            username,
-            password,
-        })
-        console.log('auth', response)
+        try {
+            const response = await axios.post('/api/login', {
+                username,
+                password,
+            })
+            console.log('auth', response)
+
+        } catch {
+            return false
+        }
         // console.log('authenticate', username, password)
     }
 
     async function logout() {
         const response = await axios.post('/api/logout')
-        location.href = '/test123'
+        location.href = '/minthcm/'
     }
 
     return {

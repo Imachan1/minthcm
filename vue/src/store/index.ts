@@ -1,3 +1,6 @@
+import resetStore from '@/plugins/reset-store'
 import { createPinia } from 'pinia'
 
-export default createPinia()
+const pinia = createPinia()
+pinia.use(resetStore)
+export default pinia
