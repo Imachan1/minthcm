@@ -198,8 +198,25 @@ class JsonRPCServerCalls
         }
 
         $response['id'] = $request_id;
-        $response['result'] = array('list' => $list_arr);
-
+        $list_arr = $this->addCustomFilters($list_arr);
+        // MintHCM #117141 start
+        $response['result'] = array('list' => array_values($list_arr));
+        // MintHCM #117141 end
         return $response;
     }
+
+    // MintHCM #117141 start
+    protected function addCustomFilters($data)
+    {
+        foreach ($data as $key => $value) {
+            if (empty($value['fields']['show_on_employees']) && 'User' == $value['module'] 
+                || ('Private' == $value['fields']['group_type'] && 'SecurityGroup' == $value['module'])) 
+            {
+                unset($data[$key]);
+            }
+        }
+
+        return $data;
+    }
+    // MintHCM #117141 end
 }
