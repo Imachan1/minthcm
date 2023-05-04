@@ -2,7 +2,7 @@
 
 namespace MintHCM\Api\Routes;
 
-use MintHCM\Api\Utils\CustomLoader;
+use MintHCM\Utils\CustomLoader;
 
 class RouteManager
 {

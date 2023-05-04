@@ -6,7 +6,7 @@ use MintHCM\Api\Middlewares\Auth\AuthMiddleware;
 use MintHCM\Api\Middlewares\Params\ParamsMiddleware;
 use MintHCM\Api\Middlewares\Parsers\JsonBodyParserMiddleware;
 use MintHCM\Api\Routes\RouteManager;
-use MintHCM\Api\Utils\CustomLoader;
+use MintHCM\Utils\CustomLoader;
 
 class ApiManager
 {

@@ -7,6 +7,7 @@ use MintHCM\Modules\Alerts\api\controllers\UpdateAction;
 
 $routes = array(
     "detail" => array(),
+    "list_data" => array(),
     "list" => array(
         "method" => "GET",
         "path" => "",
