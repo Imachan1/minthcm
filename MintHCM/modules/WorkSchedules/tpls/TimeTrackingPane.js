@@ -270,7 +270,7 @@ if (!window.TimePanel) { // avoid multi-declaration
                     i.id,
                     {
                         postSaveCallback: function () {
-                            SUGAR.mySugar.retrieveDashlet($('#dashlet_id').val());
+                            SUGAR.mySugar.retrieveDashlet($('.TWSDashlet').parent().parent().find('#dashlet_id').val());
                             return false;
                         }.bind(this),
 
