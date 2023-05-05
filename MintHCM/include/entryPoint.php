@@ -131,6 +131,7 @@ require_once 'modules/Trackers/BreadCrumbStack.php';
 require_once 'modules/Trackers/Tracker.php';
 require_once 'modules/Trackers/TrackerManager.php';
 require_once 'modules/ACL/ACLController.php';
+require_once 'modules/ACLActions/ACLAction.php';
 require_once 'modules/Administration/Administration.php';
 require_once 'modules/Administration/updater_utils.php';
 require_once 'modules/Users/User.php';
