@@ -40,7 +40,7 @@ class ElasticSearch extends SearchManager
     public function getResultBeans($group_by_type = false): array
     {
         $beans = $this->getHitsAsBeans();
-        
+
         $size = $this->size;
         $size_with_one_more = $this->params['body']['size'];
 
@@ -109,7 +109,7 @@ class ElasticSearch extends SearchManager
             }
         }
         return $next_offset;
-        
+
     }
 
     protected function getHitsAsBeans()
