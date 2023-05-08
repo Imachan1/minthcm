@@ -4,11 +4,18 @@
             "MintHCM\\Api\\": "app/",
             "MintHCM\\Custom\\Api\\": "custom/app/",
             "MintHCM\\Modules\\": "modules/",
-            "MintHCM\\Custom\\Modules\\": "custom/modules/"
-        }
+            "MintHCM\\Custom\\Modules\\": "custom/modules/",
+            "MintHCM\\Lib\\": "lib/",
+            "MintHCM\\Utils\\": "utils/"
+        },
+        "files": [
+            "configs/mint/config.php",
+            "configs/list/config.php"
+        ]
     },
     "require": {
         "slim/slim": "4.*",
-        "slim/psr7": "^1.5"
+        "slim/psr7": "^1.5",
+        "elasticsearch/elasticsearch": "^5.3"
     }
 }

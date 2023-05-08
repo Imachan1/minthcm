@@ -4,6 +4,7 @@ use MintHCM\Modules\Trackers\api\controllers\ListAction;
 
 $routes = array(
     "detail" => array(),
+    "list_data" => array(),
     "list" => array(
         "method" => "GET",
         "path" => "",

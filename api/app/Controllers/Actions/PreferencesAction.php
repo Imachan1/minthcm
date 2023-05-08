@@ -46,7 +46,7 @@ class PreferencesAction
         return array(
             'date_format' => $current_user_preferences['global']['datef'] ?? '',
             'time_format' => $current_user_preferences['global']['timef'] ?? '',
-            'name_format' => $current_user_preferences["global"]["default_locale_name_format"],
+            'name_format' => $current_user_preferences["global"]["default_locale_name_format"] ?? '',
         );
     }
 

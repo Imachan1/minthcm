@@ -2,15 +2,15 @@
 if (!defined('sugarEntry')) {
     define('sugarEntry', true);
 }
-chdir(__DIR__ . '/../legacy/');
-require_once __DIR__ . '/../legacy/include/entryPoint.php';
-chdir(__DIR__ . '/../api/');
+chdir('../legacy/');
+require_once 'include/entryPoint.php';
+chdir('../api/');
 
 require __DIR__ . '/vendor/autoload.php';
 
 use MintHCM\Api\ApiManager;
 use MintHCM\Api\Config\AppConfig;
-use MintHCM\Api\Utils\CustomLoader;
+use MintHCM\Utils\CustomLoader;
 use Slim\Factory\AppFactory;
 
 $config = CustomLoader::getObject(AppConfig::class);
