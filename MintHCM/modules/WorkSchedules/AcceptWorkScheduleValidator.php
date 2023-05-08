@@ -2,6 +2,13 @@
 
 class AcceptWorkScheduleValidator
 {
+    protected $workschedule;
+    protected $employee;
+    protected $date_start;
+    protected $date_end;
+    protected $response;
+
+    private $db;
 
     const SUCCESS = 1;
     const ERR_SPENT_TIMES_DO_NOT_OVERLAP_WITH_WORK_SCHEDULE = 2;
