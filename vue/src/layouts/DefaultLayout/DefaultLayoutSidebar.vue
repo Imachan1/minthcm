@@ -32,151 +32,157 @@
                 </div>
             </v-list-item>
         </v-list>
-        <div style="display: flex; flex-direction: column; overflow: auto">
-        <v-text-field
-            v-model="filterModulesQuery"
-            class="find-module"
-            placeholder="Find module..."
-            variant="plain"
-            density="compact"
-            hide-details
+        <div
+            class="flex-grow-1"
+            style="display: flex; flex-direction: column; overflow: auto"
         >
-            <template #prepend-inner>
-                <v-icon icon="mdi-magnify" />
-            </template>
-        </v-text-field>
-        <v-list
-            nav
-            class="nav-list nav-list-blurred flex-grow-1"
-            style="min-height: 80px"
-        >
-            <transition-group name="list" tag="ul">
-                <template v-if="filteredModules.length">
-                    <v-list-item
-                        class="nav-item"
-                        v-for="filteredModule in filteredModules"
-                        :key="filteredModule.label"
-                        :value="filteredModule.label"
-                        :data-cy="filteredModule.label"
-                        :to="
-                            ![
-                                'Calls',
-                                'Candidates',
-                                'Meetings',
-                                'Tasks',
-                                'Candidatures',
-                                'Positions',
-                                'Recruitments',
-                            ].includes(filteredModule.label)
-                                ? `/${filteredModule.label}`
-                                : `/${filteredModule.label}/ESListView`
-                        "
-                        :active="filteredModule.label === url.module"
-                        color="secondary"
-                    >
-                        <div
-                            style="
-                                display: flex;
-                                align-items: center;
-                                justify-content: space-between;
+            <v-text-field
+                v-model="filterModulesQuery"
+                class="find-module"
+                placeholder="Find module..."
+                variant="plain"
+                density="compact"
+                hide-details
+            >
+                <template #prepend-inner>
+                    <v-icon icon="mdi-magnify" />
+                </template>
+            </v-text-field>
+            <v-list
+                nav
+                class="nav-list nav-list-blurred flex-grow-1"
+                style="min-height: 80px"
+            >
+                <transition-group name="list" tag="ul">
+                    <template v-if="filteredModules.length">
+                        <v-list-item
+                            class="nav-item"
+                            v-for="filteredModule in filteredModules"
+                            :key="filteredModule.label"
+                            :value="filteredModule.label"
+                            :data-cy="filteredModule.label"
+                            :to="
+                                ![
+                                    'Calls',
+                                    'Candidates',
+                                    'Meetings',
+                                    'Tasks',
+                                    'Candidatures',
+                                    'Positions',
+                                    'Recruitments',
+                                ].includes(filteredModule.label)
+                                    ? `/${filteredModule.label}`
+                                    : `/${filteredModule.label}/ESListView`
                             "
+                            :active="filteredModule.label === url.module"
+                            color="secondary"
                         >
-                            <div class="nav-title">
-                                <v-icon :icon="`mdi-${filteredModule.icon}`" />
-                                <span v-text="filteredModule.name" />
-                            </div>
-                            <v-menu
-                                v-if="
-                                    filteredModule.label !== 'Home' &&
-                                    filteredModule.actions?.length
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: space-between;
                                 "
                             >
-                                <template
-                                    v-slot:activator="{ props, isActive }"
-                                >
-                                    <v-btn
-                                        v-bind="props"
-                                        @click.prevent.stop="null"
-                                        class="menu-icon"
-                                        :class="[
-                                            isActive && 'menu-icon-active',
-                                        ]"
-                                        icon="mdi-dots-vertical"
-                                        variant="text"
-                                        density="compact"
-                                        color="secondary"
+                                <div class="nav-title">
+                                    <v-icon
+                                        :icon="`mdi-${filteredModule.icon}`"
                                     />
-                                </template>
-                                <MintMenuList
-                                    :items="
-                                        parseModuleActions(
-                                            filteredModule.actions,
-                                        )
+                                    <span v-text="filteredModule.name" />
+                                </div>
+                                <v-menu
+                                    v-if="
+                                        filteredModule.label !== 'Home' &&
+                                        filteredModule.actions?.length
                                     "
-                                />
-                            </v-menu>
-                        </div>
-                    </v-list-item>
-                </template>
-                <div class="px-4" v-else>No modules found</div>
-            </transition-group>
-        </v-list>
-        <v-expansion-panels class="nav-accordion" variant="accordion">
-            <v-expansion-panel
-                v-if="recents.recents?.length"
-                bg-color="transparent"
-            >
-                <v-expansion-panel-title>
-                    <v-icon class="mr-4">mdi-history</v-icon>
-                    <span>Recently viewed</span>
-                </v-expansion-panel-title>
-                <v-expansion-panel-text>
-                    <v-list nav class="nav-list">
-                        <v-list-item
-                            v-for="recent in recents.recents?.slice(0, 9) ?? []"
-                            :key="recent.item_id"
-                            class="nav-item"
-                            :value="recent.item_id"
-                            :to="`/${recent.module_name}/DetailView/${recent.item_id}`"
-                            :active="false"
-                        >
-                            <div class="nav-title">
-                                <v-icon :icon="'mdi-clock'" />
-                                <span v-text="recent.item_summary" />
+                                >
+                                    <template
+                                        v-slot:activator="{ props, isActive }"
+                                    >
+                                        <v-btn
+                                            v-bind="props"
+                                            @click.prevent.stop="null"
+                                            class="menu-icon"
+                                            :class="[
+                                                isActive && 'menu-icon-active',
+                                            ]"
+                                            icon="mdi-dots-vertical"
+                                            variant="text"
+                                            density="compact"
+                                            color="secondary"
+                                        />
+                                    </template>
+                                    <MintMenuList
+                                        :items="
+                                            parseModuleActions(
+                                                filteredModule.actions,
+                                            )
+                                        "
+                                    />
+                                </v-menu>
                             </div>
                         </v-list-item>
-                    </v-list>
-                </v-expansion-panel-text>
-            </v-expansion-panel>
-            <v-expansion-panel
-                v-if="favorites.favorites?.length"
-                bg-color="transparent"
-                elevetion="10"
-            >
-                <v-expansion-panel-title>
-                    <v-icon class="mr-4">mdi-heart</v-icon>
-                    <span>Favorite records</span>
-                </v-expansion-panel-title>
-                <v-expansion-panel-text>
-                    <v-list nav class="nav-list">
-                        <v-list-item
-                            v-for="favorite in favorites.favorites"
-                            :key="favorite.id"
-                            class="nav-item"
-                            :value="favorite.id"
-                            :to="`/${favorite.module_name}/DetailView/${favorite.id}`"
-                            :active="false"
-                        >
-                            <div class="nav-title">
-                                <v-icon :icon="'mdi-heart'" />
-                                <span v-text="favorite.item_summary" />
-                            </div>
-                        </v-list-item>
-                    </v-list>
-                </v-expansion-panel-text>
-            </v-expansion-panel>
-        </v-expansion-panels>
-    </div>
+                    </template>
+                    <div class="px-4" v-else>No modules found</div>
+                </transition-group>
+            </v-list>
+            <v-expansion-panels class="nav-accordion" variant="accordion">
+                <v-expansion-panel
+                    v-if="recents.recents?.length"
+                    bg-color="transparent"
+                >
+                    <v-expansion-panel-title>
+                        <v-icon class="mr-4">mdi-history</v-icon>
+                        <span>Recently viewed</span>
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                        <v-list nav class="nav-list">
+                            <v-list-item
+                                v-for="recent in recents.recents?.slice(0, 9) ??
+                                []"
+                                :key="recent.item_id"
+                                class="nav-item"
+                                :value="recent.item_id"
+                                :to="`/${recent.module_name}/DetailView/${recent.item_id}`"
+                                :active="false"
+                            >
+                                <div class="nav-title">
+                                    <v-icon :icon="'mdi-clock'" />
+                                    <span v-text="recent.item_summary" />
+                                </div>
+                            </v-list-item>
+                        </v-list>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+                <v-expansion-panel
+                    v-if="favorites.favorites?.length"
+                    bg-color="transparent"
+                    elevetion="10"
+                >
+                    <v-expansion-panel-title>
+                        <v-icon class="mr-4">mdi-heart</v-icon>
+                        <span>Favorite records</span>
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                        <v-list nav class="nav-list">
+                            <v-list-item
+                                v-for="favorite in favorites.favorites"
+                                :key="favorite.id"
+                                class="nav-item"
+                                :value="favorite.id"
+                                :to="`/${favorite.module_name}/DetailView/${favorite.id}`"
+                                :active="false"
+                            >
+                                <div class="nav-title">
+                                    <v-icon :icon="'mdi-heart'" />
+                                    <span v-text="favorite.item_summary" />
+                                </div>
+                            </v-list-item>
+                        </v-list>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+            </v-expansion-panels>
+        </div>
     </v-navigation-drawer>
 </template>
 
@@ -216,7 +222,7 @@ function parseModuleActions(actions: ModuleAction[]) {
     max-height: calc(100vh - var(--v-top-nav-height));
     backdrop-filter: blur(10px);
     .v-navigation-drawer__content {
-    overflow: hidden;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
     }
