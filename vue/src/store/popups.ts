@@ -22,9 +22,14 @@ export const usePopupsStore = defineStore('popups', () => {
         popups.value = popups.value.filter((p) => p !== popup)
     }
 
+    function closeAll() {
+        popups.value = []
+    }
+
     return {
         popups,
         showPopup,
         closePopup,
+        closeAll,
     }
 })

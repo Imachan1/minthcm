@@ -5,9 +5,10 @@
             :key="item.title"
             :to="item.url"
             @click="item.onClick"
+            :active="false"
         >
             <template v-if="item.icon" #prepend>
-                <v-icon size="16" :icon="`mdi-${item.icon}`" />
+                <v-icon size="14" :icon="`mdi-${item.icon}`" />
             </template>
             <v-list-item-title>
                 {{ item.title }}
@@ -23,7 +24,7 @@ export interface MenuListItem {
     title: string
     icon?: string
     url?: string
-    onClick?: string
+    onClick?: () => void
 }
 
 interface Props {
@@ -40,9 +41,12 @@ const props = defineProps<Props>()
     .v-list-item {
         margin: 0px;
         padding: 0px 12px;
+        &:hover {
+            color: rgb(var(--v-theme-secondary-dark));
+        }
     }
     .v-list-item-title {
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 600;
     }
     .v-icon {

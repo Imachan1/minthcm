@@ -214,8 +214,8 @@ function onDrop(e, list) {
                 justify-content: space-between;
                 align-items: center;
                 border-radius: 100px;
-                background: #333;
-                color: white;
+                background: #ddd;
+                color: black;
                 padding: 4px 12px 4px 16px;
                 cursor: grab;
                 user-select: none;

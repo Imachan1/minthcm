@@ -6,49 +6,33 @@
         permanent
         width="260"
         :color="$vuetify.display.mdAndDown ? '#d5e6e4dd' : '#00000010'"
-        floating
+        :floating="$vuetify.display.lgAndUp"
+        rail-width="76"
     >
         <v-list
-            v-if="backend.activeModule?.label !== 'Home' && backend.activeModule?.actions"
+            v-if="
+                backend.activeModule?.label !== 'Home' &&
+                backend.activeModule?.actions
+            "
             nav
             bg-color="primary"
-            class="nav-list flex-shrink-0"
-            density="comfortable"
+            class="nav-list flex-shrink-0 py-4"
         >
             <v-list-item
                 v-for="action in backend.activeModule.actions"
                 :key="action.action"
-                class="nav-item"
-                :prepend-icon="`mdi-${action.icon}`"
+                class="nav-item module-action"
                 :value="action.action"
                 :to="url.fromLegacyUrl(action.url)"
                 :active="false"
             >
-                <v-list-item-title class="nav-title">
-                    {{ action.name }}
-                </v-list-item-title>
-                <template v-if="action.options" #append>
-                    <v-menu>
-                        <template v-slot:activator="{ props }">
-                            <v-btn
-                                v-bind="props"
-                                @click.prevent.stop="null"
-                                class="menu-icon"
-                                icon="mdi-dots-vertical"
-                                variant="text"
-                                density="compact"
-                            />
-                        </template>
-                        <v-list class="menu-list">
-                            <v-list-item title="Action 1" />
-                            <v-list-item title="Action 2" />
-                            <v-list-item title="Action 3" />
-                            <v-list-item title="Action 4" />
-                        </v-list>
-                    </v-menu>
-                </template>
+                <div class="nav-title">
+                    <v-icon :icon="`mdi-${action.icon}`" />
+                    <span v-text="action.name" />
+                </div>
             </v-list-item>
         </v-list>
+        <div style="display: flex; flex-direction: column; overflow: auto">
         <v-text-field
             v-model="filterModulesQuery"
             class="find-module"
@@ -61,7 +45,11 @@
                 <v-icon icon="mdi-magnify" />
             </template>
         </v-text-field>
-        <v-list nav class="nav-list nav-list-blurred flex-grow-1" style="min-height:80px">
+        <v-list
+            nav
+            class="nav-list nav-list-blurred flex-grow-1"
+            style="min-height: 80px"
+        >
             <transition-group name="list" tag="ul">
                 <template v-if="filteredModules.length">
                     <v-list-item
@@ -69,105 +57,136 @@
                         v-for="filteredModule in filteredModules"
                         :key="filteredModule.label"
                         :value="filteredModule.label"
-                        :to="!['Calls', 'Candidates', 'Meetings', 'Tasks', 'Candidatures', 'Positions', 'Recruitments'].includes(filteredModule.label) ? `/${filteredModule.label}` : `/${filteredModule.label}/ESListView`"
+                        :data-cy="filteredModule.label"
+                        :to="
+                            ![
+                                'Calls',
+                                'Candidates',
+                                'Meetings',
+                                'Tasks',
+                                'Candidatures',
+                                'Positions',
+                                'Recruitments',
+                            ].includes(filteredModule.label)
+                                ? `/${filteredModule.label}`
+                                : `/${filteredModule.label}/ESListView`
+                        "
                         :active="filteredModule.label === url.module"
                         color="secondary"
                     >
-                        <template #prepend>
-                            <v-icon :icon="`mdi-${filteredModule.icon}`" />
-                        </template>
-                        <v-list-item-title>
-                            {{ filteredModule.name }}
-                        </v-list-item-title>
-                        <template #append v-if="filteredModule.label !== 'Home' && filteredModule.actions?.length">
-                            <v-menu>
-                                <template v-slot:activator="{ props }">
+                        <div
+                            style="
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                            "
+                        >
+                            <div class="nav-title">
+                                <v-icon :icon="`mdi-${filteredModule.icon}`" />
+                                <span v-text="filteredModule.name" />
+                            </div>
+                            <v-menu
+                                v-if="
+                                    filteredModule.label !== 'Home' &&
+                                    filteredModule.actions?.length
+                                "
+                            >
+                                <template
+                                    v-slot:activator="{ props, isActive }"
+                                >
                                     <v-btn
                                         v-bind="props"
                                         @click.prevent.stop="null"
                                         class="menu-icon"
+                                        :class="[
+                                            isActive && 'menu-icon-active',
+                                        ]"
                                         icon="mdi-dots-vertical"
                                         variant="text"
                                         density="compact"
                                         color="secondary"
                                     />
                                 </template>
-                                <v-list
-                                    nav
-                                    class="menu-list"
-                                    color="secondary"
-                                    density="compact"
-                                >
-                                    <v-list-item
-                                        v-for="action in filteredModule.actions"
-                                        :key="action.action"
-                                        :to="url.fromLegacyUrl(action.url)"
-                                        :active="false"
-                                    >
-                                        <template #prepend>
-                                            <v-icon size="16" :icon="`mdi-${action.icon}`" />
-                                        </template>
-                                        <v-list-item-title>
-                                            {{ action.name }}
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                </v-list>
+                                <MintMenuList
+                                    :items="
+                                        parseModuleActions(
+                                            filteredModule.actions,
+                                        )
+                                    "
+                                />
                             </v-menu>
-                        </template>
+                        </div>
                     </v-list-item>
                 </template>
                 <div class="px-4" v-else>No modules found</div>
             </transition-group>
         </v-list>
         <v-expansion-panels class="nav-accordion" variant="accordion">
-            <v-expansion-panel bg-color="transparent">
+            <v-expansion-panel
+                v-if="recents.recents?.length"
+                bg-color="transparent"
+            >
                 <v-expansion-panel-title>
                     <v-icon class="mr-4">mdi-history</v-icon>
                     <span>Recently viewed</span>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text>
-                    <v-list nav class="nav-list" density="compact">
+                    <v-list nav class="nav-list">
                         <v-list-item
                             v-for="recent in recents.recents?.slice(0, 9) ?? []"
                             :key="recent.item_id"
-                            prepend-icon="mdi-clock"
-                            :title="recent.item_summary"
+                            class="nav-item"
                             :value="recent.item_id"
                             :to="`/${recent.module_name}/DetailView/${recent.item_id}`"
                             :active="false"
-                        />
+                        >
+                            <div class="nav-title">
+                                <v-icon :icon="'mdi-clock'" />
+                                <span v-text="recent.item_summary" />
+                            </div>
+                        </v-list-item>
                     </v-list>
                 </v-expansion-panel-text>
             </v-expansion-panel>
-            <v-expansion-panel bg-color="transparent" elevetion="10">
+            <v-expansion-panel
+                v-if="favorites.favorites?.length"
+                bg-color="transparent"
+                elevetion="10"
+            >
                 <v-expansion-panel-title>
                     <v-icon class="mr-4">mdi-heart</v-icon>
                     <span>Favorite records</span>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text>
-                    <v-list nav class="nav-list" density="compact">
+                    <v-list nav class="nav-list">
                         <v-list-item
                             v-for="favorite in favorites.favorites"
                             :key="favorite.id"
-                            prepend-icon="mdi-heart"
-                            :title="favorite.item_summary"
+                            class="nav-item"
                             :value="favorite.id"
                             :to="`/${favorite.module_name}/DetailView/${favorite.id}`"
                             :active="false"
-                        />
+                        >
+                            <div class="nav-title">
+                                <v-icon :icon="'mdi-heart'" />
+                                <span v-text="favorite.item_summary" />
+                            </div>
+                        </v-list-item>
                     </v-list>
                 </v-expansion-panel-text>
             </v-expansion-panel>
         </v-expansion-panels>
+    </div>
     </v-navigation-drawer>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useBackendStore } from '@/store/backend'
+import { useBackendStore, ModuleAction } from '@/store/backend'
 import { useUrlStore } from '@/store/url'
 import { useFavoritesStore } from '@/store/favorites'
 import { useRecentsStore } from '@/store/recents'
+import MintMenuList from '@/components/MintMenuList.vue'
 
 const backend = useBackendStore()
 const url = useUrlStore()
@@ -182,6 +201,14 @@ const filteredModules = computed(() => {
     }
     return backend.modules.filter((m) => m.name.toLowerCase().includes(query))
 })
+
+function parseModuleActions(actions: ModuleAction[]) {
+    return actions.map((action) => ({
+        title: action.name,
+        url: url.fromLegacyUrl(action.url),
+        icon: action.icon,
+    }))
+}
 </script>
 <style lang="scss">
 .drawer-nav {
@@ -189,35 +216,56 @@ const filteredModules = computed(() => {
     max-height: calc(100vh - var(--v-top-nav-height));
     backdrop-filter: blur(10px);
     .v-navigation-drawer__content {
+    overflow: hidden;
         display: flex;
         flex-direction: column;
+    }
+}
+.drawer-nav.v-navigation-drawer--rail {
+    .menu-icon {
+        display: none;
+    }
+    .menu-icon.menu-icon-active {
+        display: block;
+    }
+    .nav-accordion .v-expansion-panel-title span {
+        display: none;
+    }
+}
+.drawer-nav.v-navigation-drawer--is-hovering {
+    .menu-icon {
+        display: block;
+    }
+    .nav-accordion .v-expansion-panel-title span {
+        display: block;
     }
 }
 </style>
 <style scoped lang="scss">
 .nav-list {
+    padding-left: 0px;
+    padding-right: 16px;
     overflow-y: auto !important;
     -ms-overflow-style: none;
     scrollbar-width: none;
     &::-webkit-scrollbar {
         display: none;
     }
-    :deep(.v-list-item__prepend .v-icon) {
-        margin-inline-end: 16px;
-    }
 }
 
 .find-module {
-    padding: 12px 16px 12px 16px;
+    padding: 12px 24px 12px 24px;
     flex: 0;
     color: rgb(var(--v-theme-secondary));
     .v-icon {
         opacity: 1;
+        margin-right: 10px;
     }
     :deep(.v-field__input) {
         padding-top: 8px;
     }
 }
+
 .nav-accordion {
     white-space: nowrap;
     box-shadow: 0 0 1rem #0003;
@@ -233,8 +281,7 @@ const filteredModules = computed(() => {
         padding: 0px;
     }
     :deep(.v-expansion-panel-title) {
-        padding-left: 16px;
-        padding-right: 16px;
+        padding: 8px 24px;
     }
     :deep(.v-list-item-title) {
         font-weight: 600;
@@ -242,21 +289,59 @@ const filteredModules = computed(() => {
 }
 
 .nav-item {
-    transition: all 300ms ease-out;
+    transition: all 150ms ease-out;
     border-radius: 0px 20px 20px 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     &:hover {
-        transform: translateX(-8px);
         background: #0000001f;
     }
+    :deep(.v-list-item__content) {
+        width: 100%;
+    }
+    .nav-title {
+        color: rgb(var(--v-theme-secondary));
+        padding-left: 24px;
+        white-space: nowrap;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        span {
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    }
     &:hover .nav-title {
-        color: white;
+        transform: translateX(-8px);
+        color: rgb(var(--v-theme-secondary-dark));
     }
     .menu-icon {
+        margin: 0 8px;
+        margin-left: auto;
         opacity: 0 !important;
         transition: all 250ms ease-in-out;
     }
+    .menu-icon.menu-icon-active {
+        opacity: 1 !important;
+    }
     &:hover .menu-icon {
         opacity: 1 !important;
+    }
+}
+
+.nav-item.module-action {
+    &:hover {
+        background: #0004;
+    }
+    .nav-title {
+        color: #ffffffaf;
+    }
+    &:hover .nav-title {
+        color: #fff;
     }
 }
 
@@ -275,7 +360,6 @@ const filteredModules = computed(() => {
         line-height: 1.5;
     }
     .v-icon {
-        color: rgb(var(--v-theme-secondary));
         opacity: 1;
     }
 }

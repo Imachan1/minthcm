@@ -9,25 +9,7 @@ html {
 }
 
 .v-application {
-    // background: #111;
     background-image: url('/bg.jpg');
-}
-
-.menu-list {
-    padding: 2px 0px;
-    color: rgb(var(--v-theme-secondary));
-    .v-list-item {
-        margin: 0px;
-        padding: 0px 12px;
-    }
-    .v-list-item-title {
-        font-size: 12px;
-        font-weight: 600;
-    }
-    .v-icon {
-        opacity: 1;
-        margin-inline-end: 8px;
-    }
 }
 
 // scrollbar
@@ -36,10 +18,10 @@ html {
     height: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: rgb(var(--v-theme-surface)); 
+    background: rgb(var(--v-theme-surface));
 }
 ::-webkit-scrollbar-thumb {
-    background: rgb(var(--v-theme-secondary)); 
+    background: rgb(var(--v-theme-secondary));
     border-radius: 5px;
 }
 

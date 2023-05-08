@@ -84,10 +84,10 @@ router.afterEach((to, from) => {
     if (to.params?.module && !languages.languages.modules[to.params.module]) {
         languages.fetchModuleLanguage(to.params.module)
     }
-    if (to.meta?.isLegacy && from.meta?.isLegacy) {
-        router.go(0)
-        return
-    }
+    // if (to.meta?.isLegacy && from.meta?.isLegacy) {
+    //     router.go(0)
+    //     return
+    // }
 })
 
 export default router

@@ -73,9 +73,9 @@ const backend = useBackendStore()
 const popups = usePopupsStore()
 
 const initialQuery = new URL(location.href).searchParams.get('query_string')
-const searchQuery = ref(initialQuery ?? '')
+const searchQuery = ref<string | null>(initialQuery ?? '')
 const standardizedQuery = computed(() => {
-    return searchQuery.value.trim()
+    return searchQuery.value?.trim()
 })
 
 function search() {
@@ -117,13 +117,15 @@ function showModulesPopup() {
     }
 }
 .img-logo {
+    display: flex;
+    align-items: center;
     background: rgb(var(--v-theme-primary));
     min-height: var(--v-top-nav-height);
     height: var(--v-top-nav-height);
     width: 260px;
     z-index: 1000;
     img {
-        padding: 12px 16px;
+        padding: 12px 24px;
         height: 58px;
     }
 }

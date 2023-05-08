@@ -58,11 +58,11 @@ function handleLegacyUrlChange(e: Event) {
         router.push(path)
     } else {
         // router.push(path) /* problem: podwójny reload legacy => legacy */
-        // history.replaceState(
-        //     {},
-        //     '',
-        //     `/minthcm${path}`,
-        // ) /* problem: powrót do pierwotnego widoku legacy */
+        history.replaceState(
+            {},
+            '',
+            `/minthcm${path}`,
+        ) /* problem: powrót do pierwotnego widoku legacy */
     }
 }
 

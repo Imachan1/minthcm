@@ -1,44 +1,76 @@
 <template>
-    <v-list class="py-4">
-        <template v-if="alerts.sortedAlerts?.length">
-            <v-list-item v-for="alert in alerts.sortedAlerts" :key="alert.id">
-                <div
-                    class="alert"
-                    v-ripple="{ class: 'text-primary' }"
-                    :class="{ 'alert-faded': alert.is_read }"
+    <v-card class="pt-4 pb-2">
+        <v-list>
+            <template v-if="alerts.sortedAlerts?.length">
+                <v-list-item
+                    v-for="alert in alerts.sortedAlerts"
+                    :key="alert.id"
                 >
-                    <div class="alert-body">
-                        <span class="alert-title" v-text="alert.description" />
-                        <span
-                            class="alert-date"
-                            v-text="toRelativeDate(alert.date_entered)"
-                        />
+                    <div
+                        class="alert"
+                        v-ripple="{ class: 'text-primary' }"
+                        :class="{ 'alert-faded': alert.is_read }"
+                    >
+                        <div class="alert-body">
+                            <span
+                                class="alert-title"
+                                v-text="alert.description"
+                            />
+                            <span
+                                class="alert-date"
+                                v-text="toRelativeDate(alert.date_entered)"
+                            />
+                        </div>
+                        <div class="alert-nav">
+                            <v-btn
+                                class="alert-delete-btn"
+                                icon="mdi-close"
+                                variant="text"
+                                density="comfortable"
+                                color="secondary"
+                                @click.stop="alerts.close(alert.id)"
+                            />
+                            <v-btn
+                                v-if="!alert.is_read"
+                                class="alert-not-read-dot"
+                                icon="mdi-circle"
+                                variant="text"
+                                size="small"
+                                density="compact"
+                                color="error"
+                                @click.stop="alerts.markRead(alert.id)"
+                            />
+                        </div>
                     </div>
-                    <div class="alert-nav">
-                        <v-btn
-                            class="alert-delete-btn"
-                            icon="mdi-close"
-                            variant="text"
-                            density="comfortable"
-                            color="secondary"
-                            @click.stop="alerts.close(alert.id)"
-                        />
-                        <v-btn
-                            v-if="!alert.is_read"
-                            class="alert-not-read-dot"
-                            icon="mdi-circle"
-                            variant="text"
-                            size="small"
-                            density="compact"
-                            color="error"
-                            @click.stop="alerts.markRead(alert.id)"
-                        />
-                    </div>
-                </div>
-            </v-list-item>
-        </template>
-        <span v-else v-text="'No alerts'" class="pa-4" />
-    </v-list>
+                </v-list-item>
+            </template>
+            <span v-else v-text="'No alerts'" class="pa-4" />
+        </v-list>
+        <div class="alerts-footer">
+            <v-tooltip text="Mark all as read" location="top left">
+                <template v-slot:activator="{ props }">
+                    <v-btn
+                        v-bind="props"
+                        color="secondary"
+                        icon="mdi-email-open"
+                        variant="text"
+                        size="small"
+                    />
+                </template>
+            </v-tooltip>
+            <v-tooltip text="Delete all" location="top left">
+                <template v-slot:activator="{ props }">
+                    <v-btn
+                        v-bind="props"
+                        color="secondary"
+                        icon="mdi-delete-sweep"
+                        variant="text"
+                        size="small"
+                    />
+                </template>
+            </v-tooltip>
+        </div>
+    </v-card>
 </template>
 
 <script setup lang="ts">
@@ -57,6 +89,13 @@ function toRelativeDate(date: string) {
 </script>
 
 <style scoped lang="scss">
+.alerts-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
 .alert {
     display: flex;
     justify-content: space-between;

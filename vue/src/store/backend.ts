@@ -11,7 +11,7 @@ import { useLanguagesStore, Languages } from './languages'
 import axios, { AxiosError } from 'axios'
 import { MenuListItem } from '@/components/MintMenuList.vue'
 
-interface ModuleAction {
+export interface ModuleAction {
     name: string
     icon: string
     url: string
@@ -66,7 +66,7 @@ export const useBackendStore = defineStore('backend', () => {
             modules.value = initData.data?.modules ?? []
             quickCreate.value =
                 initData.data?.quick_create?.map((qc) => ({
-                    icon: 'pencil',
+                    icon: modules.value.find(m => m.label === qc.module)?.icon ?? 'pencil',
                     title: qc.name,
                     url: `/${qc.module}/EditView`,
                 })) ?? []

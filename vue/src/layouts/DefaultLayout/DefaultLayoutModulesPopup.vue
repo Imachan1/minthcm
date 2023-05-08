@@ -53,13 +53,14 @@ function handleTileClick(mod: Module) {
 .modules-popup {
     display: flex;
     flex-wrap: wrap;
-    width: 1200px;
-    gap: 16px 0px;
+    width: 80vw;
+    max-width: 1300px;
+    gap: 16px;
     padding: 16px 24px;
     .module-tile {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 14px;
         transition: all 150ms ease-in-out;
         border-radius: 8px;
         width: 96px;

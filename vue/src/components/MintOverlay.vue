@@ -1,17 +1,20 @@
 <template>
     <v-fade-transition>
-        <div v-if="isOverlayVisible" class="mint-overlay" />
+        <div
+            v-if="isOverlayVisible"
+            class="mint-overlay"
+            @click="popups.closeAll"
+        />
     </v-fade-transition>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { usePopupsStore } from '@/store/popups'
-import { storeToRefs } from 'pinia'
 
-const { popups } = storeToRefs(usePopupsStore())
+const popups = usePopupsStore()
 
-const isOverlayVisible = computed(() => popups.value.length)
+const isOverlayVisible = computed(() => popups.popups.length)
 </script>
 
 <style scoped lang="scss">

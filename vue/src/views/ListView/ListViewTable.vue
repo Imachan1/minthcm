@@ -3,7 +3,7 @@
         class="list-table"
         :headers="store.headers"
         :items="store.results"
-        :items-length="store.itemsLength"
+        :items-length="store.itemsLength || 0"
         :loading="store.isLoading"
         height="calc(100vh - 400px)"
         fixed-header

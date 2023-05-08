@@ -16,7 +16,7 @@
                 :error-messages="usernameError"
                 hide-details="auto"
                 :disabled="isSubmiting"
-                :rules="[(v) => !!v || 'Pole jest wymagane']"
+                :rules="[(v) => !!v || 'Field is required']"
                 required
             />
             <v-text-field
@@ -29,7 +29,7 @@
                 prepend-inner-icon="mdi-lock"
                 hide-details="auto"
                 :disabled="isSubmiting"
-                :rules="[(v) => !!v || 'Pole jest wymagane']"
+                :rules="[(v) => !!v || 'Field is required']"
                 required
             />
             <v-btn type="submit" color="primary" :loading="isSubmiting">
@@ -69,7 +69,7 @@ async function handleSubmit() {
     await auth.authenticate(username.value, password.value)
     await backend.init()
     if (!auth.user?.id) {
-        usernameError.value = 'Niepoprawny login lub hasło'
+        usernameError.value = 'Invalid username or password'
     }
     isSubmiting.value = false
 }

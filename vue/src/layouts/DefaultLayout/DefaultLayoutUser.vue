@@ -13,57 +13,58 @@
                 </span>
             </button>
         </template>
-        <v-list nav color="secondary" density="compact" class="menu-list">
-            <v-list-item :to="`/Employees/DetailView/${auth.user?.id}`">
-                <template #prepend>
-                    <v-icon size="16" icon="mdi-account" />
-                </template>
-                <v-list-item-title> Profile </v-list-item-title>
-            </v-list-item>
-            <v-list-item :to="`/Users/EditView/${auth.user?.id}`">
-                <template #prepend>
-                    <v-icon size="16" icon="mdi-account-settings" />
-                </template>
-                <v-list-item-title> Settings </v-list-item-title>
-            </v-list-item>
-            <v-list-item to="/Employees">
-                <template #prepend>
-                    <v-icon size="16" icon="mdi-account-group" />
-                </template>
-                <v-list-item-title> Employees </v-list-item-title>
-            </v-list-item>
-            <v-list-item v-if="auth.user?.is_admin" to="/Administration">
-                <template #prepend>
-                    <v-icon size="16" icon="mdi-cog" />
-                </template>
-                <v-list-item-title> Administration </v-list-item-title>
-            </v-list-item>
-            <v-list-item tag="a" href="https://minthcm.org/support/" target="_blank">
-                <template #prepend>
-                    <v-icon size="16" icon="mdi-face-agent" />
-                </template>
-                <v-list-item-title> Support </v-list-item-title>
-            </v-list-item>
-            <v-list-item to="/Home/About">
-                <template #prepend>
-                    <v-icon size="16" icon="mdi-information" />
-                </template>
-                <v-list-item-title> About </v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="auth.logout">
-                <template #prepend>
-                    <v-icon size="16" icon="mdi-logout" />
-                </template>
-                <v-list-item-title> Logout </v-list-item-title>
-            </v-list-item>
-        </v-list>
+        <MintMenuList :items="menuItems" />
     </v-menu>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useAuthStore } from '@/store/auth'
+import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 
 const auth = useAuthStore()
+
+const menuItems = computed<MenuListItem[]>(() => {
+    const items: MenuListItem[] = []
+    items.push({
+        title: 'Profile',
+        icon: 'account',
+        url: `/Employees/DetailView/${auth.user?.id}`,
+    })
+    items.push({
+        title: 'Settings',
+        icon: 'account-settings',
+        url: `/Users/EditView/${auth.user?.id}`,
+    })
+    items.push({
+        title: 'Employees',
+        icon: 'account-group',
+        url: '/Employees',
+    })
+    if (auth.user?.is_admin) {
+        items.push({
+            title: 'Administration',
+            icon: 'cog',
+            url: '/Administration',
+        })
+    }
+    items.push({
+        title: 'Support',
+        icon: 'face-agent',
+        onClick: () => window.open('https://minthcm.org/support/', '_blank'),
+    })
+    items.push({
+        title: 'About',
+        icon: 'information',
+        url: '/Home/About',
+    })
+    items.push({
+        title: 'Logout',
+        icon: 'logout',
+        onClick: () => auth.logout(),
+    })
+    return items
+})
 </script>
 
 <style scoped lang="scss">
@@ -91,5 +92,4 @@ const auth = useAuthStore()
         background: rgb(var(--v-theme-secondary));
     }
 }
-
 </style>

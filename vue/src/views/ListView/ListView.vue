@@ -1,7 +1,7 @@
 <template>
-    <div class="pa-8">
+    <div class="px-8 py-2">
         <h1 v-text="module" />
-        <div class="elevation-4 list-view">
+        <div class="elevation-4 mt-1 list-view">
             <ListViewFilters />
             <ListViewHeader />
             <ListViewTable />
@@ -44,12 +44,13 @@ watch(module, (newVal, oldVal) => {
 
 <style scoped lang="scss">
 h1 {
-    text-transform: uppercase;
     color: rgb(var(--v-theme-secondary-dark));
     letter-spacing: 1px;
     font-weight: 600;
 }
 .list-view {
+    border-radius: 16px;
+    padding-bottom: 8px;
     background: rgb(var(--v-theme-surface));
 }
 </style>

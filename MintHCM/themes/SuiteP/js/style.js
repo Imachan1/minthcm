@@ -66,10 +66,11 @@ $(document).ready(function () {
 
   // #Mint-Vue Start
   window.addEventListener('click', (e) => {
+    if (e.target?.getAttribute('target') === '_blank' || e.target?.closest('a')?.getAttribute('target') === '_blank') {
+      return
+    }
     const href = e.target?.href ?? e.target?.closest('a')?.href
-    if (href && !['#', 'javascript:void(0)'].includes(href) && !href.includes('javascript:')) {
-      e.stopPropagation()
-      e.preventDefault()
+    if (href && !['#', 'javascript:void(0)'].includes(href) && !href.includes('javascript:') && !href.includes('#')) {
       window.parent.postMessage(href)
     }
   })
