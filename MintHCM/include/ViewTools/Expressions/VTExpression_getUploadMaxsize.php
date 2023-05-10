@@ -15,6 +15,6 @@ class VTExpression_getUploadMaxsize extends VTExpression
     {
         return <<<EOQ
         return SUGAR.config.uploadMaxsize;
-        EOQ;
+EOQ;
     }
 }
