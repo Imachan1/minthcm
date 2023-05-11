@@ -174,11 +174,14 @@ class WorkSchedulesApi
     }
 
     public function getActiveWorkplaces($args) {
+        global $timedate;
         $employee = BeanFactory::getBean('Employees', $args['assigned_user_id']);
+        $date_start = $timedate->to_db_date($args['date_start']);
+        $date_end = $timedate->to_db_date($args['date_end']);
         if (empty($employee->id)) {
             return;
-        }
-        return $employee->getActiveWorkplaces();
+        }   
+        return $employee->getActiveWorkplaces(null, $date_start, $date_);
     }
 }
 

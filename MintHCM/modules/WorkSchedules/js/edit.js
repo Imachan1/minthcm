@@ -324,7 +324,9 @@ function setDefaultWorkPlace() {
         module: "WorkSchedules",
         action: "getWorkplaces",
         dataPOST: {
-            assigned_user_id: $("#assigned_user_id").val()
+            assigned_user_id: $("#assigned_user_id").val(),
+            date_start: $('#date_start').val(), 
+            date_end: $('#date_end').val(), 
         },
         callback: function (result) {
             if (result.length === 1) {

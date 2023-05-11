@@ -74,7 +74,7 @@ class AcceptWorkScheduleValidator
         {
             return;
         }
-        $active_workplaces = $this->employee->getActiveWorkplaces(null, $this->date_start);
+        $active_workplaces = $this->employee->getActiveWorkplaces(null, $this->date_start, $this->date_end);
         if (!empty($active_workplaces)) {
             $this->response = self::ERR_WORKPLACE_IS_REQUIRED;
         }
@@ -89,7 +89,7 @@ class AcceptWorkScheduleValidator
         {
             return;
         }
-        $active_workplaces = $this->employee->getActiveWorkplaces($this->workschedule->workplace_id, $this->date_start);
+        $active_workplaces = $this->employee->getActiveWorkplaces($this->workschedule->workplace_id, $this->date_start, $this->date_end);
         if (empty($active_workplaces)) {
             $this->response = self::ERR_WORKPLACE_IS_NOT_ACTIVE;
         }
