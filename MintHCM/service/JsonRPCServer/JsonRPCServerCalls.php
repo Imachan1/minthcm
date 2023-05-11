@@ -210,9 +210,9 @@ class JsonRPCServerCalls
     {
         global $app_list_strings;
         foreach ($data as $key => $value) {
-            $group_type = array_search($value['fields']['group_type'], $app_list_strings['group_type_list']);
-            if (empty($value['fields']['show_on_employees']) && 'User' == $value['module'] 
-                || ($group_type == $value['fields']['group_type'] && 'SecurityGroup' == $value['module'])) 
+            $private_group_type = $app_list_strings['group_type_list']['private'];
+            if ($value['fields']['show_on_employees'] === '0' && 'User' == $value['module'] 
+                || ($private_group_type == $value['fields']['group_type'] && 'SecurityGroup' == $value['module'])) 
             {
                 unset($data[$key]);
             }
