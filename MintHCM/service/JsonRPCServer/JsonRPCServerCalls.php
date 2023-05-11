@@ -208,9 +208,11 @@ class JsonRPCServerCalls
     // MintHCM #117141 start
     protected function addCustomFilters($data)
     {
+        global $app_list_strings;
         foreach ($data as $key => $value) {
+            $group_type = array_search($value['fields']['group_type'], $app_list_strings['group_type_list']);
             if (empty($value['fields']['show_on_employees']) && 'User' == $value['module'] 
-                || ('Private' == $value['fields']['group_type'] && 'SecurityGroup' == $value['module'])) 
+                || ($group_type == $value['fields']['group_type'] && 'SecurityGroup' == $value['module'])) 
             {
                 unset($data[$key]);
             }
