@@ -181,7 +181,7 @@ class WorkSchedulesApi
         if (empty($employee->id)) {
             return;
         }   
-        return $employee->getActiveWorkplaces(null, $date_start, $date_);
+        return $employee->getActiveWorkplaces(null, $date_start, $date_end);
     }
 }
 
