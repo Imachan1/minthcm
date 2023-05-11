@@ -6,7 +6,7 @@ if (typeof PhotosFiles !== 'function') {
         }
 
         getAcceptedFiles() {
-            return 'image/*';
+            return 'image/*,application/pdf,.doc,.docx,.pages,.odt,.rtf/*,.xls,.xlsx';
         }
     }
     window.PhotosFiles = PhotosFiles;

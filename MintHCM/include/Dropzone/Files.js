@@ -43,7 +43,7 @@ if (typeof Files !== 'function') {
         }
 
         handleThumbnail(file) {
-            const [name, ext] = file.name.split('.');
+            const [name, ext] = file.name.split(/\.(?=[^\.]+$)/);
             const fileSize = file.previewElement.querySelector('.dz-size').innerText;
             const iconPath = this.fileTypesMap[ext] ?? this.defaultThumbnail;
             file.previewElement.classList.remove('dz-file-preview');
@@ -152,7 +152,7 @@ if (typeof Files !== 'function') {
         }
 
         getAcceptedFiles() {
-            return 'image/*,application/pdf,.doc,.docx,.pages,.odt,.rtf/*';
+            return 'image/*,application/pdf,.doc,.docx,.pages,.odt,.rtf/*,.xls,.xlsx';
         }
 
         getMaxFiles() {

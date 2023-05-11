@@ -45,7 +45,6 @@
                                 <div class="dz-message needsclick">
                                     <div class="dz-button"><span class="fas fa-plus-circle"></span></div>
                                     <span class="note needsclick">
-                                        {sugar_translate label='dropzone_labels' module='app_list_strings' select='dictDefaultMessage'}
                                     </span>
                                 </div>
                             </div>
@@ -58,6 +57,8 @@
                                         const record = $("form[name='DetailView'] input[name='record']").val();
                                         window.documentFiles = new PhotosFiles(record, module, {}, true);
                                         window.documentFiles.init();
+                                        const label = viewTools.language.get('app_strings', 'LBL_DEFAULT_DROPZONE_MESSAGE').replace('{upload_maxsize}', viewTools.formula.getUploadMaxsize);
+                                        $('.note.needsclick').html(label);
                                     });
                                 {/literal}
                             </script>
