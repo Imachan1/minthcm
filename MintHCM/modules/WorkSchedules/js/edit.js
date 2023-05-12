@@ -320,6 +320,9 @@ function validateWorkScheduleCreatedByPeriodicity() {
 }
 
 function setDefaultWorkPlace() {
+    if ($('#workplace_name').val() || $('#workplace_id').val()) {
+        return;
+    }
     viewTools.api.callCustomApi({
         module: "WorkSchedules",
         action: "getWorkplaces",
