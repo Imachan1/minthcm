@@ -211,7 +211,12 @@ function displayQuestion($survey, $question)
         <div class="panel-heading">
         <!-- MintHCM #102681 START -->
         <?php
-            echo "<h3 class='panel-title'><label for='question".$question->id."'>".$question->name."</label></h3>";
+            if('Checkbox'==$question->type){
+                echo '';
+            }
+            else{
+                echo "<h3 class='panel-title'><label for='question".$question->id."'>".$question->name."</label></h3>";
+            }
         ?>
         <!-- MintHCM #102681 END -->
         </div>
