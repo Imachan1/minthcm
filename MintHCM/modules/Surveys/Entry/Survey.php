@@ -26,8 +26,12 @@ if ($survey->status != 'Active') {
 $employeeId = $_REQUEST['employee'];
 //MintHCM #102681 START
 if (empty($employeeId)) {
-    header("HTTP/1.0 404 Not Found");
-    exit();
+    if(empty($_SESSION['authenticated_user_id'])){
+        header("HTTP/1.0 404 Not Found");
+        exit();  
+    } else {
+        $employeeId = $_SESSION['authenticated_user_id'];
+    }
 }
 
 
