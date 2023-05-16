@@ -211,12 +211,7 @@ function displayQuestion($survey, $question)
         <div class="panel-heading">
         <!-- MintHCM #102681 START -->
         <?php
-            if('Checkbox'==$question->type){
-                echo '';
-            }
-            else{
-                echo "<h3 class='panel-title'><label for='question".$question->id."'>".$question->name."</label></h3>";
-            }
+            echo "<h3 class='panel-title'><label for='question".$question->id."'>".$question->name."</label></h3>";
         ?>
         <!-- MintHCM #102681 END -->
         </div>
@@ -255,16 +250,15 @@ $options = array();
             echo "</label></div>";
             break;
         case "Multiselect": 
+            $multi = $question->type == 'Multiselect' ? ' multiple="true" ' : '';
+            $name =
+            $question->type == 'Multiselect' ? "question[" . $question->id . "][]" :
+            "question[" . $question->id . "]";
+            echo "<select class=\"form-control\" style='height:75px;' id='question" . $question->id . "' name='$name' $multi>";
             foreach ($options as $option) {
-                echo "<div class='checkbox checkbox-lg'><label>";
-                echo "<input id='question" .
-                $question->id .
-                "' name='question[" .
-                $question->id .
-                "]' type='checkbox'/>"; 
-                echo $option['name'];  
-                echo "</label></div>";
-            }  
+                echo "<option value='" . $option['id'] . "'>" . $option['name'] . "</option>";
+            }
+            echo "</select>";
             break;
         //MintHCM #102681 END
         case "Radio":
