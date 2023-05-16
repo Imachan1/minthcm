@@ -77,7 +77,7 @@ $subpanel_layout['list_fields'] = array(
         'type' => 'enum',
         'default' => true,
         'studio' => 'visible',
-        'vname' => 'SCORING',
+        'vname' => 'LBL_SCORING',
     ),
     'date_modified' => array(
         'vname' => 'LBL_DATE_MODIFIED',

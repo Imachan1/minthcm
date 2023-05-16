@@ -81,6 +81,7 @@ $dictionary['OAuthToken'] = array('table' => 'oauth_tokens',
       'consumer' =>
       array(
             'name' => 'consumer',
+            'vname' => 'LBL_CONSUMER',
             'type' => 'id',
             'required' => true,
             'comment' => 'Token related to the consumer',

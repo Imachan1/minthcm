@@ -180,7 +180,7 @@ $mod_strings = array(
     'LBL_USERS_FORCED_TABS_DASHBOARDS' => 'Forced dashboards',
     'LBL_USERS_LOCKED_DASHBOARDS' => 'Locked dashboards',
     'LBL_USERS_ONBOARDINGOFFBOARDINGELEMENTS' => 'Onboarding/Offboarding elements',
-    'LBL_POSITION_EMPLOYEES' => 'Stanowiska',
+    'LBL_POSITION_EMPLOYEES' => 'Positions',
     'LBL_CANDIDATE_EMPLOYEE_LINK_FROM_EMPLOYEE' => 'Employee candidate link',
     'LBL_CANDIDATE_EMPLOYEE_ID_FROM_EMPLOYEE' => 'Candidate ID for employee',
     'LBL_USERS_ONE_TIME_DEFAULT_DASHBOARDS' => 'Users: One Time Default',
@@ -205,5 +205,7 @@ $mod_strings = array(
     /* MintHCM #84233 END */
     'LBL_BIRTHDATE' => 'Birthdate',
     'LBL_KUDOS' => 'Kudos',
-    'LBL_FILES' => 'Files'
+    'LBL_FILES' => 'Files',
+    'LBL_EVALUATIONS' => 'Evaluations',
+    'LBL_DATE_INDEXED' => 'Date Indexed',
 );

@@ -118,4 +118,5 @@ $mod_strings = array(
     'LBL_DAYS' => 'Days',
     'LBL_HOURS' => 'Hours',
     'LBL_RELATIONSHIP_TYPE' => 'Relationship Type',
+    'LBL_DATE_INDEXED' => 'Date Indexed',
 );

@@ -400,5 +400,6 @@ $mod_strings = array(
    'LBL_CANDIDATES_TITLE' => 'Activities:Candidates',
    'LBL_RECRUITMENTS_TITLE' => 'Activities:Recruitments',
 
-   'LBL_FROM_ADDR_NAME' => 'From Address'
+   'LBL_FROM_ADDR_NAME' => 'From Address',
+   'LBL_EMAILS_EMPLOYEES_REL' => 'Emails:Employees',
 );

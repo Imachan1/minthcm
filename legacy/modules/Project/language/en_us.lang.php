@@ -175,5 +175,7 @@ $mod_strings = array(
     'LBL_PROJECT_CONTACTS_1_FROM_CONTACTS_TITLE' => 'Project Contacts from Contacts Title',
     'LBL_AM_PROJECTTEMPLATES_PROJECT_1_FROM_PROJECT_TITLE' => 'Project Templates: Project from Project Title',
     'LBL_AOS_QUOTES_PROJECT' => 'Quotes: Project',
-
+    'LBL_DATE_INDEXED' => 'Date Indexed',
+    'LBL_BUGS' => 'Bugs',
+    'LBL_PROJECT_TASKS' => 'Project Tasks',
 );

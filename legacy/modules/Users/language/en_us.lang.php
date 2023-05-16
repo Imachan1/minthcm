@@ -651,8 +651,6 @@ $mod_strings = array(
     'LBL_USERS_ONBOARDINGOFFBOARDINGELEMENTS' => 'Onboarding/Offboarding elements',
     'LBL_RELATIONSHIP_CERTIFICATES_NAME' => 'Certificates',
     'LBL_RELATIONSHIP_TRAININGS_NAME' => 'Trainings',
-    'LBL_FACTOR_AUTH' => 'Factor Auth',
-    'LBL_FACTOR_AUTH_INTERFACE' => 'Factor Auth Interface',
     'LBL_BUSINESS_ROLE' => 'Business role',
     'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
     'LBL_USERS_CONFIRMATION_BUTTON_CONFIRM' => 'YES',
@@ -670,4 +668,5 @@ $mod_strings = array(
     'LBL_ENABLE_NOTIFICATION_TYPE' => 'Notification Type',
     'LBL_ENABLE_NOTIFICATION' => 'Notification Enabled',
 
+    'LBL_DATE_INDEXED' => 'Date Indexed',
 ); // END STRINGS DEFS

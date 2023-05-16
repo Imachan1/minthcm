@@ -250,15 +250,6 @@ $dictionary['User'] = array(
                 'quickcreate' => false,
             ),
         ),
-        'date_indexed' => array(
-            'name' => 'date_indexed',
-            'vname' => 'LBL_DATE_INDEXED',
-            'type' => 'datetime',
-            'comment' => 'Date record last indexed',
-            'enable_range_search' => true,
-            'options' => 'date_range_search_dom',
-            'inline_edit' => false,
-        ),
         'modified_user_id' => array(
             'name' => 'modified_user_id',
             'rname' => 'user_name',

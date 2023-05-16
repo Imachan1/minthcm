@@ -117,4 +117,6 @@ $mod_strings = array(
    'LBL_SHOW_MORE_INFORMATION' => 'Other',
    'LBL_RECRUITMENTS_ACTIVITIES_EMAILS_FROM_EMAILS_TITLE' => 'E-mails',
    'LBL_LIST_TITLE' => 'Recruitments',
+   'LBL_CURRENCY_NAME' => 'Currency Name',
+   'LBL_CURRENCY_SYMBOL' => 'Currency Symbol',
 );

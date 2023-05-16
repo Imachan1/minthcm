@@ -168,4 +168,5 @@ $mod_strings = array(
     'MSG_SHOW_DUPLICATES' => 'The record you are about to create might be a duplicate of a Candidates or Employees record that already exists. Candidates and Employees records containing similar names are listed below.<br>Click Create to continue creating this new Candidate, or select an existing listed below.',
     'LBL_LIST_TITLE' => 'Candidate',
     'LBL_LINKEDIN_ACCOUNT' => 'LinkedIn',
+    'LBL_PROSPECT_LIST' => 'Prospect List',
 );

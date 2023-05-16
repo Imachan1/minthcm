@@ -106,4 +106,7 @@ $mod_strings = array(
     'LBL_LIST_TITLE' => 'Note or Attachment',
     'LBL_FILE_CONTENTS' => 'File Contents',
     'LBL_APPRAISAL' => 'Appraisal',
+    'LBL_DATE_INDEXED' => 'Date Indexed',
+    'LBL_BUGS' => 'Bugs',
+    'LBL_PROJECT_TASKS' => 'Project Tasks',
 );

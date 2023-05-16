@@ -152,4 +152,6 @@ $mod_strings = array(
     'LBL_WORKSCHEDULES' => 'Work Schedules',
     'LBL_DELEGATIONS' => 'Delegations',
     'LBL_DOCUMENTS' => 'Documents',
+
+    'LBL_REGIMEN_VALUE' => 'Regimen Value',
 );
