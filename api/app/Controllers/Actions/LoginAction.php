@@ -23,7 +23,6 @@ class LoginAction
         $response = $response->withHeader('Content-type', 'application/json');
 
         $response_body = array();
-        $preferences = $this->getPreferences();
         $response_body['global'] = $this->preferences_controller->getGlobalSettings();
         $response_body['languages'] = $this->languages_controller->getLanguages();
 
