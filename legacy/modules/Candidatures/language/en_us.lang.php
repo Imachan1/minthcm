@@ -96,7 +96,7 @@ $mod_strings = array(
     'LBL_START_DATE' => 'Application Date',
     'LBL_SOURCE' => 'Source',
     'LBL_TASK_GRADE' => 'Task Grade',
-    'SCORING' => 'Scoring',
+    'LBL_SCORING' => 'Scoring',
     'LBL_FINAL_EMPLOYMENT_FORM' => 'Final Employment Form',
     'LBL_NOTICE' => 'Notice',
     'LBL_NOTICE_FINAL_EXPECTATIONS' => 'Notice',
@@ -156,4 +156,7 @@ $mod_strings = array(
     'LBL_INFO' => 'Select one of the following options:',
     'LBL_FILES' => 'Files',
     'LBL_LIST_TITLE' => 'Candidature',
+    'LBL_PARENT_ID' => 'Parent (ID)',
+    'LBL_CURRENCY_NAME' => 'Currency Name',
+    'LBL_CURRENCY_SYMBOL' => 'Currency Symbol',
 );

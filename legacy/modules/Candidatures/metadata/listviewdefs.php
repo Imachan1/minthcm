@@ -110,7 +110,7 @@ $listViewDefs[$module_name] = array(
     ),
     'scoring' => array(
         'name' => 'scoring',
-        'label' => 'SCORING',
+        'label' => 'LBL_SCORING',
         'enabled' => true,
         'default' => true,
     ),

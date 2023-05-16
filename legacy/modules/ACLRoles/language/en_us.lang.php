@@ -66,4 +66,5 @@ $mod_strings = array(
     'LBL_DUPLICATE_OF' => 'Duplicate Of ',
 
     'LBL_SECURITYGROUPS' => 'Organizational Unit',
+    'LBL_DATE_INDEXED' => 'Date Indexed',
 );

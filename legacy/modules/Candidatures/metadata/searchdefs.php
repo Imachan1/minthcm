@@ -124,7 +124,7 @@ $searchdefs[$module_name] = array(
          array(
             'type' => 'enum',
             'default' => true,
-            'label' => 'SCORING',
+            'label' => 'LBL_SCORING',
             'width' => '10%',
             'name' => 'scoring',
          ),
