@@ -492,6 +492,9 @@ class CalendarDisplay {
 
     /* MintHCM #75984 START */
     public function get_week_info($datetime){
+        if($datetime->format("D") === "Sun"){
+            $datetime->modify("+1 day");
+        }
         return translate('LBL_CALENDAR_WEEK_NUMBER','Calendar').": ". intval($datetime->format("W"));
     }
     /* MintHCM #75984 END */
