@@ -465,17 +465,6 @@
         'edit' => '90',
         'massupdate' => '90',
       ),
-      'EmployeeInteractionTracking' => 
-      array (
-        'edit' => '90',
-        'list' => '90',
-        'delete' => '90',
-        'view' => '90',
-        'massupdate' => '90',
-        'access' => '89',
-        'export' => '90',
-        'import' => '90',
-      ),
       'EmployeeRoles' => 
       array (
         'delete' => '90',
@@ -1567,17 +1556,6 @@
         'list' => '90',
         'export' => '90',
         'view' => '90',
-      ),
-      'EmployeeInteractionTracking' => 
-      array (
-        'export' => '90',
-        'import' => '90',
-        'list' => '90',
-        'edit' => '90',
-        'delete' => '90',
-        'view' => '90',
-        'massupdate' => '90',
-        'access' => '89',
       ),
       'EmployeeRoles' => 
       array (
@@ -2671,17 +2649,6 @@
         'list' => '90',
         'export' => '90',
       ),
-      'EmployeeInteractionTracking' => 
-      array (
-        'massupdate' => '-99',
-        'access' => '89',
-        'export' => '-99',
-        'import' => '90',
-        'list' => '80',
-        'edit' => '90',
-        'delete' => '75',
-        'view' => '90',
-      ),
       'EmployeeRoles' => 
       array (
         'import' => '90',
@@ -3773,17 +3740,6 @@
         'import' => '90',
         'list' => '80',
         'export' => '80',
-      ),
-      'EmployeeInteractionTracking' => 
-      array (
-        'massupdate' => '90',
-        'access' => '89',
-        'export' => '90',
-        'import' => '90',
-        'list' => '90',
-        'edit' => '80',
-        'view' => '90',
-        'delete' => '90',
       ),
       'EmployeeRoles' => 
       array (
