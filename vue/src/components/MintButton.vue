@@ -1,7 +1,7 @@
 <template>
     <button
-        class="mint-button"
         :class="[
+            'mint-button',
             `mint-button-${props.variant}`,
             isIcon && 'mint-button-icon',
             props.disabled && 'disabled',
@@ -11,7 +11,8 @@
         :disabled="disabled"
     >
         <v-icon v-if="props.icon" :icon="props.icon" size="24" />
-        <span v-if="props.text" v-text="props.text" />
+        <div v-if="props.text" v-text="props.text" class="mx-auto" />
+        <v-tooltip v-if="props.tooltip?.trim()" activator="parent" location="top">{{ props.tooltip }}</v-tooltip>
     </button>
 </template>
 
@@ -46,7 +47,7 @@ const isIcon = computed(() => props.icon && !props.text)
     letter-spacing: 0.47px;
     transition: all 150ms ease-in-out;
     cursor: pointer;
-    padding: 7px 14px 7px 14px;
+    padding: 5px 14px 5px 14px;
     text-transform: uppercase;
     display: flex;
     align-items: center;

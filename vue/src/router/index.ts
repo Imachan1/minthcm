@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import DashboardView from '@/views/DashboardView/DashboardView.vue'
-import LoginView from '@/views/LoginView/LoginView.vue'
+import AuthView from '@/views/AuthView/AuthView.vue'
 import LegacyView from '@/views/LegacyView/LegacyView.vue'
 import { useBackendStore } from '@/store/backend'
 import { useAuthStore } from '@/store/auth'
@@ -28,10 +28,11 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/Users/Login',
         name: 'login',
-        component: LoginView,
+        component: AuthView,
         meta: {
             auth: false,
         },
+        alias: ['/Login'],
     },
     // {
     //     path: '/:module/DetailView/:record',

@@ -1,38 +1,30 @@
 <template>
-    <nav class="guest-navbar">
-        <img height="35" src="../../assets/mint_logo_white.svg" />
-    </nav>
     <slot></slot>
     <footer>
-        <span>© Reinvented by MintHCM</span>
-        <span>© Supercharged by SuiteCRM</span>
-        <span>© Powered By SugarCRM</span>
+        <a href="https://minthcm.org" target="_blank">
+            www.minthcm.org
+        </a>
     </footer>
 </template>
 
 <script setup lang="ts"></script>
 
 <style scoped lang="scss">
-.guest-navbar {
-    z-index: 1005;
-    position: fixed;
-    top: 0px;
-    width: 100%;
-    color: white;
-    background: rgb(var(--v-theme-primary));
-    height: var(--v-top-nav-height);
-    display: flex;
-    padding: 0 16px;
-    gap: 16px;
-    align-items: center;
-}
 footer {
-    height: 40px;
-    background: #ccc;
+    width: 100%;
+    text-align: center;
     font-size: 12px;
-    display: flex;
     gap: 16px;
     align-items: center;
-    padding: 0 32px;
+    padding: 8px 32px;
+    
+    a {
+        color: rgb(var(--v-theme-secondary));
+        text-decoration: none;
+
+        &:hover {
+            color: rgb(var(--v-theme-secondary-dark));
+        }
+    }
 }
 </style>

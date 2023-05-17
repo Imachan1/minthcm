@@ -3,29 +3,7 @@
         <router-link class="img-logo" to="/">
             <img src="../../assets/mint_logo_white.svg" />
         </router-link>
-        <div style="width: 40ch">
-            <v-text-field
-                v-model="searchQuery"
-                class="search-field"
-                hide-details
-                placeholder="Search..."
-                @keyup.enter="search"
-                prepend-inner-icon="mdi-magnify"
-                variant="plain"
-                clearable
-            />
-        </div>
-        <v-slide-x-transition>
-            <v-btn
-                v-if="searchQuery?.length"
-                @click="search"
-                icon="mdi-chevron-right"
-                size="default"
-                density="comfortable"
-                variant="text"
-                color="secondary"
-            />
-        </v-slide-x-transition>
+        <DefaultLayoutSearch />
         <v-spacer />
         <v-menu offset="16">
             <template v-slot:activator="{ props, isActive }">
@@ -33,9 +11,12 @@
             </template>
             <MintMenuList :items="backend.quickCreate" />
         </v-menu>
-
-        <MintButton icon="mdi-apps" variant="nav" @click="showModulesPopup"
-        :active="!!popups.popups.find(p => p.component === DefaultLayoutModulesPopup)" />
+        <MintButton
+            icon="mdi-apps"
+            variant="nav"
+            @click="showModulesPopup"
+            :active="!!popups.popups.find((p) => p.component === DefaultLayoutModulesPopup)"
+        />
 
         <v-menu offset="16" :close-on-content-click="false">
             <template v-slot:activator="{ props, isActive }">
@@ -56,8 +37,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import { useBackendStore } from '@/store/backend'
 import { useAlertsStore } from '@/store/alerts'
 import { usePopupsStore } from '@/store/popups'
@@ -66,25 +45,11 @@ import DefaultLayoutUser from './DefaultLayoutUser.vue'
 import MintMenuList from '@/components/MintMenuList.vue'
 import MintButton from '@/components/MintButton.vue'
 import DefaultLayoutModulesPopup from './DefaultLayoutModulesPopup.vue'
+import DefaultLayoutSearch from './DefaultLayoutSearch.vue'
 
-const router = useRouter()
 const alerts = useAlertsStore()
 const backend = useBackendStore()
 const popups = usePopupsStore()
-
-const initialQuery = new URL(location.href).searchParams.get('query_string')
-const searchQuery = ref<string | null>(initialQuery ?? '')
-const standardizedQuery = computed(() => {
-    return searchQuery.value?.trim()
-})
-
-function search() {
-    if (standardizedQuery.value) {
-        router.push(
-            `/Home/UnifiedSearch?search_form=false&query_string=${standardizedQuery.value}`,
-        )
-    }
-}
 
 function showModulesPopup() {
     popups.showPopup({
@@ -129,22 +94,4 @@ function showModulesPopup() {
         height: 58px;
     }
 }
-.search-field {
-    flex-grow: 1;
-    :deep(.v-field__prepend-inner) {
-        padding-top: 12px;
-        color: rgb(var(--v-theme-secondary));
-    }
-    :deep(.v-field__clearable) {
-        padding-top: 12px;
-        color: rgb(var(--v-theme-secondary));
-    }
-    :deep(.v-field__input) {
-        padding-top: 0px;
-    }
-    :deep(.v-icon) {
-        opacity: 1;
-    }
-}
-
 </style>

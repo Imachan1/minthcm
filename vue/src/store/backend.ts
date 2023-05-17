@@ -66,7 +66,7 @@ export const useBackendStore = defineStore('backend', () => {
             modules.value = initData.data?.modules ?? []
             quickCreate.value =
                 initData.data?.quick_create?.map((qc) => ({
-                    icon: modules.value.find(m => m.label === qc.module)?.icon ?? 'pencil',
+                    icon: modules.value.find((m) => m.label === qc.module)?.icon ?? 'pencil',
                     title: qc.name,
                     url: `/${qc.module}/EditView`,
                 })) ?? []
@@ -77,11 +77,7 @@ export const useBackendStore = defineStore('backend', () => {
                 // router.back()
                 const prev = router.options.history.state.back as string
                 console.log('prev', prev)
-                if (
-                    prev &&
-                    prev !== '/Users/Logout' &&
-                    prev !== '/Users/Login'
-                ) {
+                if (prev && prev !== '/Users/Logout' && prev !== '/Users/Login') {
                     router.push(prev)
                 } else {
                     router.push('/')
@@ -112,11 +108,16 @@ export const useBackendStore = defineStore('backend', () => {
         return modules.value.find((m) => m.label === url.module)
     })
 
+    function getModuleIcon(module: string) {
+        return `mdi-${modules.value.find(m => m.label === module)?.icon || 'star'}`
+    }
+
     return {
         init,
         initialLoading,
         modules,
         quickCreate,
         activeModule,
+        getModuleIcon,
     }
 })
