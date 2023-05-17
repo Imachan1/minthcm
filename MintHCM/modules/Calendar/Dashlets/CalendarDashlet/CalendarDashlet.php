@@ -60,6 +60,9 @@ class CalendarDashlet extends Dashlet
      */
     public function __construct($id, $def)
     {
+        if (!ACLController::checkAccess('Calendar', 'list', true)) {
+            return;
+        }
         $this->loadLanguage('CalendarDashlet', 'modules/Calendar/Dashlets/');
 
         parent::__construct($id);
@@ -106,6 +109,9 @@ class CalendarDashlet extends Dashlet
      */
     public function display()
     {
+        if (!ACLController::checkAccess('Calendar', 'list', true)) {
+            return;
+        }
         ob_start();
 
         if (isset($GLOBALS['cal_strings'])) {
@@ -119,9 +125,7 @@ class CalendarDashlet extends Dashlet
         global $cal_strings, $current_language;
         $cal_strings = return_module_language($current_language, 'Calendar');
 
-        if (!ACLController::checkAccess('Calendar', 'list', true)) {
-            ACLController::displayNoAccess(false);
-        }
+
 
         $cal = new Calendar($this->view);
         $cal->dashlet = true;
@@ -194,6 +198,9 @@ class CalendarDashlet extends Dashlet
     }
     public function getHeader($text = '')
     {
+        if (!ACLController::checkAccess('Calendar', 'list', true)) {
+            return;
+        }
         $template = new Sugar_Smarty();
 
         $template->assign('is_locked', $this->is_locked);
