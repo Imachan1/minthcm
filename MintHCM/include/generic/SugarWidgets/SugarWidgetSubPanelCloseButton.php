@@ -73,7 +73,8 @@ class SugarWidgetSubPanelCloseButton extends SugarWidgetField
             /* MintHCM #114934 START */
             case 'Trainings':
                 $new_status = 'held';
-                if(strtolower($layout_def['fields']['STATUS']) === "held"){
+                $training = BeanFactory::getBean("Trainings",$record_id);
+                if(strtolower($training->status === "held")){
                     return '';
                 }
                 break;
