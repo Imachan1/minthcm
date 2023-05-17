@@ -1,0 +1,95 @@
+<?php
+
+namespace MintHCM\Api\Controllers\Init;
+
+use Slim\Psr7\Response;
+use MintHCM\Api\Controllers\Init\Module;
+use MintHCM\Api\Controllers\Init\Languages;
+use MintHCM\Api\Controllers\Init\Preferences;
+use Psr\Http\Message\ServerRequestInterface as Request;
+
+class Init
+{
+    protected $preferences_controller, $languages_controller;
+
+    public function __construct()
+    {
+        $this->preferences_controller = new Preferences();
+        $this->languages_controller = new Languages();
+        $this->module_init_controller = new Module();
+    }
+
+    public function __invoke(Request $request, Response $response, array $args): Response
+    {
+        $response = $response->withHeader('Content-type', 'application/json');
+
+        $response_body = $this->getData();
+
+        $response->getBody()->write(json_encode($response_body));
+        return $response;
+    }
+
+    public function getData()
+    {
+        $response_body = array();
+        $response_body['user'] = $this->getCurrentUserData();
+        $response_body['preferences'] = $this->preferences_controller->getUserPreferences();
+        $response_body['global'] = $this->preferences_controller->getGlobalSettings();
+        $response_body['languages'] = $this->languages_controller->getLanguages();
+        [$modules_menu, $modules_data] = $this->getModules();
+        $response_body['menu_modules'] = $modules_menu;
+        $response_body['modules'] = $modules_data;
+        $response_body['quick_create'] = $this->getQuickCreate();
+        return $response_body;
+    }
+
+    private function getCurrentUserData()
+    {
+        global $current_user;
+        if (empty($current_user->id)) {
+            return array();
+        }
+
+        return array(
+            "id" => $current_user->id,
+            "is_admin" => "1" === $current_user->is_admin ? true : false,
+            "first_name" => $current_user->first_name,
+            "last_name" => $current_user->last_name,
+            "full_name" => $current_user->full_name,
+        );
+    }
+
+    private function getModules()
+    {
+        global $current_user, $app_list_strings;
+        $modules = query_module_access_list($current_user);
+
+        $modules_data = array();
+        if (!is_array($modules)) {
+            return $modules_data;
+        }
+
+        foreach ($modules as $module) {
+            $modules_data[$module] = $this->module_init_controller->getModuleData($module);
+        }
+        return [array_keys($modules), $modules_data];
+    }
+
+    private function getQuickCreate()
+    {
+        $modules = include "constants/quick_create.php";
+        $response = array();
+
+        if (!is_array($modules)) {
+            return $response;
+        }
+
+        foreach ($modules as $module => $name) {
+            $response[] = array(
+                "module" => $module,
+                "name" => $name,
+            );
+        }
+        return $response;
+    }
+}

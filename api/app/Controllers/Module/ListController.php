@@ -2,15 +2,16 @@
 
 namespace MintHCM\Api\Controllers\Module;
 
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
-use Elasticsearch\Common\Exceptions\InvalidArgumentException;
 use Link2;
+use M2MRelationship;
+use Slim\Psr7\Response;
 use MintHCM\Lib\Search\Search;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Routing\RouteContext;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpInternalServerErrorException;
-use Slim\Psr7\Response;
-use Slim\Routing\RouteContext;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use Elasticsearch\Common\Exceptions\InvalidArgumentException;
 
 class ListController
 {
@@ -46,11 +47,11 @@ class ListController
             $columns = $bean->column_fields;
             $row = [];
             foreach ($columns as $column) {
-                if ($bean->$column instanceof Link2) {
+                if($bean->$column instanceof Link2) {
                     $id_key = strtolower($bean->$column->getSide()) . "_key";
                     $id_name = $bean->$column->relationship->def[$id_key];
                     $id = $bean->{$id_name};
-                    if (!empty($id) && 'id' !== $id_name) {
+                    if(!empty($id) && $id_name !== 'id') {
                         $row[$column] = "/" . $bean->$column->getRelatedModuleName() . "/DetailView/" . $id;
                         continue;
                     }
@@ -70,7 +71,7 @@ class ListController
         $size = $request->getAttribute('items') ?? ($mint_config['search']['default_page_size'] ?? 25);
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
-
+        
         $params = array();
         $params['items'] = $size;
         $params['offset'] = $request->getAttribute('offset') ?? -1;

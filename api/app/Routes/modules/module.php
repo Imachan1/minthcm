@@ -1,16 +1,17 @@
 <?php
 
+use MintHCM\Api\Controllers\Init\Module;
 use MintHCM\Api\Controllers\ModuleController;
 use MintHCM\Api\Controllers\Module\ListController;
 use MintHCM\Api\Controllers\Module\ListInitController;
-use MintHCM\Api\Middlewares\Params\ParamTypes\ArrayType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\IntType;
+use MintHCM\Api\Middlewares\Params\ParamTypes\ArrayType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
 
 $routes = array(
     "detail" => array(
         "method" => "GET",
-        "path" => "/{id}",
+        "path" => "/Detail/{id}",
         "class" => ModuleController::class,
         "function" => 'detail',
         "desc" => "Get module detail",
@@ -86,6 +87,15 @@ $routes = array(
         "method" => "GET",
         "path" => "",
         "class" => ListInitController::class,
+        "desc" => "Get init data for list",
+        "options" => array(
+            'auth' => true,
+        ),
+    ),
+    "init" => array(
+        "method" => "GET",
+        "path" => "/init",
+        "class" => Module::class,
         "desc" => "Get init data for list",
         "options" => array(
             'auth' => true,
