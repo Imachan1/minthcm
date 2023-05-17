@@ -95,11 +95,6 @@ class MySugar{
         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             return;
         }
-        /* MintHCM #84212 START */
-        if (!empty($_REQUEST['type_module']) && !ACLController::checkAccess($_REQUEST['type_module'], 'list', true)) {
-            return;
-        }
-        /* MintHCM #84212 END */
 		if(!is_file(sugar_cached('dashlets/dashlets.php'))) {
             require_once('include/Dashlets/DashletCacheBuilder.php');
 

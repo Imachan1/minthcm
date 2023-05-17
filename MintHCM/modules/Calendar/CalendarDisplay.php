@@ -552,7 +552,7 @@ class CalendarDisplay {
 
       $ss->assign('print', $this->cal->isPrint());
       if (!ACLController::checkAccess('Calendar', 'list', true)) {
-            ACLController::displayNoAccess(false);  
+            echo '<script>function set_focus(){}</script><p class="error" style="margin:auto;">' . translate('LBL_NO_ACCESS', 'ACL') . '</p>'; 
             return;
       }
       if ( $controls ) {
