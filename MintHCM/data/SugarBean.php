@@ -529,6 +529,10 @@ class SugarBean {
                   if ( isset($this->$field) ) {
                      break;
                   }
+                // MintHCM #102684 START
+                case 'ColoredEnum':
+                    $this->field_defs[$field]['coloredenum_module'] = $this->module_name;
+                // MintHCM #102684 END
                default:
                     $this->field_defs[$field]['field_module_name'] = $_REQUEST['module'];
                     $this->field_defs[$field]['field_record'] = $_REQUEST['record'];
