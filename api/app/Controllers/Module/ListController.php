@@ -2,16 +2,14 @@
 
 namespace MintHCM\Api\Controllers\Module;
 
-use Link2;
-use M2MRelationship;
-use Slim\Psr7\Response;
-use MintHCM\Lib\Search\Search;
-use Slim\Routing\RouteContext;
-use Slim\Exception\HttpBadRequestException;
-use Slim\Exception\HttpInternalServerErrorException;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
+use MintHCM\Lib\Search\Search;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpBadRequestException;
+use Slim\Exception\HttpInternalServerErrorException;
+use Slim\Psr7\Response;
+use Slim\Routing\RouteContext;
 
 class ListController
 {
@@ -33,35 +31,11 @@ class ListController
     private function getData()
     {
         return array(
-            'total' => $this->search_result['total'],
-            'next_page_exists' => $this->search_result['next_page_exists'],
-            'offset' => $this->search_result['next_offset'],
-            'results' => $this->getBeans(),
+            'total' => $this->search_result->getTotal(),
+            'next_page_exists' => $this->search_result->getNextPageExists(),
+            'offset' => $this->search_result->getNextOffset(),
+            'results' => $this->search_result->getBeansAsJsonArray(),
         );
-    }
-
-    private function getBeans()
-    {
-        $beans = array();
-        foreach ($this->search_result['beans'] as $bean) {
-            $columns = $bean->column_fields;
-            $row = [];
-            foreach ($columns as $column) {
-                if($bean->$column instanceof Link2) {
-                    $id_key = strtolower($bean->$column->getSide()) . "_key";
-                    $id_name = $bean->$column->relationship->def[$id_key];
-                    $id = $bean->{$id_name};
-                    if(!empty($id) && $id_name !== 'id') {
-                        $row[$column] = "/" . $bean->$column->getRelatedModuleName() . "/DetailView/" . $id;
-                        continue;
-                    }
-                }
-                $row[$column] = $bean->$column;
-            }
-            $row['acl_access'] = $bean->acl_access;
-            $beans[] = $row;
-        }
-        return $beans;
     }
 
     private function setParams(Request $request)
@@ -71,10 +45,11 @@ class ListController
         $size = $request->getAttribute('items') ?? ($mint_config['search']['default_page_size'] ?? 25);
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
-        
+
         $params = array();
+        $params['search'] = 'list';
         $params['items'] = $size;
-        $params['offset'] = $request->getAttribute('offset') ?? -1;
+        $params['from'] = $request->getAttribute('offset') ?? -1;
         $params['sort_by'] = $request->getAttribute('sortBy') ?? null;
         $params['sort_order'] = $request->getAttribute('sortOrder') ?? 'asc';
         $params['filters'] = $request->getAttribute('filters') ?? array();
@@ -86,8 +61,8 @@ class ListController
     {
         try {
             $search_manager = Search::getManager();
-            $search_manager->execute($this->params);
-            $this->search_result = $search_manager->getResultBeans();
+            $search_manager->setQuery($this->params);
+            $this->search_result = $search_manager->search(true);
 
         } catch (BadRequest400Exception $e) {
             throw new HttpBadRequestException($this->request);

@@ -38,6 +38,7 @@ class ComposerStaticInitb37ba7854db44afda592f3ed7ba9e139
             'MintHCM\\Utils\\' => 14,
             'MintHCM\\Modules\\' => 16,
             'MintHCM\\Lib\\' => 12,
+            'MintHCM\\Data\\' => 13,
             'MintHCM\\Custom\\Modules\\' => 23,
             'MintHCM\\Custom\\Api\\' => 19,
             'MintHCM\\Api\\' => 12,
@@ -104,6 +105,10 @@ class ComposerStaticInitb37ba7854db44afda592f3ed7ba9e139
         'MintHCM\\Lib\\' => 
         array (
             0 => __DIR__ . '/../..' . '/lib',
+        ),
+        'MintHCM\\Data\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/data',
         ),
         'MintHCM\\Custom\\Modules\\' => 
         array (
@@ -399,11 +404,13 @@ class ComposerStaticInitb37ba7854db44afda592f3ed7ba9e139
         'GuzzleHttp\\Stream\\Utils' => __DIR__ . '/..' . '/guzzlehttp/streams/src/Utils.php',
         'MintHCM\\Api\\ApiManager' => __DIR__ . '/../..' . '/app/ApiManager.php',
         'MintHCM\\Api\\Config\\AppConfig' => __DIR__ . '/../..' . '/app/Config/AppConfig.php',
-        'MintHCM\\Api\\Controllers\\Actions\\InitAction' => __DIR__ . '/../..' . '/app/Controllers/Actions/InitAction.php',
-        'MintHCM\\Api\\Controllers\\Actions\\LanguagesAction' => __DIR__ . '/../..' . '/app/Controllers/Actions/LanguagesAction.php',
         'MintHCM\\Api\\Controllers\\Actions\\LoginAction' => __DIR__ . '/../..' . '/app/Controllers/Actions/LoginAction.php',
-        'MintHCM\\Api\\Controllers\\Actions\\PreferencesAction' => __DIR__ . '/../..' . '/app/Controllers/Actions/PreferencesAction.php',
         'MintHCM\\Api\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Controllers/AuthController.php',
+        'MintHCM\\Api\\Controllers\\GlobalSearchController' => __DIR__ . '/../..' . '/app/Controllers/GlobalSearchController.php',
+        'MintHCM\\Api\\Controllers\\Init\\Init' => __DIR__ . '/../..' . '/app/Controllers/Init/Init.php',
+        'MintHCM\\Api\\Controllers\\Init\\Languages' => __DIR__ . '/../..' . '/app/Controllers/Init/Languages.php',
+        'MintHCM\\Api\\Controllers\\Init\\Module' => __DIR__ . '/../..' . '/app/Controllers/Init/Module.php',
+        'MintHCM\\Api\\Controllers\\Init\\Preferences' => __DIR__ . '/../..' . '/app/Controllers/Init/Preferences.php',
         'MintHCM\\Api\\Controllers\\ModuleController' => __DIR__ . '/../..' . '/app/Controllers/ModuleController.php',
         'MintHCM\\Api\\Controllers\\Module\\ListController' => __DIR__ . '/../..' . '/app/Controllers/Module/ListController.php',
         'MintHCM\\Api\\Controllers\\Module\\ListInitController' => __DIR__ . '/../..' . '/app/Controllers/Module/ListInitController.php',
@@ -412,11 +419,14 @@ class ComposerStaticInitb37ba7854db44afda592f3ed7ba9e139
         'MintHCM\\Api\\Middlewares\\Params\\ParamType' => __DIR__ . '/../..' . '/app/Middlewares/Params/ParamType.php',
         'MintHCM\\Api\\Middlewares\\Params\\ParamTypes\\ArrayType' => __DIR__ . '/../..' . '/app/Middlewares/Params/ParamTypes/ArrayType.php',
         'MintHCM\\Api\\Middlewares\\Params\\ParamTypes\\BoolType' => __DIR__ . '/../..' . '/app/Middlewares/Params/ParamTypes/BoolType.php',
+        'MintHCM\\Api\\Middlewares\\Params\\ParamTypes\\EmailType' => __DIR__ . '/../..' . '/app/Middlewares/Params/ParamTypes/EmailType.php',
         'MintHCM\\Api\\Middlewares\\Params\\ParamTypes\\IntType' => __DIR__ . '/../..' . '/app/Middlewares/Params/ParamTypes/IntType.php',
         'MintHCM\\Api\\Middlewares\\Params\\ParamTypes\\StringType' => __DIR__ . '/../..' . '/app/Middlewares/Params/ParamTypes/StringType.php',
         'MintHCM\\Api\\Middlewares\\Params\\ParamsMiddleware' => __DIR__ . '/../..' . '/app/Middlewares/Params/ParamsMiddleware.php',
         'MintHCM\\Api\\Middlewares\\Parsers\\JsonBodyParserMiddleware' => __DIR__ . '/../..' . '/app/Middlewares/Parsers/JsonBodyParserMiddleware.php',
         'MintHCM\\Api\\Routes\\RouteManager' => __DIR__ . '/../..' . '/app/Routes/RouteManager.php',
+        'MintHCM\\Data\\BeanFactory' => __DIR__ . '/../..' . '/data/BeanFactory.php',
+        'MintHCM\\Data\\MintBean' => __DIR__ . '/../..' . '/data/MintBean.php',
         'MintHCM\\Lib\\Search\\ElasticSearch\\ElasticOperator' => __DIR__ . '/../..' . '/lib/Search/ElasticSearch/ElasticOperator.php',
         'MintHCM\\Lib\\Search\\ElasticSearch\\ElasticParams' => __DIR__ . '/../..' . '/lib/Search/ElasticSearch/ElasticParams.php',
         'MintHCM\\Lib\\Search\\ElasticSearch\\ElasticQueryOperatorsManager' => __DIR__ . '/../..' . '/lib/Search/ElasticSearch/ElasticQueryOperatorsManager.php',

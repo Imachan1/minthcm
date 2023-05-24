@@ -17,6 +17,7 @@ return array(
     'MintHCM\\Utils\\' => array($baseDir . '/utils'),
     'MintHCM\\Modules\\' => array($baseDir . '/modules'),
     'MintHCM\\Lib\\' => array($baseDir . '/lib'),
+    'MintHCM\\Data\\' => array($baseDir . '/data'),
     'MintHCM\\Custom\\Modules\\' => array($baseDir . '/custom/modules'),
     'MintHCM\\Custom\\Api\\' => array($baseDir . '/custom/app'),
     'MintHCM\\Api\\' => array($baseDir . '/app'),

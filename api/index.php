@@ -13,7 +13,10 @@ use MintHCM\Api\Config\AppConfig;
 use MintHCM\Utils\CustomLoader;
 use Slim\Factory\AppFactory;
 
+global $app;
+
 $config = CustomLoader::getObject(AppConfig::class);
+
 $app = AppFactory::create();
 $app->setBasePath($config::getBasePath());
 
