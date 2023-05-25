@@ -1,31 +1,14 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '@/composables/useApi'
 import { useAuthStore, User } from './auth'
-import { useUrlStore } from './url'
 import { useAlertsStore } from './alerts'
 import { useFavoritesStore } from './favorites'
 import { useRecentsStore } from './recents'
 import { useLanguagesStore, Languages } from './languages'
 import axios, { AxiosError } from 'axios'
-import { MenuListItem } from '@/components/MintMenuList.vue'
-
-export interface ModuleAction {
-    name: string
-    icon: string
-    url: string
-    action: string
-    options: []
-}
-
-export interface Module {
-    key: string
-    label: string
-    name: string
-    icon: string
-    actions: ModuleAction[]
-}
+import { useModulesStore, ModulesDefs } from './modules'
 
 interface QuickCreate {
     module: string
@@ -35,48 +18,41 @@ interface QuickCreate {
 interface InitResponse {
     user: User
     languages: Languages
-    modules: Module[]
+    modules: ModulesDefs
+    menu_modules: string[]
     quick_create: QuickCreate[]
 }
 
 export const useBackendStore = defineStore('backend', () => {
-    const initialLoading = ref(true)
-    const modules = ref<Module[]>([])
-    const quickCreate = ref<MenuListItem[]>([])
     const route = useRoute()
     const router = useRouter()
-    const url = useUrlStore()
     const alerts = useAlertsStore()
     const favorites = useFavoritesStore()
     const recents = useRecentsStore()
     const languages = useLanguagesStore()
+    const modules = useModulesStore()
+
+    const initData = ref<InitResponse | null>(null)
+    const initialLoading = ref(true)
 
     async function init() {
         const auth = useAuthStore()
         const api = useApi()
         try {
-            const initData = await axios.get<InitResponse>('/api/init')
-            console.log('initData', initData.data)
-            auth.user = initData.data?.user ?? {}
+            const initResponse = await axios.get<InitResponse>('/api/init')
+            console.log('initData', initResponse.data)
+            initData.value = initResponse.data
+            auth.user = initResponse.data?.user ?? {}
             languages.languages = {
-                app_strings: initData.data.languages?.app_strings ?? {},
-                app_list_strings: initData.data.languages?.app_list_strings ?? {},
+                app_strings: initResponse.data.languages?.app_strings ?? {},
+                app_list_strings: initResponse.data.languages?.app_list_strings ?? {},
                 modules: {},
             }
-            modules.value = initData.data?.modules ?? []
-            quickCreate.value =
-                initData.data?.quick_create?.map((qc) => ({
-                    icon: modules.value.find((m) => m.label === qc.module)?.icon ?? 'pencil',
-                    title: qc.name,
-                    url: `/${qc.module}/EditView`,
-                })) ?? []
-            console.log('route', route)
+            modules.modulesDefs = initResponse.data?.modules ?? {}
             if (route.meta.auth !== false && !auth.user?.id) {
                 router.push({ name: 'login' })
             } else if (route.name === 'login' && auth.user?.id) {
-                // router.back()
                 const prev = router.options.history.state.back as string
-                console.log('prev', prev)
                 if (prev && prev !== '/Users/Logout' && prev !== '/Users/Login') {
                     router.push(prev)
                 } else {
@@ -97,27 +73,18 @@ export const useBackendStore = defineStore('backend', () => {
                         Users: loginData.languages?.Users ?? {},
                     },
                 }
-                router.push({ name: 'login' })
+                if (router.currentRoute.value.name !== 'login') {
+                    router.push({ name: 'login' })
+                }
             }
         } finally {
             initialLoading.value = false
         }
     }
 
-    const activeModule = computed(() => {
-        return modules.value.find((m) => m.label === url.module)
-    })
-
-    function getModuleIcon(module: string) {
-        return `mdi-${modules.value.find(m => m.label === module)?.icon || 'star'}`
-    }
-
     return {
         init,
         initialLoading,
-        modules,
-        quickCreate,
-        activeModule,
-        getModuleIcon,
+        initData,
     }
 })

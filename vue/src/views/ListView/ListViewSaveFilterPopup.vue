@@ -9,16 +9,8 @@
         :error-messages="errorMsg"
     />
     <div class="buttons mt-4">
-        <MintButton
-            @click="$emit('close')"
-            variant="text"
-            :text="languages.label('LBL_ESLIST_CANCEL')"
-        />
-        <MintButton
-            @click="save"
-            variant="primary"
-            :text="languages.label('LBL_ESLIST_SAVE')"
-        />
+        <MintButton @click="$emit('close')" variant="text" :text="languages.label('LBL_ESLIST_CANCEL')" />
+        <MintButton @click="save" variant="primary" :text="languages.label('LBL_ESLIST_SAVE')" />
     </div>
 </template>
 
@@ -40,8 +32,7 @@ const store = useListViewStore()
 function save() {
     if (validate()) {
         const name = filterName.value.trim()
-        const filterWithSameNameIndex =
-            store.preferences?.saved_filters?.findIndex((f) => f.name === name)
+        const filterWithSameNameIndex = store.preferences?.saved_filters?.findIndex((f) => f.name === name)
         if (filterWithSameNameIndex > -1) {
             store.preferences.saved_filters[filterWithSameNameIndex] = {
                 filters: props.data.filterRows,
@@ -55,10 +46,7 @@ function save() {
             const savedFilters = store.preferences?.saved_filters ?? []
             store.preferences = {
                 ...store.preferences,
-                saved_filters: [
-                    ...savedFilters,
-                    { filters: props.data.filterRows, name },
-                ],
+                saved_filters: [...savedFilters, { filters: props.data.filterRows, name }],
             }
         }
         store.savePreferences()

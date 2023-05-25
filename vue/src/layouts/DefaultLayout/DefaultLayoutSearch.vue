@@ -27,7 +27,7 @@
                     @click="showRecord(result.module, result.id)"
                     class="search-result"
                 >
-                    <v-icon :icon="getModuleIcon(result.module)" color="primary" />
+                    <v-icon :icon="modules.modules[result.module].icon || modules.defaultIcon" color="primary" />
                     <div>
                         <span v-html="getHighlightedText(result.name, response.query)" />
                         <div class="search-result-description">
@@ -47,10 +47,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useBackendStore } from '@/store/backend'
+import { useModulesStore } from '@/store/modules'
 import he from 'he'
 
-const { getModuleIcon } = useBackendStore()
+const modules = useModulesStore()
 const router = useRouter()
 const isFocused = ref(false)
 const initialQuery = new URL(location.href).searchParams.get('query_string')

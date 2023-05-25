@@ -9,7 +9,7 @@
             <template v-slot:activator="{ props, isActive }">
                 <MintButton v-bind="props" variant="nav" icon="mdi-plus" :active="isActive" />
             </template>
-            <MintMenuList :items="backend.quickCreate" />
+            <MintMenuList :items="quickCreateMenu" />
         </v-menu>
         <MintButton
             icon="mdi-apps"
@@ -37,19 +37,33 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useBackendStore } from '@/store/backend'
 import { useAlertsStore } from '@/store/alerts'
 import { usePopupsStore } from '@/store/popups'
+import { useModulesStore } from '@/store/modules'
 import DefaultLayoutAlerts from './DefaultLayoutAlerts.vue'
 import DefaultLayoutUser from './DefaultLayoutUser.vue'
-import MintMenuList from '@/components/MintMenuList.vue'
+import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 import MintButton from '@/components/MintButton.vue'
 import DefaultLayoutModulesPopup from './DefaultLayoutModulesPopup.vue'
 import DefaultLayoutSearch from './DefaultLayoutSearch.vue'
 
-const alerts = useAlertsStore()
 const backend = useBackendStore()
+const alerts = useAlertsStore()
 const popups = usePopupsStore()
+const modules = useModulesStore()
+
+const quickCreateMenu = computed<MenuListItem[]>(() => {
+    if (!backend.initData?.quick_create) {
+        return []
+    }
+    return backend.initData.quick_create.map((qc) => ({
+        title: qc.name,
+        icon: modules.modules[qc.module]?.icon ?? 'mdi-pencil',
+        url: `/${qc.module}/EditView`,
+    }))
+})
 
 function showModulesPopup() {
     popups.showPopup({

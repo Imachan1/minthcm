@@ -1,6 +1,6 @@
 <template>
     <v-navigation-drawer
-        class="drawer-nav"
+        class="sidebar-nav"
         expand-on-hover
         :rail="$vuetify.display.mdAndDown"
         permanent
@@ -10,16 +10,13 @@
         rail-width="76"
     >
         <v-list
-            v-if="
-                backend.activeModule?.label !== 'Home' &&
-                backend.activeModule?.actions
-            "
+            v-if="modules.activeModule?.name !== 'Home' && modules.activeModule?.actions"
             nav
             bg-color="primary"
             class="nav-list flex-shrink-0 py-4"
         >
             <v-list-item
-                v-for="action in backend.activeModule.actions"
+                v-for="action in modules.activeModule.actions"
                 :key="action.action"
                 class="nav-item module-action"
                 :value="action.action"
@@ -32,10 +29,7 @@
                 </div>
             </v-list-item>
         </v-list>
-        <div
-            class="flex-grow-1"
-            style="display: flex; flex-direction: column; overflow: auto"
-        >
+        <div class="flex-grow-1" style="display: flex; flex-direction: column; overflow: auto">
             <v-text-field
                 v-model="filterModulesQuery"
                 class="find-module"
@@ -48,19 +42,15 @@
                     <v-icon icon="mdi-magnify" />
                 </template>
             </v-text-field>
-            <v-list
-                nav
-                class="nav-list nav-list-blurred flex-grow-1"
-                style="min-height: 80px"
-            >
+            <v-list nav class="nav-list nav-list-blurred flex-grow-1" style="min-height: 80px">
                 <transition-group name="list" tag="ul">
                     <template v-if="filteredModules.length">
                         <v-list-item
                             class="nav-item"
                             v-for="filteredModule in filteredModules"
-                            :key="filteredModule.label"
-                            :value="filteredModule.label"
-                            :data-cy="filteredModule.label"
+                            :key="filteredModule.name"
+                            :value="filteredModule.name"
+                            :data-cy="filteredModule.name"
                             :to="
                                 ![
                                     'Calls',
@@ -70,55 +60,32 @@
                                     'Candidatures',
                                     'Positions',
                                     'Recruitments',
-                                ].includes(filteredModule.label)
-                                    ? `/${filteredModule.label}`
-                                    : `/${filteredModule.label}/ESListView`
+                                ].includes(filteredModule.name)
+                                    ? `/${filteredModule.name}`
+                                    : `/${filteredModule.name}/ESListView`
                             "
-                            :active="filteredModule.label === url.module"
+                            :active="filteredModule.name === url.module"
                             color="secondary"
                         >
-                            <div
-                                style="
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: space-between;
-                                "
-                            >
+                            <div style="display: flex; align-items: center; justify-content: space-between">
                                 <div class="nav-title">
-                                    <v-icon
-                                        :icon="`mdi-${filteredModule.icon}`"
-                                    />
-                                    <span v-text="filteredModule.name" />
+                                    <v-icon :icon="`${filteredModule.icon}`" />
+                                    <span v-text="filteredModule.label" />
                                 </div>
-                                <v-menu
-                                    v-if="
-                                        filteredModule.label !== 'Home' &&
-                                        filteredModule.actions?.length
-                                    "
-                                >
-                                    <template
-                                        v-slot:activator="{ props, isActive }"
-                                    >
+                                <v-menu v-if="filteredModule.name !== 'Home' && filteredModule.actions?.length">
+                                    <template v-slot:activator="{ props, isActive }">
                                         <v-btn
                                             v-bind="props"
                                             @click.prevent.stop="null"
                                             class="menu-icon"
-                                            :class="[
-                                                isActive && 'menu-icon-active',
-                                            ]"
+                                            :class="[isActive && 'menu-icon-active']"
                                             icon="mdi-dots-vertical"
                                             variant="text"
                                             density="compact"
                                             color="secondary"
                                         />
                                     </template>
-                                    <MintMenuList
-                                        :items="
-                                            parseModuleActions(
-                                                filteredModule.actions,
-                                            )
-                                        "
-                                    />
+                                    <MintMenuList :items="parseModuleActions(filteredModule.actions)" />
                                 </v-menu>
                             </div>
                         </v-list-item>
@@ -127,19 +94,15 @@
                 </transition-group>
             </v-list>
             <v-expansion-panels class="nav-accordion" variant="accordion">
-                <v-expansion-panel
-                    v-if="recents.recents?.length"
-                    bg-color="transparent"
-                >
+                <v-expansion-panel v-if="recents.recents?.length" bg-color="transparent">
                     <v-expansion-panel-title>
-                        <v-icon class="mr-4">mdi-history</v-icon>
+                        <v-icon class="mr-4" icon="mdi-history" />
                         <span>Recently viewed</span>
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
                         <v-list nav class="nav-list">
                             <v-list-item
-                                v-for="recent in recents.recents?.slice(0, 9) ??
-                                []"
+                                v-for="recent in recents.recents?.slice(0, 9) ?? []"
                                 :key="recent.item_id"
                                 class="nav-item"
                                 :value="recent.item_id"
@@ -147,20 +110,16 @@
                                 :active="false"
                             >
                                 <div class="nav-title">
-                                    <v-icon :icon="'mdi-clock'" />
+                                    <v-icon :icon="modules.modules[recent.module_name]?.icon ?? 'mdi-clock'" />
                                     <span v-text="recent.item_summary" />
                                 </div>
                             </v-list-item>
                         </v-list>
                     </v-expansion-panel-text>
                 </v-expansion-panel>
-                <v-expansion-panel
-                    v-if="favorites.favorites?.length"
-                    bg-color="transparent"
-                    elevetion="10"
-                >
+                <v-expansion-panel v-if="favorites.favorites?.length" bg-color="transparent" elevetion="10">
                     <v-expansion-panel-title>
-                        <v-icon class="mr-4">mdi-heart</v-icon>
+                        <v-icon class="mr-4" icon="mdi-heart" />
                         <span>Favorite records</span>
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
@@ -174,7 +133,7 @@
                                 :active="false"
                             >
                                 <div class="nav-title">
-                                    <v-icon :icon="'mdi-heart'" />
+                                    <v-icon :icon="modules.modules[favorite.module_name]?.icon ?? 'mdi-heart'" />
                                     <span v-text="favorite.item_summary" />
                                 </div>
                             </v-list-item>
@@ -188,24 +147,24 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useBackendStore, ModuleAction } from '@/store/backend'
 import { useUrlStore } from '@/store/url'
 import { useFavoritesStore } from '@/store/favorites'
 import { useRecentsStore } from '@/store/recents'
+import { useModulesStore, ModuleAction } from '@/store/modules'
 import MintMenuList from '@/components/MintMenuList.vue'
 
-const backend = useBackendStore()
+const modules = useModulesStore()
 const url = useUrlStore()
 const favorites = useFavoritesStore()
 const recents = useRecentsStore()
 
 const filterModulesQuery = ref('')
 const filteredModules = computed(() => {
-    const query = filterModulesQuery.value.trim()
+    const query = filterModulesQuery.value.trim().toLowerCase()
     if (!query) {
-        return backend.modules
+        return modules.visibleModules
     }
-    return backend.modules.filter((m) => m.name.toLowerCase().includes(query))
+    return modules.visibleModules.filter((m) => m.name.toLowerCase().includes(query))
 })
 
 function parseModuleActions(actions: ModuleAction[]) {
@@ -217,7 +176,7 @@ function parseModuleActions(actions: ModuleAction[]) {
 }
 </script>
 <style lang="scss">
-.drawer-nav {
+.sidebar-nav {
     top: var(--v-top-nav-height) !important;
     max-height: calc(100vh - var(--v-top-nav-height));
     backdrop-filter: blur(10px);
@@ -227,7 +186,7 @@ function parseModuleActions(actions: ModuleAction[]) {
         flex-direction: column;
     }
 }
-.drawer-nav.v-navigation-drawer--rail {
+.sidebar-nav.v-navigation-drawer--rail {
     .menu-icon {
         display: none;
     }
@@ -238,7 +197,7 @@ function parseModuleActions(actions: ModuleAction[]) {
         display: none;
     }
 }
-.drawer-nav.v-navigation-drawer--is-hovering {
+.sidebar-nav.v-navigation-drawer--is-hovering {
     .menu-icon {
         display: block;
     }

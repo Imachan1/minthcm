@@ -61,10 +61,7 @@ export const useListViewStore = defineStore('listview', () => {
             module: url.module,
             function_name: 'getResults',
             page: options.value.page,
-            itemsPerPage:
-                options.value.itemsPerPage === -1
-                    ? 100
-                    : options.value.itemsPerPage,
+            itemsPerPage: options.value.itemsPerPage === -1 ? 100 : options.value.itemsPerPage,
             myObjects: myObjects.value,
             searchPhrase: searchPhrase.value,
             filters: filters.value,
@@ -97,9 +94,7 @@ export const useListViewStore = defineStore('listview', () => {
     }
 
     const allColumns = computed(() => {
-        return Object.values(defs.value?.columns).sort((a, b) =>
-            a.label?.localeCompare(b.label, 'pl'),
-        )
+        return Object.values(defs.value?.columns).sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
     })
 
     const visibleColumns = computed(() => {
@@ -113,9 +108,7 @@ export const useListViewStore = defineStore('listview', () => {
             }, [])
         } else {
             // default
-            return Object.values(defs.value?.columns).filter(
-                (col) => col.default,
-            )
+            return Object.values(defs.value?.columns).filter((col) => col.default)
         }
     })
 
@@ -188,9 +181,7 @@ export const useListViewStore = defineStore('listview', () => {
             return {}
         }
         return Object.values(defs.value?.columns)
-            .filter((col) =>
-                ['date', 'datetime', 'datetimecombo'].includes(col.type),
-            )
+            .filter((col) => ['date', 'datetime', 'datetimecombo'].includes(col.type))
             .map((col) => col.name)
     })
     const customFields = computed(() => {
@@ -216,21 +207,13 @@ export const useListViewStore = defineStore('listview', () => {
     const filterableFields = computed(() => {
         console.log(
             'filterable',
-            Object.values(defs.value?.search).sort((a, b) =>
-                a.label?.localeCompare(b.label, 'pl'),
-            ),
+            Object.values(defs.value?.search).sort((a, b) => a.label?.localeCompare(b.label, 'pl')),
         )
-        return Object.values(defs.value?.search).sort((a, b) =>
-            a.label?.localeCompare(b.label, 'pl'),
-        )
+        return Object.values(defs.value?.search).sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
     })
 
     watch(options, () => {
-        console.log(
-            'update options',
-            options.value,
-            defs.value?.columns[options.value.sortBy[0]?.key]?.key,
-        )
+        console.log('update options', options.value, defs.value?.columns[options.value.sortBy[0]?.key]?.key)
         getData()
     })
 

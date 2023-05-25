@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export interface Languages {
     app_strings: { [key: string]: string }
-    app_list_strings: { [key: string]: object }
+    app_list_strings: { [key: string]: { [key: string]: string } }
     modules: { [key: string]: { [key: string]: string } }
 }
 
@@ -29,10 +29,7 @@ export const useLanguagesStore = defineStore('languages', () => {
     })
 
     async function fetchModuleLanguage(module: string) {
-        if (
-            languages.value.modules[module] &&
-            Object.keys(languages.value.modules[module]).length
-        ) {
+        if (languages.value.modules[module] && Object.keys(languages.value.modules[module]).length) {
             return languages.value.modules[module]
         }
         const response = await axios.get('/api/languages', {

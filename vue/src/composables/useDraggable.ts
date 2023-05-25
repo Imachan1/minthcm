@@ -32,14 +32,8 @@ export const useDraggable = (draggable: HTMLElement, dragged?: HTMLElement) => {
             top: e.clientY,
         }
         const computedPosition = {
-            left:
-                parseInt(dragged.style.left, 10) +
-                cursorPosition.left -
-                prevCursorPosition.left,
-            top:
-                parseInt(dragged.style.top, 10) +
-                cursorPosition.top -
-                prevCursorPosition.top,
+            left: parseInt(dragged.style.left, 10) + cursorPosition.left - prevCursorPosition.left,
+            top: parseInt(dragged.style.top, 10) + cursorPosition.top - prevCursorPosition.top,
         }
         dragged.style.left = computedPosition.left + 'px'
         dragged.style.top = computedPosition.top + 'px'
@@ -58,13 +52,9 @@ export const useDraggable = (draggable: HTMLElement, dragged?: HTMLElement) => {
         const top = parseInt(draggedComputedStyle.top, 10)
 
         const widthBoundary =
-            draggedComputedStyle.position === 'fixed'
-                ? window.innerWidth
-                : document.documentElement.scrollWidth
+            draggedComputedStyle.position === 'fixed' ? window.innerWidth : document.documentElement.scrollWidth
         const heightBoundary =
-            draggedComputedStyle.position === 'fixed'
-                ? window.innerHeight
-                : document.documentElement.scrollHeight
+            draggedComputedStyle.position === 'fixed' ? window.innerHeight : document.documentElement.scrollHeight
 
         // Specifies the number of pixels that draggable element sticks out from the window edge
         const w = width >= 100 ? 100 : width

@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
+import { defineProps } from 'vue'
 
 export interface MenuListItem {
     title: string
@@ -30,13 +30,13 @@ const props = defineProps<Props>()
 //TODO: global function?
 function getIcon(icon: string) {
     if (!icon) {
-        return null
+        return ''
     }
     if (icon.slice(0, 4) === 'mdi-') {
-        return icon // mdi
+        return icon // Material Design Icons
     }
     if (icon.slice(0, 3) === 'fi-') {
-        return icon // flag-icon
+        return icon // Flag Icons
     }
     return `mdi-${icon}` // return mdi by default
 }

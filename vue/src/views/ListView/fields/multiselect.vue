@@ -1,39 +1,39 @@
 <template>
     <v-select
-        v-model="input.value"
-        class="es-list-filter-input-multiselect"
-        :items="getList(fieldDefs.options)"
-        dense
-        style="width: fit-content"
-        :label="input.label"
+        v-model="value"
+        @update:model-value="emit('update:modelValue', value)"
+        :items="items"
+        item-value="value"
+        item-title="text"
+        :label="props.input.label"
         multiple
-        small-chips
-        deletable-chips
-        outlined
+        chips
+        closable-chips
+        variant="outlined"
         hide-details
     />
 </template>
 
-<script>
-export default {
-    props: {
-        input: { type: Object, required: true },
-        fieldDefs: { type: Object },
-    },
-    methods: {
-        getList(list) {
-            return Object.entries(
-                SUGAR.language.languages['app_list_strings'][list] ?? {}
-            ).map(([value, text]) => ({ value, text }))
-        },
-    }
+<script setup lang="ts">
+import { defineProps, defineEmits, ref, computed } from 'vue'
+import { useLanguagesStore } from '@/store/languages'
+
+export interface Props {
+    input: any
+    fieldDefs: any
 }
+
+const props = defineProps<Props>()
+const emit = defineEmits(['update:modelValue'])
+const languages = useLanguagesStore()
+const value = ref(props.input?.value)
+
+const items = computed(() => {
+    return Object.entries(languages.languages.app_list_strings[props.fieldDefs.options] ?? {}).map(([value, text]) => ({
+        value,
+        text,
+    }))
+})
 </script>
 
-<style lang="scss">
-.es-list-filter-input-multiselect {
-    .v-chip--select {
-        margin: 4px !important;
-    }
-}
-</style>
+<style scoped lang="scss"></style>

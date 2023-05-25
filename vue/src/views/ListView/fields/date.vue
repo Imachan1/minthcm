@@ -1,11 +1,5 @@
 <template>
-    <v-menu
-        v-model="menu"
-        :close-on-content-click="false"
-        transition="scale-transition"
-        offset-y
-        min-width="auto"
-    >
+    <v-menu v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
         <template v-slot:activator="{ props }">
             <v-text-field
                 v-model="formattedDate"
@@ -19,7 +13,7 @@
             />
         </template>
         <VueDatePicker
-            @update:model-value="val => value = DateTime.fromJSDate(val).toSQLDate()"
+            @update:model-value="(val) => (value = DateTime.fromJSDate(val).toSQLDate())"
             inline
             :enable-time-picker="false"
             :format="format"

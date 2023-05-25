@@ -4,6 +4,11 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 
+const variables = {
+    'top-nav-height': '72px',
+    'drawer-width': '460px',
+}
+
 export default createVuetify({
     icons: {
         defaultSet: 'mdi',
@@ -22,24 +27,22 @@ export default createVuetify({
                 colors: {
                     primary: '#00654e',
                     'primary-light': '#e0ecea',
+                    'primary-lighter': '#f5fbfa',
                     secondary: '#145d7b',
                     'secondary-dark': '#08384B',
                 },
-                variables: {
-                    'top-nav-height': '72px',
-                },
+                variables,
             },
             dark: {
                 dark: true,
                 colors: {
                     primary: '#00654e',
                     'primary-light': '#e0ecea',
+                    'primary-lighter': '#f5fbfa',
                     secondary: '#145d7b',
                     'secondary-dark': '#08384B',
                 },
-                variables: {
-                    'top-nav-height': '72px',
-                },
+                variables,
             },
         },
     },

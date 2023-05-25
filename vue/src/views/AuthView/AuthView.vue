@@ -8,7 +8,7 @@
                 @update:username="(newVal) => (username = newVal)"
             />
             <AuthViewForget v-else-if="form === 'forget'" />
-            <AuthViewReset v-else-if="form === 'reset'" />
+            <AuthViewReset v-else-if="form === 'reset'" :username="username" />
         </v-slide-x-transition>
         <div class="auth-footer">
             <v-slide-x-transition hide-on-leave>
@@ -41,7 +41,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import { useLanguagesStore } from '@/store/languages'
 import MintButton from '@/components/MintButton.vue'
 import MintMenuList from '@/components/MintMenuList.vue'
@@ -51,8 +52,31 @@ import AuthViewReset from './AuthViewReset.vue'
 
 const languages = useLanguagesStore()
 
-const form = ref<'login' | 'forget' | 'reset'>('login')
+const url = new URL(location.href)
+const resetToken = url.searchParams.get('reset_token')
+
 const username = ref('')
+const form = ref<'login' | 'forget' | 'reset'>(resetToken ? 'reset' : 'login')
+
+// onMounted(async () => {
+//     const url = new URL(location.href)
+//     const resetToken = url.searchParams.get('reset_token')
+//     form.value =
+//     if (!resetToken) {
+//         form.value = 'login'
+//         return
+//     }
+//     const response = await axios.get('/api/validation_token', {
+//         params: {
+//             reset_token: resetToken,
+//         },
+//     })
+//     if (response.data?.username) {
+//         username.value = response.data.username
+//         form.value = 'reset'
+//     }
+//     console.log('validation_token response', response.data?.username)
+// })
 </script>
 
 <style scoped lang="scss">
@@ -103,7 +127,7 @@ const username = ref('')
 
 <style>
 /* fix chrome autofill background change */
-/* todo: autfill bug */
+/* TODO: autfill bug */
 .login-container .login-input input:-webkit-autofill,
 .login-container .login-input input:-webkit-autofill:hover,
 .login-container .login-input input:-webkit-autofill:focus,

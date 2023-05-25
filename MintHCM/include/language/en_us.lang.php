@@ -4440,6 +4440,10 @@ $app_strings['LBL_START_TIME'] = 'Start time';
 $app_strings['LBL_END_TIME'] = 'End time';
 
 //Mint4
+$app_strings['LBL_MINT4_STATUS_BOX_ERROR'] = 'Error';
+$app_strings['LBL_MINT4_STATUS_BOX_SUCCESS'] = 'Success';
+$app_strings['LBL_MINT4_STATUS_BOX_INFO'] = 'Attention';
+
 $app_strings['LBL_MINT4_AUTH_LOGIN_TITLE'] = 'Login';
 $app_strings['LBL_MINT4_AUTH_LOGIN_BTN'] = 'Log in';
 $app_strings['LBL_MINT4_AUTH_BACK_TO_LOGIN'] = 'Back to login';
@@ -4447,6 +4451,8 @@ $app_strings['LBL_MINT4_AUTH_LOGIN_ERROR'] = 'Incorrect email or password, pleas
 $app_strings['LBL_MINT4_AUTH_FORGET_TITLE'] = 'Forget Password';
 $app_strings['LBL_MINT4_AUTH_FORGET_BTN'] = 'Reset Password';
 $app_strings['LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION'] = 'Forget password?';
+$app_strings['LBL_MINT4_AUTH_FORGET_SUCCESS'] = 'Shortly, you will receive an email with a link to reset your password.';
+$app_strings['LBL_MINT4_AUTH_FORGET_ERROR'] = 'Incorrect username or email, please try another one.';
 $app_strings['LBL_MINT4_AUTH_RESET_TITLE'] = 'Password Reset';
 $app_strings['LBL_MINT4_AUTH_RESET_BTN'] = 'Change Password';
 $app_strings['LBL_MINT4_AUTH_LANG_TOOLTIP'] = 'Change language';
@@ -4454,6 +4460,8 @@ $app_strings['LBL_MINT4_AUTH_USERNAME'] = 'Username';
 $app_strings['LBL_MINT4_AUTH_PASSWORD'] = 'Password';
 $app_strings['LBL_MINT4_AUTH_PASSWORD_REPEAT'] = 'Repeat new password';
 $app_strings['LBL_MINT4_AUTH_EMAIL'] = 'Email';
-$app_strings['LBL_MINT4_STATUS_BOX_ERROR'] = 'Error';
-$app_strings['LBL_MINT4_STATUS_BOX_SUCCESS'] = 'Success';
-$app_strings['LBL_MINT4_STATUS_BOX_INFO'] = 'Attention';
+$app_strings['LBL_MINT4_AUTH_PASSWORD_RULES'] = 'The password must contain:';
+
+$app_strings['LBL_MINT4_CHAT_CREATE_GROUP'] = 'Create Group Conversation';
+$app_strings['LBL_MINT4_CHAT_SEARCH_CONVERSATION'] = 'Search';
+$app_strings['LBL_MINT4_CHAT_SEARCH_USER'] = 'Search';

@@ -1,10 +1,6 @@
 <template>
     <v-fade-transition>
-        <div
-            v-if="isOverlayVisible"
-            class="mint-overlay"
-            @click="popups.closeAll"
-        />
+        <div v-if="isOverlayVisible" class="mint-overlay" @click="popups.closeAll" />
     </v-fade-transition>
 </template>
 

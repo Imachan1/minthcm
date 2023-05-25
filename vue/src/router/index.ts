@@ -1,65 +1,8 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import DashboardView from '@/views/DashboardView/DashboardView.vue'
-import AuthView from '@/views/AuthView/AuthView.vue'
-import LegacyView from '@/views/LegacyView/LegacyView.vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import { useBackendStore } from '@/store/backend'
 import { useAuthStore } from '@/store/auth'
 import { useLanguagesStore } from '@/store/languages'
-
-const routes: Array<RouteRecordRaw> = [
-    {
-        path: '/',
-        name: 'dashboard',
-        component: LegacyView,
-        alias: '/Home',
-        meta: {
-            isLegacy: true,
-        },
-    },
-    {
-        path: '/Administration',
-        name: 'administration',
-        component: LegacyView,
-        alias: '/Admin',
-        meta: {
-            isLegacy: true,
-        },
-    },
-    {
-        path: '/Users/Login',
-        name: 'login',
-        component: AuthView,
-        meta: {
-            auth: false,
-        },
-        alias: ['/Login'],
-    },
-    // {
-    //     path: '/:module/DetailView/:record',
-    //     name: 'detail',
-    //     component: () => import('../views/DetailView/DetailView.vue'),
-    // },
-    // {
-    //     path: '/:module/EditView/:record',
-    //     name: 'edit',
-    //     component: () => import('../views/EditView/EditView.vue'),
-    //     alias: '/:module/EditView',
-    // },
-    {
-        path: '/:module/ESListView',
-        name: 'list',
-        component: () => import('../views/ListView/ListView.vue'),
-        // alias: '/:module/index',
-    },
-    {
-        path: '/:catchAll(.*)',
-        name: 'legacy',
-        component: LegacyView,
-        meta: {
-            isLegacy: true,
-        },
-    },
-]
+import routes from './routes'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -82,7 +25,7 @@ router.beforeEach((to, from) => {
 
 router.afterEach((to, from) => {
     const languages = useLanguagesStore()
-    if (to.params?.module && !languages.languages.modules[to.params.module]) {
+    if (to.params?.module && typeof to.params.module === 'string' && !languages.languages.modules[to.params.module]) {
         languages.fetchModuleLanguage(to.params.module)
     }
     // if (to.meta?.isLegacy && from.meta?.isLegacy) {

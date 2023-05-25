@@ -12,13 +12,7 @@
                 hide-details
             />
         </v-col>
-        <v-switch
-            v-model="store.myObjects"
-            class="flex-grow-0"
-            @change="store.getData"
-            color="secondary"
-            hide-details
-        >
+        <v-switch v-model="store.myObjects" class="flex-grow-0" @change="store.getData" color="secondary" hide-details>
             <template #label>
                 <span v-text="languages.label('LBL_ESLIST_MY_OBJECTS')"></span>
             </template>
@@ -138,9 +132,7 @@ function showSaveFilterPopup() {
 
 function deleteFilterRow(index: number) {
     console.log('deleteFilter', index)
-    filterRows.value = filterRows.value.filter(
-        (filterRow, filterIndex) => index !== filterIndex,
-    )
+    filterRows.value = filterRows.value.filter((filterRow, filterIndex) => index !== filterIndex)
 }
 
 function replacePlaceholders(placeholders, inputs) {
@@ -161,9 +153,7 @@ function replacePlaceholders(placeholders, inputs) {
 function getOperator(field: string, operator: string) {
     const type = store.defs?.search[field].type
     const defs =
-        operatorDefs[type] ??
-        operatorDefs[operatorDefs.typeMap[type]] ??
-        operatorDefs[operatorDefs.defaultOperator]
+        operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
     return defs[operator]
 }
 
@@ -203,8 +193,7 @@ function setFilters(filterRows: FilterRow[]) {
             })
         })
     })
-    const filtersChanged =
-        JSON.stringify(query) !== JSON.stringify(store.filters)
+    const filtersChanged = JSON.stringify(query) !== JSON.stringify(store.filters)
     console.log('query', query)
     store.filters = query
     if (filtersChanged) {
@@ -213,11 +202,13 @@ function setFilters(filterRows: FilterRow[]) {
 }
 
 function deleteSavedFilter(filter: string) {
-    store.preferences.saved_filters = store.preferences?.saved_filters.filter(f => f.name !== filter)
+    store.preferences.saved_filters = store.preferences?.saved_filters.filter((f) => f.name !== filter)
     store.savePreferences()
 }
 
-watch(filterRows, (newFilterRows) => {
+watch(
+    filterRows,
+    (newFilterRows) => {
         console.log('newFilterRows', newFilterRows)
         setFilters(newFilterRows)
     },
@@ -225,7 +216,9 @@ watch(filterRows, (newFilterRows) => {
 )
 
 watch(activeFilter, () => {
-    filterRows.value = cloneDeep(store.preferences?.saved_filters?.find(f => f.name === activeFilter.value)?.filters ?? [])
+    filterRows.value = cloneDeep(
+        store.preferences?.saved_filters?.find((f) => f.name === activeFilter.value)?.filters ?? [],
+    )
 })
 </script>
 

@@ -13,3 +13,7 @@ const app = createApp(App)
 app.use(router).use(vuetify).use(pinia)
 
 app.mount('#app')
+
+//TODO: dev
+import { DateTime } from 'luxon'
+window.DateTime = DateTime

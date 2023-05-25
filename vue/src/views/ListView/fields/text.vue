@@ -27,7 +27,9 @@ function handleInput() {
 }
 
 function handleKeyEnter() {
-    clearTimeout(debounceTimeout.value)
+    if (debounceTimeout.value) {
+        clearTimeout(debounceTimeout.value)
+    }
     emit('update:modelValue', value.value)
 }
 </script>

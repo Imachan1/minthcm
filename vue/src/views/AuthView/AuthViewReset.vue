@@ -8,9 +8,19 @@
             density="comfortable"
             :label="languages.label('LBL_MINT4_AUTH_USERNAME')"
             variant="outlined"
+            disabled
             hide-details
-            :disabled="isSubmiting"
         />
+        <MintStatusBox type="info">
+            <span v-text="languages.label('LBL_MINT4_AUTH_PASSWORD_RULES')" />
+            <div style="display: flex; flex-direction: column">
+                <div>a</div>
+                <div>b</div>
+                <div>c</div>
+                <div>d</div>
+                <div>e</div>
+            </div>
+        </MintStatusBox>
         <v-text-field
             v-model="password"
             :type="showPassword ? 'text' : 'password'"
@@ -42,11 +52,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, defineProps, readonly } from 'vue'
 import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
 import { useAuthStore } from '@/store/auth'
 import MintButton from '@/components/MintButton.vue'
+import MintStatusBox from '@/components/MintStatusBox.vue'
+
+interface Props {
+    username: string
+}
+
+const props = defineProps<Props>()
 
 const backend = useBackendStore()
 const languages = useLanguagesStore()
@@ -55,7 +72,7 @@ const password = ref('')
 const password2 = ref('')
 const showPassword = ref(false)
 
-const username = ref('')
+const username = ref(props.username)
 const email = ref('')
 const isSubmiting = ref(false)
 </script>

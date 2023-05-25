@@ -8,6 +8,7 @@ import GuestLayout from '@/layouts/GuestLayout/GuestLayout.vue'
 export const useUxStore = defineStore('ux', () => {
     const defaultLoadingMessage = 'Loading...'
     const loadingScreen = ref('')
+    const drawer = ref(false)
 
     function showLoadingScreen(msg?: string) {
         loadingScreen.value = msg ?? defaultLoadingMessage
@@ -31,5 +32,6 @@ export const useUxStore = defineStore('ux', () => {
         showLoadingScreen,
         closeLoadingScreen,
         layout,
+        drawer,
     }
 })

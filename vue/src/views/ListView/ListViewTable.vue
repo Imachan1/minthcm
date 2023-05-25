@@ -22,25 +22,13 @@
             />
             <span v-else v-text="item.raw[link.nameField]" />
         </template>
-        <template
-            v-for="bool in store.customFields.booleans"
-            v-slot:[`item.${bool}`]="{ item }"
-            :key="bool"
-        >
+        <template v-for="bool in store.customFields.booleans" v-slot:[`item.${bool}`]="{ item }" :key="bool">
             <v-icon
                 color="secondary"
-                :icon="
-                    item.raw[bool] && item.raw[bool] !== '0'
-                        ? 'mdi-checkbox-marked-circle'
-                        : 'mdi-close'
-                "
+                :icon="item.raw[bool] && item.raw[bool] !== '0' ? 'mdi-checkbox-marked-circle' : 'mdi-close'"
             />
         </template>
-        <template
-            v-for="list in store.customFields.lists"
-            v-slot:[`item.${list.field}`]="{ item }"
-            :key="list.field"
-        >
+        <template v-for="list in store.customFields.lists" v-slot:[`item.${list.field}`]="{ item }" :key="list.field">
             <span v-text="list.options[item.raw[list.field]]" />
         </template>
         <template
@@ -48,20 +36,9 @@
             v-slot:[`item.${multienum.field}`]="{ item }"
             :key="multienum.field"
         >
-            <span
-                v-text="
-                    formatMultienum(
-                        item.raw[multienum.field],
-                        multienum.options,
-                    )
-                "
-            />
+            <span v-text="formatMultienum(item.raw[multienum.field], multienum.options)" />
         </template>
-        <template
-            v-for="date in store.customFields.dates"
-            v-slot:[`item.${date}`]="{ item }"
-            :key="date"
-        >
+        <template v-for="date in store.customFields.dates" v-slot:[`item.${date}`]="{ item }" :key="date">
             <span v-text="formatDate(item.raw[date])" />
         </template>
         <template v-slot:[`item.actions`]="{ item }">
@@ -72,19 +49,14 @@
                     @click="action.onClick(item.raw)"
                     color="secondary"
                     size="small"
-                >
-                    {{ action.icon }}
-                </v-icon>
+                    :icon="action.icon"
+                />
             </div>
         </template>
         <template #bottom>
             <VDataTableFooter
-                :items-per-page-options="
-                    store.config?.config?.itemsPerPageOptions
-                "
-                v-bind:items-per-page-text="
-                    languages.label('LBL_ESLIST_ITEMS_PER_PAGE')
-                "
+                :items-per-page-options="store.config?.config?.itemsPerPageOptions"
+                v-bind:items-per-page-text="languages.label('LBL_ESLIST_ITEMS_PER_PAGE')"
                 :page-text="pageText"
             />
         </template>
@@ -106,7 +78,7 @@ const url = useUrlStore()
 const languages = useLanguagesStore()
 
 const pageText = computed(() => {
-    const isOverflow = store.itemsLength > (store.options.page * store.options.itemsPerPage)
+    const isOverflow = store.itemsLength > store.options.page * store.options.itemsPerPage
     const pageText = `{0} - {1} ${languages.label('LBL_ESLIST_PAGE_TEXT')} {2}`
     return isOverflow ? `${pageText}+` : pageText
 })
@@ -128,9 +100,7 @@ const coreActions = {
 
 function getItemActions(item: any) {
     return store.config.config.actions
-        .filter(
-            (action) => typeof action !== 'string' || item.acl_access[action],
-        )
+        .filter((action) => typeof action !== 'string' || item.acl_access[action])
         .map((action) => {
             if (typeof action === 'string') {
                 return coreActions[action]
