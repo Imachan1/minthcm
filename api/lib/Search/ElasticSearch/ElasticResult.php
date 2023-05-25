@@ -135,7 +135,7 @@ class ElasticResult extends SearchResult
             });
 
             $bean = reset($bean) ?? null;
-            if (!isset($bean)) {
+            if (empty($bean)) {
                 continue;
             }
 

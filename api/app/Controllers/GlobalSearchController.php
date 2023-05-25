@@ -2,9 +2,10 @@
 
 namespace MintHCM\Api\Controllers;
 
-use MintHCM\Lib\Search\Search;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
+use MintHCM\Lib\Search\Search;
+use MintHCM\Utils\LegacyConnector;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class GlobalSearchController
 {
@@ -21,7 +22,7 @@ class GlobalSearchController
                 "query" => $request->getAttribute('query'),
                 "sort_order" => "desc",
             ));
-            $search_result = $search_manager->search(false);
+            $search_result = $search_manager->search(true);
 
         } catch (BadRequest400Exception $e) {
             throw new HttpBadRequestException($this->request);
@@ -29,8 +30,32 @@ class GlobalSearchController
             throw new HttpInternalServerErrorException($this->request);
         }
 
-        $data = $search_result->getBeansAsJsonArray();
+        $data = array(
+            'query' => $request->getAttribute('query'),
+            'next_page_exists' => $search_result->getNextPageExists(),
+            'results' => $this->getBeans($search_result->getBeans()),
+        );
+
         $response->getBody()->write(json_encode($data));
+        return $response;
+    }
+
+    protected function getBeans($beans)
+    {
+        $timedate = new LegacyConnector("TimeDate");
+        $response = array();
+
+        foreach ($beans as $bean) {
+            $response[] = array(
+                "id" => $bean->id,
+                "module" => $bean->module_name,
+                "name" => $bean->name,
+                "meta" => array(
+                    "label" => 'LBL_DATE_ENTERED',
+                    "value" => $timedate->asUser($timedate->fromString($bean->date_entered)),
+                ),
+            );
+        }
         return $response;
     }
 }

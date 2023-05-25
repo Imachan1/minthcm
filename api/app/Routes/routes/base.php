@@ -2,6 +2,7 @@
 
 use MintHCM\Api\Controllers\Actions\LoginAction;
 use MintHCM\Api\Controllers\GlobalSearchController;
+use MintHCM\Api\Middlewares\Params\ParamTypes\ArrayType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
 
 $routes = array(
