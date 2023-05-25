@@ -12,7 +12,7 @@ $mint_config = array(
                     'host' => 'localhost',
                     'user' => '',
                     'pass' => '',
-                    'port' => '',
+                    'port' => '9200',
                 ),
             ),
         ),
