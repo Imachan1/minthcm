@@ -4,15 +4,14 @@ namespace MintHCM\Lib\Search;
 
 class Search
 {
-
-    public static function getManager($engine = null)
+    public static function getManager($engine = null, ...$args)
     {
         global $mint_config;
 
         $default_manager_name = $mint_config["search"]["default_engine"] ?? null;
         $default_manager = $default_manager_name && isset($mint_config["search"]["engines"][$default_manager_name]) ? self::getClass($default_manager_name) : null;
         $engine = self::getClass($engine);
-        return $engine ? new $engine() : ($default_manager ? new $default_manager() : null);
+        return $engine ? new $engine($args) : ($default_manager ? new $default_manager($args) : null);
     }
 
     protected static function getClass($class_name)
