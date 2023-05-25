@@ -62,6 +62,7 @@ import MintButton from '../MintButton.vue'
 import { nextTick } from 'vue'
 import { onMounted } from 'vue'
 import axios from 'axios'
+import { onUnmounted } from 'vue'
 
 const chat = useMintChatStore()
 const auth = useAuthStore()
@@ -137,7 +138,7 @@ async function sendMessage() {
         messagesContent.value.scrollTo(0, messagesContent.value.scrollHeight)
     }
     setTimeout(() => {
-        sendAutoMessage()
+        sendAutoMessage(chat.activeConversationId || '')
     }, 3000)
 }
 
@@ -146,29 +147,42 @@ onMounted(async () => {
     if (messagesContent.value) {
         messagesContent.value.scrollTo(0, messagesContent.value.scrollHeight)
     }
-    initTimeout()
+    initTimeout(chat.activeConversationId)
 })
 
-function initTimeout() {
-    setTimeout(() => {
-        sendAutoMessage()
-        initTimeout()
+const autotimeout = ref<any>(null)
+function initTimeout(convId) {
+    autotimeout.value = setTimeout(() => {
+        sendAutoMessage(convId)
+        initTimeout(convId)
     }, Math.round(Math.random() * 60) * 1000)
 }
 
-async function sendAutoMessage() {
-    chat.conversations
-        .find((c) => c.id === chat.activeConversationId)
-        ?.messages?.push({
-            id: Math.random().toString(),
-            user_id: 'x',
-            text: (await axios.get(`https://fakerapi.it/api/v1/texts?_locale=pl_PL&_quantity=1&_characters=${Math.round(Math.random() * 50 + 10)}`))?.data?.data?.[0]?.content || 'asd',
-            date_entered: DateTime.now().toSQL() || '',
-        })
-    await nextTick()
-    if (messagesContent.value) {
-        messagesContent.value.scrollTo(0, messagesContent.value.scrollHeight)
-    }
+onUnmounted(() => {
+    console.log('clear')
+    clearTimeout(autotimeout.value)
+})
+
+async function sendAutoMessage(convId: string) {
+    try {
+        const message = (await axios.get(`https://fakerapi.it/api/v1/texts?_locale=pl_PL&_quantity=1&_characters=${Math.round(Math.random() * 50 + 10)}`))?.data?.data?.[0]?.content || 'asd'
+        if (!message) {
+            return
+        }
+        chat.conversations
+            .find((c) => c.id === convId)
+            ?.messages?.push({
+                id: Math.random().toString(),
+                user_id: 'x',
+                text: message,
+                date_entered: DateTime.now().toSQL() || '',
+            })
+        await nextTick()
+        if (messagesContent.value) {
+            console.log('scrollHeight', messagesContent.value.scrollHeight)
+            messagesContent.value.scrollTo(0, messagesContent.value.scrollHeight)
+        }
+    } catch {}
 }
 </script>
 

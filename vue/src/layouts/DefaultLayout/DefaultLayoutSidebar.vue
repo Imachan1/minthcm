@@ -102,7 +102,7 @@
                     <v-expansion-panel-text>
                         <v-list nav class="nav-list">
                             <v-list-item
-                                v-for="recent in recents.recents?.slice(0, 9) ?? []"
+                                v-for="recent in recents.recents?.slice(0, 5) ?? []"
                                 :key="recent.item_id"
                                 class="nav-item"
                                 :value="recent.item_id"
@@ -125,7 +125,7 @@
                     <v-expansion-panel-text>
                         <v-list nav class="nav-list">
                             <v-list-item
-                                v-for="favorite in favorites.favorites"
+                                v-for="favorite in favorites.favorites?.slice(0, 5) ?? []"
                                 :key="favorite.id"
                                 class="nav-item"
                                 :value="favorite.id"
