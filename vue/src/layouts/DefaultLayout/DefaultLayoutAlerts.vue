@@ -44,9 +44,9 @@
                     </div>
                 </v-list-item>
             </template>
-            <span v-else v-text="'No alerts'" class="pa-4" />
+            <span v-else v-text="'No alerts'" class="px-4" />
         </v-list>
-        <div class="alerts-footer">
+        <!-- <div class="alerts-footer">
             <v-tooltip text="Mark all as read" location="top left">
                 <template v-slot:activator="{ props }">
                     <v-btn
@@ -69,7 +69,7 @@
                     />
                 </template>
             </v-tooltip>
-        </div>
+        </div> -->
     </v-card>
 </template>
 

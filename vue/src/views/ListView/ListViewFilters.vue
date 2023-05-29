@@ -1,6 +1,6 @@
 <template>
     <v-row no-gutters class="filters-nav">
-        <v-col :cols="$vuetify.display.lgAndDown ? 4 : 6">
+        <v-col :cols="$vuetify.display.lgAndDown ? 4 : 5">
             <v-text-field
                 v-model="store.searchPhrase"
                 class="filters-search"

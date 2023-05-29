@@ -63,6 +63,7 @@ import { nextTick } from 'vue'
 import { onMounted } from 'vue'
 import axios from 'axios'
 import { onUnmounted } from 'vue'
+import { onUpdated } from 'vue'
 
 const chat = useMintChatStore()
 const auth = useAuthStore()
@@ -147,6 +148,8 @@ onMounted(async () => {
     if (messagesContent.value) {
         messagesContent.value.scrollTo(0, messagesContent.value.scrollHeight)
     }
+    chat.conversations.find(c => c.id === chat.activeConversationId).date_read = DateTime.now().toSQL()
+    
     initTimeout(chat.activeConversationId)
 })
 
@@ -159,11 +162,15 @@ function initTimeout(convId) {
 }
 
 onUnmounted(() => {
-    console.log('clear')
     clearTimeout(autotimeout.value)
 })
 
+onUpdated(() => {
+    chat.conversations.find(c => c.id === chat.activeConversationId).date_read = DateTime.now().toSQL()
+})
+
 async function sendAutoMessage(convId: string) {
+    return
     try {
         const message = (await axios.get(`https://fakerapi.it/api/v1/texts?_locale=pl_PL&_quantity=1&_characters=${Math.round(Math.random() * 50 + 10)}`))?.data?.data?.[0]?.content || 'asd'
         if (!message) {
@@ -179,7 +186,6 @@ async function sendAutoMessage(convId: string) {
             })
         await nextTick()
         if (messagesContent.value) {
-            console.log('scrollHeight', messagesContent.value.scrollHeight)
             messagesContent.value.scrollTo(0, messagesContent.value.scrollHeight)
         }
     } catch {}

@@ -19,7 +19,7 @@
                 />
                 <div v-else @click="form = 'login'">← {{ languages.label('LBL_MINT4_AUTH_BACK_TO_LOGIN') }}</div>
             </v-slide-x-transition>
-            <v-menu offset="16">
+            <!-- <v-menu offset="16">
                 <template v-slot:activator="{ props, isActive }">
                     <MintButton
                         v-bind="props"
@@ -35,7 +35,7 @@
                         { title: 'polski', icon: 'fi-pl', onClick: () => {} },
                     ]"
                 />
-            </v-menu>
+            </v-menu> -->
         </div>
     </div>
 </template>
@@ -126,12 +126,4 @@ const form = ref<'login' | 'forget' | 'reset'>(resetToken ? 'reset' : 'login')
 </style>
 
 <style>
-/* fix chrome autofill background change */
-/* TODO: autfill bug */
-.login-container .login-input input:-webkit-autofill,
-.login-container .login-input input:-webkit-autofill:hover,
-.login-container .login-input input:-webkit-autofill:focus,
-.login-container .login-input input:-webkit-autofill:active {
-    transition: background-color 9999s ease-in-out 0s;
-}
 </style>

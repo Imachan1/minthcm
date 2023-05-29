@@ -5,6 +5,7 @@
         <MintSearch
             v-model="chat.conversationsSearchQuery"
             :label="languages.label('LBL_MINT4_CHAT_SEARCH_CONVERSATION')"
+            @clear="chat.conversationsSearchQuery = ''"
         />
         <MintButton variant="nav" icon="mdi-square-edit-outline" @click="chat.view = 'list'" />
     </div>
@@ -12,7 +13,7 @@
         <div
             :class="{
                 'mint-chat-conversation': true,
-                'mint-chat-conversation-unread': !conv.date_read || conv.date_read < conv.date_active,
+                'mint-chat-conversation-unread': (conv.messages?.at(-1)?.user_id !== auth.user?.id) && (!conv.date_read || conv.date_read < (conv.messages?.at(-1)?.date_entered || conv.date_active)),
             }"
             v-for="conv in chat.conversationsList"
             :key="conv.id"
@@ -27,9 +28,9 @@
                 <div class="mint-chat-conversation-header">
                     <div class="mint-chat-conversation-name" v-text="conv.name" />
                     <div class="mint-chat-conversation-status">
-                        <div v-text="toRelativeDate(conv.date_active)" />
+                        <div v-text="toRelativeDate(conv.messages?.at(-1)?.date_entered || conv.date_active)" />
                         <div
-                            v-if="!conv.date_read || conv.date_read < conv.date_active"
+                            v-if="(conv.messages?.at(-1)?.user_id !== auth.user?.id) && (!conv.date_read || conv.date_read < (conv.messages?.at(-1)?.date_entered || conv.date_active))"
                             class="mint-chat-conversation-unread-dot"
                         />
                     </div>
@@ -50,14 +51,16 @@ import { useMintChatStore } from './MintChatStore'
 import MintButton from '../MintButton.vue'
 import MintSearch from '../MintSearch.vue'
 import { useLanguagesStore } from '@/store/languages'
+import { useAuthStore } from '@/store/auth'
 
 const chat = useMintChatStore()
 const languages = useLanguagesStore()
+const auth = useAuthStore()
 
 function toRelativeDate(date: string) {
     const dt = DateTime.fromSQL(date)
     if (dt.diffNow('days').days >= -5) {
-        return dt.toRelative()
+        return dt.toRelativeCalendar()
     }
     return dt.toFormat('dd.MM.yyyy')
 }

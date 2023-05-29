@@ -4444,6 +4444,7 @@ $app_strings['LBL_MINT4_STATUS_BOX_ERROR'] = 'Error';
 $app_strings['LBL_MINT4_STATUS_BOX_SUCCESS'] = 'Success';
 $app_strings['LBL_MINT4_STATUS_BOX_INFO'] = 'Attention';
 
+// Login, Forget Password, Reset Password
 $app_strings['LBL_MINT4_AUTH_LOGIN_TITLE'] = 'Login';
 $app_strings['LBL_MINT4_AUTH_LOGIN_BTN'] = 'Log in';
 $app_strings['LBL_MINT4_AUTH_BACK_TO_LOGIN'] = 'Back to login';
@@ -4462,6 +4463,12 @@ $app_strings['LBL_MINT4_AUTH_PASSWORD_REPEAT'] = 'Repeat new password';
 $app_strings['LBL_MINT4_AUTH_EMAIL'] = 'Email';
 $app_strings['LBL_MINT4_AUTH_PASSWORD_RULES'] = 'The password must contain:';
 
+// Chat
 $app_strings['LBL_MINT4_CHAT_CREATE_GROUP'] = 'Create Group Conversation';
 $app_strings['LBL_MINT4_CHAT_SEARCH_CONVERSATION'] = 'Search';
 $app_strings['LBL_MINT4_CHAT_SEARCH_USER'] = 'Search';
+
+// Global Search
+$app_strings['LBL_MINT4_GS_SEARCH_INPUT'] = 'Search...';
+$app_strings['LBL_MINT4_GS_GO_TO_LIST'] = 'Display all records in a list view';
+$app_strings['LBL_MINT4_GS_GO_TO_LIST_MORE'] = 'More records found. Display all in a list view';

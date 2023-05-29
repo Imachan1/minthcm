@@ -2,44 +2,65 @@
     <div class="search-container">
         <v-text-field
             v-model="searchQuery"
+            ref="searchInput"
             class="search-input"
             :class="[isFocused && 'search-input-active']"
             hide-details
-            placeholder="Search..."
-            @keyup.enter="search"
+            :placeholder="languages.label('LBL_MINT4_GS_SEARCH_INPUT')"
+            @keyup.enter="goToFullList"
             variant="plain"
             @update:focused="isFocused = $event"
         >
             <template #prepend-inner>
                 <v-fab-transition class="search-prepend-icon">
-                    <v-icon v-if="standardizedQuery" icon="mdi-close" @click="searchQuery = ''" />
+                    <v-icon v-if="searchQuery" icon="mdi-close" @click="searchQuery = ''" />
                     <v-icon v-else icon="mdi-magnify" />
                 </v-fab-transition>
             </template>
         </v-text-field>
         <v-slide-y-transition>
-            <div v-if="isFocused && response?.results?.length" class="search-results">
-                <div
-                    v-for="result in response.results"
-                    :key="result.id"
-                    color="primary"
-                    v-ripple="{ class: 'text-primary' }"
-                    @click="showRecord(result.module, result.id)"
-                    class="search-result"
-                >
-                    <v-icon :icon="modules.modules[result.module].icon || modules.defaultIcon" color="primary" />
-                    <div>
-                        <span v-html="getHighlightedText(result.name, response.query)" />
-                        <div class="search-result-description">
-                            <span v-text="result.module" />
-                            <span v-text="`${result.meta?.label}: ${result.meta?.value}`" />
+            <template v-if="isFocused">
+                <v-skeleton-loader v-if="isSearching" type="list-item-two-line" class="search-results" />
+                <div v-else-if="!searchResponse?.results?.length" class="search-results">
+                    <div
+                        class="ma-4 text-caption"
+                        v-text="
+                            !searchResponse?.query || searchResponse.query.length < 3
+                                ? 'Enter at least 3 characters to find records'
+                                : 'No records found'
+                        "
+                    />
+                </div>
+                <div v-else-if="searchResponse?.results?.length" class="search-results">
+                    <div
+                        v-for="result in searchResponse.results"
+                        :key="result.id"
+                        color="primary"
+                        v-ripple="{ class: 'text-primary' }"
+                        @click="showRecord(result.module, result.id)"
+                        class="search-result"
+                    >
+                        <v-icon :icon="modules.modules[result.module]?.icon || modules.defaultIcon" color="primary" />
+                        <div>
+                            <span v-html="getHighlightedText(result.name, searchResponse.query)" />
+                            <div class="search-result-description">
+                                <span v-text="result.module" />
+                                <span v-text="`Date created: ${result.meta?.value}`" />
+                            </div>
                         </div>
                     </div>
+                    <div class="search-results-footer">
+                        <span
+                            @click="goToFullList"
+                            v-text="
+                                searchResponse.next_page_exists
+                                    ? languages.label('LBL_MINT4_GS_GO_TO_LIST_MORE')
+                                    : languages.label('LBL_MINT4_GS_GO_TO_LIST')
+                            "
+                        />
+                    </div>
                 </div>
-                <div class="search-results-footer">
-                    <span @click="search" v-text="'Display all records in a list view'" />
-                </div>
-            </div>
+            </template>
         </v-slide-y-transition>
     </div>
 </template>
@@ -48,64 +69,117 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useModulesStore } from '@/store/modules'
+import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import he from 'he'
+import axios from 'axios'
+import { watch } from 'vue'
+import { useLanguagesStore } from '@/store/languages'
 
 const modules = useModulesStore()
+const languages = useLanguagesStore()
 const router = useRouter()
+const searchInput = ref<HTMLInputElement | null>(null)
 const isFocused = ref(false)
+const isSearching = ref(false)
 const initialQuery = new URL(location.href).searchParams.get('query_string')
 const searchQuery = ref<string | null>(initialQuery ?? '')
 const standardizedQuery = computed(() => {
-    return searchQuery.value?.trim()
+    let query = searchQuery.value?.trim() ?? ''
+    query
+        .split(' ')
+        .filter((q) => !['AND', 'OR'].includes(q) && !q.includes('*'))
+        .forEach((q) => {
+            query = query.replace(q, `${q}*`)
+        })
+    return query
 })
 
 function showRecord(module: string, id: string) {
     if (module && id) {
         router.push(`/${module}/DetailView/${id}`)
+        searchQuery.value = ''
     }
 }
 
-const response = {
-    query: 'Smi',
-    total: 2, // jeśli nie mamy możliwości obliczenia total, to może być też flaga overflow
-    results: [
-        // jeśli total > results.length, to znaczy, że jest overflow
-        {
-            name: 'Kevin Smith',
-            module: 'Candidates',
-            id: '1',
-            meta: {
-                label: 'email', // przetłumaczone na backendzie?
-                // jeśli ma być tłumaczone na froncie to musiałbym strzelić po języki wszystkich modułów zawartych w results
-                value: 'kevin.smith@gmail.com',
-            },
-        },
-        {
-            name: 'Smithsonian Institute',
-            module: 'Meetings',
-            id: '2',
-            meta: {
-                label: 'start time',
-                value: '05.05.2023 10:30', // parsowanie daty na backendzie?
-                // jeśli parsowanie ma być na froncie, to trzeba do meta wysyłać jeszcze type
-            },
-        },
-    ],
+interface SearchResult {
+    id: string
+    name: string
+    module: string
+    meta: {
+        label: string
+        value: string
+    }
 }
 
-function search() {
-    if (standardizedQuery.value) {
-        router.push(`/Home/UnifiedSearch?search_form=false&query_string=${standardizedQuery.value}`)
+interface SearchResponse {
+    query: string
+    next_page_exists: boolean
+    results: SearchResult[]
+}
+
+const searchResponse = ref<SearchResponse | null>(null)
+
+async function search() {
+    if (debounce.value) {
+        clearTimeout(debounce.value)
+    }
+    if (standardizedQuery.value?.length >= 4) {
+        isSearching.value = true
+        try {
+            const response = await axios.get('/api/global_search', {
+                params: {
+                    query: standardizedQuery.value,
+                },
+            })
+            searchResponse.value = response.data
+        } finally {
+            isSearching.value = false
+        }
     }
 }
 
 function getHighlightedText(text: string, query: string) {
+    query = he.encode(query)
     text = he.encode(text)
     if (!query) {
         return text
     }
-    return text?.replace(new RegExp(query, 'gi'), '<span class="highlighted">$&</span>') || text
+    try {
+        const regex = new RegExp(
+            `\\b(${query
+                .split(' ')
+                .filter((q) => !['AND', 'OR'].includes(q) && q.length > 2)
+                .join('|')})`,
+            'gi',
+        )
+        text = text.replace(regex, '<span class="highlighted">$&</span>')
+        return text
+    } catch {
+        return text
+    }
 }
+
+function goToFullList() {
+    if (standardizedQuery.value?.length >= 4) {
+        router.push(`/Home/UnifiedSearch?search_form=false&query_string=${searchQuery.value}`)
+        searchQuery.value = ''
+        searchInput.value?.blur()
+    }
+}
+
+const debounce = ref<null | number>(null)
+watch(searchQuery, (newVal) => {
+    if (!newVal) {
+        searchResponse.value = null
+    } else {
+        if (debounce.value) {
+            clearTimeout(debounce.value)
+        }
+        debounce.value = setTimeout(() => {
+            search()
+        }, 500)
+    }
+})
 </script>
 
 <style scoped lang="scss">
@@ -135,7 +209,6 @@ function getHighlightedText(text: string, query: string) {
         background: rgb(var(--v-theme-primary-light));
     }
 }
-
 
 .search-results {
     position: absolute;

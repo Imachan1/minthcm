@@ -31,6 +31,7 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
+    store.$reset()
 })
 
 watch(module, (newVal, oldVal) => {

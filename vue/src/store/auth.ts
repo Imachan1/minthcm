@@ -19,12 +19,10 @@ export const useAuthStore = defineStore('auth', () => {
                 username,
                 password,
             })
-            console.log('auth', response)
 
         } catch {
             return false
         }
-        // console.log('authenticate', username, password)
     }
 
     async function logout() {

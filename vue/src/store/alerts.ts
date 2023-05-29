@@ -28,7 +28,6 @@ export const useAlertsStore = defineStore('alerts', () => {
         }
         isFetching.value = true
         const response = await axios.get('/api/Alerts')
-        console.log('alerts', response.data)
         alerts.value = response.data
         isFetching.value = false
     }
@@ -38,7 +37,6 @@ export const useAlertsStore = defineStore('alerts', () => {
             is_read: true,
         })
         fetchAlerts()
-        console.log('markRead', response)
     }
 
     async function close(id: string) {
@@ -46,7 +44,6 @@ export const useAlertsStore = defineStore('alerts', () => {
             is_closed: true,
         })
         fetchAlerts()
-        console.log('close', response)
     }
 
     const unreadAlertsCount = computed(() => {

@@ -11,7 +11,7 @@
     >
         <template #prepend-inner>
             <v-fab-transition class="search-prepend-icon">
-                <v-icon v-if="standardizedQuery" icon="mdi-close" @click="searchQuery = ''" />
+                <v-icon v-if="standardizedQuery" icon="mdi-close" @click="clear" />
                 <v-icon v-else icon="mdi-magnify" />
             </v-fab-transition>
         </template>
@@ -36,7 +36,12 @@ const props = withDefaults(defineProps<Props>(), {
     debounce: 1000,
 })
 
-const emit = defineEmits(['debounce', 'update:modelValue'])
+const emit = defineEmits(['debounce', 'update:modelValue', 'clear'])
+
+function clear() {
+    searchQuery.value = ''
+    emit('clear')
+}
 </script>
 
 <style scoped lang="scss">

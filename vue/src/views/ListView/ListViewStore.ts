@@ -94,7 +94,7 @@ export const useListViewStore = defineStore('listview', () => {
     }
 
     const allColumns = computed(() => {
-        return Object.values(defs.value?.columns).sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
+        return Object.values(defs.value?.columns || {}).sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
     })
 
     const visibleColumns = computed(() => {
@@ -108,7 +108,7 @@ export const useListViewStore = defineStore('listview', () => {
             }, [])
         } else {
             // default
-            return Object.values(defs.value?.columns).filter((col) => col.default)
+            return Object.values(defs.value?.columns || {}).filter((col) => col.default)
         }
     })
 
@@ -139,7 +139,7 @@ export const useListViewStore = defineStore('listview', () => {
         if (!isInit.value) {
             return {}
         }
-        return Object.values(defs.value?.columns)
+        return Object.values(defs.value?.columns || {})
             .filter((col) => col.link)
             .map((col) => ({
                 nameField: col.name,
@@ -150,7 +150,7 @@ export const useListViewStore = defineStore('listview', () => {
         if (!isInit.value) {
             return {}
         }
-        return Object.values(defs.value?.columns)
+        return Object.values(defs.value?.columns || {})
             .filter((col) => ['bool', 'boolean'].includes(col.type))
             .map((col) => col.name)
     })
@@ -158,7 +158,7 @@ export const useListViewStore = defineStore('listview', () => {
         if (!isInit.value) {
             return {}
         }
-        return Object.values(defs.value?.columns)
+        return Object.values(defs.value?.columns || {})
             .filter((col) => col.type === 'enum' && col.options)
             .map((col) => ({
                 field: col.name,
@@ -169,7 +169,7 @@ export const useListViewStore = defineStore('listview', () => {
         if (!isInit.value) {
             return {}
         }
-        return Object.values(defs.value?.columns)
+        return Object.values(defs.value?.columns || {})
             .filter((col) => col.type === 'multienum' && col.options)
             .map((col) => ({
                 field: col.name,
@@ -180,7 +180,7 @@ export const useListViewStore = defineStore('listview', () => {
         if (!isInit.value) {
             return {}
         }
-        return Object.values(defs.value?.columns)
+        return Object.values(defs.value?.columns || {})
             .filter((col) => ['date', 'datetime', 'datetimecombo'].includes(col.type))
             .map((col) => col.name)
     })
@@ -207,9 +207,9 @@ export const useListViewStore = defineStore('listview', () => {
     const filterableFields = computed(() => {
         console.log(
             'filterable',
-            Object.values(defs.value?.search).sort((a, b) => a.label?.localeCompare(b.label, 'pl')),
+            Object.values(defs.value?.search || {}).sort((a, b) => a.label?.localeCompare(b.label, 'pl')),
         )
-        return Object.values(defs.value?.search).sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
+        return Object.values(defs.value?.search || {}).sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
     })
 
     watch(options, () => {

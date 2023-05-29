@@ -3,23 +3,27 @@
         style="display: flex; gap: 8px; padding: 8px 16px 8px 8px; align-items: center; border-bottom: thin solid #0002"
     >
         <MintButton variant="nav" icon="mdi-arrow-left" @click="chat.view = 'default'" />
-        <MintSearch v-model="chat.chatUsersSearchQuery" :label="languages.label('LBL_MINT4_CHAT_SEARCH_USER')" />
+        <MintSearch
+            v-model="chat.chatUsersSearchQuery"
+            :label="languages.label('LBL_MINT4_CHAT_SEARCH_USER')"
+            @clear="chat.chatUsersSearchQuery = ''"
+        />
     </div>
-    <div
+    <!-- <div
         class="mint-chat-create-group mint-chat-list-item"
         v-ripple="{ class: 'text-primary' }"
         @click="chat.view = 'edit'"
     >
         <v-icon icon="mdi-account-group" />
         <span v-text="languages.label('LBL_MINT4_CHAT_CREATE_GROUP')" />
-    </div>
+    </div> -->
     <div>
         <div
             class="mint-chat-user mint-chat-list-item"
             v-for="user in chat.usersList"
             :key="user.id"
             v-ripple="{ class: 'text-primary' }"
-            @click="null"
+            @click="chat.openPrivateConversation(user)"
         >
             <img v-if="user.photo" :src="user.photo" />
             <v-icon v-else icon="mdi-account" />

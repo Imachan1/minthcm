@@ -75,7 +75,7 @@ const legacyUrl = computed(() => {
 <style scoped lang="scss">
 .legacy-view {
     width: 100%;
-    height: calc(100vh - 67px);
+    height: calc(100vh - var(--v-top-nav-height) - 7px);
     border: none;
 }
 </style>
