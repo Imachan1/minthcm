@@ -152,7 +152,7 @@ $unified_search_modules_display = array(
         'visible' => false,
     ),
     'Tasks' => array(
-        'visible' => false,
+        'visible' => true,
     ),
     'jjwg_Address_Cache' => array(
         'visible' => false,
