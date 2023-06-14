@@ -85,6 +85,18 @@ class ViewESList extends SugarView
         }
     }
 
+    //temp
+    public function getInitialData()
+    {
+        $this->prepareESListView();
+        $data = new stdClass();
+        $data->config = $this->prepareConfig();
+        $data->defs = $this->prepareDefs();
+        $data->module = $this->bean->module_name;
+        $data->preferences = $this->prepareUserPreferences();
+        return $data;
+    }
+
     protected function prepareESListView()
     {
         global $sugar_config;

@@ -17,6 +17,22 @@ class ESListViewController {
         $this->bean = $bean;
     }
 
+    //temp
+    public function getInitialData($options) {
+        $view = new ViewESList();
+        $module = $options['module'];
+        $view->module = $module;
+        $view->seed = BeanFactory::newBean($module);
+        $view->bean = BeanFactory::newBean($module);
+        $data = $view->getInitialData();
+        return [
+            'config' => json_decode($data->config, true),
+            'defs' => json_decode($data->defs, true),
+            'module' => $data->module,
+            'preferences' => json_decode($data->preferences, true),
+        ];
+    }
+
     public function massUpdate() {
         require_once 'include/MassUpdate.php';
         $_POST['mass'] = $_POST['IDs'];
