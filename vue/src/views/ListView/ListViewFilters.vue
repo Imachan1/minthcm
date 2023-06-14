@@ -131,7 +131,6 @@ function showSaveFilterPopup() {
 }
 
 function deleteFilterRow(index: number) {
-    console.log('deleteFilter', index)
     filterRows.value = filterRows.value.filter((filterRow, filterIndex) => index !== filterIndex)
 }
 
@@ -194,7 +193,6 @@ function setFilters(filterRows: FilterRow[]) {
         })
     })
     const filtersChanged = JSON.stringify(query) !== JSON.stringify(store.filters)
-    console.log('query', query)
     store.filters = query
     if (filtersChanged) {
         store.getData()
@@ -209,7 +207,6 @@ function deleteSavedFilter(filter: string) {
 watch(
     filterRows,
     (newFilterRows) => {
-        console.log('newFilterRows', newFilterRows)
         setFilters(newFilterRows)
     },
     { deep: true },

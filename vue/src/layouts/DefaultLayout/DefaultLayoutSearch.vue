@@ -96,7 +96,14 @@ const standardizedQuery = computed(() => {
 
 function showRecord(module: string, id: string) {
     if (module && id) {
-        router.push(`/${module}/DetailView/${id}`)
+        router.push({
+            name: 'module-view',
+            params: {
+                module,
+                action: 'DetailView',
+                record: id,
+            },
+        })
         searchQuery.value = ''
     }
 }

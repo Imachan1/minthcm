@@ -27,7 +27,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     async function logout() {
         const response = await axios.post('/api/logout')
-        location.href = '/minthcm/'
+        location.href = '/'
     }
 
     return {

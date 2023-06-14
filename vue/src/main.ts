@@ -16,4 +16,7 @@ app.mount('#app')
 
 //TODO: dev
 import { DateTime } from 'luxon'
+import axios from 'axios'
 window.DateTime = DateTime
+window.axios = axios
+window.router = router

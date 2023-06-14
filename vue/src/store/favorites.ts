@@ -17,11 +17,9 @@ export const useFavoritesStore = defineStore('favorites', () => {
     }
 
     function removeFromFavorites(id: string) {
-        console.log('removeFromFavorites', id)
     }
 
     function addToFavorites(module: string, record: string) {
-        console.log('addToFavorites', module, record)
     }
 
     return {

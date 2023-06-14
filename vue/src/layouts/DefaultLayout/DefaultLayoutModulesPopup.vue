@@ -27,11 +27,7 @@ const modules = useModulesStore()
 const emit = defineEmits(['close'])
 
 function handleTileClick(mod: Module) {
-    router.push(
-        !['Calls', 'Candidates', 'Meetings', 'Tasks', 'Candidatures', 'Positions', 'Recruitments'].includes(mod.name)
-            ? `/${mod.name}`
-            : `/${mod.name}/ESListView`,
-    )
+    router.push(`/modules/${mod.name}`)
     emit('close')
 }
 </script>

@@ -46,7 +46,6 @@ export const useListViewStore = defineStore('listview', () => {
             module: url.module,
             function_name: 'getInitialData',
         })
-        console.log('init lv', result.data)
         config.value = result.data?.config
         defs.value = result.data?.defs
         preferences.value = result.data?.preferences
@@ -55,7 +54,6 @@ export const useListViewStore = defineStore('listview', () => {
     }
 
     async function getData() {
-        console.log('getData')
         isLoading.value = true
         const result = await axios.post('/legacy/index.php?action=ESList', {
             module: url.module,
@@ -76,7 +74,6 @@ export const useListViewStore = defineStore('listview', () => {
             pageOffsetMap.value = {}
         }
         pageOffsetMap.value[options.value.page] = result.data?.offset ?? 0
-        console.log('lv results', result.data)
     }
 
     async function savePreferences() {
@@ -116,7 +113,6 @@ export const useListViewStore = defineStore('listview', () => {
         if (!isInit.value) {
             return {}
         }
-        console.log('headers')
         const headers = visibleColumns.value.map((col) => ({
             value: col.name,
             key: col.name,
@@ -131,7 +127,6 @@ export const useListViewStore = defineStore('listview', () => {
             sortable: false,
             align: 'end',
         })
-        console.log('headers', headers)
         return headers
     })
 
@@ -188,13 +183,6 @@ export const useListViewStore = defineStore('listview', () => {
         if (!isInit.value) {
             return {}
         }
-        console.log({
-            links: links.value,
-            booleans: booleans.value,
-            lists: lists.value,
-            multienums: multienums.value,
-            dates: dates.value,
-        })
         return {
             links: links.value,
             booleans: booleans.value,
@@ -205,15 +193,10 @@ export const useListViewStore = defineStore('listview', () => {
     })
 
     const filterableFields = computed(() => {
-        console.log(
-            'filterable',
-            Object.values(defs.value?.search || {}).sort((a, b) => a.label?.localeCompare(b.label, 'pl')),
-        )
         return Object.values(defs.value?.search || {}).sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
     })
 
     watch(options, () => {
-        console.log('update options', options.value, defs.value?.columns[options.value.sortBy[0]?.key]?.key)
         getData()
     })
 

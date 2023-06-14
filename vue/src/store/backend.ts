@@ -40,7 +40,6 @@ export const useBackendStore = defineStore('backend', () => {
         const api = useApi()
         try {
             const initResponse = await axios.get<InitResponse>('/api/init')
-            console.log('initData', initResponse.data)
             initData.value = initResponse.data
             auth.user = initResponse.data?.user ?? {}
             languages.languages = {
@@ -50,8 +49,8 @@ export const useBackendStore = defineStore('backend', () => {
             }
             modules.modulesDefs = initResponse.data?.modules ?? {}
             if (route.meta.auth !== false && !auth.user?.id) {
-                router.push({ name: 'login' })
-            } else if (route.name === 'login' && auth.user?.id) {
+                router.push({ name: 'auth-login' })
+            } else if (route.name === 'auth-login' && auth.user?.id) {
                 const prev = router.options.history.state.back as string
                 if (prev && prev !== '/Users/Logout' && prev !== '/Users/Login') {
                     router.push(prev)
@@ -65,7 +64,6 @@ export const useBackendStore = defineStore('backend', () => {
         } catch (err) {
             if ((err as AxiosError).response?.status === 401) {
                 const loginData = (await api.get('/api/login')).data
-                console.log('loginData', loginData)
                 languages.languages = {
                     app_strings: loginData.languages?.app_strings ?? {},
                     app_list_strings: loginData.languages?.app_list_strings ?? {},
@@ -73,8 +71,8 @@ export const useBackendStore = defineStore('backend', () => {
                         Users: loginData.languages?.Users ?? {},
                     },
                 }
-                if (router.currentRoute.value.name !== 'login') {
-                    router.push({ name: 'login' })
+                if (router.currentRoute.value.name !== 'auth-login') {
+                    router.push({ name: 'auth-login' })
                 }
             }
         } finally {

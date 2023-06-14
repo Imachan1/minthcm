@@ -1,24 +1,16 @@
 <template>
-    <iframe
-        class="legacy-view"
-        :src="legacyUrl"
-        @load="handleLegacyUrlChange"
-    />
+    <iframe class="legacy-view" :src="legacyUrl" />
 </template>
 
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useAuthStore } from '@/store/auth'
 import { useUrlStore } from '@/store/url'
 
-const route = useRoute()
 const router = useRouter()
-const auth = useAuthStore()
 const url = useUrlStore()
-
 onMounted(() => {
-    // messages from iframe
+    // messages from legacy iframe
     window.addEventListener('message', handleMessageEvent)
 })
 
@@ -26,49 +18,50 @@ onBeforeUnmount(() => {
     window.removeEventListener('message', handleMessageEvent)
 })
 
-function handleMessageEvent(e: MessageEvent) {
+async function handleMessageEvent(e: MessageEvent) {
     if (!e.data || typeof e.data !== 'string' || e.data.slice(0, 4) !== 'http') {
         return
     }
     const path = url.fromLegacyUrl(e.data)
-    if (route.path === path) {
-        return
-    }
-    router.push({
-        path,
-        force: true,
-    })
-}
-
-function handleLegacyUrlChange(e: Event) {
-    const href = (e.target as HTMLIFrameElement).contentWindow?.location.href
-    if (!href) {
-        return console.error('Legacy View error: url empty')
-    }
-    const path = url.fromLegacyUrl(href)
-    console.log(route.path === path, 'old', route.path, 'new', path)
-    if (path === route.path) {
-        return
-    }
-    const routeName = router.resolve(path)?.name?.toString() ?? ''
-    if (routeName === 'login') {
-        auth.user = null
-    }
-    if (!['legacy', 'dashboard', 'administration'].includes(routeName)) {
-        router.push(path)
+    const resolved = router.resolve(path)
+    if (resolved.meta?.auth === false) {
+        router.go(0) //refresh
+    } else if (resolved.meta?.isLegacy && resolved.name === 'dashboard') {
+        history.replaceState(null, '', resolved.href)
     } else {
-        // router.push(path) /* problem: podwójny reload legacy => legacy */
-        history.replaceState(
-            {},
-            '',
-            `/minthcm${path}`,
-        ) /* problem: powrót do pierwotnego widoku legacy */
+        router.push({
+            path,
+            force: true,
+        })
     }
 }
 
 const legacyUrl = computed(() => {
-    console.log(url.toLegacyUrl(location.href))
-    return url.toLegacyUrl(location.href)
+    const route = useRoute()
+    if (route.meta?.legacyUrl) {
+        return route.meta.legacyUrl
+    } else if (route.name === 'module-view') {
+        const x = new URL(location.origin + location.pathname)
+        if (typeof route.params?.module === 'string') {
+            x.searchParams.set('module', route.params.module)
+        }
+        if (typeof route.params?.action === 'string') {
+            x.searchParams.set('action', route.params.action)
+        }
+        if (route.params?.record && typeof route.params.record === 'string') {
+            x.searchParams.set('record', route.params.record)
+        }
+        Object.keys(route.query)
+            .filter((key) => !['module', 'action', 'record'].includes(key))
+            .forEach((key) => {
+                const value = route.query[key]
+                if (value && typeof value === 'string') {
+                    x.searchParams.set(key, value)
+                }
+            })
+        return 'legacy/index.php' + x.search
+    }
+    return 'legacy/index.php' + location.search
 })
 </script>
 

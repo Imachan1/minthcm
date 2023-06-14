@@ -1,25 +1,25 @@
 <template>
     <div class="auth-view">
         <img src="../../assets/mint_logo.png" height="32" />
-        <v-slide-x-transition hide-on-leave class="form-content">
-            <AuthViewLogin
-                v-if="form === 'login'"
-                v-model:username="username"
-                @update:username="(newVal) => (username = newVal)"
-            />
-            <AuthViewForget v-else-if="form === 'forget'" />
-            <AuthViewReset v-else-if="form === 'reset'" :username="username" />
-        </v-slide-x-transition>
+
+        <router-view v-slot="{ Component }" class="form-content">
+            <v-slide-x-transition hide-on-leave>
+                <component :is="Component" />
+            </v-slide-x-transition>
+        </router-view>
+
         <div class="auth-footer">
             <v-slide-x-transition hide-on-leave>
                 <div
-                    v-if="form === 'login'"
-                    @click="form = 'forget'"
+                    v-if="$route.name === 'auth-login'"
+                    @click="$router.push({ name: 'auth-forget' })"
                     v-text="languages.label('LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION')"
                 />
-                <div v-else @click="form = 'login'">← {{ languages.label('LBL_MINT4_AUTH_BACK_TO_LOGIN') }}</div>
+                <div v-else @click="$router.push({ name: 'auth-login' })">
+                    ← {{ languages.label('LBL_MINT4_AUTH_BACK_TO_LOGIN') }}
+                </div>
             </v-slide-x-transition>
-            <!-- <v-menu offset="16">
+            <v-menu offset="16">
                 <template v-slot:activator="{ props, isActive }">
                     <MintButton
                         v-bind="props"
@@ -35,48 +35,17 @@
                         { title: 'polski', icon: 'fi-pl', onClick: () => {} },
                     ]"
                 />
-            </v-menu> -->
+            </v-menu>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
 import { useLanguagesStore } from '@/store/languages'
 import MintButton from '@/components/MintButton.vue'
 import MintMenuList from '@/components/MintMenuList.vue'
-import AuthViewLogin from './AuthViewLogin.vue'
-import AuthViewForget from './AuthViewForget.vue'
-import AuthViewReset from './AuthViewReset.vue'
 
 const languages = useLanguagesStore()
-
-const url = new URL(location.href)
-const resetToken = url.searchParams.get('reset_token')
-
-const username = ref('')
-const form = ref<'login' | 'forget' | 'reset'>(resetToken ? 'reset' : 'login')
-
-// onMounted(async () => {
-//     const url = new URL(location.href)
-//     const resetToken = url.searchParams.get('reset_token')
-//     form.value =
-//     if (!resetToken) {
-//         form.value = 'login'
-//         return
-//     }
-//     const response = await axios.get('/api/validation_token', {
-//         params: {
-//             reset_token: resetToken,
-//         },
-//     })
-//     if (response.data?.username) {
-//         username.value = response.data.username
-//         form.value = 'reset'
-//     }
-//     console.log('validation_token response', response.data?.username)
-// })
 </script>
 
 <style scoped lang="scss">
@@ -125,5 +94,4 @@ const form = ref<'login' | 'forget' | 'reset'>(resetToken ? 'reset' : 'login')
 }
 </style>
 
-<style>
-</style>
+<style></style>

@@ -9,7 +9,7 @@
         }}</MintStatusBox>
         <template v-if="!forgetSuccess">
             <v-text-field
-                v-model="username"
+                v-model="authViewStore.username"
                 color="primary"
                 base-color="#00000099"
                 density="comfortable"
@@ -43,7 +43,9 @@ import axios from 'axios'
 import { useLanguagesStore } from '@/store/languages'
 import MintButton from '@/components/MintButton.vue'
 import MintStatusBox from '@/components/MintStatusBox.vue'
+import { useAuthViewStore } from './AuthViewStore'
 
+const authViewStore = useAuthViewStore()
 const languages = useLanguagesStore()
 
 const username = ref('')

@@ -112,7 +112,6 @@ function handleFieldChange() {
 }
 
 function handleOperatorChange() {
-    console.log('handleOperatorChange', operator.value, operatorList.value)
     if (!operator.value || !operatorList.value[operator.value].inputs) {
         inputs.value = []
     } else {

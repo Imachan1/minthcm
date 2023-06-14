@@ -11,7 +11,7 @@ export const useUrlStore = defineStore('url', () => {
     })
 
     const module = computed(() => {
-        return path.value?.[1] || DEFAULT_MODULE
+        return route.params?.module || DEFAULT_MODULE
     })
 
     const action = computed(() => {
@@ -23,11 +23,12 @@ export const useUrlStore = defineStore('url', () => {
     })
 
     function toLegacyUrl(url: string | URL) {
-        const base = import.meta.env.BASE_URL + 'legacy/index.php'
+        return 'legacy/index.php'
+        const base = 'legacy/index.php'
         if (typeof url === 'string') {
             url = new URL(url)
         }
-        const path = url.pathname.split('/')
+        const path = url.hash.split('/')
         const module = path[2]
         const action = path[3]
         const record = path[4]
@@ -44,7 +45,6 @@ export const useUrlStore = defineStore('url', () => {
         url.searchParams.forEach((value, param) => {
             legacyUrl.searchParams.set(param, value)
         })
-        console.log('legacyUrl', legacyUrl.href)
         return legacyUrl.href
     }
 
@@ -65,7 +65,7 @@ export const useUrlStore = defineStore('url', () => {
         url.searchParams.delete('record')
         let path = '/'
         if (pathParams.module) {
-            path += pathParams.module
+            path += `modules/${pathParams.module}`
             if (pathParams.action && pathParams.action !== 'index') {
                 path += `/${pathParams.action}`
                 if (pathParams.record) {

@@ -1,5 +1,7 @@
 # mintvue
 
+disableAjaxUI
+
 ## Project setup
 ```
 npm install

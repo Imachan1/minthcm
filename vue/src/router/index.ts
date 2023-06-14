@@ -1,11 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { useBackendStore } from '@/store/backend'
 import { useAuthStore } from '@/store/auth'
 import { useLanguagesStore } from '@/store/languages'
 import routes from './routes'
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHashHistory(window.location.pathname),
     routes,
 })
 
@@ -15,11 +15,11 @@ router.beforeEach((to, from) => {
     if (backend.initialLoading) {
         return
     }
-    if (to.meta.auth !== false && !auth.user?.id) {
-        return { name: 'login' }
+    if (to.meta?.auth !== false && !auth.user?.id) {
+        return { name: 'auth-login' }
     }
-    if (to.name === 'login' && auth.user?.id) {
-        return '/'
+    if (to.meta?.auth === false && auth.user?.id) {
+        return { name: 'dashboard' }
     }
 })
 

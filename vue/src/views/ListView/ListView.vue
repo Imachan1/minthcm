@@ -19,7 +19,6 @@ import ListViewFilters from './ListViewFilters.vue'
 
 const url = useUrlStore()
 const store = useListViewStore()
-console.log('ListView init')
 
 const module = computed(() => url.module)
 
@@ -36,7 +35,6 @@ onUnmounted(() => {
 
 watch(module, (newVal, oldVal) => {
     if (newVal !== oldVal) {
-        console.log('lv watch')
         store.init()
     }
 })

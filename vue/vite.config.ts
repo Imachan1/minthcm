@@ -1,17 +1,10 @@
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vuetify from 'vite-plugin-vuetify'
 import path from 'path'
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-ignore
-process.env = {
-    ...process.env,
-    ...loadEnv(process.env.NODE_ENV as string, process.cwd(), ''),
-}
-
 export default defineConfig({
-    base: '/minthcm/',
+    base: './',
     plugins: [
         vue(),
         vuetify({
@@ -27,16 +20,14 @@ export default defineConfig({
         },
     },
     server: {
-        base: '/minthcm',
+        base: '/',
         proxy: {
-            '/minthcm/api': {
+            '/api': {
                 target: process.env.PROXY_URL ?? '',
-                rewrite: (path) => path.replace('/minthcm', ''),
                 changeOrigin: true,
             },
-            '/minthcm/legacy': {
+            '/legacy': {
                 target: process.env.PROXY_URL ?? '',
-                rewrite: (path) => path.replace('/minthcm', ''),
                 changeOrigin: true,
             },
         },

@@ -7,7 +7,7 @@
         <v-form class="login-form" @submit.prevent="handleSubmit">
             <v-text-field
                 class="login-input"
-                v-model="username"
+                v-model="authViewStore.username"
                 color="primary"
                 name="username"
                 base-color="#00000099"
@@ -39,12 +39,14 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useAuthViewStore } from './AuthViewStore'
 import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
 import { useAuthStore } from '@/store/auth'
 import MintButton from '@/components/MintButton.vue'
 import MintStatusBox from '@/components/MintStatusBox.vue'
 
+const authViewStore = useAuthViewStore()
 const backend = useBackendStore()
 const languages = useLanguagesStore()
 const auth = useAuthStore()
@@ -61,7 +63,7 @@ async function handleSubmit() {
         return
     }
     isSubmiting.value = true
-    await auth.authenticate(username.value, password.value)
+    await auth.authenticate(authViewStore.username, password.value)
     await backend.init()
     if (!auth.user?.id) {
         loginError.value = true

@@ -61,8 +61,8 @@
                                     'Positions',
                                     'Recruitments',
                                 ].includes(filteredModule.name)
-                                    ? `/${filteredModule.name}`
-                                    : `/${filteredModule.name}/ESListView`
+                                    ? `/modules/${filteredModule.name}`
+                                    : `/modules/${filteredModule.name}/ESListView`
                             "
                             :active="filteredModule.name === url.module"
                             color="secondary"
@@ -106,7 +106,7 @@
                                 :key="recent.item_id"
                                 class="nav-item"
                                 :value="recent.item_id"
-                                :to="`/${recent.module_name}/DetailView/${recent.item_id}`"
+                                :to="`/modules/${recent.module_name}/DetailView/${recent.item_id}`"
                                 :active="false"
                             >
                                 <div class="nav-title">
@@ -129,7 +129,7 @@
                                 :key="favorite.id"
                                 class="nav-item"
                                 :value="favorite.id"
-                                :to="`/${favorite.module_name}/DetailView/${favorite.id}`"
+                                :to="`/modules/${favorite.module_name}/DetailView/${favorite.id}`"
                                 :active="false"
                             >
                                 <div class="nav-title">

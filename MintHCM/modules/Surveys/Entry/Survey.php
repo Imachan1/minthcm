@@ -82,7 +82,7 @@ EOF;
             </div>
         </div>
         </div>
-        <div class="row well">
+        <div class="row well" style="margin-top: 32px">
             <div class="col-md-offset-2 col-md-8">
                 <h1><?=$survey->name;?></h1>
                 <!-- MintHCM #74238 START -->
