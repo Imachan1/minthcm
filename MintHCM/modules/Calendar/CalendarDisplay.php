@@ -156,6 +156,11 @@ class CalendarDisplay {
       $ss->assign('editview_height', SugarConfig::getInstance()->get('calendar.editview_height', 600));
 
       $ss->assign('a_str', json_encode($cal->items));
+        /* MintHCM #84212 START */
+        if (!ACLController::checkAccess('Calendar', 'list', true)) {  
+            return;
+        }      
+        /* MintHCM #84212 END */
 
       $start = $current_user->getPreference('day_start_time');
       if ( is_null($start) ) {
@@ -546,7 +551,10 @@ class CalendarDisplay {
       $ss->assign("view", $this->cal->view);
 
       $ss->assign('print', $this->cal->isPrint());
-
+      if (!ACLController::checkAccess('Calendar', 'list', true)) {
+            echo '<script>function set_focus(){}</script><p class="error" style="margin:auto;">' . translate('LBL_NO_ACCESS', 'ACL') . '</p>'; 
+            return;
+      }
       if ( $controls ) {
          $current_date = str_pad($this->cal->date_time->month, 2, '0', STR_PAD_LEFT) . "/" . str_pad($this->cal->date_time->day, 2, '0', STR_PAD_LEFT) . "/" . $this->cal->date_time->year;
 
