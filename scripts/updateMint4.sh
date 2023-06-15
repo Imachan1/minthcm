@@ -43,7 +43,7 @@ cp -r ${tmp_dir}/MintHCM/lib/* /var/www/${instance_dir}/legacy/lib/
 echo "aktualizacja frontend\n"
 cp -r ${tmp_dir}/vue/dist/* /var/www/${instance_dir}/
 echo "aktualizacja api\n"
-cp -r ${tmp_dir}/api/* /var/www/${instance_dir}/api/
+rsync -ra ${tmp_dir}/api/ /var/www/${instance_dir}/api/ --exclude app/Config/AppConfig.php --exclude configs
 
 echo "uprawnienia"
 chown -R www-data:www-data /var/www/${instance_dir}
