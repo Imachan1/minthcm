@@ -46,7 +46,7 @@ function beforeClosePlan() {
       dialog_buttons[SUGAR.language.get( 'app_strings', 'LBL_DIALOG_YES' )] = function () {
          $( this ).dialog( "close" );
          var planType = $( '#type' ).val() || (getTimePanel().taskman._currentPlans.filter( function ( i ) {
-            return i.id == getTimePanel().taskman.$planSelect.val();
+            return i.id == getRecordID();
          } ))[0].type;
          var dontCheck = [ 'holiday', 'sick', 'occasional_leave', 'overtime', 'excused_absence', 'leave_at_request' ].indexOf( planType ) >= 0;
          if ( dontCheck || checkIfCanBeClosed() ) {

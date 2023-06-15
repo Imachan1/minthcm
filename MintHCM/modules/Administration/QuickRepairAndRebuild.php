@@ -45,6 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+require_once 'lib/Search/ElasticSearch/MappingsGenerator.php';
 
 class RepairAndClear
 {
@@ -123,6 +124,7 @@ class RepairAndClear
                 $this->rebuildExtensions();
                 $this->rebuildAuditTables();
                 $this->repairDatabase();
+                $this->generateMappings();
                 break;
         }
     }
@@ -401,6 +403,10 @@ class RepairAndClear
 		}
 		if($this->show_output) echo $mod_strings['LBL_DONE'];
 	}
+
+    public function generateMappings() {
+        (new MappingsGenerator())->generateMappings();
+    }
 
 	private function _rebuildAuditTablesHelper($focus)
 	{
