@@ -359,15 +359,15 @@ window.viewTools.form = {
     var label_object = handler.closest( ".edit-view-row-item" ).children( ".label" );
     if ( required === true ) {
       label_object.append( "<span class='required'>*</span>" );
-      //eVolpe #116937 Start
+      //MintHCM #116937 Start
       label_object.addClass('bold_required_field');
-      //eVolpe #116937 End
+      //MintHCM #116937 End
     } 
     else {
       label_object.children( "span.required" ).remove();
-      //eVolpe #116937 Start
+      //MintHCM #116937 Start
       label_object.removeClass('bold_required_field');
-      //eVolpe #116937 End
+      //MintHCM #116937 End
     }
  },
    setFieldReadonly: function ( handler, is_readonly ) {

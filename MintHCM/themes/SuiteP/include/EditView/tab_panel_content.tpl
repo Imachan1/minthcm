@@ -30,17 +30,17 @@
                         {{if $smarty.foreach.colIteration.total > 1 && $colData.colspan != 3}}
 
                             {{if ($fields[$colData.field.name].required && (!isset($colData.field.displayParams.required) || $colData.field.displayParams.required)) || (isset($colData.field.displayParams.required) && $colData.field.displayParams.required)}}
-                                    {*<!-- eVolpe #87912 Start -->*}
+                                    {*<!-- MintHCM #87912 Start -->*}
                                     <div class="col-xs-12 col-sm-4 label bold_required_field" data-label="{{$fields[$colData.field.name].vname}}">
-                                    {*<!-- eVolpe #87912 End -->*}
+                                    {*<!-- MintHCM #87912 End -->*}
                                 {{else}}
                                     <div class="col-xs-12 col-sm-4 label" data-label="{{$fields[$colData.field.name].vname}}">
                             {{/if}}
                             {{else}}
                                     {{if ($fields[$colData.field.name].required && (!isset($colData.field.displayParams.required) || $colData.field.displayParams.required)) || (isset($colData.field.displayParams.required) && $colData.field.displayParams.required)}}
-                                        {*<!-- eVolpe #87912 Start -->*}
+                                        {*<!-- MintHCM #87912 Start -->*}
                                             <div class="col-xs-12 col-sm-2 label bold_required_field" data-label="{{$fields[$colData.field.name].vname}}">
-                                            {*<!-- eVolpe #87912 End -->*}
+                                            {*<!-- MintHCM #87912 End -->*}
                                         {{else}}
                                             <div class="col-xs-12 col-sm-2 label" data-label="{{$fields[$colData.field.name].vname}}">
                                     {{/if}}
