@@ -153,7 +153,8 @@ class ViewESList extends SugarView
 
     protected function prepareColumnsDefs()
     {
-        global $mod_strings, $app_strings;
+        global $mod_strings, $app_strings, $current_language;
+        $mod_strings = return_module_language($current_language, $this->module);
         $columns = $this->ESListViewDefs[$this->module]['columns'];
         if (empty($columns)) {
             LoggerManager::getLogger()->fatal('Columns for ESList View are not defined');
@@ -191,7 +192,8 @@ class ViewESList extends SugarView
 
     protected function prepareSearchDefs()
     {
-        global $mod_strings, $app_strings;
+        global $mod_strings, $app_strings, $current_language;
+        $mod_strings = return_module_language($current_language, $this->module);
         $search = $this->ESListViewDefs[$this->module]['search'];
         if (empty($search)) {
             return false;
@@ -215,6 +217,9 @@ class ViewESList extends SugarView
             $search[$field]['name'] = $defs['name'] ?? $field;
             $search[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field] ?? $field;
             $search[$field]['type'] = $defs['type'] ?? $field_defs['type'];
+            if (!empty($search[$field]['type']) && in_array($search[$field]['type'], ['multienum', 'enum'])) {
+                $search[$field]['key'] .= '.keyword';
+            }
             $search[$field]['options'] = $field_defs['options'];
             $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
             $search[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
@@ -277,8 +282,12 @@ class ViewESList extends SugarView
         foreach ($options as $key => $option) {
             if ($option['value'] > $maxItemsPerPage) {
                 array_splice($options, $key);
-                $options[$key]['value'] = $maxItemsPerPage;
-                $options[$key]['title'] = (string)$maxItemsPerPage;
+                if ($options[$key - 1]['value'] != $maxItemsPerPage) {
+                    $options[$key] = [
+                        'value' => $maxItemsPerPage,
+                        'title' => (string)$maxItemsPerPage,
+                    ];
+                }
                 return $options;
             }
         }
