@@ -237,6 +237,7 @@ function make_sugar_config(&$sugar_config)
             'max_cron_runtime' => 60, // max runtime for cron jobs
             'min_cron_interval' => 30, // minimal interval between cron jobs
         ),
+        'display_week_number' => false,
     );
 }
 
@@ -455,6 +456,7 @@ function get_sugar_config_defaults()
             'max_cron_runtime' => 30, // max runtime for cron jobs
             'min_cron_interval' => 30, // minimal interval between cron jobs
         ),
+        'display_week_number' => false,
     );
 
     if (!is_object($locale)) {
