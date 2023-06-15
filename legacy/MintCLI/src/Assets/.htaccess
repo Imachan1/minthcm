@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    Options +SymLinksIfOwnerMatch
+    RewriteEngine On
+    RewriteBase __BASE_PATH__
+
+    RewriteRule ^assets/(.*?)$ assets/$1 [L]
+    RewriteRule ^legacy/(.*?)$ legacy/index.php/$1 [L]
+    RewriteRule ^api/(.*?)$ api/index.php [L]
+    RewriteRule ^bg.jpg$ bg.jpg [L]
+    RewriteRule ^favicon.ico$ favicon.ico [L]
+
+    RewriteRule .* index.html [L]
+</IfModule>
