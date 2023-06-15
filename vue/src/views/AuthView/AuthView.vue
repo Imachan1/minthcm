@@ -19,7 +19,7 @@
                     ← {{ languages.label('LBL_MINT4_AUTH_BACK_TO_LOGIN') }}
                 </div>
             </v-slide-x-transition>
-            <v-menu offset="16">
+            <!-- <v-menu offset="16">
                 <template v-slot:activator="{ props, isActive }">
                     <MintButton
                         v-bind="props"
@@ -35,7 +35,7 @@
                         { title: 'polski', icon: 'fi-pl', onClick: () => {} },
                     ]"
                 />
-            </v-menu>
+            </v-menu> -->
         </div>
     </div>
 </template>

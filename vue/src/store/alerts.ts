@@ -27,20 +27,20 @@ export const useAlertsStore = defineStore('alerts', () => {
             return
         }
         isFetching.value = true
-        const response = await axios.get('/api/Alerts')
+        const response = await axios.get('api/Alerts')
         alerts.value = response.data
         isFetching.value = false
     }
 
     async function markRead(id: string) {
-        const response = await axios.patch(`/api/Alerts/${id}`, {
+        const response = await axios.patch(`api/Alerts/${id}`, {
             is_read: true,
         })
         fetchAlerts()
     }
 
     async function close(id: string) {
-        const response = await axios.patch(`/api/Alerts/${id}`, {
+        const response = await axios.patch(`api/Alerts/${id}`, {
             is_closed: true,
         })
         fetchAlerts()

@@ -133,7 +133,7 @@ async function search() {
     if (standardizedQuery.value?.length >= 4) {
         isSearching.value = true
         try {
-            const response = await axios.get('/api/global_search', {
+            const response = await axios.get('api/global_search', {
                 params: {
                     query: standardizedQuery.value,
                 },
@@ -168,7 +168,7 @@ function getHighlightedText(text: string, query: string) {
 
 function goToFullList() {
     if (standardizedQuery.value?.length >= 4) {
-        router.push(`/Home/UnifiedSearch?search_form=false&query_string=${searchQuery.value}`)
+        router.push(`/modules/Home/UnifiedSearch?search_form=false&query_string=${searchQuery.value}`)
         searchQuery.value = ''
         searchInput.value?.blur()
     }

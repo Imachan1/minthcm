@@ -15,7 +15,7 @@ class AuthApi extends MintApi {
     }
 
     public async forgetPassword(username: string, email: string) {
-        return await this.instance.post('/api/forget_password', {
+        return await this.instance.post('api/forget_password', {
             data: {
                 username,
                 email,

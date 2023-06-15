@@ -12,7 +12,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
     const favorites = ref<Favorite[]>([])
 
     async function fetch() {
-        const response = await axios.get('/api/Favorites')
+        const response = await axios.get('api/Favorites')
         favorites.value = response.data
     }
 

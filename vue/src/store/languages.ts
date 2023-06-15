@@ -32,7 +32,7 @@ export const useLanguagesStore = defineStore('languages', () => {
         if (languages.value.modules[module] && Object.keys(languages.value.modules[module]).length) {
             return languages.value.modules[module]
         }
-        const response = await axios.get('/api/languages', {
+        const response = await axios.get('api/languages', {
             params: {
                 modules: module,
             },

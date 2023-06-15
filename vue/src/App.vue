@@ -7,10 +7,10 @@
             <v-main
                 class="mint-content"
                 :style="{
-                    marginRight: ux.drawer && $vuetify.display.xlAndUp ? 'var(--v-drawer-width)' : '64px',
+                    marginRight: ux.drawer && $vuetify.display.xlAndUp ? 'var(--v-drawer-width)' : '0px',
                 }"
             >
-                <router-view />
+                <router-view :key="$route.fullPath" />
             </v-main>
         </component>
     </v-app>
@@ -22,7 +22,7 @@ import { useUxStore } from '@/store/ux'
 import MintPopups from '@/components/MintPopups.vue'
 import LoadingScreen from '@/components/LoadingScreen.vue'
 import MintOverlay from './components/MintOverlay.vue'
-import '/node_modules/flag-icons/css/flag-icons.min.css'
+// import '/node_modules/flag-icons/css/flag-icons.min.css'
 
 const backend = useBackendStore()
 const ux = useUxStore()

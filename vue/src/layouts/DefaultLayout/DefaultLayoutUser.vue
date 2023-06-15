@@ -29,23 +29,23 @@ const menuItems = computed<MenuListItem[]>(() => {
     items.push({
         title: 'Profile',
         icon: 'account',
-        url: `/Employees/DetailView/${auth.user?.id}`,
+        url: `/modules/Employees/DetailView/${auth.user?.id}`,
     })
     items.push({
         title: 'Settings',
         icon: 'account-settings',
-        url: `/Users/EditView/${auth.user?.id}`,
+        url: `/modules/Users/EditView/${auth.user?.id}`,
     })
     items.push({
         title: 'Employees',
         icon: 'account-group',
-        url: '/Employees',
+        url: '/modules/Employees',
     })
     if (auth.user?.is_admin) {
         items.push({
             title: 'Administration',
             icon: 'cog',
-            url: '/Administration',
+            url: '/modules/Administration',
         })
     }
     items.push({
@@ -56,7 +56,7 @@ const menuItems = computed<MenuListItem[]>(() => {
     items.push({
         title: 'About',
         icon: 'information',
-        url: '/Home/About',
+        url: '/modules/Home/About',
     })
     items.push({
         title: 'Logout',

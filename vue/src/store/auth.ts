@@ -15,7 +15,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     async function authenticate(username: string, password: string) {
         try {
-            const response = await axios.post('/api/login', {
+            const response = await axios.post('api/login', {
                 username,
                 password,
             })
@@ -26,8 +26,8 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     async function logout() {
-        const response = await axios.post('/api/logout')
-        location.href = '/'
+        const response = await axios.post('api/logout')
+        location.href = ''
     }
 
     return {

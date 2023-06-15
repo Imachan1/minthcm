@@ -12,7 +12,7 @@ export const useRecentsStore = defineStore('recents', () => {
     const recents = ref<Recent[]>([])
 
     async function fetch() {
-        const response = await axios.get('/api/Trackers')
+        const response = await axios.get('api/Trackers')
         recents.value = response.data
     }
 

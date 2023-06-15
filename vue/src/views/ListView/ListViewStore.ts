@@ -42,7 +42,7 @@ export const useListViewStore = defineStore('listview', () => {
     })
 
     async function init() {
-        const result = await axios.post('/legacy/index.php?action=ESList', {
+        const result = await axios.post('legacy/index.php?action=ESList', {
             module: url.module,
             function_name: 'getInitialData',
         })
@@ -55,7 +55,7 @@ export const useListViewStore = defineStore('listview', () => {
 
     async function getData() {
         isLoading.value = true
-        const result = await axios.post('/legacy/index.php?action=ESList', {
+        const result = await axios.post('legacy/index.php?action=ESList', {
             module: url.module,
             function_name: 'getResults',
             page: options.value.page,
@@ -77,7 +77,7 @@ export const useListViewStore = defineStore('listview', () => {
     }
 
     async function savePreferences() {
-        const response = await axios.post('/legacy/index.php?action=ESList', {
+        const response = await axios.post('legacy/index.php?action=ESList', {
             module: module.value,
             preferences: preferences.value,
             function_name: 'savePreferences',

@@ -86,11 +86,11 @@ const pageText = computed(() => {
 const coreActions = {
     edit: {
         icon: 'mdi-pencil',
-        onClick: (item) => router.push(`/${url.module}/EditView/${item.id}`),
+        onClick: (item) => router.push(`/modules/${url.module}/EditView/${item.id}`),
     },
     view: {
         icon: 'mdi-eye',
-        onClick: (item) => router.push(`/${url.module}/DetailView/${item.id}`),
+        onClick: (item) => router.push(`/modules/${url.module}/DetailView/${item.id}`),
     },
     delete: {
         icon: 'mdi-delete',

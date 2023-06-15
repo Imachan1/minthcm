@@ -57,7 +57,7 @@ const isSubmiting = ref(false)
 async function handleForgetBtnClick() {
     forgetError.value = false
     try {
-        await axios.post('/api/forget_password', {
+        await axios.post('api/forget_password', {
             username: username.value,
             email: email.value,
         })

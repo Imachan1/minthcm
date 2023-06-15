@@ -61,7 +61,7 @@ const quickCreateMenu = computed<MenuListItem[]>(() => {
     return backend.initData.quick_create.map((qc) => ({
         title: qc.name,
         icon: modules.modules[qc.module]?.icon ?? 'mdi-pencil',
-        url: `/${qc.module}/EditView`,
+        url: `/modules/${qc.module}/EditView`,
     }))
 })
 

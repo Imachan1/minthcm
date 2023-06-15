@@ -39,7 +39,7 @@ export const useBackendStore = defineStore('backend', () => {
         const auth = useAuthStore()
         const api = useApi()
         try {
-            const initResponse = await axios.get<InitResponse>('/api/init')
+            const initResponse = await axios.get<InitResponse>('api/init')
             initData.value = initResponse.data
             auth.user = initResponse.data?.user ?? {}
             languages.languages = {
@@ -63,7 +63,7 @@ export const useBackendStore = defineStore('backend', () => {
             recents.fetch()
         } catch (err) {
             if ((err as AxiosError).response?.status === 401) {
-                const loginData = (await api.get('/api/login')).data
+                const loginData = (await api.get('api/login')).data
                 languages.languages = {
                     app_strings: loginData.languages?.app_strings ?? {},
                     app_list_strings: loginData.languages?.app_list_strings ?? {},
