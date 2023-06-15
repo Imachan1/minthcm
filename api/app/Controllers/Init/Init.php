@@ -40,6 +40,7 @@ class Init
         $response_body['menu_modules'] = $modules_menu;
         $response_body['modules'] = $modules_data;
         $response_body['quick_create'] = $this->getQuickCreate();
+        $response_body['legacy_views'] = $this->getLegacyViews();
         return $response_body;
     }
 
@@ -91,5 +92,11 @@ class Init
             );
         }
         return $response;
+    }
+
+    private function getLegacyViews()
+    {
+        $legacy_views = include "constants/legacy_views.php";
+        return $legacy_views;
     }
 }

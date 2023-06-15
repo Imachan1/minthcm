@@ -50,5 +50,4 @@ global $mod_strings, $app_strings;
 if (ACLController::checkAccess('RECRUITMENTS', 'edit', true)) $module_menu[] = array("index.php?module=Recruitments&action=EditView&return_module=Recruitments&return_action=DetailView", $mod_strings['LNK_NEW_RECORD'], "Create");
 if (ACLController::checkAccess('RECRUITMENTS', 'list', true)) $module_menu[] = array("index.php?module=Recruitments&action=index&return_module=Recruitments&return_action=DetailView", $mod_strings['LNK_LIST'], "List");
 if (ACLController::checkAccess('RECRUITMENTS', 'import', true)) $module_menu[] = array("index.php?module=Import&action=Step1&import_module=Recruitments&return_module=Recruitments&return_action=index", $mod_strings['LNK_IMPORT_RECRUITMENTS'], "Import", 'Contacts');
-if (ACLController::checkAccess('RECRUITMENTS', 'list', true)) $module_menu[] = array("index.php?module=Recruitments&action=ESListView", $mod_strings['LNK_ES_RECRUITMENTS_LIST'], "List");
 
