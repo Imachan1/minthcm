@@ -1,18 +1,19 @@
 <?php
+
 if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+    exit('Not A Valid Entry Point');
 }
 
 $module_name = 'Tasks';
-$ESListViewDefs[$module_name] = array(
-    'columns' => array(
-        'NAME' => array(
+$ESListViewDefs[$module_name] = [
+    'columns' => [
+        'NAME' => [
             'width' => '40',
             'label' => 'LBL_LIST_SUBJECT',
             'link' => true,
-            'default' => true
-        ),
-        'CONTACT_NAME' => array(
+            'default' => true,
+        ],
+        'CONTACT_NAME' => [
             'width' => '20',
             'label' => 'LBL_LIST_CONTACT',
             'link' => true,
@@ -20,56 +21,56 @@ $ESListViewDefs[$module_name] = array(
             'module' => 'Contacts',
             'default' => true,
             'ACLTag' => 'CONTACT',
-            'related_fields' => array('contact_id')
-        ),
-        'PARENT_NAME' => array(
-            'width'   => '20',
-            'label'   => 'LBL_LIST_RELATED_TO',
+            'related_fields' => ['contact_id'],
+        ],
+        'PARENT_NAME' => [
+            'width' => '20',
+            'label' => 'LBL_LIST_RELATED_TO',
             'dynamic_module' => 'PARENT_TYPE',
             'id' => 'PARENT_ID',
             'link' => true,
             'default' => true,
             'sortable' => false,
             'ACLTag' => 'PARENT',
-            'related_fields' => array('parent_id', 'parent_type')
-        ),
-        'DATE_DUE' => array(
+            'related_fields' => ['parent_id', 'parent_type'],
+        ],
+        'DATE_DUE' => [
             'width' => '15',
             'label' => 'LBL_LIST_DUE_DATE',
             'link' => false,
-            'default' => true
-        ),
-        'TIME_DUE' => array(
+            'default' => true,
+        ],
+        'TIME_DUE' => [
             'width' => '15',
             'label' => 'LBL_LIST_DUE_TIME',
             'sortable' => false,
             'link' => false,
-            'default' => true
-        ),
+            'default' => true,
+        ],
 
-        'ASSIGNED_USER_NAME' => array(
+        'ASSIGNED_USER_NAME' => [
             'width' => '2',
             'label' => 'LBL_LIST_ASSIGNED_TO_NAME',
             'module' => 'Employees',
             'id' => 'ASSIGNED_USER_ID',
-            'default' => true
-        ),
-        'DATE_START' => array(
+            'default' => true,
+        ],
+        'DATE_START' => [
             'width' => '5',
             'label' => 'LBL_LIST_START_DATE',
             'link' => false,
-            'default' => false
-        ),
-        'STATUS' => array(
+            'default' => false,
+        ],
+        'STATUS' => [
             'width' => '10',
             'label' => 'LBL_LIST_STATUS',
             'link' => false,
-            'default' => false
-        ),
-        'DATE_ENTERED' => array(
+            'default' => false,
+        ],
+        'DATE_ENTERED' => [
             'width' => '10',
             'label' => 'LBL_DATE_ENTERED',
-            'default' => true
-        ),
-    )
-);
+            'default' => true,
+        ],
+    ],
+];

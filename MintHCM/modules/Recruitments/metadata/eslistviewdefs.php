@@ -1,20 +1,21 @@
 <?php
+
 if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+    exit('Not A Valid Entry Point');
 }
 
 $module_name = 'Recruitments';
-$ESListViewDefs[$module_name] = array(
-    'columns' => array(
-        'NAME' => array(
+$ESListViewDefs[$module_name] = [
+    'columns' => [
+        'NAME' => [
             'name' => 'name',
             'label' => 'LBL_NAME',
             'default' => true,
             'enabled' => true,
             'link' => true,
             'width' => '10%',
-        ),
-        'POSITION_NAME' => array(
+        ],
+        'POSITION_NAME' => [
             'name' => 'position_name',
             'label' => 'LBL_RECRUITMENTS_POSITIONS_FROM_POSITIONS_TITLE',
             'enabled' => true,
@@ -23,122 +24,122 @@ $ESListViewDefs[$module_name] = array(
             'sortable' => false,
             'default' => true,
             'width' => '10%',
-        ),
-        'PROJECT_STATUS' => array(
+        ],
+        'PROJECT_STATUS' => [
             'name' => 'project_status',
             'label' => 'LBL_PROJECT_STATUS',
             'enabled' => true,
             'default' => true,
             'width' => '10%',
-        ),
-        'START_DATE' => array(
+        ],
+        'START_DATE' => [
             'name' => 'start_date',
             'label' => 'LBL_START_DATE',
             'enabled' => true,
             'default' => true,
             'width' => '10%',
-        ),
-        'END_DATE' => array(
+        ],
+        'END_DATE' => [
             'name' => 'end_date',
             'label' => 'LBL_END_DATE',
             'enabled' => true,
             'default' => true,
             'width' => '10%',
-        ),
-        'ASSIGNED_USER_NAME' => array(
+        ],
+        'ASSIGNED_USER_NAME' => [
             'name' => 'assigned_user_name',
             'label' => 'LBL_ASSIGNED_TO_NAME',
             'default' => true,
             'enabled' => true,
             'link' => true,
             'width' => '10%',
-        ),
-        'START_WORK_DATE' => array(
+        ],
+        'START_WORK_DATE' => [
             'name' => 'start_work_date',
             'label' => 'LBL_START_WORK_DATE',
             'enabled' => true,
             'default' => false,
             'width' => '10%',
-        ),
-        'DATE_ENTERED' => array(
+        ],
+        'DATE_ENTERED' => [
             'type' => 'datetime',
             'label' => 'LBL_DATE_ENTERED',
             'width' => '10%',
             'default' => false,
-        ),
-        'SALARY_FROM' => array(
+        ],
+        'SALARY_FROM' => [
             'name' => 'salary_from',
             'label' => 'LBL_SALARY_FROM',
-            'related_fields' => array(
+            'related_fields' => [
                 0 => 'currency_id',
-            ),
+            ],
             'currency_field' => 'currency_id',
             'enabled' => true,
             'default' => false,
             'width' => '10%',
-        ),
-        'SALARY_TO' => array(
+        ],
+        'SALARY_TO' => [
             'name' => 'salary_to',
             'label' => 'LBL_SALARY_TO',
-            'related_fields' => array(
+            'related_fields' => [
                 0 => 'currency_id',
-            ),
+            ],
             'currency_field' => 'currency_id',
             'enabled' => true,
             'default' => false,
             'width' => '10%',
-        ),
-        'RECRUITMENT_CHANNELS' => array(
+        ],
+        'RECRUITMENT_CHANNELS' => [
             'type' => 'multienum',
             'default' => false,
             'studio' => 'visible',
             'label' => 'LBL_RECRUITMENT_CHANNELS',
             'width' => '10%',
-        ),
-        'CREATED_BY_NAME' => array(
+        ],
+        'CREATED_BY_NAME' => [
             'type' => 'relate',
             'link' => true,
             'label' => 'LBL_CREATED',
             'id' => 'CREATED_BY',
             'width' => '10%',
             'default' => false,
-        ),
-        'VACANCY' => array(
+        ],
+        'VACANCY' => [
             'name' => 'vacancy',
             'label' => 'LBL_VACANCY',
             'enabled' => true,
             'default' => false,
             'width' => '10%',
-        ),
-        'EMPLOYEES_NUMBER' => array(
+        ],
+        'EMPLOYEES_NUMBER' => [
             'name' => 'employees_number',
             'label' => 'LBL_EMPLOYEES_NUMBER',
             'enabled' => true,
             'default' => false,
             'width' => '10%',
-        ),
-        'RECRUITMENT_TYPE' => array(
+        ],
+        'RECRUITMENT_TYPE' => [
             'type' => 'enum',
             'default' => false,
             'studio' => 'visible',
             'label' => 'LBL_RECRUITMENT_TYPE',
             'width' => '10%',
-        ),
-        'DATE_MODIFIED' => array(
+        ],
+        'DATE_MODIFIED' => [
             'label' => 'LBL_DATE_MODIFIED',
             'enabled' => true,
             'default' => false,
             'name' => 'date_modified',
             'readonly' => true,
             'width' => '10%',
-        ),
-        'MODIFIED_BY_NAME' => array(
+        ],
+        'MODIFIED_BY_NAME' => [
             'type' => 'relate',
             'link' => true,
             'label' => 'LBL_MODIFIED_NAME',
             'id' => 'MODIFIED_USER_ID',
             'width' => '10%',
             'default' => false,
-        ),
-    )
-);
+        ],
+    ],
+];
