@@ -62,7 +62,9 @@ class Init
     private function getModules()
     {
         global $current_user, $app_list_strings;
+        chdir('../legacy');
         $modules = query_module_access_list($current_user);
+        chdir('../api');
 
         $modules_data = array();
         if (!is_array($modules)) {

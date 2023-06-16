@@ -166,7 +166,7 @@ const filteredModules = computed(() => {
     if (!query) {
         return modules.visibleModules
     }
-    return modules.visibleModules.filter((m) => m.name.toLowerCase().includes(query))
+    return modules.visibleModules.filter((m) => m.label.toLowerCase().includes(query))
 })
 
 function parseModuleActions(actions: ModuleAction[]) {

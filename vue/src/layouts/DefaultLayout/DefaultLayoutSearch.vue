@@ -44,7 +44,7 @@
                         <div>
                             <span v-html="getHighlightedText(result.name, searchResponse.query)" />
                             <div class="search-result-description">
-                                <span v-text="result.module" />
+                                <span v-text="getModuleName(result.module)" />
                                 <span v-text="`${result.meta?.label} ${result.meta?.value}`" />
                             </div>
                         </div>
@@ -106,6 +106,10 @@ function showRecord(module: string, id: string) {
         })
         searchQuery.value = ''
     }
+}
+
+function getModuleName(module: string) {
+    return languages.languages.app_list_strings?.moduleList?.[module] ?? ''
 }
 
 interface SearchResult {
