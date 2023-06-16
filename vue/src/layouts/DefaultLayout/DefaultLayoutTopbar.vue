@@ -42,6 +42,7 @@ import { useBackendStore } from '@/store/backend'
 import { useAlertsStore } from '@/store/alerts'
 import { usePopupsStore } from '@/store/popups'
 import { useModulesStore } from '@/store/modules'
+import { useLanguagesStore } from '@/store/languages'
 import DefaultLayoutAlerts from './DefaultLayoutAlerts.vue'
 import DefaultLayoutUser from './DefaultLayoutUser.vue'
 import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
@@ -53,6 +54,7 @@ const backend = useBackendStore()
 const alerts = useAlertsStore()
 const popups = usePopupsStore()
 const modules = useModulesStore()
+const languages = useLanguagesStore()
 
 const quickCreateMenu = computed<MenuListItem[]>(() => {
     if (!backend.initData?.quick_create) {
@@ -67,7 +69,7 @@ const quickCreateMenu = computed<MenuListItem[]>(() => {
 
 function showModulesPopup() {
     popups.showPopup({
-        title: 'All modules',
+        title: languages.label('LBL_MINT4_ALL_MODULES'),
         icon: 'mdi-apps',
         component: DefaultLayoutModulesPopup,
     })

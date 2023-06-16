@@ -44,7 +44,7 @@
                     </div>
                 </v-list-item>
             </template>
-            <span v-else v-text="'No alerts'" class="px-4" />
+            <span v-else v-text="languages.label('LBL_MINT4_NO_ALERTS')" class="px-4" />
         </v-list>
         <!-- <div class="alerts-footer">
             <v-tooltip text="Mark all as read" location="top left">
@@ -76,8 +76,10 @@
 <script setup lang="ts">
 import { DateTime } from 'luxon'
 import { useAlertsStore } from '@/store/alerts'
+import { useLanguagesStore } from '@/store/languages'
 
 const alerts = useAlertsStore()
+const languages = useLanguagesStore()
 
 function toRelativeDate(date: string) {
     const dt = DateTime.fromSQL(date)

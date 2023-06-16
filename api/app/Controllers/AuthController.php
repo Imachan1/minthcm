@@ -13,6 +13,7 @@ class AuthController
     {
         $username = $request->getAttribute('username');
         $password = $request->getAttribute('password');
+        $login_language = $request->getAttribute('login_language');
 
         chdir('../legacy/');
         require_once 'include/MVC/SugarApplication.php';
@@ -28,6 +29,9 @@ class AuthController
             throw new HttpUnauthorizedException($request);
         }
 
+        if (!empty($login_language)) {
+            $_SESSION['authenticated_user_language'] = $login_language;
+        }
         $response = $response->withHeader('Content-type', 'application/json');
         $data = json_encode(['message' => 'Login success']);
         $response->getBody()->write($data);

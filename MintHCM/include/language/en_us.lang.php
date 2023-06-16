@@ -4472,3 +4472,19 @@ $app_strings['LBL_MINT4_CHAT_SEARCH_USER'] = 'Search';
 $app_strings['LBL_MINT4_GS_SEARCH_INPUT'] = 'Search...';
 $app_strings['LBL_MINT4_GS_GO_TO_LIST'] = 'Display all records in a list view';
 $app_strings['LBL_MINT4_GS_GO_TO_LIST_MORE'] = 'More records found. Display all in a list view';
+$app_strings['LBL_MINT4_GS_HELP_TIP'] = 'Enter at least 3 characters to find records';
+$app_strings['LBL_MINT4_GS_NO_RECORDS_FOUND'] = 'No records found';
+
+$app_strings['LBL_MINT4_FIND_MODULE'] = 'Find module...';
+$app_strings['LBL_MINT4_RECENTLY_VIEWED'] = 'Recently viewed';
+$app_strings['LBL_MINT4_FAVORITE_RECORDS'] = 'Favorite records';
+$app_strings['LBL_MINT4_ALL_MODULES'] = 'All modules';
+$app_strings['LBL_MINT4_NO_ALERTS'] = 'No alerts';
+
+$app_strings['LBL_MINT4_USER_MENU_PROFILE'] = 'Profile';
+$app_strings['LBL_MINT4_USER_MENU_SETTINGS'] = 'Settings';
+$app_strings['LBL_MINT4_USER_MENU_EMPLOYEES'] = 'Employees';
+$app_strings['LBL_MINT4_USER_MENU_ADMINISTRATION'] = 'Administration';
+$app_strings['LBL_MINT4_USER_MENU_SUPPORT'] = 'Support';
+$app_strings['LBL_MINT4_USER_MENU_ABOUT'] = 'About';
+$app_strings['LBL_MINT4_USER_MENU_LOGOUT'] = 'Logout';

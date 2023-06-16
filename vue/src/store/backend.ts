@@ -21,6 +21,7 @@ interface InitResponse {
     modules: ModulesDefs
     menu_modules: string[]
     quick_create: QuickCreate[]
+    global: any
 }
 
 export const useBackendStore = defineStore('backend', () => {
@@ -47,6 +48,7 @@ export const useBackendStore = defineStore('backend', () => {
                 app_list_strings: initResponse.data.languages?.app_list_strings ?? {},
                 modules: {},
             }
+            languages.currentLanguage = initResponse.data.global?.default_language ?? 'pl_PL'
             modules.modulesDefs = initResponse.data?.modules ?? {}
             if (route.meta.auth !== false && !auth.user?.id) {
                 router.push({ name: 'auth-login' })
@@ -71,6 +73,7 @@ export const useBackendStore = defineStore('backend', () => {
                         Users: loginData.languages?.Users ?? {},
                     },
                 }
+                languages.currentLanguage = loginData.global?.default_language ?? 'pl_PL'
                 if (router.currentRoute.value.name !== 'auth-login') {
                     router.push({ name: 'auth-login' })
                 }

@@ -23,11 +23,11 @@ export default defineConfig({
         base: '/',
         proxy: {
             '/api': {
-                target: process.env.PROXY_URL ?? '',
+                target: 'http://localhost:8080/ewl' ?? '',
                 changeOrigin: true,
             },
             '/legacy': {
-                target: process.env.PROXY_URL ?? '',
+                target: 'http://localhost:8080/ewl' ?? '',
                 changeOrigin: true,
             },
         },

@@ -20,46 +20,48 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useAuthStore } from '@/store/auth'
+import { useLanguagesStore } from '@/store/languages'
 import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 
 const auth = useAuthStore()
+const languages = useLanguagesStore()
 
 const menuItems = computed<MenuListItem[]>(() => {
     const items: MenuListItem[] = []
     items.push({
-        title: 'Profile',
+        title: languages.label('LBL_MINT4_USER_MENU_PROFILE'),
         icon: 'account',
         url: `/modules/Employees/DetailView/${auth.user?.id}`,
     })
     items.push({
-        title: 'Settings',
+        title: languages.label('LBL_MINT4_USER_MENU_SETTINGS'),
         icon: 'account-settings',
         url: `/modules/Users/EditView/${auth.user?.id}`,
     })
     items.push({
-        title: 'Employees',
+        title: languages.label('LBL_MINT4_USER_MENU_EMPLOYEES'),
         icon: 'account-group',
         url: '/modules/Employees',
     })
     if (auth.user?.is_admin) {
         items.push({
-            title: 'Administration',
+            title: languages.label('LBL_MINT4_USER_MENU_ADMINISTRATION'),
             icon: 'cog',
             url: '/modules/Administration',
         })
     }
     items.push({
-        title: 'Support',
+        title: languages.label('LBL_MINT4_USER_MENU_SUPPORT'),
         icon: 'face-agent',
         onClick: () => window.open('https://minthcm.org/support/', '_blank'),
     })
     items.push({
-        title: 'About',
+        title: languages.label('LBL_MINT4_USER_MENU_ABOUT'),
         icon: 'information',
         url: '/modules/Home/About',
     })
     items.push({
-        title: 'Logout',
+        title: languages.label('LBL_MINT4_USER_MENU_LOGOUT'),
         icon: 'logout',
         onClick: () => auth.logout(),
     })
