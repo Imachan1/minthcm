@@ -703,4 +703,7 @@ $mod_strings = array(
     'LBL_CLEAR_APP_DATA' => 'Clear app data',
     'LBL_ARE_YOU_SURE_TO_CLEAR_APP_DATA' => 'Are you sure you want to clear app data?',
 
+    'LBL_USERS_CONFIRMATION_BUTTON_CONFIRM' => 'YES',
+    'LBL_USERS_CONFIRMATION_BUTTON_CANCEL' => 'NO',
+    'LBL_USER_DEACTIVE_SUPERVISOR'=>'The employee you want to deactivate is the current manager of the unit</br> <URL>In order to correctly generate the organizational structure of the department, a new manager should be indicated. Do you want to continue with deactivation?'
 ); // END STRINGS DEFS
