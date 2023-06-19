@@ -45,6 +45,7 @@
             <div class="d-flex justify-end" style="gap: 8px">
                 <v-icon
                     v-for="action in getItemActions(item.raw)"
+                    v-show="action.icon"
                     :key="action.icon"
                     @click="action.onClick(item.raw)"
                     color="secondary"
@@ -92,10 +93,10 @@ const coreActions = {
         icon: 'mdi-eye',
         onClick: (item) => router.push(`/modules/${url.module}/DetailView/${item.id}`),
     },
-    delete: {
-        icon: 'mdi-delete',
-        onClick: (item) => null,
-    },
+    // delete: {
+    //     icon: 'mdi-delete',
+    //     onClick: (item) => null,
+    // },
 }
 
 function getItemActions(item: any) {
@@ -103,7 +104,7 @@ function getItemActions(item: any) {
         .filter((action) => typeof action !== 'string' || item.acl_access[action])
         .map((action) => {
             if (typeof action === 'string') {
-                return coreActions[action]
+                return coreActions[action] ?? {}
             }
             return {
                 ...action,

@@ -60,6 +60,44 @@
     <title>{$TITLE}</title>
     <!-- MintHCM #100459 END -->
 
+    <!-- Mint-Vue Start -->
+    {literal}
+    <script type="text/javascript">
+        if (window.parent === window) {
+            const url = new URL(location.href)
+            const pathParams = {
+                module: url.searchParams.get('module'),
+                action: url.searchParams.get('action'),
+                record: url.searchParams.get('record'),
+            }
+            url.searchParams.delete('module')
+            url.searchParams.delete('action')
+            url.searchParams.delete('record')
+            let path = '/'
+            if (pathParams.module) {
+                path += `#/modules/${pathParams.module}`
+                if (pathParams.action && pathParams.action !== 'index') {
+                    path += `/${pathParams.action}`
+                    if (pathParams.record) {
+                        path += `/${pathParams.record}`
+                    }
+                }
+            }
+            const indexOfLegacy = location.href.indexOf('/legacy')
+            if (indexOfLegacy !== -1) {
+                location.href = location.href.slice(0, indexOfLegacy) + path + url.search
+            }
+        }
+    </script>
+    {/literal}
+    <!-- Mint-Vue Stop -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
     {$SUGAR_JS}
     {literal}
     <script type="text/javascript">
