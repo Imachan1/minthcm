@@ -402,8 +402,9 @@ class Employee extends Person implements EmailInterface
                             LEFT JOIN allocations a ON a.id = ae.allocation_id AND ae.deleted = 0
                     WHERE ae.employee_id = {$this->db->quoted($this->id)}) all_allocations
                         INNER JOIN workplaces w ON w.id = workplace_id AND w.deleted = 0 AND w.availability = 'active'
-                WHERE ({$date_start} BETWEEN all_allocations.date_from AND all_allocations.date_to)
-                AND ({$date_end} BETWEEN all_allocations.date_from AND all_allocations.date_to)
+                WHERE ( ({$date_start} BETWEEN all_allocations.date_from AND all_allocations.date_to)
+                AND ({$date_end} BETWEEN all_allocations.date_from AND all_allocations.date_to) )
+                OR  {$date_start} >= all_allocations.date_from AND all_allocations.date_to IS NULL
                 ";
         if (!empty($workplace_id)) {
             $sql .= "AND w.id = {$this->db->quoted($workplace_id)}";
