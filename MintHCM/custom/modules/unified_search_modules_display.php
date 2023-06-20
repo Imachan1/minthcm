@@ -46,12 +46,6 @@ $unified_search_modules_display = array(
     'SchedulersJobs' => array(
         'visible' => true,
     ),
-    'DynamicFields' => array(
-        'visible' => true,
-    ),
-    'EditCustomFields' => array(
-        'visible' => true,
-    ),
     'EmailTemplates' => array(
         'visible' => true,
     ),
