@@ -50,5 +50,4 @@ global $mod_strings, $app_strings;
 if (ACLController::checkAccess('CANDIDATURES', 'edit', true)) $module_menu[] = array("index.php?module=Candidatures&action=EditView&return_module=Candidatures&return_action=DetailView", $mod_strings['LNK_NEW_RECORD'], "Create");
 if (ACLController::checkAccess('CANDIDATURES', 'list', true)) $module_menu[] = array("index.php?module=Candidatures&action=index&return_module=Candidatures&return_action=DetailView", $mod_strings['LNK_LIST'], "List");
 if (ACLController::checkAccess('CANDIDATURES', 'import', true)) $module_menu[] = array("index.php?module=Import&action=Step1&import_module=Candidatures&return_module=CandidatURES&return_action=index", $mod_strings['LNK_IMPORT_CANDIDATURES'], "Import", 'Contacts');
-if (ACLController::checkAccess('CANDIDATURES', 'list', true)) $module_menu[] = array("index.php?module=Candidatures&action=ESListView", $mod_strings['LNK_ES_CANDIDATURES_LIST'], "List");
 

@@ -53,5 +53,4 @@ if (ACLController::checkAccess('Tasks', 'import', true)) $module_menu[] = array(
 if (ACLController::checkAccess('Tasks', 'list', true)) {
     $module_menu[] = array('index.php?module=Tasks&action=kanban&return_module=Tasks&return_action=DetailView', $app_strings['LNK_KANBAN'], 'View', 'Tasks');
 }
-if (ACLController::checkAccess('Tasks', 'list', true)) $module_menu[] = array("index.php?module=Tasks&action=ESListView", $mod_strings['LNK_ES_TASKS_LIST'], "List");
 

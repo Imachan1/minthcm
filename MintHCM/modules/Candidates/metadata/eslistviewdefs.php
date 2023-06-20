@@ -1,6 +1,7 @@
 <?php
+
 if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+    exit('Not A Valid Entry Point');
 }
 
 $module_name = 'Candidates';
@@ -52,5 +53,5 @@ $ESListViewDefs[$module_name] = [
         'birthdate' => [],
         'relocation' => [],
         'date_entered' => [],
-    ]
+    ],
 ];
