@@ -7,15 +7,6 @@ $unified_search_modules_display = array(
     'ACLActions' => array(
         'visible' => true,
     ),
-    'Leads' => array(
-        'visible' => true,
-    ),
-    'Cases' => array(
-        'visible' => true,
-    ),
-    'Bugs' => array(
-        'visible' => true,
-    ),
     'ProspectLists' => array(
         'visible' => true,
     ),
@@ -55,19 +46,10 @@ $unified_search_modules_display = array(
     'SchedulersJobs' => array(
         'visible' => true,
     ),
-    'Contacts' => array(
-        'visible' => true,
-    ),
-    'Accounts' => array(
-        'visible' => true,
-    ),
     'DynamicFields' => array(
         'visible' => true,
     ),
     'EditCustomFields' => array(
-        'visible' => true,
-    ),
-    'Opportunities' => array(
         'visible' => true,
     ),
     'EmailTemplates' => array(
@@ -100,73 +82,13 @@ $unified_search_modules_display = array(
     'Connectors' => array(
         'visible' => true,
     ),
-    'Import_1' => array(
-        'visible' => true,
-    ),
-    'Import_2' => array(
-        'visible' => true,
-    ),
-    'Versions' => array(
-        'visible' => true,
-    ),
-    'Administration' => array(
-        'visible' => true,
-    ),
-    'vCals' => array(
-        'visible' => true,
-    ),
-    'CustomFields' => array(
-        'visible' => true,
-    ),
-    'Alerts' => array(
-        'visible' => true,
-    ),
     'Documents' => array(
-        'visible' => true,
-    ),
-    'DocumentRevisions' => array(
         'visible' => true,
     ),
     'Roles' => array(
         'visible' => true,
     ),
-    'Audit' => array(
-        'visible' => true,
-    ),
-    'InboundEmail' => array(
-        'visible' => true,
-    ),
-    'SavedSearch' => array(
-        'visible' => true,
-    ),
-    'UserPreferences' => array(
-        'visible' => true,
-    ),
-    'MergeRecords' => array(
-        'visible' => true,
-    ),
-    'EmailAddresses' => array(
-        'visible' => true,
-    ),
-    'EmailText' => array(
-        'visible' => true,
-    ),
-    'Relationships' => array(
-        'visible' => true,
-    ),
     'Employees' => array(
-        'visible' => true,
-    ),
-    'Spots' => array(
-        'visible' => true,
-    ),
-    'AOBH_BusinessHours' => array(
-        'visible' => true,
-    ),
-    'SugarFeed' => array(
-        'visible' => true,
-    ),
-    'EAPM' => array(
         'visible' => true,
     ),
     'OAuthKeys' => array(
@@ -175,124 +97,7 @@ $unified_search_modules_display = array(
     'OAuthTokens' => array(
         'visible' => true,
     ),
-    'AM_ProjectTemplates' => array(
-        'visible' => true,
-    ),
-    'AM_TaskTemplates' => array(
-        'visible' => true,
-    ),
-    'Favorites' => array(
-        'visible' => true,
-    ),
-    'AOK_Knowledge_Base_Categories' => array(
-        'visible' => true,
-    ),
-    'AOK_KnowledgeBase' => array(
-        'visible' => true,
-    ),
-    'Reminders' => array(
-        'visible' => true,
-    ),
-    'Reminders_Invitees' => array(
-        'visible' => true,
-    ),
-    'FP_events' => array(
-        'visible' => true,
-    ),
-    'FP_Event_Locations' => array(
-        'visible' => true,
-    ),
-    'AOD_IndexEvent' => array(
-        'visible' => true,
-    ),
-    'AOD_Index' => array(
-        'visible' => true,
-    ),
-    'AOP_Case_Events' => array(
-        'visible' => true,
-    ),
-    'AOP_Case_Updates' => array(
-        'visible' => true,
-    ),
-    'AOR_Reports' => array(
-        'visible' => true,
-    ),
-    'AOR_Fields' => array(
-        'visible' => true,
-    ),
-    'AOR_Charts' => array(
-        'visible' => true,
-    ),
-    'AOR_Conditions' => array(
-        'visible' => true,
-    ),
-    'AOR_Scheduled_Reports' => array(
-        'visible' => true,
-    ),
-    'AOS_Contracts' => array(
-        'visible' => true,
-    ),
-    'AOS_Invoices' => array(
-        'visible' => true,
-    ),
-    'AOS_PDF_Templates' => array(
-        'visible' => true,
-    ),
-    'AOS_Product_Categories' => array(
-        'visible' => true,
-    ),
-    'AOS_Products' => array(
-        'visible' => true,
-    ),
-    'AOS_Products_Quotes' => array(
-        'visible' => true,
-    ),
-    'AOS_Line_Item_Groups' => array(
-        'visible' => true,
-    ),
-    'AOS_Quotes' => array(
-        'visible' => true,
-    ),
-    'AOW_Actions' => array(
-        'visible' => true,
-    ),
-    'AOW_WorkFlow' => array(
-        'visible' => true,
-    ),
-    'AOW_Processed' => array(
-        'visible' => true,
-    ),
-    'AOW_Conditions' => array(
-        'visible' => true,
-    ),
-    'jjwg_Maps' => array(
-        'visible' => true,
-    ),
-    'jjwg_Markers' => array(
-        'visible' => true,
-    ),
-    'jjwg_Areas' => array(
-        'visible' => true,
-    ),
-    'jjwg_Address_Cache' => array(
-        'visible' => true,
-    ),
-    'Calls_Reschedule' => array(
-        'visible' => true,
-    ),
     'SecurityGroups' => array(
-        'visible' => true,
-    ),
-    'OutboundEmailAccounts' => array(
-        'visible' => true,
-    ),
-    'TemplateSectionLine' => array(
-        'visible' => true,
-    ),
-    'OAuth2Tokens' => array(
-        'visible' => true,
-    ),
-    'OAuth2Clients' => array(
         'visible' => true,
     ),
     'SurveyResponses' => array(
@@ -317,9 +122,6 @@ $unified_search_modules_display = array(
         'visible' => true,
     ),
     'Knowledge' => array(
-        'visible' => true,
-    ),
-    'ReservationsCalendar' => array(
         'visible' => true,
     ),
     'ResponsibilityActivities' => array(
@@ -505,5 +307,4 @@ $unified_search_modules_display = array(
     'Files' => array(
         'visible' => true,
     ),
-
 );
