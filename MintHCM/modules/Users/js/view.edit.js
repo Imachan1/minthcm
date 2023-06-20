@@ -1,30 +1,4 @@
 
-function getSupervisedUnitsIfEmployeeIsSupervisor() {
-    let status = $('select[name="status"] option:selected').val();
-    let employee_status = $('select[name="employee_status"] option:selected').val();
-    if (employee_status != 'Active' || status != 'Active') {
-        let employee_id = $('#record').val();
-        viewTools.api.callCustomApi({
-            module: 'Employees',
-            action: 'checkIfEmployeeIsSupervisor',
-            dataPOST: {employee_id: employee_id, employee_status: employee_status},
-            async: false,
-            callback: function (response) {
-                if (response != false) {
-                    displayConfirmationWindow(response);
-                }
-                else {
-                    SUGAR.ajaxUI.submitForm("EditView");
-                    return false;
-                }
-            }
-        });
-    } else {
-        SUGAR.ajaxUI.submitForm("EditView");
-        return false;
-    }
-}
-
 function displayConfirmationWindow(response) {
     let units_links = '';
     let dialog_div = '';
@@ -44,7 +18,8 @@ function displayConfirmationWindow(response) {
                 text: viewTools.language.get('Users', 'LBL_USERS_CONFIRMATION_BUTTON_CONFIRM'),
                 click: function () {
                     $(this).dialog("close");
-                    runUsersForceSave();
+                    window["users_editview_units_popup"] = true;
+                    viewTools.form.prepareViewToolsValidation.call($('#SAVE_HEADER').get(0));
                 },
             },
             {
@@ -57,7 +32,28 @@ function displayConfirmationWindow(response) {
   });
 }
 
-function runUsersForceSave() {
-    SUGAR.ajaxUI.submitForm("EditView");
-    return false;
-}
+viewTools.form.afterSave(function(){
+    let status = $('select[name="status"] option:selected').val();
+    let employee_status = $('select[name="employee_status"] option:selected').val();
+    let employee_id = $('#record').val();
+    let result = false;
+    if (!!window["users_editview_units_popup"] === false && (employee_status != 'Active' || status != 'Active') && employee_id != '') {
+        viewTools.api.callCustomApi({
+            module: 'Employees',
+            action: 'checkIfEmployeeIsSupervisor',
+            dataPOST: {employee_id: employee_id, employee_status: employee_status},
+            async: true,
+            callback: function (response) {
+                if (response != false) {
+                    displayConfirmationWindow(response);
+                }
+                else {
+                    result = true;
+                }
+            }
+        });
+    } else {
+        result = true;
+    }
+    return result;
+});
