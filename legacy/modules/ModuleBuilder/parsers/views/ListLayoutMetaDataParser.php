@@ -134,6 +134,8 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
         }
         $this->implementation->deploy(array_change_key_case($this->_viewdefs,
             CASE_UPPER)); // force the field names back to upper case so the list view will work correctly
+        $this->view = "eslistview";
+        $this->implementation->deploy($this->_eslistviewdefs, true);
     }
 
     /**
@@ -301,6 +303,7 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
          * any where studio !== true, which are not editable but must be preserved
          */
         $newViewdefs = array();
+        $esListViewDefs = []; //MintHCM start #117539
 
         $originalViewDefs = $this->getOriginalViewDefs();
 
@@ -370,9 +373,29 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
                 }
 
                 $newViewdefs [$fieldname] ['default'] = ($i == 0);
+                
+                //MintHCM start #117539
+                if($this->view == "listview"){
+                    $array = "columns";
+                    $ESListProperties = ['link', 'default', 'sortable'];
+                } else if ($this->view == "advanced_search") {
+                    $array = "search";
+                }
+                
+                if(isset($ESListProperties)){
+                    foreach ($ESListProperties as $property){ //leaving this here if we want to save other views in the future
+                        if(isset($this->_viewdefs[$fieldname] [$property])){
+                            $esListViewDefs[$array][$fieldname][$property] = $newViewdefs[$fieldname][$property];
+                        }                    
+                    }
+                } else {
+                    $esListViewDefs[$array][$fieldname] = [];
+                }
+                //MintHCM end
             }
         }
         $this->_viewdefs = $newViewdefs;
+        $this->_eslistviewdefs = $esListViewDefs; //MintHCM start #117539
     }
 
     /**

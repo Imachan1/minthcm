@@ -189,6 +189,10 @@ class SearchViewMetaDataParser extends ListLayoutMetaDataParser
             
         $this->_saved [ 'layout' ] [ self::$variableMap [ $this->_searchLayout ] ] = $this->convertSearchViewToListView($this->_viewdefs);;
         $this->implementation->deploy ( $this->_saved ) ;
+        //MintHCM start #117539 
+        $this->view = "eslistview";
+        $this->implementation->deploy($this->_eslistviewdefs, true);
+        //MintHCM end
     }
 
     private function convertSearchViewToListView ($viewdefs)
