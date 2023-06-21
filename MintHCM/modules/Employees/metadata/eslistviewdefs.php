@@ -50,8 +50,6 @@ $ESListViewDefs['Employees'] = [
         ],
         'position_name' => [
         ],
-        'phone' => [
-        ],
         'securitygroup_name' => [
         ],
         'email' => [

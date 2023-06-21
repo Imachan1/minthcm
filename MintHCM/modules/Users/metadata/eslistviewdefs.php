@@ -71,8 +71,6 @@ $ESListViewDefs['Users'] = [
         ],
         'securitygroup_name' => [
         ],
-        'phone' => [
-        ],
         'address_street' => [
         ],
         'email' => [

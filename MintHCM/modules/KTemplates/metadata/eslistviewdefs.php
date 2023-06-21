@@ -20,8 +20,6 @@ $ESListViewDefs['KTemplates'] = [
     'search' => [
         'name' => [
         ],
-        'is_default' => [
-        ],
         'relatedmodule' => [
         ],
     ],

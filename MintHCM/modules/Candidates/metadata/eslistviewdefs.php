@@ -13,8 +13,7 @@ $ESListViewDefs[$module_name] = [
         ],
         'phone_mobile' => [
             'default' => true,
-        ],
-        'recr_contact_agree' => [
+            'type' => 'varchar',
         ],
         'potential' => [
             'default' => true,
