@@ -303,9 +303,32 @@ function smarty_function_sugar_button($params, &$smarty)
 			break;
 
 			case "CANCEL":
-                //MintHCM #117552 START
-                $cancelButton = "<a href='index.php?module=$module&action=ESlistView' class='button customCancelButton'>". $app_strings['LBL_CANCEL'] . "</a>";
-                //MintHCM #117552 END
+                //If the return action is not empty and the return action is detail view and the id is not empty
+                $cancelButton  = '{if !empty($smarty.request.return_action) && ($smarty.request.return_action == "DetailView" && !empty($smarty.request.return_id))}';
+                $cancelButton .= '<a href="index.php?action=DetailView&module={$smarty.request.return_module|escape:"url"}&record={$smarty.request.return_id|escape:"url"}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
+
+                //If the return action is not empty and the return action is detail view and the id (from fields) is not empty
+                $cancelButton .= '{elseif !empty($smarty.request.return_action) && ($smarty.request.return_action == "DetailView" && !empty($fields.id.value))}';
+                $cancelButton .= '<a href="index.php?action=DetailView&module={$smarty.request.return_module|escape:"url"}&record={$fields.id.value}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
+
+                //Bug 1057 If the return action is not empty and the return action is detail view and the id (from both locations) are empty, go to the modules listview
+                $cancelButton .= '{elseif !empty($smarty.request.return_action) && ($smarty.request.return_action == "DetailView" && empty($fields.id.value)) && empty($smarty.request.return_id)}';
+                $cancelButton .= '<a href="index.php?module={$smarty.request.return_module|escape:"url"}&action=ESlistView" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
+
+
+                //Bug 893 if the return action is not empty and the return module is not empty, go back to that page
+                $cancelButton .= '{elseif !empty($smarty.request.return_action) && !empty($smarty.request.return_module)}';
+                $cancelButton .= '<a href="index.php?action={$smarty.request.return_action}&module={$smarty.request.return_module|escape:"url"}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
+
+                //If the return action is empty but the return id is in fields
+                $cancelButton .= '{elseif empty($smarty.request.return_action) || empty($smarty.request.return_id) && !empty($fields.id.value)}';
+                $cancelButton .= '<a href="index.php?action=index&module='.$module.'" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
+
+                $cancelButton .= '{else}';
+                $cancelButton .= '<a href="index.php?action=index&module={$smarty.request.return_module|escape:"url"}&record={$smarty.request.return_id|escape:"url"}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
+                $cancelButton .= '{/if}';
+
+                //$cancelButton = '{$smarty.request.return_action}'.'{$smarty.request.return_module}';              
                 $output = $cancelButton;
 			break;
 

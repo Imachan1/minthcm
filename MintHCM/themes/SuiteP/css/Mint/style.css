@@ -10,3 +10,19 @@
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */@font-face{font-family:'Font Awesome 5 Free';font-style:normal;font-weight:900;font-display:auto;src:url("../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts/fa-solid-900.eot");src:url("../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts/fa-solid-900.eot?#iefix") format('embedded-opentype'), url("../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts/fa-solid-900.woff2") format('woff2'), url("../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts/fa-solid-900.woff") format('woff'), url("../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts/fa-solid-900.ttf") format('truetype'), url("../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts/fa-solid-900.svg#fontawesome") format('svg');}.fa,.fas{font-family:'Font Awesome 5 Free';font-weight:900}
  body {background:transparent!important}#bootstrap-container{background:transparent!important}
+
+ #EditView a.button {
+    padding: 0 10px;
+    margin: 4px;
+    background-color: #fff;
+    border: 1px solid #63c29a;
+    color: #63c29a;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+    height: 32px;
+    display: inline-block;
+}
+
+#EditView a.button:hover {
+    background-color: #fcfafa;
+    
+}
