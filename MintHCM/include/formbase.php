@@ -251,7 +251,7 @@ function handleRedirect($return_id='', $return_module='', $additionalFlags = fal
 	}
 
 	$url = buildRedirectURL($return_id, $return_module);
-	header($url);
+	echo "<script>window.parent.postMessage(location.origin+location.pathname.replace('index.php', '')+'$url');</script>\n";
 	exit;	
 }
 

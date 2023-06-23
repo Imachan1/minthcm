@@ -651,8 +651,7 @@ class SugarApplication {
             } else {
                 //@ob_end_clean(); // clear output buffer
                 session_write_close();
-                header('HTTP/1.1 301 Moved Permanently');
-                header("Location: " . $url);
+                echo "<script>window.parent.postMessage(location.origin+location.pathname.replace('index.php', '')+'$url');</script>\n";
             }
         }
         if (!defined('SUITE_PHPUNIT_RUNNER')) {
