@@ -43,19 +43,19 @@ generateOnboardingOffboarding = {
       let result = true;
       viewTools.GUI.fieldErrorUnmark();
       let employees_ids = this.getEmployeesIds();
-      let employee_field = $('#' + this.form_name + ' #' + this.relate_field_name + '_id');
+      let employee_field = $('#' + this.form_name + ' #' + this.relate_field_name + '_id0');
       let date_start = $('#' + this.form_name + ' #goo_date_start');
       let parent_id = $('#' + this.form_name + ' #parent_id');
-      if (_.isEmpty(employees_ids)) {
-         viewTools.GUI.fieldErrorMark(employee_field, viewTools.language.get('app_strings', 'ERR_MISSING_REQUIRED_FIELDS') + ' ' + viewTools.language.get('app_strings', 'LBL_GENERATEONBOARDINGOFFBOARDING_EMPLOYEE_NAME'));
-         result = false;
-      }
       if (_.isEmpty($('#goo_date_start_date').val())) {
          viewTools.GUI.fieldErrorMark($('#goo_date_start_date'), viewTools.language.get('app_strings', 'ERR_MISSING_REQUIRED_FIELDS') + ' ' + viewTools.language.get('app_strings', 'LBL_GENERATEONBOARDINGOFFBOARDING_START_DATE'));
          result = false;
       } if (_.isEmpty($('#goo_date_start_hours').val())) {
          viewTools.GUI.fieldErrorMark($('#goo_date_start_hours'), viewTools.language.get('app_strings', 'ERR_MISSING_REQUIRED_FIELDS') + ' ' + viewTools.language.get('app_strings', 'LBL_GENERATEONBOARDINGOFFBOARDING_START_DATE'));
          result = false;
+      }
+      if (_.isEmpty(employee_field.val())) {
+        viewTools.GUI.fieldErrorMark(employee_field, viewTools.language.get('app_strings', 'ERR_MISSING_REQUIRED_FIELDS') + ' ' + viewTools.language.get('app_strings', 'LBL_GENERATEONBOARDINGOFFBOARDING_EMPLOYEE_NAME'));
+        result = false;
       }
       if (_.isEmpty(parent_id.val())) {
          viewTools.GUI.fieldErrorMark(parent_id, viewTools.language.get('app_strings', 'ERR_MISSING_REQUIRED_FIELDS') + ' ' + viewTools.language.get('app_strings', 'LBL_GENERATEONBOARDINGOFFBOARDING_TEMPLATE'));

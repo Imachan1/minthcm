@@ -99,7 +99,8 @@ class GenerateOnboardingOffboarding
     protected function createProcess($process_name, $relate_id_field_name, 
         $assigned_user_id) {
         $bean = BeanFactory::newBean($process_name);
-        $bean->date_start = $this->date_start;
+        $db_date = date('Y-m-d H:i:s', strtotime($this->date_start . ' -2 hours'));
+        $bean->date_start = $db_date;
         $bean->employee_id = $this->employee_id;
         $bean->$relate_id_field_name = $this->template_id;
         $bean->assigned_user_id = $assigned_user_id;
