@@ -266,7 +266,7 @@ $dictionary['Candidates'] = array(
             'merge_filter' => 'enabled',
             'duplicate_on_record_copy' => 'always',
             'audited' => true,
-            'default' => 'Polska',
+            'default' => '',
         ),
         'alt_address_street' => array(
             'name' => 'alt_address_street',
