@@ -10,7 +10,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -38,16 +38,22 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-
 global $mod_strings, $app_strings;
-if (ACLController::checkAccess('CANDIDATES', 'edit', true)) $module_menu[] = array("index.php?module=Candidates&action=EditView&return_module=Candidates&return_action=DetailView", $mod_strings['LNK_NEW_RECORD'], "Create");
-if (ACLController::checkAccess('CANDIDATES', 'list', true)) $module_menu[] = array("index.php?module=Candidates&action=index&return_module=Candidates&return_action=DetailView", $mod_strings['LNK_LIST'], "List");
-if (ACLController::checkAccess('CANDIDATES', 'import', true)) $module_menu[] = array("index.php?module=Import&action=Step1&import_module=Candidates&return_module=Candidates&return_action=index", $mod_strings['LNK_IMPORT_CANDIDATES'], "Import", 'Contacts');
+if (ACLController::checkAccess('Candidates', 'edit', true)) {
+    $module_menu[] = array("index.php?module=Candidates&action=EditView&return_module=Candidates&return_action=DetailView", $mod_strings['LNK_NEW_RECORD'], "Create");
+}
 
+if (ACLController::checkAccess('Candidates', 'list', true)) {
+    $module_menu[] = array("index.php?module=Candidates&action=index&return_module=Candidates&return_action=DetailView", $mod_strings['LNK_LIST'], "List");
+}
+
+if (ACLController::checkAccess('Candidates', 'import', true)) {
+    $module_menu[] = array("index.php?module=Import&action=Step1&import_module=Candidates&return_module=Candidates&return_action=index", $mod_strings['LNK_IMPORT_CANDIDATES'], "Import", 'Contacts');
+}

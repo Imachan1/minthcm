@@ -38,16 +38,22 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-
 global $mod_strings, $app_strings;
-if (ACLController::checkAccess('CANDIDATURES', 'edit', true)) $module_menu[] = array("index.php?module=Candidatures&action=EditView&return_module=Candidatures&return_action=DetailView", $mod_strings['LNK_NEW_RECORD'], "Create");
-if (ACLController::checkAccess('CANDIDATURES', 'list', true)) $module_menu[] = array("index.php?module=Candidatures&action=index&return_module=Candidatures&return_action=DetailView", $mod_strings['LNK_LIST'], "List");
-if (ACLController::checkAccess('CANDIDATURES', 'import', true)) $module_menu[] = array("index.php?module=Import&action=Step1&import_module=Candidatures&return_module=CandidatURES&return_action=index", $mod_strings['LNK_IMPORT_CANDIDATURES'], "Import", 'Contacts');
+if (ACLController::checkAccess('Candidatures', 'edit', true)) {
+    $module_menu[] = array("index.php?module=Candidatures&action=EditView&return_module=Candidatures&return_action=DetailView", $mod_strings['LNK_NEW_RECORD'], "Create");
+}
 
+if (ACLController::checkAccess('Candidatures', 'list', true)) {
+    $module_menu[] = array("index.php?module=Candidatures&action=index&return_module=Candidatures&return_action=DetailView", $mod_strings['LNK_LIST'], "List");
+}
+
+if (ACLController::checkAccess('Candidatures', 'import', true)) {
+    $module_menu[] = array("index.php?module=Import&action=Step1&import_module=Candidatures&return_module=CandidatURES&return_action=index", $mod_strings['LNK_IMPORT_CANDIDATURES'], "Import", 'Contacts');
+}
