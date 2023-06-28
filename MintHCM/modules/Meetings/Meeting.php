@@ -265,9 +265,9 @@ class Meeting extends SugarBean {
       
       $return_id = parent::save($check_notify);
 
-      if ( $this->shouldBeProcessedApi() ) {
-         // $this->saveRepeatlyApi(); //CR komentuje to bo spotkania w Mincie siê tworz¹ cyklicznie przy kazdej edycji
-      }
+    //   if ( $this->shouldBeProcessedApi() ) { // FIXME EV 2023-06-28 - nieistniejÄ…ca metoda
+         // $this->saveRepeatlyApi(); //CR komentuje to bo spotkania w Mincie siï¿½ tworzï¿½ cyklicznie przy kazdej edycji
+    //   }
 
       if ($this->status != $bean->fetched_row['status'] && $this->status == 'Held') {
          $this->closeRelatedTraining();
