@@ -232,7 +232,7 @@ class ElasticSearchEngine extends SearchEngine
       }
       /** @noinspection PhpRedundantCatchClauseInspection */
       catch (BadRequest400Exception $exception) {
-         throw new SearchInvalidRequestException('The query was not valid.');
+        throw new SearchInvalidRequestException('ElasticSearchEngine::runElasticSearch: The query was not valid - ' . $exception);
       }
 
       return $results;
