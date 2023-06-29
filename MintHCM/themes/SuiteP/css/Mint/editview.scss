@@ -92,3 +92,32 @@ input#btn_ActionLine.button[type="button"] {
 .edit-view-row .edit-view-row-item .bold_required_field, .bold_required_field {
     font-weight: bold;
 }
+#EditView div[type='bool'] input[type='checkbox'] {
+    vertical-align: bottom;
+    position      : relative;
+    top           : 9px;
+}
+
+.dcQuickEdit .buttons {
+    margin-top: 30px;
+}
+
+table.subpanel-table ul.clickMenu.fancymenu.SugarActionMenu {
+    padding-left: 10px !important;
+}
+
+.edit tr td[scope='row'] {
+    padding: 0px;
+}
+
+.edit tr td {
+    padding: 0px;
+}
+
+#EditView select.datetimecombo_time {
+    height: 33px;
+}
+
+.emailAddressFieldContainer .col-xs-12 {
+    padding: 0px;
+}
