@@ -605,8 +605,8 @@ class ListViewSubPanel extends ListView {
          $GLOBALS['log']->debug("Offsets: (start, previous, next, last)(0, $previous_offset, $next_offset, $last_offset)");
 
          if ( 0 == $current_offset ) {
-            $start_link = "<button type='button' name='listViewStartButton' title='{$this->local_app_strings['LNK_LIST_START']}' class='button' disabled><span class='suitepicon suitepicon-action-first'></span></button>";
-            $previous_link = "<button type='button' name='listViewPrevButton' title='{$this->local_app_strings['LNK_LIST_PREVIOUS']}' class='button' disabled><span class='suitepicon suitepicon-action-left'></span></button>";
+            $start_link = "<button type='button' name='listViewStartButton' title='{$this->local_app_strings['LNK_LIST_START']}' class='button' ><span class='suitepicon suitepicon-action-first'></span></button>";
+            $previous_link = "<button type='button' name='listViewPrevButton' title='{$this->local_app_strings['LNK_LIST_PREVIOUS']}' class='button' ><span class='suitepicon suitepicon-action-left'></span></button>";
          } else {
             if ( $this->multi_select_popup ) {// nav links for multiselect popup, submit form to save checks.
                $start_link = "<button type='button' class='button' name='listViewStartButton' title='{$this->local_app_strings['LNK_LIST_START']}' onClick='javascript:save_checks(0, \"{$moduleString}\");'><span class='suitepicon suitepicon-action-first'></span></button>";
@@ -634,8 +634,8 @@ class ListViewSubPanel extends ListView {
          }
 
          if ( $last_offset <= $current_offset ) {
-            $end_link = "<button type='button' name='listViewEndButton' title='{$this->local_app_strings['LNK_LIST_END']}' class='button' disabled><span class='suitepicon suitepicon-action-last'></span></button>";
-            $next_link = "<button type='button' name='listViewNextButton' title='{$this->local_app_strings['LNK_LIST_NEXT']}' class='button' disabled><span class='suitepicon suitepicon-action-right'></span></button>";
+            $end_link = "<button type='button' name='listViewEndButton' title='{$this->local_app_strings['LNK_LIST_END']}' class='button' ><span class='suitepicon suitepicon-action-last'></span></button>";
+            $next_link = "<button type='button' name='listViewNextButton' title='{$this->local_app_strings['LNK_LIST_NEXT']}' class='button' ><span class='suitepicon suitepicon-action-right'></span></button>";
          } else {
             if ( $this->multi_select_popup ) { // nav links for multiselect popup, submit form to save checks.
                $end_link = "<button type='button' name='listViewEndButton' class='button' title='{$this->local_app_strings['LNK_LIST_END']}' onClick='javascript:save_checks($last_offset, \"{$moduleString}\");'><span class='suitepicon suitepicon-action-last'></span></button>";
@@ -796,7 +796,7 @@ class ListViewSubPanel extends ListView {
             } else {
                $html_text .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td align=\"left\"  nowrap>$select_link&nbsp;$export_link&nbsp;$delete_link&nbsp;$selected_objects_span";
             }
-            $html_text .= "</td>\n<td nowrap align=\"right\">" . $start_link . "&nbsp;&nbsp;" . $previous_link . "&nbsp;&nbsp;<span class='pageNumbers'>(" . $start_record . " - " . $end_record . " " . $this->local_app_strings['LBL_LIST_OF'] . " " . $row_count . ")</span>&nbsp;&nbsp;" . $next_link . "&nbsp;&nbsp;" . $end_link . "</td></tr></table>\n";
+            $html_text .= "</td>\n<td nowrap align=\"right\" class='pagination_subpanelview'>" . $start_link . "&nbsp;&nbsp;" . $previous_link . "&nbsp;&nbsp;<span class='pageNumbers'>(" . $start_record . " - " . $end_record . " " . $this->local_app_strings['LBL_LIST_OF'] . " " . $row_count . ")</span>&nbsp;&nbsp;" . $next_link . "&nbsp;&nbsp;" . $end_link . "</td></tr></table>\n";
             $html_text .= "</td>\n";
             $html_text .= "</tr>\n";
             $this->smartyTemplate->assign("PAGINATION", $html_text);

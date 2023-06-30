@@ -31360,6 +31360,14 @@ input#btn_ActionLine.button[type=button] {
   margin-top: 30px;
 }
 
+.buttons input {
+  margin-right: 8px;
+}
+
+.buttons input:first-child {
+  margin-left: 10px;
+}
+
 table.subpanel-table ul.clickMenu.fancymenu.SugarActionMenu {
   padding-left: 10px !important;
 }
@@ -31378,6 +31386,10 @@ table.subpanel-table ul.clickMenu.fancymenu.SugarActionMenu {
 
 .emailAddressFieldContainer .col-xs-12 {
   padding: 0px;
+}
+
+.pagination_subpanelview {
+  padding-right: 5px;
 }
 
 .fc-day-number {
