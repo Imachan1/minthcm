@@ -94,7 +94,7 @@
 
                 </tr>
             {/if}
-            <tr style="height: 0px">
+            <tr style="height: auto">
                 <td >
                     {$columnChooser}
                 </td>
