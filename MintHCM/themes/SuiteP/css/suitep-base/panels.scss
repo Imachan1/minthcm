@@ -298,8 +298,7 @@ div.sub-panel {
 
 .subpanel-table.list tr.pagination span.pageNumbers {
   position: relative;
-  /*top: 5px;*/
-  top: -7px;
+  top: -3px;
 }
 
 
@@ -550,3 +549,25 @@ table.subpanelTabForm {
 .footable-last-visible ul.clickMenu {
     vertical-align: middle;
 }
+
+// eVolpe #119867 START
+.sub-panel .pagination_subpanelview > button > .suitepicon {
+    color: white;
+    display: flex;
+    justify-content: center;
+
+    &.suitepicon-action-first,
+    &.suitepicon-action-left {
+        padding-left: 4px;
+    }
+
+    &.suitepicon-action-right {
+        padding-right: 2px;
+    }
+}
+
+table.subpanel-table .pagination_subpanelview {
+    padding-right: 10px !important;
+}
+// eVolpe #119867 END
+
