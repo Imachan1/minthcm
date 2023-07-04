@@ -100,15 +100,6 @@ $unified_search_modules_display = array(
     'Surveys' => array(
         'visible' => true,
     ),
-    'SurveyQuestionResponses' => array(
-        'visible' => true,
-    ),
-    'SurveyQuestions' => array(
-        'visible' => true,
-    ),
-    'SurveyQuestionOptions' => array(
-        'visible' => true,
-    ),
     'Skills' => array(
         'visible' => true,
     ),
