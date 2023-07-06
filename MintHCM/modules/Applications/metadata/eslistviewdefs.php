@@ -33,21 +33,14 @@ $ESListViewDefs['Applications'] = [
         ],
     ],
     'search' => [
-        'search_name' => [
-        ],
-        'date_modified' => [
-        ],
-        'date_entered' => [
-        ],
-        'modified_user_id' => [
-        ],
-        'created_by' => [
-        ],
-        'status' => [
-        ],
-        'type' => [
-        ],
-        'employee_name' => [
-        ],
+        'name' => [],
+        'status' => [],
+        'type' => [],
+        'employee_name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

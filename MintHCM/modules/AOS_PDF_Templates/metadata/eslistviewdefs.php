@@ -24,15 +24,12 @@ $ESListViewDefs['AOS_PDF_Templates'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'date_entered' => [
-        ],
-        'date_modified' => [
-        ],
-        'type' => [
-        ],
-        'created_by' => [
-        ],
+        'name' => [],
+        'type' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

@@ -28,17 +28,15 @@ $ESListViewDefs['Campaigns'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'start_date' => [
-        ],
-        'end_date' => [
-        ],
-        'status' => [
-        ],
-        'campaign_type' => [
-        ],
-        'assigned_user_id' => [
-        ],
+        'name' => [],
+        'start_date' => [],
+        'end_date' => [],
+        'status' => [],
+        'campaign_type' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

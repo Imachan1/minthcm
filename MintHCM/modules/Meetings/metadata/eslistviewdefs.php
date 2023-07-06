@@ -13,6 +13,19 @@ $ESListViewDefs[$module_name] = [
             'link' => true,
             'default' => true,
         ],
+        'STATUS' => [
+            'type' => 'ColoredActivityStatus',
+            'width' => '10%',
+            'label' => 'LBL_LIST_STATUS',
+            'link' => false,
+            'default' => false,
+        ],
+        'TYPE' => [
+            'width' => '10%',
+            'label' => 'LBL_TYPE',
+            'link' => false,
+            'default' => false,
+        ],
         'CONTACT_NAME' => [
             'width' => '15%',
             'label' => 'LBL_LIST_CONTACT',
@@ -45,6 +58,12 @@ $ESListViewDefs[$module_name] = [
                 'time_start',
             ],
         ],
+        'DATE_END' => [
+            'default' => false,
+        ],
+        'DURATION' => [
+            'default' => false,
+        ],
         'ASSIGNED_USER_NAME' => [
             'width' => '10%',
             'label' => 'LBL_LIST_ASSIGNED_TO_NAME',
@@ -53,29 +72,23 @@ $ESListViewDefs[$module_name] = [
             'default' => true,
             'link' => true,
         ],
-        'DIRECTION' => [
-            'type' => 'enum',
-            'label' => 'LBL_LIST_DIRECTION',
-            'width' => '10%',
-            'default' => false,
-        ],
-        'STATUS' => [
-            'type' => 'ColoredActivityStatus',
-            'width' => '10%',
-            'label' => 'LBL_LIST_STATUS',
-            'link' => false,
-            'default' => false,
-        ],
-        'TYPE' => [
-            'width' => '10%',
-            'label' => 'LBL_TYPE',
-            'link' => false,
-            'default' => false,
-        ],
         'DATE_ENTERED' => [
             'width' => '10%',
             'label' => 'LBL_DATE_ENTERED',
             'default' => true,
         ],
+        'date_modified' => [],
+    ],
+    'search' => [
+        'name' => [],
+        'status' => [],
+        'type' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'date_start' => [],
+        'date_end' => [],
+        'duration' => [],
+        'related_to' => [],
+        'assigned_user_name' => [],
     ],
 ];

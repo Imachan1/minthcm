@@ -30,17 +30,13 @@ $ESListViewDefs['Ideas'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'status' => [
-        ],
-        'assigned_user_id' => [
-        ],
-        'user_id' => [
-        ],
-        'date_entered' => [
-        ],
-        'date_modified' => [
-        ],
+        'name' => [],
+        'status' => [],
+        'user_name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

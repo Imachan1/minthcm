@@ -60,4 +60,17 @@ $ESListViewDefs[$module_name] = [
             'readonly' => true,
         ],
     ],
+    'search' => [
+        'name' => [],
+        'status' => [],
+        'securitygroup_leader_name' => [],
+        'offboardingtemplate_name' => [],
+        'onboardingtemplate_name' => [],
+        'positions_supervision_name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
+    ]
 ];

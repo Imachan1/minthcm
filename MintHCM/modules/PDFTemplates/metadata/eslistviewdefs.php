@@ -16,28 +16,24 @@ $ESListViewDefs['PDFTemplates'] = [
         'type' => [
             'default' => true,
         ],
-        'orientation' => [
-        ],
+        'orientation' => [],
         'date_modified' => [
             'default' => true,
         ],
-        'modified_by_name' => [
-        ],
-        'created_by_name' => [
-        ],
-        'date_entered' => [
-        ],
+        'modified_by_name' => [],
+        'created_by_name' => [],
+        'date_entered' => [],
     ],
     'search' => [
-        'name' => [
-        ],
-        'is_default' => [
-        ],
-        'relatedmodule' => [
-        ],
-        'type' => [
-        ],
-        'orientation' => [
-        ],
+        'name' => [],
+        'is_default' => [],
+        'relatedmodule' => [],
+        'type' => [],
+        'orientation' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

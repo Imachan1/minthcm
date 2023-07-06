@@ -39,21 +39,20 @@ $ESListViewDefs['SalaryRanges'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'position_name' => [
-        ],
-        'start_date' => [
-        ],
-        'end_date' => [
-        ],
-        'date_modified' => [
-        ],
-        'created_by' => [
-        ],
-        'date_entered' => [
-        ],
-        'modified_user_id' => [
-        ],
+        'name' => [],
+        'position_name' => [],
+        'start_date' => [],
+        'end_date' => [],
+        'gross_value_from' => [],
+        'gross_value_to' => [],
+        'net_value_from' => [],
+        'net_value_to' => [],
+        'employer_costs_from' => [],
+        'employer_costs_to' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

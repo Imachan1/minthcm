@@ -27,15 +27,14 @@ $ESListViewDefs['Resources'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'assigned_user_id' => [
-        ],
-        'employee_id' => [
-        ],
-        'type' => [
-        ],
-        'unavailable' => [
-        ],
+        'name' => [],
+        'employee_name' => [],
+        'type' => [],
+        'unavailable' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

@@ -21,11 +21,12 @@ $ESListViewDefs['EmployeeRoles'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'status' => [
-        ],
-        'assigned_user_id' => [
-        ],
+        'name' => [],
+        'status' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

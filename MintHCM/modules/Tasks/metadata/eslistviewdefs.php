@@ -13,6 +13,13 @@ $ESListViewDefs[$module_name] = [
             'link' => true,
             'default' => true,
         ],
+        'STATUS' => [
+            'width' => '10',
+            'label' => 'LBL_LIST_STATUS',
+            'link' => false,
+            'default' => false,
+        ],
+        'PRIORITY' => [],
         'CONTACT_NAME' => [
             'width' => '20',
             'label' => 'LBL_LIST_CONTACT',
@@ -40,14 +47,12 @@ $ESListViewDefs[$module_name] = [
             'link' => false,
             'default' => true,
         ],
-        'TIME_DUE' => [
-            'width' => '15',
-            'label' => 'LBL_LIST_DUE_TIME',
-            'sortable' => false,
+        'DATE_START' => [
+            'width' => '5',
+            'label' => 'LBL_LIST_START_DATE',
             'link' => false,
-            'default' => true,
+            'default' => false,
         ],
-
         'ASSIGNED_USER_NAME' => [
             'width' => '2',
             'label' => 'LBL_LIST_ASSIGNED_TO_NAME',
@@ -55,22 +60,25 @@ $ESListViewDefs[$module_name] = [
             'id' => 'ASSIGNED_USER_ID',
             'default' => true,
         ],
-        'DATE_START' => [
-            'width' => '5',
-            'label' => 'LBL_LIST_START_DATE',
-            'link' => false,
-            'default' => false,
-        ],
-        'STATUS' => [
-            'width' => '10',
-            'label' => 'LBL_LIST_STATUS',
-            'link' => false,
-            'default' => false,
-        ],
         'DATE_ENTERED' => [
             'width' => '10',
             'label' => 'LBL_DATE_ENTERED',
             'default' => true,
         ],
+        'DATE_MODIFIED' => [],
+    ],
+    'search' => [
+        'name' => [],
+        'status' => [],
+        'date_start' => [],
+        'date_due' => [],
+        'priority' => [],
+        'parent_name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];
+

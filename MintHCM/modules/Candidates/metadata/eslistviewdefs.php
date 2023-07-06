@@ -51,6 +51,10 @@ $ESListViewDefs[$module_name] = [
         'potential' => [],
         'birthdate' => [],
         'relocation' => [],
+        'assigned_user_name' => [],
         'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

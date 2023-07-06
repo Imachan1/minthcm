@@ -32,19 +32,16 @@ $ESListViewDefs['Trainings'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'date_start' => [
-        ],
-        'date_end' => [
-        ],
-        'status' => [
-        ],
-        'training_type' => [
-        ],
-        'assigned_user_id' => [
-        ],
-        'parent_name' => [
-        ],
+        'name' => [],
+        'date_start' => [],
+        'date_end' => [],
+        'status' => [],
+        'training_type' => [],
+        'parent_name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];
