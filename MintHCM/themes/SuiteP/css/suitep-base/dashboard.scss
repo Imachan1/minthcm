@@ -837,3 +837,10 @@ td.dashlet-title > h3 > span {
   border-radius: 4px;
   background-color: #fff;
 }
+
+// eVolpe #119869 START
+.SuiteP-configureDashlet select[multiple] {
+  resize: both;
+}
+// eVolpe #119869 END
+

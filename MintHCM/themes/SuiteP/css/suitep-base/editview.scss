@@ -5814,3 +5814,10 @@ div.content div.pagecontent form#EditView div.edit.view table tbody tr td input[
     height: initial;
   }
 }
+
+// eVolpe #119869 START
+.SuiteP-configureDashlet .view tr {
+  height: auto;
+}
+// eVolpe #119869 END
+
