@@ -39,14 +39,15 @@ class ListAction
                 'id' => $alert->id,
                 'name' => $alert->name,
                 'description' => $alert->description,
-                'is_read' => $alert->is_read,
-                'is_closed' => $alert->is_closed,
+                'is_read' => !empty($alert->is_read),
+                'is_closed' => !empty($alert->is_closed),
                 'alert_type' => $alert->alert_type,
                 'parent_type' => $alert->parent_type,
                 'parent_id' => $alert->parent_id,
                 'type' => $alert->type,
                 'target_module' => $alert->target_module,
                 'date_entered' => $alert->date_entered,
+                'url_redirect' => $alert->url_redirect,
             );
 
         }
