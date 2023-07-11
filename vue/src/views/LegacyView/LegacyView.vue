@@ -35,7 +35,7 @@ async function handleMessageEvent(e: MessageEvent) {
             force: true,
         })
 
-        if (route.path === path) {
+        if (route.path === path.match(/[^\?]*/i)[0]) {
             // Force iframe reload (necessary e.g. for: QC -> create -> full form -> save)
             iframeReload.value++
         }
