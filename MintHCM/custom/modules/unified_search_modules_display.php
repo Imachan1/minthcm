@@ -94,19 +94,7 @@ $unified_search_modules_display = array(
     'SecurityGroups' => array(
         'visible' => true,
     ),
-    'SurveyResponses' => array(
-        'visible' => true,
-    ),
     'Surveys' => array(
-        'visible' => true,
-    ),
-    'SurveyQuestionResponses' => array(
-        'visible' => true,
-    ),
-    'SurveyQuestions' => array(
-        'visible' => true,
-    ),
-    'SurveyQuestionOptions' => array(
         'visible' => true,
     ),
     'Skills' => array(
