@@ -123,7 +123,7 @@ function formatDate(date: string) {
     }
     if (date.length === 19) {
         // db datetime
-        return DateTime.fromSQL(date).toFormat('dd.MM.yyyy HH:mm:ss') // todo: user format
+        return DateTime.fromSQL(date, { zone: 'UTC' }).toFormat('dd.MM.yyyy HH:mm:ss') // todo: user format
     }
     return ''
 }
