@@ -4516,3 +4516,7 @@ $app_list_strings['parent_type_display_for_files'] = array(
     'Trainings' => 'Training',
     'Ideas' => 'Idea',
 );
+
+$app_strings['LBL_NO'] = 'No';
+$app_strings['LBL_YES'] = 'Yes';
+$app_strings['LBL_CONFIRM'] = 'Confirm';
