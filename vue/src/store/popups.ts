@@ -1,15 +1,19 @@
 import { ref, markRaw, Component } from 'vue'
 import { defineStore } from 'pinia'
+import { useLanguagesStore } from './languages'
+import MintPopupConfirm from '@/components/MintPopups/MintPopupConfirm.vue'
 
 export interface Popup {
     title: string
     component: Component
+    unclosable?: boolean
     icon?: string
     data?: object
 }
 
 export const usePopupsStore = defineStore('popups', () => {
     const popups = ref<Popup[]>([])
+    const languages = useLanguagesStore()
 
     function showPopup(popup: Popup) {
         popups.value.push({
@@ -23,7 +27,22 @@ export const usePopupsStore = defineStore('popups', () => {
     }
 
     function closeAll() {
-        popups.value = []
+        popups.value = popups.value.filter((popup) => popup.unclosable)
+    }
+
+    function confirm(text: string) {
+        return new Promise((resolve) => {
+            showPopup({
+                title: languages.label('LBL_CONFIRM'),
+                unclosable: true,
+                component: markRaw(MintPopupConfirm),
+                data: {
+                    text,
+                    onReject: () => resolve(false),
+                    onConfirm: () => resolve(true),
+                },
+            })
+        })
     }
 
     return {
@@ -31,5 +50,6 @@ export const usePopupsStore = defineStore('popups', () => {
         showPopup,
         closePopup,
         closeAll,
+        confirm,
     }
 })

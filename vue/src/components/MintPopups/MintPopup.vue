@@ -4,6 +4,7 @@
             <v-icon v-if="props.popup.icon" :icon="props.popup.icon" />
             <span v-text="props.popup.title" />
             <v-btn
+                v-if="!props.popup.unclosable"
                 icon="mdi-close"
                 variant="text"
                 density="compact"
@@ -14,11 +15,7 @@
             />
         </div>
         <div class="mint-popup-content">
-            <component
-                :is="props.popup.component"
-                @close="closePopup(props.popup)"
-                :data="popup.data"
-            />
+            <component :is="props.popup.component" @close="closePopup(props.popup)" :data="popup.data" />
         </div>
     </div>
 </template>
@@ -49,10 +46,8 @@ onMounted(async () => {
 
 function center() {
     if (mintPopup.value) {
-        mintPopup.value.style.left =
-            (window.innerWidth - mintPopup.value.clientWidth) / 2 + 'px'
-        mintPopup.value.style.top =
-            (window.innerHeight - mintPopup.value.clientHeight) / 2 + 'px'
+        mintPopup.value.style.left = (window.innerWidth - mintPopup.value.clientWidth) / 2 + 'px'
+        mintPopup.value.style.top = (window.innerHeight - mintPopup.value.clientHeight) / 2 + 'px'
     }
 }
 </script>
