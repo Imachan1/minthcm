@@ -72,6 +72,7 @@ import { useRouter } from 'vue-router'
 import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useUrlStore } from '@/store/url'
+import axios from 'axios'
 
 const router = useRouter()
 const store = useListViewStore()
@@ -93,10 +94,14 @@ const coreActions = {
         icon: 'mdi-eye',
         onClick: (item) => router.push(`/modules/${url.module}/DetailView/${item.id}`),
     },
-    // delete: {
-    //     icon: 'mdi-delete',
-    //     onClick: (item) => null,
-    // },
+    delete: {
+        icon: 'mdi-delete',
+        onClick: (item) => {
+            const response =  axios.delete('api/'+url.module+'/'+item.id).then(() => {
+                store.getData();
+            })    
+        },
+    },
 }
 
 function getItemActions(item: any) {
