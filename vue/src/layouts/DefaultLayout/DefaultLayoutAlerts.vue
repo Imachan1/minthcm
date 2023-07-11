@@ -87,7 +87,7 @@ const languages = useLanguagesStore()
 const url = useUrlStore()
 
 function toRelativeDate(date: string) {
-    const dt = DateTime.fromSQL(date)
+    const dt = DateTime.fromSQL(date, { zone: 'UTC' })
     if (dt.diffNow('days').days >= -5) {
         return dt.toRelative()
     }
