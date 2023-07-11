@@ -94,6 +94,9 @@ $unified_search_modules_display = array(
     'SecurityGroups' => array(
         'visible' => true,
     ),
+    'SurveyResponses' => array(
+        'visible' => true,
+    ),
     'Surveys' => array(
         'visible' => true,
     ),
