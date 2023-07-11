@@ -29,21 +29,16 @@ $ESListViewDefs['Emails'] = [
         ],
     ],
     'search' => [
-        'imap_keywords' => [
-        ],
-        'from_addr_name' => [
-        ],
-        'to_addrs_names' => [
-        ],
-        'name' => [
-        ],
-        'description' => [
-        ],
-        'assigned_user_id' => [
-        ],
-        'category_id' => [
-        ],
-        'parent_name' => [
-        ],
+        'name' => [],
+        'imap_keywords' => [],
+        'from_addr_name' => [],
+        'to_addrs_names' => [],
+        'category_name' => [],
+        'parent_name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

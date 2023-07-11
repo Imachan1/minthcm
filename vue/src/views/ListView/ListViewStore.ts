@@ -157,7 +157,8 @@ export const useListViewStore = defineStore('listview', () => {
             .filter((col) => col.type === 'enum' && col.options)
             .map((col) => ({
                 field: col.name,
-                options: languages.languages.app_list_strings[col.options],
+                options:
+                    typeof col.options === 'string' ? languages.languages.app_list_strings[col.options] : col.options,
             }))
     })
     const multienums = computed(() => {
@@ -168,7 +169,8 @@ export const useListViewStore = defineStore('listview', () => {
             .filter((col) => col.type === 'multienum' && col.options)
             .map((col) => ({
                 field: col.name,
-                options: languages.languages.app_list_strings[col.options],
+                options:
+                    typeof col.options === 'string' ? languages.languages.app_list_strings[col.options] : col.options,
             }))
     })
     const dates = computed(() => {

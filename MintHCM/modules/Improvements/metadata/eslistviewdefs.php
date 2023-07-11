@@ -27,19 +27,12 @@ $ESListViewDefs['Improvements'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'assigned_user_id' => [
-        ],
-        'date_entered' => [
-        ],
-        'date_modified' => [
-        ],
-        'created_by' => [
-        ],
-        'modified_user_id' => [
-        ],
-        'employee_id' => [
-        ],
+        'name' => [],
+        'employee_name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

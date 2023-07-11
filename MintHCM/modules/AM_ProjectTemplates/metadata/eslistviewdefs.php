@@ -18,9 +18,13 @@ $ESListViewDefs['AM_ProjectTemplates'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'assigned_user_id' => [
-        ],
+        'name' => [],
+        'status' => [],
+        'priority' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

@@ -33,21 +33,15 @@ $ESListViewDefs['Reservations'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'assigned_user_id' => [
-        ],
-        'date_entered' => [
-        ],
-        'date_modified' => [
-        ],
-        'employee_id' => [
-        ],
-        'parent_name' => [
-        ],
-        'resource_name' => [
-        ],
-        'delegation_name' => [
-        ],
+        'name' => [],
+        'employee_name' => [],
+        'parent_name' => [],
+        'resource_name' => [],
+        'delegation_name' => [],    
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

@@ -10,6 +10,7 @@ $ESListViewDefs['KReports'] = [
         'report_module' => [
             'default' => true,
         ],
+        'report_status' => [],
         'listtype' => [
             'default' => true,
         ],
@@ -30,13 +31,15 @@ $ESListViewDefs['KReports'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'current_user_only' => [
-        ],
-        'assigned_user_id' => [
-        ],
-        'report_module' => [
-        ],
+        'name' => [],
+        'current_user_only' => [],
+        'report_module' => [],
+        'report_status' => [],
+        'listtype' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

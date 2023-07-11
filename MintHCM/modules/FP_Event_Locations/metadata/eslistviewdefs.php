@@ -3,9 +3,6 @@
 $module_name = 'FP_Event_Locations';
 $ESListViewDefs['FP_Event_Locations'] = [
     'columns' => [
-        'date_entered' => [
-            'default' => true,
-        ],
         'name' => [
             'link' => true,
             'default' => true,
@@ -16,11 +13,20 @@ $ESListViewDefs['FP_Event_Locations'] = [
         'assigned_user_name' => [
             'default' => true,
         ],
+        'date_entered' => [
+            'default' => true,
+        ],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
     'search' => [
-        'name' => [
-        ],
-        'assigned_user_id' => [
-        ],
+        'name' => [],
+        'capacity' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

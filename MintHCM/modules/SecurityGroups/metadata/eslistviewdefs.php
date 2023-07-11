@@ -28,23 +28,24 @@ $ESListViewDefs['SecurityGroups'] = [
             'link' => true,
             'default' => true,
         ],
+        'created_by_name' => [
+            'link' => true,
+        ],
+        'modified_by_name' => [
+            'link' => true,
+        ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'group_type' => [
-        ],
-        'assigned_user_id' => [
-        ],
-        'position_leader_name' => [
-        ],
-        'parent_name' => [
-        ],
-        'date_entered' => [
-        ],
-        'date_modified' => [
-        ],
-        'current_manager_name' => [
-        ],
+        'name' => [],
+        'group_type' => [],
+        'assigned_user_name' => [],
+        'position_leader_name' => [],
+        'noninheritable' => [],
+        'parent_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'current_manager_name' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

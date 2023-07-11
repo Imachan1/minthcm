@@ -186,6 +186,7 @@ class ViewESList extends SugarView
             $columns[$field]['options'] = $field_defs['options'];
             $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
             $columns[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
+            $this->assignDynamicOptionsIfFunction($columns, $field, $field_defs);
         }
         return $columns;
     }
@@ -223,8 +224,34 @@ class ViewESList extends SugarView
             $search[$field]['options'] = $field_defs['options'];
             $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
             $search[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
+            $this->assignDynamicOptionsIfFunction($search, $field, $field_defs);
         }
         return $search;
+    }
+
+    protected function assignDynamicOptionsIfFunction(&$out_defs, $field, $field_defs)
+    {
+        if ($field_defs['type'] === 'enum' && !empty($field_defs['function'])) {
+            $out_defs[$field]['options'] = $this->getEnumOptionsFromFunction($field, $field_defs);
+        }
+    }
+
+    protected function getEnumOptionsFromFunction($field, $field_defs)
+    {
+        if ($field_defs['type'] === 'enum' && !empty($field_defs['function'])) {
+            $func_def = $field_defs['function'];
+            $callback = $func_def['name'];
+
+            if (!empty($func_def['include'])) {
+                require_once $func_def['include'];
+            }
+
+            if (empty($func_def['params'])) {
+                return $callback($this->bean, $field, $this->bean->$field, 'eslist', $func_def['additional_params']);
+            } else {
+                return call_user_func_array($callback, $func_def['params']);
+            }
+        }
     }
 
     protected function prepareUserPreferences()

@@ -33,21 +33,17 @@ $ESListViewDefs['Documents'] = [
         ],
     ],
     'search' => [
-        'document_name' => [
-        ],
-        'status' => [
-        ],
-        'template_type' => [
-        ],
-        'category_id' => [
-        ],
-        'subcategory_id' => [
-        ],
-        'assigned_user_id' => [
-        ],
-        'active_date' => [
-        ],
-        'exp_date' => [
-        ],
+        'document_name' => [],
+        'status' => [],
+        'template_type' => [],
+        'category_name' => [],
+        'subcategory_name' => [],
+        'active_date' => [],
+        'exp_date' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

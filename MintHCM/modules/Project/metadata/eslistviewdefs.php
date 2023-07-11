@@ -24,15 +24,15 @@ $ESListViewDefs['Project'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'estimated_start_date' => [
-        ],
-        'estimated_end_date' => [
-        ],
-        'status' => [
-        ],
-        'priority' => [
-        ],
+        'name' => [],
+        'estimated_start_date' => [],
+        'estimated_end_date' => [],
+        'status' => [],
+        'priority' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

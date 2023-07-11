@@ -48,27 +48,20 @@ $ESListViewDefs['TermsOfEmployment'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'contract_name' => [
-        ],
-        'date_of_signing' => [
-        ],
-        'term_starting_date' => [
-        ],
-        'term_ending_date' => [
-        ],
-        'gross' => [
-        ],
-        'net' => [
-        ],
-        'employer_cost' => [
-        ],
-        'contracted_employee' => [
-        ],
-        'employee_id' => [
-        ],
-        'assigned_user_id' => [
-        ],
+        'name' => [],
+        'contract_name' => [],
+        'date_of_signing' => [],
+        'term_starting_date' => [],
+        'term_ending_date' => [],
+        'gross' => [],
+        'net' => [],
+        'employer_cost' => [],
+        'contracted_employee' => [],
+        'employee_name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

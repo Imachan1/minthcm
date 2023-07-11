@@ -24,6 +24,9 @@ $ESListViewDefs['Rooms'] = [
             'link' => true,
             'default' => true,
         ],
+        'resource_name' => [
+            'link' => true,
+        ],
         'created_by_name' => [
             'link' => true,
         ],
@@ -38,15 +41,17 @@ $ESListViewDefs['Rooms'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'reservation_type' => [
-        ],
-        'availability' => [
-        ],
-        'assigned_user_id' => [
-        ],
-        'security_group_name' => [
-        ],
+        'name' => [],
+        'reservation_type' => [],
+        'number_of_seats',
+        'availability' => [],
+        'room_surface' => [],
+        'resource_name' => [],
+        'assigned_user_name' => [],
+        'security_group_name' => [],
+        'date_modified' => [],
+        'date_entered' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

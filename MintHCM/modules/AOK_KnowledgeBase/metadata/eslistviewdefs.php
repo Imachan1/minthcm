@@ -28,12 +28,20 @@ $ESListViewDefs['AOK_KnowledgeBase'] = [
             'default' => true,
         ],
         'assigned_user_name' => [
+            'link' => true,
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'assigned_user_id' => [
-        ],
+        'name' => [],
+        'status' => [],
+        'author' => [],
+        'approver' => [],
+        'revision' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'assigned_user_name' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];
+

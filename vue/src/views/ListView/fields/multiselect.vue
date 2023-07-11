@@ -29,7 +29,11 @@ const languages = useLanguagesStore()
 const value = ref(props.input?.value)
 
 const items = computed(() => {
-    return Object.entries(languages.languages.app_list_strings[props.fieldDefs.options] ?? {}).map(([value, text]) => ({
+    return Object.entries(
+        typeof props.fieldDefs.options === 'string'
+            ? languages.languages.app_list_strings[props.fieldDefs.options] ?? {}
+            : props.fieldDefs.options,
+    ).map(([value, text]) => ({
         value,
         text,
     }))

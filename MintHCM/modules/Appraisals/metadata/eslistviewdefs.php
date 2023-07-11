@@ -37,25 +37,26 @@ $ESListViewDefs['Appraisals'] = [
         'position_name' => [
             'default' => true,
         ],
+        'created_by_name' => [
+            'link' => true,
+        ],
+        'modified_by_name' => [
+            'link' => true,
+        ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'date' => [
-        ],
-        'type' => [
-        ],
-        'status' => [
-        ],
-        'candidature_name' => [
-        ],
-        'position_name' => [
-        ],
-        'employee_name' => [
-        ],
-        'evaluator_name' => [
-        ],
-        'assigned_user_id' => [
-        ],
+        'name' => [],
+        'date' => [],
+        'type' => [],
+        'status' => [],
+        'candidature_name' => [],
+        'position_name' => [],
+        'employee_name' => [],
+        'evaluator_name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

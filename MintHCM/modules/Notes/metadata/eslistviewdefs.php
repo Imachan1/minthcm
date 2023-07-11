@@ -24,13 +24,13 @@ $ESListViewDefs['Notes'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'parent_name' => [
-        ],
-        'filename' => [
-        ],
-        'date_entered' => [
-        ],
+        'name' => [],
+        'parent_name' => [],
+        'filename' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

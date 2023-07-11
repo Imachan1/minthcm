@@ -35,19 +35,20 @@ $ESListViewDefs['WorkSchedules'] = [
         ],
     ],
     'search' => [
-        'assigned_user_id' => [
-        ],
-        'type' => [
-        ],
-        'status' => [
-        ],
-        'supervisor_acceptance' => [
-        ],
-        'date_start' => [
-        ],
-        'date_end' => [
-        ],
-        'delegation_duration' => [
-        ],
+        'name' => [],
+        'type' => [],
+        'status' => [],
+        'supervisor_acceptance' => [],
+        'date_start' => [],
+        'date_end' => [],
+        'delegation_duration' => [],
+        'spent_time' => [],
+        'spent_time_settlement' => [],
+        'workplace_name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

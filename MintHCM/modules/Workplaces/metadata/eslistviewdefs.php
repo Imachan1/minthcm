@@ -30,15 +30,17 @@ $ESListViewDefs['Workplaces'] = [
         'modified_by_name' => [
             'link' => true,
         ],
-        'date_modified' => [
-        ],
+        'date_modified' => [],
     ],
     'search' => [
-        'name' => [
-        ],
-        'mode' => [
-        ],
-        'assigned_user_id' => [
-        ],
+        'name' => [],
+        'mode' => [],
+        'room_name' => [],
+        'availability' => [],
+        'assigned_user_name' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
+        'date_modified' => [],
+        'date_entered' => [],
     ],
 ];

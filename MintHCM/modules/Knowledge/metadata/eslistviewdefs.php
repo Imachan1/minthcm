@@ -13,8 +13,6 @@ $ESListViewDefs['Knowledge'] = [
         'employee_name' => [
             'default' => true,
         ],
-        'description' => [
-        ],
         'date_entered' => [
             'default' => true,
         ],
@@ -23,11 +21,12 @@ $ESListViewDefs['Knowledge'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'assigned_user_id' => [
-        ],
-        'employee_id' => [
-        ],
+        'name' => [],
+        'employee_name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

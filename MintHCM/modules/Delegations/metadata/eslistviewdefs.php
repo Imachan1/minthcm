@@ -46,11 +46,16 @@ $ESListViewDefs['Delegations'] = [
         ],
     ],
     'search' => [
-        'assigned_user_id' => [
-        ],
-        'start_date' => [
-        ],
-        'end_date' => [
-        ],
+        'name' => [],
+        'start_date' => [],
+        'end_date' => [],
+        'obtained_sum' => [],
+        'purpose' => [],
+        'owner' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

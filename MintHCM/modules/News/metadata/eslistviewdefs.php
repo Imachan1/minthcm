@@ -30,19 +30,14 @@ $ESListViewDefs['News'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'news_type' => [
-        ],
-        'news_status' => [
-        ],
-        'publication_date' => [
-        ],
-        'date_entered' => [
-        ],
-        'date_modified' => [
-        ],
-        'assigned_user_id' => [
-        ],
+        'name' => [],
+        'news_type' => [],
+        'news_status' => [],
+        'publication_date' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

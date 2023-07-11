@@ -24,17 +24,11 @@ $ESListViewDefs['ResponsibilityActivities'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'date_modified' => [
-        ],
-        'date_entered' => [
-        ],
-        'modified_user_id' => [
-        ],
-        'created_by' => [
-        ],
-        'assigned_user_id' => [
-        ],
+        'name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];

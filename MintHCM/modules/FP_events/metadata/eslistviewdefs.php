@@ -25,15 +25,14 @@ $ESListViewDefs['FP_events'] = [
         ],
     ],
     'search' => [
-        'name' => [
-        ],
-        'date_start' => [
-        ],
-        'date_end' => [
-        ],
-        'fp_event_locations_fp_events_1_name' => [
-        ],
-        'assigned_user_id' => [
-        ],
+        'name' => [],
+        'date_start' => [],
+        'date_end' => [],
+        'fp_event_locations_fp_events_1_name' => [],
+        'assigned_user_name' => [],
+        'date_entered' => [],
+        'date_modified' => [],
+        'created_by_name' => [],
+        'modified_by_name' => [],
     ],
 ];
