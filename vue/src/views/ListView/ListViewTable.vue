@@ -65,6 +65,7 @@
 </template>
 
 <script setup lang="ts">
+import axios from 'axios'
 import { computed } from 'vue'
 import { VDataTableServer, VDataTableFooter } from 'vuetify/labs/VDataTable'
 import { DateTime } from 'luxon'
@@ -72,11 +73,13 @@ import { useRouter } from 'vue-router'
 import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useUrlStore } from '@/store/url'
+import { usePopupsStore } from '@/store/popups'
 
 const router = useRouter()
 const store = useListViewStore()
 const url = useUrlStore()
 const languages = useLanguagesStore()
+const popups = usePopupsStore()
 
 const pageText = computed(() => {
     const isOverflow = store.itemsLength > store.options.page * store.options.itemsPerPage
@@ -93,10 +96,16 @@ const coreActions = {
         icon: 'mdi-eye',
         onClick: (item) => router.push(`/modules/${url.module}/DetailView/${item.id}`),
     },
-    // delete: {
-    //     icon: 'mdi-delete',
-    //     onClick: (item) => null,
-    // },
+    delete: {
+        icon: 'mdi-delete',
+        onClick: async (item) => {
+            const confirmMessage = `${languages.label('LBL_ESLIST_DELETE_RECORD_CONFIRM_BODY')} ${item.name}?`
+            if (await popups.confirm(confirmMessage)) {
+                await axios.delete(`api/${url.module}/${item.id}`)
+                store.getData()
+            }
+        },
+    },
 }
 
 function getItemActions(item: any) {
