@@ -2,7 +2,7 @@ export default {
     equal: {
         label: 'LBL_ESLIST_EQUAL',
         inputs: [
-            { type: 'text', label: 'LBL_ESLIST_VALUE' }
+            { type: 'numeric', label: 'LBL_ESLIST_VALUE' }
         ],
         filters: [
             { op: 'term', value: '{0}' }
@@ -12,7 +12,7 @@ export default {
         label: 'LBL_ESLIST_NOT_EQUAL',
         not: true,
         inputs: [
-            { type: 'text', label: 'LBL_ESLIST_VALUE' }
+            { type: 'numeric', label: 'LBL_ESLIST_VALUE' }
         ],
         filters: [
             { op: 'term', value: '{0}' }
@@ -21,7 +21,7 @@ export default {
     gte: {
         label: 'LBL_ESLIST_GREATER_OR_EQUAL',
         inputs: [
-            { type: 'text', label: 'LBL_ESLIST_VALUE' }
+            { type: 'numeric', label: 'LBL_ESLIST_VALUE' }
         ],
         filters: [
             { op: 'range', value: { gte: '{0}' }}
@@ -30,7 +30,7 @@ export default {
     lte: {
         label: 'LBL_ESLIST_LESS_OR_EQUAL',
         inputs: [
-            { type: 'text', label: 'LBL_ESLIST_VALUE' }
+            { type: 'numeric', label: 'LBL_ESLIST_VALUE' }
         ],
         filters: [
             { op: 'range', value: { lte: '{0}' }}
@@ -39,7 +39,7 @@ export default {
     gt: {
         label: 'LBL_ESLIST_GREATER_THAN',
         inputs: [
-            { type: 'text', label: 'LBL_ESLIST_VALUE' }
+            { type: 'numeric', label: 'LBL_ESLIST_VALUE' }
         ],
         filters: [
             { op: 'range', value: { gt: '{0}' }}
@@ -48,7 +48,7 @@ export default {
     lt: {
         label: 'LBL_ESLIST_LESS_THAN',
         inputs: [
-            { type: 'text', label: 'LBL_ESLIST_VALUE' }
+            { type: 'numeric', label: 'LBL_ESLIST_VALUE' }
         ],
         filters: [
             { op: 'range', value: { lt: '{0}' }}
@@ -57,8 +57,8 @@ export default {
     between: {
         label: 'LBL_ESLIST_BETWEEN',
         inputs: [
-            { type: 'text', label: 'LBL_ESLIST_VALUE_FROM' },
-            { type: 'text', label: 'LBL_ESLIST_VALUE_TO' },
+            { type: 'numeric', label: 'LBL_ESLIST_VALUE_FROM' },
+            { type: 'numeric', label: 'LBL_ESLIST_VALUE_TO' },
         ],
         filters: [
             { op: 'range', value: { gte: '{0}', lte: '{1}' }}

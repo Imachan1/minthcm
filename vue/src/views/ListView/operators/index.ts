@@ -14,4 +14,5 @@ export const typeMap = {
     int: 'numeric',
     float: 'numeric',
     decimal: 'numeric',
+    currency: 'numeric',
 }
