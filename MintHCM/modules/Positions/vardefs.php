@@ -146,6 +146,7 @@ $dictionary['Positions'] = array(
             'module' => 'Positions',
             'table' => 'positions',
             'rname' => 'name',
+            'vt_validation' => "AEM(callCustomApi(Positions, checkSubordinatedPositions, {id:\$id, positions_supervision_id:\$positions_supervision_id}), 'LBL_PARENT_SUPERVISION_ERROR')",
         ),
         'positions_supervision_id' => array(
             'name' => 'positions_supervision_id',
@@ -333,6 +334,16 @@ $dictionary['Positions'] = array(
             'bean_name' => 'TermsOfEmployment',
             'side' => 'right',
             'vname' => 'LBL_TERMSOFEMPLOYMENT',
+        ),
+        'files' => array(
+            'name' => 'files',
+            'type' => 'link',
+            'relationship' => 'positions_files',
+            'source' => 'non-db',
+            'module' => 'Files',
+            'bean_name' => 'Files',
+            'vname' => 'LBL_FILES',
+            'label' => 'LBL_FILES',
         ),
     ),
     'relationships' => array(

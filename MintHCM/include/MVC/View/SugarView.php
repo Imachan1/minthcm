@@ -573,7 +573,7 @@ class SugarView
             $ss->assign("CURRENT_USER_ID", $current_user->id);
             $ss->assign("CURRENT_USER_HAS_PHOTO", !empty($current_user->photo)); // MintHCM #63083
             $ss->assign("CURRENT_USER_DATE_MODIFIED", $current_user->date_modified); //MintHCM #67873
-
+            $ss->assign("CURRENT_USER_FIRST_NAME", empty($current_user->first_name) ? $current_user->full_name : $current_user->first_name); //MintHCM #58625
 	    // get the last viewed records
 	    $favorites = BeanFactory::getBean('Favorites');
 	    $favorite_records = $favorites->getCurrentUserSidebarFavorites();
@@ -582,6 +582,14 @@ class SugarView
 	    $tracker = BeanFactory::getBean('Trackers');
 	    $history = $tracker->get_recently_viewed($current_user->id);
 	    $ss->assign("recentRecords", $this->processRecentRecords($history));
+
+        // MintHCM #100495 START
+        $title = $this->bean->name ? $this->bean->name . " » " : '';
+        $title .= $this->action == "EditView" && empty($this->bean->id) ? $app_strings['LNK_CREATE'] . " » " : '';
+        $title .= $app_list_strings['moduleList'][$this->bean->module_name] ? $app_list_strings['moduleList'][$this->bean->module_name] . " » " : '';
+        $title .= $app_strings['LBL_BROWSER_TITLE'];
+        $ss->assign('TITLE', $title);
+        // MintHCM #100495 END
 	}
 
         $bakModStrings = $mod_strings;
@@ -692,6 +700,12 @@ class SugarView
                     $topTabs = array();
                 }
                 $extraTabs = array();
+
+                // MintHCM #102680 START
+                if($max_tabs < 8){
+                    $max_tabs = 8;
+                }
+                // MintHCM #102680 END
 
                 // Split it in to the tabs that go across the top, and the ones that are on the extra menu.
                 if (count($topTabs) > $max_tabs) {
@@ -1174,6 +1188,13 @@ EOHTML;
             );
         }
         // end
+
+        // START #85450: Numer wersji na dole strony
+        if (file_exists('minthcm_version.php')) {
+            include 'minthcm_version.php';
+            $ss->assign('MINTHCM_VERSION', $minthcm_version);
+        }
+        // END #85450: Numer wersji na dole strony
 
         $ss->display(SugarThemeRegistry::current()->getTemplate('footer.tpl'));
     }
@@ -1748,6 +1769,10 @@ EOHTML;
         if (!empty($sugar_config['overrideAjaxBannedModules'])) {
             $config_js[] =
                 $this->prepareConfigVarForJs('overrideAjaxBannedModules', $sugar_config['overrideAjaxBannedModules']);
+        }
+        if (!empty($sugar_config['upload_maxsize'])) {
+            $config_js[] =
+                $this->prepareConfigVarForJs('uploadMaxsize', $sugar_config['upload_maxsize'] / (10**6));
         }
         if (!empty($sugar_config['js_available']) && is_array($sugar_config['js_available'])) {
             foreach ($sugar_config['js_available'] as $configKey) {

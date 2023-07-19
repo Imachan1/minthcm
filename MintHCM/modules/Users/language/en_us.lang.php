@@ -73,6 +73,7 @@ $mod_strings = array(
     'ERR_RULES_NOT_MET' => 'The password you entered did not meet the password requirements. Please try again.',
     'ERR_USER_NAME_EXISTS_1' => 'The user name ',
     'ERR_USER_NAME_EXISTS_2' => ' already exists. Duplicate user names are not allowed. Please change the user name to be unique.',
+    'ERR_USER_NAME_EXISTS_3' => 'The user name already exists',
     'ERR_USER_IS_LOCKED_OUT' => 'This user is locked out of the MintHCM application and cannot log in using his/her existing password.',
     'ERR_PASSWORD_MINPWDLENGTH' => 'Password should contain at least %d characters.',
     'ERR_PASSWORD_ONEUPPER' => 'Password should contain uppercase characters.',
@@ -701,5 +702,7 @@ $mod_strings = array(
     'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Management of organizational units',
     'LBL_CLEAR_APP_DATA' => 'Clear app data',
     'LBL_ARE_YOU_SURE_TO_CLEAR_APP_DATA' => 'Are you sure you want to clear app data?',
-
+    'LBL_USERS_CONFIRMATION_BUTTON_CONFIRM' => 'YES',
+    'LBL_USERS_CONFIRMATION_BUTTON_CANCEL' => 'NO',
+    'LBL_USER_DEACTIVE_SUPERVISOR'=>'The employee you want to deactivate is the current manager of the unit</br> <URL>In order to correctly generate the organizational structure of the department, a new manager should be indicated. Do you want to continue with deactivation?'
 ); // END STRINGS DEFS

@@ -10,20 +10,32 @@ $(document).ready(function () {
         })
         .change();
 
-    if ($("#type :selected").val() === "office") {
-        setAssignedWorkingRoom();
+    if (
+        $("#type").val() == "office"
+        && $('#record').val() == ''
+    ) {
+        setDefaultWorkPlace();
     }
+    $("#type").change(() => {
+        if ($("#type :selected").val() === "office") {
+            setDefaultWorkPlace();
+        }
+    });
+    setDefaultWorkPlace();
 });
 
-viewTools.form.beforeSave(function () {
-    viewTools.GUI.fieldErrorUnmark();
-    var result_1 = validateUniqueWorkSchedules();
-    var result_2 = validateDatesEndAfterStart();
-    var result_3 = validateWorkScheduleLength();
-    var result_4 = validateWorkScheduleCreatedByPeriodicity();
+if (!window.workSchedulerSaveHandlerAlreadyInitialized) {
+    viewTools.form.beforeSave(function () {
+        viewTools.GUI.fieldErrorUnmark();
+        var result_1 = validateUniqueWorkSchedules();
+        var result_2 = validateDatesEndAfterStart();
+        var result_3 = validateWorkScheduleLength();
+        var result_4 = validateWorkScheduleCreatedByPeriodicity();
 
-    return result_1 && result_2 && result_3 && result_4;
-});
+        return result_1 && result_2 && result_3 && result_4;
+    });
+    window.workSchedulerSaveHandlerAlreadyInitialized = true;
+}
 
 function getRecordID() {
     var record_id = "";
@@ -35,35 +47,6 @@ function getRecordID() {
 
 function isUserAdmin() {
     return $("#current_user_is_admin").val() == true;
-}
-
-$("#type").change(() => {
-    if ($("#type :selected").val() === "office") {
-        setAssignedWorkingRoom();
-    }
-});
-
-function setAssignedWorkingRoom() {
-    let assigned_user_id = $("#assigned_user_id").val();
-    viewTools.api.callCustomApi({
-        module: "WorkSchedules",
-        action: "setAssignedWorkingRoom",
-        dataType: "json",
-        async: true,
-        dataPOST: {
-            assigned_user_id: assigned_user_id,
-        },
-        callback: function ({ name, id }) {
-            try {
-                if (id !== "" && name !== "") {
-                    $("#workplace_id").val(id);
-                    $("#workplace_name").val(name);
-                }
-            } catch (error) {
-                return;
-            }
-        },
-    });
 }
 
 function parseTimeNumberValue(element) {
@@ -296,14 +279,15 @@ function createActivitySelectDialog() {
 }
 
 function validateWorkScheduleCreatedByPeriodicity() {
-    var result = true;
-    var type = $("select[name=repeat_type]").val();
+    let result = true;
+    let type = $("select[name=repeat_type]").val();
+    let repeat_end_type = document.querySelector('input[name="repeat_end_type"]:checked')?.value ?? "";
     if (type !== "") {
         var data = {
             type: type,
             interval: $("select[name=repeat_interval]").val(),
-            count: $("input[name=repeat_count]").val(),
-            until: $("input[name=repeat_until]").val(),
+            count: repeat_end_type=="number" ? $("input[name=repeat_count]").val() : "",
+            until: repeat_end_type=="date" ? $("input[name=repeat_until]").val(): "",
             dow: $("#repeat_dow").val(),
             date_start: $("#date_start").val(),
             duration_hours: $("#duration_hours").val(),
@@ -333,4 +317,25 @@ function validateWorkScheduleCreatedByPeriodicity() {
         });
     }
     return result;
+}
+
+function setDefaultWorkPlace() {
+    if ($('#workplace_name').val() || $('#workplace_id').val()) {
+        return;
+    }
+    viewTools.api.callCustomApi({
+        module: "WorkSchedules",
+        action: "getWorkplaces",
+        dataPOST: {
+            assigned_user_id: $("#assigned_user_id").val(),
+            date_start: $('#date_start').val(), 
+            date_end: $('#date_end').val(), 
+        },
+        callback: function (result) {
+            if (result.length === 1) {
+                $('#workplace_name').val(result[0].name);
+                $('#workplace_id').val(result[0].id);
+            }
+        },
+    });
 }

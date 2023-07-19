@@ -49,7 +49,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-global $current_user, $sugar_version, $sugar_config, $beanFiles;
+// MintHCM #94842 START
+global $current_user, $sugar_version, $sugar_config, $beanFiles, $dashlet_initial_loading;
+// MintHCM #94842 STOP
 
 
 require_once('include/MySugar/MySugar.php');
@@ -184,8 +186,10 @@ if (empty($pages)) {
 
 $sugar_smarty = new Sugar_Smarty();
 
-$activePage = isset($_REQUEST['page_id']) && $_REQUEST['page_id'] ? $_REQUEST['page_id']
-        : 0;
+$activePage = 0;
+if (isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])) {
+    $activePage = (int)$_REQUEST['page_id'];
+}
 
 $divPages[] = $activePage;
 
@@ -265,7 +269,12 @@ foreach ($pages[$activePage]['columns'] as $colNum => $column) {
                     $dashlet->is_locked = true;
                 }
                 // Mint end #52883
+
+                // MintHCM #94842 START
+                $dashlet_initial_loading = true;
                 $dashlet->process($lvsParams, $id);
+                $dashlet_initial_loading = false;
+                // MintHCM #94842 END
                 try {
                     $display[$colNum]['dashlets'][$id]['display']       = $dashlet->display();
                     $display[$colNum]['dashlets'][$id]['displayHeader'] = $dashlet->getHeader();
@@ -273,6 +282,10 @@ foreach ($pages[$activePage]['columns'] as $colNum => $column) {
                     if ($dashlet->hasScript) {
                         $display[$colNum]['dashlets'][$id]['script'] = $dashlet->displayScript();
                     }
+
+                    // MintHCM #94842 START
+                    echo '<script type="text/javascript"> setTimeout(function(){SUGAR.mySugar.retrieveDashlet("'.$id.'")},100)</script>';
+                    // MintHCM #94842 STOP
                 } catch (Exception $ex) {
                     $display[$colNum]['dashlets'][$id]['display']       = $ex->getMessage();
                     $display[$colNum]['dashlets'][$id]['displayHeader'] = $dashlet->getHeader();

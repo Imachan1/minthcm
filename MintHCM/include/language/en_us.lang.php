@@ -1034,6 +1034,13 @@ $app_list_strings = array(
         'next_year' => 'Next Year',
         'between' => 'Is Between',
         'over_n_months_ago' => 'More Than n Months Ago',
+        'last_week' => 'Last Week',
+        'this_week' => 'This Week',
+        'next_week' => 'Next Week',
+        'in_the_past' => 'In The Past',
+        'in_the_future' => 'In The Future',
+        'last_n_days' => 'Last n Days',
+        'next_n_days' => 'Next n Days',
     ),
     'numeric_range_search_dom' => array(
         '=' => 'Equals',
@@ -2201,6 +2208,7 @@ $app_strings = array(
     'LBL_NAV_RECRUITMENT_EB' => 'Recruitment',
     'LBL_NAV_TIME_TRACKING' => 'Time Tracking',
     'LBL_NAV_COMPANY_LIFE' => 'Company Life',
+    'LBL_NAV_DEFINITIONS' => 'Definitions',
     'LBL_NAV_EMPLOYEE' => 'Employee',
     'LBL_GENERATEONBOARDINGOFFBOARDING_EMPLOYEE_NAME' => 'Employee',
     'LBL_GENERATEONBOARDINGOFFBOARDING_START_DATE' => 'Start Date',
@@ -2212,6 +2220,10 @@ $app_strings = array(
     'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_EMPLOYEE_MANAGER' => 'Manager is not set for: ',
     'LBL_GENERATEONBOARDINGOFFBOARDING_ERROR_ORGANIZATIONAL_UNIT_MANAGER' => 'The following Organizational Units do not have Manager set:',
     'LBL_SUBORDINATES_FILTER' => 'My Subordinates',
+    'LBL_SHOW_MORE' => 'Show More',
+    'LBL_SHOW_LESS' => 'Show Less',
+    'LBL_ASCENDING' => 'Ascending',
+    'LBL_DESCENDING' => 'Descending',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
@@ -3851,8 +3863,8 @@ $app_list_strings['workschedule_type_list'] = [
     'home' => 'Remote Work',
     'delegation' => 'Delegation',
     'holiday' => 'Holiday',
-    'sick' => 'Sick',
-    'sick-care' => 'Sick - Care',
+    'sick' => 'Sick Leave',
+    'sick-care' => 'Childcare Leave',
     'occasional_leave' => 'Occasional Leave',
     'leave_at_request' => 'Leave at Request',
     'overtime' => 'Free Overtime',
@@ -4033,15 +4045,14 @@ $app_list_strings['status_list'] = array(
     'InProgress' => 'CV Acceptance',
     'MeetingAdditional' => 'Meeting - Additional',
     'MeetingPrimary' => 'Meeting - Preliminary',
-    'MeetingTask' => 'Meeting - Task',
     'Negotation' => 'Negotations',
     'New' => 'New',
     'Offer' => 'Make an Offer',
-    'PracticalTask' => 'Practical Task',
+    'PracticalTask' => 'Recruitment Task',
     'Preselection' => 'Preselection',
     'Rejected' => 'Rejected',
-    'Scored' => 'Scored Stage 1',
-    'Scored2' => 'Scored Stage 2',
+    'Scored' => 'Task Scored',
+    'Scored2' => 'After Preliminary Meeting',
 );
 
 $app_list_strings['project_status_list'] = array(
@@ -4396,3 +4407,67 @@ $app_strings['LBL_TIME_EXTENDS_SCHEDULE'] = 'This time exceeds work schedule';
 $app_strings['LBL_TIME_OVERLAPS'] = 'Spent time overlaps';
 $app_strings['LBL_START_TIME'] = 'Start time';
 $app_strings['LBL_END_TIME'] = 'End time';
+
+$app_list_strings['parent_type_display_for_candidatures'] = array(
+    'Candidates' => 'Candidate',
+    'Employees' => 'Employee',
+);
+
+$app_strings['LNK_KANBAN'] = 'Board';
+$app_strings['ERR_KANBAN_COL_ERROR'] = 'Column for Kanban is not defined. Property "column" is missing for kanbanviewdefs.';
+
+$app_strings['LBL_WORKSCHEDULES'] = 'Work Schedules';
+$app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed';
+$app_strings['LBL_DASHLETS_PROCESSING'] = 'Dashlet Processing...';
+
+$app_strings['LBL_WORKSCHEDULES'] = 'Work Schedules';
+
+$app_strings['LBL_EMAIL_AUTHORIZE'] = 'Authorize';
+$app_strings['LBL_EMAIL_AUTHORIZED'] = 'Authorized';
+$app_strings['LBL_EMAIL_NOT_AUTHORIZED'] = 'Not Authorized';
+$app_strings['LBL_EMAIL_AUTH_WARNING'] = 'An administrator must configure the {0} Connector via Admin > Connectors before you can set up this account.';
+
+$app_strings['LBL_SMTPTYPE_MICROSOFT'] = 'Microsoft';
+$app_strings['LBL_SMTPTYPE_GMAIL'] = 'Google Basic Authentication';
+$app_strings['LBL_SMTPTYPE_EXCHANGE'] = 'Exchange Basic Authentication';
+$app_strings['LBL_SMTPTYPE_GOOGLE_OAUTH2'] = 'Google';
+$app_strings['LBL_SMTPTYPE_EXCHANGE_ONLINE'] = 'Exchange Online';
+
+$app_strings['LBL_EMAIL_PLEASE_AUTHORIZE_TESTING'] = 'Account Not Authorized';
+$app_strings['LBL_EMAIL_ACCOUNT_NOT_AUTHORIZED'] = 'Account Not Authorized';
+$app_strings['LBL_EMAIL_PLEASE_AUTHORIZE'] = 'Please authorize the account before saving.';
+
+$app_list_strings['dom_imaptype_options'] = array(
+    'google_oauth2' => 'Google Mail',
+    'exchange_online' => 'Exchange Online',
+    'other' => 'Other',
+);
+
+$app_strings['LBL_RN_108842_SETOAUTH2MAILINGCONFIGURATION'] = 'Configure oauth2 mailing';
+$app_strings['ERR_WORKPLACE_REQUIRED_IF_ASSIGNED_TO_USER'] = 'Workplace is required if user has at least one workplace assigned!';
+
+$app_list_strings['dropzone_labels'] = [
+    'dictDefaultMessage' => "Drop files here or click to upload<br />(Maximum file size is 3MB)",
+    'dictFallbackMessage' => 'Your browser does not support drag\'n\'drop file uploads',
+    'dictFileTooBig' => 'The file size is too large',
+    'dictInvalidFileType' => 'You can\'t upload files of this type',
+    'dictResponseError' => 'The file upload has failed',
+    'dictCancelUpload' => 'Cancel upload',
+    'dictUploadCanceled' => 'Upload canceled',
+    'dictCancelUploadConfirmation' => 'Are you sure you want to cancel this upload?',
+    'dictRemoveFile' => 'Remove file',
+    'dictMaxFilesExceeded' => 'You can not upload any more files',
+];
+$app_strings['LBL_TO_LARGE_FILE_ERROR'] = 'File is too large. Max Filesize is {upload_maxsize} MB';
+$app_strings['LBL_DEFAULT_DROPZONE_MESSAGE'] = "Drop files here or click to upload<br />(Maximum file size is {upload_maxsize} MB)";
+$app_list_strings['moduleList']['Files'] = 'Files';
+$app_list_strings['moduleListSingular']['Files'] = 'File';
+$app_list_strings['parent_type_display_for_files'] = array(
+    'Candidatures' => 'Candidature',
+    'Candidates' => 'Candidate',
+    'Resources' => 'Resource',
+    'Positions' => 'Position',
+    'Workplaces' => 'Workplace',
+    'Trainings' => 'Training',
+    'Ideas' => 'Idea',
+);

@@ -273,6 +273,44 @@ $dictionary["Employee"]["fields"]["allocations_employees"] = array(
     'bean_name' => 'Allocations',
     'vname' => 'LBL_LINKED_ALLOCATIONS_TITLE',
 );
+$dictionary["Employee"]["fields"]["trainings"] = array(
+    'name' => 'trainings',
+    'type' => 'link',
+    'relationship' => 'trainings_assigned_user',
+    'source' => 'non-db',
+    'module' => 'Trainings',
+    'bean_name' => 'Trainings',
+    'vname' => 'LBL_TRAININGS',
+);
+$dictionary["Employee"]["fields"]["tasks"] = array(
+    'name' => 'tasks',
+    'type' => 'link',
+    'relationship' => 'tasks_assigned_user',
+    'source' => 'non-db',
+    'module' => 'Tasks',
+    'bean_name' => 'Tasks',
+    'vname' => 'LBL_TASKS',
+);
+$dictionary['Employee']['fields']['candidatures'] = array(
+    'name' => 'candidatures',
+    'type' => 'link',
+    'relationship' => 'employee_candidatures',
+    'source' => 'non-db',
+    'module' => 'Candidatures',
+    'bean_name' => 'Candidatures',
+    'vname' => 'LBL_CANDIDATURES',
+    'label' => 'LBL_CANDIDATURES',
+);
+$dictionary['Employee']['fields']['candidatures'] = array(
+    'name' => 'candidatures',
+    'type' => 'link',
+    'relationship' => 'employee_candidatures',
+    'source' => 'non-db',
+    'module' => 'Candidatures',
+    'bean_name' => 'Candidatures',
+    'vname' => 'LBL_CANDIDATURES',
+    'label' => 'LBL_CANDIDATURES',
+);
 
 $dictionary["Employee"]["audited"] = true;
 $dictionary["Employee"]["fields"]["employee_status"]["audited"] = true;

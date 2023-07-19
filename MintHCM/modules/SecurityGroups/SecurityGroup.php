@@ -51,24 +51,38 @@ class SecurityGroup extends SecurityGroup_sugar {
                     and secu.user_id = '$user_id'
                 where secg.deleted = 0
             )";
-      } else {
-         //MintHcm start #60146
-         $focus = BeanFactory::getBean($module);
-         $sql = ' OR ( ' . str_replace( $focus->table_name, $table_name,  $focus->getOwnerWhere($user_id)) . ' ) ';
+         } elseif ($module == 'Employees') {
+            $focus = BeanFactory::getBean($module);
+            $sql = ' OR ( ' . str_replace($focus->table_name, $table_name, $focus->getOwnerWhere($user_id)) . ' ) ';
 
-         return " EXISTS (SELECT  1
+            return " EXISTS (SELECT  1
                   FROM    securitygroups secg
                           INNER JOIN securitygroups_users secu
                             ON secg.id = secu.securitygroup_id
                                AND secu.deleted = 0
                                AND secu.user_id = '$user_id'
-                          INNER JOIN securitygroups_records secr
-                            ON secg.id = secr.securitygroup_id
-                               AND secr.deleted = 0
-                               AND secr.module = '$module'
-                       WHERE   secr.record_id = " . $table_name . '.id
+                                   INNER JOIN
+                          securitygroups_users secr_list ON secr_list.securitygroup_id = secu.securitygroup_id
+                AND secr_list.deleted = 0
+                       WHERE   secr_list.user_id = " . $table_name . '.id
                                AND secg.deleted = 0)' . $sql;
-         //MintHcm end #60146         
+        } else {
+         // MintHCM #60146, #94842 START
+         $focus = BeanFactory::getBean($module);
+         $sql = ' OR ( ' . str_replace( $focus->table_name, $table_name,  $focus->getOwnerWhere($user_id)) . ' ) ';
+
+         return " {$table_name}.id IN (SELECT secr.record_id
+         FROM    securitygroups secg
+                 INNER JOIN securitygroups_users secu
+                   ON secg.id = secu.securitygroup_id
+                      AND secu.deleted = 0
+                      AND secu.user_id = '$user_id'
+                 INNER JOIN securitygroups_records secr
+                   ON secg.id = secr.securitygroup_id
+                      AND secr.deleted = 0
+                      AND secr.module = '$module'
+                      AND secg.deleted = 0)" . $sql;
+         // MintHCM #60146, #94842 END
       }
    }
 

@@ -272,7 +272,6 @@ class Meeting extends SugarBean {
       if ($this->status != $bean->fetched_row['status'] && $this->status == 'Held') {
          $this->closeRelatedTraining();
          }
-         
       if ( $this->update_vcal ) {
          vCal::cache_sugar_vcal($current_user);
          // MintHCM start
@@ -288,8 +287,6 @@ class Meeting extends SugarBean {
          Reminder::saveRemindersDataJson('Meetings', $return_id, $reminderData);
          $this->saving_reminders_data = false;
       }
-
-
       return $return_id;
    }
 

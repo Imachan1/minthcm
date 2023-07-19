@@ -74,6 +74,9 @@ class CandidatureConverter
     public function convert()
     {
         $beans_for_employee = $this->setModulesBeans();
+        if (empty($beans_for_employee)) {
+            return false;
+        }
 
         $create_employee = new EmployeeCreator($beans_for_employee);
         $employee = $create_employee->createOrUpdate();
@@ -81,7 +84,7 @@ class CandidatureConverter
         if (!is_null($this->latest_appraisal_bean) && !empty($this->latest_appraisal_items_beans) && !$employee['candidate_employee_relation']) {
 
             foreach ($this->latest_appraisal_items_beans as $one_appraisal_item_bean) {
-                if ($one_appraisal_item_bean->parent_type == self::COMPETENCIES_MODULE_NAME) {
+                if (self::COMPETENCIES_MODULE_NAME == $one_appraisal_item_bean->parent_type) {
 
                     $create_competency_rating = new CompetencyRatingCreator($one_appraisal_item_bean, $employee['employee_bean']);
                     $create_competency_rating->createOrUpdateRecords();
@@ -97,9 +100,12 @@ class CandidatureConverter
 
     protected function setModulesBeans()
     {
-        $appraisals = new AppraisalsLoader();
-
         $this->converted_candidature_bean = $this->getConvertedCandidatureBean();
+        if ($this->converted_candidature_bean->parent_type !== 'Candidates') {
+            return null;
+        }
+
+        $appraisals = new AppraisalsLoader();
         $this->latest_appraisal_bean = $appraisals->getLatestAppraisalBean($this->converted_candidature_bean);
         $this->latest_appraisal_items_beans = $appraisals->getLatestAppraisalItemsBeans($this->latest_appraisal_bean);
 
@@ -133,7 +139,7 @@ class CandidatureConverter
     protected function getCandidateBean(): Candidates
     {
         global $db;
-        $sql = "SELECT candidate_id FROM candidatures WHERE id='{$this->converted_candidature_bean->id}'";
+        $sql = "SELECT parent_id FROM candidatures WHERE id='{$this->converted_candidature_bean->id}'";
         $result_candidate_id = $db->getOne($sql);
 
         return BeanFactory::getBean(self::CANDIDATES_MODULE_NAME, $result_candidate_id);

@@ -76,7 +76,7 @@ $mod_strings = array(
     'LBL_ADMIN' => 'Administrator:',
     'LBL_EMPLOYEE_INFORMATION' => 'Employee Information',
     'LBL_OFFICE_PHONE' => 'Office Phone:',
-    'LBL_REPORTS_TO' => 'Reports to Id:',
+    'LBL_REPORTS_TO_ID' => 'Reports to Id:',
     'LBL_REPORTS_TO_NAME' => 'Reports to',
     'LBL_OTHER_PHONE' => 'Other Phone:',
     'LBL_NOTES' => 'Notes:',
@@ -199,4 +199,9 @@ $mod_strings = array(
     'LBL_SECURITYGROUPS_MANAGERS' => 'Manager in Organizational Units',
 
     'LBL_LINKED_ALLOCATIONS_TITLE' => 'Allocations',
+    'LBL_TRAININGS' => 'Trainings',
+    'LBL_CANDIDATURES' => 'Candidatures',
+    'LBL_BUSINESS_ROLE' => 'Business Role',
+    'LBL_EMPLOYEES_CONFIRMATION_BUTTON_CONFIRM' => 'YES',
+    'LBL_EMPLOYEES_CONFIRMATION_BUTTON_CANCEL' => 'NO',
 );

@@ -94,6 +94,11 @@ class CalendarActivity {
          }
          $this->end_time = $this->start_time->get("+$hours hours $mins minutes");
       }
+      /* MintHCM #97710 START */
+      if ( empty($this->end_time) ) {
+        return;
+      }
+      /* MintHCM #97710 END */
       // Convert it back to database time so we can properly manage it for getting the proper start and end dates
       $timedate->tzGMT($this->start_time);
       $timedate->tzGMT($this->end_time);

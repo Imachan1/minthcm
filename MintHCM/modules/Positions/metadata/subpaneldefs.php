@@ -238,10 +238,6 @@ $layout_defs["Positions"]["subpanel_setup"] = array(
         'get_subpanel_data' => 'salaryranges',
         'top_buttons' => array(
             array(
-                'widget_class' => 'SubPanelTopSelectButton',
-                'mode' => 'MultiSelect',
-            ),
-            array(
                 'widget_class' => 'SubPanelTopButtonQuickCreate',
             ),
         ),
@@ -257,5 +253,13 @@ $layout_defs["Positions"]["subpanel_setup"] = array(
         'get_subpanel_data' => 'SecurityGroups',
         'add_subpanel_data' => 'securitygroup_id',
         'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
+    ),
+    'files' => array(
+        'order' => 100,
+        'module' => 'Files',
+        'subpanel_name' => 'default',
+        'title_key' => 'LBL_FILES',
+        'get_subpanel_data' => 'files',
+        'dropzone' => true
     ),
 );

@@ -99,6 +99,18 @@ $searchdefs[$module_name] = array(
                 'default' => true,
                 'width' => '10%',
             ),
+            'last_time_contact' => array(
+                'name' => 'last_time_contact',
+                'type' => 'date',
+                'default' => true,
+                'width' => '10%',
+            ),
+            'date_planned_contact' => array(
+                'name' => 'date_planned_contact',
+                'type' => 'date',
+                'default' => true,
+                'width' => '10%',
+            ),
             'potential' => array(
                 'name' => 'potential',
                 'default' => true,
@@ -162,6 +174,9 @@ $searchdefs[$module_name] = array(
                     'name' => 'get_user_array',
                     'params' => array(false),
                 ),
+                'default' => true,
+                'width' => '10%',
+            ),
                 'employee_id' => array(
                     'name' => 'employee_id',
                     'label' => 'LBL_EMPLOYEE_NAME',
@@ -176,10 +191,8 @@ $searchdefs[$module_name] = array(
                     'default' => true,
                     'width' => '10%',
                 ),
-            ),
         ),
-        'templateMeta' =>
-        array(
+        'templateMeta' => array(
             'maxColumns' => '3',
             'maxColumnsBasic' => '4',
             'widths' => array(

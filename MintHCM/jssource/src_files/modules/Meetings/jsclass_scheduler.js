@@ -109,8 +109,9 @@ SugarWidgetListView.prototype.display = function () {
 
       html += '<tr class="' + className + '">';
       html += '<td><span class="suitepicon suitepicon-module-' + bean.module.toLowerCase().replace( '_', '-' ) + '"></span></td>';
-      // MintHCM #54195 #59793 Start
-      if ( bean.module == 'Resources' ) {
+        // MintHCM #54195 #59793  #43484 Start
+        if (bean.module == 'Resources' || bean.module == "SecurityGroup") {
+        // MintHCM #43484 End
          html += '<td>' + bean.fields.name + '</td><td></td><td></td>';
       } else {
          html += '<td>' + bean.fields.full_name + '</td>';
@@ -121,7 +122,7 @@ SugarWidgetListView.prototype.display = function () {
             html += '<td>' + bean.fields.phone_work + '</td>';
          }
       }
-      // MintHCM #54195 #59793 End
+        // MintHCM #54195 #59793 
       html += '<td align="right">';
       //	hidden = 'hidden';
       hidden = 'visible';
@@ -138,7 +139,45 @@ SugarWidgetListView.prototype.display = function () {
 
    div.innerHTML = html;
 }
+// MintHCM #43484 Start
+SugarWidgetSchedulerAttendees.get_users = function (list_row) {
 
+    if (typeof (GLOBAL_REGISTRY.result_list[list_row]) != 'undefined') {
+        viewTools.api.callCustomApi( {
+            module: 'Meetings',
+            action: 'getUsers',
+            dataPOST: {
+               id: GLOBAL_REGISTRY.result_list[list_row].fields.id
+            },
+            callback: function ( data ) {
+                data.forEach((person) => {
+                if(!SugarWidgetSchedulerAttendees.userOnList(person.id)){
+                    item = {
+                        fields:person,
+                        module:"User"
+                    }
+                    GLOBAL_REGISTRY.focus.users_arr.push(item)
+                }
+
+              });
+              
+            }
+         } );
+    }
+}
+
+SugarWidgetSchedulerAttendees.userOnList = function (id){
+    var user_on_list = false;
+    for(var i = 0; i<GLOBAL_REGISTRY.focus.users_arr.length; i++){
+        if(GLOBAL_REGISTRY.focus.users_arr[i].fields.id == id){
+            user_on_list = true;
+            break;
+        }
+    }
+    return user_on_list;
+}
+
+// MintHCM #43484 End
 SugarWidgetListView.prototype.display_loading = function () {
 
 }
@@ -169,8 +208,6 @@ SugarWidgetSchedulerSearch.prototype.load = function ( parentNode ) {
 
 SugarWidgetSchedulerSearch.submit = function ( form ) {
 
-   SugarWidgetSchedulerSearch.hideCreateForm();
-
    //construct query obj:
    var conditions = new Array();
 
@@ -185,12 +222,12 @@ SugarWidgetSchedulerSearch.submit = function ( form ) {
    }
 
    var query = {
-      // MintHCM #54195 #59793 Start
-      "modules": [ "Users", "Contacts", "Leads", "Candidates", "Resources" ],
-      "field_list": [ 'id', 'name', 'full_name', 'email1', 'phone_work', 'phone_mobile' ],
-      // MintHCM #54195 #59793 End
-      "group": "and",
-      "conditions": conditions
+        // MintHCM #54195 #59793 #43484 #117141 Start
+        "modules": ["Users", "Contacts", "Leads", "Candidates", "Resources", "SecurityGroups"],
+        "field_list": [ 'id', 'name', 'full_name', 'email1', 'phone_work', 'phone_mobile', 'show_on_employees', 'group_type'],
+        // MintHCM #54195 #59793 #43484 #117141 End
+        "group": "and",
+        "conditions": conditions
    };
    global_request_registry[req_count] = [ this, 'display' ];
    req_id = global_rpcClient.call_method( 'query', query );
@@ -198,7 +235,6 @@ SugarWidgetSchedulerSearch.submit = function ( form ) {
 }
 
 SugarWidgetSchedulerSearch.prototype.refresh_list = function ( rslt ) {
-
    GLOBAL_REGISTRY['result_list'] = rslt['list'];
 
    if ( rslt['list'].length > 0 ) {
@@ -316,154 +352,8 @@ SugarWidgetSchedulerSearch.prototype.display = function () {
    div.style.height = '100%';
    div.style.display = 'none';
    this.parentNode.appendChild( div );
-
-   var create_invitees = document.createElement( "div" );
-   create_invitees.setAttribute( 'id', 'create-invitees' );
-   create_invitees.setAttribute( 'style', 'margin-bottom: 10px;' );
-
-   var empty_search_message = document.createElement( "div" );
-   empty_search_message.setAttribute( 'id', 'empty-search-message' );
-   empty_search_message.setAttribute( 'style', 'display: none;' );
-   empty_search_message.innerHTML = GLOBAL_REGISTRY['meeting_strings']['LBL_EMPTY_SEARCH_RESULT'];
-   create_invitees.appendChild( empty_search_message );
-
-   var h3 = document.createElement( "h3" );
-   h3.setAttribute( 'id', 'create-invitees-title' );
-   h3.innerHTML = GLOBAL_REGISTRY['meeting_strings']['LBL_CREATE_INVITEE'];
-   create_invitees.appendChild( h3 );
-
-   var create_invitees_buttons = document.createElement( "div" );
-   create_invitees_buttons.setAttribute( 'id', 'create-invitees-buttons' );
-
-   var button1 = document.createElement( "button" );
-   button1.setAttribute( 'id', 'create_invitee_as_contact' );
-   button1.setAttribute( 'type', 'button' );
-   button1.setAttribute( 'onclick', 'SugarWidgetSchedulerSearch.showCreateForm(\'Contacts\');' );
-   button1.innerHTML = GLOBAL_REGISTRY['meeting_strings']['LBL_CREATE_CONTACT'];
-   create_invitees_buttons.appendChild( button1 );
-
-   var button2 = document.createElement( "button" );
-   button2.setAttribute( 'id', 'create_invitee_as_lead' );
-   button2.setAttribute( 'type', 'button' );
-   button2.setAttribute( 'onclick', 'SugarWidgetSchedulerSearch.showCreateForm(\'Leads\');' );
-   button2.innerHTML = GLOBAL_REGISTRY['meeting_strings']['LBL_CREATE_LEAD'];
-   create_invitees_buttons.appendChild( button2 );
-   create_invitees.appendChild( create_invitees_buttons );
-
-   var create_invitee_edit = document.createElement( "div" );
-   create_invitee_edit.setAttribute( 'id', 'create-invitee-edit' );
-   create_invitee_edit.setAttribute( 'style', 'display: none;' );
-
-   var form1 = document.createElement( "form" );
-   form1.setAttribute( 'name', 'createInviteeForm' );
-   form1.setAttribute( 'id', 'createInviteeForm' );
-   form1.setAttribute( 'onsubmit', 'SugarWidgetSchedulerSearch.createInvitee(this); return false;' );
-
-   var input4 = document.createElement( "input" );
-   input4.setAttribute( 'name', 'inviteeModule' );
-   input4.setAttribute( 'value', 'Contacts' );
-   input4.setAttribute( 'type', 'hidden' );
-   form1.appendChild( input4 );
-
-   var table3 = document.createElement( "table" );
-   table3.setAttribute( 'class', 'edit view' );
-   table3.setAttribute( 'cellpadding', '0' );
-   table3.setAttribute( 'cellspacing', '0' );
-   table3.setAttribute( 'style', 'width: 330px; margin-top: 2px;' );
-
-   var row3 = table3.insertRow( 0 );
-   var cell31 = row3.insertCell( 0 );
-   cell31.setAttribute( 'valign', 'top' );
-   cell31.setAttribute( 'width', '33%' );
-   cell31.innerHTML = GLOBAL_REGISTRY['meeting_strings']['LBL_FIRST_NAME'] + ':';
-
-   var cell32 = row3.insertCell( 1 );
-   cell32.setAttribute( 'valign', 'top' );
-
-   var input5 = document.createElement( "input" );
-   input5.setAttribute( 'name', 'first_name' );
-   input5.setAttribute( 'size', '19' );
-   input5.setAttribute( 'type', 'text' );
-   cell32.appendChild( input5 );
-
-   var row4 = table3.insertRow( 1 );
-   var cell41 = row4.insertCell( 0 );
-   cell41.setAttribute( 'valign', 'top' );
-   cell41.setAttribute( 'width', '33%' );
-   cell41.innerHTML = GLOBAL_REGISTRY['meeting_strings']['LBL_LAST_NAME'] + ':';
-
-   var cell42 = row4.insertCell( 1 );
-   cell42.setAttribute( 'valign', 'top' );
-
-   var input6 = document.createElement( "input" );
-   input6.setAttribute( 'name', 'last_name' );
-   input6.setAttribute( 'size', '19' );
-   input6.setAttribute( 'type', 'text' );
-   cell42.appendChild( input6 );
-
-   var row5 = table3.insertRow( 2 );
-   var cell51 = row5.insertCell( 0 );
-   cell51.setAttribute( 'valign', 'top' );
-   cell51.setAttribute( 'width', '33%' );
-   cell51.innerHTML = GLOBAL_REGISTRY['meeting_strings']['LBL_EMAIL'] + ':';
-
-   var cell52 = row5.insertCell( 1 );
-   cell52.setAttribute( 'valign', 'top' );
-
-   var input7 = document.createElement( "input" );
-   input7.setAttribute( 'name', 'email1' );
-   input7.setAttribute( 'size', '19' );
-   input7.setAttribute( 'type', 'text' );
-   cell52.appendChild( input7 );
-
-   form1.appendChild( table3 );
-
-   var button3 = document.createElement( "button" );
-   button3.setAttribute( 'id', 'create-invitee-btn' );
-   button3.setAttribute( 'type', 'button' );
-   button3.setAttribute( 'onclick', 'SugarWidgetSchedulerSearch.createInvitee(this.form);' );
-   button3.innerHTML = GLOBAL_REGISTRY['meeting_strings']['LBL_CREATE_AND_ADD'];
-   form1.appendChild( button3 );
-
-   var button4 = document.createElement( "button" );
-   button4.setAttribute( 'id', 'cancel-create-invitee-btn' );
-   button4.setAttribute( 'type', 'button' );
-   button4.setAttribute( 'onclick', 'SugarWidgetSchedulerSearch.hideCreateForm();' );
-   button4.innerHTML = GLOBAL_REGISTRY['meeting_strings']['LBL_CANCEL_CREATE_INVITEE'];
-   form1.appendChild( button4 );
-
-   create_invitee_edit.appendChild( form1 );
-   create_invitees.appendChild( create_invitee_edit );
-   this.parentNode.appendChild( create_invitees );
-
-   addToValidate( 'createInviteeForm', 'last_name', 'last_name', true, GLOBAL_REGISTRY['meeting_strings']['LBL_LAST_NAME'] );
-
    this.list_view = new SugarWidgetListView();
    this.list_view.load( div );
-}
-
-SugarWidgetSchedulerSearch.showCreateForm = function ( module ) {
-   document.getElementById( 'create-invitee-edit' ).style.display = '';
-   document.getElementById( 'create-invitees-buttons' ).style.display = 'none';
-   document.getElementById( 'list_div_win' ).style.display = 'none';
-   document.forms['createInviteeForm'].elements['inviteeModule'].value = module;
-
-   document.getElementById( 'empty-search-message' ).style.display = 'none';
-
-   if ( typeof document.createInviteeForm.first_name != 'undefined' && typeof document.schedulerwidget.search_first_name != 'undefined' )
-      document.createInviteeForm.first_name.value = document.schedulerwidget.search_first_name.value;
-   if ( typeof document.createInviteeForm.last_name != 'undefined' && typeof document.schedulerwidget.search_last_name != 'undefined' )
-      document.createInviteeForm.last_name.value = document.schedulerwidget.search_last_name.value;
-   if ( typeof document.createInviteeForm.email1 != 'undefined' && typeof document.schedulerwidget.search_email != 'undefined' )
-      document.createInviteeForm.email1.value = document.schedulerwidget.search_email.value;
-
-}
-
-SugarWidgetSchedulerSearch.hideCreateForm = function ( module ) {
-   document.getElementById( 'create-invitee-edit' ).style.display = 'none';
-   document.getElementById( 'create-invitees-buttons' ).style.display = '';
-
-   document.forms['createInviteeForm'].reset();
 }
 
 SugarWidgetSchedulerSearch.resetSearchForm = function () {
@@ -471,58 +361,6 @@ SugarWidgetSchedulerSearch.resetSearchForm = function () {
       //if search form is initiated, it clears the input fields.
       document.forms[GLOBAL_REGISTRY.scheduler_search_obj.form_id].reset();
    }
-}
-
-SugarWidgetSchedulerSearch.createInvitee = function ( form ) {
-   if ( !(check_form( 'createInviteeForm' )) ) {
-      return false;
-   }
-
-   document.getElementById( 'create-invitee-btn' ).setAttribute( 'disabled', 'disabled' );
-   document.getElementById( 'cancel-create-invitee-btn' ).setAttribute( 'disabled', 'disabled' );
-
-   ajaxStatus.showStatus( SUGAR.language.get( 'app_strings', 'LBL_SAVING' ) );
-
-   var callback = {
-      success: function ( response ) {
-
-         SUGAR.util.globalEval( "e=(" + response.responseText + ")" );
-         var rObj = e;
-
-         ajaxStatus.hideStatus();
-
-         if ( typeof rObj.noAccess != 'undefined' ) {
-            var alertMsg = GLOBAL_REGISTRY['meeting_strings']['LBL_NO_ACCESS'];
-            alertMsg = alertMsg.replace( "\$module", rObj.module );
-            SugarWidgetSchedulerSearch.hideCreateForm();
-            alert( alertMsg );
-            return false;
-         }
-
-         GLOBAL_REGISTRY.focus.users_arr[GLOBAL_REGISTRY.focus.users_arr.length] = rObj;
-         GLOBAL_REGISTRY.scheduler_attendees_obj.display();
-
-         SugarWidgetSchedulerSearch.hideCreateForm();
-         //Bug#51357: Reset the search input fields after invitee is added.
-         SugarWidgetSchedulerSearch.resetSearchForm();
-
-         document.getElementById( 'create-invitee-btn' ).removeAttribute( 'disabled' );
-         document.getElementById( 'cancel-create-invitee-btn' ).removeAttribute( 'disabled' );
-      }
-   };
-
-   var fieldList = [ 'id', 'full_name', 'email1', 'phone_work' ];
-
-   var t = [ ];
-   for ( i in fieldList ) {
-      t.push( "fieldList[]=" + encodeURIComponent( fieldList[i] ) );
-   }
-   var postData = t.join( "&" );
-
-   var url = "index.php?module=Calendar&action=CreateInvitee&sugar_body_only=true";
-   YAHOO.util.Connect.setForm( document.forms['createInviteeForm'] );
-   YAHOO.util.Connect.asyncRequest( 'POST', url, callback, postData );
-
 }
 
 //////////////////////////////////////////////////
@@ -776,7 +614,8 @@ SugarWidgetScheduler.getScheduleDetails = function ( beans, ids ) {
            );
    // MintHCM #59793 Start
    if ( _.contains( beans, 'Reservationss' ) ) {
-      viewTools.api.callCustomApi( {module: 'Reservations', action: 'getReservations', dataPOST: {reservations_ids: ids}, callback: function ( data ) {
+        viewTools.api.callCustomApi({
+            module: 'Reservations', action: 'getReservations', dataPOST: { reservations_ids: ids }, callback: function (data) {
             if ( !_.isEmpty( data ) ) {
                var innerHTML = "";
                var reservationTemplate = _.template( '<div><div><a href="index.php?module=Reservations&action=DetailView&record=<%= id %>"><%= name %></a></div><div><%= starting_date %></div><div><%= employee %></div></div><br />' );
@@ -785,7 +624,8 @@ SugarWidgetScheduler.getScheduleDetails = function ( beans, ids ) {
                } );
                $dialog.html( innerHTML );
             }
-         }} );
+            }
+        });
    } else if ( _.contains( beans, 'Candidates' ) || _.contains( beans, 'Resources' ) ) {
       var bean_name = $( '#schedulerTable tr[data-id="' + ids[0] + '"][data-module="' + beans[0] + '"] td:first-child' ).text();
       if ( bean_name ) {
@@ -893,9 +733,19 @@ SugarWidgetSchedulerAttendees.prototype.init = function () {
    GLOBAL_REGISTRY.focus.fields.datetime_start = SugarDateTime.mysql2jsDateTime( GLOBAL_REGISTRY.focus.fields.date_start, GLOBAL_REGISTRY.focus.fields.time_start );
 
    this.timeslots = new Array();
-   this.hours = 9;
+   /* MintHCM #75792 START */
+   /* this.hours = 9; */
+   this.hours = parseInt(document.forms[form_name].duration_hours.value) + (parseInt(document.forms[form_name].duration_minutes.value) > 0 ? 1 : 0);
+   if (this.hours > 12) {
+       this.hours = 12;
+   }
+   /* MintHCM #75792 END */
    this.segments = 4;
-   this.start_hours_before = 4;
+   /* MintHCM #75792 START */
+   /* this.start_hours_before = 4; */
+   this.start_hours_before = 2;
+   this.hours += this.start_hours_before * 2;
+   /* MintHCM #75792 END */
 
    var minute_interval = 15;
    var dtstart = GLOBAL_REGISTRY.focus.fields.datetime_start;
@@ -1044,11 +894,22 @@ SugarWidgetSchedulerAttendees.prototype.display = function () {
       // MintHCM #59793 End
    }
 }
+SugarWidgetSchedulerAttendees.form_add_attendee = function (list_row) {
 
-SugarWidgetSchedulerAttendees.form_add_attendee = function ( list_row ) {
-   if ( typeof (GLOBAL_REGISTRY.result_list[list_row]) != 'undefined' && typeof (GLOBAL_REGISTRY.focus.users_arr_hash[ GLOBAL_REGISTRY.result_list[list_row].fields.id]) == 'undefined' ) {
+    if (typeof (GLOBAL_REGISTRY.result_list[list_row]) != 'undefined' && typeof (GLOBAL_REGISTRY.focus.users_arr_hash[GLOBAL_REGISTRY.result_list[list_row].fields.id]) == 'undefined' &&
+    // MintHCM #43484 Start
+    GLOBAL_REGISTRY.result_list[list_row].module !="SecurityGroup"
+    // MintHCM #43484 End
+    ) {
       GLOBAL_REGISTRY.focus.users_arr[ GLOBAL_REGISTRY.focus.users_arr.length ] = GLOBAL_REGISTRY.result_list[list_row];
    }
+
+
+    // MintHCM #43484 Start
+    if(GLOBAL_REGISTRY.result_list[list_row].module == 'SecurityGroup'){
+        SugarWidgetSchedulerAttendees.get_users(list_row);
+    }
+        // MintHCM #43484 End
    GLOBAL_REGISTRY.scheduler_attendees_obj.display();
 }
 
@@ -1237,11 +1098,23 @@ SugarWidgetScheduleRow.prototype.add_freebusy_nodes = function ( tr, attendee ) 
       if ( is_loaded ) {
          // if there's a freebusy stack in this slice
          if ( typeof (GLOBAL_REGISTRY['freebusy_adjusted'][this.focus_bean.fields.id][this.timeslots[i].hash]) != 'undefined' ) {
-            $( td ).addClass( 'free' );
+            /* MintHCM #75792 START */
+            /*  $( td ).addClass( 'free' ); */
+            /* MintHCM #75792 START */
 
             var dataid = '',
                     module = '';
             $.each( GLOBAL_REGISTRY['freebusy_adjusted'][this.focus_bean.fields.id][this.timeslots[i].hash]['records'], function ( index, value ) {
+               /* MintHCM #75792 START */
+               if (value.startsWith('WorkSchedules')) {
+                   var ws_type = value.split('___')[1];
+                   if (ws_type != undefined) {
+                       $(td).addClass('ws-' + ws_type);
+                   }
+                   return;
+               }
+               $( td ).addClass( 'free' );
+               /* MintHCM #75792 END */
                if ( dataid == '' )
                   dataid = index;
                else

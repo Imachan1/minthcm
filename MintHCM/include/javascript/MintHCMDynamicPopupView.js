@@ -1,6 +1,7 @@
 var MintHCMDynamicPopupView = {
     popup : null,
     init : function (title, module_name, record_id, options) {
+        viewTools.cache.form_beforeSave_enforced = [];
         let viewtype = 'EditView';
         let formname = 'EditView';
         this.options = options || {};
@@ -31,9 +32,22 @@ var MintHCMDynamicPopupView = {
 
     this.save = function(){
         viewTools.GUI.fieldErrorUnmark();
-        var _form = document.getElementById(this.formname); _form.action.value='Save';
-        if(check_form(this.formname)){
+        let validation_is_ok = true;
+        for (let key = 0; key < viewTools.cache.form_beforeSave_enforced.length; key++) {
+            var tmp_function = viewTools.cache.form_beforeSave_enforced[key];
+            if (tmp_function(this.formname) === false) {
+                validation_is_ok = false;
+                viewTools.form.error_count++;
+            }
+        }
+        var _form = document.getElementById(this.formname);
+        _form.action.value = 'Save';
+        validation_is_ok = check_form(this.formname) && validation_is_ok;
+        if (validation_is_ok) {
             MintHCMDynamicPopupView.submitForm(_form);
+        } else {
+            viewTools.form.focusOnFirstError();
+            viewTools.form.onValidationEnd();
         }
     }
 
@@ -59,11 +73,11 @@ var MintHCMDynamicPopupView = {
             let buttons =  [];
             if(!this.options.isDetailView){
                 buttons.push({
-                    text: viewTools.language.get('app_strings', 'LBL_SAVE_BUTTON_LABEL'), class: "primary", click: this.save.bind(this),
+                    text: viewTools.language.get('app_strings', 'LBL_SAVE_BUTTON_LABEL'), class: "primary", accesskey: "a", click: this.save.bind(this),
                  });
             }
             buttons.push({
-                text: viewTools.language.get('app_strings', 'LBL_CANCEL_BUTTON_LABEL'), class: "", click: this.close.bind(this)
+                text: viewTools.language.get('app_strings', 'LBL_CANCEL_BUTTON_LABEL'), class: "", accesskey: "l", click: this.close.bind(this)
              });
              if(this.options.isDetailView){
                 cont = cont.replace(/\#content /g,".MintHCMPopup-body ");

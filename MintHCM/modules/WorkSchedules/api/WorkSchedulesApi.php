@@ -46,14 +46,16 @@
 class WorkSchedulesApi
 {
 
-    public function canChangeTypeToWorkOff($id, $type)
+    public function canChangeTypeToWorkOff($args)
     {
       global $db;
+      $id = $args['id'];
+      $type = $args['type'];
       $result = true;
       $work_off_types = array(
          'holiday',
          'sick',
-         'sick-care',
+         'sick_care',
          'occasional_leave',
          'leave_at_request',
          'overtime',
@@ -104,22 +106,19 @@ class WorkSchedulesApi
       return null;
    }
 
-    public function validateWorkplaceStatus($workplace_id)
+    public function validateWorkplaceStatus($args)
     {
+        $workplace_id = $args['id'];
         $workplace = BeanFactory::getBean('Workplaces', $workplace_id);
-        if (!$workplace || empty($workplace->id) || 'active' == $workplace->availability) {
-            return true;
-        } else {
-            return false;
-}
-
+        return !$workplace || empty($workplace->id) || 'active' == $workplace->availability;
     }
 
-    public function validateWorkplaceAllocationPeriods($workplace_id, $date_start, $date_end)
+    public function validateWorkplaceAllocationPeriods($args)
     {
-        $db = DBManagerFactory::getInstance();
         global $timedate;
-        $db_format = $timedate->get_db_date_time_format();
+        $workplace_id = $args['workplace_id'];
+        $date_start = $args['date_start'];
+        $date_end = $args['ate_end'];
         $return = true;
         $workplace = BeanFactory::getBean('Workplaces', $workplace_id);
         if ($workplace) {
@@ -146,36 +145,43 @@ class WorkSchedulesApi
         return $return;
     }
 
-    public function setAssignedWorkingRoom($args)
+    public function canChangeWorkScheduleStatus($args)
     {
-        $db = \DBManagerFactory::getInstance();
-        $user_id = $db->quote($args['assigned_user_id']);
-        $result = [];
+        $id = $args['id'];
+        $status = $args['status'];
+        $return = true;
+        $work_schedule = BeanFactory::getBean('WorkSchedules', $id);
+        if ($status == 'closed' && $work_schedule->canBeConfirmed() != "1") {
+            $return = false;
+        }
 
-        if (!empty($user_id)) {
-            $sqlResult = $db->query("SELECT
-            WP.id,
-            WP.name
-         FROM
-             allocations AS AL
-         INNER JOIN workplaces AS WP
-         ON
-             AL.workplace_id = WP.id
-         WHERE
-             WP.deleted = 0
-            AND AL.deleted = 0
-            AND AL.assigned_user_id = 1
-            AND AL.mode = 'permanent'
-            AND WP.availability = 'active'
-            AND AL.date_from <= CURDATE() 
-            AND AL.date_to >= CURDATE() "
-            );
-        }
-        if (1 === $sqlResult->num_rows) {
-            $result = $db->fetchByAssoc($sqlResult);
+        return $return;
+
+    }
+
+    public function validateDelegationDurationValue($args)
+    {
+        $delegation_duration = unformat_number($args['delegation_duration']);
+        if (!empty($delegation_duration)) {
+            if (is_numeric($delegation_duration) && $delegation_duration >= 0) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            return;
+            return true;
         }
-        return $result;
+    }
+
+    public function getActiveWorkplaces($args) {
+        global $timedate;
+        $employee = BeanFactory::getBean('Employees', $args['assigned_user_id']);
+        $date_start = $timedate->to_db_date($args['date_start']);
+        $date_end = $timedate->to_db_date($args['date_end']);
+        if (empty($employee->id)) {
+            return;
+        }   
+        return $employee->getActiveWorkplaces(null, $date_start, $date_end);
     }
 }
+

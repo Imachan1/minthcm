@@ -3168,7 +3168,10 @@ class SugarBean {
       if ( in_array('set_notification_body', get_class_methods($this)) ) {
          $xtpl = $this->set_notification_body($xtpl, $this);
       } else {
-         $xtpl->assign("OBJECT", translate('LBL_MODULE_NAME', $this->module_name));
+        // MintHCM #75607 START
+        //$xtpl->assign("OBJECT", translate('LBL_MODULE_NAME', $this->module_name));
+        $xtpl->assign("OBJECT", return_app_list_strings_language($current_language)['moduleList'][$this->module_name] ?? $this->module_name);
+        // MintHCM #75607 END
          $template_name = "Default";
       }
       if ( !empty($_SESSION["special_notification"]) && $_SESSION["special_notification"] ) {
@@ -3862,22 +3865,17 @@ class SugarBean {
       }
       //Mint start SG optimization
       global $current_user;
-      $skipped_modules = [];
+      $skipped_modules = [ 'ev_RedmineProjectTask' ]; //Mint #62980
       $group_where = SecurityGroup::getGroupWhere($this->table_name, $this->module_dir, $current_user->id);
-      
-      if (strpos($ret_array['where'], $group_where) !== false && !in_array($this->module_name, $skipped_modules) ) { //Mint #60146
-         $n = " LEFT JOIN securitygroups_records secr ON secr.deleted=0  AND secr.module='{$this->module_dir}' AND secr.record_id={$this->table_name}.id 
-         LEFT JOIN securitygroups secg on secg.id=secr.securitygroup_id AND secg.deleted=0 LEFT JOIN securitygroups_users secu
-          ON secg.id=secu.securitygroup_id AND secu.deleted=0 AND secu.user_id='{$current_user->id}' ";
 
+      if (strpos($ret_array['where'], $group_where) !== false && !in_array($this->module_name, $skipped_modules) ) { //Mint #60146
+         $n = " LEFT JOIN securitygroups_records secr ON secr.deleted=0  AND secr.module='{$this->module_dir}' AND secr.record_id={$this->table_name}.id INNER JOIN securitygroups secg on secg.id=secr.securitygroup_id AND secg.deleted=0 INNER JOIN securitygroups_users secu ON secg.id=secu.securitygroup_id AND secu.deleted=0 AND secu.user_id='{$current_user->id}' ";
          foreach ( array( 'from', 'from_min', 'secondary_from' ) as $eVSecGroupUpdKey ) {
             if ( isset($ret_array[$eVSecGroupUpdKey]) && strpos($ret_array[$eVSecGroupUpdKey], $n) === false ) {
                $ret_array[$eVSecGroupUpdKey] .= $n;
             }
          }
-         $optimization_replacer = " (secg.id is not null OR ( ".$this->getOwnerWhere($current_user->id) .")) ";
-
-         $ret_array['where'] = str_replace($group_where, $optimization_replacer, $ret_array['where']);
+         $ret_array['where'] = str_replace($group_where, "secg.id is not null", $ret_array['where']);
       }
       // Mint end SG optimization
       //make call to process the order by clause

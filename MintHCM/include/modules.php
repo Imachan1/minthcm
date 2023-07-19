@@ -741,6 +741,9 @@ $moduleList[] = 'SalaryRanges';
 $moduleList[] = 'EmployeeCertificates';
 $moduleList[] = 'Employees';  // MintHCM #116668
 //
+$beanList['Files'] = 'Files';
+$beanFiles['Files'] = 'modules/Files/Files.php';
+$moduleList[] = 'Files';
 if (file_exists('include/modules_override.php')) {
     include 'include/modules_override.php';
 }

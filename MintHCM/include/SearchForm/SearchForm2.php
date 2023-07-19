@@ -247,6 +247,14 @@ class SearchForm {
             $this->tabs[$tabkey]['displayDiv'] = 'display:none';
          }
       }
+      /* MintHCM #92823 START */
+        if(!empty($_REQUEST['displayColumns'])){
+            $this->th->ss->assign('DISPLAY_COLUMNS',$_REQUEST['displayColumns']);
+        } else {
+            $this->th->ss->assign('DISPLAY_COLUMNS',$_REQUEST['mint_displayColumns']);
+        }      
+      /* MintHCM #92823 END */
+
 
       $this->th->ss->assign('TAB_ARRAY', $this->tabs);
 
@@ -415,6 +423,11 @@ class SearchForm {
                   }
                   $value = implode(', ', $values);
                }
+                // MintHCM #69594  START
+               else if($value[0] == '[' && $value[strlen($value) - 1] == ']'){
+                    $value = $defs['options'][substr($value, 1, -1)];
+                }
+                // MintHCM #69594 END
                $data[$labelText] = $type == 'bool' ? '&#10004' : $value;
             }
          }
@@ -1423,6 +1436,102 @@ class SearchForm {
                            $where .= ' OR ' . $db_field . " in (" . $field_value . ')';
                         }
                         break;
+                    //MintHCM #69594 START
+                     case 'last_week':
+                        global $timedate, $current_user;
+                        $start = $timedate->now(true);
+                        $tz = $current_user->getPreference('timezone');
+                        if (empty($tz)) {
+                            $tz = 'Europe/Warsaw';
+                        }
+                        $current_date = new DateTime($start, new DateTimeZone($tz));
+                        $previous_week = $current_date->modify("-1 week");
+                        $start_week = $previous_week->modify("last sunday midnight");
+                        $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
+                        $end_week = $start_week->modify("next sunday");
+                        $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
+                        $where .= "($db_field >= '$formatted_start_week' AND $db_field <= '$formatted_end_week')";
+                        break;
+                     case 'this_week':
+                        global $timedate, $current_user;
+                        $start = $timedate->now(true);
+                        $tz = $current_user->getPreference('timezone');
+                        if (empty($tz)) {
+                            $tz = 'Europe/Warsaw';
+                        }
+                        $current_date = new DateTime($start, new DateTimeZone($tz));
+                        $start_week = $current_date->modify("last sunday midnight");
+                        $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
+                        $end_week = $current_date->modify("next saturday");
+                        $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
+                        $where .= "($db_field >= '{$formatted_start_week}' AND $db_field <= '{$formatted_end_week}' )";
+                        break;
+                     case 'next_week':
+                        global $timedate, $current_user;
+                        $start = $timedate->now(true);
+                        $tz = $current_user->getPreference('timezone');
+                        if (empty($tz)) {
+                            $tz = 'Europe/Warsaw';
+                        }
+                        $current_date = new DateTime($start, new DateTimeZone($tz));
+                        $next_week = $current_date->modify("+1 week -1 day");
+                        $start_week = $next_week->modify("last sunday midnight");
+                        $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
+                        $end_week = $next_week->modify("next saturday");
+                        $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
+                        $where .= "($db_field >= '{$formatted_start_week}' AND $db_field <= '{$formatted_end_week}')";
+                        break;
+                     case 'in_the_past':
+                        global $timedate, $current_user;
+                        $start = $timedate->now(true);
+                        $tz = $current_user->getPreference('timezone');
+                        if (empty($tz)) {
+                            $tz = 'Europe/Warsaw';
+                        }
+                        $current_date = new DateTime($start, new DateTimeZone($tz));
+                        $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
+                        $where .= "$db_field < '$formatted_current_date'";
+                        break;
+                     case 'in_the_future':
+                        global $timedate, $current_user;
+                        $start = $timedate->now(true);
+                        $tz = $current_user->getPreference('timezone');
+                        if (empty($tz)) {
+                            $tz = 'Europe/Warsaw';
+                        }
+                        $current_date = new DateTime($start, new DateTimeZone($tz));
+                        $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
+                        $where .= "$db_field > '$formatted_current_date'";
+                        break;
+                     case 'last_n_days':
+                        global $timedate, $current_user;
+                        $start = $timedate->now(true);
+                        $tz = $current_user->getPreference('timezone');
+                        if (empty($tz)) {
+                            $tz = 'Europe/Warsaw';
+                        }
+                        $current_date = new DateTime($start, new DateTimeZone($tz));
+                        $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
+                        $field_value = (int) $field_value;
+                        $modify_date = $current_date->modify("-{$field_value} days");
+                        $formatted_date = $modify_date->format($timedate->get_db_date_time_format());
+                        $where .= "($db_field >= '{$formatted_date}' AND $db_field <= '{$formatted_current_date}')";
+                        break;
+                     case 'next_n_days':
+                        global $timedate, $current_user;
+                        $start = $timedate->now(true);
+                        $tz = $current_user->getPreference('timezone');
+                        if (empty($tz)) {
+                            $tz = 'Europe/Warsaw';
+                        }
+                        $current_date = new DateTime($start, new DateTimeZone($tz));
+                        $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
+                        $field_value = (int) $field_value;
+                        $modify_date = $current_date->modify("+{$field_value} days");
+                        $formatted_date = $modify_date->format($timedate->get_db_date_time_format());
+                        $where .= "($db_field >= '{$formatted_current_date}' AND $db_field <= '{$formatted_date}')";
+                        break;
+                     //MintHCM #69594 END
                   }
                }
             }

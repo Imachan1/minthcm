@@ -109,5 +109,7 @@ $entry_point_registry = array(
    'viewToolsApi' => array( 'file' => 'include/ViewTools/viewToolsApi.php', 'auth' => true ),
    'CalculateDLNC' => array('file' => 'include/LastNextContacts/entrypoints/CalculateDLNCindex.php'),
    'CalculateDLNCcalc' => array('file' => 'include/LastNextContacts/entrypoints/CalculateDLNCcalc.php'),
-   'Languages' => array('file' => 'include/Mobile/EntryPoints/LanguagesEntryPoint.php', 'auth' => false )
+   'Languages' => array('file' => 'include/Mobile/EntryPoints/LanguagesEntryPoint.php', 'auth' => false ),
+   'OrganizationalStructure' => array('file' => 'include/OrganizationalStructure/OrganizationalStructureEntrypoint.php', 'auth' => true),
+   'SaveFileFromDropzone' => array('file' => 'include/Dropzone/SaveFileFromDropzone.php', 'auth' => true),
 );

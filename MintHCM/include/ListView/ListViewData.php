@@ -137,7 +137,14 @@ class ListViewData {
 	 * @return  STRING (ASC or DESC)
 	 */
 	function getReverseSortOrder($current_order){
-		return (strcmp(strtolower($current_order), 'asc') == 0)?'DESC':'ASC';
+         /* MintHCM #82984 START */
+         if (empty($current_order)){
+            return 'DESC';
+        }
+        else{
+        /* MintHCM #82984 END */
+            return (strcmp(strtolower($current_order), 'asc') == 0)?'DESC':'ASC';
+        }
 	}
 	/**
 	 * gets the limit of how many rows to show per page
@@ -326,6 +333,20 @@ class ListViewData {
         if(!isset($params['custom_from'])) $params['custom_from'] = '';
         if(!isset($params['custom_where'])) $params['custom_where'] = '';
         if(!isset($params['custom_order_by'])) $params['custom_order_by'] = '';
+        
+        // MintHCM START - Order Query at least by ID
+        $custom_order_by = '';
+        if (!empty(trim((string) $ret_array['order_by']))) {
+            $custom_order_by .= ' , ';
+        } else {
+            $custom_order_by .= ' ORDER BY ';
+        }
+        if (!empty(trim((string) $params['custom_order_by']))) {
+            $custom_order_by .= ' ' . trim(ltrim(trim((string) $params['custom_order_by']), ',')) . ' , ';
+        }
+        $params['custom_order_by'] = $custom_order_by . " {$seed->table_name}.id ASC ";
+        // MintHCM END - Order Query at least by ID
+
 		$main_query = $ret_array['select'] . $params['custom_select'] . $ret_array['from'] . $params['custom_from'] . $ret_array['inner_join']. $ret_array['where'] . $params['custom_where'] . $ret_array['order_by'] . $params['custom_order_by'];
 		//C.L. - Fix for 23461
 		if(empty($_REQUEST['action']) || $_REQUEST['action'] != 'Popup') {
@@ -542,6 +563,15 @@ class ListViewData {
                 }
             }
         }
+
+        //MintHCM #104078 Start
+        if ('asc' == $_POST["lvso"]) {
+            $pageData["ordering"]["sortOrder"] = 'DESC';
+        }
+        if ('desc' == $_POST["lvso"]) {
+            $pageData["ordering"]["sortOrder"] = 'ASC';
+        }
+        //MintHCM #104078 End
 
 		return array('data'=>$data , 'pageData'=>$pageData, 'query' => $queryString);
 	}

@@ -62,6 +62,17 @@ $layout_defs['SecurityGroups'] = array(
             ),
          ),
       ),
+      'employees_in_department' => array(
+         'order' => 10,
+         'module' => 'Employees',
+         'subpanel_name' => 'default',
+         'sort_order' => 'asc',
+         'sort_by' => 'id',
+         'title_key' => 'LBL_EMPLOYEES_IN_DEPARTEMENTS',
+         'get_subpanel_data' => 'employees', 
+         'top_buttons' => array(
+         ),
+      ),
       'employees' => array(
          'order' => 10,
          'module' => 'Employees',
@@ -69,7 +80,7 @@ $layout_defs['SecurityGroups'] = array(
          'sort_order' => 'asc',
          'sort_by' => 'id',
          'title_key' => 'LBL_EMPLOYEES',
-         'get_subpanel_data' => 'employees', 
+         'get_subpanel_data' => 'users', 
          'top_buttons' => array(
             array(
                'widget_class' => 'SubPanelTopSelectButton',
@@ -88,18 +99,6 @@ $layout_defs['SecurityGroups'] = array(
          'get_subpanel_data' => 'users',
          'add_subpanel_data' => 'user_id',
          'title_key' => 'LBL_USERS_SUBPANEL_TITLE',
-      ),
-      'aclroles' => array(
-         'top_buttons' => array(array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'ACLRoles'),),
-         'order' => 20,
-         'sort_by' => 'name',
-         'sort_order' => 'asc',
-         'module' => 'ACLRoles',
-         'subpanel_name' => 'default',
-         'get_subpanel_data' => 'aclroles',
-         'add_subpanel_data' => 'role_id',
-         'refresh_page' => 1,
-         'title_key' => 'LBL_ROLES_SUBPANEL_TITLE',
       ),
    ),
 );

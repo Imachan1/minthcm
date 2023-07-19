@@ -870,6 +870,17 @@ function handleSugarConfig($lock = false) {
       }
    }
 
+   // MintHCM #110041 START
+   if (!isset($sugar_config['http_referer'])) {
+      $sugar_config['http_referer'] = [];
+   }
+   if (!isset($sugar_config['http_referer']['list'])) {
+      $sugar_config['http_referer']['list'] = [];
+   }
+   $sugar_config['http_referer']['list'][] = 'accounts.google.com';
+   $sugar_config['http_referer']['list']  = array_unique($sugar_config['http_referer']['list']);
+   // MintHCM #110041 END
+
    ksort($sugar_config);
    $sugar_config_string = "<?php\n" .
            '// created: ' . date('Y-m-d H:i:s') . "\n" .
@@ -945,7 +956,9 @@ function handleHtaccess() {
    $restrict_str = <<<EOQ
 
 # BEGIN SUGARCRM RESTRICTIONS
-
+# MINTHCM #110405 START
+Header always edit Set-Cookie ^(.*)$ $1;HttpOnly;Secure;SameSite=None;
+# MINTHCM #110405 END
 EOQ;
    if ( ini_get('suhosin.perdir') !== false && strpos(ini_get('suhosin.perdir'), 'e') !== false ) {
       $restrict_str .= "php_value suhosin.executor.include.whitelist upload\n";
@@ -979,6 +992,9 @@ EOQ;
     RewriteRule ^Api/access_token$ Api/index.php/access_token [L]
     RewriteRule ^Api/V8/(.*?)$ Api/index.php/V8/$1 [L]
     RewriteRule ^Api/(.*)$ - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    # MintHCM #110041 START
+    RewriteRule ^oauth-handler/(.*)$ index.php?module=EAPM&action=$1 [L,QSA]
+    # MintHCM #110041 END
 </IfModule>
 <FilesMatch "\.(jpg|png|gif|js|css|ico)$">
         <IfModule mod_headers.c>

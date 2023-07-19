@@ -11,8 +11,8 @@ convertToEmployee = {
     LBL_ALERT_NOTE: viewTools.language.get('Candidatures', 'LBL_ALERT_NOTE'),
     LBL_CREATE_USER: viewTools.language.get('Candidatures', 'LBL_CREATE_USER'),
     LBL_CREATE_EMPLOYEE: viewTools.language.get('Candidatures', 'LBL_CREATE_EMPLOYEE'),
-    LBL_ALERT_CREATE_USER: viewTools.language.get('Candidatures','LBL_ALERT_CREATE_USER'),
-    LBL_ALERT_CREATE_Employee: viewTools.language.get('Candidatures','LBL_ALERT_CREATE_Employee'),
+    LBL_ALERT_CREATE_USER: viewTools.language.get('Candidatures', 'LBL_ALERT_CREATE_USER'),
+    LBL_ALERT_CREATE_Employee: viewTools.language.get('Candidatures', 'LBL_ALERT_CREATE_Employee'),
     LBL_FAIL: viewTools.language.get('Candidatures', 'LBL_FAILED_CONVERTING_CANDIDATURE'),
     LBL_INFO: viewTools.language.get('Candidatures', 'LBL_INFO'),
     initialize: function () {
@@ -67,21 +67,25 @@ convertToEmployee = {
             let login = $("#MintHCMPopup_login").val();
             const convertType = $("input[name='convertType']:checked").val();
 
-
             if (convertType == undefined) {
                 viewTools.GUI.fieldErrorMark($('#createUser'), viewTools.language.get('Candidatures', 'LBL_ERROR_INPUT_RADIO'));
-            } else if (convertType == "createUser" && login == "") {
-                viewTools.GUI.fieldErrorMark($("#MintHCMPopup_login"), viewTools.language.get('Candidatures', 'LBL_ERROR_LOGIN'));
+            } else if (convertType == "createUser") {
+                if(login == ""){
+                    viewTools.GUI.fieldErrorUnmark();
+                    viewTools.GUI.fieldErrorMark($("#MintHCMPopup_login"), viewTools.language.get('Candidatures', 'LBL_ERROR_LOGIN'));
+                } else if (_this.checkUserDuplicate(login)) {
+                    viewTools.GUI.fieldErrorUnmark();
+                    viewTools.GUI.fieldErrorMark($("#MintHCMPopup_login"), viewTools.language.get('Candidatures', 'LBL_ERROR_LOGIN_DUPLICATE'));
+                } else {
+                    _this.ajaxRequest(recordData.record_id, recordData.module_name, login, _this.LBL_FAIL, convertType);
+                }
             }
             else if (convertType == "createEmployee") {
                 login = "";
-                _this.ajaxRequest(recordData.record_id, recordData.module_name, login, _this.LBL_FAIL);
-            }
-            else {
-                _this.ajaxRequest(recordData.record_id, recordData.module_name, login, _this.LBL_FAIL);
+                _this.setStatusHiredAndRejected(recordData.record_id);
+                _this.ajaxRequest(recordData.record_id, recordData.module_name, login, _this.LBL_FAIL, convertType);
             }
         }
-
 
         function callbackButtonCancel() {
             MintHCMPopup.close();
@@ -107,6 +111,22 @@ convertToEmployee = {
 
     },
 
+    checkUserDuplicate: function(login){
+        var result = "";
+        viewTools.api.callCustomApi( {
+            module: 'Users',
+            action: 'checkUserDuplicate',
+            async:false,
+            dataPOST: {
+                login: login,
+            },
+            callback: function ( data ) {
+                result = data;
+            }
+         } );
+         return result;
+    },
+
     getRecordData: function () {
         return {
             record_id: $('#formDetailView input[name="record"]').val(),
@@ -114,14 +134,30 @@ convertToEmployee = {
         };
     },
 
-    ajaxRequest: function (record_id, module_name, login, LBL_FAIL) {
+    setStatusHiredAndRejected: function(record_id){
+        viewTools.api.callCustomApi( {
+            module: 'Candidatures',
+            action: 'setStatusHiredAndRejected',
+            async:false,
+            dataPOST: {
+                record_id: record_id,
+            },
+         } );
+    },
+
+    ajaxRequest: function (record_id, module_name, login, LBL_FAIL, convert_type) {
         const ajax_link = `index.php?sugar_body_only=1&action=${this.action_name}&module=${module_name}&record_id=${record_id}&login=${login}`;
 
         $.ajax({
             type: "GET",
             url: ajax_link,
+            async: false,
             success: function (id) {
-                window.location.href = `index.php?module=Employees&return_module=Employees&action=DetailView&record=${id}`;
+                if (convert_type == "createEmployee") {
+                    window.location.href = `index.php?module=Employees&return_module=Employees&action=DetailView&record=${id}`;
+                } else if (convert_type == "createUser") {
+                    window.location.href = `index.php?module=Users&return_module=Users&action=DetailView&record=${id}`;
+                }
             },
             error: function (jqXHR, exception) {
                 viewTools.GUI.statusBox.showStatus(LBL_FAIL, 'error', 3500);
