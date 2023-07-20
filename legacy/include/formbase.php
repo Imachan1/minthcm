@@ -250,8 +250,8 @@ function handleRedirect($return_id='', $return_module='', $additionalFlags = fal
 		exit;
 	}
 
-	$url = buildRedirectURL($return_id, $return_module);
-	header($url);
+	$url = str_replace("Location: ",'',buildRedirectURL($return_id, $return_module)); //MintHCM4 added replace there because at the moment we do not know we can change it in buildRedirectURL.
+	echo "<script>window.parent.postMessage(location.origin+location.pathname.replace('index.php', '')+'$url');</script>\n";
 	exit;	
 }
 

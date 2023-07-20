@@ -17,7 +17,20 @@ input[type=button][selected]:hover, .buttons .button[selected]:hover {
     background: $color-mint-lightgreen-lighter;
     color: #fff;
 }
+#EditView a.button {
+    padding: 0 10px;
+    margin: 4px;
+    background-color: $color-32;
+    border: 1px solid $color-99;
+    color: $color-99;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+    height: 32px;
+    display: inline-block;
+}
 
+#EditView a.button:hover {
+    background-color: $color-mint-white-hover;
+}
 .detail-view-field .dataField input.button {
     background-color: $color-36;
 }

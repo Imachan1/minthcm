@@ -10,6 +10,7 @@
                         class="alert"
                         v-ripple="{ class: 'text-primary' }"
                         :class="{ 'alert-faded': alert.is_read }"
+                        @click="redirectToAlert(alert)"
                     >
                         <div class="alert-body">
                             <span
@@ -44,7 +45,7 @@
                     </div>
                 </v-list-item>
             </template>
-            <span v-else v-text="'No alerts'" class="px-4" />
+            <span v-else v-text="languages.label('LBL_MINT4_NO_ALERTS')" class="px-4" />
         </v-list>
         <!-- <div class="alerts-footer">
             <v-tooltip text="Mark all as read" location="top left">
@@ -74,17 +75,32 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { DateTime } from 'luxon'
-import { useAlertsStore } from '@/store/alerts'
+import { useAlertsStore, Alert } from '@/store/alerts'
+import { useLanguagesStore } from '@/store/languages'
+import { useUrlStore } from '@/store/url'
 
+const router = useRouter()
 const alerts = useAlertsStore()
+const languages = useLanguagesStore()
+const url = useUrlStore()
 
 function toRelativeDate(date: string) {
-    const dt = DateTime.fromSQL(date)
+    const dt = DateTime.fromSQL(date, { zone: 'UTC' })
     if (dt.diffNow('days').days >= -5) {
         return dt.toRelative()
     }
     return dt.toFormat('dd.MM.yyyy')
+}
+
+function redirectToAlert(alert: Alert) {
+    if (!alert.is_read) {
+        alerts.markRead(alert.id)
+    }
+    if (alert.url_redirect) {
+        router.push(url.fromLegacyUrl(alert.url_redirect))
+    }
 }
 </script>
 

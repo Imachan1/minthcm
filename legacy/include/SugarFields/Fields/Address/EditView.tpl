@@ -43,6 +43,7 @@
  */
 
 *}
+
 <script src='{sugar_getjspath file="include/SugarFields/Fields/Address/SugarFieldAddress.js"}'></script>
 {{assign var="key" value=$displayParams.key|upper}}
 {{assign var="street" value=$displayParams.key|cat:'_address_street'}}
@@ -55,9 +56,11 @@
     <table border="0" cellspacing="1" cellpadding="0" class="edit" width="100%">
         <tr>
             <td valign="top" id="{{$street}}_label" width='25%' scope='row'>
-                <label for='{{$street}}'>{sugar_translate label='LBL_STREET' module='{{$module}}'}:</label>
                 {if $fields.{{$street}}.required || {{if $street|lower|in_array:$displayParams.required}}true{{else}}false{{/if}}}
-                <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>
+                    <label for='{{$street}}' class="bold_required_field">{sugar_translate label='LBL_STREET' module='{{$module}}'}:</label>
+                    <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>
+                {else}
+                    <label for='{{$street}}'>{sugar_translate label='LBL_STREET' module='{{$module}}'}:</label>
                 {/if}
             </td>
             <td width="*">
@@ -80,9 +83,11 @@
 
             <td id="{{$city}}_label" width='{{$def.templateMeta.widths[$smarty.foreach.colIteration.index].label}}%'
                 scope='row'>
-                <label for='{{$city}}'>{sugar_translate label='LBL_CITY' module='{{$module}}'}:</label>
                 {if $fields.{{$city}}.required || {{if $city|lower|in_array:$displayParams.required}}true{{else}}false{{/if}}}
-                <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>
+                    <label for='{{$city}}' class="bold_required_field">{sugar_translate label='LBL_CITY' module='{{$module}}'}:</label>
+                    <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>
+                {else}
+                    <label for='{{$city}}'>{sugar_translate label='LBL_CITY' module='{{$module}}'}:</label>
                 {/if}
             </td>
             <td>
@@ -95,9 +100,11 @@
         <tr>
             <td id="{{$state}}_label" width='{{$def.templateMeta.widths[$smarty.foreach.colIteration.index].label}}%'
                 scope='row'>
-                <label for='{{$state}}'>{sugar_translate label='LBL_STATE' module='{{$module}}'}:</label>
                 {if $fields.{{$state}}.required || {{if $state|lower|in_array:$displayParams.required}}true{{else}}false{{/if}}}
-                <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>
+                    <label for='{{$state}}' class="bold_required_field">{sugar_translate label='LBL_STATE' module='{{$module}}'}:</label>
+                    <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>
+                {else}
+                    <label for='{{$state}}'>{sugar_translate label='LBL_STATE' module='{{$module}}'}:</label>
                 {/if}
             </td>
             <td>
@@ -112,9 +119,11 @@
             <td id="{{$postalcode}}_label"
                 width='{{$def.templateMeta.widths[$smarty.foreach.colIteration.index].label}}%' scope='row'>
 
-                <label for='{{$postalcode}}'>{sugar_translate label='LBL_POSTAL_CODE' module='{{$module}}'}:</label>
                 {if $fields.{{$postalcode}}.required || {{if $postalcode|lower|in_array:$displayParams.required}}true{{else}}false{{/if}}}
-                <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>
+                    <label for='{{$postalcode}}' class="bold_required_field">{sugar_translate label='LBL_POSTAL_CODE' module='{{$module}}'}:</label>
+                    <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>
+                {else}
+                    <label for='{{$postalcode}}'>{sugar_translate label='LBL_POSTAL_CODE' module='{{$module}}'}:</label>
                 {/if}
             </td>
             <td>
@@ -130,9 +139,11 @@
             <td id="{{$country}}_label" width='{{$def.templateMeta.widths[$smarty.foreach.colIteration.index].label}}%'
                 scope='row'>
 
-                <label for='{{$country}}'>{sugar_translate label='LBL_COUNTRY' module='{{$module}}'}:</label>
                 {if $fields.{{$country}}.required || {{if $country|lower|in_array:$displayParams.required}}true{{else}}false{{/if}}}
-                <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>
+                    <label for='{{$country}}' class="bold_required_field">{sugar_translate label='LBL_COUNTRY' module='{{$module}}'}:</label>
+                    <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>
+                {else}
+                    <label for='{{$country}}'>{sugar_translate label='LBL_COUNTRY' module='{{$module}}'}:</label>
                 {/if}
             </td>
             <td>

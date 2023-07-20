@@ -26,8 +26,8 @@
                         class="ma-4 text-caption"
                         v-text="
                             !searchResponse?.query || searchResponse.query.length < 3
-                                ? 'Enter at least 3 characters to find records'
-                                : 'No records found'
+                                ? languages.label('LBL_MINT4_GS_HELP_TIP')
+                                : languages.label('LBL_MINT4_GS_NO_RECORDS_FOUND')
                         "
                     />
                 </div>
@@ -44,8 +44,8 @@
                         <div>
                             <span v-html="getHighlightedText(result.name, searchResponse.query)" />
                             <div class="search-result-description">
-                                <span v-text="result.module" />
-                                <span v-text="`Date created: ${result.meta?.value}`" />
+                                <span v-text="getModuleName(result.module)" />
+                                <span v-text="`${result.meta?.label} ${result.meta?.value}`" />
                             </div>
                         </div>
                     </div>
@@ -106,6 +106,10 @@ function showRecord(module: string, id: string) {
         })
         searchQuery.value = ''
     }
+}
+
+function getModuleName(module: string) {
+    return languages.languages.app_list_strings?.moduleList?.[module] ?? ''
 }
 
 interface SearchResult {
@@ -224,7 +228,7 @@ watch(searchQuery, (newVal) => {
     left: 0px;
     top: 20px;
     background: rgb(var(--v-theme-surface));
-    border-radius: 0px 0px 4px 4px;
+    border-radius: 0px 0px 24px 24px;
     box-shadow: 0px 3px 6px #00000029;
     .search-results-footer {
         margin-top: 8px;

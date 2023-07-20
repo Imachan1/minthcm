@@ -19,7 +19,7 @@
                     ← {{ languages.label('LBL_MINT4_AUTH_BACK_TO_LOGIN') }}
                 </div>
             </v-slide-x-transition>
-            <!-- <v-menu offset="16">
+            <v-menu offset="16">
                 <template v-slot:activator="{ props, isActive }">
                     <MintButton
                         v-bind="props"
@@ -31,21 +31,43 @@
                 </template>
                 <MintMenuList
                     :items="[
-                        { title: 'English', icon: 'fi-gb', onClick: () => {} },
-                        { title: 'polski', icon: 'fi-pl', onClick: () => {} },
+                        { title: 'polski', icon: 'fi-pl', onClick: () => { changeLanguage('pl_PL') } },
+                        { title: 'English', icon: 'fi-gb', onClick: () => { changeLanguage('en_us') } },
                     ]"
                 />
-            </v-menu> -->
+            </v-menu>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { useLanguagesStore } from '@/store/languages'
+import { useBackendStore } from '@/store/backend'
 import MintButton from '@/components/MintButton.vue'
 import MintMenuList from '@/components/MintMenuList.vue'
+import axios from 'axios'
 
 const languages = useLanguagesStore()
+const backend = useBackendStore()
+
+async function changeLanguage(lang = 'pl_PL') {
+    backend.initialLoading = true
+    const response = await axios.get('api/languages', {
+        params: {
+            lang,
+        },
+    })
+    if (!response?.data) {
+        return
+    }
+    languages.languages = {
+        app_strings: response.data.app_strings,
+        app_list_strings: response.data.app_list_strings,
+        modules: {},
+    }
+    languages.currentLanguage = lang
+    backend.initialLoading = false
+}
 </script>
 
 <style scoped lang="scss">

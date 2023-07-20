@@ -49,12 +49,23 @@ class MintHCMPopupClass {
         };
 
         this.getButtons = function () {
-            var button = _.template( '<input type="button" value="<%= text %>" accesskey="<%= accesskey %>" />' );
-            var buttons = "";
+            const button = _.template( '<input type="button" accesskey="<%= accesskey %>" value="<%= text %>" id="<%= id %>" <% if (primary) { %> class="button primary" <% } %> />' );
+            let buttonsLeft = '';
+            let buttonsRight = '';
             this.buttons.forEach( function ( btn ) {
-                buttons += button({ text: btn.text, accesskey: btn.accesskey });
-            } );
-            return buttons;
+                const buttonHtml = button({
+                    text: btn.text,
+                    id: btn.id ?? btn.text.replace(' ', '_'),
+                    primary: !!btn.primary,
+                    accesskey: btn.accesskey
+                });
+                if (btn.left) {
+                    buttonsLeft += buttonHtml
+                } else {
+                    buttonsRight += buttonHtml
+                }
+            });
+            return `<div>${buttonsLeft}</div><div>${buttonsRight}</div>`;
         };
 
         this.setButtonsEvents = function () {
@@ -99,3 +110,56 @@ var closeLoadingScreen = function () {
     return true;
 };
 
+MintHCMPopup.confirm = function (body, options = {}) {
+    return new Promise((resolve) => {
+        MintHCMPopup(
+            viewTools.language.get('app_strings', 'LBL_CONFIRM'),
+            body,
+            [
+                {
+                    text: options.customLabels?.noBtn || viewTools.language.get('app_strings', 'LBL_NO'),
+                    click: () => {
+                        MintHCMPopup.close();
+                        resolve(false);
+                    },
+                    left: true,
+                },
+                {
+                    text: options.customLabels?.yesBtn || viewTools.language.get('app_strings', 'LBL_YES'),
+                    click: () => {
+                        MintHCMPopup.close();
+                        resolve(true);
+                    },
+                    primary: true,
+                },
+            ],
+            {
+                noCloseButton: true,
+                css: { whiteSpace: 'break-spaces', maxWidth: '500px' },
+            },
+        );
+    });
+}
+
+MintHCMPopup.alert = function (body, options = {}) {
+    return new Promise((resolve) => {
+        MintHCMPopup(
+            '',
+            body,
+            [
+                {
+                    text: options.customLabels?.confirmBtn || viewTools.language.get('app_strings', 'LBL_OK'),
+                    click: () => {
+                        MintHCMPopup.close();
+                        resolve(true);
+                    },
+                    primary: true,
+                },
+            ],
+            {
+                noCloseButton: true,
+                css: { whiteSpace: 'break-spaces', maxWidth: '500px' },
+            },
+        );
+    });
+}

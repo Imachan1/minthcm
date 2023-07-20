@@ -29,6 +29,12 @@ $routes = array(
                 "desc" => "User password",
                 "example" => 'p4$$w0rd',
             ),
+            "login_language" => array(
+                "type" => StringType::class,
+                "required" => false,
+                "desc" => "System language",
+                "example" => 'pl_PL',
+            ),
         ),
     ),
     "logout" => array(

@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-interface Alert {
+export interface Alert {
     id: string
     name: string
     description: string
@@ -10,6 +10,7 @@ interface Alert {
     is_read: boolean
     parent_id: string
     parent_type: string
+    url_redirect: string
 }
 
 export const useAlertsStore = defineStore('alerts', () => {

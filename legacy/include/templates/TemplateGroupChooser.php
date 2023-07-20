@@ -115,7 +115,7 @@ EOQ;
 
         $str .= <<<EOQ
                 </td>
-                <td align="center">
+                <td align="center" style="vertical-align: top">
                     <table border="0" cellspacing=0 cellpadding="0" align="center">
                         <tr>
                             <td id="{$this->args['left_name']}_td" align="center">
@@ -136,7 +136,7 @@ EOQ;
                 $str .= "<a id='chooser_{$this->args['left_name']}_left_arrow' onclick=\"return SUGAR.tabChooser.right_to_left('{$this->args['left_name']}','{$this->args['right_name']}', '{$left_size}', '{$right_size}', '{$max_left}');\">" . SugarThemeRegistry::current()->getImage('leftarrow_big','border="0" style="margin-right: 1px;"',null,null,'.gif',$alt_tip_left) . "</a><a id='chooser_{$this->args['left_name']}_left_to_right' onclick=\"return SUGAR.tabChooser.left_to_right('{$this->args['left_name']}','{$this->args['right_name']}', '{$left_size}', '{$right_size}');\">" . SugarThemeRegistry::current()->getImage('rightarrow_big','border="0" style="margin-left: 1px;"',null,null,'.gif',$alt_tip_right) . "</a>";
             }
             $str .= "</td>
-                <td id=\"{$this->args['right_name']}_td\" align=\"center\">
+                <td id=\"{$this->args['right_name']}_td\" align=\"center\" style=\"vertical-align: top\">
                 <select id=\"{$this->args['right_name']}\" name=\"{$this->args['right_name']}[]\" size=\"" . (empty($this->args['right_size']) ? '10' : $this->args['right_size']) . "\" multiple=\"multiple\" " . (isset($this->args['disable']) ? "DISABLED" : '') . 'class="groupChooser">';
             foreach($this->args['values_array'][1] as $key=>$value) {
                 $str .= "<option value=\"{$key}\">{$value}</option>";

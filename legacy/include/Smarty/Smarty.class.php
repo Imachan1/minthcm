@@ -1097,6 +1097,7 @@ class Smarty
     function trigger_error($error_msg, $error_type = E_USER_WARNING)
     {
         $msg = htmlentities($error_msg);
+        $GLOBALS['log']->fatal("Smarty error: {$msg}");
         trigger_error("Smarty error: $msg", $error_type);
     }
 

@@ -265,14 +265,13 @@ class Meeting extends SugarBean {
       
       $return_id = parent::save($check_notify);
 
-      if ( $this->shouldBeProcessedApi() ) {
-         // $this->saveRepeatlyApi(); //CR komentuje to bo spotkania w Mincie się tworzą cyklicznie przy kazdej edycji
-      }
+    //   if ( $this->shouldBeProcessedApi() ) { // FIXME EV 2023-06-28 - nieistniejąca metoda
+         // $this->saveRepeatlyApi(); //CR komentuje to bo spotkania w Mincie si� tworz� cyklicznie przy kazdej edycji
+    //   }
 
       if ($this->status != $bean->fetched_row['status'] && $this->status == 'Held') {
          $this->closeRelatedTraining();
          }
-         
       if ( $this->update_vcal ) {
          vCal::cache_sugar_vcal($current_user);
          // MintHCM start
@@ -288,8 +287,6 @@ class Meeting extends SugarBean {
          Reminder::saveRemindersDataJson('Meetings', $return_id, $reminderData);
          $this->saving_reminders_data = false;
       }
-
-
       return $return_id;
    }
 
@@ -991,38 +988,6 @@ class Meeting extends SugarBean {
       }
    }
 
-   public function shouldBeProcessedApi() {
-      return !( self::$repeatSaveRoudTripCounter || empty($this->repeat_type) || empty($this->date_start) );
-   }
-
-   public function saveRepeatlyApi() {
-      self::$repeatSaveRoudTripCounter++;
-      require_once 'modules/Calendar/CalendarUtils.php';
-
-      $params = array(
-         'type' => $this->repeat_type,
-         'interval' => $this->repeat_interval,
-         'count' => $this->repeat_count,
-         'until' => isset($this->repeat_until) ? $this->repeat_until : null,
-         'dow' => $this->repeat_dow,
-      );
-
-      
-      $repeatArr = CalendarUtils::build_repeat_sequence($this->date_start, $params);
-      $limit = SugarConfig::getInstance()->get('calendar.max_repeat_count', 1000);
-
-      if ( !empty($this->edit_all_recurrences) ) {
-         CalendarUtils::markRepeatDeleted($this);
-      }
-
-      if ( count($repeatArr) > ($limit - 1) ) {
-         //$GLOBALS['log']->fatal('Repeat limit exceeded');
-      } elseif ( isset($repeatArr) && is_array($repeatArr) && count($repeatArr) > 0 ) {
-         CalendarUtils::save_repeat_activities($this, $repeatArr);
-      }
-   }
-
-   // MintHCM #44718 END
 }
 
 // end class def

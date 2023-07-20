@@ -45,6 +45,7 @@
             <div class="d-flex justify-end" style="gap: 8px">
                 <v-icon
                     v-for="action in getItemActions(item.raw)"
+                    v-show="action.icon"
                     :key="action.icon"
                     @click="action.onClick(item.raw)"
                     color="secondary"
@@ -64,6 +65,7 @@
 </template>
 
 <script setup lang="ts">
+import axios from 'axios'
 import { computed } from 'vue'
 import { VDataTableServer, VDataTableFooter } from 'vuetify/labs/VDataTable'
 import { DateTime } from 'luxon'
@@ -71,11 +73,13 @@ import { useRouter } from 'vue-router'
 import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useUrlStore } from '@/store/url'
+import { usePopupsStore } from '@/store/popups'
 
 const router = useRouter()
 const store = useListViewStore()
 const url = useUrlStore()
 const languages = useLanguagesStore()
+const popups = usePopupsStore()
 
 const pageText = computed(() => {
     const isOverflow = store.itemsLength > store.options.page * store.options.itemsPerPage
@@ -94,7 +98,13 @@ const coreActions = {
     },
     delete: {
         icon: 'mdi-delete',
-        onClick: (item) => null,
+        onClick: async (item) => {
+            const confirmMessage = `${languages.label('LBL_ESLIST_DELETE_RECORD_CONFIRM_BODY')} ${item.name}?`
+            if (await popups.confirm(confirmMessage)) {
+                await axios.delete(`api/${url.module}/${item.id}`)
+                store.getData()
+            }
+        },
     },
 }
 
@@ -103,7 +113,7 @@ function getItemActions(item: any) {
         .filter((action) => typeof action !== 'string' || item.acl_access[action])
         .map((action) => {
             if (typeof action === 'string') {
-                return coreActions[action]
+                return coreActions[action] ?? {}
             }
             return {
                 ...action,
@@ -122,7 +132,7 @@ function formatDate(date: string) {
     }
     if (date.length === 19) {
         // db datetime
-        return DateTime.fromSQL(date).toFormat('dd.MM.yyyy HH:mm:ss') // todo: user format
+        return DateTime.fromSQL(date, { zone: 'UTC' }).toLocal().toFormat('dd.MM.yyyy HH:mm:ss') // todo: user format
     }
     return ''
 }

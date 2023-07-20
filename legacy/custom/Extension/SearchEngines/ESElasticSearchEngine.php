@@ -68,6 +68,7 @@ class ESElasticSearchEngine extends ElasticSearchEngine {
     public function search(SearchQuery $query) {
         $this->validateQuery($query);
         $params = $this->createSearchParams($query);
+        $params = $this->addKeywordToSort($params);
         $start = microtime(true);
         $hits = $this->runElasticSearch($params);
         $results = $this->parseHits($hits);
@@ -83,6 +84,36 @@ class ESElasticSearchEngine extends ElasticSearchEngine {
             $params['body']['size'] = $size;
         }
 
+        return $params;
+    }
+
+    protected function addKeywordToSort($params) 
+    {
+        $path = 'lib/Search/ElasticSearch/defaultParams.yml';
+        if (!file_exists($path)) {
+            return $params;
+        }
+        $parse = new Symfony\Component\Yaml\Parser();
+        $parsed = $parse->parseFile('lib/Search/ElasticSearch/defaultParams.yml');
+        $module = !empty($params['type']) ? $params['type'] : '';
+        $sort_field = !empty($params['body']['sort']) && count($params['body']['sort']) == 1 ? array_key_first($params['body']['sort']) : '';
+        $sort_field_exp = explode('.',$sort_field);
+        if (!isset($parsed['mappings'][$module])) {
+            return $params;
+        }
+        $mappings = $parsed['mappings'][$module];
+        foreach ($sort_field_exp as $sort_field_part) {
+            if (!isset($mappings['properties'][$sort_field_part])) {
+                return $params;
+            }
+            $mappings = $mappings['properties'][$sort_field_part];
+        }
+        if (
+            isset($mappings['fields']['keyword']['type'])
+            && $mappings['fields']['keyword']['type'] == 'keyword'
+        ) {
+            $params['body']['sort'] = [$sort_field.'.keyword' => $params['body']['sort'][$sort_field]];
+        }
         return $params;
     }
 

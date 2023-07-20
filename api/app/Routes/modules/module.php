@@ -27,6 +27,26 @@ $routes = array(
             ),
         ),
     ),
+    "delete" => array(
+        "method" => "DELETE",
+        "path" => "/{id}",
+        "class" => ModuleController::class,
+        "function" => 'delete',
+        "desc" => "Delete record",
+        "options" => array(
+            'auth' => true,
+        ),
+        "pathParams" => array(
+            "id" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Module id",
+                "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
+            ),
+        ),
+        "queryParams" => array(),
+        "bodyParams" => array(),
+    ),
     "list_data" => array(
         "method" => "POST",
         "path" => "",

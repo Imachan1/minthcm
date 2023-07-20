@@ -1,82 +1,118 @@
 <?php
-// created: 2018-08-15 11:18:10
+// created: 2023-06-20 13:07:24
 $unified_search_modules_display = array(
-    'Accounts' => array(
+    'ACLRoles' => array(
         'visible' => true,
     ),
-    'Contacts' => array(
+    'ACLActions' => array(
         'visible' => true,
     ),
-    'Opportunities' => array(
+    'ProspectLists' => array(
         'visible' => true,
     ),
-    'Calls' => array(
+    'Prospects' => array(
         'visible' => true,
     ),
-    'Documents' => array(
+    'Project' => array(
         'visible' => true,
     ),
-    'Cases' => array(
-        'visible' => true,
-    ),
-    'AOS_Contracts' => array(
-        'visible' => true,
-    ),
-    'Leads' => array(
-        'visible' => true,
-    ),
-    'Meetings' => array(
-        'visible' => true,
-    ),
-    'Notes' => array(
+    'ProjectTask' => array(
         'visible' => true,
     ),
     'Campaigns' => array(
         'visible' => true,
     ),
+    'EmailMarketing' => array(
+        'visible' => true,
+    ),
+    'CampaignLog' => array(
+        'visible' => true,
+    ),
+    'CampaignTrackers' => array(
+        'visible' => true,
+    ),
+    'Releases' => array(
+        'visible' => true,
+    ),
+    'Groups' => array(
+        'visible' => true,
+    ),
+    'EmailMan' => array(
+        'visible' => true,
+    ),
+    'Schedulers' => array(
+        'visible' => true,
+    ),
+    'SchedulersJobs' => array(
+        'visible' => true,
+    ),
+    'EmailTemplates' => array(
+        'visible' => true,
+    ),
+    'Notes' => array(
+        'visible' => true,
+    ),
+    'Calls' => array(
+        'visible' => true,
+    ),
+    'Emails' => array(
+        'visible' => true,
+    ),
+    'Meetings' => array(
+        'visible' => true,
+    ),
+    'Tasks' => array(
+        'visible' => true,
+    ),
+    'Users' => array(
+        'visible' => true,
+    ),
+    'Currencies' => array(
+        'visible' => true,
+    ),
+    'Trackers' => array(
+        'visible' => true,
+    ),
+    'Connectors' => array(
+        'visible' => true,
+    ),
+    'Documents' => array(
+        'visible' => true,
+    ),
+    'Roles' => array(
+        'visible' => true,
+    ),
     'Employees' => array(
         'visible' => true,
     ),
-    'Candidates' => array(
+    'OAuthKeys' => array(
         'visible' => true,
     ),
-    'Candidatures' => array(
+    'OAuthTokens' => array(
         'visible' => true,
     ),
-    'News' => array(
+    'SecurityGroups' => array(
         'visible' => true,
     ),
-    'Ideas' => array(
+    'SurveyResponses' => array(
         'visible' => true,
     ),
-    'Positions' => array(
+    'Surveys' => array(
         'visible' => true,
     ),
-    'SalaryRanges' => array(
+    'Skills' => array(
         'visible' => true,
     ),
-    'Recruitments' => array(
+    'Attitudes' => array(
         'visible' => true,
     ),
-    'OrganizationalUnits' => array(
+    'Knowledge' => array(
         'visible' => true,
     ),
-    'Competencies' => array(
+    'ResponsibilityActivities' => array(
         'visible' => true,
     ),
-    'CompetencyRatings' => array(
-        'visible' => true,
-    ),
-    'Appraisals' => array(
-        'visible' => true,
-    ),
-    'Benefits' => array(
-        'visible' => true,
-    ),
-    'Responsibilities' => array(
-        'visible' => true,
-    ),
-    'TermsOfEmployment' => array(
+    'Improvements' => array(
         'visible' => true,
     ),
     'Conclusions' => array(
@@ -85,85 +121,175 @@ $unified_search_modules_display = array(
     'Problems' => array(
         'visible' => true,
     ),
-    'Improvements' => array(
+    'Candidates' => array(
         'visible' => true,
     ),
-    'Applications' => array(
+    'Candidatures' => array(
         'visible' => true,
     ),
-    'Certificates' => array(
+    'Costs' => array(
+        'visible' => true,
+    ),
+    'Delegations' => array(
+        'visible' => true,
+    ),
+    'DelegationsLocale' => array(
+        'visible' => true,
+    ),
+    'Ideas' => array(
+        'visible' => true,
+    ),
+    'Rooms' => array(
+        'visible' => true,
+    ),
+    'Allocations' => array(
+        'visible' => true,
+    ),
+    'Workplaces' => array(
+        'visible' => true,
+    ),
+    'EmployeeInteractionTracking' => array(
+        'visible' => true,
+    ),
+    'Positions' => array(
+        'visible' => true,
+    ),
+    'Recruitments' => array(
+        'visible' => true,
+    ),
+    'Transportations' => array(
+        'visible' => true,
+    ),
+    'EmployeeRoles' => array(
+        'visible' => true,
+    ),
+    'Benefits' => array(
+        'visible' => true,
+    ),
+    'Responsibilities' => array(
+        'visible' => true,
+    ),
+    'SpentTime' => array(
+        'visible' => true,
+    ),
+    'WorkSchedules' => array(
+        'visible' => true,
+    ),
+    'WorkingMonths' => array(
+        'visible' => true,
+    ),
+    'NonWorkingDays' => array(
+        'visible' => true,
+    ),
+    'Resources' => array(
+        'visible' => true,
+    ),
+    'PeriodsOfEmployment' => array(
+        'visible' => true,
+    ),
+    'Reservations' => array(
+        'visible' => true,
+    ),
+    'Contracts' => array(
+        'visible' => true,
+    ),
+    'TermsOfEmployment' => array(
+        'visible' => true,
+    ),
+    'Trainings' => array(
+        'visible' => true,
+    ),
+    'OnboardingOffboardingElements' => array(
+        'visible' => true,
+    ),
+    'OnboardingTemplates' => array(
+        'visible' => true,
+    ),
+    'OffboardingTemplates' => array(
         'visible' => true,
     ),
     'ExitInterviews' => array(
         'visible' => true,
     ),
-    'AOP_Case_Events' => array(
-        'visible' => false,
-    ),
-    'AOP_Case_Updates' => array(
-        'visible' => false,
-    ),
-    'AOR_Reports' => array(
-        'visible' => false,
-    ),
-    'AOS_Invoices' => array(
-        'visible' => false,
-    ),
-    'AOS_PDF_Templates' => array(
-        'visible' => false,
-    ),
-    'AOS_Product_Categories' => array(
-        'visible' => false,
-    ),
-    'AOS_Products' => array(
-        'visible' => false,
-    ),
-    'AOS_Quotes' => array(
-        'visible' => false,
-    ),
-    'AOW_Processed' => array(
-        'visible' => false,
-    ),
-    'AOW_WorkFlow' => array(
-        'visible' => false,
-    ),
-    'Bugs' => array(
-        'visible' => false,
-    ),
-    'Calls_Reschedule' => array(
-        'visible' => false,
-    ),
-    'FP_Event_Locations' => array(
-        'visible' => false,
-    ),
-    'FP_events' => array(
-        'visible' => false,
-    ),
-    'Project' => array(
-        'visible' => false,
-    ),
-    'ProjectTask' => array(
-        'visible' => false,
-    ),
-    'ProspectLists' => array(
-        'visible' => false,
-    ),
-    'Prospects' => array(
-        'visible' => false,
-    ),
-    'Tasks' => array(
+    'Goals' => array(
         'visible' => true,
     ),
-    'jjwg_Address_Cache' => array(
-        'visible' => false,
+    'Appraisals' => array(
+        'visible' => true,
     ),
-    'jjwg_Areas' => array(
-        'visible' => false,
+    'AppraisalItems' => array(
+        'visible' => true,
     ),
-    'jjwg_Maps' => array(
-        'visible' => false,
+    'Onboardings' => array(
+        'visible' => true,
     ),
-    'jjwg_Markers' => array(
-        'visible' => false,
+    'Offboardings' => array(
+        'visible' => true,
+    ),
+    'CompetencyRatings' => array(
+        'visible' => true,
+    ),
+    'Competencies' => array(
+        'visible' => true,
+    ),
+    'CareerPaths' => array(
+        'visible' => true,
+    ),
+    'News' => array(
+        'visible' => true,
+    ),
+    'UsersNews' => array(
+        'visible' => true,
+    ),
+    'Certificates' => array(
+        'visible' => true,
+    ),
+    'Applications' => array(
+        'visible' => true,
+    ),
+    'DashboardBackups' => array(
+        'visible' => true,
+    ),
+    'DashboardManager' => array(
+        'visible' => true,
+    ),
+    'DashboardHistory' => array(
+        'visible' => true,
+    ),
+    'KReports' => array(
+        'visible' => true,
+    ),
+    'ScheduleReports' => array(
+        'visible' => true,
+    ),
+    'ScheduleReportsLogs' => array(
+        'visible' => true,
+    ),
+    'KTemplates' => array(
+        'visible' => true,
+    ),
+    'PDFGenerator' => array(
+        'visible' => true,
+    ),
+    'PDFTemplates' => array(
+        'visible' => true,
+    ),
+    'SalaryRanges' => array(
+        'visible' => true,
+    ),
+    'EmployeeCertificates' => array(
+        'visible' => true,
+    ),
+    'Dictionaries' => array(
+        'visible' => true,
+    ),
+    'Comments' => array(
+        'visible' => true,
+    ),
+    'Reactions' => array(
+        'visible' => true,
+    ),
+    'Files' => array(
+        'visible' => true,
     ),
 );

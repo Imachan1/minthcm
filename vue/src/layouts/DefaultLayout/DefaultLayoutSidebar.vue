@@ -33,7 +33,7 @@
             <v-text-field
                 v-model="filterModulesQuery"
                 class="find-module"
-                placeholder="Find module..."
+                :placeholder="languages.label('LBL_MINT4_FIND_MODULE')"
                 variant="plain"
                 density="compact"
                 hide-details
@@ -97,7 +97,7 @@
                 <v-expansion-panel v-if="recents.recents?.length" bg-color="transparent">
                     <v-expansion-panel-title>
                         <v-icon class="mr-4" icon="mdi-history" />
-                        <span>Recently viewed</span>
+                        <span v-text="languages.label('LBL_MINT4_RECENTLY_VIEWED')" />
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
                         <v-list nav class="nav-list">
@@ -120,7 +120,7 @@
                 <v-expansion-panel v-if="favorites.favorites?.length" bg-color="transparent" elevetion="10">
                     <v-expansion-panel-title>
                         <v-icon class="mr-4" icon="mdi-heart" />
-                        <span>Favorite records</span>
+                        <span v-text="languages.label('LBL_MINT4_FAVORITE_RECORDS')" />
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
                         <v-list nav class="nav-list">
@@ -152,11 +152,13 @@ import { useFavoritesStore } from '@/store/favorites'
 import { useRecentsStore } from '@/store/recents'
 import { useModulesStore, ModuleAction } from '@/store/modules'
 import MintMenuList from '@/components/MintMenuList.vue'
+import { useLanguagesStore } from '@/store/languages'
 
 const modules = useModulesStore()
 const url = useUrlStore()
 const favorites = useFavoritesStore()
 const recents = useRecentsStore()
+const languages = useLanguagesStore()
 
 const filterModulesQuery = ref('')
 const filteredModules = computed(() => {
@@ -164,7 +166,7 @@ const filteredModules = computed(() => {
     if (!query) {
         return modules.visibleModules
     }
-    return modules.visibleModules.filter((m) => m.name.toLowerCase().includes(query))
+    return modules.visibleModules.filter((m) => m.label.toLowerCase().includes(query))
 })
 
 function parseModuleActions(actions: ModuleAction[]) {

@@ -303,43 +303,37 @@ function smarty_function_sugar_button($params, &$smarty)
 			break;
 
 			case "CANCEL":
-
                 //If the return action is not empty and the return action is detail view and the id is not empty
                 $cancelButton  = '{if !empty($smarty.request.return_action) && ($smarty.request.return_action == "DetailView" && !empty($smarty.request.return_id))}';
-                $cancelButton .= '<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="SUGAR.ajaxUI.loadContent(\'index.php?action=DetailView&module={$smarty.request.return_module|escape:"url"}&record={$smarty.request.return_id|escape:"url"}\'); return false;" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" type="button" id="'.$type.$location.'"> ';
+                $cancelButton .= '<a href="index.php?action=DetailView&module={$smarty.request.return_module|escape:"url"}&record={$smarty.request.return_id|escape:"url"}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
 
                 //If the return action is not empty and the return action is detail view and the id (from fields) is not empty
                 $cancelButton .= '{elseif !empty($smarty.request.return_action) && ($smarty.request.return_action == "DetailView" && !empty($fields.id.value))}';
-                $cancelButton .= '<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="SUGAR.ajaxUI.loadContent(\'index.php?action=DetailView&module={$smarty.request.return_module|escape:"url"}&record={$fields.id.value}\'); return false;" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" id="'.$type.$location.'"> ';
+                $cancelButton .= '<a href="index.php?action=DetailView&module={$smarty.request.return_module|escape:"url"}&record={$fields.id.value}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
 
                 //Bug 1057 If the return action is not empty and the return action is detail view and the id (from both locations) are empty, go to the modules listview
                 $cancelButton .= '{elseif !empty($smarty.request.return_action) && ($smarty.request.return_action == "DetailView" && empty($fields.id.value)) && empty($smarty.request.return_id)}';
-                $cancelButton .= '<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="SUGAR.ajaxUI.loadContent(\'index.php?action=ListView&module={$smarty.request.return_module|escape:"url"}&record={$fields.id.value}\'); return false;" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" id="'.$type.$location.'"> ';
+                $cancelButton .= '<a href="index.php?module={$smarty.request.return_module|escape:"url"}&action=ESlistView" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
 
 
                 //Bug 893 if the return action is not empty and the return module is not empty, go back to that page
                 $cancelButton .= '{elseif !empty($smarty.request.return_action) && !empty($smarty.request.return_module)}';
-                $cancelButton .= '<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="SUGAR.ajaxUI.loadContent(\'index.php?action={$smarty.request.return_action}&module={$smarty.request.return_module|escape:"url"}\'); return false;" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" id="'.$type.$location.'"> ';
+                $cancelButton .= '<a href="index.php?action={$smarty.request.return_action}&module={$smarty.request.return_module|escape:"url"}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
 
                 //If the return action is empty but the return id is in fields
                 $cancelButton .= '{elseif empty($smarty.request.return_action) || empty($smarty.request.return_id) && !empty($fields.id.value)}';
-                $cancelButton .= '<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="SUGAR.ajaxUI.loadContent(\'index.php?action=index&module='.$module.'\'); return false;" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" id="'.$type.$location.'"> ';
-
-
+                $cancelButton .= '<a href="index.php?action=index&module='.$module.'" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
 
                 $cancelButton .= '{else}';
-                $cancelButton .= '<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="SUGAR.ajaxUI.loadContent(\'index.php?action=index&module={$smarty.request.return_module|escape:"url"}&record={$smarty.request.return_id|escape:"url"}\'); return false;" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" id="'.$type.$location.'"> ';
+                $cancelButton .= '<a href="index.php?action=index&module={$smarty.request.return_module|escape:"url"}&record={$smarty.request.return_id|escape:"url"}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
                 $cancelButton .= '{/if}';
 
-
-                //$cancelButton = '{$smarty.request.return_action}'.'{$smarty.request.return_module}';
-
-
+                //$cancelButton = '{$smarty.request.return_action}'.'{$smarty.request.return_module}';              
                 $output = $cancelButton;
 			break;
 
 			case "DELETE":
-                $output = '{if $bean->aclAccess("delete")}<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="button" onclick="'.$js_form.' _form.return_module.value=\'' . $module . '\'; _form.return_action.value=\'ListView\'; _form.action.value=\'Delete\'; if(confirm(\'{$APP.NTC_DELETE_CONFIRMATION}\')) SUGAR.ajaxUI.submitForm(_form); return false;" type="submit" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" id="delete_button">{/if} ';
+                $output = '{if $bean->aclAccess("delete")}<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="button" onclick="'.$js_form.' _form.return_module.value=\'' . $module . '\'; _form.return_action.value=\'ESlistView\'; _form.action.value=\'Delete\'; if(confirm(\'{$APP.NTC_DELETE_CONFIRMATION}\')) SUGAR.ajaxUI.submitForm(_form); return false;" type="submit" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" id="delete_button">{/if} ';
             break;
 
 			case "DUPLICATE":
@@ -347,7 +341,7 @@ function smarty_function_sugar_button($params, &$smarty)
             break;
 
 			case "EDIT";
-			    $output = '{if $bean->aclAccess("edit")}<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="button primary" onclick="'.$js_form.' _form.return_module.value=\'' . $module . '\'; _form.return_action.value=\'DetailView\'; _form.return_id.value=\'{$id}\'; _form.action.value=\'EditView\';SUGAR.ajaxUI.submitForm(_form);" type="button" name="Edit" id="edit_button" value="{$APP.LBL_EDIT_BUTTON_LABEL}">{/if} ';
+                $output = '{if $bean->aclAccess("edit")}<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="button primary" onclick="debugger;window.parent.postMessage(location.origin+location.pathname.replace(\'index.php\', \'\')+\'index.php?action=EditView&module='.$module.'&return_action=DetailView&return_module='.$module.'&return_id={$id}&record={$id}\');" type="button" name="Edit" id="edit_button" value="{$APP.LBL_EDIT_BUTTON_LABEL}">{/if} ';
             break;
 
 			case "FIND_DUPLICATES":

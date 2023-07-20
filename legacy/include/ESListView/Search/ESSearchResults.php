@@ -39,8 +39,9 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
                 }
                 $fieldDefs = $obj->getFieldDefinitions();
                 $objUpdatedLinks = $this->updateFieldDefLinks($obj, $fieldDefs);
+                $objDecodedEntities = $this->decodeEntities($objUpdatedLinks, $fieldDefs);
 
-                $parsed[$module][] = $objUpdatedLinks;
+                $parsed[$module][] = $objDecodedEntities;
             }
             $parsed[$module] = $this->handleSG($parsed[$module], $module);
         }
@@ -145,10 +146,22 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
         }
         return $obj;
     }
-        protected function getHrefLink($label, $module, $record, $action)
+
+    protected function getHrefLink($label, $module, $record, $action)
     {
-        global $sugar_config;
         $link = "index.php?action={$action}&module={$module}&record={$record}";
         return $link;
+    }
+
+    protected function decodeEntities(SugarBean $obj, &$fieldDefs)
+    {
+        foreach ($fieldDefs as &$fieldDef) {
+            if (isset($fieldDef['type']) && in_array($fieldDef['type'], ['name', 'varchar'])) {
+                $field = $fieldDef['name'];
+                $obj->$field = html_entity_decode($obj->$field, ENT_QUOTES);
+            }
+        }
+
+        return $obj;
     }
 }

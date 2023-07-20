@@ -1,12 +1,13 @@
 <template>
-    <iframe class="legacy-view" :src="legacyUrl" />
+    <iframe class="legacy-view" :src="legacyUrl" :key="iframeReload" />
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUrlStore } from '@/store/url'
 
+const route = useRoute()
 const router = useRouter()
 const url = useUrlStore()
 onMounted(() => {
@@ -33,6 +34,11 @@ async function handleMessageEvent(e: MessageEvent) {
             path,
             force: true,
         })
+
+        if (route.path === path.match(/[^\?]*/i)[0]) {
+            // Force iframe reload (necessary e.g. for: QC -> create -> full form -> save)
+            iframeReload.value++
+        }
     }
 }
 
@@ -63,6 +69,8 @@ const legacyUrl = computed(() => {
     }
     return 'legacy/index.php' + location.search
 })
+
+const iframeReload = ref(0)
 </script>
 
 <style scoped lang="scss">

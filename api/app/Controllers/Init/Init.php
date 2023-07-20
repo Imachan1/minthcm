@@ -40,6 +40,7 @@ class Init
         $response_body['menu_modules'] = $modules_menu;
         $response_body['modules'] = $modules_data;
         $response_body['quick_create'] = $this->getQuickCreate();
+        $response_body['legacy_views'] = $this->getLegacyViews();
         return $response_body;
     }
 
@@ -62,7 +63,9 @@ class Init
     private function getModules()
     {
         global $current_user, $app_list_strings;
+        chdir('../legacy');
         $modules = query_module_access_list($current_user);
+        chdir('../api');
 
         $modules_data = array();
         if (!is_array($modules)) {
@@ -71,6 +74,10 @@ class Init
 
         foreach ($modules as $module) {
             $modules_data[$module] = $this->module_init_controller->getModuleData($module);
+        }
+        
+        if($current_user->isAdmin()) {
+            return $this->getMenuForAllModules($modules_data,$modules);
         }
         return [array_keys($modules), $modules_data];
     }
@@ -91,5 +98,23 @@ class Init
             );
         }
         return $response;
+    }
+
+    private function getLegacyViews()
+    {
+        $legacy_views = include "constants/legacy_views.php";
+        return $legacy_views;
+    }
+
+    private function getMenuForAllModules($modules_data,$modules)
+    {
+        global $beanList;
+        foreach($beanList as $key=>$module) {
+            if(!array_key_exists($key,$modules_data)){
+                $modules_data[$key] = $this->module_init_controller->getModuleData($key);
+                $modules[$key] = $module;
+            }
+        }
+        return [array_keys($modules), $modules_data];
     }
 }

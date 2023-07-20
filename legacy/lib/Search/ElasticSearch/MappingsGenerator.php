@@ -11,44 +11,44 @@ class MappingsGenerator
     protected $metadata_file = 'eslistviewdefs.php';
     protected $output_file_path = 'lib/Search/ElasticSearch/defaultParams.yml';
     protected $not_standard_fields = [
-        'name',
-        'first_name',
-        'last_name',
-        'date_entered',
-        'created_by',
-        'date_modified',
-        'modified_user_id',
-        'assigned_user_id',
-        'modified_by_name',
-        'created_by_name',
-        'assigned_user_name',
-        'phone_mobile',
-        'primary_address_city',
-        'primary_address_state',
-        'primary_address_postalcode',
-        'primary_address_street',
-        'primary_address_country',
+        'name' => 'name.name',
+        'first_name' => 'name.first',
+        'last_name' => 'name.last',
+        'date_entered' => 'meta.created.date',
+        'created_by' => 'meta.created.user_id',
+        'date_modified' => 'meta.modified.date',
+        'modified_user_id' => 'meta.modified.user_id',
+        'assigned_user_id' => 'meta.assigned.user_id',
+        'modified_by_name' => 'meta.modified.user_name',
+        'created_by_name' => 'meta.created.user_name',
+        'assigned_user_name' => 'meta.assigned.user_name',
+        'primary_address_city' => 'address.primary.city',
+        'primary_address_state' => 'address.primary.state',
+        'primary_address_postalcode' => 'address.primary.postalcode',
+        'primary_address_street' => 'address.primary.street',
+        'primary_address_country' => 'address.primary.country',
+        'phone_mobile' => '',
     ];
     protected $types = [
         'date' => [
             'type' => 'date',
-            'format' => 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+            'format' => 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd',
         ],
         'text' => [
             'type' => 'text',
             'fields' => [
                 'keyword' => [
                     'type' => 'keyword',
-                    'ignore_above' => 256
-                ]
-            ]
+                    'ignore_above' => 256,
                 ],
+            ],
+        ],
         'boolean' => [
-            'type' => 'boolean'
+            'type' => 'boolean',
         ],
         'long' => [
-            'type' => 'long'
-        ]
+            'type' => 'long',
+        ],
     ];
 
     protected function getModulesWithElastic()
@@ -87,8 +87,8 @@ class MappingsGenerator
             $key = $data['es_module'] ? $data['es_module'] : $module['module'];
 
             foreach ($fields_to_map as $field) {
-                if (in_array($field, $this->not_standard_fields)) {
-                    $mappings = $this->handleNotStandardField($field, $mappings, $key);
+                if (!empty($this->not_standard_fields[$field])) {
+                    $mappings = $this->handleNotStandardField($this->not_standard_fields[$field], $mappings, $key);
                 } else {
                     if (in_array($defs[$field]['type'], ['date', 'datetime', 'datetimecombo'])) {
                         $mappings['mappings'][$key]['properties'][$field] = $this->types['date'];
@@ -104,20 +104,27 @@ class MappingsGenerator
         $this->parseMappingsToYaml($mappings);
     }
 
-    protected function parseMappingsToYaml($mappings) {
+    protected function parseMappingsToYaml($mappings)
+    {
         $yaml = Yaml::dump($mappings, 10, 2);
         file_put_contents($this->output_file_path, $yaml);
     }
 
-    protected function handleNotStandardField($field, $mappings, $key)
+    protected function handleNotStandardField($es_field, $mappings, $key)
     {
-        if (strpos($field, 'address')) {
-            $address = explode('_', $field);
-            $mappings['mappings'][$key]['properties']['address']['properties'][$address[0]]['properties'][$address[2]] = $this->types['text'];
-        } elseif ('phone_mobile' == $field) {
-            $mappings['mappings'][$key]['properties']['phone']['properties']['mobile'] = $this->types['text'];
+        $es_field_parts = explode('.', $es_field);
+        $count = count($es_field_parts);
+        $sub_mappings = &$mappings['mappings'][$key];
+        foreach ($es_field_parts as $es_field_part) {
+            if (!isset($sub_mappings['properties'][$es_field_part])) {
+                $sub_mappings['properties'][$es_field_part] = [];
+            }
+            $sub_mappings = &$sub_mappings['properties'][$es_field_part];
+            $count--;
+            if ($count == 0) {
+                $sub_mappings = $this->types['text'];
+            }
         }
-
         return $mappings;
     }
 

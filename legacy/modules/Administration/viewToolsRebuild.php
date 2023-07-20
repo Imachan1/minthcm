@@ -613,7 +613,7 @@ window.viewTools.cache.formulaDuplicateFields = ' . json_encode($duplicate_field
     require 'cache/Relationships/relationships.cache.php';
     $related_tmp = array();
     foreach ($GLOBALS["dictionary"] as $module_name => $module) {
-        if (is_array($module['fields'])) {
+        if (isset($module['fields']) && is_array($module['fields'])) {
             foreach ($module['fields'] as $module_field) {
                 if (isset($module_field['vt_calculated']) && is_string($module_field['vt_calculated'])) {
                     preg_match_all('/\#(\w+)/i', $module_field['vt_calculated'],
@@ -658,9 +658,9 @@ window.viewTools.cache.formulaDuplicateFields = ' . json_encode($duplicate_field
 function vtr_getModuleLowercase($key, $module) {
     global $beanList;
     $flipped = array_flip($beanList);
-    $module_lowercase = strtolower($flipped[$key]);
+    $module_lowercase = isset($flipped[$key]) ? strtolower($flipped[$key]) : '';
     if(empty($module_lowercase)){
-        $module_lowercase = $module['table'];
+        $module_lowercase = isset($module['table']) ? $module['table'] : '';
     }
     return $module_lowercase;
 }

@@ -166,4 +166,5 @@ $mod_strings = array(
     'LBL_ERROR_INPUT_RADIO' => 'You must select one of the fields',
     'LBL_INFO' => 'Select one of the following options:',
     'LNK_ES_CANDIDATURES_LIST' => 'View ES Candidatures',
+    'LBL_FILES' => 'Files',
 );
