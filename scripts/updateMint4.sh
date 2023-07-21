@@ -21,25 +21,25 @@ else
 fi
 
 echo "Aktualizacja custom\n"
-cp -r ${tmp_dir}/MintHCM/custom/* /var/www/${instance_dir}/legacy/custom/
+cp -r ${tmp_dir}/legacy/custom/* /var/www/${instance_dir}/legacy/custom/
 echo "Aktualizacja data\n"
-cp -r ${tmp_dir}/MintHCM/data/* /var/www/${instance_dir}/legacy/data/
+cp -r ${tmp_dir}/legacy/data/* /var/www/${instance_dir}/legacy/data/
 echo "aktualizacja include\n"
-cp -r ${tmp_dir}/MintHCM/include/* /var/www/${instance_dir}/legacy/include/
+cp -r ${tmp_dir}/legacy/include/* /var/www/${instance_dir}/legacy/include/
 echo "aktualizacja jssource\n"
-cp -r ${tmp_dir}/MintHCM/jssource/* /var/www/${instance_dir}/legacy/jssource/
+cp -r ${tmp_dir}/legacy/jssource/* /var/www/${instance_dir}/legacy/jssource/
 echo "aktualizacja metadata\n"
-cp -r ${tmp_dir}/MintHCM/metadata/* /var/www/${instance_dir}/legacy/metadata/
+cp -r ${tmp_dir}/legacy/metadata/* /var/www/${instance_dir}/legacy/metadata/
 echo "aktualizacja themes\n"
-cp -r ${tmp_dir}/MintHCM/themes/* /var/www/${instance_dir}/legacy/themes/
+cp -r ${tmp_dir}/legacy/themes/* /var/www/${instance_dir}/legacy/themes/
 echo "aktualizacja modules\n"
-cp -r ${tmp_dir}/MintHCM/modules/* /var/www/${instance_dir}/legacy/modules/
+cp -r ${tmp_dir}/legacy/modules/* /var/www/${instance_dir}/legacy/modules/
 echo "aktualizacja API\n"
-cp -r ${tmp_dir}/MintHCM/Api/* /var/www/${instance_dir}/legacy/Api/
+cp -r ${tmp_dir}/legacy/Api/* /var/www/${instance_dir}/legacy/Api/
 echo "aktualizacja vendor\n"
-cp -r ${tmp_dir}/MintHCM/vendor/* /var/www/${instance_dir}/legacy/vendor/
+cp -r ${tmp_dir}/legacy/vendor/* /var/www/${instance_dir}/legacy/vendor/
 echo "aktualizacja lib\n"
-cp -r ${tmp_dir}/MintHCM/lib/* /var/www/${instance_dir}/legacy/lib/
+cp -r ${tmp_dir}/legacy/lib/* /var/www/${instance_dir}/legacy/lib/
 echo "aktualizacja frontend\n"
 cp -r ${tmp_dir}/vue/dist/* /var/www/${instance_dir}/
 echo "aktualizacja api\n"
