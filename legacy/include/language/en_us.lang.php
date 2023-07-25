@@ -2277,6 +2277,7 @@ $app_strings = array(
     'LBL_ESLIST_FILTER' => 'Filter',
     'LBL_ESLIST_LOADING' => 'Loading...',
     'LBL_ESLIST_NO_DATA' => 'No options available',
+    'LBL_ESLIST_DATE' => 'Date',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
