@@ -205,9 +205,10 @@ a#callnav_today {
   height: $calendar-title-height;
   vertical-align: middle;
   margin: 0;
+  margin-top: 0;
   padding-left: $mint-rem;
   padding-right: $mint-rem;
-  margin-top: $mint-rem * 2;
+  //margin-top: $mint-rem * 2;
 
   > div {
     padding: 0;
@@ -534,19 +535,25 @@ ul.yui-nav li.selected {
 
 
 td.fc-widget-header {
-  background-color: $calendar-header-bg;
+// MintHCM #120479 START
+  //background-color: $calendar-header-bg;
+  // MintHCM #120479 END
   padding: 0;
   border: none;
 }
 
 td.fc-widget-header table > thead {
-  background-color: $calendar-header-bg;
+    // MintHCM #120479 START
+  //background-color: $calendar-header-bg;
+  // MintHCM #120479 END
   padding: 0;
   border: none;
 }
 
 td.fc-widget-header table > thead > tr > th {
-  background-color: $calendar-header-bg;
+    // MintHCM #120479 START
+  //background-color: $calendar-header-bg;
+  // MintHCM #120479 END
   padding: 0;
   border: none;
 }
@@ -559,7 +566,10 @@ td.fc-day-top.fc-other-month {
 
 .fc-title {
   font-size: 13px;
+  // MintHCM #120479 START
   line-height: 24px;
+  line-height: 18px;
+  // MintHCM #120479 END
 }
 
 .fc-day-header a {
@@ -738,7 +748,9 @@ tbody.fc-body {
 }
 
 thead.fc-head {
-  background: $calendar-month-day-header-bg;
+// MintHCM #120479 START
+  //background: $calendar-month-day-header-bg;
+  // MintHCM #120479 END
   color: $default-btn-color;
 }
 
@@ -952,3 +964,13 @@ iframe.teamNoticeBox {
     width: 900px;
   }
 }
+// MintHCM #120479 START
+.fc-time-grid .fc-event, .fc-time-grid .fc-bgevent {
+    margin-right: 0 !important;
+    opacity: .9;
+}
+
+.dashletPanel .fc-view-container .monthCalBody {
+	display: none;
+}
+// MintHCM #120479 END

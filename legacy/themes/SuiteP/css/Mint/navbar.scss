@@ -45,7 +45,10 @@ ul.toolbar li.globalLinks-desktop:hover {
 .navbar-inverse .dropdown-menu li a:hover,
 .navbar-inverse .dropdown-menu li a:active,
 .navbar li a.suitepicon:hover,
-.navbar li a.suitepicon:active,
+// MintHCM #120479 START
+//.navbar li a.suitepicon:active,
+.navbar li a.suitepicon:active
+// MintHCM #120479 END
 {
     color: $navbar-inverse-link-color;
 }
@@ -53,3 +56,41 @@ ul.toolbar li.globalLinks-desktop:hover {
 .quickcreatetop li:last-child a {
 border-bottom: 0;
 }
+
+// MintHCM #120479 START
+.navbar-inverse {
+    background: $lm-primary-accent;
+}
+
+.navbar-inverse .dropdown-menu {
+  background: $lm-primary-accent;
+}
+
+.navbar-inverse .dropdown-menu li a,
+.navbar-inverse .dropdown-menu li a:hover,
+.topnav a,
+.topnav a:hover,
+.navbar-inverse .nav > .topnav > span.notCurrentTab > a:hover,
+.navbar-inverse .nav > .topnav.with-actions > span.notCurrentTab > a:hover,
+.create.quickcreatetop .dropdown-toggle,
+.globalLinks-desktop .user-menu-button {
+    background-color: unset;
+}
+
+.alertsButton {
+    background-color: unset !important;
+}
+
+.create.quickcreatetop ul.dropdown-menu {
+    background: $lm-primary-accent;
+}
+
+.navbar-inverse .dropdown-menu li a:hover,
+.topnav:hover,
+.create.quickcreatetop .dropdown-toggle:hover,
+.create.quickcreatetop ul.dropdown-menu li a:hover,
+.globalLinks-desktop .user-menu-button:hover,
+.globalLinks-desktop .user-menu-button:active {
+    background: $lm-primary-accent--darker;
+}
+// MintHCM #120479 END

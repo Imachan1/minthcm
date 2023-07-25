@@ -25,6 +25,9 @@ h3 {
 // override bootstrap
 a {
   color: $link-color;
+    // MintHCM #120479 START
+  font-weight: 600;
+    // MintHCM #120479 END
 }
 
 a:hover {
