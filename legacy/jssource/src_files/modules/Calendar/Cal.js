@@ -947,46 +947,97 @@ $($.fullCalendar).ready(function () {
             // #42688 end
             switch (element.ws_type) {
                case 'office':
-                  valueToPush["textColor"] = '#000';
-                  switch (element.status) {
-                     case 'closed':
-                        valueToPush["backgroundColor"] = '#009976';
-                        break;
-                     case 'in_progress':
-                        valueToPush["backgroundColor"] = '#63c29a';
-                        break;
-                     case 'planned':
-                        valueToPush["backgroundColor"] = '#b2b4b3';
-                        break;
-                  }
+                  if(element.status === "closed" ){
+                    valueToPush['borderColor'] = "#909090";
+                    valueToPush['textColor'] = "#909090";
+                } else{
+                    valueToPush["borderColor"] = '#007D30';
+                  valueToPush["textColor"] = '#007D30';
+
+                }
+                  valueToPush["backgroundColor"] = '#097c311a';
                   break;
                case 'home':
-                  valueToPush["backgroundColor"] = '#a7d3f1';
-                  valueToPush["textColor"] = '#000';
+                  valueToPush["backgroundColor"] = '#a7d3f11a';
+                  if(element.status === "closed" ){
+                    valueToPush['borderColor'] = "#909090";
+                    valueToPush['textColor'] = "#909090";
+                } else{
+                    valueToPush["borderColor"] = '#005189';
+                  valueToPush["textColor"] = '#005189';
+                    
+                }
                   break;
                case 'delegation':
-                  valueToPush["backgroundColor"] = '#e1b7c6';
-                  valueToPush["textColor"] = '#000';
+                  valueToPush["backgroundColor"] = '#ac02211a';
+                  if(element.status === "closed" ){
+                    valueToPush['borderColor'] = "#909090";
+                    valueToPush['textColor'] = "#909090";
+                } else{
+                    valueToPush["borderColor"] = '#AC0221';
+                  valueToPush["textColor"] = '#AC0221';
+                }
+                 
                   break;
                case 'holiday':
-                  valueToPush["backgroundColor"] = '#ffff99';
-                  valueToPush["textColor"] = '#000';
+                  valueToPush["backgroundColor"] = '#b0a9001a';
+                  if(element.status === "closed" ){
+                    valueToPush['borderColor'] = "#909090";
+                    valueToPush['textColor'] = "#909090";
+                } else{
+                    valueToPush["borderColor"] = '#B0A900';
+                  valueToPush["textColor"] = '#B0A900'; 
+                }
+                  
                   break;
                case 'sick':
-                  valueToPush["backgroundColor"] = '#f08475';
-                  valueToPush["textColor"] = '#000';
+               case 'sick-care':
+                  valueToPush["backgroundColor"] = '#ac02211a';
+                  
+                  if(element.status === "closed" ){
+                    valueToPush['borderColor'] = "#909090";
+                    valueToPush['textColor'] = "#909090";
+                } else{
+                    valueToPush["textColor"] = '#AC0221';
+                    valueToPush["borderColor"] = '#AC0221';
+                }
+                  
                   break;
                case 'occasional_leave':
-                  valueToPush["backgroundColor"] = '#ffcf99';
-                  valueToPush["textColor"] = '#000';
+                  valueToPush["backgroundColor"] = '#ac02211a';
+                  if(element.status === "closed" ){
+                    valueToPush['borderColor'] = "#909090";
+                    valueToPush['textColor'] = "#909090";
+                } else{
+                    valueToPush["borderColor"] = '#AC0221';
+                  valueToPush["textColor"] = '#AC0221';
+                    
+                }
+                  valueToPush["borderColor"] = '#AC0221';
                   break;
                case 'overtime':
-                  valueToPush["backgroundColor"] = '#adebad';
-                  valueToPush["textColor"] = '#000';
+                  valueToPush["backgroundColor"] = '#b0a9001a';
+                  if(element.status === "closed" ){
+                    valueToPush['borderColor'] = "#909090";
+                    valueToPush['textColor'] = "#909090";
+                } else{
+                    valueToPush["borderColor"] = '#AC0221';
+                  valueToPush["textColor"] = '#B0A900';
+                    
+                }
+                  valueToPush["borderColor"] = '#B0A900';
                   break;
                case 'excused_absence':
-                  valueToPush["backgroundColor"] = '#adff2f';
-                  valueToPush["textColor"] = '#000';
+                  valueToPush["backgroundColor"] = '#ac02211a';
+                if(element.status === "closed" ){
+                    valueToPush['borderColor'] = "#909090";
+                    valueToPush['textColor'] = "#909090";
+                } else{
+                    valueToPush["borderColor"] = '#AC0221';
+                  valueToPush["textColor"] = '#AC0221';
+
+                    
+                }
                   break;
             }
          } else {

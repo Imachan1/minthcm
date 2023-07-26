@@ -7995,6 +7995,10 @@ a:hover {
     padding: 16px;
   }
 }
+body::-webkit-scrollbar {
+  display: none;
+}
+
 .aor-tab-content {
   background-color: #ffffff;
 }
@@ -14524,7 +14528,7 @@ td.dashlet-title > h3 > span:nth-of-type(2) {
 .dashboard {
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
   border-radius: 4px;
-  background-color: #fff;
+  background-color: transparent;
 }
 
 .SuiteP-configureDashlet select[multiple] {
@@ -14536,12 +14540,13 @@ td.dashlet-title > h3 > span:nth-of-type(2) {
 }
 
 .dashboard .tab-content, .dashboard {
-  background-color: #eaeaea;
+  background-color: transparent;
+  border: none;
   box-shadow: none;
 }
 
 .dashboard .tab-content {
-  padding: 0 0 8px 16px;
+  padding: 0 0 0px 32px;
 }
 
 /*** MAIN ***/
@@ -20713,10 +20718,10 @@ div.content div.pagecontent form#EditView div.edit.view table tbody tr td input[
 }
 
 .dashboard .tab-content {
-  background-color: #ffffff;
-  padding: 0px 16px 8px 32px;
+  background-color: transparent;
+  padding: 0px;
   margin-bottom: 30px;
-  border: 1px solid transparent;
+  border: none;
   border-top-right-radius: 4px;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
@@ -22726,11 +22731,11 @@ p#clear {
 }
 
 .yui-calendar td.calcell.today {
-  background-color: #009976;
+  background-color: rgba(100, 100, 100, 0.0705882353);
 }
 
 .yui-calendar td.calcell.today a {
-  background-color: #009976;
+  background-color: rgba(100, 100, 100, 0.0705882353);
 }
 
 .yui-calendar td.calcell.oom {
@@ -28627,12 +28632,12 @@ td.fc-day-top.fc-other-month {
 }
 
 td.fc-day-top.fc-today {
-  background: #b2b4b3;
+  background: rgba(100, 100, 100, 0.0705882353);
   cursor: pointer;
 }
 
 .fc-day-top {
-  background: #b2b4b3;
+  background: rgba(100, 100, 100, 0.0705882353);
   cursor: pointer;
 }
 
@@ -28885,7 +28890,7 @@ a.fc-day-number:hover {
 
 .calendar tbody td.today a,
 .calendar tbody td.today {
-  background-color: #009976;
+  background-color: rgba(100, 100, 100, 0.0705882353);
   color: #606164;
 }
 
@@ -28911,7 +28916,7 @@ a.fc-day-number:hover {
 }
 
 .calendar thead .title {
-  background: #b2b4b3;
+  background: rgba(100, 100, 100, 0.0705882353);
   color: #EAEAEA;
   padding: 3px;
   border-top: 1px solid #eeeeee;
@@ -28924,7 +28929,7 @@ a.fc-day-number:hover {
 }
 
 .fc-bg table > tbody > tr .fc-today {
-  background-color: #009976;
+  background-color: rgba(100, 100, 100, 0.0705882353);
 }
 
 div.fc-basic-view .fc-body .fc-row {
@@ -28995,6 +29000,10 @@ iframe.teamNoticeBox {
 
 .dashletPanel .fc-view-container .monthCalBody {
   display: none;
+}
+
+#calendarContainer .fc-view thead .fc-head {
+  background-color: rgb(0, 101, 78);
 }
 
 /**** Emails ***/
@@ -31815,7 +31824,8 @@ input[type=text] {
 
 .fc-event {
   border: none !important;
-  border-radius: 4px !important;
+  border-radius: 0px !important;
+  border-left: 3px solid !important;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
   padding: 4px;
 }

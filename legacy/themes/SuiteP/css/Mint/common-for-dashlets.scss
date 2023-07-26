@@ -95,7 +95,8 @@ input[type=text] {
 
 .fc-event {
   border: none !important;
-  border-radius: 4px !important;
+  border-radius: 0px !important;
+  border-left: 3px solid !important;
   @include BoxShadow(1);
   padding: $mint-rem / 4;
 }
