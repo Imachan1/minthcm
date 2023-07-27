@@ -4067,7 +4067,7 @@ $app_list_strings['competency_ratings_type_list'] = array(
 $app_list_strings['potential_list'] = array(
     'Not_applicable' => 'Not applicable',
     'Contact_in_future' => 'Contact us in the future',
-    'Not_contact' => 'Not contact',
+    'Do_not_contact' => 'Do not contact',
 );
 
 $app_list_strings['scoring_list'] = array(
