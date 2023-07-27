@@ -160,7 +160,7 @@ $viewdefs[$module_name]['DetailView'] = array(
                 'task_grade',
             ),
             array(
-                'scoring',
+                'referrer',
                 '',
             ),
         ),

@@ -98,7 +98,7 @@ $viewdefs[$module_name]['QuickCreate'] = array(
                 'task_grade',
             ),
             array(
-                'scoring',
+                'referrer',
                 '',
             ),
         ),

@@ -28624,11 +28624,11 @@ td.fc-day-top.fc-other-month {
 }
 
 .fc-day-header a {
-  color: #fff;
+  color: #606164;
 }
 
 .fc-day-header a:hover {
-  color: #fff;
+  color: #606164;
 }
 
 td.fc-day-top.fc-today {
@@ -29002,8 +29002,8 @@ iframe.teamNoticeBox {
   display: none;
 }
 
-#calendarContainer .fc-view thead .fc-head {
-  background-color: rgb(0, 101, 78);
+#pagecontent #calendarContainer {
+  background-color: rgb(255, 255, 255);
 }
 
 /**** Emails ***/

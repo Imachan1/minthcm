@@ -104,7 +104,7 @@ $viewdefs[$module_name]['EditView'] = array(
                 'task_grade',
             ),
             array(
-                'scoring',
+                'referrer',
                 '',
             ),
         ),

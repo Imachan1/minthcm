@@ -174,6 +174,12 @@ $ESListViewDefs[$module_name] = [
             'enabled' => true,
             'default' => false,
         ],
+        'referrer' => [
+            'name' => 'referrer',
+            'label' => 'LBL_REFERRER',
+            'enabled' => true,
+            'default' => false,
+        ],
     ],
     'search' => [
         'name' => [],
@@ -199,5 +205,6 @@ $ESListViewDefs[$module_name] = [
         'date_modified' => [],
         'created_by_name' => [],
         'modified_by_name' => [],
+        'referrer' => [],
     ],
 ];
