@@ -1,7 +1,7 @@
 <template>
     <div class="modules-popup">
         <v-tooltip
-            v-for="mod in modules.modules"
+            v-for="mod in modules.visibleModules"
             :key="mod.name"
             :text="mod.label"
             z-index="20000"

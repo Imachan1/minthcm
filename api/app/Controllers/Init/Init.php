@@ -2,6 +2,7 @@
 
 namespace MintHCM\Api\Controllers\Init;
 
+use BeanFactory;
 use Slim\Psr7\Response;
 use MintHCM\Api\Controllers\Init\Module;
 use MintHCM\Api\Controllers\Init\Languages;
@@ -10,7 +11,14 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class Init
 {
-    protected $preferences_controller, $languages_controller;
+    protected $preferences_controller, $languages_controller, $module_init_controller;
+
+    const VIEW_META = [
+        "DetailView",
+        "EditView",
+        "Subpanels",
+        "RecordView",
+    ];
 
     public function __construct()
     {
@@ -66,24 +74,19 @@ class Init
         chdir('../legacy');
         $modules = query_module_access_list($current_user);
         chdir('../api');
-
         $modules_data = array();
         if (!is_array($modules)) {
             return $modules_data;
         }
-
         foreach ($modules as $module) {
             $modules_data[$module] = $this->module_init_controller->getModuleData($module);
         }
-        
-        if($current_user->isAdmin()) {
-            return $this->getMenuForAllModules($modules_data,$modules);
-        }
-        return [array_keys($modules), $modules_data];
+        return $this->getMenuForAllModules($modules_data,$modules);
     }
 
     private function getQuickCreate()
     {
+        chdir('../api');
         $modules = include "constants/quick_create.php";
         $response = array();
 
@@ -108,11 +111,12 @@ class Init
 
     private function getMenuForAllModules($modules_data,$modules)
     {
-        global $beanList;
+        global $beanList,$current_user;
         foreach($beanList as $key=>$module) {
             if(!array_key_exists($key,$modules_data)){
-                $modules_data[$key] = $this->module_init_controller->getModuleData($key);
-                $modules[$key] = $module;
+                if($current_user->isAdmin()){
+                    $modules_data[$key] = $this->module_init_controller->getModuleData($key);
+                }
             }
         }
         return [array_keys($modules), $modules_data];
