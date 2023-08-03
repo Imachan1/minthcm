@@ -118,7 +118,7 @@ class Meeting extends SugarBean {
    public $cached_get_users = null;
    public $new_schema = true;
    public $date_changed = false;
-   public $repeat_parent_id;
+   // public $repeat_parent_id; eVolpe $95709
 
    /**
     * sole constructor
@@ -265,9 +265,10 @@ class Meeting extends SugarBean {
       
       $return_id = parent::save($check_notify);
 
+      /* eVolpe #95709
       if ( $this->shouldBeProcessedApi() ) {
          $this->saveRepeatlyApi();
-      }
+      } */ 
 
       if ($this->status != $bean->fetched_row['status'] && $this->status == 'Held') {
          $this->closeRelatedTraining();
@@ -988,6 +989,7 @@ class Meeting extends SugarBean {
       }
    }
 
+   /* eVolpe #95709
    public function shouldBeProcessedApi() {
       return !( self::$repeatSaveRoudTripCounter || empty($this->repeat_type) || empty($this->date_start) );
    }
@@ -1018,6 +1020,7 @@ class Meeting extends SugarBean {
          CalendarUtils::save_repeat_activities($this, $repeatArr);
       }
    }
+   */
 
    // MintHCM #44718 END
 }
