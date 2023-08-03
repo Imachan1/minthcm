@@ -5,7 +5,7 @@
                 v-model="store.searchPhrase"
                 class="filters-search"
                 variant="plain"
-                placeholder="Search..."
+                :placeholder="languages.label('LBL_MINT4_GS_SEARCH_INPUT')"
                 prepend-inner-icon="mdi-magnify"
                 @keyup.enter="handleSearchPhraseEnterKey"
                 @input="updateOptionsDebounce"
