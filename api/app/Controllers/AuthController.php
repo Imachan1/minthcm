@@ -49,7 +49,7 @@ class AuthController
 
     public function forgetPassword(Request $request, Response $response, array $args): Response
     {
-        global $timedate, $sugar_config;
+        global $sugar_config;
 
         $response = $response->withHeader('Content-type', 'application/json');
 
@@ -102,7 +102,7 @@ class AuthController
 
     public function validToken(Request $request, Response $response, array $args): Response
     {
-        global $timedate, $sugar_config;
+        global $sugar_config;
 
         $response = $response->withHeader('Content-type', 'application/json');
 
@@ -160,9 +160,8 @@ class AuthController
 
     public function resetForgetPassword(Request $request, Response $response, array $args): Response
     {
-        global $timedate, $sugar_config, $mod_strings, $current_language;
+        global $mod_strings;
 
-        $token = $request->getAttribute('reset_token');
         $username = $request->getAttribute('username');
         $new_password = $request->getAttribute('new_password');
 
