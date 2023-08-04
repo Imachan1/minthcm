@@ -309,8 +309,8 @@ class DeployedMetaDataImplementation extends AbstractMetaDataImplementation impl
             // Read the file contents into an array
             $fileLines = file($filename);
     
-            // Remove the first 4 lines from the array
-            $fileLines = array_slice($fileLines, 4);
+            // Remove the first line from the array
+            $fileLines = array_slice($fileLines, 1);
     
             // Join the remaining lines into a single string
             $fileContent = implode('', $fileLines);

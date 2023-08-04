@@ -115,19 +115,19 @@ $admin_group_header[] = ['LBL_EMAIL_TITLE', '', false, $admin_option_defs, 'LBL_
 
 //studio.
 $admin_option_defs = [];
-$admin_option_defs['studio']['studio'] = ['Studio', 'LBL_STUDIO', 'LBL_STUDIO_DESC', './index.php?module=ModuleBuilder&action=index&type=studio', 'studio'];
+$admin_option_defs['studio']['studio'] = ['Studio', 'LBL_STUDIO', 'LBL_STUDIO_DESC', './index.php?module=ModuleBuilder&action=index', 'studio'];
 if (isset($GLOBALS['beanFiles']['iFrame'])) {
     $admin_option_defs['Administration']['portal'] = ['iFrames', 'LBL_IFRAME', 'DESC_IFRAME', './index.php?module=iFrames&action=index'];
 }
 $admin_option_defs['Administration']['rename_tabs'] = ['RenameTabs', 'LBL_RENAME_TABS', 'LBL_CHANGE_NAME_MODULES', "./index.php?action=wizard&module=Studio&wizard=StudioWizard&option=RenameTabs", 'rename-modules'];
-$admin_option_defs['Administration']['moduleBuilder'] = ['ModuleBuilder', 'LBL_MODULEBUILDER', 'LBL_MODULEBUILDER_DESC', './index.php?module=ModuleBuilder&action=index&type=mb', 'module-builder'];
+//$admin_option_defs['Administration']['moduleBuilder'] = ['ModuleBuilder', 'LBL_MODULEBUILDER', 'LBL_MODULEBUILDER_DESC', './index.php?module=ModuleBuilder&action=index&type=mb', 'module-builder'];
 $admin_option_defs['Administration']['history_contacts_emails'] = ['ConfigureTabs', 'LBL_HISTORY_CONTACTS_EMAILS', 'LBL_HISTORY_CONTACTS_EMAILS_DESC', './index.php?module=Configurator&action=historyContactsEmails', 'history-subpanel'];
 $admin_option_defs['Administration']['configure_tabs'] = ['ConfigureTabs', 'LBL_CONFIGURE_TABS_AND_SUBPANELS', 'LBL_CONFIGURE_TABS_AND_SUBPANELS_DESC', './index.php?module=Administration&action=ConfigureTabs', 'display-modules-and-subpanels'];
 $admin_option_defs['Administration']['module_loader'] = ['ModuleLoader', 'LBL_MODULE_LOADER_TITLE', 'LBL_MODULE_LOADER', './index.php?module=Administration&action=UpgradeWizard&view=module', 'module-loader'];
 
 $admin_option_defs['Administration']['configure_group_tabs'] = ['ConfigureTabs', 'LBL_CONFIGURE_GROUP_TABS', 'LBL_CONFIGURE_GROUP_TABS_DESC', './index.php?action=wizard&module=Studio&wizard=StudioWizard&option=ConfigureGroupTabs', 'configure-module-menu-filters'];
 
-$admin_option_defs['any']['dropdowneditor'] = ['Dropdown', 'LBL_DROPDOWN_EDITOR', 'DESC_DROPDOWN_EDITOR', './index.php?module=ModuleBuilder&action=index&type=dropdowns', 'dropdown-editor'];
+//$admin_option_defs['any']['dropdowneditor'] = ['Dropdown', 'LBL_DROPDOWN_EDITOR', 'DESC_DROPDOWN_EDITOR', './index.php?module=ModuleBuilder&action=index&type=dropdowns', 'dropdown-editor'];
 
 $admin_option_defs['Administration']['dictionaries'] = ['Dictionaries', 'LBL_DICTIONARIES', 'LBL_DICTIONARIES_DESC', 'index.php?module=Dictionaries', 'dropdown-editor'];
 //$admin_option_defs['migrate_custom_fields']= array('MigrateFields','LBL_EXTERNAL_DEV_TITLE','LBL_EXTERNAL_DEV_DESC','./index.php?module=Administration&action=Development');
