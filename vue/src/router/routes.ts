@@ -94,6 +94,17 @@ const routes: Array<RouteRecordRaw> = [
         },
     },
     {
+        path: '/ModuleBuilder',
+        name: 'modulebuilder',
+        component: LegacyView,
+        alias: ['/ModuleBuilder', '/modules/ModuleBuilder'],
+        meta: {
+            isLegacy: true,
+            legacyUrl: 'legacy/index.php?module=ModuleBuilder&action=index',
+            auth: true,
+        },
+    },
+    {
         path: '/modules/:module',
         name: 'list',
         component: () => import('../views/ListView/ListView.vue'),
