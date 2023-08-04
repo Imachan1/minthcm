@@ -3,6 +3,7 @@
         :class="[
             'mint-button',
             `mint-button-${props.variant}`,
+            props.size && `mint-button-${props.size}`,
             isIcon && 'mint-button-icon',
             props.disabled && 'disabled',
             props.active && 'active',
@@ -10,8 +11,10 @@
         v-ripple="!disabled"
         :disabled="disabled"
     >
-        <v-icon v-if="props.icon" :icon="props.icon" size="24" />
+        <v-progress-circular v-if="loading" :size="props.size" indeterminate />
+        <v-icon v-if="props.icon" :icon="props.icon" :size="props.size" />
         <div v-if="props.text" v-text="props.text" class="mx-auto" />
+        <v-icon v-if="props.appendIcon" :icon="props.appendIcon" :size="props.size" />
         <v-tooltip v-if="props.tooltip?.trim()" activator="parent" location="top">{{ props.tooltip }}</v-tooltip>
     </button>
 </template>
@@ -21,26 +24,29 @@ import { defineProps, withDefaults, computed } from 'vue'
 
 interface Props {
     icon?: string
+    appendIcon?: string
     text?: string
     tooltip?: string
     variant?: 'text' | 'regular' | 'primary' | 'nav'
-    size?: 'small' | 'medium' | 'large'
+    size?: '24' | 'small' | 'medium' | 'large'
     disabled?: boolean
     active?: boolean
+    loading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
     variant: 'regular',
-    size: 'medium',
+    size: '24',
     disabled: false,
     active: false,
 })
 
-const isIcon = computed(() => props.icon && !props.text)
+const isIcon = computed(() => (props.icon || props.appendIcon) && !props.text)
 </script>
 
 <style scoped lang="scss">
 .mint-button {
+    position: relative;
     border-radius: 50px;
     font-weight: 600;
     font-size: 15px;
@@ -124,5 +130,9 @@ const isIcon = computed(() => props.icon && !props.text)
 .mint-button-icon {
     padding: 8px;
     border-radius: 50%;
+}
+
+.mint-button-small {
+    padding: 3px;
 }
 </style>

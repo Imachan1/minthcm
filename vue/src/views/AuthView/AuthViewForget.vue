@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useLanguagesStore } from '@/store/languages'
 import MintButton from '@/components/MintButton.vue'
@@ -54,11 +54,18 @@ const forgetSuccess = ref(false)
 const forgetError = ref(false)
 const isSubmiting = ref(false)
 
+onMounted(() => {
+    authViewStore.footerNavAction = {
+        routeName: 'auth-login',
+        label: `← ${languages.label('LBL_MINT4_AUTH_BACK_TO_LOGIN')}`,
+    }
+})
+
 async function handleForgetBtnClick() {
     forgetError.value = false
     try {
         await axios.post('api/forget_password', {
-            username: username.value,
+            username: authViewStore.username,
             email: email.value,
         })
         forgetSuccess.value = true

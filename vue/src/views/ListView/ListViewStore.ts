@@ -40,6 +40,7 @@ export const useListViewStore = defineStore('listview', () => {
         itemsPerPage: 10,
         sortBy: [],
     })
+    const selected = ref([])
 
     async function init() {
         const result = await axios.post('legacy/index.php?action=ESList', {
@@ -111,7 +112,7 @@ export const useListViewStore = defineStore('listview', () => {
 
     const headers = computed(() => {
         if (!isInit.value) {
-            return {}
+            return []
         }
         const headers = visibleColumns.value.map((col) => ({
             value: col.name,
@@ -226,5 +227,6 @@ export const useListViewStore = defineStore('listview', () => {
         savePreferences,
         setDefaultColumns,
         pageOffsetMap,
+        selected,
     }
 })

@@ -30,10 +30,7 @@ async function handleMessageEvent(e: MessageEvent) {
     } else if (resolved.meta?.isLegacy && resolved.name === 'dashboard') {
         history.replaceState(null, '', resolved.href)
     } else {
-        router.push({
-            path,
-            force: true,
-        })
+        router.push(path)
 
         if (route.path === path.match(/[^\?]*/i)[0]) {
             // Force iframe reload (necessary e.g. for: QC -> create -> full form -> save)
@@ -45,7 +42,11 @@ async function handleMessageEvent(e: MessageEvent) {
 const legacyUrl = computed(() => {
     const route = useRoute()
     if (route.meta?.legacyUrl) {
-        return route.meta.legacyUrl
+        const url = new URL(route.meta.legacyUrl, location.origin + location.pathname)
+        new URLSearchParams(location.hash).forEach((val, key) => {
+            url.searchParams.set(key, val)
+        })
+        return url.href
     } else if (route.name === 'module-view') {
         const x = new URL(location.origin + location.pathname)
         if (typeof route.params?.module === 'string') {

@@ -76,7 +76,7 @@ class AuthController
 
         $guid = create_guid();
         $emailTemp_id = $sugar_config['passwordsetting']['lostpasswordtmpl'];
-        $url = $sugar_config['site_url'] . "/Users/Login?reset_token=$guid";
+        $url = $sugar_config['site_url'] . "/#/auth/reset?token=$guid";
         $additionalData = array(
             'link' => true,
             'password' => '',
@@ -106,7 +106,7 @@ class AuthController
 
         $response = $response->withHeader('Content-type', 'application/json');
 
-        $token = $request->getAttribute('reset_token');
+        $token = $request->getAttribute('token');
 
         chdir('../legacy/');
         $db = \DBManagerFactory::getInstance();
@@ -162,7 +162,7 @@ class AuthController
     {
         global $timedate, $sugar_config, $mod_strings, $current_language;
 
-        $token = $request->getAttribute('reset_token');
+        $token = $request->getAttribute('token');
         $username = $request->getAttribute('username');
         $new_password = $request->getAttribute('new_password');
 

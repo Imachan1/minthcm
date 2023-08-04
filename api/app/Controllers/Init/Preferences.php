@@ -45,7 +45,13 @@ class Preferences
             'time_formats' => $sugar_config["time_formats"],
             'name_format' => $sugar_config["default_locale_name_format"],
             'name_formats' => $sugar_config["name_formats"],
-
+            'password_rules' => [
+                'minpwdlength' => $sugar_config['passwordsetting']['minpwdlength'] ?? null,
+                'oneupper' => $sugar_config['passwordsetting']['oneupper'] ?? false,
+                'onelower' => $sugar_config['passwordsetting']['onelower'] ?? false,
+                'onenumber' => $sugar_config['passwordsetting']['onenumber'] ?? false,
+                'onespecial' => $sugar_config['passwordsetting']['onespecial'] ?? false,
+            ],
         );
     }
 

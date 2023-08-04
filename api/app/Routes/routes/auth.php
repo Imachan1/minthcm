@@ -87,11 +87,11 @@ $routes = array(
         ),
         "pathParams" => array(),
         "queryParams" => array(
-            "reset_token" => array(
+            "token" => array(
                 "type" => StringType::class,
                 "required" => true,
                 "desc" => "Guid to reset password",
-                "example" => '?reset_token=d41448ca-7d9e-1b9f-d826-64621b33ffb1',
+                "example" => '?token=d41448ca-7d9e-1b9f-d826-64621b33ffb1',
             ),
         ),
         "bodyParams" => array(
@@ -109,11 +109,11 @@ $routes = array(
         "pathParams" => array(),
         "queryParams" => array(),
         "bodyParams" => array(
-            "reset_token" => array(
+            "token" => array(
                 "type" => StringType::class,
                 "required" => true,
                 "desc" => "Guid to reset password",
-                "example" => '?reset_token=d41448ca-7d9e-1b9f-d826-64621b33ffb1',
+                "example" => '?token=d41448ca-7d9e-1b9f-d826-64621b33ffb1',
             ),
             "username" => array(
                 "type" => StringType::class,

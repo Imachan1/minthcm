@@ -11,17 +11,15 @@
         <div class="auth-footer">
             <v-slide-x-transition hide-on-leave>
                 <div
-                    v-if="$route.name === 'auth-login'"
-                    @click="$router.push({ name: 'auth-forget' })"
-                    v-text="languages.label('LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION')"
+                    v-if="store.footerNavAction"
+                    @click="$router.push({ name: store.footerNavAction.routeName })"
+                    v-text="store.footerNavAction.label"
                 />
-                <div v-else @click="$router.push({ name: 'auth-login' })">
-                    ← {{ languages.label('LBL_MINT4_AUTH_BACK_TO_LOGIN') }}
-                </div>
             </v-slide-x-transition>
             <v-menu offset="16">
                 <template v-slot:activator="{ props, isActive }">
                     <MintButton
+                        class="ms-auto"
                         v-bind="props"
                         variant="nav"
                         icon="mdi-translate"
@@ -41,6 +39,7 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthViewStore } from './AuthViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useBackendStore } from '@/store/backend'
 import MintButton from '@/components/MintButton.vue'
@@ -49,6 +48,7 @@ import axios from 'axios'
 
 const languages = useLanguagesStore()
 const backend = useBackendStore()
+const store = useAuthViewStore()
 
 async function changeLanguage(lang = 'pl_PL') {
     backend.initialLoading = true

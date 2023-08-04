@@ -4517,6 +4517,15 @@ $app_strings['LBL_MINT4_AUTH_PASSWORD'] = 'Password';
 $app_strings['LBL_MINT4_AUTH_PASSWORD_REPEAT'] = 'Repeat new password';
 $app_strings['LBL_MINT4_AUTH_EMAIL'] = 'Email';
 $app_strings['LBL_MINT4_AUTH_PASSWORD_RULES'] = 'The password must contain:';
+$app_strings['LBL_MINT4_AUTH_PASSWORD_RULE_MINPWDLENGTH'] = 'at least {length} characters';
+$app_strings['LBL_MINT4_AUTH_PASSWORD_RULE_ONELOWER'] = 'at least one lowercase character';
+$app_strings['LBL_MINT4_AUTH_PASSWORD_RULE_ONEUPPER'] = 'at least one uppercase character';
+$app_strings['LBL_MINT4_AUTH_PASSWORD_RULE_ONENUMBER'] = 'at least one number';
+$app_strings['LBL_MINT4_AUTH_PASSWORD_RULE_ONESPECIAL'] = 'at least one special character';
+$app_strings['LBL_MINT4_AUTH_RESET_SUCCESS'] = 'The password has been changed. You can log in now.';
+$app_strings['LBL_MINT4_AUTH_RESET_BACK_TO_LOGIN_BTN'] = 'Return to login';
+$app_strings['LBL_MINT4_AUTH_RESET_TOKEN_ERROR'] = 'Invalid or expired token.';
+$app_strings['LBL_MINT4_AUTH_RESET_AGAIN_BTN'] = 'Reset again';
 
 // Chat
 $app_strings['LBL_MINT4_CHAT_CREATE_GROUP'] = 'Create Group Conversation';

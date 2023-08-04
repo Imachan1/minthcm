@@ -132,6 +132,10 @@ class ViewESList extends SugarView
             $this->config['actions'] = $this->ESListViewDefs[$this->module]['actions'] ?? [];
         }
 
+        if (isset($this->ESListViewDefs[$this->module]['mass_actions'])) {
+            $this->config['mass_actions'] = array_values($this->ESListViewDefs[$this->module]['mass_actions']) ?? [];
+        }
+
         foreach ($theme as $property => $objects) {
             foreach ($objects as $object => $value) {
                 $theme[$property][$object] = $variables[$property][$value];

@@ -8,6 +8,8 @@
         height="calc(100vh - 400px)"
         fixed-header
         must-sort
+        :show-select="!!store.config?.config?.mass_actions?.length"
+        v-model="store.selected"
         @update:options="store.options = $event"
     >
         <template

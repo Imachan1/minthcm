@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAuthViewStore } from './AuthViewStore'
 import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
@@ -50,6 +50,13 @@ const authViewStore = useAuthViewStore()
 const backend = useBackendStore()
 const languages = useLanguagesStore()
 const auth = useAuthStore()
+
+onMounted(() => {
+    authViewStore.footerNavAction = {
+        routeName: 'auth-forget',
+        label: languages.label('LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION'),
+    }
+})
 
 const username = ref('')
 const password = ref('')
