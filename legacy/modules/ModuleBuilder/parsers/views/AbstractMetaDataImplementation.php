@@ -362,6 +362,56 @@ abstract class AbstractMetaDataImplementation
         }
     }
 
+    //MintHCM start #117539
+    protected function _saveToFileESList($filename, $defs, $ESList)
+    {
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
+
+        mkdir_recursive(dirname($filename));
+
+        $ESListKeys = array_keys($ESList);
+
+        foreach($ESListKeys as $property){
+            if(!isset($defs[$property])){
+                $defs[$property] = $ESList[$property];
+            }
+        }
+
+        ksort($defs); //sorting the keys so its in the same order as eslistview
+
+        // create the new metadata file contents, and write it out
+        $start = <<<EOQ
+<?php
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+
+\$module_name = '$this->_moduleName';
+
+EOQ;
+        $out = "";
+
+        $viewVariable = '$ESListViewDefs';
+        $out .= "$viewVariable" . "[" . '$module_name' . "] = " . var_export_helper($defs);
+
+        $out .= ";";
+
+        $out = str_replace('array (', '[', $out);
+        $out = str_replace(')', ']', $out); 
+        $out = preg_replace('/=>\s*\[/', '=> [', $out); // Replace '=>' followed by zero or more spaces and '[' with '=>' followed by '['
+        $out = preg_replace('/\[\s*\n\s*\]/', '[]', $out); //Replace '[', followed by zero or more spaces, a newline, zero or more spaces, and ']' with '[]'
+        $out = str_replace('  ', '    ', $out); // Replace two spaces with four spaces
+
+        $out = $start . $out;
+
+        if (sugar_file_put_contents($filename, $out) === false) {
+            $GLOBALS ['log']->fatal(get_class($this) . ": could not write new viewdef file " . $filename);
+        }
+    }
+    //MintHCM end
+
     /**
      * @param $defs array The definitions to save
      * @return bool

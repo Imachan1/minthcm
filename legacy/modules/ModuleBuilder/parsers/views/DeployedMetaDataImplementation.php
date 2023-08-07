@@ -292,8 +292,37 @@ class DeployedMetaDataImplementation extends AbstractMetaDataImplementation impl
      * Deploy a layout
      * @param array $layoutDefinitions Layout definition in the same format as received by the constructor
      */
-    public function deploy($layoutDefinitions)
+    public function deploy($layoutDefinitions, $ESList = false)
     {
+        //MintHCM start #117539        
+        if($ESList == true){
+            $this->_view = "eslistview";
+            $this->_sourceFilename = "custom/history/modules/".$this->_moduleName."/metadata/eslistviewdefs.php";           
+            $custom_file = $this->getFileName($this->_view, $this->_moduleName, null, MB_CUSTOMMETADATALOCATION);
+
+            if(file_exists($custom_file)){ // Check if there's an existing custom eslistview file
+                $filename = $custom_file;
+            } else { // If there isn't one, refer to the base eslistview
+                $filename = $this->getFileName($this->_view, $this->_moduleName, null, MB_BASEMETADATALOCATION);
+            }
+
+            // Read the file contents into an array
+            $fileLines = file($filename);
+    
+            // Remove the first line from the array
+            $fileLines = array_slice($fileLines, 1);
+    
+            // Join the remaining lines into a single string
+            $fileContent = implode('', $fileLines);
+    
+            // Evaluate the string as PHP code to create the variable
+            eval($fileContent);
+    
+            // Extract the desired array from the evaluated code
+            $ESListViewDefs = $ESListViewDefs[$module_name];
+        }
+        //MintHCM end #117539
+        
         if ($this->_sourceFilename == $this->getFileName($this->_view, $this->_moduleName, null,
                 MB_HISTORYMETADATALOCATION)
         ) {
@@ -315,7 +344,13 @@ class DeployedMetaDataImplementation extends AbstractMetaDataImplementation impl
         }
         $filename = $this->getFileName($this->_view, $this->_moduleName, null, MB_CUSTOMMETADATALOCATION);
         $GLOBALS ['log']->debug(get_class($this) . "->deploy(): writing to " . $filename);
-        $this->_saveToFile($filename, $layoutDefinitions);
+
+        //MintHCM start #117539
+        if($ESList == true){
+            $this->_saveToFileESList($filename, $layoutDefinitions, $ESListViewDefs);
+        } else {
+            $this->_saveToFile($filename, $layoutDefinitions);
+        } //MintHCM end
 
         // now clear the cache so that the results are immediately visible
         include_once('include/TemplateHandler/TemplateHandler.php');
@@ -353,7 +388,8 @@ class DeployedMetaDataImplementation extends AbstractMetaDataImplementation impl
             MB_EDITVIEW => 'editviewdefs',
             MB_DETAILVIEW => 'detailviewdefs',
             MB_QUICKCREATE => 'quickcreatedefs',
-        );
+            'eslistview' => 'eslistviewdefs',  //CR zdefiniuj stałą
+        ); 
 
         //In a deployed module, we can check for a studio module with file name overrides.
         $sm = StudioModuleFactory::getStudioModule($moduleName);
