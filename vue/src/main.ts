@@ -7,11 +7,11 @@ import { loadFonts } from './plugins/webfontloader'
 import './main.scss'
 
 //TODO: dev
-// import { DateTime } from 'luxon'
-// import axios from 'axios'
-// window.DateTime = DateTime
-// window.axios = axios
-// window.router = router
+import { DateTime } from 'luxon'
+import axios from 'axios'
+window.DateTime = DateTime
+window.axios = axios
+window.router = router
 
 loadFonts()
 

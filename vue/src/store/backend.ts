@@ -35,17 +35,14 @@ export const useBackendStore = defineStore('backend', () => {
     const preferences = usePreferencesStore()
 
     const initData = ref<InitResponse | null>(null)
+    const isInit = ref(false)
     const initialLoading = ref(true)
 
     async function init() {
-        console.log(router.resolve('#/modules/Calls/index'))
-        setTimeout(() => {console.log(router.resolve('#/modules/Calls/index'))}, 3000)
         const auth = useAuthStore()
         const api = useApi()
         try {
-            console.log('before', router.resolve('#/modules/Calls/index'))
             const initResponse = await axios.get<InitResponse>('api/init')
-            console.log('after', router.resolve('#/modules/Calls/index'))
             initData.value = initResponse.data
             auth.user = initResponse.data?.user ?? {}
             languages.languages = {
@@ -55,46 +52,6 @@ export const useBackendStore = defineStore('backend', () => {
             }
             languages.currentLanguage = initResponse.data.global?.default_language ?? 'pl_PL'
             modules.modulesDefs = initResponse.data?.modules ?? {}
-            await nextTick()
-            await nextTick()
-            await nextTick()
-            await nextTick()
-            await nextTick()
-            console.log(location.hash)
-            const routeName = router.resolve(location.hash)?.name
-            console.log(routeName)
-            if (route.meta.auth !== false && !auth.user?.id) {
-                router.push({ name: 'auth-login' })
-            } else if (routeName === 'auth-login' && auth.user?.id) {
-                const prev = router.options.history.state.back as string
-                if (prev && prev !== '/Users/Logout' && prev !== '/Users/Login') {
-                    router.push(prev)
-                } else {
-                    router.push('/')
-                }
-            } else if (routeName === 'list') {
-                const moduleName = route.params.module?.toString()
-                if (initData.value?.legacy_views?.[moduleName]?.list) {
-                    router.push({
-                        name: 'module-view',
-                        params: {
-                            module: moduleName,
-                            action: 'index',
-                        },
-                    })
-                }
-            } else if (routeName === 'record') {
-                const moduleName = route.params.module?.toString()
-                if (initData.value?.legacy_views?.[moduleName]?.record) {
-                    router.push({
-                        name: 'module-view',
-                        params: {
-                            module: moduleName,
-                            action: 'DetailView',
-                        },
-                    })
-                }
-            }
             alerts.init()
             favorites.fetch()
             recents.fetch()
@@ -115,6 +72,7 @@ export const useBackendStore = defineStore('backend', () => {
                 }
             }
         } finally {
+            isInit.value = true
             initialLoading.value = false
         }
     }
@@ -122,6 +80,7 @@ export const useBackendStore = defineStore('backend', () => {
     return {
         init,
         initialLoading,
+        isInit,
         initData,
     }
 })
