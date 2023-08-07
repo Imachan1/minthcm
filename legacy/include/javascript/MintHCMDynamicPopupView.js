@@ -128,8 +128,8 @@ var MintHCMDynamicPopupView = {
     {
         var checkLS = /&LicState=check/.exec(window.location.search);
 
-        // Return false if ajax ui is completely disabled, or if license state is set to check
-        if( checkLS || (typeof(SUGAR.config.disableAjaxUI) != 'undefined' && SUGAR.config.disableAjaxUI == true)){
+        // Return false license state is set to check
+        if( checkLS ){
             return false;
         }
 

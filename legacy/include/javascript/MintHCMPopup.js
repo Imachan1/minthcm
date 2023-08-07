@@ -70,9 +70,8 @@ class MintHCMPopupClass {
 
         this.setButtonsEvents = function () {
             const _this = this;
-            $( '#' + this.id + ' .MintHCMPopup-buttons input' ).each( function ( index ) {
-                $( this ).attr( 'id', _this.buttons[index].text );
-                $( this ).click( _this.buttons[index].click );
+            $( '#' + this.id + ' .MintHCMPopup-buttons input' ).each( function () {
+                $( this ).click( _this.buttons.find(btn => btn.text === $(this).val())?.click );
             } );
         };
 
