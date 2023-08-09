@@ -118,7 +118,6 @@ class Meeting extends SugarBean {
    public $cached_get_users = null;
    public $new_schema = true;
    public $date_changed = false;
-   // public $repeat_parent_id; eVolpe $95709
 
    /**
     * sole constructor
@@ -265,10 +264,12 @@ class Meeting extends SugarBean {
       
       $return_id = parent::save($check_notify);
 
-      /* eVolpe #95709
+      // MintHCM #111604 start
       if ( $this->shouldBeProcessedApi() ) {
-         $this->saveRepeatlyApi();
-      } */ 
+        $this->createRelationshipFromApi();
+        $this->saveRepeatlyApi();
+      }
+      // MintHCM #111604 end
 
       if ($this->status != $bean->fetched_row['status'] && $this->status == 'Held') {
          $this->closeRelatedTraining();
@@ -988,10 +989,25 @@ class Meeting extends SugarBean {
          CalendarUtils::save_repeat_activities($this, $repeatArr);
       }
    }
+   // MintHCM #44718 END
 
-   /* eVolpe #95709
-   public function shouldBeProcessedApi() {
-      return !( self::$repeatSaveRoudTripCounter || empty($this->repeat_type) || empty($this->date_start) );
+
+   // MintHCM #111604 start
+   protected function shouldBeProcessedApi() {
+      return !( self::$repeatSaveRoudTripCounter || empty($this->repeat_type) || empty($this->date_start) || !empty($this->fetched_row)
+      || empty($_SERVER['REQUEST_URI']) || substr($_SERVER['REQUEST_URI'], -14, 14) != "/Api/V8/module");
+   }
+
+   protected function createRelationshipFromApi()
+   {
+       
+       if (!empty($this->users_arr) && is_string($this->users_arr) && $this->load_relationship('users') && $this->users) {
+           $users_ids = explode(',', $this->users_arr);
+           foreach ($users_ids as $user_id) {
+               $this->users->add($user_id);
+           }
+       }
+       
    }
 
    public function saveRepeatlyApi() {
@@ -1006,8 +1022,13 @@ class Meeting extends SugarBean {
          'dow' => $this->repeat_dow,
       );
 
-      
-      $repeatArr = CalendarUtils::build_repeat_sequence($this->date_start, $params);
+      $date_start = $GLOBALS['timedate']->fromDb($this->date_start);
+      if (!empty($date_start)) {
+        $date_start = $GLOBALS['timedate']->tzUser($date_start);
+        $repeatArr = CalendarUtils::build_repeat_sequence($date_start->format($GLOBALS['timedate']->get_date_time_format()), $params);
+      } else {
+        $repeatArr = CalendarUtils::build_repeat_sequence($this->date_start, $params);
+      }
       $limit = SugarConfig::getInstance()->get('calendar.max_repeat_count', 1000);
 
       if ( !empty($this->edit_all_recurrences) ) {
@@ -1020,10 +1041,8 @@ class Meeting extends SugarBean {
          CalendarUtils::save_repeat_activities($this, $repeatArr);
       }
    }
-   */
-
-   // MintHCM #44718 END
 }
+// MintHCM #111604 end
 
 // end class def
 // External API integration, for the dropdown list of what external API's are available
