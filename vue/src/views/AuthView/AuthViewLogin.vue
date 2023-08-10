@@ -43,6 +43,7 @@ import { useAuthViewStore } from './AuthViewStore'
 import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
 import { useAuthStore } from '@/store/auth'
+import { useRouter } from 'vue-router'
 import MintButton from '@/components/MintButton.vue'
 import MintStatusBox from '@/components/MintStatusBox.vue'
 
@@ -63,6 +64,7 @@ const password = ref('')
 const showPassword = ref(false)
 const isSubmiting = ref(false)
 const loginError = ref(false)
+const router = useRouter()
 
 async function handleSubmit() {
     loginError.value = false
@@ -74,8 +76,10 @@ async function handleSubmit() {
     await backend.init()
     if (!auth.user?.id) {
         loginError.value = true
-
-        //todo: auto error
+    } else if (auth.user.show_login_wizard) {
+        router.push({ name: 'setup-wizard' })
+    } else {
+        router.push({ name: 'dashboard' })
     }
     isSubmiting.value = false
 }

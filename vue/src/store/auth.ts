@@ -9,6 +9,9 @@ export interface User {
     first_name: string
     last_name: string
     full_name: string
+    email: string
+    show_login_wizard: boolean
+    preferences: { [key: string]: any }
 }
 
 export const useAuthStore = defineStore('auth', () => {

@@ -4552,6 +4552,36 @@ $app_strings['LBL_MINT4_USER_MENU_ADMINISTRATION'] = 'Administration';
 $app_strings['LBL_MINT4_USER_MENU_SUPPORT'] = 'Support';
 $app_strings['LBL_MINT4_USER_MENU_ABOUT'] = 'About';
 $app_strings['LBL_MINT4_USER_MENU_LOGOUT'] = 'Logout';
+
+// Setup Wizard
+$app_strings['LBL_MINT4_SETUP_WIZARD_COOKIES_TITLE'] = 'Cookies';
+$app_strings['LBL_MINT4_SETUP_WIZARD_COOKIES_DESCRIPTION'] = 'Ta aplikacja wykorzystuje pliki cookie, aby zapewnić lepszą funkcjonalność. Kontynuując, zgadzasz się na wykorzystanie plików cookie zgodnie zgodnie z naszą <a href="https://minthcm.org/privacy-policy/" target="_blank">Polityką Prywatności</a>.';
+
+$app_strings['LBL_MINT4_SETUP_WIZARD_USER_PROFILE_TITLE'] = 'User Profile';
+$app_strings['LBL_MINT4_SETUP_WIZARD_USER_PROFILE_FIRST_NAME'] = 'First name';
+$app_strings['LBL_MINT4_SETUP_WIZARD_USER_PROFILE_LAST_NAME'] = 'Last name';
+$app_strings['LBL_MINT4_SETUP_WIZARD_USER_PROFILE_EMAIL'] = 'E-mail';
+
+$app_strings['LBL_MINT4_SETUP_WIZARD_LOCALE_SETTINGS_TITLE'] = 'User Locale Settings';
+$app_strings['LBL_MINT4_SETUP_WIZARD_LOCALE_SETTINGS_TIME_ZONE'] = 'Timezone';
+$app_strings['LBL_MINT4_SETUP_WIZARD_LOCALE_SETTINGS_TIME_FORMAT'] = 'Time format';
+$app_strings['LBL_MINT4_SETUP_WIZARD_LOCALE_SETTINGS_DATE_FORMAT'] = 'Date format';
+$app_strings['LBL_MINT4_SETUP_WIZARD_LOCALE_SETTINGS_NAME_FORMAT'] = 'Display name format';
+
+$app_strings['LBL_MINT4_SETUP_WIZARD_COMPLETE_SCREEN_TITLE'] = 'Setup complete';
+$app_strings['LBL_MINT4_SETUP_WIZARD_COMPLETE_SCREEN_SUBTITLE'] = 'A couple of useful links:';
+$app_strings['LBL_MINT4_SETUP_WIZARD_COMPLETE_SCREEN_BTN'] = 'Start Using Mint';
+$app_strings['LBL_MINT4_SETUP_WIZARD_COMPLETE_SCREEN_MINTHCMORG'] = 'MintHCM.org website';
+$app_strings['LBL_MINT4_SETUP_WIZARD_COMPLETE_SCREEN_DOCUMENTATION'] = 'Documentation';
+$app_strings['LBL_MINT4_SETUP_WIZARD_COMPLETE_SCREEN_SUPPORT'] = 'Support forum';
+
+$app_strings['LBL_MINT4_ACCEPT'] = 'Accept';
+$app_strings['LBL_MINT4_DECLINE'] = 'Decline';
+$app_strings['LBL_MINT4_BACK'] = 'Back';
+$app_strings['LBL_MINT4_NEXT'] = 'Next';
+$app_strings['LBL_MINT4_FINISH'] = 'Finish';
+$app_strings['LBL_MINT4_ERROR_REQUIRED_FIELD'] = 'The field is required';
+
 $app_strings['ERR_WORKPLACE_REQUIRED_IF_ASSIGNED_TO_USER'] = 'Workplace is required if user has at least one workplace assigned!';
 
 $app_list_strings['dropzone_labels'] = [
