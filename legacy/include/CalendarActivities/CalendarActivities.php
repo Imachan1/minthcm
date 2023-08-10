@@ -67,7 +67,7 @@ class CalendarActivities {
       $hasAccess = false;
       $acl = $_SESSION['ACL'][$current_user->id][$module]['module']['view']['aclaccess'];
 
-      if ( $acl == ACL_ALLOW_ALL || $acl == ACL_ALLOW_GROUP || $current_user->is_admin ||
+      if ( $acl == ACL_ALLOW_ALL || $current_user->is_admin ||
               ($acl == ACL_ALLOW_OWNER && $current_user->id === $user_id) ) {
          $hasAccess = true;
       }
