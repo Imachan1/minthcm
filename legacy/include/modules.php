@@ -79,6 +79,7 @@ $moduleList[] = 'Project';
 $moduleList[] = 'Bugs';
 $moduleList[] = 'ResourceCalendar';
 $moduleList[] = 'AOBH_BusinessHours';
+$moduleList[] = 'Employees';
 
 $moduleList[] = 'Spots';
 
