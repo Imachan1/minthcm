@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import { useLanguagesStore } from '@/store/languages'
 import { useSetupWizardStore } from './SetupWizardStore'
 import SetupWizardComplete from './SetupWizardComplete.vue'

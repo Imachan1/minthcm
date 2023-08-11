@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintMenuList from '@/components/MintMenuList.vue'
 import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'

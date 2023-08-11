@@ -42,7 +42,7 @@
 import { useAuthViewStore } from './AuthViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useBackendStore } from '@/store/backend'
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintMenuList from '@/components/MintMenuList.vue'
 import axios from 'axios'
 

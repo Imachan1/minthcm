@@ -79,7 +79,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import ListViewFilterRow, { FilterRow } from './ListViewFilterRow.vue'

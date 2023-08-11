@@ -44,7 +44,7 @@ import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
 import { useAuthStore } from '@/store/auth'
 import { useRouter } from 'vue-router'
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintStatusBox from '@/components/MintStatusBox.vue'
 
 const authViewStore = useAuthViewStore()

@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import { useLanguagesStore } from '@/store/languages'
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import { useSetupWizardStore } from './SetupWizardStore'
 
 const languages = useLanguagesStore()

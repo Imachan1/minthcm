@@ -41,7 +41,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useLanguagesStore } from '@/store/languages'
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintStatusBox from '@/components/MintStatusBox.vue'
 import { useAuthViewStore } from './AuthViewStore'
 
