@@ -1,7 +1,14 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vuetify from 'vite-plugin-vuetify'
 import path from 'path'
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+process.env = {
+    ...process.env,
+    ...loadEnv(process.env.NODE_ENV as string, process.cwd(), ''),
+}
 
 export default defineConfig({
     base: './',
@@ -23,11 +30,11 @@ export default defineConfig({
         base: '/',
         proxy: {
             '/api': {
-                target: 'http://localhost:8080/ewl' ?? '',
+                target: process.env.PROXY_URL ?? '',
                 changeOrigin: true,
             },
             '/legacy': {
-                target: 'http://localhost:8080/ewl' ?? '',
+                target: process.env.PROXY_URL ?? '',
                 changeOrigin: true,
             },
         },
