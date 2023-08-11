@@ -209,4 +209,41 @@ class AuthController
 
         return $response;
     }
+    
+    public function confirmLoginWizard(Request $request, Response $response, array $args): Response
+    {
+        $first_name = $request->getAttribute('first_name');
+        $last_name = $request->getAttribute('last_name');
+        $email = $request->getAttribute('email');
+        $preferences = [];
+        $preferences['timezone'] = $request->getAttribute('time_zone');
+        $preferences['timef'] = $request->getAttribute('time_format');
+        $preferences['datef'] = $request->getAttribute('date_format');
+        $preferences['default_locale_name_format'] = $request->getAttribute('display_name_format');
+
+        $response = new Response();
+        $response = $response->withHeader('Content-type', 'application/json');
+
+        global $current_user;
+        if (empty($current_user->id)) {
+            $response = $response->withStatus(403);
+            return $response;
+        }
+        chdir('../legacy/');
+        $current_user->first_name = $first_name;
+        $current_user->last_name = $last_name;
+        $current_user->email1 = $email;
+
+        $current_user->save(false);
+
+        foreach($preferences as $k => $v){
+            if(!empty($v)){
+                $current_user->setPreference($k, $v, 0, 'global');        
+            }
+        }
+        $current_user->setPreference('ut', '1', 0, 'global');
+
+        chdir('../api/');
+        return $response;
+    }
 }

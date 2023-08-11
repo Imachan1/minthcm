@@ -1,6 +1,7 @@
 # DEVELOPMENT
 * npm install
-* zmień w pliku vite.config.ts: server->proxy->target na swoją instancję
+* skopiuj plik .env.example i nazwij go jako .env
+* zmień PROXY_URL na link do swojej instancji
 * npm run dev
 
 # PRODUCTION

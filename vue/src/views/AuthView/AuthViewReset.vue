@@ -176,7 +176,6 @@ async function submitResetPassword() {
         resetSuccess.value = true
         store.footerNavAction = null
     }
-    console.log(response)
 }
 </script>
 

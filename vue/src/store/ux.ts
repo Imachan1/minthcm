@@ -9,6 +9,7 @@ export const useUxStore = defineStore('ux', () => {
     const defaultLoadingMessage = 'Loading...'
     const loadingScreen = ref('')
     const drawer = ref(false)
+    const route = useRoute()
 
     function showLoadingScreen(msg?: string) {
         loadingScreen.value = msg ?? defaultLoadingMessage
@@ -19,12 +20,11 @@ export const useUxStore = defineStore('ux', () => {
     }
 
     const layout = computed(() => {
-        const route = useRoute()
         if (route.meta?.layout) {
             return route.meta.layout
         }
         const auth = useAuthStore()
-        return auth.user?.id ? DefaultLayout : GuestLayout
+        return auth.user?.id && !auth.user.show_login_wizard ? DefaultLayout : GuestLayout
     })
 
     return {
