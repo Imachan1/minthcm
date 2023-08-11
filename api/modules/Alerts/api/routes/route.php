@@ -1,8 +1,10 @@
 <?php
 
+use MintHCM\Api\Middlewares\Params\ParamTypes\ArrayType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\BoolType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
 use MintHCM\Modules\Alerts\api\controllers\ListAction;
+use MintHCM\Modules\Alerts\api\controllers\MassActionController;
 use MintHCM\Modules\Alerts\api\controllers\UpdateAction;
 
 $routes = array(
@@ -48,4 +50,57 @@ $routes = array(
             ),
         ),
     ),
+    "readAlerts" => [
+        "method" => "PATCH",
+        "path" => "/update/ReadAlerts",
+        "class" => MassActionController::class,
+        "desc" => "Mark passed alerts as read",
+        "function" => 'readAlerts',
+        "options" => [
+            'auth' => true,
+        ],
+        "pathParams" => [],
+        "bodyParams" => [ 
+            "records" => [
+                "type" => ArrayType::class,
+                "required" => false,
+                "example" => '
+                {
+                    "records":[
+                        "223dee27-b9e7-432a-8da9-c84cc0770035",
+                        "723wee27-b9e7-432a-8da9-c831c0770031",
+                        "1236ee27-b9e7-432a-8da9-c84c4fsa0033",
+                    ]
+                }
+                ',
+            ],
+        ],
+    ],
+    "closeAlerts" => [
+        "method" => "PATCH",
+        "path" => "/update/CloseAlerts",
+        "class" => MassActionController::class,
+        "desc" => "Mark passed alerts as closed",
+        "function" => 'closeAlerts',
+        "options" => [
+            'auth' => true,
+        ],
+        "pathParams" => [],
+        "bodyParams" => [ 
+            "records" => [
+                "type" => ArrayType::class,
+                "required" => false,
+                "desc" => "Set alert as readed",
+                "example" => '
+                {
+                    "records":[
+                        "223dee27-b9e7-432a-8da9-c84cc0770035",
+                        "723wee27-b9e7-432a-8da9-c831c0770031",
+                        "1236ee27-b9e7-432a-8da9-c84c4fsa0033",
+                    ]
+                }
+                ',
+            ],
+        ],
+    ],
 );
