@@ -59,7 +59,6 @@ onMounted(() => {
     }
 })
 
-const username = ref('')
 const password = ref('')
 const showPassword = ref(false)
 const isSubmiting = ref(false)
@@ -72,15 +71,12 @@ async function handleSubmit() {
         return
     }
     isSubmiting.value = true
-    await auth.authenticate(authViewStore.username, password.value)
-    backend.initialLoading = true
-    await backend.init()
-    if (!auth.user?.id) {
-        loginError.value = true
-    } else if (auth.user.show_login_wizard) {
-        router.push({ name: 'setup-wizard' })
+    const result = await auth.authenticate(authViewStore.username, password.value)
+    if (result) {
+        backend.initialLoading = true
+        router.go(0)
     } else {
-        router.push({ name: 'dashboard' })
+        loginError.value = true
     }
     isSubmiting.value = false
 }

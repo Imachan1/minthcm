@@ -3,7 +3,7 @@
         <div class="setup-wizard-container">
             <v-fade-transition>
                 <div v-if="store.isLoading" class="setup-wizard-loader">
-                    <v-progress-circular indeterminate color="secondary" size="64" />
+                    <v-progress-circular indeterminate color="primary" size="64" />
                 </div>
             </v-fade-transition>
             <SetupWizardComplete v-if="store.isFinished" />
@@ -47,7 +47,7 @@ const languages = useLanguagesStore()
 const setupWizardStepComponent = ref<any>()
 
 function handleNextStep() {
-    if (!setupWizardStepComponent.value?.validate || setupWizardStepComponent.value?.validate()) {
+    if (!setupWizardStepComponent.value?.validate || setupWizardStepComponent.value.validate()) {
         store.nextStep()
     }
 }

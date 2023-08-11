@@ -25,7 +25,10 @@ export const useAuthStore = defineStore('auth', () => {
                 password,
                 login_language: languages.currentLanguage ?? 'pl_PL',
             })
-
+            if (response.status !== 200) {
+                return false
+            }
+            return true
         } catch {
             return false
         }

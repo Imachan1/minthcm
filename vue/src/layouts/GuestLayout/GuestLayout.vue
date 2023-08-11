@@ -1,9 +1,7 @@
 <template>
     <slot></slot>
     <footer>
-        <a href="https://minthcm.org" target="_blank">
-            www.minthcm.org
-        </a>
+        <a href="https://minthcm.org" target="_blank"> www.minthcm.org </a>
     </footer>
 </template>
 
@@ -17,7 +15,8 @@ footer {
     gap: 16px;
     align-items: center;
     padding: 8px 32px;
-    
+    z-index: 1000;
+
     a {
         color: rgb(var(--v-theme-secondary));
         text-decoration: none;

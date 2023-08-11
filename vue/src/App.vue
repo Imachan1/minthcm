@@ -5,7 +5,7 @@
         <v-fade-transition>
             <LoadingScreen v-if="backend.initialLoading" />
         </v-fade-transition>
-        <component v-if="!backend.initialLoading" :is="ux.layout">
+        <component :is="ux.layout">
             <v-main
                 class="mint-content"
                 :style="{

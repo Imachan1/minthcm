@@ -25,7 +25,7 @@
             :text="languages.label('LBL_MINT4_SETUP_WIZARD_COMPLETE_SCREEN_BTN')"
             variant="primary"
             class="mt-6"
-            @click="redirectToMint"
+            @click="$router.push({ name: 'dashboard' })"
         />
     </div>
 </template>
@@ -33,18 +33,11 @@
 <script setup lang="ts">
 import { useLanguagesStore } from '@/store/languages'
 import MintButton from '@/components/MintButtons/MintButton.vue'
-import { useSetupWizardStore } from './SetupWizardStore'
 
 const languages = useLanguagesStore()
-const store = useSetupWizardStore()
 
 function openInNew(href: string) {
     window.open(href, '_blank')
-}
-
-function redirectToMint() {
-    store.isLoading = true
-    location.href = ''
 }
 </script>
 
