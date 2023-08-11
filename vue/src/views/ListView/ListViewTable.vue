@@ -4,7 +4,7 @@
         :headers="store.headers"
         :items="store.results"
         :items-length="store.itemsLength || 0"
-        :loading="store.isLoading"
+        :loading="store.isLoading || store.initialLoading"
         height="calc(100vh - 400px)"
         fixed-header
         must-sort
