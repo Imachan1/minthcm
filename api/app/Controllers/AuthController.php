@@ -21,8 +21,14 @@ class AuthController
         $app->startSession();
         require_once 'modules/Users/authentication/SugarAuthenticate/SugarAuthenticateUser.php';
         require_once 'modules/Users/authentication/AuthenticationController.php';
-        $sugar_auth = \AuthenticationController::getInstance();
-        $loginSuccess = $sugar_auth->login($username, $password);
+
+        if($this->IsLdapOn() && (new \AuthenticationController())->authController->loginAuthenticate($username, $password, false, [])){
+            $loginSuccess = true;
+        }
+        if(!$loginSuccess){
+            $sugar_auth = \AuthenticationController::getInstance();
+            $loginSuccess = $sugar_auth->login($username, $password);
+        }
         chdir('../api/');
 
         if (!$loginSuccess) {
@@ -37,6 +43,12 @@ class AuthController
         $response->getBody()->write($data);
         return $response;
     }
+
+    private function IsLdapOn(){
+        global $system_config;
+        return !empty($system_config->settings['system_ldap_enabled']) && $system_config->settings['system_ldap_enabled'] == true;
+    }
+
 
     public function logout(Request $request, Response $response, array $args): Response
     {
