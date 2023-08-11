@@ -73,6 +73,7 @@ async function handleSubmit() {
     }
     isSubmiting.value = true
     await auth.authenticate(authViewStore.username, password.value)
+    backend.initialLoading = true
     await backend.init()
     if (!auth.user?.id) {
         loginError.value = true
