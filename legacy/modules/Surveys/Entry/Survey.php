@@ -1,14 +1,24 @@
 <?php
+use SuiteCRM\Utility\SuiteValidator;
 
 //Grab the survey
 if (empty($_REQUEST['id'])) {
-    header("HTTP/1.0 404 Not Found");
+    header('HTTP/1.0 404 Not Found');
     exit();
 }
-$surveyId = $_REQUEST['id'];
+
+$isValidator = new SuiteValidator();
+$surveyId = '';
+
+if (!empty($_REQUEST['id']) && $isValidator->isValidId($_REQUEST['id'])) {
+    $surveyId = $_REQUEST['id'];
+} else {
+    LoggerManager::getLogger()->warn('Invalid survey ID.');
+}
+
 $survey = BeanFactory::getBean('Surveys', $surveyId);
 if (empty($survey->id)) {
-    header("HTTP/1.0 404 Not Found");
+    header('HTTP/1.0 404 Not Found');
     exit();
 }
 if ($survey->status == 'Closed') {
@@ -19,11 +29,17 @@ if ($survey->status == 'Closed') {
 //if ($survey->status != 'Public') {
 if ($survey->status != 'Active') {
     //MintHCM #74241 END
-    header("HTTP/1.0 404 Not Found");
+    header('HTTP/1.0 404 Not Found');
     exit();
 }
 
-$employeeId = $_REQUEST['employee'];
+$employeeId = '';
+
+if (!empty($_REQUEST['employee']) && $isValidator->isValidId($_REQUEST['employee'])) {
+    $employeeId = $_REQUEST['employee'];
+} else {
+    LoggerManager::getLogger()->warn('Invalid employee ID in survey.');
+}
 //MintHCM #102681 START
 if (empty($employeeId)) {
     if(empty($_SESSION['authenticated_user_id'])){
@@ -67,7 +83,14 @@ if (empty($db->fetchOne($sql2))) {
     return;
 }
 //MintHCM #102681 END
-$trackerId = !empty($_REQUEST['tracker']) ? $_REQUEST['tracker'] : '';
+$trackerId = '';
+
+if (!empty($_REQUEST['tracker']) && $isValidator->isValidId($_REQUEST['tracker'])) {
+    $trackerId = $_REQUEST['tracker'];
+} else {
+    LoggerManager::getLogger()->warn('Invalid tracker ID in survey.');
+}
+
 
 $themeObject = SugarThemeRegistry::current();
 $companyLogoURL = $themeObject->getImageURL('company_logo.png');

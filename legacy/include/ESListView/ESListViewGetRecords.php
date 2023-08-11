@@ -53,7 +53,7 @@ class ESListViewGetRecords {
         $number_of_request_into_elasticsearch = 0;
         $total = $this->itemsPerPage;
         while ($this->selected_records < $this->itemsPerPage + 1 && $total >= $this->itemsPerPage) {
-            list($beans, $query_results) = $this->getRecordsFromElasticSearch(null, $this->itemsPerPage + 1, $this->offset + ($this->itemsPerPage * $number_of_request_into_elasticsearch), $this->engine, $this->options);
+            list($beans, $query_results) = $this->getRecordsFromElasticSearch('', $this->itemsPerPage + 1, $this->offset + ($this->itemsPerPage * $number_of_request_into_elasticsearch), $this->engine, $this->options);
             $total = $query_results->getTotal();
             $this->add_to_offset = 0;
             foreach ($beans[$this->module] as $item) {
@@ -96,6 +96,15 @@ class ESListViewGetRecords {
         return $row;
     }
 
+    /**
+     * @param string $query A string containing the search query.
+     * @param int $per_page The number of results
+     * @param int $offset The results offset (for pagination)
+     * @param string|null $engine Name of the search engine to use. Use default if `null`
+     * @param array|null $options Array with options (optional)
+     *
+     * @return array
+     */
     protected function getRecordsFromElasticSearch($query, $per_page, $offset, $engine, $options) {
         $search_query = SearchQuery::fromString($query, $per_page, $offset, $engine, $options);
         $results = SearchWrapper::search($search_query->getEngine(), $search_query);

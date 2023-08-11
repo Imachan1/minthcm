@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,25 +53,22 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class SugarWidgetSubPanelActivitiesStatusField extends SugarWidgetField
 {
-	function displayList(&$layout_def)
-	{
-		global $current_language;
-		$app_list_strings = return_app_list_strings_language($current_language);
-		
-		$module = empty($layout_def['module']) ? '' : $layout_def['module'];
-		
-		if(isset($layout_def['varname']))
-		{
-			$key = strtoupper($layout_def['varname']);
-		}
-		else
-		{
-			$key = $this->_get_column_alias($layout_def);
-			$key = strtoupper($key);
-		}
+    public function displayList(&$layout_def)
+    {
+        global $current_language;
+        $app_list_strings = return_app_list_strings_language($current_language);
+        
+        $module = empty($layout_def['module']) ? '' : $layout_def['module'];
+        
+        if (isset($layout_def['varname'])) {
+            $key = strtoupper($layout_def['varname']);
+        } else {
+            $key = $this->_get_column_alias($layout_def);
+            $key = strtoupper($key);
+        }
 
-		$value = $layout_def['fields'][$key];
-		// cn: bug 5813, removing double-derivation of lang-pack value
-		return $value;
-	}
+        $value = $layout_def['fields'][$key];
+        // cn: bug 5813, removing double-derivation of lang-pack value
+        return $value;
+    }
 }

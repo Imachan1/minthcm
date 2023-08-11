@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,34 +46,18 @@
  * THIS CLASS IS FOR DEVELOPERS TO MAKE CUSTOMIZATIONS IN
  */
 require_once('modules/FP_events/FP_events_sugar.php');
-class FP_events extends FP_events_sugar {
-
-	function __construct(){
-		parent::__construct();
-	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function FP_events(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+class FP_events extends FP_events_sugar
+{
+    public function __construct()
+    {
+        parent::__construct();
     }
 
+    //assign email templates to drop_down in module
+    public function email_templates()
+    {
+        global $app_list_strings;
 
-	//assign email templates to drop_down in module
-	function email_templates(){
-
-		global $app_list_strings;
-
-		$app_list_strings['email_templet_list'] = get_bean_select_array(true, 'EmailTemplate','name');
-
-
-	}
+        $app_list_strings['emailTemplates_type_list'] = get_bean_select_array(true, 'EmailTemplate', 'name', "type='event'");
+    }
 }

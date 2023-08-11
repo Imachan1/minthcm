@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -54,36 +54,44 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('include/JSON.php');
 require_once('include/upload_file.php');
 
-if (!is_dir($cachedir = sugar_cached('images/')))
+if (!is_dir($cachedir = sugar_cached('images/'))) {
     mkdir_recursive($cachedir);
+}
 
 // cn: bug 11012 - fixed some MIME types not getting picked up.  Also changed array iterator.
 $imgType = array('image/gif', 'image/png', 'image/x-png', 'image/bmp', 'image/jpeg', 'image/jpg', 'image/pjpeg');
 
 $ret = array();
 
-foreach($_FILES as $k => $file) {
-	if(in_array(strtolower($_FILES[$k]['type']), $imgType) && $_FILES[$k]['size'] > 0) {
-	    $upload_file = new UploadFile($k);
-		// check the file
-		if($upload_file->confirm_upload()) {
-		    $dest = $cachedir.basename($upload_file->get_stored_file_name()); // target name
-		    $guid = create_guid();
-		    if($upload_file->final_move($guid)) { // move to uploads
-		        $path = $upload_file->get_upload_path($guid);
-		        // if file is OK, copy to cache
-		        if(verify_uploaded_image($path) && copy($path, $dest)) {
-		            $ret[] = $dest;
-		        }
-		        // remove temp file
-		        unlink($path);
-		    }
-		}
-	}
+foreach ($_FILES as $k => $file) {
+    if (in_array(strtolower($_FILES[$k]['type']), $imgType) && $_FILES[$k]['size'] > 0) {
+        $fileName = $_FILES[$k]['name'] ?? '';
+
+        if (!has_valid_image_extension('Attach Files Uploaded file: ' . $fileName , $fileName)) {
+            LoggerManager::getLogger()->fatal("EmailTemplates AttachFiles - Invalid file ext : '$fileName'.");
+            throw new RuntimeException('Invalid request');
+        }
+
+        $upload_file = new UploadFile($k);
+        // check the file
+        if ($upload_file->confirm_upload()) {
+            $dest = $cachedir.basename($upload_file->get_stored_file_name()); // target name
+            $guid = create_guid();
+            if ($upload_file->final_move($guid)) { // move to uploads
+                $path = $upload_file->get_upload_path($guid);
+                // if file is OK, copy to cache
+                if (verify_uploaded_image($path) && copy($path, $dest)) {
+                    $ret[] = $dest;
+                }
+                // remove temp file
+                unlink($path);
+            }
+        }
+    }
 }
 
 if (!empty($ret)) {
-	$json = getJSONobj();
-	echo $json->encode($ret);
-	//return the parameters
+    $json = getJSONobj();
+    echo $json->encode($ret);
+    //return the parameters
 }

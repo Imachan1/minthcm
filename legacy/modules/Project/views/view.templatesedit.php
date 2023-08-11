@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,29 +44,29 @@
  */
 
 
-class ProjectViewTemplatesEdit extends ViewEdit 
+class ProjectViewTemplatesEdit extends ViewEdit
 {
- 	/**
-	 * @see SugarView::_getModuleTitleParams()
-	 */
-	protected function _getModuleTitleParams($browserTitle = false)
-	{
-	    global $mod_strings;
-	    
-	    $crumbs = array();
-	    $crumbs[] = $this->_getModuleTitleListParam($browserTitle);
-	    if(!empty($this->bean->id)){
-	    	$crumbs[] =  "<a href='index.php?module=Project&action=EditView&record={$this->bean->id}'>{$this->bean->name}</a>";
-	    }
-	    $crumbs[] = $mod_strings['LBL_PROJECT_TEMPLATE'];
-    	return $crumbs;
+    /**
+     * @see SugarView::_getModuleTitleParams()
+     */
+    protected function _getModuleTitleParams($browserTitle = false)
+    {
+        global $mod_strings;
+        
+        $crumbs = array();
+        $crumbs[] = $this->_getModuleTitleListParam($browserTitle);
+        if (!empty($this->bean->id)) {
+            $crumbs[] =  "<a href='index.php?module=Project&action=EditView&record={$this->bean->id}'>{$this->bean->name}</a>";
+        }
+        $crumbs[] = $mod_strings['LBL_PROJECT_TEMPLATE'];
+        return $crumbs;
     }
     
-	function display() 
-	{
+    public function display()
+    {
         $this->bean->is_template = 1;
         $this->ev->ss->assign("is_template", 1);
 
- 		parent::display();
- 	}
+        parent::display();
+    }
 }

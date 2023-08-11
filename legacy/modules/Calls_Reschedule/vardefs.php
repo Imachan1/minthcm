@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,12 +43,12 @@
  */
 
 $dictionary['Calls_Reschedule'] = array(
-	'table'=>'calls_reschedule',
-	'audited'=>true,
-		'duplicate_merge'=>true,
-		'fields'=>array (
-  'reason' => 
-  array (
+    'table'=>'calls_reschedule',
+    'audited'=>true,
+        'duplicate_merge'=>true,
+        'fields'=>array(
+  'reason' =>
+  array(
     'required' => false,
     'name' => 'reason',
     'vname' => 'LBL_REASON',
@@ -71,7 +71,7 @@ $dictionary['Calls_Reschedule'] = array(
     'dependency' => false,
   ),
   'call_id' =>
-  array (
+  array(
     'required' => false,
     'name' => 'call_id',
     'vname' => '',
@@ -91,7 +91,7 @@ $dictionary['Calls_Reschedule'] = array(
     'size' => '20',
   ),
   'call_name' =>
-  array (
+  array(
     'required' => false,
     'source' => 'non-db',
     'name' => 'call_name',
@@ -118,12 +118,12 @@ $dictionary['Calls_Reschedule'] = array(
     'studio' => 'visible',
   ),
 ),
-	'relationships'=>array (
+    'relationships'=>array(
 ),
-	'optimistic_locking'=>true,
-		'unified_search'=>true,
-	);
-if (!class_exists('VardefManager')){
-        require_once('include/SugarObjects/VardefManager.php');
+    'optimistic_locking'=>true,
+        'unified_search'=>true,
+    );
+if (!class_exists('VardefManager')) {
+    require_once('include/SugarObjects/VardefManager.php');
 }
-VardefManager::createVardef('Calls_Reschedule','Calls_Reschedule', array('basic','assignable'));
+VardefManager::createVardef('Calls_Reschedule', 'Calls_Reschedule', array('basic','assignable'));

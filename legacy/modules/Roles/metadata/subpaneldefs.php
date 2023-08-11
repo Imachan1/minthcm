@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,20 +49,20 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $layout_defs['Roles'] = array(
-	// list of what Subpanels to show in the DetailView 
-	'subpanel_setup' => array(
+    // list of what Subpanels to show in the DetailView
+    'subpanel_setup' => array(
          'users' => array(
          'top_buttons' => array(
-			array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'Users'),
-	),
-			'order' => 10,
-			'module' => 'Users',
-			'sort_by' => 'user_name',
-			'sort_order' => 'asc',
-			'subpanel_name' => 'default',
-			'get_subpanel_data' => 'users',
-			'add_subpanel_data' => 'user_id',
-			'title_key' => 'LBL_USERS_SUBPANEL_TITLE',
-		),
-	),
+            array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'Users'),
+    ),
+            'order' => 10,
+            'module' => 'Users',
+            'sort_by' => 'user_name',
+            'sort_order' => 'asc',
+            'subpanel_name' => 'default',
+            'get_subpanel_data' => 'users',
+            'add_subpanel_data' => 'user_id',
+            'title_key' => 'LBL_USERS_SUBPANEL_TITLE',
+        ),
+    ),
 );

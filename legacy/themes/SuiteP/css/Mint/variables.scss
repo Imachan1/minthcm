@@ -682,7 +682,7 @@ $alert-warning-border:        $state-warning-border !default;
 $alert-danger-bg:             $state-danger-bg !default;
 $alert-danger-text:           $state-danger-text !default;
 $alert-danger-border:         $state-danger-border !default;
-
+$alert-danger-text-color:     $color-80;
 
 //== Progress bars
 //
@@ -939,6 +939,7 @@ $default-btn-color: $color-mint-grey;
 $default-text-disabled-bg: $color-52;
 $default-text-disabled-color: $color-52;
 $default-text-disabled-border-color: $color-45;
+$subpanel-text-hover: $color-90;
 $default-input-group-color: $color-40;
 $default-btn-bg: $color-28;
 $default-btn-bg-hover: $color-28;
@@ -977,7 +978,10 @@ $navbar-link-color-hover: $color-50;
 $navbar-main-menu-bg: $color-99;
 $navbar-menu-link-color: $color-80;
 $navbar-menu-link-color-hover: $color-50;
-$navbar-menu-seperator: $color-18;
+$navbar-menu-separator: $color-18;
+$navbar-menu-current-separator: $color-50;
+$navbar-menu-seperator: $navbar-menu-separator; //needed for backward compatibility
+$navbar-menu-current-seperator: $navbar-menu-current-separator; //needed for backward compatibility
 $navbar-menu-current-seperator: $color-89;
 $navbar-mobile-toolbar-color: $color-80;
 
@@ -1145,6 +1149,11 @@ $input-select-bg: $color-34;
 $input-select-border: $color-34;
 $input-border: $color-34;
 
+$select-size-background-url: "../../../../../themes/SuiteP/images/forms/select.ico";
+$select-form-control-background-url: "../../../../../themes/SuiteP/images/forms/select.ico";
+$select-background-url: "../../../../../themes/SuiteP/images/forms/select.ico";
+$saved-search-select-background-url: "../../../../../themes/SuiteP/images/forms/select.ico";
+$select-ui-widget-control-background-url: "../../../../../themes/SuiteP/images/forms/select.ico";
 
 // tables
 $table-header-bg: $color-20;
@@ -1311,6 +1320,7 @@ $scheduler-excused_absence-color: $color-119;
 
 // AOR
 $aor-droparea: $color-75;
+$aor-total: $main-bg;
 
 // Line Items
 $line-item-group-width: 100%;
@@ -1346,3 +1356,12 @@ $notification-text: $danger-btn-color !default;
 // Required *
 $required-bg: transparent;
 $required-color: $color-49;
+
+$navbar-menu-separator: $color-7;
+$navbar-menu-current-separator: white;
+$navbar-quick-create-menu-separator: $color-7;
+$navbar-alert-separator: $color-7;
+$action-tab-separator: $color-7;
+$error-background-color: $color-50;
+$navigation-hover-color: $color-80;
+$text-label-color: $color-90;

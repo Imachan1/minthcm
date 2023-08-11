@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,19 +48,19 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $layout_defs['OAuthKeys'] = array(
-	// list of what Subpanels to show in the DetailView
-	'subpanel_setup' => array(
-		'tokens' => array(
-			'order' => 30,
-			'module' => 'OAuthTokens',
-			'sort_order' => 'asc',
-			'sort_by' => 'token_ts',
-			'subpanel_name' => 'ForKeys',
-			'get_subpanel_data' => 'tokens',
-			'title_key' => 'LBL_TOKENS',
-			'top_buttons' => array(
-			),
+    // list of what Subpanels to show in the DetailView
+    'subpanel_setup' => array(
+        'tokens' => array(
+            'order' => 30,
+            'module' => 'OAuthTokens',
+            'sort_order' => 'asc',
+            'sort_by' => 'token_ts',
+            'subpanel_name' => 'ForKeys',
+            'get_subpanel_data' => 'tokens',
+            'title_key' => 'LBL_TOKENS',
+            'top_buttons' => array(
+            ),
 
-		),
+        ),
     )
 );

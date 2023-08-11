@@ -31,6 +31,23 @@ class AttributeObjectHelper
 
         $current_time_zone = date_default_timezone_get();
         date_default_timezone_set('UTC');
+        $allowedField = [];
+
+        $fieldsToParse = $fields;
+        if (empty($fields)) {
+            $fieldsToParse =  array_keys($bean->field_defs);
+        }
+
+        foreach ($fieldsToParse ?? [] as $index => $field) {
+            $isSensitive = isTrue($bean->field_defs[$field]['sensitive'] ?? false);
+            $notApiVisible = isFalse($bean->field_defs[$field]['api-visible'] ?? true);
+
+            if ($isSensitive || $notApiVisible){
+                continue;
+            }
+
+            $allowedField[$index] = $field;
+        }
 
         // using the ISO 8601 format for dates
         $attributes = array_map(function ($value) {
@@ -42,9 +59,8 @@ class AttributeObjectHelper
         }, $bean->toArray());
 
         date_default_timezone_set($current_time_zone);
-
-        if ($fields !== null) {
-            $attributes = array_intersect_key($attributes, array_flip($fields));
+        if ($allowedField !== null) {
+            $attributes = array_intersect_key($attributes, array_flip($allowedField));
         }
 
         unset($attributes['id']);

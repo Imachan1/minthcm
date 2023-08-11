@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,29 +49,29 @@
  * Window - Preferences - PHPeclipse - PHP - Code Templates
  */
   $searchdefs['Bugs'] = array(
-					'templateMeta' => array(
-							'maxColumns' => '3', 
-  							'maxColumnsBasic' => '4', 
-                            'widths' => array('label' => '10', 'field' => '30'),                 
+                    'templateMeta' => array(
+                            'maxColumns' => '3',
+                            'maxColumnsBasic' => '4',
+                            'widths' => array('label' => '10', 'field' => '30'),
                            ),
-                    'layout' => array(  					
-						'basic_search' => array(
-						 	'name', 
-							array('name'=>'current_user_only', 'label'=>'LBL_CURRENT_USER_FILTER', 'type'=>'bool'),
-							
-					        array ('name' => 'open_only', 'label' => 'LBL_OPEN_ITEMS', 'type' => 'bool', 'default' => false, 'width' => '10%'),       
-		      ),
-						'advanced_search' => array(
-							'bug_number', 
-							'name', 
-							'resolution',
-							'found_in_release',
-							'fixed_in_release',
-							'type',
-							'status',
-							array('name' => 'assigned_user_id', 'type' => 'enum', 'label' => 'LBL_ASSIGNED_TO', 'function' => array('name' => 'get_user_array', 'params' => array(false))),
-							'priority',
-							
-						),
-					),
- 			   );
+                    'layout' => array(
+                        'basic_search' => array(
+                            'name',
+                            array('name'=>'current_user_only', 'label'=>'LBL_CURRENT_USER_FILTER', 'type'=>'bool'),
+                            
+                            array('name' => 'open_only', 'label' => 'LBL_OPEN_ITEMS', 'type' => 'bool', 'default' => false, 'width' => '10%'),
+              ),
+                        'advanced_search' => array(
+                            'bug_number',
+                            'name',
+                            'resolution',
+                            'found_in_release',
+                            'fixed_in_release',
+                            'type',
+                            'status',
+                            array('name' => 'assigned_user_id', 'type' => 'enum', 'label' => 'LBL_ASSIGNED_TO', 'function' => array('name' => 'get_user_array', 'params' => array(false))),
+                            'priority',
+                            
+                        ),
+                    ),
+               );

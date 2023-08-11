@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 /**
  *
@@ -10,7 +12,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,32 +55,30 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
-require_once('include/MVC/View/views/view.detail.php');
 
-class ProjectViewDetail extends ViewDetail 
+class ProjectViewDetail extends ViewDetail
 {
- 	/**
- 	 * @see SugarView::display()
- 	 */
- 	public function display() 
- 	{
-		global $beanFiles;
-		require_once($beanFiles['Project']);
+    /**
+     * @see SugarView::display()
+     */
+    public function display()
+    {
+        global $beanFiles;
+        require_once($beanFiles['Project']);
 
-		$focus = new Project();
-		$focus->retrieve($_REQUEST['record']);
+        $focus = BeanFactory::newBean('Project');
+        $focus->retrieve($_REQUEST['record']);
 
-		global $app_list_strings, $current_user, $mod_strings;
-		$this->ss->assign('APP_LIST_STRINGS', $app_list_strings);
+        global $app_list_strings, $current_user, $mod_strings;
+        $this->ss->assign('APP_LIST_STRINGS', $app_list_strings);
 
-		if($current_user->id == $focus->assigned_user_id || $current_user->is_admin){
-			$this->ss->assign('OWNER_ONLY', true);
-		}
-		else{
-			$this->ss->assign('OWNER_ONLY', false);
-		}
-		$this->ss->assign("IS_TEMPLATE", 0);
+        if ($current_user->id == $focus->assigned_user_id || $current_user->is_admin) {
+            $this->ss->assign('OWNER_ONLY', true);
+        } else {
+            $this->ss->assign('OWNER_ONLY', false);
+        }
+        $this->ss->assign("IS_TEMPLATE", 0);
 
- 		parent::display();
- 	}
+        parent::display();
+    }
 }

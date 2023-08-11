@@ -55,8 +55,7 @@ require_once('include/SugarObjects/forms/FormBase.php');
 
 class MeetingFormBase extends FormBase {
 
-   function getFormBody($prefix, $mod = '', $formname = '') {
-        
+   public function getFormBody($prefix, $mod = '', $formname = '') {
       if ( !ACLController::checkAccess('Meetings', 'edit', true) ) {
          return '';
       }
@@ -118,14 +117,14 @@ EOF;
 
       $javascript = new javascript();
       $javascript->setFormName($formname);
-      $javascript->setSugarBean(new Meeting());
+      $javascript->setSugarBean(BeanFactory::newBean('Meetings'));
       $javascript->addRequiredFields($prefix);
       $form .= $javascript->getScript();
       $mod_strings = $temp_strings;
       return $form;
    }
 
-   function getForm($prefix, $mod = 'Meetings') {
+   public function getForm($prefix, $mod = 'Meetings') {
       if ( !ACLController::checkAccess('Meetings', 'edit', true) ) {
          return '';
       }
@@ -173,7 +172,7 @@ EOQ;
     * @param	bool redirect default True
     * @param	bool useRequired default True
     */
-   function handleSave($prefix, $redirect = true, $useRequired = false) {
+   public function handleSave($prefix, $redirect = true, $useRequired = false) {
 
 
       require_once('include/formbase.php');
@@ -181,7 +180,7 @@ EOQ;
       global $current_user;
       global $timedate;
 
-      $focus = new Meeting();
+      $focus = BeanFactory::newBean('Meetings');
 
       if ( $useRequired && !checkRequired($prefix, array_keys($focus->required_fields)) ) {
          return null;
@@ -233,7 +232,7 @@ EOQ;
 
       // if dates changed
       if ( !empty($focus->id) ) {
-         $oldBean = new Meeting();
+         $oldBean = BeanFactory::newBean('Meetings');
          $oldBean->retrieve($focus->id);
          if ( ($focus->date_start != $oldBean->date_start) || ($focus->date_end != $oldBean->date_end) ) {
             $focus->date_changed = true;
@@ -605,12 +604,14 @@ EOQ;
       if ( isset($_REQUEST['return_module']) && ($_REQUEST['return_module'] == 'Calendar' || $_REQUEST['return_module'] == 'Home') ) {
          header("Location: index.php?module=" . $_REQUEST['return_module'] . "&action=index");
          // MintHCM end #42401
-      } else if ( $redirect ) {
-         handleRedirect($return_id, 'Meetings');
       } else {
-         return $focus;
-      }
-   }
+            if ( $redirect ) {
+                handleRedirect($return_id, 'Meetings');
+            } else {
+                return $focus;
+            }
+        }
+    }
 
 // end handleSave();
 }

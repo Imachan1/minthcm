@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,13 +45,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
-
- * Description:
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc. All Rights
- * Reserved. Contributor(s): ______________________________________..
- * *******************************************************************************/
-
 
 	
 $db = DBManagerFactory::getInstance();
@@ -62,7 +55,7 @@ $q = "SELECT id, name, email_password FROM inbound_email WHERE deleted=0 AND sta
 $r = $db->query($q);
 
 while($a = $db->fetchByAssoc($r)) {
-	$ieX = new InboundEmail();
+    $ieX = BeanFactory::newBean('InboundEmail');
 	$ieX->retrieve($a['id']);
 	if(!$ieX->repairAccount()) {
 		// none of the iterations worked.  flag for display

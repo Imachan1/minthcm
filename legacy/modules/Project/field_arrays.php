@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,7 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
  ********************************************************************************/
-$fields_array['Project'] = array ('column_fields' => array(
+$fields_array['Project'] = array('column_fields' => array(
         'id',
         'date_entered',
         'date_modified',
@@ -79,7 +79,7 @@ $fields_array['Project'] = array ('column_fields' => array(
         'total_estimated_effort',
         'total_actual_effort',
         'status',
-        'priority',     
+        'priority',
         
     ),
     'required_fields' =>  array('name'=>1, 'estimated_start_date'=>2, 'estimated_end_date'=>3),

@@ -119,7 +119,7 @@ class ACLRolesUpdater
 
     private function resetExistingRoleActions($role)
     {
-        $role_actions_modules = ACLRole::getRoleActions($role->id);
+        $role_actions_modules = (new ACLRole())->getRoleActions($role->id);
         foreach ($role_actions_modules as $module) {
             foreach ($module as $module_action) {
                 foreach ($module_action as $action_array) {
@@ -172,7 +172,7 @@ class ACLRolesUpdater
     {
         $default_actions = $role_array['default_actions'];
         if (!empty($default_actions)) {
-            $role_actions_modules = ACLRole::getRoleActions($role->id);
+            $role_actions_modules = (new ACLRole())->getRoleActions($role->id);
             foreach ($role_actions_modules as $module_name => $module_array) {
                 foreach ($default_actions as $module_action => $access) {
                     if ($this->isDifferentActionAccess($role_actions_modules, $module_name, $module_action, $access)) {
@@ -188,7 +188,7 @@ class ACLRolesUpdater
     {
         $actions = $role_array['actions'];
         if (!empty($actions)) {
-            $role_actions_modules = ACLRole::getRoleActions($role->id);
+            $role_actions_modules = (new ACLRole())->getRoleActions($role->id);
             foreach ($actions as $module_name => $module_actions) {
                 foreach ($module_actions as $module_action => $access) {
                     if ($this->isDifferentActionAccess($role_actions_modules, $module_name, $module_action, $access)) {

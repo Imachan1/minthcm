@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,7 +52,7 @@ class ConfiguratorController extends SugarController
     /**
      * Go to the font manager view
      */
-    function action_FontManager(){
+    public function action_FontManager(){
         global $current_user;
         if(!is_admin($current_user)){
             sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
@@ -63,7 +63,7 @@ class ConfiguratorController extends SugarController
     /**
      * Delete a font and go back to the font manager
      */
-    function action_deleteFont(){
+    public function action_deleteFont(){
         global $current_user;
         if(!is_admin($current_user)){
             sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
@@ -80,7 +80,7 @@ class ConfiguratorController extends SugarController
         header("Location: $urlSTR");
     }
 
-    function action_listview(){
+    public function action_listview(){
         global $current_user;
         if(!is_admin($current_user)){
             sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
@@ -90,7 +90,7 @@ class ConfiguratorController extends SugarController
     /**
      * Show the addFont view
      */
-    function action_addFontView(){
+    public function action_addFontView(){
         global $current_user;
         if(!is_admin($current_user)){
             sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
@@ -100,7 +100,7 @@ class ConfiguratorController extends SugarController
     /**
      * Add a new font and show the addFontResult view
      */
-    function action_addFont(){
+    public function action_addFont(){
         global $current_user, $mod_strings;
         if(!is_admin($current_user)){
             sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
@@ -137,13 +137,13 @@ class ConfiguratorController extends SugarController
         }
         $this->view = 'addFontResult';
     }
-    function action_saveadminwizard()
+    public function action_saveadminwizard()
     {
         global $current_user;
         if(!is_admin($current_user)){
             sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
         }
-        $focus = new Administration();
+        $focus = BeanFactory::newBean('Administration');
         $focus->retrieveSettings();
         $focus->saveConfig();
 
@@ -230,22 +230,18 @@ class ConfiguratorController extends SugarController
                 unset($GLOBALS['tabStructure']['LBL_TABGROUP_DEFAULT']);
             }
             //Write the tabstructure to custom so that the grouping are not shown for the un-selected scenarios
-            $fp = sugar_fopen('custom/include/tabConfig.php', 'w');
-            $fileContents = "<?php \n" .'$GLOBALS["tabStructure"] ='.var_export($GLOBALS['tabStructure'],true).';';
-            fwrite($fp, $fileContents);
-            fclose($fp);
+            $fileContents = "<?php \n" .'$GLOBALS["tabStructure"] ='.var_export($GLOBALS['tabStructure'], true).';';
+            sugar_file_put_contents('custom/include/tabConfig.php', $fileContents);
             //Write the dashlets to custom so that the dashlets are not shown for the un-selected scenarios
-            $fp = sugar_fopen('custom/modules/Home/dashlets.php', 'w');
-            $fileContents = "<?php \n" .'$defaultDashlets ='.var_export($defaultDashlets,true).';';
-            fwrite($fp, $fileContents);
-            fclose($fp);
+            $fileContents = "<?php \n" .'$defaultDashlets ='.var_export($defaultDashlets, true).';';
+            sugar_file_put_contents('custom/modules/Home/dashlets.php', $fileContents);
             // End of the scenario implementations
         }
 
         SugarApplication::redirect('index.php?module=Users&action=Wizard&skipwelcome=1');
     }
 
-    function action_saveconfig()
+    public function action_saveconfig()
     {
         require_once('modules/Administration/QuickRepairAndRebuild.php');
 
@@ -263,7 +259,7 @@ class ConfiguratorController extends SugarController
             return;
         }
 
-        $focus = new Administration();
+        $focus = BeanFactory::newBean('Administration');
         $focus->saveConfig();
 
         $rc = new RepairAndClear();
@@ -275,7 +271,7 @@ class ConfiguratorController extends SugarController
         SugarApplication::redirect('index.php?module=Administration&action=index');
     }
 
-    function action_detail()
+    public function action_detail()
     {
         global $current_user;
         if(!is_admin($current_user)){
@@ -287,7 +283,7 @@ class ConfiguratorController extends SugarController
     /**
      * Define correct view for action
      */
-    function action_historyContactsEmails()
+    public function action_historyContactsEmails()
     {
         $this->view = 'historyContactsEmails';
     }
@@ -295,7 +291,7 @@ class ConfiguratorController extends SugarController
     /**
      * Generates custom field_defs for selected fields
      */
-    function action_historyContactsEmailsSave()
+    public function action_historyContactsEmailsSave()
     {
         if (!empty($_POST['modules']) && is_array($_POST['modules'])) {
             require_once('include/SubPanel/SubPanelDefinitions.php');

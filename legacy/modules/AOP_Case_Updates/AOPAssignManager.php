@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -113,7 +113,7 @@ class AOPAssignManager
     private function getRoleUsers($roleId)
     {
         require_once 'modules/ACLRoles/ACLRole.php';
-        $role = new ACLRole();
+        $role = BeanFactory::newBean('ACLRoles');
         $role->retrieve($roleId);
         $role_users = $role->get_linked_beans('users', 'User');
         $r_users = array();
@@ -141,7 +141,7 @@ class AOPAssignManager
             case 'security_group':
                 if (file_exists('modules/SecurityGroups/SecurityGroup.php')) {
                     require_once 'modules/SecurityGroups/SecurityGroup.php';
-                    $security_group = new SecurityGroup();
+                    $security_group = BeanFactory::newBean('SecurityGroups');
                     $security_group->retrieve($distributionOptions[1]);
                     $group_users = $security_group->get_linked_beans('users', 'User');
                     $users = array();
@@ -158,6 +158,7 @@ class AOPAssignManager
                     break;
                 }
             //No Security Group module found - fall through.
+            // no break
             case 'role':
                 $users = $this->getRoleUsers($distributionOptions[2]);
                 break;
@@ -312,10 +313,7 @@ class AOPAssignManager
     \$lastUser = {$arrayString};
 ?>
 eoq;
-        if ($fh = @sugar_fopen($file, 'w')) {
-            fwrite($fh, $content);
-            fclose($fh);
-        }
+        sugar_file_put_contents($file, $content);
 
         return true;
     }

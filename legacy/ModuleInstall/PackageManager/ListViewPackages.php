@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,45 +44,46 @@
 
  require_once('include/ListView/ListViewSmarty.php');
 
-class ListViewPackages extends ListViewSmarty{
-    var $secondaryDisplayColumns;
+class ListViewPackages extends ListViewSmarty
+{
+    public $secondaryDisplayColumns;
     /**
      * Constructor  Call ListViewSmarty
      */
-    function __construct(){
+    public function __construct()
+    {
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function ListViewPackages(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     /**
      * Override the setup method in ListViewSmarty since we are not passing in a bean
      *
-     * @param data  the data to display on the page
-     * @param file  the template file to parse
+     * @param mixed $data the data to display on the page
+     * @param mixed $file the template file to parse
+     * @param mixed $where
+     * @param mixed $params
+     * @param mixed $offset
+     * @param mixed $limit
+     * @param mixed $filter_fields
+     * @param mixed $id_field
+     * @param null|mixed $id
      */
-    function setup($data, $file, $where, $params = Array(), $offset = 0, $limit = -1, $filter_fields = Array(), $id_field = 'id', $id=NULL) {
+    public function setup($data, $file, $where, $params = array(), $offset = 0, $limit = -1, $filter_fields = array(), $id_field = 'id', $id=null)
+    {
         $this->data = $data;
         $this->tpl = $file;
     }
 
     /**
      * Override the display method
+     * 
+     * @param boolean $end
      */
-    function display($end = true){
+    public function display($end = true)
+    {
         global $odd_bg, $even_bg, $app_strings;
         $this->ss->assign('rowColor', array('oddListRow', 'evenListRow'));
         $this->ss->assign('bgColor', array($odd_bg, $even_bg));

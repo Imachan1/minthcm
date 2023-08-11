@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,51 +50,38 @@ require_once('include/generic/SugarWidgets/SugarWidgetFieldvarchar.php');
 
 class SugarWidgetFieldText extends SugarWidgetFieldVarchar
 {
-    function __construct(&$layout_manager) {
+    public function __construct(&$layout_manager)
+    {
         parent::__construct($layout_manager);
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function SugarWidgetFieldText(&$layout_manager){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($layout_manager);
-    }
-
-
-    function queryFilterEquals($layout_def)
+    public function queryFilterEquals($layout_def)
     {
         return $this->reporter->db->convert($this->_get_column_select($layout_def), "text2char").
-        	" = ".$this->reporter->db->quoted($layout_def['input_name0']);
+            " = ".$this->reporter->db->quoted($layout_def['input_name0']);
     }
 
-    function queryFilterNot_Equals_Str($layout_def)
+    public function queryFilterNot_Equals_Str($layout_def)
     {
         $column = $this->_get_column_select($layout_def);
         return "($column IS NULL OR ". $this->reporter->db->convert($column, "text2char")." != ".
             $this->reporter->db->quoted($layout_def['input_name0']).")";
     }
 
-    function queryFilterNot_Empty($layout_def)
+    public function queryFilterNot_Empty($layout_def)
     {
         $column = $this->_get_column_select($layout_def);
         return "($column IS NOT NULL AND ".$this->reporter->db->convert($column, "length")." > 0)";
     }
 
-    function queryFilterEmpty($layout_def)
+    public function queryFilterEmpty($layout_def)
     {
         $column = $this->_get_column_select($layout_def);
         return "($column IS NULL OR ".$this->reporter->db->convert($column, "length")." = 0)";
     }
 
-    function displayList(&$layout_def) {
+    public function displayList(&$layout_def)
+    {
         return nl2br(parent::displayListPlain($layout_def));
     }
 }

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -41,7 +41,6 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
 *}
 <div id="popupDiv_ara"
      style="display:none;position:fixed;top: 39%; left: 41%;opacity:1;z-index:9999;background:#FFFFFF;">
@@ -61,9 +60,9 @@
                     {/capture}
                     <tr height="20">
                         <td width="17" valign="center"><a href="#" onclick="{$on_click_js}">
-                                <a href="#" onclick="{$on_click_js}">
-                                    <img src="themes/default/images/txt_image_inline.gif" width="16" height="16"/>
-                                </a>
+                            <a href="#" onclick="{$on_click_js}">
+                                <img src="themes/default/images/txt_image_inline.gif" width="16" height="16"/>
+                            </a>
                         </td>
                         <td>
                             <a href="#" onclick="{$on_click_js}">
@@ -82,43 +81,40 @@
     </tr>
     <tr>
         <td colspan="2">
-            <button style=" display: block;margin-left: auto;margin-right: auto" onclick="document.getElementById( 'popupDivBack_ara' ).style.display = 'none';
-                   document.getElementById( 'popupDiv_ara' ).style.display = 'none';
-                   return false;">
+            <button style=" display: block;margin-left: auto;margin-right: auto" onclick="document.getElementById('popupDivBack_ara').style.display='none';document.getElementById('popupDiv_ara').style.display='none';return false;">
                 Cancel
             </button>
         </td>
     </tr>
-</table>
+    </table>
 </div>
-<div id="popupDivBack_ara" onclick="this.style.display = 'none';
-       document.getElementById( 'popupDiv_ara' ).style.display = 'none';" style="top:0px;left:0px;position:fixed;height:100%;width:100%;background:#000000;opacity:0.5;display:none;vertical-align:middle;text-align:center;z-index:9998;">
+<div id="popupDivBack_ara" onclick="this.style.display='none';document.getElementById('popupDiv_ara').style.display='none';" style="top:0px;left:0px;position:fixed;height:100%;width:100%;background:#000000;opacity:0.5;display:none;vertical-align:middle;text-align:center;z-index:9998;">
 </div>
 <script>
-    {literal}
-        /**
-         *
-         * @param task
-         * @return {boolean}
-         * @see generatePdf (entrypoint)
-         */
-    {/literal}
-        function showPopup( task ) {ldelim}
-               var form = document.getElementById( 'popupForm' );
-               var ppd = document.getElementById( 'popupDivBack_ara' );
-               var ppd2 = document.getElementById( 'popupDiv_ara' );
-               var totalTemplates = {$TOTAL_TEMPLATES}
-               if ( totalTemplates === 1 ) {ldelim}
-                         form.task.value = task;
-                         form.templateID.value = '{$template}';
-                         form.submit();
-    {rdelim} else if ( form !== null && ppd !== null && ppd2 !== null ) {ldelim}
-              ppd.style.display = 'block';
-              ppd2.style.display = 'block';
-              form.task.value = task;
+  {literal}
+  /**
+   *
+   * @param task
+   * @return {boolean}
+   * @see generatePdf (entrypoint)
+   */
+  {/literal}
+  function showPopup(task) {ldelim}
+    var form = document.getElementById('popupForm');
+    var ppd = document.getElementById('popupDivBack_ara');
+    var ppd2 = document.getElementById('popupDiv_ara');
+    var totalTemplates = {$TOTAL_TEMPLATES}
+    if (totalTemplates === 1) {ldelim}
+      form.task.value = task;
+      form.templateID.value = '{$template}';
+      form.submit();
+    {rdelim} else if (form !== null && ppd !== null && ppd2 !== null) {ldelim}
+      ppd.style.display ='block';
+      ppd2.style.display ='block';
+      form.task.value = task;
     {rdelim} else {ldelim}
-              alert( 'Error!' );
+      alert('Error!');
     {rdelim}
-           return false;
-    {rdelim}
+    return false;
+  {rdelim}
 </script>

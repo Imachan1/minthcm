@@ -12,13 +12,16 @@
 namespace Symfony\Component\Translation;
 
 use Symfony\Component\Translation\Exception\InvalidArgumentException;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 /**
  * TranslatorInterface.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @deprecated since Symfony 4.2, use Symfony\Contracts\Translation\TranslatorInterface instead
  */
-interface TranslatorInterface
+interface TranslatorInterface extends LocaleAwareInterface
 {
     /**
      * Translates the given message.
@@ -32,7 +35,7 @@ interface TranslatorInterface
      *
      * @throws InvalidArgumentException If the locale contains invalid characters
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null);
+    public function trans($id, array $parameters = [], $domain = null, $locale = null);
 
     /**
      * Translates the given choice message by choosing a translation according to a number.
@@ -47,7 +50,7 @@ interface TranslatorInterface
      *
      * @throws InvalidArgumentException If the locale contains invalid characters
      */
-    public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null);
+    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null);
 
     /**
      * Sets the current locale.

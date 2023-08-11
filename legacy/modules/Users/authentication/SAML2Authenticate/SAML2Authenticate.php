@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,29 +42,50 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-if (!defined('sugarEntry') || !sugarEntry) {
+ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-require_once dirname(dirname(__FILE__)).'/SAML2Authenticate/lib/onelogin/php-saml/_toolkit_loader.php';
-require_once('modules/Users/authentication/SugarAuthenticate/SugarAuthenticate.php');
+require_once __DIR__ . '/../../../../modules/Users/authentication/SugarAuthenticate/SugarAuthenticate.php';
+
+/**
+ * Returns the XML metadata which can be used to register the SP with the IDP
+ *
+ * @param array $settingsInfo a SAML2 settings array structure
+ * @return string the xml metadata
+ * @throws OneLogin_Saml2_Error In case the settings/metadata are invalid
+ */
+function getSAML2Metadata($settingsInfo) {
+    $auth = new OneLogin_Saml2_Auth($settingsInfo);
+    $settings = $auth->getSettings();
+    $metadata = $settings->getSPMetadata();
+    $errors = $settings->validateMetadata($metadata);
+    if (!empty($errors)) {
+        throw new OneLogin_Saml2_Error(
+            'Invalid SP metadata: '.implode(', ', $errors),
+            OneLogin_Saml2_Error::METADATA_SP_INVALID
+        );
+    }
+    return $metadata;
+}
 
 /**
  * Class SAML2Authenticate for SAML2 auth
  */
-class SAML2Authenticate extends SugarAuthenticate {
-    var $userAuthenticateClass = 'SAML2AuthenticateUser';
-    var $authenticationDir = 'SAML2Authenticate';
+class SAML2Authenticate extends SugarAuthenticate
+{
+    public $userAuthenticateClass = 'SAML2AuthenticateUser';
+    public $authenticationDir = 'SAML2Authenticate';
 
     /**
      * @var OneLogin_Saml2_Auth
      */
-    private $samlLogoutAuth = null;
+    private $samlLogoutAuth;
 
     /**
      * @var array
      */
-    private $samlLogoutArgs = array();
+    private $samlLogoutArgs = [];
 
     /**
      * pre login initialization - use SAML2 to authenticate a user login process
@@ -72,13 +93,11 @@ class SAML2Authenticate extends SugarAuthenticate {
      */
     public function pre_login()
     {
-        parent::pre_login();
-
-        require_once dirname(dirname(__FILE__)) . '/SAML2Authenticate/lib/onelogin/settings.php';
+        require_once __DIR__ . '/../SAML2Authenticate/lib/onelogin/settings.php';
         $auth = new OneLogin_Saml2_Auth($settingsInfo);
 
-        if(isset($_REQUEST['SAMLResponse']) && $_REQUEST['SAMLResponse']) {
-            if (isset($_SESSION) && isset($_SESSION['AuthNRequestID'])) {
+        if (!empty($_POST['SAMLResponse'])) {
+            if (isset($_SESSION['AuthNRequestID'])) {
                 $requestID = $_SESSION['AuthNRequestID'];
             } else {
                 $requestID = null;
@@ -105,10 +124,21 @@ class SAML2Authenticate extends SugarAuthenticate {
             if (isset($_POST['RelayState']) && OneLogin_Saml2_Utils::getSelfURL() != $_POST['RelayState']) {
                 $relayStateUrl = $_POST['RelayState'] . '?action=Login&module=Users';
                 $selfurl = OneLogin_Saml2_Utils::getSelfURL();
-                if($selfurl === $relayStateUrl) {
+                if ($selfurl === $relayStateUrl) {
                     // Authenticate with suitecrm
                     $this->redirectToLogin($GLOBALS['app']);
                 }
+            } elseif (!empty($_GET['SAMLResponse']) || (!empty($_GET['SAMLRequest']))) {
+
+                $auth->processSLO();
+
+                $errors = $auth->getErrors();
+                if (!empty($errors)) {
+                    $GLOBALS['log']->warn('SLO errors: ' . implode(', ', $errors));
+                }
+
+                $auth->login();
+                exit;
             }
         } else {
             $auth->login();
@@ -121,15 +151,15 @@ class SAML2Authenticate extends SugarAuthenticate {
      * @param SugarApplication $app
      * @return bool
      */
-    public function redirectToLogin(SugarApplication $app) {
-        if(isset($_SESSION['samlNameId']) && !empty($_SESSION['samlNameId'])) {
-            if( $this->userAuthenticate->loadUserOnLogin($_SESSION['samlNameId'], null) ) {
+    public function redirectToLogin(SugarApplication $app)
+    {
+        if (isset($_SESSION['samlNameId']) && !empty($_SESSION['samlNameId'])) {
+            if ($this->userAuthenticate->loadUserOnLogin($_SESSION['samlNameId'], null)) {
                 global $authController;
                 $authController->login($_SESSION['samlNameId'], null);
             }
-            SugarApplication::redirect('index.php');
-        }
-        else {
+            SugarApplication::redirect('index.php?module=Users&action=LoggedOut');
+        } else {
             return false;
         }
     }
@@ -140,7 +170,7 @@ class SAML2Authenticate extends SugarAuthenticate {
      */
     public function logout()
     {
-        if ($this->samlLogoutAuth && !empty($this->samlLogoutAuth->getSLOurl())) {
+        if ($this->samlLogoutAuth && $this->samlLogoutAuth->getSLOurl()) {
             $this->samlLogoutAuth->logout(
                 $this->samlLogoutArgs['returnTo'],
                 $this->samlLogoutArgs['parameters'],
@@ -159,7 +189,8 @@ class SAML2Authenticate extends SugarAuthenticate {
     /**
      * call before from user logout page clear the session, store logout information for SAML2 logout
      */
-    public function preLogout() {
+    public function preLogout()
+    {
         require_once dirname(dirname(__FILE__)) . '/SAML2Authenticate/lib/onelogin/settings.php';
         $auth = new OneLogin_Saml2_Auth($settingsInfo);
 
@@ -182,5 +213,4 @@ class SAML2Authenticate extends SugarAuthenticate {
         $this->samlLogoutAuth = $auth;
         $this->samlLogoutArgs = array('returnTo' => $returnTo, 'parameters' => $paramters, 'nameId' => $nameId, 'sessionIndex' => $sessionIndex, 'false' => false, 'nameIdFormat' => $nameIdFormat);
     }
-
 }

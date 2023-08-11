@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,13 +43,12 @@
  */
 
 
-require_once('include/MVC/View/views/view.list.php');
 
 class ActivitiesViewList extends ViewList
 {
- 	public function display()
- 	{
- 		$GLOBALS['mod_strings'] = return_module_language($GLOBALS['current_language'], 'Calendar');
- 		require_once('modules/Calendar/index.php');
- 	}
+    public function display()
+    {
+        $GLOBALS['mod_strings'] = return_module_language($GLOBALS['current_language'], 'Calendar');
+        require_once('modules/Calendar/index.php');
+    }
 }

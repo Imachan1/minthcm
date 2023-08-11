@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,14 +45,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/**
-
- * Description:
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc. All Rights
- * Reserved. Contributor(s): ______________________________________..
- * *******************************************************************************/
-
-
 session_start();
 $GLOBALS['installing'] = true;
 
@@ -61,7 +53,7 @@ require_once('include/JSON.php');
 
 require_once('include/utils/db_utils.php');
 
-require_once('include/utils/zip_utils.php');
+require_once('include/utils/php_zip_utils.php');
 
 require_once('modules/UpgradeWizard/uw_utils.php');
 
@@ -71,7 +63,7 @@ $json = getJSONobj();
 /*
 $upgradeStepTime = $json->decode(html_entity_decode($_REQUEST['upgradeStepTime']));
 if(isset($tagdata['jsonObject']) && $tagdata['jsonObject'] != null){
-	$upgradeStepTime = $upgradeStepTime['jsonObject'];
+    $upgradeStepTime = $upgradeStepTime['jsonObject'];
  }
 
  if(!isset($_SESSION['totalUpgradeTime'])){
@@ -88,8 +80,8 @@ $GLOBALS['log']->fatal('TOTAL TIME .....'.$_SESSION['totalUpgradeTime']);
 
 
  if (!empty($response)) {
-    $json = getJSONobj();
-	print $json->encode($response);
+     $json = getJSONobj();
+     print $json->encode($response);
  }
 
 sugar_cleanup();

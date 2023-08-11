@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -56,33 +56,23 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/AOK_Knowledge_Base_Categories/AOK_Knowledge_Base_Categories.php');
 
-class AOK_Knowledge_Base_CategoriesDashlet extends DashletGeneric {
-    function __construct($id, $def = null) {
-		global $current_user, $app_strings;
-		require('modules/AOK_Knowledge_Base_Categories/metadata/dashletviewdefs.php');
+class AOK_Knowledge_Base_CategoriesDashlet extends DashletGeneric
+{
+    public function __construct($id, $def = null)
+    {
+        global $current_user, $app_strings;
+        require('modules/AOK_Knowledge_Base_Categories/metadata/dashletviewdefs.php');
 
         parent::__construct($id, $def);
 
-        if(empty($def['title'])) $this->title = translate('LBL_HOMEPAGE_TITLE', 'AOK_Knowledge_Base_Categories');
+        if (empty($def['title'])) {
+            $this->title = translate('LBL_HOMEPAGE_TITLE', 'AOK_Knowledge_Base_Categories');
+        }
 
         $this->searchFields = $dashletData['AOK_Knowledge_Base_CategoriesDashlet']['searchFields'];
         $this->columns = $dashletData['AOK_Knowledge_Base_CategoriesDashlet']['columns'];
 
-        $this->seedBean = new AOK_Knowledge_Base_Categories();
-    }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function AOK_Knowledge_Base_CategoriesDashlet($id, $def = null){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($id, $def);
+        $this->seedBean = BeanFactory::newBean('AOK_Knowledge_Base_Categories');
     }
 
 }

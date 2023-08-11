@@ -12,7 +12,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -70,7 +70,7 @@ echo getClassicModuleTitle(
 if ( $current_user->is_admin ) {
    require_once('modules/Currencies/ListCurrency.php');
 
-   $focus = new Currency();
+   $focus = BeanFactory::newBean('Currencies');
    $lc = new ListCurrency();
    $lc->handleAdd();
 
@@ -81,7 +81,7 @@ if ( $current_user->is_admin ) {
       $currencies = $_REQUEST['mergecur'];
 
 
-      $opp = new Opportunity();
+      $opp = BeanFactory::newBean('Opportunities');
       $opp->update_currency_id($currencies, $_REQUEST['mergeTo']);
       foreach ( $currencies as $cur ) {
          if ( $cur != $_REQUEST['mergeTo'] ) {
@@ -182,7 +182,7 @@ EOQ;
 
    $sugar_smarty->assign("PRINT_URL", "index.php?" . $GLOBALS['request_string']);
    $sugar_smarty->assign("JAVASCRIPT", get_set_focus_js());
-   $sugar_smarty->assign("THEME", SugarThemeRegistry::current()->__toString());
+   $sugar_smarty->assign("THEME", (string)SugarThemeRegistry::current());
    $sugar_smarty->assign("ID", $focus->id);
    $sugar_smarty->assign('NAME', $focus->name);
    $sugar_smarty->assign('STATUS', $focus->status);

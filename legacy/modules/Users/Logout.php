@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,14 +45,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
-
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 
 
 // record the last theme the user used
@@ -67,8 +59,8 @@ if(method_exists($authController->authController, 'preLogout')) {
 foreach($_SESSION as $key => $val) {
 	$_SESSION[$key] = ''; // cannot just overwrite session data, causes segfaults in some versions of PHP	
 }
-if(isset($_COOKIE[session_name()])) {
-	setcookie(session_name(), '', time()-42000, '/',null,false,true);
+if (isset($_COOKIE[session_name()])) {
+    SugarApplication::setCookie(session_name(), '', time()-42000, '/', null, isSSL(), true);
 }
 
 //Update the tracker_sessions table

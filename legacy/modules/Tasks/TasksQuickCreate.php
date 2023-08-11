@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,9 +52,9 @@ require_once('include/EditView/QuickCreate.php');
 
 class TasksQuickCreate extends QuickCreate {
     
-    var $javascript;
+    public $javascript;
     
-    function process() {
+    public function process() {
         global $current_user, $timedate, $app_list_strings, $current_language, $mod_strings;
         $mod_strings = return_module_language($current_language, 'Tasks');
         
@@ -64,7 +64,7 @@ class TasksQuickCreate extends QuickCreate {
         $this->ss->assign("STATUS_OPTIONS", get_select_options_with_id($app_list_strings['task_status_dom'], $app_list_strings['task_status_default']));
 		$this->ss->assign("TIME_FORMAT", '('. $timedate->get_user_time_format().')');
         
-        $focus = new Task();
+        $focus = BeanFactory::newBean('Tasks');
         $time_start_hour = intval(substr($focus->time_start, 0, 2));
 	    $time_start_minutes = substr($focus->time_start, 3, 5);
 		if($time_start_minutes > 45) {
@@ -77,12 +77,14 @@ class TasksQuickCreate extends QuickCreate {
                   $focus->meridiem_am_values = array('am'=>'am', 'pm'=>'pm');
                } 		
                $this->ss->assign("TIME_MERIDIEM", get_select_options_with_id($focus->meridiem_am_values, $time_start_hour < 12 ? 'am' : 'pm'));               
-		} else if(strpos($time_pref, 'A')) {
+		} else {
+            if(strpos($time_pref, 'A')) {
 		       if(!isset($focus->meridiem_AM_values)) {
 		          $focus->meridiem_AM_values = array('AM'=>'AM', 'PM'=>'PM');
 		       }       
 		       $this->ss->assign("TIME_MERIDIEM", get_select_options_with_id($focus->meridiem_AM_values, $time_start_hour < 12 ? 'AM' : 'PM'));
-		} //if-else
+            }
+        } //if-else
 
 		$this->ss->assign("USER_DATEFORMAT", '('. $timedate->get_user_date_format().')');
 		$this->ss->assign("CALENDAR_DATEFORMAT", $timedate->get_cal_date_format());
@@ -98,7 +100,7 @@ class TasksQuickCreate extends QuickCreate {
         $this->javascript = new javascript();
         $this->javascript->setFormName('tasksQuickCreate');
         
-        $focus = new Task();
+        $focus = BeanFactory::newBean('Tasks');
         $this->javascript->setSugarBean($focus);
         $this->javascript->addAllFields('');
 

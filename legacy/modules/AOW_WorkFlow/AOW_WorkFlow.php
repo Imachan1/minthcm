@@ -6,9 +6,9 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -142,14 +142,27 @@ class AOW_WorkFlow extends Basic
         $return_id = parent::save($check_notify);
 
         require_once('modules/AOW_Conditions/AOW_Condition.php');
-        $condition = new AOW_Condition();
+        $condition = BeanFactory::newBean('AOW_Conditions');
         $condition->save_lines($_POST, $this, 'aow_conditions_');
 
         require_once('modules/AOW_Actions/AOW_Action.php');
-        $action = new AOW_Action();
+        $action = BeanFactory::newBean('AOW_Actions');
         $action->save_lines($_POST, $this, 'aow_actions_');
 
         return $return_id;
+    }
+
+    public function mark_deleted($id)
+    {
+        // These are owned by the workflow, so delete them instead of just removing the link
+        $beans = $this->get_linked_beans('aow_conditions');
+        $beans = array_merge($beans, $this->get_linked_beans('aow_actions'));
+        $beans = array_merge($beans, $this->get_linked_beans('aow_processed'));
+        foreach ($beans as $bean) {
+            $bean->mark_deleted($bean->id);
+        }
+
+        parent::mark_deleted($id);
     }
 
     public function load_flow_beans()
@@ -209,13 +222,14 @@ class AOW_WorkFlow extends Basic
      */
     public function run_bean_flows(SugarBean $bean)
     {
-        if (!defined('SUGARCRM_IS_INSTALLING') && (!isset($_REQUEST['module']) || $_REQUEST['module'] != 'Import')) {
-            $query = "SELECT id FROM aow_workflow WHERE aow_workflow.flow_module = '" . $bean->module_dir . "' AND aow_workflow.status = 'Active' AND (aow_workflow.run_when = 'Always' OR aow_workflow.run_when = 'On_Save' OR aow_workflow.run_when = 'Create') AND aow_workflow.deleted = 0 ";
+        $query = "SELECT id FROM aow_workflow WHERE aow_workflow.flow_module = '" . $bean->module_dir . "' AND aow_workflow.status = 'Active' AND (aow_workflow.run_when = 'Always' OR aow_workflow.run_when = 'On_Save' OR aow_workflow.run_when = 'Create') AND aow_workflow.deleted = 0 ";
 
-            $result = $this->db->query($query, false);
-            $flow = new AOW_WorkFlow();
-            while (($row = $bean->db->fetchByAssoc($result)) != null) {
-                $flow->retrieve($row['id']);
+        $result = $this->db->query($query, false);
+        $flow = BeanFactory::newBean('AOW_WorkFlow');
+        while (($row = $bean->db->fetchByAssoc($result)) != null) {
+            $flow->retrieve($row['id']);
+
+            if ((!defined('SUGARCRM_IS_INSTALLING') && (!isset($_REQUEST['module'])) || $_REQUEST['module'] != 'Import') || $flow->run_on_import) {
                 if ($flow->check_valid_bean($bean)) {
                     $flow->run_actions($bean, true);
                 }
@@ -277,7 +291,7 @@ class AOW_WorkFlow extends Basic
         $name,
         $custom_name,
         SugarBean $module,
-            $query = array()
+        $query = array()
     ) {
         if (!isset($query['join'][$custom_name])) {
             $query['join'][$custom_name] = 'LEFT JOIN '.$module->get_custom_table_name()
@@ -289,12 +303,13 @@ class AOW_WorkFlow extends Basic
     public function build_flow_relationship_query_join(
         $name,
         SugarBean $module,
-            $query = array()
+        $query = array()
     ) {
+	    global $db;
         if (!isset($query['join'][$name])) {
             if ($module->load_relationship($name)) {
                 $params['join_type'] = 'LEFT JOIN';
-                $params['join_table_alias'] = $name;
+                $params['join_table_alias'] = $db->quoteIdentifier($name);
                 $join = $module->$name->getJoin($params, true);
 
                 $query['join'][$name] = $join['join'];
@@ -322,7 +337,7 @@ class AOW_WorkFlow extends Basic
             $result = $this->db->query($sql);
 
             while ($row = $this->db->fetchByAssoc($result)) {
-                $condition = new AOW_Condition();
+                $condition = BeanFactory::newBean('AOW_Conditions');
                 $condition->retrieve($row['id']);
                 $query = $this->build_query_where($condition, $module, $query);
                 if (empty($query)) {
@@ -377,7 +392,7 @@ class AOW_WorkFlow extends Basic
             foreach ($path as $rel) {
                 $query = $this->build_flow_relationship_query_join(
                     $rel,
-                        $condition_module,
+                    $condition_module,
                     $query
                 );
                 $condition_module = new $beanList[getRelatedModule($condition_module->module_dir, $rel)];
@@ -397,16 +412,68 @@ class AOW_WorkFlow extends Basic
                 $field = $table_alias.'_cstm.'.$condition->field;
                 $query = $this->build_flow_custom_query_join(
                     $table_alias,
-                    $table_alias.'_cstm',
+                    $table_alias . '_cstm',
                     $condition_module,
                     $query
                 );
+            } else if (isset($data['source']) && $data['source'] == 'non-db' && $data['type'] == 'relate' && !empty($data['link'])) {
+                $rel = $data['link'];
+                if (!isset($query['join'][$rel])) {
+                    if ($condition_module->load_relationship($rel)) {
+                        $join = $condition_module->$rel->getJoin([
+                            'join_type' => 'LEFT JOIN',
+                            'join_table_alias' => str_replace('.', '_', $rel),
+                            'left_join_table_alias' => $table_alias,
+                            'right_join_table_alias' => $table_alias
+                        ], true);
+                        $query['join'][$rel] = $join['join'];
+                        $query['select'][] = $join['select'] . " AS '" . str_replace('.', '_', $rel) . "_id'";
+                    }
+                }
+                $relObject = $condition_module->$rel;
+
+                if (!empty($relObject)) {
+                    if ($relObject->getRelationshipObject()->type == 'one-to-many') {
+                        $field = $table_alias . '.' . $data['id_name'];
+                    } else {
+                        $targetTable = $relObject->getRelationshipObject()->getRelationshipTable();
+                        $field = $targetTable . '.' . $data['id_name'];
+                    }
+                } else {
+                    $field = $table_alias . '.' . $condition->field;
+                }
+            } else if (isset($data['source']) && $data['source'] == 'non-db' && $data['type'] == 'relate') {
+                $relModule = $data['module'];
+                $relBean = BeanFactory::getBean($relModule);
+                $relAlias = $data['id'];
+                $id_name = $data['id_name'];
+                $parentFieldDef = $condition_module->getFieldDefinition($data['id_name']);
+                if (!empty($parentFieldDef['source']) && $parentFieldDef['source'] == 'custom_fields') {
+                    $query = $this->build_flow_custom_query_join(
+                        $table_alias,
+                        $table_alias . '_cstm',
+                        $condition_module,
+                        $query
+                    );
+                    $table_alias = $table_alias . '_cstm';
+                }
+                $primaryKey = $relBean->getPrimaryFieldDefinition();
+                if (!isset($query['join'][$relAlias])) {
+                    $query['join'][$relAlias] = ' LEFT JOIN ' . $relBean->getTableName()
+                        . ' ' . $relAlias . ' ON ' . $table_alias . '.' . $id_name . ' = ' . $relAlias . '.' . $primaryKey['name'];
+                }
+                $field = $relAlias . '.' . $data['rname'];
+                $relFieldDef = $relBean->getFieldDefinition($data['rname']);
+
+                if (isset($relFieldDef['db_concat_fields'])) {
+                    $field = $this->db->concat($relAlias, $relFieldDef['db_concat_fields']);
+                }
             } else {
-                $field = $table_alias.'.'.$condition->field;
+                $field = $table_alias . '.' . $condition->field;
             }
 
             if ($condition->operator == 'is_null') {
-                $query['where'][] = '('.$field.' '.$this->getSQLOperator($condition->operator).' OR '.$field.' '.$this->getSQLOperator('Equal_To')." '')";
+                $query['where'][] = '(' . $field . ' ' . $this->getSQLOperator($condition->operator) . ' OR ' . $field . ' ' . $this->getSQLOperator('Equal_To') . " '')";
                 return $query;
             }
 
@@ -426,9 +493,9 @@ class AOW_WorkFlow extends Basic
                     if ((isset($data['source']) && $data['source'] == 'custom_fields')) {
                         $value = $module->table_name.'_cstm.'.$condition->value;
                         $query = $this->build_flow_custom_query_join(
-                                $module->table_name,
+                            $module->table_name,
                             $module->table_name.'_cstm',
-                                $module,
+                            $module,
                             $query
                         );
                     } else {
@@ -461,23 +528,33 @@ class AOW_WorkFlow extends Basic
                             $value = 'Curdate()';
                         }
                     } else {
-                        $data = null;
-                        if (isset($module->field_defs[$params[0]])) {
-                            $data = $module->field_defs[$params[0]];
+                        if (isset($params[0]) && $params[0] == 'today') {
+                            if ($sugar_config['dbconfig']['db_type'] == 'mssql') {
+                                //$field =
+                                $value  = 'CAST(GETDATE() AS DATE)';
+                            } else {
+                                $field = 'DATE('.$field.')';
+                                $value = 'Curdate()';
+                            }
                         } else {
-                            LoggerManager::getLogger()->warn('Filed def data is missing: ' . get_class($module) . '::$field_defs[' . $params[0] . ']');
-                        }
+                            $data = null;
+                            if (isset($module->field_defs[$params[0]])) {
+                                $data = $module->field_defs[$params[0]];
+                            } else {
+                                LoggerManager::getLogger()->warn('Filed def data is missing: ' . get_class($module) . '::$field_defs[' . $params[0] . ']');
+                            }
 
                         if ((isset($data['source']) && $data['source'] == 'custom_fields')) {
                             $value = $module->table_name.'_cstm.'.$params[0];
                             $query = $this->build_flow_custom_query_join(
-                                    $module->table_name,
+                                $module->table_name,
                                 $module->table_name.'_cstm',
-                                    $module,
+                                $module,
                                 $query
                             );
-                        } else {
-                            $value = $module->table_name.'.'.$params[0];
+                            } else {
+                                $value = $module->table_name.'.'.$params[0];
+                            }
                         }
                     }
 
@@ -487,7 +564,7 @@ class AOW_WorkFlow extends Basic
                                 if (file_exists('modules/AOBH_BusinessHours/AOBH_BusinessHours.php') && $params[0] == 'now') {
                                     require_once('modules/AOBH_BusinessHours/AOBH_BusinessHours.php');
 
-                                    $businessHours = new AOBH_BusinessHours();
+                                    $businessHours = BeanFactory::newBean('AOBH_BusinessHours');
 
                                     $amount = $params[2];
 
@@ -521,7 +598,8 @@ class AOW_WorkFlow extends Basic
                                         LoggerManager::getLogger()->warn('Date operator is not set in app_list_string[' . $params1 . ']');
                                     }
 
-                                    $value = "DATE_ADD($value, INTERVAL ".$dateOp." $params2 ".$params3.")";
+                                    $field = 'DATE_FORMAT('.$field.", '%Y-%m-%d %H:%i')";
+                                    $value = "DATE_FORMAT(DATE_ADD($value, INTERVAL ".$dateOp." $params2 ".$params3."), '%Y-%m-%d %H:%i')";
                                 }
                                 break;
                         }
@@ -615,7 +693,7 @@ class AOW_WorkFlow extends Basic
             }
         }
 
-        if (!isset($bean->date_entered)) {
+        if (!isset($bean->date_entered) && $bean->fetched_row !== false) {
             $bean->date_entered = $bean->fetched_row['date_entered'];
         }
 
@@ -649,7 +727,7 @@ class AOW_WorkFlow extends Basic
         $query_array = array();
 
         while ($row = $this->db->fetchByAssoc($result)) {
-            $condition = new AOW_Condition();
+            $condition = BeanFactory::newBean('AOW_Conditions');
             $condition->retrieve($row['id']);
 
             $path = unserialize(base64_decode($condition->module_path));
@@ -698,7 +776,9 @@ class AOW_WorkFlow extends Basic
                             && isset($condition_bean->rel_fields_before_value[$condition->field])) {
                             $value = $condition_bean->rel_fields_before_value[$condition->field];
                         } else {
-                            $value = $condition_bean->fetched_row[$condition->field];
+                            $value = from_html($condition_bean->fetched_row[$condition->field]);
+                            // Bug - on delete bean action CRM load bean in a different way and bean can contain html characters
+                            $field = from_html($field);
                         }
                         if (in_array($data['type'], $dateFields)) {
                             $value = strtotime($value);
@@ -724,8 +804,14 @@ class AOW_WorkFlow extends Basic
                             $value = date('Y-m-d');
                             $field = strtotime(date('Y-m-d', $field));
                         } else {
-                            $fieldName = $params[0];
-                            $value = $condition_bean->$fieldName;
+                            if ($params[0] == 'today') {
+                                $dateType = 'date';
+                                $value = date('Y-m-d');
+                                $field = strtotime(date('Y-m-d', $field));
+                            } else {
+                                $fieldName = $params[0];
+                                $value = $condition_bean->$fieldName;
+                            }
                         }
 
                         if ($params[1] != 'now') {
@@ -734,7 +820,7 @@ class AOW_WorkFlow extends Basic
                                     if (file_exists('modules/AOBH_BusinessHours/AOBH_BusinessHours.php')) {
                                         require_once('modules/AOBH_BusinessHours/AOBH_BusinessHours.php');
 
-                                        $businessHours = new AOBH_BusinessHours();
+                                        $businessHours = BeanFactory::newBean('AOBH_BusinessHours');
 
                                         $amount = $params[2];
                                         if ($params[1] != "plus") {
@@ -791,8 +877,12 @@ class AOW_WorkFlow extends Basic
                     default:
                         if (in_array($data['type'], $dateFields) && trim($value) != '') {
                             $value = strtotime($value);
-                        } elseif ($data['type'] == 'bool' && (!boolval($value) || strtolower($value) == 'false')) {
+                        } elseif ($data['type'] == 'bool' && (!(bool)$value || strtolower($value) == 'false')) {
                             $value = 0;
+                        }
+                        $type = $data['dbType'] ?? $data['type'];
+                        if ((strpos($type, 'char') !== false || strpos($type, 'text') !== false) && !empty($field)) {
+                            $field = from_html($field);
                         }
                         break;
                 }
@@ -836,9 +926,9 @@ class AOW_WorkFlow extends Basic
             case "Less_Than":  return $var1 <  $var2;
             case "Greater_Than_or_Equal_To": return $var1 >= $var2;
             case "Less_Than_or_Equal_To": return $var1 <= $var2;
-            case "Contains": return strpos($var1, $var2);
-            case "Starts_With": return strrpos($var1, $var2, -strlen($var1));
-            case "Ends_With": return strpos($var1, $var2, strlen($var1) - strlen($var2));
+            case "Contains": return strpos(strtolower($var1), strtolower($var2)) !== false;
+            case "Starts_With": return substr(strtolower($var1), 0, strlen($var2) ) === strtolower($var2);
+            case "Ends_With": return substr(strtolower($var1), -strlen($var2) ) === strtolower($var2);
             case "is_null": return $var1 == '';
             case "One_of":
                 if (is_array($var1)) {
@@ -886,7 +976,7 @@ class AOW_WorkFlow extends Basic
     public function run_actions(SugarBean &$bean, $in_save = false)
     {
         require_once('modules/AOW_Processed/AOW_Processed.php');
-        $processed = new AOW_Processed();
+        $processed = BeanFactory::newBean('AOW_Processed');
         if (!$this->multiple_runs) {
             $processed->retrieve_by_string_fields(array('aow_workflow_id' => $this->id,'parent_id' => $bean->id));
 
@@ -908,7 +998,7 @@ class AOW_WorkFlow extends Basic
         $result = $this->db->query($sql);
 
         while ($row = $this->db->fetchByAssoc($result)) {
-            $action = new AOW_Action();
+            $action = BeanFactory::newBean('AOW_Actions');
             $action->retrieve($row['id']);
 
             if ($this->multiple_runs || !$processed->db->getOne("select id from aow_processed_aow_actions where aow_processed_id = '".$processed->id."' AND aow_action_id = '".$action->id."' AND status = 'Complete'")) {
@@ -919,7 +1009,11 @@ class AOW_WorkFlow extends Basic
                 } elseif (file_exists('modules/AOW_Actions/actions/'.$action_name.'.php')) {
                     require_once('modules/AOW_Actions/actions/'.$action_name.'.php');
                 } else {
-                    return false;
+                    if (file_exists('modules/AOW_Actions/actions/'.$action_name.'.php')) {
+                        require_once('modules/AOW_Actions/actions/'.$action_name.'.php');
+                    } else {
+                        return false;
+                    }
                 }
 
                 $custom_action_name = "custom" . $action_name;

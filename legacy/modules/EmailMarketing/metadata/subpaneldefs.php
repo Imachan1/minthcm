@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,30 +47,30 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
  
 
-$layout_defs['EmailMarketing'] = array( 
-	// list of what Subpanels to show in the DetailView 
-	'subpanel_setup' => array(
+$layout_defs['EmailMarketing'] = array(
+    // list of what Subpanels to show in the DetailView
+    'subpanel_setup' => array(
         'prospectlists' => array(
-			'order' => 10,
-			'sort_order' => 'asc',
-			'sort_by' => 'name',
-			'module' => 'ProspectLists',
-			'get_subpanel_data'=>'prospectlists',
-			'set_subpanel_data'=>'prospectlists',			
-			'subpanel_name' => 'default',
-			'title_key' => 'LBL_PROSPECT_LIST_SUBPANEL_TITLE',
-			'top_buttons' => array(),
-		),
+            'order' => 10,
+            'sort_order' => 'asc',
+            'sort_by' => 'name',
+            'module' => 'ProspectLists',
+            'get_subpanel_data'=>'prospectlists',
+            'set_subpanel_data'=>'prospectlists',
+            'subpanel_name' => 'default',
+            'title_key' => 'LBL_PROSPECT_LIST_SUBPANEL_TITLE',
+            'top_buttons' => array(),
+        ),
         'allprospectlists' => array(
-			'order' => 20,
-			'module' => 'ProspectLists',
-			'sort_order' => 'asc',
-			'sort_by' => 'name',
-			'get_subpanel_data'=>'function:get_all_prospect_lists',
-			'set_subpanel_data'=>'prospectlists',			
-			'subpanel_name' => 'default',
-			'title_key' => 'LBL_PROSPECT_LIST_SUBPANEL_TITLE',
-			'top_buttons' => array(),
-		),
-	)
+            'order' => 20,
+            'module' => 'ProspectLists',
+            'sort_order' => 'asc',
+            'sort_by' => 'name',
+            'get_subpanel_data'=>'function:get_all_prospect_lists',
+            'set_subpanel_data'=>'prospectlists',
+            'subpanel_name' => 'default',
+            'title_key' => 'LBL_PROSPECT_LIST_SUBPANEL_TITLE',
+            'top_buttons' => array(),
+        ),
+    )
 );

@@ -7,6 +7,9 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2023 MintHCM
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
  * Free Software Foundation with the addition of the following permission added
@@ -32,10 +35,11 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by
- * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 -->
 
@@ -234,6 +238,8 @@ var authInfo = {/literal}{$js_authinfo}{literal}
 											<td width="20%">&nbsp;</td>
 											<td width="30%">&nbsp;</td>
 										</tr>
+										</table>
+										<table width="100%" cellpadding="0" cellspacing="0">
 										<tr id="mail_allow_user">
 											<td width="20%" scope="row">
 												{$MOD.LBL_ALLOW_DEFAULT_SELECTION}&nbsp;
@@ -244,10 +250,7 @@ var authInfo = {/literal}{$js_authinfo}{literal}
 												<input id="notify_allow_default_outbound" name='notify_allow_default_outbound' value="2" tabindex='1' class="checkbox" type="checkbox" {$notify_allow_default_outbound_on}>
 											</td>
 										</tr>
-									</table>
-                                                                                        
-                                                                        <table width="100%" cellpadding="0" cellspacing="0">
-                                                                            <tr>
+									<tr class="legacy-compose-option" {if isset($legacyEmailConfigEnabled)}style="display:none"{/if}>
                                                                                 <td width="20%" scope="row">
                                                                                     {$MOD.LBL_ALLOW_SEND_AS_USER}&nbsp;
                                                                                     <img border="0" class="inlineHelpTip" onclick="return SUGAR.util.showHelpTips(this,'{$MOD.LBL_ALLOW_SEND_AS_USER_DESC}','','','dialogHelpPopup')" src="index.php?entryPoint=getImage&themeName={$THEME}&imageName=helpInline.gif">
@@ -348,7 +351,14 @@ var authInfo = {/literal}{$js_authinfo}{literal}
 							<td width="30%"  valign='top'>
 								<select name="email_template_id_opt_in">{$EMAIL_OPT_IN_TEMPLATES}</select>
 							</td>
-
+						</tr>
+						<tr>
+							<td width="20%" scope="row" valign='top'>
+								{$MOD.LBL_LEGACY_EMAIL_COMPOSE_BEHAVIOR}:&nbsp;
+							</td>
+							<td width="30%"  valign='top'>
+								<input id="legacy_email_behaviour" name='legacy_email_behaviour' value="true" tabindex='1' class="checkbox" type="checkbox" {if !empty($legacyEmailConfigEnabled)}checked="checked{/if}">
+							</td>
 						</tr>
 					</table>
 				</div>
@@ -739,10 +749,6 @@ function notify_setrequired(f) {
         document.getElementById("smtp_auth2").style.visibility = (document.getElementById('mail_smtpauth_req').checked) ? "visible" : "hidden";
     }
     // MintHCM #110041 END
-	if( document.getElementById('mail_smtpauth_req').checked)
-	   YAHOO.util.Dom.removeClass('mail_allow_user', "yui-hidden");
-	else
-	   YAHOO.util.Dom.addClass("mail_allow_user", "yui-hidden");
 
 	return true;
 }
@@ -998,6 +1004,25 @@ if(window.addEventListener){
 }else{
     window.attachEvent("onload", function() { SUGAR.util.setEmailPasswordDisplay('mail_smtppass', {/literal}{$mail_haspass}{literal}); });
 }
+
+function toggleLegacyComposeOptions()
+{
+    var isSelected = $('#legacy_email_behaviour').is(':checked') || false;
+
+    var displayMethod = 'hide';
+    if(isSelected) {
+        displayMethod = 'show';
+    }
+
+    $('.legacy-compose-option')[displayMethod]();
+}
+
+$(document).ready(function () {
+    toggleLegacyComposeOptions()
+    $('#legacy_email_behaviour').on('change', function(){
+        toggleLegacyComposeOptions()
+    });
+});
 {/literal}{if !empty($mail_smtptype)}{literal}
 changeEmailScreenDisplay("{/literal}{$mail_smtptype}{literal}", false);
 {/literal}{/if}{literal}

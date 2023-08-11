@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,6 +50,25 @@
 {assign var="alt_prev" value=$navStrings.previous}
 {assign var="alt_end" value=$navStrings.end}
 
+{if !isset($hideColumnFilter)}
+    {assign var="currentModule" value = $pageData.bean.moduleDir}
+    {assign var="hideColumnFilter" value = false}
+
+    {php}
+      $currentModule = $this->get_template_vars('currentModule');
+      $APP_CONFIG = $this->get_template_vars("APP_CONFIG");
+
+      if (
+          isset($APP_CONFIG['hideColumnFilter'][$currentModule])
+           && $APP_CONFIG['hideColumnFilter'][$currentModule] == true
+        ) {
+    {/php}
+          {assign var="hideColumnFilter" value = true}
+    {php}
+        }
+    {/php}
+{/if}
+
 	<tr id='pagination' class="pagination-unique" role='presentation'>
 		<td colspan='{if $prerow}{$colCount+1}{else}{$colCount}{/if}'>
 			<table border='0' cellpadding='0' cellspacing='0' width='100%' class='paginationTable'>
@@ -67,7 +86,9 @@
 						{if $showFilterIcon}
 							{include file='include/ListView/ListViewSearchLink.tpl'}
 						{/if}
-						{include file='include/ListView/ListViewColumnsFilterLink.tpl'}
+      {if empty($hideColumnFilter)}
+          {include file='include/ListView/ListViewColumnsFilterLink.tpl'}
+      {/if}
 						&nbsp;{$selectedObjectsSpan}
 					</td>
 					<td  nowrap='nowrap' align="right" class='paginationChangeButtons' width="1%">

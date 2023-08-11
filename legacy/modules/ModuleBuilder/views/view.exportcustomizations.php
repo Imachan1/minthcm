@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,40 +45,40 @@
 require_once('modules/ModuleBuilder/MB/AjaxCompose.php');
 class ViewExportcustomizations extends SugarView
 {
-	/**
-	 * @see SugarView::_getModuleTitleParams()
-	 */
-	protected function _getModuleTitleParams($browserTitle = false)
-	{
-	    global $mod_strings;
-	    
-    	return array(
-    	   translate('LBL_MODULE_NAME','Administration'),
-    	   ModuleBuilderController::getModuleTitle(),
-    	   );
+    /**
+     * @see SugarView::_getModuleTitleParams()
+     */
+    protected function _getModuleTitleParams($browserTitle = false)
+    {
+        global $mod_strings;
+        
+        return array(
+           translate('LBL_MODULE_NAME', 'Administration'),
+           ModuleBuilderController::getModuleTitle(),
+           );
     }
 
-	function display()
-	{
- 		global $current_user, $mod_strings;
- 		$smarty = new Sugar_Smarty();
- 		$mb = new MBPackage("packageCustom");
- 		$mod=$mb->getCustomModules();
- 		foreach($mod as $key => $value){
- 		    $modules[]=$key;
- 		    $custom[]=$value;
- 		}
- 		$nb_mod = count($modules);
- 		$smarty->assign('mod_strings', $mod_strings);
- 		$smarty->assign('modules', $mod);
- 		$smarty->assign('custom', $custom);
- 		$smarty->assign('nb_mod', $nb_mod);
- 		$smarty->assign('defaultHelp', 'exportHelp');
- 		$smarty->assign('moduleList',$GLOBALS['app_list_strings']['moduleList']);  
- 		$smarty->assign('moduleList',$GLOBALS['app_list_strings']['moduleList']);  
-		$ajax = new AjaxCompose();
-		$ajax->addCrumb($mod_strings['LBL_STUDIO'], 'ModuleBuilder.getContent("module=ModuleBuilder&action=wizard")');
-		$ajax->addSection('center', $mod_strings['LBL_EC_TITLE'],$smarty->fetch($this->getCustomFilePathIfExists('modules/ModuleBuilder/tpls/exportcustomizations.tpl')));
-		echo $ajax->getJavascript();
- 	}
+    public function display()
+    {
+        global $current_user, $mod_strings;
+        $smarty = new Sugar_Smarty();
+        $mb = new MBPackage("packageCustom");
+        $mod=$mb->getCustomModules();
+        foreach ($mod as $key => $value) {
+            $modules[]=$key;
+            $custom[]=$value;
+        }
+        $nb_mod = count($modules);
+        $smarty->assign('mod_strings', $mod_strings);
+        $smarty->assign('modules', $mod);
+        $smarty->assign('custom', $custom);
+        $smarty->assign('nb_mod', $nb_mod);
+        $smarty->assign('defaultHelp', 'exportHelp');
+        $smarty->assign('moduleList', $GLOBALS['app_list_strings']['moduleList']);
+        $smarty->assign('moduleList', $GLOBALS['app_list_strings']['moduleList']);
+        $ajax = new AjaxCompose();
+        $ajax->addCrumb($mod_strings['LBL_STUDIO'], 'ModuleBuilder.getContent("module=ModuleBuilder&action=wizard")');
+        $ajax->addSection('center', $mod_strings['LBL_EC_TITLE'], $smarty->fetch($this->getCustomFilePathIfExists('modules/ModuleBuilder/tpls/exportcustomizations.tpl')));
+        echo $ajax->getJavascript();
+    }
 }

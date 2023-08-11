@@ -12,7 +12,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -59,13 +59,10 @@ $views = array("agendaDay" => array(),"basicDay" => array(), "basicWeek" => arra
 global $cal_strings, $current_language;
 $cal_strings = return_module_language($current_language, 'Calendar');
 
-if(empty($_REQUEST['view'])){
-    if (isset($_SESSION['CALENDAR_VIEW']) && in_array($_SESSION['CALENDAR_VIEW'], $views))
-    {
+if(empty($_REQUEST['view'])) {
+    if (isset($_SESSION['CALENDAR_VIEW']) && in_array($_SESSION['CALENDAR_VIEW'], $views)) {
         $_REQUEST['view'] = $_SESSION['CALENDAR_VIEW'];
-    }
-    else
-    {
+    } else {
         $_REQUEST['view'] = SugarConfig::getInstance()->get('calendar.default_view','agendaWeek');
     }
 }
@@ -78,13 +75,13 @@ $cal = new Calendar($_REQUEST['view'], array(), $views);
 if($cal->view == "sharedMonth" || $cal->view == "sharedWeek"){
 	$cal->init_shared();	
 	global $shared_user;				
-	$shared_user = new User();	
+    $shared_user = BeanFactory::newBean('Users');
 	foreach($cal->shared_ids as $member){
 		$shared_user->retrieve($member);
 		$cal->add_activities($shared_user);
 	}
-}else{
-	if(array_key_exists($cal->view,$views)) {
+}else {
+	if (array_key_exists($cal->view,$views)) {
 		$cal->add_activities($GLOBALS['current_user']);
 	}
 }
@@ -100,8 +97,9 @@ if (!empty($_REQUEST['print']) && $_REQUEST['print'] == 'true') {
 $display = new CalendarDisplay($cal,"", $views);
 
 	$display->display_title();
-	if($cal->view == "sharedMonth" || $cal->view == "sharedWeek")
-		$display->display_shared_html($cal->view);
+	if ($cal->view == "sharedMonth" || $cal->view == "sharedWeek") {
+		$display->display_shared_html($cal->view);        
+    }
 	$display->display_calendar_header();
 	$display->display();
 	$display->display_calendar_footer();

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,36 +52,34 @@ $results = array(
     'data' => array(),
 );
 $selectedId = null;
-if(!isset($_REQUEST['campaign_id']) || !$_REQUEST['campaign_id']) {
+if (!isset($_REQUEST['campaign_id']) || !$_REQUEST['campaign_id']) {
     $results['error'] = 'campaign_id is not set';
     unset($_SESSION['campaignWizard'][$campaign_id]['defaultSelectedMarketingId']);
-}
-else {
+} else {
     $campaign_id = $db->quote($_REQUEST['campaign_id']);
-    if($list = BeanFactory::getBean('EmailMarketing')->get_full_list("", "campaign_id = '{$campaign_id}'")) {
+    if ($list = BeanFactory::getBean('EmailMarketing')->get_full_list("", "campaign_id = '{$campaign_id}'")) {
         foreach ($list as $elem) {
             $results['data'][] = array(
                 'id' => $elem->id,
                 'name' => $elem->name,
             );
-            if(isset($_SESSION['campaignWizard'][$campaign_id]['defaultSelectedMarketingId']) && $elem->id == $_SESSION['campaignWizard'][$campaign_id]['defaultSelectedMarketingId']) {
+            if (isset($_SESSION['campaignWizard'][$campaign_id]['defaultSelectedMarketingId']) && $elem->id == $_SESSION['campaignWizard'][$campaign_id]['defaultSelectedMarketingId']) {
                 $selectedId = $elem->id;
             }
         }
-        if(!$selectedId && !empty($results['data'][0]['id'])) {
+        if (!$selectedId && !empty($results['data'][0]['id'])) {
             $selectedId = $results['data'][0]['id'];
         }
     }
 }
 
-if($selectedId) {
+if ($selectedId) {
     $results['selectedId'] = $_SESSION['campaignWizard'][$campaign_id]['defaultSelectedMarketingId'] = $selectedId;
-}
-else {
+} else {
     unset($_SESSION['campaignWizard'][$campaign_id]['defaultSelectedMarketingId']);
 }
 
-if(isset($_REQUEST['func']) && $_REQUEST['func'] == 'createEmailMarketing') {
+if (isset($_REQUEST['func']) && $_REQUEST['func'] == 'createEmailMarketing') {
     unset($_SESSION['campaignWizard'][$campaign_id]['defaultSelectedMarketingId']);
     $results['selectedId'] = null;
 }

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,13 +45,13 @@
 
 class ViewNoaccess extends SugarView
 {
-	public $type = 'noaccess';
-	
-	/**
-	 * @see SugarView::display()
-	 */
-	public function display()
-	{
-		echo '<p class="error">Warning: You do not have permission to access this module.</p>';
- 	}
+    public $type = 'noaccess';
+    
+    /**
+     * @see SugarView::display()
+     */
+    public function display()
+    {
+        echo '<p class="error">Warning: You do not have permission to access this module.</p>';
+    }
 }

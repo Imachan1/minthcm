@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -62,7 +62,7 @@ require_once('modules/Cases/Case.php');
 
 global $HTTP_RAW_POST_DATA;
 
-$administrator = new Administration();
+$administrator = BeanFactory::newBean('Administration');
 $administrator->retrieveSettings();
 
 // Sugarcrm namespace is necessary for backwards compatibility with existing SOAP clients
@@ -71,8 +71,8 @@ $server = new soap_server;
 $server->configureWSDL('sugarsoap', $NAMESPACE, $sugar_config['site_url'].'/soap.php');
 
 //New API is in these files
-if(!empty($administrator->settings['portal_on'])) {
-	require_once('soap/SoapPortalUsers.php');
+if (!empty($administrator->settings['portal_on'])) {
+    require_once('soap/SoapPortalUsers.php');
 }
 
 require_once('soap/SoapSugarUsers.php');
@@ -85,7 +85,7 @@ require_once('soap/SoapDeprecated.php');
 /* Begin the HTTP listener service and exit. */
 ob_clean();
 
-if (!isset($HTTP_RAW_POST_DATA)){
+if (!isset($HTTP_RAW_POST_DATA)) {
     $HTTP_RAW_POST_DATA = file_get_contents('php://input');
 }
 
@@ -94,10 +94,10 @@ $resourceManager = ResourceManager::getInstance();
 $resourceManager->setup('Soap');
 $observers = $resourceManager->getObservers();
 //Call set_soap_server for SoapResourceObserver instance(s)
-foreach($observers as $observer) {
-   if(method_exists($observer, 'set_soap_server')) {
-   	  $observer->set_soap_server($server);
-   }
+foreach ($observers as $observer) {
+    if (method_exists($observer, 'set_soap_server')) {
+        $observer->set_soap_server($server);
+    }
 }
 
 $HTTP_RAW_POST_DATA = isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : '';

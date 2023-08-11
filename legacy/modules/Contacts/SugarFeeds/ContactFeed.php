@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,19 +49,19 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('modules/SugarFeed/feedLogicBase.php');
 
 
-class ContactFeed extends FeedLogicBase{
-    var $module = 'Contacts';
-    function pushFeed($bean, $event, $arguments){
-    	global $locale;
+class ContactFeed extends FeedLogicBase
+{
+    public $module = 'Contacts';
+    public function pushFeed($bean, $event, $arguments)
+    {
+        global $locale;
         $text = '';
-        if(empty($bean->fetched_row)){
+        if (empty($bean->fetched_row)) {
             $text =  '{SugarFeed.CREATED_CONTACT} [' . $bean->module_dir . ':' . $bean->id . ':' . $locale->getLocaleFormattedName($bean->first_name, $bean->last_name) . ']';
         }
-		
-        if(!empty($text)){ 
-			SugarFeed::pushFeed2($text, $bean);
+        
+        if (!empty($text)) {
+            SugarFeed::pushFeed2($text, $bean);
         }
-		
     }
 }
-

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,10 +52,10 @@ if (!defined('sugarEntry') || !sugarEntry) {
 //TODO Rename this to edit link
 class SugarWidgetSubPanelRelFieldEditButton extends SugarWidgetField
 {
-	function displayHeaderCell($layout_def)
-	{
-		return '&nbsp;';
-	}
+    public function displayHeaderCell($layout_def)
+    {
+        return '&nbsp;';
+    }
 
     public function displayList($layout_def)
     {
@@ -67,8 +67,10 @@ class SugarWidgetSubPanelRelFieldEditButton extends SugarWidgetField
 
         global $app_strings;
 
-		$edit_icon_html = SugarThemeRegistry::current()->getImage( 'edit_inline',
-			'align="absmiddle" alt="' . $app_strings['LNK_EDIT'] . '" border="0"');
+        $edit_icon_html = SugarThemeRegistry::current()->getImage(
+            'edit_inline',
+            'align="absmiddle" alt="' . $app_strings['LNK_EDIT'] . '" border="0"'
+        );
 
         $script = "
         function editRel(name, id, module) {
@@ -98,6 +100,5 @@ class SugarWidgetSubPanelRelFieldEditButton extends SugarWidgetField
         return "<script>$script</script>"
              . '<div onclick="editRel(\'p1_b1_accounts\', \'cac203f3-0380-495f-3231-4cf58f089f00\', \'Accounts\')">'
              . $edit_icon_html . "</div>";
-	}
-		
+    }
 }

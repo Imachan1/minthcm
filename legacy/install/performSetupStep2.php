@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -103,10 +103,8 @@ $setup_site_log_level = 'fatal';
 installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS'], null, false, '');
 installLog("Begin creating Defaults");
 installerHook('pre_createDefaultSettings');
-if ($new_config) {
-    installLog("insert defaults into config table");
-    insert_default_settings();
-}
+installLog("insert defaults into config table");
+insert_default_settings();
 installerHook('post_createDefaultSettings');
 
 $new_tables = 1; // is there ever a scenario where we DON'T create the admin user?
@@ -128,7 +126,7 @@ installDefaultKReports();
 // default OOB schedulers
 
 installLog($mod_strings['LBL_PERFORM_DEFAULT_SCHEDULER']);
-$scheduler = new Scheduler();
+$scheduler = BeanFactory::newBean('Schedulers');
 installerHook('pre_createDefaultSchedulers');
 $scheduler->rebuildDefaultSchedulers();
 installerHook('post_createDefaultSchedulers');
@@ -175,7 +173,7 @@ if (isset($_SESSION['setup_site_sugarbeet_automatic_checks']) && $_SESSION['setu
     set_CheckUpdates_config_setting('manual');
 }
 if (!empty($_SESSION['setup_system_name'])) {
-    $admin = new Administration();
+    $admin=BeanFactory::newBean('Administration');
     $admin->saveSetting('system', 'name', $_SESSION['setup_system_name']);
 }
 
@@ -199,7 +197,6 @@ $enabled_tabs[] = 'FP_events';
 $enabled_tabs[] = 'FP_Event_Locations';
 $enabled_tabs[] = 'AOS_PDF_Templates';
 $enabled_tabs[] = 'AOR_Reports';
-$enabled_tabs[] = 'AOW_WorkFlow';
 $enabled_tabs[] = 'AOK_KnowledgeBase';
 $enabled_tabs[] = 'AOK_Knowledge_Base_Categories';
 $enabled_tabs[] = 'Surveys';
@@ -307,16 +304,12 @@ if (!is_null($_SESSION['scenarios'])) {
 }
 
 //Write the tabstructure to custom so that the grouping are not shown for the un-selected scenarios
-$fp = sugar_fopen('custom/include/tabConfig.php', 'w');
-$fileContents = "<?php \n" . '$GLOBALS["tabStructure"] =' . var_export($GLOBALS['tabStructure'], true) . ';';
-fwrite($fp, $fileContents);
-fclose($fp);
+$fileContents = "<?php \n" .'$GLOBALS["tabStructure"] ='.var_export($GLOBALS['tabStructure'], true).';';
+sugar_file_put_contents('custom/include/tabConfig.php', $fileContents);
 
 //Write the dashlets to custom so that the dashlets are not shown for the un-selected scenarios
-$fp = sugar_fopen('custom/modules/Home/dashlets.php', 'w');
-$fileContents = "<?php \n" . '$defaultDashlets =' . var_export($defaultDashlets, true) . ';';
-fwrite($fp, $fileContents);
-fclose($fp);
+$fileContents = "<?php \n" .'$defaultDashlets ='.var_export($defaultDashlets, true).';';
+sugar_file_put_contents('custom/modules/Home/dashlets.php', $fileContents);
 
 // End of the scenario implementations
 

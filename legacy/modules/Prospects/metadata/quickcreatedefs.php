@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,116 +52,116 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
-$viewdefs = array (
-  'Prospects' => 
-  array (
-    'QuickCreate' => 
-    array (
-      'templateMeta' => 
-      array (
+$viewdefs = array(
+  'Prospects' =>
+  array(
+    'QuickCreate' =>
+    array(
+      'templateMeta' =>
+      array(
         'maxColumns' => '2',
-        'widths' => 
-        array (
-          0 => 
-          array (
+        'widths' =>
+        array(
+          0 =>
+          array(
             'label' => '10',
             'field' => '30',
           ),
-          1 => 
-          array (
+          1 =>
+          array(
             'label' => '10',
             'field' => '30',
           ),
         ),
       ),
-      'panels' => 
-      array (
-        'LBL_PROSPECT_INFORMATION' => 
-        array (
-          0 => 
-          array (
-            0 => 
-            array (
+      'panels' =>
+      array(
+        'LBL_PROSPECT_INFORMATION' =>
+        array(
+          0 =>
+          array(
+            0 =>
+            array(
               'name' => 'first_name',
             ),
-            1 => 
-            array (
+            1 =>
+            array(
               'name' => 'phone_work',
             ),
           ),
-          1 => 
-          array (
-            0 => 
-            array (
+          1 =>
+          array(
+            0 =>
+            array(
               'name' => 'last_name',
               'displayParams'=>array('required'=>true)
             ),
-            1 => 
-            array (
+            1 =>
+            array(
               'name' => 'phone_mobile',
             ),
           ),
-          2 => 
-          array (
-            0 => 
-            array (
+          2 =>
+          array(
+            0 =>
+            array(
               'name' => 'account_name',
             ),
-            1 => 
-            array (
+            1 =>
+            array(
               'name' => 'phone_fax',
             ),
           ),
-          3 => 
-          array (
-            0 => 
-            array (
+          3 =>
+          array(
+            0 =>
+            array(
               'name' => 'title',
             ),
-            1 => 
-            array (
+            1 =>
+            array(
               'name' => 'department',
             ),
           ),
-          4 => 
-          array (
-            0 => 
-            array (
+          4 =>
+          array(
+            0 =>
+            array(
               'name' => 'team_name',
             ),
-            1 => 
-            array (
+            1 =>
+            array(
               'name' => 'do_not_call',
             ),
           ),
-          5 => 
-          array (
-            0 => 
-            array (
+          5 =>
+          array(
+            0 =>
+            array(
               'name' => 'assigned_user_name',
             ),
           ),
         ),
-        'lbl_email_addresses' => 
-        array (
-          0 => 
-          array (
-            0 => 
-            array (
+        'lbl_email_addresses' =>
+        array(
+          0 =>
+          array(
+            0 =>
+            array(
               'name' => 'email1',
             ),
           ),
         ),
-        'LBL_ADDRESS_INFORMATION' => 
-        array (
-          0 => 
-          array (
-            0 => 
-            array (
+        'LBL_ADDRESS_INFORMATION' =>
+        array(
+          0 =>
+          array(
+            0 =>
+            array(
               'name' => 'primary_address_street',
             ),
-            1 => 
-            array (
+            1 =>
+            array(
               'name' => 'alt_address_street',
             ),
           ),

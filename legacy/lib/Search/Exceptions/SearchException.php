@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
@@ -8,7 +7,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,9 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 class SearchException extends \RuntimeException
 {
-    
     const ZERO_SIZE = 100;
     const ES_DISABLED = 101;
     const ES_MODULE_BLACKLISTED = 102;
-
 }

@@ -7,7 +7,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -609,15 +609,7 @@ SugarWidgetScheduler.prototype.display = function () {
   // Create div so that popup can be generated below it
   $('div#scheduler').append('<div id="SugarWidgetSchedulerPopup"></div>');
 
-  YUI().use('overlay', 'event', 'widget-anim', function (Y) {
-    SugarWidgetScheduler.popupControl = new Y.Overlay({
-      srcNode: "#SugarWidgetSchedulerPopup",
-      visible: false,
-      width: "50em"
-    }).plug(Y.Plugin.WidgetAnim);
-    SugarWidgetScheduler.popupControl.render();
 
-  });
 
   // Hold off hiding the tool tip overlay if the mouse is over the tool tip
   // hide the tool tip if the mouse is not over the tool tip

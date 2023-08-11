@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -55,33 +55,27 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 function displaySubjectField($focus, $field, $value, $view)
 {
-    global $app_strings, $app_list_strings, $mod_strings;
     $result = '';
-    $bean = $focus;
 
-    if(empty($view)) {
+    if (empty($view)) {
         return $result;
     }
 
-    if(strtolower($field) !== 'subject') {
+    if (strtolower($field) !== 'subject') {
         return $result;
     }
 
-    if(is_object($focus)) {
+    if (is_object($focus)) {
         $focus = get_object_vars($focus);
-    } else if(is_array($focus)) {
-        $focus = array_change_key_case($focus, CASE_LOWER);
+    } else {
+        if (is_array($focus)) {
+            $focus = array_change_key_case($focus, CASE_LOWER);
+        }
     }
 
 
     $template = new Sugar_Smarty();
-    $template->assign('APP', $app_strings);
-    $template->assign('APP_LIST_STRINGS', $app_list_strings);
-    $template->assign('MOD', $mod_strings);
     $template->assign('bean', $focus);
 
-    $result = $template->fetch('modules/Emails/templates/displaySubjectField.tpl');
-
-
-    return $result;
+    return $template->fetch('modules/Emails/templates/displaySubjectField.tpl');
 }

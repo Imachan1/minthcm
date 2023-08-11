@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,22 +43,21 @@
  */
 
 *}
-{include file="_head.tpl" theme_template=true}
+{include file="themes/SuiteP/tpls/_head.tpl"}
 <body onMouseOut="closeMenus();">
 
 {if $AUTHENTICATED}
     <div id="ajaxHeader" style="display:none /*#Mint-Vue*/">
-        {include file="_headerModuleList.tpl" theme_template=true}
+        {include file="themes/SuiteP/tpls/_headerModuleList.tpl"}
     </div>
 {/if}
 {literal}
-    <iframe id='ajaxUI-history-iframe' src='index.php?entryPoint=getImage&imageName=blank.png' title='empty'
-            style='display:none'></iframe>
+
 <input id='ajaxUI-history-field' type='hidden'>
 <script type='text/javascript'>
     if (SUGAR.ajaxUI && !SUGAR.ajaxUI.hist_loaded) {
         YAHOO.util.History.register('ajaxUILoc', "", SUGAR.ajaxUI.go);
-        {/literal}{if $smarty.request.module != "ModuleBuilder"}{* Module builder will init YUI history on its own *}
+        {/literal}{if isset($smarty.request.module) && $smarty.request.module != "ModuleBuilder"}{* Module builder will init YUI history on its own *}
         YAHOO.util.History.initialize("ajaxUI-history-field", "ajaxUI-history-iframe");
         {/if}{literal}
     }
@@ -67,7 +66,7 @@
 <!-- Start of page content -->
 {if $AUTHENTICATED}
 <div id="bootstrap-container" style="margin-top:0px;margin-left:0px;width:100% /*#Mint-Vue*/"
-     class="{if $THEME_CONFIG.display_sidebar && $smarty.cookies.sidebartoggle != 'collapsed'}col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2{/if} main bootstrap-container">
+     class="{if $THEME_CONFIG.display_sidebar && $smarty.cookies.sidebartoggle|default:'' != 'collapsed'}col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2{/if} main bootstrap-container">
     <div id="content" class="content">
-        <div id="pagecontent" class=".pagecontent">
+    <div id="pagecontent" class=".pagecontent" data-module="{$MODULE_NAME}">
 {/if}

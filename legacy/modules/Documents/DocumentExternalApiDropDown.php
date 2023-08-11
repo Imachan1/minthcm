@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,16 +45,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-function getDocumentsExternalApiDropDown($focus = null, $name = null, $value = null, $view = null) {
+function getDocumentsExternalApiDropDown($focus = null, $name = null, $value = null, $view = null)
+{
     require_once('include/externalAPI/ExternalAPIFactory.php');
 
     $apiList = ExternalAPIFactory::getModuleDropDown('Documents');
 
-    $apiList = array_merge(array('Sugar'=>$GLOBALS['app_list_strings']['eapm_list']['Sugar']),$apiList);
-    if(!empty($value) && empty($apiList[$value])){
+    $apiList = array_merge(array('Sugar'=>$GLOBALS['app_list_strings']['eapm_list']['Sugar']), $apiList);
+    if (!empty($value) && empty($apiList[$value])) {
         $apiList[$value] = $value;
     }
     return $apiList;
-
 }
- 

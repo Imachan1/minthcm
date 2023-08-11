@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -144,12 +144,16 @@ class EmailFromValidator
     protected function getEmail()
     {
         if (!$this->email) {
-            throw new EmailValidatorException('Trying to get Email but previously is not set.',
-                EmailValidatorException::EMAIL_IS_NOT_SET);
+            throw new EmailValidatorException(
+                'Trying to get Email but previously is not set.',
+                EmailValidatorException::EMAIL_IS_NOT_SET
+            );
         }
         if (!($this->email instanceof Email)) {
-            throw new EmailValidatorException('Trying to get Email but object type is incorrect:' . gettype($this->email),
-                EmailValidatorException::EMAIL_ISNT_EMAILOBJ);
+            throw new EmailValidatorException(
+                'Trying to get Email but object type is incorrect:' . gettype($this->email),
+                EmailValidatorException::EMAIL_ISNT_EMAILOBJ
+            );
         }
 
         return $this->email;
@@ -171,8 +175,10 @@ class EmailFromValidator
     protected function addError($error)
     {
         if ($error !== (int)$error) {
-            throw new InvalidArgumentException('Error code should be an integer, ' . gettype($error) . ' given',
-                self::EX_ERROR_CODE_TYRE_IS_INCORRECT);
+            throw new InvalidArgumentException(
+                'Error code should be an integer, ' . gettype($error) . ' given',
+                self::EX_ERROR_CODE_TYRE_IS_INCORRECT
+            );
         }
         if (!in_array($error, $this->errors)) {
             $this->errors[] = $error;
@@ -227,8 +233,10 @@ class EmailFromValidator
     protected function getErrorAsText($error)
     {
         if ($error !== (int)$error) {
-            throw new InvalidArgumentException('Error code should be an integer, ' . gettype($error) . ' given',
-                self::EX_ERROR_CODE_TYRE_IS_INCORRECT);
+            throw new InvalidArgumentException(
+                'Error code should be an integer, ' . gettype($error) . ' given',
+                self::EX_ERROR_CODE_TYRE_IS_INCORRECT
+            );
         }
         $lbl = $this->getErrorTextLabel($error);
         return LangText::get($lbl, null, LangText::USING_ALL_STRINGS, true, false, 'Emails');
@@ -243,8 +251,10 @@ class EmailFromValidator
     protected function getErrorTextLabel($error)
     {
         if ($error !== (int)$error) {
-            throw new InvalidArgumentException('Error code should be an integer, ' . gettype($error) . ' given',
-                self::EX_ERROR_CODE_TYRE_IS_INCORRECT);
+            throw new InvalidArgumentException(
+                'Error code should be an integer, ' . gettype($error) . ' given',
+                self::EX_ERROR_CODE_TYRE_IS_INCORRECT
+            );
         }
         switch ($error) {
             case self::ERR_FIELD_FROM_IS_NOT_SET:
@@ -314,8 +324,10 @@ class EmailFromValidator
                 $lbl = 'ERR_FIELD_FROM_ADDR_NAME_INVALID_EMAIL_PART_TO_FIELD_FROM_NAME';
                 break;
             default:
-                throw new InvalidArgumentException('Error code is not implemented: ' . $error,
-                    self::EX_ERROR_CODE_IS_NOT_IMPLEMENTED);
+                throw new InvalidArgumentException(
+                    'Error code is not implemented: ' . $error,
+                    self::EX_ERROR_CODE_IS_NOT_IMPLEMENTED
+                );
         }
 
         return $lbl;
@@ -388,8 +400,10 @@ class EmailFromValidator
         $matches = null;
         $results = preg_match('/([^<]+)\s+<([^>]+)>/', $fromAddrName, $matches);
         if ($results === false) {
-            throw new EmailValidatorException('preg_match error occurred at from_addr_name check.',
-                EmailValidatorException::PREG_MATCH_ERROR_AT_FROMADDRNAME);
+            throw new EmailValidatorException(
+                'preg_match error occurred at from_addr_name check.',
+                EmailValidatorException::PREG_MATCH_ERROR_AT_FROMADDRNAME
+            );
         }
         if (!$results) {
             $this->addError(self::ERR_FIELD_FROM_ADDR_NAME_DOESNT_MATCH_REGEX);

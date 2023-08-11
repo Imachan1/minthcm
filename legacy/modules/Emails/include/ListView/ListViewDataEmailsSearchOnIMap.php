@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,11 +42,12 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-if (!defined('sugarEntry') || !sugarEntry) {
+ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract {
+class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract
+{
 
 
 
@@ -79,7 +80,8 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract {
         $limitPerPage,
         $params,
         $pageData,
-        $filter_fields) {
+        $filter_fields
+    ) {
 
 
         // Create the data structure which are required to view a list view.
@@ -124,7 +126,7 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract {
         $emailServerEmails = $inboundEmail->checkWithPagination($offset, $limitPerPage, $order, $filter, $filter_fields);
 
         $total = $emailServerEmails['mailbox_info']['Nmsgs']; // + count($importedEmails['data']);
-        if ($page === "end") {
+        if ($request['Emails2_EMAIL_offset'] === "end") {
             $offset = $total - $limitPerPage;
         }
 
@@ -204,10 +206,6 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract {
             $nextOffset = $offset + $limitPerPage;
         }
 
-        if ($nextOffset >= $total) {
-            $nextOffset = $total;
-        }
-
         if ($page > 0) {
             $prevOffset = $offset - $limitPerPage;
             if ($prevOffset < 0) {
@@ -221,24 +219,36 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract {
         }
 
         if ($total > 0) {
-            $endOffset = $total / $limitPerPage;
+            $endOffset = ceil($total / $limitPerPage);
+        }
+
+        if ($nextOffset >= $total) {
+            $nextOffset = -1;
+            $endOffset = $offset;
         }
 
         $pageData['offsets']['current'] = $offset;
         $pageData['offsets']['total'] = $total;
         $pageData['offsets']['next'] = $nextOffset;
         $pageData['offsets']['prev'] = $prevOffset;
-        $pageData['offsets']['end'] = ceil($endOffset);
+        $pageData['offsets']['end'] = $endOffset;
 
-        $queries = array('baseUrl', 'endPage', 'nextPage', 'orderBy');
+        $queries = array('baseUrl', 'orderBy');
 
         if ((int)$pageData['offsets']['current'] >= $limitPerPage) {
             $queries[] = 'prevPage';
             $queries[] = 'startPage';
         }
 
-        foreach ($queries as $query) {
+        if ($nextOffset !== -1) {
+            $queries[] =  'nextPage';
+        }
 
+        if ($endOffset !== -1) {
+            $queries[] =  'endPage';
+        }
+
+        foreach ($queries as $query) {
             if ($total < $limitPerPage || $nextOffset >= $total) {
                 if (isset($pageData['queries'][$query])) {
                     unset($pageData['queries'][$query]);
@@ -253,7 +263,6 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract {
                 $pageData['queries'][$query]['lvso'] = "DESC";
 
                 $pageData['urls'][$query] = 'index.php?module=Emails&action=index&parentTab=Activities&searchFormTab=advanced_search&query=true&current_user_only_basic=0&button=Search&lvso=DESC';
-
             }
         }
 
@@ -283,15 +292,18 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract {
             }
         }
 
-        if(!isset($pageData['ordering'])) {
+        if (!isset($pageData['ordering'])) {
             $pageData['ordering'] = array(
-                'orderBy' => 'date_entered',
-                'sortOrder'=> 'ASC'
+                'orderBy' => 'date_sent_received',
+                'sortOrder'=> 'DESC'
             );
         }
 
-        // TODO: TASK: UNDEFINED - HANDLE in second filter after IMap
-        $endOffset = floor(($total - 1) / $limit) * $limit;
+        if ($endOffset !== -1) {
+            // TODO: TASK: UNDEFINED - HANDLE in second filter after IMap
+            $endOffset = floor(($total - 1) / $limit) * $limit;
+        }
+
 
         if (!isset($pageData['ordering']) || !isset($pageData['ordering']['sortOrder'])) {
             LoggerManager::getLogger()->warn('ListViewDataEmailsSearchOnIMap::search: sort order is not set. Using null by default.');
@@ -338,10 +350,10 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract {
         }
 
 
-        if ( $this->lvde->isRequestedSearchAdvanced($request) ) {
+        if ($this->lvde->isRequestedSearchAdvanced($request)) {
             $queryString = "-advanced_search";
         } else {
-            if ( $this->lvde->isRequestedSearchBasic($request) ) {
+            if ($this->lvde->isRequestedSearchBasic($request)) {
 
                 // SearchForm is a (SearchForm2)
                 $searchMetaData = SearchForm::retrieveSearchDefs($seed->module_dir);

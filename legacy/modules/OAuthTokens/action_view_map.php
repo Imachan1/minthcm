@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,19 +49,19 @@ if (!defined('sugarEntry') || !sugarEntry) {
 $action_view_map['authorize']= 'authorize';
 
 /*
-	global $mod_strings;
-	global $current_language;
-	global $currentModule;
-	$temp_module = $currentModule;
-	$mod_strings = return_module_language($current_language,'Calendar');
-	$currentModule = 'Calendar';
-	$args = array();
+    global $mod_strings;
+    global $current_language;
+    global $currentModule;
+    $temp_module = $currentModule;
+    $mod_strings = return_module_language($current_language,'Calendar');
+    $currentModule = 'Calendar';
+    $args = array();
         include_once("modules/Calendar/Calendar.php") ;
         include_once("modules/Calendar/templates/templates_calendar.php") ;
         $args['calendar'] = new Calendar('month');
-	$args['view'] = 'month';
-	$args['size'] = 'small';
+    $args['view'] = 'month';
+    $args['size'] = 'small';
         template_calendar($args);
-	$mod_strings = return_module_language($current_language,$temp_module);
-	$currentModule = $_REQUEST['module'];
+    $mod_strings = return_module_language($current_language,$temp_module);
+    $currentModule = $_REQUEST['module'];
 */

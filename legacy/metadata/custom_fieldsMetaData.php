@@ -1,7 +1,6 @@
 <?php
-
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 /**
  *
@@ -12,7 +11,8 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,22 +45,23 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
 $dictionary['custom_fields'] = array( 'table' => 'custom_fields'
-   , 'fields' => array(
-      array( 'name' => 'bean_id', 'type' => 'varchar', 'len' => '36' )
-      , array( 'name' => 'set_num', 'type' => 'int', 'len' => '11', 'default' => '0' )
-      , array( 'name' => 'field0', 'type' => 'varchar', 'len' => '255' )
-      , array( 'name' => 'field1', 'type' => 'varchar', 'len' => '255' )
-      , array( 'name' => 'field2', 'type' => 'varchar', 'len' => '255' )
-      , array( 'name' => 'field3', 'type' => 'varchar', 'len' => '255' )
-      , array( 'name' => 'field4', 'type' => 'varchar', 'len' => '255' )
-      , array( 'name' => 'field5', 'type' => 'varchar', 'len' => '255' )
-      , array( 'name' => 'field6', 'type' => 'varchar', 'len' => '255' )
-      , array( 'name' => 'field7', 'type' => 'varchar', 'len' => '255' )
-      , array( 'name' => 'field8', 'type' => 'varchar', 'len' => '255' )
-      , array( 'name' => 'field9', 'type' => 'varchar', 'len' => '255' )
-      , array( 'name' => 'deleted', 'type' => 'bool', 'len' => '1', 'default' => '0' )
-   ), 'indices' => array(
-      array( 'name' => 'idx_beanid_set_num', 'type' => 'index', 'fields' => array( 'bean_id', 'set_num' ) )
-   )
-);
+                                  , 'fields' => array(
+       array('name' =>'bean_id', 'type' =>'varchar', 'len'=>'36')
+      , array('name' =>'set_num', 'type' =>'int', 'len'=>'11', 'default'=>'0')
+      , array('name' =>'field0', 'type' =>'varchar', 'len'=>'255')
+      , array('name' =>'field1', 'type' =>'varchar', 'len'=>'255')
+      , array('name' =>'field2', 'type' =>'varchar', 'len'=>'255')
+      , array('name' =>'field3', 'type' =>'varchar', 'len'=>'255')
+      , array('name' =>'field4', 'type' =>'varchar', 'len'=>'255')
+      , array('name' =>'field5', 'type' =>'varchar', 'len'=>'255')
+      , array('name' =>'field6', 'type' =>'varchar', 'len'=>'255')
+      , array('name' =>'field7', 'type' =>'varchar', 'len'=>'255')
+      , array('name' =>'field8', 'type' =>'varchar', 'len'=>'255')
+      , array('name' =>'field9', 'type' =>'varchar', 'len'=>'255')
+      , array('name' =>'deleted', 'type' =>'bool', 'len'=>'1', 'default'=>'0')
+                                                      )                                  , 'indices' => array(
+       array('name' =>'idx_beanid_set_num', 'type' =>'index', 'fields'=>array('bean_id','set_num'))
+                                                      )
+                                  );

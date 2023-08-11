@@ -8,7 +8,8 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,15 +53,15 @@ $disable_date_format = true;
 
 class SoapHelperWebServices
 {
-
-    function get_field_list($value, $fields, $translate = true)
+    public function get_field_list($value, $fields, $translate = true)
     {
-        $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_field_list(' . print_r($value,
-                true) . ', ' . print_r($fields, true) . ", $translate");
+        $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_field_list(' . print_r(
+            $value,
+            true
+        ) . ', ' . print_r($fields, true) . ", $translate");
         $module_fields = array();
         $link_fields = array();
         if (!empty($value->field_defs)) {
-
             foreach ($value->field_defs as $var) {
                 if (!empty($fields) && !in_array($var['name'], $fields)) {
                     continue;
@@ -104,8 +105,10 @@ class SoapHelperWebServices
                     $link_fields[$var['name']] = $entry;
                 } else {
                     if ($translate) {
-                        $entry['label'] = isset($var['vname']) ? translate($var['vname'],
-                            $value->module_dir) : $var['name'];
+                        $entry['label'] = isset($var['vname']) ? translate(
+                            $var['vname'],
+                            $value->module_dir
+                        ) : $var['name'];
                     } else {
                         $entry['label'] = isset($var['vname']) ? $var['vname'] : $var['name'];
                     }
@@ -121,7 +124,7 @@ class SoapHelperWebServices
 
         if ($value->module_dir == 'Bugs') {
             require_once('modules/Releases/Release.php');
-            $seedRelease = new Release();
+            $seedRelease = BeanFactory::newBean('Releases');
             $options = $seedRelease->get_releases(true, "Active");
             $options_ret = array();
             foreach ($options as $name => $value) {
@@ -160,7 +163,7 @@ class SoapHelperWebServices
         return $return;
     } // fn
 
-    function setFaultObject($errorObject)
+    public function setFaultObject($errorObject)
     {
         if ($this->isLogLevelDebug()) {
             $GLOBALS['log']->debug('SoapHelperWebServices->setFaultObject - ' . var_export($errorObject, true));
@@ -177,13 +180,13 @@ class SoapHelperWebServices
      * @return true -- If the session is created
      * @return false -- If the session is not created
      */
-    function validate_user($user_name, $password)
+    public function validate_user($user_name, $password)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->validate_user');
         global $server, $current_user, $sugar_config, $system_config;
-        $user = new User();
+        $user = BeanFactory::newBean('Users');
         $user->user_name = $user_name;
-        $system_config = new Administration();
+        $system_config = BeanFactory::newBean('Administration');
         $system_config->retrieveSettings('system');
         $authController = new AuthenticationController();
         // Check to see if the user name and password are consistent.
@@ -210,7 +213,6 @@ class SoapHelperWebServices
 
             return false;
         }
-
     }
 
     /**
@@ -220,7 +222,7 @@ class SoapHelperWebServices
      * @return true -- If the session is valid and loaded.
      * @return false -- if the session is not valid.
      */
-    function validate_authenticated($session_id)
+    public function validate_authenticated($session_id)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->validate_authenticated');
         if (!empty($session_id)) {
@@ -232,10 +234,9 @@ class SoapHelperWebServices
             }
 
             if (!empty($_SESSION['is_valid_session']) && $this->is_valid_ip_address('ip_address') && $_SESSION['type'] == 'user') {
-
                 global $current_user;
                 require_once('modules/Users/User.php');
-                $current_user = new User();
+                $current_user = BeanFactory::newBean('Users');
                 $current_user->retrieve($_SESSION['user_id']);
                 $this->login_success();
                 $GLOBALS['log']->info('Begin: SoapHelperWebServices->validate_authenticated - passed');
@@ -260,17 +261,17 @@ class SoapHelperWebServices
      * @param string $session_var
      * @return bool - true if the ip address is valid, false otherwise.
      */
-    function is_valid_ip_address($session_var)
+    public function is_valid_ip_address($session_var)
     {
         global $sugar_config;
         // grab client ip address
         $clientIP = query_client_ip();
         $classCheck = 0;
         // check to see if config entry is present, if not, verify client ip
-        if (!isset ($sugar_config['verify_client_ip']) || $sugar_config['verify_client_ip'] == true) {
+        if (!isset($sugar_config['verify_client_ip']) || $sugar_config['verify_client_ip'] == true) {
             // check to see if we've got a current ip address in $_SESSION
             // and check to see if the session has been hijacked by a foreign ip
-            if (isset ($_SESSION[$session_var])) {
+            if (isset($_SESSION[$session_var])) {
                 $session_parts = explode(".", $_SESSION[$session_var]);
                 $client_parts = explode(".", $clientIP);
                 if (count($session_parts) < 4) {
@@ -281,14 +282,13 @@ class SoapHelperWebServices
                         if ($session_parts[$i] == $client_parts[$i]) {
                             $classCheck = 1;
                             continue;
-                        } else {
-                            $classCheck = 0;
-                            break;
                         }
+                        $classCheck = 0;
+                        break;
                     }
                 }
                 // we have a different IP address
-                if ($_SESSION[$session_var] != $clientIP && empty ($classCheck)) {
+                if ($_SESSION[$session_var] != $clientIP && empty($classCheck)) {
                     $GLOBALS['log']->fatal("IP Address mismatch: SESSION IP: {$_SESSION[$session_var]} CLIENT IP: {$clientIP}");
 
                     return false;
@@ -301,7 +301,7 @@ class SoapHelperWebServices
         return true;
     }
 
-    function checkSessionAndModuleAccess(
+    public function checkSessionAndModuleAccess(
         $session,
         $login_error_key,
         $module_name,
@@ -344,7 +344,7 @@ class SoapHelperWebServices
         return true;
     } // fn
 
-    function checkACLAccess($bean, $viewType, $errorObject, $error_key)
+    public function checkACLAccess($bean, $viewType, $errorObject, $error_key)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->checkACLAccess');
         if (!$bean->ACLAccess($viewType)) {
@@ -360,7 +360,7 @@ class SoapHelperWebServices
         return true;
     } // fn
 
-    function checkQuery($errorObject, $query, $order_by = '')
+    public function checkQuery($errorObject, $query, $order_by = '')
     {
         require_once 'include/SugarSQLValidate.php';
         $valid = new SugarSQLValidate();
@@ -375,12 +375,12 @@ class SoapHelperWebServices
         return true;
     }
 
-    function get_name_value($field, $value)
+    public function get_name_value($field, $value)
     {
         return array('name' => $field, 'value' => $value);
     }
 
-    function get_user_module_list($user)
+    public function get_user_module_list($user)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_user_module_list');
         global $app_list_strings, $current_language;
@@ -408,10 +408,9 @@ class SoapHelperWebServices
         $GLOBALS['log']->info('End: SoapHelperWebServices->get_user_module_list');
 
         return $modules;
-
     }
 
-    function check_modules_access($user, $module_name, $action = 'write')
+    public function check_modules_access($user, $module_name, $action = 'write')
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->check_modules_access');
         if (!isset($_SESSION['avail_modules'])) {
@@ -427,8 +426,10 @@ class SoapHelperWebServices
                 $GLOBALS['log']->info('End: SoapHelperWebServices->check_modules_access - FAILED: write action on read_only module only available to admins');
 
                 return false;
-            } elseif ($action == 'write' && strcmp(strtolower($module_name),
-                    'users') == 0 && !$user->isAdminForModule($module_name)
+            } elseif ($action == 'write' && strcmp(
+                strtolower($module_name),
+                'users'
+            ) == 0 && !$user->isAdminForModule($module_name)
             ) {
                 //rrs bug: 46000 - If the client is trying to write to the Users module and is not an admin then we need to stop them
                 return false;
@@ -440,11 +441,10 @@ class SoapHelperWebServices
         $GLOBALS['log']->info('End: SoapHelperWebServices->check_modules_access - FAILED: Module info not available in $_SESSION');
 
         return false;
-
     }
 
 
-    function get_name_value_list($value)
+    public function get_name_value_list($value)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_name_value_list');
         global $app_list_strings;
@@ -481,10 +481,9 @@ class SoapHelperWebServices
         $GLOBALS['log']->info('End: SoapHelperWebServices->get_name_value_list');
 
         return $list;
-
     }
 
-    function filter_fields($value, $fields)
+    public function filter_fields($value, $fields)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->filter_fields');
         global $invalid_contact_fields;
@@ -498,9 +497,7 @@ class SoapHelperWebServices
             if (isset($value->field_defs[$field])) {
                 $var = $value->field_defs[$field];
                 if (isset($var['source']) && ($var['source'] != 'db' && $var['source'] != 'custom_fields') && $var['name'] != 'email1' && $var['name'] != 'email2' && (!isset($var['type']) || $var['type'] != 'relate')) {
-
                     if ($value->module_dir == 'Emails' && (($var['name'] == 'description') || ($var['name'] == 'description_html') || ($var['name'] == 'from_addr_name') || ($var['name'] == 'reply_to_addr') || ($var['name'] == 'to_addrs_names') || ($var['name'] == 'cc_addrs_names') || ($var['name'] == 'bcc_addrs_names') || ($var['name'] == 'raw_source'))) {
-
                     } else {
                         continue;
                     }
@@ -513,7 +510,7 @@ class SoapHelperWebServices
         return $filterFields;
     } // fn
 
-    function get_name_value_list_for_fields($value, $fields)
+    public function get_name_value_list_for_fields($value, $fields)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_name_value_list_for_fields');
         global $app_list_strings;
@@ -555,15 +552,16 @@ class SoapHelperWebServices
         } // if
         $GLOBALS['log']->info('End: SoapHelperWebServices->get_name_value_list_for_fields');
         if ($this->isLogLevelDebug()) {
-            $GLOBALS['log']->debug('SoapHelperWebServices->get_name_value_list_for_fields - return data = ' . var_export($list,
-                    true));
+            $GLOBALS['log']->debug('SoapHelperWebServices->get_name_value_list_for_fields - return data = ' . var_export(
+                $list,
+                true
+            ));
         } // if
 
         return $list;
-
     } // fn
 
-    function array_get_name_value_list($array)
+    public function array_get_name_value_list($array)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->array_get_name_value_list');
         $list = array();
@@ -573,10 +571,9 @@ class SoapHelperWebServices
         $GLOBALS['log']->info('End: SoapHelperWebServices->array_get_name_value_list');
 
         return $list;
-
     }
 
-    function array_get_name_value_lists($array)
+    public function array_get_name_value_lists($array)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->array_get_name_value_lists');
         $list = array();
@@ -595,7 +592,7 @@ class SoapHelperWebServices
         return $list;
     }
 
-    function name_value_lists_get_array($list)
+    public function name_value_lists_get_array($list)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->name_value_lists_get_array');
         $array = array();
@@ -616,19 +613,18 @@ class SoapHelperWebServices
         return $array;
     }
 
-    function array_get_return_value($array, $module)
+    public function array_get_return_value($array, $module)
     {
-
         $GLOBALS['log']->info('Begin/End: SoapHelperWebServices->array_get_return_value');
 
-        return Array(
+        return array(
             'id' => $array['id'],
             'module_name' => $module,
             'name_value_list' => $this->array_get_name_value_list($array)
         );
     }
 
-    function get_return_value_for_fields($value, $module, $fields)
+    public function get_return_value_for_fields($value, $module, $fields)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_return_value_for_fields');
         global $module_name, $current_user;
@@ -639,7 +635,7 @@ class SoapHelperWebServices
         $value = clean_sensitive_data($value->field_defs, $value);
         $GLOBALS['log']->info('End: SoapHelperWebServices->get_return_value_for_fields');
 
-        return Array(
+        return array(
             'id' => $value->id,
             'module_name' => $module,
             'name_value_list' => $this->get_name_value_list_for_fields($value, $fields)
@@ -656,7 +652,7 @@ class SoapHelperWebServices
      * @return Array 'rows/fields_set_on_rows' -- The list of records and what fields were actually set for thos erecords
      */
 
-    function getRelationshipResults($bean, $link_field_name, $link_module_fields, $optional_where = '')
+    public function getRelationshipResults($bean, $link_field_name, $link_module_fields, $optional_where = '')
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->getRelationshipResults');
         global $current_user, $disable_date_format, $timedate;
@@ -701,15 +697,14 @@ class SoapHelperWebServices
             $GLOBALS['log']->info('End: SoapHelperWebServices->getRelationshipResults');
 
             return array('rows' => $list, 'fields_set_on_rows' => $filterFields);
-        } else {
-            $GLOBALS['log']->info('End: SoapHelperWebServices->getRelationshipResults - ' . $link_field_name . ' relationship does not exists');
+        }
+        $GLOBALS['log']->info('End: SoapHelperWebServices->getRelationshipResults - ' . $link_field_name . ' relationship does not exists');
 
-            return false;
-        } // else
-
+        return false;
+        // else
     } // fn
 
-    function get_return_value_for_link_fields($bean, $module, $link_name_to_value_fields_array)
+    public function get_return_value_for_link_fields($bean, $module, $link_name_to_value_fields_array)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_return_value_for_link_fields');
         global $module_name, $current_user;
@@ -726,8 +721,10 @@ class SoapHelperWebServices
         }
 
         if ($this->isLogLevelDebug()) {
-            $GLOBALS['log']->debug('SoapHelperWebServices->get_return_value_for_link_fields - link info = ' . var_export($link_name_to_value_fields_array,
-                    true));
+            $GLOBALS['log']->debug('SoapHelperWebServices->get_return_value_for_link_fields - link info = ' . var_export(
+                $link_name_to_value_fields_array,
+                true
+            ));
         } // if
         $link_output = array();
         foreach ($link_name_to_value_fields_array as $link_name_value_fields) {
@@ -762,8 +759,10 @@ class SoapHelperWebServices
         } // foreach
         $GLOBALS['log']->debug('End: SoapHelperWebServices->get_return_value_for_link_fields');
         if ($this->isLogLevelDebug()) {
-            $GLOBALS['log']->debug('SoapHelperWebServices->get_return_value_for_link_fields - output = ' . var_export($link_output,
-                    true));
+            $GLOBALS['log']->debug('SoapHelperWebServices->get_return_value_for_link_fields - output = ' . var_export(
+                $link_output,
+                true
+            ));
         } // if
 
         return $link_output;
@@ -779,7 +778,7 @@ class SoapHelperWebServices
      * @param int delete -- If 0 then add relationship else delete this relationship data
      * @return true on success, false on failure
      */
-    function new_handle_set_relationship(
+    public function new_handle_set_relationship(
         $module_name,
         $module_id,
         $link_field_name,
@@ -829,14 +828,13 @@ class SoapHelperWebServices
             $GLOBALS['log']->info('End: SoapHelperWebServices->new_handle_set_relationship');
 
             return true;
-        } else {
-            $GLOBALS['log']->info('End: SoapHelperWebServices->new_handle_set_relationship');
-
-            return false;
         }
+        $GLOBALS['log']->info('End: SoapHelperWebServices->new_handle_set_relationship');
+
+        return false;
     }
 
-    function new_handle_set_entries($module_name, $name_value_lists, $select_fields = false)
+    public function new_handle_set_entries($module_name, $name_value_lists, $select_fields = false)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->new_handle_set_entries');
         global $beanList, $beanFiles, $current_user, $app_list_strings;
@@ -847,7 +845,7 @@ class SoapHelperWebServices
         require_once($beanFiles[$class_name]);
         $ids = array();
         $count = 1;
-        $total = sizeof($name_value_lists);
+        $total = count($name_value_lists);
         foreach ($name_value_lists as $name_value_list) {
             $seed = new $class_name();
 
@@ -972,16 +970,15 @@ class SoapHelperWebServices
             return array(
                 'name_value_lists' => $ret_values,
             );
-        } else {
-            $GLOBALS['log']->info('End: SoapHelperWebServices->new_handle_set_entries');
+        }
+        $GLOBALS['log']->info('End: SoapHelperWebServices->new_handle_set_entries');
 
-            return array(
+        return array(
                 'ids' => $ids,
             );
-        }
     }
 
-    function get_return_value($value, $module)
+    public function get_return_value($value, $module)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_return_value');
         global $module_name, $current_user;
@@ -992,7 +989,7 @@ class SoapHelperWebServices
         $value = clean_sensitive_data($value->field_defs, $value);
         $GLOBALS['log']->info('End: SoapHelperWebServices->new_handle_set_entries');
 
-        return Array(
+        return array(
             'id' => $value->id,
             'module_name' => $module,
             'name_value_list' => $this->get_name_value_list($value)
@@ -1000,7 +997,7 @@ class SoapHelperWebServices
     }
 
 
-    function get_return_module_fields($value, $module, $fields, $translate = true)
+    public function get_return_module_fields($value, $module, $fields, $translate = true)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_return_module_fields');
         global $module_name;
@@ -1008,14 +1005,14 @@ class SoapHelperWebServices
         $result = $this->get_field_list($value, $fields, $translate);
         $GLOBALS['log']->info('End: SoapHelperWebServices->get_return_module_fields');
 
-        return Array(
+        return array(
             'module_name' => $module,
             'module_fields' => $result['module_fields'],
             'link_fields' => $result['link_fields'],
         );
     } // fn
 
-    function login_success($name_value_list = array())
+    public function login_success($name_value_list = array())
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->login_success');
         global $current_language, $sugar_config, $app_strings, $app_list_strings;
@@ -1047,7 +1044,7 @@ class SoapHelperWebServices
     } // fn
 
 
-    function checkSaveOnNotify()
+    public function checkSaveOnNotify()
     {
         $notifyonsave = false;
         if (isset($_SESSION['notifyonsave']) && $_SESSION['notifyonsave'] == true) {
@@ -1060,7 +1057,7 @@ class SoapHelperWebServices
     /*
      *	Given an account_name, either create the account or assign to a contact.
      */
-    function add_create_account($seed)
+    public function add_create_account($seed)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->add_create_account');
         global $current_user;
@@ -1069,7 +1066,7 @@ class SoapHelperWebServices
         $assigned_user_id = $current_user->id;
 
         // check if it already exists
-        $focus = new Account();
+        $focus = BeanFactory::newBean('Accounts');
         if ($focus->ACLAccess('Save')) {
             $class = get_class($seed);
             $temp = new $class();
@@ -1089,8 +1086,7 @@ class SoapHelperWebServices
             }
             $arr = array();
 
-            if (!empty($account_id))  // bug # 44280
-            {
+            if (!empty($account_id)) {  // bug # 44280
                 $query = "select id, deleted from {$focus->table_name} WHERE id='" . $seed->db->quote($account_id) . "'";
             } else {
                 $query = "select id, deleted from {$focus->table_name} WHERE name='" . $seed->db->quote($account_name) . "'";
@@ -1130,13 +1126,12 @@ class SoapHelperWebServices
                 $seed->account_id = $focus->id;
             } // if
             $GLOBALS['log']->info('End: SoapHelperWebServices->add_create_account');
-
         } else {
             $GLOBALS['log']->info('End: SoapHelperWebServices->add_create_account - Insufficient ACLAccess');
         } // else
     } // fn
 
-    function check_for_duplicate_contacts($seed)
+    public function check_for_duplicate_contacts($seed)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->check_for_duplicate_contacts');
         require_once('modules/Contacts/Contact.php');
@@ -1163,31 +1158,36 @@ class SoapHelperWebServices
                 $GLOBALS['log']->info('End: SoapHelperWebServices->check_for_duplicate_contacts - no duplicte found');
 
                 return null;
-            } else {
-                foreach ($contacts as $contact) {
-                    if (!empty($trimmed_last) && strcmp($trimmed_last, $contact->last_name) == 0) {
-                        if ((!empty($trimmed_email) || !empty($trimmed_email2)) && (strcmp($trimmed_email,
-                                    $contact->email1) == 0 || strcmp($trimmed_email,
-                                    $contact->email2) == 0 || strcmp($trimmed_email2,
-                                    $contact->email) == 0 || strcmp($trimmed_email2, $contact->email2) == 0)
+            }
+            foreach ($contacts as $contact) {
+                if (!empty($trimmed_last) && strcmp($trimmed_last, $contact->last_name) == 0) {
+                    if ((!empty($trimmed_email) || !empty($trimmed_email2)) && (strcmp(
+                        $trimmed_email,
+                        $contact->email1
+                        ) == 0 || strcmp(
+                            $trimmed_email,
+                            $contact->email2
+                                    ) == 0 || strcmp(
+                                        $trimmed_email2,
+                                        $contact->email
+                                    ) == 0 || strcmp($trimmed_email2, $contact->email2) == 0)
                         ) {
-                            $contact->load_relationship('accounts');
-                            if (empty($seed->account_name) || strcmp($seed->account_name,
-                                    $contact->account_name) == 0
+                        $contact->load_relationship('accounts');
+                        if (empty($seed->account_name) || strcmp(
+                            $seed->account_name,
+                            $contact->account_name
+                            ) == 0
                             ) {
-                                $GLOBALS['log']->info('End: SoapHelperWebServices->check_for_duplicate_contacts - duplicte found ' . $contact->id);
+                            $GLOBALS['log']->info('End: SoapHelperWebServices->check_for_duplicate_contacts - duplicte found ' . $contact->id);
 
-                                return $contact->id;
-                            }
+                            return $contact->id;
                         }
                     }
                 }
-                $GLOBALS['log']->info('End: SoapHelperWebServices->check_for_duplicate_contacts - no duplicte found');
-
-                return null;
             }
-        } else {
             $GLOBALS['log']->info('End: SoapHelperWebServices->check_for_duplicate_contacts - no duplicte found');
+
+            return null;
         }
         $GLOBALS['log']->info('End: SoapHelperWebServices->check_for_duplicate_contacts - no duplicte found');
 
@@ -1204,13 +1204,12 @@ class SoapHelperWebServices
      *
      * @return a decrypted string if we can decrypt, the original string otherwise
      */
-    function decrypt_string($string)
+    public function decrypt_string($string)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->decrypt_string');
-
         if (function_exists('openssl_decrypt')) {
             require_once('modules/Administration/Administration.php');
-            $focus = new Administration();
+            $focus = BeanFactory::newBean('Administration');
             $focus->retrieveSettings();
             $key = '';
             if (!empty($focus->settings['ldap_enc_key'])) {
@@ -1224,15 +1223,15 @@ class SoapHelperWebServices
             $key = substr(md5($key), 0, 24);
             $iv = "password";
             $GLOBALS['log']->info('End: SoapHelperWebServices->decrypt_string');
-            return openssl_decrypt(pack("H*", $buffer), 'des-ede3-cbc', $key, OPENSSL_NO_PADDING, $iv);
+            $decrypted = openssl_decrypt(pack("H*", $buffer), 'des-ede3-cbc', $key, OPENSSL_RAW_DATA|OPENSSL_ZERO_PADDING, $iv);
+            $decrypted = str_replace("\0", "", $decrypted);
+            return $decrypted;
         }
-
         $GLOBALS['log']->info('End: SoapHelperWebServices->decrypt_string');
         return $string;
+    }
 
-    } // fn
-
-    function isLogLevelDebug()
+    public function isLogLevelDebug()
     {
         if (isset($GLOBALS['sugar_config']['logger'])) {
             if (isset($GLOBALS['sugar_config']['logger']['level'])) {
@@ -1242,6 +1241,4 @@ class SoapHelperWebServices
 
         return false;
     } // fn
-
-
 } // clazz

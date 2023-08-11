@@ -325,7 +325,7 @@ function setDefaultWorkPlace() {
     }
     viewTools.api.callCustomApi({
         module: "WorkSchedules",
-        action: "getWorkplaces",
+        action: "getActiveWorkplaces",
         dataPOST: {
             assigned_user_id: $("#assigned_user_id").val(),
             date_start: $('#date_start').val(), 

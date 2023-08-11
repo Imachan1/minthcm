@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -130,6 +130,8 @@ $dictionary['Email'] = array(
          'vname' => 'description',
          'source' => 'non-db',
          'inline_edit' => false,
+         'rows' => 6,
+         'cols' => 80,
       ),
       'date_sent_received' => array(
          'name' => 'date_sent_received',
@@ -304,6 +306,23 @@ $dictionary['Email'] = array(
             'onListView' => true
          ),
       ),
+      'attachment' => array(
+        'name' => 'attachment',
+        'vname' => 'LBL_ATTACHMENTS',
+        'type' => 'function',
+        'source' => 'non-db',
+        'massupdate' => 0,
+        'importable' => 'false',
+        'duplicate_merge' => 'disabled',
+        'studio' => 'visible',
+        'inline_edit' => false,
+        'function' => array(
+            'name' => 'displayAttachmentField',
+            'returns' => 'html',
+            'include' => 'modules/Emails/include/displayAttachmentField.php',
+            'onListView' =>  true
+        ),
+    ),
       'uid' => array(
          'name' => 'uid',
          'type' => 'varchar',
@@ -731,14 +750,19 @@ $dictionary['Email'] = array(
       ),
       // SNIP
       'emails_meetings_rel' => array(
-         'lhs_module' => 'Emails',
-         'lhs_table' => 'emails',
-         'lhs_key' => 'id',
-         'rhs_module' => 'Meetings',
-         'rhs_table' => 'meetings',
-         'rhs_key' => 'parent_id',
-         'relationship_type' => 'one-to-many',
-      ),
+        'lhs_module' => 'Emails',
+        'lhs_table' => 'emails',
+        'lhs_key' => 'id',
+        'rhs_module' => 'Meetings',
+        'rhs_table' => 'meetings',
+        'rhs_key' => 'id',
+        'relationship_type' => 'many-to-many',
+        'join_table' => 'emails_beans',
+        'join_key_lhs' => 'email_id',
+        'join_key_rhs' => 'bean_id',
+        'relationship_role_column' => 'bean_module',
+        'relationship_role_column_value' => 'Meetings',
+    ),
    ), // end relationships
    'indices' => array(
       array(
@@ -770,6 +794,11 @@ $dictionary['Email'] = array(
         'name' => 'dlnc_email',
         'type' => 'index',
         'fields' => array( 'id','deleted','status' ),
+      ),
+      array(
+         'name' => 'idx_email_uid',
+         'type' => 'index',
+         'fields' => array('uid')
       ),
    ) // end indices
 );

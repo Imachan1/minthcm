@@ -9,9 +9,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,12 +46,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
-/* 
- * func: query_module_access 
+/*
+ * func: query_module_access
  * param: $moduleName
- * 
+ *
  * returns 1 if user has access to a module, else returns 0
- * 
+ *
  */
 
 $modules_exempt_from_availability_check['Activities']='Activities';
@@ -74,23 +74,23 @@ $modules_exempt_from_availability_check['SchedulersJobs']='SchedulersJobs';
 $modules_exempt_from_availability_check['DocumentRevisions']='DocumentRevisions';
 function query_module_access_list(&$user)
 {
-	require_once('modules/MySettings/TabController.php');
-	$controller = new TabController();
-	$tabArray = $controller->get_tabs($user); 
+    require_once('modules/MySettings/TabController.php');
+    $controller = new TabController();
+    $tabArray = $controller->get_tabs($user);
 
-	return $tabArray[0];
+    return $tabArray[0];
 }
 
 function query_user_has_roles($user_id)
 {
-    $role = new Role();
+    $role = BeanFactory::newBean('Roles');
 
     return $role->check_user_role_count($user_id);
 }
 
 function get_user_allowed_modules($user_id)
 {
-    $role = new Role();
+    $role = BeanFactory::newBean('Roles');
 
     $allowed = $role->query_user_allowed_modules($user_id);
     return $allowed;
@@ -98,16 +98,14 @@ function get_user_allowed_modules($user_id)
 
 function get_user_disallowed_modules($user_id, &$allowed)
 {
-	
-
-	$role = new Role();
-	$disallowed = $role->query_user_disallowed_modules($user_id, $allowed);
-	return $disallowed;
+    $role = BeanFactory::newBean('Roles');
+    $disallowed = $role->query_user_disallowed_modules($user_id, $allowed);
+    return $disallowed;
 }
 // grabs client ip address and returns its value
 function query_client_ip()
 {
-    if(!empty($GLOBALS['sugar_config']['ip_variable']) && !empty($_SERVER[$GLOBALS['sugar_config']['ip_variable']])) {
+    if (!empty($GLOBALS['sugar_config']['ip_variable']) && !empty($_SERVER[$GLOBALS['sugar_config']['ip_variable']])) {
         return $_SERVER[$GLOBALS['sugar_config']['ip_variable']];
     } elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
         return $_SERVER['HTTP_CLIENT_IP'];
@@ -130,13 +128,13 @@ function query_client_ip()
 }
 
 // sets value to key value
-function get_val_array($arr){
-	$new = array();
-	if(!empty($arr)){
-	foreach($arr as $key=>$val){
-		$new[$key] = $key;
-	}
-	}
-	return $new;
+function get_val_array($arr)
+{
+    $new = array();
+    if (!empty($arr)) {
+        foreach ($arr as $key=>$val) {
+            $new[$key] = $key;
+        }
+    }
+    return $new;
 }
-

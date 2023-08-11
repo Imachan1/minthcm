@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,27 +43,17 @@
  */
 
 require_once('soap/SoapHelperFunctions.php');
-class MailMergeController extends SugarController{
-	function __construct(){
-		parent::__construct();
-	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function MailMergeController(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+class MailMergeController extends SugarController
+{
+    public function __construct()
+    {
+        parent::__construct();
     }
 
-
-    public function action_search(){
+    public function action_search()
+    {
+        global $beanList;
+        
         //set ajax view
         $this->view = 'ajax';
         //get the module
@@ -72,59 +62,57 @@ class MailMergeController extends SugarController{
         $lmodule = strtolower($module);
         //get the search term
         $term = !empty($_REQUEST['term']) ? DBManagerFactory::getInstance()->quote($_REQUEST['term']) : '';
-        //in the case of Campaigns we need to use the related module
-        $relModule = !empty($_REQUEST['rel_module']) ? $_REQUEST['rel_module'] : null;
 
         $max = !empty($_REQUEST['max']) ? $_REQUEST['max'] : 10;
         $order_by = !empty($_REQUEST['order_by']) ? $_REQUEST['order_by'] : $lmodule.".name";
         $offset = !empty($_REQUEST['offset']) ? $_REQUEST['offset'] : 0;
         $response = array();
 
-        if(!empty($module)){
+        if (!empty($module)) {
             $where = '';
             $deleted = '0';
             $using_cp = false;
 
-            if(!empty($term))
-            {
-                if($module == 'Contacts' || $module == 'Leads')
-                {
+            if (!empty($term)) {
+                if ($module == 'Contacts' || $module == 'Leads') {
                     $where = $lmodule.".first_name like '%".$term."%' OR ".$lmodule.".last_name like '%".$term."%'";
                     $order_by = $lmodule.".last_name";
-                }
-                else
-                {
+                } else {
                     $where = $lmodule.".name like '".$term."%'";
                 }
             }
 
-            if($module == 'CampaignProspects'){
-                    $using_cp = true;
-                    $module = 'Prospects';
-                    $lmodule = strtolower($relModule);
-                    $campign_where = $_SESSION['MAILMERGE_WHERE'];
-                    $where = $lmodule.".first_name like '%".$term."%' OR ".$lmodule.".last_name like '%".$term."%'";
-                    if($campign_where)
-                        $where .= " AND ".$campign_where ;
-                    $where .= " AND related_type = #".$lmodule."#";
+            if ($module === 'CampaignProspects') {
+                $using_cp = true;
+                $module = 'Prospects';
+                //in the case of Campaigns we need to use the related module
+                $relModule = !empty($_REQUEST['rel_module']) ? $_REQUEST['rel_module'] : null;
+                $lmodule = strtolower($relModule);
+
+                if (isset($beanList[$relModule])) {
+                    $campaignWhere = $_SESSION['MAILMERGE_WHERE'];
+                    $where = $lmodule . ".first_name like '%" . $term . "%' OR " . $lmodule . ".last_name like '%" . $term . "%'";
+                    if ($campaignWhere) {
+                        $where .= ' AND ' . $campaignWhere;
+                    }
+                    $where .= ' AND related_type = #' . $lmodule . '#';
+                }
             }
 
             $seed = SugarModule::get($module)->loadBean();
 
-            if($using_cp){
+            if ($using_cp) {
                 $fields = array('id', 'first_name', 'last_name');
-                $dataList = $seed->retrieveTargetList($where, $fields, $offset,-1,$max,$deleted);
-
-            }else{
-                $dataList = $seed->get_list($order_by, $where, $offset,-1,$max,$deleted);
+                $dataList = $seed->retrieveTargetList($where, $fields, $offset, -1, $max, $deleted);
+            } else {
+                $dataList = $seed->get_list($order_by, $where, $offset, -1, $max, $deleted);
             }
 
             $list = $dataList['list'];
             $row_count = $dataList['row_count'];
 
             $output_list = array();
-            foreach($list as $value)
-            {
+            foreach ($list as $value) {
                 $output_list[] = get_return_value($value, $module);
             }
 

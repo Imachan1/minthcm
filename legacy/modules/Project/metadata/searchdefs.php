@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,26 +44,26 @@
 
 
   $searchdefs['Project'] = array(
-					'templateMeta' => array(
-							'maxColumns' => '3', 
-  							'maxColumnsBasic' => '4', 
-                            'widths' => array('label' => '10', 'field' => '30'),                 
+                    'templateMeta' => array(
+                            'maxColumns' => '3',
+                            'maxColumnsBasic' => '4',
+                            'widths' => array('label' => '10', 'field' => '30'),
                            ),
-                    'layout' => array(  					
-						'basic_search' => array(
-						 	'name',
-						 	array('name'=>'current_user_only', 'label'=>'LBL_CURRENT_USER_FILTER', 'type'=>'bool'),
-                            array ('name' => 'favorites_only','label' => 'LBL_FAVORITES_FILTER','type' => 'bool',),
+                    'layout' => array(
+                        'basic_search' => array(
+                            'name',
+                            array('name'=>'current_user_only', 'label'=>'LBL_CURRENT_USER_FILTER', 'type'=>'bool'),
+                            array('name' => 'favorites_only','label' => 'LBL_FAVORITES_FILTER','type' => 'bool',),
 
 
                         ),
-						'advanced_search' => array(
-							'name', 
-							'estimated_start_date',
-							'estimated_end_date',
-							'status',
-							'priority',		
-							
-						),
-					),
- 			   );
+                        'advanced_search' => array(
+                            'name',
+                            'estimated_start_date',
+                            'estimated_end_date',
+                            'status',
+                            'priority',
+                            
+                        ),
+                    ),
+               );

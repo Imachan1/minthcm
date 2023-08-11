@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,8 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,124 +42,126 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
-class JsonRPCServerUtils {
+class JsonRPCServerUtils
+{
+    /**
+     * @param $query_obj
+     * @param string $table
+     * @param null $module
+     * @return string
+     */
+    public function constructWhere(&$query_obj, $table = '', $module = null)
+    {
+        if (!empty($table)) {
+            $table .= '.';
+        }
+        $cond_arr = array();
 
-   /**
-    * @param $query_obj
-    * @param string $table
-    * @param null $module
-    * @return string
-    */
-   public function constructWhere(&$query_obj, $table = '', $module = null) {
-      if ( !empty($table) ) {
-         $table .= '.';
-      }
-      $cond_arr = array();
+        if (!is_array($query_obj['conditions'])) {
+            $query_obj['conditions'] = array();
+        }
 
-      if ( !is_array($query_obj['conditions']) ) {
-         $query_obj['conditions'] = array();
-      }
-
-      foreach ( $query_obj['conditions'] as $condition ) {
-         if ( $condition['name'] === 'user_hash' ) {
-            continue;
-         }
-         if ( $condition['name'] === 'email1' || $condition['name'] === 'email2' ) {
-
-            $email1_value = strtoupper($condition['value']);
-            $email1_condition = " {$table}id in ( SELECT  er.bean_id AS id FROM email_addr_bean_rel er, " .
-               'email_addresses ea WHERE ea.id = er.email_address_id ' .
-               "AND ea.deleted = 0 AND er.deleted = 0 AND er.bean_module = '{$module}' AND email_address_caps LIKE '%{$email1_value}%' )";
-
-            $cond_arr[] = $email1_condition;
-         } else {
-            if ( $condition['op'] === 'contains' ) {
-               $cond_arr[] = $table . DBManagerFactory::getInstance()->getValidDBName($condition['name']) . " like '%" . DBManagerFactory::getInstance()->quote($condition['value']) . "%'";
+        foreach ($query_obj['conditions'] as $condition) {
+            if ($condition['name'] === 'user_hash') {
+                continue;
             }
-            if ( $condition['op'] === 'like_custom' ) {
-               $like = '';
-               if ( !empty($condition['begin']) ) {
-                  $like .= DBManagerFactory::getInstance()->quote($condition['begin']);
-               }
-               $like .= DBManagerFactory::getInstance()->quote($condition['value']);
-               if ( !empty($condition['end']) ) {
-                  $like .= DBManagerFactory::getInstance()->quote($condition['end']);
-               }
-               $cond_arr[] = $table . DBManagerFactory::getInstance()->getValidDBName($condition['name']) . " like '$like'";
-            } else { // starts_with
+            if ($condition['name'] === 'email1' || $condition['name'] === 'email2') {
+
+                $email1_value = strtoupper($condition['value']);
+                $email1_condition = " {$table}id in ( SELECT  er.bean_id AS id FROM email_addr_bean_rel er, " .
+                    'email_addresses ea WHERE ea.id = er.email_address_id ' .
+                    "AND ea.deleted = 0 AND er.deleted = 0 AND er.bean_module = '{$module}' AND email_address_caps LIKE '%{$email1_value}%' )";
+
+                $cond_arr[] = $email1_condition;
+            } else {
+                if ($condition['op'] === 'contains') {
+                    $cond_arr[] = $table . DBManagerFactory::getInstance()->getValidDBName($condition['name']) . " like '%" . DBManagerFactory::getInstance()->quote($condition['value']) . "%'";
+                }
+                if ($condition['op'] === 'like_custom') {
+                    $like = '';
+                    if (!empty($condition['begin'])) {
+                        $like .= DBManagerFactory::getInstance()->quote($condition['begin']);
+                    }
+                    $like .= DBManagerFactory::getInstance()->quote($condition['value']);
+                    if (!empty($condition['end'])) {
+                        $like .= DBManagerFactory::getInstance()->quote($condition['end']);
+                    }
+                    $cond_arr[] = $table . DBManagerFactory::getInstance()->getValidDBName($condition['name']) . " like '$like'";
+                } else { // starts_with
                // MintHCM #59793 start
                if ( in_array($module , ["Resources", "SecurityGroups"]) && ($condition['name'] == "first_name" || $condition['name'] == "last_name") ) {
                   $cond_arr[] = $table . "name like '" . DBManagerFactory::getInstance()->quote($condition['value']) . "%'";
                } else {
-                  $cond_arr[] = $table . DBManagerFactory::getInstance()->getValidDBName($condition['name']) . " like '" . DBManagerFactory::getInstance()->quote($condition['value']) . "%'";
-               }
+                    $cond_arr[] = $table . DBManagerFactory::getInstance()->getValidDBName($condition['name']) . " like '" . DBManagerFactory::getInstance()->quote($condition['value']) . "%'";
+                }
                // MintHCM #59793 end
             }
-         }
-      }
+            }
+        }
 
-      if ( $table === 'users.' ) {
-         $cond_arr[] = $table . "status='Active'";
-      }
+        if ($table === 'users.') {
+            $cond_arr[] = $table . "status='Active'";
+        }
       // MintHCM #59793 start
       elseif ( $module == "Resources" ) {
          $cond_arr[] = $table . "type='for_reservation'";
       }
       // MintHCM #59793 end
-      $group = strtolower(trim($query_obj['group']));
-      if ( $group !== 'and' && $group !== 'or' ) {
-         $group = 'and';
-      }
+        $group = strtolower(trim($query_obj['group']));
+        if ($group !== 'and' && $group !== 'or') {
+            $group = 'and';
+        }
 
-      return implode(" $group ", $cond_arr);
-   }
+        return implode(" $group ", $cond_arr);
+    }
 
-   /**
-    * Authenticates User
-    * @return null|User
-    */
-   public function authenticate() {
-      global $sugar_config;
-      global $log;
+    /**
+     * Authenticates User
+     * @return null|User
+     */
+    public function authenticate()
+    {
+        global $sugar_config;
+        global $log;
 
-      $user_unique_key = isset($_SESSION['unique_key']) ? $_SESSION['unique_key'] : '';
-      $server_unique_key = isset($sugar_config['unique_key']) ? $sugar_config['unique_key'] : '';
+        $user_unique_key = isset($_SESSION['unique_key']) ? $_SESSION['unique_key'] : '';
+        $server_unique_key = isset($sugar_config['unique_key']) ? $sugar_config['unique_key'] : '';
 
-      if ( $user_unique_key !== $server_unique_key ) {
-         $log->debug('JSON_SERVER: user_unique_key:' . $user_unique_key . '!=' . $server_unique_key);
-         session_destroy();
+        if ($user_unique_key !== $server_unique_key) {
+            $log->debug('JSON_SERVER: user_unique_key:' . $user_unique_key . '!=' . $server_unique_key);
+            session_destroy();
 
-         return null;
-      }
+            return null;
+        }
 
-      if ( !isset($_SESSION['authenticated_user_id']) ) {
-         $log->debug('JSON_SERVER: authenticated_user_id NOT SET. DESTROY');
-         session_destroy();
+        if (!isset($_SESSION['authenticated_user_id'])) {
+            $log->debug('JSON_SERVER: authenticated_user_id NOT SET. DESTROY');
+            session_destroy();
 
-         return null;
-      }
+            return null;
+        }
 
-      /**
-       * @var User $current_user;
-       */
-      $current_user = BeanFactory::newBean('Users');
+        /**
+         * @var User $current_user;
+         */
+        $current_user = BeanFactory::newBean('Users');
 
-      $result = $current_user->retrieve($_SESSION['authenticated_user_id']);
-      $GLOBALS['log']->debug('JSON_SERVER: retrieved user from SESSION');
+        $result = $current_user->retrieve($_SESSION['authenticated_user_id']);
+        $GLOBALS['log']->debug('JSON_SERVER: retrieved user from SESSION');
 
 
-      if ( $result === null ) {
-         $GLOBALS['log']->debug('JSON_SERVER: could get a user from SESSION. DESTROY');
-         session_destroy();
+        if ($result === null) {
+            $GLOBALS['log']->debug('JSON_SERVER: could get a user from SESSION. DESTROY');
+            session_destroy();
 
-         return null;
-      }
+            return null;
+        }
 
-      return $result;
-   }
-
+        return $result;
+    }
 }

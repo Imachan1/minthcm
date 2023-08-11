@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,38 +46,19 @@ require_once('modules/AOS_Products_Quotes/AOS_Products_Quotes_sugar.php');
 
 class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
 {
-
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function AOS_Products_Quotes(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-
-    function save_lines($post_data, $parent, $groups = array(), $key = '')
+    public function save_lines($post_data, $parent, $groups = array(), $key = '')
     {
-
         $line_count = isset($post_data[$key . 'name']) ? count($post_data[$key . 'name']) : 0;
         $j = 0;
         for ($i = 0; $i < $line_count; ++$i) {
-
             if (isset($post_data[$key . 'deleted'][$i]) && $post_data[$key . 'deleted'][$i] == 1) {
                 $this->mark_deleted($post_data[$key . 'id'][$i]);
             } else {
-                
                 if (!isset($post_data[$key . 'id'][$i])) {
                     LoggerManager::getLogger()->warn('Post date has no key id');
                     $postDataKeyIdI = null;
@@ -96,14 +77,13 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
                     }
                 }
                 if (isset($post_data[$key . 'group_number'][$i])) {
-                    
-                    if(!isset($post_data[$key . 'group_number'][$i])) {
+                    if (!isset($post_data[$key . 'group_number'][$i])) {
                         LoggerManager::getLogger()->warn('AOS Product Quotes error: Group number at post data key index is undefined in groups. Key and index was: ' . $key . ', ' . $i);
                         $groupIndex = null;
                     } else {
                         $groupIndex = $post_data[$key . 'group_number'][$i];
                     }
-                    if(!isset($groups[$groupIndex])) {
+                    if (!isset($groups[$groupIndex])) {
                         LoggerManager::getLogger()->warn('AOS Product Quotes error: Group index was: ' . $groupIndex);
                         $product_quote->group_id = null;
                     } else {
@@ -131,7 +111,7 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
         }
     }
 
-    function save($check_notify = FALSE)
+    public function save($check_notify = false)
     {
         require_once('modules/AOS_Products_Quotes/AOS_Utils.php');
         perform_aos_save($this);
@@ -141,9 +121,8 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
     /**
      * @param $parent SugarBean
      */
-    function mark_lines_deleted($parent)
+    public function mark_lines_deleted($parent)
     {
-
         require_once('modules/Relationships/Relationship.php');
         $product_quotes = $parent->get_linked_beans('aos_products_quotes', $this->object_name);
         foreach ($product_quotes as $product_quote) {

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -102,10 +102,12 @@ abstract class SugarCacheAbstract
      */
     public function __construct()
     {
-        if ( isset($GLOBALS['sugar_config']['cache_expire_timeout']) )
+        if (isset($GLOBALS['sugar_config']['cache_expire_timeout'])) {
             $this->_expireTimeout = $GLOBALS['sugar_config']['cache_expire_timeout'];
-        if ( isset($GLOBALS['sugar_config']['unique_key']) )
+        }
+        if (isset($GLOBALS['sugar_config']['unique_key'])) {
             $this->_keyPrefix = $GLOBALS['sugar_config']['unique_key'];
+        }
     }
 
     /**
@@ -123,24 +125,23 @@ abstract class SugarCacheAbstract
      */
     public function __get($key)
     {
-        if ( SugarCache::$isCacheReset )
+        if (SugarCache::$isCacheReset) {
             return null;
+        }
 
         $this->_cacheRequests++;
-        if ( !$this->useLocalStore || !isset($this->_localStore[$key]) ) {
+        if (!$this->useLocalStore || !isset($this->_localStore[$key])) {
             $this->_localStore[$key] = $this->_getExternal($this->_keyPrefix.$key);
-            if ( isset($this->_localStore[$key]) ) {
+            if (isset($this->_localStore[$key])) {
                 $this->_cacheExternalHits++;
-            }
-            else {
+            } else {
                 $this->_cacheMisses++;
             }
-        }
-        elseif ( isset($this->_localStore[$key]) ) {
+        } elseif (isset($this->_localStore[$key])) {
             $this->_cacheLocalHits++;
         }
 
-        if ( isset($this->_localStore[$key]) ) {
+        if (isset($this->_localStore[$key])) {
             return $this->_localStore[$key];
         }
 
@@ -153,10 +154,9 @@ abstract class SugarCacheAbstract
      * @param  string $key
      * @return mixed
      */
-    public function __set( $key, $value)
+    public function __set($key, $value)
     {
         $this->set($key, $value);
-
     }
 
     /**
@@ -169,28 +169,25 @@ abstract class SugarCacheAbstract
      */
     public function set($key, $value, $ttl = null)
     {
-        if ( is_null($value) )
-        {
+        if (is_null($value)) {
             $value = SugarCache::EXTERNAL_CACHE_NULL_VALUE;
         }
 
 
-        if ( $this->useLocalStore )
-        {
+        if ($this->useLocalStore) {
             $this->_localStore[$key] = $value;
         }
 
-        if( $ttl === NULL )
-        {
-            $this->_setExternal($this->_keyPrefix.$key,$value);
-        }
-        else if( $ttl > 0 )
-        {
-            //For BC reasons the setExternal signature will remain the same.
-            $previousExpireTimeout = $this->_expireTimeout;
-            $this->_expireTimeout = $ttl;
-            $this->_setExternal($this->_keyPrefix.$key,$value);
-            $this->_expireTimeout = $previousExpireTimeout;
+        if ($ttl === null) {
+            $this->_setExternal($this->_keyPrefix.$key, $value);
+        } else {
+            if ($ttl > 0) {
+                //For BC reasons the setExternal signature will remain the same.
+                $previousExpireTimeout = $this->_expireTimeout;
+                $this->_expireTimeout = $ttl;
+                $this->_setExternal($this->_keyPrefix.$key, $value);
+                $this->_expireTimeout = $previousExpireTimeout;
+            }
         }
     }
     /**
@@ -265,7 +262,7 @@ abstract class SugarCacheAbstract
      */
     public function __toString()
     {
-        return strtolower(str_replace('SugarCache','',get_class($this)));
+        return strtolower(str_replace('SugarCache', '', get_class($this)));
     }
 
     /**
@@ -275,7 +272,7 @@ abstract class SugarCacheAbstract
      * @param string $key
      * @param mixed  $value
      */
-    abstract protected function _setExternal($key,$value);
+    abstract protected function _setExternal($key, $value);
 
     /**
      * Hook for the child implementations of the individual backends to provide thier own logic for
@@ -308,8 +305,8 @@ abstract class SugarCacheAbstract
      */
     public function useBackend()
     {
-        if ( !empty($GLOBALS['sugar_config']['external_cache_disabled'])
-                && $GLOBALS['sugar_config']['external_cache_disabled'] == true ) {
+        if (!empty($GLOBALS['sugar_config']['external_cache_disabled'])
+                && $GLOBALS['sugar_config']['external_cache_disabled'] == true) {
             return false;
         }
 
@@ -317,8 +314,8 @@ abstract class SugarCacheAbstract
             return false;
         }
 
-        if ( isset($GLOBALS['sugar_config']['external_cache_force_backend'])
-                && ( $GLOBALS['sugar_config']['external_cache_force_backend'] != (string) $this ) ) {
+        if (isset($GLOBALS['sugar_config']['external_cache_force_backend'])
+                && ($GLOBALS['sugar_config']['external_cache_force_backend'] != (string) $this)) {
             return false;
         }
 

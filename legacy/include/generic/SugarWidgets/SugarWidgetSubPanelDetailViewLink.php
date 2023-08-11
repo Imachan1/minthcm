@@ -1,14 +1,17 @@
 <?php
-
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/* * *******************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ *
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +22,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -35,15 +38,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by
- * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- * ****************************************************************************** */
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
+ */
 
 class SugarWidgetSubPanelDetailViewLink extends SugarWidgetField
 {
-
     public function displayList(&$layout_def)
     {
         global $focus;
@@ -63,6 +66,7 @@ class SugarWidgetSubPanelDetailViewLink extends SugarWidgetField
             $value = $layout_def['fields'][$key];
         }
 
+
         if (empty($layout_def['target_record_key'])) {
             $record = $layout_def['fields']['ID'];
         } else {
@@ -72,7 +76,7 @@ class SugarWidgetSubPanelDetailViewLink extends SugarWidgetField
 
         if (!empty($layout_def['target_module_key'])) {
             if (!empty($layout_def['fields'][strtoupper($layout_def['target_module_key'])])) {
-                $module = $layout_def['fields'][strtoupper($layout_def['target_module_key'])];
+                $module=$layout_def['fields'][strtoupper($layout_def['target_module_key'])];
             }
         }
 
@@ -87,21 +91,21 @@ class SugarWidgetSubPanelDetailViewLink extends SugarWidgetField
         //links to email module now need additional information.
         //this is to resolve the information about the target of the emails. necessitated by feature that allow
         //only on email record for the whole campaign.
-        $parent = '';
+        $parent='';
         if (!empty($layout_def['parent_info'])) {
             if (!empty($focus)) {
-                $parent = "&parent_id=" . $focus->id;
-                $parent .= "&parent_module=" . $focus->module_dir;
+                $parent="&parent_id=".$focus->id;
+                $parent.="&parent_module=".$focus->module_dir;
             }
         } else {
             if (!empty($layout_def['parent_id'])) {
                 if (isset($layout_def['fields'][strtoupper($layout_def['parent_id'])])) {
-                    $parent .= "&parent_id=" . $layout_def['fields'][strtoupper($layout_def['parent_id'])];
+                    $parent.="&parent_id=".$layout_def['fields'][strtoupper($layout_def['parent_id'])];
                 }
             }
             if (!empty($layout_def['parent_module'])) {
                 if (isset($layout_def['fields'][strtoupper($layout_def['parent_module'])])) {
-                    $parent .= "&parent_module=" . $layout_def['fields'][strtoupper($layout_def['parent_module'])];
+                    $parent.="&parent_module=".$layout_def['fields'][strtoupper($layout_def['parent_module'])];
                 }
             }
         }
@@ -110,7 +114,9 @@ class SugarWidgetSubPanelDetailViewLink extends SugarWidgetField
         $value = $layout_def['fields'][$key];
         global $current_user;
         if (!empty($record) &&
-            ($layout_def['DetailView'] && !$layout_def['owner_module'] || $layout_def['DetailView'] && !ACLController::moduleSupportsACL($layout_def['owner_module']) || ACLController::checkAccess($layout_def['owner_module'], 'view', $layout_def['owner_id'] == $current_user->id))) {
+            ($layout_def['DetailView'] && !$layout_def['owner_module']
+            ||  $layout_def['DetailView'] && !ACLController::moduleSupportsACL($layout_def['owner_module'])
+            || ACLController::checkAccess($layout_def['owner_module'], 'view', $layout_def['owner_id'] == $current_user->id))) {
             // MintHCM start #57627
             if ( $layout_def['owner_module'] && !empty($layout_def['fields']['PARENT_ID']) && !empty($layout_def['fields']['PARENT_NAME']) && !empty($layout_def['fields']['PARENT_TYPE']) ) {
                 $module = $layout_def['fields']['PARENT_TYPE'];
@@ -118,13 +124,12 @@ class SugarWidgetSubPanelDetailViewLink extends SugarWidgetField
             }
             // MintHCM end #57627
             $link = ajaxLink("index.php?module=$module&action=$action&record={$record}{$parent}");
-            if ('EAPM' == $module) {
+            if ($module == 'EAPM') {
                 $link = "index.php?module=$module&action=$action&record={$record}{$parent}";
             }
-            return '<a href="' . $link . '" >' . "$value</a>";
+            return '<a href="' . $link . '" >'."$value</a>";
         } else {
             return $value;
         }
     }
-
 }

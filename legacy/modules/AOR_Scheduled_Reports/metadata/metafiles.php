@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,10 +50,10 @@
  */
 $module_name = 'AOR_Scheduled_Reports';
  $metafiles[$module_name] = array(
-	'detailviewdefs'  => 	'modules/'.$module_name.'/metadata/detailviewdefs.php', 	
-	'editviewdefs'    => 	'modules/'. $module_name. '/metadata/editviewdefs.php',
- 	'listviewdefs'    => 	'modules/'. $module_name. '/metadata/listviewdefs.php',
- 	'searchdefs'      =>    'modules/'. $module_name. '/metadata/searchdefs.php',
- 	'popupdefs'	      =>    'modules/'. $module_name. '/metadata/popupdefs.php',
- 	'searchfields'	  =>    'modules/'. $module_name. '/metadata/SearchFields.php',
+    'detailviewdefs'  => 	'modules/'.$module_name.'/metadata/detailviewdefs.php',
+    'editviewdefs'    => 	'modules/'. $module_name. '/metadata/editviewdefs.php',
+    'listviewdefs'    => 	'modules/'. $module_name. '/metadata/listviewdefs.php',
+    'searchdefs'      =>    'modules/'. $module_name. '/metadata/searchdefs.php',
+    'popupdefs'	      =>    'modules/'. $module_name. '/metadata/popupdefs.php',
+    'searchfields'	  =>    'modules/'. $module_name. '/metadata/SearchFields.php',
  );

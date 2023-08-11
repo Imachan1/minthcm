@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,13 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 
 
@@ -65,16 +59,16 @@ global $current_user;
 
 $json = getJSONobj();
 $pass = '';
-if(!empty($_REQUEST['mail_smtppass'])) {
+if (!empty($_REQUEST['mail_smtppass'])) {
     $pass = $_REQUEST['mail_smtppass'];
-} elseif(isset($_REQUEST['mail_type'])) {
+} elseif (isset($_REQUEST['mail_type'])) {
     $oe = new OutboundEmail();
-    if(is_admin($current_user) && $_REQUEST['mail_type'] == 'system') {
+    if (is_admin($current_user) && $_REQUEST['mail_type'] == 'system') {
         $oe = $oe->getSystemMailerSettings();
     } else {
         $oe = $oe->getMailerByName($current_user, $_REQUEST['mail_type']);
     }
-    if(!empty($oe)) {
+    if (!empty($oe)) {
         $pass = $oe->mail_smtppass;
     }
 }
@@ -85,7 +79,7 @@ $authType = !empty($_REQUEST['mail_authtype']) ? $_REQUEST['mail_authtype'] : ''
 $eapmId = !empty($_REQUEST['eapm_id']) ? $_REQUEST['eapm_id'] : '';
 $authAccount = !empty($_REQUEST['authorized_account']) ? $_REQUEST['authorized_account'] : '';
 
-$email = new Email();
+$email = BeanFactory::newBean('Emails');
 $out = $email->sendEmailTest(
     $_REQUEST['mail_smtpserver'],
     $_REQUEST['mail_smtpport'],

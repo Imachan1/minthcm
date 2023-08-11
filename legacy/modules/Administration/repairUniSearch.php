@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,10 +53,10 @@ global $sugar_config, $mod_strings;
 $search_dir=sugar_cached('');
 
 $src_file = $search_dir . 'modules/unified_search_modules.php';
-if(file_exists($src_file)) {
-    print( $mod_strings['LBL_CLEAR_UNIFIED_SEARCH_CACHE_DELETING1'] . "<br>" );
-    print( $mod_strings['LBL_CLEAR_UNIFIED_SEARCH_CACHE_DELETING2'] . " $src_file<BR>" ) ;
-    unlink( "$src_file" );
+if (file_exists($src_file)) {
+    print($mod_strings['LBL_CLEAR_UNIFIED_SEARCH_CACHE_DELETING1'] . "<br>");
+    print($mod_strings['LBL_CLEAR_UNIFIED_SEARCH_CACHE_DELETING2'] . " $src_file<BR>") ;
+    unlink((string)$src_file);
 }
 
 echo "\n--- " . $mod_strings['LBL_DONE'] . "---<br />\n";

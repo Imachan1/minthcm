@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,36 +53,27 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
-require_once('include/Dashlets/DashletGeneric.php');
-require_once('modules/FP_Event_Locations/FP_Event_Locations.php');
+ require_once('include/Dashlets/DashletGeneric.php');
+ require_once('modules/FP_Event_Locations/FP_Event_Locations.php');
+ 
+ class FP_Event_LocationsDashlet extends DashletGeneric
+ {
+     public function __construct($id, $def = null)
+     {
+         global $current_user, $app_strings;
+         require('modules/FP_Event_Locations/metadata/dashletviewdefs.php');
+ 
+         parent::__construct($id, $def);
+ 
+         if (empty($def['title'])) {
+             $this->title = translate('LBL_HOMEPAGE_TITLE', 'FP_Event_Locations');
+         }
+ 
+         $this->searchFields = $dashletData['FP_Event_LocationsDashlet']['searchFields'];
+         $this->columns = $dashletData['FP_Event_LocationsDashlet']['columns'];
+ 
+         $this->seedBean = BeanFactory::newBean('FP_Event_Locations');
+     }
 
-class FP_Event_LocationsDashlet extends DashletGeneric {
-    function __construct($id, $def = null) {
-		global $current_user, $app_strings;
-		require('modules/FP_Event_Locations/metadata/dashletviewdefs.php');
-
-        parent::__construct($id, $def);
-
-        if(empty($def['title'])) $this->title = translate('LBL_HOMEPAGE_TITLE', 'FP_Event_Locations');
-
-        $this->searchFields = $dashletData['FP_Event_LocationsDashlet']['searchFields'];
-        $this->columns = $dashletData['FP_Event_LocationsDashlet']['columns'];
-
-        $this->seedBean = new FP_Event_Locations();
-    }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function FP_Event_LocationsDashlet($id, $def = null){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($id, $def);
-    }
-
-}
+ }
+ 

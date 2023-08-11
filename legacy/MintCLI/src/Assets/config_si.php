@@ -8,7 +8,7 @@ $sugar_config_si = array(
    'setup_db_port_num' => '_DB_PORT_',
    'setup_db_type' => 'mysql',
    'setup_db_pop_demo_data' => false,
-   'demoData' => '_INSTALL_DD_',
+   'demoData' => 'no',
    'setup_db_create_database' => 1,
    'setup_db_create_sugarsales_user' => 0,
 //   'dbUSRData' => 'create',
@@ -43,6 +43,7 @@ $sugar_config_si = array(
       'debug' => 0,
       'ssl' => false,
       'collation' => '_DB_COLLATION_',
+      'charset' => 'utf8mb4',
    ),
 );
 ?>

@@ -437,7 +437,7 @@ class MysqlManager extends DBManager {
 
    /**
     * Get tables like expression
-    * @param $like string
+     * @param string $like
     * @return array
     */
    public function tablesLike($like) {
@@ -521,15 +521,22 @@ class MysqlManager extends DBManager {
       }
 
       // cn: using direct calls to prevent this from spamming the Logs
-      $collation = $this->getOption('collation');
-      $character = $this->getCharacter($collation);
-      $names = "SET NAMES '{$character}'";
-      if ( !empty($collation) ) {
-         $names .= " COLLATE '$collation'";
-      }
-      mysql_query("SET CHARACTER SET {$character}", $this->database);
+      $charset = $this->getCharset();
 
-      mysql_query($names, $this->database);
+      if(!empty($charset)) {
+         $msg = "Error setting character set";
+               $this->query("SET CHARACTER SET $charset", true, $msg);
+
+               $names = "SET NAMES '$charset'";
+               $collation = $this->getCollation();
+
+               if (!empty($collation)) {
+                  $names .= " COLLATE '$collation'";
+         }
+
+         $msg = "Error setting character set and collation";
+               $this->query($names, true, $msg);
+      }
 
       if ( !$this->checkError('Could Not Connect:', $dieOnError) ) {
          $GLOBALS['log']->info("connected to db");
@@ -730,10 +737,10 @@ class MysqlManager extends DBManager {
       }
 
       // cn: bug 9873 - module tables do not get created in utf8 with assoc collation
-      $collation = $this->getOption('collation');
-      if ( empty($collation) ) {
-         $collation = $this->getDefaultCollation();
-      }
+      $collation = $this->getCollation();
+      $charset = $this->getCharset();
+
+      $sql = "CREATE TABLE $tablename ($columns $keys) CHARACTER SET $charset COLLATE $collation";
       $character  = $this->getCharacter($collation);
       $sql = "CREATE TABLE $tablename ($columns $keys) CHARACTER SET {$character} COLLATE $collation";
       if ( !empty($engine) ) {
@@ -841,6 +848,8 @@ class MysqlManager extends DBManager {
               in_array($ref['colBaseType'], array( 'text', 'blob', 'longtext', 'longblob' )) ) {
          $ref['default'] = '';
       }
+        // Quote the name column incase it has been reserved by dbms
+        $ref['name'] = $this->quoteIdentifier($ref['name']);
 
       if ( $return_as_array ) {
          return $ref;
@@ -984,28 +993,35 @@ class MysqlManager extends DBManager {
       return "";
    }
 
-   /**
-    * @see DBManager::get_indices()
-    */
-   public function get_indices($tablename) {
-      //find all unique indexes and primary keys.
-      $result = $this->query("SHOW INDEX FROM $tablename");
+    /**
+     * @see DBManager::get_indices()
+     */
+    public function get_indices($tablename)
+    {
+        //find all unique indexes and primary keys.
+        $result = $this->query("SHOW INDEX FROM $tablename");
 
-      $indices = array();
-      while ( ($row = $this->fetchByAssoc($result)) != null ) {
-         $index_type = 'index';
-         if ( $row['Key_name'] == 'PRIMARY' ) {
-            $index_type = 'primary';
-         } elseif ( $row['Non_unique'] == '0' ) {
-            $index_type = 'unique';
-         }
-         $name = strtolower($row['Key_name']);
-         $indices[$name]['name'] = $name;
-         $indices[$name]['type'] = $index_type;
-         $indices[$name]['fields'][] = strtolower($row['Column_name']);
-      }
-      return $indices;
-   }
+        $indices = array();
+        while (($row = $this->fetchByAssoc($result)) != null) {
+            $index_type = 'index';
+            if ($row['Key_name'] == 'PRIMARY') {
+                $index_type = 'primary';
+            } elseif ($row['Non_unique'] == '0') {
+                $index_type = 'unique';
+            }
+            $name = strtolower($row['Key_name']);
+            $indices[$name]['name'] = $name;
+            $indices[$name]['type'] = $index_type;
+            $field = strtolower($row['Column_name']);
+
+            if (is_numeric($row['Sub_part'])) {
+                $field = strtolower($row['Column_name'])." ({$row['Sub_part']})";
+            }
+            $indices[$name]['fields'][] = $field;
+        }
+
+        return $indices;
+    }
 
    /**
     * @see DBManager::add_drop_constraint()
@@ -1144,7 +1160,7 @@ class MysqlManager extends DBManager {
          }
       }
       if ( !empty($sql) ) {
-         $sql = "ALTER TABLE $tablename " . join(",", $sql) . ";";
+         $sql = "ALTER TABLE $tablename " . implode(",", $sql) . ";";
          if ( $execute ) {
             $this->query($sql);
          }
@@ -1153,15 +1169,51 @@ class MysqlManager extends DBManager {
       }
       return $sql;
    }
+    /**
+     * Get default collation settings
+     * @return string
+     */
+    public function getCollation()
+    {
+        $collation = $this->getOption('collation');
+        if (empty($collation)) {
+            $collation = $this->getDefaultCollation();
+        }
 
+        return $this->quote($collation);
+    }
+
+    /**
+     * Get default charset settings
+     * @return string
+     */
+    public function getCharset()
+    {
+        $charset = $this->getOption('charset');
+        if (empty($charset)) {
+            $charset = $this->getDefaultCharset();
+        }
+
+        return $this->quote($charset);
+    }
    /**
     * List of available collation settings
     * @return string
     */
-   public function getDefaultCollation() {
-      return "utf8mb4_general_ci";
-   }
-   protected function getDefaultCharacter(){
+    public function getDefaultCollation()
+    {
+        return 'utf8_general_ci';
+    }
+
+    /**
+     * Get default charset settings
+     * @return string
+     */
+    public function getDefaultCharset()
+    {
+        return 'utf8';
+    }
+    protected function getDefaultCharacter(){
       return 'utf8mb4';
    }
    protected function getCharacter($collation=false){
@@ -1259,7 +1311,7 @@ class MysqlManager extends DBManager {
       foreach ( $exclude_terms as $term ) {
          $condition[] = "-" . $this->quoteTerm($term);
       }
-      $condition = $this->quoted(join(" ", $condition));
+      $condition = $this->quoted(implode(" ", $condition));
       return "MATCH($field) AGAINST($condition IN BOOLEAN MODE)";
    }
 
@@ -1287,7 +1339,7 @@ class MysqlManager extends DBManager {
          "MySQL Host Info" => @mysql_get_host_info($this->database),
          "MySQL Server Info" => @mysql_get_server_info($this->database),
          "MySQL Client Encoding" => @mysql_client_encoding($this->database),
-         "MySQL Character Set Settings" => join(", ", $charset_str),
+         "MySQL Character Set Settings" => implode(", ", $charset_str),
       );
    }
 
@@ -1480,14 +1532,22 @@ class MysqlManager extends DBManager {
     * Create a database
     * @param string $dbname
     */
-   public function createDatabase($dbname) {
-      $this->query("CREATE DATABASE `$dbname` CHARACTER SET ".$this->getDefaultCharacter()." COLLATE ".$this->getDefaultCollation(), true);
-   }
+    public function createDatabase($dbname)
+    {
+        $collation = $this->getCollation();
+	$charset = $this->getCharset();
 
-   public function preInstall() {
-      $db->query("ALTER DATABASE `{$setup_db_database_name}` DEFAULT CHARACTER SET ".$db->getDefaultCharacter(), true);
-      $db->query("ALTER DATABASE `{$setup_db_database_name}` DEFAULT COLLATE ".$db->getDefaultCollation(), true);
-   }
+        $this->query("CREATE DATABASE `$dbname` CHARACTER SET $charset COLLATE $collation", true);
+    }
+
+    public function preInstall()
+    {
+        $collation = $this->getCollation();
+	$charset = $this->getCharset();
+
+        $db->query("ALTER DATABASE `{$setup_db_database_name}` DEFAULT CHARACTER SET $charset", true);
+        $db->query("ALTER DATABASE `{$setup_db_database_name}` DEFAULT COLLATE $collation", true);
+    }
 
    /**
     * Drop a database
@@ -1530,8 +1590,8 @@ class MysqlManager extends DBManager {
     * @see DBManager::version()
     */
     public function versionName() {
-        $result = $this->getOne("SELECT @@version_comment");
-        $db_sub_provider = strtolower(is_array($result)?join(",",$result):$result) ;
+        $result = $this->getOne("SELECT @@version_comment ");
+        $db_sub_provider = strtolower(is_array($result)?implode(",",$result):$result) ;
         if(false!==strpos($db_sub_provider,'mariadb')){
             return 'maria';
         }

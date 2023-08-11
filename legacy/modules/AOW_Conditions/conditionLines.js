@@ -125,7 +125,11 @@ function showConditionCurrentModuleFields(ln, value){
 function showModuleField(ln, operator_value, type_value, field_value){
     if (typeof operator_value === 'undefined') { operator_value = ''; }
     if (typeof type_value === 'undefined') { type_value = ''; }
-    if (typeof field_value === 'undefined') { field_value = ''; }
+    var is_value_set = true;
+    if (typeof field_value === 'undefined') {
+        field_value = '';
+        is_value_set = false;
+    }
 
     var rel_field = document.getElementById('aow_conditions_module_path'+ln).value;
     var aow_field = document.getElementById('aow_conditions_field'+ln).value;
@@ -169,7 +173,7 @@ function showModuleField(ln, operator_value, type_value, field_value){
 
         YAHOO.util.Connect.asyncRequest ("GET", "index.php?module=AOW_WorkFlow&action=getModuleOperatorField&view="+action_sugar_grp1+"&aow_module="+flow_module+"&aow_fieldname="+aow_field+"&aow_newfieldname="+aow_operator_name+"&aow_value="+operator_value+"&rel_field="+rel_field,callback);
         YAHOO.util.Connect.asyncRequest ("GET", "index.php?module=AOW_WorkFlow&action=getFieldTypeOptions&view="+action_sugar_grp1+"&aow_module="+flow_module+"&aow_fieldname="+aow_field+"&aow_newfieldname="+aow_field_type_name+"&aow_value="+type_value+"&rel_field="+rel_field,callback2);
-        YAHOO.util.Connect.asyncRequest ("GET", "index.php?module=AOW_WorkFlow&action=getModuleFieldType&view="+action_sugar_grp1+"&aow_module="+flow_module+"&aow_fieldname="+aow_field+"&aow_newfieldname="+aow_field_name+"&aow_value="+field_value+"&aow_type="+type_value+"&rel_field="+rel_field,callback3);
+        YAHOO.util.Connect.asyncRequest ("GET", "index.php?module=AOW_WorkFlow&action=getModuleFieldType&view="+action_sugar_grp1+"&aow_module="+flow_module+"&aow_fieldname="+aow_field+"&aow_newfieldname="+aow_field_name+"&aow_value="+field_value+"&is_value_set="+is_value_set+"&aow_type="+type_value+"&rel_field="+rel_field,callback3);
 
     } else {
         document.getElementById('aow_conditions_operatorInput'+ln).innerHTML = ''
@@ -226,23 +230,18 @@ function insertConditionHeader(){
     //a.style.color="rgb(68,68,68)";
 
     var b=x.insertCell(1);
-    b.style.color="rgb(0,0,0)";
     b.innerHTML=SUGAR.language.get('AOW_Conditions', 'LBL_MODULE_PATH');
 
     var c=x.insertCell(2);
-    c.style.color="rgb(0,0,0)";
     c.innerHTML=SUGAR.language.get('AOW_Conditions', 'LBL_FIELD');
 
     var d=x.insertCell(3);
-    d.style.color="rgb(0,0,0)";
     d.innerHTML=SUGAR.language.get('AOW_Conditions', 'LBL_OPERATOR');
 
     var e=x.insertCell(4);
-    e.style.color="rgb(0,0,0)";
     e.innerHTML=SUGAR.language.get('AOW_Conditions', 'LBL_VALUE_TYPE');
 
     var f=x.insertCell(5);
-    f.style.color="rgb(0,0,0)";
     f.innerHTML=SUGAR.language.get('AOW_Conditions', 'LBL_VALUE');
 }
 
@@ -261,14 +260,14 @@ function insertConditionLine(){
 
 
     var x = tablebody.insertRow(-1);
-    x.id = 'product_line' + condln;
+    x.id = 'condition_line' + condln;
 
     var a = x.insertCell(0);
     if(action_sugar_grp1 == 'EditView'){
         a.innerHTML = "<button type='button' id='aow_conditions_delete_line" + condln + "' class='button' value='' tabindex='116' onclick='markConditionLineDeleted(" + condln + ")'><span class='suitepicon suitepicon-action-minus'></span></button><br>";
         a.innerHTML += "<input type='hidden' name='aow_conditions_deleted[" + condln + "]' id='aow_conditions_deleted" + condln + "' value='0'><input type='hidden' name='aow_conditions_id[" + condln + "]' id='aow_conditions_id" + condln + "' value=''>";
     } else{
-        a.innerHTML = condln +1;
+        a.innerHTML = '';
     }
 
     var b = x.insertCell(1);

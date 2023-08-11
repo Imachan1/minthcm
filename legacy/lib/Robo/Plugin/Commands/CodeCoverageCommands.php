@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -41,35 +41,35 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
 namespace SuiteCRM\Robo\Plugin\Commands;
 
+use Robo\Tasks;
+use RuntimeException;
 use SuiteCRM\Utility\OperatingSystem;
 use SuiteCRM\Robo\Traits\RoboTrait;
-use Robo\Task\Base\loadTasks;
-use SuiteCRM\Utility\Paths;
-use Symfony\Component\Yaml\Yaml;
 
-class CodeCoverageCommands extends \Robo\Tasks
+class CodeCoverageCommands extends Tasks
 {
-    use loadTasks;
     use RoboTrait;
 
     /**
-     * Runs code coverage for travis ci
-     * @throws RuntimeException
+     * Runs code coverage
+     * @param array $opts
+     * @option bool $ci Should be set to true if using a Continuous Integration environment.
      */
-    public function codeCoverage()
+    public function codeCoverage($opts = ['ci' => false])
     {
         $this->say('Code Coverage');
 
         // Get environment
-        if ($this->isEnvironmentTravisCI()) {
-            $range = $this->getCommitRangeForTravisCi();
-        } else {
-            throw new \RuntimeException('unable to detect continuous integration environment');
+        if ($opts['ci'] === true) {
+            if ($this->isEnvironmentTravisCI()) {
+                $range = $this->getCommitRangeForTravisCi();
+            } else {
+                throw new RuntimeException('Unable to detect continuous integration environment');
+            }
         }
-
-        $this->disableStateChecker();
         $this->generateCodeCoverageFile();
 
         $this->say('Code Coverage Completed');
@@ -85,7 +85,7 @@ class CodeCoverageCommands extends \Robo\Tasks
 
     /**
      * @return array|false|string git commit range from travis ci
-     * eg 3b762531a80e768c2b303f4cce0189386a9f71d4...921bd12b282b0a984a83cc3d7e2a43bc21f2694f
+     * e.g. 3b762531a80e768c2b303f4cce0189386a9f71d4...921bd12b282b0a984a83cc3d7e2a43bc21f2694f
      */
     private function getCommitRangeForTravisCi()
     {
@@ -98,34 +98,16 @@ class CodeCoverageCommands extends \Robo\Tasks
     private function generateCodeCoverageFile()
     {
         $this->_exec($this->getCodeCoverageCommand());
-    }
-
-    /**
-     * Disables the state checker
-     */
-    private function disableStateChecker()
-    {
-        global $sugar_config;
-        require_once 'include/utils/file_utils.php';
-
-        $sugar_config['state_checker']['test_state_check_mode'] = 0;
-
-        return write_array_to_file(
-            'sugar_config',
-            $sugar_config,
-            'config_override.php'
-        );
+        $this->say('Code coverage xml outputted to ./tests/_output/coverage.xml');
     }
 
     private function getCodeCoverageCommand()
     {
-        //$paths = new Paths();
         $os = new OperatingSystem();
-        //$projectPath = $os->toOsPath($paths->getProjectPath());
-        $command = 
-            'cd tests/ ; ' //. projectPath
-            . $os->toOsPath('../vendor/bin/phpunit')
-            . ' --configuration $(pwd)/phpunit.xml.dist --coverage-clover ./_output/coverage.xml ./tests/unit/phpunit';
+        $command =
+            $os->toOsPath('./vendor/bin/phpunit')
+            . ' --configuration ./tests/phpunit.xml.dist --coverage-clover ./tests/_output/coverage.xml ./tests/unit/phpunit';
+
         return $command;
     }
 }

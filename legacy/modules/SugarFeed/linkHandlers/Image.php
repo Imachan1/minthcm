@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,42 +45,46 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-require_once('modules/SugarFeed/linkHandlers/Link.php');
+ require_once('modules/SugarFeed/linkHandlers/Link.php');
 
-class FeedLinkHandlerImage extends FeedLinkHandlerLink {
-    function getDisplay(&$data) {
-        $imageData = unserialize(base64_decode($data['LINK_URL']));
-        if ( $imageData['width'] != 0 ) {
-            $image_style = 'width: '.$imageData['width'].'px; height: '.$imageData['height'].'px; border: 0px;';
-        } else {
-            // Unknown width/height
-            // Set it to a max width of 425 px, and include a tweak so that IE 6 can actually handle it.
-            $image_style = 'width: expression(this.scrollWidth > 425 ? \'425px\':\'auto\'); max-width: 425px;';
-        }
-        return '<div style="padding-left:10px"><!--not_in_theme!--><img src="'. $imageData['url']. '" style="'.$image_style.'"></div>';
-    }
-
-    function handleInput($feed, $link_type, $link_url) {
-        parent::handleInput($feed, $link_type, $link_url);
-
-        // The FeedLinkHandlerLink class will help sort this url out for us
-        $link_url = $feed->link_url;
-
-        $imageData = @getimagesize($link_url);
-
-        if ( ! isset($imageData) ) {
-            // The image didn't pull down properly, could be a link and allow_url_fopen could be disabled
-            $imageData[0] = 0;
-            $imageData[1] = 0;
-        } else {
-            if ( max($imageData[0],$imageData[1]) > 425 ) {
-                // This is a large image, we need to set some specific width/height properties so that the browser can scale it.
-                $scale = 425 / max($imageData[0],$imageData[1]);
-                $imageData[0] = floor($imageData[0]*$scale);
-                $imageData[1] = floor($imageData[1]*$scale);
-            }
-        }
-
-        $feed->link_url = base64_encode(serialize(array('url'=>$link_url,'width'=>$imageData[0],'height'=>$imageData[1])));
-    }
-}
+ class FeedLinkHandlerImage extends FeedLinkHandlerLink
+ {
+     public function getDisplay(&$data)
+     {
+         $imageData = unserialize(base64_decode($data['LINK_URL']));
+         if ($imageData['width'] != 0) {
+             $image_style = 'width: '.$imageData['width'].'px; height: '.$imageData['height'].'px; border: 0px;';
+         } else {
+             // Unknown width/height
+             // Set it to a max width of 425 px, and include a tweak so that IE 6 can actually handle it.
+             $image_style = 'width: expression(this.scrollWidth > 425 ? \'425px\':\'auto\'); max-width: 425px;';
+         }
+         return '<div style="padding-left:10px"><!--not_in_theme!--><img src="'. $imageData['url']. '" style="'.$image_style.'"></div>';
+     }
+ 
+     public function handleInput($feed, $link_type, $link_url)
+     {
+         parent::handleInput($feed, $link_type, $link_url);
+ 
+         // The FeedLinkHandlerLink class will help sort this url out for us
+         $link_url = $feed->link_url;
+ 
+         $imageData = @getimagesize($link_url);
+ 
+         if (! isset($imageData)) {
+             // The image didn't pull down properly, could be a link and allow_url_fopen could be disabled
+             $imageData[0] = 0;
+             $imageData[1] = 0;
+         } else {
+             if (max($imageData[0], $imageData[1]) > 425) {
+                 // This is a large image, we need to set some specific width/height properties so that the browser can scale it.
+                 $scale = 425 / max($imageData[0], $imageData[1]);
+                 $imageData[0] = floor($imageData[0]*$scale);
+                 $imageData[1] = floor($imageData[1]*$scale);
+             }
+         }
+ 
+         $feed->link_url = base64_encode(serialize(array('url'=>$link_url,'width'=>$imageData[0],'height'=>$imageData[1])));
+     }
+ }
+ 

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -54,7 +54,7 @@ require_once('include/formbase.php');
 
 global $current_user;
 
-$sugarbean = new AM_ProjectTemplates();
+$sugarbean = BeanFactory::newBean('AM_ProjectTemplates');
 $sugarbean = populateFromPost('', $sugarbean);
 
 $sugarbean->save(null);
@@ -62,4 +62,4 @@ $return_id = $sugarbean->id;
 
 //customize default retrun view to make it to redirect to GanttChart view
 $_REQUEST['return_url'] = "index.php?module=AM_ProjectTemplates&action=view_GanttChart&record=" . $return_id;
-handleRedirect($return_id,'AM_ProjectTemplates');
+handleRedirect($return_id, 'AM_ProjectTemplates');

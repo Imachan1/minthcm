@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +11,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,26 +49,26 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 global $current_user;
 
-$dashletData['MyProjectDashlet']['searchFields'] =  array( 
+$dashletData['MyProjectDashlet']['searchFields'] =  array(
                                                             'estimated_end_date'         => array('default' => ''),
-		                                           'estimated_start_date'        => array('default' => ''),
+                                                   'estimated_start_date'        => array('default' => ''),
                                                             'status'         => array('default' => ''),
                                                             'assigned_user_id' => array('type'    => 'assigned_user_name',
                                                                                         'default' => $current_user->name)
 
                                                             );
-$dashletData['MyProjectDashlet']['columns'] = array('name' => array('width'   => '40', 
+$dashletData['MyProjectDashlet']['columns'] = array('name' => array('width'   => '40',
                                                                        'label'   => 'LBL_NAME',
                                                                        'link'    => true,
                                                                        'default' => true),
 
-                                                                 'assigned_user_name' => array('width'   => '8', 
+                                                                 'assigned_user_name' => array('width'   => '8',
                                                                                      'label'   => 'LBL_LIST_ASSIGNED_USER',
                                                                                      'default' => true),
                                                                  'estimated_start_date' => array('width' => '10',
-										    'label' => 'LBL_DATE_START'),
-								 'estimated_end_date' => array('width' => '10',
+                                            'label' => 'LBL_DATE_START'),
+                                 'estimated_end_date' => array('width' => '10',
                                                                                     'label' => 'LBL_DATE_END'),
-								 'status' => array('width' => '5',
+                                 'status' => array('width' => '5',
                                                                                     'label' => 'LBL_STATUS'),
 );

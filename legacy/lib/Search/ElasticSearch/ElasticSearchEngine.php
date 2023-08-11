@@ -9,7 +9,10 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,17 +45,19 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
+namespace SuiteCRM\Search\ElasticSearch;
+
 if ( !defined('sugarEntry') || !sugarEntry ) {
    die('Not A Valid Entry Point');
 }
 
 use Elasticsearch\Client;
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
-use SuiteCRM\Search\ElasticSearch\ElasticSearchClientBuilder;
-use SuiteCRM\Search\Exceptions\SearchInvalidRequestException;
+use SuiteCRM\Exception\InvalidArgumentException;
 use SuiteCRM\Search\SearchEngine;
 use SuiteCRM\Search\SearchQuery;
 use SuiteCRM\Search\SearchResults;
+use SuiteCRM\Search\SearchWrapper;
 
 /**
  * SearchEngine that use Elasticsearch index for performing almost real-time search.
@@ -77,13 +82,14 @@ class ElasticSearchEngine extends SearchEngine
          $this->setIndex($GLOBALS['sugar_config']['unique_key'] . '_shared');
       }
       // View Tools end #60464
-      $this->client = empty($client) ? ElasticSearchClientBuilder::getClient() : $client;
+      $this->client = $client ?? ElasticSearchClientBuilder::getClient();
    }
 
    /**
+    * @throws InvalidArgumentException
     * @inheritdoc
     */
-   public function search(SearchQuery $query)
+   public function search(SearchQuery $query): SearchResults
    {
       $this->validateQuery($query);
       $params = $this->createSearchParams($query);
@@ -114,7 +120,7 @@ class ElasticSearchEngine extends SearchEngine
    /**
     * @param SearchQuery $query
     */
-   protected function validateQuery(SearchQuery &$query)
+   protected function validateQuery(SearchQuery &$query): void
    {
       $query->trim();
       $query->convertEncoding();
@@ -127,51 +133,77 @@ class ElasticSearchEngine extends SearchEngine
     *
     * @return array
     */
-   protected function createSearchParams($query)  //MintHCM
-   {
-      if ($query->getOptions()['filter_by_module']) {
-         $params = [
-            'index' => $this->index,
-            'body' => [
-               'query' => [
-                  'bool' => [
-                     'filter' => [
-                        //
-                     ],
-                     'must_not' => [
-                        //
-                     ]
-                  ]
-               ]
-            ]
-         ];
+    protected function createSearchParams(SearchQuery $query): array  //MintHCM
+    {
+       if ($query->getOptions()['filter_by_module']) {
+          $params = [
+             'index' => $this->index,
+             'body' => [
+                'query' => [
+                   'bool' => [
+                      'filter' => [
+                         //
+                      ],
+                      'must_not' => [
+                         //
+                      ]
+                   ]
+                ]
+             ]
+          ];
+ 
+          $params = $this->addFilterByModule($params, $query->getOptions()['module']);
+          $params = $this->addPagination($params, $query->getFrom(), $query->getSize());
+          $params = $this->addSorting($params, $query->getOptions()['sorting']);
+          $params = $this->addFilters($params, $query->getOptions()['filters']);
+       } else {
+            $searchStr = $query->getSearchString();
+            $searchModules = SearchWrapper::getModules();
+            $indexes = implode(',', array_map('strtolower', $searchModules));
 
-         $params = $this->addFilterByModule($params, $query->getOptions()['module']);
-         $params = $this->addPagination($params, $query->getFrom(), $query->getSize());
-         $params = $this->addSorting($params, $query->getOptions()['sorting']);
-         $params = $this->addFilters($params, $query->getOptions()['filters']);
-      } else {
-      $params = [
-         'index' => $this->index,
-         'body' => [
-            'stored_fields' => [],
-            'from' => $query->getFrom(),
-            'size' => $query->getSize(),
-            'query' => [
-               'query_string' => [
-                  'query' => $query->getSearchString(),
-                     'fields' => ['name.*^5', '_all'],
-                  'analyzer' => 'standard',
-                  'default_operator' => 'OR',
-                  'minimum_should_match' => '66%',
-               ],
-               ]
-            ]
-         ];
-      }
+            // Wildcard character required for Elasticsearch
+            $wildcardBe = "*";
 
-      return $params;
-   }
+            // Override frontend wildcard character
+            if (isset($GLOBALS['sugar_config']['search_wildcard_char'])) {
+                $wildcardFe = $GLOBALS['sugar_config']['search_wildcard_char'];
+                if ($wildcardFe !== $wildcardBe && strlen($wildcardFe) === 1) {
+                    $searchStr = str_replace($wildcardFe, $wildcardBe, $searchStr);
+                }
+            }
+
+            // Add wildcard at the beginning of the search string
+            if (isset($GLOBALS['sugar_config']['search_wildcard_infront']) &&
+                $GLOBALS['sugar_config']['search_wildcard_infront'] === true && $searchStr[0] !== $wildcardBe) {
+                $searchStr = $wildcardBe . $searchStr;
+            }
+
+            // Add wildcard at the end of search string
+            if ((substr_compare($searchStr, $wildcardBe, -strlen($wildcardBe))) !== 0) {
+                $searchStr .= $wildcardBe;
+            }
+
+            return [
+                'index' => $indexes,
+                'body' => [
+                    'stored_fields' => [],
+                    'from' => $query->getFrom(),
+                    'size' => $query->getSize(),
+                    'query' => [
+                        'query_string' => [
+                            'query' => $searchStr,
+                            'fields' => ['name.*^5', '*'],
+                            'analyzer' => 'standard',
+                            'default_operator' => 'OR',
+                            'minimum_should_match' => '66%',
+                        ],
+                    ],
+                ],
+            ];
+       }
+
+       return $params;
+    }
 
    private function addFilterByModule($params, $data)
    {
@@ -225,17 +257,9 @@ class ElasticSearchEngine extends SearchEngine
     *
     * @return array
     */
-   protected function runElasticSearch($params) //MintHCM
+   protected function runElasticSearch(array $params): array //MintHCM
    {
-      try {
-         $results = $this->client->search($params);
-      }
-      /** @noinspection PhpRedundantCatchClauseInspection */
-      catch (BadRequest400Exception $exception) {
-        throw new SearchInvalidRequestException('ElasticSearchEngine::runElasticSearch: The query was not valid - ' . $exception);
-      }
-
-      return $results;
+        return $this->client->search($params);
    }
 
    /**
@@ -246,16 +270,26 @@ class ElasticSearchEngine extends SearchEngine
     *
     * @return array
     */
-   protected function parseHits($hits) //MintHCM
-   {
-      $hitsArray = $hits['hits']['hits'];
+    protected function parseHits(array $hits): array //MintHCM
+    {
+        $hitsArray = $hits['hits']['hits'];
 
-      $results = [];
+        $initialResults = [];
 
-      foreach ($hitsArray as $hit) {
-         $results[$hit['_type']][] = $hit['_id'];
-      }
+        foreach ($hitsArray as $hit) {
+            $recordModule = $hit['_index'];
+            $initialResults[$recordModule][] = $hit['_id'];
+        }
 
-      return $results;
-   }
+        $searchResults = [];
+
+        foreach ($initialResults as $index => $hit) {
+            $params = ['index' => $index];
+            $meta = $this->client->indices()->getMapping($params);
+            $moduleName = $meta[$index]['mappings']['_meta']['module_name'];
+            $searchResults[$moduleName] = $hit;
+        }
+
+        return $searchResults;
+    }
 }

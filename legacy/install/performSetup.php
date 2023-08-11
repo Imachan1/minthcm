@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -184,7 +184,7 @@ installLog('save locale');
 
 //global $current_user;
 installLog('new Administration');
-$focus = new Administration();
+$focus=BeanFactory::newBean('Administration');
 installLog('retrieveSettings');
 //$focus->retrieveSettings();
 // switch off the adminwizard (mark that we have got past this point)
@@ -228,7 +228,7 @@ $configurator->saveConfig();
 
 // Bug 37310 - Delete any existing currency that matches the one we've just set the default to during the admin wizard
 installLog('new Currency');
-$currency = new Currency;
+$currency = new Currency; 
 installLog('retrieve');
 $currency->retrieve($currency->retrieve_id_by_name($_REQUEST['default_currency_name']));
 if (!empty($currency->id)
@@ -248,7 +248,7 @@ installLog('Save user settings..');
 // set all of these default parameters since the Users save action will undo the defaults otherwise
 
 // load admin
-$current_user = new User();
+$current_user = BeanFactory::newBean('Users');
 $current_user->retrieve(1);
 $current_user->is_admin = '1';
 $sugar_config = get_sugar_config_defaults();
@@ -258,20 +258,10 @@ if (isset($_REQUEST['timezone']) && $_REQUEST['timezone']) {
     $current_user->setPreference('timezone', $_REQUEST['timezone']);
 }
 
-//$_POST[''] = $_REQUEST['default_locale_name_format'];
+if (file_exists(__DIR__ . '/../modules/ACL/install_actions.php')) {
+    require_once(__DIR__ . '/../modules/ACL/install_actions.php');
+}
 $_POST['dateformat'] = $_REQUEST['default_date_format'];
-//$_POST[''] = $_REQUEST['default_time_format'];
-//$_POST[''] = $_REQUEST['default_language'];
-//$_POST[''] = $_REQUEST['default_currency_name'];
-//$_POST[''] = $_REQUEST['default_currency_symbol'];
-//$_POST[''] = $_REQUEST['default_currency_iso4217'];
-//$_POST[''] = $_REQUEST['setup_site_session_path'];
-//$_POST[''] = $_REQUEST['setup_site_log_dir'];
-//$_POST[''] = $_REQUEST['setup_site_guid'];
-//$_POST[''] = $_REQUEST['default_email_charset'];
-//$_POST[''] = $_REQUEST['default_export_charset'];
-//$_POST[''] = $_REQUEST['export_delimiter'];
-
 $_POST['record'] = $current_user->id;
 $_POST['is_admin'] = ($current_user->is_admin ? 'on' : '');
 $_POST['use_real_names'] = true;

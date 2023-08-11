@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,53 +48,53 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $subpanel_layout = array(
-	'top_buttons' => array(
+    'top_buttons' => array(
        array('widget_class' => 'SubPanelTopCreateButton'),
-	   array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'Documents','field_to_name_array'=>array('document_revision_id'=>'REL_ATTRIBUTE_document_revision_id')),
-	),
+       array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'Documents','field_to_name_array'=>array('document_revision_id'=>'REL_ATTRIBUTE_document_revision_id')),
+    ),
 
-	'where' => '',
-	
-	
+    'where' => '',
+    
+    
 
     'list_fields'=> array(
       'document_name'=> array(
-	    	'name' => 'document_name',
-	 		'vname' => 'LBL_LIST_DOCUMENT_NAME',
-			'widget_class' => 'SubPanelDetailViewLink',
-			'width' => '40%',
-	   ),
+            'name' => 'document_name',
+            'vname' => 'LBL_LIST_DOCUMENT_NAME',
+            'widget_class' => 'SubPanelDetailViewLink',
+            'width' => '40%',
+       ),
        'is_template'=>array(
- 	    	'name' => 'is_template',
-	 	    'vname' => 'LBL_LIST_IS_TEMPLATE',
-		    'width' => '15%',
-		    'widget_type'=>'checkbox',
-		),
+            'name' => 'is_template',
+            'vname' => 'LBL_LIST_IS_TEMPLATE',
+            'width' => '15%',
+            'widget_type'=>'checkbox',
+        ),
        'template_type'=>array(
- 	    	'name' => 'template_types',
-	 	    'vname' => 'LBL_LIST_TEMPLATE_TYPE',
-		    'width' => '20%',
-		),		
+            'name' => 'template_types',
+            'vname' => 'LBL_LIST_TEMPLATE_TYPE',
+            'width' => '20%',
+        ),
        'latest_revision'=>array(
- 	    	'name' => 'latest_revision',
-	 	    'vname' => 'LBL_LATEST_REVISION',
-		    'width' => '15%',
+            'name' => 'latest_revision',
+            'vname' => 'LBL_LATEST_REVISION',
+            'width' => '15%',
             'sortable' => false
-		),
-		'edit_button'=>array(
-			'vname' => 'LBL_EDIT_BUTTON',
-			'widget_class' => 'SubPanelEditButton',
-		 	'module' => 'Documents',
-			'width' => '5%',
-		),
-		'remove_button'=>array(
-			'vname' => 'LBL_REMOVE',
-			'widget_class' => 'SubPanelRemoveButton',
-		 	'module' => 'Documents',
-			'width' => '5%',
-		),		
-		'document_revision_id'=>array(
-			'usage'=>'query_only'
-		),
-	),
+        ),
+        'edit_button'=>array(
+            'vname' => 'LBL_EDIT_BUTTON',
+            'widget_class' => 'SubPanelEditButton',
+            'module' => 'Documents',
+            'width' => '5%',
+        ),
+        'remove_button'=>array(
+            'vname' => 'LBL_REMOVE',
+            'widget_class' => 'SubPanelRemoveButton',
+            'module' => 'Documents',
+            'width' => '5%',
+        ),
+        'document_revision_id'=>array(
+            'usage'=>'query_only'
+        ),
+    ),
 );

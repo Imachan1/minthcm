@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,47 +42,38 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-class ViewJson extends SugarView{
-	var $type ='detail';
+class ViewJson extends SugarView
+{
+    public $type ='detail';
 
-	public function __construct(){
- 		parent::__construct();
- 	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function ViewJson(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+    public function __construct()
+    {
+        parent::__construct();
     }
 
 
-	function display(){
- 		global $beanList;
-		$module = $GLOBALS['module'];
-		$json = getJSONobj();
-		$bean = $this->bean;
-		$all_fields = array_merge($bean->column_fields,$bean->additional_column_fields);
 
-		$js_fields_arr = array();
-		foreach($all_fields as $field) {
-			if(isset($bean->$field)) {
-				$bean->$field = from_html($bean->$field);
-				$bean->$field = preg_replace('/\r\n/','<BR>',$bean->$field);
-				$bean->$field = preg_replace('/\n/','<BR>',$bean->$field);
-				$js_fields_arr[$field] = addslashes($bean->$field);
-			}
-		}
-		$out = $json->encode($js_fields_arr, true);
-		ob_clean();
-		print($out);
-		sugar_cleanup(true);
-	}
+
+    public function display()
+    {
+        global $beanList;
+        $module = $GLOBALS['module'];
+        $json = getJSONobj();
+        $bean = $this->bean;
+        $all_fields = array_merge($bean->column_fields, $bean->additional_column_fields);
+
+        $js_fields_arr = array();
+        foreach ($all_fields as $field) {
+            if (isset($bean->$field)) {
+                $bean->$field = from_html($bean->$field);
+                $bean->$field = preg_replace('/\r\n/', '<BR>', $bean->$field);
+                $bean->$field = preg_replace('/\n/', '<BR>', $bean->$field);
+                $js_fields_arr[$field] = addslashes($bean->$field);
+            }
+        }
+        $out = $json->encode($js_fields_arr, true);
+        ob_clean();
+        print($out);
+        sugar_cleanup(true);
+    }
 }

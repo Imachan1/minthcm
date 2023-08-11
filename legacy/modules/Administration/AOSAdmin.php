@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,7 +52,9 @@ global $app_list_strings;
 global $app_strings;
 global $theme;
 
-if (!is_admin($current_user)) sugar_die("Unauthorized access to administration.");
+if (!is_admin($current_user)) {
+    sugar_die("Unauthorized access to administration.");
+}
 
 require_once('modules/Configurator/Configurator.php');
 
@@ -73,10 +75,10 @@ $errors = array();
 if (isset($_REQUEST['do']) && $_REQUEST['do'] == 'save') {
 
     foreach ($_POST as $key => $value) {
-        if (strcmp("$value", 'true') == 0) {
+        if (strcmp((string)$value, 'true') == 0) {
             $value = true;
         }
-        if (strcmp("$value", 'false') == 0) {
+        if (strcmp((string)$value, 'false') == 0) {
             $value = false;
         }
         $_POST[$key] = $value;
@@ -117,7 +119,6 @@ $javascript->setFormName('ConfigureSettings');
 echo $javascript->getScript();
 ?>
 <script language="Javascript" type="text/javascript">
-    addToValidate('ConfigureSettings', 'aos_contracts_renewalReminderPeriod', 'int', false, "Days must be a number");
     addToValidateLessThan('ConfigureSettings', 'aos_invoices_initialNumber', 'int', false, "", 9999999999,"Initial Invoice number cannot be bigger than 9999999999");
 </script>
 

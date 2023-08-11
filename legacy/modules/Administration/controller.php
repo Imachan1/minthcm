@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -68,8 +68,9 @@ class AdministrationController extends SugarController
         // handle the subpanels
         if(isset($_REQUEST['disabled_tabs'])) {
             $disabledTabs = json_decode(html_entity_decode($_REQUEST['disabled_tabs'], ENT_QUOTES));
-            $disabledTabsKeyArray = TabController::get_key_array($disabledTabs);
-            SubPanelDefinitions::set_hidden_subpanels($disabledTabsKeyArray);
+            $disabledTabsKeyArray = $tabs->get_key_array($disabledTabs);
+            $subPanelDefinition = new SubPanelDefinitions($this->bean);
+            $subPanelDefinition->set_hidden_subpanels($disabledTabsKeyArray);
         }
 
         header("Location: index.php?module=Administration&action=ConfigureTabs");
@@ -83,7 +84,7 @@ class AdministrationController extends SugarController
         $toDecode = html_entity_decode  ($_REQUEST['enabled_langs'], ENT_QUOTES);
         $enabled_langs = json_decode($toDecode);
         $cfg = new Configurator();
-        $cfg->config['disabled_languages'] = join(',', $disabled_langs);
+        $cfg->config['disabled_languages'] = implode(',', $disabled_langs);
         // TODO: find way to enforce order
         $cfg->handleOverride();
         header("Location: index.php?module=Administration&action=Languages");
@@ -144,7 +145,7 @@ class AdministrationController extends SugarController
         require_once('modules/Configurator/Configurator.php');
         $cfg = new Configurator();
         $disabled = json_decode(html_entity_decode  ($_REQUEST['disabled_modules'], ENT_QUOTES));
-        $cfg->config['addAjaxBannedModules'] = empty($disabled) ? FALSE : $disabled;
+        $cfg->config['addAjaxBannedModules'] = empty($disabled) ? false : $disabled;
         $cfg->addKeyToIgnoreOverride('addAjaxBannedModules', $disabled);
         $cfg->handleOverride();
         $this->view = "configureajaxui";

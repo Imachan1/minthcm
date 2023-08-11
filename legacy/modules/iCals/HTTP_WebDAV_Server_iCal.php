@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -58,9 +58,9 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
  */
 class HTTP_WebDAV_Server_iCal extends HTTP_WebDAV_Server
 {
-    var $cal_encoding = "";
-    var $cal_charset = "";
-    var $http_spec = "";
+    public $cal_encoding = "";
+    public $cal_charset = "";
+    public $http_spec = "";
 
     /**
      * Constructor for the WebDAV srver
@@ -68,7 +68,7 @@ class HTTP_WebDAV_Server_iCal extends HTTP_WebDAV_Server
     public function __construct()
     {
         $this->vcal_focus = new iCal();
-        $this->user_focus = new User();
+        $this->user_focus = BeanFactory::newBean('Users');
     }
 
     /**
@@ -128,10 +128,6 @@ class HTTP_WebDAV_Server_iCal extends HTTP_WebDAV_Server
             }
         } else {
             $this->path = $this->_urldecode($_SERVER["PATH_INFO"]);
-
-            if (ini_get("magic_quotes_gpc")) {
-                $this->path = stripslashes($this->path);
-            }
 
             $query_str = preg_replace('/^\//', '', $this->path);
             $query_arr = array();
@@ -198,7 +194,7 @@ class HTTP_WebDAV_Server_iCal extends HTTP_WebDAV_Server
     }
 
 
-    function GET()
+    public function GET()
     {
         return true;
     }
@@ -224,8 +220,10 @@ class HTTP_WebDAV_Server_iCal extends HTTP_WebDAV_Server
                 ) {
                     $this->http_status("200 OK");
                     header('Content-Type: text/calendar; charset="' . $this->cal_charset . '"');
-                    $result = mb_convert_encoding(html_entity_decode($this->vcal_focus->getVcalIcal($this->user_focus,
-                        $_REQUEST['num_months']), ENT_QUOTES, $this->cal_charset), $this->cal_encoding);
+                    $result = mb_convert_encoding(html_entity_decode($this->vcal_focus->getVcalIcal(
+                        $this->user_focus,
+                        $_REQUEST['num_months']
+                    ), ENT_QUOTES, $this->cal_charset), $this->cal_encoding);
                     ob_end_clean();
                     echo $result;
 

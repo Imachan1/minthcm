@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
@@ -8,7 +7,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,7 +44,7 @@
 namespace SuiteCRM\Robo\Plugin\Commands;
 
 use BeanFactory;
-use Robo\Task\Base\loadTasks;
+use Robo\Tasks;
 use SuiteCRM\Robo\Traits\CliRunnerTrait;
 use SuiteCRM\Robo\Traits\RoboTrait;
 use SuiteCRM\Search\ElasticSearch\ElasticSearchIndexer;
@@ -61,9 +60,8 @@ use SuiteCRM\Utility\BeanJsonSerializer;
  *
  * @package SuiteCRM\Robo\Plugin\Commands
  */
-class ElasticSearchCommands extends \Robo\Tasks
+class ElasticSearchCommands extends Tasks
 {
-    use loadTasks;
     use RoboTrait;
     use CliRunnerTrait;
 

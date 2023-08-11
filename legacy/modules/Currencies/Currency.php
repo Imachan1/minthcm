@@ -12,7 +12,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -81,7 +81,8 @@ class Currency extends SugarBean {
 
    // View Tools end #40674
 
-   public function __construct() {
+   public function __construct() 
+   {
       parent::__construct();
       global $app_strings, $current_user, $sugar_config, $locale;
       $this->field_defs['hide'] = array( 'name' => 'hide', 'source' => 'non-db', 'type' => 'varchar', 'len' => 25 );
@@ -89,28 +90,32 @@ class Currency extends SugarBean {
       $this->disable_row_level_security = true;
    }
 
-   /**
-    * convertToDollar
-    * This method accepts a currency amount and converts it to the US Dollar amount
-    *
-    * @param $amount The currency amount to convert to US Dollars
-    * @param $precision The rounding precision scale
-    * @return currency value in US Dollars from conversion
-    */
-   public function convertToDollar($amount, $precision = 6) {
+    /**
+     * convertToDollar
+     * This method accepts a currency amount and converts it to the US Dollar amount
+     *
+     * @param $amount string|float The currency amount to convert to US Dollars
+     * @param $precision int The rounding precision scale
+     * @return float currency value in US Dollars from conversion
+     */
+   public function convertToDollar($amount, $precision = 6) 
+   {
+      $amount = is_string($amount) ? (float)$amount : $amount;
       return $this->conversion_rate ? round(($amount / $this->conversion_rate), $precision) : 0;
    }
 
-   /**
-    * convertFromCollar
-    * This method accepts a US Dollar amount and returns a currency amount
-    * with the conversion rate applied to it.
-    *
-    * @param $amount The currency amount in US Dollars
-    * @param $precision The rounding precision scale
-    * @return currency value from US Dollar conversion
-    */
-   public function convertFromDollar($amount, $precision = 6) {
+    /**
+     * convertFromCollar
+     * This method accepts a US Dollar amount and returns a currency amount
+     * with the conversion rate applied to it.
+     *
+     * @param $amount string|float The currency amount in US Dollars
+     * @param $precision int The rounding precision scale
+     * @return float currency value from US Dollar conversion
+     */
+   public function convertFromDollar($amount, $precision = 6) 
+   {
+      $amount = is_string($amount) ? (float)$amount : $amount;
       return round(($amount * $this->conversion_rate), $precision);
    }
 
@@ -120,7 +125,8 @@ class Currency extends SugarBean {
     * Returns the default currency name as defined in application
     * @return String value of default currency name
     */
-   public function getDefaultCurrencyName() {
+   public function getDefaultCurrencyName() 
+   {
       global $sugar_config;
       return $sugar_config['default_currency_name'];
    }
@@ -131,7 +137,8 @@ class Currency extends SugarBean {
     * Returns the default currency symobol in application
     * @return String value of default currency symbol(e.g. $)
     */
-   public function getDefaultCurrencySymbol() {
+   public function getDefaultCurrencySymbol() 
+   {
       global $sugar_config;
       return $sugar_config['default_currency_symbol'];
    }
@@ -142,13 +149,15 @@ class Currency extends SugarBean {
     * Returns the default ISO 4217 standard currency code value
     * @return String value for the ISO 4217 standard code(e.g. EUR)
     */
-   public function getDefaultISO4217() {
+   public function getDefaultISO4217() 
+   {
       global $sugar_config;
       return $sugar_config['default_currency_iso4217'];
    }
 
    // View Tools start #40674
-   public function getDefaultCurrencyOnRight() {
+   public function getDefaultCurrencyOnRight() 
+   {
       global $sugar_config;
       return (isset($sugar_config['currency_on_right'])) ? $sugar_config['currency_on_right'] : false;
    }
@@ -165,7 +174,8 @@ class Currency extends SugarBean {
     * @return String id value for symbol defined in Currencies table, blank String value
     *         if none found
     */
-   public function retrieveIDBySymbol($symbol) {
+   public function retrieveIDBySymbol($symbol) 
+   {
       $query = "SELECT id FROM currencies WHERE symbol='$symbol' AND deleted=0;";
       $result = $this->db->query($query);
       if ( $result ) {
@@ -178,7 +188,8 @@ class Currency extends SugarBean {
       return '';
    }
 
-   public function list_view_parse_additional_sections(&$list_form) {
+   public function list_view_parse_additional_sections(&$list_form) 
+   {
       global $isMerge;
 
       if ( isset($isMerge) && $isMerge && $this->id != '-99' ) {
@@ -187,7 +198,8 @@ class Currency extends SugarBean {
       return $list_form;
    }
 
-   public function retrieve_id_by_name($name) {
+   public function retrieve_id_by_name($name) 
+   {
       $nameQuoted = $this->db->quote($name);
       $query = "select id from currencies where name='$nameQuoted' and deleted=0;";
       $result = $this->db->query($query);
@@ -200,7 +212,8 @@ class Currency extends SugarBean {
       return '';
    }
 
-   public function retrieve($id = -99, $encode = true, $deleted = true) {
+   public function retrieve($id = -99, $encode = true, $deleted = true) 
+   {
       if ( $id == '-99' ) {
          $this->name = $this->getDefaultCurrencyName();
          $this->symbol = $this->getDefaultCurrencySymbol();
@@ -244,20 +257,23 @@ class Currency extends SugarBean {
     * Returns:
     * 	$symbol otherwise chr(2) for euro symbol
     */
-   public function getPdfCurrencySymbol() {
+   public function getPdfCurrencySymbol() 
+   {
       if ( $this->symbol == '&#8364;' || $this->symbol == '€' ) {
          return chr(2);
       }
       return $this->symbol;
    }
 
-   public function get_list_view_data() {
+   public function get_list_view_data() 
+   {
       $this->conversion_rate = format_number($this->conversion_rate, 10, 10);
       $data = parent::get_list_view_data();
       return $data;
    }
 
-   public function save($check_notify = false) {
+   public function save($check_notify = false) 
+   {
       sugar_cache_clear('currency_list');
       return parent::save($check_notify);
    }
@@ -271,12 +287,12 @@ class Currency extends SugarBean {
  *
  * This method is a wrapper designed exclusively for formatting currency values
  * with the assumption that the method caller wants a currency formatted value
- * matching his/her user preferences(if set) or the system configuration defaults
+ * matching their user preferences(if set) or the system configuration defaults
  * (if user preferences are not defined).
  *
  * @param $amount The amount to be formatted
  * @param $params Optional parameters(see @format_number)
- * @return String representation of amount with formatting applied
+ * @return string representation of amount with formatting applied //mint
  */
 function currency_format_number($amount, $params = array()) {
    global $locale;
@@ -321,10 +337,10 @@ function currency_format_number($amount, $params = array()) {
  * are responsible for passing in the appropriate decimal and number rounding digits
  * as well as parameters to control displaying the currency symbol or not.
  *
- * @param $amount The currency amount to apply formatting to
+ * @param $amount float|string The currency amount to apply formatting to
  * @param $round Integer value for number of places to round to
  * @param $decimals Integer value for number of decimals to round to
- * @param $params Array of additional parameter values
+ * @param $params array of additional parameter values
  *
  *
  * The following are passed in as an array of params:
@@ -346,7 +362,9 @@ function format_number($amount, $round = null, $decimals = null, $params = array
    static $override_currency_id = null;
    static $currency;
 
-   $seps = get_number_seperators();
+   $amount = is_string($amount) ? (float) $amount : $amount;
+
+   $seps = get_number_separators();
    $num_grp_sep = $seps[0];
    $dec_sep = $seps[1];
 
@@ -366,21 +384,21 @@ function format_number($amount, $round = null, $decimals = null, $params = array
       if ( !empty($params['currency_id']) ) {
          if ( $override_currency_id != $params['currency_id'] ) {
             $override_currency_id = $params['currency_id'];
-            $currency = new Currency();
+            $currency = BeanFactory::newBean('Currencies');
             $currency->retrieve($override_currency_id);
             $last_override_currency = $currency;
          } else {
             $currency = $last_override_currency;
          }
-      } elseif ( !isset($current_users_currency) ) { // else use current user's
-         $current_users_currency = new Currency();
-         if ( $current_user->getPreference('currency') ) {
-            $current_users_currency->retrieve($current_user->getPreference('currency'));
+      } elseif (!isset($current_users_currency)) { // else use current user's
+         $current_users_currency = BeanFactory::newBean('Currencies');
+         if ($current_user->getPreference('currency')) {
+             $current_users_currency->retrieve($current_user->getPreference('currency'));
          } else {
-            $current_users_currency->retrieve('-99');
+             $current_users_currency->retrieve('-99');
          } // use default if none set
          $currency = $current_users_currency;
-      }
+     }
    }
    if ( !empty($params['convert']) && $params['convert'] ) {
       $amount = $currency->convertFromDollar($amount, 6);
@@ -420,7 +438,7 @@ function format_number($amount, $round = null, $decimals = null, $params = array
       if ( $checkAmount >= 1000 || $checkAmount <= -1000 ) {
          $amount = round(($amount / 1000), 0);
          $amount = number_format($amount, 0, $dec_sep, $num_grp_sep); // add for SI bug 52498
-         $amount = $amount . 'k';
+         $amount .= 'k';
          $amount = format_place_symbol($amount, $symbol, (empty($params['symbol_space']) ? false : true), $currency); // View Tools #40674 ($currency)
       } else {
          $amount = format_place_symbol($amount, $symbol, (empty($params['symbol_space']) ? false : true), $currency); // View Tools #40674 ($currency)
@@ -465,7 +483,7 @@ function unformat_number($string) {
    static $currency = null;
    if ( !isset($currency) ) {
       global $current_user;
-      $currency = new Currency();
+      $currency = BeanFactory::newBean('Currencies');
       if ( !empty($current_user->id) ) {
          if ( $current_user->getPreference('currency') ) {
             $currency->retrieve($current_user->getPreference('currency'));
@@ -477,7 +495,7 @@ function unformat_number($string) {
       }
    }
 
-   $seps = get_number_seperators();
+   $seps = get_number_separators();
    // remove num_grp_sep and replace decimal separator with decimal
    $string = trim(str_replace(array( $seps[0], $seps[1], $currency->symbol ), array( '', '.', '' ), $string));
    if ( preg_match('/^[+-]?\d(\.\d+)?[Ee]([+-]?\d+)?$/', $string) ) {
@@ -488,27 +506,34 @@ function unformat_number($string) {
    $out_number = trim($string[0]);
    if ( $out_number == '' ) {
       return '';
-   } else {
-      return ( float ) $out_number;
    }
+   return ( float ) $out_number;
 }
 
 // deprecated use format_number() above
-function format_money($amount, $for_display = TRUE) {
-   // This function formats an amount for display.
-   // Later on, this should be converted to use proper thousand and decimal seperators
-   // Currently, it stays closer to the existing format, and just rounds to two decimal points
-   if ( isset($amount) ) {
-      if ( $for_display ) {
-         return sprintf("%0.02f", $amount);
-      } else {
-         // If it's an editable field, don't use a thousand seperator.
-         // Or perhaps we will want to, but it doesn't matter right now.
-         return sprintf("%0.02f", $amount);
-      }
-   } else {
-      return;
-   }
+function format_money($amount, $for_display = true)
+{
+    // This function formats an amount for display.
+    // Later on, this should be converted to use proper thousand and decimal separators
+    // Currently, it stays closer to the existing format, and just rounds to two decimal points
+    if (isset($amount)) {
+        if ($for_display) {
+            return sprintf("%0.02f", $amount);
+        }
+        // If it's an editable field, don't use a thousand separator.
+        // Or perhaps we will want to, but it doesn't matter right now.
+        return sprintf("%0.02f", $amount);
+    }
+    return;
+}
+
+/**
+ * @deprecated
+ * @param bool $reset_sep
+ */
+function get_number_seperators($reset_sep = false)
+{
+    get_number_separators($reset_sep);
 }
 
 /**
@@ -516,7 +541,7 @@ function format_money($amount, $for_display = TRUE) {
  * (default ".").  Special case: when num_grp_sep is ".", it will return NULL as the num_grp_sep.
  * @return array Two element array, first item is num_grp_sep, 2nd item is dec_sep
  */
-function get_number_seperators($reset_sep = false) {
+function get_number_separators($reset_sep = false) {
    global $current_user, $sugar_config;
 
    static $dec_sep = null;
@@ -540,7 +565,8 @@ function get_number_seperators($reset_sep = false) {
       $num_grp_sep = $sugar_config['default_number_grouping_seperator'];
       if ( !empty($current_user->id) ) {
          $user_num_grp_sep = $current_user->getPreference('num_grp_sep');
-         $num_grp_sep = (empty($user_num_grp_sep) ? $sugar_config['default_number_grouping_seperator'] : $user_num_grp_sep);
+         $num_grp_sep = (empty($user_num_grp_sep)
+         ? $sugar_config['default_number_grouping_seperator'] : $user_num_grp_sep);
       }
    }
 
@@ -625,99 +651,98 @@ function getCurrencyDropDown($focus, $field = 'currency_id', $value = '', $view 
          $html .= $currency->getJavascript();
       }
       return $html;
-   } else {
-      $currency = new Currency();
-      $currency->retrieve($value);
-      return $currency->name;
-   }
+   } 
+      $currency = BeanFactory::newBean('Currencies');
+   $currency->retrieve($value);
+   return $currency->name;
 }
 
-function getCurrencyNameDropDown($focus, $field = 'currency_name', $value = '', $view = 'DetailView') {
-   if ( $view == 'EditView' || $view == 'MassUpdate' || $view == 'QuickCreate' ) {
-      require_once('modules/Currencies/ListCurrency.php');
-      $currency_fields = array();
-      //Bug 18276 - Fix for php 5.1.6
+function getCurrencyNameDropDown($focus, $field='currency_name', $value='', $view='DetailView')
+{
+    if ($view == 'EditView' || $view == 'MassUpdate' || $view == 'QuickCreate') {
+        require_once('modules/Currencies/ListCurrency.php');
+        $currency_fields = array();
+        //Bug 18276 - Fix for php 5.1.6
 
-      if ( !isset($focus) ) {
-         LoggerManager::getLogger()->warn('Currency Dorp-down error: Focus not defined.');
-         $defs = null;
-      } elseif ( !isset($focus->field_defs) ) {
-         LoggerManager::getLogger()->warn('Currency Dorp-down error: Undefined field definition for focus. Focus was: ' . get_class($focus));
-         $defs = null;
-      } elseif ( !is_object($focus) ) {
-         LoggerManager::getLogger()->warn('Currency Dorp-down error: Focus is not an object. Given type of focus was: ' . gettype($focus));
-         $defs = null;
-      } else {
-         $defs = isset($focus->field_defs) ? $focus->field_defs : null;
-      }
+        if (!isset($focus)) {
+            LoggerManager::getLogger()->warn('Currency Dorp-down error: Focus not defined.');
+            $defs = null;
+        } elseif (!isset($focus->field_defs)) {
+            LoggerManager::getLogger()->warn('Currency Dorp-down error: Undefined field definition for focus. Focus was: ' . get_class($focus));
+            $defs = null;
+        } elseif (!is_object($focus)) {
+            LoggerManager::getLogger()->warn('Currency Dorp-down error: Focus is not an object. Given type of focus was: ' . gettype($focus));
+            $defs = null;
+        } else {
+            $defs = isset($focus->field_defs) ? $focus->field_defs : null;
+        }
 
-      //
-      foreach ( ( array ) $defs as $name => $key ) {
-         if ( $key['type'] == 'currency' ) {
-            $currency_fields[] = $name;
-         }
-      }
-      $currency = new ListCurrency();
-      $currency->lookupCurrencies();
-      $listitems = array();
-      foreach ( $currency->list as $item ) {
-         $listitems[$item->name] = $item->name;
-      }
-      return '<select name="' . $field . '" id="' . $field . '" />' .
-              get_select_options_with_id($listitems, $value) . '</select>';
-   } else {
-      $currency = new Currency();
-      if ( isset($focus->currency_id) ) {
-         $currency_id = $focus->currency_id;
-      } else {
-         $currency_id = -99;
-      }
-      $currency->retrieve($currency_id);
-      return $currency->name;
-   }
+        //
+        foreach ((array)$defs as $name=>$key) {
+            if ($key['type'] == 'currency') {
+                $currency_fields[]= $name;
+            }
+        }
+        $currency = new ListCurrency();
+        $currency->lookupCurrencies();
+        $listitems = array();
+        foreach ($currency->list as $item) {
+            $listitems[$item->name] = $item->name;
+        }
+        return '<select name="'.$field.'" id="'.$field.'" />'.
+            get_select_options_with_id($listitems, $value).'</select>';
+    }
+    $currency = BeanFactory::newBean('Currencies');
+    if (isset($focus->currency_id)) {
+        $currency_id = $focus->currency_id;
+    } else {
+        $currency_id = -99;
+    }
+    $currency->retrieve($currency_id);
+    return $currency->name;
 }
 
-function getCurrencySymbolDropDown($focus, $field = 'currency_name', $value = '', $view = 'DetailView') {
-   if ( $view == 'EditView' || $view == 'MassUpdate' || $view == 'QuickCreate' ) {
-      require_once('modules/Currencies/ListCurrency.php');
-      $currency_fields = array();
-      //Bug 18276 - Fix for php 5.1.6
+function getCurrencySymbolDropDown($focus, $field='currency_name', $value='', $view='DetailView')
+{
+    if ($view == 'EditView' || $view == 'MassUpdate' || $view == 'QuickCreate') {
+        require_once('modules/Currencies/ListCurrency.php');
+        $currency_fields = array();
+        //Bug 18276 - Fix for php 5.1.6
 
-      if ( !isset($focus) ) {
-         LoggerManager::getLogger()->warn('Currency Dorp-down error: Focus not defined.');
-         $defs = null;
-      } elseif ( !isset($focus->field_defs) ) {
-         LoggerManager::getLogger()->warn('Currency Dorp-down error: Undefined field definition for focus. Focus was: ' . get_class($focus));
-         $defs = null;
-      } elseif ( !is_object($focus) ) {
-         LoggerManager::getLogger()->warn('Currency Dorp-down error: Focus is not an object. Given type of focus was: ' . gettype($focus));
-         $defs = null;
-      } else {
-         $defs = isset($focus->field_defs) ? $focus->field_defs : null;
-      }
+        if (!isset($focus)) {
+            LoggerManager::getLogger()->warn('Currency Dorp-down error: Focus not defined.');
+            $defs = null;
+        } elseif (!isset($focus->field_defs)) {
+            LoggerManager::getLogger()->warn('Currency Dorp-down error: Undefined field definition for focus. Focus was: ' . get_class($focus));
+            $defs = null;
+        } elseif (!is_object($focus)) {
+            LoggerManager::getLogger()->warn('Currency Dorp-down error: Focus is not an object. Given type of focus was: ' . gettype($focus));
+            $defs = null;
+        } else {
+            $defs = isset($focus->field_defs) ? $focus->field_defs : null;
+        }
 
-      //
-      foreach ( ( array ) $defs as $name => $key ) {
-         if ( $key['type'] == 'currency' ) {
-            $currency_fields[] = $name;
-         }
-      }
-      $currency = new ListCurrency();
-      $currency->lookupCurrencies();
-      $listitems = array();
-      foreach ( $currency->list as $item ) {
-         $listitems[$item->symbol] = $item->symbol;
-      }
-      return '<select name="' . $field . '" id="' . $field . '" />' .
-              get_select_options_with_id($listitems, $value) . '</select>';
-   } else {
-      $currency = new Currency();
-      if ( isset($focus->currency_id) ) {
-         $currency_id = $focus->currency_id;
-      } else {
-         $currency_id = -99;
-      }
-      $currency->retrieve($currency_id);
-      return $currency->name;
-   }
+        //
+        foreach ((array)$defs as $name=>$key) {
+            if ($key['type'] == 'currency') {
+                $currency_fields[]= $name;
+            }
+        }
+        $currency = new ListCurrency();
+        $currency->lookupCurrencies();
+        $listitems = array();
+        foreach ($currency->list as $item) {
+            $listitems[$item->symbol] = $item->symbol;
+        }
+        return '<select name="'.$field.'" id="'.$field.'" />'.
+            get_select_options_with_id($listitems, $value).'</select>';
+    }
+    $currency = BeanFactory::newBean('Currencies');
+    if (isset($focus->currency_id)) {
+        $currency_id = $focus->currency_id;
+    } else {
+        $currency_id = -99;
+    }
+    $currency->retrieve($currency_id);
+    return $currency->name;
 }

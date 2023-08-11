@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,35 +49,35 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $listViewDefs['Prospects'] = array(
-	'FULL_NAME' => array(
-		'width' => '20', 
-		'label' => 'LBL_LIST_NAME', 
-		'link' => true,
+    'FULL_NAME' => array(
+        'width' => '20',
+        'label' => 'LBL_LIST_NAME',
+        'link' => true,
         'related_fields' => array('first_name', 'last_name'),
         'orderBy' => 'last_name',
         'default' => true),
     'TITLE' => array(
-        'width' => '20', 
-        'label' => 'LBL_LIST_TITLE', 
+        'width' => '20',
+        'label' => 'LBL_LIST_TITLE',
         'link' => false,
-        'default' => true),   
+        'default' => true),
     'EMAIL1' => array(
-        'width' => '20', 
+        'width' => '20',
         'label' => 'LBL_LIST_EMAIL_ADDRESS',
-        'sortable' => false, 
+        'sortable' => false,
         'link' => false,
         'default' => true,
         'customCode' => '{$EMAIL1_LINK}',
-    ),           
+    ),
     'PHONE_WORK' => array(
-        'width' => '10', 
-        'label' => 'LBL_LIST_PHONE', 
+        'width' => '10',
+        'label' => 'LBL_LIST_PHONE',
         'link' => false,
-        'default' => true), 
-	'DATE_ENTERED' => array (
-	    'type' => 'datetime',
-	    'label' => 'LBL_DATE_ENTERED',
-	    'width' => '10',
-	    'default' => true,
-	  ),  
+        'default' => true),
+    'DATE_ENTERED' => array(
+        'type' => 'datetime',
+        'label' => 'LBL_DATE_ENTERED',
+        'width' => '10',
+        'default' => true,
+      ),
 );

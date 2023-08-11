@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,7 +46,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
    die('Not A Valid Entry Point');
 }
 
-require_once('include/utils/zip_utils.php');
+require_once('include/utils/php_zip_utils.php');
 require_once('include/upload_file.php');
 
 ////////////////
@@ -251,7 +251,7 @@ function commitPatch($unlink = false, $type = 'patch') {
    $errors = array();
    $files = array();
    global $current_user;
-   $current_user = new User();
+   $current_user = BeanFactory::newBean('Users');
    $current_user->is_admin = '1';
    $old_mod_strings = $mod_strings;
    if ( is_dir($base_upgrade_dir) ) {
@@ -320,7 +320,7 @@ function commitModules($unlink = false, $type = 'module') {
    $errors = array();
    $files = array();
    global $current_user;
-   $current_user = new User();
+   $current_user = BeanFactory::newBean('Users');
    $current_user->is_admin = '1';
    $old_mod_strings = $mod_strings;
    if ( is_dir(sugar_cached("upload/upgrades")) ) {
@@ -966,7 +966,7 @@ EOQ;
    $restrict_str .= <<<EOQ
 RedirectMatch 403 {$ignoreCase}.*\.log$
 RedirectMatch 403 {$ignoreCase}/+not_imported_.*\.txt
-RedirectMatch 403 {$ignoreCase}/+(soap|cache|xtemplate|data|examples|include|log4php|metadata|modules)/+.*\.(php|tpl)
+RedirectMatch 403 {$ignoreCase}/+(soap|cache|xtemplate|data|examples|include|log4php|metadata|modules|vendor)/+.*\.(php|tpl|phar)
 RedirectMatch 403 {$ignoreCase}/+emailmandelivery\.php
 RedirectMatch 403 {$ignoreCase}/+upload
 RedirectMatch 403 {$ignoreCase}/+custom/+blowfish
@@ -1180,7 +1180,6 @@ function create_table_if_not_exist(&$focus) {
 }
 
 function create_default_users() {
-   $db = DBManagerFactory::getInstance();
    global $setup_site_admin_password;
    global $setup_site_admin_user_name;
    global $create_default_user;
@@ -1189,7 +1188,7 @@ function create_default_users() {
    require_once('install/UserDemoData.php');
 
    //Create default admin user
-   $user = new User();
+   $user = BeanFactory::newBean('Users');
    $user->id = 1;
    $user->new_with_id = true;
    $user->last_name = 'Administrator';
@@ -1199,14 +1198,13 @@ function create_default_users() {
    $user->is_admin = true;
    $user->employee_status = 'Active';
    $user->user_hash = User::getPasswordHash($setup_site_admin_password);
-   $user->save();
-   //Bug#53793: Keep default current user in the global variable in order to store 'created_by' info as default user
-   //           while installation is proceed.
+
    $GLOBALS['current_user'] = $user;
+   $GLOBALS['current_user']->save();
 
 
    if ( $create_default_user ) {
-      $default_user = new User();
+      $default_user = BeanFactory::newBean('Users');
       $default_user->last_name = $sugar_config['default_user_name'];
       $default_user->user_name = $sugar_config['default_user_name'];
       $default_user->status = 'Active';
@@ -2281,7 +2279,7 @@ function isWeekend($date) {
 function post_install_modules() {
    if ( is_file('modules_post_install.php') ) {
       global $current_user, $mod_strings;
-      $current_user = new User();
+      $current_user = BeanFactory::newBean('Users');
       $current_user->is_admin = '1';
       require_once('ModuleInstall/PackageManager/PackageManager.php');
       require_once('modules_post_install.php');

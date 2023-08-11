@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,20 +45,25 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-require_once('modules/SugarFeed/linkHandlers/Link.php');
 
-class FeedLinkHandlerYoutube extends FeedLinkHandlerLink {
-    function getDisplay(&$data) {
-        return '<div style="padding-left:10px"><object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/' . $data['LINK_URL'] . '&hl=en&fs=1"></param><param name="allowFullScreen" value="true"></param><param name="wmode" value="opaque" /><embed src="http://www.youtube.com/v/' . $data['LINK_URL'] . '&hl=en&fs=1" type="application/x-shockwave-flash" allowfullscreen="false" wmode="opaque" width="425" height="344"></embed></object></div>';
-    }
-    
-    function handleInput($feed, $link_type, $link_url) {
-        $match = array();
-        preg_match('/v=([^\&]+)/', $link_url, $match);
-		
-        if(!empty($match[1])){
-            $feed->link_type = $link_type;
-            $feed->link_url = $match[1];
-        }
-    }
-}
+ require_once('modules/SugarFeed/linkHandlers/Link.php');
+
+ class FeedLinkHandlerYoutube extends FeedLinkHandlerLink
+ {
+     public function getDisplay(&$data)
+     {
+         return '<div style="padding-left:10px"><object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/' . $data['LINK_URL'] . '&hl=en&fs=1"></param><param name="allowFullScreen" value="true"></param><param name="wmode" value="opaque" /><embed src="http://www.youtube.com/v/' . $data['LINK_URL'] . '&hl=en&fs=1" type="application/x-shockwave-flash" allowfullscreen="false" wmode="opaque" width="425" height="344"></embed></object></div>';
+     }
+     
+     public function handleInput($feed, $link_type, $link_url)
+     {
+         $match = array();
+         preg_match('/v=([^\&]+)/', $link_url, $match);
+         
+         if (!empty($match[1])) {
+             $feed->link_type = $link_type;
+             $feed->link_url = $match[1];
+         }
+     }
+ }
+ 

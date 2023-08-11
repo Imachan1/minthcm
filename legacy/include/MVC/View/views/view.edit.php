@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,81 +41,92 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+
+
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
 
 require_once('include/EditView/EditView2.php');
 
-class ViewEdit extends SugarView {
+class ViewEdit extends SugarView
+{
+    /**
+     * @var EditView $ev
+     */
+    public $ev;
 
-   /**
-    * @var EditView $ev
-    */
-   public $ev;
-   /**
-    * @inheritdoc
-    */
-   public $type = 'edit';
-   /**
-    * @var boolean $useForSubpanel determine whether view can be used for subpanel creates
-    */
-   public $useForSubpanel = false;
-   /**
-    * @var boolean to determine whether or not SubpanelQuickCreate has a separate display function
-    */
-   public $useModuleQuickCreateTemplate = false;
-   /**
-    * @var boolean used to passed showTitle to $ev used for backwards compatibility
-    */
-   public $showTitle = true;
+    /**
+     * @inheritdoc
+     */
+    public $type = 'edit';
 
-   /**
-    * ViewEdit constructor.
-    */
-   public function __construct() {
-      parent::__construct();
-   }
+    /**
+     * @var boolean $useForSubpanel determine whether view can be used for subpanel creates
+     */
+    public $useForSubpanel = false;
 
-   /**
-    * @see SugarView::preDisplay()
-    */
-   public function preDisplay() {
-      $metadataFile = $this->getMetaDataFile();
-      $this->ev = $this->getEditView();
-      $this->ev->ss = & $this->ss;
-      $this->ev->setup($this->module, $this->bean, $metadataFile);
-   }
+    /**
+     * @var boolean to determine whether or not SubpanelQuickCreate has a separate display function
+     */
+    public $useModuleQuickCreateTemplate = false;
 
-   /**
-    * @inheritdoc
-    */
-   public function display() {
-      $this->ev->process();
+    /**
+     * @var boolean used to passed showTitle to $ev used for backwards compatibility
+     */
+    public $showTitle = true;
 
-      //viewTools start #40916
-      $mrf = new ModuleRelatedField();
-      $locked_field = $mrf->getModuleRelatedField($this->bean);
-      $this->ev->ss->assign('locked_field', $locked_field);
-      //viewTools end #40916
+    /**
+     * ViewEdit constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-      echo $this->ev->display($this->showTitle);
-      //viewTools start #52440
-      echo '<script>viewTools.form.calculateSelectors();</script>';
-      //viewTools end #52440
-   }
 
-   /**
-    * Get a new EditView object
-    * @return EditView
-    */
-   public function getEditView() {
-      if ( empty($this->ev) ) {
-         $this->ev = new EditView();
-      }
 
-      return $this->ev;
-   }
 
+    /**
+     * @see SugarView::preDisplay()
+     */
+    public function preDisplay()
+    {
+        $metadataFile = $this->getMetaDataFile();
+        $this->ev = $this->getEditView();
+        $this->ev->ss =& $this->ss;
+        $this->ev->setup($this->module, $this->bean, $metadataFile);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function display()
+    {
+        $this->ev->process();
+
+        //viewTools start #40916
+        $mrf = new ModuleRelatedField();
+        $locked_field = $mrf->getModuleRelatedField($this->bean);
+        $this->ev->ss->assign('locked_field', $locked_field);
+        //viewTools end #40916
+        echo $this->ev->display($this->showTitle);
+        //viewTools start #52440
+        echo '<script>viewTools.form.calculateSelectors();</script>';
+        //viewTools end #52440
+    }
+
+    /**
+     * Get a new EditView object
+     * @return EditView
+     */
+    public function getEditView()
+    {
+        if (empty($this->ev)) {
+            $this->ev = new EditView();
+        }
+
+        return $this->ev;
+    }
 }

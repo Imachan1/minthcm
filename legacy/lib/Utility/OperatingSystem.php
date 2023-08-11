@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,43 +48,49 @@ class OperatingSystem
     /**
      * @return bool true when operating system is BSD
      */
-    public function isOsBSD() {
-        return stristr(php_uname('s'), 'BSD') !== FALSE;
+    public function isOsBSD()
+    {
+        return stristr(php_uname('s'), 'BSD') !== false;
     }
 
     /**
      * @return bool true when operating system is Linux
      */
-    public function isOsLinux() {
-        return stristr(php_uname('s'), 'Linux') !== FALSE;
+    public function isOsLinux()
+    {
+        return stristr(php_uname('s'), 'Linux') !== false;
     }
 
     /**
      * @return bool true when operating system is Mac OS X
      */
-    public function isOsMacOSX() {
-        return stristr(php_uname('s'), 'Darwin') !== FALSE;
+    public function isOsMacOSX()
+    {
+        return stristr(php_uname('s'), 'Darwin') !== false;
     }
 
     /**
      * @return bool true when operating system is Solaris
      */
-    public function isOsSolaris() {
-        return stristr(php_uname('s'), 'Solaris') !== FALSE;
+    public function isOsSolaris()
+    {
+        return stristr(php_uname('s'), 'Solaris') !== false;
     }
 
     /**
      * @return bool true when operating system is Unknown
      */
-    public function isOsUnknown() {
+    public function isOsUnknown()
+    {
         return php_uname('s') === 'Unknown';
     }
 
     /**
      * @return bool true when operating system is Windows
      */
-    public function isOsWindows() {
-        return stristr(php_uname('s'), 'Windows') !== FALSE;
+    public function isOsWindows()
+    {
+        return stristr(php_uname('s'), 'Windows') !== false;
     }
 
     /**

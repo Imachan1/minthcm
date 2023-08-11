@@ -5,10 +5,10 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2021 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,10 +45,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-require_once 'php_version.php';
-require_once 'include/SugarObjects/SugarConfig.php';
-require_once 'include/utils/security_utils.php';
+require_once __DIR__ . '/../php_version.php';
+require_once __DIR__ . '/../include/SugarObjects/SugarConfig.php';
+require_once __DIR__ . '/../include/utils/security_utils.php';
 
+use voku\helper\AntiXSS;
+
+/**
+ * @param $sugar_config
+ */
 function make_sugar_config(&$sugar_config)
 {
     /* used to convert non-array config.php file to array format */
@@ -112,6 +117,9 @@ function make_sugar_config(&$sugar_config)
         'calculate_response_time' => empty($calculate_response_time) ? true : $calculate_response_time,
         'create_default_user' => empty($create_default_user) ? false : $create_default_user,
         'chartEngine' => 'Jit',
+        'pdf' => [
+            'defaultEngine' => 'TCPDFEngine'
+        ],
         'date_formats' => empty($dateFormats) ? array(
             'Y-m-d' => '2010-12-23',
             'd-m-Y' => '23-12-2010',
@@ -142,7 +150,7 @@ function make_sugar_config(&$sugar_config)
             'chown' => '',
             'chgrp' => '',
         ),
-        'default_theme' => empty($default_theme) ? 'Sugar5' : $default_theme,
+        'default_theme' => empty($default_theme) ? 'SuiteP' : $default_theme,
         'default_time_format' => empty($defaultTimeFormat) ? 'h:ia' : $defaultTimeFormat,
         'default_user_is_admin' => empty($default_user_is_admin) ? false : $default_user_is_admin,
         'default_user_name' => empty($default_user_name) ? '' : $default_user_name,
@@ -166,13 +174,20 @@ function make_sugar_config(&$sugar_config)
         'lock_default_user_name' => empty($lock_default_user_name) ? false : $lock_default_user_name,
         'log_memory_usage' => empty($log_memory_usage) ? false : $log_memory_usage,
         'name_formats' => empty($nameFormats) ? array(
-            's f l' => 's f l', 'f l' => 'f l', 's l' => 's l', 'l, s f' => 'l, s f',
-            'l, f' => 'l, f', 's l, f' => 's l, f', 'l s f' => 'l s f', 'l f s' => 'l f s',
+            's f l' => 's f l',
+            'f l' => 'f l',
+            's l' => 's l',
+            'l, s f' => 'l, s f',
+            'l, f' => 'l, f',
+            's l, f' => 's l, f',
+            'l s f' => 'l s f',
+            'l f s' => 'l f s',
         ) : $nameFormats,
+        'oauth2_encryption_key' => base64_encode(random_bytes(32)),
         'portal_view' => 'single_user',
         'resource_management' => array(
             'special_query_limit' => 50000,
-            'special_query_modules' => array('Reports', 'Export', 'Import', 'Administration',
+            'special_query_modules' => array('AOR_Reports', 'Export', 'Import', 'Administration',
                 'Sync'),
             'default_limit' => 1000,
         ),
@@ -184,23 +199,59 @@ function make_sugar_config(&$sugar_config)
         'showThemePicker' => true,
         'sugar_version' => empty($sugar_version) ? 'unknown' : $sugar_version,
         'time_formats' => empty($timeFormats) ? array(
-            'H:i' => '23:00', 'h:ia' => '11:00 pm', 'h:iA' => '11:00PM',
-            'H.i' => '23.00', 'h.ia' => '11.00 pm', 'h.iA' => '11.00PM') : $timeFormats,
+            'H:i' => '23:00',
+            'h:ia' => '11:00 pm',
+            'h:iA' => '11:00PM',
+            'H.i' => '23.00',
+            'h.ia' => '11.00 pm',
+            'h.iA' => '11.00PM',
+        ) : $timeFormats,
         'tmp_dir' => $tmp_dir, // this must be set!!
         'translation_string_prefix' => empty($translation_string_prefix) ? false
         : $translation_string_prefix,
         'unique_key' => empty($unique_key) ? md5(create_guid()) : $unique_key,
         'upload_badext' => empty($upload_badext) ? array(
-            'php', 'php3', 'php4', 'php5', 'pl', 'cgi', 'py',
-            'asp', 'cfm', 'js', 'vbs', 'html', 'htm') : $upload_badext,
+            'php',
+            'php3',
+            'php4',
+            'php5',
+            'php6',
+            'php7',
+            'php8',
+            'pl',
+            'cgi',
+            'py',
+            'asp',
+            'cfm',
+            'js',
+            'vbs',
+            'html',
+            'htm',
+            'phtml',
+            'phar',
+        ) : $upload_badext,
+        'valid_image_ext' => [
+            'gif',
+            'png',
+            'jpg',
+            'jpeg',
+            'svg'
+        ],
         'upload_dir' => $upload_dir, // this must be set!!
         'upload_maxsize' => empty($upload_maxsize) ? 30000000 : $upload_maxsize,
+        'allowed_preview' => [
+            'pdf',
+            'gif',
+            'png',
+            'jpeg',
+            'jpg'
+        ],
         'import_max_execution_time' => empty($import_max_execution_time) ? 3600 : $import_max_execution_time,
         'lock_homepage' => false,
         'lock_subpanels' => false,
         'max_dashlets_homepage' => 15,
         'dashlet_display_row_options' => array('1', '3', '5', '10'),
-        'default_max_tabs' => empty($max_tabs) ? '7' : $max_tabs,
+        'default_max_tabs' => empty($max_tabs) ? 10 : $max_tabs,
         'default_subpanel_tabs' => empty($subpanel_tabs) ? true : $subpanel_tabs,
         'default_subpanel_links' => empty($subpanel_links) ? false : $subpanel_links,
         'default_swap_last_viewed' => empty($swap_last_viewed) ? false : $swap_last_viewed,
@@ -237,40 +288,76 @@ function make_sugar_config(&$sugar_config)
             'max_cron_runtime' => 60, // max runtime for cron jobs
             'min_cron_interval' => 30, // minimal interval between cron jobs
         ),
+        'strict_id_validation' => false,
+        'legacy_email_behaviour' => false,
         'display_week_number' => false,
     );
 }
 
-function get_sugar_config_defaults()
+/**
+ * Used for getting base values for array style config.php
+ * @return array
+ * @throws Exception
+ */
+function get_sugar_config_defaults(): array
 {
     global $locale;
-    /*
-     * used for getting base values for array style config.php.  used by the
-     * installer and to fill in new entries on upgrades.  see also:
-     * sugar_config_union
-     */
 
-    $sugar_config_defaults = array(
+    $sugar_config_defaults = [
         'admin_export_only' => false,
+        'anti_malware_scanners' => [
+            'SuiteCRM\Utility\AntiMalware\Providers\ClamTCP' => [
+                'name' => 'ClamAntiVirus TCP',
+                'support_page' => 'https://www.clamav.net/',
+                'enabled' => false,
+                'path' => null,
+                'options' => [
+                    'ip' => '127.0.0.1',
+                    'port' => 3310,
+                    'type' => 'local'
+                ],
+            ],
+            'SuiteCRM\Utility\AntiMalware\Providers\Sophos' => [
+                'name' => 'Sophos Anti Virus (Linux)',
+                'support_page' => 'https://www.sophos.com/en-us/products/free-tools/sophos-antivirus-for-linux.aspx',
+                'enabled' => false,
+                'path' => '/opt/sophos-av/bin/savscan',
+                'options' => '-ss'
+            ]
+        ],
         'export_delimiter' => ',',
         'export_excel_compatible' => false,
         'cache_dir' => 'cache/',
         'calculate_response_time' => true,
         'create_default_user' => false,
         'chartEngine' => 'Jit',
-        'date_formats' => array(
-            'Y-m-d' => '2010-12-23', 'm-d-Y' => '12-23-2010', 'd-m-Y' => '23-12-2010',
-            'Y/m/d' => '2010/12/23', 'm/d/Y' => '12/23/2010', 'd/m/Y' => '23/12/2010',
-            'Y.m.d' => '2010.12.23', 'd.m.Y' => '23.12.2010', 'm.d.Y' => '12.23.2010'),
-        'name_formats' => array(
-            's f l' => 's f l', 'f l' => 'f l', 's l' => 's l', 'l, s f' => 'l, s f',
-            'l, f' => 'l, f', 's l, f' => 's l, f', 'l s f' => 'l s f', 'l f s' => 'l f s',
-        ),
-        'dbconfigoption' => array(
+        'date_formats' => [
+            'Y-m-d' => '2010-12-23',
+            'm-d-Y' => '12-23-2010',
+            'd-m-Y' => '23-12-2010',
+            'Y/m/d' => '2010/12/23',
+            'm/d/Y' => '12/23/2010',
+            'd/m/Y' => '23/12/2010',
+            'Y.m.d' => '2010.12.23',
+            'd.m.Y' => '23.12.2010',
+            'm.d.Y' => '12.23.2010',
+        ],
+        'name_formats' => [
+            's f l' => 's f l',
+            'f l' => 'f l',
+            's l' => 's l',
+            'l, s f' => 'l, s f',
+            'l, f' => 'l, f',
+            's l, f' => 's l, f',
+            'l s f' => 'l s f',
+            'l f s' => 'l f s',
+        ],
+        'dbconfigoption' => [
             'persistent' => true,
             'autofree' => false,
             'debug' => 0,
-            'ssl' => false),
+            'ssl' => false,
+        ],
         'default_action' => 'index',
         'default_charset' => return_session_value_or_default('default_charset',
             'UTF-8'),
@@ -305,8 +392,12 @@ function get_sugar_config_defaults()
         'default_user_is_admin' => false,
         'default_user_name' => '',
         'disable_export' => false,
-        'disable_persistent_connections' => return_session_value_or_default('disable_persistent_connections',
-            'false'),
+        'disable_persistent_connections' => return_session_value_or_default('disable_persistent_connections', false),
+        'default_module_favicon' => false,
+        'dashlet_auto_refresh_min' => 30,
+        'stack_trace_errors' => false,
+        'developerMode' => false,
+        'stackTrace' => false,
         'display_email_template_variable_chooser' => false,
         'display_inbound_email_buttons' => false,
         'dump_slow_queries' => false,
@@ -314,10 +405,11 @@ function get_sugar_config_defaults()
         'email_default_editor' => 'html',
         'email_default_client' => 'sugar',
         'email_default_delete_attachments' => true,
+        'email_warning_notifications' => true,
         'email_enable_auto_send_opt_in' => false,
         'email_enable_confirm_opt_in' => SugarEmailAddress::COI_STAT_DISABLED,
-        'filter_module_fields' => array(
-            'Users' => array(
+        'filter_module_fields' => [
+            'Users' => [
                 'show_on_employees',
                 'portal_only',
                 'is_group',
@@ -332,8 +424,8 @@ function get_sugar_config_defaults()
                 'password',
                 'last_login',
                 'oauth_tokens',
-            ),
-            'Employees' => array(
+            ],
+            'Employees' => [
                 'show_on_employees',
                 'portal_only',
                 'is_group',
@@ -348,26 +440,30 @@ function get_sugar_config_defaults()
                 'password',
                 'last_login',
                 'oauth_tokens',
-            ),
-        ),
+            ],
+        ],
         'google_auth_json' => '',
         'history_max_viewed' => 20, // MintHCM #100495
         'installer_locked' => true,
         'import_max_records_per_file' => 100,
         'import_max_records_total_limit' => '',
-        'languages' => array('en_us' => 'English (US)'),
+        'languages' => ['en_us' => 'English (US)'],
         'large_scale_test' => false,
         'list_max_entries_per_page' => 20,
         'list_max_entries_per_subpanel' => 10,
         'lock_default_user_name' => false,
         'log_memory_usage' => false,
+        'oauth2_encryption_key' => base64_encode(random_bytes(32)),
         'portal_view' => 'single_user',
-        'resource_management' => array(
+        'pdf' => [
+            'defaultEngine' => 'TCPDFEngine'
+        ],
+        'resource_management' => [
             'special_query_limit' => 50000,
-            'special_query_modules' => array('Reports', 'Export', 'Import', 'Administration',
-                'Sync'),
+            'special_query_modules' => ['AOR_Reports', 'Export', 'Import', 'Administration',
+                'Sync'],
             'default_limit' => 1000,
-        ),
+        ],
         'require_accounts' => true,
         'rss_cache_time' => return_session_value_or_default('rss_cache_time',
             '10800'),
@@ -376,17 +472,56 @@ function get_sugar_config_defaults()
         'showThemePicker' => true,
         'slow_query_time_msec' => '100',
         'sugarbeet' => true,
-        'time_formats' => array(
-            'H:i' => '23:00', 'h:ia' => '11:00pm', 'h:iA' => '11:00PM', 'h:i a' => '11:00 pm',
+        'time_formats' => [
+            'H:i' => '23:00',
+            'h:ia' => '11:00pm',
+            'h:iA' => '11:00PM',
+            'h:i a' => '11:00 pm',
             'h:i A' => '11:00 PM',
-            'H.i' => '23.00', 'h.ia' => '11.00pm', 'h.iA' => '11.00PM', 'h.i a' => '11.00 pm',
-            'h.i A' => '11.00 PM'),
+            'H.i' => '23.00',
+            'h.ia' => '11.00pm',
+            'h.iA' => '11.00PM',
+            'h.i a' => '11.00 pm',
+            'h.i A' => '11.00 PM',
+        ],
         'tracker_max_display_length' => 25, // MintHCM #100495
         'translation_string_prefix' => return_session_value_or_default('translation_string_prefix',
             false),
-        'upload_badext' => array(
-            'php', 'php3', 'php4', 'php5', 'pl', 'cgi', 'py',
-            'asp', 'cfm', 'js', 'vbs', 'html', 'htm', 'phtml'),
+        'upload_badext' => [
+            'php',
+            'php3',
+            'php4',
+            'php5',
+            'php6',
+            'php7',
+            'php8',
+            'pl',
+            'cgi',
+            'py',
+            'asp',
+            'cfm',
+            'js',
+            'vbs',
+            'html',
+            'htm',
+            'phtml',
+            'phar',
+            ],
+            'valid_image_ext' => [
+                'gif',
+                'png',
+                'jpg',
+                'jpeg',
+                'svg',
+                'bmp'
+            ],
+            'allowed_preview' => [
+                'pdf',
+                'gif',
+                'png',
+                'jpeg',
+                'jpg'
+        ],
         'upload_maxsize' => 30000000,
         'import_max_execution_time' => 3600,
 //    'use_php_code_json' => returnPhpJsonStatus(),
@@ -397,8 +532,8 @@ function get_sugar_config_defaults()
         'lock_homepage' => false,
         'lock_subpanels' => false,
         'max_dashlets_homepage' => '15',
-        'default_max_tabs' => '7',
-        'dashlet_display_row_options' => array('1', '3', '5', '10'),
+        'default_max_tabs' => 10,
+        'dashlet_display_row_options' => ['1', '3', '5', '10'],
         'default_subpanel_tabs' => true,
         'default_subpanel_links' => false,
         'default_swap_last_viewed' => false,
@@ -408,7 +543,7 @@ function get_sugar_config_defaults()
         'use_common_ml_dir' => false,
         'common_ml_dir' => '',
         'vcal_time' => '2',
-        'calendar' => array(
+        'calendar' => [
             'default_view' => 'week',
             'show_calls_by_default' => true,
             'show_tasks_by_default' => true,
@@ -421,8 +556,8 @@ function get_sugar_config_defaults()
             'items_resizable' => true,
             'enable_repeat' => true,
             'max_repeat_count' => 1000,
-        ),
-        'passwordsetting' => empty($passwordsetting) ? array(
+        ],
+        'passwordsetting' => empty($passwordsetting) ? [
             'SystemGeneratedPasswordON' => '',
             'generatepasswordtmpl' => '',
             'lostpasswordtmpl' => '',
@@ -442,28 +577,34 @@ function get_sugar_config_defaults()
             'onenumber' => true,
             'onespecial' => true,
             // MintHCM #103191 end
-        ) : $passwordsetting,
+        ] : $passwordsetting,
         'use_real_names' => true,
         'search_wildcard_infront' => false,
         'search_wildcard_char' => '%',
-        'jobs' => array(
+        'jobs' => [
             'min_retry_interval' => 30, // 30 seconds minimal job retry
             'max_retries' => 5, // how many times to retry the job
             'timeout' => 86400, // how long a job may spend as running before being force-failed
-        ),
-        'cron' => array(
+        ],
+        'cron' => [
             'max_cron_jobs' => 10, // max jobs per cron schedule run
             'max_cron_runtime' => 30, // max runtime for cron jobs
             'min_cron_interval' => 30, // minimal interval between cron jobs
-        ),
+        ],
+        'strict_id_validation' => false,
+        'id_validation_pattern' => '/^[a-zA-Z0-9_-]*$/i',
+        'session_gc' => [
+            'enable' => true,
+            'gc_probability' => 1,
+            'gc_divisor' => 100,
+        ],
+        'legacy_email_behaviour' => false,
         'display_week_number' => false,
-    );
+    ];
 
     if (!is_object($locale)) {
         $locale = new Localization();
     }
-
-    $sugar_config_defaults['default_currencies'] = $locale->getDefaultCurrencies();
 
     $sugar_config_defaults = sugarArrayMerge($locale->getLocaleConfigDefaults(),
         $sugar_config_defaults);
@@ -480,14 +621,14 @@ function get_sugar_config_defaults()
  */
 function getRunningUser()
 {
-    // works on Windows and Linux, but might return null on systems that include exec in
+    // works on Windows and Linux, but might return null on systems that include "exec" in
     // disabled_functions in php.ini (typical in shared hosting)
     $runningUser = exec('whoami');
 
-    if ($runningUser == null) { // matches null, false and ""
+    if ($runningUser == null) {  // matches null, false and ""
         if (is_windows()) {
-            $runningUser = getenv('USERDOMAIN') . '\\' . getenv('USERNAME');
-        } else {
+            $runningUser = getenv('USERDOMAIN').'\\'.getenv('USERNAME');
+        } elseif (function_exists('posix_getpwuid') && function_exists('posix_geteuid')) {
             $usr = posix_getpwuid(posix_geteuid());
             $runningUser = $usr['name'];
         }
@@ -585,6 +726,9 @@ function get_notify_template_file($language)
     return $file;
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function sugar_config_union($default, $override)
 {
     // a little different then array_merge and array_merge_recursive.  we want
@@ -605,6 +749,9 @@ function sugar_config_union($default, $override)
     return $override;
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function make_not_writable($file)
 {
     // Returns true if the given file/dir has been made not writable
@@ -628,10 +775,14 @@ function make_not_writable($file)
     return $ret_val;
 }
 
-/** This function returns the name of the person.
- * It currently returns "first last".  It should not put the space if either name is not available.
+/**
+ * This function returns the name of the person.
+ * It currently returns "first last". It should not put the space if either name is not available.
  * It should not return errors if either name is not available.
  * If no names are present, it will return ""
+ *
+ * @deprecated This function is unused and will be removed in a future release.
+ *
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
@@ -678,6 +829,9 @@ function get_languages()
     return $lang;
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function get_all_languages()
 {
     global $sugar_config;
@@ -685,11 +839,30 @@ function get_all_languages()
     return $sugar_config['languages'];
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function get_language_display($key)
 {
     global $sugar_config;
 
     return $sugar_config['languages'][$key];
+}
+
+/**
+ * Returns the currently active language string.
+ *
+ * @return string
+ */
+function get_current_language()
+{
+    global $sugar_config;
+
+    if (!empty($_SESSION['authenticated_user_language'])) {
+        return $_SESSION['authenticated_user_language'];
+    } else {
+        return $sugar_config['default_language'];
+    }
 }
 
 function get_assigned_user_name($assigned_user_id, $is_group = '')
@@ -718,16 +891,39 @@ function get_user_name($id)
 {
     $db = DBManagerFactory::getInstance();
 
-    if (empty($db)) {
+    if ($db === null) {
         $db = DBManagerFactory::getInstance();
     }
 
-    $q = "SELECT user_name FROM users WHERE id='{$id}'";
+    $idQuoted = $db->quoted($id);
+    $q = "SELECT user_name FROM users WHERE id=$idQuoted";
     $r = $db->query($q);
     $a = $db->fetchByAssoc($r);
 
     return (empty($a)) ? '' : $a['user_name'];
 }
+
+/**
+ * Get currently authenticated user
+ * @return User
+ */
+function get_authenticated_user(): ?User {
+    $authenticatedUserId = $_SESSION['authenticated_user_id'] ?? '';
+
+    if (empty($authenticatedUserId)){
+        return null;
+    }
+
+    /** @var User $authenticatedUser */
+    $authenticatedUser = BeanFactory::getBean('Users', $authenticatedUserId);
+
+    if (empty($authenticatedUser)) {
+        return null;
+    }
+
+    return $authenticatedUser;
+}
+
 
 //TODO Update to use global cache
 /**
@@ -1095,7 +1291,7 @@ function _mergeCustomAppListStrings($file, $app_list_strings)
     foreach ($app_list_strings as $key => $value) {
         if (!in_array($key, $exemptDropdowns) && array_key_exists($key,
             $app_list_strings_original)) {
-            unset($app_list_strings_original["$key"]);
+            unset($app_list_strings_original[(string)$key]);
         }
     }
     $app_list_strings = sugarArrayMergeRecursive($app_list_strings_original,
@@ -1214,7 +1410,7 @@ function return_module_language($language, $module, $refresh = false)
     global $currentModule;
 
     // Jenny - Bug 8119: Need to check if $module is not empty
-    if (empty($module)) {
+    if (empty($module) || !isAllowedModuleName($module)) {
         $GLOBALS['log']->warn('Variable module is not in return_module_language, see more info: debug_backtrace()');
 
         return array();
@@ -1355,7 +1551,11 @@ function return_mod_list_strings_language($language, $module)
     return $return_value;
 }
 
-/** This function retrieves a theme's language file and returns the array of strings included.
+/**
+ * This function retrieves a theme's language file and returns the array of strings included.
+ *
+ * @deprecated This function is unused and will be removed in a future release.
+ *
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
@@ -1752,9 +1952,8 @@ function get_select_options_with_id_separate_key($label_list, $key_list,
         // the system is evaluating $selected_key == 0 || '' to true.  Be very careful when changing this.  Test all cases.
         // The bug was only happening with one of the users in the drop down.  It was being replaced by none.
         if (
-            ($option_key != '' && $selected_key == $option_key) || (
-                $option_key == '' && (($selected_key == '' && !$massupdate) || $selected_key
-                    == '__SugarMassUpdateClearField__')
+            ($option_key !== '' && $selected_key === $option_key) || (
+                $option_key === '' && (($selected_key === '' && !$massupdate) || $selected_key === '__SugarMassUpdateClearField__')
             ) || (is_array($selected_key) && in_array($option_key, $selected_key))
         ) {
             $selected_string = 'selected ';
@@ -2028,6 +2227,11 @@ function translate($string, $mod = '', $selectedValue = '')
     return $returnValue;
 }
 
+/**
+ * Converts a number from '1,000' to '1000', and '1,50' (if using commas as a decimal separator) to '1.50'.
+ *
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function unTranslateNum($num)
 {
     static $dec_sep;
@@ -2068,6 +2272,9 @@ function isSSL()
     return false;
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function add_http($url)
 {
     if (!preg_match('@://@i', $url)) {
@@ -2266,9 +2473,21 @@ function clean_string($str, $filter = 'STANDARD', $dieOnBadData = true)
         }
 
         return false;
-    } else {
-        return $str;
+    } 
+    return $str;
+}
+
+function clean_file_output($string, $mine_type)
+{
+    $patterns = [];
+
+    if ($mine_type === 'image/svg+xml') {
+        $patterns[] = "/onload=\"window.location='(.*?)'\"/";
     }
+
+    $string = preg_replace($patterns, '', $string);
+
+    return $string;
 }
 
 function clean_special_arguments()
@@ -2363,22 +2582,11 @@ function clean_incoming_data()
     global $sugar_config;
     global $RAW_REQUEST;
 
-    if (get_magic_quotes_gpc()) {
-        // magic quotes screw up data, we'd have to clean up
-        $RAW_REQUEST = array_map('cleanup_slashes', $_REQUEST);
-    } else {
-        $RAW_REQUEST = $_REQUEST;
-    }
+    $RAW_REQUEST = $_REQUEST;
 
-    if (get_magic_quotes_gpc() == 1) {
-        $req = array_map('preprocess_param', $_REQUEST);
-        $post = array_map('preprocess_param', $_POST);
-        $get = array_map('preprocess_param', $_GET);
-    } else {
-        $req = array_map('securexss', $_REQUEST);
-        $post = array_map('securexss', $_POST);
-        $get = array_map('securexss', $_GET);
-    }
+    $req = array_map('securexss', $_REQUEST);
+    $post = array_map('securexss', $_POST);
+    $get = array_map('securexss', $_GET);
 
     // PHP cannot stomp out superglobals reliably
     foreach ($post as $k => $v) {
@@ -2440,8 +2648,7 @@ function clean_incoming_data()
     }
 
     if (isset($_REQUEST['lvso'])) {
-        set_superglobals('lvso',
-            (strtolower($_REQUEST['lvso']) === 'desc') ? 'desc' : 'asc');
+        set_superglobals('lvso', (strtolower($_REQUEST['lvso']) === 'desc') ? 'desc' : 'asc');
     }
     // Clean "offset" and "order_by" parameters in URL
     foreach ($_REQUEST as $key => $val) {
@@ -2469,24 +2676,39 @@ function str_end($str, $end)
     return substr($str, strlen($str) - strlen($end)) == $end;
 }
 
-function securexss($value)
+/**
+ * @param $uncleanString
+ * @return array
+ */
+function securexss($uncleanString)
 {
-    if (is_array($value)) {
-        $new = array();
-        foreach ($value as $key => $val) {
+    if (is_array($uncleanString)) {
+        $new = [];
+        foreach ($uncleanString as $key => $val) {
             $new[$key] = securexss($val);
         }
 
         return $new;
     }
-    static $xss_cleanup = array('&quot;' => '&#38;', '"' => '&quot;', "'" => '&#039;',
-        '<' => '&lt;', '>' => '&gt;');
-    $value = preg_replace(array('/javascript:/i', '/\0/'),
-        array('java script:', ''), $value);
-    $value = preg_replace('/javascript:/i', 'java script:', $value);
 
-    return str_replace(array_keys($xss_cleanup), array_values($xss_cleanup),
-        $value);
+    static $xss_cleanup = [
+        '&quot;' => '&#38;',
+        '"' => '&quot;',
+        "'" => '&#039;',
+        '<' => '&lt;',
+        '>' => '&gt;',
+        '`' => '&#96;'
+    ];
+
+    $uncleanString = preg_replace(array('/javascript:/i', '/\0/', '/javascript:/i'),
+        array('java script:', '', 'java script:'), $uncleanString);
+
+    $partialString = str_replace(array_keys($xss_cleanup), $xss_cleanup, $uncleanString);
+
+    $antiXss = new AntiXSS();
+    $antiXss->removeEvilAttributes(['style']);
+
+    return $antiXss->xss_clean($partialString);
 }
 
 function securexsskey($value, $die = true)
@@ -2497,21 +2719,37 @@ function securexsskey($value, $die = true)
     if (!empty($matches)) {
         if ($die) {
             die("Bad data passed in; <a href=\"{$sugar_config['site_url']}\">Return to Home</a>");
-        } else {
-            unset($_REQUEST[$value]);
-            unset($_POST[$value]);
-            unset($_GET[$value]);
-        }
+        } 
+        unset($_REQUEST[$value]);
+        unset($_POST[$value]);
+        unset($_GET[$value]);
     }
+}
+
+/**
+ * @param string|null $value
+ * @return string
+ */
+function purify_html(?string $value): string {
+
+    if (($value ?? '') === '') {
+        return '';
+    }
+
+    $cleanedValue = htmlentities(SugarCleaner::cleanHtml($value, true));
+    $decoded = html_entity_decode($cleanedValue);
+    $doubleDecoded = html_entity_decode($decoded);
+
+    if (stripos($decoded, '<script>') !== false || stripos($doubleDecoded, '<script>') !== false){
+        $cleanedValue = '';
+    }
+
+    return $cleanedValue;
 }
 
 function preprocess_param($value)
 {
     if (is_string($value)) {
-        if (get_magic_quotes_gpc() == 1) {
-            $value = stripslashes($value);
-        }
-
         $value = securexss($value);
     } elseif (is_array($value)) {
         foreach ($value as $key => $element) {
@@ -2550,8 +2788,8 @@ function clear_register_value($category, $name)
 function convert_id($string)
 {
 
-    $stateSaver = new SuiteCRM\StateSaver();
-    $stateSaver->pushErrorLevel();
+    $errorLevelStored = error_reporting();
+    error_reporting(0);
 
     $function = function ($matches) {
         return ord($matches[0]);
@@ -2561,7 +2799,7 @@ function convert_id($string)
         LoggerManager::getLogger()->warn('Function not created');
     }
 
-    $stateSaver->popErrorLevel();
+    error_reporting($errorLevelStored);
 
     return preg_replace_callback('|[^A-Za-z0-9\-]|', $function, $string);
 }
@@ -2652,6 +2890,9 @@ function getJSPath($relative_path, $additional_attrs = '')
         : '');
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function getSWFPath($relative_path, $additional_params = '')
 {
     $path = $relative_path;
@@ -2665,6 +2906,9 @@ function getSWFPath($relative_path, $additional_params = '')
     return $path;
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function getSQLDate($date_str)
 {
     if (preg_match('/^(\d{1,2})-(\d{1,2})-(\d{4})$/', $date_str, $match)) {
@@ -2685,11 +2929,13 @@ function getSQLDate($date_str)
         }
 
         return "{$match[3]}-{$match[1]}-{$match[2]}";
-    } else {
-        return '';
-    }
+    } 
+    return '';
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function clone_history(&$db, $from_id, $to_id, $to_type)
 {
     global $timedate;
@@ -2755,6 +3001,9 @@ function clone_history(&$db, $from_id, $to_id, $to_type)
     }
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function values_to_keys($array)
 {
     $new_array = array();
@@ -2992,27 +3241,10 @@ function get_bean_select_array(
 
         $query .= " {$focus->table_name}.deleted=0";
 
-        /* BEGIN - SECURITY GROUPS */
-        global $current_user, $sugar_config;
-        if ($focus->module_dir == 'Users' && !is_admin($current_user) && isset($sugar_config['securitysuite_filter_user_list'])
-            && $sugar_config['securitysuite_filter_user_list'] == true
-        ) {
-            require_once 'modules/SecurityGroups/SecurityGroup.php';
-            $group_where = SecurityGroup::getGroupUsersWhere($current_user->id);
-            $query .= ' AND (' . $group_where . ') ';
-        } elseif ($focus->bean_implements('ACL') && ACLController::requireSecurityGroup($focus->module_dir,
-            'list')) {
-            require_once 'modules/SecurityGroups/SecurityGroup.php';
-            $owner_where = $focus->getOwnerWhere($current_user->id);
-            $group_where = SecurityGroup::getGroupWhere($focus->table_name,
-                $focus->module_dir, $current_user->id);
-            if (!empty($owner_where)) {
-                $query .= ' AND (' . $owner_where . ' or ' . $group_where . ') ';
-            } else {
-                $query .= ' AND ' . $group_where;
-            }
+        $accessWhere = $focus->buildAccessWhere('list');
+        if (!empty($accessWhere)) {
+            $query .= ' AND ' . $accessWhere;
         }
-        /* END - SECURITY GROUPS */
 
         if ($order_by != '') {
             $query .= " order by {$focus->table_name}.{$order_by}";
@@ -3082,34 +3314,41 @@ function display_notice($msg = false)
         $error_notice .= $msg . '<br>';
     }
 }
-/* checks if it is a number that at least has the plus at the beginning.
- */
 
+/**
+ * Checks if it is a number that at least has the plus at the beginning.
+ *
+ * @deprecated No longer used, will be removed without replacement in SuiteCRM 7.12.
+ */
 function skype_formatted($number)
 {
     //kbrill - BUG #15375
     if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'Popup') {
         return false;
-    } else {
-        return substr($number, 0, 1) == '+' || substr($number, 0, 2) == '00' || substr($number,
-            0, 3) == '011';
-    }
+    } 
     return substr($number, 0, 1) == '+' || substr($number, 0, 2) == '00' || substr($number,
         0, 3) == '011';
 
     //    return substr($number, 0, 1) == '+' || substr($number, 0, 2) == '00' || substr($number, 0, 2) == '011';
 }
 
+/**
+ * @deprecated No longer used, will be removed without replacement in SuiteCRM 7.12.
+ */
 function format_skype($number)
 {
     return preg_replace('/[^\+0-9]/', '', $number);
 }
+
 
 function insert_charset_header()
 {
     header('Content-Type: text/html; charset=UTF-8');
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function getCurrentURL()
 {
     $href = 'http:';
@@ -3132,7 +3371,7 @@ function javascript_escape($str)
         } elseif (ord(substr($str, $i, 1)) == 13) {
             $new_str .= '\r';
         } else {
-            $new_str .= $str{$i};
+            $new_str .= $str[$i];
         }
     }
 
@@ -3179,6 +3418,7 @@ function br2nl($str)
  * Private helper function for displaying the contents of a given variable.
  * This function is only intended to be used for SugarCRM internal development.
  * The ppd stands for Pre Print Die.
+ * @deprecated This function is unused and will be removed in a future release.
  */
 function _ppd($mixed)
 {
@@ -3193,11 +3433,12 @@ function _ppd($mixed)
  * @param $mixed var to print_r()
  * @param $die boolean end script flow
  * @param $displayStackTrace also show stack trace
+ * @deprecated This function is unused and will be removed in a future release.
  */
 function _ppl($mixed, $die = false, $displayStackTrace = false,
     $loglevel = 'fatal') {
     if (!isset($GLOBALS['log']) || empty($GLOBALS['log'])) {
-        $GLOBALS['log'] = LoggerManager::getLogger('SugarCRM');
+        $GLOBALS['log'] = LoggerManager::getLogger();
     }
 
     $mix = print_r($mixed, true); // send print_r() output to $mix
@@ -3224,6 +3465,7 @@ function _ppl($mixed, $die = false, $displayStackTrace = false,
  * The ppf stands for Pre[formatted] Print Focus [object].
  *
  * @param object bean The focus bean
+ * @deprecated This function is unused and will be removed in a future release.
  */
 function _ppf($bean, $die = false)
 {
@@ -3234,6 +3476,7 @@ function _ppf($bean, $die = false)
  * Private helper function for displaying the contents of a given variable.
  * This function is only intended to be used for SugarCRM internal development.
  * The pp stands for Pre Print.
+ * @deprecated This function is unused and will be removed in a future release.
  */
 function _pp($mixed)
 {
@@ -3244,6 +3487,7 @@ function _pp($mixed)
  * Private helper function for displaying the contents of a given variable.
  * This function is only intended to be used for SugarCRM internal development.
  * The pp stands for Pre Print.
+ * @deprecated This function is unused and will be removed in a future release.
  */
 function _pstack_trace($mixed = null)
 {
@@ -3254,6 +3498,7 @@ function _pstack_trace($mixed = null)
  * Private helper function for displaying the contents of a given variable.
  * This function is only intended to be used for SugarCRM internal development.
  * The pp stands for Pre Print Trace.
+ * @deprecated This function is unused and will be removed in a future release.
  */
 function _ppt($mixed, $textOnly = false)
 {
@@ -3264,6 +3509,7 @@ function _ppt($mixed, $textOnly = false)
  * Private helper function for displaying the contents of a given variable.
  * This function is only intended to be used for SugarCRM internal development.
  * The pp stands for Pre Print Trace Die.
+ * @deprecated This function is unused and will be removed in a future release.
  */
 function _pptd($mixed)
 {
@@ -3273,6 +3519,7 @@ function _pptd($mixed)
 /**
  * Private helper function for decoding javascript UTF8
  * This function is only intended to be used for SugarCRM internal development.
+ * @deprecated This function is unused and will be removed in a future release.
  */
 function decodeJavascriptUTF8($str)
 {
@@ -3290,30 +3537,25 @@ function decodeJavascriptUTF8($str)
  * 0 if version is between minimun and recomended PHP versions,
  * -1 otherwise (less than minimum or buggy version)
  */
-function check_php_version($sys_php_version = '')
+function check_php_version($sys_php_version = '', $min_php_version = '', $rec_php_version = '')
 {
     if ($sys_php_version === '') {
         $sys_php_version = constant('PHP_VERSION');
     }
+    if ($min_php_version === '') {
+        $min_php_version = constant('SUITECRM_PHP_MIN_VERSION');
+    }
+    if ($rec_php_version === '') {
+        $rec_php_version = constant('SUITECRM_PHP_REC_VERSION');
+    }
 
     // versions below MIN_PHP_VERSION are not accepted, so return early.
-    if (version_compare($sys_php_version, constant('SUITECRM_PHP_MIN_VERSION'),
-        '<') === true) {
+    if (version_compare($sys_php_version, $min_php_version, '<') === true) {
         return -1;
     }
 
-    // If there are some bug ridden versions, we should include them here
-    // and check immediately for one of this versions
-    $bug_php_versions = array();
-    foreach ($bug_php_versions as $v) {
-        if (version_compare($sys_php_version, $v, '=') === true) {
-            return -1;
-        }
-    }
-
-    //If the checked version is between the minimum and recommended versions, return 0
-    if (version_compare($sys_php_version, constant('SUITECRM_PHP_REC_VERSION'),
-        '<') === true) {
+    // If the checked version is between the minimum and recommended versions, return 0.
+    if (version_compare($sys_php_version, $rec_php_version, '<') === true) {
         return 0;
     }
 
@@ -3414,6 +3656,22 @@ function pre_login_check()
     }
 }
 
+/**
+ * Like exit() but will throw an exception if called during tests.
+ *
+ * This is to avoid exit() stopping the test suite without us noticing.
+ *
+ * @param int|string $status
+ * @throws Exception
+ */
+function suite_exit($status = 0)
+{
+    if (defined('SUITE_PHPUNIT_RUNNER'))
+        throw new Exception("exit() called during tests with status: $status");
+    else
+        exit($status);
+}
+
 function sugar_cleanup($exit = false)
 {
     static $called = false;
@@ -3431,10 +3689,9 @@ function sugar_cleanup($exit = false)
     //added this check to avoid errors during install.
     if (empty($sugar_config['dbconfig'])) {
         if ($exit) {
-            exit;
-        } else {
-            return;
+            suite_exit();
         }
+        return;
     }
 
     if (!class_exists('Tracker', true)) {
@@ -3471,7 +3728,7 @@ function sugar_cleanup($exit = false)
         $db = DBManagerFactory::getInstance();
         $db->disconnect();
         if ($exit) {
-            exit;
+            suite_exit();
         }
     }
 }
@@ -3629,20 +3886,25 @@ function StackTraceErrorHandler($errno, $errstr, $errfile, $errline, $errcontext
 
     switch ($errno) {
 //        case 2048:
-        //            return; //depricated we have lots of these ignore them
+//            return; //depricated we have lots of these ignore them
         case E_USER_NOTICE:
             $type = 'User notice';
+            // no break
         case E_NOTICE:
             $type = 'Notice';
             $halt_script = false;
             break;
 
+
         case E_USER_WARNING:
             $type = 'User warning';
+            // no break
         case E_COMPILE_WARNING:
             $type = 'Compile warning';
+            // no break
         case E_CORE_WARNING:
             $type = 'Core warning';
+            // no break
         case E_WARNING:
             $type = 'Warning';
             $halt_script = false;
@@ -3650,10 +3912,13 @@ function StackTraceErrorHandler($errno, $errstr, $errfile, $errline, $errcontext
 
         case E_USER_ERROR:
             $type = 'User error';
+            // no break
         case E_COMPILE_ERROR:
             $type = 'Compile error';
+            // no break
         case E_CORE_ERROR:
             $type = 'Core error';
+            // no break
         case E_ERROR:
             $type = 'Error';
             $halt_script = true;
@@ -3678,6 +3943,7 @@ function StackTraceErrorHandler($errno, $errstr, $errfile, $errline, $errcontext
         exit(1);
     }
 }
+
 if (isset($sugar_config['stack_trace_errors']) && $sugar_config['stack_trace_errors']) {
     set_error_handler('StackTraceErrorHandler');
 }
@@ -3699,6 +3965,9 @@ function get_sub_cookies($name)
     return $cookies;
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function mark_delete_components($sub_object_array, $run_second_level = false,
     $sub_sub_array = '') {
     if (!empty($sub_object_array)) {
@@ -3721,19 +3990,26 @@ function mark_delete_components($sub_object_array, $run_second_level = false,
 }
 
 /**
- * For translating the php.ini memory values into bytes.  e.g. input value of '8M' will return 8388608.
+ * Translates php.ini memory values into bytes.
+ * For example, an input value of '8M' will return 8388608.
+ * 8M is 8 mebibytes, 1 mebibyte is 1,048,576 bytes or 2^20 bytes.
+ *
+ * @param string $val A string like '8M'.
+ * @return integer The number of bytes represented by that string.
  */
 function return_bytes($val)
 {
     $val = trim($val);
-    $last = strtolower($val{strlen($val) - 1});
+    $last = strtolower($val[strlen($val) - 1]);
     $val = preg_replace("/[^0-9,.]/", "", $val);
 
     switch ($last) {
         case 'g':
             $val *= 1024;
+            // no break
         case 'm':
             $val *= 1024;
+            // no break
         case 'k':
             $val *= 1024;
     }
@@ -3746,14 +4022,12 @@ function return_bytes($val)
  */
 function url2html($string)
 {
-    //
     $return_string = preg_replace('/(\w+:\/\/)(\S+)/',
         ' <a href="\\1\\2" target="_new"  style="font-weight: normal;">\\1\\2</a>',
         $string);
 
     return $return_string;
 }
-// End customization by Julian
 
 /**
  * tries to determine whether the Host machine is a Windows machine.
@@ -3777,7 +4051,7 @@ function is_windows()
  */
 function is_writable_windows($file)
 {
-    if ($file{strlen($file) - 1} == '/') {
+    if ($file[strlen($file) - 1] == '/') {
         return is_writable_windows($file . uniqid(mt_rand()) . '.tmp');
     }
 
@@ -3848,9 +4122,8 @@ function get_singular_bean_name($bean_name)
     global $beanFiles, $beanList;
     if (array_key_exists($bean_name, $beanList)) {
         return $beanList[$bean_name];
-    } else {
-        return $bean_name;
     }
+    return $bean_name;
 }
 /*
  * Given the potential module name (singular name, renamed module name)
@@ -4101,9 +4374,14 @@ function string_format($format, $args, $escape = true)
                 }
             }
             $args[$i] = implode("','", $values);
+            $result = str_replace('{'.$i.'}', $args[$i], $result);
+       }
+        else if ($escape){
+            $result = str_replace('{'.$i.'}', $db->quote($args[$i]), $result);
         }
-
-        $result = str_replace('{' . $i . '}', "'" . $args[$i] . "'", $result);
+        else{
+            $result = str_replace('{'.$i.'}', $args[$i], $result);
+        }
     }
 
     return $result;
@@ -4114,6 +4392,7 @@ function string_format($format, $args, $escape = true)
  * of a system_id and number.  This is use to allow us to generate quote
  * numbers using a DB auto-increment key from offline clients and still
  * have the number be unique (since it is modified by the system_id.
+ * @deprecated This function is unused and will be removed in a future release.
  *
  * @param   $num       of bean
  * @param   $system_id from system
@@ -4127,12 +4406,14 @@ function format_number_display($num, $system_id)
         $num = unformat_number($num);
         if (isset($system_id) && $system_id == 1) {
             return sprintf('%d', $num);
-        } else {
-            return sprintf('%d-%d', $num, $system_id);
-        }
+        } 
+        return sprintf('%d-%d', $num, $system_id);
     }
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function checkLoginUserStatus()
 {
 
@@ -4334,7 +4615,8 @@ function sugarArrayMergeRecursive($gimp, $dom)
 }
 
 /**
- * finds the correctly working versions of PHP-JSON.
+ * Finds the correctly working versions of PHP-JSON.
+ * @deprecated This function is unused and will be removed in a future release.
  *
  * @return bool True if NOT found or WRONG version
  */
@@ -4490,6 +4772,9 @@ function generate_search_where(
     return $where_clauses;
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function add_quotes($str)
 {
     return "'{$str}'";
@@ -4519,9 +4804,8 @@ function rebuildConfigFile($sugar_config, $sugar_version)
 
     if (write_array_to_file('sugar_config', $sugar_config, 'config.php')) {
         return true;
-    } else {
-        return false;
     }
+    return false;
 }
 
 /**
@@ -4572,13 +4856,21 @@ function getJavascriptSiteURL()
     return $site_url;
 }
 
-// works nicely with array_map() -- can be used to wrap single quotes around each element in an array
+/**
+ * Works nicely with array_map() -- can be used to wrap single quotes around
+ * each element in an array.
+ *
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function add_squotes($str)
 {
     return "'" . $str . "'";
 }
 
-// recursive function to count the number of levels within an array
+/**
+ * Recursive function to count the number of levels within an array.
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function array_depth($array, $depth_count = -1, $depth_array = array())
 {
     ++$depth_count;
@@ -4605,7 +4897,7 @@ function array_depth($array, $depth_count = -1, $depth_array = array())
  */
 function createGroupUser($name)
 {
-    $group = new User();
+    $group = BeanFactory::newBean('Users');
     $group->user_name = $name;
     $group->last_name = $name;
     $group->is_group = 1;
@@ -4765,6 +5057,7 @@ function is_freetds()
 
 /**
  * Chart dashlet helper function that returns the correct CSS file, dependent on the current theme.
+ * @deprecated This function is unused and will be removed in a future release.
  *
  * @todo this won't work completely right until we impliment css compression and combination
  *       for now, we'll just include the last css file found.
@@ -4779,7 +5072,7 @@ function chartStyle()
 /**
  * Chart dashlet helper functions that returns the correct XML color file for charts,
  * dependent on the current theme.
- *
+ * @deprecated This function is unused and will be removed in a future release.
  * @return sugarColors.xml to use
  */
 function chartColors()
@@ -4795,6 +5088,8 @@ function chartColors()
 /**
  * This function is designed to set up the php enviroment
  * for AJAX requests.
+ *
+ * @deprecated This function is unused and will be removed in a future release.
  */
 function ajaxInit()
 {
@@ -4931,6 +5226,27 @@ function filterInboundEmailPopSelection($protocol)
 }
 
 /**
+ * Get Inbound Email protocols
+ *
+ * @return array
+ */
+function getInboundEmailProtocols(): array
+{
+    global $app_list_strings, $sugar_config;
+
+    $protocols = $app_list_strings['dom_email_server_type'];
+    if (!isset($sugar_config['allow_pop_inbound']) || !$sugar_config['allow_pop_inbound']) {
+        if (isset($protocols['pop3'])) {
+            unset($protocols['pop3']);
+        }
+    } else {
+        $protocols['pop3'] = 'POP3';
+    }
+
+    return $protocols;
+}
+
+/**
  * The function is used because currently we are not supporting mbstring.func_overload
  * For some user using mssql without FreeTDS, they may store multibyte charaters in varchar using latin_general collation. It cannot store so many mutilbyte characters, so we need to use strlen.
  * The varchar in MySQL, Orcale, and nvarchar in FreeTDS, we can store $length mutilbyte charaters in it. we need mb_substr to keep more info.
@@ -4957,7 +5273,12 @@ function sugar_ucfirst($string, $charset = 'UTF-8')
 }
 
 /**
+ * Given a multienum encoded as a string, convert it to an array of strings,
+ * e.g. `"^Monday^,^Tuesday^,^Wednesday^,^Thursday^"` becomes
+ * `["Monday", "Tuesday", "Wednesday", "Thursday"]`.
  *
+ * @param string|string[] $string The encoded multienum value. If this is already an array, the array will be returned unchanged.
+ * @return string[] An array of strings representing the multienum's values.
  */
 function unencodeMultienum($string)
 {
@@ -5028,8 +5349,7 @@ function create_export_query_relate_link_patch($module, $searchFields, $where)
             $join = $seed->$fieldLink->getJoin($params, true);
             $join_table_alias = 'join_' . $field['name'];
             if (isset($field['db_concat_fields'])) {
-                $db_field = db_concat($join_table_alias,
-                    $field['db_concat_fields']);
+                $db_field = DBManager::concat($join_table_alias, $field['db_concat_fields']);
                 $where = preg_replace('/' . $field['name'] . '/', $db_field,
                     $where);
             } else {
@@ -5075,9 +5395,8 @@ function getVariableFromQueryString($variable, $string)
         $matches);
     if ($number) {
         return $matches[1];
-    } else {
-        return false;
-    }
+    }  
+    return false;
 }
 
 /**
@@ -5105,6 +5424,7 @@ function should_hide_iframes()
  * Given a version such as 5.5.0RC1 return RC. If we have a version such as: 5.5 then return GA.
  *
  * @param string $version
+ * @deprecated This function is unused and will be removed in a future release.
  *
  * @return string RC, BETA, GA
  */
@@ -5112,14 +5432,14 @@ function getVersionStatus($version)
 {
     if (preg_match('/^[\d\.]+?([a-zA-Z]+?)[\d]*?$/si', $version, $matches)) {
         return strtoupper($matches[1]);
-    } else {
-        return 'GA';
-    }
+    } 
+    return 'GA';
 }
 
 /**
  * Return the numeric portion of a version. For example if passed 5.5.0RC1 then return 5.5. If given
  * 5.5.1RC1 then return 5.5.1.
+ * @deprecated This function is unused and will be removed in a future release.
  *
  * @param string $version
  *
@@ -5247,7 +5567,7 @@ function verify_image_file($path, $jpeg = false)
  */
 function verify_uploaded_image($path, $jpeg_only = false)
 {
-    $supportedExtensions = array('jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg');
+    $supportedExtensions = array('jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'tmp' => 'tmp');
     if (!$jpeg_only) {
         $supportedExtensions['png'] = 'image/png';
     }
@@ -5285,9 +5605,8 @@ function cmp_beans($a, $b)
     }
     if ($a->$sugar_web_service_order_by < $b->$sugar_web_service_order_by) {
         return -1;
-    } else {
-        return 1;
     }
+    return 1;
 }
 
 function order_beans($beans, $field_name)
@@ -5376,6 +5695,7 @@ function getFTSEngineType()
 
 /**
  * @param string $optionName - name of the option to be retrieved from app_list_strings
+ * @deprecated This function is unused and will be removed in a future release.
  *
  * @return array - the array to be used in option element
  */
@@ -5383,9 +5703,8 @@ function getFTSBoostOptions($optionName)
 {
     if (isset($GLOBALS['app_list_strings'][$optionName])) {
         return $GLOBALS['app_list_strings'][$optionName];
-    } else {
-        return array();
-    }
+    } 
+    return array();
 }
 
 /**
@@ -5393,6 +5712,7 @@ function getFTSBoostOptions($optionName)
  *
  * This function walks through an Array and recursively calls utf8_encode on the
  * values of each of the elements.
+ * @deprecated This function is unused and will be removed in a future release.
  *
  * @param $data Array of data to encode
  *
@@ -5449,6 +5769,7 @@ function get_custom_file_if_exists($file)
  * This will return the URL used to redirect the user to the help documentation.
  * It can be overriden completely by setting the custom_help_url or partially by setting the custom_help_base_url
  * in config.php or config_override.php.
+ * @deprecated This function is unused and will be removed in a future release.
  *
  * @param string $send_edition
  * @param string $send_version
@@ -5563,6 +5884,8 @@ function clean_sensitive_data($defs, $data)
 
 /**
  * Return relations with labels for duplicates.
+ *
+ * @deprecated This function is unused and will be removed in a future release.
  */
 function getDuplicateRelationListWithTitle($def, $var_def, $module)
 {
@@ -5656,58 +5979,70 @@ function sugar_unserialize($value)
 }
 define('DEFAULT_UTIL_SUITE_ENCODING', 'UTF-8');
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function suite_strlen($input, $encoding = DEFAULT_UTIL_SUITE_ENCODING)
 {
     if (function_exists('mb_strlen')) {
         return mb_strlen($input, $encoding);
-    } else {
-        return strlen($input);
     }
+    return strlen($input);
 }
 
-function suite_substr($input, $start, $length = null,
-    $encoding = DEFAULT_UTIL_SUITE_ENCODING) {
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
+function suite_substr($input, $start, $length = null, $encoding = DEFAULT_UTIL_SUITE_ENCODING)
+{
     if (function_exists('mb_substr')) {
         return mb_substr($input, $start, $length, $encoding);
-    } else {
-        return substr($input, $start, $length);
     }
+    return substr($input, $start, $length);
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function suite_strtoupper($input, $encoding = DEFAULT_UTIL_SUITE_ENCODING)
 {
     if (function_exists('mb_strtoupper')) {
         return mb_strtoupper($input, $encoding);
-    } else {
-        return strtoupper($input);
     }
+    return strtoupper($input);
 }
 
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
 function suite_strtolower($input, $encoding = DEFAULT_UTIL_SUITE_ENCODING)
 {
     if (function_exists('mb_strtolower')) {
         return mb_strtolower($input, $encoding);
-    } else {
-        return strtolower($input);
     }
+    return strtolower($input);
 }
 
-function suite_strpos($haystack, $needle, $offset = 0,
-    $encoding = DEFAULT_UTIL_SUITE_ENCODING) {
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
+function suite_strpos($haystack, $needle, $offset = 0, $encoding = DEFAULT_UTIL_SUITE_ENCODING)
+{
     if (function_exists('mb_strpos')) {
         return mb_strpos($haystack, $needle, $offset, $encoding);
-    } else {
-        return strpos($haystack, $needle, $offset);
     }
+    return strpos($haystack, $needle, $offset);
 }
 
-function suite_strrpos($haystack, $needle, $offset = 0,
-    $encoding = DEFAULT_UTIL_SUITE_ENCODING) {
+/**
+ * @deprecated This function is unused and will be removed in a future release.
+ */
+function suite_strrpos($haystack, $needle, $offset = 0, $encoding = DEFAULT_UTIL_SUITE_ENCODING)
+{
     if (function_exists('mb_strrpos')) {
         return mb_strrpos($haystack, $needle, $offset, $encoding);
-    } else {
-        return strrpos($haystack, $needle, $offset);
     }
+    return strrpos($haystack, $needle, $offset);
 }
 
 /**
@@ -5726,8 +6061,8 @@ function isValidId($id)
     return $result;
 }
 
-function isValidEmailAddress($email, $message = 'Invalid email address given',
-    $orEmpty = true, $logInvalid = 'error') {
+function isValidEmailAddress($email, $message = 'Invalid email address given', $orEmpty = true, $logInvalid = 'error')
+{
     if ($orEmpty && !$email) {
         return true;
     }
@@ -5744,8 +6079,7 @@ function isValidEmailAddress($email, $message = 'Invalid email address given',
 
 function displayAdminError($errorString)
 {
-    $output = '<p class="error">' . $errorString . '</p>';
-    SugarApplication::appendErrorMessage($output);
+    SugarApplication::appendErrorMessage($errorString);
 }
 
 function getAppString($key)
@@ -5925,4 +6259,179 @@ if (!function_exists('getMintDisabledModulesList')) {
             'AOS_Contracts',
         ];
     }
+}
+
+/**
+ * Check if has valid image extension
+ * @param string $fieldName
+ * @param string $value
+ * @return bool
+ */
+function has_valid_image_extension($fieldName, $name)
+{
+    global $sugar_config;
+
+    $validExtensions = [
+        'gif',
+        'png',
+        'jpg',
+        'jpeg',
+        'svg'
+    ];
+
+    if (isset($sugar_config['valid_image_ext']) && is_array($sugar_config['valid_image_ext'])){
+        $validExtensions = $sugar_config['valid_image_ext'];
+    }
+
+    return has_valid_extension($fieldName, $name, $validExtensions);
+}
+
+/**
+ * Check if has valid extension
+ * @param string $fieldName
+ * @param string $name
+ * @param array $validExtensions
+ * @return bool
+ */
+function has_valid_extension($fieldName, $name, $validExtensions)
+{
+
+    if ($name === '.' || empty($name)) {
+        LoggerManager::getLogger()->security("Invalid ext  $fieldName : '$name'.");
+
+        return false;
+    }
+
+    $validExtensions = array_map('strtolower', $validExtensions);
+
+    $parts = explode('.', $name);
+
+    if (empty($parts)) {
+        LoggerManager::getLogger()->security("Invalid ext  $fieldName : '$name'.");
+
+        return false;
+    }
+
+    $ext = array_pop($parts);
+    $trimmedValue = preg_replace('/.*\.([^\.]+)$/', '\1', $ext);
+
+    if (!in_array(strtolower($trimmedValue), $validExtensions, true)) {
+        LoggerManager::getLogger()->security("Invalid $fieldName: '$name'.");
+
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Check if value is one of the accepted true representations
+ * @param $value
+ * @return bool
+ */
+function isTrue($value): bool {
+    return $value === true || $value === 'true' || $value === 1 || $value === '1' || $value === 'on';
+}
+
+/**
+ * Check if value is one of the accepted false representations
+ * @param $value
+ * @return bool
+ */
+function isFalse($value): bool {
+    return $value === false || $value === 'false' || $value === 0 || $value === '0';
+}
+
+/**
+ * Get validation pattern
+ * @return string
+ */
+function get_id_validation_pattern(): string {
+    global $sugar_config;
+
+    $pattern = '/^[a-zA-Z0-9_-]*$/i';
+    if (!empty($sugar_config['id_validation_pattern'])){
+        $pattern = $sugar_config['id_validation_pattern'];
+    }
+
+    return $pattern;
+}
+
+/**
+ * Check if user has group and action acls defined
+ * @param string $module
+ * @param string $action
+ * @return bool
+ */
+function has_group_action_acls_defined(string $module, string $action): bool
+{
+    global $current_user;
+
+    $hasGroupActionAcls = true;
+
+    $groups = SecurityGroup::getUserSecurityGroups($current_user->id);
+    $hasGroups = !empty($groups);
+
+    $aclActions = ACLAction::getUserActions($current_user->id, false, $module, 'module', $action);
+    $isDefaultListACL = !empty($aclActions['isDefault']) && isTrue($aclActions['isDefault']);
+
+    if (!$hasGroups) {
+        $hasGroupActionAcls = false;
+    }
+
+    if ($isDefaultListACL) {
+        $hasGroupActionAcls = false;
+    }
+
+    return $hasGroupActionAcls;
+}
+
+/**
+ * Check if is value is smtp in a case-insensitive way
+ * @param $value
+ * @return bool
+ */
+function isSmtp($value): bool {
+    if (empty($value) || !is_string($value)) {
+        return false;
+    }
+
+    return strtolower($value)  === 'smtp';
+}
+
+/**
+ * Check if is string is an allowed module name
+ * @param string $value
+ * @return bool
+ */
+function isAllowedModuleName(string $value): bool {
+    if (empty($value)) {
+        return false;
+    }
+
+    $result = preg_match("/^[\w\-\_\.]+$/", $value);
+
+    if (!empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * @param $endpoint
+ * @return bool
+ */
+function isSelfRequest($endpoint) : bool {
+    $domain = 'localhost';
+    if (isset($_SERVER["HTTP_HOST"])) {
+        $domain = $_SERVER["HTTP_HOST"];
+    }
+
+    $siteUrl = SugarConfig::getInstance()->get('site_url');
+    if (empty($siteUrl)){
+        $siteUrl = '';
+    }
+
+    return stripos($endpoint, $domain) !== false || stripos($endpoint, $siteUrl) !== false;
 }

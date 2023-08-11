@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -86,7 +86,6 @@ class DashletMetaDataParser extends ListLayoutMetaDataParser
      */
     public function __construct($view, $moduleName, $packageName = '')
     {
-
         $this->search = ($view == MB_DASHLETSEARCH) ? true : false;
         $this->_moduleName = $moduleName;
         $this->_packageName = $packageName;
@@ -140,7 +139,7 @@ class DashletMetaDataParser extends ListLayoutMetaDataParser
         $temp = array();
         foreach ($defs as $key => $value) {
             $temp[$key] = $value;
-            if (!isset ($temp[$key]['name'])) {
+            if (!isset($temp[$key]['name'])) {
                 $temp[$key]['name'] = $key;
             }
         }
@@ -172,7 +171,7 @@ class DashletMetaDataParser extends ListLayoutMetaDataParser
      */
     public function handleSave($populate = true)
     {
-        if (empty ($this->_packageName)) {
+        if (empty($this->_packageName)) {
             foreach (array(MB_CUSTOMMETADATALOCATION, MB_BASEMETADATALOCATION) as $value) {
                 $file = $this->implementation->getFileName(MB_DASHLET, $this->_moduleName, null, $value);
                 if (file_exists($file)) {
@@ -189,8 +188,11 @@ class DashletMetaDataParser extends ListLayoutMetaDataParser
                 mkdir_recursive(dirname($writeFile));
             }
         } else {
-            $writeFile = $file = $this->implementation->getFileName(MB_DASHLET, $this->_moduleName,
-                $this->_packageName);
+            $writeFile = $file = $this->implementation->getFileName(
+                MB_DASHLET,
+                $this->_moduleName,
+                $this->_packageName
+            );
             $writeTodashletName = $dashletName = $this->implementation->module->key_name . 'Dashlet';
         }
 
@@ -212,7 +214,7 @@ class DashletMetaDataParser extends ListLayoutMetaDataParser
             }
             $out .= "\$dashletData['$writeTodashletName']['searchFields'] = " . var_export_helper($dashletData[$dashletName]['searchFields']) . ";\n";
             $out .= "\$dashletData['$writeTodashletName']['columns'] = " . var_export_helper($dashletData[$dashletName]['columns']) . ";\n";
-            fputs($fh, $out);
+            fwrite($fh, $out);
             fclose($fh);
         }
     }

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -57,7 +57,7 @@ function install_aop()
     $sugar_config['aop'] = array('distribution_method' => 'roundRobin');
     $templates = getTemplates();
     foreach ($templates as $configKey => $templateData) {
-        $template = new EmailTemplate();
+        $template = BeanFactory::newBean('EmailTemplates');
         foreach ($templateData as $field => $value) {
             $template->$field = $value;
         }
@@ -166,8 +166,11 @@ function installAOPHooks()
     );
 
     foreach ($hooks as $hook) {
-        check_logic_hook_file($hook['module'], $hook['hook'],
-            array($hook['order'], $hook['description'], $hook['file'], $hook['class'], $hook['function']));
+        check_logic_hook_file(
+            $hook['module'],
+            $hook['hook'],
+            array($hook['order'], $hook['description'], $hook['file'], $hook['class'], $hook['function'])
+        );
     }
 }
 
@@ -254,7 +257,7 @@ function getTemplates()
     $templates['user_email_template'] = array(
         'name' => 'User Case Update',
         'published' => 'off',
-        'description' => 'Email template to send to a Sugar user when their case is updated.',
+        'description' => 'Email template to send to a SuiteCRM user when their case is updated.',
         'subject' => '$acase_name (# $acase_case_number) update',
         'type' => 'system',
         'body' => 'Hi $user_first_name $user_last_name,

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -56,39 +56,42 @@ class EmailAddressRelationship extends M2MRelationship
 {
     /**
      * For Email Addresses, there is only a link from the left side, so we need a new add function that ignores rhs
-     * @param  $lhs SugarBean left side bean to add to the relationship.
-     * @param  $rhs SugarBean right side bean to add to the relationship.
-     * @param  $additionalFields key=>value pairs of fields to save on the relationship
+     *
+     * @param SugarBean $lhs left side bean to add to the relationship.
+     * @param SugarBean $rhs right side bean to add to the relationship.
+     * @param mixed $additionalFields key=>value pairs of fields to save on the relationship
      * @return boolean true if successful
      */
     public function add($lhs, $rhs, $additionalFields = array())
     {
         $lhsLinkName = $this->lhsLink;
 
-        if (empty($lhs->$lhsLinkName) && !$lhs->load_relationship($lhsLinkName))
-        {
+        if (empty($lhs->$lhsLinkName) && !$lhs->load_relationship($lhsLinkName)) {
             $lhsClass = get_class($lhs);
             $GLOBALS['log']->fatal("could not load LHS $lhsLinkName in $lhsClass");
             return false;
         }
 
-            if ($lhs->$lhsLinkName->beansAreLoaded())
-                $lhs->$lhsLinkName->addBean($rhs);
+        if ($lhs->$lhsLinkName->beansAreLoaded()) {
+            $lhs->$lhsLinkName->addBean($rhs);
+        }
 
-            $this->callBeforeAdd($lhs, $rhs, $lhsLinkName);
+        $this->callBeforeAdd($lhs, $rhs, $lhsLinkName);
 
         //Many to many has no additional logic, so just add a new row to the table and notify the beans.
         $dataToInsert = $this->getRowToInsert($lhs, $rhs, $additionalFields);
 
         $this->addRow($dataToInsert);
 
-        if ($this->self_referencing)
+        if ($this->self_referencing) {
             $this->addSelfReferencing($lhs, $rhs, $additionalFields);
+        }
 
-            if ($lhs->$lhsLinkName->beansAreLoaded())
-                $lhs->$lhsLinkName->addBean($rhs);
+        if ($lhs->$lhsLinkName->beansAreLoaded()) {
+            $lhs->$lhsLinkName->addBean($rhs);
+        }
 
-            $this->callAfterAdd($lhs, $rhs, $lhsLinkName);
+        $this->callAfterAdd($lhs, $rhs, $lhsLinkName);
 
         return true;
     }
@@ -105,16 +108,13 @@ class EmailAddressRelationship extends M2MRelationship
             $GLOBALS['log']->fatal("RHS is not a SugarBean object");
             return false;
         }
-        if (empty($lhs->$lhsLinkName) && !$lhs->load_relationship($lhsLinkName))
-        {
+        if (empty($lhs->$lhsLinkName) && !$lhs->load_relationship($lhsLinkName)) {
             $GLOBALS['log']->fatal("could not load LHS $lhsLinkName");
             return false;
         }
 
-        if (empty($_SESSION['disable_workflow']) || $_SESSION['disable_workflow'] != "Yes")
-        {
-            if (!empty($lhs->$lhsLinkName))
-            {
+        if (empty($_SESSION['disable_workflow']) || $_SESSION['disable_workflow'] != "Yes") {
+            if (!empty($lhs->$lhsLinkName)) {
                 $lhs->$lhsLinkName->load();
                 $this->callBeforeDelete($lhs, $rhs, $lhsLinkName);
             }
@@ -127,13 +127,12 @@ class EmailAddressRelationship extends M2MRelationship
 
         $this->removeRow($dataToRemove);
 
-        if ($this->self_referencing)
+        if ($this->self_referencing) {
             $this->removeSelfReferencing($lhs, $rhs);
+        }
 
-        if (empty($_SESSION['disable_workflow']) || $_SESSION['disable_workflow'] != "Yes")
-        {
-            if (!empty($lhs->$lhsLinkName))
-            {
+        if (empty($_SESSION['disable_workflow']) || $_SESSION['disable_workflow'] != "Yes") {
+            if (!empty($lhs->$lhsLinkName)) {
                 $lhs->$lhsLinkName->load();
                 $this->callAfterDelete($lhs, $rhs, $lhsLinkName);
             }

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,17 +49,18 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 global $current_user,$beanList, $beanFiles;
 $actionarr = ACLAction::getDefaultActions();
-if(is_admin($current_user)){
-	$foundOne = false;
-	foreach($actionarr as $actionobj){
-		if(!isset($beanList[$actionobj->category]) || !file_exists($beanFiles[$beanList[$actionobj->category]])){
-			if(!isset($_REQUEST['upgradeWizard'])){
-				echo 'Removing for ' . $actionobj->category . '<br>';
-			}
-			$foundOne = true;
-			ACLAction::removeActions($actionobj->category);
-		}
-	}
-	if(!$foundOne)
-		echo 'No ACL modules found that needed to be removed';
+if (is_admin($current_user)) {
+    $foundOne = false;
+    foreach ($actionarr as $actionobj) {
+        if (!isset($beanList[$actionobj->category]) || !file_exists($beanFiles[$beanList[$actionobj->category]])) {
+            if (!isset($_REQUEST['upgradeWizard'])) {
+                echo sprintf('Removing "%s" ACL for module "%s"<br>', $actionobj->name, $actionobj->category);
+            }
+            $foundOne = true;
+            ACLAction::removeActions($actionobj->category);
+        }
+    }
+    if (!$foundOne) {
+        echo 'No ACL modules found that needed to be removed';
+    }
 }

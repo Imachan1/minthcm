@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -69,29 +69,29 @@
             {/if}
             <span class="pagination">
                 {if !empty($previous_link)}
-                <button type="button" class="button btn-pagination" title="{$app_strings.LNK_LIST_PREVIOUS}" onClick="document.location.href='{$previous_link}';">
+                <a class="button btn-pagination" title="{$app_strings.LNK_LIST_PREVIOUS}" href="{$previous_link}">
                     {*{sugar_getimage name="previous" attr="border=\"0\" align=\"absmiddle\"" ext=".gif" alt=$app_strings.LNK_LIST_PREVIOUS}*}
                     <span class="suitepicon suitepicon-action-left"> </span><span class="pagination-label">{$app_strings.LNK_LIST_PREVIOUS}</span>
-                </button>
+                </a>
                 {else}
-                <button type="button" class="button btn-pagination" title="{$app_strings.LNK_LIST_PREVIOUS}" disabled='true'>
+                <a class="button btn-pagination" title="{$app_strings.LNK_LIST_PREVIOUS}" disabled='true'>
                     {*{sugar_getimage name="previous_off" attr="border=\"0\" align=\"absmiddle\"" ext=".gif" alt=$app_strings.LNK_LIST_PREVIOUS}*}
                     <span class="suitepicon suitepicon-action-left"> </span><span class="pagination-label">{$app_strings.LNK_LIST_PREVIOUS}</span>
-                </button>
+                </a>
                 {/if}
                 &nbsp;&nbsp;
                 <span class="pagination-range-label">({$offset}{if !empty($total)} {$app_strings.LBL_LIST_OF} {$total}{$plus}{/if})</span>
                 &nbsp;&nbsp;
                 {if !empty($next_link)}
-                <button type="button" class="button btn-pagination" title="{$app_strings.LNK_LIST_NEXT}" onClick="document.location.href='{$next_link}';">
+                <a class="button btn-pagination" title="{$app_strings.LNK_LIST_NEXT}" href="{$next_link}">
                     {*{sugar_getimage name="next" attr="border=\"0\" align=\"absmiddle\"" ext=".gif" alt=$app_strings.LNK_LIST_NEXT}*}
                     <span class="pagination-label">{$app_strings.LNK_LIST_NEXT}</span><span class="suitepicon suitepicon-action-right"> </span>
-                </button>
+                </a>
                 {else}
-                <button type="button" class="button btn-pagination" title="{$app_strings.LNK_LIST_NEXT}" disabled="true">
+                <a class="button btn-pagination" title="{$app_strings.LNK_LIST_NEXT}" disabled="true">
                     {*{sugar_getimage name="next_off" attr="border=\"0\" align=\"absmiddle\"" ext=".gif" alt=$app_strings.LNK_LIST_NEXT}*}
                     <span class="pagination-label">{$app_strings.LNK_LIST_NEXT}</span><span class="suitepicon suitepicon-action-right"> </span>
-                </button>
+                </a>
                 {/if}
             </span>
             &nbsp;&nbsp;

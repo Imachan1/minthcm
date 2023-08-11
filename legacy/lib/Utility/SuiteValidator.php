@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,21 +47,25 @@ namespace SuiteCRM\Utility;
 class SuiteValidator
 {
     /**
-     * @param string $id
+     * @param string|null $id
      * @return bool
      */
-    public function isValidId($id)
+    public function isValidId(?string $id): bool
     {
-        $valid = is_numeric($id) || (is_string($id) && preg_match('/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/i', $id));
+        if (empty($id)) {
+            return false;
+        }
 
-        return $valid;
+        $pattern = $this->getIdValidationPattern();
+
+        return is_numeric($id) || (is_string($id) && preg_match($pattern, $id));
     }
 
     /**
      * @param string $fieldname
      * @return bool
      */
-    public function isPercentageField($fieldname)
+    public function isPercentageField(string $fieldname): bool
     {
         if ($fieldname === 'aos_products_quotes_vat' ||
             strpos(strtolower($fieldname), 'pct') !== false ||
@@ -69,6 +73,24 @@ class SuiteValidator
             strpos(strtolower($fieldname), 'percentage') !== false) {
             return true;
         }
+
         return false;
+    }
+
+    /**
+     * Get id validation pattern
+     * @return string
+     */
+    public function getIdValidationPattern(): string
+    {
+        global $sugar_config;
+
+        if (isset($sugar_config['strict_id_validation']) && $sugar_config['strict_id_validation']) {
+            $pattern = '/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/i';
+        } else {
+            $pattern = get_id_validation_pattern();
+        }
+
+        return $pattern;
     }
 }

@@ -1,4 +1,5 @@
 {*
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,6 +43,8 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+
+
 *}
 <link rel="stylesheet" type="text/css" href="modules/ModuleBuilder/tpls/ListEditor.css" />
 <table class="preview-content">
@@ -68,16 +71,6 @@
     <table width='100%'>
     	<tr>
     		<td style="font-weight: bold;">{if !empty($value.label)}{sugar_translate label=$value.label module=$language}{else}{$key}{/if}</td>
-    		<td>
-                {* BEGIN SUGARCRM flav=pro ONLY *}
-                {if isset($field_defs.$key.calculated) && $field_defs.$key.calculated}
-                    {sugar_getimage name="SugarLogic/icon_calculated" alt=$mod_strings.LBL_CALCULATED ext=".png" other_attributes=''}
-                {/if}
-                {if isset($field_defs.$key.dependency) && $field_defs.$key.dependency}
-                    {sugar_getimage name="SugarLogic/icon_dependent" alt=$mod_strings.LBL_DEPENDANT ext=".png" other_attributes=''}
-                {/if}
-                {* END SUGARCRM flav=pro ONLY *}
-    		</td>
     	</tr>
     	<tr class='fieldValue' style='cursor:default;'>
     		{if empty($hideKeys)}<td>[{$key}]</td>{/if}

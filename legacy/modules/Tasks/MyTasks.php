@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,7 +53,7 @@ $current_module_strings = return_module_language($current_language, 'Tasks');
 $tomorrow = $timedate->getNow()->get("+1 day")->asDb();
 
 $ListView = new ListView();
-$seedTasks = new Task();
+$seedTasks = BeanFactory::newBean('Tasks');
 $where = "tasks.assigned_user_id='". $current_user->id ."' and (tasks.status is NULL or (tasks.status!='Completed' and tasks.status!='Deferred')) ";
 $where .= "and (tasks.date_start is NULL or ";
 $where .= $seedTasks->db->convert($seedTasks->db->convert("tasks.date_start", "date_format", '%Y-%m-%d'),  "CONCAT",

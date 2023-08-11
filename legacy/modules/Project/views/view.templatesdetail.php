@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,52 +44,49 @@
  */
 
 
-require_once('include/MVC/View/views/view.detail.php');
 
-class ProjectViewTemplatesDetail extends ViewDetail 
+class ProjectViewTemplatesDetail extends ViewDetail
 {
- 	/**
-	 * @see SugarView::_getModuleTitleParams()
-	 */
-	protected function _getModuleTitleParams($browserTitle = false)
-	{
-	    global $mod_strings;
-	    
-    	return array(
-    	   $this->_getModuleTitleListParam($browserTitle),
-    	   "<a href='index.php?module=Project&action=EditView&record={$this->bean->id}'>{$this->bean->name}</a>",
-    	   $mod_strings['LBL_PROJECT_TEMPLATE']
-    	   );
+    /**
+     * @see SugarView::_getModuleTitleParams()
+     */
+    protected function _getModuleTitleParams($browserTitle = false)
+    {
+        global $mod_strings;
+        
+        return array(
+           $this->_getModuleTitleListParam($browserTitle),
+           "<a href='index.php?module=Project&action=EditView&record={$this->bean->id}'>{$this->bean->name}</a>",
+           $mod_strings['LBL_PROJECT_TEMPLATE']
+           );
     }
     
-	function display() 
-	{
- 		global $beanFiles;
-		require_once($beanFiles['Project']);
+    public function display()
+    {
+        global $beanFiles;
+        require_once($beanFiles['Project']);
 
-		$focus = new Project();
-		$focus->retrieve($_REQUEST['record']);
+        $focus = BeanFactory::newBean('Project');
+        $focus->retrieve($_REQUEST['record']);
 
-		global $app_list_strings, $current_user, $mod_strings;
-		$this->ss->assign('APP_LIST_STRINGS', $app_list_strings);
+        global $app_list_strings, $current_user, $mod_strings;
+        $this->ss->assign('APP_LIST_STRINGS', $app_list_strings);
 
-		if($current_user->id == $focus->assigned_user_id || $current_user->is_admin){
-			$this->ss->assign('OWNER_ONLY', true);
-		}
-		else{
-			$this->ss->assign('OWNER_ONLY', false);
-		}
- 		parent::display();
- 	}
+        if ($current_user->id == $focus->assigned_user_id || $current_user->is_admin) {
+            $this->ss->assign('OWNER_ONLY', true);
+        } else {
+            $this->ss->assign('OWNER_ONLY', false);
+        }
+        parent::display();
+    }
 
- 	/**
+    /**
      * @see SugarView::_displaySubPanels()
      */
     protected function _displaySubPanels()
     {
-    	require_once ('include/SubPanel/SubPanelTiles.php');
-   	 	$subpanel = new SubPanelTiles( $this->bean, 'ProjectTemplates' );
-    	echo $subpanel->display( true, true );
+        require_once('include/SubPanel/SubPanelTiles.php');
+        $subpanel = new SubPanelTiles($this->bean, 'ProjectTemplates');
+        echo $subpanel->display(true, true);
     }
-
 }

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,7 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-if (!defined('sugarEntry') || !sugarEntry) {
+ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
@@ -104,14 +104,14 @@ class FactorAuthEmailCode implements FactorAuthInterface
 
         $ret = true;
 
-        $emailTemplate = new EmailTemplate();
+        $emailTemplate = BeanFactory::newBean('EmailTemplates');
         $emailTemplateId = $sugar_config['passwordsetting']['factoremailtmpl'];
         $emailTemplate->retrieve($emailTemplateId);
 
         $mailer = new SugarPHPMailer();
         $mailer->setMailerForSystem();
 
-        $emailObj = new Email();
+        $emailObj = BeanFactory::newBean('Emails');
         $defaults = $emailObj->getSystemDefaultEmail();
 
         $mailer->From = $defaults['email'];
@@ -131,11 +131,12 @@ class FactorAuthEmailCode implements FactorAuthInterface
         if (!$mailer->send()) {
             $ret = false;
             $GLOBALS['log']->fatal(
-                    'Email sending for two factor email authentication via Email Code failed. Mailer Error Info: ' .
+                'Email sending for two factor email authentication via Email Code failed. Mailer Error Info: ' .
                     $mailer->ErrorInfo
             );
         } else {
-            $GLOBALS['log']->debug('FACTOR AUTH: token sent to user: ' .
+            $GLOBALS['log']->debug(
+                'FACTOR AUTH: token sent to user: ' .
                     $current_user->id . ', token: ' . '{$token}' . ' so we store it in the session'
             );
         }

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,7 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-if (!defined('sugarEntry') || !sugarEntry) {
+ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
@@ -139,7 +139,7 @@ class SugarAuthenticateUser
         }
 
         if (!empty($_SESSION['authenticated_user_id']) || !empty($user_id)) {
-            $GLOBALS['current_user'] = new User();
+            $GLOBALS['current_user'] = BeanFactory::newBean('Users');
             if ($GLOBALS['current_user']->retrieve($_SESSION['authenticated_user_id'])) {
                 return true;
             }
@@ -246,10 +246,10 @@ class SugarAuthenticateUser
         if (function_exists('random_int')) {
             $token = random_int($min, $max);
         } else {
-            $token = rand($min, $max);
+            $token = mt_rand($min, $max);
         }
 
-        $emailTemplate = new EmailTemplate();
+        $emailTemplate = BeanFactory::newBean('EmailTemplates');
         $emailTemplateId = $sugar_config['passwordsetting']['factoremailtmpl'];
         $emailTemplate->retrieve($emailTemplateId);
 
@@ -257,7 +257,7 @@ class SugarAuthenticateUser
         $mailer = new SugarPHPMailer();
         $mailer->setMailerForSystem();
 
-        $emailObj = new Email();
+        $emailObj = BeanFactory::newBean('Emails');
         $defaults = $emailObj->getSystemDefaultEmail();
 
         $mailer->From = $defaults['email'];
@@ -277,13 +277,13 @@ class SugarAuthenticateUser
         if (!$mailer->send()) {
             $ret = false;
             $GLOBALS['log']->fatal(
-                    'Email sending for two factor email authentication via Email Code failed. Mailer Error Info: ' .
+                'Email sending for two factor email authentication via Email Code failed. Mailer Error Info: ' .
                     $mailer->ErrorInfo
             );
         } else {
             $ret = true;
             $GLOBALS['log']->debug(
-                    'Token sent to user: ' .
+                'Token sent to user: ' .
                     $current_user->id . ', token: ' . $token . ' so we store it in the session'
             );
 

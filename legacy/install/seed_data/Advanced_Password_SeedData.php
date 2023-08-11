@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -65,7 +65,7 @@ if (
     !isset($sugar_config['passwordsetting']['generatepasswordtmpl'])
     || empty($sugar_config['passwordsetting']['generatepasswordtmpl'])
 ) {
-    $EmailTemp = new EmailTemplate();
+    $EmailTemp = BeanFactory::newBean('EmailTemplates');
     $EmailTemp->name = $mod_strings['advanced_password_new_account_email']['name'];
     $EmailTemp->description = $mod_strings['advanced_password_new_account_email']['description'];
     $EmailTemp->subject = $mod_strings['advanced_password_new_account_email']['subject'];
@@ -85,7 +85,7 @@ if (
     !isset($sugar_config['passwordsetting']['lostpasswordtmpl'])
     || empty($sugar_config['passwordsetting']['lostpasswordtmpl'])
 ) {
-    $EmailTemp = new EmailTemplate();
+    $EmailTemp = BeanFactory::newBean('EmailTemplates');
     $EmailTemp->name = $mod_strings['advanced_password_forgot_password_email']['name'];
     $EmailTemp->description = $mod_strings['advanced_password_forgot_password_email']['description'];
     $EmailTemp->subject = $mod_strings['advanced_password_forgot_password_email']['subject'];
@@ -105,7 +105,7 @@ if (
     !isset($sugar_config['passwordsetting']['factoremailtmpl'])
     || empty($sugar_config['passwordsetting']['factoremailtmpl'])
 ) {
-    $EmailTemp = new EmailTemplate();
+    $EmailTemp = BeanFactory::newBean('EmailTemplates');
     $EmailTemp->name = $mod_strings['two_factor_auth_email']['name'];
     $EmailTemp->description = $mod_strings['two_factor_auth_email']['description'];
     $EmailTemp->subject = $mod_strings['two_factor_auth_email']['subject'];

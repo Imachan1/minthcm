@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,7 +50,7 @@ global $app_list_strings, $app_strings, $current_user;
 
 $mod_strings = return_module_language($GLOBALS['current_language'], 'Users');
 
-$focus = new User();
+$focus = BeanFactory::newBean('Users');
 $focus->retrieve($_REQUEST['record']);
 if (!is_admin($focus)) {
     $sugar_smarty = new Sugar_Smarty();
@@ -68,29 +68,29 @@ if (!is_admin($focus)) {
             foreach ($categories as $key => $value) {
                 if (!in_array($key, $tabs) && !in_array($key, $modInvisList)) {
                     unset($categories[$key]);
-
                 }
             }
-
         }
     }
 
     $names = array();
     $names = ACLAction::setupCategoriesMatrix($categories);
     if (!empty($names)) {
-        $tdwidth = 100 / sizeof($names);
+        $tdwidth = 100 / count($names);
     }
     $sugar_smarty->assign('APP', $app_list_strings);
     $sugar_smarty->assign('CATEGORIES', $categories);
     $sugar_smarty->assign('TDWIDTH', $tdwidth);
     $sugar_smarty->assign('ACTION_NAMES', $names);
 
-    $title = getClassicModuleTitle('', array($mod_strings['LBL_MODULE_NAME'], $mod_strings['LBL_ROLES_SUBPANEL_TITLE']),
-        '');
+    $title = getClassicModuleTitle(
+        '',
+        array($mod_strings['LBL_MODULE_NAME'], $mod_strings['LBL_ROLES_SUBPANEL_TITLE']),
+        ''
+    );
 
     $sugar_smarty->assign('TITLE', $title);
     $sugar_smarty->assign('USER_ID', $focus->id);
     $sugar_smarty->assign('LAYOUT_DEF_KEY', 'UserRoles');
     echo $sugar_smarty->fetch('modules/ACLRoles/DetailViewUser.tpl');
 }
-

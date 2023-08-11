@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -41,7 +41,6 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
 *}
 
 {{sugar_include type="smarty" file=$headerTpl}}
@@ -196,19 +195,6 @@
         </div>
     </div>
     <div class="attachments">
-        {if $RETURN_MODULE != 'Emails' && $RETURN_ID}
-            <div class="bean-attachments">
-                <div class="bean-attachment-group-container">
-                    <input type="hidden" id="bean_attachment_{$RETURN_ID}" multiple="multiple">
-                    <label for="bean_attachment_{$RETURN_ID}" class="">
-                        <div class="bean-attachment-file-container file-image">
-                            <span class="bean-attachment-type glyphicon glyphicon-file"></span>
-                            <span class="bean-attachment-name">{$ATTACHMENT_NAME}</span>
-                        </div>
-                    </label>
-                </div>
-            </div>
-        {/if}
         <div class="file-attachments"></div>
         <div class="document-attachments"></div>
     </div>
@@ -244,7 +230,7 @@
         $(function(){
             $('#EditView_tabs ul.nav.nav-tabs li > a[data-toggle="tab"]').click(function(e){
                 if(typeof $(this).parent().find('a').first().attr('id') != 'undefined') {
-                    var tab = parseInt($(this).parent().find('a').first().attr('id').match(/^tab(.)*$/)[1]);
+                    var tab = parseInt($(this).parent().find('a').first().attr('id').match(/^tab(?<number>(.)*)$/)[1]);
                     selectTab(tab);
                 }
             });
@@ -274,10 +260,13 @@
       $(document).ready(function() {ldelim}
         $('#ComposeView').EmailsComposeView({if $RETURN_MODULE != 'Emails' && $RETURN_ID}{ldelim}
           'attachment': {ldelim}
-            'module': '{$RETURN_MODULE}',
-            'id': '{$RETURN_ID}'
+            'module': '{$RETURN_MODULE|escape:'javascript'}',
+            'id': '{$RETURN_ID|escape:'javascript'}'
           {rdelim}
         {rdelim}{/if});
+      {rdelim});
+      $( "#emails_email_templates_name" ).change(function() {ldelim}
+          $.fn.EmailsComposeView.onTemplateChange()
       {rdelim});
     </script>
     {/if}

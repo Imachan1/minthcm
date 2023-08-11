@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,9 +52,9 @@ require_once('include/EditView/QuickCreate.php');
 
 class NotesQuickCreate extends QuickCreate {
     
-    var $javascript;
+    public $javascript;
     
-    function process() {
+    public function process() {
         global $current_user, $timedate, $app_list_strings, $current_language, $mod_strings;
         $mod_strings = return_module_language($current_language, 'Notes');
         
@@ -70,7 +70,7 @@ class NotesQuickCreate extends QuickCreate {
         $this->javascript = new javascript();
         $this->javascript->setFormName('notesQuickCreate');
         
-        $focus = new Note();
+        $focus = BeanFactory::newBean('Notes');
         $this->javascript->setSugarBean($focus);
         $this->javascript->addAllFields('');
 

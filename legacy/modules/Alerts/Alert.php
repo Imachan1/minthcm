@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,39 +44,39 @@
 
 class Alert extends Basic {
 
-    var $new_schema = true;
-    var $module_dir = 'Alerts';
-    var $object_name = 'Alert';
-    var $table_name = 'alerts';
-    var $importable = false;
-    var $disable_row_level_security = true ; // to ensure that modules created and deployed under CE will continue to function under team security if the instance is upgraded to PRO
-    var $id;
-    var $name;
-    var $date_entered;
-    var $date_modified;
-    var $modified_user_id;
-    var $modified_by_name;
-    var $created_by;
-    var $created_by_name;
-    var $description;
-    var $deleted;
-    var $created_by_link;
-    var $modified_user_link;
-    var $assigned_user_id;
-    var $assigned_user_name;
-    var $assigned_user_link;
-    var $is_read;
+    public $new_schema = true;
+    public $module_dir = 'Alerts';
+    public $object_name = 'Alert';
+    public $table_name = 'alerts';
+    public $importable = false;
+    public $disable_row_level_security = true ; // to ensure that modules created and deployed under CE will continue to function under team security if the instance is upgraded to PRO
+    public $id;
+    public $name;
+    public $date_entered;
+    public $date_modified;
+    public $modified_user_id;
+    public $modified_by_name;
+    public $created_by;
+    public $created_by_name;
+    public $description;
+    public $deleted;
+    public $created_by_link;
+    public $modified_user_link;
+    public $assigned_user_id;
+    public $assigned_user_name;
+    public $assigned_user_link;
+    public $is_read;
 
     /**
      * @var string
      */
     public $reminder_id;
 
-    function __construct(){
+    public function __construct(){
         parent::__construct();
     }
 
-    function bean_implements($interface){
+    public function bean_implements($interface){
         switch($interface){
             case 'ACL': return true;
         }
@@ -87,13 +87,13 @@ class Alert extends Basic {
         global $current_user;
         $list = $this->get_full_list("alerts.date_entered", "alerts.assigned_user_id = '".$current_user->id."' AND alerts.is_read != '1' AND alerts.deleted != '1' AND alerts.type ='webpush'");
         $return = [];
-        if (count($list)) {
+        if (!empty($list) && count($list)) {
             foreach ($list as $notification) {
                 $return[] = array("id" => $notification->id, "title" => $notification->name,
                     "options" => array("url_redirect" => $notification->url_redirect,
                         "body" => htmlspecialchars_decode($notification->description)));
-            }
         }
+    }
         return $return;
     }
 

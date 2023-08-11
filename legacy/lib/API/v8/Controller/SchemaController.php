@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -70,7 +70,7 @@ class SchemaController extends ApiController
     {
         try {
             $jsonApi = new JsonApi();
-            if(file_exists($jsonApi->getSchemaPath()) === false) {
+            if (file_exists($jsonApi->getSchemaPath()) === false) {
                 throw new NotFoundException(
                     '[SchemaController] unable to find JSON Api Schema file:  '. $jsonApi->getSchemaPath()
                 );
@@ -78,14 +78,13 @@ class SchemaController extends ApiController
 
             $schemaFile = file_get_contents($jsonApi->getSchemaPath());
 
-            if($schemaFile === false) {
+            if ($schemaFile === false) {
                 throw new ApiException(
                     '[SchemaController] unable to read JSON Api Schema file: '.  $jsonApi->getSchemaPath()
                 );
             }
 
             return $response->withHeader(self::CONTENT_TYPE_HEADER, self::CONTENT_TYPE_JSON)->write($schemaFile);
-            
         } catch (\Exception $e) {
             $payload = $this->handleExceptionIntoPayloadError($request, $e, isset($payload) ? $payload : []);
         }
@@ -106,7 +105,7 @@ class SchemaController extends ApiController
     {
         try {
             $path = dirname(__DIR__).'/swagger.json';
-            if(file_exists($path) === false) {
+            if (file_exists($path) === false) {
                 throw new NotFoundException(
                     '[SchemaController] unable to find JSON Api Schema file:  '. $path
                 );
@@ -114,14 +113,13 @@ class SchemaController extends ApiController
 
             $schemaFile = file_get_contents($path);
 
-            if($schemaFile === false) {
+            if ($schemaFile === false) {
                 throw new ApiException(
                     '[SchemaController] unable to read JSON Api Schema file: '.  $path
                 );
             }
 
             return $response->withHeader(self::CONTENT_TYPE_HEADER, self::CONTENT_TYPE_JSON)->write($schemaFile);
-            
         } catch (\Exception $e) {
             $payload = $this->handleExceptionIntoPayloadError($request, $e, isset($payload) ? $payload : []);
         }

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,7 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 class EmailsDataAddress
 {
-    
+
     /**
      *
      * @param string $type
@@ -70,27 +70,35 @@ class EmailsDataAddress
      * @return array
      */
     public function getDataArray(
-            $type,
-            $id,
-            $attributesReplyTo,
-            $attributesFrom,
-            $attributesName,
-            $attributesOe,
-            $prepend,
-            $isPersonalEmailAccount,
-            $isGroupEmailAccount,
-            $outboundEmailId,
-            $outboundEmailName,
-            $emailSignaturesArray
+        $type,
+        $id,
+        $attributesReplyTo,
+        $attributesFrom,
+        $attributesName,
+        $attributesOe,
+        $prepend,
+        $isPersonalEmailAccount,
+        $isGroupEmailAccount,
+        $outboundEmailId,
+        $outboundEmailName,
+        $emailSignaturesArray,
+        $accountName = '',
+        $attributesReplyToName = ''
     ) {
         $signatureResolver = new EmailsSignatureResolver();
         $signatureResolver->setSignatureArray($emailSignaturesArray);
-        
+
         $dataArray = [
             'type' => $type,
             'id' => $id,
+            'name' => $accountName,
             'attributes' => $this->getDataArrayAttributes(
-                    $attributesReplyTo, $attributesFrom, $attributesName, $attributesOe),
+                $attributesReplyTo,
+                $attributesFrom,
+                $attributesName,
+                $attributesOe,
+                $attributesReplyToName
+            ),
             'prepend' => $prepend,
             'isPersonalEmailAccount' => $isPersonalEmailAccount,
             'isGroupEmailAccount' => $isGroupEmailAccount,
@@ -99,27 +107,29 @@ class EmailsDataAddress
                 'name' => $outboundEmailName,
             ],
             'emailSignatures' => [
-                'html' => $signatureResolver->getHtml(),
+                'html' => utf8_encode(html_entity_decode($signatureResolver->getHtml())),
                 'plain' => $signatureResolver->getPlaintext(),
                 'no_default_available' => $signatureResolver->isNoDefaultAvailable(),
             ],
         ];
-        
+
         return $dataArray;
     }
-    
+
     /**
      *
      * @param string $attributesReplyTo
      * @param string $attributesFrom
      * @param string $attributesName
      * @param string $attributesOe
+     * @param string $attributesReplyToName
      * @return array
      */
-    protected function getDataArrayAttributes($attributesReplyTo, $attributesFrom, $attributesName, $attributesOe)
+    protected function getDataArrayAttributes($attributesReplyTo, $attributesFrom, $attributesName, $attributesOe, $attributesReplyToName = '')
     {
         return [
             'reply_to' => utf8_encode($attributesReplyTo),
+            'reply_to_name' => utf8_encode($attributesReplyToName),
             'from' => utf8_encode($attributesFrom),
             'name' => utf8_encode($attributesName),
             'oe' => utf8_encode($attributesOe),

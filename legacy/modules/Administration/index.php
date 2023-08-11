@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,14 +44,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-/*********************************************************************************
-
- * Description: TODO:  To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 global $currentModule;
 global $current_language;
@@ -94,10 +86,12 @@ foreach ($admin_group_header as $key=>$values) {
             $group_header_value=get_form_header(translate($values[0],'Administration'),$values[1],$values[2]);
         	$group[$j][0] = '<h3>' . translate($values[0]) . '</h3>';
         	$addedHeaderGroups[$values[0]] = 1;
-        	if (isset($values[4]))
-    	       $group[$j][1] = '' . translate($values[4]) . '';
-    	    else
-    	       $group[$j][2] = '';
+        	if (isset($values[4])){
+                $group[$j][1] = '' . translate($values[4]) . '';
+            } else{
+                $group[$j][2] = '';
+            }
+    	       
             $colnum=0;
             $i=0;
             $fix = array_keys($values[3]);
@@ -122,6 +116,7 @@ foreach ($admin_group_header as $key=>$values) {
 
             foreach ($mod as $link_idx =>$admin_option) {
                 if(!empty($GLOBALS['admin_access_control_links']) && in_array($link_idx, $GLOBALS['admin_access_control_links'])){
+                    unset($values_3_tab[$j][$link_idx]);
                     continue;
                 }
                 $colnum+=1;

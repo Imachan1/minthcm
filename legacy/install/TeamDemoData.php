@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,10 +49,10 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 class TeamDemoData {
-	var $_team;
-	var $_large_scale_test;
+	public $_team;
+	public $_large_scale_test;
 
-	var $guids = array(
+	public $guids = array(
 		'jim'	=> 'seed_jim_id',
 		'sarah'	=> 'seed_sarah_id',
 		'sally'	=> 'seed_sally_id',
@@ -73,31 +73,16 @@ class TeamDemoData {
 	/**
 	 * Constructor for creating demo data for teams
 	 */
-	function __construct($seed_team, $large_scale_test = false)
+	public function __construct($seed_team, $large_scale_test = false)
 	{
 		$this->_team = $seed_team;
 		$this->_large_scale_test = $large_scale_test;
 	}
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function TeamDemoData($seed_team, $large_scale_test = false){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($seed_team, $large_scale_test);
-    }
-
-
 	/**
 	 *
 	 */
-	function create_demo_data() {
+	public function create_demo_data() {
 		global $current_language;
 		global $sugar_demodata;
 		foreach($sugar_demodata['teams'] as $v)
@@ -118,7 +103,7 @@ class TeamDemoData {
 		$this->add_users_to_team();
 	}
 
-	function add_users_to_team() {
+	public function add_users_to_team() {
 		// Create the west team memberships
 		$this->_team->retrieve("West");
 		$this->_team->add_user_to_team($this->guids['sarah']);
@@ -134,7 +119,7 @@ class TeamDemoData {
 	/**
 	 *
 	 */
-	function get_random_team()
+	public function get_random_team()
 	{
 		$team_list = $this->_seed_data_get_team_list();
 		$team_list_size = count($team_list);
@@ -146,7 +131,7 @@ class TeamDemoData {
 	/**
 	 *
 	 */
-	function get_random_teamset()
+	public function get_random_teamset()
 	{
 		$team_list = $this->_seed_data_get_teamset_list();
 		$team_list_size = count($team_list);
@@ -159,9 +144,9 @@ class TeamDemoData {
 	/**
 	 *
 	 */
-	function _seed_data_get_teamset_list()
+	public function _seed_data_get_teamset_list()
 	{
-		$teamsets = Array();
+		$teamsets = array();
 		$teamsets[] = array("East", "West");
 		$teamsets[] = array("East", "West", "1");
 		$teamsets[] = array("West", "East");
@@ -175,9 +160,9 @@ class TeamDemoData {
 	/**
 	 *
 	 */
-	function _seed_data_get_team_list()
+	public function _seed_data_get_team_list()
 	{
-		$teams = Array();
+		$teams = array();
 //bug 28138 todo
 		$teams[] = "north";
 		$teams[] = "south";
@@ -203,7 +188,7 @@ class TeamDemoData {
 	/**
 	 *
 	 */
-	function _quick_create($name)
+	public function _quick_create($name)
 	{
 		if (!$this->_team->retrieve($name))
 		{

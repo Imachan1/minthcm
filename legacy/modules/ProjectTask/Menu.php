@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -54,14 +54,27 @@ global $mod_strings;
 // Each index of module_menu must be an array of:
 // the link url, display text for the link, and the icon name.
 
-if(ACLController::checkAccess('Project', 'edit', true))$module_menu[] = array("index.php?module=Project&action=EditView&return_module=Project&return_action=DetailView",
-	$mod_strings['LNK_NEW_PROJECT'], 'Create');
-if(ACLController::checkAccess('Project', 'list', true))$module_menu[] = array('index.php?module=Project&action=index',
-	$mod_strings['LNK_PROJECT_LIST'], 'List');
+if (ACLController::checkAccess('Project', 'edit', true)) {
+    $module_menu[] = array("index.php?module=Project&action=EditView&return_module=Project&return_action=DetailView",
+    $mod_strings['LNK_NEW_PROJECT'], 'Create');
+}
+if (ACLController::checkAccess('Project', 'list', true)) {
+    $module_menu[] = array('index.php?module=Project&action=index',
+    $mod_strings['LNK_PROJECT_LIST'], 'List');
+}
     /*
 if(ACLController::checkAccess('ProjectTask', 'edit', true))$module_menu[] = array("index.php?module=ProjectTask&action=EditView&return_module=ProjectTask&return_action=DetailView",
-	$mod_strings['LNK_NEW_PROJECT_TASK'], 'CreateProjectTask');
+    $mod_strings['LNK_NEW_PROJECT_TASK'], 'CreateProjectTask');
     */
-if(ACLController::checkAccess('ProjectTask', 'list', true))$module_menu[] = array('index.php?module=ProjectTask&action=index',
-	$mod_strings['LNK_PROJECT_TASK_LIST'], 'View_Project_Tasks');
-
+if (ACLController::checkAccess('ProjectTask', 'list', true)) {
+    $module_menu[] = array('index.php?module=ProjectTask&action=index',
+    $mod_strings['LNK_PROJECT_TASK_LIST'], 'View_Project_Tasks');
+}
+// Import Project Task
+if (ACLController::checkAccess('ProjectTask', 'import', true)) {
+    $module_menu[] = array(
+        'index.php?module=Import&action=Step1&import_module=ProjectTask&return_module=ProjectTask&return_action=index',
+        isset($mod_strings['LBL_IMPORT_PROJECT_TASKS']) ? $mod_strings['LBL_IMPORT_PROJECT_TASKS'] : '',
+        'Import'
+    );
+}

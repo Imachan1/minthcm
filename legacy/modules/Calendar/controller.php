@@ -71,7 +71,7 @@ class CalendarController extends SugarController {
          foreach ( $repeat_fields as $suffix ) {
             unset($_POST['repeat_' . $suffix]);
          }
-      } else if ( !empty($_REQUEST['repeat_type']) && !empty($_REQUEST['date_start']) ) {
+      } elseif ( !empty($_REQUEST['repeat_type']) && !empty($_REQUEST['date_start']) ) {
 
          $params = array(
             'type' => $_REQUEST['repeat_type'],
@@ -145,9 +145,9 @@ class CalendarController extends SugarController {
          if ( !empty($_REQUEST['edit_all_recurrences']) ) {
             $jsonData['edit_all_recurrences'] = 'true';
          }
-         if ( $jsonData['duration_hours'] % 24 == 0 ) {
-            $jsonData['allDay'] == "true";
-         }
+         if (!empty($jsonData['duration_hours']) && $jsonData['duration_hours'] %24 === 0) {
+            $jsonData['allDay'] = 'true';
+        }
       } else {
          $jsonData = array(
             'access' => 'no',
@@ -320,9 +320,9 @@ class CalendarController extends SugarController {
 
       if ( in_array($cal->view, array( 'day', 'week', 'month' )) ) {
          $cal->add_activities($GLOBALS['current_user']);
-      } else if ( $cal->view == 'shared' ) {
+      } elseif ( $cal->view == 'shared' ) {
          $cal->init_shared();
-         $sharedUser = new User();
+         $sharedUser = BeanFactory::newBean('Users');
          foreach ( $cal->shared_ids as $member ) {
             $sharedUser->retrieve($member);
             $cal->add_activities($sharedUser);

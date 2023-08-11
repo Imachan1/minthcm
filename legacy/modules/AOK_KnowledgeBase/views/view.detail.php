@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,34 +45,22 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-require_once('include/MVC/View/views/view.detail.php');
 
-class AOK_KnowledgeBaseViewDetail extends ViewDetail {
-    function __construct(){
+class AOK_KnowledgeBaseViewDetail extends ViewDetail
+{
+    public function __construct()
+    {
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function AOK_KnowledgeBaseViewDetail(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-
-    function display(){
+    public function display()
+    {
         $this->setDecodeHTML();
         parent::display();
     }
 
-    function setDecodeHTML(){
-        $this->bean->description = html_entity_decode(str_replace('&nbsp;',' ',$this->bean->description));
+    public function setDecodeHTML()
+    {
+        $this->bean->description = html_entity_decode(str_replace('&nbsp;', ' ', $this->bean->description));
     }
 }

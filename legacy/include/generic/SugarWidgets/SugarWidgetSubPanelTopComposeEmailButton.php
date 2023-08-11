@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -64,18 +64,13 @@ class SugarWidgetSubPanelTopComposeEmailButton extends SugarWidgetSubPanelTopBut
             return $temp;
         }
 
-        global $app_strings, $current_user, $sugar_config;
+        global $app_strings, $current_user;
         $title = $app_strings['LBL_COMPOSE_EMAIL_BUTTON_TITLE'];
         $value = $app_strings['LBL_COMPOSE_EMAIL_BUTTON_LABEL'];
 
         //martin Bug 19660
-        $userPref = $current_user->getPreference('email_link_type');
-        $defaultPref = $sugar_config['email_default_client'];
-        if ($userPref != '') {
-            $client = $userPref;
-        } else {
-            $client = $defaultPref;
-        }
+        $client = $current_user->getEmailClient();
+
         /** @var Person|Company|Opportunity $bean */
         $bean = $defines['focus'];
 
@@ -83,9 +78,9 @@ class SugarWidgetSubPanelTopComposeEmailButton extends SugarWidgetSubPanelTopBut
             // awu: Not all beans have emailAddress property, we must account for this
             if (isset($bean->emailAddress)) {
                 $to_addrs = $bean->emailAddress->getPrimaryAddress($bean);
-                $button = "<input class='button' type='button'  value='$value'  id='" . $this->getWidgetId() . "'  name='" . preg_replace('[ ]', '', $value) . "'   title='$title' onclick=\"location.href='mailto:$to_addrs';return false;\" />";
+                $button = "<input class='button' type='button' value='$value' id='" . $this->getWidgetId() . "' name='" . preg_replace('[ ]', '', $value) . "' title='$title' onclick=\"location.href='mailto:$to_addrs';return false;\"/>";
             } else {
-                $button = "<input class='button' type='button'  value='$value'  id='" . $this->getWidgetId() . "'  name='" . preg_replace('[ ]', '', $value) . "'  title='$title' onclick=\"location.href='mailto:';return false;\" />";
+                $button = "<input class='button' type='button' value='$value' id='" . $this->getWidgetId() . "' name='" . preg_replace('[ ]', '', $value) . "' title='$title' onclick=\"location.href='mailto:';return false;\"/>";
             }
         } else {
             // Generate the compose package for the quick create options.
@@ -102,6 +97,10 @@ class SugarWidgetSubPanelTopComposeEmailButton extends SugarWidgetSubPanelTopBut
                     $bean->email1 = $relatedAccountBean->email1;
                     $bean->name = $relatedAccountBean->name;
                 }
+            }
+
+            if (empty($bean->email1)) {
+                $bean->email1 = '';
             }
 
             $emailUI = new EmailUI();
@@ -128,7 +127,13 @@ class SugarWidgetSubPanelTopComposeEmailButton extends SugarWidgetSubPanelTopBut
         $inputID = $this->getWidgetId();
 
         $button = $this->_get_form($defines, $additionalFormFields);
-        $button .= "<a id='$inputID' style='display: none;'>$this->form_value</a>";
+
+        global $current_user;
+        $client = $current_user->getEmailClient();
+
+        if ($client == 'sugar') {
+            $button .= "<input class='button' onclick='return false;' type='button' id='$inputID' value='$this->form_value'>";
+        }
 
         return $button;
     }

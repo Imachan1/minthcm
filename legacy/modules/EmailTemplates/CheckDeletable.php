@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,50 +45,47 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 require_once('modules/EmailTemplates/EmailTemplate.php');
 
-$focus = new EmailTemplate();
-if($_REQUEST['from'] == 'DetailView') {
-	if(!isset($_REQUEST['record']))
-		sugar_die("A record number must be specified to delete the template.");
-	$focus->retrieve($_REQUEST['record']);
-	if(check_email_template_in_use($focus)) {
-		echo 'true';
-		return;
-	}
-	echo 'false';
-} else if($_REQUEST['from'] == 'ListView') {
-	$returnString = '';
-	$idArray = explode(',', $_REQUEST['records']);
-	foreach($idArray as $key => $value) {
-		if($focus->retrieve($value)) {
-			if(check_email_template_in_use($focus)) {
-				$returnString .= $focus->name . ',';
-			}
-		}
-	}
-	$returnString = substr($returnString, 0, -1);
-	echo $returnString;
+$focus = BeanFactory::newBean('EmailTemplates');
+if ($_REQUEST['from'] == 'DetailView') {
+    if (!isset($_REQUEST['record'])) {
+        sugar_die("A record number must be specified to delete the template.");
+    }
+    $focus->retrieve($_REQUEST['record']);
+    if (check_email_template_in_use($focus)) {
+        echo 'true';
+        return;
+    }
+    echo 'false';
 } else {
-	echo '';
+    if ($_REQUEST['from'] == 'ListView') {
+        $returnString = '';
+        $idArray = explode(',', $_REQUEST['records']);
+        foreach ($idArray as $key => $value) {
+            if ($focus->retrieve($value)) {
+                if (check_email_template_in_use($focus)) {
+                    $returnString .= $focus->name . ',';
+                }
+            }
+        }
+        $returnString = substr($returnString, 0, -1);
+        echo $returnString;
+    } else {
+        echo '';
+    }
 }
 
 function check_email_template_in_use($focus)
 {
-	if($focus->is_used_by_email_marketing()) {
-		return true;
-	}
-	$system = $GLOBALS['sugar_config']['passwordsetting'];
-	if($focus->id == $system['generatepasswordtmpl'] || $focus->id == $system['lostpasswordtmpl']) {
-	    return true;
-	}
+    if ($focus->is_used_by_email_marketing()) {
+        return true;
+    }
+    $system = $GLOBALS['sugar_config']['passwordsetting'];
+    if ($focus->id == $system['generatepasswordtmpl'] || $focus->id == $system['lostpasswordtmpl']) {
+        return true;
+    }
     return false;
 }

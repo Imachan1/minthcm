@@ -11,7 +11,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,26 +46,26 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/* this table should never get created, it should only be used as a template for the acutal audit tables
- * for each moudule.
+/* This table should never get created, it should only be used as a template for the actual audit tables
+ * for each module.
  */
-$dictionary['audit'] = 
-		array ( 'table' => 'audit',
-              	'fields' => array (
-              	      'id'=> array('name' =>'id', 'type' =>'id', 'len'=>'36','required'=>true), 
-              	      'parent_id'=>array('name' =>'parent_id', 'type' =>'id', 'len'=>'36','required'=>true),               	                   	
-				      'date_created'=>array('name' =>'date_created','type' => 'datetime'),
-				      'created_by'=>array('name' =>'created_by','type' => 'varchar','len' => 36),				
-					  'field_name'=>array('name' =>'field_name','type' => 'varchar','len' => 100),
-					  'data_type'=>array('name' =>'data_type','type' => 'varchar','len' => 100),
-					  'before_value_string'=>array('name' =>'before_value_string','type' => 'varchar'),
-					  'after_value_string'=>array('name' =>'after_value_string','type' => 'varchar'),
-					  'before_value_text'=>array('name' =>'before_value_text','type' => 'text'),
-					  'after_value_text'=>array('name' =>'after_value_text','type' => 'text'),
-				),
-				'indices' => array (
-				      //name will be re-constructed adding idx_ and table name as the prefix like 'idx_accounts_'
-				      array ('name' => 'pk', 'type' => 'primary', 'fields' => array('id')),
-				      array ('name' => 'parent_id', 'type' => 'index', 'fields' => array('parent_id'))
-				)
-		);
+$dictionary['audit'] =
+        array( 'table' => 'audit',
+                  'fields' => array(
+                      'id'=> array('name' =>'id', 'type' =>'id', 'len'=>'36','required'=>true),
+                      'parent_id'=>array('name' =>'parent_id', 'type' =>'id', 'len'=>'36','required'=>true),
+                      'date_created'=>array('name' =>'date_created','type' => 'datetime'),
+                      'created_by'=>array('name' =>'created_by','type' => 'varchar','len' => 36),
+                      'field_name'=>array('name' =>'field_name','type' => 'varchar','len' => 100),
+                      'data_type'=>array('name' =>'data_type','type' => 'varchar','len' => 100),
+                      'before_value_string'=>array('name' =>'before_value_string','type' => 'varchar'),
+                      'after_value_string'=>array('name' =>'after_value_string','type' => 'varchar'),
+                      'before_value_text'=>array('name' =>'before_value_text','type' => 'text'),
+                      'after_value_text'=>array('name' =>'after_value_text','type' => 'text'),
+                ),
+                'indices' => array(
+                      //name will be re-constructed adding idx_ and table name as the prefix like 'idx_accounts_'
+                      array('name' => 'pk', 'type' => 'primary', 'fields' => array('id')),
+                      array('name' => 'parent_id', 'type' => 'index', 'fields' => array('parent_id'))
+                )
+        );

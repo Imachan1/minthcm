@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,41 +45,32 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
-
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 
-
-
-
-global $app_strings;
-//we don't want the parent module's string file, but rather the string file specifc to this subpanel
-global $current_language;
-$current_module_strings = return_module_language($current_language, 'Leads');
-
-global $currentModule;
-global $theme;
-global $focus;
-global $action;
-
-
-
-
-// focus_list is the means of passing data to a SubPanelView.
-global $focus_list;
-
-global $current_user;
-$header_text = '';
-if(is_admin($current_user) && $_REQUEST['module'] != 'DynamicLayout' && !empty($_SESSION['editinplace'])){	
-		$header_text = "&nbsp;<a href='index.php?action=index&module=DynamicLayout&from_action=SubPanelView&from_module=Leads&record=". $_REQUEST['record']."'>".SugarThemeRegistry::current()->getImage("EditLayout","border='0' alt='Edit Layout' align='bottom'",null,null,'.gif',$mod_strings['LBL_EDITLAYOUT'])."</a>";
-}
-$ListView = new ListView();
-$ListView->initNewXTemplate( 'modules/Leads/SubPanelView.html',$current_module_strings);
-$ListView->setHeaderTitle($current_module_strings['LBL_MODULE_NAME'] . $header_text);
-//$ListView->setHeaderText($button);
-$ListView->processListView($focus_list, "main", "LEAD");
+ global $app_strings;
+ //we don't want the parent module's string file, but rather the string file specifc to this subpanel
+ global $current_language;
+ $current_module_strings = return_module_language($current_language, 'Leads');
+ 
+ global $currentModule;
+ global $theme;
+ global $focus;
+ global $action;
+ 
+ 
+ 
+ 
+ // focus_list is the means of passing data to a SubPanelView.
+ global $focus_list;
+ 
+ global $current_user;
+ $header_text = '';
+ if (is_admin($current_user) && $_REQUEST['module'] != 'DynamicLayout' && !empty($_SESSION['editinplace'])) {
+     $header_text = "&nbsp;<a href='index.php?action=index&module=DynamicLayout&from_action=SubPanelView&from_module=Leads&record=". $_REQUEST['record']."'>".SugarThemeRegistry::current()->getImage("EditLayout", "border='0' alt='Edit Layout' align='bottom'", null, null, '.gif', $mod_strings['LBL_EDITLAYOUT'])."</a>";
+ }
+ $ListView = new ListView();
+ $ListView->initNewXTemplate('modules/Leads/SubPanelView.html', $current_module_strings);
+ $ListView->setHeaderTitle($current_module_strings['LBL_MODULE_NAME'] . $header_text);
+ //$ListView->setHeaderText($button);
+ $ListView->processListView($focus_list, "main", "LEAD");
+ 

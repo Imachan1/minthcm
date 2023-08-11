@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,43 +52,39 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
-$sugarbean = new Project();
+$sugarbean = BeanFactory::newBean('Project');
 
 // perform the delete if given a record to delete
 
-if(empty($_REQUEST['record']))
-{
-	$GLOBALS['log']->info('delete called without a record id specified');
-}
-else
-{
-	$record = $_REQUEST['record'];
-	$sugarbean->retrieve($record);
-	if(!$sugarbean->ACLAccess('Delete')){
-		ACLController::displayNoAccess(true);
-		sugar_cleanup(true);
-	}
-	$GLOBALS['log']->info("deleting record: $record");
-	$sugarbean->mark_deleted($record);
+if (empty($_REQUEST['record'])) {
+    $GLOBALS['log']->info('delete called without a record id specified');
+} else {
+    $record = $_REQUEST['record'];
+    $sugarbean->retrieve($record);
+    if (!$sugarbean->ACLAccess('Delete')) {
+        ACLController::displayNoAccess(true);
+        sugar_cleanup(true);
+    }
+    $GLOBALS['log']->info("deleting record: $record");
+    $sugarbean->mark_deleted($record);
 }
 
 // handle the return location variables
 
 $return_module = empty($_REQUEST['return_module']) ? 'Project'
-	: $_REQUEST['return_module'];
+    : $_REQUEST['return_module'];
 
 $return_action = empty($_REQUEST['return_action']) ? 'index'
-	: $_REQUEST['return_action'];
+    : $_REQUEST['return_action'];
 
 $return_id = empty($_REQUEST['return_id']) ? ''
-	: $_REQUEST['return_id'];
+    : $_REQUEST['return_id'];
 
 $return_location = "index.php?module=$return_module&action=$return_action";
 
 // append the return_id if given
-if(!empty($return_id))
-{
-	$return_location .= "&record=$return_id";
+if (!empty($return_id)) {
+    $return_location .= "&record=$return_id";
 }
 
 // now that the delete has been performed, return to given location

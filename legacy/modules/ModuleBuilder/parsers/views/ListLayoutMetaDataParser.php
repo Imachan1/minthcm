@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -89,19 +89,18 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
         }
         // END ASSERTIONS
 
-        if (empty ($packageName)) {
+        if (empty($packageName)) {
             require_once 'modules/ModuleBuilder/parsers/views/DeployedMetaDataImplementation.php';
-            $this->implementation = new DeployedMetaDataImplementation ($view, $moduleName);
+            $this->implementation = new DeployedMetaDataImplementation($view, $moduleName);
         } else {
             require_once 'modules/ModuleBuilder/parsers/views/UndeployedMetaDataImplementation.php';
-            $this->implementation = new UndeployedMetaDataImplementation ($view, $moduleName, $packageName);
+            $this->implementation = new UndeployedMetaDataImplementation($view, $moduleName, $packageName);
         }
         $this->view = $view;
 
         $this->_fielddefs = $this->implementation->getFielddefs();
         $this->_standardizeFieldLabels($this->_fielddefs);
         $this->_viewdefs = array_change_key_case($this->implementation->getViewdefs()); // force to lower case so don't have problems with case mismatches later
-
     }
 
     /**
@@ -132,8 +131,10 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
         if ($populate) {
             $this->_populateFromRequest();
         }
-        $this->implementation->deploy(array_change_key_case($this->_viewdefs,
-            CASE_UPPER)); // force the field names back to upper case so the list view will work correctly
+        $this->implementation->deploy(array_change_key_case(
+            $this->_viewdefs,
+            CASE_UPPER
+        )); // force the field names back to upper case so the list view will work correctly
         $this->view = "eslistview";
         $this->implementation->deploy($this->_eslistviewdefs, true);
     }
@@ -155,7 +156,7 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
         $defaultFields = array();
         foreach ($this->_viewdefs as $key => $def) {
             // add in the default fields from the listviewdefs but hide fields disabled in the listviewdefs.
-            if (!empty ($def ['default']) && (!isset($def['enabled']) || $def['enabled'] != false)
+            if (!empty($def ['default']) && (!isset($def['enabled']) || $def['enabled'] != false)
                 && (!isset($def ['studio']) || ($def ['studio'] !== false && $def ['studio'] != "false"))
             ) {
                 if (isset($this->_fielddefs [$key])) {
@@ -185,7 +186,7 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
                 continue;
             }
 
-            if (empty ($def ['default'])) {
+            if (empty($def ['default'])) {
                 if (isset($this->_fielddefs [$key])) {
                     $additionalFields [$key] = self::_trimFieldDefs($this->_fielddefs [$key]);
                 } else {
@@ -258,7 +259,6 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
                     }
                 }
             }
-
         }
 
         //Bug 32520. We need to dissalow currency_id fields on list views.
@@ -296,23 +296,25 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
      */
     protected function _populateFromRequest()
     {
-        $GLOBALS ['log']->debug(get_class($this) . "->populateFromRequest() - fielddefs = " . print_r($this->_fielddefs,
-                true));
+        $GLOBALS ['log']->debug(get_class($this) . "->populateFromRequest() - fielddefs = " . print_r(
+            $this->_fielddefs,
+            true
+        ));
         /**
          * Transfer across any reserved fields, that is,
          * any where studio !== true, which are not editable but must be preserved
          */
         $newViewdefs = array();
         $esListViewDefs = []; //MintHCM start #117539
-
         $originalViewDefs = $this->getOriginalViewDefs();
 
         foreach ($this->_viewdefs as $key => $def) {
             /**
              * If the field is on the layout, but studio disabled, put it back on the layout at the front
              */
-            if (isset ($def['studio']) && (
-                    (is_array($def['studio']) && isset($def['studio']['listview']) &&
+            if (isset($def['studio']) && (
+                (
+                        is_array($def['studio']) && isset($def['studio']['listview']) &&
                         ($def['studio']['listview'] === false || strtolower($def['studio']['listview']) == 'false'
                             || strtolower($def['studio']['listview']) == 'required')
                     )
@@ -327,15 +329,15 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
          * only take items from group_0 for searchviews (basic_search or advanced_search) and
          * subpanels (which both are missing the Available column) - take group_0, _1 and _2 for all other list views
          */
-        $lastGroup = (isset ($this->columns ['LBL_AVAILABLE'])) ? 2 : 1;
+        $lastGroup = (isset($this->columns ['LBL_AVAILABLE'])) ? 2 : 1;
 
-        for ($i = 0; isset ($_POST ['group_' . $i]) && $i < $lastGroup; $i++) {
+        for ($i = 0; isset($_POST ['group_' . $i]) && $i < $lastGroup; $i++) {
             foreach ($_POST ['group_' . $i] as $fieldname) {
                 $fieldname = strtolower($fieldname);
                 //Check if the field was previously on the layout
-                if (isset ($this->_viewdefs[$fieldname])) {
+                if (isset($this->_viewdefs[$fieldname])) {
                     $newViewdefs [$fieldname] = $this->_viewdefs[$fieldname];
-                    // print_r($this->_viewdefs[ $fieldname ]);
+                // print_r($this->_viewdefs[ $fieldname ]);
                 } //Next check if the original view def contained it
                 else {
                     if (isset($originalViewDefs[$fieldname])) {
@@ -343,19 +345,21 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
                     } //create a definition from the fielddefs
                     else {
                         // if we don't have a valid fieldname then just ignore it and move on...
-                        if (!isset ($this->_fielddefs [$fieldname])) {
+                        if (!isset($this->_fielddefs [$fieldname])) {
                             continue;
                         }
 
-                        $newViewdefs[$fieldname] = self::createViewDefsByFieldDefs($this->_fielddefs[$fieldname],
-                            get_class($this));
+                        $newViewdefs[$fieldname] = self::createViewDefsByFieldDefs(
+                            $this->_fielddefs[$fieldname],
+                            get_class($this)
+                        );
                     }
                 }
                 if (isset($newViewdefs [$fieldname]['enabled'])) {
                     $newViewdefs [$fieldname]['enabled'] = true;
                 }
 
-                if (isset ($_REQUEST [strtolower($fieldname) . 'width'])) {
+                if (isset($_REQUEST [strtolower($fieldname) . 'width'])) {
                     $width = substr($_REQUEST [$fieldname . 'width'], 6, 3);
                     if (strpos($width, "%") != false) {
                         $width = substr($width, 0, 2);
@@ -365,7 +369,7 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
                     }
                     $newViewdefs [$fieldname] ['width'] = $width . "%";
                 } else {
-                    if (isset ($this->_viewdefs [$fieldname] ['width'])) {
+                    if (isset($this->_viewdefs [$fieldname] ['width'])) {
                         $newViewdefs [$fieldname] ['width'] = $this->_viewdefs [$fieldname] ['width'];
                     } else {
                         $newViewdefs [$fieldname] ['width'] = "10%";
@@ -373,7 +377,6 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
                 }
 
                 $newViewdefs [$fieldname] ['default'] = ($i == 0);
-                
                 //MintHCM start #117539
                 if($this->view == "listview"){
                     $array = "columns";
@@ -459,7 +462,7 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
      */
     public function removeField($fieldName)
     {
-        if (isset ($this->_viewdefs [$fieldName])) {
+        if (isset($this->_viewdefs [$fieldName])) {
             unset($this->_viewdefs [$fieldName]);
 
             return true;
@@ -488,7 +491,7 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
      */
     public static function _trimFieldDefs($fieldDefinitions)
     {
-        if (isset ($fieldDefinitions ['vname'])) {
+        if (isset($fieldDefinitions ['vname'])) {
             $fieldDefinitions ['label'] = $fieldDefinitions ['vname'];
         }
 
@@ -508,5 +511,4 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
             'currency_format' => true
         ));
     }
-
 }

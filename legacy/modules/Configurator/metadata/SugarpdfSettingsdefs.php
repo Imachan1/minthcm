@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -144,7 +144,7 @@ $SugarpdfSettings = array(
     "sugarpdf_pdf_protection"=>array(
         "label"=>$mod_strings["PDF_PROTECTION"],
         "info_label"=>$mod_strings["PDF_PROTECTION_INFO"],
-        "value"=>explode(",",PDF_PROTECTION),
+        "value"=>explode(",", PDF_PROTECTION),
         "class"=>"advanced",
         "type"=>"multiselect",
         "selectList"=>array("print"=>"Print", "modify"=>"Modify", "copy"=>"Copy", "annot-forms"=>"Annotations and forms"),
@@ -213,9 +213,9 @@ $SugarpdfSettings = array(
 // Use the OOB directory for images if there is no image in the custom directory
 $small_logo = $SugarpdfSettings['sugarpdf_pdf_small_header_logo']['path'];
 $logo = $SugarpdfSettings['sugarpdf_pdf_header_logo']['path'];
-if (@getimagesize($logo) === FALSE) {
+if (@getimagesize($logo) === false) {
     $SugarpdfSettings['sugarpdf_pdf_header_logo']['path'] = K_PATH_IMAGES.$SugarpdfSettings['sugarpdf_pdf_header_logo']['value'];
 }
-if (@getimagesize($small_logo) === FALSE) {
+if (@getimagesize($small_logo) === false) {
     $SugarpdfSettings['sugarpdf_pdf_small_header_logo']['path'] = K_PATH_IMAGES.$SugarpdfSettings['sugarpdf_pdf_small_header_logo']['value'];
 }

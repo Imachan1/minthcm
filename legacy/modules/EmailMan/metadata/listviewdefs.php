@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,39 +50,39 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 $listViewDefs['EmailMan'] = array(
     'CAMPAIGN_NAME' => array(
-        'width' => '10', 
-        'label' => 'LBL_LIST_CAMPAIGN', 
+        'width' => '10',
+        'label' => 'LBL_LIST_CAMPAIGN',
         'link' => true,
-		'customCode' => '<a href="index.php?module=Campaigns&action=DetailView&record={$CAMPAIGN_ID}">{$CAMPAIGN_NAME}</a>',
+        'customCode' => '<a href="index.php?module=Campaigns&action=DetailView&record={$CAMPAIGN_ID}">{$CAMPAIGN_NAME}</a>',
         'default' => true),
     'RECIPIENT_NAME' => array(
-		'sortable' => false,
-        'width' => '10', 
+        'sortable' => false,
+        'width' => '10',
         'label' => 'LBL_LIST_RECIPIENT_NAME',
-		'customCode' => '<a href="index.php?module={$RELATED_TYPE}&action=DetailView&record={$RELATED_ID}">{$RECIPIENT_NAME}</a>', 
+        'customCode' => '<a href="index.php?module={$RELATED_TYPE}&action=DetailView&record={$RELATED_ID}">{$RECIPIENT_NAME}</a>',
         'default' => true),
     'RECIPIENT_EMAIL' => array(
-		'sortable' => false,
-        'width' => '10', 
+        'sortable' => false,
+        'width' => '10',
         'label' => 'LBL_LIST_RECIPIENT_EMAIL',
-		'customCode' => '{$RECIPIENT_EMAIL}</a>',
+        'customCode' => '{$RECIPIENT_EMAIL}</a>',
         'default' => true),
     'MESSAGE_NAME' => array(
-		'sortable' => false,
-        'width' => '10', 
+        'sortable' => false,
+        'width' => '10',
         'label' => 'LBL_LIST_MESSAGE_NAME',
-		'customCode' => '<a href="index.php?module=EmailMarketing&action=DetailView&record={$MARKETING_ID}">{$MESSAGE_NAME}</a>',
+        'customCode' => '<a href="index.php?module=EmailMarketing&action=DetailView&record={$MARKETING_ID}">{$MESSAGE_NAME}</a>',
         'default' => true),
     'SEND_DATE_TIME' => array(
-        'width' => '10', 
-        'label' => 'LBL_LIST_SEND_DATE_TIME', 
+        'width' => '10',
+        'label' => 'LBL_LIST_SEND_DATE_TIME',
         'default' => true),
     'SEND_ATTEMPTS' => array(
-        'width' => '10', 
-        'label' => 'LBL_LIST_SEND_ATTEMPTS', 
+        'width' => '10',
+        'label' => 'LBL_LIST_SEND_ATTEMPTS',
         'default' => true),
     'IN_QUEUE' => array(
-        'width' => '10', 
-        'label' => 'LBL_LIST_IN_QUEUE', 
+        'width' => '10',
+        'label' => 'LBL_LIST_IN_QUEUE',
         'default' => true),
 );

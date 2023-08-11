@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,16 +43,10 @@
  */
 namespace SuiteCRM\API\JsonApi\v1\Resource;
 
-use Interop\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use SuiteCRM\API\JsonApi\v1\Links;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
 use SuiteCRM\API\JsonApi\v1\Enumerator\ResourceEnum;
 use SuiteCRM\API\v8\Exception\BadRequestException;
 use SuiteCRM\API\v8\Exception\ConflictException;
-use SuiteCRM\API\v8\Exception\NotImplementedException;
-use SuiteCRM\Utility\SuiteLogger as Logger;
 
 /**
  * Class Resource
@@ -123,7 +117,7 @@ class Resource extends ResourceIdentifier
      */
     public function fromJsonApiRequest(array $data, $source = ResourceEnum::DEFAULT_SOURCE)
     {
-        if(isset($data['id'])) {
+        if (isset($data['id'])) {
             $this->id = $data['id'];
         }
         $this->type = $data['type'];
@@ -135,7 +129,7 @@ class Resource extends ResourceIdentifier
             throw $exception;
         }
 
-        if(!isset($data[self::ATTRIBUTES] )) {
+        if (!isset($data[self::ATTRIBUTES])) {
             $exception = new BadRequestException('[Missing attributes]');
             $exception->setSource('/data/attributes');
             throw $exception;
@@ -190,15 +184,15 @@ class Resource extends ResourceIdentifier
             }
         }
 
-        if($this->meta !== null) {
+        if ($this->meta !== null) {
             $response[self::META] = $this->meta;
         }
 
-        if($this->links !== null) {
+        if ($this->links !== null) {
             $response[self::LINKS] = $this->links->toJsonApiResponse();
         }
 
-        if($this->relationships !== null) {
+        if ($this->relationships !== null) {
             $response[self::RELATIONSHIPS] = $this->relationships;
         }
 
@@ -209,7 +203,8 @@ class Resource extends ResourceIdentifier
      * @param Links $links
      * @return $this
      */
-    public function withLinks(Links $links) {
+    public function withLinks(Links $links)
+    {
         $this->links = $links;
 
         return clone $this;
@@ -219,7 +214,8 @@ class Resource extends ResourceIdentifier
      * @param Relationship $relationship
      * @return Resource|$this
      */
-    public function withRelationship(\SuiteCRM\API\JsonApi\v1\Resource\Relationship $relationship) {
+    public function withRelationship(\SuiteCRM\API\JsonApi\v1\Resource\Relationship $relationship)
+    {
         $relationshipName = $relationship->getRelatationshipName();
         $this->relationships[$relationshipName] = $relationship->toJsonApiResponse();
         return clone $this;
@@ -233,10 +229,10 @@ class Resource extends ResourceIdentifier
     /**
      * Reserved words which must not be used in the Json API Request / Response
      * @return array
-     */ 
+     */
     public function getReservedKeywords()
     {
-         return self::$JSON_API_RESERVED_KEYWORDS;
+        return self::$JSON_API_RESERVED_KEYWORDS;
     }
     /**
      * @throws ConflictException
@@ -268,7 +264,6 @@ class Resource extends ResourceIdentifier
             $dataRelationships = $data[self::RELATIONSHIPS];
             // Validate relationships
             foreach ($dataRelationships as $relationshipName => $relationship) {
-
                 if (isset($relationship['data']) === false) {
                     $exception = new BadRequestException('[Resource] [missing relationship data]');
                     $exception->setSource('/data/relationships/{link}/data');
@@ -293,7 +288,6 @@ class Resource extends ResourceIdentifier
                             $toManyRelationshipName
                         );
                     }
-
                 } else {
                     // detected to one
                     $toOneRelationship = $relationship['data'];
@@ -334,7 +328,7 @@ class Resource extends ResourceIdentifier
      */
     private function validateToOneRelationshipFromDataArray($toOneRelationship, $relationshipName)
     {
-    // validate relationship
+        // validate relationship
         if (isset($toOneRelationship['id']) === false || empty($toOneRelationship['id'])) {
             $exception = new BadRequestException('[Resource] [missing "to one" relationship field] "id"');
             $exception->setSource(self::DATA_RELATIONSHIPS . $relationshipName . '/id');
@@ -380,7 +374,6 @@ class Resource extends ResourceIdentifier
                 self::DATA_RELATIONSHIPS . $relationshipName . '/' . $toManyRelationshipName . '/type'
             );
             throw $exception;
-
         }
 
         if (isset($toManyRelationship[self::ATTRIBUTES]) === true) {

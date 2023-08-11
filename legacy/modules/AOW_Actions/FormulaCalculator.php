@@ -7,9 +7,9 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -249,8 +249,12 @@ class FormulaCalculator
                 $pos = strpos($evaluatedValue, $childItem['value']);
                 if ($pos !== false) {
                     $this->log("Going to replace child value '" . $childItem['value'] . "' in expression: " . $evaluatedValue);
-                    $evaluatedValue = substr_replace($evaluatedValue, $childItem['evaluatedValue'], $pos,
-                        strlen($childItem['value']));
+                    $evaluatedValue = substr_replace(
+                        $evaluatedValue,
+                        $childItem['evaluatedValue'],
+                        $pos,
+                        strlen($childItem['value'])
+                    );
                     $this->log("Replaced child value '" . $childItem['evaluatedValue'] . "'. New expression: " . $evaluatedValue);
                 }
             }
@@ -330,10 +334,9 @@ class FormulaCalculator
         if (($params = $this->evaluateFunctionParams("substring", $text, $childItems)) != null) {
             // Workaround for PHP < 5.4.8
             if (isset($params[2])) {
-                return mb_substr($params[0], intval($params[1]), intval($params[2]));
-            } else {
-                return mb_substr($params[0], intval($params[1]));
+                return mb_substr($params[0], (int)$params[1], (int)$params[2]);
             }
+            return mb_substr($params[0], (int)$params[1]);
         }
 
         if (($params = $this->evaluateFunctionParams("length", $text, $childItems)) != null) {
@@ -404,9 +407,9 @@ class FormulaCalculator
             return date($params[0], strtotime($params[1]));
         }
 
-        if (($params = $this->evaluateFunctionParams("datediff", $text, $childItems)) != null) {
-            $d1 = new DateTime($params[0]);
-            $d2 = new DateTime($params[1]);
+        if (($params = $this->evaluateFunctionParams("datediff", $text, $childItems)) != null) { 
+            $d1 = new DateTime($this->getDBFormat($params[0]));
+            $d2 = new DateTime($this->getDBFormat($params[1]));
             $diff = $d1->diff($d2);
 
             switch ($params[2]) {
@@ -644,7 +647,7 @@ class FormulaCalculator
      */
     private function parseFloat($value)
     {
-        return floatval(str_replace(",", ".", $value));
+        return (float)str_replace(",", ".", $value);
     }
 
     /**
@@ -661,7 +664,7 @@ class FormulaCalculator
     {
         $prefix = $isTime ? 'PT' : 'P';
 
-        $datetime = new DateTime($datestring);
+        $datetime = new DateTime($this->getDBFormat($datestring));
 
         if ($isAdd) {
             $datetime->add(new DateInterval($prefix . $ammount . $type));
@@ -765,33 +768,37 @@ class FormulaCalculator
                     date('Y-m-d')
                 ) {
                     return $this->configurator->config[FormulaCalculator::CONFIGURATOR_NAME]['DailyCounter'][$parameterText]['value'];
-                } else {
-                    return 0;
                 }
+
+                return 0;
+
             case 'DailyCounterPerUser':
                 if ($this->configurator->config[FormulaCalculator::CONFIGURATOR_NAME]['DailyCounterPerUser'][$this->creatorUserId][$parameterText]['date'] ===
                     date('Y-m-d')
                 ) {
                     return $this->configurator->config[FormulaCalculator::CONFIGURATOR_NAME]['DailyCounterPerUser'][$this->creatorUserId][$parameterText]['value'];
-                } else {
-                    return 0;
                 }
+
+                return 0;
+
             case 'DailyCounterPerModule':
                 if ($this->configurator->config[FormulaCalculator::CONFIGURATOR_NAME]['DailyCounterPerUser'][$this->currentModule][$parameterText]['date'] ===
                     date('Y-m-d')
                 ) {
                     return $this->configurator->config[FormulaCalculator::CONFIGURATOR_NAME]['DailyCounterPerUser'][$this->currentModule][$parameterText]['value'];
-                } else {
-                    return 0;
                 }
+
+                return 0;
+
             case 'DailyCounterPerUserPerModule':
                 if ($this->configurator->config[FormulaCalculator::CONFIGURATOR_NAME]['DailyCounterPerUserPerModule'][$this->creatorUserId][$this->currentModule][$parameterText]['date'] ===
                     date('Y-m-d')
                 ) {
                     return $this->configurator->config[FormulaCalculator::CONFIGURATOR_NAME]['DailyCounterPerUserPerModule'][$this->creatorUserId][$this->currentModule][$parameterText]['value'];
-                } else {
-                    return 0;
                 }
+
+                return 0;
+
         }
     }
 
@@ -846,4 +853,43 @@ class FormulaCalculator
     {
         return sprintf("%0" . $digits . "d", $value);
     }
+
+    /**
+     * Outputs date and datetime values in DB format
+     *
+     * @param String $date
+     * @return String
+     */
+    private function getDBFormat($date) {
+        // 1) If WF is thrown by the after_save LH, the bean is already loaded and the date/datetime value 
+        // is properly formatted, so will only change the timezone value from UTC to user's one.
+        // 2) If WF is run by the scheduler task, will change date/datetime value to DB format.
+        $formatDate = 'Y-m-d';
+        $validDate = DateTime::createFromFormat($formatDate, $date);
+        $formatDateTime = 'Y-m-d H:i:s';
+        $validDateTime = DateTime::createFromFormat($formatDateTime, $date);
+        if ($validDate && $validDate->format($formatDate) === $date) {
+            // Nothing to do
+            return $date;
+        } else if ($validDateTime && $validDateTime->format($formatDateTime) === $date) {
+            // Set TZ to user's TZ
+            global $timedate, $current_user;
+            $date = $timedate->fromDb($date);
+            $date = $timedate->tzUser($date, $current_user);
+            return $date->format('Y-m-d H:i:s');
+        } else { // In this case the WF is run by the cron
+            global $current_user, $timedate;
+            if(strpos($date, " ") !== false){
+                $type = 'datetime';
+            } else{
+                $type = 'date';
+            }
+            $date = $timedate->fromUserType($date, $type, $current_user);
+            if ($date) {
+                return $date->asDb(false);
+            }
+            return null;
+        }
+    }
+
 }

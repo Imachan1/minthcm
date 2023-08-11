@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,14 +45,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
-
- * Description:  TODO To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 
  function canSendPassword() {
  	require_once('include/SugarPHPMailer.php');
@@ -60,30 +52,35 @@ if (!defined('sugarEntry') || !sugarEntry) {
 	global $current_user;
 	global $app_strings;
 	$mail = new SugarPHPMailer();
- 	$emailTemp = new EmailTemplate();
+    $emailTemp = BeanFactory::newBean('EmailTemplates');
  	$mail->setMailerForSystem();
     $emailTemp->disable_row_level_security = true;
 
 
-    if ($current_user->is_admin){
-    	if ($emailTemp->retrieve($GLOBALS['sugar_config']['passwordsetting']['generatepasswordtmpl']) == '')
-        	return $mod_strings['LBL_EMAIL_TEMPLATE_MISSING'];
-    	if(empty($emailTemp->body) && empty($emailTemp->body_html))
-    		return $app_strings['LBL_EMAIL_TEMPLATE_EDIT_PLAIN_TEXT'];
-    	if($mail->Mailer == 'smtp' && $mail->Host =='')
-    		return $mod_strings['ERR_SERVER_SMTP_EMPTY'];
+    if ($current_user->is_admin) {
+        if ($emailTemp->retrieve($GLOBALS['sugar_config']['passwordsetting']['generatepasswordtmpl']) == '') {
+            return $mod_strings['LBL_EMAIL_TEMPLATE_MISSING'];
+        }
+        if (empty($emailTemp->body) && empty($emailTemp->body_html)) {
+            return $app_strings['LBL_EMAIL_TEMPLATE_EDIT_PLAIN_TEXT'];
+        }
+        if ($mail->Mailer == 'smtp' && $mail->Host =='') {
+            return $mod_strings['ERR_SERVER_SMTP_EMPTY'];
+        }
 
-		$email_errors=$mod_strings['ERR_EMAIL_NOT_SENT_ADMIN'];
-		if ($mail->Mailer == 'smtp')
-			$email_errors.="<br>-".$mod_strings['ERR_SMTP_URL_SMTP_PORT'];
-		if ($mail->SMTPAuth)
-		 	$email_errors.="<br>-".$mod_strings['ERR_SMTP_USERNAME_SMTP_PASSWORD'];
-		$email_errors.="<br>-".$mod_strings['ERR_RECIPIENT_EMAIL'];
-		$email_errors.="<br>-".$mod_strings['ERR_SERVER_STATUS'];
-		return $email_errors;
-	}
-	else
-		return $mod_strings['LBL_EMAIL_NOT_SENT'];
+        $email_errors=$mod_strings['ERR_EMAIL_NOT_SENT_ADMIN'];
+        if ($mail->Mailer == 'smtp') {
+            $email_errors.="<br>-".$mod_strings['ERR_SMTP_URL_SMTP_PORT'];
+        }
+        if ($mail->SMTPAuth) {
+            $email_errors.="<br>-".$mod_strings['ERR_SMTP_USERNAME_SMTP_PASSWORD'];
+        }
+        $email_errors.="<br>-".$mod_strings['ERR_RECIPIENT_EMAIL'];
+        $email_errors.="<br>-".$mod_strings['ERR_SERVER_STATUS'];
+        return $email_errors;
+    } else {
+        return $mod_strings['LBL_EMAIL_NOT_SENT'];
+    }
 }
 
 function  hasPasswordExpired($username){
@@ -115,8 +112,9 @@ function  hasPasswordExpired($username){
 
 		        $expiretime = $timeFromUser->get("+{$expireday} days")->ts;
 
-			    if ($timedate->getNow()->ts < $expiretime)
+			    if ($timedate->getNow()->ts < $expiretime){
 			    	return false;
+                }
 			    else{
 			    	$_SESSION['expiration_type']= $mod_strings['LBL_PASSWORD_EXPIRATION_TIME'];
 			    	return true;
@@ -131,11 +129,9 @@ function  hasPasswordExpired($username){
 		        if ($login+1 >= $res[$type.'expirationlogin']){
 		        	$_SESSION['expiration_type']= $mod_strings['LBL_PASSWORD_EXPIRATION_LOGIN'];
 		        	return true;
-		        }
-		        else
-		            {
+		        } else{
 			    	return false;
-			    	}
+			    }
 		    	break;
 
 		    case '0':

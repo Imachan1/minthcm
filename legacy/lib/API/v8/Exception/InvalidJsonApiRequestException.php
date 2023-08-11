@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,8 +44,6 @@
 
 namespace SuiteCRM\API\v8\Exception;
 
-use SuiteCRM\Enumerator\ExceptionCode;
-
 /**
  * Class InvalidJsonApiRequestException
  * @package SuiteCRM\API\v8\Exception
@@ -56,5 +54,4 @@ class InvalidJsonApiRequestException extends ApiException
     const DEFAULT_CODE = 8010;
     const HTTP_STATUS = 400;
     const DETAIL_TEXT_LABEL = 'LBL_INVALID_JSON_API_REQUEST_EXCEPTION_DETAIL';
-
 }

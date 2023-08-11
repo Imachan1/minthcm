@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,7 +45,6 @@
 namespace SuiteCRM\API\JsonApi\v1\Filters\Validators;
 
 use SuiteCRM\API\JsonApi\v1\Filters\Interfaces\ValidatorInterface;
-use SuiteCRM\API\JsonApi\v1\Filters\Operators\Operator;
 use SuiteCRM\Exception\InvalidArgumentException;
 
 /**
@@ -61,7 +60,7 @@ class OperatorValidator implements ValidatorInterface
      */
     public function isValid($value)
     {
-        if(!is_string(value)) {
+        if (!is_string(value)) {
             throw new Exception(
                 '[JsonApi][v1][Filters][Validators][OperatorValidator][expected type to be string] $fieldKey'
             );

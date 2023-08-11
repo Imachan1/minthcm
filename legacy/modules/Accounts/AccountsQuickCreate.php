@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,17 +50,18 @@ require_once('include/EditView/QuickCreate.php');
 
 
 
-class AccountsQuickCreate extends QuickCreate {
+class AccountsQuickCreate extends QuickCreate
+{
+    public $javascript;
     
-    var $javascript;
-    
-    function process() {
+    public function process()
+    {
         global $current_user, $timedate, $app_list_strings, $current_language, $mod_strings;
         $mod_strings = return_module_language($current_language, 'Accounts');
         
         parent::process();
   
-        if($this->viaAJAX) { // override for ajax call
+        if ($this->viaAJAX) { // override for ajax call
             $this->ss->assign('saveOnclick', "onclick='if(check_form(\"accountsQuickCreate\")) return SUGAR.subpanelUtils.inlineSave(this.form.id, \"accounts\"); else return false;'");
             $this->ss->assign('cancelOnclick', "onclick='return SUGAR.subpanelUtils.cancelCreate(\"subpanel_accounts\")';");
         }
@@ -70,10 +71,10 @@ class AccountsQuickCreate extends QuickCreate {
         $this->javascript = new javascript();
         $this->javascript->setFormName('accountsQuickCreate');
         
-        $focus = new Account();
+        $focus = BeanFactory::newBean('Accounts');
         $this->javascript->setSugarBean($focus);
         $this->javascript->addAllFields('');
 
         $this->ss->assign('additionalScripts', $this->javascript->getScript(false));
-    }   
+    }
 }

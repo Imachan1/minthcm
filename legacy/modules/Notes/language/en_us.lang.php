@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -98,7 +98,7 @@ $mod_strings = array(
     'LBL_CREATED_BY' => 'Created By',
     'LBL_MODIFIED_BY' => 'Modified By',
     'LBL_SEND_ANYWAYS' => 'This email has no subject. Send/save anyway?',
-    'LBL_NOTE_INFORMATION' => 'OVERVIEW',
+    'LBL_NOTE_INFORMATION' => 'OVERVIEW', //No need to be translated in all caps. Translation used just in menu action items when using the SuiteP template
     'LBL_MY_NOTES_DASHLETNAME' => 'My Notes',
     'LBL_EDITLAYOUT' => 'Edit Layout' /*for 508 compliance fix*/,
     //For export labels
@@ -108,4 +108,5 @@ $mod_strings = array(
     'LBL_DATE_MODIFIED' => 'Date Modified',
     'LBL_DELETED' => 'Deleted',
     'LBL_LIST_TITLE' => 'Note or Attachment',
+    'LBL_FILE_CONTENTS' => 'File Contents',
 );

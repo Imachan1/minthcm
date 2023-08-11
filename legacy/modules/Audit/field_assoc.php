@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,13 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 global $genericAssocFieldsArray;
 global $moduleAssocFieldsArray;
 
@@ -64,25 +58,25 @@ $genericAssocFieldsArray = array('assigned_user_id' =>
                                   array('table_name' => 'accounts',
                                     'select_field_name' => 'name',
                                     'select_field_join'  => 'id',
-                                  ), 
+                                  ),
                                   'contact_id' =>
                                   array('table_name' => 'contacts',
-                                    'select_field_name' => 
-                                    		array('first_name',
-                                    			  'last_name',
-                                    		),
+                                    'select_field_name' =>
+                                            array('first_name',
+                                                  'last_name',
+                                            ),
                                     'select_field_join'  => 'id',
                                   ),
                                   'fixed_in_release' =>
                                   array('table_name' => 'releases',
                                     'select_field_name' => 'name',
                                     'select_field_join'  => 'id',
-                                  ), 
+                                  ),
                                   'found_in_release' =>
                                   array('table_name' => 'releases',
                                     'select_field_name' => 'name',
                                     'select_field_join'  => 'id',
-                                  ),                                   
+                                  ),
                             );
 $moduleAssocFieldsArray = array('Account' =>
                                 array('parent_id' =>

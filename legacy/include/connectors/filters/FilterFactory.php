@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,45 +50,44 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Filter factory
  * @api
  */
-class FilterFactory{
+class FilterFactory
+{
+    public static $filter_map = array();
 
-	static $filter_map = array();
+    public static function getInstance($source_name, $filter_name='')
+    {
+        require_once('include/connectors/filters/default/filter.php');
+        $key = $source_name . $filter_name;
+        if (empty(self::$filter_map[$key])) {
+            if (empty($filter_name)) {
+                $filter_name = $source_name;
+            }
 
-	public static function getInstance($source_name, $filter_name=''){
-		require_once('include/connectors/filters/default/filter.php');
-		$key = $source_name . $filter_name;
-		if(empty(self::$filter_map[$key])) {
+            //split the wrapper name to find the path to the file.
+            $dir = str_replace('_', '/', $filter_name);
+            $parts = explode("/", $dir);
+            $file = $parts[count($parts)-1];
 
-			if(empty($filter_name)){
-			   $filter_name = $source_name;
-			}
+            //check if this override wrapper file exists.
+            require_once('include/connectors/ConnectorFactory.php');
+            if (file_exists("modules/Connectors/connectors/filters/{$dir}/{$file}.php") ||
+               file_exists("custom/modules/Connectors/connectors/filters/{$dir}/{$file}.php")) {
+                ConnectorFactory::load($filter_name, 'filters');
+                try {
+                    $filter_name .= '_filter';
+                } catch (Exception $ex) {
+                    return null;
+                }
+            } else {
+                //if there is no override wrapper, use the default.
+                $filter_name = 'default_filter';
+            }
 
-			//split the wrapper name to find the path to the file.
-			$dir = str_replace('_','/',$filter_name);
-			$parts = explode("/", $dir);
-			$file = $parts[count($parts)-1];
-
-			//check if this override wrapper file exists.
-		    require_once('include/connectors/ConnectorFactory.php');
-			if(file_exists("modules/Connectors/connectors/filters/{$dir}/{$file}.php") ||
-			   file_exists("custom/modules/Connectors/connectors/filters/{$dir}/{$file}.php")) {
-				ConnectorFactory::load($filter_name, 'filters');
-				try{
-					$filter_name .= '_filter';
-				}catch(Exception $ex){
-					return null;
-				}
-			}else{
-				//if there is no override wrapper, use the default.
-				$filter_name = 'default_filter';
-			}
-
-			$component = ConnectorFactory::getInstance($source_name);
-			$filter = new $filter_name();
-			$filter->setComponent($component);
-			self::$filter_map[$key] = $filter;
-		} //if
-		return self::$filter_map[$key];
-	}
-
+            $component = ConnectorFactory::getInstance($source_name);
+            $filter = new $filter_name();
+            $filter->setComponent($component);
+            self::$filter_map[$key] = $filter;
+        } //if
+        return self::$filter_map[$key];
+    }
 }

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -54,20 +54,16 @@ class SugarWidgetFieldcurrency_id extends SugarWidgetFieldEnum
      * @param bool $refresh cache
      * @return array list of beans
      */
-    static public function getCurrenciesList($refresh = false)
+    public static function getCurrenciesList($refresh = false)
     {
         static $list = false;
-        if ($list === false || $refresh == true)
-        {
-            $currency = new Currency();
+        if ($list === false || $refresh == true) {
+            $currency = BeanFactory::newBean('Currencies');
             $list = $currency->get_full_list('name');
             $currency->retrieve('-99');
-            if (is_array($list))
-            {
+            if (is_array($list)) {
                 $list = array_merge(array($currency), $list);
-            }
-            else
-            {
+            } else {
                 $list = array($currency);
             }
         }
@@ -84,9 +80,8 @@ class SugarWidgetFieldcurrency_id extends SugarWidgetFieldEnum
     {
         static $currencies;
         $value = $this->_get_list_value($layout_def);
-        if (empty($currencies[$value]))
-        {
-            $currency = new Currency();
+        if (empty($currencies[$value])) {
+            $currency = BeanFactory::newBean('Currencies');
             $currency->retrieve($value);
             $currencies[$value] = $currency->symbol . ' ' . $currency->iso4217;
         }
@@ -103,27 +98,20 @@ class SugarWidgetFieldcurrency_id extends SugarWidgetFieldEnum
     {
         $tmpList = self::getCurrenciesList();
         $list = array();
-        foreach ($tmpList as $bean)
-        {
+        foreach ($tmpList as $bean) {
             $list[$bean->id] = $bean->symbol . ' ' . $bean->iso4217;
         }
 
         $field_def = $this->reporter->all_fields[$layout_def['column_key']];
-        if (!empty ($field_def['sort_on']))
-        {
+        if (!empty($field_def['sort_on'])) {
             $order_by = $layout_def['table_alias'].".".$field_def['sort_on'];
-        }
-        else
-        {
+        } else {
             $order_by = $this->_get_column_select($layout_def);
         }
 
-        if (empty ($layout_def['sort_dir']) || $layout_def['sort_dir'] == 'a')
-        {
+        if (empty($layout_def['sort_dir']) || $layout_def['sort_dir'] == 'a') {
             $order_dir = "ASC";
-        }
-        else
-        {
+        } else {
             $order_dir = "DESC";
         }
         return $this->reporter->db->orderByEnum($order_by, $list, $order_dir);

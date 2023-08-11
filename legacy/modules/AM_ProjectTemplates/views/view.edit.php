@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,31 +48,30 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/json_config.php');
 
-class AM_ProjectTemplatesViewEdit extends ViewEdit {
-
-    function __construct()
+class AM_ProjectTemplatesViewEdit extends ViewEdit
+{
+    public function __construct()
     {
         parent::__construct();
     }
 
- 	function display() {
+    public function display()
+    {
+        global $json;
 
-	 	global $json;
-
-		$this->bean->is_template = 0;
+        $this->bean->is_template = 0;
         $this->ev->ss->assign("is_template", 0);
 
         $json = getJSONobj();
         $json_config = new json_config();
-		if (isset($this->bean->json_id) && !empty ($this->bean->json_id)) {
-			$javascript = $json_config->get_static_json_server(false, true, 'AM_ProjectTemplates', $this->bean->json_id);
-		} else {
-			$this->bean->json_id = $this->bean->id;
-			$javascript = $json_config->get_static_json_server(false, true, 'AM_ProjectTemplates', $this->bean->id);
-		}
- 		$this->ss->assign('JSON_CONFIG_JAVASCRIPT', $javascript);
+        if (isset($this->bean->json_id) && !empty($this->bean->json_id)) {
+            $javascript = $json_config->get_static_json_server(false, true, 'AM_ProjectTemplates', $this->bean->json_id);
+        } else {
+            $this->bean->json_id = $this->bean->id;
+            $javascript = $json_config->get_static_json_server(false, true, 'AM_ProjectTemplates', $this->bean->id);
+        }
+        $this->ss->assign('JSON_CONFIG_JAVASCRIPT', $javascript);
 
- 		parent::display();
-
- 	}
+        parent::display();
+    }
 }

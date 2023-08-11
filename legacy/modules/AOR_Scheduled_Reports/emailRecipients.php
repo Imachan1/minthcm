@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,23 +42,26 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-function display_email_lines($focus, $field, $value, $view){
+function display_email_lines($focus, $field, $value, $view)
+{
     global $app_list_strings;
     $params = unserialize(base64_decode($value));
 
-    if($view == 'EditView') {
+    if ($view == 'EditView') {
         $html = '<script src="modules/AOR_Scheduled_Reports/emailRecipients.js"></script>';
         $html .= '<input type="hidden" name="aor_email_type_list" id="aor_email_type_list" value="' . get_select_options_with_id($app_list_strings['aor_email_type_list'], '') . '">
 				  <input type="hidden" name="aor_email_to_list" id="aor_email_to_list" value="' . get_select_options_with_id($app_list_strings['aor_email_to_list'], '') . '">';
 
-        $html .= '<button type="button" onclick="add_emailLine()"><img src="' . SugarThemeRegistry::current()->getImageURL('id-ff-add.png') . '"></button>';
+                  $html .= '<button type="button" class="button" onclick="add_emailLine()"><img src="' . SugarThemeRegistry::current()->getImageURL('id-ff-add.png') . '"></button>';
         $html .= '<table id="emailLine_table" width="100%"></table>';
 
         $html .= "<script>";
 
         if (isset($params['email_target_type'])) {
             foreach ($params['email_target_type'] as $key => $field) {
-                if (is_array($params['email'][$key])) $params['email'][$key] = json_encode($params['email'][$key]);
+                if (is_array($params['email'][$key])) {
+                    $params['email'][$key] = json_encode($params['email'][$key]);
+                }
                 $html .= "load_emailline('" . $params['email_to_type'][$key] . "','" . $params['email_target_type'][$key] . "','" . $params['email'][$key] . "');";
             }
         }

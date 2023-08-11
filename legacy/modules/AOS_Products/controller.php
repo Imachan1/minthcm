@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -51,17 +51,15 @@
   
   
  class AOS_ProductsController extends SugarController
-{	
-	function action_editview(){
-		$this->view = 'edit';
-		$GLOBALS['view'] = $this->view;
-		if(!empty($_REQUEST['deleteAttachment'])){
-			ob_clean();
-			echo $this->bean->deleteAttachment($_REQUEST['isDuplicate']) ? 'true' : 'false';
-			sugar_cleanup(true);
-		}
-
-	}
-	
-}
-
+ {
+     public function action_editview()
+     {
+         $this->view = 'edit';
+         $GLOBALS['view'] = $this->view;
+         if (!empty($_REQUEST['deleteAttachment'])) {
+             ob_clean();
+             echo $this->bean->deleteAttachment($_REQUEST['isDuplicate']) ? 'true' : 'false';
+             sugar_cleanup(true);
+         }
+     }
+ }

@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -36,15 +36,14 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
- * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
+ * these Appropriate Legal Notices must retain the display of the 'Powered by
+ * SugarCRM' logo and 'Supercharged by SuiteCRM' logo. If the display of the logos is not
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words  'Powered by SugarCRM' and 'Supercharged by SuiteCRM'.
  */
 
 if (!defined('sugarEntry') || !sugarEntry) {
-    die ('Not A Valid Entry Point');
+    die('Not A Valid Entry Point');
 }
 
 class EmailsViewDeleteDraftEmail extends ViewAjax
@@ -64,7 +63,7 @@ class EmailsViewDeleteDraftEmail extends ViewAjax
         global $app_strings;
         $response = array();
 
-        if(empty($this->bean->status)) {
+        if (empty($this->bean->status)) {
             $this->bean->status = $_REQUEST['status'];
         }
 
@@ -96,5 +95,4 @@ class EmailsViewDeleteDraftEmail extends ViewAjax
 
         echo json_encode($response);
     }
-
 }

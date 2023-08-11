@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,26 +50,26 @@
  */
  //format '<action_name>' => '<view_name>',
  $action_view_map = array(
- 						'index' => 'main',
- 						'module'=>'module',
- 						'modulefields'=>'modulefields',
- 						'modulelabels'=>'modulelabels',
- 						'relationships'=>'relationships',
- 						'relationship'=>'relationship',
+                        'index' => 'main',
+                        'module'=>'module',
+                        'modulefields'=>'modulefields',
+                        'modulelabels'=>'modulelabels',
+                        'relationships'=>'relationships',
+                        'relationship'=>'relationship',
                         'resetmodule'=>'resetmodule',
- 						'modulefield'=>'modulefield',
- 						'displaydeploy'=>'displaydeploy',
- 						'package'=>'package',
- 						'dropdown'=>'dropdown',
- 						'dropdowns'=>'dropdowns',
- 						'detailview' => 'detail',
- 						'editview' => 'edit',
- 						'popup' => 'popup',
- 						'home'=>'home',
+                        'modulefield'=>'modulefield',
+                        'displaydeploy'=>'displaydeploy',
+                        'package'=>'package',
+                        'dropdown'=>'dropdown',
+                        'dropdowns'=>'dropdowns',
+                        'detailview' => 'detail',
+                        'editview' => 'edit',
+                        'popup' => 'popup',
+                        'home'=>'home',
                         'visibilityeditor' => 'visibilityeditor',
- 						'exportcustomizations'=>'exportcustomizations',
+                        'exportcustomizations'=>'exportcustomizations',
 
- 					);
+                    );
     // add those we need from the global action_view_map
     $action_view_map['dc'] = 'dc';
     $action_view_map['dcajax'] = 'dcajax';

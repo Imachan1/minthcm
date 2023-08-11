@@ -12,7 +12,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,8 +45,10 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
 require_once('include/SugarObjects/templates/person/Person.php');
 require_once('include/MVC/SugarModule.php');
+require_once('include/utils.php');
 
 /**
  * quicksearchQuery class, handles AJAX calls from quicksearch.js
@@ -290,11 +292,7 @@ class quicksearchQuery {
 
                // get fields to match enum vals
                if ( empty($app_list_strings) ) {
-                  if ( isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '' ) {
-                     $current_language = $_SESSION['authenticated_user_language'];
-                  } else {
-                     $current_language = $sugar_config['default_language'];
-                  }
+                  $current_language = get_current_language();
                   $app_list_strings = return_app_list_strings_language($current_language);
                }
 
@@ -371,7 +369,7 @@ class quicksearchQuery {
     */
    protected function getRawResults($args, $singleSelect = false) {
       $orderBy = !empty($args['order']) ? $args['order'] : '';
-      $limit = !empty($args['limit']) ? intval($args['limit']) : '';
+      $limit = !empty($args['limit']) ? (int)($args['limit']) : '';
       $data = array();
 
       foreach ( $args['modules'] as $module ) {

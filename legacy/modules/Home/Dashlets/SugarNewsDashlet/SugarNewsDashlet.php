@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,33 +46,20 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
+ require_once('modules/Home/Dashlets/iFrameDashlet/iFrameDashlet.php');
 
-require_once('modules/Home/Dashlets/iFrameDashlet/iFrameDashlet.php');
+ class SugarNewsDashlet extends iFrameDashlet
+ {
+     public $displayTpl = 'modules/Home/Dashlets/SugarNewsDashlet/display.tpl';
+     public $configureTpl = 'modules/Home/Dashlets/SugarNewsDashlet/configure.tpl';
+     public $defaultURL = 'https://minthcm.org/news/';
+     public $url;
 
-class SugarNewsDashlet extends iFrameDashlet {
-    var $displayTpl = 'modules/Home/Dashlets/SugarNewsDashlet/display.tpl';
-    var $configureTpl = 'modules/Home/Dashlets/SugarNewsDashlet/configure.tpl';
-    var $defaultURL = 'https://minthcm.org/news/';
-    var $url;
-
-    public function __construct($id, $options = null)
-    {
-        $this->title = translate('LBL_DASHLET_SUITE_NEWS', 'Home');
-        parent::__construct($id, $options);
-    }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function SugarNewsDashlet($id, $options = null){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($id, $options);
-    }
-
-}
+     public function __construct($id, $options = null)
+     {
+         $this->title = translate('LBL_DASHLET_SUITE_NEWS', 'Home');
+         parent::__construct($id, $options);
+     }
+     
+ }
+ 

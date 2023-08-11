@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,13 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 
 
@@ -77,7 +71,7 @@ global $focus_list;
 $button  = "<form action='index.php' method='post' name='UsersForm' id='UsersForm'>\n";
 $button .= "<input type='hidden' name='module' value='Users'>\n";
 if ($currentModule == 'Roles') {
-	$button .= "<input type='hidden' name='record' value='$focus->id'>\n";
+    $button .= "<input type='hidden' name='record' value='$focus->id'>\n";
 }
 $button .= "<input type='hidden' name='return_module' value='".$currentModule."'>\n";
 $button .= "<input type='hidden' name='return_action' value='".$action."'>\n";
@@ -86,8 +80,9 @@ $button .= "<input type='hidden' name='action'>\n";
 $button .= "<input type='hidden' name='report_module'>\n";
 $button .= "<input type='hidden' name='id'>\n";
 
-if ($currentModule == 'Roles') 
-	$button .= "<input title='".$app_strings['LBL_SELECT_BUTTON_TITLE']." ' type='button' class='button' value='  ".$app_strings['LBL_SELECT_BUTTON_LABEL']."  ' name='button' LANGUAGE=javascript onclick='window.open(\"index.php?module=Users&action=PopupUsers&html=Popup_Users_picker&form=UsersForm&record=".$focus->id."&form_submit=true&query=true\",\"new\",\"width=600,height=400,resizable=1,scrollbars=1\");'>\n";
+if ($currentModule == 'Roles') {
+    $button .= "<input title='".$app_strings['LBL_SELECT_BUTTON_TITLE']." ' type='button' class='button' value='  ".$app_strings['LBL_SELECT_BUTTON_LABEL']."  ' name='button' LANGUAGE=javascript onclick='window.open(\"index.php?module=Users&action=PopupUsers&html=Popup_Users_picker&form=UsersForm&record=".$focus->id."&form_submit=true&query=true\",\"new\",\"width=600,height=400,resizable=1,scrollbars=1\");'>\n";
+}
 
 $button .= "</form>\n";
 
@@ -97,11 +92,11 @@ $ListView = new ListView();
 $ListView->initNewXTemplate('modules/Roles/SubPanelViewUsers.html', $current_module_strings);
 
 $ListView->xTemplateAssign("ROLE_RECORD", $focus->id);
-$ListView->xTemplateAssign("EDIT_INLINE_PNG",  SugarThemeRegistry::current()->getImage('edit_inline','align="absmiddle" border="0"',null,null,'.gif',$app_strings['LNK_EDIT']));
-$ListView->xTemplateAssign("REMOVE_INLINE_PNG",  SugarThemeRegistry::current()->getImage('delete_inline','align="absmiddle" border="0"',null,null,'.gif',$app_strings['LNK_REMOVE']));
+$ListView->xTemplateAssign("EDIT_INLINE_PNG", SugarThemeRegistry::current()->getImage('edit_inline', 'align="absmiddle" border="0"', null, null, '.gif', $app_strings['LNK_EDIT']));
+$ListView->xTemplateAssign("REMOVE_INLINE_PNG", SugarThemeRegistry::current()->getImage('delete_inline', 'align="absmiddle" border="0"', null, null, '.gif', $app_strings['LNK_REMOVE']));
 
 $ListView->xTemplateAssign("RETURN_URL", "&return_module=".$currentModule."&return_action=DetailView&return_id=".$focus->id);
-$ListView->setHeaderTitle($current_module_strings['LBL_MODULE_NAME'] );
+$ListView->setHeaderTitle($current_module_strings['LBL_MODULE_NAME']);
 $ListView->setQuery("", "", "user_name", "USER");
 $ListView->setHeaderText($button);
 $ListView->processListView($focus_list, "main", "USER");

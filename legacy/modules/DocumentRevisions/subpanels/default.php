@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,55 +48,55 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $subpanel_layout = array(
-	'top_buttons' => array(
+    'top_buttons' => array(
         array('widget_class' => 'SubPanelTopCreateRevisionButton'),
-	),
+    ),
 
-	'where' => '',
+    'where' => '',
 
 
-	'list_fields' => array(
-		  'filename' => 
-		  array (
-		    'vname' => 'LBL_REV_LIST_FILENAME',
-		    'widget_class' => 'SubPanelDetailViewLink',
-		    'width' => '15%',
-		    'default' => true,
-		  ),
-		  'revision' => 
-		  array (
-		    'vname' => 'LBL_REV_LIST_REVISION',
-		    'width' => '5%',
-		    'default' => true,
-		  ),
-		  'created_by_name' => 
-		  array (
-		    'vname' => 'LBL_REV_LIST_CREATED',
-		    'width' => '25%',
-		    'default' => true,
-		  ),
-		  'date_entered' => 
-		  array (
-		    'vname' => 'LBL_REV_LIST_ENTERED',
-		    'width' => '10%',
-		    'default' => true,
-		  ),
-		  'change_log' => 
-		  array (
-		    'vname' => 'LBL_REV_LIST_LOG',
-		    'width' => '35%',
-		    'default' => true,
-		  ),
-		  'del_button' => 
-		  array (
-		    'vname' => 'LBL_DELETE_BUTTON',
-		    'widget_class' => 'SubPanelRemoveButton',
-		    'width' => '5%',
-		    'default' => true,
-		  ),
-		  'document_id' => 
-		  array (
-		    'usage' => 'query_only',
-		  ),
-	),
+    'list_fields' => array(
+          'filename' =>
+          array(
+            'vname' => 'LBL_REV_LIST_FILENAME',
+            'widget_class' => 'SubPanelDetailViewLink',
+            'width' => '15%',
+            'default' => true,
+          ),
+          'revision' =>
+          array(
+            'vname' => 'LBL_REV_LIST_REVISION',
+            'width' => '5%',
+            'default' => true,
+          ),
+          'created_by_name' =>
+          array(
+            'vname' => 'LBL_REV_LIST_CREATED',
+            'width' => '25%',
+            'default' => true,
+          ),
+          'date_entered' =>
+          array(
+            'vname' => 'LBL_REV_LIST_ENTERED',
+            'width' => '10%',
+            'default' => true,
+          ),
+          'change_log' =>
+          array(
+            'vname' => 'LBL_REV_LIST_LOG',
+            'width' => '35%',
+            'default' => true,
+          ),
+          'del_button' =>
+          array(
+            'vname' => 'LBL_DELETE_BUTTON',
+            'widget_class' => 'SubPanelRemoveButton',
+            'width' => '5%',
+            'default' => true,
+          ),
+          'document_id' =>
+          array(
+            'usage' => 'query_only',
+          ),
+    ),
 );

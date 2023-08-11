@@ -9,9 +9,9 @@
                 {* viewTools ViewTools begin ref #34457 *}
                 {capture name="field_name" assign="field_name"}{{$fields[$colData.field.name].name}}{/capture}
                 {{if $smarty.foreach.colIteration.total > 1 && $colData.colspan != 3}}
-                    <div class="col-xs-12 col-sm-6 edit-view-row-item" {if $fields.$field_name.acl == 0}style="display: none;"{/if}>
+                    <div class="col-xs-12 col-sm-6 edit-view-row-item" data-field="{{$colData.field.name}}" {if $fields.$field_name.acl == 0}style="display: none;"{/if}>
                 {{else}}
-                    <div class="col-xs-12 col-sm-12 edit-view-row-item" {if $fields.$field_name.acl == 0}style="display: none;"{/if}>
+                    <div class="col-xs-12 col-sm-12 edit-view-row-item" data-field="{{$colData.field.name}}" {if $fields.$field_name.acl == 0}style="display: none;"{/if}>
                 {{/if}}
                 {* viewTools ViewTools end ref #34457 *}
                 {{counter name="fieldCount" start=0 print=false assign="fieldCount"}}

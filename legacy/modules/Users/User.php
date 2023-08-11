@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -352,17 +352,15 @@ class User extends Person implements EmailInterface
         $userPrivGuid = $this->getPreference('userPrivGuid', 'global', $this);
         if ($userPrivGuid) {
             return $userPrivGuid;
-        } else {
-            $this->setUserPrivGuid();
-            if (!isset($_SESSION['setPrivGuid'])) {
-                $_SESSION['setPrivGuid'] = true;
-                $userPrivGuid = $this->getUserPrivGuid();
-
-                return $userPrivGuid;
-            } else {
-                sugar_die("Breaking Infinite Loop Condition: Could not setUserPrivGuid.");
-            }
         }
+         $this->setUserPrivGuid();
+        if (!isset($_SESSION['setPrivGuid'])) {
+            $_SESSION['setPrivGuid'] = true;
+            $userPrivGuid = $this->getUserPrivGuid();
+
+            return $userPrivGuid;
+        }
+        sugar_die("Breaking Infinite Loop Condition: Could not setUserPrivGuid.");
     }
 
     public function setUserPrivGuid()
@@ -597,6 +595,9 @@ class User extends Person implements EmailInterface
      * addresses and return false it also set the variable called
      * User::$lastSaveErrorIsEmailAddressSaveError to true.
      *
+     * @global User $current_user
+     * @global array $sugar_config
+     * @global array $mod_strings
      * @param bool $check_notify
      * @return bool|string
      * @throws SuiteException
@@ -605,12 +606,16 @@ class User extends Person implements EmailInterface
     {
         global $current_user, $mod_strings;
 
+        if (!$this->hasSaveAccess()) {
+            throw new RuntimeException('Not authorized');
+        }
+
         $msg = '';
 
-        $isUpdate = !empty($this->id) && !$this->new_with_id;
+        $isUpdate = $this->isUpdate();
 
         //No SMTP server is set up Error.
-        $admin = new Administration();
+        $admin = BeanFactory::newBean('Administration');
         $smtp_error = $admin->checkSmtpError();
 
         // only admin user can change 2 factor authentication settings
@@ -662,6 +667,9 @@ class User extends Person implements EmailInterface
 
         // wp: do not save user_preferences in this table, see user_preferences module
         $this->user_preferences = '';
+
+        // If the current user is not an admin, reset the admin flag to the original value.
+        $this->setIsAdmin();
 
         // if this is an admin user, do not allow is_group or portal_only flag to be set.
         if ($this->is_admin) {
@@ -748,7 +756,7 @@ class User extends Person implements EmailInterface
 
             require_once 'modules/MySettings/TabController.php';
 
-            global $current_user;
+            global $current_user, $sugar_config;
 
             $display_tabs_def = isset($_REQUEST['display_tabs_def']) ? urldecode($_REQUEST['display_tabs_def']) : '';
             $hide_tabs_def = isset($_REQUEST['hide_tabs_def']) ? urldecode($_REQUEST['hide_tabs_def']) : '';
@@ -765,8 +773,7 @@ class User extends Person implements EmailInterface
             $this->is_group = 0;
             $this->portal_only = 0;
 
-            if ((isset($_POST['is_admin']) && ('on' == $_POST['is_admin'] || '1' == $_POST['is_admin'])) ||
-                (isset($_POST['UserType']) && "Administrator" == $_POST['UserType'])) {
+            if (is_admin($current_user) && ((isset($_POST['is_admin']) && ($_POST['is_admin'] === 'on' || $_POST['is_admin'] === '1')) || (isset($_POST['UserType']) && $_POST['UserType'] === 'Administrator'))) {
                 $this->is_admin = 1;
             } elseif (isset($_POST['is_admin']) && empty($_POST['is_admin'])) {
                 $this->is_admin = 0;
@@ -992,6 +999,15 @@ class User extends Person implements EmailInterface
             } else {
                 $this->setPreference('syncGCal', 0, 0, 'GoogleSync');
             }
+            if ($this->user_hash === null) {
+                $newUser = true;
+                clear_register_value('user_array', $this->object_name);
+            } else {
+                $newUser = false;
+            }
+            if ($newUser && !$this->is_group && !$this->portal_only && isset($sugar_config['passwordsetting']['SystemGeneratedPasswordON'])) {
+                require_once 'modules/Users/GeneratePassword.php';
+            }
         }
     }
 
@@ -1042,9 +1058,8 @@ class User extends Person implements EmailInterface
         // If the role doesn't exist in the list of the user's roles
         if (!empty($role_array) && in_array($role_name, $role_array)) {
             return true;
-        } else {
-            return false;
-        }
+        } 
+        return false;
     }
 
     public function get_summary_text()
@@ -1080,11 +1095,9 @@ class User extends Person implements EmailInterface
         $row = static::findUserPassword($this->user_name, $password);
         if (empty($row)) {
             return false;
-        } else {
-            $this->id = $row['id'];
-
-            return true;
-        }
+        } 
+        $this->id = $row['id'];
+        return true;
     }
 
     /**
@@ -1196,26 +1209,28 @@ EOQ;
     /**
      * Generate a new hash from plaintext password
      * @param string $password
+     * @return bool|string
      */
     public static function getPasswordHash($password)
     {
-        if (!defined('CRYPT_MD5') || !constant('CRYPT_MD5')) {
-            // does not support MD5 crypt - leave as is
-            if (defined('CRYPT_EXT_DES') && constant('CRYPT_EXT_DES')) {
-                return crypt(strtolower(md5($password)), "_.012" . substr(str_shuffle('./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'), -4));
-            }
-            // plain crypt cuts password to 8 chars, which is not enough
-            // fall back to old md5
-            return strtolower(md5($password));
-        }
+        return self::getPasswordHashMD5(md5($password));
+    }
 
-        return @crypt(strtolower(md5($password)));
+    /**
+     * Generate a new hash from MD5 password
+     * @param string $passwordMd5
+     * @return bool|string
+     */
+    public static function getPasswordHashMD5($passwordMd5)
+    {
+        return password_hash(strtolower($passwordMd5), PASSWORD_DEFAULT);
     }
 
     /**
      * Check that password matches existing hash
      * @param string $password Plaintext password
-     * @param string $user_hash DB hash
+     * @param string $userHash DB hash
+     * @return bool
      */
     public static function checkPassword($password, $user_hash)
     {
@@ -1224,21 +1239,24 @@ EOQ;
 
     /**
      * Check that md5-encoded password matches existing hash
-     * @param string $password MD5-encoded password
-     * @param string $user_hash DB hash
+     * @param string $passwordMd5 MD5-encoded password
+     * @param string $userHash DB hash
      * @return bool Match or not?
      */
-    public static function checkPasswordMD5($password_md5, $user_hash)
+    public static function checkPasswordMD5($passwordMd5, $userHash)
     {
-        if (empty($user_hash)) {
+        if (empty($userHash)) {
             return false;
         }
-        if ('$' != $user_hash[0] && strlen($user_hash) == 32) {
-            // Old way - just md5 password
-            return strtolower($password_md5) == $user_hash;
+
+        if ($userHash[0] !== '$' && strlen($userHash) === 32) {
+            // Legacy md5 password
+            $valid = strtolower($passwordMd5) === $userHash;
+        } else {
+            $valid = password_verify(strtolower($passwordMd5), $userHash);
         }
 
-        return crypt(strtolower($password_md5), $user_hash) == $user_hash;
+        return $valid;
     }
 
     /**
@@ -1247,7 +1265,7 @@ EOQ;
      * @param string $password MD5-encoded password
      * @param string $where Limiting query
      * @param bool $checkPasswordMD5 use md5 check for user_hash before return the user data (default is true)
-     * @return bool|arraythe matching User of false if not found
+     * @return bool|array the matching User of false if not found
      */
     public static function findUserPassword($name, $password, $where = '', $checkPasswordMD5 = true)
     {
@@ -1474,7 +1492,7 @@ EOQ;
                 $query = "SELECT reports_to_id FROM users WHERE id='" . $this->db->quote($check_user) . "'";
                 $result = $this->db->query($query, true, "Error checking for reporting-loop");
                 $row = $this->db->fetchByAssoc($result);
-                // echo ("fetched: " . $row['reports_to_id'] . " from " . $check_user . "<br>"); MintHCM #88363
+                //echo ("fetched: " . $row['reports_to_id'] . " from " . $check_user . "<br>"); MintHCM #88363
                 $check_user = $row['reports_to_id'];
             }
 
@@ -1590,6 +1608,11 @@ EOQ;
 
     public function create_export_query($order_by, $where, $relate_link_join = '')
     {
+        global $current_user;
+        if (!is_admin($current_user)) {
+            throw new RuntimeException('Not authorized');
+        }
+
         include 'modules/Users/field_arrays.php';
 
         $cols = '';
@@ -1633,7 +1656,7 @@ EOQ;
         // First, get the list of IDs.
         $query = "SELECT meeting_id as id from meetings_users where user_id='$this->id' AND deleted=0";
 
-        $meeting = new Meeting();
+        $meeting = BeanFactory::newBean('Meetings');
         return $this->build_related_list($query, $meeting);
     }
 
@@ -1642,7 +1665,7 @@ EOQ;
         // First, get the list of IDs.
         $query = "SELECT call_id as id from calls_users where user_id='$this->id' AND deleted=0";
 
-        return $this->build_related_list($query, new Call());
+        return $this->build_related_list($query, BeanFactory::newBean('Calls'));
     }
 
     /**
@@ -1746,7 +1769,7 @@ EOQ;
 
     public function getSystemDefaultNameAndEmail()
     {
-        $email = new Email();
+        $email = BeanFactory::newBean('Emails');
         $return = $email->getSystemDefaultEmail();
         $prefAddr = $return['email'];
         $fullName = $return['name'];
@@ -1781,7 +1804,7 @@ EOQ;
     {
         $user = $this;
         if (!empty($id)) {
-            $user = new User();
+            $user = BeanFactory::newBean('Users');
             $user->retrieve($id);
         }
 
@@ -1914,13 +1937,13 @@ EOQ;
 
         $ret1 = '';
         $ret2 = '';
-        for ($i = 0; $i < strlen($macro); $i++) {
-            if (array_key_exists($macro{$i}, $format)) {
-                $ret1 .= "<i>" . $format[$macro{$i}] . "</i>";
-                $ret2 .= "<i>" . $name[$macro{$i}] . "</i>";
+        for ($i = 0, $iMax = strlen($macro); $i < $iMax; $i++) {
+            if (array_key_exists($macro[$i], $format)) {
+                $ret1 .= "<i>" . $format[$macro[$i]] . "</i>";
+                $ret2 .= "<i>" . $name[$macro[$i]] . "</i>";
             } else {
-                $ret1 .= $macro{$i};
-                $ret2 .= $macro{$i};
+                $ret1 .= $macro[$i];
+                $ret2 .= $macro[$i];
             }
         }
 
@@ -1999,6 +2022,16 @@ EOQ;
         }
 
         return $myModules;
+    }
+
+    /**
+     * Is user enabled
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return ($this->status !== 'Inactive') && ($this->employee_status === 'Active');
     }
 
     /**
@@ -2220,7 +2253,7 @@ EOQ;
 
         // Create random characters for the ones that doesnt have requirements
         for ($i = 0; $i < $length - $condition; $i++) { // loop and create password
-            $password = $password . substr($charBKT, rand() % strlen($charBKT), 1);
+            $password = $password . substr($charBKT, mt_rand() % strlen($charBKT), 1);
         }
 
         return $password;
@@ -2242,7 +2275,7 @@ EOQ;
             'message' => '',
         );
 
-        $emailTemp = new EmailTemplate();
+        $emailTemp = BeanFactory::newBean('EmailTemplates');
         $emailTemp->disable_row_level_security = true;
         if ($emailTemp->retrieve($templateId) == '') {
             $result['message'] = $mod_strings['LBL_EMAIL_TEMPLATE_MISSING'];
@@ -2275,7 +2308,7 @@ EOQ;
         //retrieve IT Admin Email
         //_ppd( $emailTemp->body_html);
         //retrieve email defaults
-        $emailObj = new Email();
+        $emailObj = BeanFactory::newBean('Emails');
         $defaults = $emailObj->getSystemDefaultEmail();
         require_once 'include/SugarPHPMailer.php';
         $mail = new SugarPHPMailer();
@@ -2374,9 +2407,8 @@ EOQ;
     {
         if (!empty($this->email1) && !empty($email) && strcasecmp($this->email1, $email) == 0) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public function getEditorType()
@@ -2437,7 +2469,7 @@ EOQ;
        parent::mark_deleted($id);
     }
 
-    public function getUserSupervisiorID($id)
+    public static function getUserSupervisiorID($id)
     {
         $user = BeanFactory::getBean('Users');
         if ($user->retrieve($id)) {
@@ -2456,4 +2488,56 @@ EOQ;
         return $this->user_private_group_id;
     }
 
+    /**
+     * Check if current user can save the current user record
+     * @return bool
+     */
+    protected function hasSaveAccess(): bool
+    {
+        global $current_user;
+
+        if (empty($this->id)) {
+            return true;
+        }
+
+        if (empty($current_user->id)) {
+            return true;
+        }
+
+        $sameUser = $current_user->id === $this->id;
+
+        return $sameUser || is_admin($current_user);
+    }
+
+    /**
+     * Reset is_admin if current user is not an admin user
+     * @return void
+     */
+    protected function setIsAdmin(): void
+    {
+        global $current_user;
+        if (!isset($this->is_admin)) {
+            return;
+        }
+
+
+        $originalIsAdminValue = $this->is_admin ?? false;
+        if ($this->isUpdate() && isset($this->fetched_row['is_admin'])) {
+            $originalIsAdminValue = isTrue($this->fetched_row['is_admin'] ?? false);
+        }
+
+        $currentUserReloaded = BeanFactory::getReloadedBean('Users', $current_user->id);
+        if (!is_admin($currentUserReloaded)) {
+            $this->is_admin = $originalIsAdminValue;
+        }
+
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isUpdate(): bool
+    {
+        return !empty($this->id) && !$this->new_with_id;
+    }
 }

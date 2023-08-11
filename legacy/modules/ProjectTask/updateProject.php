@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,8 +46,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 class updateEndDate
 {
-// logic hook is used to update "project end date" when task "end date" exceeds project end date
-    function update(&$bean, $event, $arguments)
+    // logic hook is used to update "project end date" when task "end date" exceeds project end date
+    public function update(&$bean, $event, $arguments)
     {
         if (!empty($bean->project_id)) {
             global $current_user, $timedate;

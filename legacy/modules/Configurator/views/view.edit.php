@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -109,7 +109,7 @@ class ConfiguratorViewEdit extends ViewEdit {
 
       $configurator = $this->configurator;
       $sugarConfig = SugarConfig::getInstance();
-      $focus = new Administration();
+      $focus = BeanFactory::newBean('Administration');
       $configurator->parseLoggerSettings();
 
       $focus->retrieveSettings();
@@ -166,7 +166,11 @@ class ConfiguratorViewEdit extends ViewEdit {
       } else {
          $this->ss->assign('logger_visible', true);
       }
-
+      if (isset($configurator->config['stackTrace'])) {
+         $this->ss->assign('stackTrace', $configurator->config['stackTrace']);
+      } else {
+         $this->ss->assign('stackTrace', false);
+      }
       // Check for Google Sync JSON
       $this->checkGoogleSyncJSON($configurator->config['google_auth_json']);
 
@@ -176,12 +180,12 @@ class ConfiguratorViewEdit extends ViewEdit {
 
       $javascript = new javascript();
       $javascript->setFormName("ConfigureSettings");
-      $javascript->addFieldGeneric("notify_fromaddress", "email", $mod_strings['LBL_NOTIFY_FROMADDRESS'], TRUE, "");
-      $javascript->addFieldGeneric("notify_subject", "varchar", $mod_strings['LBL_NOTIFY_SUBJECT'], TRUE, "");
-      $javascript->addFieldGeneric("proxy_host", "varchar", $mod_strings['LBL_PROXY_HOST'], TRUE, "");
-      $javascript->addFieldGeneric("proxy_port", "int", $mod_strings['LBL_PROXY_PORT'], TRUE, "");
-      $javascript->addFieldGeneric("proxy_password", "varchar", $mod_strings['LBL_PROXY_PASSWORD'], TRUE, "");
-      $javascript->addFieldGeneric("proxy_username", "varchar", $mod_strings['LBL_PROXY_USERNAME'], TRUE, "");
+      $javascript->addFieldGeneric("notify_fromaddress", "email", $mod_strings['LBL_NOTIFY_FROMADDRESS'], true, "");
+      $javascript->addFieldGeneric("notify_subject", "varchar", $mod_strings['LBL_NOTIFY_SUBJECT'], true, "");
+      $javascript->addFieldGeneric("proxy_host", "varchar", $mod_strings['LBL_PROXY_HOST'], true, "");
+      $javascript->addFieldGeneric("proxy_port", "int", $mod_strings['LBL_PROXY_PORT'], true, "");
+      $javascript->addFieldGeneric("proxy_password", "varchar", $mod_strings['LBL_PROXY_PASSWORD'], true, "");
+      $javascript->addFieldGeneric("proxy_username", "varchar", $mod_strings['LBL_PROXY_USERNAME'], true, "");
       echo $javascript->getScript();
    }
 

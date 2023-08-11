@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,15 +46,11 @@ require_once('include/MVC/View/SugarView.php');
 
 class CalendarViewGetGRUsers extends SugarView {
 
-	function CalendarViewGetGRUsers(){
- 		parent::SugarView();
-	}
-	
-	function process(){
+	public function process(){
 		$this->display();
 	}
 	
-	function display(){
+	public function display(){
 		$users_arr = array();
 		require_once("modules/Users/User.php");	
 	
@@ -69,7 +65,7 @@ class CalendarViewGetGRUsers extends SugarView {
 		foreach($user_ids as $u_id){
 			if(empty($u_id))
 				continue;
-			$bean = new User();
+            $bean = BeanFactory::newBean('Users');
 			$bean->retrieve($u_id);
 			array_push($users_arr, $json_config->populateBean($bean));        	
 		}

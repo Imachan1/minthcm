@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,19 +52,19 @@ global $current_user;
 
 $dashletData['AOD_IndexEventDashlet']['searchFields'] = array('date_entered'     => array('default' => ''),
                                                           'date_modified'    => array('default' => ''),
-                                                          'assigned_user_id' => array('type'    => 'assigned_user_name', 
+                                                          'assigned_user_id' => array('type'    => 'assigned_user_name',
                                                                                       'default' => $current_user->name));
 $dashletData['AOD_IndexEventDashlet']['columns'] =  array(   'name' => array('width'   => '40',
                                                                       'label'   => 'LBL_LIST_NAME',
                                                                       'link'    => true,
-                                                                      'default' => true), 
-                                                      'date_entered' => array('width'   => '15', 
+                                                                      'default' => true),
+                                                      'date_entered' => array('width'   => '15',
                                                                               'label'   => 'LBL_DATE_ENTERED',
                                                                               'default' => true),
-                                                      'date_modified' => array('width'   => '15', 
-                                                                              'label'   => 'LBL_DATE_MODIFIED'),    
-                                                      'created_by' => array('width'   => '8', 
+                                                      'date_modified' => array('width'   => '15',
+                                                                              'label'   => 'LBL_DATE_MODIFIED'),
+                                                      'created_by' => array('width'   => '8',
                                                                             'label'   => 'LBL_CREATED'),
-                                                      'assigned_user_name' => array('width'   => '8', 
+                                                      'assigned_user_name' => array('width'   => '8',
                                                                                      'label'   => 'LBL_LIST_ASSIGNED_USER'),
                                                );

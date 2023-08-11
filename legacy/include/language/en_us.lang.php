@@ -6,10 +6,10 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -520,6 +520,10 @@ $app_list_strings = array(
         'Rooms' => 'Room',
         'Workplaces' => 'Workplace',
         'Allocations' => 'Allocation',
+        'AOS_Contracts' => 'Contract',
+        'AOS_Invoices' => 'Invoice',
+        'AOS_Quotes' => 'Quote',
+        'AOS_Products' => 'Product',
     ),
     'record_type_display_notes' => array(
         'Tasks' => 'Task',
@@ -530,7 +534,12 @@ $app_list_strings = array(
         'Candidatures' => 'Candidature',
         'Ideas' => 'Idea',
         'Candidates' => 'Candidate',
+        'Campaigns' => 'Campaign',
         'Recruitments' => 'Recruitment',
+        'AOS_Contracts' => 'Contract',
+        'AOS_Invoices' => 'Invoice',
+        'AOS_Quotes' => 'Quote',
+        'AOS_Products' => 'Product',
     ),
     'parent_type_display' => array(
         'Tasks' => 'Task',
@@ -541,6 +550,10 @@ $app_list_strings = array(
         'Candidatures' => 'Candidature',
         'Offboardings' => 'Offboardings',
         'Onboardings' => 'Onboardings',
+        'AOS_Contracts' => 'Contract',
+        'AOS_Invoices' => 'Invoice',
+        'AOS_Quotes' => 'Quote',
+        'AOS_Products' => 'Product',
     ),
     'parent_line_items' => array(
         'AOS_Quotes' => 'Quotes',
@@ -666,6 +679,7 @@ $app_list_strings = array(
         'Radio' => 'Radio',
         'Television' => 'Television',
         'NewsLetter' => 'Newsletter',
+        'Survey' => 'Survey',
     ),
     'newsletter_frequency_dom' => array(
         '' => '',
@@ -735,6 +749,38 @@ $app_list_strings = array(
         'AM' => 'AM',
         'PM' => 'PM',
     ),
+    'dom_inbound_email_account_types' => [
+        'personal' => 'Personal',
+        'group' => 'Group',
+        'bounce' => 'Bounce',
+    ],
+
+    'dom_inbound_email_auth_types' => [
+        'basic' => 'Basic Auth',
+        'oauth' => 'OAuth',
+    ],
+
+    'dom_external_oauth_connection_types' => [
+        'personal' => 'Personal',
+        'group' => 'Group',
+    ],
+
+    'dom_external_oauth_provider_types' => [
+        'personal' => 'Personal',
+        'group' => 'Group',
+    ],
+
+    'dom_outbound_email_account_types' => [
+        'user' => 'Personal',
+        'group' => 'Group',
+        'system' => 'System',
+        'system-override' => 'System Override',
+    ],
+
+    'dom_inbound_email_account_status' => [
+        'Active' => 'Active',
+        'Inactive' => 'Inactive',
+    ],
     'dom_email_types' => array(
         'out' => 'Sent',
         'archived' => 'Archived',
@@ -925,6 +971,7 @@ $app_list_strings = array(
         'lead' => 'Leads Created',
         'contact' => 'Contacts Created',
         'blocked' => 'Suppressed by address or domain',
+        'Survey' => 'Survey answered',
     ),
     'campainglog_target_type_dom' => array(
         'Contacts' => 'Contacts',
@@ -946,6 +993,9 @@ $app_list_strings = array(
     'custom_fields_merge_dup_dom' => array(
         0 => 'Disabled',
         1 => 'Enabled',
+        2 => 'Filter',
+        3 => 'Default selected filter',
+        4 => 'Only filter',
     ),
     'projects_priority_options' => array(
         'high' => 'High',
@@ -1152,6 +1202,7 @@ $app_strings = array(
     'LBL_EMAIL_ACCOUNTS_SMTPUSER' => 'SMTP Username',
     'LBL_EMAIL_ACCOUNTS_SMTPDEFAULT' => 'Default',
     'LBL_EMAIL_WARNING_MISSING_USER_CREDS' => 'Warning: Missing username and password for outgoing mail account.',
+    'LBL_EMAIL_WARNING_MISSING_CREDS' => 'Warning: Missing credentials',
     'LBL_EMAIL_ACCOUNTS_SUBTITLE' => 'Set up Mail Accounts to view incoming emails from your email accounts.',
     'LBL_EMAIL_ACCOUNTS_OUTBOUND_SUBTITLE' => 'Provide SMTP mail server information to use for outgoing email in Mail Accounts.',
     'LBL_EMAIL_ADDRESS_BOOK_ADD' => 'Done',
@@ -1243,8 +1294,22 @@ $app_strings = array(
     'LBL_EMAIL_ERROR_VIEW_RAW_SOURCE' => 'This information is not available',
     'LBL_EMAIL_ERROR_NO_OUTBOUND' => 'No outgoing mail server specified.',
     'LBL_EMAIL_ERROR_SENDING' => 'Error Sending Email. Please contact your administrator for assistance.',
-    'LBL_EMAIL_FOLDERS' => SugarThemeRegistry::current()->getImage('icon_email_folder', 'align=absmiddle border=0', null, null, '.gif', '') . 'Folders',
-    'LBL_EMAIL_FOLDERS_SHORT' => SugarThemeRegistry::current()->getImage('icon_email_folder', 'align=absmiddle border=0', null, null, '.gif', ''),
+    'LBL_EMAIL_FOLDERS' => SugarThemeRegistry::current()->getImage(
+        'icon_email_folder',
+        'align=absmiddle border=0',
+        null,
+        null,
+        '.gif',
+        ''
+        ) . 'Folders',
+    'LBL_EMAIL_FOLDERS_SHORT' => SugarThemeRegistry::current()->getImage(
+        'icon_email_folder',
+        'align=absmiddle border=0',
+        null,
+        null,
+        '.gif',
+        ''
+    ),
     'LBL_EMAIL_FOLDERS_ADD' => 'Add',
     'LBL_EMAIL_FOLDERS_ADD_DIALOG_TITLE' => 'Add New Folder',
     'LBL_EMAIL_FOLDERS_RENAME_DIALOG_TITLE' => 'Rename Folder',
@@ -1337,8 +1402,22 @@ $app_strings = array(
     'LBL_EMAIL_SAVE_AND_REPLY' => 'Save & Reply',
     'LBL_EMAIL_SAVE_DRAFT' => 'Save Draft',
     'LBL_EMAIL_DRAFT_SAVED' => 'Draft has been saved',
-    'LBL_EMAIL_SEARCH' => SugarThemeRegistry::current()->getImage('Search', 'align=absmiddle border=0', null, null, '.gif', ''),
-    'LBL_EMAIL_SEARCH_SHORT' => SugarThemeRegistry::current()->getImage('Search', 'align=absmiddle border=0', null, null, '.gif', ''),
+    'LBL_EMAIL_SEARCH' => SugarThemeRegistry::current()->getImage(
+        'Search',
+        'align=absmiddle border=0',
+        null,
+        null,
+        '.gif',
+        ''
+    ),
+    'LBL_EMAIL_SEARCH_SHORT' => SugarThemeRegistry::current()->getImage(
+        'Search',
+        'align=absmiddle border=0',
+        null,
+        null,
+        '.gif',
+        ''
+    ),
     'LBL_EMAIL_SEARCH_DATE_FROM' => 'Date From',
     'LBL_EMAIL_SEARCH_DATE_UNTIL' => 'Date Until',
     'LBL_EMAIL_SEARCH_NO_RESULTS' => 'No results match your search criteria.',
@@ -2143,6 +2222,7 @@ $app_strings = array(
     'LBL_SUBTHEME_OPTIONS_DAY' => 'Day',
     'LBL_SUBTHEME_OPTIONS_DUSK' => 'Dusk',
     'LBL_SUBTHEME_OPTIONS_NIGHT' => 'Night',
+    'LBL_SUBTHEME_OPTIONS_NOON' => 'Noon',
     'LBL_CONFIRM_DISREGARD_DRAFT_TITLE' => 'Disregard draft',
     'LBL_CONFIRM_DISREGARD_DRAFT_BODY' => 'This operation will delete this email, do you want to continue?',
     'LBL_CONFIRM_DISREGARD_EMAIL_TITLE' => 'Exit compose dialog',
@@ -2986,6 +3066,7 @@ $app_list_strings['emailTemplates_type_list'] = array(
     '' => '',
     'campaign' => 'Campaign',
     'email' => 'Email',
+    'event' => 'Event',
 );
 
 $app_list_strings['emailTemplates_type_list_campaigns'] = array(
@@ -2997,6 +3078,7 @@ $app_list_strings['emailTemplates_type_list_no_workflow'] = array(
     '' => '',
     'campaign' => 'Campaign',
     'email' => 'Email',
+    'event' => 'Event',
     'system' => 'System',
 );
 
@@ -3056,7 +3138,7 @@ $app_list_strings['contact_portal_user_type_dom'] = array(
     'Account' => 'Account user',
 );
 $app_list_strings['dom_email_distribution_for_auto_create'] = array(
-    'AOPDefault' => 'Use AOP Default',
+    'AOPDefault' => 'System Default',
     'singleUser' => 'Single User',
     'roundRobin' => 'Round-Robin',
     'leastBusy' => 'Least-Busy',
@@ -3080,9 +3162,16 @@ $app_list_strings['aor_operator_list']['Starts_With'] = 'Starts With';
 $app_list_strings['aor_operator_list']['Ends_With'] = 'Ends With';
 $app_list_strings['aor_format_options'][''] = '';
 $app_list_strings['aor_format_options']['Y-m-d'] = 'Y-m-d';
+$app_list_strings['aor_format_options']['m-d-Y'] = 'm-d-Y';
+$app_list_strings['aor_format_options']['d-m-Y'] = 'd-m-Y';
+$app_list_strings['aor_format_options']['Y/m/d'] = 'Y/m/d';
+$app_list_strings['aor_format_options']['m/d/Y'] = 'm/d/Y';
+$app_list_strings['aor_format_options']['d/m/Y'] = 'd/m/Y';
+$app_list_strings['aor_format_options']['Y.m.d'] = 'Y.m.d';
+$app_list_strings['aor_format_options']['m.d.Y'] = 'm.d.Y';
+$app_list_strings['aor_format_options']['d.m.Y'] = 'd.m.Y';
 $app_list_strings['aor_format_options']['Ymd'] = 'Ymd';
 $app_list_strings['aor_format_options']['Y-m'] = 'Y-m';
-$app_list_strings['aor_format_options']['d/m/Y'] = 'd/m/Y';
 $app_list_strings['aor_format_options']['Y'] = 'Y';
 $app_list_strings['aor_condition_operator_list']['And'] = 'And';
 $app_list_strings['aor_condition_operator_list']['OR'] = 'OR';
@@ -3292,6 +3381,7 @@ $app_list_strings['aow_date_type_list']['minute'] = 'Minutes';
 $app_list_strings['aow_date_type_list']['hour'] = 'Hours';
 $app_list_strings['aow_date_type_list']['day'] = 'Days';
 $app_list_strings['aow_date_type_list']['week'] = 'Weeks';
+$app_list_strings['aow_date_type_list']['year'] = 'Years';
 $app_list_strings['aow_date_type_list']['month'] = 'Months';
 $app_list_strings['aow_date_type_list']['business_hours'] = 'Business Hours';
 $app_list_strings['aow_date_options']['now'] = 'Now';
@@ -3617,11 +3707,13 @@ $app_strings['LBL_RESCHEDULE_COUNT'] = 'Call Attempts';
 
 //SecurityGroups
 $app_list_strings['moduleList']['SecurityGroups'] = 'Organizational Unit Management';
-$app_strings['LBL_LOGIN_AS'] = 'Login as ';
-$app_strings['LBL_LOGOUT_AS'] = 'Logout as ';
+
 $app_strings['LBL_SECURITYGROUP'] = 'Organizational Unit';
+$app_strings['LBL_ROLE'] = 'Role';
 
 $app_list_strings['moduleList']['OutboundEmailAccounts'] = 'Outbound Email Accounts';
+$app_list_strings['moduleList']['ExternalOAuthConnection'] = 'External OAuth Connection';
+$app_list_strings['moduleList']['ExternalOAuthProvider'] = 'External OAuth Provider';
 
 //social
 $app_strings['FACEBOOK_USER_C'] = 'Facebook';
@@ -4613,3 +4705,30 @@ $app_list_strings['parent_type_display_for_files'] = array(
 $app_strings['LBL_NO'] = 'No';
 $app_strings['LBL_YES'] = 'Yes';
 $app_strings['LBL_CONFIRM'] = 'Confirm';
+$app_strings['LBL_USE_ADVANCED_SEARCH'] = 'Use Advanced Search';
+$app_strings['LBL_USE_BASIC_SEARCH'] = 'Use Basic Search';
+
+// PDF Engines
+$app_strings['LBL_LEGACY_MPDF_ENGINE'] = 'Legacy MPDF Engine';
+$app_strings['LBL_TCPDF_ENGINE'] = 'TCPDF Engine';
+
+
+$app_strings['ERR_INVALID_FILE_NAME'] = 'Invalid file name:';
+$app_strings['LBL_LOGGER_VALID_FILENAME_CHARACTERS'] = 'This can only be alphanumeric characters, plus \'.\' , \'-\' and \'_\'';
+$app_strings['LBL_LOGGER_INVALID_FILENAME'] = 'Invalid import file name';
+
+$app_strings['LBL_PASSWORD_SET_NEW_VALUE_TO_RESET'] = 'Password set. Enter value to set new password.';
+$app_strings['LBL_VALUE_SET_PLACEHOLDER'] = 'Value set. Enter new value to override current one.';
+
+$app_strings['ERR_IMAP_OAUTH_CONNECTION_ERROR'] = 'Not able to connect using OAuth login with Inbound Email server. For connection: ';
+$app_strings['WARN_OAUTH_TOKEN_SESSION_EXPIRED'] = 'Your IMAP OAuth session has expired, please login again in the connection: ';
+
+$app_strings['LBL_KEY'] = 'Key';
+$app_strings['LBL_VALUE'] = 'Value';
+$app_strings['LBL_OPTIONAL'] = 'Optional';
+$app_strings['LBL_OPTIONAL_CONNECTION_STRING'] = 'Optional. Set to use a specific connection string';
+$app_strings['LBL_OUTBOUND_ACCOUNT'] = 'Outbound Account';
+$app_strings['LBL_INBOUND_ACCOUNT'] = 'Inbound Account';
+$app_strings['LBL_SYSTEM_ACCOUNT'] = 'System Account';
+$app_strings['LBL_FROM_SYSTEM'] = 'Send From System';
+$app_strings['LBL_SIGNATURE'] = 'Signature';

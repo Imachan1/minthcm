@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -68,7 +68,6 @@ $mod_strings = array(
     'LNK_NEW_MEETING' => 'Schedule Meeting',
     'LNK_NEW_TASK' => 'Create Task',
     'LNK_NEW_BUG' => 'Report Bug',
-    'LBL_ADD_BUSINESSCARD' => 'Enter Business Card',
     'LNK_NEW_SEND_EMAIL' => 'Compose Email',
     'LBL_NO_ACCESS' => 'You do not have access to this area. Contact your site administrator to obtain access',
     'LBL_NO_RESULTS_IN_MODULE' => '-- No Results --',
@@ -179,6 +178,9 @@ $mod_strings = array(
     'LBL_TOUR_CALENDAR_URL_1' => 'Do you share your MintHCM calendar with 3rd party applications, such as Microsoft Outlook or Exchange? If so, you have a new URL. This new, more secure URL includes a personal key which will prevent unauthorized publishing of your calendar.',
     'LBL_TOUR_CALENDAR_URL_2' => 'Retrieve your new shared calendar URL.',
     'LBL_ABOUT' => 'About',
+    'LBL_EDIT_ALL_RECURRENCES' => 'Edit All Recurrences',
+    'LBL_REMOVE_ALL_RECURRENCES' => 'Delete All Recurrences',
+    'LBL_CONFIRM_REMOVE' => 'Are you sure you want to remove the record?',
     'LBL_ABOUT_TITLE' => 'A fresh way to do HR!',
     'LBL_ABOUT_CHAPTER_1' => 'MintHCM is a system made on the strong foundation of two worldwide known applications SuiteCRM and SugarCRM CE. It is entirely Open for modifications. We invite you to contribute to its core and joining our thriving community. Join Team MintHCM now!',
     'LBL_ABOUT_CHAPTER_2_TITLE' => 'A short story about MintHCM',
@@ -221,8 +223,8 @@ $mod_strings = array(
     'LBL_HOUR_ABBREV' => 'hour',
     'LBL_HOURS_ABBREV' => 'hours',
     'LBL_MINSS_ABBREV' => 'minutes',
-    'LBL_LOCATION' => 'Location: ',
-    'LBL_STATUS' => 'Status: ',
+    'LBL_LOCATION' => 'Location:',
+    'LBL_STATUS' => 'Status:',
     'LBL_DESCRIPTION' => 'Description: ',
     //End Events
     'LBL_ERR_DATE_ARE_NOT_EQUALS' => 'Dates are not equal',
@@ -230,4 +232,15 @@ $mod_strings = array(
     'LBL_CLOSE_PLAN_CONFIRM' => 'Are you sure to submit this work schedule? You cannot rollback this operation.',
     'ERR_CLOSE_PLAN' => 'Work schedule can not be submitted due to breaks between work times.',
     'LBL_ERR_INVALID_START_TIME' => 'Work schedule can not start after 23:55',
+    
+    'LBL_ELASTIC_SEARCH_EXCEPTION_SEARCH_INVALID_REQUEST' => 'An error has occurred while performing the search. Your query syntax might not be valid.',
+    'LBL_ELASTIC_SEARCH_EXCEPTION_SEARCH_ENGINE_NOT_FOUND' => 'Unable to find the requested SearchEngine. Try performing the search again.',
+    'LBL_ELASTIC_SEARCH_EXCEPTION_NO_NODES_AVAILABLE' => 'Failed to connect to the Elasticsearch server.',
+    'LBL_ELASTIC_SEARCH_EXCEPTION_SEARCH' => 'An error internal to the Search has occurred.',
+    'LBL_ELASTIC_SEARCH_EXCEPTION_DEFAULT' => 'An unknown error has occurred while performing the search.',
+    'LBL_ELASTIC_SEARCH_EXCEPTION_END_MESSAGE' => 'Contact an administrator if the problem persists. More information available in the logs.',
+
+    'LBL_ELASTIC_SEARCH_DEFAULT' => 'No results matching your search criteria. Try broadening your search.',
+
+    'LNK_TASK_VIEW' => 'View Task',
 );

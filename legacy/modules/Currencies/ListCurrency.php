@@ -13,7 +13,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,13 +53,13 @@ class ListCurrency {
    public $javascript = '<script>';
 
    public function lookupCurrencies() {
-      $this->focus = new Currency();
+      $this->focus = BeanFactory::newBean('Currencies');
       $this->list = $this->focus->get_full_list('name');
       $this->focus->retrieve('-99');
       if ( is_array($this->list) ) {
-         $this->list = array_merge(Array( $this->focus ), $this->list);
+         $this->list = array_merge(array( $this->focus ), $this->list);
       } else {
-         $this->list = Array( $this->focus );
+         $this->list = array( $this->focus );
       }
    }
 
@@ -67,7 +67,7 @@ class ListCurrency {
       global $current_user;
       if ( $current_user->is_admin ) {
          if ( isset($_POST['edit']) && $_POST['edit'] == 'true' && isset($_POST['name']) && !empty($_POST['name']) && isset($_POST['conversion_rate']) && !empty($_POST['conversion_rate']) && isset($_POST['symbol']) && !empty($_POST['symbol']) ) {
-            $currency = new Currency();
+            $currency = BeanFactory::newBean('Currencies');
             if ( isset($_POST['record']) && !empty($_POST['record']) ) {
                $currency->retrieve($_POST['record']);
             }
@@ -99,8 +99,8 @@ class ListCurrency {
             $currency_on_right = isset($_POST['currency_on_right']) ? $_POST['currency_on_right'] : 0;
             $hidden = isset($_POST['hidden']) ? $_POST['hidden'] : 0;
             // View Tools end #40674
-            $size = sizeof($ids);
-            if ( $size != sizeof($names) || $size != sizeof($isos) || $size != sizeof($symbols) || $size != sizeof($rates) ) {
+            $size = count($ids);
+            if ( $size != count($names) || $size != count($isos) || $size != count($symbols) || $size != count($rates) ) {
                return;
             }
 
@@ -212,6 +212,7 @@ EOQ;
    }
 
    public function getTable() {
+      global $sugar_config;
       $this->lookupCurrencies();
       $usdollar = translate('LBL_US_DOLLAR');
       $currency = translate('LBL_CURRENCY');

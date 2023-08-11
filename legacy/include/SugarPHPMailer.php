@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -83,7 +83,7 @@ class SugarPHPMailer extends PHPMailer
      * @var string
      */
     public $Body_html;
-    
+
     private static $FromNameOrigin = null;
 
     /**
@@ -100,7 +100,7 @@ class SugarPHPMailer extends PHPMailer
         global $current_user;
         global $sugar_config;
 
-        $admin = new Administration();
+        $admin = BeanFactory::newBean('Administration');
         $admin->retrieveSettings();
 
         if (isset($admin->settings['disclosure_enable']) && !empty($admin->settings['disclosure_enable'])) {
@@ -131,21 +131,7 @@ class SugarPHPMailer extends PHPMailer
         // MintHCM #110041 END
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8,
-     *     please update your code, use __construct instead
-     */
-    public function SugarPHPMailer()
-    {
-        $deprecatedMessage =
-            'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
     /**
      * Prefills outbound details
@@ -161,7 +147,7 @@ class SugarPHPMailer extends PHPMailer
         // ssl or tcp - keeping outside isSMTP b/c a default may inadvertently set ssl://
         $this->protocol = $oe->mail_smtpssl ? 'ssl://' : 'tcp://';
 
-        if ($oe->mail_sendtype === 'SMTP') {
+        if (isSmtp($oe->mail_sendtype ?? '')) {
             //Set mail send type information
             $this->Mailer = 'smtp';
             $this->Host = $oe->mail_smtpserver;
@@ -195,7 +181,7 @@ class SugarPHPMailer extends PHPMailer
         // ssl or tcp - keeping outside isSMTP b/c a default may inadvertantly set ssl://
         $this->protocol = $oe->mail_smtpssl ? 'ssl://' : 'tcp://';
 
-        if ($oe->mail_sendtype === 'SMTP') {
+        if (isSmtp($oe->mail_sendtype ?? '')) {
             //Set mail send type information
             $this->Mailer = 'smtp';
             $this->Host = $oe->mail_smtpserver;
@@ -243,7 +229,6 @@ class SugarPHPMailer extends PHPMailer
 
             // HTML email RFC compliance
             if ($this->ContentType === 'text/html' && strpos($this->Body, '<html') === false) {
-
                 $langHeader = get_language_header();
 
                 $head = <<<eoq
@@ -257,17 +242,16 @@ class SugarPHPMailer extends PHPMailer
 eoq;
                 $this->Body = $head . $this->Body . '</body></html>';
             }
-            
+
             $fromName = $this->FromName;
-            
-            // checking if username already set for phpmailer and 
+
+            // checking if username already set for phpmailer and
             // using that as username instead fromname
             if ($this->FromName == self::$FromNameOrigin && !empty($this->Username)) {
                 $fromName = $this->Username;
             }
 
             $this->FromName = $locale->translateCharset(trim($fromName), 'UTF-8', $OBCharset);
-
         }
     }
 
@@ -343,7 +327,7 @@ eoq;
         //Replace any embeded images using the secure entryPoint for src url.
         $this->replaceImageByRegex(
             "(?:{$sugar_config['site_url']})?index.php[?]entryPoint=download&(?:amp;)?[^\"]+?id=",
-            'upload://',
+            'upload/',
             true
         );
 
@@ -362,13 +346,13 @@ eoq;
                     $filename = $note->file->original_file_name;
                     $mime_type = $note->file->mime_type;
                 } else {
-                    $file_location = "upload://{$note->id}";
+                    $file_location = "upload/{$note->id}";
                     $filename = $note->id . $note->filename;
                     $mime_type = $note->file_mime_type;
                 }
             } elseif ($note->object_name === 'DocumentRevision') { // from Documents
                 $filename = $note->id . $note->filename;
-                $file_location = "upload://$filename";
+                $file_location = "upload/$filename";
                 $mime_type = $note->file_mime_type;
             }
 
@@ -456,7 +440,8 @@ eoq;
      * @param string $key
      * @param string $value
      */
-    public function replace($key, $value) {
+    public function replace($key, $value)
+    {
         $this->Subject = preg_replace('/\$' . $key . '\b/', $value, $this->Subject);
         $this->Body = preg_replace('/\$' . $key . '\b/', $value, $this->Body);
         $this->Body_html = preg_replace('/\$' . $key . '\b/', $value, $this->Body_html);
@@ -477,10 +462,10 @@ eoq;
         //$this->Sender   = 'me@here.com';
         //$this->Password = 'wrong';
         //$GLOBALS['log']->debug("PHPMailer Send Function: { FromName: $this->FromName From: $this->From Host: $this->Host UserName: $this->Username }");
-       
-        
+
+
         $ret = null;
-        
+
         $this->fullSmtpLog='';
         $phpMailerExceptionMsg='';
 
@@ -489,7 +474,7 @@ eoq;
             $this->exceptions = true;
 
             // pass callabck function for PHPMailer to call to provide log :
-            $this->Debugoutput = function($str, $level) {
+            $this->Debugoutput = function ($str, $level) {
                 // obfuscate part of response if previous line was a server 334 request, for authentication data:
                 static $previousIs334 = false;
                 if ($previousIs334) {
@@ -503,14 +488,12 @@ eoq;
             $this->SMTPDebug = 3;
             $ret = parent::send();
             $this->exceptions =  $saveExceptionsState;
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $phpMailerExceptionMsg=$e->errorMessage(); //Pretty error messages from PHPMailer
             if ($phpMailerExceptionMsg) {
                 $GLOBALS['log']->error("send: PHPMailer Exception: { $phpMailerExceptionMsg }");
             }
-        }
-        catch (\Exception $e) { //The leading slash means the Global PHP Exception class will be caught
+        } catch (\Exception $e) { //The leading slash means the Global PHP Exception class will be caught
             $phpMailerExceptionMsg=$e->getMessage(); //generic error messages from anything else
             if ($phpMailerExceptionMsg) {
                 $GLOBALS['log']->error("send: PHPMailer Exception: { $phpMailerExceptionMsg }");

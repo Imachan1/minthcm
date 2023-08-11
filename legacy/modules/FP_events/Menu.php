@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,8 +46,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
-global $mod_strings, $app_strings, $sugar_config;
+ global $mod_strings, $app_strings, $sugar_config;
  
-if(ACLController::checkAccess('FP_events', 'edit', true))$module_menu[]=Array("index.php?module=FP_events&action=EditView&return_module=FP_events&return_action=DetailView", $mod_strings['LNK_NEW_RECORD'],"Create", 'FP_events');
-if(ACLController::checkAccess('FP_events', 'list', true))$module_menu[]=Array("index.php?module=FP_events&action=index&return_module=FP_events&return_action=DetailView", $mod_strings['LNK_LIST'],"List", 'FP_events');
-if(ACLController::checkAccess('FP_events', 'import', true))$module_menu[]=Array("index.php?module=Import&action=Step1&import_module=FP_events&return_module=FP_events&return_action=index", $app_strings['LBL_IMPORT'],"Import", 'FP_events');
+ if (ACLController::checkAccess('FP_events', 'edit', true)) {
+     $module_menu[]=array("index.php?module=FP_events&action=EditView&return_module=FP_events&return_action=DetailView", $mod_strings['LNK_NEW_RECORD'],"Create", 'FP_events');
+ }
+ if (ACLController::checkAccess('FP_events', 'list', true)) {
+     $module_menu[]=array("index.php?module=FP_events&action=index&return_module=FP_events&return_action=DetailView", $mod_strings['LNK_LIST'],"List", 'FP_events');
+ }
+ if (ACLController::checkAccess('FP_events', 'import', true)) {
+     $module_menu[]=array("index.php?module=Import&action=Step1&import_module=FP_events&return_module=FP_events&return_action=index", $app_strings['LBL_IMPORT'],"Import", 'FP_events');
+ }
+ 

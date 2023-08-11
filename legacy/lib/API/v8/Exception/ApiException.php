@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,7 +45,6 @@
 
 namespace SuiteCRM\API\v8\Exception;
 
-use SuiteCRM\API\v8\Controller\ApiController;
 use SuiteCRM\LangException;
 use SuiteCRM\LangText;
 
@@ -77,7 +76,7 @@ class ApiException extends LangException
     protected $detail;
 
     /**
-     * 
+     *
      * @param string $message
      * @param integer $code
      * @param \Exception $previous
@@ -111,17 +110,18 @@ class ApiException extends LangException
      */
     public function setSource($source)
     {
-        if(is_string($source)) {
+        if (is_string($source)) {
             $source = ['pointer' => $source];
         }
         $this->source = $source;
     }
     
     /**
-     * 
+     *
      * @return array
      */
-    public function getSource() {
+    public function getSource()
+    {
         return $this->source;
     }
 

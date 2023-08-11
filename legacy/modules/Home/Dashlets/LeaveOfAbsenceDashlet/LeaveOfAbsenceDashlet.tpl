@@ -85,8 +85,7 @@
         }
 
         .fc-unthemed .fc-today {
-            background-color: #8f1376;
-            border-style: solid;
+            background-color: rgba(0,0,0,0);
             color: #009976;
             font-weight: bold;
         }

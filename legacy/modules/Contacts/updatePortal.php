@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -62,7 +62,7 @@ class updatePortal
             global $sugar_config;
             $aop_config = $sugar_config['aop'];
 
-            $template = BeanFactory::getBean('EmailTemplates',$aop_config['joomla_account_creation_email_template_id']);
+            $template = BeanFactory::getBean('EmailTemplates', $aop_config['joomla_account_creation_email_template_id']);
 
             $search = array("\$joomla_pass", "\$portal_address");
             $replace = array($bean->joomla_account_access, $aop_config['joomla_url']);
@@ -90,7 +90,7 @@ class updatePortal
         require_once 'modules/Emails/Email.php';
         require_once 'include/SugarPHPMailer.php';
 
-        $emailObj = new Email();
+        $emailObj = BeanFactory::newBean('Emails');
         $emailSettings = getPortalEmailSettings();
 
         $mail = new SugarPHPMailer();
@@ -115,7 +115,7 @@ class updatePortal
             $emailObj->description = $mail->AltBody;
             $emailObj->description_html = $mail->Body;
             $emailObj->from_addr_name = $mail->From;
-            if ($relatedBean instanceOf SugarBean && !empty($relatedBean->id)) {
+            if ($relatedBean instanceof SugarBean && !empty($relatedBean->id)) {
                 $emailObj->parent_type = $relatedBean->module_dir;
                 $emailObj->parent_id = $relatedBean->id;
             }

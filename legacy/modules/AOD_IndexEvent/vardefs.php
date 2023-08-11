@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,12 +43,12 @@
  */
 
 $dictionary['AOD_IndexEvent'] = array(
-	'table'=>'aod_indexevent',
-	'audited'=>true,
-		'duplicate_merge'=>true,
-		'fields'=>array (
-  'error' => 
-  array (
+    'table'=>'aod_indexevent',
+    'audited'=>true,
+        'duplicate_merge'=>true,
+        'fields'=>array(
+  'error' =>
+  array(
     'required' => false,
     'name' => 'error',
     'vname' => 'LBL_ERROR',
@@ -67,8 +67,8 @@ $dictionary['AOD_IndexEvent'] = array(
     'len' => '255',
     'size' => '20',
   ),
-  'success' => 
-  array (
+  'success' =>
+  array(
     'required' => false,
     'name' => 'success',
     'vname' => 'LBL_SUCCESS',
@@ -87,13 +87,13 @@ $dictionary['AOD_IndexEvent'] = array(
     'merge_filter' => 'disabled',
     'size' => '20',
   ),
-  'record_id' => array (
+  'record_id' => array(
     'name' => 'record_id',
     'type' => 'id',
     'reportable' => false,
     'vname' => 'LBL_RECORD_ID',
   ),
-  'record_module' => array (
+  'record_module' => array(
     'required' => false,
     'name' => 'record_module',
     'vname' => 'LBL_RECORD_MODULE',
@@ -113,16 +113,16 @@ $dictionary['AOD_IndexEvent'] = array(
     'size' => '20',
   ),
 ),
-	'relationships'=>array (
+    'relationships'=>array(
 ),
-    'indices' => array (
+    'indices' => array(
         array('name' =>'idx_record_module' , 'type'=>'index' , 'fields'=>array('record_module')),
         array('name' =>'idx_record_id', 'type' =>'index', 'fields'=>array('record_id')),
     ),
-	'optimistic_locking'=>true,
-		'unified_search'=>false,
-	);
-if (!class_exists('VardefManager')){
-        require_once('include/SugarObjects/VardefManager.php');
+    'optimistic_locking'=>true,
+        'unified_search'=>false,
+    );
+if (!class_exists('VardefManager')) {
+    require_once('include/SugarObjects/VardefManager.php');
 }
-VardefManager::createVardef('AOD_IndexEvent','AOD_IndexEvent', array('basic','assignable'));
+VardefManager::createVardef('AOD_IndexEvent', 'AOD_IndexEvent', array('basic','assignable'));

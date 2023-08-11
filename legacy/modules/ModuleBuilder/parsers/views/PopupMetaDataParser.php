@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -196,7 +196,7 @@ class PopupMetaDataParser extends ListLayoutMetaDataParser
      */
     public function handleSave($populate = true)
     {
-        if (empty ($this->_packageName)) {
+        if (empty($this->_packageName)) {
             foreach (array(MB_CUSTOMMETADATALOCATION, MB_BASEMETADATALOCATION) as $value) {
                 $file = $this->implementation->getFileName(MB_POPUPLIST, $this->_moduleName, null, $value);
                 if (file_exists($file)) {
@@ -208,8 +208,12 @@ class PopupMetaDataParser extends ListLayoutMetaDataParser
                 mkdir_recursive(dirname($writeFile));
             }
         } else {
-            $writeFile = $file = $this->implementation->getFileName(MB_POPUPLIST, $this->_moduleName, null,
-                $this->_packageName);
+            $writeFile = $file = $this->implementation->getFileName(
+                MB_POPUPLIST,
+                $this->_moduleName,
+                null,
+                $this->_packageName
+            );
         }
         $this->implementation->getHistory()->append($file);
         if ($populate) {
@@ -266,8 +270,8 @@ class PopupMetaDataParser extends ListLayoutMetaDataParser
     public function addNewSearchDef($searchDefs, &$popupMeta)
     {
         if (!empty($searchDefs)) {
-            $this->__diffAndUpdate($searchDefs, $popupMeta['whereClauses'], true);
-            $this->__diffAndUpdate($searchDefs, $popupMeta['searchInputs']);
+            $this->_diffAndUpdate($searchDefs, $popupMeta['whereClauses'], true);
+            $this->_diffAndUpdate($searchDefs, $popupMeta['searchInputs']);
         }
     }
 
@@ -276,14 +280,14 @@ class PopupMetaDataParser extends ListLayoutMetaDataParser
      * @param array $targetDefs
      * @param bool $forWhere
      */
-    private function __diffAndUpdate($newDefs, &$targetDefs, $forWhere = false)
+    private function _diffAndUpdate($newDefs, &$targetDefs, $forWhere = false)
     {
         if (!is_array($targetDefs)) {
             $targetDefs = array();
         }
         foreach ($newDefs as $key => $def) {
             if (!isset($targetDefs[$key]) && $forWhere) {
-                $targetDefs[$key] = $this->__getTargetModuleName($def) . '.' . $key;
+                $targetDefs[$key] = $this->_getTargetModuleName($def) . '.' . $key;
             } else {
                 if (!in_array($key, $targetDefs) && !$forWhere) {
                     array_push($targetDefs, $key);
@@ -302,14 +306,13 @@ class PopupMetaDataParser extends ListLayoutMetaDataParser
                 }
             }
         }
-
     }
 
     /**
      * @param array $def
      * @return string
      */
-    private function __getTargetModuleName($def)
+    private function _getTargetModuleName($def)
     {
         $dir = strtolower($this->implementation->getModuleDir());
         if (isset($this->_fielddefs[$def['name']]) && isset($this->_fielddefs[$def['name']]['source']) && $this->_fielddefs[$def['name']]['source'] == 'custom_fields') {
@@ -318,6 +321,4 @@ class PopupMetaDataParser extends ListLayoutMetaDataParser
 
         return $dir;
     }
-
 }
-

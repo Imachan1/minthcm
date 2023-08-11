@@ -10,7 +10,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,18 +46,21 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 require_once('include/MVC/View/SugarView.php');
 require_once('include/Sugarpdf/FontManager.php');
-class ConfiguratorViewAddFontView extends SugarView {
+class ConfiguratorViewAddFontView extends SugarView 
+{
    
     /**
      * Constructor
      */
-    public function AddFontView(){
+    public function AddFontView()
+    {
         parent::__construct();
     }
     /** 
      * display the form
      */
-    public function display(){
+    public function display()
+    {
         global $mod_strings, $app_list_strings, $app_strings, $current_user;
         if(!is_admin($current_user)){
             sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);  

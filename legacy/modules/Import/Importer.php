@@ -13,7 +13,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -102,7 +102,7 @@ class Importer {
       $this->ifs = $this->getFieldSanitizer();
 
       //Get the default user currency
-      $this->defaultUserCurrency = new Currency();
+      $this->defaultUserCurrency = BeanFactory::newBean('Currencies');
       $this->defaultUserCurrency->retrieve('-99');
 
       //Get our import column definitions
@@ -158,7 +158,8 @@ class Importer {
             $locale = new Localization();
          }
          if ( isset($row[$fieldNum]) ) {
-            $rowValue = $locale->translateCharset(strip_tags(trim($row[$fieldNum])), $this->importSource->importlocale_charset, $sugar_config['default_charset']);
+                // issue #6442 - translateCharset was already executed in an earlier step
+                $rowValue = strip_tags(trim($row[$fieldNum]));
          } elseif ( isset($this->sugarToExternalSourceFieldMap[$field]) && isset($row[$this->sugarToExternalSourceFieldMap[$field]]) ) {
             $rowValue = $locale->translateCharset(strip_tags(trim($row[$this->sugarToExternalSourceFieldMap[$field]])), $this->importSource->importlocale_charset, $sugar_config['default_charset']);
          } else {
@@ -234,7 +235,7 @@ class Importer {
             if ( !$returnValue && !empty($defaultRowValue) ) {
                $returnValue = $this->ifs->email($defaultRowValue, $fieldDef);
             }
-            if ( $returnValue === FALSE ) {
+            if ( $returnValue === false ) {
                $do_save = 0;
                $this->importSource->writeError($mod_strings['LBL_ERROR_INVALID_EMAIL'], $fieldTranslated, $rowValue);
             } else {
@@ -269,7 +270,7 @@ class Importer {
             if ( $field == "email_addresses_non_primary" && is_array($rowValue) ) {
                foreach ( $rowValue as $tempRow ) {
                   $tempRow = $this->sanitizeFieldValueByType($tempRow, $fieldDef, $defaultRowValue, $focus, $fieldTranslated);
-                  if ( $tempRow === FALSE ) {
+                  if ( $tempRow === false ) {
                      $rowValue = false;
                      $do_save = false;
                      break;
@@ -353,7 +354,7 @@ class Importer {
 
          if ( isset($dbrow['id']) && $dbrow['id'] != -1 ) {
             // if it exists but was deleted, just remove it
-            if ( isset($dbrow['deleted']) && $dbrow['deleted'] == 1 && $this->isUpdateOnly == false ) {
+            if (isset($dbrow['deleted']) && $dbrow['deleted'] == 1) {
                $this->removeDeletedBean($focus);
                $focus->new_with_id = true;
             } else {
@@ -364,13 +365,13 @@ class Importer {
                }
 
                $clonedBean = $this->cloneExistingBean($focus);
-               if ( $clonedBean === FALSE ) {
+               if ( $clonedBean === false ) {
                   $this->importSource->writeError($mod_strings['LBL_RECORD_CANNOT_BE_UPDATED'], 'ID', $focus->id);
                   $this->_undoCreatedBeans(ImportFieldSanitize::$createdBeans);
                   return;
                }
                $focus = $clonedBean;
-               $newRecord = FALSE;
+               $newRecord = false;
             }
          } else {
             $focus->new_with_id = true;
@@ -439,7 +440,7 @@ class Importer {
             }
             if ( !$returnValue ) {
                $this->importSource->writeError($mod_strings['LBL_ERROR_INVALID_' . strtoupper($fieldtype)], $fieldTranslated, $rowValue, $focus);
-               return FALSE;
+               return false;
             }
             return $returnValue;
       }
@@ -448,7 +449,7 @@ class Importer {
    protected function cloneExistingBean($focus) {
       $existing_focus = clone $this->bean;
       if ( !($existing_focus->retrieve($focus->id) instanceof SugarBean) ) {
-         return FALSE;
+         return false;
       }
       $newData = $focus->toArray();
       foreach ( $newData as $focus_key => $focus_value ) {
@@ -484,7 +485,7 @@ class Importer {
        * Bug 34854: Added all conditions besides the empty check on date modified.
        */
       if ( (!empty($focus->new_with_id) && !empty($focus->date_modified)) ||
-              (empty($focus->new_with_id) && $timedate->to_db($focus->date_modified) != $timedate->to_db($timedate->to_display_date_time($focus->fetched_row['date_modified'])))
+              (is_array($focus->fetched_row) && empty($focus->new_with_id) && $timedate->to_db($focus->date_modified) != $timedate->to_db($timedate->to_display_date_time($focus->fetched_row['date_modified'])))
       ) {
          $focus->update_date_modified = false;
       }
@@ -564,7 +565,7 @@ class Importer {
 
       $firstrow = json_decode(html_entity_decode($_REQUEST['firstrow']), true);
       $mappingValsArr = $this->importColumns;
-      $mapping_file = new ImportMap();
+      $mapping_file = BeanFactory::newBean('Import_1');
       if ( isset($_REQUEST['has_header']) && $_REQUEST['has_header'] == 'on' ) {
          $header_to_field = array();
          foreach ( $this->importColumns as $pos => $field_name ) {
@@ -697,7 +698,7 @@ class Importer {
          $ifs->$field = $this->importSource->$fieldKey;
       }
 
-      $currency = new Currency();
+      $currency = BeanFactory::newBean('Currencies');
       $currency->retrieve($this->importSource->importlocale_currency);
       $ifs->currency_symbol = $currency->symbol;
 
@@ -721,7 +722,7 @@ class Importer {
     * @param array $ids ids of user_last_import records created
     */
    protected function _undoCreatedBeans(array $ids) {
-      $focus = new UsersLastImport();
+      $focus = BeanFactory::newBean('Import_2');
       foreach ( $ids as $id ) {
          $focus->undoById($id);
       }

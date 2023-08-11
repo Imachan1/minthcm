@@ -1,6 +1,4 @@
 {*
-Mint #61877 : added missing STYLE_JS, which is required for checkbox functionality
-{*
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,9 +6,9 @@ Mint #61877 : added missing STYLE_JS, which is required for checkbox functionali
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -80,6 +78,7 @@ function clearAll() {
 <input type="hidden" name="module" value="{$module}" />
 <input type="hidden" name="action" value="Popup" />
 <input type="hidden" name="query" value="true" />
+<input type="hidden" name="metadata" value="{$metadata}" />
 <input type="hidden" name="func_name" value="" />
 <input type="hidden" name="request_data" value="{$request_data}" />
 <input type="hidden" name="populate_parent" value="false" />

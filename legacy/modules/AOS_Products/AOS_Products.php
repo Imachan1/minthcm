@@ -28,67 +28,56 @@
  * THIS CLASS IS FOR DEVELOPERS TO MAKE CUSTOMIZATIONS IN
  */
 require_once('modules/AOS_Products/AOS_Products_sugar.php');
-class AOS_Products extends AOS_Products_sugar {
-
-	function __construct(){
-		parent::__construct();
-	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function AOS_Products(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+class AOS_Products extends AOS_Products_sugar
+{
+    public function __construct()
+    {
+        parent::__construct();
     }
 
-    function getGUID(){
-        if (function_exists('com_create_guid')){
+    public function getGUID()
+    {
+        if (function_exists('com_create_guid')) {
             return com_create_guid();
         }
-        else {
-            mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
-            $charid = strtoupper(md5(uniqid(rand(), true)));
-            $hyphen = chr(45);// "-"
-            $uuid = substr($charid, 0, 8).$hyphen
+        mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+        $charid = strtoupper(md5(uniqid(mt_rand(), true)));
+        $hyphen = chr(45);// "-"
+        $uuid = substr($charid, 0, 8).$hyphen
                 .substr($charid, 8, 4).$hyphen
-                .substr($charid,12, 4).$hyphen
-                .substr($charid,16, 4).$hyphen
-                .substr($charid,20,12);
-            return $uuid;
-        }
+                .substr($charid, 12, 4).$hyphen
+                .substr($charid, 16, 4).$hyphen
+                .substr($charid, 20, 12);
+        return $uuid;
     }
 
-	function save($check_notify=false){
-		global $sugar_config,$mod_strings;
+    public function save($check_notify = false)
+    {
+        global $sugar_config, $mod_strings;
 
-		if (isset($_POST['deleteAttachment']) && $_POST['deleteAttachment']=='1') {
-			$this->product_image = '';
-		}
+        if (isset($_POST['deleteAttachment']) && $_POST['deleteAttachment'] == '1') {
+            $this->product_image = '';
+        }
 
-		require_once('include/upload_file.php');
-		$GLOBALS['log']->debug('UPLOADING PRODUCT IMAGE');
-		$upload_file = new UploadFile('uploadfile');
+        require_once('include/upload_file.php');
+        $GLOBALS['log']->debug('UPLOADING PRODUCT IMAGE');
 
-		if (isset($_FILES['uploadimage']['tmp_name'])&&$_FILES['uploadimage']['tmp_name']!=""){
-
-            if($_FILES['uploadimage']['size'] > $sugar_config['upload_maxsize']) {
-                die($mod_strings['LBL_IMAGE_UPLOAD_FAIL'].$sugar_config['upload_maxsize']);
-
+        if(!empty($_FILES['uploadimage']['name'])){
+            $imageFileName = $_FILES['uploadimage']['name'] ?? '';
+            if (!has_valid_image_extension('AOS_Products Uploaded image file: ' . $imageFileName , $imageFileName)) {
+                LoggerManager::getLogger()->fatal("AOS_Products save - Invalid image file ext : '$imageFileName'.");
+                throw new RuntimeException('Invalid request');
             }
-            else {
-                $prefix_image = $this->getGUID().'_';
-                $this->product_image=$sugar_config['site_url'].'/'.$sugar_config['upload_dir'].$prefix_image.$_FILES['uploadimage']['name'];
-                move_uploaded_file($_FILES['uploadimage']['tmp_name'], $sugar_config['upload_dir'].$prefix_image.$_FILES['uploadimage']['name']);
-
+        }
+        
+        if (!empty($_FILES['uploadimage']['tmp_name']) && verify_uploaded_image($_FILES['uploadimage']['tmp_name'])) {
+            if ($_FILES['uploadimage']['size'] > $sugar_config['upload_maxsize']) {
+                die($mod_strings['LBL_IMAGE_UPLOAD_FAIL'] . $sugar_config['upload_maxsize']);
             }
-	    }
+            $prefix_image = $this->getGUID() . '_';
+            $this->product_image = $sugar_config['site_url'] . '/' . $sugar_config['upload_dir'] . $prefix_image . $_FILES['uploadimage']['name'];
+            move_uploaded_file($_FILES['uploadimage']['tmp_name'], $sugar_config['upload_dir'] . $prefix_image . $_FILES['uploadimage']['name']);
+        }
 
         require_once('modules/AOS_Products_Quotes/AOS_Utils.php');
 
@@ -97,8 +86,9 @@ class AOS_Products extends AOS_Products_sugar {
         return parent::save($check_notify);
     }
 
-	public function getCustomersPurchasedProductsQuery() {
-		$query = "
+    public function getCustomersPurchasedProductsQuery()
+    {
+        $query = "
  			SELECT * FROM (
  				SELECT
 					aos_quotes.*,
@@ -117,11 +107,10 @@ class AOS_Products extends AOS_Products_sugar {
 				JOIN aos_quotes ON aos_quotes.id = aos_products_quotes.parent_id AND aos_quotes.stage = 'Closed Accepted' AND aos_quotes.deleted = 0
 				JOIN accounts ON accounts.id = aos_quotes.billing_account_id -- AND accounts.deleted = 0
 
-				GROUP BY accounts.id
+				GROUP BY aos_quotes.id
 			) AS aos_quotes
 
 		";
-		return $query;
-	}
-
+        return $query;
+    }
 }

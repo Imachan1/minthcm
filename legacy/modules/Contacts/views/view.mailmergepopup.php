@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,25 +45,27 @@
 
 /**
  * ContactsViewContactAddressPopup
- * 
+ *
  * */
  
 require_once('include/MVC/View/SugarView.php');
 require_once('modules/Contacts/Popup_picker.php');
 
-class ContactsViewMailMergePopup extends SugarView {
-	
- 	function ContactAddressPopup(){
- 		parent::__construct();
- 	}
- 	
- 	function process() {
-		$this->display();
- 	}
+class ContactsViewMailMergePopup extends SugarView
+{
+    public function ContactAddressPopup()
+    {
+        parent::__construct();
+    }
+    
+    public function process()
+    {
+        $this->display();
+    }
 
- 	function display() {
- 		
-		$popup = new Popup_Picker();
-		echo $popup->process_page_for_merge();
- 	}	
+    public function display()
+    {
+        $popup = new Popup_Picker();
+        echo $popup->process_page_for_merge();
+    }
 }

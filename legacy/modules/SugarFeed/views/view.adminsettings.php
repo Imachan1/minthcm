@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -75,7 +75,7 @@ class ViewAdminsettings extends SugarView
     {
         global $mod_strings, $app_strings;
 
-        $admin = new Administration();
+        $admin = BeanFactory::newBean('Administration');
         $admin->retrieveSettings();
 
         // Handle posts
@@ -121,18 +121,20 @@ class ViewAdminsettings extends SugarView
                     $modulesWithFeeds = SugarFeed::getAllFeedModules();
 
                     foreach ($modulesWithFeeds as $currFeedModule) {
-                        SugarFeed::disableModuleFeed($currFeedModule, FALSE);
+                        SugarFeed::disableModuleFeed($currFeedModule, false);
                     }
                 }
 
-                $admin->retrieveSettings(FALSE, TRUE);
+                $admin->retrieveSettings(false, true);
                 SugarFeed::flushBackendCache();
-            } else if ($_REQUEST['process'] == 'deleteRecords') {
-                if (!isset($db)) {
-                    $db = DBManagerFactory::getInstance();
+            } else {
+                if ($_REQUEST['process'] == 'deleteRecords') {
+                    if (!isset($db)) {
+                        $db = DBManagerFactory::getInstance();
+                    }
+                    $db->query("UPDATE sugarfeed SET deleted = '1'");
+                    echo(translate('LBL_RECORDS_DELETED', 'SugarFeed'));
                 }
-                $db->query("UPDATE sugarfeed SET deleted = '1'");
-                echo(translate('LBL_RECORDS_DELETED', 'SugarFeed'));
             }
 
 

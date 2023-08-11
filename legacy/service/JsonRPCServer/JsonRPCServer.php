@@ -8,7 +8,8 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once __DIR__ . '/../../soap/SoapHelperFunctions.php';
 require_once __DIR__ . '/../../include/json_config.php';
+require_once __DIR__ . '/../../include/utils.php';
 require_once __DIR__ . '/JsonRPCServerUtils.php';
 require_once __DIR__ . '/JsonRPCServerCalls.php';
 
@@ -100,14 +102,12 @@ class JsonRPCServer
             $log->debug('JSON_SERVER:session_save_path:' . $sugar_config['session_dir']);
         }
 
-        session_start();
-        $log->debug('JSON_SERVER:session started');
-
-        if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] !== '') {
-            $current_language = $_SESSION['authenticated_user_language'];
-        } else {
-            $current_language = $sugar_config['default_language'];
+        if(session_status() === PHP_SESSION_NONE){
+            session_start();
+            $log->debug('JSON_SERVER:session started');
         }
+
+        $current_language = get_current_language();
 
         $log->debug('JSON_SERVER: current_language:' . $current_language);
 

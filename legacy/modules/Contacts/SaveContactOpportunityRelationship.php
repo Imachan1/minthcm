@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,13 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 require_once('modules/Contacts/ContactOpportunityRelationship.php');
 
@@ -62,19 +56,16 @@ $focus = new ContactOpportunityRelationship();
 
 $focus->retrieve($_REQUEST['record']);
 
-foreach($focus->column_fields as $field)
-{
-	safe_map($field, $focus, true);
+foreach ($focus->column_fields as $field) {
+    safe_map($field, $focus, true);
 }
 
-foreach($focus->additional_column_fields as $field)
-{
-	safe_map($field, $focus, true);
+foreach ($focus->additional_column_fields as $field) {
+    safe_map($field, $focus, true);
 }
 
 // send them to the edit screen.
-if(isset($_REQUEST['record']) && $_REQUEST['record'] != "")
-{
+if (isset($_REQUEST['record']) && $_REQUEST['record'] != "") {
     $recordID = $_REQUEST['record'];
 }
 

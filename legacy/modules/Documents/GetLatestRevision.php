@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -51,13 +51,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('modules/Documents/Document.php');
 require_once('include/formbase.php');
 if (!empty($_REQUEST['record'])) {
-
-	$document = new Document();
-	$document->retrieve($_REQUEST['record']);
-	if (!empty($document->document_revision_id) && !empty($_REQUEST['get_latest_for_id']))  {
-		$query="update linked_documents set document_revision_id='{$document->document_revision_id}', date_modified='".TimeDate::getInstance()->nowDb()."' where id ='{$_REQUEST['get_latest_for_id']}' ";
-		$document->db->query($query);
-	}	
+    $document = BeanFactory::newBean('Documents');
+    $document->retrieve($_REQUEST['record']);
+    if (!empty($document->document_revision_id) && !empty($_REQUEST['get_latest_for_id'])) {
+        $query="update linked_documents set document_revision_id='{$document->document_revision_id}', date_modified='".TimeDate::getInstance()->nowDb()."' where id ='{$_REQUEST['get_latest_for_id']}' ";
+        $document->db->query($query);
+    }
 }
 handleRedirect();
-

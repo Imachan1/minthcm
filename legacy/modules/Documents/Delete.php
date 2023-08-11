@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,7 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 /*********************************************************************************
 
- * Description:  Deletes an Account record and then redirects the browser to the 
+ * Description:  Deletes an Account record and then redirects the browser to the
  * defined return URL.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
@@ -61,20 +61,20 @@ global $mod_strings;
 
 
 
-if(!isset($_REQUEST['record']))
-	sugar_die($mod_strings['ERR_DELETE_RECORD']);
-$focus = new Document();
+if (!isset($_REQUEST['record'])) {
+    sugar_die($mod_strings['ERR_DELETE_RECORD']);
+}
+$focus = BeanFactory::newBean('Documents');
 $focus->retrieve($_REQUEST['record']);
-if(!$focus->ACLAccess('Delete')){
-	ACLController::displayNoAccess(true);
-	sugar_cleanup(true);
+if (!$focus->ACLAccess('Delete')) {
+    ACLController::displayNoAccess(true);
+    sugar_cleanup(true);
 }
 if (isset($_REQUEST['object']) && $_REQUEST['object']="documentrevision") {
-	//delete document revision.
-	$focus = new DocumentRevision();
-	UploadFile::unlink_file($_REQUEST['revision_id'],$_REQUEST['filename']);
+    //delete document revision.
+    $focus = BeanFactory::newBean('DocumentRevisions');
+    UploadFile::unlink_file($_REQUEST['revision_id'], $_REQUEST['filename']);
 }
 
 $focus->mark_deleted($_REQUEST['record']);
 header("Location: index.php?module=".$_REQUEST['return_module']."&action=".$_REQUEST['return_action']."&record=".$_REQUEST['return_id']);
-

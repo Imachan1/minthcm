@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -92,32 +92,33 @@ class SpotsController extends SugarController {
     *
     * @return string $where the where clause to represent access
     */
-   public function buildSpotsAccessQuery(SugarBean $module, $alias) {
-      $module->table_name = $alias;
-      $where = '';
-      if ( $module->bean_implements('ACL') && ACLController::requireOwner($module->module_dir, 'list') ) {
-         global $current_user;
-         $owner_where = $module->getOwnerWhere($current_user->id);
-         $where = ' AND ' . $owner_where;
-      }
-
-      if ( file_exists('modules/SecurityGroups/SecurityGroup.php') ) {
-         /* BEGIN - SECURITY GROUPS */
-         if ( $module->bean_implements('ACL') && ACLController::requireSecurityGroup($module->module_dir, 'list') ) {
-            require_once 'modules/SecurityGroups/SecurityGroup.php';
+    public function buildSpotsAccessQuery(SugarBean $module, $alias)
+    {
+        $module->table_name = $alias;
+        $where = '';
+        if ($module->bean_implements('ACL') && ACLController::requireOwner($module->module_dir, 'list')) {
             global $current_user;
             $owner_where = $module->getOwnerWhere($current_user->id);
-            $group_where = SecurityGroup::getGroupWhere($alias, $module->module_dir, $current_user->id);
-            if ( !empty($owner_where) ) {
-               $where .= ' AND (' . $owner_where . ' or ' . $group_where . ') ';
-            } else {
-               $where .= ' AND ' . $group_where;
-            }
-         }
-      }
+            $where = ' AND '.$owner_where;
+        }
 
-      return $where;
-   }
+        if (file_exists('modules/SecurityGroups/SecurityGroup.php')) {
+            /* BEGIN - SECURITY GROUPS */
+            if ($module->bean_implements('ACL') && ACLController::requireSecurityGroup($module->module_dir, 'list')) {
+                require_once 'modules/SecurityGroups/SecurityGroup.php';
+                global $current_user;
+                $owner_where = $module->getOwnerWhere($current_user->id);
+                $group_where = SecurityGroup::getGroupWhere($alias, $module->module_dir, $current_user->id);
+                if (!empty($owner_where)) {
+                    $where .= ' AND ('.$owner_where.' or '.$group_where.') ';
+                } else {
+                    $where .= ' AND '.$group_where;
+                }
+            }
+        }
+
+        return $where;
+    }
 
    /**
     * Returns the cached account file, will create it first if it is out of date / does not exist.

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -378,6 +378,13 @@ $dictionary['Document'] = array('table' => 'documents',
             'reportable' => false,
             'source' => 'non-db',
         ),
+        'filecontents' =>
+            array(
+                'name' => 'filecontents',
+                'vname' => 'LBL_FILE_CONTENTS',
+                'type' => 'varchar',
+                'source' => 'non-db',
+            ),
 //END fields used for contract documents subpanel.
         'aos_contracts' => array(
             'name' => 'aos_contracts',
@@ -386,6 +393,12 @@ $dictionary['Document'] = array('table' => 'documents',
             'relationship' => 'aos_contracts_documents',
             'source' => 'non-db',
             'module' => 'AOS_Contracts',
+        ),
+        'show_preview' => array(
+            'name' => 'show_preview',
+            'type' => 'bool',
+            'source' => 'non-db',
+            'reportable' => false
         ),
         "positions" => array(
             'name' => 'positions',

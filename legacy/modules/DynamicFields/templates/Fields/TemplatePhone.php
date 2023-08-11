@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,32 +46,34 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
-class TemplatePhone extends TemplateText{
-    var $max_size = 25;
-    var $type='phone';
-    var $supports_unified_search = true;
+class TemplatePhone extends TemplateText
+{
+    public $max_size = 25;
+    public $type='phone';
+    public $supports_unified_search = true;
     
     /**
      * __construct
-     * 
+     *
      * Constructor for TemplatePhone class. This constructor ensures that TemplatePhone instances have the
      * validate_usa_format vardef value.
      */
-    function __construct()
-	{
-	}	
-	
-	/**
-	 * get_field_def
-	 * 
-	 * @see parent::get_field_def
-	 * This method checks to see if the validate_usa_format key/value entry should be
-	 * added to the vardef entry representing the module
-	 */	
-    function get_field_def(){
-		$def = parent::get_field_def();
-		$def['dbType'] = 'varchar';
-		
-		return $def;	
-	}
+    public function __construct()
+    {
+    }
+    
+    /**
+     * get_field_def
+     *
+     * @see parent::get_field_def
+     * This method checks to see if the validate_usa_format key/value entry should be
+     * added to the vardef entry representing the module
+     */
+    public function get_field_def()
+    {
+        $def = parent::get_field_def();
+        $def['dbType'] = 'varchar';
+        
+        return $def;
+    }
 }

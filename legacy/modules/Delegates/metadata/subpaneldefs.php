@@ -15,7 +15,7 @@ $layout_defs['Delegates'] = array(
 			'Contacts' => array(
 				'columns' => array(
 					'checkbox' => 
-					  array (
+					array (
 					    'vname' => '<ul id="selectLinkTop" class="clickMenu selectmenu SugarActionMenu" name="">
 					                    <li class="sugar_action_button">
 					                      <input class="checkallContacts" class="checkbox massall" type="checkbox" name="checkallContacts" style="float: left;margin: 2px 0 0 2px;" onclick="">

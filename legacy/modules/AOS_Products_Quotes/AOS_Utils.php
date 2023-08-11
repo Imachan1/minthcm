@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /**
  * Products, Quotations & Invoices modules.
  * Extensions to SugarCRM
@@ -25,53 +27,61 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * @author SalesAgility Ltd <info@salesagility.com>
  */
 
-function perform_aos_save($focus){
-
-    foreach($focus->field_defs as $field){
-
-        $fieldName = $field['name'];
-        $fieldNameDollar = $field['name'].'_usdollar';
-
-        if(isset($focus->field_defs[$fieldNameDollar])){
-
-            $focus->$fieldNameDollar = '';
-            if(!number_empty($focus->field_defs[$field['name']])){
-                $currency = new Currency();
-                if(!isset($focus->currency_id)) {
-                    LoggerManager::getLogger()->warn('Currency is not set for perform AOS save.');
-                    $currency->retrieve();
-                } else {
-                    $currency->retrieve($focus->currency_id);
-                }
-
-                if(!isset($focus->$fieldName)) {
-                    LoggerManager::getLogger()->warn('Perform AOS Save error: Undefined field name of focus. Focus and field name were: ' . get_class($focus) . ', ' . $fieldName);
-                }
-                $amountToConvert = isset($focus->$fieldName) ? $focus->$fieldName : null;
-                if (!amountToConvertIsDatabaseValue($focus, $fieldName)) {
-                    if (!isset($focus->$fieldName)) {
-                        LoggerManager::getLogger()->warn('Undefined field for AOS utils / perform aos save. Focus and field name were: [' . get_class($focus) . '], [' . $fieldName . ']');
-                        $focusFieldValue = null;
-                    } else {
-                        $focusFieldValue = $focus->$fieldName;
-                    }
-                    $amountToConvert = unformat_number($focusFieldValue);
-                }
-
-                $focus->$fieldNameDollar = $currency->convertToDollar($amountToConvert);
-            }
-
-        }
-
-    }
-}
-
-function amountToConvertIsDatabaseValue($focus, $fieldName)
-{
-    if (isset($focus->fetched_row)
-        && isset($focus->fetched_row[$fieldName])
-        && $focus->fetched_row[$fieldName] == $focus->$fieldName) {
-        return true;
-    }
-    return false;
-}
+ function perform_aos_save($focus)
+ {
+     $currency = fetch_aos_currency($focus);
+ 
+     foreach ($focus->field_defs as $field) {
+         $fieldName = $field['name'];
+         $fieldNameDollar = $field['name'].'_usdollar';
+ 
+         if (isset($focus->field_defs[$fieldNameDollar])) {
+             $focus->$fieldNameDollar = '';
+             if (!number_empty($focus->field_defs[$field['name']])) {
+                 if (!isset($focus->$fieldName)) {
+                     LoggerManager::getLogger()->warn('Perform AOS Save error: Undefined field name of focus. Focus and field name were: ' . get_class($focus) . ', ' . $fieldName);
+                 }
+                 $amountToConvert = isset($focus->$fieldName) ? $focus->$fieldName : null;
+                 if (!amountToConvertIsDatabaseValue($focus, $fieldName)) {
+                     if (!isset($focus->$fieldName)) {
+                         LoggerManager::getLogger()->warn('Undefined field for AOS utils / perform aos save. Focus and field name were: [' . get_class($focus) . '], [' . $fieldName . ']');
+                         $focusFieldValue = null;
+                     } else {
+                         $focusFieldValue = $focus->$fieldName;
+                     }
+                     $amountToConvert = unformat_number($focusFieldValue);
+                 }
+ 
+                 $focus->$fieldNameDollar = $currency->convertToDollar($amountToConvert);
+             }
+         }
+     }
+ }
+ 
+ /**
+  * @param $focus
+  * @return bool|SugarBean
+  */
+ function fetch_aos_currency($focus)
+ {
+     $currency = BeanFactory::newBean('Currencies');
+     if (!isset($focus->currency_id)) {
+         LoggerManager::getLogger()->warn('Currency is not defined in focus');
+         $currency->retrieve();
+     } else {
+         $currency->retrieve($focus->currency_id);
+     }
+ 
+     return $currency;
+ }
+ 
+ function amountToConvertIsDatabaseValue($focus, $fieldName)
+ {
+     if (isset($focus->fetched_row)
+         && isset($focus->fetched_row[$fieldName])
+         && $focus->fetched_row[$fieldName] == $focus->$fieldName) {
+         return true;
+     }
+     return false;
+ }
+ 

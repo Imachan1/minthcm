@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,41 +47,41 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $popupMeta = array(
-	'moduleMain' => 'Campaign',
-	'varName' => 'CAMPAIGN',
-	'orderBy' => 'name',
-	'whereClauses' => 
-		array('name' => 'campaigns.name'),
-	'searchInputs' =>
-		array('name'),
-	'listviewdefs' => array(
-		'NAME' => array(
-			'width' => '20', 
-			'label' => 'LBL_LIST_CAMPAIGN_NAME',
-	        'link' => true,
-	        'default' => true), 
-		 'CAMPAIGN_TYPE' => array(
-	        'width' => '10', 
-	        'label' => 'LBL_LIST_TYPE',
-	        'default' => true),
-		'STATUS' => array(
-			'width' => '10', 
-			'label' => 'LBL_LIST_STATUS',
-	        'default' => true),
-		'START_DATE' => array(
-	        'width' => '10', 
-	        'label' => 'LBL_LIST_START_DATE',
-	        'default' => true),
-		'END_DATE' => array(
-	        'width' => '10', 
-	        'label' => 'LBL_LIST_END_DATE',
-	        'default' => true), 
-	),
-	'searchdefs'   => array(
-	 	'name', 
-		'campaign_type', 
-		'status',
-		'start_date',
-		'end_date'
-	)
+    'moduleMain' => 'Campaign',
+    'varName' => 'CAMPAIGN',
+    'orderBy' => 'name',
+    'whereClauses' =>
+        array('name' => 'campaigns.name'),
+    'searchInputs' =>
+        array('name'),
+    'listviewdefs' => array(
+        'NAME' => array(
+            'width' => '20',
+            'label' => 'LBL_LIST_CAMPAIGN_NAME',
+            'link' => true,
+            'default' => true),
+         'CAMPAIGN_TYPE' => array(
+            'width' => '10',
+            'label' => 'LBL_LIST_TYPE',
+            'default' => true),
+        'STATUS' => array(
+            'width' => '10',
+            'label' => 'LBL_LIST_STATUS',
+            'default' => true),
+        'START_DATE' => array(
+            'width' => '10',
+            'label' => 'LBL_LIST_START_DATE',
+            'default' => true),
+        'END_DATE' => array(
+            'width' => '10',
+            'label' => 'LBL_LIST_END_DATE',
+            'default' => true),
+    ),
+    'searchdefs'   => array(
+        'name',
+        'campaign_type',
+        'status',
+        'start_date',
+        'end_date'
+    )
 );

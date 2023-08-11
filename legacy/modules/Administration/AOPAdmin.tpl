@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -194,13 +194,23 @@
         <tr>
             <td  scope="row" width="200">{$MOD.LBL_SUPPORT_FROM_ADDRESS}: </td>
             <td  >
-                <input type="text" name="support_from_address" id="support_from_address" value="{$config.support_from_address}">
-            </td>
+                <input type="text" name="support_from_address" id="support_from_address" value="{$config.support_from_address}">            </td>
         </tr>
         <tr>
             <td  scope="row" width="200">{$MOD.LBL_SUPPORT_FROM_NAME}: </td>
             <td  >
                 <input type="text" name="support_from_name" id="support_from_name" value="{$config.support_from_name}">
+            </td>
+        </tr>
+        <tr>
+            <td  scope="row" width="200">{$MOD.LBL_CASE_MACRO}: </td>
+            <td  >
+                <input type="text" name="inbound_email_case_macro" id="inbound_email_case_macro" value="{$inbound_email_case_macro}">
+                <span>
+                    {$MOD.LBL_CASE_MACRO_DESC}
+                    <br />
+                    <i>{$MOD.LBL_CASE_MACRO_DESC2}</i>
+                </span>
             </td>
         </tr>
         <tr id="user_email_template_row">

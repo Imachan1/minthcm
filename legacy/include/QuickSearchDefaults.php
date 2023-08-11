@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -56,8 +56,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class QuickSearchDefaults
 {
-
-	var $form_name = 'EditView';
+    public $form_name = 'EditView';
 
     /**
      * getQuickSearchDefaults
@@ -67,25 +66,25 @@ class QuickSearchDefaults
      * @param array $lookup Array with custom files and class names for custom QuickSearchDefaults classes, optional
      * @return QuickSearchDefaults
      */
-    static public function getQuickSearchDefaults(array $lookup = array())
+    public static function getQuickSearchDefaults(array $lookup = array())
     {
-       $lookup['custom/include/QuickSearchDefaults.php'] = 'QuickSearchDefaultsCustom';
-       foreach ($lookup as $file => $class)
-       {
-           if (file_exists($file))
-           {
-               require_once($file);
-               return new $class();
-           }
-       }
-       return new QuickSearchDefaults();
+        $lookup['custom/include/QuickSearchDefaults.php'] = 'QuickSearchDefaultsCustom';
+        foreach ($lookup as $file => $class) {
+            if (file_exists($file)) {
+                require_once($file);
+                return new $class();
+            }
+        }
+        return new QuickSearchDefaults();
     }
 
-	function setFormName($name = 'EditView') {
-		$this->form_name = $name;
-	}
+    public function setFormName($name = 'EditView')
+    {
+        $this->form_name = $name;
+    }
 
-    function getQSParent($parent = 'Accounts') {
+    public function getQSParent($parent = 'Accounts')
+    {
         global $app_strings;
 
         $qsParent = array(
@@ -105,14 +104,14 @@ class QuickSearchDefaults
         return $qsParent;
     }
 
-    function getQSAccount($nameKey, $idKey, $billingKey = null, $shippingKey = null, $additionalFields = null) {
-
+    public function getQSAccount($nameKey, $idKey, $billingKey = null, $shippingKey = null, $additionalFields = null)
+    {
         global $app_strings;
 
 
         $field_list = array('name', 'id');
         $populate_list = array($nameKey, $idKey);
-        if($billingKey != null) {
+        if ($billingKey != null) {
             $field_list = array_merge($field_list, array('billing_address_street', 'billing_address_city',
                                                            'billing_address_state', 'billing_address_postalcode', 'billing_address_country'));
 
@@ -120,7 +119,7 @@ class QuickSearchDefaults
                                                                 $billingKey . "_address_state", $billingKey . "_address_postalcode", $billingKey . "_address_country"));
         } //if
 
-        if($shippingKey != null) {
+        if ($shippingKey != null) {
             $field_list = array_merge($field_list, array('shipping_address_street', 'shipping_address_city',
                                                            'shipping_address_state', 'shipping_address_postalcode', 'shipping_address_country'));
 
@@ -128,13 +127,13 @@ class QuickSearchDefaults
                                                                 $shippingKey . "_address_state", $shippingKey . "_address_postalcode", $shippingKey . "_address_country"));
         }
 
-        if(!empty($additionalFields) && is_array($additionalFields)) {
-           $field_list = array_merge($field_list, array_keys($additionalFields));
-           $populate_list = array_merge($populate_list, array_values($additionalFields));
+        if (!empty($additionalFields) && is_array($additionalFields)) {
+            $field_list = array_merge($field_list, array_keys($additionalFields));
+            $populate_list = array_merge($populate_list, array_values($additionalFields));
         }
 
         $qsParent = array(
-					'form' => $this->form_name,
+                    'form' => $this->form_name,
                     'method' => 'query',
                     'modules' => array('Accounts'),
                     'group' => 'or',
@@ -159,11 +158,12 @@ class QuickSearchDefaults
      * this widget non-functional.
      * @return The JSON format of a QuickSearch definition for the Contacts module
      */
-    function getQSContact($name, $idName) {
+    public function getQSContact($name, $idName)
+    {
         global $app_strings, $locale;
 
         $qsContact = array('form' => $this->form_name,
-        				   'method'=>'get_contact_array',
+                           'method'=>'get_contact_array',
                            'modules'=>array('Contacts'),
                            'field_list' => array('salutation', 'first_name', 'last_name', 'id'),
                            'populate_list' => array($name, $idName, $idName, $idName),
@@ -179,11 +179,12 @@ class QuickSearchDefaults
         return $qsContact;
     }
 
-    function getQSUser($p_name = 'assigned_user_name', $p_id ='assigned_user_id') {
+    public function getQSUser($p_name = 'assigned_user_name', $p_id ='assigned_user_id')
+    {
         global $app_strings;
 
         $qsUser = array('form' => $this->form_name,
-        				'method' => 'get_user_array', // special method
+                        'method' => 'get_user_array', // special method
                         'field_list' => array('user_name', 'id'),
                         'populate_list' => array($p_name, $p_id),
                         'required_list' => array($p_id),
@@ -191,11 +192,12 @@ class QuickSearchDefaults
                         'limit' => '30','no_match_text' => $app_strings['ERR_SQS_NO_MATCH']);
         return $qsUser;
     }
-    function getQSCampaigns($c_name = 'campaign_name', $c_id = 'campaign_id') {
+    public function getQSCampaigns($c_name = 'campaign_name', $c_id = 'campaign_id')
+    {
         global $app_strings;
 
         $qsCampaign = array('form' => $this->form_name,
-        					'method' => 'query',
+                            'method' => 'query',
                             'modules'=> array('Campaigns'),
                             'group' => 'or',
                             'field_list' => array('name', 'id'),
@@ -218,26 +220,20 @@ class QuickSearchDefaults
      * @param type $nameField the name of the field to populate
      * @param type $idField the id of the field to populate
      */
-    function loadQSObject($module, $object, $relationName, $nameField, $idField)
+    public function loadQSObject($module, $object, $relationName, $nameField, $idField)
     {
         $result = array();
         VardefManager::loadVardef($module, $object);
-        if (isset($GLOBALS['dictionary'][$object]['relationships']) && array_key_exists($relationName, $GLOBALS['dictionary'][$object]['relationships']))
-        {
-            if (method_exists($this, 'getQS' . $module))
-            {
+        if (isset($GLOBALS['dictionary'][$object]['relationships']) && array_key_exists($relationName, $GLOBALS['dictionary'][$object]['relationships'])) {
+            if (method_exists($this, 'getQS' . $module)) {
                 $result = $this->{'getQS' . $module};
-            } elseif (method_exists($this, 'getQS' . $object))
-            {
+            } elseif (method_exists($this, 'getQS' . $object)) {
                 $result = $this->{'getQS' . $object};
             }
-        } else
-        {
-            if (method_exists($this, 'getQS' . $module))
-            {
+        } else {
+            if (method_exists($this, 'getQS' . $module)) {
                 $result = $this->{'getQS' . $module}($nameField, $idField);
-            } elseif (method_exists($this, 'getQS' . $object))
-            {
+            } elseif (method_exists($this, 'getQS' . $object)) {
                 $result = $this->{'getQS' . $object}($nameField, $idField);
             }
         }
@@ -245,21 +241,24 @@ class QuickSearchDefaults
     }
 
     // BEGIN QuickSearch functions for 4.5.x backwards compatibility support
-    function getQSScripts() {
-		global $sugar_version, $sugar_config, $theme;
-		$qsScripts = '<script type="text/javascript">sqsWaitGif = "' . SugarThemeRegistry::current()->getImageURL('sqsWait.gif') . '";</script>
+    public function getQSScripts()
+    {
+        global $sugar_version, $sugar_config, $theme;
+        $qsScripts = '<script type="text/javascript">sqsWaitGif = "' . SugarThemeRegistry::current()->getImageURL('sqsWait.gif') . '";</script>
 		<script type="text/javascript" src="'. getJSPath('include/javascript/quicksearch.js') . '"></script>';
-		return $qsScripts;
-	}
+        return $qsScripts;
+    }
 
-	function getQSScriptsNoServer() {
-		return $this->getQSScripts();
-	}
+    public function getQSScriptsNoServer()
+    {
+        return $this->getQSScripts();
+    }
 
-	function getQSScriptsJSONAlreadyDefined() {
-		global $sugar_version, $sugar_config, $theme;
-		$qsScriptsJSONAlreadyDefined = '<script type="text/javascript">sqsWaitGif = "' . SugarThemeRegistry::current()->getImageURL('sqsWait.gif') . '";</script><script type="text/javascript" src="' . getJSPath('include/javascript/quicksearch.js') . '"></script>';
-		return $qsScriptsJSONAlreadyDefined;
-	}
+    public function getQSScriptsJSONAlreadyDefined()
+    {
+        global $sugar_version, $sugar_config, $theme;
+        $qsScriptsJSONAlreadyDefined = '<script type="text/javascript">sqsWaitGif = "' . SugarThemeRegistry::current()->getImageURL('sqsWait.gif') . '";</script><script type="text/javascript" src="' . getJSPath('include/javascript/quicksearch.js') . '"></script>';
+        return $qsScriptsJSONAlreadyDefined;
+    }
     // END QuickSearch functions for 4.5.x backwards compatibility support
 }

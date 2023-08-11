@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -79,9 +79,15 @@ $xtpl->assign('APP', $app_strings);
 	
 $xtpl->assign('CANCEL_SCRIPT', 'window.close()');
 
-if(isset($_REQUEST['return_module'])) $xtpl->assign('RETURN_MODULE', $_REQUEST['return_module']);
-if(isset($_REQUEST['return_action'])) $xtpl->assign('RETURN_ACTION', $_REQUEST['return_action']);
-if(isset($_REQUEST['return_id'])) $xtpl->assign('RETURN_ID', $_REQUEST['return_id']);
+if (isset($_REQUEST['return_module'])) {
+    $xtpl->assign('RETURN_MODULE', $_REQUEST['return_module']);
+}
+if (isset($_REQUEST['return_action'])) {
+    $xtpl->assign('RETURN_ACTION', $_REQUEST['return_action']);
+}
+if (isset($_REQUEST['return_id'])) {
+    $xtpl->assign('RETURN_ID', $_REQUEST['return_id']);
+}
 // handle Create $module then Cancel
 if(empty($_REQUEST['return_id'])) {
 	$xtpl->assign('RETURN_ACTION', 'index');

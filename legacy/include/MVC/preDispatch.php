@@ -11,7 +11,7 @@ if (!defined('sugarEntry')) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,22 +46,20 @@ if (!defined('sugarEntry')) {
  */
 
 
-/* 
+/*
  * First step in removing getimage and getYUIComboFile -- at least this bypasses most of the app,
  * making assets load faster.
  */
-if( isset($_GET["entryPoint"]) )
-{
-	if($_GET["entryPoint"] == "getImage")
-    {
-		require_once('include/SugarTheme/SugarTheme.php');
-		require_once('include/utils.php');
-		include("include/SugarTheme/getImage.php");
-		die();
-	}
-	else if($_GET["entryPoint"] == "getYUIComboFile")
-    {
-		include("include/javascript/getYUIComboFile.php");
-		die();
-	}
+if (isset($_GET["entryPoint"])) {
+    if ($_GET["entryPoint"] == "getImage") {
+        require_once('include/SugarTheme/SugarTheme.php');
+        require_once('include/utils.php');
+        include("include/SugarTheme/getImage.php");
+        die();
+    } else {
+        if ($_GET["entryPoint"] == "getYUIComboFile") {
+            include("include/javascript/getYUIComboFile.php");
+            die();
+        }
+    }
 }

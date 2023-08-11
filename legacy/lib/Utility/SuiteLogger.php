@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,7 +44,6 @@
 
 namespace SuiteCRM\Utility;
 
-
 use Psr\Log\AbstractLogger;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
@@ -64,7 +63,7 @@ class SuiteLogger extends AbstractLogger
      * @param array $context eg array(user => 'joe')
      * @throws InvalidArgumentException
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
         $log = \LoggerManager::getLogger();
         $message = $this->interpolate($message, $context);
@@ -102,7 +101,7 @@ class SuiteLogger extends AbstractLogger
                 $log->debug('[DEBUG] ' . $message);
                 break;
             default:
-                throw new InvalidArgumentException();
+                throw new InvalidArgumentException('Invalid log level type: ' . $level);
         }
     }
 
@@ -112,11 +111,11 @@ class SuiteLogger extends AbstractLogger
      * @param array $context
      * @return string
      */
-    private function interpolate($message, array $context = array())
+    private function interpolate($message, array $context = [])
     {
-        $replace = array();
+        $replace = [];
 
-        if(empty($context)) {
+        if (empty($context)) {
             return $message;
         }
 

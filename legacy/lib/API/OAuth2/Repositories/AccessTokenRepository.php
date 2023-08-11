@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,7 +45,6 @@
 
 namespace SuiteCRM\API\OAuth2\Repositories;
 
-use Faker\Provider\DateTime;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
@@ -59,12 +58,14 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
+        global $timedate;
+
         // Used by password grand
         // Some logic here to save the access token to a database
         $token = new \OAuth2Tokens();
         $token->token_is_revoked = false;
         $token->access_token = $accessTokenEntity->getIdentifier();
-        $token->access_token_expires = $accessTokenEntity->getExpiryDateTime()->format('Y-m-d H:i:s');
+        $token->access_token_expires = $timedate->asUser($accessTokenEntity->getExpiryDateTime());
         $token->client = $accessTokenEntity->getClient()->getIdentifier();
         $token->assigned_user_id = $accessTokenEntity->getUserIdentifier();
 
@@ -115,9 +116,9 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
          */
         foreach ($tokens['list'] as $token) {
             $expires = $timedate->fromUser($token->access_token_expires);
-            if(!empty($expires)) {
+            if (!empty($expires)) {
                 $now = new \DateTime('now', $expires->getTimezone());
-                if($now > $expires || (bool)$token->token_is_revoked === true) {
+                if ($now > $expires || (bool)$token->token_is_revoked === true) {
                     $token->token_is_revoked = true;
                     $token->save();
                     return true;

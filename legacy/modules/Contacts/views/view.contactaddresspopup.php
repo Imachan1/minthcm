@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -51,34 +51,22 @@
 require_once('include/MVC/View/SugarView.php');
 require_once('modules/Contacts/Popup_picker.php');
 
-class ContactsViewContactAddressPopup extends SugarView {
-
- 	function __construct(){
- 		parent::__construct();
- 	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function ContactsViewContactAddressPopup(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+class ContactsViewContactAddressPopup extends SugarView
+{
+    public function __construct()
+    {
+        parent::__construct();
     }
 
+    public function process()
+    {
+        $this->display();
+    }
 
- 	function process() {
-		$this->display();
- 	}
-
- 	function display() {
- 		$this->renderJavascript();
- 		$popup = new Popup_Picker();
-		echo $popup->process_page_for_address();
- 	}
+    public function display()
+    {
+        $this->renderJavascript();
+        $popup = new Popup_Picker();
+        echo $popup->process_page_for_address();
+    }
 }

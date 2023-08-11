@@ -1,4 +1,5 @@
 {*
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -90,14 +91,6 @@
             {if isset($col.type) && ($col.type == 'phone')}
                 {$icon_phone}
             {/if}
-            {* BEGIN SUGARCRM flav=pro ONLY *}
-            {if isset($field_defs.$field.calculated) && $field_defs.$field.calculated}
-                {sugar_getimage name="SugarLogic/icon_calculated" alt=$mod_strings.LBL_CALCULATED ext=".png" other_attributes='class="right_icon" '}
-            {/if}
-            {if isset($field_defs.$field.dependency) && $field_defs.$field.dependency}
-                {sugar_getimage name="SugarLogic/icon_dependent" ext=".png" alt=$mod_strings.LBL_DEPENDANT other_attributes='class="right_icon" '}
-            {/if}
-            {* END SUGARCRM flav=pro ONLY *}
             <span id='le_label_{$idCount}'>
             {if !empty($translate) && !empty($col.label)}
                 {eval var=$col.label assign='newLabel'}
@@ -188,14 +181,6 @@
                     {if isset($col.type) && ($col.type == 'phone')}
                         {$icon_phone}
                     {/if}
-                    {* BEGIN SUGARCRM flav=pro ONLY *}
-                    {if isset($field_defs.$field.calculated) && $field_defs.$field.calculated}
-                        {sugar_getimage name="SugarLogic/icon_calculated" alt=$mod_strings.LBL_CALCULATED ext=".png" other_attributes='class="right_icon"'}
-                    {/if}
-                    {if isset($field_defs.$field.dependency) && $field_defs.$field.dependency}
-                        {sugar_getimage name="SugarLogic/icon_dependent" ext=".png" alt=$mod_strings.LBL_DEPENDANT other_attributes='class="right_icon"'}
-                    {/if}
-                    {* END SUGARCRM flav=pro ONLY *}
                     <span id='le_label_{$idCount}'>
                     {sugar_translate label=$col.label}
                     </span>

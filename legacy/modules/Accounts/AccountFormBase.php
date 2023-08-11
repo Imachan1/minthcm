@@ -1,7 +1,4 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -11,7 +8,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,41 +50,52 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+
 class AccountFormBase
 {
+    protected $db = null;
+
+    public function __construct()
+    {
+        $this->db = DBManagerFactory::getInstance();
+    }
+
     public function checkForDuplicates($prefix)
     {
         require_once('include/formbase.php');
 
-        $focus = new Account();
         $query = '';
-        $baseQuery = 'select id, name, website, billing_address_city  from accounts where deleted!=1 and ';
-        if (!empty($_POST[$prefix.'name'])) {
-            $query = $baseQuery ."  name like '".$_POST[$prefix.'name']."%'";
+
+        $name = !empty($_POST[$prefix . 'name']) ? $_POST[$prefix . 'name'] : '';
+        $shippingAddressCity = !empty($_POST[$prefix . 'shipping_address_city']) ? $_POST[$prefix . 'shipping_address_city'] : '';
+        $billingAddressCity = !empty($_POST[$prefix . 'billing_address_city']) ? $_POST[$prefix . 'billing_address_city'] : '';
+
+        $baseQuery = 'SELECT id, name, website, billing_address_city FROM accounts WHERE deleted != 1 AND ';
+
+        if (!empty($name)) {
+            $nameQuoted = $this->db->quoted($name . '%');
+            $query = $baseQuery ." name LIKE " . $nameQuoted;
         }
 
-        if (!empty($_POST[$prefix.'billing_address_city']) || !empty($_POST[$prefix.'shipping_address_city'])) {
-            $temp_query = '';
-            if (!empty($_POST[$prefix.'billing_address_city'])) {
-                if (empty($temp_query)) {
-                    $temp_query =  "  billing_address_city like '".$_POST[$prefix.'billing_address_city']."%'";
-                } else {
-                    $temp_query .= "or billing_address_city like '".$_POST[$prefix.'billing_address_city']."%'";
-                }
+        if (!empty($billingAddressCity) || !empty($shippingAddressCity)) {
+            $tempQuery = '';
+
+            if (!empty($billingAddressCity)) {
+                $billingAddressCityQuoted = $this->db->quoted($billingAddressCity . '%');
+                $tempQuery .= "billing_address_city LIKE " . $billingAddressCityQuoted;
             }
-            if (!empty($_POST[$prefix.'shipping_address_city'])) {
-                if (empty($temp_query)) {
-                    $temp_query = "  shipping_address_city like '".$_POST[$prefix.'shipping_address_city']."%'";
-                } else {
-                    $temp_query .= "or shipping_address_city like '".$_POST[$prefix.'shipping_address_city']."%'";
-                }
+
+            if (!empty($shippingAddressCity)) {
+                $shippingAddressCityQuoted = $this->db->quoted($shippingAddressCity . '%');
+                $tempQuery .= (empty($tempQuery)) ?: ' OR ';
+                $tempQuery .= "shipping_address_city LIKE " . $shippingAddressCityQuoted;
             }
-            if (empty($query)) {
-                $query .= $baseQuery;
-            } else {
-                $query .= ' AND ';
-            }
-            $query .=   ' ('. $temp_query . ' ) ';
+
+            $query .= (empty($query)) ? $baseQuery : ' AND ';
+            $query .=   ' ('. $tempQuery . ' ) ';
         }
 
         if (!empty($query)) {
@@ -95,16 +103,19 @@ class AccountFormBase
             $db = DBManagerFactory::getInstance();
             $result = $db->query($query);
             $i=-1;
+
             while (($row=$db->fetchByAssoc($result)) != null) {
                 $i++;
                 $rows[$i] = $row;
             }
+
             if ($i==-1) {
                 return null;
             }
 
             return $rows;
         }
+
         return null;
     }
 
@@ -122,7 +133,7 @@ class AccountFormBase
             global $mod_strings;
         }
         global $app_strings;
-        $cols = sizeof($rows[0]) * 2 + 1;
+        $cols = count($rows[0]) * 2 + 1;
         if ($action != 'ShowDuplicates') {
             $form = "<form action='index.php' method='post' id='dupAccounts'  name='dupAccounts'><input type='hidden' name='selectedAccount' value=''>";
             $form .= '<table width="100%"><tr><td>'.$mod_strings['MSG_DUPLICATE']. '</td></tr><tr><td height="20"></td></tr></table>';
@@ -293,7 +304,7 @@ EOQ;
 
         $javascript = new javascript();
         $javascript->setFormName($formname);
-        $javascript->setSugarBean(new Account());
+        $javascript->setSugarBean(BeanFactory::newBean('Accounts'));
         $javascript->addRequiredFields($prefix);
         $form .=$javascript->getScript();
         $mod_strings = $temp_strings;
@@ -309,7 +320,7 @@ EOQ;
         }
 
         if (empty($contact)) {
-            $contact = new Contact();
+            $contact = BeanFactory::newBean('Contacts');
         }
         global $mod_strings;
         $temp_strings = $mod_strings;
@@ -319,7 +330,7 @@ EOQ;
         }
         global $app_strings;
         global $current_user;
-        $account = new Account();
+        $account = BeanFactory::newBean('Accounts');
 
         $lbl_required_symbol = $app_strings['LBL_REQUIRED_SYMBOL'];
         $lbl_account_name = $mod_strings['LBL_ACCOUNT_NAME'];
@@ -382,7 +393,7 @@ EOQ;
 		</tr>
 EOQ;
         //carry forward custom lead fields common to accounts during Lead Conversion
-        $tempAccount = new Account();
+        $tempAccount = BeanFactory::newBean('Accounts');
         if (method_exists($contact, 'convertCustomFieldsForm')) {
             $contact->convertCustomFieldsForm($form, $tempAccount, $prefix);
         }
@@ -394,7 +405,7 @@ EOQ;
 
         $javascript = new javascript();
         $javascript->setFormName($formname);
-        $javascript->setSugarBean(new Account());
+        $javascript->setSugarBean(BeanFactory::newBean('Accounts'));
         $javascript->addRequiredFields($prefix);
         $form .=$javascript->getScript();
         $mod_strings = $temp_strings;
@@ -406,7 +417,7 @@ EOQ;
     {
         require_once('include/formbase.php');
 
-        $focus = new Account();
+        $focus = BeanFactory::newBean('Accounts');
 
         if ($useRequired &&  !checkRequired($prefix, array_keys($focus->required_fields))) {
             return null;
@@ -445,7 +456,7 @@ EOQ;
                         $get .= "&Accounts$field=".urlencode($focus->$field);
                     }
                 }
-            
+
 
                 if ($focus->hasCustomFields()) {
                     foreach ($focus->field_defs as $name=>$field) {
@@ -502,7 +513,7 @@ EOQ;
 
         $focus->save($check_notify);
         $return_id = $focus->id;
-    
+
         $GLOBALS['log']->debug("Saved record with id of ".$return_id);
 
 

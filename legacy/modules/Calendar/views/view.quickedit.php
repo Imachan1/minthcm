@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,13 +42,13 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-require_once('include/MVC/View/views/view.ajax.php');
+
 require_once('include/EditView/EditView2.php');
 
 
 class CalendarViewQuickEdit extends SugarView {
 
-	var $ev;
+	public $ev;
 	protected $editable;	
 	
 	public function preDisplay()
@@ -88,6 +88,14 @@ class CalendarViewQuickEdit extends SugarView {
 		$this->ev->view = "QuickCreate";
 		$this->ev->ss = new Sugar_Smarty();
 		$this->ev->formName = "CalendarEditView";
+		//Fix #9781 Meetings and Calls quick edit via Calender does not populate correct reminders
+        //Fetch Reminders Data for existing Calls or Meetings and assign to smarty template
+        if (!empty($this->bean->id)) {
+            $this->ev->ss->assign('remindersData', Reminder::loadRemindersData($module, $this->bean->id, false));
+            $this->ev->ss->assign('remindersDataJson', Reminder::loadRemindersDataJson($module, $this->bean->id, false));
+            $this->ev->ss->assign('remindersDefaultValuesDataJson', Reminder::loadRemindersDefaultValuesDataJson());
+            $this->ev->ss->assign('remindersDisabled', json_encode(false));
+        }
 		$this->ev->setup($module,$this->bean,$source,$tpl);
 		$this->ev->defs['templateMeta']['form']['headerTpl'] = "modules/Calendar/tpls/editHeader.tpl";
 		$this->ev->defs['templateMeta']['form']['footerTpl'] = "modules/Calendar/tpls/empty.tpl";						

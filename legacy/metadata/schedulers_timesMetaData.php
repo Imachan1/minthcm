@@ -11,7 +11,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,76 +48,76 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $dictionary['SchedulersTimes'] = array('table' => 'schedulers_times',
-	'fields' => array (
-		'id' => array (
-			'name' => 'id',
-			'vname' => 'LBL_NAME',
-			'type' => 'id',
-			'len' => '36',
-			'required' => true,
-			'reportable'=>false,
-		),
-		'deleted' => array (
-			'name' => 'deleted',
-			'vname' => 'LBL_DELETED',
-			'type' => 'bool',
-			'required' => false,
-			'default' => '0',
-			'reportable'=>false,
-		),
-		'date_entered' => array (
-			'name' => 'date_entered',
-			'vname' => 'LBL_DATE_ENTERED',
-			'type' => 'datetime',
-			'required' => true,
-		),
-		'date_modified' => array (
-			'name' => 'date_modified',
-			'vname' => 'LBL_DATE_MODIFIED',
-			'type' => 'datetime',
-			'required' => true,
-		),
-		'scheduler_id' => array (
-			'name' => 'scheduler_id',
-			'vname' => 'LBL_SCHEDULER_ID',
-			'type' => 'id',
-			'dbType' => 'varchar',
-			'len' => 36,
-			'required' => true,
-			'reportable' => false,
-		),
-		'execute_time' => array (
-			'name' => 'execute_time',
-			'vname' => 'LBL_EXECUTE_TIME',
-			'type' => 'datetime',
-			'required' => true,
-			'reportable' => true,
-		),
-		'status' => array (
-			'name' => 'status',
-			'vname' => 'LBL_STATUS',
-			'type' => 'varchar',
-			'len' => '25',
-			'required' => true,
-			'reportable' => true,
-			'default' => 'ready',
-		),
-	),
-	'indices' => array (
-		array(
-			'name' =>'schedulers_timespk',
-			'type' =>'primary',
-			'fields' => array(
-				'id'
-			)
-		),
-		array(
-		'name' =>'idx_scheduler_id',
-		'type'=>'index',
-		'fields' => array(
-			'scheduler_id',
-			'execute_time',
-			)
-		),
-	),
+    'fields' => array(
+        'id' => array(
+            'name' => 'id',
+            'vname' => 'LBL_NAME',
+            'type' => 'id',
+            'len' => '36',
+            'required' => true,
+            'reportable'=>false,
+        ),
+        'deleted' => array(
+            'name' => 'deleted',
+            'vname' => 'LBL_DELETED',
+            'type' => 'bool',
+            'required' => false,
+            'default' => '0',
+            'reportable'=>false,
+        ),
+        'date_entered' => array(
+            'name' => 'date_entered',
+            'vname' => 'LBL_DATE_ENTERED',
+            'type' => 'datetime',
+            'required' => true,
+        ),
+        'date_modified' => array(
+            'name' => 'date_modified',
+            'vname' => 'LBL_DATE_MODIFIED',
+            'type' => 'datetime',
+            'required' => true,
+        ),
+        'scheduler_id' => array(
+            'name' => 'scheduler_id',
+            'vname' => 'LBL_SCHEDULER_ID',
+            'type' => 'id',
+            'dbType' => 'varchar',
+            'len' => 36,
+            'required' => true,
+            'reportable' => false,
+        ),
+        'execute_time' => array(
+            'name' => 'execute_time',
+            'vname' => 'LBL_EXECUTE_TIME',
+            'type' => 'datetime',
+            'required' => true,
+            'reportable' => true,
+        ),
+        'status' => array(
+            'name' => 'status',
+            'vname' => 'LBL_STATUS',
+            'type' => 'varchar',
+            'len' => '25',
+            'required' => true,
+            'reportable' => true,
+            'default' => 'ready',
+        ),
+    ),
+    'indices' => array(
+        array(
+            'name' =>'schedulers_timespk',
+            'type' =>'primary',
+            'fields' => array(
+                'id'
+            )
+        ),
+        array(
+        'name' =>'idx_scheduler_id',
+        'type'=>'index',
+        'fields' => array(
+            'scheduler_id',
+            'execute_time',
+            )
+        ),
+    ),
 );

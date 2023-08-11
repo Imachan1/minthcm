@@ -6,9 +6,9 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,39 +48,27 @@
  * This class serves as the base class for the notifier/observable pattern used
  * by the resource management framework.
  */
-class ResourceObserver {
+class ResourceObserver
+{
+    public $module;
+    public $limit;
 
-var $module;
-var $limit;
-
-public function __construct($module) {
-	$this->module = $module;
-}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function ResourceObserver($module){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($module);
+    public function __construct($module)
+    {
+        $this->module = $module;
     }
 
-function setLimit($limit) {
-	$this->limit = $limit;
-}
-
-function notify($msg = '') {
-    if($this->dieOnError) {
-       die($GLOBALS['app_strings']['ERROR_NOTIFY_OVERRIDE']);
-    } else {
-       echo($GLOBALS['app_strings']['ERROR_NOTIFY_OVERRIDE']);
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
     }
-}
 
+    public function notify($msg = '')
+    {
+        if ($this->dieOnError) {
+            die($GLOBALS['app_strings']['ERROR_NOTIFY_OVERRIDE']);
+        } else {
+            echo($GLOBALS['app_strings']['ERROR_NOTIFY_OVERRIDE']);
+        }
+    }
 }

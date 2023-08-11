@@ -1,14 +1,13 @@
 <?php
 /**
- *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,7 +44,7 @@
 namespace SuiteCRM\Robo\Traits;
 
 /**
- * This Trait creates a fully working instance of SugarCRM.
+ * This Trait creates a fully working instance of SuiteCRM.
  *
  * The main advantage of this class is that it establish a working database connection to be used from your CLIs.
  *
@@ -70,12 +69,26 @@ trait CliRunnerTrait
          * since they have side effects and can make other
          * Robo Tasks fail (i.e. failed database connection).
          */
-
         $root = __DIR__ . '/../../../';
 
         require $root . 'config.php';
         require $root . 'config_override.php';
         require_once $root . 'include/entryPoint.php';
+
+        // Load up the config.test.php file. This is used to define configuration values for the test environment.
+        $testConfig = [];
+
+        if (is_file($root . 'tests/config.test.php')) {
+            require_once $root . 'tests/config.test.php';
+        }
+
+        foreach (array_keys($testConfig) as $key) {
+            if (isset($sugar_config[$key])) {
+                $sugar_config[$key] = $testConfig[$key];
+            } else {
+                $sugar_config[] = $testConfig[$key];
+            }
+        }
 
         $current_language = 'en_us';
         $app_list_strings = return_app_list_strings_language($current_language);

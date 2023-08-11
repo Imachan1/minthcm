@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -159,11 +159,11 @@ class AuthenticationController
 			if(isset($GLOBALS['current_user']))
 				$GLOBALS['current_user']->call_custom_logic('after_login');
 
-			// Check for running Admin Wizard
-			$config = new Administration();
+            // Check for running Admin Wizard
+            $config = BeanFactory::newBean('Administration');
 			$config->retrieveSettings();
 			$postSilentInstallAdminWizardCompleted = $GLOBALS['current_user']->getPreference('postSilentInstallAdminWizardCompleted');
-		    if ( (is_admin($GLOBALS['current_user']) && empty($config->settings['system_adminwizard']) && $_REQUEST['action'] != 'AdminWizard') ||($postSilentInstallAdminWizardCompleted !== NULL && !$postSilentInstallAdminWizardCompleted) ) {
+		    if ( (is_admin($GLOBALS['current_user']) && empty($config->settings['system_adminwizard']) && $_REQUEST['action'] != 'AdminWizard') ||($postSilentInstallAdminWizardCompleted !== null && !$postSilentInstallAdminWizardCompleted) ) {
 				$GLOBALS['module'] = 'Configurator';
 				$GLOBALS['action'] = 'AdminWizard';
 				ob_clean();

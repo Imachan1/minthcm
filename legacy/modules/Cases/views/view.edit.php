@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -41,36 +41,22 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-require_once('include/MVC/View/views/view.edit.php');
 require_once('include/SugarTinyMCE.php');
 
-class CasesViewEdit extends ViewEdit {
-
-    function __construct(){
+class CasesViewEdit extends ViewEdit
+{
+    public function __construct()
+    {
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function CasesViewEdit(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-    function display(){
-
+    public function display()
+    {
         parent::display();
 
         $newScript = '';
 
-        if(empty($this->bean->id)){
+        if (empty($this->bean->id)) {
             $newScript = "
                     $('#update_text').closest('.edit-view-row-item').hide();
                     $('#update_text_label').closest('.edit-view-row-item').hide();
@@ -78,9 +64,8 @@ class CasesViewEdit extends ViewEdit {
                     $('#internal_label').closest('.edit-view-row-item').hide();
                     $('#addFileButton').closest('.edit-view-row-item').hide();
                     $('#case_update_form_label').closest('.edit-view-row-item').hide();";
-            $newScript .= "tinyMCE.execCommand('mceAddControl', false, document.getElementById('description'));";
+         }
 
-            echo '<script>$(document).ready(function(){' . $newScript . '})</script>';
-        }
+         echo '<script>$(document).ready(function(){' . $newScript . '})</script>';
     }
 }

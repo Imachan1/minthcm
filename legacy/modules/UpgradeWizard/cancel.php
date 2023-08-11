@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,23 +45,17 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc. All Rights
- * Reserved. Contributor(s): ______________________________________..
- * *******************************************************************************/
 logThis('[At cancel.php]');
 logThis('cleaning up files and session.  goodbye.');
 
 
 //Check the current step.
 
-if(isset($_SESSION['install_file']) && file_exists(isset($_SESSION['install_file']))){
-	@unlink(isset($_SESSION['install_file']));
+if (isset($_SESSION['install_file']) && file_exists(isset($_SESSION['install_file']))) {
+    @unlink(isset($_SESSION['install_file']));
 }
 unlinkUWTempFiles();
-unlinkUploadFiles();
 resetUwSession();
 
 $uwMain =<<<eoq
@@ -97,4 +91,3 @@ $stepBack		= $_REQUEST['step'] - 1;
 $stepNext		= $_REQUEST['step'] + 1;
 $stepCancel		= -1;
 $stepRecheck	= $_REQUEST['step'];
-

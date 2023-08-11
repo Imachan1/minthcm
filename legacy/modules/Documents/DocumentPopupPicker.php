@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -68,7 +68,7 @@ class DocumentPopupPicker extends Popup_Picker
     public function _get_where_clause()
     {
         $where = '';
-        if(isset($_REQUEST['query'])) {
+        if (isset($_REQUEST['query'])) {
             $where_clauses = array();
             append_where_clause($where_clauses, "document_name", "documents.document_name");
             append_where_clause($where_clauses, "category_id", "documents.category_id");

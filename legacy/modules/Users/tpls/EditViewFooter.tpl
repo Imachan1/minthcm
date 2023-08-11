@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -86,10 +86,10 @@
         </tr>
     </table>
     {if $ID}
-        <button class="button" id="settingsButton" 
-            {{* MintHCM #111578 Start *}}
+        <button class="button" id="settingsButton"
+                {{* MintHCM #111578 Start *}}
                 type="button"
-            {{* MintHCM #111578 End *}}
+                {{* MintHCM #111578 End *}}
                 onclick="SUGAR.email2.settings.showSettings(getUserEditViewUserId()); return false;"><img
                     src="themes/default/images/icon_email_settings.gif" align="absmiddle"
                     border="0"> {$APP.LBL_EMAIL_SETTINGS}</button>
@@ -120,7 +120,7 @@
                                     </td>
                                     <td>
                                         <input name='old_password' id='old_password' type='password' tabindex='2'
-                                               onkeyup="password_confirmation();">
+                                        onkeyup="password_confirmation();" autocomplete="new-password">
                                     </td>
                                     <td width='40%'>
                                     </td>
@@ -243,8 +243,10 @@
                     </slot>&nbsp;{sugar_help text=$MOD.LBL_RECEIVE_NOTIFICATIONS_TEXT}
                 </td>
                 <td width="33%">
-                    <slot><input name='receive_notifications' class="checkbox" tabindex='12' type="checkbox"
-                                 value="12" {$RECEIVE_NOTIFICATIONS}></slot>
+                    <slot>
+                        <input type='hidden' value='0' name='receive_notifications'>
+                        <input name='receive_notifications' class="checkbox" tabindex='12' type="checkbox" value="1" {$RECEIVE_NOTIFICATIONS}>
+                    </slot>
                 </td>
             </tr>
 

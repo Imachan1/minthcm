@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,11 +46,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
  
-require_once('include/MVC/View/views/view.ajax.php');
 
-class ViewEditFields extends ViewAjax{
- 	
-    function __construct(){
+class ViewEditFields extends ViewAjax
+{
+    public function __construct()
+    {
         $rel = $this->rel = $_REQUEST['rel'];
         $this->id = $_REQUEST['id'];
         $moduleName = $this->module = $_REQUEST['rel_module'];
@@ -61,9 +61,10 @@ class ViewEditFields extends ViewAjax{
         $beanName = $beanList [ $moduleName ];
         $link = new Link($this->rel, new $beanName(), array());
         $this->fields = $link->_get_link_table_definition($rel, 'fields');
- 	}
+    }
 
- 	function display(){
+    public function display()
+    {
 
         //echo "<pre>".print_r($this->fields, true)."</pre>";
         echo "<form name='edit_rel_fields'>" .
@@ -76,19 +77,18 @@ class ViewEditFields extends ViewAjax{
              '<input type="hidden" name="rel_module" value="' . $this->module .'">' .
              "<table class='edit view'><tr>";
         $count = 0;
-        foreach($this->fields as $def)
-        {
+        foreach ($this->fields as $def) {
             if (!empty($def['relationship_field'])) {
                 $label = !empty($def['vname']) ? $def['vname'] : $def['name'];
                 echo "<td>" . translate($label, $this->module) . ":</td>"
                    . "<td><input id='{$def['name']}' name='{$def['name']}'>"  ;
 
-                if ($count%1)
+                if ($count%1) {
                     echo "</tr><tr>";
+                }
                 $count++;
             }
         }
         echo "</tr></table></form>";
- 	}
-
+    }
 }

@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -77,8 +77,7 @@ class EmailsDetailView extends DetailView2
         $tpl = 'include/DetailView/DetailView.tpl',
         $createFocus = true,
         $metadataFileName = 'detail'
-    )
-    {
+    ) {
         parent::setup($module, $focus, $metadataFile, $tpl, $createFocus, $metadataFileName);
     }
 
@@ -98,9 +97,11 @@ class EmailsDetailView extends DetailView2
      */
     public function populateFields()
     {
-        if(empty($this->focus->from_addr_name)) {
+        if (empty($this->focus->from_addr_name)) {
             $this->focus->from_addr_name = $this->focus->from_addr;
         }
+        //Prevent Email address to be handled as HTML tag
+        $this->focus->from_addr_name = html_entity_decode($this->focus->from_addr_name);
     }
 
     /**
@@ -113,4 +114,3 @@ class EmailsDetailView extends DetailView2
         return parent::display($showTitle, $ajaxSave);
     }
 }
-

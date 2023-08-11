@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,27 +53,27 @@ require_once('modules/ModuleBuilder/MB/AjaxCompose.php');
 
 class ViewModulelabels extends SugarView
 {
- 	/**
-	 * @see SugarView::_getModuleTitleParams()
-	 */
-	protected function _getModuleTitleParams($browserTitle = false)
-	{
-	    global $mod_strings;
-	    
-    	return array(
-    	   translate('LBL_MODULE_NAME','Administration'),
-    	   ModuleBuilderController::getModuleTitle(),
-    	   );
+    /**
+     * @see SugarView::_getModuleTitleParams()
+     */
+    protected function _getModuleTitleParams($browserTitle = false)
+    {
+        global $mod_strings;
+        
+        return array(
+           translate('LBL_MODULE_NAME', 'Administration'),
+           ModuleBuilderController::getModuleTitle(),
+           );
     }
 
-	function display()
-	{
- 		global $mod_strings;
+    public function display()
+    {
+        global $mod_strings;
         $bak_mod_strings=$mod_strings;
- 		$smarty = new Sugar_Smarty();
+        $smarty = new Sugar_Smarty();
         $smarty->assign('mod_strings', $mod_strings);
- 		$package_name = $_REQUEST['view_package'];
- 		$module_name = $_REQUEST['view_module'];
+        $package_name = $_REQUEST['view_package'];
+        $module_name = $_REQUEST['view_module'];
 
 		require_once('modules/ModuleBuilder/MB/ModuleBuilder.php');
 		$mb = new ModuleBuilder();
@@ -102,13 +102,12 @@ class ViewModulelabels extends SugarView
 		/////////////////////////////////////////////////////////////////
 	 	////ASSISTANT
 
-		$ajax = new AjaxCompose();
-		$ajax->addCrumb($bak_mod_strings['LBL_MODULEBUILDER'], 'ModuleBuilder.main("mb")');
-		$ajax->addCrumb($package_name, 'ModuleBuilder.getContent("module=ModuleBuilder&action=package&package='.$package->name. '")');
+        $ajax = new AjaxCompose();
+        $ajax->addCrumb($bak_mod_strings['LBL_MODULEBUILDER'], 'ModuleBuilder.main("mb")');
+        $ajax->addCrumb($package_name, 'ModuleBuilder.getContent("module=ModuleBuilder&action=package&package='.$package->name. '")');
         $ajax->addCrumb($module_name, 'ModuleBuilder.getContent("module=ModuleBuilder&action=module&view_package='.$package->name.'&view_module='. $module_name . '")');
         $ajax->addCrumb($bak_mod_strings['LBL_LABELS'], '');
-		$ajax->addSection('center', $bak_mod_strings['LBL_LABELS'],$smarty->fetch('modules/ModuleBuilder/tpls/labels.tpl'));
-		echo $ajax->getJavascript();
-	}
+        $ajax->addSection('center', $bak_mod_strings['LBL_LABELS'], $smarty->fetch('modules/ModuleBuilder/tpls/labels.tpl'));
+        echo $ajax->getJavascript();
+    }
 }
-

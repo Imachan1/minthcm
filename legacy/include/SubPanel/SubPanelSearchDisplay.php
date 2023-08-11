@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,20 +45,18 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-ini_set('display_errors',1);
+ini_set('display_errors', 1);
 
 global $beanList;
 global $beanFiles;
 
 
-if(empty($_REQUEST['module']))
-{
-	die("'module' was not defined");
+if (empty($_REQUEST['module'])) {
+    die("'module' was not defined");
 }
 
-if(!isset($beanList[$_REQUEST['module']]))
-{
-	die("'".$_REQUEST['module']."' is not defined in \$beanList");
+if (!isset($beanList[$_REQUEST['module']])) {
+    die("'".$_REQUEST['module']."' is not defined in \$beanList");
 }
 
 if (!isset($_REQUEST['subpanel'])) {
@@ -73,11 +71,10 @@ $collection = array();
 
 include('include/SubPanel/SubPanel.php');
 $layout_def_key = '';
-if(!empty($_REQUEST['layout_def_key'])){
-	$layout_def_key = $_REQUEST['layout_def_key'];
+if (!empty($_REQUEST['layout_def_key'])) {
+    $layout_def_key = $_REQUEST['layout_def_key'];
 }
 
-$subpanel_object = new SubPanel($module, $record, $subpanel,null, $layout_def_key, $collection);
+$subpanel_object = new SubPanel($module, $record, $subpanel, null, $layout_def_key, $collection);
 
 echo $subpanel_object->getSearchForm();
-

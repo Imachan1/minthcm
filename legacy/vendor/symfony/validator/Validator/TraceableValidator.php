@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class TraceableValidator implements ValidatorInterface
 {
     private $validator;
-    private $collectedData = array();
+    private $collectedData = [];
 
     public function __construct(ValidatorInterface $validator)
     {
@@ -38,7 +38,7 @@ class TraceableValidator implements ValidatorInterface
 
     public function reset()
     {
-        $this->collectedData = array();
+        $this->collectedData = [];
     }
 
     /**
@@ -64,7 +64,7 @@ class TraceableValidator implements ValidatorInterface
     {
         $violations = $this->validator->validate($value, $constraints, $groups);
 
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 7);
+        $trace = debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 7);
 
         $file = $trace[0]['file'];
         $line = $trace[0]['line'];
@@ -92,11 +92,11 @@ class TraceableValidator implements ValidatorInterface
         $name = str_replace('\\', '/', $file);
         $name = substr($name, strrpos($name, '/') + 1);
 
-        $this->collectedData[] = array(
+        $this->collectedData[] = [
             'caller' => compact('name', 'file', 'line'),
             'context' => compact('value', 'constraints', 'groups'),
             'violations' => iterator_to_array($violations),
-        );
+        ];
 
         return $violations;
     }

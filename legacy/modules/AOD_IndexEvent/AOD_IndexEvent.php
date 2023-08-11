@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,25 +46,20 @@
  * THIS CLASS IS FOR DEVELOPERS TO MAKE CUSTOMIZATIONS IN
  */
 require_once('modules/AOD_IndexEvent/AOD_IndexEvent_sugar.php');
-class AOD_IndexEvent extends AOD_IndexEvent_sugar {
 
-	public function __construct(){
-		parent::__construct();
-	}
-
+/**
+ * @deprecated since v7.12.0
+ * Class AOD_IndexEvent
+ */
+class AOD_IndexEvent extends AOD_IndexEvent_sugar
+{
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
+     * @deprecated since v7.12.0
+     * AOD_IndexEvent constructor.
      */
-    public function AOD_IndexEvent(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+    public function __construct()
+    {
+        parent::__construct();
     }
-
 
 }

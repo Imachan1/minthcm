@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -111,7 +111,7 @@ $dictionary['DashboardManager'] = array(
             'default' => '',
             'massupdate' => true,
             'required' => false,
-            'vt_validation' => 'callCustomApi(DashboardManager,validateUniqueRole,{id:$id, business_role:$business_role},true,\'LBL_ROLE_EXISTS\')',
+            'vt_validation' => 'callCustomApi(\'DashboardManager\',\'validateUniqueRole\',{id:$id, business_role:$business_role},true,\'LBL_ROLE_EXISTS\')',
         ),
         "dashboardbackups" => array(
             'name' => 'dashboardbackups',

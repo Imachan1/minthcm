@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,7 +43,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+    die('Not A Valid Entry Point');
 }
 
 $entry_point_registry = array(
@@ -112,4 +112,7 @@ $entry_point_registry = array(
    'OrganizationalStructure' => array('file' => 'include/OrganizationalStructure/OrganizationalStructureEntrypoint.php', 'auth' => true),
    'Languages' => array('file' => 'include/Mobile/EntryPoints/LanguagesEntryPoint.php', 'auth' => false ),
    'SaveFileFromDropzone' => array('file' => 'include/Dropzone/SaveFileFromDropzone.php', 'auth' => true),
+   'SAML2Metadata'=>  array('file' => 'modules/Users/authentication/SAML2Authenticate/SAML2Metadata.php', 'auth' => false),
+   'redirectToExternalOAuth' => ['file' => 'modules/ExternalOAuthConnection/entrypoint/redirectToExternalOAuth.php', 'auth' => true],
+   'setExternalOAuthToken' => ['file' => 'modules/ExternalOAuthConnection/entrypoint/setExternalOAuthToken.php', 'auth' => true],
 );

@@ -306,7 +306,13 @@ class MysqliManager extends MysqlManager {
             $dbport = substr($configOptions['db_host_name'], $pos + 1);
          }
 
-         $this->database = @mysqli_connect($dbhost, $configOptions['db_user_name'], $configOptions['db_password'], isset($configOptions['db_name']) ? $configOptions['db_name'] : '', $dbport);
+         $this->database = @mysqli_connect(
+            $dbhost,
+            $configOptions['db_user_name'],
+            $configOptions['db_password'],
+            isset($configOptions['db_name']) ? $configOptions['db_name'] : '',
+            $dbport
+         );
          if ( empty($this->database) ) {
             $GLOBALS['log']->fatal("Could not connect to DB server " . $dbhost . " as " . $configOptions['db_user_name'] . ". port " . $dbport . ": " . mysqli_connect_error());
             if ( $dieOnError ) {
@@ -334,7 +340,7 @@ class MysqliManager extends MysqlManager {
          }
       }
 
-      // cn: using direct calls to prevent this from spamming the Logs
+
       // Mint
       $collation = $this->getOption('collation');
       $utf8mb4 = true;
@@ -348,6 +354,12 @@ class MysqliManager extends MysqlManager {
       }
       mysqli_set_charset($this->database, "utf8".($utf8mb4?'mb4':'')."");
       //Mint end
+
+      // https://github.com/salesagility/SuiteCRM/issues/7107
+      // MySQL 5.7 is stricter regarding missing values in SQL statements and makes some tests fail.
+      // Remove STRICT_TRANS_TABLES from sql_mode so we get the old behaviour again.
+      mysqli_query($this->database, "SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode, 'STRICT_TRANS_TABLES', ''))");
+
       if ( $this->checkError('Could Not Connect', $dieOnError) ) {
          $GLOBALS['log']->info("connected to db");
       }
@@ -386,7 +398,7 @@ class MysqliManager extends MysqlManager {
          "MySQLi Host Info" => @mysqli_get_host_info($this->database),
          "MySQLi Server Info" => @mysqli_get_server_info($this->database),
          "MySQLi Client Encoding" => @mysqli_character_set_name($this->database),
-         "MySQL Character Set Settings" => join(", ", $charset_str),
+         "MySQL Character Set Settings" => implode(", ", $charset_str),
       );
    }
 
@@ -405,5 +417,21 @@ class MysqliManager extends MysqlManager {
    public function valid() {
       return function_exists("mysqli_connect") && empty($GLOBALS['sugar_config']['mysqli_disabled']);
    }
-
+   
+   public function compareVarDefs($fielddef1, $fielddef2, $ignoreName = false)
+   {
+       /**
+        * Int lengths are ignored in MySQL versions >= 8.0.19 so we need to ignore when comparing vardefs.
+        */
+       if($fielddef1['type'] == 'int') {
+           $db_version = $this->version();
+           if (!empty($db_version)
+               && version_compare($db_version, '8.0.19') >= 0
+               && strpos($db_version, "MariaDB") === false
+           ) {
+               unset($fielddef2['len']);
+           }
+       }
+       return parent::compareVarDefs($fielddef1, $fielddef2, $ignoreName);
+   }
 }

@@ -5,10 +5,10 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -59,7 +59,7 @@ $mod_strings = array(
     // END Dashlet Categories
 
     'ERR_DELETE_RECORD' => 'You must specify a record number in order to delete the account.',
-    'LBL_ACCOUNT_INFORMATION' => 'OVERVIEW',
+    'LBL_ACCOUNT_INFORMATION' => 'OVERVIEW', //No need to be translated in all caps. Translation used just in menu action items when using the SuiteP template
     'LBL_ACCOUNT_NAME' => 'Account Name:',
     'LBL_ACCOUNT' => 'Account:',
     'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
@@ -143,7 +143,7 @@ $mod_strings = array(
     'LBL_SHIPPING_ADDRESS_STREET' => 'Shipping Street:',
     'LBL_SHIPPING_ADDRESS' => 'Shipping Address:',
     'LBL_SIC_CODE' => 'SIC Code:',
-    'LBL_STATE' => 'State:',
+    'LBL_STATE' => 'State/Region:',
     'LBL_TICKER_SYMBOL' => 'Ticker Symbol:',
     'LBL_TYPE' => 'Type:',
     'LBL_WEBSITE' => 'Website:',
@@ -165,5 +165,5 @@ $mod_strings = array(
     'LBL_AOS_CONTRACTS' => 'Contracts',
     'LBL_AOS_INVOICES' => 'Invoices',
     'LBL_AOS_QUOTES' => 'Quotes',
+    'LBL_LIST_WEBSITE' => 'website',
 );
-

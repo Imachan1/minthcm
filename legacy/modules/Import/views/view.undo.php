@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -62,25 +62,25 @@ class ImportViewUndo extends ImportView
  	/** 
      * @see SugarView::display()
      */
- 	public function display()
+    public function display()
     {
         global $mod_strings, $current_user, $current_language;
         
         $this->ss->assign("IMPORT_MODULE", $_REQUEST['import_module']);
         // lookup this module's $mod_strings to get the correct module name
         $old_mod_strings = $mod_strings;
-        $module_mod_strings = 
+        $module_mod_strings =
             return_module_language($current_language, $_REQUEST['import_module']);
-        $this->ss->assign("MODULENAME",$module_mod_strings['LBL_MODULE_NAME']);
+        $this->ss->assign("MODULENAME", $module_mod_strings['LBL_MODULE_NAME']);
         $this->ss->assign("MODULE_TITLE", $this->getModuleTitle(false), ENT_NOQUOTES);
         // reset old ones afterwards
         $mod_strings = $old_mod_strings;
         
-        $last_import = new UsersLastImport();
-        $this->ss->assign('UNDO_SUCCESS',$last_import->undo($_REQUEST['import_module']));
+        $last_import = BeanFactory::newBean('Import_2');
+        $this->ss->assign('UNDO_SUCCESS', $last_import->undo($_REQUEST['import_module']));
         $this->ss->assign("JAVASCRIPT", $this->_getJS());
         $content = $this->ss->fetch('modules/Import/tpls/undo.tpl');
-        $this->ss->assign("CONTENT",$content);
+        $this->ss->assign("CONTENT", $content);
         $this->ss->display('modules/Import/tpls/wizardWrapper.tpl');
     }
     

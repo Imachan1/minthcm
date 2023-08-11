@@ -1,5 +1,4 @@
 <?php
-//FILE SUGARCRM flav=pro || flav=sales
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
@@ -12,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -56,7 +55,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Inactive, this needs to trigger a dialog to reassign records.  The quick edit functionality was introduced into the Users module in the 6.4 release.
  *
  */
-require_once('include/MVC/View/views/view.quickedit.php');
 require_once('include/EditView/EditView2.php');
 
 class ProjectViewQuickedit extends ViewQuickEdit
@@ -79,10 +77,9 @@ class ProjectViewQuickedit extends ViewQuickEdit
 
     public function preDisplay()
     {
-
-        if(!empty($_REQUEST['record'])) {
+        if (!empty($_REQUEST['record'])) {
             $this->bean->retrieve($_REQUEST['record']);
-            if($this->bean->is_template == 1){
+            if ($this->bean->is_template == 1) {
                 $this->footerTpl = 'modules/Project/tpls/QuickEditFooter.tpl';
                 $this->headerTpl = 'modules/Project/tpls/QuickEditHeader.tpl';
                 $this->defaultButtons = array('DCMENUCANCEL');
@@ -90,5 +87,4 @@ class ProjectViewQuickedit extends ViewQuickEdit
         }
         return parent::preDisplay();
     }
-
 }

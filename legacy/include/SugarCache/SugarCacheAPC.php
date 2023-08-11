@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -57,12 +57,14 @@ class SugarCacheAPC extends SugarCacheAbstract
      */
     public function useBackend()
     {
-        if ( !parent::useBackend() )
+        if (!parent::useBackend()) {
             return false;
+        }
 
-        if ( function_exists("apc_store")
-                && empty($GLOBALS['sugar_config']['external_cache_disabled_apc']))
+        if (function_exists("apc_store")
+                && empty($GLOBALS['sugar_config']['external_cache_disabled_apc'])) {
             return true;
+        }
 
         return false;
     }
@@ -70,9 +72,9 @@ class SugarCacheAPC extends SugarCacheAbstract
     /**
      * @see SugarCacheAbstract::_setExternal()
      */
-    protected function _setExternal($key,$value)
+    protected function _setExternal($key, $value)
     {
-        apc_store($key,$value,$this->_expireTimeout);
+        apc_store($key, $value, $this->_expireTimeout);
     }
 
     /**
@@ -81,7 +83,7 @@ class SugarCacheAPC extends SugarCacheAbstract
     protected function _getExternal($key)
     {
         $res = apc_fetch($key);
-        if($res === false) {
+        if ($res === false) {
             return null;
         }
 

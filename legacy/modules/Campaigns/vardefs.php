@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -74,7 +74,7 @@ $dictionary['Campaign'] = array('audited' => true,
             'vname' => 'LBL_CAMPAIGN_NAME',
             'dbType' => 'varchar',
             'type' => 'name',
-            'len' => '50',
+            'len' => '255',
             'comment' => 'The name of the campaign',
             'importable' => 'required',
             'required' => true,
@@ -282,8 +282,15 @@ $dictionary['Campaign'] = array('audited' => true,
             'link_class' => 'ProspectLink',
             'link_file' => 'modules/Campaigns/ProspectLink.php'
         ),
-
-        "survey" => array (
+        'notes' =>
+            array(
+                'name' => 'notes',
+                'type' => 'link',
+                'relationship' => 'campaign_notes',
+                'source' => 'non-db',
+                'vname' => 'LBL_NOTES',
+            ),
+        "survey" => array(
                 'name' => 'survey',
                 'type' => 'link',
                 'relationship' => 'surveys_campaigns',
@@ -295,7 +302,7 @@ $dictionary['Campaign'] = array('audited' => true,
                 'link_type'=>'one',
                 'side' => 'left',
         ),
-        "survey_name" => array (
+        "survey_name" => array(
                 'name' => 'survey_name',
                 'type' => 'relate',
                 'source' => 'non-db',
@@ -307,13 +314,13 @@ $dictionary['Campaign'] = array('audited' => true,
                 'module' => 'Surveys',
                 'rname' => 'name',
         ),
-        "survey_id" => array (
+        "survey_id" => array(
                 'name' => 'survey_id',
                 'type' => 'id',
                 'reportable' => false,
                 'vname' => 'LBL_CAMPAIGN_SURVEYS',
         ),
-        "surveyresponses_campaigns" => array (
+        "surveyresponses_campaigns" => array(
                 'name' => 'surveyresponses_campaigns',
                 'type' => 'link',
                 'relationship' => 'surveyresponses_campaigns',
@@ -362,6 +369,11 @@ $dictionary['Campaign'] = array('audited' => true,
         'campaign_opportunities' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
             'rhs_module' => 'Opportunities', 'rhs_table' => 'opportunities', 'rhs_key' => 'campaign_id',
             'relationship_type' => 'one-to-many'),
+            
+        'campaign_notes' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
+            'rhs_module' => 'Notes', 'rhs_table' => 'notes', 'rhs_key' => 'parent_id',
+            'relationship_type' => 'one-to-many', 'relationship_role_column' => 'parent_type',
+            'relationship_role_column_value' => 'Campaigns'),
 
         'campaign_email_marketing' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
             'rhs_module' => 'EmailMarketing', 'rhs_table' => 'email_marketing', 'rhs_key' => 'campaign_id',

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,55 +45,47 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 require_once('include/formbase.php');
 
-$focus = new CampaignTracker();
+$focus = BeanFactory::newBean('CampaignTrackers');
 
 $focus->retrieve($_POST['record']);
-if(!$focus->ACLAccess('Save')){
-	ACLController::displayNoAccess(true);
-	sugar_cleanup(true);
+if (!$focus->ACLAccess('Save')) {
+    ACLController::displayNoAccess(true);
+    sugar_cleanup(true);
 }
 
-$check_notify = FALSE;
-foreach($focus->column_fields as $field) {
-	if(isset($_POST[$field])) {
-		$value = $_POST[$field];
-		$focus->$field = $value;
-	}
+$check_notify = false;
+foreach ($focus->column_fields as $field) {
+    if (isset($_POST[$field])) {
+        $value = $_POST[$field];
+        $focus->$field = $value;
+    }
 }
 
-foreach($focus->additional_column_fields as $field) {
-	if(isset($_POST[$field])) {
-		$value = $_POST[$field];
-		$focus->$field = $value;
-
-	}
+foreach ($focus->additional_column_fields as $field) {
+    if (isset($_POST[$field])) {
+        $value = $_POST[$field];
+        $focus->$field = $value;
+    }
 }
 //set check box states.
 if (isset($_POST['is_optout']) && $_POST['is_optout'] =='on') {
-	$focus->is_optout=1;
-	$focus->tracker_url='index.php?entryPoint=removeme';
+    $focus->is_optout=1;
+    $focus->tracker_url='index.php?entryPoint=removeme';
 } else {
-	$focus->is_optout=0;
+    $focus->is_optout=0;
 }
 
 $focus->save($check_notify);
 $return_id = $focus->id;
 $GLOBALS['log']->debug("Saved record with id of ".$return_id);
 
-if(isset($_POST['response_json']) && $_POST['response_json']) {
-	$results['data'] = array('id' => $focus->id);
-	echo json_encode($results);
-	die();
-}
-else {
-	handleRedirect('', '');
+if (isset($_POST['response_json']) && $_POST['response_json']) {
+    $results['data'] = array('id' => $focus->id);
+    echo json_encode($results);
+    die();
+} else {
+    handleRedirect('', '');
 }

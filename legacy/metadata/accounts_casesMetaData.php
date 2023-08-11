@@ -11,7 +11,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,14 +46,14 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$dictionary['accounts_cases'] = array ( 'table' => 'accounts_cases'
-                                  , 'fields' => array (
+$dictionary['accounts_cases'] = array( 'table' => 'accounts_cases'
+                                  , 'fields' => array(
        array('name' =>'id', 'type' =>'varchar', 'len'=>'36')
       , array('name' =>'account_id', 'type' =>'varchar', 'len'=>'36')
       , array('name' =>'case_id', 'type' =>'varchar', 'len'=>'36')
-      , array ('name' => 'date_modified','type' => 'datetime')
-  	,array('name' =>'deleted', 'type' =>'bool', 'len'=>'1', 'required'=>false, 'default'=>'0')
-                                                      )                                  , 'indices' => array (
+      , array('name' => 'date_modified','type' => 'datetime')
+    ,array('name' =>'deleted', 'type' =>'bool', 'len'=>'1', 'required'=>false, 'default'=>'0')
+                                                      )                                  , 'indices' => array(
        array('name' =>'accounts_casespk', 'type' =>'primary', 'fields'=>array('id'))
        , array('name' =>'idx_acc_case_acc', 'type' =>'index', 'fields'=>array('account_id'))
       , array('name' =>'idx_acc_acc_case', 'type' =>'index', 'fields'=>array('case_id'))

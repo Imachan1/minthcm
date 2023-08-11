@@ -12,7 +12,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -56,7 +56,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Inactive, this needs to trigger a dialog to reassign records.  The quick edit functionality was introduced into the Users module in the 6.4 release.
  *
  */
-require_once('include/MVC/View/views/view.quickedit.php');
+
 require_once('include/EditView/EditView2.php');
 
 class UsersViewQuickedit extends ViewQuickEdit

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,27 +45,21 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 require_once('include/vCard.php');
 
 class ViewVcard extends SugarView
 {
-	public $type = 'detail';
-	
-	/**
+    public $type = 'detail';
+    
+    /**
      * @see SugarView::display()
      */
-	public function display()
+    public function display()
     {
-		$vcard = new vCard();		
-		$vcard->loadContact($this->bean->id, $this->module);
-		$vcard->saveVCard();
- 	}
+        $vcard = new vCard();
+        $vcard->loadContact($this->bean->id, $this->module);
+        $vcard->saveVCard();
+    }
 }

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -76,11 +76,9 @@ class JSON
     {
         $encodedString = json_encode($array);
 
-        if ($encodeSpecial)
-        {
+        if ($encodeSpecial) {
             $charMap = array('<' => '\u003C', '>' => '\u003E', "'" => '\u0027', '&' => '\u0026');
-            foreach($charMap as $c => $enc)
-            {
+            foreach ($charMap as $c => $enc) {
                 $encodedString = str_replace($c, $enc, $encodedString);
             }
         }
@@ -98,7 +96,7 @@ class JSON
      */
     public static function decode($string, $examineEnvelope=false, $assoc = true)
     {
-        return json_decode($string,$assoc);
+        return json_decode($string, $assoc);
     }
 
     /**

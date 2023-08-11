@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -93,22 +93,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
      }
 
      /**
-      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-      */
-     public function ListViewFacade($focus, $module, $type = 0)
-     {
-         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-         if (isset($GLOBALS['log'])) {
-             $GLOBALS['log']->deprecated($deprecatedMessage);
-         } else {
-             trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-         }
-         self::__construct($focus, $module, $type);
-     }
-
-     /**
       * Retrieves display columns on list view of specified module
-      * 
+      *
       * @param string $module
       * @param array $request
       * @return array
@@ -140,27 +126,27 @@ if (!defined('sugarEntry') || !sugarEntry) {
          }
          
          if ($metadataFile) {
-            if (!file_exists($metadataFile)) {
-                throw new Exception("Metadata file '$metadataFile' not found for module '$module'.");
-            }
-            require_once($metadataFile);
+             if (!file_exists($metadataFile)) {
+                 throw new Exception("Metadata file '$metadataFile' not found for module '$module'.");
+             }
+             require_once($metadataFile);
          }
 
          $displayColumns = array();
          if (!empty($listViewDefs)) {
-            if (!empty($request['displayColumns'])) {
-                foreach (explode('|', $_REQUEST['displayColumns']) as $num => $col) {
-                    if (!empty($listViewDefs[$module][$col])) {
-                        $displayColumns[$col] = $listViewDefs[$module][$col];
-                    }
-                }
-            } else {
-                foreach ($listViewDefs[$module] as $col => $params) {
-                    if (!empty($params['default']) && $params['default']) {
-                        $displayColumns[$col] = $params;
-                    }
-                }
-            }
+             if (!empty($request['displayColumns'])) {
+                 foreach (explode('|', $_REQUEST['displayColumns']) as $num => $col) {
+                     if (!empty($listViewDefs[$module][$col])) {
+                         $displayColumns[$col] = $listViewDefs[$module][$col];
+                     }
+                 }
+             } else {
+                 foreach ($listViewDefs[$module] as $col => $params) {
+                     if (!empty($params['default']) && $params['default']) {
+                         $displayColumns[$col] = $params;
+                     }
+                 }
+             }
          } else {
              throw new Exception("List view definition is not found for module '$module'");
          }
@@ -219,14 +205,16 @@ if (!defined('sugarEntry') || !sugarEntry) {
              ob_end_clean();
          } else {
              $output = get_form_header($title, '', false) . $this->lv->display();
- 		}
-        if($return)
-            return $output;
-        else
-            echo $output;
- 	}
+         }
+         if ($return) {
+             return $output;
+         } else {
+             echo $output;
+         }
+     }
 
-	function setTitle($title = ''){
-		$this->title = $title;
-	}
+     public function setTitle($title = '')
+     {
+         $this->title = $title;
+     }
  }

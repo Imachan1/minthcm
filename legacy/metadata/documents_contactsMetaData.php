@@ -8,7 +8,8 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,12 +44,12 @@
  */
 
 
-$dictionary["documents_contacts"] = array (
+$dictionary["documents_contacts"] = array(
   'true_relationship_type' => 'many-to-many',
-  'relationships' => 
-  array (
-    'documents_contacts' => 
-    array (
+  'relationships' =>
+  array(
+    'documents_contacts' =>
+    array(
       'lhs_module' => 'Documents',
       'lhs_table' => 'documents',
       'lhs_key' => 'id',
@@ -62,71 +63,70 @@ $dictionary["documents_contacts"] = array (
     ),
   ),
   'table' => 'documents_contacts',
-  'fields' => 
-  array (
-    0 => 
-    array (
+  'fields' =>
+  array(
+    0 =>
+    array(
       'name' => 'id',
       'type' => 'varchar',
       'len' => 36,
     ),
-    1 => 
-    array (
+    1 =>
+    array(
       'name' => 'date_modified',
       'type' => 'datetime',
     ),
-    2 => 
-    array (
+    2 =>
+    array(
       'name' => 'deleted',
       'type' => 'bool',
       'len' => '1',
       'default' => '0',
       'required' => true,
     ),
-    3 => 
-    array (
+    3 =>
+    array(
       'name' => 'document_id',
       'type' => 'varchar',
       'len' => 36,
     ),
-    4 => 
-    array (
+    4 =>
+    array(
       'name' => 'contact_id',
       'type' => 'varchar',
       'len' => 36,
     ),
   ),
-  'indices' => 
-  array (
-    0 => 
-    array (
+  'indices' =>
+  array(
+    0 =>
+    array(
       'name' => 'documents_contactsspk',
       'type' => 'primary',
-      'fields' => 
-      array (
+      'fields' =>
+      array(
         0 => 'id',
       ),
     ),
-    1 => 
-    array (
+    1 =>
+    array(
       'name' => 'documents_contacts_contact_id',
       'type' => 'alternate_key',
-      'fields' => 
-      array (
+      'fields' =>
+      array(
         0 => 'contact_id',
         1 => 'document_id',
       ),
     ),
-    2 => 
-    array (
+    2 =>
+    array(
       'name' => 'documents_contacts_document_id',
       'type' => 'alternate_key',
-      'fields' => 
-      array (
+      'fields' =>
+      array(
         0 => 'document_id',
         1 => 'contact_id',
       ),
     ),
   ),
 );
-

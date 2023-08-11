@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 /**
  *
@@ -10,7 +12,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,33 +47,20 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  */
 
 
-class BugsViewEdit extends ViewEdit {
-
- 	function __construct(){
- 		parent::__construct();
- 	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function BugsViewEdit(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+class BugsViewEdit extends ViewEdit
+{
+    public function __construct()
+    {
+        parent::__construct();
     }
 
-
- 	function display() {
-        $admin = new Administration();
+    public function display()
+    {
+        $admin = BeanFactory::newBean('Administration');
         $admin->retrieveSettings();
-        if(isset($admin->settings['portal_on']) && $admin->settings['portal_on']) {
-           $this->ev->ss->assign("PORTAL_ENABLED", true);
+        if (isset($admin->settings['portal_on']) && $admin->settings['portal_on']) {
+            $this->ev->ss->assign("PORTAL_ENABLED", true);
         }
- 		parent::display();
- 	}
+        parent::display();
+    }
 }

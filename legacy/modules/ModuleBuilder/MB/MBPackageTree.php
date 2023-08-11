@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,58 +44,48 @@
 
 require_once('include/ytree/Tree.php');
 require_once('include/ytree/Node.php');
-class MBPackageTree{
-
-	function __construct(){
-		$this->tree = new Tree('package_tree');
-		$this->tree->id = 'package_tree';
-		$this->mb = new ModuleBuilder();
-		$this->populateTree($this->mb->getNodes(), $this->tree);
-	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function MBPackageTree(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+class MBPackageTree
+{
+    public function __construct()
+    {
+        $this->tree = new Tree('package_tree');
+        $this->tree->id = 'package_tree';
+        $this->mb = new ModuleBuilder();
+        $this->populateTree($this->mb->getNodes(), $this->tree);
     }
 
+    public function getName()
+    {
+        return 'Packages';
+    }
 
-	function getName(){
-		return 'Packages';
-	}
+    public function populateTree($nodes, &$parent)
+    {
+        foreach ($nodes as $node) {
+            if (empty($node['label'])) {
+                $node['label'] = $node['name'];
+            }
+            $yn = new Node($parent->id . '/' . $node['name'], $node['label']);
+            if (!empty($node['action'])) {
+                $yn->set_property('action', $node['action']);
+            }
+            $yn->set_property('href', 'javascript:void(0);');
+            $yn->id = $parent->id . '/' . $node['name'];
+            if (!empty($node['children'])) {
+                $this->populateTree($node['children'], $yn);
+            }
+            $parent->add_node($yn);
+        }
+    }
 
-	function populateTree($nodes, &$parent){
-		foreach($nodes as $node){
-			if(empty($node['label']))$node['label'] = $node['name'];
-			$yn = new Node($parent->id . '/' . $node['name'],$node['label']);
-			if(!empty($node['action']))
-			$yn->set_property('action', $node['action']);
-			$yn->set_property('href', 'javascript:void(0);');
-			$yn->id = $parent->id . '/' . $node['name'];
-			if(!empty($node['children']))$this->populateTree($node['children'], $yn);
-			$parent->add_node($yn);
-		}
-	}
+    public function fetch()
+    {
+        //return $this->tree->generate_header() . $this->tree->generate_nodes_array();
+        return $this->tree->generate_nodes_array();
+    }
 
-	function fetch(){
-		//return $this->tree->generate_header() . $this->tree->generate_nodes_array();
-		return $this->tree->generate_nodes_array();
-	}
-
-	function fetchNodes(){
-		return $this->tree->generateNodesRaw();
-	}
-
-
-
-
-
+    public function fetchNodes()
+    {
+        return $this->tree->generateNodesRaw();
+    }
 }

@@ -7,7 +7,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -294,6 +294,9 @@
          recordId.attr( 'value', typeof (emailId) != 'undefined' ? emailId : '' );
          recordId.attr( 'enabled', "true" );
 
+         // Fix #9271 - Keeping record of primary email, after adding secondary
+         var primaryPreviousValue = $("input[name='"+ _eaw.module + "0emailAddressPrimaryFlag']:checked").val();
+      
 
          // Primary checkbox
          var primaryCheckbox = lineContainer.find( 'input#email-address-primary-flag' );
@@ -317,7 +320,12 @@
          if ( this.module == 'Users' && primaryCheckbox.attr( "checked" ) ) {
             removeButton.prop( 'disabled', true );
          }
-
+      
+         // Fix #9271 - Keeping record of primary email, after adding secondary
+         if (!primaryFlag && primaryPreviousValue) {
+            $('input[value="'+primaryPreviousValue+'"].email-address-primary-flag').prop("checked", true);
+         }
+         
          // Reply to checkbox
          var replyToCheckbox = lineContainer.find( 'input#email-address-reply-to-flag' );
          if ( replyToCheckbox.length == 1 ) {

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,26 +45,21 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc. All Rights
- * Reserved. Contributor(s): ______________________________________..
- * *******************************************************************************/
 logThis('-----------------------------------------------------------------------------');
 logThis('Upgrade started. At start.php');
 
 //set the upgrade progress status.
-set_upgrade_progress('start','in_progress');
+set_upgrade_progress('start', 'in_progress');
 
 unlinkUWTempFiles();
 resetUwSession();
 
-if(isset($_REQUEST['showUpdateWizardMessage']) && $_REQUEST['showUpdateWizardMessage'] == true) {
-	// set a flag to skip the upload screen
-	$_SESSION['skip_zip_upload'] = true;
+if (isset($_REQUEST['showUpdateWizardMessage']) && $_REQUEST['showUpdateWizardMessage'] == true) {
+    // set a flag to skip the upload screen
+    $_SESSION['skip_zip_upload'] = true;
 
-	$newUWMsg =<<<eoq
+    $newUWMsg =<<<eoq
 	<table cellspacing="0" cellpadding="3" border="0">
 		<tr>
 			<th>
@@ -78,7 +73,7 @@ if(isset($_REQUEST['showUpdateWizardMessage']) && $_REQUEST['showUpdateWizardMes
 		</tr>
 	</table>
 eoq;
-	echo $newUWMsg;
+    echo $newUWMsg;
 }
 
 

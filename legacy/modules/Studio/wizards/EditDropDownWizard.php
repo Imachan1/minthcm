@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,46 +49,46 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 require_once('modules/Studio/DropDowns/DropDownHelper.php');
-class EditDropDownWizard extends StudioWizard {
-	var $wizard = 'EditDropDownWizard';
-    function welcome(){
-		return 'You can rename the global dropdown list here.';
-	}
-	function back(){
-	    
-	    ob_clean();
-	     if(!empty($_SESSION['studio']['module'])){
-	        header('Location: index.php?action=wizard&module=Studio&wizard=SelectModuleAction');
-	        sugar_cleanup(true);
-	     }
-	     header('Location: index.php?action=wizard&module=Studio&wizard=StudioWizard');
-	    sugar_cleanup(true);
-	     
-	    
-	   
-	}
-	function options(){
-//		return array('EditDropdown'=>$GLOBALS['mod_strings']['LBL_SW_EDIT_DROPDOWNS'], 'CreateDropdown'=>$GLOBALS['mod_strings']['LBL_ED_CREATE_DROPDOWN'] );
-	}
-	
-	function process($option){
-		switch($option){
-		    case 'EditDropdown':
-		        parent::process($option);
-		        require_once('modules/Studio/DropDowns/EditView.php');
-		        break;
-		    case 'SaveDropDown':
-		        DropDownHelper::saveDropDown($_REQUEST);
-		        require_once('modules/Studio/DropDowns/EditView.php');
-		        break;
-		    default:
-		         parent::process($option);
-		}
-	}
-	
-	function display()
-	{
-	    // override the parent display - don't display any wizard stuff
-	}
-	
+class EditDropDownWizard extends StudioWizard
+{
+    public $wizard = 'EditDropDownWizard';
+    public function welcome()
+    {
+        return 'You can rename the global dropdown list here.';
+    }
+    public function back()
+    {
+        ob_clean();
+        if (!empty($_SESSION['studio']['module'])) {
+            header('Location: index.php?action=wizard&module=Studio&wizard=SelectModuleAction');
+            sugar_cleanup(true);
+        }
+        header('Location: index.php?action=wizard&module=Studio&wizard=StudioWizard');
+        sugar_cleanup(true);
+    }
+    public function options()
+    {
+        //		return array('EditDropdown'=>$GLOBALS['mod_strings']['LBL_SW_EDIT_DROPDOWNS'], 'CreateDropdown'=>$GLOBALS['mod_strings']['LBL_ED_CREATE_DROPDOWN'] );
+    }
+    
+    public function process($option)
+    {
+        switch ($option) {
+            case 'EditDropdown':
+                parent::process($option);
+                require_once('modules/Studio/DropDowns/EditView.php');
+                break;
+            case 'SaveDropDown':
+                (new DropDownHelper())->saveDropDown($_REQUEST);
+                require_once('modules/Studio/DropDowns/EditView.php');
+                break;
+            default:
+                 parent::process($option);
+        }
+    }
+    
+    public function display()
+    {
+        // override the parent display - don't display any wizard stuff
+    }
 }

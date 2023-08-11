@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,30 +43,21 @@
  */
 
 
-class contextMenu {
-    var $menuItems;
-    var $objectName;
+class contextMenu
+{
+    public $menuItems;
+    public $objectName;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->menuItems = array();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function contextMenu(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
 
 
-    function getScript() {
+
+    public function getScript()
+    {
         $json = getJSONobj();
         return "SUGAR.contextMenu.registerObjectType('{$this->objectName}', " . $json->encode($this->menuItems) . ");\n";
     }
@@ -89,13 +80,16 @@ class contextMenu {
      *      submenu - Appends / removes a menu (and it's associated DOM elements) to / from the MenuItem.
      *      checked - If set to true the MenuItem will be rendered with a checkmark.
      */
-    function addMenuItem($text, $action, $module = null, $aclAction = null, $params = null) {
+    public function addMenuItem($text, $action, $module = null, $aclAction = null, $params = null)
+    {
         // check ACLs if module and aclAction set otherwise no ACL check
-        if(((!empty($module) && !empty($aclAction)) && ACLController::checkAccess($module, $aclAction)) || (empty($module) || empty($aclAction))) {
+        if (((!empty($module) && !empty($aclAction)) && ACLController::checkAccess($module, $aclAction)) || (empty($module) || empty($aclAction))) {
             $item = array('text' => translate($text),
                           'action' => $action);
-            foreach(array('url', 'target', 'helptext', 'emphasis', 'strongemphasis', 'disabled', 'selected', 'submenu', 'checked') as $param) {
-                if(!empty($params[$param])) $item[$param] = $params[$param];
+            foreach (array('url', 'target', 'helptext', 'emphasis', 'strongemphasis', 'disabled', 'selected', 'submenu', 'checked') as $param) {
+                if (!empty($params[$param])) {
+                    $item[$param] = $params[$param];
+                }
             }
             array_push($this->menuItems, $item);
         }
@@ -105,9 +99,10 @@ class contextMenu {
      * Loads up menu items from files located in include/contextMenus/menuDefs
      * @param string $name name of the object
      */
-    function loadFromFile($name) {
+    public function loadFromFile($name)
+    {
         global $menuDef;
-    	clean_string($name, 'FILE');
+        clean_string($name, 'FILE');
         require_once('include/contextMenus/menuDefs/' . $name . '.php');
         $this->loadFromDef($name, $menuDef[$name]);
     }
@@ -117,13 +112,17 @@ class contextMenu {
      * @param string $name name of the object type
      * @param array $defs menu item definitions
      */
-    function loadFromDef($name, $defs) {
+    public function loadFromDef($name, $defs)
+    {
         $this->objectName = $name;
-        foreach($defs as $def) {
-            $this->addMenuItem($def['text'], $def['action'],
-                               (empty($def['module']) ? null : $def['module']),
-                               (empty($def['aclAction']) ? null : $def['aclAction']),
-                               (empty($def['params']) ? null : $def['params']));
+        foreach ($defs as $def) {
+            $this->addMenuItem(
+                $def['text'],
+                $def['action'],
+                (empty($def['module']) ? null : $def['module']),
+                (empty($def['aclAction']) ? null : $def['aclAction']),
+                (empty($def['params']) ? null : $def['params'])
+            );
         }
     }
 }

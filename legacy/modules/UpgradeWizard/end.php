@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,11 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/*********************************************************************************
- * Description:
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc. All Rights
- * Reserved. Contributor(s): ______________________________________..
- * *******************************************************************************/
+
 logThis('[At end.php]');
 global $unzip_dir;
 global $path;
@@ -84,7 +80,7 @@ foreach ($beanFiles as $bean => $file) {
     if (file_exists($file)) {
         require_once $file;
         unset($GLOBALS['dictionary'][$bean]);
-        $focus = new $bean ();
+        $focus = new $bean();
         if (($focus instanceof SugarBean)) {
             if (!isset($repairedTables[$focus->table_name])) {
                 $sql = DBManagerFactory::getInstance()->repairTable($focus, true);
@@ -175,7 +171,7 @@ if (isset($_SESSION['current_db_version']) && isset($_SESSION['target_db_version
         $db = &DBManagerFactory::getInstance();
         if ($ce_to_pro_ent) {
             //Also set license information
-            $admin = new Administration();
+            $admin = BeanFactory::newBean('Administration');
             $category = 'license';
             $value = '0';
             $admin->saveSetting($category, 'users', $value);
@@ -189,7 +185,7 @@ if (isset($_SESSION['current_db_version']) && isset($_SESSION['target_db_version
 }
 
 // Mark the instance as having gone thru the admin wizard
-$admin = new Administration();
+$admin = BeanFactory::newBean('Administration');
 $admin->saveSetting('system', 'adminwizard', 1);
 
 //Upgrade connectors

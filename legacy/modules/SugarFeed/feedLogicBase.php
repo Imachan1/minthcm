@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,18 +46,22 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
-class FeedLogicBase {
-	var $module = '';
-	
-	function pushFeed($bean, $event, $arguments){
-		
-	}
-
-	function installHook($file,$className){
-		check_logic_hook_file($this->module, "before_save", array(1, $this->module . " push feed",  $file, $className, "pushFeed"));
-	}
-
-    function removeHook($file,$className){
-		remove_logic_hook($this->module, "before_save", array(1, $this->module . " push feed",  $file, $className, "pushFeed"));        
-    }
-}
+ class FeedLogicBase
+ {
+     public $module = '';
+     
+     public function pushFeed($bean, $event, $arguments)
+     {
+     }
+ 
+     public function installHook($file, $className)
+     {
+         check_logic_hook_file($this->module, "before_save", array(1, $this->module . " push feed",  $file, $className, "pushFeed"));
+     }
+ 
+     public function removeHook($file, $className)
+     {
+         remove_logic_hook($this->module, "before_save", array(1, $this->module . " push feed",  $file, $className, "pushFeed"));
+     }
+ }
+ 

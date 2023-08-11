@@ -11,7 +11,8 @@ if (!defined('sugarEntry')) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -95,6 +96,9 @@ class SugarRestJSON extends SugarRest{
 			$json = getJSONObj();
 			$data = $json->decode($json_data);
 			if(!is_array($data))$data = array($data);
+            if (!isset($data['application_name']) && isset($data['application'])){
+                $data['application_name'] = $data['application'];
+            }
 			$res = call_user_func_array(array( $this->implementation, $method),$data);
 			$GLOBALS['log']->info('End: SugarRestJSON->serve');
 			return $res;

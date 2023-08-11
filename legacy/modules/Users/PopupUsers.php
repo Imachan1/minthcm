@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,14 +45,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
-
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 global $theme;
 global $app_strings;
 global $app_list_strings;
@@ -68,14 +60,14 @@ global $currentModule;
 
 
 $current_module_strings = return_module_language($current_language, 'Users');
-$seed_object = new User();
+$seed_object = BeanFactory::newBean('Users');
 
 $where = "";
 if(isset($_REQUEST['query']))
 {
-	$search_fields = Array("first_name", "last_name", "user_name");
+	$search_fields = array("first_name", "last_name", "user_name");
 
-	$where_clauses = Array();
+	$where_clauses = array();
 
 	append_where_clause($where_clauses, "first_name", "users.first_name");
 	append_where_clause($where_clauses, "last_name", "users.last_name");
@@ -109,13 +101,21 @@ $form->assign("APP", $app_strings);
 $form->assign("MODULE_NAME", $currentModule);
 $form->assign("parent_id", $parent_id);
 $form->assign("parent_name", $parent_name);
-if (isset($_REQUEST['form_submit'])) $form->assign("FORM_SUBMIT", $_REQUEST['form_submit']);
+if (isset($_REQUEST['form_submit'])) {
+    $form->assign("FORM_SUBMIT", $_REQUEST['form_submit']);
+}
 $form->assign("FORM", $from_form);
 $form->assign("RECORD_VALUE", $_REQUEST['record']);
 
-if (isset($_REQUEST['first_name'])) $last_search['FIRST_NAME'] = $_REQUEST['first_name'];
-if (isset($_REQUEST['last_name'])) $last_search['LAST_NAME'] = $_REQUEST['last_name'];
-if (isset($_REQUEST['user_name'])) $last_search['USER_NAME'] = $_REQUEST['user_name'];
+if (isset($_REQUEST['first_name'])) {
+    $last_search['FIRST_NAME'] = $_REQUEST['first_name'];
+}
+if (isset($_REQUEST['last_name'])) {
+    $last_search['LAST_NAME'] = $_REQUEST['last_name'];
+}
+if (isset($_REQUEST['user_name'])) {
+    $last_search['USER_NAME'] = $_REQUEST['user_name'];
+}
 
 insert_popup_header($theme);
 

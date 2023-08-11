@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -57,12 +57,14 @@ class SugarCachesMash extends SugarCacheAbstract
      */
     public function useBackend()
     {
-        if ( !parent::useBackend() )
+        if (!parent::useBackend()) {
             return false;
+        }
         
-        if ( function_exists("zget")
-                && empty($GLOBALS['sugar_config']['external_cache_disabled_smash']))
+        if (function_exists("zget")
+                && empty($GLOBALS['sugar_config']['external_cache_disabled_smash'])) {
             return true;
+        }
             
         return false;
     }
@@ -73,8 +75,7 @@ class SugarCachesMash extends SugarCacheAbstract
     protected function _setExternal(
         $key,
         $value
-        )
-    {
+        ) {
         zput('/tmp/'.$this->_keyPrefix.'/'.$key, $value, $this->_expireTimeout);
     }
     
@@ -83,9 +84,8 @@ class SugarCachesMash extends SugarCacheAbstract
      */
     protected function _getExternal(
         $key
-        )
-    {
-        return zget('/tmp/'.$this->_keyPrefix.'/'.$key,null);
+        ) {
+        return zget('/tmp/'.$this->_keyPrefix.'/'.$key, null);
     }
     
     /**
@@ -93,8 +93,7 @@ class SugarCachesMash extends SugarCacheAbstract
      */
     protected function _clearExternal(
         $key
-        )
-    {
+        ) {
         zdelete('/tmp/'.$this->_keyPrefix.'/'.$key);
     }
     

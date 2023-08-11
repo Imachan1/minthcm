@@ -12,6 +12,7 @@
 namespace Symfony\Component\Validator\Mapping;
 
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Composite;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 /**
@@ -52,7 +53,7 @@ abstract class MemberMetadata extends GenericMetadata implements PropertyMetadat
     /**
      * @var \ReflectionMethod[]|\ReflectionProperty[]
      */
-    private $reflMember = array();
+    private $reflMember = [];
 
     /**
      * @param string $class    The name of the class this member is defined on
@@ -71,9 +72,7 @@ abstract class MemberMetadata extends GenericMetadata implements PropertyMetadat
      */
     public function addConstraint(Constraint $constraint)
     {
-        if (!\in_array(Constraint::PROPERTY_CONSTRAINT, (array) $constraint->getTargets())) {
-            throw new ConstraintDefinitionException(sprintf('The constraint %s cannot be put on properties or getters', \get_class($constraint)));
-        }
+        $this->checkConstraint($constraint);
 
         parent::addConstraint($constraint);
 
@@ -85,11 +84,11 @@ abstract class MemberMetadata extends GenericMetadata implements PropertyMetadat
      */
     public function __sleep()
     {
-        return array_merge(parent::__sleep(), array(
+        return array_merge(parent::__sleep(), [
             'class',
             'name',
             'property',
-        ));
+        ]);
     }
 
     /**
@@ -181,4 +180,17 @@ abstract class MemberMetadata extends GenericMetadata implements PropertyMetadat
      * @return \ReflectionMethod|\ReflectionProperty The reflection instance
      */
     abstract protected function newReflectionMember($objectOrClassName);
+
+    private function checkConstraint(Constraint $constraint)
+    {
+        if (!\in_array(Constraint::PROPERTY_CONSTRAINT, (array) $constraint->getTargets(), true)) {
+            throw new ConstraintDefinitionException(sprintf('The constraint "%s" cannot be put on properties or getters.', \get_class($constraint)));
+        }
+
+        if ($constraint instanceof Composite) {
+            foreach ($constraint->getNestedContraints() as $nestedContraint) {
+                $this->checkConstraint($nestedContraint);
+            }
+        }
+    }
 }

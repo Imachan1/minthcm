@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,6 +41,7 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
 require_once('include/DetailView/DetailView2.php');
 
 /**
@@ -50,50 +50,43 @@ require_once('include/DetailView/DetailView2.php');
  * @package MVC
  * @category Views
  */
-class ViewDetail extends SugarView {
+class ViewDetail extends SugarView
+{
+    /**
+     * @see SugarView::$type
+     */
+    public $type = 'detail';
 
-   /**
-    * @see SugarView::$type
-    */
-   public $type = 'detail';
-   /**
-    * @var DetailView2 object
-    */
-   public $dv;
+    /**
+     * @var DetailView2 object
+     */
+    public $dv;
 
-   /**
-    * Constructor
-    *
-    * @see SugarView::SugarView()
-    */
-   public function __construct() {
-      parent::__construct();
-   }
+    /**
+     * @see SugarView::preDisplay()
+     */
+    public function preDisplay()
+    {
+        //View Tools begin
+        SugarAutoLoader::requireWithCustom('include/ViewTools/VTFormulaInterpreter.php');
+        $fields_to_hide = (new VTFormulaInterpreter)->getToHideFields($this->bean);
+        echo '<script type="text/javascript">$(document).on("ready",function(){;for ( key in ' . json_encode($fields_to_hide) . ' ) {var field = $( \'td[field="\' + key + \'"]\' );field.html( \'\' );field.prev().html( \'\' );}});</script>';
+        //View Tools end
+        $metadataFile = $this->getMetaDataFile();
+        $this->dv = new DetailView2();
+        $this->dv->ss =&  $this->ss;
+        $this->dv->setup($this->module, $this->bean, $metadataFile, get_custom_file_if_exists('include/DetailView/DetailView.tpl'));
+    }
 
-   /**
-    * @see SugarView::preDisplay()
-    */
-   public function preDisplay() {
-      //View Tools begin
-      SugarAutoLoader::requireWithCustom('include/ViewTools/VTFormulaInterpreter.php');
-      $fields_to_hide = VTFormulaInterpreter::getToHideFields($this->bean);
-      echo '<script type="text/javascript">$(document).on("ready",function(){;for ( key in ' . json_encode($fields_to_hide) . ' ) {var field = $( \'td[field="\' + key + \'"]\' );field.html( \'\' );field.prev().html( \'\' );}});</script>';
-      //View Tools end
-      $metadataFile = $this->getMetaDataFile();
-      $this->dv = new DetailView2();
-      $this->dv->ss = & $this->ss;
-      $this->dv->setup($this->module, $this->bean, $metadataFile, get_custom_file_if_exists('include/DetailView/DetailView.tpl'));
-   }
-
-   /**
-    * @see SugarView::display()
-    */
-   public function display() {
-      if ( empty($this->bean->id) ) {
-         sugar_die($GLOBALS['app_strings']['ERROR_NO_RECORD']);
-      }
-      $this->dv->process();
-      echo $this->dv->display();
-   }
-
+    /**
+     * @see SugarView::display()
+     */
+    public function display()
+    {
+        if (empty($this->bean->id)) {
+            sugar_die($GLOBALS['app_strings']['ERROR_NO_RECORD']);
+        }
+        $this->dv->process();
+        echo $this->dv->display();
+    }
 }

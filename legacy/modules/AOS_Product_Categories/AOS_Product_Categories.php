@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,50 +46,37 @@
  * THIS CLASS IS FOR DEVELOPERS TO MAKE CUSTOMIZATIONS IN
  */
 require_once('modules/AOS_Product_Categories/AOS_Product_Categories_sugar.php');
-class AOS_Product_Categories extends AOS_Product_Categories_sugar {
-
-	function __construct(){
-		parent::__construct();
-	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function AOS_Product_Categories(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+class AOS_Product_Categories extends AOS_Product_Categories_sugar
+{
+    public function __construct()
+    {
+        parent::__construct();
     }
 
-
-    private function clearParent(){
+    private function clearParent()
+    {
         $this->parent_category_id = '';
         $this->parent_category_name = '';
         $this->parent_category = '';
     }
 
 
-    function save($check_notify = FALSE){
-        if($this->is_parent){
+    public function save($check_notify = false)
+    {
+        if ($this->is_parent) {
             $this->clearParent();
-        }else{
+        } else {
             $tmp = $this;
-            while($tmp && $tmp->parent_category_id){
-                if($tmp->parent_category_id == $this->id){
+            while ($tmp && $tmp->parent_category_id) {
+                if ($tmp->parent_category_id == $this->id) {
                     $this->clearParent();
                     break;
                 }
-                $tmp = new AOS_Product_Categories();
+                $tmp = BeanFactory::newBean('AOS_Product_Categories');
                 $tmp->retrieve($tmp->parent_category_id);
             }
         }
 
         return parent::save($check_notify);
     }
-
 }

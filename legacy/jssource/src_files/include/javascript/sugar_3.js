@@ -7,7 +7,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -782,13 +782,11 @@ function add_error_style( formname, input, txt, flash ) {
       nomatchTxt = SUGAR.language.get( 'app_strings', 'ERR_SQS_NO_MATCH_FIELD' );
       matchTxt = txt.replace( requiredTxt, '' ).replace( invalidTxt, '' ).replace( nomatchTxt, '' );
 
-      YUI().use( 'node', function ( Y ) {
-         Y.one( inputHandle ).get( 'parentNode' ).get( 'children' ).each( function ( node, index, nodeList ) {
-            if ( node.hasClass( 'validation-message' ) && node.get( 'text' ) == matchTxt ) { // View Tools #40728 && node.get( 'text' ).search( matchTxt ) ) {
-               raiseFlag = true;
-            }
-         } );
-      } );
+      $.each($(inputHandle).parent().children(), function( index, item ) {
+         if ($(item).hasClass('validation-message') && $(item).text.indexOf(matchTxt) >= 0) {
+           raiseFlag = true;
+         }
+       });
 
       if ( !raiseFlag ) {
          errorTextNode = document.createElement( 'div' );
@@ -1123,7 +1121,7 @@ function validate_form( formname, startsWith ) {
                            var result = validate[formname][i][callbackIndex]( formname, validate[formname][i][nameIndex] );
                            if ( result == false ) {
                               isError = true;
-                              add_error_style( formname, validate[formname][i][nameIndex], requiredTxt + " " + validate[formname][i][msgIndex] );
+                              add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex]);
                            }
                         }
                         break;
@@ -2011,42 +2009,79 @@ function sugarListView() {
 }
 
 
-sugarListView.prototype.confirm_action = function ( del ) {
-   if ( del == 1 ) {
-      return confirm( SUGAR.language.get( 'app_strings', 'NTC_DELETE_CONFIRMATION_NUM' ) + sugarListView.get_num_selected() + SUGAR.language.get( 'app_strings', 'NTC_DELETE_SELECTED_RECORDS' ) );
-   } else {
-      return confirm( SUGAR.language.get( 'app_strings', 'NTC_UPDATE_CONFIRMATION_NUM' ) + sugarListView.get_num_selected() + SUGAR.language.get( 'app_strings', 'NTC_DELETE_SELECTED_RECORDS' ) );
+sugarListView.prototype.confirm_action = function (del) {
+   if (del == 1) {
+     return confirm(SUGAR.language.get('app_strings', 'NTC_DELETE_CONFIRMATION_NUM') + sugarListView.get_num_selected_string() + SUGAR.language.get('app_strings', 'NTC_DELETE_SELECTED_RECORDS'));
    }
+   else {
+     return confirm(SUGAR.language.get('app_strings', 'NTC_UPDATE_CONFIRMATION_NUM') + sugarListView.get_num_selected_string() + SUGAR.language.get('app_strings', 'NTC_DELETE_SELECTED_RECORDS'));
+   }
+ 
+ }
 
-}
-sugarListView.get_num_selected = function () {
-   var selectCount = $( "input[name='selectCount[]']:first" );
-   if ( selectCount.length > 0 )
-      return parseInt( selectCount.val().replace( "+", "" ) );
-   return 0;
-
-}
-sugarListView.update_count = function ( count, add ) {
-   if ( typeof document.MassUpdate != 'undefined' ) {
-      the_form = document.MassUpdate;
-      for ( var wp = 0; wp < the_form.elements.length; wp++ ) {
-         if ( typeof the_form.elements[wp].name != 'undefined' && the_form.elements[wp].name == 'selectCount[]' ) {
-            if ( add ) {
-               the_form.elements[wp].value = parseInt( the_form.elements[wp].value, 10 ) + count;
-               if ( the_form.select_entire_list.value == 1 && the_form.show_plus.value ) {
-                  the_form.elements[wp].value += '+';
-               }
-            } else {
-               if ( the_form.select_entire_list.value == 1 && the_form.show_plus.value ) {
-                  the_form.elements[wp].value = count + '+';
-               } else {
-                  the_form.elements[wp].value = count;
-               }
-            }
+/**
+ * Returns whether the value returned by get_num_selected() is exact. In case it isn't the real count could be
+ * more than the returned value.
+ *
+ * @returns {boolean}
+ */
+sugarListView.get_num_selected_is_exact = function () {
+   var the_form = document.MassUpdate;
+   return (typeof the_form == 'undefined' || the_form.select_entire_list.value != 1 || !the_form.show_plus.value);
+ }
+ 
+ /**
+  * Returns the number of selected records as a string. In case the value is not exact because count queries are
+  * disabled then '+' is appended.
+  *
+  * @returns {string}
+  */
+ sugarListView.get_num_selected_string = function () {
+   var count = sugarListView.get_num_selected().toString();
+   if (!sugarListView.get_num_selected_is_exact()) {
+     count += '+';
+   }
+   return count;
+ }
+ 
+ /**
+  * Returns the number of selected records.
+  * Use get_num_selected_is_exact() to check whether the value is exact or not.
+  *
+  * @returns {number}
+  */
+ sugarListView.get_num_selected = function () {
+   var the_form = document.MassUpdate;
+   if (typeof the_form != 'undefined' && the_form.select_entire_list.value == 1) {
+     var selectCount = $("input[name='selectCount[]']:first");
+     if (selectCount.length > 0) {
+       return parseInt(selectCount.val().replace("+", ""));
+     }
+   }
+   return sugarListView.get_checks_count();
+ }
+ 
+ sugarListView.update_count = function (count, add) {
+   if (typeof document.MassUpdate != 'undefined') {
+     the_form = document.MassUpdate;
+     for (var wp = 0; wp < the_form.elements.length; wp++) {
+       if (typeof the_form.elements[wp].name != 'undefined' && the_form.elements[wp].name == 'selectCount[]') {
+         if (add) {
+           the_form.elements[wp].value = parseInt(the_form.elements[wp].value, 10) + count;
+           if (!sugarListView.get_num_selected_is_exact()) {
+             the_form.elements[wp].value += '+';
+           }
+         } else {
+           if (!sugarListView.get_num_selected_is_exact()) {
+             the_form.elements[wp].value = count + '+';
+           } else {
+             the_form.elements[wp].value = count;
+           }
          }
-      }
+       }
+     }
    }
-}
+ }
 sugarListView.prototype.use_external_mail_client = function ( no_record_txt, module ) {
    selected_records = sugarListView.get_checks_count();
    if ( selected_records < 1 ) {
@@ -2095,139 +2130,6 @@ sugarListView.prototype.use_external_mail_client = function ( no_record_txt, mod
 sugarListView.prototype.use_external_mail_client_callback = function ( o ) {
    if ( o.responseText )
       location.href = 'mailto:' + o.responseText;
-}
-
-sugarListView.prototype.send_form_for_emails = function ( select, currentModule, action, no_record_txt, action_module, totalCount, totalCountError ) {
-   if ( typeof (SUGAR.config.email_sugarclient_listviewmaxselect) === 'undefined' ) {
-      maxCount = 10;
-   } else {
-      maxCount = SUGAR.config.email_sugarclient_listviewmaxselect;
-   }
-
-   if ( document.MassUpdate.select_entire_list.value == 1 ) {
-      if ( totalCount > maxCount ) {
-         alert( totalCountError );
-         return;
-      } // if
-      select = false;
-   } else if ( document.MassUpdate.massall.checked == true )
-      select = false;
-   else
-      select = true;
-
-   sugarListView.get_checks();
-   // create new form to post (can't access action property of MassUpdate form due to action input)
-   var newForm = document.createElement( 'form' );
-   newForm.method = 'post';
-   newForm.action = action;
-   newForm.name = 'newForm';
-   newForm.id = 'newForm';
-   var uidTa = document.createElement( 'textarea' );
-   uidTa.name = 'uid';
-   uidTa.style.display = 'none';
-
-   if ( select ) { // use selected items
-      uidTa.value = document.MassUpdate.uid.value;
-   } else { // use current page
-      inputs = document.MassUpdate.elements;
-      ar = new Array();
-      for ( i = 0; i < inputs.length; i++ ) {
-         if ( inputs[i].name == 'mass[]' && inputs[i].checked && typeof (inputs[i].value) != 'function' ) {
-            ar.push( inputs[i].value );
-         }
-      }
-      uidTa.value = ar.join( ',' );
-   }
-
-   if ( uidTa.value == '' ) {
-      alert( no_record_txt );
-      return false;
-   }
-
-   var selectedArray = uidTa.value.split( "," );
-   if ( selectedArray.length > maxCount ) {
-      alert( totalCountError );
-      return;
-   } // if
-   newForm.appendChild( uidTa );
-
-   var moduleInput = document.createElement( 'input' );
-   moduleInput.name = 'module';
-   moduleInput.type = 'hidden';
-   moduleInput.value = currentModule;
-   newForm.appendChild( moduleInput );
-
-   var actionInput = document.createElement( 'input' );
-   actionInput.name = 'action';
-   actionInput.type = 'hidden';
-   actionInput.value = 'Compose';
-   newForm.appendChild( actionInput );
-
-   if ( typeof action_module != 'undefined' && action_module != '' ) {
-      var actionModule = document.createElement( 'input' );
-      actionModule.name = 'action_module';
-      actionModule.type = 'hidden';
-      actionModule.value = action_module;
-      newForm.appendChild( actionModule );
-   }
-   //return_info must follow this pattern."&return_module=Accounts&return_action=index"
-   if ( typeof return_info != 'undefined' && return_info != '' ) {
-      var params = return_info.split( '&' );
-      if ( params.length > 0 ) {
-         for ( var i = 0; i < params.length; i++ ) {
-            if ( params[i].length > 0 ) {
-               var param_nv = params[i].split( '=' );
-               if ( param_nv.length == 2 ) {
-                  returnModule = document.createElement( 'input' );
-                  returnModule.name = param_nv[0];
-                  returnModule.type = 'hidden';
-                  returnModule.value = param_nv[1];
-                  newForm.appendChild( returnModule );
-               }
-            }
-         }
-      }
-   }
-
-   var isAjaxCall = document.createElement( 'input' );
-   isAjaxCall.name = 'ajaxCall';
-   isAjaxCall.type = 'hidden';
-   isAjaxCall.value = true;
-   newForm.appendChild( isAjaxCall );
-
-   var isListView = document.createElement( 'input' );
-   isListView.name = 'ListView';
-   isListView.type = 'hidden';
-   isListView.value = true;
-   newForm.appendChild( isListView );
-
-   var toPdf = document.createElement( 'input' );
-   toPdf.name = 'to_pdf';
-   toPdf.type = 'hidden';
-   toPdf.value = true;
-   newForm.appendChild( toPdf );
-
-   //Grab the Quick Compose package for the listview
-   YAHOO.util.Connect.setForm( newForm );
-   var callback =
-           {
-              success: function ( o ) {
-                 var resp = YAHOO.lang.JSON.parse( o.responseText );
-                 var quickComposePackage = new Object();
-                 quickComposePackage.composePackage = resp;
-                 quickComposePackage.fullComposeUrl = 'index.php?module=Emails&action=Compose&ListView=true' +
-                         '&uid=' + uidTa.value + '&action_module=' + action_module;
-
-                 SUGAR.quickCompose.init( quickComposePackage );
-              }
-           }
-
-   YAHOO.util.Connect.asyncRequest( 'POST', 'index.php', callback, null );
-
-   // awu Bug 18624: Fixing issue where a canceled Export and unselect of row will persist the uid field, clear the field
-   document.MassUpdate.uid.value = '';
-
-   return false;
 }
 
 sugarListView.prototype.send_form = function ( select, currentModule, action, no_record_txt, action_module, return_info, ajax, callback ) {
@@ -2350,6 +2252,10 @@ sugarListView.prototype.send_form = function ( select, currentModule, action, no
 }
 //return a count of checked row.
 sugarListView.get_checks_count = function () {
+   // Return 0 if MassUpdate is undefined, to prevent an undefined property error.
+   if (typeof document.MassUpdate == 'undefined') {
+      return 0;
+   }
    ar = new Array();
 
    if ( document.MassUpdate.uid.value != '' ) {
@@ -2362,11 +2268,15 @@ sugarListView.get_checks_count = function () {
    }
    // build associated array of uids, associated array ensures uniqueness
    inputs = document.MassUpdate.elements;
-   for ( i = 0; i < inputs.length; i++ ) {
-      if ( inputs[i].name == 'mass[]' ) {
-         ar[inputs[i].value] = (inputs[i].checked) ? 1 : 0; // 0 of it is unchecked
+   for (i = 0; i < inputs.length; i++) {
+      if (inputs[i].name === 'mass[]') {
+        if (inputs[i].value !== '') {
+          ar[inputs[i].value] = (inputs[i].checked) ? 1 : 0;
+        } else {
+          ar[i] = (inputs[i].checked) ? 1 : 0;
+        }
       }
-   }
+    }
 
    // build regular array of uids
    uids = new Array();
@@ -2431,7 +2341,7 @@ sugarListView.prototype.order_checks = function ( order, orderBy, moduleString )
    document.MassUpdate.return_action.value = '';
    document.MassUpdate.submit();
 
-   return !checks;
+
 }
 sugarListView.prototype.save_checks = function ( offset, moduleString ) {
    checks = sugarListView.get_checks();
@@ -2468,6 +2378,7 @@ sugarListView.prototype.check_item = function ( cb, form ) {
 sugarListView.prototype.toggleSelected = function () {
 
    var numSelected = sugarListView.get_num_selected();
+   var numSelectedString = sugarListView.get_num_selected_string();
    var selectedRecords = document.getElementById( "selectedRecordsTop" );
    var selectActions = document.getElementById( "actionLinkTop" );
    var selectActionsDisabled = document.getElementById( "select_actions_disabled_top" );
@@ -2475,6 +2386,8 @@ sugarListView.prototype.toggleSelected = function () {
    var selectActionsDisabledBottom = document.getElementById( "select_actions_disabled_bottom" );
 
    if ( numSelected > 0 ) {
+      $('.selectedRecords.value').html(numSelectedString);
+      $('.selectedRecords').removeClass('hidden');
       $( selectedRecords ).removeAttr( "style" ).addClass( "show" );
       $( ".selectActionsDisabled" ).hide();
       jQuery( 'ul[name=selectActions]' ).each( function () {
@@ -2492,6 +2405,7 @@ sugarListView.prototype.toggleSelected = function () {
          jQuery( this ).removeAttr( "style" ).addClass( "hide" );
       } );
    } else {
+      $('.selectedRecords').addClass('hidden');
       $( selectedRecords ).hide();
       $( selectActions ).removeAttr( "style" ).removeClass( "show" ).addClass( "hide" );
       $( selectActionsBottom ).removeAttr( "style" ).removeClass( "show" ).addClass( "hide" );
@@ -2559,10 +2473,7 @@ sugarListView.prototype.check_all = function ( form, field, value, pageTotal ) {
    } );
    if ( document.MassUpdate.select_entire_list &&
            document.MassUpdate.select_entire_list.value == 1 ) {
-      sugarListView.prototype.toggleSelected();
-      $( document.MassUpdate.massall ).each( function () {
-         $( this ).attr( 'disabled', true );
-      } );
+      sugarListView.prototype.clear_all();
    } else {
       $( document.MassUpdate.massall ).each( function () {
          $( this ).attr( 'disabled', false );
@@ -2693,7 +2604,7 @@ sugarListView.prototype.send_mass_update = function ( mode, no_record_txt, del )
                ar.push( document.MassUpdate.elements[wp].value );
             }
          }
-         if ( document.MassUpdate.uid.value != '' )
+         if (document.MassUpdate.uid.value != '' && ar.length)
             document.MassUpdate.uid.value += ',';
          document.MassUpdate.uid.value += ar.join( ',' );
          if ( document.MassUpdate.uid.value == '' ) {
@@ -3112,52 +3023,29 @@ SUGAR.util = function () {
 
                   // Check is ulr cross domain or not
                   var r1 = /:\/\//igm;
-                  if ( r1.test( srcResult ) && srcResult.indexOf( window.location.hostname ) == -1 ) {
+                  if (r1.test(srcResult) && srcResult.indexOf(window.location.hostname) == -1) {
                      // if script is cross domain it cannot be loaded via ajax request
                      // try load script asynchronous by creating script element in the body
                      // YUI 3.3 doesn't allow load scrips synchronously
                      // YUI 3.5 do it
-                     YUI().use( 'get', function ( Y ) {
-                        var url = srcResult;
-                        Y.Get.script( srcResult,
-                                {
-                                   autopurge: false,
-                                   onSuccess: function ( o ) {
-                                   },
-                                   onFailure: function ( o ) {
-                                   },
-                                   onTimeout: function ( o ) {
-                                   }
-                                } );
-                     } );
-                     // TODO: for YUI 3.5 - load scripts as script object synchronous
-                     /*
-                      YUI().use('get', function (Y) {
-                      var url = srcResult;
-                      Y.Get.js([{url: url, async: false}], function (err) {});
-                      });
-                      */
-                  } else {
+       
+                     $.getScript(srcResult, function( data, textStatus, jqxhr ) {
+       
+                     });
+                   } else {
+       
                      // Bug #49205 : Subpanels fail to load when selecting subpanel tab
                      // Create a YUI instance using the io-base module.
-                     (function ( srcResult ) {
-                        YUI().use( "io-base", function ( Y ) {
-                           var cfg, response;
-                           cfg = {
-                              method: 'GET',
-                              sync: true,
-                              on: {
-                                 success: function ( transactionid, response, arguments ) {
-                                    SUGAR.util.globalEval( response.responseText );
-                                 }
-                              }
-                           };
-                           // Call synchronous request to load javascript content
-                           // restonse will be processed in success function
-                           response = Y.io( srcResult, cfg );
-                        } );
-                     })( srcResult );
-                  }
+                     (function (srcResult) {
+                       $.ajax({
+                         url: srcResult,
+                         async: false,
+                         method: 'GET'
+                       }).done(function(responseText) {
+                         SUGAR.util.globalEval(responseText);
+                       });
+                     })(srcResult);
+                   }
                } else {
                   // Bug #49205 : Subpanels fail to load when selecting subpanel tab
                   // execute script in global context
@@ -3825,6 +3713,25 @@ SUGAR.savedViews = function () {
             document.getElementById( 'sort_order_desc_radio' ).checked = true;
          else
             document.getElementById( 'sort_order_asc_radio' ).checked = true;
+         var sortableColumnsCount = 0;
+
+         var columnDefs = SUGAR.savedViews.columnsMeta;
+         if(columnDefs && typeof columnDefs === 'object' && Object.keys(columnDefs))  {
+            Object.keys(columnDefs).forEach(function (columnKey) {
+               var column = columnDefs[columnKey];
+               if (!column || !column.sortable) {
+                  return;
+               }
+      
+               if (column.sortable === true) {
+                  sortableColumnsCount++;
+               }
+            })
+         }
+      
+         if (sortableColumnsCount < 1 ) {
+            $('.saved-search-sort-column-config-row').hide();
+         }
       }
    };
 }();
@@ -4650,16 +4557,15 @@ function open_popup( module_name, width, height, initial_filter, close_popup, hi
       URL += field_to_name_array_url;
    }
 
-   win = SUGAR.util.openWindow( URL, windowName, windowFeatures );
-
-   if ( window.focus ) {
-      // put the focus on the popup if the browser supports the focus() method
-      win.focus();
+   win = SUGAR.util.openWindow(URL, windowName, windowFeatures);
+   if(win) {
+       $(win).focus(function(){
+         win.focus();
+       });
+       win.popupCount = popupCount;
+       return win;
    }
-
-   win.popupCount = popupCount;
-
-   return win;
+   return '';
 }
 
 /**

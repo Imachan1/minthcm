@@ -114,8 +114,16 @@ class CalendarActivity {
     * @param string $view view; not used for now, left for compatibility
     * @return string
     */
-   public function get_occurs_within_where_clause($table_name, $rel_table, $start_ts_obj, $end_ts_obj, $field_name = 'date_start', $field_end_date = "date_end") {
-      return static::getOccursWhereClauseGeneral($table_name, $rel_table, $start_ts_obj, $end_ts_obj, $field_name, $field_end_date, array('self', 'within'));
+   public static function get_occurs_within_where_clause($table_name, $rel_table, $start_ts_obj, $end_ts_obj, $field_name = 'date_start', $field_end_date = "date_end") {
+        return static::getOccursWhereClauseGeneral(
+            $table_name,
+            $rel_table,
+            $start_ts_obj,
+            $end_ts_obj,
+            $field_name,
+            $field_end_date,
+            array('self', 'within')
+        );
    }
 
    /**
@@ -129,12 +137,20 @@ class CalendarActivity {
     * @return string
     */
    public static function get_occurs_until_where_clause($table_name, $rel_table, $start_ts_obj, $end_ts_obj, $field_name = 'date_start', $field_end_date = "date_end") {
-      return static::getOccursWhereClauseGeneral($table_name, $rel_table, $start_ts_obj, $end_ts_obj, $field_name, $field_end_date, array('self', 'until'));
+        return static::getOccursWhereClauseGeneral(
+            $table_name,
+            $rel_table,
+            $start_ts_obj,
+            $end_ts_obj,
+            $field_name,
+            $field_end_date,
+            array('self', 'until')
+        );
    }
 
    function get_freebusy_activities($user_focus, $start_date_time, $end_date_time) {
       $act_list = array();
-      $vcal_focus = new vCal();
+      $vcal_focus = BeanFactory::newBean('vCals');
       $vcal_str = $vcal_focus->get_vcal_freebusy($user_focus);
 
       $lines = explode("\n", $vcal_str);
@@ -164,56 +180,74 @@ class CalendarActivity {
    public static function get_activities($activities, $user_id, $show_tasks, $view_start_time, $view_end_time, $view, $show_calls = true, $show_completed = true) {
 
       global $current_user;
-      global $beanList;
+
       $act_list = array();
       $seen_ids = array();
 
-      $completedCalls = '';
-      $completedMeetings = '';
-      $completedTasks = '';
+      $complete = [];
       if ( !$show_completed ) {
-         $completedCalls = " AND calls.status = 'Planned' ";
-         $completedMeetings = " AND meetings.status = 'Planned' ";
-         $completedTasks = " AND tasks.status != 'Completed' ";
+        $complete['Calls'] = " AND calls.status = 'Planned' ";
+        $complete['Meetings'] = " AND meetings.status = 'Planned' ";
+        $complete['Tasks'] = " AND tasks.status != 'Completed' ";
       }
 
       foreach ( $activities as $key => $activity ) {
-
+        if ($key === 'Tasks' && !$show_tasks) {
+            continue;
+        }
          if ( ACLController::checkAccess($key, 'list', true) ) {
             /* END - SECURITY GROUPS */
-            $class = $beanList[$key];
-            $bean = new $class();
+            $bean = BeanFactory::newBean($key);
 
             if ( $current_user->id === $user_id ) {
                $bean->disable_row_level_security = true;
             }
 
-            $where = static::get_occurs_until_where_clause($bean->table_name, isset($bean->rel_users_table) ? $bean->rel_users_table : null, $view_start_time, $view_end_time, $activity['start'], $activity['end'], $view);
+            switch ($key) {
+                case 'Meetings':
+                case 'Calls':
+                    $where = self::get_occurs_until_where_clause(
+                        $bean->table_name,
+                        isset($bean->rel_users_table) ? $bean->rel_users_table : null,
+                        $view_start_time,
+                        $view_end_time,
+                        $activity['start'],
+                        $activity['end']
+                    );
+                    break;
+                default:
+                    $where = self::get_occurs_within_where_clause(
+                        $bean->table_name,
+                        isset($bean->rel_users_table) ? $bean->rel_users_table : null,
+                        $view_start_time,
+                        $view_end_time,
+                        $activity['start'],
+                        $activity['end']
+                    );
+                    break;
+            }
 
-            if ( $key === "Meeting" ) {
-               $where .= $completedMeetings;
-            } elseif ( $key === "Calls" ) {
-               $where .= $completedCalls;
-               if ( !$show_calls ) {
-                  continue;
-               }
-            } elseif ( $key === "Tasks" ) {
-               $where .= $completedTasks;
-               if ( !$show_tasks ) {
-                  continue;
-               }
+            if (!empty($complete[$key])) {
+                $where .= $complete[$key];
             }
 
             $focus_list = build_related_list_by_user_id($bean, $user_id, $where);
-            require_once 'modules/SecurityGroups/SecurityGroup.php';
+            //require_once 'modules/SecurityGroups/SecurityGroup.php';
             foreach ( $focus_list as $focusBean ) {
                if ( isset($seen_ids[$focusBean->id]) ) {
                   continue;
                }
 
-               $in_group = SecurityGroup::groupHasAccess($key, $focusBean->id, 'list');
-               $show_as_busy = !(ACLController::checkAccess($key, 'list', $current_user->id === $user_id, 'module', $in_group));
-               $focusBean->show_as_busy = $show_as_busy;
+               /* TODO update currently unused functionality, disabled as expensive
+               // $in_group = SecurityGroup::groupHasAccess($key, $focusBean->id, 'list');
+               // $show_as_busy = !ACLController::checkAccess(
+               //      $key,
+               //      'list',
+               //      $current_user->id === $user_id,
+               //      'module',
+               //      $in_group
+               //  );
+               // $focusBean->show_as_busy = $show_as_busy;*/
 
                $seen_ids[$focusBean->id] = 1;
                $act = new CalendarActivity($focusBean);

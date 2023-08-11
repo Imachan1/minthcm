@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,8 +46,6 @@ namespace SuiteCRM\API\OAuth2\Repositories;
 
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use SuiteCRM\API\OAuth2\Entities\ClientEntity;
-use League\OAuth2\Server\Exception\OAuthServerException;
-use SuiteCRM\API\OAuth2\Exception\GrantTypeNotAllowedForClient;
 
 class ClientRepository implements ClientRepositoryInterface
 {
@@ -55,34 +53,31 @@ class ClientRepository implements ClientRepositoryInterface
      * {@inheritdoc}
      * @return null|ClientEntity
      */
-    public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
+    public function getClientEntity($clientIdentifier)
     {
-
         $client = new \OAuth2Clients();
         $client->retrieve($clientIdentifier);
-        if(empty($client->id)) {
-            return null;
-        }
-
-        if($client->allowed_grant_type !== $grantType) {
-            throw new GrantTypeNotAllowedForClient();
-        }
-
-        if (
-            $mustValidateSecret === true
-            && (bool)$client->is_confidential === true
-            && password_verify($clientSecret, $client->secret) === false
-        ) {
+        if (empty($client->id)) {
             return null;
         }
 
         $clientEntity = new ClientEntity();
         $clientEntity->setIdentifier($clientIdentifier);
         $clientEntity->setName($client->name);
-
-        $redirect_url = isset($client->redirect_uri) ? $client->redirect_uri : '';
-        $clientEntity->setRedirectUri($redirect_url);
+        $clientEntity->setRedirectUri($client->redirect_uri ?? '');
+        $clientEntity->setIsConfidential($client->is_confidential ?? false);
 
         return $clientEntity;
+    }
+
+    public function validateClient($clientIdentifier, $clientSecret, $grantType)
+    {
+        $client = new \OAuth2Clients();
+        $client->retrieve($clientIdentifier);
+        if (empty($client->id)) {
+            return null;
+        }
+
+        return hash('sha256', $clientSecret) === $client->secret && $grantType === $client->allowed_grant_type;
     }
 }

@@ -59,21 +59,6 @@ class AOR_Chart extends Basic
         $this->colours = self::COLOUR_DEFAULTS;
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function AOR_Chart()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-
     public function save_lines(array $post, AOR_Report $bean, $postKey)
     {
         $seenIds = array();
@@ -266,7 +251,7 @@ class AOR_Chart extends Basic
                 $hash = md5($onelabel);
                 $colours[] = substr($hash, 0, 6);
             }
-            $this->colours = "['#" . implode($colours, "','#") . "']";
+            $this->colours = "['#" . implode("','#", $colours) . "']";
             return true;
         }
         LoggerManager::getLogger()->warn('Incorrect labels given. Using default colours in charts.');
@@ -671,7 +656,7 @@ EOF;
     private function getShortenedLabel($label, $maxLabelSize = 20)
     {
         if (strlen($label) > $maxLabelSize) {
-            return substr($label, 0, $maxLabelSize).'...';
+            return mb_substr($label, 0, $maxLabelSize).'...';
         }
         return $label;
     }
@@ -714,7 +699,7 @@ EOF;
         $_data = array();
         foreach ($data as $label => $values) {
             foreach ($values as $key => $value) {
-                $_data[$label][$tooltips[$label][$key]] = $value;
+                $_data[$label][$tooltips[$label][$key]] += $value;
             }
         }
         $data = $_data;

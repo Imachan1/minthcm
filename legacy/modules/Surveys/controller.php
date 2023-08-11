@@ -7,7 +7,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 class SurveysController extends SugarController
 {
 
-    function action_Reports()
+    public function action_Reports()
     {
         $this->view = 'Reports';
     }

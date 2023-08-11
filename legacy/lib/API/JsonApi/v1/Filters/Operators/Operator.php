@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -107,7 +107,7 @@ class Operator
      */
     public function isValid($operator)
     {
-        if(!is_string($operator)) {
+        if (!is_string($operator)) {
             throw new InvalidArgumentException(
                 '[JsonApi][v1][Filters][Operators][Operator][isValid][expected type to be string] $operator'
             );
@@ -136,7 +136,7 @@ class Operator
      */
     public function hasOperator($filter)
     {
-        if(!is_string($filter)) {
+        if (!is_string($filter)) {
             throw new InvalidArgumentException(
                 '[JsonApi][v1][Filters][Operators][Operator][hasOperator][expected type to be string] $operator'
             );
@@ -167,7 +167,7 @@ class Operator
      */
     public function toSqlOperands(array $operands)
     {
-        if(!is_array($operands)) {
+        if (!is_array($operands)) {
             throw new InvalidArgumentException(
                 '[JsonApi][v1][Filters][Operators][Operator][toSqlOperands][expected type to be array] $operands'
             );
@@ -179,10 +179,10 @@ class Operator
 
         foreach ($operands as $i => $operand) {
             if ($i >= $this->totalOperands()) {
-               throw new BadRequestException('[JsonApi][v1][Filters][Operators][Operator][toSqlOperands][operand limit exceeded]');
+                throw new BadRequestException('[JsonApi][v1][Filters][Operators][Operator][toSqlOperands][operand limit exceeded]');
             }
 
-            if(is_numeric($operand)) {
+            if (is_numeric($operand)) {
                 $operands[$i] = $db->quote($operand);
             } else {
                 $operands[$i] = '"'. $db->quote($operand) .'"';

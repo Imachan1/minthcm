@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -65,7 +65,7 @@ $dictionary['TermsOfEmployment'] = array(
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
             'validation' => array('type' => 'isbefore', 'compareto' => 'term_ending_date'),
-            'vt_readonly' => "callCustomApi(TermsOfEmployment, checkIfTermInBetween, {id: \$id})",
+            'vt_readonly' => "callCustomApi('TermsOfEmployment', 'checkIfTermInBetween', {id: \$id})",
         ),
         'term_ending_date' => array(
             'required' => false,
@@ -87,8 +87,8 @@ $dictionary['TermsOfEmployment'] = array(
             'size' => '20',
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
-            'vt_validation' => "AEM(callCustomApi(TermsOfEmployment, validateTermDates, {id: \$id, contract_id: \$contract_id, date_start: \$term_starting_date, date_end: \$term_ending_date,}),'LBL_TERMS_NOT_ADJECENT')",
-            'vt_readonly' => "callCustomApi(TermsOfEmployment, checkIfTermInBetween, {id: \$id})",
+            'vt_validation' => "AEM(callCustomApi('TermsOfEmployment', 'validateTermDates', {id: \$id, contract_id: \$contract_id, date_start: \$term_starting_date, date_end: \$term_ending_date,}),'LBL_TERMS_NOT_ADJECENT')",
+            'vt_readonly' => "callCustomApi('TermsOfEmployment', 'checkIfTermInBetween', {id: \$id})",
         ),
         'date_of_signing' => array(
             'required' => false,
@@ -303,7 +303,7 @@ $dictionary['TermsOfEmployment'] = array(
             'table' => 'contracts',
             'rname' => 'name',
             'required' => true,
-            'vt_readonly' => "callCustomApi(TermsOfEmployment, checkIfTermInBetween, {id: \$id})",
+            'vt_readonly' => "callCustomApi('TermsOfEmployment', 'checkIfTermInBetween', {id: \$id})",
         ),
         "contract_id" => array(
             'name' => 'contract_id',

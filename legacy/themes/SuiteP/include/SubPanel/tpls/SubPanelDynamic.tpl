@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -98,9 +98,9 @@
                     <td>{$cell}</td>
                 {/foreach}
                 <td>
-                    {if $ROWS_BUTTONS.$rowHeader|@count gt 0}
-                        {sugar_action_menu id="$rowHeader" buttons=$ROWS_BUTTONS.$rowHeader class="" flat=false}
-                    {/if}
+                {if isset($ROWS_BUTTONS.$rowHeader) and  $ROWS_BUTTONS.$rowHeader|@count gt 0}
+                    {sugar_action_menu id="$rowHeader" buttons=$ROWS_BUTTONS.$rowHeader class="" flat=false}
+                {/if}
                 </td>
             </tr>
             {counter name="rowCounter" print=false}

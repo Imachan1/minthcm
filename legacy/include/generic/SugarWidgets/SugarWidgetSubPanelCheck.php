@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,18 +50,16 @@ include_once('include/generic/SugarWidgets/SugarWidgetField.php');
 
 class SugarWidgetSubPanelCheck extends SugarWidgetField
 {
-    function displayListPlain($layout_def) {
-
+    public function displayListPlain($layout_def)
+    {
         $value= $this->_get_list_value($layout_def);
 
         if (isset($layout_def['widget_type']) && $layout_def['widget_type'] =='checkbox') {
-
-            if ($value != '' &&  ($value == 'on' || intval($value) == 1 || $value == 'yes'))
-            {
+            if ($value != '' &&  ($value == 'on' || (int)$value == 1 || $value == 'yes')) {
                 return "&nbsp;<input name='checkbox_display' class='checkbox' type='checkbox' disabled='true' checked>";
             }
             //Modification to allow checkboxes to be displayed correctly in subpanel
-            if ($layout_def['checkbox_value']=='true'){
+            if ($layout_def['checkbox_value']=='true') {
                 return "&nbsp;<input name='".$layout_def['module']."checkbox_display[]' class='checkbox' type='checkbox' id='".$layout_def['module']."checkbox_display_id[]' value=\"".$layout_def['fields']['ID']."\" onclick=''>";
             }
 
@@ -69,5 +67,4 @@ class SugarWidgetSubPanelCheck extends SugarWidgetField
         }
         return $value;
     }
-
 }

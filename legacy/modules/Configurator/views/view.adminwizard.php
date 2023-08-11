@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -83,18 +83,18 @@ class ViewAdminwizard extends SugarView
         
         $configurator = new Configurator();
         $sugarConfig = SugarConfig::getInstance();
-        $focus = new Administration();
+        $focus = BeanFactory::newBean('Administration');
         $focus->retrieveSettings();
         
         $ut = $GLOBALS['current_user']->getPreference('ut');
-        if(empty($ut))
+        if(empty($ut)) {
             $this->ss->assign('SKIP_URL','index.php?module=Users&action=Wizard&skipwelcome=1');
-        else
+        } else {
             $this->ss->assign('SKIP_URL','index.php?module=Home&action=index');
-
+        }
         $silentInstall = $GLOBALS['current_user']->getPreference('silentInstall');
         //If not set, show the configuration
-        if($silentInstall === NULL)
+        if($silentInstall === null)
         {
             $silentInstall = false;
         }
@@ -124,7 +124,7 @@ class ViewAdminwizard extends SugarView
         $this->ss->assign('mail_smtpauth_req', ($focus->settings['mail_smtpauth_req']) ? "checked='checked'" : '');
         $this->ss->assign('MAIL_SSL_OPTIONS', get_select_options_with_id($app_list_strings['email_settings_for_ssl'], $focus->settings['mail_smtpssl']));
         $this->ss->assign('notify_allow_default_outbound_on', (!empty($focus->settings['notify_allow_default_outbound']) && $focus->settings['notify_allow_default_outbound'] == 2) ? 'CHECKED' : '');
-        $this->ss->assign('THEME', SugarThemeRegistry::current()->__toString());
+        $this->ss->assign('THEME', (string)SugarThemeRegistry::current());
 
         $this->ss->assign('silentInstall', $silentInstall);
 

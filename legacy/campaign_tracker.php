@@ -11,7 +11,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -68,25 +68,24 @@ if(!empty($_REQUEST['identifier'])) {
 }
 
 if(empty($_REQUEST['track'])) {
-	$track = "";
+    $track = "";
 } else {
-	$track = $_REQUEST['track'];
+    $track = $_REQUEST['track'];
 }
 $track = $db->quote($track);
 
 if(preg_match('/^[0-9A-Za-z\-]*$/', $track))
 {
-	$query = "SELECT refer_url FROM campaigns WHERE tracker_key='$track'";
-	$res = $db->query($query);
+    $query = "SELECT refer_url FROM campaigns WHERE tracker_key='$track'";
+    $res = $db->query($query);
 
-	$row = $db->fetchByAssoc($res);
+    $row = $db->fetchByAssoc($res);
 
-	$redirect_URL = $row['refer_url'];
-	sugar_cleanup();
-	header("Location: $redirect_URL");
-}
-else
+    $redirect_URL = $row['refer_url'];
+    sugar_cleanup();
+    header("Location: $redirect_URL");
+} else
 {
-	sugar_cleanup();
+    sugar_cleanup();
 }
 exit;

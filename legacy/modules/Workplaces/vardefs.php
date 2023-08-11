@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -71,7 +71,7 @@ $dictionary['Workplaces'] = array(
             'options' => 'workplace_mode_list',
             'studio' => 'visible',
             'dependency' => false,
-            'vt_validation' => "AEM(callCustomApi(Workplaces,canChangeMode,\$id,\$mode),'LBL_ERR_CANT_CHANGE_MODE')",
+            'vt_validation' => "AEM(callCustomApi('Workplaces','canChangeMode',\$id,\$mode),'LBL_ERR_CANT_CHANGE_MODE')",
         ),
         'availability' => array(
             'required' => true,
@@ -117,7 +117,7 @@ $dictionary['Workplaces'] = array(
             'module' => 'Rooms',
             'table' => 'rooms',
             'rname' => 'name',
-            'vt_validation' => "AEM(callCustomApi(Workplaces,canSelectRoom,\$room_id),'LBL_ERR_CANT_SELECT_ROOM')",
+            'vt_validation' => "AEM(callCustomApi('Workplaces','canSelectRoom',\$room_id),'LBL_ERR_CANT_SELECT_ROOM')",
          ),
          "room_id" => array(
             'name' => 'room_id',

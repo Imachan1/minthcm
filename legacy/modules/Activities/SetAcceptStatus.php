@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,15 +52,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
     global $json,$current_user;
     
     
-    if ($_REQUEST['object_type'] == "Meeting")
-    {
-        $focus = new Meeting();
+    if ($_REQUEST['object_type'] == "Meeting") {
+        $focus = BeanFactory::newBean('Meetings');
         $focus->id = $_REQUEST['object_id'];
         $test = $focus->set_accept_status($current_user, $_REQUEST['accept_status']);
-    }
-    else if ($_REQUEST['object_type'] == "Call")
-    {
-        $focus = new Call();
+    } elseif ($_REQUEST['object_type'] == "Call") {
+        $focus = BeanFactory::newBean('Calls');
         $focus->id = $_REQUEST['object_id'];
         $test = $focus->set_accept_status($current_user, $_REQUEST['accept_status']);
     }

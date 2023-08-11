@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,7 +45,6 @@
 namespace SuiteCRM\API\v8\Controller;
 
 use Interop\Container\Exception\ContainerException;
-use InvalidArgumentException;
 use JsonSchema\Validator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -58,7 +57,6 @@ use RuntimeException;
 use SuiteCRM\API\JsonApi\v1\JsonApi;
 use SuiteCRM\API\v8\Exception\ApiException;
 use SuiteCRM\API\v8\Exception\InvalidJsonApiRequestException;
-use SuiteCRM\API\v8\Exception\InvalidJsonApiResponseException;
 use SuiteCRM\API\v8\Exception\NotAcceptableException;
 use SuiteCRM\API\v8\Exception\UnsupportedMediaTypeException;
 use SuiteCRM\ErrorMessage;
@@ -153,11 +151,11 @@ class ApiController implements LoggerAwareInterface
             }
 
             json_encode($payload);
-            if(json_last_error() != JSON_ERROR_NONE) {
+            if (json_last_error() != JSON_ERROR_NONE) {
                 throw new Exception('Generating JSON payload failed: ' . json_last_error_msg());
             }
 
-            if(isset($payload['errors'][0]['status'])) {
+            if (isset($payload['errors'][0]['status'])) {
                 $status = $payload['errors'][0]['status'];
             } else {
                 $status = $response->getStatusCode();
@@ -168,7 +166,7 @@ class ApiController implements LoggerAwareInterface
                 ->write(json_encode($payload));
         } catch (\Exception $e) {
             $errorMessage = 'Generate JSON API Response exception detected: ' . get_class($e) . ': ' . $e->getMessage() . ' (' . $e->getCode() . ')';
-            if(inDeveloperMode()) {
+            if (inDeveloperMode()) {
                 ErrorMessage::log($errorMessage);
             }
             throw new RuntimeException($errorMessage, $e->getCode(), $e);
@@ -176,14 +174,15 @@ class ApiController implements LoggerAwareInterface
     }
     
     /**
-     * 
+     *
      * @param Request $request
      * @param \Exception $e
      * @param array $payload
      * @return array
      * @throws RuntimeException
      */
-    protected function handleExceptionIntoPayloadError(Request $request, \Exception $exception, $payload) {
+    protected function handleExceptionIntoPayloadError(Request $request, \Exception $exception, $payload)
+    {
         try {
             ErrorMessage::log($exception->getMessage());
             $error = new JsonApiErrorObject();
@@ -192,7 +191,7 @@ class ApiController implements LoggerAwareInterface
             return $payload;
         } catch (Exception $e) {
             $errorMessage = 'Generate JSON API Error Response exception detected: ' . get_class($e) . ': ' . $e->getMessage() . ' (' . $e->getCode() . ')';
-            if(inDeveloperMode()) {
+            if (inDeveloperMode()) {
                 ErrorMessage::log($errorMessage);
             }
             throw new RuntimeException($errorMessage, $e->getCode(), $e);
@@ -264,7 +263,7 @@ class ApiController implements LoggerAwareInterface
                 ->write(json_encode($payload));
         } catch (\Exception $e) {
             $errorMessage = 'Generate JSON API Error Response exception detected: ' . get_class($e) . ': ' . $e->getMessage() . ' (' . $e->getCode() . ')';
-            if(inDeveloperMode()) {
+            if (inDeveloperMode()) {
                 ErrorMessage::log($errorMessage);
             }
             throw new RuntimeException($errorMessage, $e->getCode(), $e);
@@ -289,10 +288,10 @@ class ApiController implements LoggerAwareInterface
         if (empty($header)) {
             throw new NotAcceptableException('Header should contains an "Accept" header.');
         }
-        if(count($header) !== 1) {
+        if (count($header) !== 1) {
             throw new NotAcceptableException('Header should contains exactly one "Accept" header.');
         }
-        if($header[0] !== self::CONTENT_TYPE) {
+        if ($header[0] !== self::CONTENT_TYPE) {
             throw new NotAcceptableException('Header "Accept" should be "' . self::CONTENT_TYPE . '", ' . ($header[0] ? '"' . $header[0] . '" given.' : 'request doesn\'t have "Accept"'));
         }
 

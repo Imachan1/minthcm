@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,12 +50,14 @@ $db = DBManagerFactory::getInstance();
 
 if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUEST['type']) || !isset($_SESSION['authenticated_user_id'])) {
     die("Not a Valid Entry Point");
-} else {
+}
     require_once("data/BeanFactory.php");
     $file_type = ''; // bug 45896
     require_once("data/BeanFactory.php");
-    ini_set('zlib.output_compression',
-        'Off');//bug 27089, if use gzip here, the Content-Length in header may be incorrect.
+    ini_set(
+        'zlib.output_compression',
+        'Off'
+    );//bug 27089, if use gzip here, the Content-Length in header may be incorrect.
     // cn: bug 8753: current_user's preferred export charset not being honored
     $GLOBALS['current_user']->retrieve($_SESSION['authenticated_user_id']);
     $GLOBALS['current_language'] = $_SESSION['authenticated_user_language'];
@@ -89,7 +91,7 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
         // Pull up the document revision, if it's of type Document
         if (isset($focus->object_name) && $focus->object_name == 'Document') {
             // It's a document, get the revision that really stores this file
-            $focusRevision = new DocumentRevision();
+            $focusRevision = BeanFactory::newBean('DocumentRevisions');
             $focusRevision->retrieve($_REQUEST['id']);
 
             if (empty($focusRevision->id)) {
@@ -113,13 +115,27 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
             header('Location: ' . $focusRevision->doc_url);
             sugar_die("Remote file detected, location header sent.");
         }
-
     } // if
-    $temp = explode("_", $_REQUEST['id'], 2);
-    if (is_array($temp)) {
-        $image_field = isset($temp[1]) ? $temp[1] : null;
-        $image_id = $temp[0];
+
+    // id here is really id_field. But since both "id" and "field" can also have underscores in them,
+    // we'll try out parts starting from the end, checking if we get a valid field name.
+    // Some edge cases might be impossible to untangle (ids that contain field names,
+    // and field names that partially contain others, e.g. name and first_name).
+    // TODO: drop this ugly scheme of passing ids together with field names - just pass them in separately...
+    $image_field = null;
+    $image_id = $_REQUEST['id'];
+    $parts = explode('_', $image_id);
+    $index = count($parts) - 1;
+    while ($index) {
+        $possible_field = implode('_', array_slice($parts, $index)); // final parts, from index to end
+        if (isset($focus->field_defs[$possible_field])) {
+            $image_field = $possible_field;
+            $image_id = implode('_', array_slice($parts, 0, $index)); // initial parts, up to index
+            break;
+        }
+        $index--;
     }
+
     if (isset($_REQUEST['ieId']) && isset($_REQUEST['isTempFile'])) {
         $local_location = sugar_cached("modules/Emails/{$_REQUEST['ieId']}/attachments/{$_REQUEST['id']}");
     } elseif (isset($_REQUEST['isTempFile']) && $file_type == "import") {
@@ -137,7 +153,6 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
     }
 
     if (!file_exists($local_location) || strpos($local_location, "..")) {
-
         if (isset($image_field)) {
             header("Content-Type: image/png");
             header("Content-Disposition: attachment; filename=\"No-Image.png\"");
@@ -147,13 +162,12 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
             set_time_limit(0);
             readfile('include/SugarFields/Fields/Image/no_image.png');
             die();
-        } else {
-            die($app_strings['ERR_INVALID_FILE_REFERENCE']);
         }
-    } else {
+        die($app_strings['ERR_INVALID_FILE_REFERENCE']);
+    }
         $doQuery = true;
 
-        if ($file_type == 'documents') {
+        if ($file_type == 'documents' && !isset($image_field)) {
             // cn: bug 9674 document_revisions table has no 'name' column.
             $query = "SELECT filename name FROM document_revisions INNER JOIN documents ON documents.id = document_revisions.document_id ";
             $query .= "WHERE document_revisions.id = '" . $db->quote($_REQUEST['id']) . "' ";
@@ -172,13 +186,14 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
 
             // Fix for issue #1195: because the module was created using Module Builder and it does not create any _cstm table,
             // there is a need to check whether the field has _c extension.
-            $query = "SELECT " . $image_field . " FROM " . $file_type . " ";
+            $file_type = $db->quote($file_type);
+            $query = "SELECT " . $db->quote($image_field) . " FROM " . $file_type . " ";
             if (substr($image_field, -2) == "_c") {
                 $query .= "LEFT JOIN " . $file_type . "_cstm cstm ON cstm.id_c = " . $file_type . ".id ";
             }
             $query .= "WHERE " . $file_type . ".id= '" . $db->quote($image_id) . "'";
 
-            //$query .= "WHERE " . $file_type . ".id= '" . $db->quote($image_id) . "'";
+        //$query .= "WHERE " . $file_type . ".id= '" . $db->quote($image_id) . "'";
         } elseif (!isset($_REQUEST['isTempFile']) && !isset($_REQUEST['tempName']) && isset($_REQUEST['type']) && $file_type != 'temp') { //make sure not email temp file.
             $query = "SELECT filename name FROM " . $file_type . " ";
             $query .= "WHERE " . $file_type . ".id= '" . $db->quote($_REQUEST['id']) . "'";
@@ -188,8 +203,15 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
 
         // Fix for issue 1506 and issue 1304 : IE11 and Microsoft Edge cannot display generic 'application/octet-stream' (which is defined as "arbitrary binary data" in RFC 2046).
         $mime_type = mime_content_type($local_location);
-        if ($mime_type == null || $mime_type == '') {
-            $mime_type = 'application/octet-stream';
+
+        switch ($mime_type) {
+            case 'text/html':
+                $mime_type = 'text/plain';
+            break;
+            case null:
+            case '':
+                $mime_type = 'application/octet-stream';
+            break;
         }
 
         if ($doQuery && isset($query)) {
@@ -216,7 +238,6 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
             } else {
                 $download_location = "upload://{$_REQUEST['id']}";
             }
-
         } else {
             if (isset($_REQUEST['tempName']) && isset($_REQUEST['isTempFile'])) {
                 // downloading a temp file (email 2.0)
@@ -235,8 +256,9 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
             $name = str_replace("+", "_", $name);
         }
 
-        header("Pragma: public");
-        header("Cache-Control: maxage=1, post-check=0, pre-check=0");
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+        header('Cache-Control: post-check=0, pre-check=0', false);
+        header('Pragma: no-cache');
         if (isset($_REQUEST['isTempFile']) && ($_REQUEST['type'] == "SugarFieldImage")) {
             $mime = getimagesize($download_location);
             if (!empty($mime)) {
@@ -246,11 +268,27 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
             }
         } else {
             header('Content-type: ' . $mime_type);
-            if($_REQUEST['preview'] === "yes"){ 
-                header( "Content-Disposition: inline; filename=\"".$name."\";"); }
-            else{
-                header("Content-Disposition: attachment; filename=\"" . $name . "\";");
+
+            $showPreview = false;
+
+            global $sugar_config;
+
+            $allowedPreview = $sugar_config['allowed_preview'] ?? [];
+
+            if (empty($row['file_ext'])) {
+                $row['file_ext'] = pathinfo($name, PATHINFO_EXTENSION);
             }
+
+            if (in_array($row['file_ext'], $allowedPreview, true)) {
+                $showPreview = isset($_REQUEST['preview']) && $_REQUEST['preview'] === 'yes' && $mime_type !== 'text/html';
+            }
+
+            if ($showPreview === true) {
+                header('Content-Disposition: inline; filename="' . $name . '";');
+            } else {
+                header('Content-Disposition: attachment; filename="' . $name . '";');
+            }
+
         }
         // disable content type sniffing in MSIE
         header("X-Content-Type-Options: nosniff");
@@ -264,6 +302,10 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
             ;
         }
 
-        readfile($download_location);
-    }
-}
+        ob_start();
+        echo clean_file_output(file_get_contents($download_location), $mime_type);
+
+        $output = ob_get_contents();
+        ob_end_clean();
+
+        echo $output;

@@ -7,7 +7,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -41,7 +41,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 function initPanel(id,state){panelId='detailpanel_'+id;expandPanel(id);if(state=='collapsed'){collapsePanel(id);}}
-function expandPanel(id){var panelId='detailpanel_'+id;document.getElementById(panelId).className=document.getElementById(panelId).className.replace(/(expanded|collapsed)/ig,'')+' expanded';}
-function collapsePanel(id){var panelId='detailpanel_'+id;document.getElementById(panelId).className=document.getElementById(panelId).className.replace(/(expanded|collapsed)/ig,'')+' collapsed';}
-function setCollapseState(mod,panel,isCollapsed){var sugar_panel_collase=Get_Cookie("sugar_panel_collase");if(sugar_panel_collase==null){sugar_panel_collase={};}else{sugar_panel_collase=YAHOO.lang.JSON.parse(sugar_panel_collase);}
-sugar_panel_collase[mod]=sugar_panel_collase[mod]||{};sugar_panel_collase[mod][panel]=isCollapsed;Set_Cookie('sugar_panel_collase',YAHOO.lang.JSON.stringify(sugar_panel_collase),30,'/','','');}
+ function expandPanel(id){var panelId='detailpanel_'+id;document.getElementById(panelId).className=document.getElementById(panelId).className.replace(/(expanded|collapsed)/ig,'')+' expanded';}
+ function collapsePanel(id){var panelId='detailpanel_'+id;document.getElementById(panelId).className=document.getElementById(panelId).className.replace(/(expanded|collapsed)/ig,'')+' collapsed';}
+ function setCollapseState(mod,panel,isCollapsed){var sugar_panel_collase=Get_Cookie("sugar_panel_collase");if(sugar_panel_collase==null){sugar_panel_collase={};}else{sugar_panel_collase=YAHOO.lang.JSON.parse(sugar_panel_collase);}
+ sugar_panel_collase[mod]=sugar_panel_collase[mod]||{};sugar_panel_collase[mod][panel]=isCollapsed;Set_Cookie('sugar_panel_collase',YAHOO.lang.JSON.stringify(sugar_panel_collase),30,'/','','');}

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,26 +48,27 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('modules/SugarFeed/feedLogicBase.php');
 
 
-class CaseFeed extends FeedLogicBase {
-    var $module = 'Cases';
-    function pushFeed($bean, $event, $arguments){
+class CaseFeed extends FeedLogicBase
+{
+    public $module = 'Cases';
+    public function pushFeed($bean, $event, $arguments)
+    {
         $text = '';
-	if(empty($bean->fetched_row) && $bean->in_save){
+        if (empty($bean->fetched_row) && $bean->in_save) {
             $accountName = $bean->account_name;
-            if(empty($accountName) && $bean->account_id){
-                $acc = BeanFactory::getBean('Accounts',$bean->account_id);
+            if (empty($accountName) && $bean->account_id) {
+                $acc = BeanFactory::getBean('Accounts', $bean->account_id);
                 $accountName = $acc->name;
             }
             $text =  '{SugarFeed.CREATED_CASE} [' . $bean->module_dir . ':' . $bean->id . ':' . $bean->name.'] {SugarFeed.FOR} [Accounts:' . $bean->account_id . ':' . $accountName . ']: '. $bean->description;
-        }else{
-            if(!empty($bean->fetched_row['status'] ) && $bean->fetched_row['status'] != $bean->status && strpos($bean->status, 'Closed') !== false){
+        } else {
+            if (!empty($bean->fetched_row['status']) && $bean->fetched_row['status'] != $bean->status && strpos($bean->status, 'Closed') !== false) {
                 $text =  '{SugarFeed.CLOSED_CASE} [' . $bean->module_dir . ':' . $bean->id . ':' . $bean->name. '] {SugarFeed.FOR} [Accounts:' . $bean->account_id . ':' . $bean->account_name . ']';
             }
         }
 
-        if(!empty($text)){
-			SugarFeed::pushFeed2($text, $bean);
+        if (!empty($text)) {
+            SugarFeed::pushFeed2($text, $bean);
         }
-
     }
 }

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,50 +52,50 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
  ********************************************************************************/
-$fields_array['EmailMan'] = array ('column_fields' => Array(
-		"id"
-		, "date_entered"
-		, "date_modified"
-		, 'user_id'
-		, 'module'
-		, 'module_id'
-		, 'marketing_id'
-		, 'campaign_id'
-		, 'list_id'
-		, 'template_id'
-		, 'from_email'
-		, 'from_name'
-		, 'invalid_email'
-		, 'send_date_time'
-		, 'in_queue'
-		, 'in_queue_date'
-		,'send_attempts'
-		),
-        'list_fields' =>  Array(
-		"id"
-		, 'user_id'
-		, 'module'
-		, 'module_id'
-		, 'campaign_id'
-		, 'marketing_id'
-		, 'list_id'
-		, 'invalid_email'
-		, 'from_name'
-		, 'from_email'
-		, 'template_id'
-		, 'send_date_time'
-		, 'in_queue'
-		, 'in_queue_date'
-		,'send_attempts'
-		,'user_name'
-		,'to_email'
-		,'from_email'
-		,'campaign_name'
-		,'to_contact'
-		,'to_lead'
-		,'to_prospect'
-		,'contact_email'
-		, 'lead_email'
-		, 'prospect_email'
+$fields_array['EmailMan'] = array('column_fields' => array(
+        "id"
+        , "date_entered"
+        , "date_modified"
+        , 'user_id'
+        , 'module'
+        , 'module_id'
+        , 'marketing_id'
+        , 'campaign_id'
+        , 'list_id'
+        , 'template_id'
+        , 'from_email'
+        , 'from_name'
+        , 'invalid_email'
+        , 'send_date_time'
+        , 'in_queue'
+        , 'in_queue_date'
+        ,'send_attempts'
+        ),
+        'list_fields' =>  array(
+        "id"
+        , 'user_id'
+        , 'module'
+        , 'module_id'
+        , 'campaign_id'
+        , 'marketing_id'
+        , 'list_id'
+        , 'invalid_email'
+        , 'from_name'
+        , 'from_email'
+        , 'template_id'
+        , 'send_date_time'
+        , 'in_queue'
+        , 'in_queue_date'
+        ,'send_attempts'
+        ,'user_name'
+        ,'to_email'
+        ,'from_email'
+        ,'campaign_name'
+        ,'to_contact'
+        ,'to_lead'
+        ,'to_prospect'
+        ,'contact_email'
+        , 'lead_email'
+        , 'prospect_email'
         ),
 );

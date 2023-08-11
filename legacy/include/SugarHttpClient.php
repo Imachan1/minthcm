@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -63,7 +63,7 @@ class SugarHttpClient
      */
     public function callRest($url, $postArgs)
     {
-        if(!function_exists("curl_init")) {
+        if (!function_exists("curl_init")) {
             $this->last_error = 'ERROR_NO_CURL';
             $GLOBALS['log']->fatal("REST call failed - no cURL!");
             return false;
@@ -78,7 +78,7 @@ class SugarHttpClient
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
         $GLOBALS['log']->debug("HTTP client call: $url -> $postArgs");
         $response = curl_exec($curl);
-        if($response === false) {
+        if ($response === false) {
             $this->last_error = 'ERROR_REQUEST_FAILED';
             $curl_errno = curl_errno($curl);
             $curl_error = curl_error($curl);

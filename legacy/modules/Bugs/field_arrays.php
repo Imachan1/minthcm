@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,26 +52,26 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
  ********************************************************************************/
-$fields_array['Bug'] = array ('column_fields' => Array("id"
-		, "name"
-		, "bug_number"
-		, "date_entered"
-		, "date_modified"
-		, "modified_user_id"
-		, "assigned_user_id"
-		, "status"
-		, "found_in_release"
-		, "created_by"
-		, "resolution"
-		, "priority"
-		, "description"
-		,'type'
-		, "fixed_in_release"
-		, "work_log"
-		, "source"
-		, "product_category"
-		),
-        'list_fields' => Array('id', 'priority', 'status', 'name', 'bug_number', 'assigned_user_name', 'assigned_user_id', 'release', 'found_in_release', 'resolution', 'type'
-		),
+$fields_array['Bug'] = array('column_fields' => array("id"
+        , "name"
+        , "bug_number"
+        , "date_entered"
+        , "date_modified"
+        , "modified_user_id"
+        , "assigned_user_id"
+        , "status"
+        , "found_in_release"
+        , "created_by"
+        , "resolution"
+        , "priority"
+        , "description"
+        ,'type'
+        , "fixed_in_release"
+        , "work_log"
+        , "source"
+        , "product_category"
+        ),
+        'list_fields' => array('id', 'priority', 'status', 'name', 'bug_number', 'assigned_user_name', 'assigned_user_id', 'release', 'found_in_release', 'resolution', 'type'
+        ),
         'required_fields' => array('name'=>1),
 );

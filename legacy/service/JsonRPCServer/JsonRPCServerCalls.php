@@ -8,7 +8,8 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once __DIR__ . '/../../soap/SoapHelperFunctions.php';
 require_once __DIR__ . '/../../include/json_config.php';
+require_once __DIR__ . '/../../include/utils.php';
 require_once __DIR__ . '/JsonRPCServerUtils.php';
 
 /**
@@ -92,8 +94,7 @@ class JsonRPCServerCalls
      */
     public function query($request_id, $params)
     {
-        global $response;
-        global $sugar_config;
+        global $response, $sugar_config, $db;
 
         $jsonParser = getJSONobj();
         $jsonConfig = new json_config();
@@ -112,9 +113,8 @@ class JsonRPCServerCalls
             foreach ($args['conditions'] as $key => $condition) {
                 if (!empty($condition['value'])) {
                     $where = $jsonParser::decode(utf8_encode($condition['value']));
-                    // cn: bug 12693 - API change due to CSRF security changes.
                     $where = empty($where) ? $condition['value'] : $where;
-                    $args['conditions'][$key]['value'] = $where;
+                    $args['conditions'][$key]['value'] = $db->quote($where);
                 }
             }
         }
@@ -179,11 +179,7 @@ class JsonRPCServerCalls
 
                     // get fields to match enum vals
                     if (empty($app_list_strings)) {
-                        if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] !== '') {
-                            $current_language = $_SESSION['authenticated_user_language'];
-                        } else {
-                            $current_language = $sugar_config['default_language'];
-                        }
+                        $current_language = get_current_language();
                         $app_list_strings = return_app_list_strings_language($current_language);
                     }
 

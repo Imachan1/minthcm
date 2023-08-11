@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,32 +45,30 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-require_once ('modules/DynamicFields/templates/Fields/TemplateField.php') ;
-require_once ('modules/DynamicFields/templates/Fields/TemplateAddressCountry.php') ;
+require_once('modules/DynamicFields/templates/Fields/TemplateField.php') ;
+require_once('modules/DynamicFields/templates/Fields/TemplateAddressCountry.php') ;
 
 class TemplateAddress extends TemplateField
 {
-    var $type = 'varchar';
-    var $supports_unified_search = true;
+    public $type = 'varchar';
+    public $supports_unified_search = true;
 
-    function save ($df)
+    public function save($df)
     {
         $this->type = 'varchar' ;
 
         require_once 'modules/ModuleBuilder/parsers/parser.label.php' ;
-        $parser = new ParserLabel ( $df->getModuleName() , $df->getPackageName() ) ;
-        foreach ( array ( 'City' , 'State' , 'PostalCode' , 'Country' ) as $addressFieldName )
-        {
-            $systemLabel = strtoupper( "LBL_" . $this->name . '_' . $addressFieldName );
-            $parser->handleSave ( array( "label_" . $systemLabel => $this->label_value . ' ' . $addressFieldName ) , $GLOBALS [ 'current_language' ] ) ;
-            $addressField = new TemplateField ( ) ;
+        $parser = new ParserLabel($df->getModuleName(), $df->getPackageName()) ;
+        foreach (array( 'City' , 'State' , 'PostalCode' , 'Country' ) as $addressFieldName) {
+            $systemLabel = strtoupper("LBL_" . $this->name . '_' . $addressFieldName);
+            $parser->handleSave(array( "label_" . $systemLabel => $this->label_value . ' ' . $addressFieldName ), $GLOBALS [ 'current_language' ]) ;
+            $addressField = new TemplateField() ;
             $addressField->len = ($addressFieldName == 'PostalCode') ? 20 : 100 ;
-            $addressField->name = $this->name . '_' . strtolower ( $addressFieldName ) ;
+            $addressField->name = $this->name . '_' . strtolower($addressFieldName) ;
             $addressField->label = $addressField->vname = $systemLabel ;
-            $addressField->save ( $df ) ;
+            $addressField->save($df) ;
         }
         // finally save the base street address field
-        parent::save($df);      
-        
+        parent::save($df);
     }
 }

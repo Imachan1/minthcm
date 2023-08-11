@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -79,8 +79,9 @@ class NotEqualsOperator extends Operator implements OperatorInterface
      */
     public function isValid($operator)
     {
-        if(!is_string($operator)) {
-            throw new InvalidArgumentException('[JsonApi][v1][Filters][Operators][Comparators]'.
+        if (!is_string($operator)) {
+            throw new InvalidArgumentException(
+                '[JsonApi][v1][Filters][Operators][Comparators]'.
                 '[NotEqualsOperator][isValid][expected type to be string] $operator'
             );
         }

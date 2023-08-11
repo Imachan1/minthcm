@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -207,9 +207,15 @@ class LangText
                 $text = $this->resolveTextByGlobal($app_strings, $this->key);
                 break;
             case self::USING_ALL_STRINGS:
-                $text = $this->resolveTextByGlobal($mod_strings, $this->key,
-                    $this->resolveTextByGlobal($app_strings, $this->key,
-                        $this->resolveTextByGlobal($app_list_strings, $this->key)));
+                $text = $this->resolveTextByGlobal(
+                    $mod_strings,
+                    $this->key,
+                    $this->resolveTextByGlobal(
+                        $app_strings,
+                        $this->key,
+                        $this->resolveTextByGlobal($app_list_strings, $this->key)
+                    )
+                );
                 break;
             default:
                 ErrorMessage::drop('Unknown use case for translation: ' . $this->use);

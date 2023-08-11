@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -89,20 +89,6 @@ class Task extends SugarBean
     public function __construct()
     {
         parent::__construct();
-    }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function Task()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
     }
 
     public $new_schema = true;
@@ -235,8 +221,10 @@ class Task extends SugarBean
             } else {
                 $taskClass = 'overdueTask';
             }
-        } else if ($dd == $today) {
-            $taskClass = 'todaysTask';
+        } else {
+            if ($dd	== $today) {
+                $taskClass = 'todaysTask';
+            }
         }
         $task_fields['DATE_DUE'] = "<font class='$taskClass'>$date_due</font>";
         if ($override_date_for_subpanel) {
@@ -316,7 +304,7 @@ class Task extends SugarBean
         }
 
         $xtpl->assign("TASK_STATUS", (isset($task->status) ? $app_list_strings['task_status_dom'][$task->status] : ""));
-        $xtpl->assign("TASK_DESCRIPTION", $task->description);
+        $xtpl->assign("TASK_DESCRIPTION", nl2br($task->description));
 
         return $xtpl;
     }
@@ -340,11 +328,13 @@ class Task extends SugarBean
             }
             /* BEGIN - SECURITY GROUPS */
             //parent_name_owner not being set for whatever reason so we need to figure this out
-            else if (!empty($this->parent_type) && !empty($this->parent_id)) {
-                global $current_user;
-                $parent_bean = BeanFactory::getBean($this->parent_type, $this->parent_id);
-                if ($parent_bean !== false) {
-                    $is_owner = $current_user->id == $parent_bean->assigned_user_id;
+            else {
+                if (!empty($this->parent_type) && !empty($this->parent_id)) {
+                    global $current_user;
+                    $parent_bean = BeanFactory::getBean($this->parent_type, $this->parent_id);
+                    if ($parent_bean !== false) {
+                        $is_owner = $current_user->id == $parent_bean->assigned_user_id;
+                    }
                 }
             }
             require_once "modules/SecurityGroups/SecurityGroup.php";

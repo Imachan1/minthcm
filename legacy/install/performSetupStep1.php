@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -181,7 +181,9 @@ foreach ($beanFiles as $bean => $file) {
         $focus = new $bean();
     }
 
-    if ($bean == 'Configurator') continue;
+    if ($bean == 'Configurator') {
+        continue;
+    }
 
     $table_name = $focus->table_name;
     //installStatus(sprintf($mod_strings['STAT_CREATE_DB_TABLE'], $focus->table_name ));
@@ -193,7 +195,7 @@ foreach ($beanFiles as $bean => $file) {
         }
         if (!in_array($bean, $nonStandardModules)) {
             require_once("modules/".$focus->module_dir."/vardefs.php"); // load up $dictionary
-            if ($dictionary[$focus->object_name]['table'] == 'does_not_exist') {
+            if (isset($dictionary[$focus->object_name]['table']) && $dictionary[$focus->object_name]['table'] == 'does_not_exist') {
                 continue; // support new vardef definitions
             }
         } else {
@@ -215,7 +217,9 @@ foreach ($beanFiles as $bean => $file) {
             if ($bean == "User") {
                 $new_tables = 1;
             }
-            if ($bean == "Administration") $new_config = 1;
+            if ($bean == "Administration") {
+                $new_config = 1;
+            }
         }
 
         installLog("creating Relationship Meta for ".$focus->getObjectName());

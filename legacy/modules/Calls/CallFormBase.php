@@ -55,7 +55,7 @@ require_once('include/SugarObjects/forms/FormBase.php');
 
 class CallFormBase extends FormBase {
 
-   function getFormBody($prefix, $mod = '', $formname = '', $cal_date = '', $cal_time = '') {
+   public function getFormBody($prefix, $mod = '', $formname = '', $cal_date = '', $cal_time = '') {
       if ( !ACLController::checkAccess('Calls', 'edit', true) ) {
          return '';
       }
@@ -140,7 +140,7 @@ EOQ;
 
       $javascript = new javascript();
       $javascript->setFormName($formname);
-      $javascript->setSugarBean(new Call());
+      $javascript->setSugarBean(BeanFactory::newBean('Calls'));
       $javascript->addRequiredFields($prefix);
       $form .= $javascript->getScript();
       $form .= "<td align=\"left\" valign=top><input title='$lbl_save_button_title' accessKey='$lbl_save_button_key' class='button' type='submit' name='button' value=' $lbl_save_button_label ' ></td></tr></table></form>";
@@ -148,7 +148,7 @@ EOQ;
       return $form;
    }
 
-   function getFormHeader($prefix, $mod = '', $title = '') {
+   public function getFormHeader($prefix, $mod = '', $title = '') {
       if ( !ACLController::checkAccess('Calls', 'edit', true) ) {
          return '';
       }
@@ -178,7 +178,7 @@ EOQ;
       return $the_form;
    }
 
-   function getFormFooter($prefic, $mod = '') {
+   public function getFormFooter($prefic, $mod = '') {
       if ( !ACLController::checkAccess('Calls', 'edit', true) ) {
          return '';
       }
@@ -192,7 +192,7 @@ EOQ;
       return $the_form;
    }
 
-   function getForm($prefix, $mod = '') {
+   public function getForm($prefix, $mod = '') {
       if ( !ACLController::checkAccess('Calls', 'edit', true) ) {
          return '';
       }
@@ -203,7 +203,7 @@ EOQ;
       return $the_form;
    }
 
-   function handleSave($prefix, $redirect = true, $useRequired = false) {
+   public function handleSave($prefix, $redirect = true, $useRequired = false) {
 
 
       require_once('include/formbase.php');
@@ -216,7 +216,7 @@ EOQ;
          $_POST[$prefix . 'duration_hours'] = trim($_POST[$prefix . 'duration_hours']);
       }
 
-      $focus = new Call();
+      $focus = BeanFactory::newBean('Calls');
 
       if ( $useRequired && !checkRequired($prefix, array_keys($focus->required_fields)) ) {
          return null;
@@ -635,16 +635,18 @@ EOQ;
       else if ( isset($_REQUEST['return_module']) && ( $_REQUEST['return_module'] == 'Calendar' || $_REQUEST['return_module'] == 'Home' ) ) {
          header("Location: index.php?module=" . $_REQUEST['return_module'] . "&action=index");
          // MintHCM #42401 END
-      } else if ( $redirect ) {
-         handleRedirect($return_id, 'Calls');
       } else {
-         return $focus;
-      }
+         if ($redirect) {
+             handleRedirect($return_id, 'Calls');
+         } else {
+             return $focus;
+         }
+     }
    }
 
 // end handleSave();
 
-   function getWideFormBody($prefix, $mod = '', $formname = '', $wide = true) {
+   public function getWideFormBody($prefix, $mod = '', $formname = '', $wide = true) {
       if ( !ACLController::checkAccess('Calls', 'edit', true) ) {
          return '';
       }
@@ -758,7 +760,7 @@ EOQ;
 
       $javascript = new javascript();
       $javascript->setFormName($formname);
-      $javascript->setSugarBean(new Call());
+      $javascript->setSugarBean(BeanFactory::newBean('Calls'));
       $javascript->addRequiredFields($prefix);
       $form .= $javascript->getScript();
       $mod_strings = $temp_strings;

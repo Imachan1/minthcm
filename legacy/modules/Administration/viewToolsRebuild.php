@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -79,7 +79,7 @@ try {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -135,8 +135,10 @@ try {
             }
         }
     }
+    $vt_expression_list = [];
     //Write formula definitions to file
     foreach ($tmp_expression_list as $fname => $src) {
+        $vt_expression_list[$fname] = $src;
         fwrite($phpcache,
             '$vt_expression_list[\'' . $fname . '\'] = \'' . $src . '\';' . "\n");
     }
@@ -165,7 +167,9 @@ window.viewTools.cache.serversideFrontend=' . json_encode($formula_list) . ';');
      */
     $returnFormulas = '';
     $validationFields = array();
-    ksort($vt_expression_list);
+    if(!empty($vt_expression_list) && is_array($vt_expression_list)){
+        ksort($vt_expression_list);
+    }
     foreach ($vt_expression_list as $functionName => $fileSource) {
         $validationClass = 'VTExpression_' . $functionName;
         $validationObj = new $validationClass();

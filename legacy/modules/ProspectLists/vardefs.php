@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -61,7 +61,7 @@ $dictionary['ProspectList'] = array(
             'name' => 'name',
             'vname' => 'LBL_NAME',
             'type' => 'varchar',
-            'len' => '50',
+            'len' => '255',
             'importable' => 'required',
             'unified_search' => true,
             'full_text_search' => array('boost' => 3),
@@ -251,7 +251,7 @@ $dictionary['ProspectList'] = array(
     'relationships' => array(
         'prospectlists_assigned_user' =>
             array('lhs_module' => 'Users', 'lhs_table' => 'users', 'lhs_key' => 'id',
-                'rhs_module' => 'prospectlists', 'rhs_table' => 'prospect_lists', 'rhs_key' => 'assigned_user_id',
+                'rhs_module' => 'ProspectLists', 'rhs_table' => 'prospect_lists', 'rhs_key' => 'assigned_user_id',
                 'relationship_type' => 'one-to-many')
     )
 );
@@ -259,4 +259,3 @@ $dictionary['ProspectList'] = array(
 VardefManager::createVardef('ProspectLists', 'ProspectList', array(
     'assignable', 'security_groups',
 ));
-

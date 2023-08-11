@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,11 +49,11 @@ $module_name = 'AOD_Index';
 $object_name = 'AOD_Index';
 $_module_name = 'aod_index';
 $popupMeta = array('moduleMain' => $module_name,
-						'varName' => $object_name,
-						'orderBy' => $_module_name.'.name',
-						'whereClauses' => 
-							array('name' => $_module_name . '.name', 
-								),
-						    'searchInputs'=> array($_module_name. '_number', 'name', 'priority','status'),
-							
-						);
+                        'varName' => $object_name,
+                        'orderBy' => $_module_name.'.name',
+                        'whereClauses' =>
+                            array('name' => $_module_name . '.name',
+                                ),
+                            'searchInputs'=> array($_module_name. '_number', 'name', 'priority','status'),
+                            
+                        );

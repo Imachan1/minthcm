@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -136,7 +136,7 @@ class Employee extends Person implements EmailInterface
 
     public function retrieve_employee_id($employee_name)
     {
-        $query = "SELECT id from users where user_name='$user_name' AND deleted=0";
+        $query = "SELECT id from users where user_name='$employee_name' AND deleted=0";
         $result = $this->db->query($query, false, "Error retrieving employee ID: ");
         $row = $this->db->fetchByAssoc($result);
         return $row['id'];
@@ -179,6 +179,11 @@ class Employee extends Person implements EmailInterface
 
     public function create_export_query($order_by, $where, $relate_link_join = '')
     {
+        global $current_user;
+        if (!is_admin($current_user)) {
+            throw new RuntimeException('Not authorized');
+        }
+
         include 'modules/Employees/field_arrays.php';
 
         $cols = '';
@@ -240,7 +245,7 @@ class Employee extends Person implements EmailInterface
      * @param boolean $return_array Optional, default false, response as array
      * @param object $parentbean creating a subquery for this bean.
      * @param boolean $singleSelect Optional, default false.
-     * @return String select query string, optionally an array value will be returned if $return_array= true.
+     * @return string select query string, optionally an array value will be returned if $return_array= true.
      */
     public function create_new_list_query(
         $order_by,
@@ -330,6 +335,13 @@ class Employee extends Person implements EmailInterface
         }
         // MintHCM 77675 end
 
+        if (!$this->hasSaveAccess()) {
+            throw new RuntimeException('Not authorized');
+        }
+
+        // If the current user is not an admin, reset the admin flag to the original value.
+        $this->setIsAdmin();
+
         return parent::save($check_notify);
     }
 
@@ -363,15 +375,6 @@ class Employee extends Person implements EmailInterface
     {
         $query = "SELECT users.* FROM users WHERE users.deleted=0 AND users.reports_to_id='{$this->id}'";
         return $query;
-    }
-
-    public function bean_implements($interface)
-    {
-        $result = false;
-        if ($interface === 'ACL') {
-            $result = true;
-        }
-        return $result;
     }
 
     public function get_employeeinteractiontracking_for_subpanel()
@@ -417,4 +420,57 @@ class Employee extends Person implements EmailInterface
         return $result;
     }
     // MintHCM end
+    
+    /**
+     * Check if current user can save the current employee record
+     * @return bool
+     */
+    protected function hasSaveAccess(): bool
+    {
+        global $current_user;
+
+        if (empty($this->id)) {
+            return true;
+        }
+
+        if (empty($current_user->id)) {
+            return false;
+        }
+
+        $sameUser = $current_user->id === $this->id;
+
+        return $sameUser || is_admin($current_user);
+    }
+
+    /**
+     * Reset is_admin if current user is not an admin user
+     * @return void
+     */
+    protected function setIsAdmin(): void
+    {
+        global $current_user;
+
+        if (!isset($this->is_admin)) {
+            return;
+        }
+
+        $originalIsAdminValue = $this->is_admin ?? false;
+        if ($this->isUpdate() && isset($this->fetched_row['is_admin'])) {
+            $originalIsAdminValue = isTrue($this->fetched_row['is_admin'] ?? false);
+        }
+
+        $currentUserReloaded = BeanFactory::getReloadedBean('Users', $current_user->id);
+        if (!is_admin($currentUserReloaded)) {
+            $this->is_admin = $originalIsAdminValue;
+        }
+
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isUpdate(): bool
+    {
+        return !empty($this->id) && !$this->new_with_id;
+    }
 }

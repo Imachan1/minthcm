@@ -7,8 +7,8 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -35,10 +35,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
- * If the display of the logos is not reasonably feasible for technical reasons, the
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -148,22 +148,6 @@ class SugarView
     public function __construct()
     {
         LoggerManager::getLogger()->deprecated();
-    }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 8.0
-     * please update your code, use __construct instead
-     */
-    public function SugarView()
-    {
-        $deprecatedMessage =
-            'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
     }
 
     /**
@@ -401,7 +385,7 @@ class SugarView
         $GLOBALS['app']->headerDisplayed = true;
 
         $themeObject = SugarThemeRegistry::current();
-        $theme = $themeObject->__toString();
+        $theme = (string)$themeObject;
 
         $ss = new Sugar_Smarty();
         $ss->assign("APP", $app_strings);
@@ -410,6 +394,7 @@ class SugarView
         $ss->assign("THEME_IE6COMPAT", $themeObject->ie6compat ? 'true' : 'false');
         $ss->assign("MODULE_NAME", $this->module);
         $ss->assign("langHeader", get_language_header());
+        $ss->assign("BROWSER_TITLE", $this->getBrowserTitle());
 
 
         // set ab testing if exists
@@ -532,9 +517,14 @@ class SugarView
                         "URL" => current($attributevalue),
                         "SUBMENU" => array(),
                     );
+
                     if (substr($gcls[$key]["URL"], 0, 11) == "javascript:") {
                         $gcls[$key]["ONCLICK"] = substr($gcls[$key]["URL"], 11);
                         $gcls[$key]["URL"] = "javascript:void(0)";
+                    }
+
+                    if (isset($attributevalue['target'])) {
+                        $gcls[$key]["TARGET"] = $attributevalue['target'];
                     }
                 }
                 // and now the sublinks
@@ -574,14 +564,14 @@ class SugarView
             $ss->assign("CURRENT_USER_HAS_PHOTO", !empty($current_user->photo)); // MintHCM #63083
             $ss->assign("CURRENT_USER_DATE_MODIFIED", $current_user->date_modified); //MintHCM #67873
             $ss->assign("CURRENT_USER_FIRST_NAME", empty($current_user->first_name) ? $current_user->full_name : $current_user->first_name); //MintHCM #58625
-	    // get the last viewed records
-	    $favorites = BeanFactory::getBean('Favorites');
-	    $favorite_records = $favorites->getCurrentUserSidebarFavorites();
-	    $ss->assign("favoriteRecords", $favorite_records);
+            // get the last viewed records
+            $favorites = BeanFactory::getBean('Favorites');
+            $favorite_records = $favorites->getCurrentUserSidebarFavorites();
+            $ss->assign("favoriteRecords", $favorite_records);
 
-	    $tracker = BeanFactory::getBean('Trackers');
-	    $history = $tracker->get_recently_viewed($current_user->id);
-	    $ss->assign("recentRecords", $this->processRecentRecords($history));
+            $tracker = BeanFactory::getBean('Trackers');
+            $history = $tracker->get_recently_viewed($current_user->id);
+            $ss->assign("recentRecords", $this->processRecentRecords($history));
 
         // MintHCM #100495 START
         $title = $this->bean->name ? $this->bean->name . " » " : '';
@@ -590,7 +580,7 @@ class SugarView
         $title .= $app_strings['LBL_BROWSER_TITLE'];
         $ss->assign('TITLE', $title);
         // MintHCM #100495 END
-	}
+        }
 
         $bakModStrings = $mod_strings;
         if (isset($_SESSION["authenticated_user_id"])) {
@@ -742,8 +732,10 @@ class SugarView
             }
 
             foreach ($groupTabs as $key => $tabGroup) {
-                if (count($topTabs) >= $max_tabs - 1 && $key !== $app_strings['LBL_TABGROUP_ALL'] && in_array($tabGroup['modules'][$moduleTab],
-                        $tabGroup['extra'])
+                if (count($topTabs) >= $max_tabs - 1 && $key !== $app_strings['LBL_TABGROUP_ALL'] && in_array(
+                    $tabGroup['modules'][$moduleTab],
+                    $tabGroup['extra']
+                )
                 ) {
                     unset($groupTabs[$key]['modules'][$moduleTab]);
                 }
@@ -904,7 +896,7 @@ class SugarView
 
         // Add in the number formatting styles here as well, we have been handling this with individual modules.
         require_once('modules/Currencies/Currency.php');
-        list($num_grp_sep, $dec_sep) = get_number_seperators();
+        list($num_grp_sep, $dec_sep) = get_number_separators();
 
         $the_script =
             "<script type=\"text/javascript\">\n" .
@@ -1037,8 +1029,8 @@ EOHTML;
         if (empty($this->responseTime)) {
             $this->_calculateFooterMetrics();
         }
-        global $app_strings;
-        global $mod_strings;
+        global $app_strings, $sugar_config;
+        $server_unique_key = isset($sugar_config['unique_key']) ? $sugar_config['unique_key'] : '';
         $themeObject = SugarThemeRegistry::current();
 
         $ss = new Sugar_Smarty();
@@ -1149,7 +1141,7 @@ EOHTML;
         // here we allocate the help link data
         $help_actions_blacklist = array('Login'); // we don't want to show a context help link here
         if (!in_array($this->action, $help_actions_blacklist)) {
-            if (!isset($GLOBALS['server_unique_key'])) {
+            if (!isset($server_unique_key)) {
                 LoggerManager::getLogger()->warn('Undefined index: server_unique_key');
             }
             $url =
@@ -1165,7 +1157,7 @@ EOHTML;
                 '&help_action=' .
                 $this->action .
                 '&key=' .
-                (isset($GLOBALS['server_unique_key']) ? $GLOBALS['server_unique_key'] : null) .
+                (isset($server_unique_key) ? $server_unique_key : null) .
                 '\'))';
             $label =
                 (isset($GLOBALS['app_list_strings']['moduleList'][$this->module]) ?
@@ -1268,7 +1260,7 @@ EOHTML;
     protected function _checkModule()
     {
         if (!empty($this->module) && !file_exists('modules/' . $this->module)) {
-            $error = str_replace("[module]", "$this->module", $GLOBALS['app_strings']['ERR_CANNOT_FIND_MODULE']);
+            $error = str_replace("[module]", (string)$this->module, $GLOBALS['app_strings']['ERR_CANNOT_FIND_MODULE']);
             $GLOBALS['log']->fatal($error);
             echo $error;
             die();
@@ -1306,7 +1298,7 @@ EOHTML;
             number_format(round($deltaTime, 2), 2) .
             ' ' .
             $GLOBALS['app_strings']['LBL_SERVER_RESPONSE_TIME_SECONDS'];
-        $return = $response_time_string;
+        $return = $response_time_string. '<br />';
 
         if (!empty($GLOBALS['sugar_config']['show_page_resources'])) {
             // Print out the resources used in constructing the page.
@@ -1413,13 +1405,13 @@ EOHTML;
 
         $module_menu = array();
 
-        if (file_exists('modules/' . $module . '/Menu.php')) {
-            require('modules/' . $module . '/Menu.php');
+        if (file_exists(get_custom_file_if_exists('modules/' . $module . '/Menu.php'))) {
+            require(get_custom_file_if_exists('modules/' . $module . '/Menu.php'));
         }
         if (file_exists('custom/modules/' . $module . '/Ext/Menus/menu.ext.php')) {
             require('custom/modules/' . $module . '/Ext/Menus/menu.ext.php');
         }
-        if (!file_exists('modules/' . $module . '/Menu.php') &&
+        if (!file_exists(get_custom_file_if_exists('modules/' . $module . '/Menu.php')) &&
             !file_exists('custom/modules/' . $module . '/Ext/Menus/menu.ext.php') &&
             !empty($GLOBALS['mod_strings']['LNK_NEW_RECORD'])
         ) {
@@ -1668,19 +1660,16 @@ EOHTML;
             if (!empty($iconPath) && !$browserTitle) {
                 if (SugarThemeRegistry::current()->directionality == "ltr") {
                     return $app_strings['LBL_SEARCH_ALT'] . "&nbsp;"
-                        . "$firstParam";
-                } else {
-                    return "$firstParam" . "&nbsp;" . $app_strings['LBL_SEARCH'];
+                        . (string)$firstParam;
                 }
-            } else {
-                return $firstParam;
+                return (string)$firstParam . "&nbsp;" . $app_strings['LBL_SEARCH'];
             }
+            return $firstParam;
+        }
+        if (!empty($iconPath) && !$browserTitle) {
+            //return "<a href='index.php?module={$this->module}&action=index'>$this->module</a>";
         } else {
-            if (!empty($iconPath) && !$browserTitle) {
-                //return "<a href='index.php?module={$this->module}&action=index'>$this->module</a>";
-            } else {
-                return $firstParam;
-            }
+            return $firstParam;
         }
     }
 

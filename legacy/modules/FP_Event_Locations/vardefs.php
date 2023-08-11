@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,7 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$dictionary['FP_Event_Locations'] = array(
+ $dictionary['FP_Event_Locations'] = array(
     'table' => 'fp_event_locations',
     'audited' => true,
     'duplicate_merge' => true,
@@ -84,7 +84,7 @@ $dictionary['FP_Event_Locations'] = array(
                 'vname' => 'LBL_ADDRESS_CITY',
                 'type' => 'varchar',
                 'massupdate' => '0',
-                'default' => NULL,
+                'default' => null,
                 'no_default' => false,
                 'comments' => '',
                 'help' => '',
@@ -105,7 +105,7 @@ $dictionary['FP_Event_Locations'] = array(
                 'vname' => 'LBL_ADDRESS_COUNTRY',
                 'type' => 'varchar',
                 'massupdate' => '0',
-                'default' => NULL,
+                'default' => null,
                 'no_default' => false,
                 'comments' => '',
                 'help' => '',
@@ -126,7 +126,7 @@ $dictionary['FP_Event_Locations'] = array(
                 'vname' => 'LBL_ADDRESS_POSTALCODE',
                 'type' => 'varchar',
                 'massupdate' => '0',
-                'default' => NULL,
+                'default' => null,
                 'no_default' => false,
                 'comments' => '',
                 'help' => '',
@@ -147,7 +147,7 @@ $dictionary['FP_Event_Locations'] = array(
                 'vname' => 'LBL_ADDRESS_STATE',
                 'type' => 'varchar',
                 'massupdate' => '0',
-                'default' => NULL,
+                'default' => null,
                 'no_default' => false,
                 'comments' => '',
                 'help' => '',

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,34 +52,22 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
  ********************************************************************************/
-require_once('include/MVC/View/views/view.classic.php');
 
-class EmailTemplatesViewClassic extends ViewClassic {
-
- 	function __construct(){
-
-		/* BEGIN - SECURITY GROUPS - The whole file is custom but the purpose is the following code */
-        //turn on normal display of subpanels
-        $this->options['show_subpanels'] = true;
-    	/* END - SECURITY GROUPS */
-        parent::__construct();
-
- 	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function EmailTemplatesViewClassic(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+class EmailTemplatesViewClassic extends ViewClassic
+{
+    public function __construct()
+    {
     }
 
-
+    public function display()
+    {
+        /* BEGIN - SECURITY GROUPS - The whole file is custom but the purpose is the following code */
+        //turn on normal display of subpanels
+        if ($this->action == 'DetailView') {
+            $this->options['show_subpanels'] = true;
+        }
+        /* END - SECURITY GROUPS */
+        return parent::display();
+    }
 
 }

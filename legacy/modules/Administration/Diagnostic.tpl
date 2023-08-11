@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -60,27 +60,27 @@
 <table id="maintable" width="430" border="0" cellspacing="0" cellpadding="0" class="edit view">
 <tr>
 	<td scope="row"><span>{$MOD.LBL_DIAGNOSTIC_CONFIGPHP}</span></td>
-	<td ><span><input name='configphp' class="checkbox" type="checkbox" tabindex='1' checked></span></td>
+	<td ><span><input name='configphp' class="checkbox" type="checkbox" tabindex='1' ></span></td>
 	</tr><tr>
 	<td scope="row"><span>{$MOD.LBL_DIAGNOSTIC_CUSTOMDIR}</span></td>
-	<td ><span><input name='custom_dir' class="checkbox" type="checkbox" tabindex='2' checked></span></td>
+	<td ><span><input name='custom_dir' class="checkbox" type="checkbox" tabindex='2' ></span></td>
 	</tr><tr>
 
 	<td scope="row"><span>{$MOD.LBL_DIAGNOSTIC_PHPINFO}</span></td>
-	<td ><span><input name='phpinfo' class="checkbox" type="checkbox" tabindex='3' checked></span></td>
+	<td ><span><input name='phpinfo' class="checkbox" type="checkbox" tabindex='3' ></span></td>
 	</tr><tr>
 	<td scope="row"><span>{$DB_NAME} - {$MOD.LBL_DIAGNOSTIC_MYSQLDUMPS}</span></td>
-	<td ><span><input name='mysql_dumps' class="checkbox" type="checkbox" tabindex='4' checked></span></td>
+	<td ><span><input name='mysql_dumps' class="checkbox" type="checkbox" tabindex='4' ></span></td>
 	</tr><tr>
 	<td scope="row"><span>{$DB_NAME} - {$MOD.LBL_DIAGNOSTIC_MYSQLSCHEMA}</span></td>
 
-	<td ><span><input name='mysql_schema' class="checkbox" type="checkbox" tabindex='5' checked></span></td>
+	<td ><span><input name='mysql_schema' class="checkbox" type="checkbox" tabindex='5' ></span></td>
 	</tr><tr>
 	<td scope="row"><span>{$DB_NAME} - {$MOD.LBL_DIAGNOSTIC_MYSQLINFO}</span></td>
-	<td ><span><input name='mysql_info' class="checkbox" type="checkbox" tabindex='6' checked></span></td>
+	<td ><span><input name='mysql_info' class="checkbox" type="checkbox" tabindex='6' ></span></td>
 	</tr><tr>
 	<td scope="row"><span>{$MOD.LBL_DIAGNOSTIC_MD5}</span></td>
-	<td ><span><input name='md5' class="checkbox" type="checkbox" tabindex='7' onclick="md5checkboxes()" checked></span></td>
+	<td ><span><input name='md5' class="checkbox" type="checkbox" tabindex='7' onclick="md5checkboxes()" ></span></td>
 	</tr><tr>
 
 	<td scope="row"><span>{$MOD.LBL_DIAGNOSTIC_FILESMD5}</span></td>
@@ -91,13 +91,13 @@
 	</tr><tr>
 	<td scope="row"><span>{$MOD.LBL_DIAGNOSTIC_BLBF}</span></td>
 
-	<td ><span><input name='beanlistbeanfiles' class="checkbox" type="checkbox" tabindex='10' checked></span></td>
+	<td ><span><input name='beanlistbeanfiles' class="checkbox" type="checkbox" tabindex='10' ></span></td>
 	</tr><tr>
 	<td scope="row"><span>{$MOD.LBL_DIAGNOSTIC_SUITELOG}</span></td>
-	<td ><span><input name='sugarlog' class="checkbox" type="checkbox" tabindex='11' checked></span></td>
+	<td ><span><input name='sugarlog' class="checkbox" type="checkbox" tabindex='11' ></span></td>
 	</tr><tr>
 	<td scope="row"><span>{$MOD.LBL_DIAGNOSTIC_VARDEFS}</span></td>
-	<td ><span><input name='vardefs' class="checkbox" type="checkbox" tabindex='11' checked></span></td>
+	<td ><span><input name='vardefs' class="checkbox" type="checkbox" tabindex='11' ></span></td>
 	</tr>
 </table>
 </div>

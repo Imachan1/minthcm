@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,46 +48,34 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/Dashlets/DashletGeneric.php');
 
-class MyDocumentsDashlet extends DashletGeneric {
-
-	function __construct($id, $def = null)
-	{
-		global $current_user, $app_strings;
-		require('modules/Documents/Dashlets/MyDocumentsDashlet/MyDocumentsDashlet.data.php');
+class MyDocumentsDashlet extends DashletGeneric
+{
+    public function __construct($id, $def = null)
+    {
+        global $current_user, $app_strings;
+        require('modules/Documents/Dashlets/MyDocumentsDashlet/MyDocumentsDashlet.data.php');
 
         parent::__construct($id, $def);
 
-        if(empty($def['title'])) $this->title = translate('LBL_HOMEPAGE_TITLE', 'Documents');
+        if (empty($def['title'])) {
+            $this->title = translate('LBL_HOMEPAGE_TITLE', 'Documents');
+        }
 
         $this->searchFields = $dashletData['MyDocumentsDashlet']['searchFields'];
         $this->columns = $dashletData['MyDocumentsDashlet']['columns'];
 
-        $this->seedBean = new Document();
+        $this->seedBean = BeanFactory::newBean('Documents');
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function MyDocumentsDashlet($id, $def = null){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($id, $def);
-    }
-
-
-    function displayOptions() {
+    public function displayOptions()
+    {
         $this->processDisplayOptions();
         require_once('modules/Documents/Document.php');
 
         $types = getDocumentsExternalApiDropDown();
         $this->currentSearchFields['doc_type']['input'] = '<select size="3" multiple="true" name="doc_type[]">'
-	                                              . get_select_options_with_id($types, (empty($this->filters['doc_type']) ? '' : $this->filters['doc_type']))
-	                                              . '</select>';
+                                                  . get_select_options_with_id($types, (empty($this->filters['doc_type']) ? '' : $this->filters['doc_type']))
+                                                  . '</select>';
         $this->configureSS->assign('searchFields', $this->currentSearchFields);
         return $this->configureSS->fetch($this->configureTpl);
     }

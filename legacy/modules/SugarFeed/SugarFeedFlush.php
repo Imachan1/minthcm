@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,26 +48,30 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
-
-class SugarFeedFlush {
-    function flushStaleEntries($bean, $event, $arguments) {
-        $admin = new Administration();
-        $admin->retrieveSettings();
-
-        $timedate = TimeDate::getInstance();
-
-        $currDate = $timedate->nowDbDate();
-        if (isset($admin->settings['sugarfeed_flushdate']) && $admin->settings['sugarfeed_flushdate'] != $currDate ) {
-            $db = DBManagerFactory::getInstance();
-            if ( ! isset($db) ) { $db = DBManagerFactory::getInstance(); }
-
-            $tmpTime = time();
-            $tmpSF = new SugarFeed();
-            $flushBefore = $timedate->asDbDate($timedate->getNow()->modify("-14 days")->setTime(0,0));
-            $db->query("DELETE FROM ".$tmpSF->table_name." WHERE date_entered < '".$db->quote($flushBefore)."'");
-            $admin->saveSetting('sugarfeed','flushdate',$currDate);
-            // Flush the cache
-            $admin->retrieveSettings(FALSE,TRUE);
-        }
-    }
-}
+ class SugarFeedFlush
+ {
+     public function flushStaleEntries($bean, $event, $arguments)
+     {
+         $admin = BeanFactory::newBean('Administration');
+         $admin->retrieveSettings();
+ 
+         $timedate = TimeDate::getInstance();
+ 
+         $currDate = $timedate->nowDbDate();
+         if (isset($admin->settings['sugarfeed_flushdate']) && $admin->settings['sugarfeed_flushdate'] != $currDate) {
+             $db = DBManagerFactory::getInstance();
+             if (! isset($db)) {
+                 $db = DBManagerFactory::getInstance();
+             }
+ 
+             $tmpTime = time();
+             $tmpSF = BeanFactory::newBean('SugarFeed');
+             $flushBefore = $timedate->asDbDate($timedate->getNow()->modify("-14 days")->setTime(0, 0));
+             $db->query("DELETE FROM ".$tmpSF->table_name." WHERE date_entered < '".$db->quote($flushBefore)."'");
+             $admin->saveSetting('sugarfeed', 'flushdate', $currDate);
+             // Flush the cache
+             $admin->retrieveSettings(false, true);
+         }
+     }
+ }
+ 

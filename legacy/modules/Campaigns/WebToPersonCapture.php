@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -58,6 +58,11 @@ if (isset($_REQUEST['moduleDir']) && $_REQUEST['moduleDir'] != null) {
     die('Not a valid module directory');
 }
 
+if (!isValidWebToPersonModule($moduleDir)) {
+    LoggerManager::getLogger()->fatal('Trying to run WepToPersonCapture for invalid module: ' . $moduleDir);
+    throw new RuntimeException('Not a valid module');
+}
+
 global $app_strings, $sugar_config, $timedate, $current_user;
 
 $mod_strings = return_module_language($sugar_config['default_language'], $moduleDir);
@@ -65,7 +70,7 @@ $mod_strings = return_module_language($sugar_config['default_language'], $module
 if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
     //adding the client ip address
     $_POST['client_id_address'] = query_client_ip();
-    $campaign = new Campaign();
+    $campaign = BeanFactory::newBean('Campaigns');
     $campaign_id = $campaign->db->quote($_POST['campaign_id']);
     $isValidator = new SuiteValidator();
     if (!$isValidator->isValidId($campaign_id)) {
@@ -77,7 +82,7 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
     $camp_data = $campaign->db->fetchByAssoc($camp_result);
     // Bug 41292 - have to select marketing_id for new lead
     $db = DBManagerFactory::getInstance();
-    $marketing = new EmailMarketing();
+    $marketing = BeanFactory::newBean('EmailMarketing');
     $marketing_query = $marketing->create_new_list_query(
         'date_start desc, date_modified desc',
         "campaign_id = '{$campaign_id}' and status = 'active' and date_start < ".$db->convert('', 'today'),
@@ -87,7 +92,7 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
     $marketing_data = $db->fetchByAssoc($marketing_result);
     // .Bug 41292
     if (isset($_REQUEST['assigned_user_id']) && !empty($_REQUEST['assigned_user_id'])) {
-        $current_user = new User();
+        $current_user = BeanFactory::newBean('Users');
         $current_user->retrieve($_REQUEST['assigned_user_id']);
     }
 
@@ -144,6 +149,9 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
                 } else {
                     if (array_key_exists($k, $person) || array_key_exists($k, $person->field_defs)) {
                         if (in_array($k, $possiblePersonCaptureFields)) {
+                            if (is_array($v)) {
+                                $v = encodeMultienumValue($v);
+                            }
                             $person->$k = $v;
                         } else {
                             LoggerManager::getLogger()->warn('Trying to set a non-valid field via WebToPerson Form: ' . $k);
@@ -156,7 +164,7 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
         if (!empty($person)) {
 
             //create campaign log
-            $camplog = new CampaignLog();
+            $camplog = BeanFactory::newBean('CampaignLog');
             $camplog->campaign_id = $campaign_id;
             $camplog->related_id = $person->id;
             $camplog->related_type = $person->module_dir;
@@ -219,7 +227,7 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
                 if (stristr($optInEmailField, '_default') !== false) {
                     $emailField = str_replace('_default', '', $optInEmailField);
 
-                    if(!in_array($emailField, $optInEmailFields)) {
+                    if (!in_array($emailField, $optInEmailFields)) {
                         $optedOut[] = $emailField;
                     }
 
@@ -231,10 +239,10 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
 
             foreach ($optInEmailFields as $optInEmailField) {
                 if (isset($person->$optInEmailField) && !empty($person->$optInEmailField)) {
-                    $sea = new EmailAddress();
+                    $sea = BeanFactory::newBean('EmailAddresses');
                     $emailId = $sea->AddUpdateEmailAddress($person->$optInEmailField);
                     if ($sea->retrieve($emailId)) {
-                        if(in_array($optInEmailField, $optedOut)) {
+                        if (in_array($optInEmailField, $optedOut)) {
                             $sea->resetOptIn();
                             continue;
                         } else {
@@ -242,20 +250,16 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
                         }
 
                         $configurator = new Configurator();
-                        if($configurator->isConfirmOptInEnabled()) {
-                            $emailman = new EmailMan();
-                            $now = TimeDate::getInstance()->nowDb();
-                            
-                            if(!$emailman->sendOptInEmail($sea, $person->module_name, $person->id)) {
+                        if ($configurator->isConfirmOptInEnabled()) {
+                            $emailman = BeanFactory::newBean('EmailMan');
+
+                            if (!$emailman->sendOptInEmail($sea, $person->module_name, $person->id)) {
                                 $errors[] = 'Confirm Opt In email sending failed, please check email address is correct: ' . $sea->email_address;
-                                $sea->confirm_opt_in_fail_date = $now;
-                            } else {
-                                $sea->confirm_opt_in_sent_date = $now;
                             }
                         }
-                        if($configurator->isOptInEnabled()) {
+                        if ($configurator->isOptInEnabled()) {
                             $date = TimeDate::getInstance()->nowDb();
-                            $date_test = $timedate->to_display_date($date,false);
+                            $date_test = $timedate->to_display_date($date, false);
                             $person->lawful_basis = '^consent^';
                             $person->date_reviewed = $date_test;
                             $person->lawful_basis_source = 'website';
@@ -343,15 +347,13 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
             if (isset($mod_strings['LBL_THANKS_FOR_SUBMITTING'])) {
                 echo $mod_strings['LBL_THANKS_FOR_SUBMITTING'];
             } else {
-
-                if(isset($errors) && $errors) {
+                if (isset($errors) && $errors) {
                     $log = LoggerManager::getLogger();
                     $log->error('Success but some error occurred: ' . implode(', ', $errors));
                 }
                 
                 //If the custom module does not have a LBL_THANKS_FOR_SUBMITTING label, default to this general one
                 echo $app_strings['LBL_THANKS_FOR_SUBMITTING'];
-
             }
             header($_SERVER['SERVER_PROTOCOL'].'201', true, 201);
         }

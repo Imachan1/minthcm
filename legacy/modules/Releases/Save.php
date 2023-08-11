@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -55,28 +55,22 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
-$focus = new Release();
+$focus = BeanFactory::newBean('Releases');
 
 
 $focus->retrieve($_REQUEST['record']);
 
-foreach($focus->column_fields as $field)
-{
-	if(isset($_REQUEST[$field]))
-	{
-		$focus->$field = $_REQUEST[$field];
-
-	}
+foreach ($focus->column_fields as $field) {
+    if (isset($_REQUEST[$field])) {
+        $focus->$field = $_REQUEST[$field];
+    }
 }
 
-foreach($focus->additional_column_fields as $field)
-{
-	if(isset($_REQUEST[$field]))
-	{
-		$value = $_REQUEST[$field];
-		$focus->$field = $value;
-
-	}
+foreach ($focus->additional_column_fields as $field) {
+    if (isset($_REQUEST[$field])) {
+        $value = $_REQUEST[$field];
+        $focus->$field = $value;
+    }
 }
 
 
@@ -85,14 +79,22 @@ $focus->save();
 $return_id = $focus->id;
 
 $edit='';
-if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != "") $return_module = $_REQUEST['return_module'];
-else $return_module = "Releases";
-if(isset($_REQUEST['return_action']) && $_REQUEST['return_action'] != "") $return_action = $_REQUEST['return_action'];
-else $return_action = "DetailView";
-if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "") $return_id = $_REQUEST['return_id'];
-if(!empty($_REQUEST['edit'])) {
-	$return_id='';
-	$edit='&edit=true';
+if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != "") {
+    $return_module = $_REQUEST['return_module'];
+} else {
+    $return_module = "Releases";
+}
+if (isset($_REQUEST['return_action']) && $_REQUEST['return_action'] != "") {
+    $return_action = $_REQUEST['return_action'];
+} else {
+    $return_action = "DetailView";
+}
+if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "") {
+    $return_id = $_REQUEST['return_id'];
+}
+if (!empty($_REQUEST['edit'])) {
+    $return_id='';
+    $edit='&edit=true';
 }
 
 $GLOBALS['log']->debug("Saved record with id of ".$return_id);

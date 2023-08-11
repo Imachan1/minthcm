@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,18 +47,18 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 $module_name = 'OAuthKeys';
 $searchFields[$module_name] =
-	array (
-		'type' => array( 'query_type'=>'default'),
-		'name' => array( 'query_type'=>'default'),
-		'c_key' => array( 'query_type'=>'default'),
-		'current_user_only'=> array('query_type'=>'default','db_field'=>array('assigned_user_id'),'my_items'=>true, 'vname' => 'LBL_CURRENT_USER_FILTER', 'type' => 'bool'),
-		'assigned_user_id'=> array('query_type'=>'default'),
-		'favorites_only' => array(
+    array(
+        'type' => array( 'query_type'=>'default'),
+        'name' => array( 'query_type'=>'default'),
+        'c_key' => array( 'query_type'=>'default'),
+        'current_user_only'=> array('query_type'=>'default','db_field'=>array('assigned_user_id'),'my_items'=>true, 'vname' => 'LBL_CURRENT_USER_FILTER', 'type' => 'bool'),
+        'assigned_user_id'=> array('query_type'=>'default'),
+        'favorites_only' => array(
             'query_type'=>'format',
-			'operator' => 'subquery',
-			'subquery' => 'SELECT sugarfavorites.record_id FROM sugarfavorites
+            'operator' => 'subquery',
+            'subquery' => 'SELECT sugarfavorites.record_id FROM sugarfavorites
 			                    WHERE sugarfavorites.deleted=0
 			                        and sugarfavorites.module = "'.$module_name.'"
 			                        and sugarfavorites.assigned_user_id = "{0}"',
-			'db_field'=>array('id')),
-	);
+            'db_field'=>array('id')),
+    );

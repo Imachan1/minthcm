@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -87,20 +87,6 @@ class AOP_Case_Updates extends Basic
     }
 
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function AOP_Case_Updates()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-    /**
      * @param $interface
      *
      * @return bool
@@ -109,14 +95,10 @@ class AOP_Case_Updates extends Basic
     {
         switch ($interface) {
             case 'ACL':
-                return false;
+                return true;
             default:
                 return false;
         }
-    }
-
-    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set') {
-        return false;
     }
 
     /**
@@ -159,7 +141,7 @@ class AOP_Case_Updates extends Basic
                 $headElement->parentNode->removeChild($headElement);
             }
             $dom->removeChild($dom->doctype);
-            $dom->replaceChild($dom->firstChild->firstChild->firstChild, $dom->firstChild);
+            $dom->appendChild($dom->firstChild);
             $description = $dom->saveHTML();
 
             foreach (libxml_get_errors() as $xmlError) {
@@ -285,7 +267,7 @@ class AOP_Case_Updates extends Basic
         $GLOBALS['log']->info('AOPCaseUpdates: sendEmail called');
         require_once 'include/SugarPHPMailer.php';
         $mailer = new SugarPHPMailer();
-        $admin = new Administration();
+        $admin = BeanFactory::newBean('Administration');
         $admin->retrieveSettings();
 
         $mailer->prepForOutbound();
@@ -314,7 +296,7 @@ class AOP_Case_Updates extends Basic
         try {
             if ($mailer->send()) {
                 require_once 'modules/Emails/Email.php';
-                $emailObj = new Email();
+                $emailObj = BeanFactory::newBean('Emails');
                 $emailObj->to_addrs_names = implode(',', $emails);
                 $emailObj->type = 'out';
                 $emailObj->deleted = '0';

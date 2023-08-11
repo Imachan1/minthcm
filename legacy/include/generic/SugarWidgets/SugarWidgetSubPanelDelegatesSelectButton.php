@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,15 +49,14 @@ require_once('include/generic/SugarWidgets/SugarWidgetSubPanelTopButton.php');
 
 class SugarWidgetSubPanelDelegatesSelectButton extends SugarWidgetSubPanelTopButton
 {
-    
-    function display($defines, $additionalFormFields = null, $nonbutton = false)
+    public function display($defines, $additionalFormFields = null, $nonbutton = false)
     {
         global $mod_strings;
         $button = "<script src='include/javascript/checkbox.js' type='text/javascript'></script>";
         $button  .= "<form id='CustSelectForm' name='CustSelectForm' method='post' action=''>";
 
-       // $button .= "<input id='custom_hidden_5' type='hidden' name='custom_hidden_5' value=''/>";
-        $button .= "<input id='Custom_Select' class='button' type='button' name='Custom_Select' onclick='select_targets()' value='".$mod_strings['LBL_SELECT_DELEGATES']."'/>\n</form>";	
+        // $button .= "<input id='custom_hidden_5' type='hidden' name='custom_hidden_5' value=''/>";
+        $button .= "<input id='Custom_Select' class='button' type='button' name='Custom_Select' onclick='select_targets()' value='".$mod_strings['LBL_SELECT_DELEGATES']."'/>\n</form>";
 
         return $button;
     }

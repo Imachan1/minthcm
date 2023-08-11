@@ -8,7 +8,8 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,12 +43,12 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$dictionary["aok_knowledgebase_categories"] = array (
+$dictionary["aok_knowledgebase_categories"] = array(
   'true_relationship_type' => 'many-to-many',
-  'relationships' => 
-  array (
+  'relationships' =>
+  array(
     'aok_knowledgebase_categories' =>
-    array (
+    array(
       'lhs_module' => 'AOK_KnowledgeBase',
       'lhs_table' => 'aok_knowledgebase',
       'lhs_key' => 'id',
@@ -61,57 +62,57 @@ $dictionary["aok_knowledgebase_categories"] = array (
     ),
   ),
   'table' => 'aok_knowledgebase_categories',
-  'fields' => 
-  array (
-    0 => 
-    array (
+  'fields' =>
+  array(
+    0 =>
+    array(
       'name' => 'id',
       'type' => 'varchar',
       'len' => 36,
     ),
-    1 => 
-    array (
+    1 =>
+    array(
       'name' => 'date_modified',
       'type' => 'datetime',
     ),
-    2 => 
-    array (
+    2 =>
+    array(
       'name' => 'deleted',
       'type' => 'bool',
       'len' => '1',
       'default' => '0',
       'required' => true,
     ),
-    3 => 
-    array (
+    3 =>
+    array(
       'name' => 'aok_knowledgebase_id',
       'type' => 'varchar',
       'len' => 36,
     ),
-    4 => 
-    array (
+    4 =>
+    array(
       'name' => 'aok_knowledge_base_categories_id',
       'type' => 'varchar',
       'len' => 36,
     ),
   ),
-  'indices' => 
-  array (
-    0 => 
-    array (
+  'indices' =>
+  array(
+    0 =>
+    array(
       'name' => 'aok_knowledgebase_categoriesspk',
       'type' => 'primary',
-      'fields' => 
-      array (
+      'fields' =>
+      array(
         0 => 'id',
       ),
     ),
-    1 => 
-    array (
+    1 =>
+    array(
       'name' => 'aok_knowledgebase_categories_alt',
       'type' => 'alternate_key',
-      'fields' => 
-      array (
+      'fields' =>
+      array(
         0 => 'aok_knowledgebase_id',
         1 => 'aok_knowledge_base_categories_id',
       ),

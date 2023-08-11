@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -86,27 +86,10 @@ class CalendarDashlet extends Dashlet
     }
 
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8,
-     * please update your code, use __construct instead
-     */
-    public function CalendarDashlet($id, $def = null)
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be removed in 7.8,
-        please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($id, $def);
-    }
-
-    /**
      * @see Dashlet::display()
      */
     public function display()
     {
-        
         ob_start();
 
         if (isset($GLOBALS['cal_strings'])) {
@@ -116,20 +99,20 @@ class CalendarDashlet extends Dashlet
         require_once 'modules/Calendar/Calendar.php';
         require_once 'modules/Calendar/CalendarDisplay.php';
         require_once "modules/Calendar/CalendarGrid.php";
+
         global $cal_strings, $current_language;
         $cal_strings = return_module_language($current_language, 'Calendar');
-
 
 
         $cal = new Calendar($this->view);
         $cal->dashlet = true;
         $cal->add_activities($GLOBALS['current_user']);
         $cal->load_activities();
-        
+
         $display = new CalendarDisplay($cal, $this->id);
         $display->display_calendar_header(false);
-        $display->display();
 
+        $display->display();
 
         $str = ob_get_contents();
         ob_end_clean();
@@ -205,6 +188,7 @@ class CalendarDashlet extends Dashlet
         $template->assign('DASHLET_BUTTON_ARIA_EDIT', translate('LBL_DASHLET_EDIT', 'Home'));
         $template->assign('DASHLET_BUTTON_ARIA_REFRESH', translate('LBL_DASHLET_REFRESH', 'Home'));
         $template->assign('DASHLET_BUTTON_ARIA_DELETE', translate('LBL_DASHLET_DELETE', 'Home'));
+
         return $template->fetch('include/Dashlets/DashletHeader.tpl');
     }
 }

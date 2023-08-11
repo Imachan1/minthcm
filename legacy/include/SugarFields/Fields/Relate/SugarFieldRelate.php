@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -338,8 +338,8 @@ class SugarFieldRelate extends SugarFieldBase {
          }
          for ( $i = 0; $i < strlen($default_locale_name_format); $i++ ) {
             $new_field .= array_key_exists(
-                            $default_locale_name_format{$i}, $names
-                    ) ? $names[$default_locale_name_format{$i}] : $default_locale_name_format{$i};
+                            $default_locale_name_format[$i], $names
+                    ) ? $names[$default_locale_name_format[$i]] : $default_locale_name_format[$i];
          }
       } else {
          $new_field = $rawField;

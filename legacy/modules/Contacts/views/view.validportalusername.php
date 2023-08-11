@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,28 +48,28 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 /**
  * ContactsViewValidPortalUsername.php
- * 
+ *
  * This class overrides SugarView and provides an implementation for the ValidPortalUsername
  * method used for checking whether or not an existing portal user_name has already been assigned.
  * We take advantage of the MVC framework to provide this action which is invoked from
  * a javascript AJAX request.
- * 
+ *
  * @author Collin Lee
  * */
  
 require_once('include/MVC/View/SugarView.php');
 
-class ContactsViewValidPortalUsername extends SugarView 
+class ContactsViewValidPortalUsername extends SugarView
 {
- 	/**
+    /**
      * @see SugarView::process()
      */
-    public function process() 
- 	{
-		$this->display();
- 	}
+    public function process()
+    {
+        $this->display();
+    }
 
- 	/**
+    /**
      * @see SugarView::display()
      */
     public function display()
@@ -78,11 +78,12 @@ class ContactsViewValidPortalUsername extends SugarView
             $portalUsername = $this->bean->db->quote($_REQUEST['portal_name']);
             $result = $this->bean->db->query("Select count(id) as total from contacts where portal_name = '$portalUsername' and deleted='0'");
             $total = 0;
-            while($row = $this->bean->db->fetchByAssoc($result))
+            while ($row = $this->bean->db->fetchByAssoc($result)) {
                 $total = $row['total'];
+            }
             echo $total;
+        } else {
+            echo '0';
         }
-        else
-           echo '0';
- 	}	
+    }
 }

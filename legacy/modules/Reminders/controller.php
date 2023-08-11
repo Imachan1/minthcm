@@ -13,7 +13,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,40 +46,46 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-class RemindersController extends SugarController {
-
-   public function action_getInviteesPersonName() {
-      $personModules = array( 'Users', 'Contacts', 'Leads' );
-      $ret = array();
-      $invitees = $_REQUEST['invitees'];
-      foreach ( $invitees as $invitee ) {
-         if ( !isset($invitee['personName']) || !$invitee['personName'] ) {
-            $person = BeanFactory::getBean($invitee['personModule'], $invitee['personModuleId']);
-            $invitee['personName'] = $person->name;
+ class RemindersController extends SugarController
+ {
+     public function action_getInviteesPersonName()
+     {
+         $personModules = array('Users', 'Contacts', 'Leads');
+         $ret = array();
+         $invitees = $_REQUEST['invitees'];
+         foreach ($invitees as $invitee) {
+             if (!empty($invitee['personModule']) && !empty($invitee['personModuleId']) && in_array($invitee['personModule'], $personModules)) {
+                 if (empty($invitee['personName'])) {
+                     $person = BeanFactory::getBean($invitee['personModule'], $invitee['personModuleId']);
+                     if (empty($person->name)) {
+                         continue;
+                     }
+                     $invitee['personName'] = $person->name;
+                 }
+                 $ret[] = $invitee;
+             }
          }
-         if ( isset($invitee['personModule']) && $invitee['personModule'] && in_array($invitee['personModule'], $personModules) && isset($invitee['personModuleId']) && $invitee['personModuleId'] && isset($invitee['personName']) && $invitee['personName'] ) {
-            $ret[] = $invitee;
-         }
+ 
+         $inviteeJson = json_encode($ret);
+         echo $inviteeJson;
+         die();
+     }
+ 
+     public function action_getUserPreferencesForReminders()
+     {
+         echo Reminder::loadRemindersDefaultValuesDataJson();
+         die();
+     }
+     
+      // View Tools #51728 START
+      public function action_markPopupAsDeleted() {
+         global $db;
+         $sql = "UPDATE reminders_invitees SET deleted=1 WHERE id='{$_REQUEST['record']}'";
+         $resut = $db->query($sql);
+         echo json_encode($resut);
+         die();
       }
 
-      $inviteeJson = json_encode($ret);
-      echo $inviteeJson;
-      die();
-   }
-
-   public function action_getUserPreferencesForReminders() {
-      echo Reminder::loadRemindersDefaultValuesDataJson();
-      die();
-   }
-
-   // View Tools #51728 START
-   public function action_markPopupAsDeleted() {
-      global $db;
-      $sql = "UPDATE reminders_invitees SET deleted=1 WHERE id='{$_REQUEST['record']}'";
-      $resut = $db->query($sql);
-      echo json_encode($resut);
-      die();
-   }
-
-   // View Tools #51728 END
-}
+      // View Tools #51728 END
+ }
+ 

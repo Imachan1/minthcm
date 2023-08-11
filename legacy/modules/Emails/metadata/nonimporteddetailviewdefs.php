@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,91 +42,102 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$module_name = 'Emails';
-$viewdefs[$module_name]['DetailView'] = array(
-    'templateMeta' => array(
-        'form' => array(
-            'buttons' => array(
-                array(
-                    'customCode' => '<input type=button data-action="emails-import-single" data-inbound-email-record="{$bean->inbound_email_record}" data-email-uid="{$bean->uid}" data-email-msgno="{$bean->msgNo}" value="{$MOD.LBL_IMPORT}">'
-                ),
-                array(
-                    'customCode' => '<input type=button onclick="window.location.href=\'index.php?module=Emails&action=ReplyTo&folder=INBOX.TestInbox&folder=inbound&inbound_email_record={$bean->inbound_email_record}&uid={$bean->uid}&msgno={$bean->msgNo}&record={$bean->id}\';" value="{$MOD.LBL_BUTTON_REPLY_TITLE}">'
-                ),
-                array(
-                    'customCode' => '<input type=button onclick="window.location.href=\'index.php?module=Emails&action=ReplyToAll&folder=INBOX.TestInbox&folder=inbound&inbound_email_record={$bean->inbound_email_record}&uid={$bean->uid}&msgno={$bean->msgNo}&record={$bean->id}\';" value="{$MOD.LBL_BUTTON_REPLY_ALL}">'
-                ),
-                array(
-                    'customCode' => '<input type=button onclick="window.location.href=\'index.php?module=Emails&action=Forward&folder=INBOX.TestInbox&folder=inbound&inbound_email_record={$bean->inbound_email_record}&uid={$bean->uid}&msgno={$bean->msgNo}&record={$bean->id}\';" value="{$MOD.LBL_BUTTON_FORWARD}">'
-                ),
-            ),
-        ),
-        'includes' => array(
-            array(
-                'file' => 'modules/Emails/include/DetailView/ImportView.js'
-            ),
-            array(
-                'file' => 'modules/Emails/include/DetailView/import.js'
-            ),
-        ),
-        'maxColumns' => '2',
-        'widths' => array(
-            array('label' => '10', 'field' => '30'),
-            array('label' => '10', 'field' => '30')
-        ),
-    ),
-
-    'panels' => array(
-
-        'LBL_EMAIL_INFORMATION' => array(
-            array(
-                'opt_in' => array(
-                    'name' => 'opt_in',
-                    'label' => 'LBL_OPT_IN',
-                ),
-            ),
-            array(
-                'from_addr_name' => array(
-                    'name' => 'from_addr_name',
-                    'label' => 'LBL_FROM',
-                ),
-            ),
-            array(
-                'to_addrs_names' => array(
-                    'name' => 'to_addrs_names',
-                    'label' => 'LBL_TO',
-                ),
-            ),
-            array(
-                'cc_addrs_names' => array(
-                    'name' => 'cc_addrs_names',
-                    'label' => 'LBL_CC',
-                ),
-            ),
-            array(
-                'bcc_addrs_names' => array(
-                    'name' => 'bcc_addrs_names',
-                    'label' => 'LBL_BCC',
-                ),
-            ),
-            array(
-                'name' => array(
-                    'name' => 'name',
-                    'label' => 'LBL_SUBJECT',
-                ),
-            ),
-            array(
-                'description' => array(
-                    'name' => 'description_html',
-                    'label' => 'LBL_BODY'
-                ),
-            ),
-            array(
-                'date_entered' => array(
-                    'name' => 'date_entered',
-                    'label' => 'LBL_DATE_ENTERED',
-                )
-            )
-        )
-    )
-);
+ $module_name = 'Emails';
+ $viewdefs[$module_name]['DetailView'] = array(
+     'templateMeta' => array(
+         'form' => array(
+             'buttons' => array(
+                 array(
+                     'customCode' => '<input type=button data-action="emails-import-single" data-inbound-email-record="{$bean->inbound_email_record}" data-email-uid="{$bean->uid}" data-email-msgno="{$bean->msgNo}" value="{$MOD.LBL_IMPORT}">'
+                 ),
+                 array(
+                     'customCode' => '<input type=button onclick="window.location.href=\'index.php?module=Emails&action=ReplyTo&folder=INBOX.TestInbox&folder=inbound&inbound_email_record={$bean->inbound_email_record}&uid={$bean->uid}&msgno={$bean->msgNo}&record={$bean->id}&return_module=Emails&return_action=index\';" value="{$MOD.LBL_BUTTON_REPLY_TITLE}">'
+                 ),
+                 array(
+                     'customCode' => '<input type=button onclick="window.location.href=\'index.php?module=Emails&action=ReplyToAll&folder=INBOX.TestInbox&folder=inbound&inbound_email_record={$bean->inbound_email_record}&uid={$bean->uid}&msgno={$bean->msgNo}&record={$bean->id}&return_module=Emails&return_action=index\';" value="{$MOD.LBL_BUTTON_REPLY_ALL}">'
+                 ),
+                 array(
+                     'customCode' => '<input type=button onclick="window.location.href=\'index.php?module=Emails&action=Forward&folder=INBOX.TestInbox&folder=inbound&inbound_email_record={$bean->inbound_email_record}&uid={$bean->uid}&msgno={$bean->msgNo}&record={$bean->id}&return_module=Emails&return_action=index\';" value="{$MOD.LBL_BUTTON_FORWARD}">'
+                 ),
+                 [
+                     'customCode' => '<input type=button onclick="window.location.href=\'index.php?module=Emails&action=DeleteFromImap&folder=INBOX.TestInbox&folder=inbound&inbound_email_record={$bean->inbound_email_record}&uid={$bean->uid}&msgno={$bean->msgNo}&record={$bean->id}&return_module=Emails&return_action=index\';" value="{$MOD.LBL_BUTTON_DELETE_IMAP}">'
+                 ],
+             ),
+         ),
+         'includes' => array(
+             array(
+                 'file' => 'modules/Emails/include/DetailView/ImportView.js'
+             ),
+             array(
+                 'file' => 'modules/Emails/include/DetailView/import.js'
+             ),
+         ),
+         'maxColumns' => '2',
+         'widths' => array(
+             array('label' => '10', 'field' => '30'),
+             array('label' => '10', 'field' => '30')
+         ),
+     ),
+ 
+     'panels' => array(
+ 
+         'LBL_EMAIL_INFORMATION' => array(
+             array(
+                 'opt_in' => array(
+                     'name' => 'opt_in',
+                     'label' => 'LBL_OPT_IN',
+                 ),
+             ),
+             array(
+                 'from_addr_name' => array(
+                     'name' => 'from_addr_name',
+                     'label' => 'LBL_FROM',
+                 ),
+             ),
+             array(
+                 'to_addrs_names' => array(
+                     'name' => 'to_addrs_names',
+                     'label' => 'LBL_TO',
+                 ),
+             ),
+             array(
+                 'cc_addrs_names' => array(
+                     'name' => 'cc_addrs_names',
+                     'label' => 'LBL_CC',
+                 ),
+             ),
+             array(
+                 'bcc_addrs_names' => array(
+                     'name' => 'bcc_addrs_names',
+                     'label' => 'LBL_BCC',
+                 ),
+             ),
+             array(
+                 'name' => array(
+                     'name' => 'name',
+                     'label' => 'LBL_SUBJECT',
+                 ),
+             ),
+             array(
+                 'description' => array(
+                     'name' => 'description_html',
+                     'label' => 'LBL_BODY'
+                 ),
+             ),
+             [
+                 'attachment' => [
+                     'name' => 'attachment',
+                     'label' => 'LBL_ATTACHMENTS',
+                   ]
+               ],
+             [
+                 'date_sent_received' => [
+                     'name' => 'date_sent_received',
+                     'customCode' => '{$fields.date_entered.value}',
+                     'label' => 'LBL_DATE_SENT_RECEIVED',
+                 ]
+             ]
+         )
+     )
+ );
+ 

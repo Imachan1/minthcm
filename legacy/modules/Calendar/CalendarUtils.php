@@ -194,7 +194,7 @@ class CalendarUtils
         $field_list = CalendarUtils::get_fields();
         $field_arr = array();
         foreach ($field_list[$bean->module_dir] as $field) {
-            if ($field == 'related_to') {
+            if ($field === 'related_to') {
                 $focus = BeanFactory::getBean($bean->parent_type, $bean->parent_id);
                 $field_arr[$field] = $focus->name;
             } else {
@@ -292,7 +292,7 @@ class CalendarUtils
         $arr = array();
 
         $type = $params['type'];
-        $interval = intval($params['interval']);
+        $interval = (int)($params['interval']);
         if ($interval < 1) {
             $interval = 1;
         }
@@ -466,6 +466,7 @@ class CalendarUtils
                                     VALUES
                     ";
         }
+
         $arr = array();
         $i = 0;
         foreach ($time_arr as $date_start) {
@@ -486,6 +487,7 @@ class CalendarUtils
                 $users_rel_arr = $clone->users_arr;
             }
             //MintHCM #111325 END
+
             if ($clone->id) {
                 foreach ($users_rel_arr as $user_id) {
                     if ($users_filled) {

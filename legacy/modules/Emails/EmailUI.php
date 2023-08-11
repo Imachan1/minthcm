@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,10 +42,13 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+use SuiteCRM\Utility\SuiteValidator;
+
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
+require_once("include/utils.php");
 require_once("include/ytree/Tree.php");
 require_once("include/ytree/ExtNode.php");
 require_once("include/SugarFolders/SugarFolders.php");
@@ -100,7 +103,7 @@ class EmailUI {
 
    /**
     * Renders the frame for emails
-    * @throws \RuntimeException
+    * @throws RuntimeException
     */
    public function displayEmailFrame($baseTpl = "modules/Emails/templates/_baseEmail.tpl") {
       require_once("include/OutboundEmail/OutboundEmail.php");
@@ -118,7 +121,7 @@ class EmailUI {
       global $server_unique_key;
 
       $this->preflightUserCache();
-      $ie = new InboundEmail();
+      $ie = BeanFactory::newBean('InboundEmail');
 
       // focus listView
       $list = array(
@@ -249,17 +252,20 @@ class EmailUI {
               $user->getSignatures(false, $defaultSignatureId, false, 'signature_id')
       );
       $this->smarty->assign(
-              'signaturesAccountSettings',
-              $user->getEmailAccountSignatures(false, $defaultSignatureId, false, 'account_signature_id'));
-      $signatureButtons = $user->getSignatureButtons('SUGAR.email2.settings.createSignature',
-              !empty($defaultSignatureId));
-      if ( !empty($defaultSignatureId) ) {
-         $signatureButtons = $signatureButtons . '<span name="delete_sig" id="delete_sig" style="visibility:inherit;"><input class="button" onclick="javascript:SUGAR.email2.settings.deleteSignature();" value="' . $app_strings['LBL_EMAIL_DELETE'] . '" type="button" tabindex="392">&nbsp;
-                    </span>';
-      } else {
-         $signatureButtons = $signatureButtons . '<span name="delete_sig" id="delete_sig" style="visibility:hidden;"><input class="button" onclick="javascript:SUGAR.email2.settings.deleteSignature();" value="' . $app_strings['LBL_EMAIL_DELETE'] . '" type="button" tabindex="392">&nbsp;
-                    </span>';
-      }
+        'signaturesAccountSettings',
+        $user->getEmailAccountSignatures(false, $defaultSignatureId, false, 'account_signature_id')
+    );
+    $signatureButtons = $user->getSignatureButtons(
+        'SUGAR.email2.settings.createSignature',
+        !empty($defaultSignatureId)
+    );
+    if (!empty($defaultSignatureId)) {
+        $signatureButtons = $signatureButtons . '<span name="delete_sig" id="delete_sig" style="visibility:inherit;"><input class="button" onclick="SUGAR.email2.settings.deleteSignature();" value="' . $app_strings['LBL_EMAIL_DELETE'] . '" type="button" tabindex="392">&nbsp;
+                </span>';
+    } else {
+        $signatureButtons = $signatureButtons . '<span name="delete_sig" id="delete_sig" style="visibility:hidden;"><input class="button" onclick="SUGAR.email2.settings.deleteSignature();" value="' . $app_strings['LBL_EMAIL_DELETE'] . '" type="button" tabindex="392">&nbsp;
+                </span>';
+    }
       $this->smarty->assign('signatureButtons', $signatureButtons);
       $this->smarty->assign('signaturePrepend', $prependSignature == 'true' ? 'CHECKED' : '');
       ////	END SIGNATURES
@@ -400,23 +406,26 @@ eoq;
     * @param string $text
     * @return string
     */
-   private function createEmailLink($module_name, $record_id, $name, $addr, $text) {
-      global $current_user;
+    private function createEmailLink($module_name, $record_id, $name, $addr, $text)
+    {
+        global $current_user;
 
-      if ( $current_user->getEmailClient() == 'sugar' ) {
-         return '<a class="email-link"'
-                 . ' onclick="$(document).openComposeViewModal(this);"'
-                 . ' data-module="' . $module_name
-                 . '" data-record-id="' . $record_id
-                 . '" data-module-name="' . $name
-                 . '" data-email-address="' . $addr . '">'
-                 . $text . '</a>';
-      }
+        if ($current_user->getEmailClient() == 'sugar') {
+            $html =<<<HTML
+            <a class="email-link" href="mailto:{$addr}"
+                    onclick="$(document).openComposeViewModal(this);"
+                    data-module="{$module_name}" data-record-id="{$record_id}"
+                    data-module-name="{$name}" data-email-address="{$addr}"
+                >{$text}</a>
+HTML;
+        } else {
+            $html =<<<HTML
+                <a class="email-link" href="mailto:{$addr}">{$text}</a>
+HTML;
+        }
 
-      return '<a class="email-link"'
-              . ' href="mailto:' . $addr . '">'
-              . $text . '</a>';
-   }
+        return $html;
+    }
 
    /**
     *
@@ -643,7 +652,7 @@ eoq;
     * returned is the minimum set needed by the quick compose UI.
     *
     * @param String $type Drives which tinyMCE options will be included.
-    * @throws \RuntimeException
+    * @throws RuntimeException
     */
    public function _generateComposeConfigData($type = "email_compose_light") {
       global $app_list_strings, $current_user, $app_strings, $mod_strings, $current_language, $locale;
@@ -676,7 +685,7 @@ eoq;
       $email_mod_strings = return_module_language($current_language, 'Emails');
       $modStrings = "var mod_strings = new Object();\n";
       foreach ( $email_mod_strings as $k => $v ) {
-         $v = str_replace("'", "\'", $v);
+        $v = str_replace("'", "\'",str_replace("\\'", "'", $v));
          $modStrings .= "mod_strings.{$k} = '{$v}';\n";
       }
       $lang .= "\n\n{$modStrings}\n";
@@ -696,7 +705,7 @@ eoq;
       $this->smarty->assign('lang', $lang);
       $this->smarty->assign('app_strings', $app_strings);
       $this->smarty->assign('mod_strings', $email_mod_strings);
-      $ie1 = new InboundEmail();
+      $ie1 = BeanFactory::newBean('InboundEmail');
 
       //Signatures
       $defsigID = $current_user->getPreference('signature_default');
@@ -795,6 +804,7 @@ eoq;
 
    /**
     * Saves changes to a user's address book
+    * @throws SuiteException
     * @param array contacts
     */
    public function setContacts($contacts) {
@@ -803,7 +813,12 @@ eoq;
       $oldContacts = $this->getContacts();
 
       foreach ( $contacts as $cid => $contact ) {
-         if ( !in_array($contact['id'], $oldContacts) ) {
+        if (!in_array($contact['id'], $oldContacts, true)) {
+            $contactId = $contact['id'];
+            $isValidator = new SuiteValidator();
+            if (!$isValidator->isValidId($contactId)) {
+                throw new SuiteException('Invalid contact ID: ' . $contactId);
+            }
             $id = create_guid();
             $q = "INSERT INTO address_book (id,assigned_user_id, bean, bean_id) VALUES ('{$id}','{$current_user->id}', '{$contact['module']}', '{$contact['id']}')";
             $r = $this->db->query($q, true);
@@ -813,18 +828,22 @@ eoq;
 
    /**
     * Removes contacts from the user's address book
+    * @throws SuiteException
     * @param array ids
     */
    public function removeContacts($ids) {
       global $current_user;
 
-      $concat = "";
+      $concat = '';
 
       foreach ( $ids as $id ) {
          if ( !empty($concat) ) {
-            $concat .= ", ";
+            $concat .= ', ';
          }
-
+         $isValidator = new SuiteValidator();
+         if (!$isValidator->isValidId($id)) {
+             throw new SuiteException('Invalid contact ID' . $id);
+         }
          $concat .= "'{$id}'";
       }
 
@@ -842,7 +861,7 @@ eoq;
       $str = from_html($str);
       $obj = $json->decode($str);
 
-      $contact = new Contact();
+      $contact = BeanFactory::newBean('Contacts');
       $contact->retrieve($obj['contact_id']);
       $contact->first_name = $obj['contact_first_name'];
       $contact->last_name = $obj['contact_last_name'];
@@ -877,7 +896,7 @@ eoq;
          
       }
 
-      $contact = new Contact();
+      $contact = BeanFactory::newBean('Contacts');
       $contact->retrieve($_REQUEST['id']);
       $ret = array();
 
@@ -889,8 +908,10 @@ eoq;
          $contactMeta['last_name'] = $contact->last_name;
 
          $this->smarty->assign("app_strings", $app_strings);
-         $this->smarty->assign("contact_strings",
-                 return_module_language($_SESSION['authenticated_user_language'], 'Contacts'));
+         $this->smarty->assign(
+            "contact_strings",
+            return_module_language(get_current_language(), 'Contacts')
+        );
          $this->smarty->assign("contact", $contactMeta);
 
          $ea = new SugarEmailAddress();
@@ -962,7 +983,6 @@ eoq;
 
       $r = $user->db->query($union);
 
-      //_pp($union);
 
       while ( $a = $user->db->fetchByAssoc($r) ) {
          $c = array();
@@ -986,7 +1006,7 @@ eoq;
    /**
     * @param bool $useRequestedRecord
     * @return array
-    * @throws \RuntimeException
+    * @throws RuntimeException
     */
    public function getUserPreferencesJS($useRequestedRecord = false) {
       global $current_user;
@@ -1224,7 +1244,7 @@ eoq;
       $tree->tree_style = 'include/ytree/TreeView/css/check/tree.css';
 
       $nodes = array();
-      $ie = new InboundEmail();
+      $ie = BeanFactory::newBean('InboundEmail');
       $refreshOffset = $this->cacheTimeouts['folders']; // 5 mins.  this will be set via user prefs
 
       $rootNode = new ExtNode($app_strings['LBL_EMAIL_HOME_FOLDER'], $app_strings['LBL_EMAIL_HOME_FOLDER']);
@@ -1364,7 +1384,7 @@ eoq;
             if ( $mailbox != "" ) {
                $mailbox .= ".";
             }
-            $mailbox .= "{$exMbox[$i]}";
+            $mailbox .= (string)($exMbox[$i]);
          }
 
          $mailbox = substr($key, strpos($key, '.'));
@@ -1710,7 +1730,7 @@ eoq;
       $smarty = new Sugar_Smarty();
 
       // SETTING DEFAULTS
-      $focus = new Email();
+      $focus = BeanFactory::newBean('Emails');
       $focus->retrieve($emailId);
       $detailView->ss = new Sugar_Smarty();
       $detailView = new DetailView();
@@ -1785,7 +1805,7 @@ eoq;
       ////	NOTES (attachements, etc.)
       ///////////////////////////////////////////////////////////////////////////////
 
-      $note = new Note();
+      $note = BeanFactory::newBean('Notes');
       $where = "notes.parent_id='{$focus->id}'";
       //take in account if this is from campaign and the template id is stored in the macros.
 
@@ -1846,7 +1866,7 @@ eoq;
       if ( strpos($folder, 'sugar::') !== false ) {
          // dealing with a sugar email object, uids are GUIDs
          foreach ( $exUids as $id ) {
-            $email = new Email();
+            $email = BeanFactory::newBean('Emails');
             $email->retrieve($id);
 
             // BUG FIX BEGIN
@@ -1893,7 +1913,7 @@ eoq;
          /* dealing with IMAP email, uids are IMAP uids */
          global $ie; // provided by EmailUIAjax.php
          if ( empty($ie) ) {
-            $ie = new InboundEmail();
+            $ie = BeanFactory::newBean('InboundEmail');
          }
          $ie->retrieve($ieId);
          $ie->mailbox = $folder;
@@ -1946,7 +1966,7 @@ eoq;
       if ( $folder != 'sugar::Emails' ) {
          $emailIds = array();
          $uids = explode($app_strings['LBL_EMAIL_DELIMITER'], $uids);
-         $ie = new InboundEmail();
+         $ie = BeanFactory::newBean('InboundEmail');
          $ie->retrieve($ieid);
          $messageIndex = 1;
          // dealing with an inbound email data so we need to import an email and then
@@ -2032,7 +2052,7 @@ eoq;
             $lastRobin = $userIds[0];
          }
 
-         $email = new Email();
+         $email = BeanFactory::newBean('Emails');
          $email->retrieve($mailId);
          $email->assigned_user_id = $thisRobin;
          $email->status = 'unread';
@@ -2050,7 +2070,7 @@ eoq;
     */
    public function distLeastBusy($userIds, $mailIds) {
       foreach ( $mailIds as $k => $mailId ) {
-         $email = new Email();
+         $email = BeanFactory::newBean('Emails');
          $email->retrieve($mailId);
          foreach ( $userIds as $k => $id ) {
             $r = $this->db->query("SELECT count(*) AS c FROM emails WHERE assigned_user_id = '.$id.' AND status = 'unread'");
@@ -2076,7 +2096,7 @@ eoq;
     */
    public function distDirect($user, $mailIds) {
       foreach ( $mailIds as $k => $mailId ) {
-         $email = new Email();
+        $email = BeanFactory::newBean('Emails');
          $email->retrieve($mailId);
          $email->assigned_user_id = $user;
          $email->status = 'unread';
@@ -2086,6 +2106,23 @@ eoq;
 
       return true;
    }
+
+    /**
+     * @param array $userIds
+     * @return array
+     */
+    public function getAssignedEmailsCountForUsers($userIds)
+    {
+        $counts = [];
+        foreach ($userIds as $id) {
+            $idQuoted = $this->db->quoted($id);
+            $r = $this->db->query("SELECT count(*) AS c FROM emails WHERE assigned_user_id = $idQuoted AND status = 'unread'");
+            $a = $this->db->fetchByAssoc($r);
+            $counts[$id] = $a['c'];
+        }
+
+        return $counts;
+    }
 
    public function getLastRobin($ie) {
       $lastRobin = "";
@@ -2211,7 +2248,7 @@ eoq;
    public function getListEmails($ieId, $mbox, $folderListCacheOffset, $forceRefresh = 'false') {
       global $sugar_config;
 
-      $ie = new InboundEmail();
+      $ie = BeanFactory::newBean('InboundEmail');
       $ie->retrieve($ieId);
       $list = $ie->displayFolderContents($mbox, $forceRefresh);
 
@@ -2343,7 +2380,7 @@ eoq;
             $GLOBALS['log']->debug("EMAILUI: At reply case");
             $header = $email->getReplyHeader();
 
-            $myCase = new aCase();
+            $myCase = BeanFactory::newBean('Cases');
             $myCase->retrieve($email->parent_id);
             $myCaseMacro = $myCase->getEmailSubjectMacro();
             $email->parent_name = $myCase->name;
@@ -2373,83 +2410,73 @@ eoq;
     * Generates a UNION query to get one list of users, contacts, leads, and
     * prospects; used specifically for the addressBook
     */
-   public function _getPeopleUnionQuery($whereArr, $person) {
-      global $current_user, $app_strings;
-      $db = DBManagerFactory::getInstance();
-      if ( !isset($person) || $person === 'LBL_DROPDOWN_LIST_ALL' ) {
-         $peopleTables = array(
-            "users",
-            "contacts",
-            "leads",
-            "prospects",
-            "accounts"
-         );
-      } else {
-         $peopleTables = array( $person );
-      }
-      $q = '';
+    public function _getPeopleUnionQuery($whereArr, $person)
+    {
+        global $current_user, $app_strings;
+        $db = DBManagerFactory::getInstance();
+        if (!isset($person) || $person === 'LBL_DROPDOWN_LIST_ALL') {
+            $peopleTables = array(
+                "users",
+                "contacts",
+                "leads",
+                "prospects",
+                "accounts"
+            );
+        } else {
+            $peopleTables = array($person);
+        }
+        $q = '';
 
-      $whereAdd = "";
+        $whereAdd = "";
 
-      foreach ( $whereArr as $column => $clause ) {
-         if ( !empty($whereAdd) ) {
-            $whereAdd .= " AND ";
-         }
-         $clause = $current_user->db->quote($clause);
-         $whereAdd .= "{$column} LIKE '{$clause}%'";
-      }
+        foreach ($whereArr as $column => $clause) {
+            if (!empty($whereAdd)) {
+                $whereAdd .= " AND ";
+            }
+            $clause = $current_user->db->quote($clause);
+            $whereAdd .= "{$column} LIKE '{$clause}%'";
+        }
 
+        foreach ($peopleTables as $tableName) {
+            $module = ucfirst($tableName);
+            $personBean = BeanFactory::getBean($module);
 
-      foreach ( $peopleTables as $table ) {
-         $module = ucfirst($table);
-         $class = substr($module, 0, strlen($module) - 1);
-         require_once("modules/{$module}/{$class}.php");
-         $person = new $class();
-         if ( !$person->ACLAccess('list') ) {
-            continue;
-         } // if
-         $where = "({$table}.deleted = 0 AND eabr.primary_address = 1 AND {$table}.id <> '{$current_user->id}')";
+            if ($personBean !== false || !$personBean->ACLAccess('list')) {
+                continue;
+            } // if
+            $table = $personBean->getTableName();
+            $where = "({$table}.deleted = 0 AND eabr.primary_address = 1 AND {$table}.id <> '{$current_user->id}')";
 
-         if ( ACLController::requireOwner($module, 'list') ) {
-            $where = $where . " AND ({$table}.assigned_user_id = '{$current_user->id}')";
-         } // if
-         if ( !empty($whereAdd) ) {
-            $where .= " AND ({$whereAdd})";
-         }
+            $accessWhere = $personBean->buildAccessWhere('list');
+            if (!empty($accessWhere)) {
+                $where .= ' AND '. $accessWhere;
+            }
 
-         if ( $person === 'accounts' ) {
-            $t = "SELECT {$table}.id, '' first_name, {$table}.name, eabr.primary_address, ea.email_address, '{$module}' module ";
-         } else {
-            $t = "SELECT {$table}.id, {$table}.first_name, {$table}.last_name, eabr.primary_address, ea.email_address, '{$module}' module ";
-         }
-         $t .= "FROM {$table} ";
-         $t .= "JOIN email_addr_bean_rel eabr ON ({$table}.id = eabr.bean_id and eabr.deleted=0) ";
-         $t .= "JOIN email_addresses ea ON (eabr.email_address_id = ea.id) ";
-         $t .= " WHERE {$where}";
+            if (!empty($whereAdd)) {
+                $where .= " AND ({$whereAdd})";
+            }
 
-         /* BEGIN - SECURITY GROUPS */
-         //this function may not even be used anymore. Seems like findEmailFromBeanIds is preferred now
-         if ( $person->bean_implements('ACL') && ACLController::requireSecurityGroup($module, 'list') ) {
-            require_once('modules/SecurityGroups/SecurityGroup.php');
-            global $current_user;
-            $owner_where = $person->getOwnerWhere($current_user->id);
-            $group_where = SecurityGroup::getGroupWhere($table, $module, $current_user->id);
-            $t .= " AND (" . $owner_where . " or " . $group_where . ") ";
-         }
-         /* END - SECURITY GROUPS */
+            if ($personBean instanceof Company) {
+                $t = "SELECT {$table}.id, '' first_name, {$table}.name, eabr.primary_address, ea.email_address, '{$module}' module ";
+            } else {
+                $t = "SELECT {$table}.id, {$table}.first_name, {$table}.last_name, eabr.primary_address, ea.email_address, '{$module}' module ";
+            }
+            $t .= "FROM {$table} ";
+            $t .= "JOIN email_addr_bean_rel eabr ON ({$table}.id = eabr.bean_id and eabr.deleted=0) ";
+            $t .= "JOIN email_addresses ea ON (eabr.email_address_id = ea.id) ";
+            $t .= " WHERE {$where}";
 
+            if (!empty($q)) {
+                $q .= "\n UNION ALL \n";
+            }
 
-         if ( !empty($q) ) {
-            $q .= "\n UNION ALL \n";
-         }
+            $q .= "({$t})";
+        }
+        $countq = "SELECT count(people.id) c from ($q) people";
+        $q .= "ORDER BY last_name";
 
-         $q .= "({$t})";
-      }
-      $countq = "SELECT count(people.id) c from ($q) people";
-      $q .= "ORDER BY last_name";
-
-      return array( 'query' => $q, 'countQuery' => $countq );
-   }
+        return array('query' => $q, 'countQuery' => $countq);
+    }
 
    /**
     * get emails of related bean for a given bean id
@@ -2458,7 +2485,7 @@ eoq;
     * @return array('query' => $q, 'countQuery' => $countq);
     */
    public function getRelatedEmail($beanType, $whereArr, $relatedBeanInfoArr = '') {
-      global $beanList, $current_user, $app_strings, $db;
+      global $beanList, $current_user, $app_strings;
       $finalQuery = '';
       $searchBeans = null;
       if ( $beanType === 'LBL_DROPDOWN_LIST_ALL' ) {
@@ -2517,76 +2544,70 @@ eoq;
       return array( 'query' => $finalQuery, 'countQuery' => $countq );
    }
 
-   public function findEmailFromBeanIds($beanIds, $beanType, $whereArr) {
-      global $current_user;
-      $q = '';
-      $whereAdd = "";
-      $relatedIDs = '';
-      if ( $beanIds != '' ) {
-         foreach ( $beanIds as $key => $value ) {
-            $beanIds[$key] = '\'' . $value . '\'';
-         }
-         $relatedIDs = implode(',', $beanIds);
-      }
+    public function findEmailFromBeanIds($beanIds, $beanType, $whereArr)
+    {
+        global $current_user;
+        $q = '';
+        $whereAdd = "";
+        $relatedIDs = '';
+        if ($beanIds != '') {
+            foreach ($beanIds as $key => $value) {
+                $beanIds[$key] = '\'' . $value . '\'';
+            }
+            $relatedIDs = implode(',', $beanIds);
+        }
 
-      if ( $beanType == 'accounts' ) {
-         if ( isset($whereArr['first_name']) ) {
-            $whereArr['name'] = $whereArr['first_name'];
-         }
-         unset($whereArr['last_name']);
-         unset($whereArr['first_name']);
-      }
+        $module = ucfirst($beanType);
+        $personBean = BeanFactory::getBean($module);
+        if ($personBean !== false  && $personBean->ACLAccess('list')) {
 
-      foreach ( $whereArr as $column => $clause ) {
-         if ( !empty($whereAdd) ) {
-            $whereAdd .= " OR ";
-         }
-         $clause = $current_user->db->quote($clause);
-         $whereAdd .= "{$column} LIKE '{$clause}%'";
-      }
-      $table = $beanType;
-      $module = ucfirst($table);
-      $class = substr($module, 0, strlen($module) - 1);
-      require_once("modules/{$module}/{$class}.php");
-      $person = new $class();
-      if ( $person->ACLAccess('list') ) {
-         if ( $relatedIDs != '' ) {
-            $where = "({$table}.deleted = 0 AND eabr.primary_address = 1 AND {$table}.id in ($relatedIDs))";
-         } else {
-            $where = "({$table}.deleted = 0 AND eabr.primary_address = 1)";
-         }
+            if ($personBean instanceof Company) {
+                if (isset($whereArr['first_name'])) {
+                    $whereArr['name'] = $whereArr['first_name'];
+                }
+                unset($whereArr['last_name']);
+                unset($whereArr['first_name']);
+            }
 
-         if ( ACLController::requireOwner($module, 'list') ) {
-            $where = $where . " AND ({$table}.assigned_user_id = '{$current_user->id}')";
-         } // if
-         if ( !empty($whereAdd) ) {
-            $where .= " AND ({$whereAdd})";
-         }
+            foreach ($whereArr as $column => $clause) {
+                if (!empty($whereAdd)) {
+                    $whereAdd .= " OR ";
+                }
+                $clause = $current_user->db->quote($clause);
+                $whereAdd .= "{$column} LIKE '{$clause}%'";
+            }
 
-         if ( $beanType === 'accounts' ) {
-            $t = "SELECT {$table}.id, '' first_name, {$table}.name last_name, eabr.primary_address, ea.email_address, '{$module}' module ";
-         } else {
-            $t = "SELECT {$table}.id, {$table}.first_name, {$table}.last_name, eabr.primary_address, ea.email_address, '{$module}' module ";
-         }
 
-         $t .= "FROM {$table} ";
-         $t .= "JOIN email_addr_bean_rel eabr ON ({$table}.id = eabr.bean_id and eabr.deleted=0) ";
-         $t .= "JOIN email_addresses ea ON (eabr.email_address_id = ea.id) ";
-         $t .= " WHERE {$where}";
-         /* BEGIN - SECURITY GROUPS */
-         //this function may not even be used anymore. Seems like findEmailFromBeanIds is preferred now
-         if ( $person->bean_implements('ACL') && ACLController::requireSecurityGroup($module, 'list') ) {
-            require_once('modules/SecurityGroups/SecurityGroup.php');
-            global $current_user;
-            $owner_where = $person->getOwnerWhere($current_user->id);
-            $group_where = SecurityGroup::getGroupWhere($table, $module, $current_user->id);
-            $t .= " AND (" . $owner_where . " or " . $group_where . ") ";
-         }
-         /* END - SECURITY GROUPS */
-      } // if
+            $table = $personBean->getTableName();
+            if ($relatedIDs !== '') {
+                $where = "({$table}.deleted = 0 AND eabr.primary_address = 1 AND {$table}.id in ($relatedIDs))";
+            } else {
+                $where = "({$table}.deleted = 0 AND eabr.primary_address = 1)";
+            }
 
-      return $t;
-   }
+            $accessWhere = $personBean->buildAccessWhere('list');
+            if (!empty($accessWhere)) {
+                $where .= ' AND '. $accessWhere;
+            }
+
+            if (!empty($whereAdd)) {
+                $where .= " AND ({$whereAdd})";
+            }
+
+            if ($personBean instanceof Company) {
+                $t = "SELECT {$table}.id, '' first_name, {$table}.name last_name, eabr.primary_address, ea.email_address, '{$module}' module ";
+            } else {
+                $t = "SELECT {$table}.id, {$table}.first_name, {$table}.last_name, eabr.primary_address, ea.email_address, '{$module}' module ";
+            }
+
+            $t .= "FROM {$table} ";
+            $t .= "JOIN email_addr_bean_rel eabr ON ({$table}.id = eabr.bean_id and eabr.deleted=0) ";
+            $t .= "JOIN email_addresses ea ON (eabr.email_address_id = ea.id) ";
+            $t .= " WHERE {$where}";
+        } // if
+
+        return $t;
+    }
 
    /**
     * Cleans UID lists
@@ -2796,26 +2817,34 @@ eoq;
     * returns an array of EmailTemplates that the user has access to for the compose email screen
     * @return array
     */
-   public function getEmailTemplatesArray() {
-      global $app_strings;
+    public function getEmailTemplatesArray()
+    {
+        global $app_strings;
 
-      if ( ACLController::checkAccess('EmailTemplates', 'list', true) && ACLController::checkAccess('EmailTemplates',
-                      'view', true)
-      ) {
-         $et = new EmailTemplate();
-         $etResult = $et->db->query($et->create_new_list_query('',
-                         "(email_templates.type IS NULL OR email_templates.type='' OR email_templates.type='email')", array(),
-                         array(), ''));
-         $email_templates_arr = array( '' => $app_strings['LBL_NONE'] );
-         while ( $etA = $et->db->fetchByAssoc($etResult) ) {
-            $email_templates_arr[$etA['id']] = $etA['name'];
-         }
-      } else {
-         $email_templates_arr = array( '' => $app_strings['LBL_NONE'] );
-      }
+        if (ACLController::checkAccess('EmailTemplates', 'list', true) && ACLController::checkAccess(
+            'EmailTemplates',
+            'view',
+            true
+        )
+        ) {
+            $et = BeanFactory::newBean('EmailTemplates');
+            $etResult = $et->db->query($et->create_new_list_query(
+                '',
+                "(email_templates.type IS NULL OR email_templates.type='' OR email_templates.type='email')",
+                array(),
+                array(),
+                ''
+            ));
+            $email_templates_arr = array('' => $app_strings['LBL_NONE']);
+            while ($etA = $et->db->fetchByAssoc($etResult)) {
+                $email_templates_arr[$etA['id']] = $etA['name'];
+            }
+        } else {
+            $email_templates_arr = array('' => $app_strings['LBL_NONE']);
+        }
 
-      return $email_templates_arr;
-   }
+        return $email_templates_arr;
+    }
 
    public function getFromAccountsArray($ie) {
       global $current_user;
@@ -2849,7 +2878,7 @@ eoq;
       foreach ( $ieAccountsFull as $k => $v ) {
          $personalSelected = (!empty($showFolders) && in_array($v->id, $showFolders));
 
-         $allowOutboundGroupUsage = $v->get_stored_options('allow_outbound_group_usage', false);
+         $allowOutboundGroupUsage = isTrue($v->get_stored_options('allow_outbound_group_usage', false) ?? false);
          $groupSelected = (in_array($v->groupfolder_id, $groupSubs) && $allowOutboundGroupUsage);
          $selected = ($personalSelected || $groupSelected);
 
@@ -2882,7 +2911,7 @@ eoq;
       }
 
       if ( !empty($system->mail_smtpserver) ) {
-         $admin = new Administration();
+        $admin = BeanFactory::newBean('Administration');
          $admin->retrieveSettings(); //retrieve all admin settings.
          $ieAccountsFrom[] = array(
             "value" => $system->id,
@@ -2925,7 +2954,7 @@ eoq;
          $toArray = $ie->email->email2ParseAddressesForAddressesOnly($ret['to']);
       } // else
       foreach ( $ieAccountsFull as $k => $v ) {
-         $storedOptions = unserialize(base64_decode($v->stored_options));
+        $storedOptions = sugar_unserialize(base64_decode($v->stored_options));
          if ( array_search_insensitive($storedOptions['from_addr'], $toArray) ) {
             if ( $v->is_personal ) {
                $foundInPersonalAccounts = true;
@@ -2956,7 +2985,7 @@ eoq;
       } // if
 
       if ( !empty($system->id) ) {
-         $admin = new Administration();
+        $admin = BeanFactory::newBean('Administration');
          $admin->retrieveSettings(); //retrieve all admin settings.
          if ( in_array(trim($return['email']), $toArray) ) {
             $foundInSystemAccounts = true;
@@ -2971,7 +3000,7 @@ eoq;
 
       $ieAccountsFrom = array();
       foreach ( $ieAccountsFull as $k => $v ) {
-         $storedOptions = unserialize(base64_decode($v->stored_options));
+        $storedOptions = sugar_unserialize(base64_decode($v->stored_options));
          $storedOptionsName = from_html($storedOptions['from_name']);
 
          $selected = false;
@@ -3065,11 +3094,18 @@ eoq;
       $defaultIEAccount = $ie->getUsersDefaultOutboundServerId($current_user);
 
       foreach ( $ieAccountsFull as $k => $v ) {
-         $selected = (!empty($showFolders) && in_array($v->id, $showFolders)) ? true : false;
-         $default = ($defaultIEAccount == $v->id) ? true : false;
-         $has_groupfolder = !empty($v->groupfolder_id) ? true : false;
-         $type = ($v->is_personal) ? $mod_strings['LBL_MAILBOX_TYPE_PERSONAL'] : $mod_strings['LBL_MAILBOX_TYPE_GROUP'];
+        $default = $defaultIEAccount == $v->id;
+        $has_groupfolder = !empty($v->groupfolder_id);
+        $type = $v->is_personal ? $mod_strings['LBL_MAILBOX_TYPE_PERSONAL'] : $mod_strings['LBL_MAILBOX_TYPE_GROUP'];
 
+        $personalSelected = (!empty($showFolders) && in_array($v->id, $showFolders, true));
+        $allowOutboundGroupUsage = isTrue($v->get_stored_options('allow_outbound_group_usage', false) ?? false);
+        $selected = $personalSelected || $allowOutboundGroupUsage  || is_admin($current_user);
+
+        if (!$selected) {
+            LoggerManager::getLogger()->debug("Inbound Email {$v->name}, not selected and will not be available for selection within compose UI.");
+            continue;
+        }
          $ieAccountsShowOptionsMeta[] = array(
             "id" => $v->id,
             "name" => $v->name,
@@ -3320,7 +3356,7 @@ eoq;
 ?>
 eoq;
       if ( $fh = @sugar_fopen($file, "w") ) {
-         fputs($fh, $the_string);
+        fwrite($fh, $the_string);
          fclose($fh);
 
          return true;
@@ -3408,29 +3444,30 @@ eoq;
     * @param int $defaultNum
     * @return string $str
     */
-   public function generateExpandableAddrs($str) {
-      global $mod_strings;
-      $tempStr = $str . ',';
-      $tempStr = html_entity_decode($tempStr);
-      $tempStr = $this->unifyEmailString($tempStr);
-      $defaultNum = 2;
-      $pattern = '/@.*,/U';
-      preg_match_all($pattern, $tempStr, $matchs);
-      $totalCount = count($matchs[0]);
+    public function generateExpandableAddrs($str)
+    {
+        global $mod_strings;
+        $tempStr = $str . ',';
+        $tempStr = html_entity_decode($tempStr);
+        $tempStr = $this->unifyEmailString($tempStr);
+        $defaultNum = 2;
+        $pattern = '/@.*,/U';
+        preg_match_all($pattern, $tempStr, $matchs);
+        $totalCount = count($matchs[0]);
 
-      if ( !empty($matchs[0]) && $totalCount > $defaultNum ) {
-         $position = strpos($tempStr, $matchs[0][$defaultNum]);
-         $hiddenCount = $totalCount - $defaultNum;
-         $frontStr = substr($tempStr, 0, $position);
-         $backStr = substr($tempStr, $position, -1);
-         $str = htmlentities($frontStr) . '<a class="utilsLink" onclick="javascript: SUGAR.email2.detailView.displayAllAddrs(this);">...[' . $mod_strings['LBL_EMAIL_DETAIL_VIEW_SHOW'] . $hiddenCount . $mod_strings['LBL_EMAIL_DETAIL_VIEW_MORE'] . ']</a><span style="display: none;">' . htmlentities($backStr) . '</span>';
-      }
+        if (!empty($matchs[0]) && $totalCount > $defaultNum) {
+            $position = strpos($tempStr, $matchs[0][$defaultNum]);
+            $hiddenCount = $totalCount - $defaultNum;
+            $frontStr = substr($tempStr, 0, $position);
+            $backStr = substr($tempStr, $position, -1);
+            $str = htmlentities($frontStr) . '<a class="utilsLink" onclick="SUGAR.email2.detailView.displayAllAddrs(this);">...[' . $mod_strings['LBL_EMAIL_DETAIL_VIEW_SHOW'] . $hiddenCount . $mod_strings['LBL_EMAIL_DETAIL_VIEW_MORE'] . ']</a><span style="display: none;">' . htmlentities($backStr) . '</span>';
+        }
 
-      return $str;
-   }
+        return $str;
+    }
 
    /**
-    * Unify the seperator as ,
+    * Unify the separator as ,
     *
     * @param String $str email address string
     * @return String converted string

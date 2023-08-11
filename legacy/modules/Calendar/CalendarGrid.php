@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -66,7 +66,7 @@ class CalendarGrid {
 	 * constructor
 	 * @param Calendar $cal
 	 */
-	function __construct(Calendar $cal){
+	public function __construct(Calendar $cal){
 		global $current_user;
 		$this->cal = $cal;
 		$today = $GLOBALS['timedate']->getNow(true)->get_day_begin();
@@ -76,8 +76,9 @@ class CalendarGrid {
 		$weekdays = array();
 		for($i = 0; $i < 7; $i++){
 			$j = $i + $this->startday;
-			if($j >= 7)
+			if($j >= 7) {
 				$j = $j - 7;
+            }
 			$weekdays[$i] = $GLOBALS['app_list_strings']['dom_cal_day_short'][$j+1];
 		}
 
@@ -87,10 +88,12 @@ class CalendarGrid {
         if (!($this->cal->isPrint() && $this->cal->view == 'day')) {
             if(in_array($this->cal->view,array('day','week'))){
                $this->scrollable = true;
-               if($this->cal->time_step < 30)
+               if($this->cal->time_step < 30){
                     $this->scroll_height = 480;
-               else
+               }
+               else {
                     $this->scroll_height = $this->cal->celcount * 15 + 1;
+               }
            }
         }
 
@@ -118,10 +121,11 @@ class CalendarGrid {
 		$str = "";
 		$head_content = "&nbsp;";
 		if($this->cal->view == 'month'){
-			if($this->startday == 0)
-				$wf = 1;
-			else
-				$wf = 0;
+			if($this->startday == 0) {
+                $wf = 1;
+            } else {
+                $wf = 0;
+            }
 			$head_content = "<a href='".ajaxLink("index.php?module=Calendar&action=index&view=week&hour=0&day=".$GLOBALS['timedate']->fromTimestamp($start)->format('j')."&month=".$GLOBALS['timedate']->fromTimestamp($start)->format('n')."&year=".$GLOBALS['timedate']->fromTimestamp($start)->format('Y'))."'>".$GLOBALS['timedate']->fromTimestamp($start + $wf*3600*24)->format('W')."</a>";
 		}
 		$str .= "<div class='left_col'>";
@@ -239,7 +243,7 @@ class CalendarGrid {
 
 	}
 
-	function mobile_display_items($day_item){
+	public function mobile_display_items($day_item){
 
 		$end_time = $this->mobile_get_end_time($day_item);
 		$status_color = $this->mobile_get_status_colour($day_item['status']);
@@ -287,14 +291,14 @@ class CalendarGrid {
 		return $display;
 	}
 
-	function mobile_get_end_time($day_item){
+	public function mobile_get_end_time($day_item){
 		$start_time = DateTime::createFromFormat("h:ia",$day_item['time_start']);
 		$start_time->modify('+' . $day_item['duration_minutes'] .'minutes');
 		return $start_time->format("h:ia");
 	}
 
 
-	function mobile_get_type_colour($type){
+	public function mobile_get_type_colour($type){
 		switch ($type) {
 			case "meeting":
 				$colour = "#D2E5FC";
@@ -312,7 +316,7 @@ class CalendarGrid {
 		return $colour;
 	}
 
-	function mobile_get_status_colour($type){
+	public function mobile_get_status_colour($type){
 		switch ($type) {
 			case "Held":
 			case "Completed":
@@ -334,7 +338,7 @@ class CalendarGrid {
 		return $colour;
 	}
 
-	function mobile_sort_items($agenda_array){
+	public function mobile_sort_items($agenda_array){
 		$times = "";
 
 		foreach ($agenda_array as $key => $row) {
@@ -375,16 +379,18 @@ class CalendarGrid {
 		$head_content = "&nbsp;";
 		if($this->cal->view == 'month' || $this->cal->style == "basic"){
 			$wf = 0;
-			if($this->startday == 0)
-				$wf = 1;
+			if($this->startday == 0) {
+                $wf = 1;
+            }
 			$head_content = $GLOBALS['timedate']->fromTimestamp($start + $wf*3600*24)->format('W');
 			$head_content = "<a href='".ajaxLink("index.php?module=Calendar&action=index&view=week&hour=0&day=".$GLOBALS['timedate']->fromTimestamp($start)->format('j')."&month=".$GLOBALS['timedate']->fromTimestamp($start)->format('n')."&year=".$GLOBALS['timedate']->fromTimestamp($start)->format('Y'))."'>".$head_content."</a>";
 		}
 		$left_col = ($this->style != 'basic' || $this->cal->view == 'month');
 
 		$attr = "";
-		if($this->cal->style != "basic")
-			$attr = " id='cal-multiday-bar'";
+		if($this->cal->style != "basic") {
+            $attr = " id='cal-multiday-bar'";
+        }
 
 		$str .= "<div>";
 		if($cols > 1){
@@ -436,8 +442,9 @@ class CalendarGrid {
 		$str = "";
 		if($force){
 			$headstyle = "";
-			if($this->today_ts == $start)
-				$headstyle = " today";
+			if($this->today_ts == $start) {
+                $headstyle = " today";
+            }
 			$str .= "<div class='col_head".$headstyle."'><a href='".ajaxLink("index.php?module=Calendar&action=index&view=day&hour=0&day=".$GLOBALS['timedate']->fromTimestamp($start)->format('j')."&month=".$GLOBALS['timedate']->fromTimestamp($start)->format('n')."&year=".$GLOBALS['timedate']->fromTimestamp($start)->format('Y'))."'>".$this->weekdays[$day]." ".$GLOBALS['timedate']->fromTimestamp($start)->format('d')."</a></div>";
 		}
 		return $str;
@@ -552,7 +559,7 @@ class CalendarGrid {
 		$str .= "<div id='cal-grid' style='visibility: hidden;'>";
 		$user_number = 0;
 
-		$shared_user = new User();
+		$shared_user = BeanFactory::newBean('Users');
 		foreach($this->cal->shared_ids as $member_id){
 
 			$user_number_str = "_".$user_number;
@@ -588,10 +595,13 @@ class CalendarGrid {
 
 		$weekEnd1 = 0 - $this->startday;
 		$weekEnd2 = -1 - $this->startday;
-		if($weekEnd1 < 0)
-			$weekEnd1 += 7;
-		if($weekEnd2 < 0)
-			$weekEnd2 += 7;
+		if($weekEnd1 < 0) {
+            $weekEnd1 += 7;
+        }
+		if($weekEnd2 < 0) {
+            $weekEnd2 += 7;
+        }
+			
 
 		$year_start = $GLOBALS['timedate']->fromString($this->cal->date_time->year.'-01-01');
 
@@ -608,14 +618,16 @@ class CalendarGrid {
 			$month_end_ts = $month_end->format('U') + $month_end->getOffset();
 			$table_id = "daily_cal_table".$m; //bug 47471
 
-			if($m % 3 == 0)
+			if($m % 3 == 0) {
 				$str .= "<tr>";
+            }
 					$str .= '<td class="yearCalBodyMonth" align="center" valign="top" scope="row">';
 						$str .= '<a class="yearCalBodyMonthLink" href="'.ajaxLink('index.php?module=Calendar&action=index&view=month&&hour=0&day=1&month='.($m+1).'&year='.$GLOBALS['timedate']->fromTimestamp($month_start_ts)->format('Y')).'">'.$GLOBALS['app_list_strings']['dom_cal_month_long'][$m+1].'</a>';
 						$str .= '<table id="'. $table_id. '" cellspacing="1" cellpadding="0" border="0" width="100%">';
 							$str .= '<tr class="monthCalBodyTH">';
-								for($d = 0; $d < 7; $d++)
+								for($d = 0; $d < 7; $d++) {
 									$str .= '<th width="14%">'.$this->weekdays[$d].'</th>';
+                                }
 							$str .= '</tr>';
 							$curr_time_global = $week_start_ts;
 							$w = 0;
@@ -624,18 +636,19 @@ class CalendarGrid {
 									for($d = 0; $d < 7; $d++){
 										$curr_time = $week_start_ts + $d*86400 + $w*60*60*24*7;
 
-										if($curr_time < $month_start_ts || $curr_time >= $month_end_ts)
+										if($curr_time < $month_start_ts || $curr_time >= $month_end_ts) {
 											$monC = "";
-										else
+                                        } else {
 											$monC = '<a href="'.ajaxLink('index.php?module=Calendar&action=index&view=day&hour=0&day='.$GLOBALS['timedate']->fromTimestamp($curr_time)->format('j').'&month='.$GLOBALS['timedate']->fromTimestamp($curr_time)->format('n').'&year='.$GLOBALS['timedate']->fromTimestamp($curr_time)->format('Y')) .'">'.$GLOBALS['timedate']->fromTimestamp($curr_time)->format('j').'</a>';
-
-										if($d == $weekEnd1 || $d == $weekEnd2)
+                                        }
+										if($d == $weekEnd1 || $d == $weekEnd2) {
 											$str .= "<td class='weekEnd monthCalBodyWeekEnd'>";
-										else
+                                        } else {
 											$str .= "<td class='monthCalBodyWeekDay'>";
 
 												$str .= $monC;
 											$str .= "</td>";
+                                        }
 									}
 								$str .= "</tr>";
 								$curr_time_global += 60*60*24*7;
@@ -643,8 +656,9 @@ class CalendarGrid {
 							}
 						$str .= '</table>';
 					$str .= '</td>';
-			if(($m - 2) % 3 == 0)
+			if(($m - 2) % 3 == 0) {
 				$str .= "</tr>";
+            }
 		}
 		$str .= "</table>";
 

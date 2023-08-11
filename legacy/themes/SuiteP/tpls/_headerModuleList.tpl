@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -124,7 +124,10 @@
                                                                 <span class="{get_module_icon_class module_name=$item.module_name}"></span>
                                                                 <span aria-hidden="true">{$item.item_summary_short}</span>
                                                             </a>
+                                                            {capture assign='access'}{suite_check_access module=$item.module_name action='edit' record=$item.item_id }{/capture}
+                                                            {if $access}
                                                             <a href="{sugar_link module=$item.module_name action='EditView' record=$item.item_id link_only=1}" class="recent-links-edit"><span class=" glyphicon glyphicon-pencil"></a>
+                                                            {/if}
                                                         </li>
                                                     {/if}
                                                     {/foreach}
@@ -149,7 +152,10 @@
                                                                                     <span class="{get_module_icon_class module_name=$item.module_name}"></span>
                                                                                     <span aria-hidden="true">{$item.item_summary_short}</span>
                                                                                 </a>
+                                                                                {capture assign='access'}{suite_check_access module=$item.module_name action='edit' record=$item.item_id }{/capture}
+                                                                                {if $access}
                                                                                 <a href="{sugar_link module=$item.module_name action='EditView' record=$item.id link_only=1}" class="favorite-links-edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></a>
+                                                                                {/if}
                                                                             </li>
                                                                         {/if}
                                                                         {/foreach}
@@ -235,7 +241,10 @@
 
                                                                                                                     <span aria-hidden="true">{$item.item_summary_short}</span>
                                                                                                                 </a>
+                                                                                                                {capture assign='access'}{suite_check_access module=$item.module_name action='edit' record=$item.item_id }{/capture}
+                                                                                                                {if $access}
                                                                                                                 <a href="{sugar_link module=$item.module_name action='EditView' record=$item.item_id link_only=1}" class="recent-links-edit"><span class=" glyphicon glyphicon-pencil"></a>
+                                                                                                                {/if}
                                                                                                             </li>
                                                                                                             {counter name="submoduleRecentRecords" print=false}
                                                                                                         {/if}
@@ -269,7 +278,10 @@
                                                                                                                     <span class="{get_module_icon_class module_name=$item.module_name}"></span>
                                                                                                                     <span aria-hidden="true">{$item.item_summary_short}</span>
                                                                                                                 </a>
+                                                                                                                {capture assign='access'}{suite_check_access module=$item.module_name action='edit' record=$item.item_id }{/capture}
+                                                                                                                {if $access}
                                                                                                                 <a href="{sugar_link module=$item.module_name action='EditView' record=$item.id link_only=1}" class="favorite-links-edit"><span class=" glyphicon glyphicon-pencil" aria-hidden="true"></a>
+                                                                                                                {/if}
                                                                                                             </li>
                                                                                                             {counter name="submoduleFavoriteRecords" print=false}
                                                                                                         {/if}
@@ -288,8 +300,7 @@
                                                                                                 {capture name=extraparams assign=extraparams}parentTab={$group}{/capture}
                                                                                                 <li class="topnav {if $smarty.foreach.groupList.last}all{/if}">
                                                                                                     <span class="notCurrentTabLeft">&nbsp;</span><span class="notCurrentTab">
-                                                                                                        <a href="#" id="grouptab_{$smarty.foreach.groupList.index}" class="dropdown-toggle grouptab"
-                                                                                                           data-toggle="dropdown">{$group}</a>
+                                                                                                        <a href="#" id="grouptab_{$smarty.foreach.groupList.index}" class="dropdown-toggle grouptab">{$group}</a>
                                                                                                         <span class="notCurrentTabRight">&nbsp;</span>
                                                                                                         <ul class="dropdown-menu" role="menu" {if $smarty.foreach.groupList.last} class="All"{/if}>
                                                                                                             {foreach from=$modules.modules item=module key=modulekey}
@@ -385,7 +396,10 @@
                                                                                                                                        href="{sugar_link module=$item.module_name action='DetailView' record=$item.item_id link_only=1}" class="recent-links-detail">
                                                                                                                                         <span aria-hidden="true">{$item.item_summary_short}</span>
                                                                                                                                     </a>
+                                                                                                                                    {capture assign='access'}{suite_check_access module=$item.module_name action='edit' record=$item.item_id }{/capture}
+                                                                                                                                    {if $access}
                                                                                                                                     <a href="{sugar_link module=$item.module_name action='EditView' record=$item.item_id link_only=1}" class="recent-links-edit"><span class=" glyphicon glyphicon-pencil"></a>
+                                                                                                                                    {/if}
                                                                                                                                 </li>
                                                                                                                                 {counter name="submoduleRecentRecords" print=false}
                                                                                                                             {/if}
@@ -414,7 +428,10 @@
                                                                                                                                        href="{sugar_link module=$item.module_name action='DetailView' record=$item.id link_only=1}" class="favorite-links-detail">
                                                                                                                                         <span aria-hidden="true">{$item.item_summary_short}</span>
                                                                                                                                     </a>
+                                                                                                                                    {capture assign='access'}{suite_check_access module=$item.module_name action='edit' record=$item.item_id }{/capture}
+                                                                                                                                    {if $access}
                                                                                                                                     <a href="{sugar_link module=$item.module_name action='EditView' record=$item.id link_only=1}" class="favorite-links-edit"><span class=" glyphicon glyphicon-pencil" aria-hidden="true"></a>
+                                                                                                                                    {/if}
                                                                                                                                 </li>
                                                                                                                                 {counter name="submoduleFavoriteRecords" print=false}
                                                                                                                             {/if}
@@ -478,10 +495,11 @@
                                                                                                           $navItems.last().prependTo( '#overflow-menu' );
                                                                                                           $navItems.splice( -1, 1 );
                                                                                                        }
-
-                                                                                                       navItemMoreLeft = $( '.navbar-horizontal-fluid .overflow-toggle-menu' ).offset().left;
-                                                                                                       navOverflowWidth = $( '#overflow-menu' ).width();
-                                                                                                       offset = navItemMoreLeft + navItemMoreWidth - navOverflowWidth;
+                                                                                                        if(typeof $navItemMoreLeft !== "undefined") {
+                                                                                                            navItemMoreLeft = $( '.navbar-horizontal-fluid .overflow-toggle-menu' ).offset().left;
+                                                                                                            navOverflowWidth = $( '#overflow-menu' ).width();
+                                                                                                            offset = navItemMoreLeft + navItemMoreWidth - navOverflowWidth;
+                                                                                                        }
                                                                                                     };
                                                                                                     $( window ).resize( windowResize );
                                                                                                     windowResize();
@@ -574,7 +592,14 @@
                                                                                                             {foreach from=$GCLS item=GCL name=gcl key=gcl_key}
                                                                                                                 <li role="presentation">
                                                                                                                     <a id="{$gcl_key}_link"
-                                                                                                                       href="{$GCL.URL}"{if !empty($GCL.ONCLICK)} onclick="{$GCL.ONCLICK}"{/if}>{$GCL.LABEL}</a>
+                                                                                                                    href="{$GCL.URL}"
+                                                                                                                    {if !empty($GCL.ONCLICK)} 
+                                                                                                                    onclick="{$GCL.ONCLICK}"
+                                                                                                                    {/if}
+                                                                                                                    {if !empty($GCL.TARGET)} 
+                                                                                                                    target="{$GCL.TARGET}"
+                                                                                                                    {/if}
+                                                                                                                    >{$GCL.LABEL}</a>
                                                                                                                 </li>
                                                                                                             {/foreach}
                                                                                                             <li role="presentation"><a role="menuitem" id="logout_link" href='{$LOGOUT_LINK}'
@@ -674,7 +699,14 @@
                                                                                                             {foreach from=$GCLS item=GCL name=gcl key=gcl_key}
                                                                                                                 <li role="presentation">
                                                                                                                     <a id="{$gcl_key}_link"
-                                                                                                                       href="{$GCL.URL}"{if !empty($GCL.ONCLICK)} onclick="{$GCL.ONCLICK}"{/if}>{$GCL.LABEL}</a>
+                                                                                                                    href="{$GCL.URL}"
+                                                                                                                    {if !empty($GCL.ONCLICK)} 
+                                                                                                                    onclick="{$GCL.ONCLICK}"
+                                                                                                                    {/if}
+                                                                                                                    {if !empty($GCL.TARGET)} 
+                                                                                                                    target="{$GCL.TARGET}"
+                                                                                                                    {/if}
+                                                                                                                    >{$GCL.LABEL}</a>
                                                                                                                 </li>
                                                                                                             {/foreach}
                                                                                                             <li role="presentation"><a role="menuitem" id="logout_link" href='{$LOGOUT_LINK}'
@@ -760,7 +792,7 @@
                                                                                                                 </span>
                                                                                                             {/if}
                                                                                                             {* MintHCM #63083 END *}
-                                                                                                            <span>{$CURRENT_USER_FIRST_NAME}</span>
+                                                                                                            <span class="globallabel-user">{$CURRENT_USER_FIRST_NAME}</span>
                                                                                                             <span class="suitepicon suitepicon-action-caret"></span>
                                                                                                         </button>
                                                                                                         <ul class="dropdown-menu user-dropdown user-menu" role="menu" aria-labelledby="with-label">
@@ -777,7 +809,14 @@
                                                                                                             {foreach from=$GCLS item=GCL name=gcl key=gcl_key}
                                                                                                                 <li role="presentation">
                                                                                                                     <a id="{$gcl_key}_link"
-                                                                                                                       href="{$GCL.URL}"{if !empty($GCL.ONCLICK)} onclick="{$GCL.ONCLICK}"{/if}>{$GCL.LABEL}</a>
+                                                                                                                    href="{$GCL.URL}"
+                                                                                                                    {if !empty($GCL.ONCLICK)} 
+                                                                                                                    onclick="{$GCL.ONCLICK}"
+                                                                                                                    {/if}
+                                                                                                                    {if !empty($GCL.TARGET)}
+                                                                                                                    target="{$GCL.TARGET}"
+                                                                                                                    {/if}
+                                                                                                                    >{$GCL.LABEL}</a>
                                                                                                                 </li>
                                                                                                             {/foreach}
                                                                                                             <li role="presentation"><a role="menuitem" id="logout_link" href='{$LOGOUT_LINK}'
@@ -795,7 +834,7 @@
 
                                                                                             <a id="buttontoggle" class="buttontoggle"><span></span></a>
 
-                                                                                            <div {if $smarty.cookies.sidebartoggle == 'collapsed'}style="display:none"{/if}
+                                                                                                <div {if $smarty.cookies.sidebartoggle|default:'' == 'collapsed'}style="display:none"{/if}
                                                                                                                                                   class="sidebar">
 
                                                                                                 <div id="actionMenuSidebar" class="actionMenuSidebar">
@@ -851,7 +890,10 @@
                                                                                                                                             <span class="{get_module_icon_class module_name=$item.module_name}"></span>
                                                                                                                                             <span>{$item.item_summary_short}</span>
                                                                                                                                         </a>
+                                                                                                                                        {capture assign='access'}{suite_check_access module=$item.module_name action='edit' record=$item.item_id }{/capture}
+                                                                                                                                        {if $access}
                                                                                                                                         <a href="{sugar_link module=$item.module_name action='EditView' record=$item.item_id link_only=1}" class="recent-links-edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                                                                                                                        {/if}
                                                                                                                                     </li>
                                                                                                                                 </div>
                                                                                                                             {/if}
@@ -896,7 +938,10 @@
                                                                                                                                         <span class="{get_module_icon_class module_name=$item.module_name}"></span>
                                                                                                                                         <span aria-hidden="true">{$item.item_summary_short}</span>
                                                                                                                                     </a>
+                                                                                                                                    {capture assign='access'}{suite_check_access module=$item.module_name action='edit' record=$item.item_id }{/capture}
+                                                                                                                                    {if $access}
                                                                                                                                     <a href="{sugar_link module=$item.module_name action='EditView' record=$item.id link_only=1}" class="favorite-links-edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                                                                                                                    {/if}
                                                                                                                                 </li>
                                                                                                                             </div>
                                                                                                                         {/if}

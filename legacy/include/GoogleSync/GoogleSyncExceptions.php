@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -51,7 +51,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Exception Codes & Messages are set to unique values, but can still be overridden if needed.
  * Standard: Classes should be in separated files..
  */
-class GoogleSyncException extends Exception {
+class GoogleSyncException extends Exception
+{
     const UNKNOWN_EXCEPTION = 100;
     const MEETING_NOT_FOUND = 101;
     const EVENT_ID_IS_EMPTY = 102;

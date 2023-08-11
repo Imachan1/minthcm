@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,29 +45,29 @@
 
 class OAuthTokensController extends SugarController
 {
-	protected function action_delete()
-	{
-	    global $current_user;
-		//do any pre delete processing
-		//if there is some custom logic for deletion.
-		if(!empty($_REQUEST['record'])){
-			if(!is_admin($current_user) && $this->bean->assigned_user_id != $current_user->id) {
+    protected function action_delete()
+    {
+        global $current_user;
+        //do any pre delete processing
+        //if there is some custom logic for deletion.
+        if (!empty($_REQUEST['record'])) {
+            if (!is_admin($current_user) && $this->bean->assigned_user_id != $current_user->id) {
                 ACLController::displayNoAccess(true);
                 sugar_cleanup(true);
-			}
-			$this->bean->mark_deleted($_REQUEST['record']);
-        }else{
-			sugar_die("A record number must be specified to delete");
-		}
-	}
+            }
+            $this->bean->mark_deleted($_REQUEST['record']);
+        } else {
+            sugar_die("A record number must be specified to delete");
+        }
+    }
 
-	protected function post_delete()
-	{
-        if(!empty($_REQUEST['return_url'])){
+    protected function post_delete()
+    {
+        if (!empty($_REQUEST['return_url'])) {
             $_REQUEST['return_url'] =urldecode($_REQUEST['return_url']);
             $this->redirect_url = $_REQUEST['return_url'];
         } else {
             parent::post_delete();
         }
-	}
+    }
 }

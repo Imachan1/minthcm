@@ -5,10 +5,10 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2020 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,51 +43,45 @@
  */
 
 
-
-
 require_once("include/SugarCharts/JsChart.php");
 
-class Jit extends JsChart {
-	
-	var $supports_image_export = true;
-	var $print_html_legend_pdf = true;
-	
-	function __construct() {
-		parent::__construct();
-	}
-	
-	function getChartResources() {
-		return '
-		<!--[if lt IE 9]>
-		<script type="text/javascript" src="'.getJSPath('include/SugarCharts/Jit/FlashCanvas/flashcanvas.js').'"></script>
-		<![endif]-->
+class Jit extends JsChart
+{
+    public $supports_image_export = true;
+    public $print_html_legend_pdf = true;
+    
+    public function __construct()
+    {
+        parent::__construct();
+    }
+    
+    public function getChartResources()
+    {
+        return '
 		<script language="javascript" type="text/javascript" src="'.getJSPath('include/SugarCharts/Jit/js/Jit/jit.js').'"></script>
 		<script language="javascript" type="text/javascript" src="'.getJSPath('include/SugarCharts/Jit/js/sugarCharts.js').'"></script>
 		';
-	}
-	
-	function getMySugarChartResources() {
-		return '
+    }
+    
+    public function getMySugarChartResources()
+    {
+        return '
 		<script language="javascript" type="text/javascript" src="'.getJSPath('include/SugarCharts/Jit/js/mySugarCharts.js').'"></script>
 		';
-	}
-	
+    }
+    
 
-	function display($name, $xmlFile, $width='320', $height='480', $resize=false) {
-	
-		parent::display($name, $xmlFile, $width, $height, $resize);
+    public function display($name, $xmlFile, $width='320', $height='480', $resize=false)
+    {
+        parent::display($name, $xmlFile, $width, $height, $resize);
 
-		return $this->ss->fetch('include/SugarCharts/Jit/tpls/chart.tpl');	
-	}
-	
+        return $this->ss->fetch('include/SugarCharts/Jit/tpls/chart.tpl');
+    }
+    
 
-	function getDashletScript($id,$xmlFile="") {
-		
-		parent::getDashletScript($id,$xmlFile);
-		return $this->ss->fetch('include/SugarCharts/Jit/tpls/DashletGenericChartScript.tpl');
-	}
-	
-	
-
-	
+    public function getDashletScript($id, $xmlFile="")
+    {
+        parent::getDashletScript($id, $xmlFile);
+        return $this->ss->fetch('include/SugarCharts/Jit/tpls/DashletGenericChartScript.tpl');
+    }
 }

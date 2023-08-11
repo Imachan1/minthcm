@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,14 +47,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('modules/DynamicFields/templates/Fields/TemplateEnum.php');
 require_once('include/utils/array_utils.php');
-class TemplateAddressCountry extends TemplateEnum {
+class TemplateAddressCountry extends TemplateEnum
+{
+    public $group = '';
     
-    var $group = '';
-    
-	function get_field_def(){
-		$def = parent::get_field_def();
-		$def['group'] = $this->group;
-		$def['options'] = 'countries_dom';
-		return $def;	
-	}
+    public function get_field_def()
+    {
+        $def = parent::get_field_def();
+        $def['group'] = $this->group;
+        $def['options'] = 'countries_dom';
+        return $def;
+    }
 }

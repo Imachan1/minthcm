@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,9 +46,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 $dictionary['Release'] = array('table' => 'releases'
-                               ,'fields' => array (
+                               ,'fields' => array(
   'id' =>
-  array (
+  array(
     'name' => 'id',
     'vname' => 'LBL_ID',
     'type' => 'id',
@@ -56,7 +56,7 @@ $dictionary['Release'] = array('table' => 'releases'
     'reportable'=>true,
   ),
   'deleted' =>
-  array (
+  array(
     'name' => 'deleted',
     'vname' => 'LBL_DELETED',
     'type' => 'bool',
@@ -64,21 +64,21 @@ $dictionary['Release'] = array('table' => 'releases'
     'reportable'=>false,
   ),
   'date_entered' =>
-  array (
+  array(
     'name' => 'date_entered',
     'vname' => 'LBL_DATE_ENTERED',
     'type' => 'datetime',
     'required'=>true,
   ),
   'date_modified' =>
-  array (
+  array(
     'name' => 'date_modified',
     'vname' => 'LBL_DATE_MODIFIED',
     'type' => 'datetime',
     'required'=>true,
   ),
     'modified_user_id' =>
-  array (
+  array(
     'name' => 'modified_user_id',
     'rname' => 'user_name',
     'id_name' => 'modified_user_id',
@@ -91,7 +91,7 @@ $dictionary['Release'] = array('table' => 'releases'
     'reportable'=>true,
   ),
   'created_by' =>
-  array (
+  array(
     'name' => 'created_by',
     'rname' => 'user_name',
     'id_name' => 'modified_user_id',
@@ -103,7 +103,7 @@ $dictionary['Release'] = array('table' => 'releases'
 
   ),
   'name' =>
-  array (
+  array(
     'name' => 'name',
     'vname' => 'LBL_NAME',
     'dbType' => 'varchar',
@@ -113,7 +113,7 @@ $dictionary['Release'] = array('table' => 'releases'
     'importable' => 'required',
   ),
  'list_order' =>
-  array (
+  array(
     'name' => 'list_order',
     'vname' => 'LBL_LIST_ORDER',
     'type' => 'int',
@@ -121,7 +121,7 @@ $dictionary['Release'] = array('table' => 'releases'
     'importable' => 'required',
   ),
   'status' =>
-  array (
+  array(
     'name' => 'status',
     'vname' => 'LBL_STATUS',
     'type' => 'enum',
@@ -130,7 +130,7 @@ $dictionary['Release'] = array('table' => 'releases'
     'importable' => 'required',
   ),
 )
-                                                      , 'indices' => array (
+                                                      , 'indices' => array(
        array('name' =>'releasespk', 'type' =>'primary', 'fields'=>array('id')),
        array('name' =>'idx_releases', 'type'=>'index', 'fields'=>array('name','deleted')),
                                                       )

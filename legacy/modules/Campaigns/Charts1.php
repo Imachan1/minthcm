@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -58,16 +58,17 @@ require_once('include/charts/Charts.php');
 
 
 
-class charts {
+class charts
+{
 
     /* @function:
      *
      * @param array targets: translated list of all activity types, targeted, bounced etc..
      * @param string campaign_id: chart for this campaign.
      */
-    function campaign_response_chart($targets,$campaign_id) {
-
-        $focus = new Campaign();
+    public function campaign_response_chart($targets, $campaign_id)
+    {
+        $focus = BeanFactory::newBean('Campaigns');
         $leadSourceArr = array();
 
         $query = "SELECT activity_type,target_type, count(*) hits ";
@@ -77,8 +78,7 @@ class charts {
         $query.= " ORDER BY  activity_type, target_type";
 
         $result = $focus->db->query($query);
-        while($row = $focus->db->fetchByAssoc($result, false)) {
-
+        while ($row = $focus->db->fetchByAssoc($result, false)) {
             if (isset($leadSourceArr[$row['activity_type']]['value'])) {
                 $leadSourceArr[$row['activity_type']]['value']=0;
             }
@@ -97,18 +97,17 @@ class charts {
         }
 
         //use the new template.
-        $xtpl=new XTemplate ('modules/Campaigns/chart.tpl');
-        $xtpl->assign("GRAPHTITLE",'Campaign Response by Recipient Activity');
-        $xtpl->assign("Y_DEFAULT_ALT_TEXT",'Rollover a bar to view details.');
+        $xtpl=new XTemplate('modules/Campaigns/chart.tpl');
+        $xtpl->assign("GRAPHTITLE", 'Campaign Response by Recipient Activity');
+        $xtpl->assign("Y_DEFAULT_ALT_TEXT", 'Rollover a bar to view details.');
 
         //process rows
         foreach ($leadSourceArr as $key=>$values) {
             if (isset($values['bars'])) {
                 foreach ($values['bars'] as $bar_id=>$bar_value) {
-                    $xtpl->assign("Y_BAR_ID",$bar_id);
+                    $xtpl->assign("Y_BAR_ID", $bar_id);
                 }
             }
-
         }
     }
-    }// end charts class
+}// end charts class

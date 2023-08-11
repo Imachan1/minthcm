@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,14 +46,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 // adding custom fields:
-if(isset($focus->custom_fields)){
-/*
-$test is set to focus to increment the reference count 
-since it appears that the reference count was off by 1 
-*/
-$test =& $focus;
-$focus->custom_fields->bean =& $focus;
-$focus->custom_fields->populateXTPL($xtpl, 'edit');
+if (isset($focus->custom_fields)) {
+    /*
+    $test is set to focus to increment the reference count
+    since it appears that the reference count was off by 1
+    */
+    $test =& $focus;
+    $focus->custom_fields->bean =& $focus;
+    $focus->custom_fields->populateXTPL($xtpl, 'edit');
 }
-
-

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,7 +49,7 @@ global $mod_strings, $app_strings, $sugar_config;
 
 if (ACLController::checkAccess('SurveyQuestions', 'edit', true)) {
     $module_menu[] =
-        Array(
+        array(
             "index.php?module=SurveyQuestions&action=EditView&return_module=SurveyQuestions&return_action=DetailView",
             $mod_strings['LNK_NEW_RECORD'],
             "Add",
@@ -58,7 +58,7 @@ if (ACLController::checkAccess('SurveyQuestions', 'edit', true)) {
 }
 if (ACLController::checkAccess('SurveyQuestions', 'list', true)) {
     $module_menu[] =
-        Array(
+        array(
             "index.php?module=SurveyQuestions&action=index&return_module=SurveyQuestions&return_action=DetailView",
             $mod_strings['LNK_LIST'],
             "View",

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,22 +42,20 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-require_once('include/MVC/View/views/view.modulelistmenu.php');
 
 class ActivitiesViewModulelistmenu extends ViewModulelistmenu
 {
- 	public function display()
- 	{
- 	    $tracker = new Tracker();
+    public function display()
+    {
+        $tracker = BeanFactory::newBean('Trackers');
         $history = $tracker->get_recently_viewed($GLOBALS['current_user']->id, array('Calls','Meetings','Tasks','Notes','Emails'));
-        foreach ( $history as $key => $row ) {
+        foreach ($history as $key => $row) {
             $history[$key]['item_summary_short'] = getTrackerSubstring($row['item_summary']);
             $history[$key]['image'] = SugarThemeRegistry::current()
-                ->getImage($row['module_name'],'border="0" align="absmiddle"',null,null,'.gif',$row['item_summary']);
-
+                ->getImage($row['module_name'], 'border="0" align="absmiddle"', null, null, '.gif', $row['item_summary']);
         }
-        $this->ss->assign('LAST_VIEWED',$history);
- 	    
- 		$this->ss->display('include/MVC/View/tpls/modulelistmenu.tpl');
- 	}
+        $this->ss->assign('LAST_VIEWED', $history);
+        
+        $this->ss->display('include/MVC/View/tpls/modulelistmenu.tpl');
+    }
 }

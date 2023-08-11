@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -65,7 +65,7 @@ if (empty($GLOBALS['installing']) && !file_exists('config.php')) {
 
 $BASE_DIR = realpath(dirname(__DIR__));
 $autoloader = $BASE_DIR.'/vendor/autoload.php';
-if(file_exists($autoloader)) {
+if (file_exists($autoloader)) {
     require_once $autoloader;
 } else {
     die('Composer autoloader not found. please run "composer install"');
@@ -86,13 +86,8 @@ if (empty($GLOBALS['installing']) && empty($sugar_config['dbconfig']['db_name'])
 }
 
 // make sure SugarConfig object is available
-$GLOBALS['sugar_config'] = $sugar_config;
+$GLOBALS['sugar_config'] = !empty($sugar_config) ? $sugar_config : [];
 require_once 'include/SugarObjects/SugarConfig.php';
-
-if (!empty($sugar_config['xhprof_config'])) {
-    require_once 'include/SugarXHprof/SugarXHprof.php';
-    SugarXHprof::getInstance()->start();
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 ////	DATA SECURITY MEASURES
@@ -171,6 +166,15 @@ if (empty($GLOBALS['installing'])) {
         }
     }
 
+    $sessionGCConfig = $sugar_config['session_gc'] ?? [];
+    if (!isset($sessionGCConfig['enable']) || isTrue($sessionGCConfig['enable'])) {
+        $gcProbability = $sessionGCConfig['gc_probability'] ?? 1;
+        $gcDivisor = $sessionGCConfig['gc_divisor'] ?? 100;
+
+        ini_set('session.gc_probability', $gcProbability);
+        ini_set('session.gc_divisor', $gcDivisor);
+    }
+
     if (!empty($sugar_config['session_dir'])) {
         session_save_path($sugar_config['session_dir']);
     }
@@ -196,10 +200,10 @@ if (empty($GLOBALS['installing'])) {
         $_SERVER['REQUEST_URI'] = '';
     }
 
-    $current_user = new User();
+    $current_user = BeanFactory::newBean('Users');
     $GLOBALS['current_user'] = $current_user;
     $current_entity = null;
-    $system_config = new Administration();
+    $system_config = BeanFactory::newBean('Administration');
     $system_config->retrieveSettings();
 
     LogicHook::initialize()->call_custom_logic('', 'after_entry_point');

@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -68,7 +68,7 @@ if (!isset($GLOBALS['log'])) {
 }
 
 $mail = new SugarPHPMailer();
-$admin = new Administration();
+$admin = BeanFactory::newBean('Administration');
 $admin->retrieveSettings();
 if (isset($admin->settings['massemailer_campaign_emails_per_run'])) {
     $max_emails_per_run = $admin->settings['massemailer_campaign_emails_per_run'];
@@ -96,7 +96,7 @@ if (isset($_REQUEST['campaign_id']) && !empty($_REQUEST['campaign_id'])) {
 
 $db = DBManagerFactory::getInstance();
 $timedate = TimeDate::getInstance();
-$emailman = new EmailMan();
+$emailman = BeanFactory::newBean('EmailMan');
 
 if ($test) {
     //if this is in test mode, then
@@ -109,6 +109,7 @@ if ($test) {
     $select_query .= " join prospect_list_campaigns plc on em.campaign_id = plc.campaign_id";
     $select_query .= " join prospect_lists pl on pl.id = plc.prospect_list_id ";
     $select_query .= " WHERE em.list_id = pl.id and pl.list_type = 'test'";
+    $select_query .= " AND pl.deleted = 0 AND plc.deleted = 0 AND em.deleted = 0";
     $select_query .= " AND em.send_date_time <= " . $db->now();
     $select_query .= " AND (em.in_queue ='0' OR em.in_queue IS NULL OR (em.in_queue ='1' AND em.in_queue_date <= " . $db->convert($db->quoted($timedate->fromString("-1 day")->asDb()), "datetime") . "))";
     $select_query .= " AND em.campaign_id='{$campaign_id}'";
@@ -121,6 +122,7 @@ if ($test) {
     $select_query = " SELECT *";
     $select_query .= " FROM $emailman->table_name";
     $select_query .= " WHERE send_date_time <= " . $db->now();
+    $select_query .= " AND deleted = 0";
     $select_query .= " AND (in_queue ='0' OR in_queue IS NULL OR ( in_queue ='1' AND in_queue_date <= " . $db->convert($db->quoted($timedate->fromString("-1 day")->asDb()), "datetime") . ")) " . ($confirmOptInEnabled ? ' OR related_confirm_opt_in = 1 ' : ' AND related_confirm_opt_in = 0');
 
     if (!empty($campaign_id)) {
@@ -134,7 +136,6 @@ DBManager::setQueryLimit(0);
 //end bug fix
 
 do {
-
     $no_items_in_queue = true;
 
     $result = $db->limitQuery($select_query, 0, $max_emails_per_run);
@@ -142,7 +143,7 @@ do {
     if (isset($current_user)) {
         $temp_user = $current_user;
     }
-    $current_user = new User();
+    $current_user = BeanFactory::newBean('Users');
     $startTime = microtime(true);
 
 
@@ -174,11 +175,10 @@ do {
         //find the template associated with marketing message. make sure that template has a subject and
         //a non-empty body
         if (!isset($template_status[$row['marketing_id']])) {
-
-            $current_emailmarketing = new EmailMarketing();
+            $current_emailmarketing = BeanFactory::newBean('EmailMarketing');
             $current_emailmarketing->retrieve($row['marketing_id']);
 
-            $current_emailtemplate = new EmailTemplate();
+            $current_emailtemplate = BeanFactory::newBean('EmailTemplates');
             $current_emailtemplate->retrieve($current_emailmarketing->template_id);
         }
 
@@ -266,7 +266,7 @@ do {
             }
         } else {
             if ($confirmOptInEnabled) {
-                $emailAddress = new EmailAddress();
+                $emailAddress = BeanFactory::newBean('EmailAddresses');
                 $emailAddress->email_address = $emailAddress->getAddressesByGUID($row['related_id'], $row['related_type']);
                 
                 $now = TimeDate::getInstance()->nowDb();
@@ -309,7 +309,7 @@ do {
     $send_all = $send_all ? !$no_items_in_queue : $send_all;
 } while ($send_all);
 
-if ($admin->settings['mail_sendtype'] == "SMTP") {
+if (isSmtp($admin->settings['mail_sendtype'] ?? '')) {
     $mail->SMTPClose();
 }
 if (isset($temp_user)) {
@@ -318,7 +318,6 @@ if (isset($temp_user)) {
 if (isset($_REQUEST['return_module']) && isset($_REQUEST['return_action']) && isset($_REQUEST['return_id'])) {
     $from_wiz = ' ';
     if (isset($_REQUEST['from_wiz']) && $_REQUEST['from_wiz']) {
-
         if (isset($_REQUEST['WizardMarketingSave']) && $_REQUEST['WizardMarketingSave']) {
             $header_URL = "Location: index.php?action=WizardMarketing&module=Campaigns&return_module=Campaigns&return_action=Wi" .
                     "zardMarketing&return_id=" . $_REQUEST['campaign_id'] . "&campaign_id=" . $_REQUEST['campaign_id'] .

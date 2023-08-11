@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,25 +45,26 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-require_once('include/Dashlets/DashletGeneric.php');
-require_once('modules/SurveyQuestionOptions/SurveyQuestionOptions.php');
-
-class SurveyQuestionOptionsDashlet extends DashletGeneric
-{
-    function __construct($id, $def = null)
-    {
-        global $current_user, $app_strings;
-        require('modules/SurveyQuestionOptions/metadata/dashletviewdefs.php');
-
-        parent::__construct($id, $def);
-
-        if (empty($def['title'])) {
-            $this->title = translate('LBL_HOMEPAGE_TITLE', 'SurveyQuestionOptions');
-        }
-
-        $this->searchFields = $dashletData['SurveyQuestionOptionsDashlet']['searchFields'];
-        $this->columns = $dashletData['SurveyQuestionOptionsDashlet']['columns'];
-
-        $this->seedBean = new SurveyQuestionOptions();
-    }
-}
+ require_once('include/Dashlets/DashletGeneric.php');
+ require_once('modules/SurveyQuestionOptions/SurveyQuestionOptions.php');
+ 
+ class SurveyQuestionOptionsDashlet extends DashletGeneric
+ {
+     public function __construct($id, $def = null)
+     {
+         global $current_user, $app_strings;
+         require('modules/SurveyQuestionOptions/metadata/dashletviewdefs.php');
+ 
+         parent::__construct($id, $def);
+ 
+         if (empty($def['title'])) {
+             $this->title = translate('LBL_HOMEPAGE_TITLE', 'SurveyQuestionOptions');
+         }
+ 
+         $this->searchFields = $dashletData['SurveyQuestionOptionsDashlet']['searchFields'];
+         $this->columns = $dashletData['SurveyQuestionOptionsDashlet']['columns'];
+ 
+         $this->seedBean = BeanFactory::newBean('SurveyQuestionOptions');
+     }
+ }
+ 

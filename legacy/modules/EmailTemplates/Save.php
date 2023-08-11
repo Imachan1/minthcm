@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -54,16 +54,16 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
-$focus = new EmailTemplate();
+$focus = BeanFactory::newBean('EmailTemplates');
 require_once('include/formbase.php');
 $focus = populateFromPost('', $focus);
 
 require_once('modules/EmailTemplates/EmailTemplateFormBase.php');
 $form = new EmailTemplateFormBase();
 sugar_cache_clear('select_array:'.$focus->object_name.'namebase_module=\''. (isset($focus->base_module) ? $focus->base_module : null).'\'name');
-if(isset($_REQUEST['inpopupwindow']) and $_REQUEST['inpopupwindow'] == true) {
-	$focus=$form->handleSave('',false, false); //do not redirect.
-	$body1 = "
+if (isset($_REQUEST['inpopupwindow']) and $_REQUEST['inpopupwindow'] == true) {
+    $focus=$form->handleSave('', false, false, true, 'download', true); //do not redirect.
+    $body1 = "
 		<script type='text/javascript'>
 			function refreshTemplates() {
 				window.opener.refresh_email_template_list('$focus->id','$focus->name')
@@ -72,7 +72,7 @@ if(isset($_REQUEST['inpopupwindow']) and $_REQUEST['inpopupwindow'] == true) {
 
 			refreshTemplates();
 		</script>";
-	echo  $body1;
+    echo  $body1;
 } else {
-	$form->handleSave('',true, false, true, 'download');
+    $form->handleSave('', true, false, true, 'download', true);
 }

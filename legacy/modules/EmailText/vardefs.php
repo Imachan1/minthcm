@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,9 +49,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Class for separate storage of Email texts
  */
 global $dictionary;
-if(file_exists('custom/metadata/emails_beansMetaData.php')) {
-  require_once('custom/metadata/emails_beansMetaData.php');
+if (file_exists('custom/metadata/emails_beansMetaData.php')) {
+    require_once('custom/metadata/emails_beansMetaData.php');
 } else {
-  require_once('metadata/emails_beansMetaData.php');
+    require_once('metadata/emails_beansMetaData.php');
 }
 $dictionary['EmailText'] = $dictionary['emails_text'];

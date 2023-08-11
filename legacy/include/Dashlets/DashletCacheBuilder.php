@@ -10,8 +10,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -38,60 +38,75 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 /*********************************************************************************
 
- * Description: Handles Generic Widgets 
+ * Description: Handles Generic Widgets
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
+class DashletCacheBuilder
+{
 
-
-
-class DashletCacheBuilder {
-    
     /**
      * Builds the cache of Dashlets by scanning the system
      */
-    function buildCache() {
+    public function buildCache()
+    {
         global $beanList;
         $dashletFiles = array();
         $dashletFilesCustom = array();
-        
+
         getFiles($dashletFiles, 'modules', '/^.*\/Dashlets\/[^\.]*\.php$/');
         getFiles($dashletFilesCustom, 'custom/modules', '/^.*\/Dashlets\/[^\.]*\.php$/');
         $cacheDir = create_cache_directory('dashlets/');
         $allDashlets = array_merge($dashletFiles, $dashletFilesCustom);
         $dashletFiles = array();
-        foreach($allDashlets as $num => $file) {
-            if(substr_count($file, '.meta') == 0) { // ignore meta data files
+        foreach ($allDashlets as $num => $file) {
+            $fileName = basename($file);
+
+            $customFilePath = sprintf(
+                'custom/%s',
+                str_replace(
+                    $fileName,
+                    'Custom' . $fileName,
+                    $file
+                )
+            );
+
+            if (in_array($customFilePath, $allDashlets, true)) {
+                continue;
+            }
+
+            if (substr_count($file, '.meta') == 0) { // ignore meta data files
                 $class = substr($file, strrpos($file, '/') + 1, -4);
                 $dashletFiles[$class] = array();
                 $dashletFiles[$class]['file'] = $file;
                 $dashletFiles[$class]['class'] = $class;
-                if(is_file(preg_replace('/(.*\/.*)(\.php)/Uis', '$1.meta$2', $file))) { // is there an associated meta data file?
+                if (is_file(preg_replace('/(.*\/.*)(\.php)/Uis', '$1.meta$2', $file))) { // is there an associated meta data file?
                     $dashletFiles[$class]['meta'] = preg_replace('/(.*\/.*)(\.php)/Uis', '$1.meta$2', $file);
-                    require($dashletFiles[$class]['meta']);
-                    if ( isset($dashletMeta[$class]['module']) )
+                    require $dashletFiles[$class]['meta'];
+                    if (isset($dashletMeta[$class]['module'])) {
                         $dashletFiles[$class]['module'] = $dashletMeta[$class]['module'];
+                    }
                 }
-                
+
                 $filesInDirectory = array();
                 getFiles($filesInDirectory, substr($file, 0, strrpos($file, '/')), '/^.*\/Dashlets\/[^\.]*\.icon\.(jpg|jpeg|gif|png)$/i');
-                if(!empty($filesInDirectory)) {
+                if (!empty($filesInDirectory)) {
                     $dashletFiles[$class]['icon'] = $filesInDirectory[0]; // take the first icon we see
                 }
             }
         }
-        
+
         write_array_to_file('dashletsFiles', $dashletFiles, $cacheDir . 'dashlets.php');
     }
 }

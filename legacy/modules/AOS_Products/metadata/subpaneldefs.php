@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,22 +47,22 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $layout_defs['AOS_Products'] = array(
-	// list of what Subpanels to show in the DetailView
-	'subpanel_setup' => array(
+    // list of what Subpanels to show in the DetailView
+    'subpanel_setup' => array(
 
-		'aos_products_purchases' => array(
-			'order' => 100,
-			'module' => 'AOS_Quotes',
-			'subpanel_name' => 'ForProductPurchases',
-			'sort_order' => 'asc',
-			'sort_by' => 'id',
-			'title_key' => 'LBL_CUSTOMERS_PURCHASED_PRODUCTS_SUBPANEL_TITLE',
-			//'get_subpanel_data' => 'aos_products_aos_quotes_1',
-			'get_subpanel_data' => 'function:getCustomersPurchasedProductsQuery',
-			'top_buttons' =>
-			array(
-			),
-		),
+        'aos_products_purchases' => array(
+            'order' => 100,
+            'module' => 'AOS_Quotes',
+            'subpanel_name' => 'ForProductPurchases',
+            'sort_order' => 'asc',
+            'sort_by' => 'id',
+            'title_key' => 'LBL_CUSTOMERS_PURCHASED_PRODUCTS_SUBPANEL_TITLE',
+            //'get_subpanel_data' => 'aos_products_aos_quotes_1',
+            'get_subpanel_data' => 'function:getCustomersPurchasedProductsQuery',
+            'top_buttons' =>
+            array(
+            ),
+        ),
 
-	),
+    ),
 );

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,9 +52,9 @@ require_once('include/EditView/QuickCreate.php');
 
 class MeetingsQuickCreate extends QuickCreate {
     
-    var $javascript;
+    public $javascript;
     
-    function process() {
+    public function process() {
         global $current_user, $timedate, $app_list_strings, $current_language, $mod_strings, $timeMeridiem;
         $mod_strings = return_module_language($current_language, 'Meetings');
         
@@ -78,7 +78,7 @@ class MeetingsQuickCreate extends QuickCreate {
         $this->javascript = new javascript();
         $this->javascript->setFormName('meetingsQuickCreate');
         
-        $focus = new Meeting();
+        $focus = BeanFactory::newBean('Meetings');
         $this->javascript->setSugarBean($focus);
         $this->javascript->addAllFields('');
 
@@ -98,7 +98,7 @@ class MeetingsQuickCreate extends QuickCreate {
 
 		$this->ss->assign("DATE_START", $focus->date_start);
 		$this->ss->assign("TIME_START", substr($focus->time_start,0,5));
-		$time_start_hour = intval(substr($focus->time_start, 0, 2));
+		$time_start_hour = (int)(substr($focus->time_start, 0, 2));
 		$time_start_minutes = substr($focus->time_start, 3, 5);
 		
 		if ($time_start_minutes > 0 && $time_start_minutes < 15) {

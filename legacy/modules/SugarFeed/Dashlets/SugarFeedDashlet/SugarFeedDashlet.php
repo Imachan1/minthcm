@@ -12,7 +12,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -135,7 +135,7 @@ class SugarFeedDashlet extends DashletGeneric {
             unset($this->selectedCategories[0]);
          }
       }
-      $this->seedBean = new SugarFeed();
+      $this->seedBean = BeanFactory::newBean('SugarFeed');
    }
 
    public function process($lvsParams = array(), $id = null) {
@@ -244,7 +244,58 @@ class SugarFeedDashlet extends DashletGeneric {
          if ( !empty($where) ) {
             $where .= ' AND ';
          }
+         
+            /* BEGIN - SECURITY GROUPS */
+            global $dictionary;
+            $all_modules = array_merge($regular_modules,$owner_modules);
+            if(!is_admin($GLOBALS['current_user']) && count($all_modules) > 0)
+            {
+                $securitygroup_where = '';
+                $first = true;
+                foreach($all_modules as $module)
+                {
+                    if(!$first)
+                    {
+                        $securitygroup_where .= ' OR ';
+                    }
+                    $first = false;
+                    if($module == 'UserFeed')
+                    {
+                        $securitygroup_where .= " (sugarfeed.related_module = 'UserFeed') ";
+                        continue; //special case for UserFeed
+                    }
+                    $securitygroup_where .= " (sugarfeed.related_module = '".$module."' ";
+                    //assume any module from this point on supports ACL
+                    if(ACLController::requireSecurityGroup($module, 'list'))
+                    {
+                        $mod_bean = BeanFactory::getBean($module);
 
+                        $securitygroup_where .= " AND
+        (
+            '".$current_user->id."' = (select assigned_user_id from ".$mod_bean->table_name." where id = sugarfeed.related_id)
+        OR  EXISTS (SELECT  1
+                  FROM    securitygroups secg
+                          INNER JOIN securitygroups_users secu 
+                            ON secg.id = secu.securitygroup_id 
+                               AND secu.deleted = 0 
+                               AND secu.user_id = '".$current_user->id."'
+                          INNER JOIN securitygroups_records secr 
+                            ON secg.id = secr.securitygroup_id 
+                               AND secr.deleted = 0 
+                               AND secr.module = '".$module."'
+                       WHERE   secr.record_id = sugarfeed.related_id
+                               AND secg.deleted = 0)
+        ) ";
+                    }
+                    $securitygroup_where .= ' ) ';
+                }
+
+                $where .= $securitygroup_where;
+            }
+            if (!empty($where)) {
+                $where .= ' AND ';
+            }
+            /* END - SECURITY GROUPS */
 
          $where .= $module_limiter;
 
@@ -282,6 +333,14 @@ class SugarFeedDashlet extends DashletGeneric {
             if ( ($data['RELATED_MODULE'] == "facebook" || $data['RELATED_MODULE'] == "twitter") && $data['ASSIGNED_USER_ID'] != $current_user->id ) {
                unset($this->lvs->data['data'][$row]);
             }
+                /* BEGIN - SECURITY GROUPS */
+
+                $row_bean = BeanFactory::getBean($data['RELATED_MODULE'],$data['RELATED_ID']);
+                if(!empty($row_bean->id) && $row_bean->ACLAccess('ListView') === false)
+                {
+                    unset($this->lvs->data['data'][$row]);
+                }
+                /* END - SECURITY GROUPS */
          }
 
          // assign a baseURL w/ the action set as DisplayDashlet
@@ -305,7 +364,7 @@ class SugarFeedDashlet extends DashletGeneric {
 
       foreach ( $external_modules as $apiName ) {
          $api = ExternalAPIFactory::loadAPI($apiName);
-         if ( $api !== FALSE ) {
+         if ( $api !== false ) {
             // FIXME: Actually calculate the oldest sugar feed we can see, once we get an API that supports this sort of filter.
             $reply = $api->getLatestUpdates(0, $fetchRecordCount);
             if ( $reply['success'] && count($reply['messages']) > 0 ) {
@@ -349,7 +408,7 @@ class SugarFeedDashlet extends DashletGeneric {
 
    public function deleteUserFeed() {
       if ( !empty($_REQUEST['record']) ) {
-         $feed = new SugarFeed();
+        $feed = BeanFactory::newBean('SugarFeed');
          $feed->retrieve($_REQUEST['record']);
          if ( is_admin($GLOBALS['current_user']) || $feed->created_by == $GLOBALS['current_user']->id ) {
             $feed->mark_deleted($_REQUEST['record']);
@@ -363,8 +422,13 @@ class SugarFeedDashlet extends DashletGeneric {
          //allow for bold and italic user tags
          $text = preg_replace('/&amp;lt;(\/*[bi])&amp;gt;/i', '<$1>', $text);
          SugarFeed::pushFeed(
-                 $text, 'UserFeed', $GLOBALS['current_user']->id, $GLOBALS['current_user']->id, $_REQUEST['link_type'], $_REQUEST['link_url']
-         );
+            $text,
+            'UserFeed',
+            $GLOBALS['current_user']->id,
+            $GLOBALS['current_user']->id,
+            $_REQUEST['link_type'],
+            $_REQUEST['link_url']
+        );
       }
    }
 
@@ -374,8 +438,13 @@ class SugarFeedDashlet extends DashletGeneric {
          //allow for bold and italic user tags
          $text = preg_replace('/&amp;lt;(\/*[bi])&amp;gt;/i', '<$1>', $text);
          SugarFeed::pushFeed(
-                 $text, 'SugarFeed', $_REQUEST['parentFeed'], $GLOBALS['current_user']->id, '', ''
-         );
+            $text,
+            'SugarFeed',
+            $_REQUEST['parentFeed'],
+            $GLOBALS['current_user']->id,
+            '',
+            ''
+        );
       }
    }
 
@@ -495,6 +564,10 @@ enableQS(false);
 
       //View Tools #50754 START - fixed missing custom module icon
       //now process each token to create the proper url and image tags in feed, leaving a string for the alt to be replaced in next step
+        /* BEGIN - SECURITY GROUPS */
+        //hide links for those that shouldn't have one
+        $listview = preg_replace('/\[(\w+)\:([\w\-\d]*)\:([^\]]*)\]\[HIDELINK\]/', '$3', $listview);
+        /* END - SECURITY GROUPS */ 
       $listview = preg_replace_callback(
               '/\[(\w+)\:([\w\-\d]*)\:([^\]]*)\]/'
               , function($matches) {
@@ -598,8 +671,8 @@ enableQS(false);
 
    // This is called from the include/MySugar/DashletsDialog/DashletsDialog.php and determines if we should display the SugarFeed dashlet as an option or not
    public static function shouldDisplay() {
-      $admin = new Administration();
-      $admin->retrieveSettings();
+        $admin = BeanFactory::newBean('Administration');
+        $admin->retrieveSettings();
 
       if ( !isset($admin->settings['sugarfeed_enabled']) || $admin->settings['sugarfeed_enabled'] != '1' ) {
          return false;

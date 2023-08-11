@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,41 +42,43 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+class HomeViewList extends ViewList
+{
+    public function ActivitiesViewList()
+    {
+        parent::__construct();
+    }
 
-require_once('include/MVC/View/views/view.list.php');
+    public function display()
+    {
+        global $mod_strings, $export_module, $current_language, $theme, $current_user, $dashletData, $sugar_flavor;
+        $this->processMaxPostErrors();
+        include('modules/Home/index.php');
+    }
 
-class HomeViewList extends ViewList{
- 	function ActivitiesViewList(){
- 		parent::__construct();
- 		
- 	}
-
- 	function display(){
- 		global $mod_strings, $export_module, $current_language, $theme, $current_user, $dashletData, $sugar_flavor;
-         $this->processMaxPostErrors();
- 		include('modules/Home/index.php');
- 	}
-
-    function processMaxPostErrors() {
-        if($this->checkPostMaxSizeError()){
+    public function processMaxPostErrors()
+    {
+        if ($this->checkPostMaxSizeError()) {
             $this->errors[] = $GLOBALS['app_strings']['UPLOAD_ERROR_HOME_TEXT'];
             $contentLength = $_SERVER['CONTENT_LENGTH'];
 
             $maxPostSize = ini_get('post_max_size');
-            if (stripos($maxPostSize,"k"))
+            if (stripos($maxPostSize, "k")) {
                 $maxPostSize = (int) $maxPostSize * pow(2, 10);
-            elseif (stripos($maxPostSize,"m"))
+            } elseif (stripos($maxPostSize, "m")) {
                 $maxPostSize = (int) $maxPostSize * pow(2, 20);
+            }
 
             $maxUploadSize = ini_get('upload_max_filesize');
-            if (stripos($maxUploadSize,"k"))
+            if (stripos($maxUploadSize, "k")) {
                 $maxUploadSize = (int) $maxUploadSize * pow(2, 10);
-            elseif (stripos($maxUploadSize,"m"))
+            } elseif (stripos($maxUploadSize, "m")) {
                 $maxUploadSize = (int) $maxUploadSize * pow(2, 20);
+            }
 
             $max_size = min($maxPostSize, $maxUploadSize);
             if ($contentLength > $max_size) {
-                $errMessage = string_format($GLOBALS['app_strings']['UPLOAD_MAXIMUM_EXCEEDED'],array($contentLength,  $max_size));
+                $errMessage = string_format($GLOBALS['app_strings']['UPLOAD_MAXIMUM_EXCEEDED'], array($contentLength,  $max_size));
             } else {
                 $errMessage =$GLOBALS['app_strings']['UPLOAD_REQUEST_ERROR'];
             }
@@ -85,6 +87,4 @@ class HomeViewList extends ViewList{
             $this->displayErrors();
         }
     }
-
 }
-

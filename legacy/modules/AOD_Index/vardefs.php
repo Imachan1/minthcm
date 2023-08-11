@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,12 +43,12 @@
  */
 
 $dictionary['AOD_Index'] = array(
-	'table'=>'aod_index',
-	'audited'=>true,
-		'duplicate_merge'=>true,
-		'fields'=>array (
-  'last_optimised' => 
-  array (
+    'table'=>'aod_index',
+    'audited'=>true,
+        'duplicate_merge'=>true,
+        'fields'=>array(
+  'last_optimised' =>
+  array(
     'required' => false,
     'name' => 'last_optimised',
     'vname' => 'LBL_LAST_OPTIMISED',
@@ -68,8 +68,8 @@ $dictionary['AOD_Index'] = array(
     'enable_range_search' => false,
     'dbType' => 'datetime',
   ),
-  'location' => 
-  array (
+  'location' =>
+  array(
     'required' => false,
     'name' => 'location',
     'vname' => 'LBL_LOCATION',
@@ -89,12 +89,12 @@ $dictionary['AOD_Index'] = array(
     'size' => '20',
   ),
 ),
-	'relationships'=>array (
+    'relationships'=>array(
 ),
-	'optimistic_locking'=>true,
-		'unified_search'=>false,
-	);
-if (!class_exists('VardefManager')){
-        require_once('include/SugarObjects/VardefManager.php');
+    'optimistic_locking'=>true,
+        'unified_search'=>false,
+    );
+if (!class_exists('VardefManager')) {
+    require_once('include/SugarObjects/VardefManager.php');
 }
-VardefManager::createVardef('AOD_Index','AOD_Index', array('basic','assignable'));
+VardefManager::createVardef('AOD_Index', 'AOD_Index', array('basic','assignable'));

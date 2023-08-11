@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -57,5 +57,5 @@ if (!defined('sugarEntry') || !sugarEntry) {
 include_once __DIR__ . '/GoogleApiKeySaverEntryPoint.php';
 
 global $current_user, $sugar_config;
-$client = new Google_Client();
+$client = new \Google\Client();
 new GoogleApiKeySaverEntryPoint($current_user, $sugar_config, $client, $_REQUEST);

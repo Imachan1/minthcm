@@ -5,10 +5,10 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,8 +52,6 @@ $mod_strings = array(
     'LBL_ACCOUNT_NAME' => 'Account Name:',
     'LBL_CAMPAIGN' => 'Campaign:',
     'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-    'LBL_ADD_BUSINESSCARD' => 'Enter Business Card',
-    'LBL_ADDMORE_BUSINESSCARD' => 'Add another business card',
     'LBL_ADDRESS_INFORMATION' => 'Address Information',
     'LBL_ALT_ADDRESS_CITY' => 'Alternate Address City:',
     'LBL_ALT_ADDRESS_COUNTRY' => 'Alternate Address Country:',
@@ -72,10 +70,9 @@ $mod_strings = array(
     'LBL_ASSISTANT_PHONE' => 'Assistant Phone:',
     'LBL_ASSISTANT' => 'Assistant:',
     'LBL_BIRTHDATE' => 'Birthdate:',
-    'LBL_BUSINESSCARD' => 'Business Card',
     'LBL_CITY' => 'City:',
     'LBL_CAMPAIGN_ID' => 'Campaign ID',
-    'LBL_CONTACT_INFORMATION' => 'OVERVIEW',
+    'LBL_CONTACT_INFORMATION' => 'OVERVIEW', //No need to be translated in all caps. Translation used just in menu action items when using the SuiteP template
     'LBL_CONTACT_NAME' => 'Contact Name:',
     'LBL_CONTACT_OPP_FORM_TITLE' => 'Contact-Opportunity:',
     'LBL_CONTACT_ROLE' => 'Role:',
@@ -120,7 +117,7 @@ $mod_strings = array(
     'LBL_LIST_LAST_NAME' => 'Last Name',
     'LBL_LIST_NAME' => 'Name',
     'LBL_LIST_PHONE' => 'Office Phone',
-    'LBL_LIST_TITLE' => 'Title',
+    'LBL_LIST_TITLE' => 'Job Title',
     'LBL_MOBILE_PHONE' => 'Mobile:',
     'LBL_MODIFIED' => 'Modified By:',
     'LBL_MODULE_NAME' => 'Contacts',
@@ -157,10 +154,10 @@ $mod_strings = array(
     'LBL_SEARCH_FORM_TITLE' => 'Contact Search',
     'LBL_SELECT_CHECKED_BUTTON_LABEL' => 'Select Checked Contacts',
     'LBL_SELECT_CHECKED_BUTTON_TITLE' => 'Select Checked Contacts',
-    'LBL_STATE' => 'State:',
+    'LBL_STATE' => 'State/Region:',
     'LBL_SYNC_CONTACT' => 'Sync to Outlook&reg;:',
     'LBL_PROSPECT_LIST' => 'Prospect List',
-    'LBL_TITLE' => 'Title:',
+    'LBL_TITLE' => 'Job Title:',
     'LNK_CONTACT_LIST' => 'View Contacts',
     'LNK_IMPORT_VCARD' => 'Create Contact From vCard',
     'LNK_NEW_ACCOUNT' => 'Create Account',
@@ -224,4 +221,3 @@ $mod_strings = array(
     'LBL_AOS_QUOTES' => 'Quotes',
     'LBL_PROJECT_CONTACTS_1_FROM_PROJECT_TITLE' => 'Project Contacts from Project Title',
 );
-

@@ -7,7 +7,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -545,7 +545,6 @@ function EmailTrackerController(action, campaignId) {
 			$('#url_text').val(text);
 			$('#tracker_url_add').val($('select[name="tracker_url"] option:selected').attr('data-url'));
 			$('#tracker_name').val('');
-			$('#template_subject').val('');
 			$('#templateManagerActionOK').val(SUGAR.language.translate('Campaigns', 'LBL_EDIT_TRACKER_BTN'));
 			createTemplateManagerDialog($('#LBL_CREATE_TRACKER_BTN'));
 			$('#templateManagerDialog').children('div').addClass('hidden');

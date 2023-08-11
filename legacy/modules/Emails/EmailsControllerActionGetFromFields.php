@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -54,48 +54,59 @@ require_once __DIR__ . '/EmailsDataAddressCollector.php';
  *
  * @author gyula
  */
-class EmailsControllerActionGetFromFields {
+class EmailsControllerActionGetFromFields
+{
 
     /**
      *
      * @var User
      */
     protected $currentUser;
-    
+
     /**
      *
-     * @var EmailsDataAddressCollector 
+     * @var EmailsDataAddressCollector
      */
     protected $collector;
 
     /**
-     * 
+     *
      * @param User $currentUser
      * @param EmailsDataAddressCollector $collector
      */
-    public function __construct(User $currentUser, EmailsDataAddressCollector $collector) {
+    public function __construct(User $currentUser, EmailsDataAddressCollector $collector)
+    {
         $this->currentUser = $currentUser;
         $this->collector = $collector;
     }
 
     /**
-     * 
+     *
      * @param Email $email
      * @param InboundEmail $ie
      * @return string JSON
      */
-    public function handleActionGetFromFields(Email $email, InboundEmail $ie) {
+    public function handleActionGetFromFields(Email $email, InboundEmail $ie)
+    {
         $email->email2init();
         $ie->email = $email;
         $ieAccounts = $ie->retrieveAllByGroupIdWithGroupAccounts($this->currentUser->id);
         $accountSignatures = $this->currentUser->getPreference('account_signatures', 'Emails');
-        $showFolders = unserialize(base64_decode($this->currentUser->getPreference('showFolders', 'Emails')));
+        $showFolders = sugar_unserialize(base64_decode($this->currentUser->getPreference('showFolders', 'Emails')));
         $emailSignatures = $this->getEmailSignatures($accountSignatures);
         $defaultEmailSignature = $this->getDefaultSignatures();
         $prependSignature = $this->currentUser->getPreference('signature_prepend');
         $dataAddresses = $this->collector->collectDataAddressesFromIEAccounts(
-            $ieAccounts, $showFolders, $prependSignature, $emailSignatures, $defaultEmailSignature
+            $ieAccounts,
+            $showFolders,
+            $prependSignature,
+            $emailSignatures,
+            $defaultEmailSignature
         );
+
+        $dataAddresses = $dataAddresses ?? [];
+
+        $this->addOutboundEmailAccounts($dataAddresses);
 
         $dataEncoded = json_encode(array('data' => $dataAddresses), JSON_UNESCAPED_UNICODE);
         $results = utf8_decode($dataEncoded);
@@ -103,13 +114,41 @@ class EmailsControllerActionGetFromFields {
     }
 
     /**
+     * Get Outbound from fields
+     * @param Email $email
+     * @return string JSON
+     * @throws JsonException
+     */
+    public function getOutboundFromFields(Email $email)
+    {
+        global $log;
+        $email->email2init();
+
+        $dataAddresses = [];
+
+        $this->addOutboundEmailAccounts($dataAddresses);
+
+        $this->collector->addSystemEmailAddress($dataAddresses);
+
+        $dataEncoded = [];
+        try {
+            $dataEncoded = json_encode(array('data' => $dataAddresses), JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
+        } catch (Exception $e) {
+            $log->fatal('getOutboundFromFields | unable to json encode the addresses for from fields | message: ' . $e->getMessage() ?? '');
+        }
+
+        return utf8_decode($dataEncoded);
+    }
+
+    /**
      *
      * @param string|null $accountSignatures
      * @return array|null
      */
-    protected function getEmailSignatures($accountSignatures = null) {
+    protected function getEmailSignatures($accountSignatures = null)
+    {
         if ($accountSignatures != null) {
-            $emailSignatures = unserialize(base64_decode($accountSignatures));
+            $emailSignatures = sugar_unserialize(base64_decode($accountSignatures));
         } else {
             $GLOBALS['log']->warn('User ' . $this->currentUser->name . ' does not have a signature');
             $emailSignatures = null;
@@ -122,7 +161,8 @@ class EmailsControllerActionGetFromFields {
      *
      * @return array
      */
-    protected function getDefaultSignatures() {
+    protected function getDefaultSignatures()
+    {
         $defaultEmailSignature = $this->currentUser->getDefaultSignature();
         if (empty($defaultEmailSignature)) {
             $defaultEmailSignature = array(
@@ -136,5 +176,52 @@ class EmailsControllerActionGetFromFields {
 
         return $defaultEmailSignature;
     }
-    
+
+    /**
+     * @param array $dataAddresses
+     * @return void
+     */
+    protected function addOutboundEmailAccounts(array &$dataAddresses): void
+    {
+        /** @var OutboundEmailAccounts $outboundAccount */
+        $outboundAccount = BeanFactory::newBean('OutboundEmailAccounts');
+
+        /** @var OutboundEmailAccounts[] $userOutboundAccounts */
+        $userOutboundAccounts = $outboundAccount->getUserOutboundAccounts();
+
+        foreach ($userOutboundAccounts as $userOutboundAccount) {
+
+            $id = $userOutboundAccount->id ?? '';
+            $name = $userOutboundAccount->name ?? '';
+            $fromAddress = $userOutboundAccount->getFromAddress();
+            $fromName = $userOutboundAccount->getFromName();
+            $replyToAddress = $userOutboundAccount->getReplyToAddress();
+            $replyToName = $userOutboundAccount->getReplyToName();
+            $type = $userOutboundAccount->type ?? '';
+            $signature = $userOutboundAccount->signature ?? '';
+            $isPersonal = $type === 'user';
+            $isGroup = $type === 'group';
+            $entry = [
+                'type' => 'OutboundEmailAccount',
+                'id' => $id,
+                'name' => $name,
+                'attributes' => [
+                    'from' => $fromAddress,
+                    'name' => $fromName,
+                    'oe' => '',
+                    'reply_to' => $replyToAddress,
+                    'reply_to_name' => $replyToName
+                ],
+                'prepend' => false,
+                'isPersonalEmailAccount' => $isPersonal,
+                'isGroupEmailAccount' => $isGroup,
+                'emailSignatures' => [
+                    'html' => utf8_encode(html_entity_decode($signature)),
+                    'plain' => ''
+                ]
+            ];
+
+            $dataAddresses[] = $entry;
+        }
+    }
 }

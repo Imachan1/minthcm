@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -116,11 +116,10 @@ $mod_strings = array(
     'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
     'LBL_ASSIGNED_TO_ID' => 'Assigned User',
     'NOTICE_DURATION_TIME' => 'Duration time must be greater than 0',
-    'LBL_CALL_INFORMATION' => 'OVERVIEW',
+    'LBL_CALL_INFORMATION' => 'OVERVIEW', //No need to be translated in all caps. Translation used just in menu action items when using the SuiteP template
     'LBL_REMOVE' => 'Remove',
     'LBL_ACCEPT_STATUS' => 'Accept Status',
     'LBL_ACCEPT_LINK' => 'Accept Link',
-
     'LNK_ES_CALLS_LIST' => 'View ES Calls',
     'LNK_ES_TASKS_LIST' => 'View ES Tasks',
     'LNK_ES_CANDIDATES_LIST' => 'View ES Candidates',
@@ -172,5 +171,6 @@ $mod_strings = array(
     'LBL_ADD_INVITEE' => 'Add Invitees/Resources',
     'LBL_FIRST_NAME' => 'First Name/Resource Name',
     'LBL_LIST_TITLE' => 'Call',
+    'LBL_RESCHEDULED_BY'=>'by',
     'LBL_CALL' => 'Call',
 );

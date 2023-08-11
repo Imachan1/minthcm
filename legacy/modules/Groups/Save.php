@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,45 +45,51 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+ $focus = BeanFactory::newBean('Groups');
 
-
-//_ppd($_REQUEST);
-$focus = new Group();
-
-// New user
-
-// Update
-if(isset($_REQUEST['record']) && !empty($_REQUEST['record'])) {
-	$focus->retrieve($_REQUEST['record']);
-}
-
-foreach($focus->column_fields as $field) {
-	if(isset($_POST[$field])) {
-		$value = $_POST[$field];
-		$focus->$field = $value;
-	}
-}
-
-foreach($focus->additional_column_fields as $field) {
-	if(isset($_POST[$field])) {
-		$value = $_POST[$field];
-		$focus->$field = $value;
-	}
-}
-if(isset($_REQUEST['user_name']) && !empty($_REQUEST['user_name'])) {
-	$focus->user_name	= $_REQUEST['user_name'];
-	$focus->last_name	= $_REQUEST['user_name'];
-}
-$focus->description	= $_REQUEST['description'];
-$focus->save();
-
-
-if(isset($_POST['return_module']) && $_POST['return_module'] != "") $return_module = $_POST['return_module'];
-else $return_module = "Groups";
-if(isset($_POST['return_action']) && $_POST['return_action'] != "") $return_action = $_POST['return_action'];
-else $return_action = "DetailView";
-if(isset($_POST['return_id']) && $_POST['return_id'] != "") $return_id = $_POST['return_id'];
-
-$GLOBALS['log']->debug("Saved record with id of ".$return_id);
-
-header("Location: index.php?action=$return_action&module=$return_module&record=$return_id");
+ // New user
+ 
+ // Update
+ if (isset($_REQUEST['record']) && !empty($_REQUEST['record'])) {
+     $focus->retrieve($_REQUEST['record']);
+ }
+ 
+ foreach ($focus->column_fields as $field) {
+     if (isset($_POST[$field])) {
+         $value = $_POST[$field];
+         $focus->$field = $value;
+     }
+ }
+ 
+ foreach ($focus->additional_column_fields as $field) {
+     if (isset($_POST[$field])) {
+         $value = $_POST[$field];
+         $focus->$field = $value;
+     }
+ }
+ if (isset($_REQUEST['user_name']) && !empty($_REQUEST['user_name'])) {
+     $focus->user_name	= $_REQUEST['user_name'];
+     $focus->last_name	= $_REQUEST['user_name'];
+ }
+ $focus->description	= $_REQUEST['description'];
+ $focus->save();
+ 
+ 
+ if (isset($_POST['return_module']) && $_POST['return_module'] != "") {
+     $return_module = $_POST['return_module'];
+ } else {
+     $return_module = "Groups";
+ }
+ if (isset($_POST['return_action']) && $_POST['return_action'] != "") {
+     $return_action = $_POST['return_action'];
+ } else {
+     $return_action = "DetailView";
+ }
+ if (isset($_POST['return_id']) && $_POST['return_id'] != "") {
+     $return_id = $_POST['return_id'];
+ }
+ 
+ $GLOBALS['log']->debug("Saved record with id of ".$return_id);
+ 
+ header("Location: index.php?action=$return_action&module=$return_module&record=$return_id");
+ 

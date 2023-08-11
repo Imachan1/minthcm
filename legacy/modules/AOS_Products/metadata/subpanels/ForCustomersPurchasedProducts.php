@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,22 +48,22 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $subpanel_layout = array(
-	'top_buttons' => array(
+    'top_buttons' => array(
 //		array('widget_class' => 'SubPanelTopCreateButton'),
 //		array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'Contacts'),
-	),
-	'list_fields' => array(
-		'aos_quote_name'=>array(
-			'vname' => 'LBL_AOS_QUOTE_NAME',
-			'widget_class' => 'SubPanelDetailViewLink',
-			'target_record_key' => 'aos_quote_id',
-			'target_module' => 'AOS_Quotes',
-		),
-		'account_name'=>array(
-			'vname' => 'LBL_ACCOUNT_NAME',
-			'widget_class' => 'SubPanelDetailViewLink',
-			'target_record_key' => 'account_id',
-			'target_module' => 'Accounts',
-		),
-	),
+    ),
+    'list_fields' => array(
+        'aos_quote_name'=>array(
+            'vname' => 'LBL_AOS_QUOTE_NAME',
+            'widget_class' => 'SubPanelDetailViewLink',
+            'target_record_key' => 'aos_quote_id',
+            'target_module' => 'AOS_Quotes',
+        ),
+        'account_name'=>array(
+            'vname' => 'LBL_ACCOUNT_NAME',
+            'widget_class' => 'SubPanelDetailViewLink',
+            'target_record_key' => 'account_id',
+            'target_module' => 'Accounts',
+        ),
+    ),
 );

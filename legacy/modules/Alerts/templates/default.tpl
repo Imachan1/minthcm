@@ -37,8 +37,9 @@
          <h4 class="alert-header">
                <span class="alert-link text-{if $result->type != null}{$result->type}{else}info{/if}" >
                {if $result->target_module != null }
-                  <img src="index.php?entryPoint=getImage&imageName={$result->target_module}s.gif"/>
-                  <strong class="text-{if $result->type != null}{$result->type}{else}info{/if}">{$result->target_module}</strong>
+                    {* Pluralize the module name if necessary. *}
+                    <span class="suitepicon suitepicon-module-{$result->target_module|lower|replace:'_':'-'}{if substr($result->target_module, -1) !== 's'}s{/if}"></span>
+                    <strong class="text-{if $result->type != null}{$result->type}{else}info{/if}">{$result->target_module}</strong>
                {else}
                   <strong class="text-{if $result->type != null}{$result->type}{else}info{/if}">Alert</strong>
                {/if}

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -75,7 +75,7 @@
     {sugar_include type="smarty" file=$form.headerTpl}
 {/if}
 
-{if count($data) == 0}
+{if !isset($data) || (count($data) == 0)}
 	{assign var="hideTable" value=true}
 	<div class="list view listViewEmpty">
         {if $showFilterIcon}
@@ -88,9 +88,9 @@
                 {capture assign="createLink"}<a href="?module={$pageData.bean.moduleDir}&action=EditView&return_module={$pageData.bean.moduleDir}&return_action=DetailView">{$APP.LBL_CREATE_BUTTON_LABEL}</a>{/capture}
                 {capture assign="importLink"}<a href="?module=Import&action=Step1&import_module={$pageData.bean.moduleDir}&return_module={$pageData.bean.moduleDir}&return_action=index">{$APP.LBL_IMPORT}</a>{/capture}
                 {capture assign="helpLink"}<a target="_blank" href='?module=Administration&action=SupportPortal&view=documentation&version={$sugar_info.sugar_version}&edition={$sugar_info.sugar_flavor}&lang=&help_module={$currentModule}&help_action=&key='>{$APP.LBL_CLICK_HERE}</a>{/capture}
-                <p class="msg">
-                    {$APP.MSG_EMPTY_LIST_VIEW_NO_RESULTS|replace:"<item2>":$createLink|replace:"<item3>":$importLink}
-                </p>
+				{if !(isset($options.hide_edit_link) && $options.hide_edit_link === true) && !empty($quickViewLinks)}
+					<p class="msg"> {$APP.MSG_EMPTY_LIST_VIEW_NO_RESULTS|replace:"<item2>":$createLink|replace:"<item3>":$importLink} </p>
+				{/if}		
         {elseif $query == "-advanced_search"}
             <p class="msg emptyResults">
                 {$APP.MSG_LIST_VIEW_NO_RESULTS_CHANGE_CRITERIA}
@@ -178,11 +178,11 @@
 								{* MintHCM #82984 END *}
 									{capture assign="imageName"}arrow_down.{$arrowExt}{/capture}
 									{capture assign="alt_sort"}{sugar_translate label='LBL_ALT_SORT_DESC'}{/capture}
-									<span class="suitepicon suitepicon-action-sorting-descending" title="{$alt_sort}"></span>
+									<span class="suitepicon suitepicon-action-sorting-ascending" title="{$alt_sort}"></span>
 								{else}
 									{capture assign="imageName"}arrow_up.{$arrowExt}{/capture}
 									{capture assign="alt_sort"}{sugar_translate label='LBL_ALT_SORT_ASC'}{/capture}
-									<span class="suitepicon suitepicon-action-sorting-ascending" title="{$alt_sort}"></span>
+									<span class="suitepicon suitepicon-action-sorting-descending" title="{$alt_sort}"></span>
 								{/if}
 							{else}
 								{capture assign="imageName"}arrow.{$arrowExt}{/capture}
@@ -195,6 +195,17 @@
                                 {if isset($params.hide_header_label) && $params.hide_header_label == true}
                                 {else}
                                     {sugar_translate label=$params.label module=$pageData.bean.moduleDir}
+									{if $params.orderBy|default:$colHeader|lower == $pageData.ordering.orderBy && $params.force_show_sort_direction}
+										{if $pageData.ordering.sortOrder == 'ASC'}
+											{capture assign="imageName"}arrow_down.{$arrowExt}{/capture}
+											{capture assign="alt_sort"}{sugar_translate label='LBL_ALT_SORT_DESC'}{/capture}
+											<span class="suitepicon suitepicon-action-sorting-ascending" title="{$alt_sort}"></span>
+										{else}
+											{capture assign="imageName"}arrow_up.{$arrowExt}{/capture}
+											{capture assign="alt_sort"}{sugar_translate label='LBL_ALT_SORT_ASC'}{/capture}
+											<span class="suitepicon suitepicon-action-sorting-descending" title="{$alt_sort}"></span>
+										{/if}
+									{/if}
 									&nbsp;&nbsp;  {/if}
 							{/if}
 						{/if}

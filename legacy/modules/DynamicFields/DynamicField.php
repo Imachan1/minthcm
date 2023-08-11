@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -68,24 +68,9 @@ class DynamicField
         global $sugar_config;
         $this->module = (!empty($module)) ? $module : ((isset($_REQUEST['module']) && !empty($_REQUEST['module'])) ? $_REQUEST ['module'] : '');
         $this->base_path = "custom/Extension/modules/{$this->module}/Ext/Vardefs";
-        if(isset($sugar_config['dbconfig'])) {
+        if (isset($sugar_config['dbconfig'])) {
             $this->db = DBManagerFactory::getInstance();
         }
-    }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     * @param string $module
-     */
-    public function DynamicField($module = '')
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($module);
     }
 
     /**
@@ -470,7 +455,7 @@ class DynamicField
                     if (in_array($field['type'], array('int', 'float', 'double', 'uint', 'ulong', 'long', 'short', 'tinyint', 'currency', 'decimal'))) {
                         $quote = '';
                         if (!isset($this->bean->$name) || !is_numeric($this->bean->$name)) {
-                            if ($field['required']) {
+                            if (!empty($field['required'])) {
                                 $this->bean->$name = 0;
                             } else {
                                 $this->bean->$name = 'NULL';
@@ -493,14 +478,14 @@ class DynamicField
                     }
                     if ($isUpdate) {
                         if ($first) {
-                            $query .= " $name=$quote" . $this->db->quote($val) . "$quote";
+                            $query .= " $name=$quote" . $this->db->quote($val) . (string)$quote;
                         } else {
-                            $query .= " ,$name=$quote" . $this->db->quote($val) . "$quote";
+                            $query .= " ,$name=$quote" . $this->db->quote($val) . (string)$quote;
                         }
                     }
                     $first = false;
                     $queryInsert .= " ,$name";
-                    $values .= " ,$quote" . $this->db->quote($val) . "$quote";
+                    $values .= " ,$quote" . $this->db->quote($val) . (string)$quote;
                 }
             }
             if ($isUpdate) {
@@ -607,7 +592,7 @@ class DynamicField
         $object_name = $this->module;
         $db_name = $field->name;
 
-        $fmd = new FieldsMetaData();
+        $fmd = BeanFactory::newBean('EditCustomFields');
         $id = $fmd->retrieve($object_name . $db_name, true, false);
         $is_update = false;
         $label = strtoupper($field->label);
@@ -754,7 +739,7 @@ class DynamicField
     {
         //Hack for the broken cases module
         $vBean = $bean_name == 'aCase' ? 'Case' : $bean_name;
-        $file_loc = "$this->base_path/sugarfield_{$field->name}.php";
+        $file_loc = "$this->base_path/_override_sugarfield_{$field->name}.php";
 
         $out = "<?php\n // created: " . date('Y-m-d H:i:s') . "\n";
         foreach ($def_override as $property => $val) {
@@ -768,7 +753,7 @@ class DynamicField
         }
 
         if ($fh = @sugar_fopen($file_loc, 'w')) {
-            fputs($fh, $out);
+            fwrite($fh, $out);
             fclose($fh);
 
             return true;

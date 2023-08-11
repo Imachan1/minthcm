@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -41,7 +41,6 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
 *}
 
 {include file='include/ListView/ListViewColumnsFilterDialog.tpl'}
@@ -71,7 +70,7 @@
 {assign var="moduleName" value = $moduleList.$currentModule}
 {assign var="hideTable" value=false}
 
-{if count($data) == 0}
+{if !isset($data) || (count($data) == 0)}
     {assign var="hideTable" value=true}
     <div class="list view listViewEmpty">
         {if $displayEmptyDataMesssages}
@@ -163,10 +162,10 @@
                                 {if $params.orderBy|default:$colHeader|lower == $pageData.ordering.orderBy}
                                     {if $pageData.ordering.sortOrder == 'ASC'}
                                         {capture assign="imageName"}arrow_down.{$arrowExt}{/capture}
-                                        <span class="suitepicon suitepicon-action-sorting-descending"></span>
+                                        <span class="suitepicon suitepicon-action-sorting-ascending"></span>
                                     {else}
                                         {capture assign="imageName"}arrow_up.{$arrowExt}{/capture}
-                                        <span class="suitepicon suitepicon-action-sorting-ascending"></span>
+                                        <span class="suitepicon suitepicon-action-sorting-descending"></span>
                                     {/if}
                                 {else}
                                     {capture assign="imageName"}arrow.{$arrowExt}{/capture}

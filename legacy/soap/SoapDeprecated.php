@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -114,37 +114,43 @@ $server->register(
     'create_session',
     array('user_name' => 'xsd:string', 'password' => 'xsd:string'),
     array('return' => 'xsd:string'),
-    $NAMESPACE);
+    $NAMESPACE
+);
 
 $server->register(
     'end_session',
     array('user_name' => 'xsd:string'),
     array('return' => 'xsd:string'),
-    $NAMESPACE);
+    $NAMESPACE
+);
 
 $server->register(
     'contact_by_email',
     array('user_name' => 'xsd:string', 'password' => 'xsd:string', 'email_address' => 'xsd:string'),
     array('return' => 'tns:contact_detail_array'),
-    $NAMESPACE);
+    $NAMESPACE
+);
 
 $server->register(
     'get_contact_relationships',
     array('user_name' => 'xsd:string', 'password' => 'xsd:string', 'id' => 'xsd:string'),
     array('return' => 'tns:contact_detail_array'),
-    $NAMESPACE);
+    $NAMESPACE
+);
 
 $server->register(
     'user_list',
     array('user_name' => 'xsd:string', 'password' => 'xsd:string'),
     array('return' => 'tns:user_detail_array'),
-    $NAMESPACE);
+    $NAMESPACE
+);
 
 $server->register(
     'search',
     array('user_name' => 'xsd:string', 'password' => 'xsd:string', 'name' => 'xsd:string'),
     array('return' => 'tns:contact_detail_array'),
-    $NAMESPACE);
+    $NAMESPACE
+);
 
 $server->register(
     'track_email',
@@ -158,7 +164,8 @@ $server->register(
         'email_body' => 'xsd:string'
     ),
     array('return' => 'xsd:string'),
-    $NAMESPACE);
+    $NAMESPACE
+);
 
 $server->register(
     'create_contact',
@@ -170,7 +177,8 @@ $server->register(
         'email_address' => 'xsd:string'
     ),
     array('return' => 'xsd:string'),
-    $NAMESPACE);
+    $NAMESPACE
+);
 $server->register(
     'create_lead',
     array(
@@ -181,7 +189,8 @@ $server->register(
         'email_address' => 'xsd:string'
     ),
     array('return' => 'xsd:string'),
-    $NAMESPACE);
+    $NAMESPACE
+);
 $server->register(
     'create_account',
     array(
@@ -192,19 +201,22 @@ $server->register(
         'website' => 'xsd:string'
     ),
     array('return' => 'xsd:string'),
-    $NAMESPACE);
+    $NAMESPACE
+);
 
 $server->register(
     'create_opportunity',
     array('user_name' => 'xsd:string', 'password' => 'xsd:string', 'name' => 'xsd:string', 'amount' => 'xsd:string'),
     array('return' => 'xsd:string'),
-    $NAMESPACE);
+    $NAMESPACE
+);
 
 $server->register(
     'create_case',
     array('user_name' => 'xsd:string', 'password' => 'xsd:string', 'name' => 'xsd:string'),
     array('return' => 'xsd:string'),
-    $NAMESPACE);
+    $NAMESPACE
+);
 /**
  * Create a new session.  This method is required before calling any other functions.
  *
@@ -248,9 +260,9 @@ function end_session($user_name)
 function validate_user($user_name, $password)
 {
     global $server, $current_user, $sugar_config, $system_config;
-    $user = new User();
+    $user = BeanFactory::newBean('Users');
     $user->user_name = $user_name;
-    $system_config = new Administration();
+    $system_config = BeanFactory::newBean('Administration');
     $system_config->retrieveSettings('system');
     $authController = new AuthenticationController();
     // Check to see if the user name and password are consistent.
@@ -278,7 +290,6 @@ function validate_user($user_name, $password)
             return false;
         }
     }
-
 }
 
 /**
@@ -309,7 +320,7 @@ function add_contacts_matching_email_address(&$output_list, $email_address, &$se
             continue;
         }
 
-        $output_list[] = Array(
+        $output_list[] = array(
             "name1" => $contact->first_name,
             "name2" => $contact->last_name,
             "association" => $contact->account_name,
@@ -371,7 +382,7 @@ function add_leads_matching_email_address(&$output_list, $email_address, &$seed_
             continue;
         }
 
-        $output_list[] = Array(
+        $output_list[] = array(
             "name1" => $lead->first_name,
             "name2" => $lead->last_name,
             "association" => $lead->account_name,
@@ -386,7 +397,7 @@ function add_leads_matching_email_address(&$output_list, $email_address, &$seed_
 }
 
 /**
- * Return a list of modules related to the specifed contact record
+ * Return a list of modules related to the specified contact record
  *
  * This function does not require a session be created first.
  *
@@ -401,7 +412,7 @@ function get_contact_relationships($user_name, $password, $id)
         return array();
     }
 
-    $seed_contact = new Contact();
+    $seed_contact = BeanFactory::newBean('Contacts');
     // Verify that the user has permission to see Contact list views
     if (!$seed_contact->ACLAccess('ListView')) {
         return;
@@ -410,7 +421,7 @@ function get_contact_relationships($user_name, $password, $id)
     $msi_id = 1;
     $seed_contact->retrieve($id);
 
-    $output_list[] = Array(
+    $output_list[] = array(
         "name1" => $seed_contact->first_name,
         "name2" => $seed_contact->last_name,
         "association" => $seed_contact->account_name,
@@ -468,13 +479,13 @@ function contact_by_email($user_name, $password, $email_address)
         return array();
     }
 
-    $seed_contact = new Contact();
-    $seed_lead = new Lead();
-    $output_list = Array();
+    $seed_contact = BeanFactory::newBean('Contacts');
+    $seed_lead = BeanFactory::newBean('Leads');
+    $output_list = array();
     $email_address_list = explode("; ", $email_address);
 
     // remove duplicate email addresses
-    $non_duplicate_email_address_list = Array();
+    $non_duplicate_email_address_list = array();
     foreach ($email_address_list as $single_address) {
         // Check to see if the current address is a match of an existing address
         $found_match = false;
@@ -521,7 +532,7 @@ function get_contact_array($contact, $msi_id = '0')
 {
     $contact->emailAddress->handleLegacyRetrieve($contact);
 
-    return Array(
+    return array(
         "name1" => $contact->first_name,
         "name2" => $contact->last_name,
         "association" => $contact->account_name,
@@ -530,7 +541,6 @@ function get_contact_array($contact, $msi_id = '0')
         "msi_id" => $msi_id,
         "email_address" => $contact->email1
     );
-
 }
 
 /**
@@ -541,7 +551,7 @@ function get_contact_array($contact, $msi_id = '0')
  */
 function get_user_list_array($user)
 {
-    return Array(
+    return array(
         'email_address' => $user->email1,
         'user_name' => $user->user_name,
         'first_name' => $user->first_name,
@@ -567,8 +577,8 @@ function user_list($user, $password)
         return array();
     }
 
-    $seed_user = new User();
-    $output_list = Array();
+    $seed_user = BeanFactory::newBean('Users');
+    $output_list = array();
     if (!$seed_user->ACLAccess('ListView')) {
         return $output_list;
     }
@@ -589,11 +599,11 @@ function user_list($user, $password)
  * @param string $name -- Name to search for.
  * @param string $where -- Where clause defaults to ''
  * @param int $msi_id -- Response array index
- * @return array -- Resturns a list of contacts that have the provided name.
+ * @return array -- Returns a list of contacts that have the provided name.
  */
 function contact_by_search($name, $where = '', $msi_id = '0')
 {
-    $seed_contact = new Contact();
+    $seed_contact = BeanFactory::newBean('Contacts');
     if ($where == '') {
         $where = $seed_contact->build_generic_where_clause($name);
     }
@@ -603,7 +613,7 @@ function contact_by_search($name, $where = '', $msi_id = '0')
     $response = $seed_contact->get_list("last_name, first_name", $where, 0);
     $contactList = $response['list'];
 
-    $output_list = Array();
+    $output_list = array();
 
     // create a return array of names and email addresses.
     foreach ($contactList as $contact) {
@@ -624,7 +634,7 @@ function get_lead_array($lead, $msi_id = '0')
 {
     $lead->emailAddress->handleLegacyRetrieve($lead);
 
-    return Array(
+    return array(
         "name1" => $lead->first_name,
         "name2" => $lead->last_name,
         "association" => $lead->account_name,
@@ -637,7 +647,7 @@ function get_lead_array($lead, $msi_id = '0')
 
 function lead_by_search($name, $where = '', $msi_id = '0')
 {
-    $seed_lead = new Lead();
+    $seed_lead = BeanFactory::newBean('Leads');
     if ($where == '') {
         $where = $seed_lead->build_generic_where_clause($name);
     }
@@ -647,7 +657,7 @@ function lead_by_search($name, $where = '', $msi_id = '0')
     $response = $seed_lead->get_list("last_name, first_name", $where, 0);
     $lead_list = $response['list'];
 
-    $output_list = Array();
+    $output_list = array();
 
     // create a return array of names and email addresses.
     foreach ($lead_list as $lead) {
@@ -666,7 +676,7 @@ function lead_by_search($name, $where = '', $msi_id = '0')
  */
 function get_account_array($account, $msi_id)
 {
-    return Array(
+    return array(
         "name1" => '',
         "name2" => $account->name,
         "association" => $account->billing_address_city,
@@ -679,7 +689,7 @@ function get_account_array($account, $msi_id)
 
 function account_by_search($name, $where = '', $msi_id = '0')
 {
-    $seed_account = new Account();
+    $seed_account = BeanFactory::newBean('Accounts');
     if (!$seed_account->ACLAccess('ListView')) {
         return array();
     }
@@ -689,7 +699,7 @@ function account_by_search($name, $where = '', $msi_id = '0')
     $response = $seed_account->get_list("name", $where, 0);
     $accountList = $response['list'];
 
-    $output_list = Array();
+    $output_list = array();
 
     // create a return array of names and email addresses.
     foreach ($accountList as $account) {
@@ -708,7 +718,7 @@ function account_by_search($name, $where = '', $msi_id = '0')
  */
 function get_opportunity_array($value, $msi_id = '0')
 {
-    return Array(
+    return array(
         "name1" => '',
         "name2" => $value->name,
         "association" => $value->account_name,
@@ -717,12 +727,11 @@ function get_opportunity_array($value, $msi_id = '0')
         "msi_id" => $msi_id,
         "email_address" => ''
     );
-
 }
 
 function opportunity_by_search($name, $where = '', $msi_id = '0')
 {
-    $seed = new Opportunity();
+    $seed = BeanFactory::newBean('Opportunities');
     if (!$seed->ACLAccess('ListView')) {
         return array();
     }
@@ -732,7 +741,7 @@ function opportunity_by_search($name, $where = '', $msi_id = '0')
     $response = $seed->get_list("name", $where, 0);
     $list = $response['list'];
 
-    $output_list = Array();
+    $output_list = array();
 
     // create a return array of names and email addresses.
     foreach ($list as $value) {
@@ -751,7 +760,7 @@ function opportunity_by_search($name, $where = '', $msi_id = '0')
  */
 function get_bean_array($value, $msi_id, $type)
 {
-    return Array(
+    return array(
         "name1" => '',
         "name2" => $value->get_summary_text(),
         "association" => '',
@@ -760,7 +769,6 @@ function get_bean_array($value, $msi_id, $type)
         "msi_id" => $msi_id,
         "email_address" => ''
     );
-
 }
 
 /**
@@ -772,7 +780,7 @@ function get_bean_array($value, $msi_id, $type)
  */
 function get_case_array($value, $msi_id)
 {
-    return Array(
+    return array(
         "name1" => '',
         "name2" => $value->get_summary_text(),
         "association" => $value->account_name,
@@ -781,12 +789,11 @@ function get_case_array($value, $msi_id)
         "msi_id" => $msi_id,
         "email_address" => ''
     );
-
 }
 
 function bug_by_search($name, $where = '', $msi_id = '0')
 {
-    $seed = new Bug();
+    $seed = BeanFactory::newBean('Bugs');
     if (!$seed->ACLAccess('ListView')) {
         return array();
     }
@@ -796,7 +803,7 @@ function bug_by_search($name, $where = '', $msi_id = '0')
     $response = $seed->get_list("name", $where, 0);
     $list = $response['list'];
 
-    $output_list = Array();
+    $output_list = array();
 
     // create a return array of names and email addresses.
     foreach ($list as $value) {
@@ -808,7 +815,7 @@ function bug_by_search($name, $where = '', $msi_id = '0')
 
 function case_by_search($name, $where = '', $msi_id = '0')
 {
-    $seed = new aCase();
+    $seed = BeanFactory::newBean('Cases');
     if (!$seed->ACLAccess('ListView')) {
         return array();
     }
@@ -818,7 +825,7 @@ function case_by_search($name, $where = '', $msi_id = '0')
     $response = $seed->get_list("name", $where, 0);
     $list = $response['list'];
 
-    $output_list = Array();
+    $output_list = array();
 
     // create a return array of names and email addresses.
     foreach ($list as $value) {
@@ -858,14 +865,14 @@ function track_email($user_name, $password, $parent_id, $contact_ids, $date_sent
     $date_sent_received = preg_replace("@([0-9]*)/([0-9]*)/([0-9]*)( .*$)@", "\\3-\\1-\\2\\4", $date_sent_received);
 
 
-    $seed_user = new User();
+    $seed_user = BeanFactory::newBean('Users');
 
     $user_id = $seed_user->retrieve_user_id($user_name);
     $seed_user->retrieve($user_id);
     $current_user = $seed_user;
 
 
-    $email = new Email();
+    $email = BeanFactory::newBean('Emails');
     if (!$email->ACLAccess('Save')) {
         return -1;
     }
@@ -906,12 +913,12 @@ function create_contact($user_name, $password, $first_name, $last_name, $email_a
     }
 
 
-    $seed_user = new User();
+    $seed_user = BeanFactory::newBean('Users');
     $user_id = $seed_user->retrieve_user_id($user_name);
     $seed_user->retrieve($user_id);
 
 
-    $contact = new Contact();
+    $contact = BeanFactory::newBean('Contacts');
     if (!$contact->ACLAccess('Save')) {
         return -1;
     }
@@ -933,11 +940,11 @@ function create_lead($user_name, $password, $first_name, $last_name, $email_addr
     //todo make the activity body not be html encoded
 
 
-    $seed_user = new User();
+    $seed_user = BeanFactory::newBean('Users');
     $user_id = $seed_user->retrieve_user_id($user_name);
 
 
-    $lead = new Lead();
+    $lead = BeanFactory::newBean('Leads');
     if (!$lead->ACLAccess('Save')) {
         return -1;
     }
@@ -959,9 +966,9 @@ function create_account($user_name, $password, $name, $phone, $website)
     //todo make the activity body not be html encoded
 
 
-    $seed_user = new User();
+    $seed_user = BeanFactory::newBean('Users');
     $user_id = $seed_user->retrieve_user_id($user_name);
-    $account = new Account();
+    $account = BeanFactory::newBean('Accounts');
     if (!$account->ACLAccess('Save')) {
         return -1;
     }
@@ -973,7 +980,6 @@ function create_account($user_name, $password, $name, $phone, $website)
     $account->save();
 
     return $account->id;
-
 }
 
 function create_case($user_name, $password, $name)
@@ -985,9 +991,9 @@ function create_case($user_name, $password, $name)
     //todo make the activity body not be html encoded
 
 
-    $seed_user = new User();
+    $seed_user = BeanFactory::newBean('Users');
     $user_id = $seed_user->retrieve_user_id($user_name);
-    $case = new aCase();
+    $case = BeanFactory::newBean('Cases');
     if (!$case->ACLAccess('Save')) {
         return -1;
     }
@@ -1005,9 +1011,9 @@ function create_opportunity($user_name, $password, $name, $amount)
     }
 
 
-    $seed_user = new User();
+    $seed_user = BeanFactory::newBean('Users');
     $user_id = $seed_user->retrieve_user_id($user_name);
-    $opp = new Opportunity();
+    $opp = BeanFactory::newBean('Opportunities');
     if (!$opp->ACLAccess('Save')) {
         return -1;
     }

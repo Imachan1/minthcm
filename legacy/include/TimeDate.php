@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -265,15 +265,15 @@ class TimeDate
      * The order is: supplied parameter, TimeDate's user, global current user
      *
      * @param User $user User object, default is current user
-     * @internal
      * @return User
+     * @internal
      */
     protected function _getUser(User $user = null)
     {
-        if (empty($user)) {
+        if ($user === null) {
             $user = $this->user;
         }
-        if (empty($user)) {
+        if ($user === null && isset($GLOBALS['current_user'])) {
             $user = $GLOBALS['current_user'];
         }
 
@@ -387,7 +387,7 @@ class TimeDate
         $timef = $user->getPreference('timef');
         if (empty($timef) && isset($GLOBALS['current_user']) && $GLOBALS['current_user'] !== $user) {
             // if we got another user and it has no time format, try current user
-            $timef = $GLOBALS['current_user']->getPreference('$timef');
+            $timef = $GLOBALS['current_user']->getPreference('timef');
         }
         if (empty($timef)) {
             $timef = $GLOBALS['sugar_config']['default_time_format'];
@@ -498,7 +498,6 @@ class TimeDate
     {
         return explode(' ', $datetime, 2);
     }
-
 
     /**
      * Get user date format in Javascript form
@@ -880,8 +879,11 @@ class TimeDate
     public function fromUserDate($date, $convert_tz = false, User $user = null)
     {
         try {
-            return SugarDateTime::createFromFormat($this->get_date_format($user), $date,
-                $convert_tz ? $this->_getUserTZ($user) : self::$gmtTimezone);
+            return SugarDateTime::createFromFormat(
+                $this->get_date_format($user),
+                $date,
+                $convert_tz ? $this->_getUserTZ($user) : self::$gmtTimezone
+            );
         } catch (Exception $e) {
             $uf = $this->get_date_format($user);
             $GLOBALS['log']->error("fromUserDate: Conversion of $date from user format $uf failed: {$e->getMessage()}");
@@ -1011,8 +1013,14 @@ class TimeDate
      */
     public function to_display_date_time($date, $meridiem = true, $convert_tz = true, $user = null)
     {
-        return $this->_convert($date, self::DB_DATETIME_FORMAT, self::$gmtTimezone, $this->get_date_time_format($user),
-            $convert_tz ? $this->_getUserTZ($user) : self::$gmtTimezone, true);
+        return $this->_convert(
+            $date,
+            self::DB_DATETIME_FORMAT,
+            self::$gmtTimezone,
+            $this->get_date_time_format($user),
+            $convert_tz ? $this->_getUserTZ($user) : self::$gmtTimezone,
+            true
+        );
     }
 
     /**
@@ -1032,9 +1040,13 @@ class TimeDate
             $date = $this->expandTime($date, self::DB_DATETIME_FORMAT, self::$gmtTimezone);
         }
 
-        return $this->_convert($date,
-            $convert_tz ? self::DB_DATETIME_FORMAT : self::DB_TIME_FORMAT, self::$gmtTimezone,
-            $this->get_time_format(), $convert_tz ? $this->_getUserTZ() : self::$gmtTimezone);
+        return $this->_convert(
+            $date,
+            $convert_tz ? self::DB_DATETIME_FORMAT : self::DB_TIME_FORMAT,
+            self::$gmtTimezone,
+            $this->get_time_format(),
+            $convert_tz ? $this->_getUserTZ() : self::$gmtTimezone
+        );
     }
 
     /**
@@ -1059,7 +1071,7 @@ class TimeDate
             's' => $date->format("s")
         );
         if ($ampm) {
-            $datearr['a'] = ($ampm{0} == 'a') ? $date->format("a") : $date->format("A");
+            $datearr['a'] = ($ampm[0] == 'a') ? $date->format("a") : $date->format("A");
         }
 
         return $datearr;
@@ -1076,9 +1088,14 @@ class TimeDate
      */
     public function to_display_date($date, $convert_tz = true)
     {
-        return $this->_convert($date,
-            self::DB_DATETIME_FORMAT, self::$gmtTimezone,
-            $this->get_date_format(), $convert_tz ? $this->_getUserTZ() : self::$gmtTimezone, true);
+        return $this->_convert(
+            $date,
+            self::DB_DATETIME_FORMAT,
+            self::$gmtTimezone,
+            $this->get_date_format(),
+            $convert_tz ? $this->_getUserTZ() : self::$gmtTimezone,
+            true
+        );
     }
 
     /**
@@ -1133,10 +1150,14 @@ class TimeDate
      */
     public function to_db($date)
     {
-        return $this->_convert($date,
-            $this->get_date_time_format(), $this->_getUserTZ(),
-            $this->get_db_date_time_format(), self::$gmtTimezone,
-            true);
+        return $this->_convert(
+            $date,
+            $this->get_date_time_format(),
+            $this->_getUserTZ(),
+            $this->get_db_date_time_format(),
+            self::$gmtTimezone,
+            true
+        );
     }
 
     /**
@@ -1150,9 +1171,14 @@ class TimeDate
      */
     public function to_db_date($date, $convert_tz = true)
     {
-        return $this->_convert($date,
-            $this->get_date_time_format(), $convert_tz ? $this->_getUserTZ() : self::$gmtTimezone,
-            self::DB_DATE_FORMAT, self::$gmtTimezone, true);
+        return $this->_convert(
+            $date,
+            $this->get_date_time_format(),
+            $convert_tz ? $this->_getUserTZ() : self::$gmtTimezone,
+            self::DB_DATE_FORMAT,
+            self::$gmtTimezone,
+            true
+        );
     }
 
     /**
@@ -1174,10 +1200,13 @@ class TimeDate
             $date = $this->expandTime($date, $format, $tz);
         }
 
-        return $this->_convert($date,
+        return $this->_convert(
+            $date,
             $convert_tz ? $format : $this->get_time_format(),
             $tz,
-            self::DB_TIME_FORMAT, self::$gmtTimezone);
+            self::DB_TIME_FORMAT,
+            self::$gmtTimezone
+        );
     }
 
     /**
@@ -1191,8 +1220,11 @@ class TimeDate
     public function to_db_date_time($date, $time)
     {
         try {
-            $phpdate = SugarDateTime::createFromFormat($this->get_date_time_format(),
-                $this->merge_date_time($date, $time), self::$gmtTimezone);
+            $phpdate = SugarDateTime::createFromFormat(
+                $this->get_date_time_format(),
+                $this->merge_date_time($date, $time),
+                self::$gmtTimezone
+            );
             if ($phpdate == false) {
                 return array('', '');
             }
@@ -1527,8 +1559,13 @@ class TimeDate
             $name = $translated;
         }
 
-        return sprintf("%s (GMT%+2d:%02d)%s", str_replace('_', ' ', $name), $off / 3600, (abs($off) / 60) % 60,
-            "");//$now->format('I')==1?"(+DST)":"");
+        return sprintf(
+            "%s (GMT%+2d:%02d)%s",
+            str_replace('_', ' ', $name),
+            $off / 3600,
+            (abs($off) / 60) % 60,
+            ""
+        );//$now->format('I')==1?"(+DST)":"");
     }
 
 
@@ -1977,13 +2014,6 @@ class TimeDate
         $result = array();
         $transitions = $tz->getTransitions($year_date->ts, $year_end->ts);
         $idx = 0;
-        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-            // <5.3.0 ignores parameters, advance manually to current year
-            $start_ts = $year_date->ts;
-            while (isset($transitions[$idx]) && $transitions[$idx]["ts"] < $start_ts) {
-                $idx++;
-            }
-        }
         // get DST start
         while (isset($transitions[$idx]) && !$transitions[$idx]["isdst"]) {
             $idx++;
@@ -2043,7 +2073,7 @@ class TimeDate
         }
 
         $menu = "<select name='" . $prefix . "meridiem' " . $attrs . ">";
-        if ($am{0} == 'a') {
+        if ($am[0] == 'a') {
             $menu .= "<option value='am'{$selected["am"]}>am";
             $menu .= "<option value='pm'{$selected["pm"]}>pm";
         } else {

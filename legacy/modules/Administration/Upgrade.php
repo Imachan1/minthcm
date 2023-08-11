@@ -11,7 +11,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -70,6 +70,10 @@ if ( DBManagerFactory::getInstance()->supports('fulltext') ) {
     <tr>
         <td scope="row"><?php echo SugarThemeRegistry::current()->getImage('Repair', 'align="absmiddle" border="0"', null, null, '.gif', $mod_strings['LBL_EXPAND_DATABASE_COLUMNS']); ?>&nbsp;<a href="./index.php?module=Administration&action=expandDatabase"><?php echo $mod_strings['LBL_EXPAND_DATABASE_COLUMNS']; ?></a></td>
         <td> <?php echo $mod_strings['LBL_EXPAND_DATABASE_COLUMNS_DESC']; ?> </td>
+    </tr>
+    <tr>
+        <td scope="row"><?php echo SugarThemeRegistry::current()->getImage('Repair', 'align="absmiddle" border="0"', null, null, '.gif', $mod_strings['LBL_REPAIR_ELASTICSEARCH_INDEX']); ?>&nbsp;<a href="./index.php?module=Administration&action=RepairESIndex"><?php echo $mod_strings['LBL_REPAIR_ELASTICSEARCH_INDEX']; ?></a></td>
+        <td> <?php echo $mod_strings['LBL_REPAIR_ELASTICSEARCH_INDEX'] ; ?> </td>
     </tr>
     <tr>
         <?php
@@ -165,5 +169,9 @@ if ( DBManagerFactory::getInstance()->supports('fulltext') ) {
     <tr>
         <td scope="row"><?php echo SugarThemeRegistry::current()->getImage('Repair', 'align="absmiddle" border="0"', null, null, '.gif', $mod_strings['LBL_REPAIR_UPLOAD_FOLDER']); ?>&nbsp;<a href="./index.php?module=Administration&action=RepairUploadFolder"><?php echo $mod_strings['LBL_REPAIR_UPLOAD_FOLDER']; ?></a></td>
         <td> <?php echo $mod_strings['LBL_REPAIR_UPLOAD_FOLDER_DESC']; ?> </td>
+    </tr>
+    <tr>
+        <td scope="row"><?php echo SugarThemeRegistry::current()->getImage('Repair', 'align="absmiddle" border="0"', null, null, '.gif', $mod_strings['LBL_REPAIR_UPLOAD_FOLDER']); ?>&nbsp;<a href="./index.php?module=Administration&action=RepairUtfEncoding"><?php echo $mod_strings['LBL_REPAIR_UTF_ENCODING']; ?></a></td>
+        <td> <?php echo $mod_strings['LBL_REPAIR_UTF_ENCODING_DESC'] ; ?> </td>
     </tr>
 </table></p>

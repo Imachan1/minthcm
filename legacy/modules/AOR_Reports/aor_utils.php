@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,7 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-if (!defined('sugarEntry') || !sugarEntry) {
+ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
@@ -71,8 +71,10 @@ function getDisplayForField($modulePath, $field, $reportModule)
             continue;
         }
         if (!empty($currentBean->field_name_map[$relName]['vname'])) {
-            $moduleLabel = trim(translate($currentBean->field_name_map[$relName]['vname'], $currentBean->module_dir),
-                ':');
+            $moduleLabel = trim(
+                translate($currentBean->field_name_map[$relName]['vname'], $currentBean->module_dir),
+                ':'
+            );
         }
         $thisModule = getRelatedModule($currentBean->module_dir, $relName);
         $currentBean = BeanFactory::getBean($thisModule);
@@ -89,7 +91,7 @@ function getDisplayForField($modulePath, $field, $reportModule)
     $fieldDisplay = trim($fieldDisplay, ':');
     foreach ($modulePathDisplay as &$module) {
         $module = isset($app_list_strings['aor_moduleList'][$module]) ? $app_list_strings['aor_moduleList'][$module] : (
-        isset($app_list_strings['moduleList'][$module]) ? $app_list_strings['moduleList'][$module] : $module
+            isset($app_list_strings['moduleList'][$module]) ? $app_list_strings['moduleList'][$module] : $module
         );
     }
     return array('field' => $fieldDisplay, 'type'=>$fieldType, 'module' => str_replace(' ', '&nbsp;', implode(' : ', $modulePathDisplay)));
@@ -97,19 +99,21 @@ function getDisplayForField($modulePath, $field, $reportModule)
 
 function requestToUserParameters($reportBean = null)
 {
+    global $app_list_strings;
     $params = array();
-    if(!empty($_REQUEST['parameter_id'])) {
+    if (!empty($_REQUEST['parameter_id'])) {
         $dateCount = 0;
         foreach ($_REQUEST['parameter_id'] as $key => $parameterId) {
-
             if ($_REQUEST['parameter_type'][$key] === 'Multi') {
-                $_REQUEST['parameter_value'][$key] = encodeMultienumValue(explode(',',
-                    $_REQUEST['parameter_value'][$key]));
+                $_REQUEST['parameter_value'][$key] = encodeMultienumValue(explode(
+                    ',',
+                    $_REQUEST['parameter_value'][$key]
+                ));
             }
 
             $condition = BeanFactory::getBean('AOR_Conditions', $_REQUEST['parameter_id'][$key]);
             $value = $_REQUEST['parameter_value'][$key];
-            if ($reportBean && $condition) {
+            if ($reportBean && $condition && !array_key_exists($value, $app_list_strings['date_time_period_list'])) {
                 $value = fixUpFormatting($reportBean->report_module, $condition->field, $value);
             }
 
@@ -123,10 +127,10 @@ function requestToUserParameters($reportBean = null)
             // Fix for issue #1272 - AOR_Report module cannot update Date type parameter.
             if ($_REQUEST['parameter_type'][$key] === 'Date') {
                 $values = array();
-                $values[] = $_REQUEST['parameter_date_value'][$dateCount];
-                $values[] = $_REQUEST['parameter_date_sign'][$dateCount];
-                $values[] = $_REQUEST['parameter_date_number'][$dateCount];
-                $values[] = $_REQUEST['parameter_date_time'][$dateCount];
+                $values[] = $_REQUEST['parameter_date_value'][$key];
+                $values[] = $_REQUEST['parameter_date_sign'][$key];
+                $values[] = $_REQUEST['parameter_date_number'][$key];
+                $values[] = $_REQUEST['parameter_date_time'][$key];
 
                 $params[$parameterId] = array(
                     'id' => $parameterId,
@@ -147,21 +151,21 @@ function requestToUserParameters($reportBean = null)
                             'id' => $parameterId,
                             'operator' => $_REQUEST['parameter_operator'][$key],
                             'type' => $_REQUEST['parameter_type'][$key],
-                            'value' => convertToDateTime($_REQUEST['parameter_value'][$key])->format('Y-m-d H:i:s'),
+                            'value' => $value,
                         );
                     } elseif (strpos($paramValue, '-') === 2 || strpos($paramValue, '-') === 4) {
                         $params[$parameterId] = array(
                             'id' => $parameterId,
                             'operator' => $_REQUEST['parameter_operator'][$key],
                             'type' => $_REQUEST['parameter_type'][$key],
-                            'value' => convertToDateTime($_REQUEST['parameter_value'][$key])->format('Y-m-d H:i:s'),
+                            'value' => $value,
                         );
                     } elseif (strpos($paramValue, '.') === 2 || strpos($paramValue, '.') === 4) {
                         $params[$parameterId] = array(
                             'id' => $parameterId,
                             'operator' => $_REQUEST['parameter_operator'][$key],
                             'type' => $_REQUEST['parameter_type'][$key],
-                            'value' => convertToDateTime($_REQUEST['parameter_value'][$key])->format('Y-m-d H:i:s'),
+                            'value' => $value,
                         );
                     }
                 }
@@ -228,11 +232,11 @@ function getConditionsAsParameters($report, $override = array())
  */
 function getPeriodDate($date_time_period_list_selected)
 {
-    global $sugar_config;
+    global $sugar_config, $timedate;
     $datetime_period = new DateTime();
 
     // Setup when year quarters start & end
-    if ($sugar_config['aor']['quarters_begin']) {
+    if (isset($sugar_config['aor']['quarters_begin'])) {
         $q = calculateQuarters($sugar_config['aor']['quarters_begin']);
     } else {
         $q = calculateQuarters();
@@ -324,6 +328,8 @@ function getPeriodDate($date_time_period_list_selected)
     // set time to 00:00:00
     $datetime_period = $datetime_period->setTime(0, 0, 0);
 
+    $datetime_period->sub(DateInterval::createFromDateString($timedate->getUserUTCOffset().' minutes'));
+
     return $datetime_period;
 }
 
@@ -334,10 +340,14 @@ function getPeriodDate($date_time_period_list_selected)
  */
 function getPeriodEndDate($dateTimePeriodListSelected)
 {
+    global $timedate;
     switch ($dateTimePeriodListSelected) {
         case 'today':
-        case 'yesterday':
             $datetimePeriod = new DateTime();
+            break;
+        case 'yesterday':
+            $datetimePeriod = new DateTime("yesterday");
+            $datetimePeriod->setTime(23, 59, 59);
             break;
         case 'this_week':
             $datetimePeriod = new DateTime("next week monday");
@@ -406,7 +416,7 @@ function getPeriodEndDate($dateTimePeriodListSelected)
             $datetimePeriod->setTime(0, 0, 0);
             break;
     }
-
+    $datetimePeriod->sub(DateInterval::createFromDateString($timedate->getUserUTCOffset().' minutes'));
     return $datetimePeriod;
 }
 
@@ -558,8 +568,11 @@ function convertToDateTime($value)
     $formattedValue .= ' 00:00:00';
     $userTimezone = $current_user->getPreference('timezone');
     $utz = new DateTimeZone($userTimezone);
-    $dateTime = DateTime::createFromFormat('Y-m-d H:i:s',
-        $formattedValue, $utz);
+    $dateTime = DateTime::createFromFormat(
+        'Y-m-d H:i:s',
+        $formattedValue,
+        $utz
+    );
     $dateTime->setTimezone(new DateTimeZone('UTC'));
 
     return $dateTime;

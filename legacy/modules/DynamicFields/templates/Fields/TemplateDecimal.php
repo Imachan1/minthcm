@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,36 +46,23 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
-class TemplateDecimal extends TemplateFloat{
-	var $type = 'decimal';
-	var $default = null;
-	var $default_value = null;
+class TemplateDecimal extends TemplateFloat
+{
+    public $type = 'decimal';
+    public $default = null;
+    public $default_value = null;
 
-	function __construct(){
-    	parent::__construct();
-	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function TemplateDecimal(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+    public function __construct()
+    {
+        parent::__construct();
     }
 
-
-    function get_db_type()
-	{
-		if(empty($this->len)) {
-			return parent::get_db_type();
-		}
-		$precision = (!empty($this->precision)) ? $this->precision : 6;
-		return " ".sprintf(DBManagerFactory::getInstance()->getColumnType("decimal_tpl"), $this->len, $precision);
-	}
+    public function get_db_type()
+    {
+        if (empty($this->len)) {
+            return parent::get_db_type();
+        }
+        $precision = (!empty($this->precision)) ? $this->precision : 6;
+        return " ".sprintf(DBManagerFactory::getInstance()->getColumnType("decimal_tpl"), $this->len, $precision);
+    }
 }

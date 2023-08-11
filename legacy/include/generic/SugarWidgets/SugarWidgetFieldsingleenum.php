@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,26 +48,24 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
  
-class SugarWidgetFieldSingleEnum extends SugarWidgetFieldEnum {
-    
-    function displayInput($layout_def) {
+class SugarWidgetFieldSingleEnum extends SugarWidgetFieldEnum
+{
+    public function displayInput($layout_def)
+    {
         global $app_list_strings;
 
-        if(!empty($layout_def['remove_blank']) && $layout_def['remove_blank']) {
-            if ( is_array($layout_def['options']) ) {
+        if (!empty($layout_def['remove_blank']) && $layout_def['remove_blank']) {
+            if (is_array($layout_def['options'])) {
                 $ops = $layout_def['options'];
+            } elseif (isset($layout_def['options']) && isset($app_list_strings[$layout_def['options']])) {
+                $ops = $app_list_strings[$layout_def['options']];
+                if (array_key_exists('', $app_list_strings[$layout_def['options']])) {
+                    unset($ops['']);
+                }
+            } else {
+                $ops = array();
             }
-            elseif (isset($layout_def['options']) && isset($app_list_strings[$layout_def['options']])){ 
-            	$ops = $app_list_strings[$layout_def['options']];
-                if(array_key_exists('', $app_list_strings[$layout_def['options']])) {
-             	   unset($ops['']);
-	            }
-            }
-            else{
-            	$ops = array();
-            }
-        }
-        else {
+        } else {
             $ops = $app_list_strings[$layout_def['options']];
         }
         

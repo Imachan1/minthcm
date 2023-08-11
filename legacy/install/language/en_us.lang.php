@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -80,6 +80,7 @@ $mod_strings = array(
     'ERR_CHECKSYS_CONFIG_OVERRIDE_NOT_WRITABLE' => 'The config override file exists but is not writeable. Please take the necessary steps to make the file writeable. Depending on your Operating system, this might require you to change the permissions by running chmod 766, or to right click on the filename to access the properties and uncheck the read only option.',
     'ERR_CHECKSYS_CUSTOM_NOT_WRITABLE' => 'The Custom Directory exists but is not writeable. You may have to change permissions on it (chmod 766) or right click on it and uncheck the read only option, depending on your Operating System. Please take the needed steps to make the file writeable.',
     'ERR_CHECKSYS_FILES_NOT_WRITABLE' => "The files or directories listed below are not writeable or are missing and cannot be created. Depending on your Operating System, correcting this may require you to change permissions on the files or parent directory (chmod 755), or to right click on the parent directory and uncheck the 'read only' option and apply it to all subfolders.",
+    'ERR_CHECKSYS_JSON_NOT_AVAILABLE' => "Functions associated with JSON Parser Libraries that are needed by the SuiteCRM application were not found. You might need to uncomment the extension in the php.ini file, or recompile with the right binary file, depending on your version of PHP. Please refer to your PHP Manual for more information.",
     'LBL_CHECKSYS_OVERRIDE_CONFIG' => 'Config override',
     'ERR_CHECKSYS_SAFE_MODE' => 'Safe Mode is On (you may wish to disable in php.ini)',
     'ERR_CHECKSYS_ZLIB' => 'ZLib support not found: MintHCM reaps enormous performance benefits with zlib compression.',
@@ -165,6 +166,7 @@ $mod_strings = array(
     'LBL_CHECKSYS_PHP_OK' => 'OK (ver ',
     'LBL_CHECKSYS_PHPVER' => 'PHP Version',
     'LBL_CHECKSYS_IISVER' => 'IIS Version',
+    'LBL_CHECKSYS_JSON' => 'JSON Parsing',
     'LBL_CHECKSYS_RECHECK' => 'Re-check',
     'LBL_CHECKSYS_STATUS' => 'Status',
     'LBL_CHECKSYS_TITLE' => 'System Check Acceptance',
@@ -190,6 +192,9 @@ $mod_strings = array(
     'LBL_DBCONF_SUITE_DB_USER' => 'MintHCM Database User',
     'LBL_DBCONF_DB_ADMIN_USER' => 'Database Administrator Username',
     'LBL_DBCONF_DB_ADMIN_PASSWORD' => 'Database Admin Password',
+    'LBL_DBCONF_COLLATION' => 'Collation',
+    'LBL_DBCONF_CHARSET' => 'Character Set',
+    'LBL_DBCONF_ADV_DB_CFG_TITLE' => 'Advanced Database Configuration',
     'LBL_DBCONF_DEMO_DATA' => 'Populate Database with Demo Data?',
     'LBL_DBCONF_DEMO_DATA_TITLE' => 'Choose Demo Data',
     'LBL_DBCONF_HOST_NAME' => 'Host Name',
@@ -514,7 +519,7 @@ $contact_user_link_guid',
     'NEW_LOGO_HELP' => 'The image file format can be either .png or .jpg. The maximum height is 170px, and the maximum width is 450px. Any image uploaded that is larger in any direction will be scaled to these max dimensions.',
     'COMPANY_LOGO_UPLOAD_BTN' => 'Upload',
     'CURRENT_LOGO' => 'Current Logo:',
-    'CURRENT_LOGO_HELP' => 'This logo is displayed in the left-hand corner of the footer of the MintHCM application.',
+    'CURRENT_LOGO_HELP' => 'This logo is displayed in the centre of the login screen of the SuiteCRM application.',
 
 
     //Scenario selection of modules
@@ -567,7 +572,7 @@ $contact_user_link_guid',
     'LBL_START' => '',
     'LBL_DB_CONN_ERR' => 'Database error',
     'LBL_OLD_PHP' => 'Old PHP Version Detected!',
-    'LBL_OLD_PHP_MSG' => 'The recommended PHP version to install MintHCM is %s <br />Although the minimum PHP version required is %s, ' .
+    'LBL_OLD_PHP_MSG' => 'The recommended PHP version to install MintHCM is %s <br />The the minimum PHP version required is %s, ' .
         //' is not recommended due to the large number of fixed bugs, including security fixes, released in the more modern versions.'.
         '<br />You are using PHP version %s, witch is not supported by MintHCM ' .
         //' which is EOL: <a href="http://php.net/eol.php">http://php.net/eol.php</a>.<br />Please consider upgrading your PHP version. Instructions on <a href="http://php.net/migration70">http://php.net/migration70</a>. '

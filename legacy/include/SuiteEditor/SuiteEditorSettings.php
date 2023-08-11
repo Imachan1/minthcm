@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -92,8 +92,9 @@ abstract class SuiteEditorSettings
      *
      * @param $settings array or object
      */
-    public function __construct($settings = null) {
-        if($settings) {
+    public function __construct($settings = null)
+    {
+        if ($settings) {
             $this->extend($settings);
         }
     }
@@ -103,10 +104,10 @@ abstract class SuiteEditorSettings
      *
      * @param $settings array or object
      */
-    public function extend($settings) {
+    public function extend($settings)
+    {
         foreach ($settings as $key => $value) {
             $this->$key = $value;
         }
     }
-
 }

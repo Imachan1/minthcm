@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -58,14 +58,14 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
  */
-function get_validate_record_js () {
-	
-global $mod_strings;
-global $app_strings;
+function get_validate_record_js()
+{
+    global $mod_strings;
+    global $app_strings;
 
-$err_missing_required_fields = $app_strings['ERR_MISSING_REQUIRED_FIELDS'];
+    $err_missing_required_fields = $app_strings['ERR_MISSING_REQUIRED_FIELDS'];
 
-$the_script  = <<<EOQ
+    $the_script  = <<<EOQ
 
 <script type="text/javascript" language="Javascript">
 function verify_data(form) {
@@ -82,8 +82,7 @@ function verify_data(form) {
 
 EOQ;
 
-return $the_script;
-
+    return $the_script;
 }
 
 /**
@@ -92,9 +91,9 @@ return $the_script;
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
  */
-function get_new_record_form () {
-
-	require_once('modules/ProspectLists/ProspectListFormBase.php');
-	$accountForm = new ProspectListFormBase();
-	return $accountForm->getForm('','ProspectLists');
+function get_new_record_form()
+{
+    require_once('modules/ProspectLists/ProspectListFormBase.php');
+    $accountForm = new ProspectListFormBase();
+    return $accountForm->getForm('', 'ProspectLists');
 }

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -75,13 +75,15 @@ class SugarCacheRedis extends SugarCacheAbstract
      */
     public function useBackend()
     {
-        if ( !parent::useBackend() )
+        if (!parent::useBackend()) {
             return false;
+        }
         
-        if ( extension_loaded("redis")
+        if (extension_loaded("redis")
                 && empty($GLOBALS['sugar_config']['external_cache_disabled_redis'])
-                && $this->_getRedisObject() )
+                && $this->_getRedisObject()) {
             return true;
+        }
             
         return false;
     }
@@ -100,17 +102,15 @@ class SugarCacheRedis extends SugarCacheAbstract
     protected function _getRedisObject()
     {
         try {
-            if ( !($this->_redis instanceOf Redis) ) {
+            if (!($this->_redis instanceof Redis)) {
                 $this->_redis = new Redis();
                 $this->_host = SugarConfig::getInstance()->get('external_cache.redis.host', $this->_host);
                 $this->_port = SugarConfig::getInstance()->get('external_cache.redis.port', $this->_port);
-                if ( !$this->_redis->connect($this->_host,$this->_port) ) {
+                if (!$this->_redis->connect($this->_host, $this->_port)) {
                     return false;
                 }
             }
-        }
-        catch (RedisException $e)
-        {
+        } catch (RedisException $e) {
             return false;
         }
         
@@ -123,12 +123,11 @@ class SugarCacheRedis extends SugarCacheAbstract
     protected function _setExternal(
         $key,
         $value
-        )
-    {
+        ) {
         $value = serialize($value);
         $key = $this->_fixKeyName($key);
         
-        $this->_getRedisObject()->set($key,$value);
+        $this->_getRedisObject()->set($key, $value);
         $this->_getRedisObject()->expire($key, $this->_expireTimeout);
     }
     
@@ -137,12 +136,11 @@ class SugarCacheRedis extends SugarCacheAbstract
      */
     protected function _getExternal(
         $key
-        )
-    {
+        ) {
         $key = $this->_fixKeyName($key);
         $returnValue = $this->_getRedisObject()->get($key);
         // return null if we don't get a cache hit
-        if ( $returnValue === false ) {
+        if ($returnValue === false) {
             return null;
         }
         
@@ -156,10 +154,9 @@ class SugarCacheRedis extends SugarCacheAbstract
      */
     protected function _clearExternal(
         $key
-        )
-    {
+        ) {
         $key = $this->_fixKeyName($key);
-        $this->_getRedisObject()->delete($key);
+        $this->_getRedisObject()->del($key);
     }
     
     /**
@@ -178,6 +175,6 @@ class SugarCacheRedis extends SugarCacheAbstract
      */
     protected function _fixKeyName($key)
     {
-        return str_replace(' ','_',$key);
+        return str_replace(' ', '_', $key);
     }
 }

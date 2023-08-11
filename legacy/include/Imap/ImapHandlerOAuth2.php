@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2019 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -881,6 +881,41 @@ class ImapHandlerOAuth2 implements ImapHandlerInterface
         $this->logReturn(__FUNCTION__, $ret);
 
         return $ret;
+    }
+
+    /**
+     * @param $stream mixed
+     * @return bool
+     */
+    public function isValidStream($stream): bool
+    {
+        // MintHCM must implement or be abstract
+        return true;
+    }
+
+        /**
+     * @param string|null $filterCriteria
+     * @param $sortCriteria
+     * @param $sortOrder
+     * @param int $offset
+     * @param int $pageSize
+     * @param array $mailboxInfo
+     * @param array $columns
+     * @return array
+     * @throws ImapHandlerException
+     */
+    public function getMessageList(
+        ?string $filterCriteria,
+        $sortCriteria,
+        $sortOrder,
+        int $offset,
+        int $pageSize,
+        array &$mailboxInfo,
+        array $columns
+    ): array
+    {
+        // MintHCM must implement or be abstract
+        return [];
     }
 
 }

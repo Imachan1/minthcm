@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,9 +44,9 @@
 
 $viewdefs['ProspectLists']['EditView'] = array(
     'templateMeta' => array('form'=>array('hidden'=>array('<input type="hidden" name="campaign_id" value="{$smarty.request.campaign_id}">')),
-                            'maxColumns' => '2', 
+                            'maxColumns' => '2',
                             'widths' => array(
-                                            array('label' => '10', 'field' => '30'), 
+                                            array('label' => '10', 'field' => '30'),
                                             array('label' => '10', 'field' => '30')
                                             ),
  'javascript' => '<script type="text/javascript">
@@ -70,15 +70,15 @@ function toggle_domain_name(list_type)  {ldelim}
  {rdelim})
 </script>',
 ),
- 'panels' =>array (
-  'default' => 
-  array (
+ 'panels' =>array(
+  'default' =>
+  array(
     
-    array (
+    array(
       array('name'=>'name', 'displayParams'=>array('required'=>true)),
       array('name'=>'list_type', 'displayParams'=>array('required'=>true, 'javascript'=>'onchange="toggle_domain_name(this);"')),
     ),
-    array (
+    array(
       array('name'=>'description'),
       array('name' => 'domain_name',
             'customLabel' => '<div id="domain_label_div">{$MOD.LBL_DOMAIN}</div>',
@@ -86,10 +86,10 @@ function toggle_domain_name(list_type)  {ldelim}
     ),
     
   ),
-  'LBL_PANEL_ASSIGNMENT' => 
-      array (
-        array (
-          array (
+  'LBL_PANEL_ASSIGNMENT' =>
+      array(
+        array(
+          array(
             'name' => 'assigned_user_name',
             'label' => 'LBL_ASSIGNED_TO_NAME',
           ),

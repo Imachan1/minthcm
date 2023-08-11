@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,13 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 
 require_once('modules/Contacts/ContactOpportunityRelationship.php');
@@ -64,12 +58,12 @@ global $sugar_version, $sugar_config;
 
 $focus = new ContactOpportunityRelationship();
 
-if(isset($_REQUEST['record'])) {
+if (isset($_REQUEST['record'])) {
     $focus->retrieve($_REQUEST['record']);
 }
 
-if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-	$focus->id = "";
+if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
+    $focus->id = "";
 }
 
 // Prepopulate either side of the relationship if passed in.
@@ -90,7 +84,7 @@ $sqs_objects['opportunity_name']['populate_list'] = array('opportunity_name', 'o
 $quicksearch_js = '<script type="text/javascript" language="javascript">sqs_objects = ' . $json->encode($sqs_objects) . '</script>';
 echo $quicksearch_js;
 
-$xtpl=new XTemplate ('modules/Contacts/ContactOpportunityRelationshipEdit.html');
+$xtpl=new XTemplate('modules/Contacts/ContactOpportunityRelationshipEdit.html');
 $xtpl->assign("MOD", $mod_strings);
 $xtpl->assign("APP", $app_strings);
 
@@ -100,8 +94,8 @@ $xtpl->assign("RETURN_ACTION", $_REQUEST['return_action']);
 $xtpl->assign("RETURN_ID", $_REQUEST['return_id']);
 $xtpl->assign("PRINT_URL", "index.php?".$GLOBALS['request_string']);
 $xtpl->assign("ID", $focus->id);
-$xtpl->assign("CONTACT",$contactName = Array("NAME" => $focus->contact_name, "ID" => $focus->contact_id));
-$xtpl->assign("OPPORTUNITY",$oppName = Array("NAME" => $focus->opportunity_name, "ID" => $focus->opportunity_id));
+$xtpl->assign("CONTACT", $contactName = array("NAME" => $focus->contact_name, "ID" => $focus->contact_id));
+$xtpl->assign("OPPORTUNITY", $oppName = array("NAME" => $focus->opportunity_name, "ID" => $focus->opportunity_id));
 
 echo getClassicModuleTitle($mod_strings['LBL_MODULE_NAME'], array($mod_strings['LBL_MODULE_NAME'],$mod_strings['LBL_CONTACT_OPP_FORM_TITLE']." ".$contactName['NAME'] . " - ". $oppName['NAME']), true);
 
@@ -120,4 +114,3 @@ $javascript->setFormName('EditView');
 $javascript->setSugarBean($focus);
 $javascript->addToValidateBinaryDependency('opportunity_name', 'alpha', $app_strings['ERR_SQS_NO_MATCH_FIELD'] . $mod_strings['LBL_OPP_NAME'], 'false', '', 'opportunity_id');
 echo $javascript->getScript();
-

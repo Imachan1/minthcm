@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -51,69 +51,69 @@ $viewdefs['Bugs']['DetailView'] = array(
                                         ),
                         ),
 
-'panels' =>array (
+'panels' =>array(
   'lbl_bug_information'=>array(
-	  array (
-	    'bug_number',
-	    'priority',
-	  ),
+      array(
+        'bug_number',
+        'priority',
+      ),
 
-	  array (
-	    array (
-	      'name' => 'name',
-	      'label' => 'LBL_SUBJECT',
-	    ),
-	    'status',
-	  ),
+      array(
+        array(
+          'name' => 'name',
+          'label' => 'LBL_SUBJECT',
+        ),
+        'status',
+      ),
 
-	  array (
-	    'type',
-	    'source',
-	  ),
+      array(
+        'type',
+        'source',
+      ),
 
-	  array (
-	    'product_category',
-	    'resolution',
-	  ),
+      array(
+        'product_category',
+        'resolution',
+      ),
 
-	  array (
-	    array (
-	      'name' => 'found_in_release',
-	      'label' => 'LBL_FOUND_IN_RELEASE',
-	    ),
-	    'fixed_in_release',
-	  ),
+      array(
+        array(
+          'name' => 'found_in_release',
+          'label' => 'LBL_FOUND_IN_RELEASE',
+        ),
+        'fixed_in_release',
+      ),
 
-	  array (
-	    'description',
-	  ),
+      array(
+        'description',
+      ),
 
-	  array (
-	    'work_log',
-	  ),
+      array(
+        'work_log',
+      ),
 
   ),
 
       'LBL_PANEL_ASSIGNMENT' =>
-      array (
+      array(
 
-        array (
+        array(
 
-          array (
+          array(
             'name' => 'assigned_user_name',
             'label' => 'LBL_ASSIGNED_TO_NAME',
           ),
 
-          array (
+          array(
             'name' => 'date_modified',
             'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
             'label' => 'LBL_DATE_MODIFIED',
           ),
         ),
 
-        array (
+        array(
 
-          array (
+          array(
             'name' => 'date_entered',
             'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
             'label' => 'LBL_DATE_ENTERED',

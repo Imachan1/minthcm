@@ -119,6 +119,7 @@ class Meeting extends SugarBean {
    public $new_schema = true;
    public $date_changed = false;
    public $repeat_parent_id;
+   protected static $remindersInSaving = false;
 
    /**
     * sole constructor
@@ -192,7 +193,7 @@ class Meeting extends SugarBean {
       $check_notify = (!empty($_REQUEST['send_invites']) && $_REQUEST['send_invites'] == '1') ? true : false;
       if ( empty($_REQUEST['send_invites']) ) {
          if ( !empty($this->id) ) {
-            $old_record = new Meeting();
+            $old_record = BeanFactory::newBean('Meetings');
             $old_record->retrieve($this->id);
             $old_assigned_user_id = $old_record->assigned_user_id;
          }
@@ -221,7 +222,7 @@ class Meeting extends SugarBean {
 
       // Do any external API saving
       // Clear out the old external API stuff if we have changed types
-      if ( isset($this->fetched_row) && $this->fetched_row['type'] != $this->type ) {
+      if ( isset($this->fetched_row) && !is_bool($this->fetched_row) && $this->fetched_row['type'] != $this->type ) {
          $this->join_url = '';
          $this->host_url = '';
          $this->external_id = '';
@@ -265,13 +266,10 @@ class Meeting extends SugarBean {
       
       $return_id = parent::save($check_notify);
 
-    //   if ( $this->shouldBeProcessedApi() ) { // FIXME EV 2023-06-28 - nieistniejąca metoda
-         // $this->saveRepeatlyApi(); //CR komentuje to bo spotkania w Mincie si� tworz� cyklicznie przy kazdej edycji
-    //   }
-
       if ($this->status != $bean->fetched_row['status'] && $this->status == 'Held') {
          $this->closeRelatedTraining();
          }
+         
       if ( $this->update_vcal ) {
          vCal::cache_sugar_vcal($current_user);
          // MintHCM start
@@ -279,14 +277,18 @@ class Meeting extends SugarBean {
          // MintHCM end
       }
 
-      if ( isset($_REQUEST['reminders_data']) && empty($this->saving_reminders_data) ) {
-         $this->saving_reminders_data = true;
+      if ( isset($_REQUEST['reminders_data']) && !self::$remindersInSaving || isset($_REQUEST['reminders_data']) && empty($this->saving_reminders_data) ) {
+        self::$remindersInSaving = true;
+        $this->saving_reminders_data = true;
          $reminderData = json_encode(
             $this->removeUnInvitedFromReminders(json_decode(html_entity_decode($_REQUEST['reminders_data']), true))
          );
          Reminder::saveRemindersDataJson('Meetings', $return_id, $reminderData);
+         self::$remindersInSaving = false;
          $this->saving_reminders_data = false;
       }
+
+
       return $return_id;
    }
 
@@ -402,7 +404,7 @@ class Meeting extends SugarBean {
    // MintHCM end
 
    public function get_summary_text() {
-      return "$this->name";
+        return (string)$this->name;
    }
 
    public function create_export_query($order_by, $where, $relate_link_join = '') {
@@ -442,7 +444,7 @@ class Meeting extends SugarBean {
       $this->fill_in_additional_parent_fields();
 
       if ( !isset($this->time_hour_start) ) {
-         $this->time_start_hour = intval(substr($this->time_start, 0, 2));
+        $this->time_start_hour = (int)substr($this->time_start, 0, 2);
       } //if-else
 
       if ( isset($this->time_minute_start) ) {
@@ -465,7 +467,7 @@ class Meeting extends SugarBean {
       if ( isset($this->time_hour_start) ) {
          $time_start_hour = $this->time_hour_start;
       } else {
-         $time_start_hour = intval(substr($this->time_start, 0, 2));
+        $time_start_hour = (int)substr($this->time_start, 0, 2);
       }
 
       global $timedate;
@@ -705,7 +707,7 @@ class Meeting extends SugarBean {
       $xtpl->assign("MEETING_ENDDATE", $timedate->asUser($enddate, $notifyUser) . " " . TimeDate::userTimezoneSuffix($enddate, $notifyUser));
       $xtpl->assign("MEETING_HOURS", $meeting->duration_hours);
       $xtpl->assign("MEETING_MINUTES", $meeting->duration_minutes);
-      $xtpl->assign("MEETING_DESCRIPTION", $meeting->description);
+      $xtpl->assign("MEETING_DESCRIPTION", nl2br($meeting->description));
       $xtpl->assign("MEETING_LOCATION", $meeting->location);
       if ( !empty($meeting->join_url) ) {
          $xtpl->assign('MEETING_URL', $meeting->join_url);
@@ -758,7 +760,7 @@ class Meeting extends SugarBean {
    }
 
    public function get_meeting_users() {
-      $template = new User();
+    $template = BeanFactory::newBean('Users');
       // First, get the list of IDs.
       $query = "SELECT meetings_users.required, meetings_users.accept_status, meetings_users.user_id from meetings_users where meetings_users.meeting_id='$this->id' AND meetings_users.deleted=0";
       $GLOBALS['log']->debug("Finding linked records $this->object_name: " . $query);
@@ -766,7 +768,7 @@ class Meeting extends SugarBean {
       $list = Array();
 
       while ( $row = $this->db->fetchByAssoc($result) ) {
-         $template = new User(); // PHP 5 will retrieve by reference, always over-writing the "old" one
+        $template = BeanFactory::newBean('Users');// PHP 5 will retrieve by reference, always over-writing the "old" one
          $record = $template->retrieve($row['user_id']);
          $template->required = $row['required'];
          $template->accept_status = $row['accept_status'];
@@ -846,7 +848,7 @@ class Meeting extends SugarBean {
       // MintHCM #54195 End
 
       foreach ( $this->users_arr as $user_id ) {
-         $notify_user = new User();
+        $notify_user = BeanFactory::newBean('Users');
          $notify_user->retrieve($user_id);
          $notify_user->new_assigned_user_name = $notify_user->full_name;
          $GLOBALS['log']->info("Notifications: recipient is $notify_user->new_assigned_user_name");
@@ -1018,9 +1020,15 @@ function getMeetingsExternalApiDropDown($focus = null, $name = null, $value = nu
       $dictionaryMeeting = $dictionary['Meeting'];
    }
 
-   if ( $dictionaryMeeting['fields']['type']['options'] != "eapm_list" ) {
+    // Protect against null.
+    if (
+        is_null($dictionaryMeeting)
+        || is_null($dictionaryMeeting['fields'])
+        || is_null($dictionaryMeeting['fields']['type'])
+        || $dictionaryMeeting['fields']['type']['options'] != "eapm_list"
+    ) {
       $apiList = array_merge(getMeetingTypeOptions($dictionary, $app_list_strings), $apiList);
-   }
+    }
 
    return $apiList;
 }

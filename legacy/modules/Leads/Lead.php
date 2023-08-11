@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,13 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 require_once('include/SugarObjects/templates/person/Person.php');
 
@@ -161,21 +155,6 @@ class Lead extends Person implements EmailInterface
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function Lead()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-
     public function get_account()
     {
         if (isset($this->account_id) && !empty($this->account_id)) {
@@ -187,8 +166,13 @@ class Lead extends Person implements EmailInterface
 
             if (!empty($result)) {
                 $row = $this->db->fetchByAssoc($result);
-                $this->account_name = $row['name'];
-                $this->account_name_owner = $row['account_name_owner'];
+                if (!is_null($row) && !is_bool($row)) {
+                    $this->account_name = $row['name'];
+                    $this->account_name_owner = $row['account_name_owner'];
+                } else {
+                    $this->account_name = null;
+                    $this->account_name_owner = null;
+                }
                 $this->account_name_mod = 'Accounts';
             }
         }
@@ -204,8 +188,15 @@ class Lead extends Person implements EmailInterface
 
             if (!empty($result)) {
                 $row = $this->db->fetchByAssoc($result);
-                $this->opportunity_name = $row['name'];
-                $this->opportunity_name_owner = $row['opportunity_name_owner'];
+
+                if (!is_null($row) && !is_bool($row)) {
+                    $this->opportunity_name = $row['name'];
+                    $this->opportunity_name_owner = $row['opportunity_name_owner'];
+                } else {
+                    $this->opportunity_name = null;
+                    $this->opportunity_name_owner = null;
+                }
+
                 $this->opportunity_name_mod = 'Opportunities';
             }
         }
@@ -221,8 +212,14 @@ class Lead extends Person implements EmailInterface
             $result = $this->db->limitQuery($query, 0, 1, true, "Want only a single row");
             if (!empty($result)) {
                 $row= $this->db->fetchByAssoc($result);
-                $this->contact_name = $locale->getLocaleFormattedName($row['first_name'], $row['last_name']);
-                $this->contact_name_owner = $row['contact_name_owner'];
+
+                if (!is_null($row) && !is_bool($row)) {
+                    $this->contact_name = $locale->getLocaleFormattedName($row['first_name'], $row['last_name']);
+                    $this->contact_name_owner = $row['contact_name_owner'];
+                } else {
+                    $this->contact_name = null;
+                    $this->contact_name_owner = null;
+                }
                 $this->contact_name_mod = 'Contacts';
             }
         }
@@ -282,7 +279,7 @@ class Lead extends Person implements EmailInterface
 
         //we must move the status out here in order to be able to capture workflow conditions
         $leadid = str_replace("'", "", $leadid);
-        $lead = new Lead();
+        $lead = BeanFactory::newBean('Leads');
         $lead->retrieve($leadid);
         $lead->status='Converted';
         $lead->save();
@@ -307,7 +304,7 @@ class Lead extends Person implements EmailInterface
         $this->get_account();
 
         if (!empty($this->campaign_id)) {
-            $camp = new Campaign();
+            $camp = BeanFactory::newBean('Campaigns');
             $where = "campaigns.id='$this->campaign_id'";
             $campaign_list = $camp->get_full_list("campaigns.name", $where, true);
             if (!empty($campaign_list)) {
@@ -400,7 +397,7 @@ class Lead extends Person implements EmailInterface
         $xtpl->assign("LEAD_NAME", $locale->getLocaleFormattedName($lead->first_name, $lead->last_name, $lead->salutation));
         $xtpl->assign("LEAD_SOURCE", (isset($lead->lead_source) ? $app_list_strings['lead_source_dom'][$lead->lead_source] : ""));
         $xtpl->assign("LEAD_STATUS", (isset($lead->status)? $app_list_strings['lead_status_dom'][$lead->status]:""));
-        $xtpl->assign("LEAD_DESCRIPTION", $lead->description);
+        $xtpl->assign("LEAD_DESCRIPTION", nl2br($lead->description));
 
         return $xtpl;
     }
@@ -412,7 +409,6 @@ class Lead extends Person implements EmailInterface
         }
         return false;
     }
-
     public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set') {
         return false;
     }
@@ -522,7 +518,13 @@ class Lead extends Person implements EmailInterface
         foreach ($this->field_defs as $field => $value) {
             if (!empty($value['source']) && $value['source'] == 'custom_fields') {
                 if (!empty($tempBean->field_defs[$field]) and isset($tempBean->field_defs[$field])) {
-                    $form .= "<tr><td nowrap colspan='4' class='dataLabel'>".$mod_strings[$tempBean->field_defs[$field]['vname']].":";
+                    $label = $tempBean->field_defs[$field]['vname'];
+                    if(isset($mod_strings[$label])){
+                        $label = $mod_strings[$label];
+                    } elseif(isset($app_strings[$label])){
+                        $label = $app_strings[$label];
+                    }
+                    $form .= "<tr><td nowrap colspan='4' class='dataLabel'>".$label.":";
 
                     if (!empty($tempBean->custom_fields->avail_fields[$field]['required']) and (($tempBean->custom_fields->avail_fields[$field]['required']== 1) or ($tempBean->custom_fields->avail_fields[$field]['required']== '1') or ($tempBean->custom_fields->avail_fields[$field]['required']== 'true') or ($tempBean->custom_fields->avail_fields[$field]['required']== true))) {
                         $form .= "&nbsp;<span class='required'>".$lbl_required_symbol."</span>";
@@ -648,3 +650,5 @@ class Lead extends Person implements EmailInterface
         return $return_array;
     }
 }
+
+

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,36 +48,36 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $subpanel_layout = array(
-	'top_buttons' => array(
+    'top_buttons' => array(
        array('widget_class' => 'SubPanelTopCreateButton'),
-	   array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'Campaigns'),
-	),
+       array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'Campaigns'),
+    ),
 
-	'where' => '',
+    'where' => '',
 
 'list_fields' => array(
-		'name'=>array(
-	    'name' => 'name',
-	 	'vname' => 'LBL_LIST_CAMPAIGN_NAME',
-		'widget_class' => 'SubPanelDetailViewLink',
-		'width' => '85%',
-	   ),
+        'name'=>array(
+        'name' => 'name',
+        'vname' => 'LBL_LIST_CAMPAIGN_NAME',
+        'widget_class' => 'SubPanelDetailViewLink',
+        'width' => '85%',
+       ),
         'status'=>array(
-	 	    'name' => 'status',
-	 	    'vname' => 'LBL_LIST_STATUS',
-		    'width' => '15%',
-		),
-		'edit_button'=>array(
-			'vname' => 'LBL_EDIT_BUTTON',
-			'widget_class' => 'SubPanelEditButton',
-		 	'module' => 'Campaigns',
-			'width' => '5%',
-		),
-		'remove_button'=>array(
-			'vname' => 'LBL_REMOVE',
-			'widget_class' => 'SubPanelRemoveButton',
-		 	'module' => 'Campgains',
-			'width' => '5%',
-		),
-	),
+            'name' => 'status',
+            'vname' => 'LBL_LIST_STATUS',
+            'width' => '15%',
+        ),
+        'edit_button'=>array(
+            'vname' => 'LBL_EDIT_BUTTON',
+            'widget_class' => 'SubPanelEditButton',
+            'module' => 'Campaigns',
+            'width' => '5%',
+        ),
+        'remove_button'=>array(
+            'vname' => 'LBL_REMOVE',
+            'widget_class' => 'SubPanelRemoveButton',
+            'module' => 'Campgains',
+            'width' => '5%',
+        ),
+    ),
 );

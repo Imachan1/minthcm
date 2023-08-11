@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -59,7 +59,9 @@ class SugarCache
      */
     public static $isCacheReset = false;
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * initializes the cache in question
@@ -68,21 +70,22 @@ class SugarCache
     {
         $lastPriority = 1000;
         $locations = array('include/SugarCache','custom/include/SugarCache');
- 	    foreach ( $locations as $location ) {
+        foreach ($locations as $location) {
             if (is_dir($location) && $dir = opendir($location)) {
                 while (($file = readdir($dir)) !== false) {
                     if ($file == ".."
                             || $file == "."
                             || !is_file("$location/$file")
-                            )
+                            ) {
                         continue;
+                    }
                     require_once("$location/$file");
                     $cacheClass = basename($file, ".php");
-                    if ( class_exists($cacheClass) && is_subclass_of($cacheClass,'SugarCacheAbstract') ) {
+                    if (class_exists($cacheClass) && is_subclass_of($cacheClass, 'SugarCacheAbstract')) {
                         $GLOBALS['log']->debug("Found cache backend $cacheClass");
                         $cacheInstance = new $cacheClass();
-                        if ( $cacheInstance->useBackend()
-                                && $cacheInstance->getPriority() < $lastPriority ) {
+                        if ($cacheInstance->useBackend()
+                                && $cacheInstance->getPriority() < $lastPriority) {
                             $GLOBALS['log']->debug("Using cache backend $cacheClass, since ".$cacheInstance->getPriority()." is less than ".$lastPriority);
                             self::$_cacheInstance = $cacheInstance;
                             $lastPriority = $cacheInstance->getPriority();
@@ -99,8 +102,9 @@ class SugarCache
      */
     public static function instance()
     {
-        if ( !is_subclass_of(self::$_cacheInstance,'SugarCacheAbstract') )
+        if (!is_subclass_of(self::$_cacheInstance, 'SugarCacheAbstract')) {
             self::_init();
+        }
 
         return self::$_cacheInstance;
     }
@@ -108,28 +112,31 @@ class SugarCache
     /**
      * Try to reset any opcode caches we know about
      *
+     *  @param Bool $full_reset -- only reset the opcache on full reset,
+     *  for removing individual files from cache use the fine grained method cleanFile
+     *
      * @todo make it so developers can extend this somehow
      */
-    public static function cleanOpcodes()
+    public static function cleanOpcodes($full_reset = false)
     {
         // APC
-        if ( function_exists('apc_clear_cache') && ini_get('apc.stat') == 0 ) {
+        if (function_exists('apc_clear_cache') && ini_get('apc.stat') == 0) {
             apc_clear_cache();
         }
         // Wincache
-        if ( function_exists('wincache_refresh_if_changed') ) {
+        if (function_exists('wincache_refresh_if_changed')) {
             wincache_refresh_if_changed();
         }
         // Zend
-        if ( function_exists('accelerator_reset') ) {
+        if (function_exists('accelerator_reset')) {
             accelerator_reset();
         }
         // eAccelerator
-        if ( function_exists('eaccelerator_clear') ) {
+        if (function_exists('eaccelerator_clear')) {
             eaccelerator_clear();
         }
         // XCache
-        if ( function_exists('xcache_clear_cache') && !ini_get('xcache.admin.enable_auth') ) {
+        if (function_exists('xcache_clear_cache') && !ini_get('xcache.admin.enable_auth')) {
             $max = xcache_count(XC_TYPE_PHP);
             for ($i = 0; $i < $max; $i++) {
                 if (!xcache_clear_cache(XC_TYPE_PHP, $i)) {
@@ -138,20 +145,67 @@ class SugarCache
             }
         }
         // Zend OPcache
-        if ( function_exists('opcache_reset') ) {
-            opcache_reset();
+        if ($full_reset && SugarCache::isOPcacheEnabled()) {
+            if (!opcache_reset()) {
+                LoggerManager::getLogger()->error("OPCache - could not reset");
+            }
         }
     }
 
     /**
      * Try to reset file from caches
      */
-    public static function cleanFile( $file )
+    public static function cleanFile($file)
     {
         // APC
-        if ( function_exists('apc_delete_file') && ini_get('apc.stat') == 0 )
-        {
-            apc_delete_file( $file );
+        if (function_exists('apc_delete_file') && ini_get('apc.stat') == 0) {
+            apc_delete_file($file);
+        }
+
+        // Zend OPcache
+        if (SugarCache::isOPcacheEnabled()) {
+            // three attempts incase concurrent opcache operations pose a lock
+            for ($i = 3; $i && !opcache_invalidate($file, true); --$i) {
+                sleep(0.2);
+            }
+
+            if (!$i) {
+                LoggerManager::getLogger()->warn("OPCache - could not invalidate file: $file");
+            }
+        }
+    }
+
+    /**
+     * cleanDir
+     * Call this function to remove files in a directory from cache
+     *
+     * @param string $dir - String value of the directory to remove from cache
+     *
+     */
+    public static function cleanDir($dir)
+    {
+        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir)) as $file) {
+            if ((new SplFileInfo($file))->getExtension() == 'php') {
+                sugarCache::cleanFile($file);
+            }
+        }
+    }
+
+    /**
+     * Check if OPcache is enabled
+     *
+     */
+    public static function isOPcacheEnabled()
+    {
+        if (extension_loaded('Zend OPcache')) {
+            if (function_exists('opcache_get_status')) {
+                $opcache_status = opcache_get_status(false);
+                return $opcache_status !== false && ($opcache_status['opcache_enabled'] ?? false);
+            } else {
+                return ini_get('opcache.enable');
+            }
+        } else {
+            return false;
         }
     }
 }
@@ -179,7 +233,7 @@ function sugar_cache_retrieve($key)
  */
 function sugar_cache_put($key, $value, $ttl = null)
 {
-    SugarCache::instance()->set($key,$value, $ttl);
+    SugarCache::instance()->set($key, $value, $ttl);
 }
 
 /**
@@ -210,7 +264,7 @@ function sugar_cache_reset()
 function sugar_cache_reset_full()
 {
     SugarCache::instance()->resetFull();
-    SugarCache::cleanOpcodes();
+    SugarCache::cleanOpcodes(true);
 }
 
 /**

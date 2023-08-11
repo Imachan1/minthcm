@@ -12,7 +12,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,13 +45,6 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-/* * *******************************************************************************
-
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- * ****************************************************************************** */
 
 
 
@@ -65,6 +58,7 @@ global $urlPrefix;
 global $currentModule;
 global $theme;
 global $filter_for_valid_editable_attributes;
+global $invalid_attribute_by_name;
 //filter condition for fields in vardefs that can participate in merge.
 $filter_for_valid_editable_attributes = array(
    array( 'type' => 'datetimecombo', 'source' => 'db' ),
@@ -78,6 +72,7 @@ $filter_for_valid_editable_attributes = array(
    array( 'type' => 'int', 'source' => 'db' ),
    array( 'type' => 'long', 'source' => 'db' ),
    array( 'type' => 'double', 'source' => 'db' ),
+   array('type'=>'bool','source'=>'db'),
    array( 'type' => 'float', 'source' => 'db' ),
    array( 'type' => 'short', 'source' => 'db' ),
    array( 'dbType' => 'varchar', 'source' => 'db' ),
@@ -115,7 +110,7 @@ if ( isset($_REQUEST['change_parent']) && $_REQUEST['change_parent'] == '1' ) {
       $merge_ids_array[] = $id;
    }
 }
-$focus = new MergeRecord();
+$focus = BeanFactory::newBean('MergeRecords');
 $focus->load_merge_bean($_REQUEST['merge_module'], true, $base_id);
 $params = array();
 $params[] = "<a href='index.php?module={$focus->merge_bean->module_dir}&action=index'>{$GLOBALS['app_list_strings']['moduleList'][$focus->merge_bean->module_dir]}</a>";
@@ -378,18 +373,22 @@ foreach ( $temp_field_array as $field_array ) {
          //add an array of fields/values to the json array
          //for setting all the values for merge
          if ( $field_check == 'relate' or $field_check == 'link' ) {
-            $temp_array = Array();
+            $temp_array = array();
             $tempId = $field_array['id_name'];
             $json_data['popup_fields'] = Array( $tempName => $mergeBeanArray[$id]->$tempName, $tempId => $mergeBeanArray[$id]->$tempId, );
-         } elseif ( $field_check == 'teamset' ) {
-            $json_data['field_value'] = TeamSetManager::getCommaDelimitedTeams($mergeBeanArray[$id]->team_set_id, $mergeBeanArray[$id]->team_id, true);
-            $json_data['field_value2'] = TeamSetManager::getTeamsFromSet($mergeBeanArray[$id]->team_set_id);
-            $json_data['field_value3'] = $mergeBeanArray[$id]->team_set_id;
-         } elseif ( $field_check == 'multienum' ) {
-            $json_data['field_value'] = unencodeMultienum($mergeBeanArray[$id]->$tempName);
          } else {
-            $json_data['field_value'] = $mergeBeanArray[$id]->$tempName;
-         }
+            if ($field_check == 'teamset') {
+                $json_data['field_value'] = TeamSetManager::getCommaDelimitedTeams($mergeBeanArray[$id]->team_set_id, $mergeBeanArray[$id]->team_id, true);
+                $json_data['field_value2'] = TeamSetManager::getTeamsFromSet($mergeBeanArray[$id]->team_set_id);
+                $json_data['field_value3'] =  $mergeBeanArray[$id]->team_set_id;
+            } else {
+                if ($field_check == 'multienum') {
+                    $json_data['field_value'] = unencodeMultienum($mergeBeanArray[$id]->$tempName);
+                } else {
+                    $json_data['field_value'] = $mergeBeanArray[$id]->$tempName;
+                }
+            }
+        }
          $encoded_json_data = $json->encode($json_data);
          $xtpl->assign('ENCODED_JSON_DATA', $encoded_json_data);
          $xtpl->parse($field_name);

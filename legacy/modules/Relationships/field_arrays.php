@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,39 +52,39 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
  ********************************************************************************/
-$fields_array['Relationship'] = array ('column_fields' => Array(
-		'id',
-		'relationship_name',
-		'lhs_module',
-		'lhs_table',
-		'lhs_key',
-		'rhs_module',
-		'rhs_table',
-		'rhs_key',
-		'join_table',
-		'join_key_lhs',
-		'join_key_rhs',
-		'relationship_type',
-		'relationship_role_column',
-		'relationship_role_column_value',
-		'reverse',
-	),
-        'list_fields' =>  Array(
-		'id',
-		'relationship_name',
-		'lhs_module',
-		'lhs_table',
-		'lhs_key',
-		'rhs_module',
-		'rhs_table',
-		'rhs_key',
-		'join_table',
-		'join_key_lhs',
-		'join_key_rhs',
-		'relationship_type',
-		'relationship_role_column',
-		'relationship_role_column_value',
-		'reverse',
-	),
+$fields_array['Relationship'] = array('column_fields' => array(
+        'id',
+        'relationship_name',
+        'lhs_module',
+        'lhs_table',
+        'lhs_key',
+        'rhs_module',
+        'rhs_table',
+        'rhs_key',
+        'join_table',
+        'join_key_lhs',
+        'join_key_rhs',
+        'relationship_type',
+        'relationship_role_column',
+        'relationship_role_column_value',
+        'reverse',
+    ),
+        'list_fields' =>  array(
+        'id',
+        'relationship_name',
+        'lhs_module',
+        'lhs_table',
+        'lhs_key',
+        'rhs_module',
+        'rhs_table',
+        'rhs_key',
+        'join_table',
+        'join_key_lhs',
+        'join_key_rhs',
+        'relationship_type',
+        'relationship_role_column',
+        'relationship_role_column_value',
+        'reverse',
+    ),
     'required_fields' =>   array("relationship_name"=>1),
 );

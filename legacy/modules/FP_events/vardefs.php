@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -191,7 +191,7 @@ $dictionary['FP_events'] = array(
                 'merge_filter' => 'disabled',
                 'len' => 100,
                 'size' => '20',
-                'options' => 'email_templet_list',
+                'options' => 'emailTemplates_type_list',
                 'studio' => 'visible',
                 'dependency' => false,
             ),
@@ -226,7 +226,7 @@ $dictionary['FP_events'] = array(
                 'vname' => 'LBL_DECLINE_REDIRECT',
                 'type' => 'url',
                 'massupdate' => '0',
-                'default' => NULL,
+                'default' => null,
                 'no_default' => false,
                 'comments' => 'Insert a URL to a web page here.',
                 'help' => 'Insert the URL for the page that you want the event delegates to see when they have declined the invitation from the email.',
@@ -240,7 +240,7 @@ $dictionary['FP_events'] = array(
                 'len' => '255',
                 'size' => '20',
                 'dbType' => 'varchar',
-                'gen' => NULL,
+                'gen' => null,
                 'link_target' => '_blank',
                 'id' => 'FP_eventsdecline_redirect',
             ),

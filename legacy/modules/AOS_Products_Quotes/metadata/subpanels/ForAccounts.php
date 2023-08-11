@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,48 +48,48 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $subpanel_layout = array(
-	'top_buttons' => array(
+    'top_buttons' => array(
 //		array('widget_class' => 'SubPanelTopCreateButton'),
 //		array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'Contacts'),
-	),
+    ),
 
 //	'where' => '',
 
-	'list_fields' => array(
-		'name'=>array(
-			'vname' => 'LBL_PRODUCTS_SERVICES',
-			'widget_class' => 'SubPanelDetailViewLink',
-			'target_record_key' => 'product_id',
-			'target_module' => 'AOS_Products', // or 'target_module_key'=>'parent_type',
-			'width' => '25%',
-		),
-		'parent_name'=>array(
-			'vname' => 'LBL_ACCOUNT_PRODUCT_QUOTE_LINK', // Quote
-			'widget_class' => 'SubPanelDetailViewLink',
-			'target_record_key' => 'parent_id',
-			'target_module_key'=>'parent_type', // or 'target_module' => 'AOS_Quotes',
-		),
-		'product_qty'=>array(
-			'vname' => 'LBL_PRODUCT_QTY',
-		),
-		'product_list_price'=>array(
-			'vname' => 'LBL_PRODUCT_LIST_PRICE',
-		),
-		'product_discount'=>array(
-			'vname' => 'LBL_PRODUCT_DISCOUNT',
-		),
+    'list_fields' => array(
+        'name'=>array(
+            'vname' => 'LBL_PRODUCTS_SERVICES',
+            'widget_class' => 'SubPanelDetailViewLink',
+            'target_record_key' => 'product_id',
+            'target_module' => 'AOS_Products', // or 'target_module_key'=>'parent_type',
+            'width' => '25%',
+        ),
+        'parent_name'=>array(
+            'vname' => 'LBL_ACCOUNT_PRODUCT_QUOTE_LINK', // Quote
+            'widget_class' => 'SubPanelDetailViewLink',
+            'target_record_key' => 'parent_id',
+            'target_module_key'=>'parent_type', // or 'target_module' => 'AOS_Quotes',
+        ),
+        'product_qty'=>array(
+            'vname' => 'LBL_PRODUCT_QTY',
+        ),
+        'product_list_price'=>array(
+            'vname' => 'LBL_PRODUCT_LIST_PRICE',
+        ),
+        'product_discount'=>array(
+            'vname' => 'LBL_PRODUCT_DISCOUNT',
+        ),
 //		'product_discount_amount'=>array(
 //			'vname' => 'LBL_PRODUCT_DISCOUNT_AMOUNT',
 //		),
 //		'product_cost_price'=>array(
 //			'vname' => 'LBL_PRODUCT_COST_PRICE',
 //		),
-		'product_unit_price'=>array(
-			'vname' => 'LBL_ACCOUNT_PRODUCT_SALE_PRICE',
-		),
-		'product_total_price'=>array(
-			'vname' => 'LBL_PRODUCT_TOTAL_PRICE',
-		),
+        'product_unit_price'=>array(
+            'vname' => 'LBL_ACCOUNT_PRODUCT_SALE_PRICE',
+        ),
+        'product_total_price'=>array(
+            'vname' => 'LBL_PRODUCT_TOTAL_PRICE',
+        ),
 
 
 //		'date_modified'=>array(
@@ -106,6 +106,5 @@ $subpanel_layout = array(
 //			'module' => $module_name,
 //			'width' => '5%',
 //		),
-	),
-);		
-
+    ),
+);

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -96,14 +96,14 @@ if (empty($memory_limit)) {
     $memory_limit = "-1";
 }
 if (!defined('SUGARCRM_MIN_MEM')) {
-    define('SUGARCRM_MIN_MEM', 40 * 1024 * 1024);
+    define('SUGARCRM_MIN_MEM', 64 * 1024 * 1024);
 }
 $sugarMinMem = constant('SUGARCRM_MIN_MEM');
 // logic based on: http://us2.php.net/manual/en/ini.core.php#ini.memory-limit
 if ($memory_limit == "") { // memory_limit disabled at compile time, no memory limit
     $memory_msg = "<b>{$mod_strings['LBL_CHECKSYS_MEM_OK']}</b>";
 } elseif ($memory_limit == "-1") { // memory_limit enabled, but set to unlimited
-    $memory_msg = "{$mod_strings['LBL_CHECKSYS_MEM_UNLIMITED']}";
+    $memory_msg = (string)($mod_strings['LBL_CHECKSYS_MEM_UNLIMITED']);
 } else {
     $mem_display = $memory_limit;
     preg_match('/^\s*([0-9.]+)\s*([KMGTPE])B?\s*$/i', $memory_limit, $matches);
@@ -117,7 +117,7 @@ if ($memory_limit == "") { // memory_limit disabled at compile time, no memory l
         case 'K':
             $num = $num * 1024;
     }
-    $memory_limit_int = intval($num);
+    $memory_limit_int = (int)$num;
     $SUGARCRM_MIN_MEM = (int) constant('SUGARCRM_MIN_MEM');
     if ($memory_limit_int < constant('SUGARCRM_MIN_MEM')) {
         // Bug59667: The string ERR_CHECKSYS_MEM_LIMIT_2 already has 'M' in it,
@@ -134,7 +134,7 @@ $envString .= '<p><b>' . $mod_strings['LBL_CHECKSYS_MEM'] . '</strong></b> ' . $
 
 // zlib
 if (function_exists('gzclose')) {
-    $zlibStatus = "{$mod_strings['LBL_CHECKSYS_OK']}";
+    $zlibStatus = (string)($mod_strings['LBL_CHECKSYS_OK']);
 } else {
     $zlibStatus = "<span class='stop'><b>{$mod_strings['ERR_CHECKSYS_ZLIB']}</b></span>";
 }
@@ -142,7 +142,7 @@ $envString .= '<p><b>' . $mod_strings['LBL_CHECKSYS_ZLIB'] . '</b> ' . $zlibStat
 
 // zip
 if (class_exists("ZipArchive")) {
-    $zipStatus = "{$mod_strings['LBL_CHECKSYS_OK']}";
+    $zipStatus = (string)($mod_strings['LBL_CHECKSYS_OK']);
 } else {
     $zipStatus = "<span class='stop'><b>{$mod_strings['ERR_CHECKSYS_ZIP']}</b></span>";
 }
@@ -153,7 +153,7 @@ if (defined('PCRE_VERSION')) {
     if (version_compare(PCRE_VERSION, '7.0') < 0) {
         $pcreStatus = "<span class='stop'><b>{$mod_strings['ERR_CHECKSYS_PCRE_VER']}</b></span>";
     } else {
-        $pcreStatus = "{$mod_strings['LBL_CHECKSYS_OK']}";
+        $pcreStatus = (string)($mod_strings['LBL_CHECKSYS_OK']);
     }
 } else {
     $pcreStatus = "<span class='stop'><b>{$mod_strings['ERR_CHECKSYS_PCRE']}</b></span>";
@@ -162,9 +162,8 @@ $envString .= '<p><b>' . $mod_strings['LBL_CHECKSYS_PCRE'] . '</b> ' . $pcreStat
 
 // imap
 $imapFactory = new ImapHandlerFactory();
-$imap = $imapFactory->getImapHandler();
-if ($imap->isAvailable()) {
-    $imapStatus = "{$mod_strings['LBL_CHECKSYS_OK']}";
+if ($imapFactory->areAllHandlersAvailable()) {
+    $imapStatus = (string)($mod_strings['LBL_CHECKSYS_OK']);
 } else {
     $imapStatus = "<span class='stop'><b>{$mod_strings['ERR_CHECKSYS_IMAP']}</b></span>";
 }
@@ -173,7 +172,7 @@ $envString .= '<p><b>' . $mod_strings['LBL_CHECKSYS_IMAP'] . '</b> ' . $imapStat
 
 // cURL
 if (function_exists('curl_init')) {
-    $curlStatus = "{$mod_strings['LBL_CHECKSYS_OK']}";
+    $curlStatus = (string)($mod_strings['LBL_CHECKSYS_OK']);
 } else {
     $curlStatus = "<span class='stop'><b>{$mod_strings['ERR_CHECKSYS_CURL']}</b></span>";
 }
@@ -205,7 +204,7 @@ $envString .= '<p><b>' . $mod_strings['LBL_SPRITE_SUPPORT'] . '</b> ' . $spriteS
 
 // Suhosin allow to use upload://
 if (UploadStream::getSuhosinStatus() == true || (strpos(ini_get('suhosin.perdir'), 'e') !== false && strpos($_SERVER["SERVER_SOFTWARE"], 'Microsoft-IIS') === false)) {
-    $suhosinStatus = "{$mod_strings['LBL_CHECKSYS_OK']}";
+    $suhosinStatus = (string)($mod_strings['LBL_CHECKSYS_OK']);
 } else {
     $suhosinStatus = "<span class='stop'><b>{$app_strings['ERR_SUHOSIN']}</b></span>";
 }

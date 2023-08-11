@@ -166,8 +166,11 @@ class Call extends SugarBean {
    }
 
    // save date_end by calculating user input
-   // this is for calendar
-   function save($check_notify = false) {
+   // this is for calendar    
+   private static $remindersInSaving = false;
+
+    public function save($check_notify = false)
+    {
       global $timedate;
 
       if ( !empty($this->date_start) ) {
@@ -190,7 +193,7 @@ class Call extends SugarBean {
       }
       if ( empty($_REQUEST['send_invites']) ) {
          if ( !empty($this->id) ) {
-            $old_record = new Call();
+            $old_record = BeanFactory::newBean('Calls');
             $old_record->retrieve($this->id);
             $old_assigned_user_id = $old_record->assigned_user_id;
          }
@@ -226,12 +229,14 @@ class Call extends SugarBean {
          vCal::cache_sugar_vcal($current_user);
       }
 
-      if ( isset($_REQUEST['reminders_data']) ) {
+      if (isset($_REQUEST['reminders_data']) && !self::$remindersInSaving) {
+         self::$remindersInSaving = true;
          $reminderData = json_encode(
-            $this->removeUnInvitedFromReminders(json_decode(html_entity_decode($_REQUEST['reminders_data']), true))
+             $this->removeUnInvitedFromReminders(json_decode(html_entity_decode($_REQUEST['reminders_data']), true))
          );
          Reminder::saveRemindersDataJson('Calls', $return_id, $reminderData);
-      }
+         self::$remindersInSaving = false;
+     }
 
       return $return_id;
    }
@@ -308,19 +313,19 @@ class Call extends SugarBean {
     * All Rights Reserved..
     * Contributor(s): ______________________________________..
     */
-   function get_contacts() {
+    public function get_contacts() {
       // First, get the list of IDs.
       $query = "SELECT contact_id as id from calls_contacts where call_id='$this->id' AND deleted=0";
 
-      $contact = new Contact();
+      $contact = BeanFactory::newBean('Contacts');
       return $this->build_related_list($query, $contact);
    }
 
-   function get_summary_text() {
-      return "$this->name";
+   public function get_summary_text() {
+      return (string)$this->name;
    }
 
-   function create_list_query($order_by, $where, $show_deleted = 0) {
+   public function create_list_query($order_by, $where, $show_deleted = 0) {
       $custom_join = $this->getCustomJoin();
       $query = "SELECT ";
       $query .= "
@@ -359,7 +364,7 @@ class Call extends SugarBean {
       $where_auto = '1=1';
       if ( $show_deleted == 0 ) {
          $where_auto = " $this->table_name.deleted=0  ";
-      } else if ( $show_deleted == 1 ) {
+      } elseif ( $show_deleted == 1 ) {
          $where_auto = " $this->table_name.deleted=1 ";
       }
 
@@ -380,7 +385,7 @@ class Call extends SugarBean {
       return $query;
    }
 
-   function create_export_query($order_by, $where, $relate_link_join = '') {
+   public function create_export_query($order_by, $where, $relate_link_join = '') {
       $custom_join = $this->getCustomJoin(true, true, $where);
       $custom_join['join'] .= $relate_link_join;
       $contact_required = stristr($where, "contacts");
@@ -416,7 +421,7 @@ class Call extends SugarBean {
       return $query;
    }
 
-   function fill_in_additional_detail_fields() {
+   public function fill_in_additional_detail_fields() {
       global $locale;
       parent::fill_in_additional_detail_fields();
       if ( !isset($this->duration_minutes) ) {
@@ -479,7 +484,7 @@ class Call extends SugarBean {
       }
    }
 
-   function get_list_view_data() {
+   public function get_list_view_data() {
       $call_fields = $this->get_list_view_array();
       global $app_list_strings, $focus, $action, $currentModule;
       if ( isset($focus->id) ) {
@@ -523,7 +528,7 @@ class Call extends SugarBean {
             }
             $call_fields['DATE_START'] = "<font class='overdueTask'>" . $dateStart . "</font>";
          }
-      } else if ( $date_db < $nextday ) {
+      } elseif ( $date_db < $nextday ) {
          $call_fields['DATE_START'] = "<font class='todaysTask'>" . $call_fields['DATE_START'] . "</font>";
       } else {
          $call_fields['DATE_START'] = "<font class='futureTask'>" . $call_fields['DATE_START'] . "</font>";
@@ -537,7 +542,7 @@ class Call extends SugarBean {
       return $call_fields;
    }
 
-   function set_notification_body($xtpl, $call) {
+   public function set_notification_body($xtpl, $call) {
       global $sugar_config;
       global $app_list_strings;
       global $current_user;
@@ -576,21 +581,21 @@ class Call extends SugarBean {
       $xtpl->assign("CALL_HOURS", $call->duration_hours);
       $xtpl->assign("CALL_MINUTES", $call->duration_minutes);
       $xtpl->assign("CALL_STATUS", ((isset($call->status)) ? $app_list_strings['call_status_dom'][$call->status] : ""));
-      $xtpl->assign("CALL_DESCRIPTION", $call->description);
+      $xtpl->assign("CALL_DESCRIPTION", nl2br($call->description));
 
       return $xtpl;
    }
 
-   function get_call_users() {
-      $template = new User();
+   public function get_call_users() {
+      $template = BeanFactory::newBean('Users');
       // First, get the list of IDs.
       $query = "SELECT calls_users.required, calls_users.accept_status, calls_users.user_id from calls_users where calls_users.call_id='$this->id' AND calls_users.deleted=0";
       $GLOBALS['log']->debug("Finding linked records $this->object_name: " . $query);
       $result = $this->db->query($query, true);
-      $list = Array();
+      $list = array();
 
       while ( $row = $this->db->fetchByAssoc($result) ) {
-         $template = new User(); // PHP 5 will retrieve by reference, always over-writing the "old" one
+         $template = BeanFactory::newBean('Users'); // PHP 5 will retrieve by reference, always over-writing the "old" one
          $record = $template->retrieve($row['user_id']);
          $template->required = $row['required'];
          $template->accept_status = $row['accept_status'];
@@ -603,7 +608,7 @@ class Call extends SugarBean {
       return $list;
    }
 
-   function get_invite_calls(&$user) {
+   public function get_invite_calls(&$user) {
       $template = $this;
       // First, get the list of IDs.
       $query = "SELECT calls_users.required, calls_users.accept_status, calls_users.call_id from calls_users where calls_users.user_id='$user->id' AND ( calls_users.accept_status IS NULL OR  calls_users.accept_status='none') AND calls_users.deleted=0";
@@ -630,7 +635,7 @@ class Call extends SugarBean {
       return $list;
    }
 
-   function set_accept_status(&$user, $status) {
+   public function set_accept_status(&$user, $status) {
       if ( $user->object_name == 'User' ) {
          $relate_values = array('user_id' => $user->id, 'call_id' => $this->id);
          $data_values = array('accept_status' => $status);
@@ -658,7 +663,7 @@ class Call extends SugarBean {
       // MintHCM #54195 End
    }
 
-   function get_notification_recipients() {
+   public function get_notification_recipients() {
       if ( $this->special_notification ) {
          return parent::get_notification_recipients();
       }
@@ -691,7 +696,7 @@ class Call extends SugarBean {
       // MintHCM #54195 End
 
       foreach ( $this->users_arr as $user_id ) {
-         $notify_user = new User();
+         $notify_user = BeanFactory::newBean('Users');
          $notify_user->retrieve($user_id);
          $notify_user->new_assigned_user_name = $notify_user->full_name;
          $GLOBALS['log']->info("Notifications: recipient is $notify_user->new_assigned_user_name");
@@ -699,7 +704,7 @@ class Call extends SugarBean {
       }
 
       foreach ( $this->contacts_arr as $contact_id ) {
-         $notify_user = new Contact();
+         $notify_user = BeanFactory::newBean('Contacts');
          $notify_user->retrieve($contact_id);
          $notify_user->new_assigned_user_name = $notify_user->full_name;
          $GLOBALS['log']->info("Notifications: recipient is $notify_user->new_assigned_user_name");
@@ -707,7 +712,7 @@ class Call extends SugarBean {
       }
 
       foreach ( $this->leads_arr as $lead_id ) {
-         $notify_user = new Lead();
+         $notify_user = BeanFactory::newBean('Leads');
          $notify_user->retrieve($lead_id);
          $notify_user->new_assigned_user_name = $notify_user->full_name;
          $GLOBALS['log']->info("Notifications: recipient is $notify_user->new_assigned_user_name");
@@ -724,14 +729,14 @@ class Call extends SugarBean {
       return $list;
    }
 
-   function bean_implements($interface) {
+   public function bean_implements($interface) {
       switch ( $interface ) {
          case 'ACL':return true;
       }
       return false;
    }
 
-   function listviewACLHelper() {
+   public function listviewACLHelper() {
       $array_assign = parent::listviewACLHelper();
       $is_owner = false;
       $in_group = false; //SECURITY GROUPS
@@ -743,7 +748,7 @@ class Call extends SugarBean {
          }
          /* BEGIN - SECURITY GROUPS */
          //parent_name_owner not being set for whatever reason so we need to figure this out
-         else if ( !empty($this->parent_type) && !empty($this->parent_id) ) {
+         elseif ( !empty($this->parent_type) && !empty($this->parent_id) ) {
             global $current_user;
             $parent_bean = BeanFactory::getBean($this->parent_type, $this->parent_id);
             if ( $parent_bean !== false ) {
@@ -800,7 +805,7 @@ class Call extends SugarBean {
       return $array_assign;
    }
 
-   function save_relationship_changes($is_update, $exclude = array()) {
+   public function save_relationship_changes($is_update, $exclude = array()) {
       if ( empty($this->in_workflow) ) {
          if ( empty($this->in_import) ) {
             //if the global soap_server_object variable is not empty (as in from a soap/OPI call), then process the assigned_user_id relationship, otherwise
@@ -821,12 +826,11 @@ class Call extends SugarBean {
       $def = $this->field_defs['status'];
       if ( isset($def['default']) ) {
          return $def['default'];
-      } else {
-         $app = return_app_list_strings_language($GLOBALS['current_language']);
-         if ( isset($def['options']) && isset($app[$def['options']]) ) {
-            $keys = array_keys($app[$def['options']]);
-            return $keys[0];
-         }
+      }
+      $app = return_app_list_strings_language($GLOBALS['current_language']);
+      if ( isset($def['options']) && isset($app[$def['options']]) ) {
+         $keys = array_keys($app[$def['options']]);
+         return $keys[0];
       }
       return '';
    }

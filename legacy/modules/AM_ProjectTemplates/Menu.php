@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +11,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,17 +45,17 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 global $mod_strings, $app_strings, $sugar_config;
 
-		
-if(ACLController::checkAccess('AM_ProjectTemplates', 'edit', true))$module_menu[]=Array("index.php?module=AM_ProjectTemplates&action=EditView&return_module=AM_ProjectTemplates&return_action=index", $mod_strings['LNK_NEW_RECORD'],"Create", 'AM_ProjectTemplates');
-if(ACLController::checkAccess('AM_ProjectTemplates', 'list', true))$module_menu[]=Array("index.php?module=AM_ProjectTemplates&action=index&return_module=AM_ProjectTemplates&return_action=DetailView", $mod_strings['LNK_LIST'],"List", 'AM_ProjectTemplates');
-if(ACLController::checkAccess('AM_ProjectTemplates', 'import', true))$module_menu[]=Array("index.php?module=Import&action=Step1&import_module=AM_ProjectTemplates&return_module=AM_ProjectTemplates&return_action=index", $mod_strings['LNK_IMPORT_AM_PROJECTTEMPLATES'],"Import", 'AM_ProjectTemplates');
+        
+if (ACLController::checkAccess('AM_ProjectTemplates', 'edit', true)) {
+    $module_menu[]=array("index.php?module=AM_ProjectTemplates&action=EditView&return_module=AM_ProjectTemplates&return_action=index", $mod_strings['LNK_NEW_RECORD'],"Create", 'AM_ProjectTemplates');
+}
+if (ACLController::checkAccess('AM_ProjectTemplates', 'list', true)) {
+    $module_menu[]=array("index.php?module=AM_ProjectTemplates&action=index&return_module=AM_ProjectTemplates&return_action=DetailView", $mod_strings['LNK_LIST'],"List", 'AM_ProjectTemplates');
+}
+if (ACLController::checkAccess('AM_ProjectTemplates', 'import', true)) {
+    $module_menu[]=array("index.php?module=Import&action=Step1&import_module=AM_ProjectTemplates&return_module=AM_ProjectTemplates&return_action=index", $mod_strings['LNK_IMPORT_AM_PROJECTTEMPLATES'],"Import", 'AM_ProjectTemplates');
+}

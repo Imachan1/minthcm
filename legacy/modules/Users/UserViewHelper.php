@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -445,7 +445,7 @@ class UserViewHelper
         $this->ss->assign("REMINDER_TIME", $reminder_time);
         $this->ss->assign("EMAIL_REMINDER_TIME", $email_reminder_time);
 
-        $remindersDefaultPreferences = Reminder::loadRemindersDefaultValuesData();
+        $remindersDefaultPreferences = Reminder::loadRemindersDefaultValuesData($this->bean);
         $this->ss->assign("REMINDER_CHECKED", $remindersDefaultPreferences['popup']);
         $this->ss->assign("EMAIL_REMINDER_CHECKED", $remindersDefaultPreferences['email']);
 
@@ -716,7 +716,7 @@ class UserViewHelper
         $currencySymbolJSON = json_encode($currencyList);
         $this->ss->assign('currencySymbolJSON', $currencySymbolJSON);
 
-        $currencyDisplay = new Currency();
+        $currencyDisplay = BeanFactory::newBean('Currencies');
         if (isset($cur_id)) {
             $currencyDisplay->retrieve($cur_id);
             $this->ss->assign('CURRENCY_DISPLAY', $currencyDisplay->iso4217 . ' ' . $currencyDisplay->symbol);

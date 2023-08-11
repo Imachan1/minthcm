@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,18 +48,17 @@
  */
 class Reminder extends Basic
 {
-
     const UPGRADE_VERSION = '7.4.3';
 
-    var $name;
+    public $name;
 
-    var $new_schema = true;
-    var $module_dir = 'Reminders';
-    var $object_name = 'Reminder';
-    var $table_name = 'reminders';
-    var $tracker_visibility = false;
-    var $importable = false;
-    var $disable_row_level_security = true;
+    public $new_schema = true;
+    public $module_dir = 'Reminders';
+    public $object_name = 'Reminder';
+    public $table_name = 'reminders';
+    public $tracker_visibility = false;
+    public $importable = false;
+    public $disable_row_level_security = true;
 
     /**
      *
@@ -67,17 +66,19 @@ class Reminder extends Basic
      */
     public $date_willexecute;
 
-    var $popup;
-    var $email;
-    var $email_sent = false;
-    var $timer_popup;
-    var $timer_email;
-    var $related_event_module;
-    var $related_event_module_id;
+    public $popup;
+    public $email;
+    public $email_sent = false;
+    public $timer_popup;
+    public $timer_email;
+    public $related_event_module;
+    public $related_event_module_id;
 
     public $popup_viewed;
 
     private static $remindersData = array();
+
+    private static $remindersInSaving = false;
 
     // ---- save and load remainders on EditViews
 
@@ -92,11 +93,15 @@ class Reminder extends Basic
      */
     public static function saveRemindersDataJson($eventModule, $eventModuleId, $remindersDataJson)
     {
-        $reminderData = json_decode($remindersDataJson);
-        if (!json_last_error()) {
-            Reminder::saveRemindersData($eventModule, $eventModuleId, $reminderData);
-        } else {
-            throw new Exception(json_last_error_msg());
+        if(!self::$remindersInSaving) {
+            self::$remindersInSaving = true;
+            $reminderData = json_decode($remindersDataJson);
+            if (!json_last_error()) {
+                Reminder::saveRemindersData($eventModule, $eventModuleId, $reminderData);
+            } else {
+                throw new Exception(json_last_error_msg());
+            }
+            self::$remindersInSaving = false;
         }
     }
 
@@ -106,7 +111,9 @@ class Reminder extends Basic
 
         $savedReminderIds = array();
         foreach ($remindersData as $reminderData) {
-            if (isset($_POST['isDuplicate']) && $_POST['isDuplicate']) $reminderData->id = '';
+            if (isset($_POST['isDuplicate']) && $_POST['isDuplicate']) {
+                $reminderData->id = '';
+            }
             $reminderBean = BeanFactory::getBean('Reminders', $reminderData->id);
             $reminderBean->popup = $reminderData->popup;
             $reminderBean->email = $reminderData->email;
@@ -258,7 +265,7 @@ class Reminder extends Basic
         if (!empty($reminderBeans)) {
             foreach ($reminderBeans as $reminderBean) {
                 $eventBean = BeanFactory::getBean($reminderBean->related_event_module, $reminderBean->related_event_module_id);
-                if($eventBean) {
+                if ($eventBean) {
                     $remind_ts = $timedate->fromUser($eventBean->date_start)->modify("-{$reminderBean->timer_email} seconds")->ts;
                     $now_ts = $timedate->getNow()->ts;
                     if ($now_ts >= $remind_ts) {
@@ -305,9 +312,7 @@ class Reminder extends Basic
         $dateTimeMax = $timedate->getNow(true)->modify("+{$app_list_strings['reminder_max_time']} seconds")->asDb(false);
 
         $dateTimeNow = $timedate->getNow(true)->asDb(false);
-
-        $dateTimeNow = $db->convert($db->quoted($dateTimeNow), 'datetime');
-        $dateTimeMax = $db->convert($db->quoted($dateTimeMax), 'datetime');
+        
 
         // Original jsAlert used to a meeting integration.
 
@@ -351,8 +356,7 @@ class Reminder extends Basic
                     //we have column to save data
                     if (!$relatedEventStart) {
                         $popupReminder->date_willexecute = -2;
-                    }
-                    else {
+                    } else {
                         $popupReminder->date_willexecute = $relatedEventStart;
                     }
                     $popupReminder->save();
@@ -369,7 +373,7 @@ class Reminder extends Basic
                 }
 
                 if ($relatedEventStart
-                    && ($relatedEventStart <= $dateTimeNowStamp || $relatedEventStart >= $dateTimeMaxStamp )) {
+                    && ($relatedEventStart <= $dateTimeNowStamp || $relatedEventStart >= $dateTimeMaxStamp)) {
                     continue;
                 }
 
@@ -459,7 +463,9 @@ class Reminder extends Basic
     {
         $ret = '';
         for ($i = 0; $i < strlen($timestr); $i++) {
-            if ($timestr[$i] != "'") $ret .= $timestr[$i];
+            if ($timestr[$i] != "'") {
+                $ret .= $timestr[$i];
+            }
         }
         return $ret;
     }
@@ -551,16 +557,21 @@ class Reminder extends Basic
 
     /**
      * Default values for Reminders from User Preferences
+     * @param User $user
      * @return array default values
      */
-    public static function loadRemindersDefaultValuesData()
+    public static function loadRemindersDefaultValuesData($user = null)
     {
         global $current_user;
 
-        $preferencePopupReminderTime = $current_user->getPreference('reminder_time');
-        $preferenceEmailReminderTime = $current_user->getPreference('email_reminder_time');
-        $preferencePopupReminderChecked = $current_user->getPreference('reminder_checked');
-        $preferenceEmailReminderChecked = $current_user->getPreference('email_reminder_checked');
+        if(!$user){
+            $user = $current_user;
+        }
+
+        $preferencePopupReminderTime = $user->getPreference('reminder_time');
+        $preferenceEmailReminderTime = $user->getPreference('email_reminder_time');
+        $preferencePopupReminderChecked = $user->getPreference('reminder_checked');
+        $preferenceEmailReminderChecked = $user->getPreference('email_reminder_checked');
 
         return array(
             'popup' => $preferencePopupReminderChecked,
@@ -609,7 +620,7 @@ class Reminder extends Basic
     {
         $users = User::getActiveUsers();
         foreach ($users as $user_id => $user_name) {
-            $user = new User();
+            $user = BeanFactory::newBean('Users');
             $user->retrieve($user_id);
 
             $preferencePopupReminderTime = $user->getPreference('reminder_time');
@@ -619,13 +630,12 @@ class Reminder extends Basic
             $preferenceEmailReminderChecked = $preferenceEmailReminderTime > -1;
             $user->setPreference('reminder_checked', $preferencePopupReminderChecked);
             $user->setPreference('email_reminder_checked', $preferenceEmailReminderChecked);
-
         }
     }
 
-	/**
-	 * @param string $eventModule 'Calls' or 'Meetings'
-	 */
+    /**
+     * @param string $eventModule 'Calls' or 'Meetings'
+     */
     private static function upgradeEventReminders($eventModule)
     {
         $db = DBManagerFactory::getInstance();
@@ -633,8 +643,7 @@ class Reminder extends Basic
         $eventBean = BeanFactory::getBean($eventModule);
         $events = $eventBean->get_full_list('', "{$eventBean->table_name}.date_start >  {$db->convert('', 'today')} AND ({$eventBean->table_name}.reminder_time != -1 OR ({$eventBean->table_name}.email_reminder_time != -1 AND {$eventBean->table_name}.email_reminder_sent != 1))");
         if ($events) {
-			foreach ($events as $event) {
-
+            foreach ($events as $event) {
                 $oldReminderPopupChecked = false;
                 $oldReminderPopupTimer = null;
                 if ($event->reminder_time != -1) {
@@ -652,7 +661,6 @@ class Reminder extends Basic
                 $oldReminderEmailSent = $event->email_reminder_sent;
 
                 if (($oldInvitees = self::getOldEventInvitees($event)) && ($event->reminder_time != -1 || ($event->email_reminder_time != -1 && $event->email_reminder_sent != 1))) {
-
                     self::migrateReminder(
                         $eventModule,
                         $event->id,
@@ -663,11 +671,9 @@ class Reminder extends Basic
                         $oldReminderEmailSent,
                         $oldInvitees
                     );
-
                 }
             }
         }
-
     }
 
 
@@ -697,7 +703,6 @@ class Reminder extends Basic
      */
     private static function migrateReminder($eventModule, $eventModuleId, $oldReminderPopupChecked, $oldReminderPopupTimer, $oldReminderEmailChecked, $oldReminderEmailTimer, $oldReminderEmailSent, $oldInvitees)
     {
-
         $reminder = BeanFactory::getBean('Reminders');
         $reminder->popup = $oldReminderPopupChecked;
         $reminder->email = $oldReminderEmailChecked;
@@ -802,5 +807,4 @@ class Reminder extends Basic
             throw new Exception("No GUID for edit.");
         }
     }
-
 }

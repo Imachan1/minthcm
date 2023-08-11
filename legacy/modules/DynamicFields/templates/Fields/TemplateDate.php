@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,15 +50,16 @@ require_once('modules/DynamicFields/templates/Fields/TemplateRange.php');
 
 class TemplateDate extends TemplateRange
 {
-	var $type = 'date';
-	var $len = '';
-	var $dateStrings;
+    public $type = 'date';
+    public $len = '';
+    public $dateStrings;
 
-function __construct() {
-	parent::__construct();
-	global $app_strings;
-	$this->dateStrings = array(
-			$app_strings['LBL_NONE']=>'',
+    public function __construct()
+    {
+        parent::__construct();
+        global $app_strings;
+        $this->dateStrings = array(
+            $app_strings['LBL_NONE']=>'',
             $app_strings['LBL_YESTERDAY']=> '-1 day',
             $app_strings['LBL_TODAY']=>'now',
             $app_strings['LBL_TOMORROW']=>'+1 day',
@@ -72,40 +73,42 @@ function __construct() {
             $app_strings['LBL_SIXMONTHS']=> '+6 months',
             $app_strings['LBL_NEXT_YEAR']=> '+1 year',
         );
+    }
+
+
+    public function get_db_default($modify=false)
+    {
+        return '';
+    }
+
+    //BEGIN BACKWARDS COMPATABILITY
+    public function get_xtpl_edit()
+    {
+        global $timedate;
+        $name = $this->name;
+        $returnXTPL = array();
+        if (!empty($this->help)) {
+            $returnXTPL[strtoupper($this->name . '_help')] = translate($this->help, $this->bean->module_dir);
+        }
+        $returnXTPL['USER_DATEFORMAT'] = $timedate->get_user_date_format();
+        $returnXTPL['CALENDAR_DATEFORMAT'] = $timedate->get_cal_date_format();
+        if (isset($this->bean->$name)) {
+            $returnXTPL[strtoupper($this->name)] = $this->bean->$name;
+        } else {
+            if (empty($this->bean->id) && !empty($this->default_value) && !empty($this->dateStrings[$this->default_value])) {
+                $returnXTPL[strtoupper($this->name)] = $timedate->asUserDate($timedate->getNow(true)->modify($this->dateStrings[$this->default_value]), false);
+            }
+        }
+        return $returnXTPL;
+    }
+
+    public function get_field_def()
+    {
+        $def = parent::get_field_def();
+        if (!empty($def['default'])) {
+            $def['display_default'] = $def['default'];
+            $def['default'] = '';
+        }
+        return $def;
+    }
 }
-
-
-function get_db_default($modify=false){
-		return '';
-}
-
-//BEGIN BACKWARDS COMPATABILITY
-function get_xtpl_edit(){
-		global $timedate;
-		$name = $this->name;
-		$returnXTPL = array();
-		if(!empty($this->help)){
-		    $returnXTPL[strtoupper($this->name . '_help')] = translate($this->help, $this->bean->module_dir);
-		}
-		$returnXTPL['USER_DATEFORMAT'] = $timedate->get_user_date_format();
-		$returnXTPL['CALENDAR_DATEFORMAT'] = $timedate->get_cal_date_format();
-		if(isset($this->bean->$name)){
-			$returnXTPL[strtoupper($this->name)] = $this->bean->$name;
-		}else{
-		    if(empty($this->bean->id) && !empty($this->default_value) && !empty($this->dateStrings[$this->default_value])){
-		        $returnXTPL[strtoupper($this->name)] = $timedate->asUserDate($timedate->getNow(true)->modify($this->dateStrings[$this->default_value]), false);
-		    }
-		}
-		return $returnXTPL;
-	}
-
-function get_field_def(){
-		$def = parent::get_field_def();
-		if(!empty($def['default'])){
-			$def['display_default'] = $def['default'];
-			$def['default'] = '';
-		}
-		return $def;
-	}
-}
-

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,21 +46,21 @@
 global $app_strings;
 
 $menuDef['sugarPerson'] = array(
-    array('text' => 'LBL_ADD_TO_FAVORITES', 
+    array('text' => 'LBL_ADD_TO_FAVORITES',
           'action' => 'SUGAR.contextMenu.actions.addToFavorites'),
-    array('text' => 'LBL_CREATE_NOTE', 
+    array('text' => 'LBL_CREATE_NOTE',
           'action' => 'SUGAR.contextMenu.actions.createNote',
           'module' => 'Notes',
           'aclAction' => 'edit'),
-    array('text' => 'LBL_CREATE_TASK', 
+    array('text' => 'LBL_CREATE_TASK',
           'action' => 'SUGAR.contextMenu.actions.createTask',
           'module' => 'Tasks',
           'aclAction' => 'edit'),
-    array('text' => 'LBL_SCHEDULE_MEETING', 
+    array('text' => 'LBL_SCHEDULE_MEETING',
           'action' => 'SUGAR.contextMenu.actions.scheduleMeeting',
           'module' => 'Meetings',
           'aclAction' => 'edit'),
-    array('text' => 'LBL_SCHEDULE_CALL', 
+    array('text' => 'LBL_SCHEDULE_CALL',
           'action' => 'SUGAR.contextMenu.actions.scheduleCall',
           'module' => 'Calls',
           'aclAction' => 'edit'),

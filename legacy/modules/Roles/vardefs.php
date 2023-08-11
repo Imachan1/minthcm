@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,9 +46,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 $dictionary['Role'] = array('table' => 'roles'
-                               ,'fields' => array (
+                               ,'fields' => array(
   'id' =>
-  array (
+  array(
     'name' => 'id',
     'vname' => 'LBL_ID',
     'required'=>true,
@@ -56,21 +56,21 @@ $dictionary['Role'] = array('table' => 'roles'
     'reportable'=>false,
   ),
    'date_entered' =>
-  array (
+  array(
     'name' => 'date_entered',
     'vname' => 'LBL_DATE_ENTERED',
     'type' => 'datetime',
     'required'=>true
   ),
   'date_modified' =>
-  array (
+  array(
     'name' => 'date_modified',
     'vname' => 'LBL_DATE_MODIFIED',
     'type' => 'datetime',
     'required'=>true,
   ),
     'modified_user_id' =>
-  array (
+  array(
     'name' => 'modified_user_id',
     'rname' => 'user_name',
     'id_name' => 'modified_user_id',
@@ -84,7 +84,7 @@ $dictionary['Role'] = array('table' => 'roles'
     'reportable'=>true,
   ),
     'created_by' =>
-  array (
+  array(
     'name' => 'created_by',
     'rname' => 'user_name',
     'id_name' => 'created_by',
@@ -96,7 +96,7 @@ $dictionary['Role'] = array('table' => 'roles'
     'len' => 36,
   ),
    'name' =>
-  array (
+  array(
     'name' => 'name',
     'type' => 'varchar',
     'vname' => 'LBL_NAME',
@@ -104,34 +104,34 @@ $dictionary['Role'] = array('table' => 'roles'
     'importable' => 'required',
   ),
    'description' =>
-  array (
+  array(
     'name' => 'description',
     'vname' => 'LBL_DESCRIPTION',
     'type' => 'text',
   ),
   'modules' =>
-  array (
+  array(
     'name' => 'modules',
     'vname' => 'LBL_MODULES',
     'type' => 'text',
   ),
   'deleted' =>
-  array (
+  array(
     'name' => 'deleted',
     'vname' => 'LBL_DELETED',
     'type' => 'bool',
     'reportable'=>false,
   ),
   'users' =>
-  array (
-  	'name' => 'users',
+  array(
+    'name' => 'users',
     'type' => 'link',
     'relationship' => 'roles_users',
     'source'=>'non-db',
-	'vname'=>'LBL_USERS',
+    'vname'=>'LBL_USERS',
   ),
 )
-, 'indices' => array (
+, 'indices' => array(
        array('name' =>'rolespk', 'type' =>'primary', 'fields'=>array('id')),
        array('name' =>'idx_role_id_del', 'type' =>'index', 'fields'=>array('id', 'deleted')),
                                                    )

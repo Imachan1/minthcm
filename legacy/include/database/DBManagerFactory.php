@@ -185,31 +185,6 @@ class DBManagerFactory {
       }
       return self::$instances[$instanceName];
    }
-
-//   public static function getInstance($instanceName = '') {
-//      global $sugar_config;
-//      static $count = 0, $old_count = 0;
-//
-//      //fall back to the default instance name
-//      if ( empty($sugar_config['db'][$instanceName]) ) {
-//         $instanceName = '';
-//      }
-//      if ( !isset(self::$instances[$instanceName]) ) {
-//         $config = $sugar_config['dbconfig'];
-//         $count++;
-//         self::$instances[$instanceName] = self::getTypeInstance($config['db_type'], $config);
-//         if ( !empty($sugar_config['dbconfigoption']) ) {
-//            self::$instances[$instanceName]->setOptions($sugar_config['dbconfigoption']);
-//         }
-//         self::$instances[$instanceName]->connect($config, true);
-//         self::$instances[$instanceName]->count_id = $count;
-//         self::$instances[$instanceName]->references = 0;
-//      } else {
-//         $old_count++;
-//         self::$instances[$instanceName]->references = $old_count;
-//      }
-//      return self::$instances[$instanceName];
-//   }
    // MintHCM end
 
    /**
@@ -244,35 +219,36 @@ class DBManagerFactory {
     * @param array $drivers
     * @param bool $validate Return only valid drivers or all of them?
     */
-   protected static function scanDriverDir($dir, &$drivers, $validate = true) {
-      if ( !is_dir($dir) ) {
-         return;
-      }
-      $scandir = opendir($dir);
-      if ( $scandir === false ) {
-         return;
-      }
-      while ( ($name = readdir($scandir)) !== false ) {
-         if ( substr($name, -11) != "Manager.php" ) {
-            continue;
-         }
-         if ( $name == "DBManager.php" ) {
-            continue;
-         }
-         require_once("$dir/$name");
-         $classname = substr($name, 0, -4);
-         if ( !class_exists($classname) ) {
-            continue;
-         }
-         $driver = new $classname;
-         if ( !$validate || $driver->valid() ) {
-            if ( empty($drivers[$driver->dbType]) ) {
-               $drivers[$driver->dbType] = array();
+    protected static function scanDriverDir($dir, &$drivers, $validate = true)
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
+        $scandir = opendir($dir);
+        if ($scandir === false) {
+            return;
+        }
+        while (($name = readdir($scandir)) !== false) {
+            if (substr($name, -11) != "Manager.php") {
+                continue;
             }
-            $drivers[$driver->dbType][] = $driver;
-         }
-      }
-   }
+            if ($name == "DBManager.php") {
+                continue;
+            }
+            require_once("$dir/$name");
+            $classname = substr($name, 0, -4);
+            if (!class_exists($classname)) {
+                continue;
+            }
+            $driver = new $classname;
+            if (!$validate || $driver->valid()) {
+                if (empty($drivers[$driver->dbType])) {
+                    $drivers[$driver->dbType]  = array();
+                }
+                $drivers[$driver->dbType][] = $driver;
+            }
+        }
+    }
 
    /**
     * Compares two drivers by priority
@@ -296,14 +272,14 @@ class DBManagerFactory {
       self::scanDriverDir("custom/include/database", $drivers, $validate);
 
       $result = array();
-      foreach ( $drivers as $type => $tdrivers ) {
-         if ( empty($tdrivers) ) {
-            continue;
-         }
-         if ( count($tdrivers) > 1 ) {
-            usort($tdrivers, array( __CLASS__, "_compareDrivers" ));
-         }
-         $result[$type] = $tdrivers[0];
+      foreach ($drivers as $type => $tdrivers) {
+          if (empty($tdrivers)) {
+              continue;
+          }
+          if (count($tdrivers) > 1) {
+              usort($tdrivers, array(__CLASS__, "_compareDrivers"));
+          }
+          $result[$type] = $tdrivers[0];
       }
       return $result;
    }

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,7 +42,6 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-use SuiteCRM\Search\ElasticSearch\ElasticSearchIndexer;
 
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
@@ -50,7 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
-global $current_user, $beanFiles;
+global $current_user, $beanFiles, $sugar_config;
 set_time_limit(3600);
 
 
@@ -60,7 +59,8 @@ if (is_admin($current_user) || isset($from_sync_client) || is_admin_for_any_modu
     isset($_REQUEST['execute'])? $execute=$_REQUEST['execute'] : $execute= false;
     $export = false;
 
-    if (sizeof($_POST) && isset($_POST['raction'])) {
+
+    if (count($_POST) && isset($_POST['raction'])) {
         if (isset($_POST['raction']) && strtolower($_POST['raction']) == "export") {
             //jc - output buffering is being used. if we do not clean the output buffer
             //the contents of the buffer up to the length of the repair statement(s)
@@ -77,7 +77,7 @@ if (is_admin($current_user) || isset($from_sync_client) || is_admin_for_any_modu
             //jc:7347 - for whatever reason, html_entity_decode is choking on converting
             //the html entity &#039; to a single quote, so we will use str_replace
             //instead
-            $sql = str_replace('&#039;', "'", $_POST['sql']);
+            $sql = str_replace(array('&#039;', '&#96;'), array("'", "`"), $_POST['sql']);
             //echo html_entity_decode($_POST['sql']);
             echo $sql;
         } elseif (isset($_POST['raction']) && strtolower($_POST['raction']) == "execute") {
@@ -85,6 +85,7 @@ if (is_admin($current_user) || isset($from_sync_client) || is_admin_for_any_modu
                 array(
                     "\n",
                     '&#039;',
+                    '&#96;',
                 ),
                 array(
                     '',
@@ -101,7 +102,7 @@ if (is_admin($current_user) || isset($from_sync_client) || is_admin_for_any_modu
             }
 
             echo "<h3>{$mod_strings['LBL_REPAIR_DATABASE_SYNCED']}</h3>";
-            ElasticSearchIndexer::repairElasticsearchIndex();
+
         }
     } else {
         if (!$export && empty($_REQUEST['repair_silent'])) {
@@ -180,7 +181,6 @@ if (is_admin($current_user) || isset($from_sync_client) || is_admin_for_any_modu
                 echo $ss->fetch('modules/Administration/templates/RepairDatabase.tpl');
             } else {
                 echo "<h3>{$mod_strings['LBL_REPAIR_DATABASE_SYNCED']}</h3>";
-                ElasticSearchIndexer::repairElasticsearchIndex();
             }
         }
     }

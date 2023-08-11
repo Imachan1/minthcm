@@ -6,9 +6,9 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -40,6 +40,9 @@
  * If the display of the logos is not reasonably feasible for technical reasons, the 
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
+ *
+ * This file was contributed by diligent technology & business consulting GmbH <info@dtbc.eu>
+ *
  */
 
 use SuiteCRM\Utility\SuiteValidator;
@@ -51,7 +54,6 @@ require_once('modules/AOW_Actions/actions/actionBase.php');
  */
 class actionComputeField extends actionBase
 {
-
     const RAW_VALUE = "raw";
     const FORMATTED_VALUE = "formatted";
 
@@ -97,17 +99,21 @@ class actionComputeField extends actionBase
             }
 
             $calculator = new FormulaCalculator(
-                $resolvedParameters, $resolvedRelationParameters, $bean->module_name, $bean->created_by
+                $resolvedParameters,
+                $resolvedRelationParameters,
+                $bean->module_name,
+                $bean->created_by
             );
 
             $relateFields = $this->getAllRelatedFields($bean);
 
-            for ($i = 0; $i < count($formulas); $i++) {
+             for ($i = 0; $i < count($formulas); $i++) {
                 if (array_key_exists($formulas[$i], $relateFields) && isset($relateFields[$formulas[$i]]['id_name'])) {
-                    $bean->{$relateFields[$formulas[$i]]['id_name']} =
-                        $calculator->calculateFormula($formulaContents[$i]);
+                    $calcValue = $calculator->calculateFormula($formulaContents[$i]);
+                    $bean->{$relateFields[$formulas[$i]]['id_name']} = ( is_numeric($calcValue) ? (float)$calcValue : $calcValue );
                 } else {
-                    $bean->{$formulas[$i]} = $calculator->calculateFormula($formulaContents[$i]);
+                    $calcValue = $calculator->calculateFormula($formulaContents[$i]);
+                    $bean->{$formulas[$i]} = ( is_numeric($calcValue) ? (float)$calcValue : $calcValue );
                 }
             }
 
@@ -151,7 +157,7 @@ class actionComputeField extends actionBase
             if ($parameterTypes[$i] == actionComputeField::FORMATTED_VALUE) {
                 $dataType = $bean->field_name_map[$parameters[$i]]['type'];
 
-                if ($dataType == 'enum') {
+                if ($dataType == 'enum' || $dataType == 'dynamicenum') {
                     $resolvedParameters[$i] =
                         $GLOBALS['app_list_strings'][$bean->field_defs[$parameters[$i]]['options']][$bean->{$parameters[$i]}];
                 } else {
@@ -277,7 +283,7 @@ class actionComputeField extends actionBase
             if ($relationParameterTypes[$i] == actionComputeField::FORMATTED_VALUE) {
                 $dataType = $entity->field_name_map[$relationParameterFields[$i]]['type'];
 
-                if ($dataType == 'enum') {
+                if ($dataType == 'enum' || $dataType == 'dynamicenum') {
                     $resolvedRelationParameters[$i] =
                         $GLOBALS['app_list_strings'][$entity->field_defs[$relationParameterFields[$i]]['options']][$entity->{$relationParameterFields[$i]}];
                 } else {
@@ -471,7 +477,7 @@ class actionComputeField extends actionBase
 					
 					function onFieldChange$line(dropdown, valueDropdown) {
 						var value = $(dropdown).find('option:selected').attr('dataType');						
-						if (value == 'enum' || value == 'multienum') {
+						if (value == 'enum' || value == 'multienum' || value == 'dynamicenum') {
 							$(valueDropdown).show();
 						} else {
 							$(valueDropdown).hide();
@@ -776,8 +782,3 @@ class actionComputeField extends actionBase
         return "";
     }
 }
-
-
-
-
-

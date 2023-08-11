@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,28 +53,28 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 $file_access_control_map = array(
-	'modules' => array(
-		'administration' => array(
-			'actions' => array(
-				'backups',
-				'updater',
-			),
-			'links'	=> array(
-				'update',
-				'backup_management',
-				'upgrade_wizard',
-				'moduleBuilder',
-			),
-		),
-		'upgradewizard' => array(
-				'actions' => array(
-					'index',
-				),
-		),
-		'modulebuilder' => array(
-				'actions' => array(
-					'index' => array('params' => array('type' => array('mb'))),
-				),
-		),
-	)
+    'modules' => array(
+        'administration' => array(
+            'actions' => array(
+                'backups',
+                'updater',
+            ),
+            'links'	=> array(
+                'update',
+                'backup_management',
+                'upgrade_wizard',
+                'moduleBuilder',
+            ),
+        ),
+        'upgradewizard' => array(
+                'actions' => array(
+                    'index',
+                ),
+        ),
+        'modulebuilder' => array(
+                'actions' => array(
+                    'index' => array('params' => array('type' => array('mb'))),
+                ),
+        ),
+    )
 );

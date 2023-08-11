@@ -11,7 +11,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -81,7 +81,7 @@
     <div class="p_login_middle">
         <div id="loginform">
             <div class="error message">{$factor_message}</div>
-            <form method="post" action="index.php?module=Users&action=index">
+            <form method="post">
                 {$APP.LBL_EMAIL_CODE} <input type="text" name="factor_token">
                 <input type="submit" value="{$APP.LBL_VERIFY}">
             </form>

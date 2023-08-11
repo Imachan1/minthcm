@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,42 +48,41 @@ require_once('modules/ModuleBuilder/Module/StudioModule.php');
 require_once('modules/ModuleBuilder/Module/StudioBrowser.php') ;
 require_once('include/ytree/ExtNode.php') ;
 
-class ViewHistory extends SugarView 
+class ViewHistory extends SugarView
 {
- 	/**
-	 * @see SugarView::_getModuleTitleParams()
-	 */
-	protected function _getModuleTitleParams($browserTitle = false)
-	{
-	    global $mod_strings;
-	    
-    	return array(
-    	   translate('LBL_MODULE_NAME','Administration'),
-    	   ModuleBuilderController::getModuleTitle(),
-    	   );
+    /**
+     * @see SugarView::_getModuleTitleParams()
+     */
+    protected function _getModuleTitleParams($browserTitle = false)
+    {
+        global $mod_strings;
+        
+        return array(
+           translate('LBL_MODULE_NAME', 'Administration'),
+           ModuleBuilderController::getModuleTitle(),
+           );
     }
 
-	//STUDIO LABELS ONLY//
- 	//TODO Bundle Studio and ModuleBuilder label handling to increase maintainability.
- 	function display()
- 	{
-		$root = new ExtNode('root', 'root', true);
-		$sb = new StudioBrowser();
-		$sb->loadModules();
-		foreach($sb->modules as $name => $studioMod) {
-			$root->add_node($this->buildStudioNode($studioMod));
-		}
-		$json = getJSONobj();
-		echo($json->encode($root));
- 	}
-	
-	/**
-	 * 
-	 * @return ExtNode built from the passed StudioModule
-	 * @param $module StudioModule
-	 */
-	function buildStudioNode($module) {
-		
-	}
-
+    //STUDIO LABELS ONLY//
+    //TODO Bundle Studio and ModuleBuilder label handling to increase maintainability.
+    public function display()
+    {
+        $root = new ExtNode('root', 'root', true);
+        $sb = new StudioBrowser();
+        $sb->loadModules();
+        foreach ($sb->modules as $name => $studioMod) {
+            $root->add_node($this->buildStudioNode($studioMod));
+        }
+        $json = getJSONobj();
+        echo($json->encode($root));
+    }
+    
+    /**
+     *
+     * @return ExtNode built from the passed StudioModule
+     * @param $module StudioModule
+     */
+    public function buildStudioNode($module)
+    {
+    }
 }

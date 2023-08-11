@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,13 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 
 
@@ -63,7 +57,7 @@ global $timedate;
 global $current_user;
 
 
-$campaign = new Campaign();
+$campaign = BeanFactory::newBean('Campaigns');
 $campaign->retrieve($_REQUEST['record']);
 
 $query = "SELECT prospect_list_id as id FROM prospect_list_campaigns WHERE campaign_id='$campaign->id' AND deleted=0";
@@ -79,51 +73,44 @@ $dateval = $timedate->merge_date_time($date_start, $time_start);
 
 $listresult = $campaign->db->query($query);
 
-while($list = $campaign->db->fetchByAssoc($listresult))
-{
-	$prospect_list = $list['id'];
-	$focus = new ProspectList();
-	
-	$focus->retrieve($prospect_list);
+while ($list = $campaign->db->fetchByAssoc($listresult)) {
+    $prospect_list = $list['id'];
+    $focus = BeanFactory::newBean('ProspectLists');
+    
+    $focus->retrieve($prospect_list);
 
-	$query = "SELECT prospect_id,contact_id,lead_id FROM prospect_lists_prospects WHERE prospect_list_id='$focus->id' AND deleted=0";
-	$result = $focus->db->query($query);
+    $query = "SELECT prospect_id,contact_id,lead_id FROM prospect_lists_prospects WHERE prospect_list_id='$focus->id' AND deleted=0";
+    $result = $focus->db->query($query);
 
-	while($row = $focus->db->fetchByAssoc($result))
-	{
-		$prospect_id = $row['prospect_id'];
-		$contact_id = $row['contact_id'];
-		$lead_id = $row['lead_id'];
-		
-		if($prospect_id <> '')
-		{
-			$moduleName = "Prospects";
-			$moduleID = $row['prospect_id'];
-		}
-		if($contact_id <> '')
-		{
-			$moduleName = "Contacts";
-			$moduleID = $row['contact_id'];
-		}
-		if($lead_id <> '')
-		{
-			$moduleName = "Leads";
-			$moduleID = $row['lead_id'];
-		}
-		
-		$mailer = new EmailMan();
-		$mailer->module = $moduleName;
-		$mailer->module_id = $moduleID;
-		$mailer->user_id = $current_user->id;
-		$mailer->list_id = $prospect_list;
-		$mailer->template_id = $template_id;
-		$mailer->from_name = $fromName;
-		$mailer->from_email = $fromEmail;
-		$mailer->send_date_time = $dateval;
-		$mailer->save();
-	}
-	
-	
+    while ($row = $focus->db->fetchByAssoc($result)) {
+        $prospect_id = $row['prospect_id'];
+        $contact_id = $row['contact_id'];
+        $lead_id = $row['lead_id'];
+        
+        if ($prospect_id <> '') {
+            $moduleName = "Prospects";
+            $moduleID = $row['prospect_id'];
+        }
+        if ($contact_id <> '') {
+            $moduleName = "Contacts";
+            $moduleID = $row['contact_id'];
+        }
+        if ($lead_id <> '') {
+            $moduleName = "Leads";
+            $moduleID = $row['lead_id'];
+        }
+        
+        $mailer = BeanFactory::newBean('EmailMan');
+        $mailer->module = $moduleName;
+        $mailer->module_id = $moduleID;
+        $mailer->user_id = $current_user->id;
+        $mailer->list_id = $prospect_list;
+        $mailer->template_id = $template_id;
+        $mailer->from_name = $fromName;
+        $mailer->from_email = $fromEmail;
+        $mailer->send_date_time = $dateval;
+        $mailer->save();
+    }
 }
 
 

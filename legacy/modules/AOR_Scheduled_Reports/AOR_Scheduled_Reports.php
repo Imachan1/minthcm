@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,154 +42,187 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-require_once 'modules/AOR_Scheduled_Reports/lib/Cron/includeCron.php';
-class AOR_Scheduled_Reports extends basic {
-
-    var $new_schema = true;
-    var $module_dir = 'AOR_Scheduled_Reports';
-    var $object_name = 'AOR_Scheduled_Reports';
-    var $table_name = 'aor_scheduled_reports';
-    var $importable = false;
-    var $disable_row_level_security = true;
-    var $id;
-    var $name;
-    var $date_entered;
-    var $date_modified;
-    var $modified_user_id;
-    var $modified_by_name;
-    var $created_by;
-    var $created_by_name;
-    var $description;
-    var $deleted;
-    var $created_by_link;
-    var $modified_user_link;
-    var $schedule;
-    var $email_recipients;
-    var $status;
-    var $last_run;
-    var $aor_report_id;
-
-	function __construct(){
-        parent::__construct();
-	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function AOR_Scheduled_Reports(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-
-    function bean_implements($interface){
-        switch($interface){
-            case 'ACL': return true;
-        }
-        return false;
-    }
-
-    function save($check_notify = FALSE){
-
-        if(isset($_POST['email_recipients']) && is_array($_POST['email_recipients'])){
-            $this->email_recipients = base64_encode(serialize($_POST['email_recipients']));
-        }
-
-        return parent::save($check_notify);
-    }
-
-    function get_email_recipients(){
-
-        $params = unserialize(base64_decode($this->email_recipients));
-
-        $emails = array();
-        if(isset($params['email_target_type'])){
-            foreach($params['email_target_type'] as $key => $field){
-                switch($field){
-                    case 'Email Address':
-                        $emails[] = $params['email'][$key];
-                        break;
-                    case 'Specify User':
-                        $user = new User();
-                        $user->retrieve($params['email'][$key]);
-                        $emails[] = $user->emailAddress->getPrimaryAddress($user);
-                        break;
-                    case 'Users':
-                        $users = array();
-                        switch($params['email'][$key][0]) {
-                            Case 'security_group':
-                                if(file_exists('modules/SecurityGroups/SecurityGroup.php')){
-                                    require_once('modules/SecurityGroups/SecurityGroup.php');
-                                    $security_group = new SecurityGroup();
-                                    $security_group->retrieve($params['email'][$key][1]);
-                                    $users = $security_group->get_linked_beans( 'users','User');
-                                    $r_users = array();
-                                    if($params['email'][$key][2] != ''){
-                                        require_once('modules/ACLRoles/ACLRole.php');
-                                        $role = new ACLRole();
-                                        $role->retrieve($params['email'][$key][2]);
-                                        $role_users = $role->get_linked_beans( 'users','User');
-                                        foreach($role_users as $role_user){
-                                            $r_users[$role_user->id] = $role_user->name;
-                                        }
-                                    }
-                                    foreach($users as $user_id => $user){
-                                        if($params['email'][$key][2] != '' && !isset($r_users[$user->id])){
-                                            unset($users[$user_id]);
-                                        }
-                                    }
-                                    break;
-                                }
-                            //No Security Group module found - fall through.
-                            Case 'role':
-                                require_once('modules/ACLRoles/ACLRole.php');
-                                $role = new ACLRole();
-                                $role->retrieve($params['email'][$key][2]);
-                                $users = $role->get_linked_beans( 'users','User');
-                                break;
-                            Case 'all':
-                            default:
-                                $db = DBManagerFactory::getInstance();
-                                $sql = "SELECT id from users WHERE status='Active' AND portal_only=0 ";
-                                $result = $db->query($sql);
-                                while ($row = $db->fetchByAssoc($result)) {
-                                    $user = new User();
-                                    $user->retrieve($row['id']);
-                                    $users[$user->id] = $user;
-                                }
-                                break;
-                        }
-                        foreach($users as $user){
-                            $emails[] = $user->emailAddress->getPrimaryAddress($user);
-                        }
-                        break;
-                }
-            }
-        }
-        return $emails;
-
-    }
-
-    function shouldRun(DateTime $date){
-        global $timedate;
-        if(empty($date)){
-            $date = new DateTime();
-        }
-        $cron = Cron\CronExpression::factory($this->schedule);
-        if(empty($this->last_run) && $cron->isDue($date)){
-            return true;
-        }
-        $lastRun = $timedate->fromDb($this->last_run);
-        $next = $cron->getNextRunDate($lastRun);
-        if($next < $date){
-            return true;
-        }
-        return false;
-    }
-}
+ require_once 'modules/AOR_Scheduled_Reports/lib/Cron/includeCron.php';
+ class AOR_Scheduled_Reports extends basic
+ {
+     public $new_schema = true;
+     public $module_dir = 'AOR_Scheduled_Reports';
+     public $object_name = 'AOR_Scheduled_Reports';
+     public $table_name = 'aor_scheduled_reports';
+     public $importable = false;
+     public $disable_row_level_security = true;
+     public $id;
+     public $name;
+     public $date_entered;
+     public $date_modified;
+     public $modified_user_id;
+     public $modified_by_name;
+     public $created_by;
+     public $created_by_name;
+     public $description;
+     public $deleted;
+     public $created_by_link;
+     public $modified_user_link;
+     public $schedule;
+     public $email_recipients;
+     public $status;
+     public $last_run;
+     public $aor_report_id;
+ 
+     public function __construct()
+     {
+         parent::__construct();
+     }
+ 
+ 
+ 
+ 
+     public function bean_implements($interface)
+     {
+         switch ($interface) {
+             case 'ACL': return true;
+         }
+         return false;
+     }
+ 
+     public function save($check_notify = false)
+     {
+         $this->parseRecipients();
+ 
+         return parent::save($check_notify);
+     }
+ 
+     public function get_email_recipients()
+     {
+         $params = unserialize(base64_decode($this->email_recipients));
+ 
+         $emails = array();
+         if (isset($params['email_target_type'])) {
+             foreach ($params['email_target_type'] as $key => $field) {
+                 switch ($field) {
+                     case 'Email Address':
+                         $emails[] = $params['email'][$key];
+                         break;
+                     case 'Specify User':
+                         $user = BeanFactory::newBean('Users');
+                         $user->retrieve($params['email'][$key]);
+                         $emails[] = $user->emailAddress->getPrimaryAddress($user);
+                         break;
+                     case 'Users':
+                         $users = array();
+                         switch ($params['email'][$key][0]) {
+                             case 'security_group':
+                                 if (file_exists('modules/SecurityGroups/SecurityGroup.php')) {
+                                     require_once('modules/SecurityGroups/SecurityGroup.php');
+                                     $security_group = BeanFactory::newBean('SecurityGroups');
+                                     $security_group->retrieve($params['email'][$key][1]);
+                                     $users = $security_group->get_linked_beans('users', 'User');
+                                     $r_users = array();
+                                     if ($params['email'][$key][2] != '') {
+                                         require_once('modules/ACLRoles/ACLRole.php');
+                                         $role = BeanFactory::newBean('ACLRoles');
+                                         $role->retrieve($params['email'][$key][2]);
+                                         $role_users = $role->get_linked_beans('users', 'User');
+                                         foreach ($role_users as $role_user) {
+                                             $r_users[$role_user->id] = $role_user->name;
+                                         }
+                                     }
+                                     foreach ($users as $user_id => $user) {
+                                         if ($params['email'][$key][2] != '' && !isset($r_users[$user->id])) {
+                                             unset($users[$user_id]);
+                                         }
+                                     }
+                                     break;
+                                 }
+                             //No Security Group module found - fall through.
+                             // no break
+                             case 'role':
+                                 require_once('modules/ACLRoles/ACLRole.php');
+                                 $role = BeanFactory::newBean('ACLRoles');
+                                 $role->retrieve($params['email'][$key][2]);
+                                 $users = $role->get_linked_beans('users', 'User');
+                                 break;
+                             case 'all':
+                             default:
+                                 $db = DBManagerFactory::getInstance();
+                                 $sql = "SELECT id from users WHERE status='Active' AND portal_only=0 ";
+                                 $result = $db->query($sql);
+                                 while ($row = $db->fetchByAssoc($result)) {
+                                     $user = BeanFactory::newBean('Users');
+                                     $user->retrieve($row['id']);
+                                     $users[$user->id] = $user;
+                                 }
+                                 break;
+                         }
+                         foreach ($users as $user) {
+                             $emails[] = $user->emailAddress->getPrimaryAddress($user);
+                         }
+                         break;
+                 }
+             }
+         }
+         return $emails;
+     }
+ 
+     /**
+      * @param DateTime $date
+      * @return bool
+      * @throws Exception
+      */
+     public function shouldRun(DateTime $date)
+     {
+         global $timedate;
+ 
+         $runDate = clone $date;
+         $this->handleTimeZone($runDate);
+ 
+         $cron = Cron\CronExpression::factory($this->schedule);
+         if (empty($this->last_run) && $cron->isDue($runDate)) {
+             return true;
+         }
+ 
+         $lastRun = $this->last_run ? $timedate->fromDb($this->last_run) : $timedate->fromDb($this->date_entered);
+ 
+         $this->handleTimeZone($lastRun);
+         $next = $cron->getNextRunDate($lastRun);
+ 
+         return $next <= $runDate;
+     }
+ 
+     /**
+      * @param DateTime $date
+      */
+     protected function handleTimeZone(DateTime $date)
+     {
+         global $sugar_config;
+ 
+         $timezone = !empty($sugar_config['default_timezone']) ? $sugar_config['default_timezone'] : date_default_timezone_get();
+         $timezone = new DateTimeZone($timezone);
+         $offset = $timezone->getOffset($date);
+         $date->modify($offset . 'second');
+     }
+ 
+     /**
+      * Parse and set recipients
+      * @return void
+      */
+     protected function parseRecipients(): void
+     {
+         $recipients = $_POST['email_recipients'] ?? null;
+         unset($_POST['email_recipients'], $_REQUEST['email_recipients'], $_GET['email_recipients']);
+         $this->email_recipients = null;
+ 
+         if (is_array($recipients)) {
+             $types = $recipients['email_target_type'] ?? [];
+             $emailInfo = $recipients['email'] ?? [];
+             $recipients = [
+                 'email_target_type' => $types,
+                 'email' => $emailInfo,
+             ];
+ 
+             $this->email_recipients = base64_encode(serialize($recipients));
+         }
+     }
+ 
+ }
+ 

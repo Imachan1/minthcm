@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -98,26 +98,41 @@ class actionCreateRecord extends actionBase
                  '_table" width="100%" class="lines"></table></td>';
         $html .= '</tr>';
         $html .= '<tr>';
-        $html .= '<td colspan="4" scope="row"><input type="button" tabindex="116" style="display:none" class="button" value="'.translate('LBL_ADD_FIELD',
-                'AOW_Actions').'" id="addcrline'.$line.'" onclick="add_crLine('.$line.')" /></td>';
+        $html .= '<td colspan="4" scope="row"><input type="button" tabindex="116" style="display:none" class="button" value="'.translate(
+            'LBL_ADD_FIELD',
+            'AOW_Actions'
+        ).'" id="addcrline'.$line.'" onclick="add_crLine('.$line.')" /></td>';
         $html .= '</tr>';
         $html .= '<tr>';
         $html .= '<td colspan="4" scope="row"><table id="crRelLine'.$line.'_table" width="100%" class="relationship"></table></td>';
         $html .= '</tr>';
         $html .= '<tr>';
-        $html .= '<td colspan="4" scope="row"><input type="button" tabindex="116" style="display:none" class="button" value="'.translate('LBL_ADD_RELATIONSHIP',
-                'AOW_Actions').'" id="addcrrelline'.$line.'" onclick="add_crRelLine('.$line.')" /></td>';
+        $html .= '<td colspan="4" scope="row"><input type="button" tabindex="116" style="display:none" class="button" value="'.translate(
+            'LBL_ADD_RELATIONSHIP',
+            'AOW_Actions'
+        ).'" id="addcrrelline'.$line.'" onclick="add_crRelLine('.$line.')" /></td>';
         $html .= '</tr>';
 
 
         if (isset($params['record_type']) && $params['record_type'] != '') {
             require_once 'modules/AOW_WorkFlow/aow_utils.php';
             $html .= "<script id ='aow_script".$line."'>";
-            $html .= 'cr_fields[' . $line . '] = "' . trim(preg_replace('/\s+/', ' ',
-                    getModuleFields($params['record_type'], 'EditView', '', array(),
-                        array('email1', 'email2')))) . '";';
-            $html .= 'cr_relationships[' . $line . '] = "' . trim(preg_replace('/\s+/', ' ',
-                    getModuleRelationships($params['record_type']))) . '";';
+            $html .= 'cr_fields[' . $line . '] = "' . trim(preg_replace(
+                '/\s+/',
+                ' ',
+                getModuleFields(
+                        $params['record_type'],
+                        'EditView',
+                        '',
+                        array(),
+                        array('email1', 'email2')
+                    )
+            )) . '";';
+            $html .= 'cr_relationships[' . $line . '] = "' . trim(preg_replace(
+                '/\s+/',
+                ' ',
+                getModuleRelationships($params['record_type'])
+            )) . '";';
             $html .= 'cr_module[' .$line. '] = "' .$params['record_type']. '";';
             if (isset($params['field'])) {
                 foreach ($params['field'] as $key => $field) {
@@ -223,14 +238,14 @@ class actionCreateRecord extends actionBase
                             case 'int':
                                 $value = format_number($bean->$fieldName);
                                 break;
-			    case 'relate':
-			        if(isset($data['id_name']) && $record_vardefs[$field]['type'] === 'relate'){
-				    $idName = $data['id_name'];
-                                    $value = $bean->$idName;
-				}else{
-				    $value = $bean->$fieldName;
-				}
-				break;
+                case 'relate':
+                    if (isset($data['id_name']) && $record_vardefs[$field]['type'] === 'relate') {
+                        $idName = $data['id_name'];
+                        $value = $bean->$idName;
+                    } else {
+                        $value = $bean->$fieldName;
+                    }
+                break;
                             default:
                                 $value = $bean->$fieldName;
                                 break;
@@ -245,7 +260,7 @@ class actionCreateRecord extends actionBase
                             case 'business_hours':
                                 require_once 'modules/AOBH_BusinessHours/AOBH_BusinessHours.php';
 
-                                $businessHours = new AOBH_BusinessHours();
+                                $businessHours = BeanFactory::newBean('AOBH_BusinessHours');
 
                                 $dateToUse = $params['value'][$key][0];
                                 $sign = $params['value'][$key][1];
@@ -291,14 +306,14 @@ class actionCreateRecord extends actionBase
                         switch ($params['value'][$key][0]) {
                             case 'security_group':
                                 require_once 'modules/SecurityGroups/SecurityGroup.php';
-                                $security_group = new SecurityGroup();
+                                $security_group = BeanFactory::newBean('SecurityGroups');
                                 $security_group->retrieve($params['value'][$key][1]);
                                 $group_users = $security_group->get_linked_beans('users', 'User');
                                 $users = array();
                                 $r_users = array();
                                 if ($params['value'][$key][2] != '') {
                                     require_once 'modules/ACLRoles/ACLRole.php';
-                                    $role = new ACLRole();
+                                    $role = BeanFactory::newBean('ACLRoles');
                                     $role->retrieve($params['value'][$key][2]);
                                     $role_users = $role->get_linked_beans('users', 'User');
                                     foreach ($role_users as $role_user) {
@@ -314,7 +329,7 @@ class actionCreateRecord extends actionBase
                                 break;
                             case 'role':
                                 require_once 'modules/ACLRoles/ACLRole.php';
-                                $role = new ACLRole();
+                                $role = BeanFactory::newBean('ACLRoles');
                                 $role->retrieve($params['value'][$key][2]);
                                 $role_users = $role->get_linked_beans('users', 'User');
                                 $users = array();
@@ -383,7 +398,20 @@ class actionCreateRecord extends actionBase
         $record->process_save_dates =false;
         $record->new_with_id = false;
 
+        /* Since we only work on non-deleted records this means the delete field
+         * was set during this action.
+         * Complete the deletion process by calling mark_deleted() after save() */
+        $was_deleted = false;
+        if ($record->deleted) {
+            $record->deleted = 0;
+            $was_deleted = true;
+        }
+
         $record->save($check_notify);
+
+        if ($was_deleted) {
+            $record->mark_deleted($record->id);
+        }
 
         $record->processed = $bean_processed;
     }

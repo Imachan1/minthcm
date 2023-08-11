@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,13 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 require_once('modules/Documents/DocumentPopupPicker.php');
 $popup = new DocumentPopupPicker();
 
@@ -71,7 +65,7 @@ $where = '';
 $where = $popup->_get_where_clause();
 
 // We can't attach remote documents to emails because we can't necessarialy fetch a copy of them to include.
-if ( ! empty($where) ) {
+if (! empty($where)) {
     $where .= ' AND ';
 }
 $where .= "documents.doc_type IN ( '', 'Sugar')";
@@ -88,8 +82,7 @@ $document_revision_id = empty($_REQUEST['document_revision_id']) ? '' : $_REQUES
 
 $hide_clear_button = empty($_REQUEST['hide_clear_button']) ? false : true;
 $button  = "<form action='index.php' method='post' name='form' id='form'>\n";
-if(!$hide_clear_button)
-{
+if (!$hide_clear_button) {
     $button .= "<input type='button' name='button' class='button' onclick=\"send_back('','');\" title='"
         .$app_strings['LBL_CLEAR_BUTTON_TITLE']."' value='  "
         .$app_strings['LBL_CLEAR_BUTTON_LABEL']."  ' />\n";
@@ -107,7 +100,7 @@ $form->assign('THEME', $theme);
 $form->assign('MODULE_NAME', $currentModule);
 $form->assign('NAME', $name);
 $form->assign('DOCUMENT_NAME', $document_name);
-if(isset($_REQUEST['target'])) {
+if (isset($_REQUEST['target'])) {
     $form->assign('DOCUMENT_TARGET', $_REQUEST['target']);
 } else {
     $form->assign('DOCUMENT_TARGET', '');
@@ -134,7 +127,7 @@ $output_html .= $form->text('main.SearchHeader');
 $form->reset('main.SearchHeader');
 
 // create the listview
-$seed_bean = new Document();
+$seed_bean = BeanFactory::newBean('Documents');
 $ListView = new ListView();
 $ListView->show_export_button = false;
 $ListView->process_for_popups = true;

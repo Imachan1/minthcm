@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -64,7 +64,7 @@ $dictionary['SpentTime'] = array(
                 'compareto' => 'date_end',
                 'blank' => false,
             ),
-            'vt_validation' => "AEM(equals(callCustomApi(SpentTime,getCountOfSpendTimeRecordsInGivenFrame,\$id,\$workschedule_id,\$date_start,\$date_end,1),0),'LBL_SPENT_TIME_RECORD_FOR_THIS_PERIOD_ALREADY_EXISTS')",
+            'vt_validation' => "AEM(equals(callCustomApi('SpentTime','getCountOfSpendTimeRecordsInGivenFrame',\$id,\$workschedule_id,\$date_start,\$date_end,1),0),'LBL_SPENT_TIME_RECORD_FOR_THIS_PERIOD_ALREADY_EXISTS')",
         ),
         'date_end' => array(
             'name' => 'date_end',
@@ -329,7 +329,7 @@ $dictionary['SpentTime'] = array(
             'rname' => 'name',
             'importable' => 'required',
             'required' => true,
-            'vt_validation' => "AEM(callCustomApi(SpentTime,canLogToWorkOffSchedule,\$workschedule_id),'LBL_ERR_CANT_LOG_TO_WORK_OFF_SCHEDULE')",
+            'vt_validation' => "AEM(callCustomApi('SpentTime','canLogToWorkOffSchedule',\$workschedule_id),'LBL_ERR_CANT_LOG_TO_WORK_OFF_SCHEDULE')",
         ),
         'workschedule_id' => array(
             'name' => 'workschedule_id',

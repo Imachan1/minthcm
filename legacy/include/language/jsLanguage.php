@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,30 +46,21 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
-class jsLanguage {
+class jsLanguage
+{
 
     /**
      * Creates javascript versions of language files
      */
-    function __construct() {
-    }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function jsLanguage(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+    public function __construct()
+    {
     }
 
 
-    static function createAppStringsCache($lang = 'en_us') {
+
+
+    public static function createAppStringsCache($lang = 'en_us')
+    {
         // cn: bug 8242 - non-US langpack chokes
         $app_strings = return_application_language($lang);
         $app_list_strings = return_app_list_strings_language($lang);
@@ -84,13 +75,14 @@ SUGAR.language.setLanguage('app_list_strings', $app_list_strings_encoded);
 EOQ;
 
         $cacheDir = create_cache_directory('jsLanguage/');
-        if($fh = @sugar_fopen($cacheDir . $lang . '.js', "w")){
-            fputs($fh, $str);
+        if ($fh = @sugar_fopen($cacheDir . $lang . '.js', "w")) {
+            fwrite($fh, $str);
             fclose($fh);
         }
     }
 
-    static function createModuleStringsCache($moduleDir, $lang = 'en_us', $return = false) {
+    public static function createModuleStringsCache($moduleDir, $lang = 'en_us', $return = false)
+    {
         $json = getJSONobj();
 
         // cn: bug 8242 - non-US langpack chokes
@@ -100,12 +92,12 @@ EOQ;
 
         $cacheDir = create_cache_directory('jsLanguage/' . $moduleDir . '/');
 
-        if($fh = @fopen($cacheDir . $lang . '.js', "w")){
-            fputs($fh, $str);
+        if ($fh = @fopen($cacheDir . $lang . '.js', 'wb')) {
+            fwrite($fh, $str);
             fclose($fh);
         }
 
-        if($return) {
+        if ($return) {
             return $str;
         }
     }

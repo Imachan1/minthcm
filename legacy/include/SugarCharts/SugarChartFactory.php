@@ -1,17 +1,14 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2020 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,6 +42,10 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+
 /**
  * Chart factory
  * @api
@@ -52,45 +53,48 @@ if (!defined('sugarEntry') || !sugarEntry) {
 class SugarChartFactory
 {
     /**
-	 * Returns a reference to the ChartEngine object for instance $chartEngine, or the default
+     * Returns a reference to the ChartEngine object for instance $chartEngine, or the default
      * instance if one is not specified
      *
      * @param string $chartEngine optional, name of the chart engine from $sugar_config['chartEngine']
      * @param string $module optional, name of module extension for chart engine (see JitReports or SugarFlashReports)
      * @return object ChartEngine instance
      */
-	public static function getInstance(
-        $chartEngine = '',
-        $module = ''
-        )
+    public static function getInstance($chartEngine = '', $module = '')
     {
         global $sugar_config;
-		$defaultEngine = "Jit";
+        $defaultEngine = "Jit";
         //fall back to the default Js Engine if config is not defined
-        if(empty($sugar_config['chartEngine'])){
-        	$sugar_config['chartEngine'] = $defaultEngine;
+        if (empty($sugar_config['chartEngine'])) {
+            $sugar_config['chartEngine'] = $defaultEngine;
         }
 
-        if(empty($chartEngine)){
-        	$chartEngine = $sugar_config['chartEngine'];
+        if (empty($chartEngine)) {
+            $chartEngine = $sugar_config['chartEngine'];
         }
 
         $file = "include/SugarCharts/".$chartEngine."/".$chartEngine.$module.".php";
+        $customFile = 'custom/' . $file;
 
-        if(file_exists('custom/' . $file))
-        {
-          require_once('custom/' . $file);
-        } else if(file_exists($file)) {
-          require_once($file);
+        if (file_exists($customFile)) {
+            require_once($customFile);
+        } elseif (file_exists($file)) {
+            require_once($file);
         } else {
-          $GLOBALS['log']->debug("using default engine include/SugarCharts/".$defaultEngine."/".$defaultEngine.$module.".php");
-          require_once("include/SugarCharts/".$defaultEngine."/".$defaultEngine.$module.".php");
-          $chartEngine = $defaultEngine;
+
+            LoggerManager::getLogger()->debug(
+                "Using default engine include/SugarCharts/" .
+                $defaultEngine . "/" .
+                $defaultEngine.$module.".php"
+            );
+
+            $defaultFile = "include/SugarCharts/".$defaultEngine."/".$defaultEngine.$module.".php";
+            require_once($defaultFile);
+
+            $chartEngine = $defaultEngine;
         }
 
         $className = $chartEngine.$module;
         return new $className();
-
     }
-
 }

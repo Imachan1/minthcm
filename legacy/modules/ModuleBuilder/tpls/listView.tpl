@@ -1,4 +1,5 @@
 {*
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -41,6 +42,8 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
+
 
 *}
 <form name='edittabs' id='edittabs' method='POST' action='index.php'>
@@ -105,14 +108,6 @@ studiotabs.reset();
             </td>
             <td></td>
             <td align="right" class="editIcon">
-                {* BEGIN SUGARCRM flav=pro ONLY *}
-                {if isset($field_defs.$key.calculated) && $field_defs.$key.calculated}
-                    {sugar_getimage name="SugarLogic/icon_calculated" alt=$mod_strings.LBL_CALCULATED ext=".png" other_attributes=''}
-                {/if}
-                {if isset($field_defs.$key.dependency) && $field_defs.$key.dependency}
-                    {sugar_getimage name="SugarLogic/icon_dependent" alt=$mod_strings.LBL_DEPENDANT ext=".png" other_attributes=''}
-                {/if}
-                {* END SUGARCRM flav=pro ONLY *}
                 <button class="suitepicon suitepicon-action-edit" style="cursor: pointer;"
 				onclick="var value_label = document.getElementById('subslot{$modCounter}label').innerHTML.replace(/^\s+|\s+$/g,''); 
 				    {if !($view|substr:-6 == "search") }

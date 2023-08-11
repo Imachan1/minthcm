@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,7 +43,7 @@
  */
 
 // created: 2015-03-04 12:01:39
-$layout_defs["AOK_Knowledge_Base_Categories"]["subpanel_setup"]['aok_knowledgebase_categories'] = array (
+$layout_defs["AOK_Knowledge_Base_Categories"]["subpanel_setup"]['aok_knowledgebase_categories'] = array(
     'order' => 100,
     'module' => 'AOK_KnowledgeBase',
     'subpanel_name' => 'default',
@@ -52,13 +52,13 @@ $layout_defs["AOK_Knowledge_Base_Categories"]["subpanel_setup"]['aok_knowledgeba
     'title_key' => 'LBL_AOK_KB_TITLE',
     'get_subpanel_data' => 'aok_knowledgebase_categories',
     'top_buttons' =>
-        array (
+        array(
             0 =>
-                array (
+                array(
                     'widget_class' => 'SubPanelTopButtonQuickCreate',
                 ),
             1 =>
-                array (
+                array(
                     'widget_class' => 'SubPanelTopSelectButton',
                     'mode' => 'MultiSelect',
                 ),

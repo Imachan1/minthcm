@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,32 +46,35 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
-$filePath = 'modules/Home/QuickSearch.php';
-if (file_exists('custom/' . $filePath))
-{
-    require_once('custom/' . $filePath);
-    $quicksearchQuery = new quicksearchQueryCustom();
-    $conditionEqual = quicksearchQueryCustom::CONDITION_EQUAL;
-}
-else
-{
-    require_once($filePath);
-    $quicksearchQuery = new quicksearchQuery();
-    $conditionEqual = quicksearchQuery::CONDITION_EQUAL;
-}
-
-$json = getJSONobj();
-$data = $json->decode(html_entity_decode($_REQUEST['data']));
-if(isset($_REQUEST['query']) && !empty($_REQUEST['query'])){
-    foreach($data['conditions'] as $k=>$v){
-        if (empty($data['conditions'][$k]['value']) && ($data['conditions'][$k]['op'] != $conditionEqual))
-        {
-            $data['conditions'][$k]['value']=urldecode($_REQUEST['query']);
-        }
-    }
-}
-
-$method = !empty($data['method']) ? $data['method'] : 'query';
-if(method_exists($quicksearchQuery, $method)) {
-   echo $quicksearchQuery->$method($data);
-}
+ $filePath = 'modules/Home/QuickSearch.php';
+ if (file_exists('custom/' . $filePath)) {
+     require_once('custom/' . $filePath);
+     $quicksearchQuery = new quicksearchQueryCustom();
+     $conditionEqual = quicksearchQueryCustom::CONDITION_EQUAL;
+ } else {
+     require_once($filePath);
+     $quicksearchQuery = new quicksearchQuery();
+     $conditionEqual = quicksearchQuery::CONDITION_EQUAL;
+ }
+ 
+ $json = getJSONobj();
+ $data = $json::decode(html_entity_decode($_REQUEST['data']));
+ 
+ if (isset($data['field_list'])) {
+     foreach ($data['field_list'] as $k => $v) {
+         $data['field_list'][$k] = securexss($v);
+     }
+ }
+ 
+ if (isset($_REQUEST['query']) && !empty($_REQUEST['query'])) {
+     foreach ($data['conditions'] as $k=>$v) {
+         if (empty($data['conditions'][$k]['value']) && ($data['conditions'][$k]['op'] != $conditionEqual)) {
+             $data['conditions'][$k]['value']=urldecode($_REQUEST['query']);
+         }
+     }
+ }
+ 
+ $method = !empty($data['method']) ? $data['method'] : 'query';
+ if (method_exists($quicksearchQuery, $method)) {
+     echo $quicksearchQuery->$method($data);
+ }

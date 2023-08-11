@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -92,7 +92,7 @@ class History implements HistoryInterface
 
         $this->_basename = basename($this->_previewFilename);
         $this->_dirname = dirname($this->_previewFilename);
-        $this->_historyLimit = isset ($GLOBALS ['sugar_config'] ['studio_max_history']) ? $GLOBALS ['sugar_config'] ['studio_max_history'] : 50;
+        $this->_historyLimit = isset($GLOBALS ['sugar_config'] ['studio_max_history']) ? $GLOBALS ['sugar_config'] ['studio_max_history'] : 50;
 
         // create the history directory if it does not already exist
         if (!is_dir($this->_dirname)) {
@@ -187,7 +187,7 @@ class History implements HistoryInterface
             $new_file = $this->getFileByTimestamp($time);
         }
         // now we have a unique filename, copy the file into the history
-        if(file_exists($path)){
+        if (file_exists($path)) {
             copy($path, $new_file);
         }
         $this->_list [] = $time;
@@ -253,6 +253,4 @@ class History implements HistoryInterface
     {
         return $this->_dirname . DIRECTORY_SEPARATOR . $this->_basename . '_' . $timestamp;
     }
-
-
 }

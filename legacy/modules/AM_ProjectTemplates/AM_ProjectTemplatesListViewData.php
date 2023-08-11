@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,27 +52,27 @@ require_once('include/EditView/SugarVCR.php');
  * Data set for ListView
  * @api
  */
-class AM_ProjectTemplatesListViewData extends ListViewData{
+class AM_ProjectTemplatesListViewData extends ListViewData
+{
 
 
-	/**
-	 * generates the additional details span to be retrieved via ajax
-	 *
-	 * @param GUID id id of the record
-	 * @return array string to attach to field
-	 */
-	function getAdditionalDetailsAjax($id)
+    /**
+     * generates the additional details span to be retrieved via ajax
+     *
+     * @param GUID id id of the record
+     * @return array string to attach to field
+     */
+    public function getAdditionalDetailsAjax($id)
     {
         global $app_strings;
 
         $jscalendarImage = '<span class="suitepicon suitepicon-action-info" title="'.$app_strings['LBL_ADDITIONAL_DETAILS'].'"></span>';
-		$jsdetailviewImage = '<span class="suitepicon suitepicon-action-view-record"></span>';
+        $jsdetailviewImage = '<span class="suitepicon suitepicon-action-view-record"></span>';
 
         $extra = "<span id='aadspan_" . $id . "' "
                 . "onclick=\"location.href='index.php?module=AM_ProjectTemplates&action=DetailView&record=". $id ."'\" "
-				. "><!--not_in_theme!-->".$app_strings['LBL_ADDITIONAL_DETAILS']."'</span>";
+                . "><!--not_in_theme!-->".$app_strings['LBL_ADDITIONAL_DETAILS']."'</span>";
 
         //return array('fieldToAddTo' => $this->additionalDetailsFieldToAdd, 'string' => $extra);
-	}
-
+    }
 }

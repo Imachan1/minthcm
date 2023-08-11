@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,31 +49,30 @@
  * Window - Preferences - PHPeclipse - PHP - Code Templates
  */
   $searchdefs['EmailTemplates'] = array(
-					'templateMeta' => array(
-							'maxColumns' => '2', 
-  							'maxColumnsBasic' => '2',
-                            'widths' => array('label' => '10', 'field' => '30'),                 
+                    'templateMeta' => array(
+                            'maxColumns' => '2',
+                            'maxColumnsBasic' => '2',
+                            'widths' => array('label' => '10', 'field' => '30'),
                            ),
-                    'layout' => array(  					
-						'basic_search' => array(
-						 	'name',
+                    'layout' => array(
+                        'basic_search' => array(
+                            'name',
                             'type' => array('name' => 'type', 'type'=>'enum', 'function' => array('name' => 'EmailTemplate::getTypeOptionsForSearch'))
-							),
-					    'advanced_search' => array('name',
+                            ),
+                        'advanced_search' => array('name',
                                                         'type' => array('name' => 'type', 'type'=>'enum', 'function' => array('name' => 'EmailTemplate::getTypeOptionsForSearch')),
                                                         'subject','description',
-                                					    'assigned_user_id' => 
-                                					      array (
-                                					        'name' => 'assigned_user_id',
-                                					        'type' => 'enum',
-                                					        'label' => 'LBL_ASSIGNED_TO',
-                                					        'function' => 
-                                					         array (
-                                    					          'name' => 'get_user_array',
-                                    					          'params' => array ( 0 => false,), ),
-                                					        'default' => true
-                                					      ),
-					    )
-					),
- 			   );
-
+                                                        'assigned_user_id' =>
+                                                          array(
+                                                            'name' => 'assigned_user_id',
+                                                            'type' => 'enum',
+                                                            'label' => 'LBL_ASSIGNED_TO',
+                                                            'function' =>
+                                                             array(
+                                                                  'name' => 'get_user_array',
+                                                                  'params' => array( 0 => false,), ),
+                                                            'default' => true
+                                                          ),
+                        )
+                    ),
+               );

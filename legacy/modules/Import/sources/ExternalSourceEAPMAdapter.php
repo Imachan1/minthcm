@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -109,7 +109,7 @@ class ExternalSourceEAPMAdapter extends ImportDataSource
         $conn = $api->getConnector();
 
         $feed = $conn->getList(array('maxResults' => $maxResults, 'startIndex' => $this->_offset));
-        if($feed !== FALSE)
+        if($feed !== false)
         {
             $this->_totalRecordCount = $feed['totalResults'];
             $this->_recordSet = $feed['records'];
@@ -160,7 +160,7 @@ class ExternalSourceEAPMAdapter extends ImportDataSource
 
     public function valid()
     {
-        return (current($this->_recordSet) !== FALSE);
+        return (current($this->_recordSet) !== false);
     }
 }
 

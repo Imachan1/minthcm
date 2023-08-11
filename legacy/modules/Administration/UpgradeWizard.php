@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -112,8 +112,18 @@ if( isset( $_REQUEST['run'] ) && ($_REQUEST['run'] != "") ){
             $perform = true;
             $base_filename = urldecode($tempFile);
         } elseif(!empty($_REQUEST['load_module_from_dir'])) {
-        	//copy file to proper location then call performSetup
-        	copy($_REQUEST['load_module_from_dir'].'/'.$_REQUEST['upgrade_zip_escaped'], "upload://".$_REQUEST['upgrade_zip_escaped']);
+            $moduleDir = $_REQUEST['load_module_from_dir'] ?? '';
+            if (stripos($moduleDir, 'phar://') !== false) {
+                LoggerManager::getLogger()->fatal("UpgradeWizard - invalid load_module_from_dir: " . $moduleDir);
+                throw new RuntimeException('Invalid request');
+            }
+
+            if (strtolower(pathinfo(urldecode($_REQUEST['upgrade_zip_escaped'] ?? ''), PATHINFO_EXTENSION)) !== 'zip'){
+                LoggerManager::getLogger()->fatal("UpgradeWizard - invalid upgrade_zip_escaped: " . $_REQUEST['upgrade_zip_escaped'] ?? '');
+                throw new RuntimeException("Invalid request");
+            }
+            //copy file to proper location then call performSetup
+            copy($moduleDir . '/' . $_REQUEST['upgrade_zip_escaped'], "upload://" . $_REQUEST['upgrade_zip_escaped']);
 
         	$perform = true;
             $base_filename = urldecode( $_REQUEST['upgrade_zip_escaped'] );

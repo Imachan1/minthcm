@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -54,18 +54,17 @@ class SugarModule
 
     public static function get(
         $moduleName
-        )
-    {
-        if ( !isset(self::$_instances[$moduleName]) )
+        ) {
+        if (!isset(self::$_instances[$moduleName])) {
             self::$_instances[$moduleName] = new SugarModule($moduleName);
+        }
 
         return self::$_instances[$moduleName];
     }
 
     public function __construct(
         $moduleName
-        )
-    {
+        ) {
         $this->_moduleName = $moduleName;
     }
 
@@ -77,14 +76,14 @@ class SugarModule
      */
     public function moduleImplements(
         $template
-        )
-    {
+        ) {
         $focus = self::loadBean();
 
-        if ( !$focus )
+        if (!$focus) {
             return false;
+        }
 
-        return is_a($focus,$template);
+        return is_a($focus, $template);
     }
 
     /**
@@ -95,33 +94,31 @@ class SugarModule
     public function loadBean($beanList = null, $beanFiles = null, $returnObject = true)
     {
         // Populate these reference arrays
-        if ( empty($beanList) ) {
+        if (empty($beanList)) {
             global $beanList;
         }
-        if ( empty($beanFiles) ) {
+        if (empty($beanFiles)) {
             global $beanFiles;
         }
-        if ( !isset($beanList) || !isset($beanFiles) ) {
+        if (!isset($beanList) || !isset($beanFiles)) {
             require('include/modules.php');
         }
 
-        if ( isset($beanList[$this->_moduleName]) ) {
+        if (isset($beanList[$this->_moduleName])) {
             $bean = $beanList[$this->_moduleName];
             if (isset($beanFiles[$bean])) {
-                if ( !$returnObject ) {
+                if (!$returnObject) {
                     return true;
                 }
-                if ( !is_file($beanFiles[$bean]) ) {
+                if (!is_file($beanFiles[$bean])) {
                     return false;
                 }
                 require_once($beanFiles[$bean]);
                 $focus = new $bean;
-            }
-            else {
+            } else {
                 return false;
             }
-        }
-        else {
+        } else {
             return false;
         }
 

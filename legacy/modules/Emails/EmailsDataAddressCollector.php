@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -151,10 +151,16 @@ class EmailsDataAddressCollector
         foreach ($ieAccounts as $inboundEmail) {
             $this->validateInboundEmail($inboundEmail);
 
-            if (in_array($inboundEmail->id, $showFolders, false)) {
-                $storedOptions = unserialize(base64_decode($inboundEmail->stored_options));
+            if (in_array($inboundEmail->id, $showFolders)) {
+                $storedOptions = sugar_unserialize(base64_decode($inboundEmail->stored_options));
                 $isGroupEmailAccount = $inboundEmail->isGroupEmailAccount();
                 $isPersonalEmailAccount = $inboundEmail->isPersonalEmailAccount();
+
+                // if group email account, check that user is allowed to use group email account
+                $inboundEmailStoredOptions = $inboundEmail->getStoredOptions();
+                if ($isGroupEmailAccount && !isTrue($inboundEmailStoredOptions['allow_outbound_group_usage'] ?? false)) {
+                    continue;
+                }
 
                 $this->getOutboundEmailOrError($storedOptions, $inboundEmail);
                 $this->retrieveFromDataStruct($storedOptions);
@@ -190,8 +196,10 @@ class EmailsDataAddressCollector
     protected function validateInboundEmail($inboundEmail = null)
     {
         if (!$inboundEmail instanceof InboundEmail) {
-            throw new InvalidArgumentException('Inbound Email Account should be a valid Inbound Email. ' . gettype($inboundEmail) . ' given.',
-                self::ERR_INVALID_INBOUND_EMAIL_TYPE);
+            throw new InvalidArgumentException(
+                'Inbound Email Account should be a valid Inbound Email. ' . gettype($inboundEmail) . ' given.',
+                self::ERR_INVALID_INBOUND_EMAIL_TYPE
+            );
         }
     }
 
@@ -327,7 +335,7 @@ class EmailsDataAddressCollector
         EmailFromValidator $emailFromValidator,
         &$replyToErr
     ) {
-        $tmpEmail = new Email();
+        $tmpEmail = BeanFactory::newBean('Emails');
         $tmpEmail->FromName = $tmpEmail->from_name = $tmpName;
         $tmpEmail->From = $tmpEmail->from_addr = $tmpAddr;
         $tmpEmail->from_addr_name = $this->getReplyTo();
@@ -429,7 +437,9 @@ class EmailsDataAddressCollector
             $isGroupEmailAccount,
             $this->getOeId(),
             $this->getOeName(),
-            []
+            [],
+            $inboundEmail->name,
+            $storedOptions['reply_to_name'] ?? ''
         );
     }
 
@@ -645,7 +655,8 @@ class EmailsDataAddressCollector
             [
                 'html' => utf8_encode(html_entity_decode($signatureHtml)),
                 'plain' => $signatureTxt,
-            ]
+            ],
+            $userAddress['email_address']
         );
     }
 
@@ -674,23 +685,43 @@ class EmailsDataAddressCollector
     }
 
     /**
+     * Add system email address
+     * @param array $dataAddresses
+     */
+    public function addSystemEmailAddress(array &$dataAddresses): void
+    {
+        $this->setOe(new OutboundEmail());
+        if ($this->getOe()->isAllowUserAccessToSystemDefaultOutbound()) {
+            $system = $this->getOe()->getSystemMailerSettings();
+            $dataAddresses[] = $this->getFillDataAddressArray(
+                $system->id,
+                $system->name,
+                $system->smtp_from_name,
+                $system->smtp_from_addr,
+                $system->mail_smtpuser,
+                []
+            );
+        }
+    }
+
+    /**
      * @param $dataAddresses
      * @return mixed
      */
     protected function fillDataAddressFromPersonal($dataAddresses)
     {
         foreach ($dataAddresses as $address => $userAddress) {
-
             if ($userAddress['type'] !== 'system') {
                 $emailInfo = $userAddress['attributes'];
-                $fromString = $this->addCurrentUserToEmailString($emailInfo['from']);
-                $replyString = $this->addCurrentUserToEmailString($emailInfo['reply_to']);
+                $fromString = $emailInfo['from'];
+                $replyString = $emailInfo['reply_to'];
 
                 $dataAddresses[$address]['attributes'] = [
                     'from' => $fromString,
                     'name' => $userAddress['attributes']['name'],
                     'oe' => $userAddress['attributes']['oe'],
-                    'reply_to' => $replyString
+                    'reply_to' => $replyString,
+                    'reply_to_name' => $emailInfo['reply_to_name'] ?? ''
                 ];
             }
         }
@@ -731,8 +762,8 @@ class EmailsDataAddressCollector
         return $dataAddress->getDataArray(
             'system',
             $id,
-            "$fromName &lt;$fromAddr&gt;",
-            "$fromName &lt;$fromAddr&gt;",
+            $fromAddr,
+            $fromAddr,
             $fromName,
             false,
             false,
@@ -740,7 +771,9 @@ class EmailsDataAddressCollector
             $id,
             $name,
             $mailUser,
-            $defaultEmailSignature
+            $defaultEmailSignature,
+            'System',
+            $fromName
         );
     }
 

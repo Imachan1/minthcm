@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,44 +46,33 @@
  * Generic filter
  * @api
  */
-class default_filter {
+class default_filter
+{
+    public $_component;
 
-var $_component;
-
-public function __construct() {
-
-}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function default_filter(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+    public function __construct()
+    {
     }
 
 
-public function setComponent($component) {
-   	$this->_component = $component;
-}
 
-/**
- * getList
- * Returns a nested array containing a key/value pair(s) of a source record
- *
- * @param array $args Array of arguments to search/filter by
- * @param string $module String optional value of the module that the connector framework is attempting to map to
- * @return array of key/value pair(s) of source record; empty Array if no results are found
- */
-public function getList($args, $module) {
-	$args = $this->_component->mapInput($args, $module);
-	return $this->_component->getSource()->getList($args, $module);
-}
 
+    public function setComponent($component)
+    {
+        $this->_component = $component;
+    }
+
+    /**
+     * getList
+     * Returns a nested array containing a key/value pair(s) of a source record
+     *
+     * @param array $args Array of arguments to search/filter by
+     * @param string $module String optional value of the module that the connector framework is attempting to map to
+     * @return array of key/value pair(s) of source record; empty Array if no results are found
+     */
+    public function getList($args, $module)
+    {
+        $args = $this->_component->mapInput($args, $module);
+        return $this->_component->getSource()->getList($args, $module);
+    }
 }

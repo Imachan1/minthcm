@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,37 +46,37 @@ $viewdefs['DocumentRevisions']['DetailView'] = array(
     'templateMeta' => array('maxColumns' => '2',
                             'form' => array(
                                 'buttons' => array(),
-                                'hidden'=>array('<input type="hidden" name="old_id" value="{$fields.document_revision_id.value}">')), 
+                                'hidden'=>array('<input type="hidden" name="old_id" value="{$fields.document_revision_id.value}">')),
                             'widths' => array(
-                                array('label' => '10', 'field' => '30'), 
+                                array('label' => '10', 'field' => '30'),
                                 array('label' => '10', 'field' => '30')
                                 ),
         ),
-    'panels' => 
-    array (
-        '' => 
-        array (
-            array (
+    'panels' =>
+    array(
+        '' =>
+        array(
+            array(
                 'document_name',
                 'latest_revision',
             ),
             
-            array (
+            array(
                 'revision',
             ),
             
-            array (
+            array(
                 'filename',
             ),
             
-            array (
-                array (
+            array(
+                array(
                     'name' => 'date_entered',
                     'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
                 ),
             ),
 
-            array (
+            array(
                 'change_log',
             ),
         ),

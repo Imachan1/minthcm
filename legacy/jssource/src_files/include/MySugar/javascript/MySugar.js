@@ -7,7 +7,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -201,12 +201,6 @@ initMySugar = function () {
           configureDlg.configFixedCenter(null, false);
           SUGAR.util.evalScript(result['body']);
 
-          // calculate the scroll and dashlet popup positions
-          var rlTop = 200;
-          var newTop = $("#dashlet_" + dashletId).offset().top - rlTop;
-          if (newTop + $('#dlg').outerHeight(true) > $('#dlg_mask').height()) {
-            newTop -= (newTop + $('#dlg').outerHeight(true) - $('#dlg_mask').height() + rlTop);
-          }
 
           // animate to position
           $('html, body').animate({
@@ -278,6 +272,9 @@ initMySugar = function () {
 
           ajaxStatus.hideStatus();
         });
+        
+        $('#dashlet_header_' + SUGAR.mySugar.configureDashletId).load(url + ' #dashlet_header_' + SUGAR.mySugar.configureDashletId);
+
         return false;
       },
 

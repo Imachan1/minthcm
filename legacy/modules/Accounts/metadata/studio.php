@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,28 +49,28 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $GLOBALS['studioDefs']['Accounts'] = array(
-	'LBL_DETAILVIEW'=>array(
-				'template'=>'xtpl',
-				'template_file'=>'modules/Accounts/DetailView.html',
-				'php_file'=>'modules/Accounts/DetailView.php',
-				'type'=>'DetailView',
-				),
-	'LBL_EDITVIEW'=>array(
-				'template'=>'xtpl',
-				'template_file'=>'modules/Accounts/EditView.html',
-				'php_file'=>'modules/Accounts/EditView.php',
-				'type'=>'EditView',
-				),
-	'LBL_LISTVIEW'=>array(
-				'template'=>'listview',
-				'meta_file'=>'modules/Accounts/listviewdefs.php',
-				'type'=>'ListView',
-				),
-	'LBL_SEARCHFORM'=>array(
-				'template'=>'xtpl',
-				'template_file'=>'modules/Accounts/SearchForm.html',
-				'php_file'=>'modules/Accounts/ListView.php',
-				'type'=>'SearchForm',
-				),
+    'LBL_DETAILVIEW'=>array(
+                'template'=>'xtpl',
+                'template_file'=>'modules/Accounts/DetailView.html',
+                'php_file'=>'modules/Accounts/DetailView.php',
+                'type'=>'DetailView',
+                ),
+    'LBL_EDITVIEW'=>array(
+                'template'=>'xtpl',
+                'template_file'=>'modules/Accounts/EditView.html',
+                'php_file'=>'modules/Accounts/EditView.php',
+                'type'=>'EditView',
+                ),
+    'LBL_LISTVIEW'=>array(
+                'template'=>'listview',
+                'meta_file'=>'modules/Accounts/listviewdefs.php',
+                'type'=>'ListView',
+                ),
+    'LBL_SEARCHFORM'=>array(
+                'template'=>'xtpl',
+                'template_file'=>'modules/Accounts/SearchForm.html',
+                'php_file'=>'modules/Accounts/ListView.php',
+                'type'=>'SearchForm',
+                ),
 
 );

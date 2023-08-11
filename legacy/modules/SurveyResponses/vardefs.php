@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -155,6 +155,25 @@ $dictionary['SurveyResponses'] = array(
             'lhs_module' => 'SurveyResponses',
             'lhs_table' => 'surveyresponses',
             'lhs_key' => 'id',
+            'relationship_type' => 'one-to-many',
+        ),
+        // Fix Issue 8897 - Adding missing relationships to SurveyResponses and Contacts/Accounts
+        'surveyresponses_contacts' => array(
+            'rhs_module'        => 'SurveyResponses',
+            'rhs_table'         => 'surveyresponses',
+            'rhs_key'           => 'contact_id',
+            'lhs_module'        => 'Contacts',
+            'lhs_table'         => 'contacts',
+            'lhs_key'           => 'id',
+            'relationship_type' => 'one-to-many',
+        ),
+        'surveyresponses_accounts' => array (
+            'rhs_module'        => 'SurveyResponses',
+            'rhs_table'         => 'surveyresponses',
+            'rhs_key'           => 'account_id',
+            'lhs_module'        => 'Accounts',
+            'lhs_table'         => 'accounts',
+            'lhs_key'           => 'id',
             'relationship_type' => 'one-to-many',
         ),
     ),

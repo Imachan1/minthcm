@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,47 +45,42 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc. All Rights
- * Reserved. Contributor(s): ______________________________________..
- * *******************************************************************************/
 
-if(ob_get_level() < 1)
-	ob_start();
+if (ob_get_level() < 1) {
+    ob_start();
+}
 ob_implicit_flush(1);
 
-if(!function_exists('getFilesForPermsCheck')) {
-	require_once('modules/UpgradeWizard/uw_utils.php');	
+if (!function_exists('getFilesForPermsCheck')) {
+    require_once('modules/UpgradeWizard/uw_utils.php');
 }
-if(!isset($sugar_config) || empty($sugar_config)) {
-		
+if (!isset($sugar_config) || empty($sugar_config)) {
 }
 // persistence
 $persistence = getPersistence();
 
-switch($_REQUEST['commitStep']) {
-	case 'run_sql':
-		ob_end_flush();
-		logThis('commitJson->runSql() called.');
-		$persistence = commitAjaxRunSql($persistence);
-	break;
+switch ($_REQUEST['commitStep']) {
+    case 'run_sql':
+        ob_end_flush();
+        logThis('commitJson->runSql() called.');
+        $persistence = commitAjaxRunSql($persistence);
+    break;
 
-	case 'get_errors':
-		logThis('commitJson->getErrors() called.');
-		commitAjaxGetSqlErrors($persistence);
-	break;
-	
-	case 'post_install':
-		logThis('commitJson->postInstall() called.');
-		commitAjaxPostInstall($persistence);
-	break;
-	
-	case 'final_touches':
-		logThis('commitJson->finalTouches() called.');
-		$persistence = commitAjaxFinalTouches($persistence);
-	break;	
+    case 'get_errors':
+        logThis('commitJson->getErrors() called.');
+        commitAjaxGetSqlErrors($persistence);
+    break;
+    
+    case 'post_install':
+        logThis('commitJson->postInstall() called.');
+        commitAjaxPostInstall($persistence);
+    break;
+    
+    case 'final_touches':
+        logThis('commitJson->finalTouches() called.');
+        $persistence = commitAjaxFinalTouches($persistence);
+    break;
 }
 
 savePersistence($persistence);

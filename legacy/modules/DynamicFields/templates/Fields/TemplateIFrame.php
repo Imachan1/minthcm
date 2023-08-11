@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,28 +46,32 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 require_once('modules/DynamicFields/templates/Fields/TemplateURL.php');
-class TemplateIFrame extends TemplateURL{
-	var $type='iframe';
-	
-function get_html_edit(){
+class TemplateIFrame extends TemplateURL
+{
+    public $type='iframe';
+    
+    public function get_html_edit()
+    {
         $this->prepare();
         return "<input type='text' name='". $this->name. "' id='".$this->name."' size='".$this->size."' title='{" . strtoupper($this->name) ."_HELP}' value='{". strtoupper($this->name). "}'>";
     }
-	
-	function get_html_label() {
-		return "LALALALA";
-	}
-	
-	function get_xtpl_detail(){
+    
+    public function get_html_label()
+    {
+        return "LALALALA";
+    }
+    
+    public function get_xtpl_detail()
+    {
         $value = parent::get_xtpl_detail();
         $value .= "BLAH BLAH";
         return $value;
     }
     
-	function get_field_def(){
-		$def = parent::get_field_def();
-		$def['height'] = !empty($this->height) ? $this->height : $this->ext4;
-		return $def;	
-	} 
-
+    public function get_field_def()
+    {
+        $def = parent::get_field_def();
+        $def['height'] = !empty($this->height) ? $this->height : $this->ext4;
+        return $def;
+    }
 }

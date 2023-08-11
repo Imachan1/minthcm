@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,89 +45,82 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$subpanel_layout = array(
-    //Removed button because this layout def is a component of
-    //the activities sub-panel.
-
+ $subpanel_layout = [
     'where' => '',
-
-    'list_fields' => array(
-        'object_image' => array(
+    'list_fields' => [
+        'object_image' => [
             'vname' => 'LBL_OBJECT_IMAGE',
             'widget_class' => 'SubPanelIcon',
             'width' => '2%',
             'image2' => 'attachment',
-            'image2_url_field' => array(
+            'image2_url_field' => [
                 'id_field' => 'id',
                 'filename_field' => 'filename',
-            ),
-        ),
-        'name' => array(
+            ],
+        ],
+        'name' => [
             'vname' => 'LBL_LIST_SUBJECT',
             'widget_class' => 'SubPanelDetailViewLink',
             'width' => '30%',
-        ),
-        'status' => array(
+        ],
+        'status' => [
             'widget_class' => 'SubPanelActivitiesStatusField',
             'vname' => 'LBL_LIST_STATUS',
             'width' => '15%',
-            'force_exists' => true, //this will create a fake field in the case a field is not defined
-
-        ),
-        'reply_to_status' => array(
+            'force_exists' => true
+        ],
+        'reply_to_status' => [
             'usage' => 'query_only',
             'force_exists' => true,
             'force_default' => 0,
-        ),
-        'parent_id' => array(
+        ],
+        'parent_id' => [
             'usage' => 'query_only',
-            'force_exists' => true,
-        ),
-        'parent_type' => array(
+            'force_exists' => true
+        ],
+        'parent_type' => [
             'usage' => 'query_only',
-            'force_exists' => true,
-        ),
-
-        'date_modified' => array(
+            'force_exists' => true
+        ],
+        'date_modified' => [
             'vname' => 'LBL_LIST_DATE_MODIFIED',
             'width' => '10%',
-        ),
-        'date_entered' => array(
+        ],
+        'date_entered' => [
             'vname' => 'LBL_LIST_DATE_ENTERED',
             'width' => '10%',
-        ),
-        'assigned_user_name' => array(
+        ],
+        'assigned_user_name' => [
             'name' => 'assigned_user_name',
             'vname' => 'LBL_LIST_ASSIGNED_TO_NAME',
             'widget_class' => 'SubPanelDetailViewLink',
             'target_record_key' => 'assigned_user_id',
             'target_module' => 'Employees',
             'width' => '10%',
-        ),
-        'assigned_user_owner' => array(
-            'force_exists' => true, //this will create a fake field since this field is not defined
-            'usage' => 'query_only',
-        ),
-        'assigned_user_mod' => array(
-            'force_exists' => true, //this will create a fake field since this field is not defined
-            'usage' => 'query_only',
-        ),
-        'edit_button' => array(
+        ],
+        'assigned_user_owner' => [
+            'force_exists' => true,
+            'usage' => 'query_only'
+        ],
+        'assigned_user_mod' => [
+            'force_exists' => true,
+            'usage' => 'query_only'
+        ],
+        'edit_button' => [
             'vname' => 'LBL_EDIT_BUTTON',
             'widget_class' => 'SubPanelEditButton',
             'width' => '2%',
-        ),
-        'remove_button' => array(
+        ],
+        'remove_button' => [
             'vname' => 'LBL_REMOVE',
             'widget_class' => 'SubPanelRemoveButton',
             'width' => '2%',
-        ),
-        'file_url' => array(
-            'usage' => 'query_only',
-        ),
-        'filename' => array(
-            'usage' => 'query_only',
-        ),
-
-    ),
-);
+        ],
+        'file_url' => [
+            'usage' => 'query_only'
+        ],
+        'filename' => [
+            'usage' => 'query_only'
+        ],
+    ],
+];

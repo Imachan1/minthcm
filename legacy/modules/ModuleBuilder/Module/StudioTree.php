@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,31 +44,18 @@
 
 require_once('modules/ModuleBuilder/MB/MBPackageTree.php');
 require_once('modules/ModuleBuilder/Module/StudioBrowser.php');
-class StudioTree extends MBPackageTree{
-	function __construct(){
-		$this->tree = new Tree('package_tree');
-		$this->tree->id = 'package_tree';
-		$this->mb = new StudioBrowser();
-		$this->populateTree($this->mb->getNodes(), $this->tree);
-	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function StudioTree(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+class StudioTree extends MBPackageTree
+{
+    public function __construct()
+    {
+        $this->tree = new Tree('package_tree');
+        $this->tree->id = 'package_tree';
+        $this->mb = new StudioBrowser();
+        $this->populateTree($this->mb->getNodes(), $this->tree);
     }
 
-
-	function getName(){
-		return translate('LBL_SECTION_MODULES');
-	}
-
+    public function getName()
+    {
+        return translate('LBL_SECTION_MODULES');
+    }
 }

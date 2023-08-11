@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,42 +52,42 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
  ********************************************************************************/
-$fields_array['Document'] = array ('column_fields' => Array("id"
-		,"document_name"
-		,"description"
-		,"category_id"
-		,"subcategory_id"
-		,"status_id"
-		,"active_date"
-		,"exp_date"
-		,"date_entered"
-		,"date_modified"
-		,"created_by"
-		,"modified_user_id"
-		,"document_revision_id"
-		,"related_doc_id"
-		,"related_doc_rev_id"
-		,"is_template"
-		,"template_type"
-		),
-        'list_fields' =>  Array("id"
-		,"document_name"
-		,"description"
-		,"category_id"
-		,"subcategory_id"
-		,"status_id"
-		,"active_date"
-		,"exp_date"
-		,"date_entered"
-		,"date_modified"
-		,"created_by"
-		,"modified_user_id"
-		,"document_revision_id"
-		,"last_rev_create_date"
-		,"last_rev_created_by"
-		,"latest_revision"
-		,"file_url"
-		,"file_url_noimage"
-		),
-        'required_fields' => Array("document_name"=>1,"active_date"=>1,"revision"=>1),
+$fields_array['Document'] = array('column_fields' => array("id"
+        ,"document_name"
+        ,"description"
+        ,"category_id"
+        ,"subcategory_id"
+        ,"status_id"
+        ,"active_date"
+        ,"exp_date"
+        ,"date_entered"
+        ,"date_modified"
+        ,"created_by"
+        ,"modified_user_id"
+        ,"document_revision_id"
+        ,"related_doc_id"
+        ,"related_doc_rev_id"
+        ,"is_template"
+        ,"template_type"
+        ),
+        'list_fields' =>  array("id"
+        ,"document_name"
+        ,"description"
+        ,"category_id"
+        ,"subcategory_id"
+        ,"status_id"
+        ,"active_date"
+        ,"exp_date"
+        ,"date_entered"
+        ,"date_modified"
+        ,"created_by"
+        ,"modified_user_id"
+        ,"document_revision_id"
+        ,"last_rev_create_date"
+        ,"last_rev_created_by"
+        ,"latest_revision"
+        ,"file_url"
+        ,"file_url_noimage"
+        ),
+        'required_fields' => array("document_name"=>1,"active_date"=>1,"revision"=>1),
 );

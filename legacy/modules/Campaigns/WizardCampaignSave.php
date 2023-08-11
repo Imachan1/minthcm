@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,13 +47,13 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 $db = DBManagerFactory::getInstance();
 
-function getTemplateValidationMessages($templateId) {
+function getTemplateValidationMessages($templateId)
+{
     $msgs = array();
-    if(!$templateId) {
+    if (!$templateId) {
         $msgs[] = 'LBL_NO_SELECTED_TEMPLATE';
-    }
-    else {
-        $template = new EmailTemplate();
+    } else {
+        $template = BeanFactory::newBean('EmailTemplates');
         $template->retrieve($templateId);
         if (!$template->subject) {
             $msgs[] = 'LBL_NO_SUBJECT';
@@ -71,17 +71,16 @@ function getTemplateValidationMessages($templateId) {
 $campaignId = $db->quote($_POST['campaignId']);
 $marketingId = $db->quote($_POST['marketingId']);
 $func = isset($_REQUEST['func']) ? $_REQUEST['func'] : null;
-if($func == 'getTemplateValidation') {
+if ($func == 'getTemplateValidation') {
     if (!empty($_POST['templateId'])) {
         $templateId = $db->quote($_POST['templateId']);
-    }
-    else {
+    } else {
         if (!$marketingId) {
             if (!empty($_SESSION['campaignWizard'][$campaignId]['defaultSelectedMarketingId']) && $func != 'createEmailMarketing') {
                 $marketingId = $_SESSION['campaignWizard'][$campaignId]['defaultSelectedMarketingId'];
             }
         }
-        $marketing = new EmailMarketing();
+        $marketing = BeanFactory::newBean('EmailMarketing');
         $marketing->retrieve($marketingId);
         $templateId = $marketing->template_id;
     }
@@ -90,13 +89,12 @@ if($func == 'getTemplateValidation') {
     $return['marketingValidationMessages'] = $marketing->validate();
 
     echo json_encode($return);
-}
-else {
+} else {
     if (!$marketingId) {
         if (!empty($_SESSION['campaignWizard'][$campaignId]['defaultSelectedMarketingId']) && $func != 'createEmailMarketing') {
             $marketingId = $_SESSION['campaignWizard'][$campaignId]['defaultSelectedMarketingId'];
-        } else if($func != 'createEmailMarketing') {
-            $marketing = new EmailMarketing();
+        } elseif ($func != 'createEmailMarketing') {
+            $marketing = BeanFactory::newBean('EmailMarketing');
             $marketing->save();
             $marketingId = $marketing->id;
         }
@@ -105,16 +103,16 @@ else {
         $templateId = $db->quote($_POST['templateId']);
     }
 
-//$campaign = new Campaign();
-//$campaign->retrieve($campaignId);
+    //$campaign = BeanFactory::newBean('Campaigns');
+    //$campaign->retrieve($campaignId);
 
-    $marketing = new EmailMarketing();
+    $marketing = BeanFactory::newBean('EmailMarketing');
     $marketing->retrieve($marketingId);
     $marketing->campaign_id = $campaignId;
     if (!empty($_POST['templateId'])) {
         $marketing->template_id = $templateId;
     }
-    if($func != 'createEmailMarketing') {
+    if ($func != 'createEmailMarketing') {
         $marketing->save();
     }
 

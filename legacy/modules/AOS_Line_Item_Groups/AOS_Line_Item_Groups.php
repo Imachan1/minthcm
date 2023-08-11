@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,30 +46,13 @@ require_once('modules/AOS_Line_Item_Groups/AOS_Line_Item_Groups_sugar.php');
 
 class AOS_Line_Item_Groups extends AOS_Line_Item_Groups_sugar
 {
-
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function AOS_Line_Item_Groups(){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-
-    function save_groups($post_data, $parent, $key = '')
+    public function save_groups($post_data, $parent, $key = '')
     {
-
         $groups = array();
         $group_count = isset($post_data[$key . 'group_number']) ? count($post_data[$key . 'group_number']) : 0;
         $j = 0;
@@ -84,7 +67,7 @@ class AOS_Line_Item_Groups extends AOS_Line_Item_Groups_sugar
             if ($postData == 1) {
                 $this->mark_deleted($post_data[$key . 'id'][$i]);
             } else {
-                $product_quote_group = new AOS_Line_Item_Groups();
+                $product_quote_group = BeanFactory::newBean('AOS_Line_Item_Groups');
                 foreach ($this->field_defs as $field_def) {
                     $field_name = $field_def['name'];
                     if (isset($post_data[$key . $field_name][$i])) {
@@ -110,17 +93,16 @@ class AOS_Line_Item_Groups extends AOS_Line_Item_Groups_sugar
                 if (isset($post_data[$key . 'group_number'][$i])) {
                     $groups[$post_data[$key . 'group_number'][$i]] = $product_quote_group->id;
                 }
-
             }
         }
 
         require_once('modules/AOS_Products_Quotes/AOS_Products_Quotes.php');
-        $productQuote = new AOS_Products_Quotes();
+        $productQuote = BeanFactory::newBean('AOS_Products_Quotes');
         $productQuote->save_lines($post_data, $parent, $groups, 'product_');
         $productQuote->save_lines($post_data, $parent, $groups, 'service_');
     }
 
-    function save($check_notify = FALSE)
+    public function save($check_notify = false)
     {
         require_once('modules/AOS_Products_Quotes/AOS_Utils.php');
         perform_aos_save($this);

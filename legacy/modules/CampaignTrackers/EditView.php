@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,13 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description: TODO:  To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 
 
@@ -62,15 +56,15 @@ global $app_list_strings;
 global $mod_strings;
 global $sugar_version, $sugar_config;
 
-$focus = new CampaignTracker();
+$focus = BeanFactory::newBean('CampaignTrackers');
 
-if(isset($_REQUEST['record'])) {
+if (isset($_REQUEST['record'])) {
     $focus->retrieve($_REQUEST['record']);
 }
 $old_id = '';
 
-if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-	$focus->id = "";
+if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
+    $focus->id = "";
 }
 
 
@@ -78,34 +72,40 @@ if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 
 $GLOBALS['log']->info("Campaign Tracker Edit View");
 
-$xtpl=new XTemplate ('modules/CampaignTrackers/EditView.html');
+$xtpl=new XTemplate('modules/CampaignTrackers/EditView.html');
 $xtpl->assign("MOD", $mod_strings);
 $xtpl->assign("APP", $app_strings);
 
 $campaignName = '';
 $campaignId = '';
 if (!empty($_REQUEST['campaign_name'])) {
-	$xtpl->assign("CAMPAIGN_NAME", $_REQUEST['campaign_name']);
-	$campaignName = $_REQUEST['campaign_name'];
+    $xtpl->assign("CAMPAIGN_NAME", $_REQUEST['campaign_name']);
+    $campaignName = $_REQUEST['campaign_name'];
 } else {
-	$xtpl->assign("CAMPAIGN_NAME", $focus->campaign_name);
-	$campaignName = $focus->campaign_name;
+    $xtpl->assign("CAMPAIGN_NAME", $focus->campaign_name);
+    $campaignName = $focus->campaign_name;
 }
 if (!empty($_REQUEST['campaign_id'])) {
-	$xtpl->assign("CAMPAIGN_ID", $_REQUEST['campaign_id']);
-	$campaignId = $_REQUEST['campaign_id'];
+    $xtpl->assign("CAMPAIGN_ID", $_REQUEST['campaign_id']);
+    $campaignId = $_REQUEST['campaign_id'];
 } else {
-	$xtpl->assign("CAMPAIGN_ID", $focus->campaign_id);
-	$campaignId = $focus->campaign_id;
+    $xtpl->assign("CAMPAIGN_ID", $focus->campaign_id);
+    $campaignId = $focus->campaign_id;
 }
 $params = array();
 $params[] = "<a href='index.php?module=Campaigns&action=DetailView&record={$campaignId}'>{$campaignName}</a>";
 $params[] = $mod_strings['LBL_MODULE_NAME'];
 echo getClassicModuleTitle($focus->module_dir, $params, true);
 
-if (isset($_REQUEST['return_module'])) $xtpl->assign("RETURN_MODULE", $_REQUEST['return_module']);
-if (isset($_REQUEST['return_action'])) $xtpl->assign("RETURN_ACTION", $_REQUEST['return_action']);
-if (isset($_REQUEST['return_id'])) $xtpl->assign("RETURN_ID", $_REQUEST['return_id']);
+if (isset($_REQUEST['return_module'])) {
+    $xtpl->assign("RETURN_MODULE", $_REQUEST['return_module']);
+}
+if (isset($_REQUEST['return_action'])) {
+    $xtpl->assign("RETURN_ACTION", $_REQUEST['return_action']);
+}
+if (isset($_REQUEST['return_id'])) {
+    $xtpl->assign("RETURN_ID", $_REQUEST['return_id']);
+}
 
 $xtpl->assign("PRINT_URL", "index.php?".$GLOBALS['request_string']);
 
@@ -118,16 +118,16 @@ $xtpl->assign("TRACKER_NAME", $focus->tracker_name);
 $xtpl->assign("TRACKER_URL", $focus->tracker_url);
 
 global $current_user;
-if(is_admin($current_user) && $_REQUEST['module'] != 'DynamicLayout' && !empty($_SESSION['editinplace'])){	
-	$record = '';
-	if(!empty($_REQUEST['record'])){
-		$record = 	$_REQUEST['record'];
-	}
-	$xtpl->assign("ADMIN_EDIT","<a href='index.php?action=index&module=DynamicLayout&from_action=".$_REQUEST['action'] ."&from_module=".$_REQUEST['module'] ."&record=".$record. "'>".SugarThemeRegistry::current()->getImage("EditLayout","border='0' align='bottom'",null,null,'.gif',$mod_strings['LBL_EDIT_LAYOUT'])."</a>");
+if (is_admin($current_user) && $_REQUEST['module'] != 'DynamicLayout' && !empty($_SESSION['editinplace'])) {
+    $record = '';
+    if (!empty($_REQUEST['record'])) {
+        $record = 	$_REQUEST['record'];
+    }
+    $xtpl->assign("ADMIN_EDIT", "<a href='index.php?action=index&module=DynamicLayout&from_action=".$_REQUEST['action'] ."&from_module=".$_REQUEST['module'] ."&record=".$record. "'>".SugarThemeRegistry::current()->getImage("EditLayout", "border='0' align='bottom'", null, null, '.gif', $mod_strings['LBL_EDIT_LAYOUT'])."</a>");
 }
 if (!empty($focus->is_optout) && $focus->is_optout == 1) {
-	$xtpl->assign("IS_OPTOUT_CHECKED","checked");
-	$xtpl->assign("TRACKER_URL_DISABLED","disabled");
+    $xtpl->assign("IS_OPTOUT_CHECKED", "checked");
+    $xtpl->assign("TRACKER_URL_DISABLED", "disabled");
 }
 
 $xtpl->parse("main");

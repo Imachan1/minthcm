@@ -7,7 +7,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,230 +44,246 @@
 function get_form() {
 
 
-   var id = document.getElementsByName( 'record' )[0];
-   var form = '';
-   var titleval = SUGAR.language.get( 'app_strings', 'LBL_RESCHEDULE_LABEL' );
+  var id = document.getElementsByName('record')[0];
+  var form = '';
+  var titleval = SUGAR.language.get('app_strings', 'LBL_RESCHEDULE_LABEL');
 
-   var callback = {
+  var callback = {
 
-      success: function ( result ) {
+    success: function (result) {
 
-         form = result.responseText;
+      form = result.responseText;
 
-         var dialog = new YAHOO.widget.Dialog( 'dialog1', {
-            width: '400px',
-            fixedcenter: "contained",
-            visible: false,
-            draggable: true,
-            modal: true
-         } );
+      var dialog = new YAHOO.widget.Dialog('dialog1', {
+        width: '400px',
+        fixedcenter: "contained",
+        visible: false,
+        draggable: true,
+        modal: true
+      });
 
-         dialog.setHeader( titleval );
-         dialog.setBody( form );
+      dialog.setHeader(titleval);
+      dialog.setBody(form);
 
-         var handleCancel = function () {
+      var handleCancel = function () {
             $( '.container-close' ).remove(); //viewTools
-            this.cancel();
+        this.cancel();
 
-         };
-         var handleSubmit = function () {
+      };
+      var handleSubmit = function () {
 
-            var date_box = dialog.getData().date;
-            var reason_box = dialog.getData().reason;
-            var hours = dialog.getData().date_start_hours;
-            var mins = dialog.getData().date_start_minutes;
-            var format = dialog.getData().format;
-            var dateformat = dialog.getData().dateformat;
-            var ampm = dialog.getData().date_start_meridiem;
-            var username = dialog.getData().user;
+        var date_box = dialog.getData().date;
+        var reason_box = dialog.getData().reason;
+        var hours = dialog.getData().date_start_hours;
+        var mins = dialog.getData().date_start_minutes;
+        var format = dialog.getData().format;
+        var dateformat = dialog.getData().dateformat;
+        var ampm = dialog.getData().date_start_meridiem;
+        var username = dialog.getData().user;
 
-            //basic validation
-            if ( (date_box == '' && reason_box == '') || (reason_box == '' && !isDate( date_box )) ) {
+        //basic validation
+        if ((date_box == '' && reason_box == '') || (reason_box == '' && !isDate(date_box))) {
 
-               document.getElementById( 'error1' ).style.display = "";
-               document.getElementById( 'error2' ).style.display = "";
+          document.getElementById('error1').style.display = "";
+          document.getElementById('error2').style.display = "";
 
-            } else if ( date_box == '' || !isDate( date_box ) ) {
+        } else if (date_box == '' || !isDate(date_box)) {
 
-               document.getElementById( 'error1' ).style.display = "";
-               document.getElementById( 'error2' ).style.display = "none";
+          document.getElementById('error1').style.display = "";
+          document.getElementById('error2').style.display = "none";
 
-            } else if ( reason_box == '' ) {
+        }
+        else if (reason_box == '') {
 
-               document.getElementById( 'error1' ).style.display = "none";
-               document.getElementById( 'error2' ).style.display = "";
+          document.getElementById('error1').style.display = "none";
+          document.getElementById('error2').style.display = "";
 
-            } else {
+        }
+        else {
 
-               this.submit();
-               update( date_box, reason_box, hours, mins, format, dateformat, ampm, username );
-            }
+          this.submit();
+          update(date_box, reason_box, hours, mins, format, dateformat, ampm, username);
+        }
 
-         };
+      };
 
-         var save = SUGAR.language.get( 'Calls', 'LBL_SAVE' );
-         var cancel = SUGAR.language.get( 'Calls', 'LBL_CANCEL' );
-         var myButtons = [ {text: save, handler: handleSubmit, isDefault: true},
-            {text: cancel, handler: handleCancel} ];
+      var save = SUGAR.language.get('Calls', 'LBL_SAVE');
+      var cancel = SUGAR.language.get('Calls', 'LBL_CANCEL');
+      var myButtons = [{text: save, handler: handleSubmit, isDefault: true},
+        {text: cancel, handler: handleCancel}];
 
-         dialog.cfg.queueProperty( "buttons", myButtons );
-         dialog.render( document.body );
-         dialog.show();
+      dialog.cfg.queueProperty("buttons", myButtons);
+      dialog.render(document.body);
+      dialog.show();
 
-         $( '.open' ).attr( 'class', 'dropdown' ); //viewTools
-         $( '#dialog1_c' ).css( 'z-index', '99' ); //viewTools
-         var close_button = document.getElementsByClassName( 'container-close' )[0]; //viewTools
-         YAHOO.util.Event.removeListener( close_button, "click" ); //viewTools
-         YAHOO.util.Event.addListener( close_button, 'click', handleCancel, dialog, true ); //viewTools
+      $( '.open' ).attr( 'class', 'dropdown' ); //viewTools
+      $( '#dialog1_c' ).css( 'z-index', '99' ); //viewTools
+      var close_button = document.getElementsByClassName( 'container-close' )[0]; //viewTools
+      YAHOO.util.Event.removeListener( close_button, "click" ); //viewTools
+      YAHOO.util.Event.addListener( close_button, 'click', handleCancel, dialog, true ); //viewTools
 
          document.getElementById( 'call_id' ).value = id.value;
 
-         var manageCalendar = function () {
-            if ( YAHOO.widget.Calendar ) {
-               Calendar.setup( {
-                  inputField: 'date',
-                  ifFormat: cal_date_format,
-                  daFormat: '%m/%d/%Y %I:%M%P',
-                  button: 'date_start_trigger',
-                  singleClick: true,
-                  step: 1,
+      var manageCalendar = function () {
+          if(YAHOO.widget.Calendar) {
+              Calendar.setup ({
+                  inputField : 'date',
+                  ifFormat : cal_date_format,
+                  daFormat : '%m/%d/%Y %I:%M%P',
+                  button : 'date_start_trigger',
+                  singleClick : true,
+                  step : 1,
                   weekNumbers: false,
                   startWeekday: 0
-               } );
-            }
-         };
+              });
+          }
+      };
 
-         document.getElementById( 'date_start_trigger' ).addEventListener( 'click', manageCalendar );
-         SUGAR.util.evalScript( document.getElementById( 'script' ).innerHTML );
-      }
+      document.getElementById('date_start_trigger').addEventListener('click', manageCalendar);
+      SUGAR.util.evalScript(document.getElementById('script').innerHTML);
+    }
 
-   };
+  };
 
-   YAHOO.util.Connect.asyncRequest( "GET", "index.php?entryPoint=Reschedule&call_id=" + id.value, callback );
+  YAHOO.util.Connect.asyncRequest("GET", "index.php?entryPoint=Reschedule&call_id=" + id.value, callback);
 
 //Updates date/time field on page
-   function update( date_box, reason_box, hours, mins, format, dateFormat, ampm, username ) {
+  function update(date_box, reason_box, hours, mins, format, dateFormat, ampm, username) {
 
 //used to update the history list
-      var currentDate = new Date();
-      var Year = currentDate.getFullYear();
-      var Month = currentDate.getMonth() + 1;
-      var Day = currentDate.getDate();
-      var Hours = currentDate.getHours();
-      var Minutes = currentDate.getMinutes();
-      var date;
-      var time;
-      var time2;
+    var currentDate = new Date();
+    var Year = currentDate.getFullYear();
+    var Month = currentDate.getMonth() + 1;
+    var Day = currentDate.getDate();
+    var Hours = currentDate.getHours();
+    var Minutes = currentDate.getMinutes();
+    var date;
+    var time;
+    var time2;
 
-      Month = Month < 10 ? "0" + Month : Month; // get 2 digit months
-      Day = Day < 10 ? "0" + Day : Day; // get 2 digit days
-      Hours = Hours < 10 ? "0" + Hours : Hours; // get 2 digit hours
-      Minutes = Minutes < 10 ? "0" + Minutes : Minutes; // get 2 digit Minutes
+    Month = Month < 10 ? "0" + Month : Month; // get 2 digit months
+    Day = Day < 10 ? "0" + Day : Day; // get 2 digit days
+    Hours = Hours < 10 ? "0" + Hours : Hours; // get 2 digit hours
+    Minutes = Minutes < 10 ? "0" + Minutes : Minutes; // get 2 digit Minutes
 
 //convert to 12 hour format (am/pm)
-      var h = Hours;
+    var h = Hours;
 //determine if 12 hour format should user Capitals for am/pm or not
-      if ( format == '11:00pm' || format == '11:00 pm' || format == '11.00pm' || format == '11.00 pm' ) {
-         var d = 'am';
+    if (format == '11:00pm' || format == '11:00 pm' || format == '11.00pm' || format == '11.00 pm') {
+      var d = 'am';
 
-         if ( h >= 12 ) {
-            h = Hours - 12;
-            d = 'pm';
-
-         }
-
-         if ( h == 0 ) {
-            h = 12;
-         }
-
-      } else {//set am/pm to uppercase
-         var d = 'AM';
-
-         if ( h >= 12 ) {
-            h = Hours - 12;
-            d = 'PM';
-
-         }
-
-         if ( h == 0 ) {
-            h = 12;
-         }
+      if (h >= 12) {
+        h = Hours - 12;
+        d = 'pm';
 
       }
 
-      h = h < 10 ? "0" + h : h; // get 2 digit hours
+      if (h == 0) {
+        h = 12;
+      }
+
+    }
+    else {//set am/pm to uppercase
+      var d = 'AM';
+
+      if (h >= 12) {
+        h = Hours - 12;
+        d = 'PM';
+
+      }
+
+      if (h == 0) {
+        h = 12;
+      }
+
+    }
+
+    h = h < 10 ? "0" + h : h; // get 2 digit hours
 
 //set dateFormat
-      if ( dateFormat == 'Y-m-d' ) {
+    if (dateFormat == 'Y-m-d') {
 
-         date = Year + '-' + Month + '-' + Day;
-      } else if ( dateFormat == 'm-d-Y' ) {
+      date = Year + '-' + Month + '-' + Day;
+    }
+    else if (dateFormat == 'm-d-Y') {
 
-         date = Month + '-' + Day + '-' + Year;
-      } else if ( dateFormat == 'd-m-Y' ) {
+      date = Month + '-' + Day + '-' + Year;
+    }
+    else if (dateFormat == 'd-m-Y') {
 
-         date = Day + '-' + Month + '-' + Year;
-      } else if ( dateFormat == 'Y/m/d' ) {
+      date = Day + '-' + Month + '-' + Year;
+    }
+    else if (dateFormat == 'Y/m/d') {
 
-         date = Year + '/' + Month + '/' + Day;
-      } else if ( dateFormat == 'm/d/Y' ) {
+      date = Year + '/' + Month + '/' + Day;
+    }
+    else if (dateFormat == 'm/d/Y') {
 
-         date = Month + '/' + Day + '/' + Year;
-      } else if ( dateFormat == 'd/m/Y' ) {
+      date = Month + '/' + Day + '/' + Year;
+    }
+    else if (dateFormat == 'd/m/Y') {
 
-         date = Day + '/' + Month + '/' + Year;
-      } else if ( dateFormat == 'Y.m.d' ) {
+      date = Day + '/' + Month + '/' + Year;
+    }
+    else if (dateFormat == 'Y.m.d') {
 
-         date = Year + '.' + Month + '.' + Day;
-      } else if ( dateFormat == 'm.d.Y' ) {
+      date = Year + '.' + Month + '.' + Day;
+    }
+    else if (dateFormat == 'm.d.Y') {
 
-         date = Month + '.' + Day + '.' + Year;
-      } else if ( dateFormat == 'd.m.Y' ) {
+      date = Month + '.' + Day + '.' + Year;
+    }
+    else if (dateFormat == 'd.m.Y') {
 
-         date = Day + '.' + Month + '.' + Year;
-      }
+      date = Day + '.' + Month + '.' + Year;
+    }
 
 //set time format
-      if ( format == '23.00' ) {
+    if (format == '23.00') {
 
-         time = hours + '.' + mins;//the time for updating the scheduled call start time
-         time2 = Hours + '.' + Minutes; //the time for updating the history list
+      time = hours + '.' + mins;//the time for updating the scheduled call start time
+      time2 = Hours + '.' + Minutes; //the time for updating the history list
 
-      } else if ( format == '23:00' ) {
+    }
+    else if (format == '23:00') {
 
-         time = hours + ':' + mins;
-         time2 = Hours + ':' + Minutes;
+      time = hours + ':' + mins;
+      time2 = Hours + ':' + Minutes;
 
-      } else if ( format == '11:00pm' || format == '11:00PM' ) {
+    }
+    else if (format == '11:00pm' || format == '11:00PM') {
 
-         time = hours + ':' + mins + ampm;
-         time2 = h + ':' + Minutes + d;
+      time = hours + ':' + mins + ampm;
+      time2 = h + ':' + Minutes + d;
 
-      } else if ( format == '11:00 pm' || format == '11:00 PM' ) {
+    }
+    else if (format == '11:00 pm' || format == '11:00 PM') {
 
-         time = hours + ':' + mins + ' ' + ampm;
-         time2 = h + ':' + Minutes + ' ' + d;
+      time = hours + ':' + mins + ' ' + ampm;
+      time2 = h + ':' + Minutes + ' ' + d;
 
-      } else if ( format == '11.00pm' || format == '11.00PM' ) {
+    }
+    else if (format == '11.00pm' || format == '11.00PM') {
 
-         time = hours + '.' + mins + ampm;
-         time2 = h + '.' + Minutes + d;
-      } else if ( format == '11.00 pm' || format == '11.00 PM' ) {
+      time = hours + '.' + mins + ampm;
+      time2 = h + '.' + Minutes + d;
+    }
+    else if (format == '11.00 pm' || format == '11.00 PM') {
 
-         time = hours + '.' + mins + ' ' + ampm;
-         time2 = h + '.' + Minutes + ' ' + d;
-      }
+      time = hours + '.' + mins + ' ' + ampm;
+      time2 = h + '.' + Minutes + ' ' + d;
+    }
 
 
 //update call start time
-      document.getElementById( 'date_start' ).innerHTML = date_box + ' ' + time;
+    document.getElementById('date_start').innerHTML = date_box + ' ' + time;
 
 //update call attempt history
-      var list = document.getElementById( 'history_list' );
-      var new_element = document.createElement( 'li' );
-      var call_reschedule_dom = SUGAR.language.languages.app_list_strings['call_reschedule_dom'];
-      new_element.innerHTML = call_reschedule_dom[reason_box] + ' - ' + date + ' ' + time2 + ' by: ' + username;
-      list.insertBefore( new_element, list.firstChild );
-   }
+    var list = document.getElementById('history_list');
+    var new_element = document.createElement('li');
+    var call_reschedule_dom = SUGAR.language.languages.app_list_strings['call_reschedule_dom'];
+    new_element.innerHTML = call_reschedule_dom[reason_box] + ' - ' + date + ' ' + time2 + ' by: ' + username;
+    list.insertBefore(new_element, list.firstChild);
+  }
 
 }

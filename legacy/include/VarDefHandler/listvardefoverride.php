@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,10 +44,11 @@
 
 
 
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 //THIS IS TO FIX ANY VARDEFS IN CREATING LIST QUERIES (specifically relationships)
-if (isset($this->field_defs['assigned_user_name']))
-{
+if (isset($this->field_defs['assigned_user_name'])) {
     $this->field_defs['assigned_user_name'] = array_merge(
         $this->field_defs['assigned_user_name'],
         array(
@@ -59,15 +60,13 @@ if (isset($this->field_defs['assigned_user_name']))
             'source' => 'non-db',
             'link' => 'assigned_user_link',
             'id_name' => 'assigned_user_id',
-            'massupdate' => FALSE
+            'massupdate' => false
         )
     );
 }
 
-if (isset($this->field_defs['created_by']))
-{
-    if (!isset($this->field_defs['created_by_name']))
-    {
+if (isset($this->field_defs['created_by'])) {
+    if (!isset($this->field_defs['created_by_name'])) {
         $this->field_defs['created_by_name'] = array();
     }
 
@@ -85,10 +84,8 @@ if (isset($this->field_defs['created_by']))
     );
 }
 
-if (isset($this->field_defs['modified_user_id']))
-{
-    if (!isset($this->field_defs['modified_by_name']))
-    {
+if (isset($this->field_defs['modified_user_id'])) {
+    if (!isset($this->field_defs['modified_by_name'])) {
         $this->field_defs['modified_by_name'] = array();
     }
 

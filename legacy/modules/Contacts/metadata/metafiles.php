@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,11 +49,10 @@
  * Window - Preferences - PHPeclipse - PHP - Code Templates
  */
  $metafiles['Contacts'] = array(
-	'detailviewdefs'  => 	'modules/Contacts/metadata/detailviewdefs.php', 	
-	'editviewdefs'    => 	'modules/Contacts/metadata/editviewdefs.php',
- 	'listviewdefs'    => 	'modules/Contacts/metadata/listviewdefs.php',
- 	'searchdefs'      =>    'modules/Contacts/metadata/searchdefs.php',
- 	'popupdefs'	      =>    'modules/Contacts/metadata/popupdefs.php',
- 	'searchfields'	  =>    'modules/Contacts/metadata/SearchFields.php',
+    'detailviewdefs'  => 	'modules/Contacts/metadata/detailviewdefs.php',
+    'editviewdefs'    => 	'modules/Contacts/metadata/editviewdefs.php',
+    'listviewdefs'    => 	'modules/Contacts/metadata/listviewdefs.php',
+    'searchdefs'      =>    'modules/Contacts/metadata/searchdefs.php',
+    'popupdefs'	      =>    'modules/Contacts/metadata/popupdefs.php',
+    'searchfields'	  =>    'modules/Contacts/metadata/SearchFields.php',
  );
-

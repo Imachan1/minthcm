@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -76,12 +76,10 @@
 	views = {
 		sharedMonth: {
 			type: 'month',
-			duration: { months: 1 },
 			buttonText: 'Shared Month'
 		},
 		sharedWeek: {
-			type: 'agenda',
-			duration: {days: 7},
+			type: 'agendaWeek',
 			buttonText: 'Shared Week'
 		}
 	};
@@ -311,13 +309,13 @@ YAHOO.util.Event.onDOMReady(function(){
 
 
 
-<link type="text/css" href="{sugar_getjspath file="modules/Calendar/fullcalendar/fullcalendar.css"}" rel="stylesheet" />
-<link type="text/css" href="{sugar_getjspath file="modules/Calendar/fullcalendar/fullcalendar.print.css"}" media='print' rel="stylesheet" />
+<link type="text/css" href="{sugar_getjspath file="modules/Calendar/fullcalendar/fullcalendar.min.css"}" rel="stylesheet" />
+<link type="text/css" href="{sugar_getjspath file="modules/Calendar/fullcalendar/fullcalendar.print.min.css"}" media='print' rel="stylesheet" />
 
 <script src='{sugar_getjspath file="include/javascript/qtip/jquery.qtip.min.js"}'></script>
 <script src='{sugar_getjspath file="modules/Calendar/fullcalendar/lib/moment.min.js"}'></script>
 <script src='{sugar_getjspath file="modules/Calendar/fullcalendar/fullcalendar.min.js"}'></script>
-<script src='{sugar_getjspath file="modules/Calendar/fullcalendar/lang-all.js"}'></script>
+<script src='{sugar_getjspath file="modules/Calendar/fullcalendar/locale-all.js"}'></script>
 
 <div id='calendarContainer'></div>
 {sugar_getscript file="modules/Calendar/Cal.js"}

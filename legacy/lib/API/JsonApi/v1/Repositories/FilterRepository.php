@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,7 +47,6 @@ namespace SuiteCRM\API\JsonApi\v1\Repositories;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use SuiteCRM\API\JsonApi\v1\Filters\Parsers\FilterParser;
 use SuiteCRM\API\JsonApi\v1\Resource\SuiteBeanResource;
-use Interop\Container\Exception\ContainerException;
 use Psr\Container\ContainerInterface;
 use SuiteCRM\API\v8\Exception\BadRequestException;
 
@@ -88,23 +87,25 @@ class FilterRepository
         /** @var OperatorInterface[] $filterOperators */
         // Parse Filters from request
         $queries = $request->getQueryParams();
-        if(empty($queries)) {
+        if (empty($queries)) {
             return array();
         }
 
         $response = array();
-        if(isset($queries['filter'])) {
+        if (isset($queries['filter'])) {
             /** @var array $filters */
             $filters = $queries['filter'];
 
-            if(is_array($filters)) {
+            if (is_array($filters)) {
                 foreach ($filters as $filterKey => $filter) {
                     $response = array_merge($response, $this->filterParser->parseFilter($filterKey, $filter, $args));
                 }
-            } else if(is_string($filters)) {
-                $response = array($filters);
             } else {
-                throw new BadRequestException('[JsonApi][v1][Repositories][FilterRepository][filter type is invalid]');
+                if (is_string($filters)) {
+                    $response = array($filters);
+                } else {
+                    throw new BadRequestException('[JsonApi][v1][Repositories][FilterRepository][filter type is invalid]');
+                }
             }
         }
 

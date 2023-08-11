@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -93,14 +93,14 @@ Not ideal but it'll work since it's the only way to get that info without editin
 {if $ACL_HEADER_DISPLAYED == "false"}
     {assign var="ACL_HEADER_DISPLAYED" value="true"}
 {*MintHCM END*}
-        {foreach from=$ACTION_NAMES item="ACTION_LABEL" key="ACTION_NAME"}
-                {foreach from=$TYPES item="ACTIONS"}
+	{foreach from=$ACTION_NAMES item="ACTION_LABEL" key="ACTION_NAME"}
+		{foreach from=$TYPES item="ACTIONS"}
 			{foreach from=$ACTIONS item="ACTION" key="ACTION_NAME_ACTIVE"}
 			{if $ACTION_NAME==$ACTION_NAME_ACTIVE}
 
 			<td align='center'>
 				<div align='center' id="{$ACTION_NAME}link" onclick="aclviewer.toggleDisplay('{$ACTION_NAME}')"><b>{$ACTION_LABEL}</b></div>
-				<div  style="display: none; text-align: center;" id="{$ACTION_NAME}">
+				<div  style="all: initial; display: none; text-align: center;" id="{$ACTION_NAME}">
 					<select name='act_guid{$ACTION_NAME}' id='act_guid{$ACTION_NAME}' onblur="cascadeAccessOption('{$ACTION_NAME}',this); aclviewer.toggleDisplay('{$ACTION_NAME}');" >
 					{html_options options=$ACTION.accessOptions selected=$ACTION.aclaccess }
 					</select>
@@ -155,7 +155,7 @@ Not ideal but it'll work since it's the only way to get that info without editin
 {*
 					<select name='act_guid{$ACTION.id}' id = 'act_guid{$ACTION.id}' onblur="document.getElementById('{$ACTION.id}link').innerHTML=this.options[this.selectedIndex].text; aclviewer.toggleDisplay('{$ACTION.id}');" >
 *}
-						<select name='act_guid{$ACTION.id}' id = 'act_guid{$ACTION.id}' onblur="document.getElementById('{$ACTION.id}link').innerHTML=this.options[this.selectedIndex].text; aclviewer.toggleDisplay('{$ACTION.id}');" >
+                        <select class='{$ACTION_NAME}' style="all: initial" name='act_guid{$ACTION.id}' id = 'act_guid{$ACTION.id}' onblur="document.getElementById('{$ACTION.id}link').innerHTML=this.options[this.selectedIndex].text; aclviewer.toggleDisplay('{$ACTION.id}');" >
  					{* END - SECURITY GROUPS *}
 					{html_options options=$ACTION.accessOptions selected=$ACTION.aclaccess }
 					</select>

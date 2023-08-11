@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -108,9 +108,9 @@ class ImapHandlerFakeData
      */
     protected function getCall($name, $args = null)
     {
-        if (key_exists($name, $this->calls)) {
+        if (array_key_exists($name, $this->calls)) {
             $argsEncoded = $this->encodeArgs($args);
-            if (key_exists($argsEncoded, $this->calls[$name])) {
+            if (array_key_exists($argsEncoded, $this->calls[$name])) {
                 $ret = $this->getNextCallReturn($name, $argsEncoded);
                 return $ret;
             } else {

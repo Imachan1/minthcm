@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,29 +47,29 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 global $current_language;
 $module_name = $_REQUEST['module_name'];
-if(isset($_REQUEST['multi_edit'])){
-	unset($_REQUEST['action']);
-	unset($_REQUEST['module_name']);
-	unset($_REQUEST['module']);
-	$the_strings = return_module_language($current_language, $module_name);
-	foreach($_REQUEST as $key=>$value){
-		if(isset($the_strings[$key])){
-			create_field_label($module_name, $current_language, $key, $value, true);
-		}
-	}
-	$location = "index.php?action=LabelList&module=LabelEditor&refreshparent=1&sugar_body_only=1";
-	header("Location:$location" );
-}else{
-	create_field_label($module_name, $current_language, $_REQUEST['record'], $_REQUEST['value'], true);
-		$location = "index.php?action=". $_REQUEST['return_action']."&module=". $_REQUEST['return_module'];
-	if(isset($_REQUEST['module_name'])){
-		$location .= "&module_name=" . $_REQUEST['module_name'];
-	}
-	if(isset($_REQUEST['sugar_body_only'])){
-		$location .= "&sugar_body_only=" . $_REQUEST['sugar_body_only'];
-	}
-	if(isset($_REQUEST['style']) && $_REQUEST['style'] == 'popup'){
-		$location .= '&refreshparent=1';	
-	}
-	header("Location:$location" );
+if (isset($_REQUEST['multi_edit'])) {
+    unset($_REQUEST['action']);
+    unset($_REQUEST['module_name']);
+    unset($_REQUEST['module']);
+    $the_strings = return_module_language($current_language, $module_name);
+    foreach ($_REQUEST as $key=>$value) {
+        if (isset($the_strings[$key])) {
+            create_field_label($module_name, $current_language, $key, $value, true);
+        }
+    }
+    $location = "index.php?action=LabelList&module=LabelEditor&refreshparent=1&sugar_body_only=1";
+    header("Location:$location");
+} else {
+    create_field_label($module_name, $current_language, $_REQUEST['record'], $_REQUEST['value'], true);
+    $location = "index.php?action=". $_REQUEST['return_action']."&module=". $_REQUEST['return_module'];
+    if (isset($_REQUEST['module_name'])) {
+        $location .= "&module_name=" . $_REQUEST['module_name'];
+    }
+    if (isset($_REQUEST['sugar_body_only'])) {
+        $location .= "&sugar_body_only=" . $_REQUEST['sugar_body_only'];
+    }
+    if (isset($_REQUEST['style']) && $_REQUEST['style'] == 'popup') {
+        $location .= '&refreshparent=1';
+    }
+    header("Location:$location");
 }

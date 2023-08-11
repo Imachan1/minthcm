@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -82,7 +82,7 @@
             <td scope="row" colspan="4">&nbsp;</td>
         </tr>
         <tr>
-            <td align="left" scope="row" colspan="3"><label for="userfile">{$MOD.LBL_SELECT_FILE}</label> <input type="hidden" /><input size="20" id="userfile" name="userfile" type="file"/> &nbsp;{sugar_help text=$MOD.LBL_FILE_UPLOAD_WIDGET_HELP}</td>
+            <td align="left" scope="row" colspan="3"><div><label for="userfile">{$MOD.LBL_SELECT_FILE}</label></div> <div><input type="hidden" /><input size="20" id="userfile" name="userfile" type="file"/>{sugar_help text=$MOD.LBL_FILE_UPLOAD_WIDGET_HELP}</div> <div><span class="small">{$APP.LBL_LOGGER_VALID_FILENAME_CHARACTERS}</span></div></td>
         </tr>
         <tr>
             <td scope="row" colspan="4"><div class="hr">&nbsp;</div></td>
@@ -133,17 +133,15 @@
           {/if}
           {foreach from=$custom_imports key=key item=item name=saved}
           <tr id="custom_import_{$smarty.foreach.saved.index}">
-            <td scope="row" colspan="2" width="10%" style="padding-right: 10px;">
+            <td scope="row" colspan="2" style="padding-right: 10px;">
                 <input class="radio" type="radio" name="source" value="custom:{$item.IMPORT_ID}"/>
                 &nbsp;{$item.IMPORT_NAME}
-            </td>
-            <td scope="row">
                 {if $is_admin}
                 <input type="button" name="publish" value="{$MOD.LBL_PUBLISH}" class="button" publish="yes"
                     onclick="publishMapping(this, 'yes','{$item.IMPORT_ID}', '{$IMPORT_MODULE}');">
                 {/if}
                 <input type="button" name="delete" value="{$MOD.LBL_DELETE}" class="button"
-					onclick="if(confirm('{$MOD.LBL_DELETE_MAP_CONFIRMATION}')){literal}{{/literal} deleteMapping('custom_import_{$smarty.foreach.saved.index}', '{$item.IMPORT_ID}' );{literal}}{/literal}">
+					onclick="if(confirm('{$MOD.LBL_DELETE_MAP_CONFIRMATION}')){literal}{{/literal} deleteMapping('custom_import_{$smarty.foreach.saved.index}', '{$item.IMPORT_ID}', '{$IMPORT_MODULE}' );{literal}}{/literal}">
             </td>
           </tr>
           {/foreach}

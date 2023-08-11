@@ -7,7 +7,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -120,7 +120,7 @@ function getEncryptedPassword(login, password, mailbox) {
 } // fn
 
 // MintHCM #110041 START
-function ie_test_open_popup_with_submit(module_name, action, pageTarget, width, height, mail_server, protocol, port, login, password, mailbox, ssl, personal, formName, ie_id, eapm_id)
+function ie_test_open_popup_with_submit(module_name, action, pageTarget, width, height, mail_server, protocol, port, login, password, mailbox, ssl, personal, formName, ie_id, eapm_id, connectionString = null)
 // MintHCM #110041 END
 {
 	if (!formName) formName = "testSettingsView";
@@ -153,7 +153,10 @@ function ie_test_open_popup_with_submit(module_name, action, pageTarget, width, 
         + '&personal=' + isPersonal
         + '&eapm_id=' + eapm_id;
         // MintHCM #110041 END
-
+		
+	if(connectionString) {
+		URL += '&connection_string=' + encodeURIComponent(connectionString);
+	}
 	var SI = SUGAR.inboundEmail;
 	if (!SI.testDlg) {
 		SI.testDlg = new YAHOO.widget.SimpleDialog("testSettingsDiv", {
@@ -230,7 +233,7 @@ function isDataValid(formName, validateMonitoredFolder) {
 } // fn
 
 // MintHCM #110041 START
-function getFoldersListForInboundAccount(module_name, action, pageTarget, width, height, mail_server, protocol, port, login, password, mailbox, ssl, personal, searchFieldValue, formName, eapm_id) {
+function getFoldersListForInboundAccount(module_name, action, pageTarget, width, height, mail_server, protocol, port, login, password, mailbox, ssl, personal, searchFieldValue, formName, eapm_id, extraParams = null) {
 // MintHCM #110041 END
 	if (!formName) formName = "testSettingsView";
 
@@ -256,6 +259,12 @@ function getFoldersListForInboundAccount(module_name, action, pageTarget, width,
 		+ '&searchField='+ searchFieldValue;
         + '&eapm_id='+ eapm_id;
         // MintHCM #110041 END
+	
+	if(extraParams && typeof extraParams === 'object' && Object.keys(extraParams).length) {
+		Object.keys(extraParams).forEach(function (key) {
+			URL += '&' + key + '=' + (extraParams[key] || '');
+		})
+	}
 
 	var SI = SUGAR.inboundEmail;
     if (!SI.listDlg) {

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -51,20 +51,20 @@
             {$columnChooser}
             <br>
         </div>
-        <div class="col-xs-12">
+        <div class="col-xs-12 saved-search-sort-column-config-row">
             <label>{sugar_translate label='LBL_ORDER_BY_COLUMNS' module='SavedSearch'}</label>
 
         </div>
-        <div class="form-item">
+        <div class="form-item saved-search-sort-column-config-row">
             <select name='orderBy' id='orderBySelect'>
             </select>
         </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-advanced-search">
-        <div class="col-xs-12">
+        <div class="col-xs-12 saved-search-sort-column-config-row">
             <label>{sugar_translate label='LBL_DIRECTION' module='SavedSearch'}</label>
         </div>
-        <div class="form-item radios">
+        <div class="form-item radios saved-search-sort-column-config-row">
             <div><input id='sort_order_desc_radio' type='radio' name='sortOrder' value='DESC'
                         {if $selectedSortOrder == 'DESC'}checked{/if}>&nbsp;<span
                         onclick='document.getElementById("sort_order_desc_radio").checked = true'

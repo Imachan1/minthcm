@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -178,12 +178,12 @@ class SugarController
      */
     protected $action_view_map = array();
 
-	/**
-	 * This can be set from the application to tell us whether we have authorization to
-	 * process the action. If this is set we will default to the noaccess view.
-	 *@var bool
+    /**
+     * This can be set from the application to tell us whether we have authorization to
+     * process the action. If this is set we will default to the noaccess view.
+     *@var bool
      */
-	public $hasAccess ;
+    public $hasAccess ;
 
     /**
      * Map case sensitive filenames to action.  This is used for linux/unix systems
@@ -195,27 +195,16 @@ class SugarController
         'listview' => 'ListView'
     );
 
-	/**
-	 * Constructor. This ie meant to load up the module, action, record as well
-	 * as the mapping arrays.
-	 */
-	public function __construct()
-	{
-        $this->hasAccess = true;}
-
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
+     * Constructor. This ie meant to load up the module, action, record as well
+     * as the mapping arrays.
      */
-    public function SugarController()
+    public function __construct()
     {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
+        $this->hasAccess = true;
     }
+
+
 
 
     /**
@@ -372,7 +361,6 @@ class SugarController
      */
     final public function execute()
     {
-
         try {
             $this->process();
             if (!empty($this->view)) {
@@ -383,16 +371,23 @@ class SugarController
         } catch (Exception $e) {
             $this->handleException($e);
         }
-
-
     }
 
+    /**
+     * @param Exception $e
+     */
     protected function showException(Exception $e)
     {
-        $GLOBALS['log']->fatal('Exception in Controller: ' . $e->getMessage());
-        $GLOBALS['log']->fatal("backtrace:\n" . $e->getTraceAsString());
+        global $sugar_config;
+
+        LoggerManager::getLogger()->fatal('Exception in Controller: ' . $e->getMessage());
+
+        if ($sugar_config['stackTrace']) {
+            LoggerManager::getLogger()->fatal("backtrace:\n" . $e->getTraceAsString());
+        }
+
         if ($prev = $e->getPrevious()) {
-            $GLOBALS['log']->fatal("Previous:\n");
+            LoggerManager::getLogger()->fatal("Previous:\n");
             $this->showException($prev);
         }
     }
@@ -423,8 +418,13 @@ class SugarController
         if (!isset($this->view_object_map['remap_action']) && isset($this->action_view_map[strtolower($this->action)])) {
             $this->view_object_map['remap_action'] = $this->action_view_map[strtolower($this->action)];
         }
-        $view = ViewFactory::loadView($this->view, $this->module, $this->bean, $this->view_object_map,
-            $this->target_module);
+        $view = ViewFactory::loadView(
+            $this->view,
+            $this->module,
+            $this->bean,
+            $this->view_object_map,
+            $this->target_module
+        );
         $GLOBALS['current_view'] = $view;
         if (!empty($this->bean) && !$this->bean->ACLAccess($view->type) && $view->type != 'list') {
             ACLController::displayNoAccess(true);
@@ -520,7 +520,6 @@ class SugarController
      */
     private function do_action()
     {
-
         $function = $this->getActionMethodName();
         if ($this->hasFunction($function)) {
             $GLOBALS['log']->debug('Performing action: ' . $function . ' MODULE: ' . $this->module);
@@ -622,7 +621,6 @@ class SugarController
      */
     protected function redirect()
     {
-
         if (!empty($this->redirect_url)) {
             SugarApplication::redirect($this->redirect_url);
         }
@@ -865,8 +863,10 @@ class SugarController
             if (!empty($dashletDefs[$id])) {
                 require_once($dashletDefs[$id]['fileLocation']);
 
-                $dashlet = new $dashletDefs[$id]['className']($id,
-                    (isset($dashletDefs[$id]['options']) ? $dashletDefs[$id]['options'] : array()));
+                $dashlet = new $dashletDefs[$id]['className'](
+                    $id,
+                    (isset($dashletDefs[$id]['options']) ? $dashletDefs[$id]['options'] : array())
+                );
 
                 if (method_exists($dashlet, $requestedMethod) || method_exists($dashlet, '__call')) {
                     echo $dashlet->$requestedMethod();
@@ -889,8 +889,10 @@ class SugarController
             $dashletDefs = $current_user->getPreference('dashlets', $_REQUEST['module']); // load user's dashlets config
             require_once($dashletDefs[$id]['fileLocation']);
 
-            $dashlet = new $dashletDefs[$id]['className']($id,
-                (isset($dashletDefs[$id]['options']) ? $dashletDefs[$id]['options'] : array()));
+            $dashlet = new $dashletDefs[$id]['className'](
+                $id,
+                (isset($dashletDefs[$id]['options']) ? $dashletDefs[$id]['options'] : array())
+            );
             if (!empty($_REQUEST['configure']) && $_REQUEST['configure']) { // save settings
                 $dashletDefs[$id]['options'] = $dashlet->saveOptions($_REQUEST);
                 $current_user->setPreference('dashlets', $dashletDefs, 0, $_REQUEST['module']);
@@ -901,7 +903,6 @@ class SugarController
                         'header' => $dashlet->title . ' : ' . $mod_strings['LBL_OPTIONS'],
                         'body' => $dashlet->displayOptions()
                     )));
-
             }
         } else {
             return '0';
@@ -971,8 +972,10 @@ class SugarController
                 $GLOBALS['admin_access_control_links'] = $this->file_access_control_map['modules'][$module]['links'];
             }
 
-            if (!empty($this->file_access_control_map['modules'][$module]['actions']) && (in_array($action,
-                        $this->file_access_control_map['modules'][$module]['actions']) || !empty($this->file_access_control_map['modules'][$module]['actions'][$action]))
+            if (!empty($this->file_access_control_map['modules'][$module]['actions']) && (in_array(
+                $action,
+                $this->file_access_control_map['modules'][$module]['actions']
+            ) || !empty($this->file_access_control_map['modules'][$module]['actions'][$action]))
             ) {
                 //check params
                 if (!empty($this->file_access_control_map['modules'][$module]['actions'][$action]['params'])) {
@@ -1104,14 +1107,15 @@ class SugarController
             $this->do_action = $this->action;
         }
     }
-    
-        
+
+
     /**
      * action: Send Confirm Opt In Email to Contact/Lead/Account/Prospect
-     * 
+     *
      * @global array $app_strings using for user messages about error/success status of action
      */
-    public function action_sendConfirmOptInEmail() {
+    public function action_sendConfirmOptInEmail()
+    {
         global $app_strings;
 
         if (!($this->bean instanceof Company || $this->bean instanceof Person)) {
@@ -1126,13 +1130,12 @@ class SugarController
             } else {
                 $emailAddressStringCaps = strtoupper($this->bean->email1);
                 if ($emailAddressStringCaps) {
-
-                    $emailAddress = new EmailAddress();
+                    $emailAddress = BeanFactory::newBean('EmailAddresses');
                     $emailAddress->retrieve_by_string_fields(array(
                         'email_address_caps' => $emailAddressStringCaps,
                     ));
 
-                    $emailMan = new EmailMan();
+                    $emailMan = BeanFactory::newBean('EmailMan');
 
                     $success = $emailMan->sendOptInEmail($emailAddress, $this->bean->module_name, $this->bean->id);
 

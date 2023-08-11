@@ -1,47 +1,54 @@
 <?php
-
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
-/* * *******************************************************************************
- * SugarCRM is a customer relationship management program developed by
- * SugarCRM, Inc. Copyright (C) 2004-2011 SugarCRM Inc.
- * 
+/**
+ *
+ * SugarCRM Community Edition is a customer relationship management program developed by
+ * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ *
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2023 MintHCM
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
  * Free Software Foundation with the addition of the following permission added
  * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
  * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
  * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License along with
  * this program; if not, see http://www.gnu.org/licenses or write to the Free
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
- * 
+ *
  * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road,
  * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- * 
+ *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by
- * SugarCRM" logo. If the display of the logo is not reasonably feasible for
- * technical reasons, the Appropriate Legal Notices must display the words
- * "Powered by SugarCRM".
- * ****************************************************************************** */
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
+ */
 
-//Request object must have these property values:
-//		Module: module name, this module should have a file called TreeData.php
-//		Function: name of the function to be called in TreeData.php, the function will be called statically.
-//		PARAM prefixed properties: array of these property/values will be passed to the function as parameter.
+ //Request object must have these property values:
+ //		Module: module name, this module should have a file called TreeData.php
+ //		Function: name of the function to be called in TreeData.php, the function will be called statically.
+ //		PARAM prefixed properties: array of these property/values will be passed to the function as parameter.
 
 $ret = array();
 $params1 = array();
@@ -59,13 +66,13 @@ $current_language = $GLOBALS['current_language'];
 foreach ($_REQUEST as $key => $value) {
 
     switch ($key) {
-
+    
         case "function":
         case "call_back_function":
             $func_name = $value;
             $params1['TREE']['function'] = $value;
             break;
-
+            
         default:
             $pssplit = explode('_', $key);
             if ($pssplit[0] == 'PARAMT') {
@@ -97,7 +104,7 @@ if (!empty($modulename) && !empty($func_name) && isset($beanList[$modulename])) 
     $TreeDataFunctions = array(
        'ProductTemplates' => array('get_node_data' => '', 'get_categories_and_products' => ''),
        'ProductCategories' => array('get_node_data' => '', 'get_product_categories' => ''),
-       'KBTags' => array(
+        'KBTags' => array(
           'get_node_data' => '',
           'get_tags_nodes' => '',
           'get_tags_nodes_cached' => '',
@@ -116,13 +123,13 @@ if (!empty($modulename) && !empty($func_name) && isset($beanList[$modulename])) 
           'untagged_documents_count' => '',
           'check_tag_child_tags_for_articles' => '',
           'childTagsHaveArticles' => '',
-       ),
-       'KBDocuments' => array(
+            ),
+        'KBDocuments' => array(
           'get_node_data' => '',
           'get_category_nodes' => '',
           'get_documents' => '',
-       ),
-       'Forecasts' => array(
+            ),
+        'Forecasts' => array(
           'get_node_data' => '',
           'get_worksheet' => '',
           'commit_forecast' => '',
@@ -130,19 +137,19 @@ if (!empty($modulename) && !empty($func_name) && isset($beanList[$modulename])) 
           'list_nav' => '',
           'reset_worksheet' => '',
           'get_chart' => '',
-       ),
-       'Documents' => array(
+            ),
+        'Documents' => array(
           'get_node_data' => '',
           'get_category_nodes' => '',
           'get_documents' => '',
-       ),
-//UPGRADE UNSAFE:
-       'PDFTemplates' => array(
-          'get_node_data' => '',
-       ),
-//////////
-    );
-
+            ),
+            //UPGRADE UNSAFE:
+        'PDFTemplates' => array(
+            'get_node_data' => '',
+            ),
+            //////////
+        );
+        
     if (isset($TreeDataFunctions[$modulename][$func_name])) {
         $ret = call_user_func($func_name, $params1);
     }
@@ -151,4 +158,4 @@ if (!empty($modulename) && !empty($func_name) && isset($beanList[$modulename])) 
 if (!empty($ret)) {
     echo $ret;
 }
-?>
+

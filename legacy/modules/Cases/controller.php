@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,7 +48,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class CasesController extends SugarController
 {
-
     public function action_get_kb_articles()
     {
         global $mod_strings;
@@ -94,7 +93,7 @@ class CasesController extends SugarController
         global $mod_strings;
 
         $article_id = $_POST['article'];
-        $article = new AOK_KnowledgeBase();
+        $article = BeanFactory::newBean('AOK_KnowledgeBase');
         $article->retrieve($article_id);
 
         echo '<span class="tool-tip-title"><strong>' . $mod_strings['LBL_TOOL_TIP_TITLE'] . '</strong>' . $article->name . '</span><br />';
@@ -119,5 +118,4 @@ class CasesController extends SugarController
     {
         return (!isset($question) || trim($question) === '');
     }
-
 }

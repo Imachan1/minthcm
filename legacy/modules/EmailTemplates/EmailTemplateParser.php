@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -177,7 +177,19 @@ class EmailTemplateParser
         }
 
         $parts = explode($charUnderscore, ltrim($variable, $charVariable));
-        list($moduleName, $attribute) = [array_shift($parts), join($charUnderscore, $parts)];
+        list($moduleName, $attribute) = [array_shift($parts), implode($charUnderscore, $parts)];
+
+        /* Leads/Prospects/Users have a special variable naming scheme.
+        $contact_xxx for leads/prospects and $contact_user_xxx for users */
+        if (strtolower($moduleName) === 'contact') {
+            if (in_array($this->module->object_name, ['Lead', 'Prospect'], true)) {
+                $moduleName = strtolower($this->module->object_name);
+            } else if ($this->module->object_name == 'User' && str_begin(strtolower($attribute), 'user_')) {
+                $attribute = explode('_', $attribute, 2)[1];
+                $moduleName = 'user';
+            }
+        }
+
         if (in_array($attribute, static::$allowedVariables, true)) {
             return $this->getNonDBVariableValue($attribute);
         }
@@ -206,7 +218,6 @@ class EmailTemplateParser
      */
     public function getSurvey()
     {
-
         if ($this->survey === null) {
             $this->survey = \BeanFactory::getBean('Surveys', $this->campaign->survey_id);
         }

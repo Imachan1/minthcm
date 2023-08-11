@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,17 +49,17 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 function get_body($ss, $vardef)
 {
-	$edit_mod_strings = return_module_language($GLOBALS['current_language'], 'EditCustomFields');
-	$ss->assign('MOD', $edit_mod_strings);
+    $edit_mod_strings = return_module_language($GLOBALS['current_language'], 'EditCustomFields');
+    $ss->assign('MOD', $edit_mod_strings);
 
-	$edValue = '';
-    if(!empty($vardef['default_value'])) {
+    $edValue = '';
+    if (!empty($vardef['default_value'])) {
         $edValue = $vardef['default_value'];
-        $edValue = str_replace(array("\r\n", "\n"), " ",$edValue);
+        $edValue = str_replace(array("\r\n", "\n"), " ", $edValue);
     }
     $ss->assign('HTML_EDITOR', $edValue);
     $ss->assign('disableInlineEdit', 1);
     $ss->assign('preSave', 'document.popup_form.presave();');
-	///////////////////////////////////
-	return $ss->fetch('modules/DynamicFields/templates/Fields/Forms/html.tpl');
+    ///////////////////////////////////
+    return $ss->fetch('modules/DynamicFields/templates/Fields/Forms/html.tpl');
 }

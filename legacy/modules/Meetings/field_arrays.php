@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,7 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
  ********************************************************************************/
-$fields_array['Meeting'] = array ('column_fields' => Array("id"
+$fields_array['Meeting'] = array ('column_fields' => array("id"
 		, "date_entered"
 		, "date_modified"
 		, "assigned_user_id"
@@ -72,7 +72,7 @@ $fields_array['Meeting'] = array ('column_fields' => Array("id"
 		, 'reminder_time'
 		,'outlook_id'
 		),
-        'list_fields' =>  Array('id', 'location', 'duration_hours', 'name	', 'status', 'parent_type', 'parent_name', 'parent_id', 'date_start', 'time_start', 'assigned_user_name', 'assigned_user_id', 'contact_name', 'contact_id','first_name','last_name','required','accept_status','outlook_id','duration_minutes'
+        'list_fields' =>  array('id', 'location', 'duration_hours', 'name	', 'status', 'parent_type', 'parent_name', 'parent_id', 'date_start', 'time_start', 'assigned_user_name', 'assigned_user_id', 'contact_name', 'contact_id','first_name','last_name','required','accept_status','outlook_id','duration_minutes'
 		),
     'required_fields' =>  array("name"=>1, "date_start"=>2, "time_start"=>3, "duration_hours"=>4),
 );

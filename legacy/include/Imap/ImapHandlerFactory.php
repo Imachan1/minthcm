@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,6 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 require_once __DIR__ . '/ImapHandler.php';
+require_once __DIR__ . '/Imap2Handler.php';
 // MintHCM #110041 START
 require_once __DIR__ . '/ImapHandlerOAuth2.php';
 // MintHCM #110041 END
@@ -63,13 +64,13 @@ class ImapHandlerFactory
 {
     const SETTINGS_KEY_FILE = '/ImapTestSettings.txt';
     const DEFAULT_SETTINGS_KEY = 'testSettingsOk';
-    
+
     /**
      *
      * @var ImapHandlerInterface
      */
     protected $interfaceObject = null;
-    
+
     /**
      *
      * @var array
@@ -79,7 +80,7 @@ class ImapHandlerFactory
         'class' => 'ImapHandlerFake',
         'calls' => 'include/Imap/ImapHandlerFakeCalls.php',
     ];
-    
+
     /**
      *
      * @param ImapHandlerInterface $interfaceObject
@@ -90,7 +91,7 @@ class ImapHandlerFactory
         LoggerManager::getLogger()->debug('ImapHandlerFactory will using a ' . $class);
         $this->interfaceObject = $interfaceObject;
     }
-    
+
     /**
      *
      */
@@ -100,7 +101,7 @@ class ImapHandlerFactory
             require_once $this->imapHandlerTestInterface['file'];
         }
     }
-    
+
     /**
      *
      * @global array $sugar_config
@@ -121,8 +122,10 @@ class ImapHandlerFactory
             $info .= "\n[debug info this] " . var_dump($this, true);
             $info .= "\n[debug info callset] " . var_dump($interfaceCallsSettings, true);
             LoggerManager::getLogger()->debug('Imap test setting failure: ' . $info);
-            throw new ImapHandlerException("Test settings does not exists: $testSettings",
-                ImapHandlerException::ERR_TEST_SET_NOT_EXISTS);
+            throw new ImapHandlerException(
+                "Test settings does not exists: $testSettings",
+                ImapHandlerException::ERR_TEST_SET_NOT_EXISTS
+            );
         }
 
         $interfaceCalls = $interfaceCallsSettings[$testSettings];
@@ -130,7 +133,7 @@ class ImapHandlerFactory
         $interfaceFakeData->retrieve($interfaceCalls);
         $this->setInterfaceObject(new $interfaceClass($interfaceFakeData));
     }
-    
+
     /**
      *
      * @return string
@@ -149,7 +152,18 @@ class ImapHandlerFactory
 
         return $testSettings;
     }
-    
+
+    /**
+     * Delete's test settings file.
+     * @return void
+     */
+    public function deleteTestSettings()
+    {
+        if (file_exists(__DIR__ . self::SETTINGS_KEY_FILE)) {
+            unlink(__DIR__ . self::SETTINGS_KEY_FILE);
+        }
+    }
+
     /**
      *
      * @param string $key
@@ -162,12 +176,14 @@ class ImapHandlerFactory
             $type = gettype($key);
             throw new InvalidArgumentException('Key should be a non-empty string, ' . ($type == 'string' ? 'empty string' : $type) . ' given.');
         }
-        
+
         $calls = include $this->imapHandlerTestInterface['calls'];
 
         if (!isset($calls[$key])) {
-            throw new ImapHandlerException('Key not found: ' . $key,
-                ImapHandlerException::ERR_KEY_NOT_FOUND);
+            throw new ImapHandlerException(
+                'Key not found: ' . $key,
+                ImapHandlerException::ERR_KEY_NOT_FOUND
+            );
         } else {
             if (!file_put_contents(__DIR__ . self::SETTINGS_KEY_FILE, $key)) {
                 throw new ImapHandlerException('Key saving error', ImapHandlerException::ERR_KEY_SAVE_ERROR);
@@ -177,20 +193,19 @@ class ImapHandlerFactory
         }
         return false;
     }
-    
+
     /**
-     *
-     * @global array $sugar_config
-     * @param string $testSettings
+     * Get Handler
+     * @param string|null $testSettings
      * @return ImapHandlerInterface
      * @throws ImapHandlerException
      */
     // MintHCM #110041 START
-    public function getImapHandler($testSettings = null, $useOauth2 = false)
+    public function getImapHandler(string $testSettings = null, string $handlerType = 'native', $useOauth2 = false)
     // MintHCM #110041 END
     {
         if (null === $this->interfaceObject) {
-            global $sugar_config;
+            global $sugar_config, $log;
 
             $test = (isset($sugar_config['imap_test']) && $sugar_config['imap_test']) || $testSettings;
             $charset = (isset($sugar_config['default_email_charset'])) ? $sugar_config['default_email_charset'] : null;
@@ -202,10 +217,10 @@ class ImapHandlerFactory
                 $logErrors = true;
                 $logCalls = false;
             }
-
             // MintHCM #110041 START
-            $interfaceClass = $useOauth2 ? ImapHandlerOauth2::class : ImapHandler::class;
+            $interfaceClass = $useOauth2 ? ImapHandlerOauth2::class : $this->getHandlerClass($handlerType);
             // MintHCM #110041 END
+            $log->debug('Using imap handler class: ' . $interfaceClass);
             if ($test) {
                 $this->loadTestSettings($testSettings);
             } else {
@@ -213,5 +228,47 @@ class ImapHandlerFactory
             }
         }
         return $this->interfaceObject;
+    }
+
+    /**
+     * Check if all handlers are available
+     * @return bool
+     */
+    public function areAllHandlersAvailable(): bool {
+        foreach ($this->getHandlers() as $handlerClass) {
+            $available = (new $handlerClass())->isAvailable();
+            if ($available === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Get Handler
+     * @param string $handlerType
+     * @return string
+     */
+    protected function getHandlerClass(string $handlerType): string
+    {
+        $handlers = $this->getHandlers();
+
+        if (!empty($handlers[$handlerType])) {
+            return $handlers[$handlerType];
+        }
+
+        return ImapHandler::class;
+    }
+
+    /**
+     * @return ImapHandlerInterface[]
+     */
+    protected function getHandlers(): array
+    {
+        return [
+            'native' => ImapHandler::class,
+            'imap2' => Imap2Handler::class,
+        ];
     }
 }

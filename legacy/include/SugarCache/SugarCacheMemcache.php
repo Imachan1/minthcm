@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -77,10 +77,11 @@ class SugarCacheMemcache extends SugarCacheAbstract
      */
     public function useBackend()
     {
-        if ( extension_loaded('memcache')
+        if (extension_loaded('memcache')
                 && empty($GLOBALS['sugar_config']['external_cache_disabled_memcache'])
-                && $this->_getMemcacheObject() )
+                && $this->_getMemcacheObject()) {
             return true;
+        }
 
         return false;
     }
@@ -98,15 +99,15 @@ class SugarCacheMemcache extends SugarCacheAbstract
      */
     protected function _getMemcacheObject()
     {
-        if ( !($this->_memcache instanceOf Memcache) ) {
+        if (!($this->_memcache instanceof Memcache)) {
             $this->_memcache = new Memcache();
             $config = SugarConfig::getInstance();
             $this->_host = $config->get('external_cache.memcache.host', $this->_host);
             $this->_port = $config->get('external_cache.memcache.port', $this->_port);
-            if ( !@$this->_memcache->connect($this->_host,$this->_port) ) {
+            if (!@$this->_memcache->connect($this->_host, $this->_port)) {
                 return false;
             }
-            if($config->get('external_cache.memcache.disable_compression', false)) {
+            if ($config->get('external_cache.memcache.disable_compression', false)) {
                 $this->_memcache->setCompressThreshold($config->get('external_cache.memcache.min_compression', $this->min_compress));
             } else {
                 $this->_memcache->setCompressThreshold(0);
@@ -122,8 +123,7 @@ class SugarCacheMemcache extends SugarCacheAbstract
     protected function _setExternal(
         $key,
         $value
-        )
-    {
+        ) {
         $this->_getMemcacheObject()->set($key, $value, 0, $this->_expireTimeout);
     }
 
@@ -132,10 +132,9 @@ class SugarCacheMemcache extends SugarCacheAbstract
      */
     protected function _getExternal(
         $key
-        )
-    {
+        ) {
         $returnValue = $this->_getMemcacheObject()->get($key);
-        if ( $returnValue === false ) {
+        if ($returnValue === false) {
             return null;
         }
 
@@ -147,8 +146,7 @@ class SugarCacheMemcache extends SugarCacheAbstract
      */
     protected function _clearExternal(
         $key
-        )
-    {
+        ) {
         $this->_getMemcacheObject()->delete($key);
     }
 

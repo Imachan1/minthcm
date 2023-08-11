@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,7 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-require_once ('include/EditView/EditView2.php');
+require_once('include/EditView/EditView2.php');
 class ComposeView extends EditView
 {
     /**
@@ -56,7 +56,8 @@ class ComposeView extends EditView
     /**
      * @inheritdoc
      */
-    public function setup($module,
+    public function setup(
+        $module,
         $focus = null,
         $metadataFile = null,
         $tpl = 'modules/Emails/include/ComposeView/ComposeView.tpl',
@@ -66,4 +67,3 @@ class ComposeView extends EditView
         parent::setup($module, $focus, $metadataFile, $tpl, $createFocus, $metadataFileName);
     }
 }
-

@@ -12,7 +12,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,11 +46,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
- * Description:
- * Portions created by SugarCRM are Copyright(C) SugarCRM, Inc. All Rights
- * Reserved. Contributor(s): ______________________________________..
- * *******************************************************************************/
 require_once 'include/SugarLogger/SugarLogger.php';
 
 $trackerManager = TrackerManager::getInstance();
@@ -392,26 +387,26 @@ eoq;
     }
     logThis('finished check to see if current_db_version in $_SESSION equals target_db_version in $_SESSION');
 
-//Look for chance folder and delete it if found. Bug 23595
+    //Look for chance folder and delete it if found. Bug 23595
     if (function_exists('deleteChance')) {
         logThis('running deleteChance() function');
         @deleteChance();
     }
 
-//also add the cache cleaning here.
+    //also add the cache cleaning here.
     if (function_exists('deleteCache')) {
         logThis('running deleteCache() function');
         @deleteCache();
     }
 
-//add tabs
+    //add tabs
     $from_dir = remove_file_extension($install_file).'-restore';
     logThis('call addNewSystemTabsFromUpgrade('.$from_dir.')');
     addNewSystemTabsFromUpgrade($from_dir);
     logThis('finished addNewSystemTabsFromUpgrade');
 
-//run fix on dropdown lists that may have been incorrectly named
-//fix_dropdown_list();
+    //run fix on dropdown lists that may have been incorrectly named
+    //fix_dropdown_list();
 
     ///////////////////////////////////////////////////////////////////////////////
     ////	REGISTER UPGRADE
@@ -526,7 +521,7 @@ $rebuildResult .= "<a href='javascript:void(0); toggleRebuild();'>{$mod_strings[
 $rebuildResult = '';
 
 $skipped_queries_Desc = '';
-if (isset($_SESSION['sqlSkippedQueries']) && $_SESSION['sqlSkippedQueries'] != null && is_array($_SESSION['sqlSkippedQueries']) && sizeof($_SESSION['sqlSkippedQueries']) > 0) {
+if (isset($_SESSION['sqlSkippedQueries']) && $_SESSION['sqlSkippedQueries'] != null && is_array($_SESSION['sqlSkippedQueries']) && count($_SESSION['sqlSkippedQueries']) > 0) {
     $skipped_queries_Desc .= "<b>{$mod_strings['LBL_UW_SKIPPED_QUERIES_ALREADY_EXIST']}</b><br />";
     $skipped_queries_Desc .= "<a href='javascript:void(0); toggleNwFiles(\"skippedQueries\");'>{$mod_strings['LBL_UW_SHOW']}</a>";
     $skipped_queries_Desc .= "<div id='skippedQueries' style='display:none;'>";

@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -78,16 +78,16 @@ $mod_strings = array(
    'LBL_FRI' => 'Friday',
    'LBL_SAT' => 'Saturday',
    'LBL_ALL' => 'Every Day',
-   'LBL_EVERY' => 'Every ',
-   'LBL_FROM' => 'From ',
-   'LBL_ON_THE' => 'On the ',
-   'LBL_RANGE' => ' to ',
-   'LBL_AND' => ' and ',
-   'LBL_MINUTES' => ' minutes ',
-   'LBL_HOUR' => ' hours',
-   'LBL_HOUR_SING' => ' hour',
-   'LBL_OFTEN' => ' As often as possible.',
-   'LBL_MIN_MARK' => ' minute mark',
+   'LBL_EVERY' => 'Every',
+   'LBL_FROM' => 'From',
+   'LBL_ON_THE' => 'On the',
+   'LBL_RANGE' => 'to',
+   'LBL_AND' => 'and',
+   'LBL_MINUTES' => 'minutes',
+   'LBL_HOUR' => 'hours',
+   'LBL_HOUR_SING' => 'hour',
+   'LBL_OFTEN' => 'As often as possible.',
+   'LBL_MIN_MARK' => 'minute mark',
 // crontabs
    'LBL_MINS' => 'min',
    'LBL_HOURS' => 'hrs',
@@ -131,10 +131,10 @@ $mod_strings = array(
    'NTC_LIST_ORDER' => 'Set the order this schedule will appear in the Scheduler dropdown lists',
    'LBL_CRON_INSTRUCTIONS_WINDOWS' => 'To Setup Windows Scheduler',
    'LBL_CRON_INSTRUCTIONS_LINUX' => 'To Setup Crontab',
-   'LBL_CRON_LINUX_DESC1' => 'In order to run MintHCM Schedulers, edit your web server user\'s crontab file with this command: ',
-   'LBL_CRON_LINUX_DESC2' => '... and add the following line to the crontab file: ',
+   'LBL_CRON_LINUX_DESC1' => 'In order to run MintHCM Schedulers, edit your web server user\'s crontab file with this command:',
+   'LBL_CRON_LINUX_DESC2' => '... and add the following line to the crontab file:',
    'LBL_CRON_LINUX_DESC3' => 'You should do this only after the installation is concluded.',
-   'LBL_CRON_WINDOWS_DESC' => 'In order to run the MintHCM schedulers, create a batch file to run using Windows Scheduled Tasks. The batch file should include the following commands: ',
+   'LBL_CRON_WINDOWS_DESC' => 'In order to run the MintHCM schedulers, create a batch file to run using Windows Scheduled Tasks. The batch file should include the following commands:',
 // Subpanels
    'LBL_JOBS_SUBPANEL_TITLE' => 'Job Log',
    'LBL_EXECUTE_TIME' => 'Execute Time',
@@ -172,10 +172,10 @@ $mod_strings = array(
    'LBL_FIND_SPENT_TIMES_ASSIGN_TO_DIFFERENT_USER_WORK_SCHEDULE_BODY' => "Find Spent times assign to different user that is in work schedule\n",
    'LBL_FIND_SPENT_TIMES_ASSIGN_TO_DIFFERENT_USER_WORK_SCHEDULE' => 'Find Spent times assign to different user that is in work schedule',
     //MintHCM #102685 START
-   'LBL_SENDCHATNOTIFICATION' => 'Sends RocketChat Notifications',
-   'LBL_CLEARVCALCRON' => 'Clear vCal',
-   'LBL_UPDATE_NEWS_DISPLAY_DATE' => 'Update News Display Date',
-   //MintHCM #102685 END
+    'LBL_SENDCHATNOTIFICATION' => 'Sends RocketChat Notifications',
+    'LBL_CLEARVCALCRON' => 'Clear vCal',
+    'LBL_UPDATE_NEWS_DISPLAY_DATE' => 'Update News Display Date',
+    //MintHCM #102685 END
    'LBL_REBUILDVIEWTOOLS' => 'Rebuild View Tools',
    'LBL_EXECUTEVIEWTOOLSQUEUE' => 'Execute View Tools Queue',
    

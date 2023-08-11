@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,12 +48,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 global $beanList, $beanFiles, $locale;
 
-if(isset($_REQUEST['module']) && isset($_REQUEST['action']) && isset($_REQUEST['record'])) {
-	$currentModule = clean_string($_REQUEST['module']);
-	$action = clean_string($_REQUEST['action']);
-	$record = clean_string($_REQUEST['record']);
+if (isset($_REQUEST['module']) && isset($_REQUEST['action']) && isset($_REQUEST['record'])) {
+    $currentModule = clean_string($_REQUEST['module']);
+    $action = clean_string($_REQUEST['action']);
+    $record = clean_string($_REQUEST['record']);
 } else {
-	die ("module, action, and record id all are required");
+    die("module, action, and record id all are required");
 }
 
 $entity = $GLOBALS['beanList'][$currentModule];

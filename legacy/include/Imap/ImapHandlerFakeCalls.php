@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,10 +47,10 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 // describes the face imap function return values for each function calls with a specific parameters in every test screnario.
 return $calls = [
-    
+
     // this case only for unit testing:
     'testCaseExample' => [],
-    
+
     'testSettingsOk' => [
         'isAvailable' => [
             ['args' => null, 'return' => [true]],
@@ -70,7 +70,7 @@ return $calls = [
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/tls/validate-cert/secure}INBOX', 'testuser_name', 'testuser_pass', 0, 0, []],
                 'return' => [function () {
-                    $ret = fopen('fakeImapResource', 'w+'); // <-- create and return a fake resource for InboundEmail test usages
+                    $ret = fopen('fakeImapResource', 'wb+'); // <-- create and return a fake resource for InboundEmail test usages
                     if (!is_resource($ret)) {
                         throw new Exception('Imap fake needs a resource to return (check the file permisson - 1)');
                     }
@@ -86,8 +86,8 @@ return $calls = [
         ],
         'getConnection' => [],
     ],
-                        
-                        
+
+
     'testSettingsWrongUser' => [
         'isAvailable' => [['args' => null, 'return' => [true]]],
         'setTimeout' => [
@@ -114,7 +114,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/tls/validate-cert/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/tls/validate-cert}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -127,7 +127,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/tls/validate-cert}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/validate-cert/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -140,7 +140,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/validate-cert/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/validate-cert}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -153,7 +153,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/validate-cert}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/tls/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -166,7 +166,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/tls/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/tls}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -179,7 +179,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/tls}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/notls/novalidate-cert/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -192,7 +192,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/notls/novalidate-cert/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/notls/novalidate-cert}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -205,7 +205,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/notls/novalidate-cert}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/novalidate-cert/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -218,7 +218,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/novalidate-cert/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/novalidate-cert}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -231,7 +231,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/novalidate-cert}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/notls/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -244,7 +244,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/notls/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/notls}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -257,7 +257,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/notls}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -270,7 +270,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl/secure}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, []],
                 'return' => [false],
@@ -283,7 +283,7 @@ return $calls = [
                 'args' => ['{imap.gmail.com:993/service=imap/ssl}INBOX', 'testuser_name_wrong', 'testuser_pass', 0, 0, ['DISABLE_AUTHENTICATOR' => 'NTLM']],
                 'return' => [false],
             ],
-            
+
             [
                 'args' => ['{imap.gmail.com:993/service=imap}INBOX', 'testuser_name_wrong', 'testuser_pass', 32768, 0, []],
                 'return' => [false],

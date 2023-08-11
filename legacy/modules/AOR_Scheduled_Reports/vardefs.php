@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -87,7 +87,7 @@ $dictionary['AOR_Scheduled_Reports'] = array(
             'importable' => 'required',
         ),
         'email_recipients' =>
-            array (
+            array(
                 'required' => false,
                 'name' => 'email_recipients',
                 'vname' => 'LBL_EMAIL_RECIPIENTS',
@@ -99,7 +99,7 @@ $dictionary['AOR_Scheduled_Reports'] = array(
                 'audited' => false,
                 'reportable' => false,
                 'function' =>
-                    array (
+                    array(
                         'name' => 'display_email_lines',
                         'returns' => 'html',
                         'include' => 'modules/AOR_Scheduled_Reports/emailRecipients.php'
@@ -125,7 +125,7 @@ $dictionary['AOR_Scheduled_Reports'] = array(
             'required' => true,
             'save' => true,
             'id_name' => 'aor_report_id',
-            'link' => 'aor_scheduled_reports_aor_reports',
+            'link' => 'aor_report',
             'table' => 'aor_reports',
             'module' => 'AOR_Reports',
             'rname' => 'name',
@@ -147,4 +147,4 @@ $dictionary['AOR_Scheduled_Reports'] = array(
 if (!class_exists('VardefManager')) {
     require_once('include/SugarObjects/VardefManager.php');
 }
-VardefManager::createVardef('AOR_Scheduled_Reports', 'AOR_Scheduled_Reports', array('basic'));
+VardefManager::createVardef('AOR_Scheduled_Reports', 'AOR_Scheduled_Reports', ['basic', 'security_groups']);

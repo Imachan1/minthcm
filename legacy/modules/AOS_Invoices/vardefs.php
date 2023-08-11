@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -758,7 +758,7 @@ $dictionary['AOS_Invoices'] = array(
                 'relationship_type' => 'one-to-many',
             ),
     ),
-    'optimistic_lock' => true,
+    'optimistic_locking' => true,
 );
 require_once('include/SugarObjects/VardefManager.php');
 VardefManager::createVardef('AOS_Invoices', 'AOS_Invoices', array('basic', 'assignable', 'security_groups'));

@@ -1,14 +1,14 @@
 <?php
 /**
- *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2021 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
+ *
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
+use Exception;
 use SuiteCRM\Search\Exceptions\SearchEngineNotFoundException;
 use SuiteCRM\Search\Exceptions\SearchException;
 use SuiteCRM\Search\Exceptions\SearchInvalidRequestException;
@@ -76,10 +77,10 @@ class SearchThrowableHandler
     /**
      * SearchThrowableHandler constructor.
      *
-     * @param Throwable   $throwable
+     * @param Throwable $throwable
      * @param SearchQuery $query
      */
-    public function __construct($throwable, SearchQuery $query)
+    public function __construct(Throwable $throwable, SearchQuery $query)
     {
         $this->throwable = $throwable;
         $this->query = $query;
@@ -90,7 +91,7 @@ class SearchThrowableHandler
      *
      * If developer mode is enabled, a full exception page will be shown.
      */
-    public function handle()
+    public function handle(): void
     {
         global $sugar_config;
 
@@ -102,6 +103,7 @@ class SearchThrowableHandler
 
         if ($sugar_config['developerMode'] === true) {
             $this->printStackTrace();
+
             return;
         }
 
@@ -113,28 +115,37 @@ class SearchThrowableHandler
      *
      * @return string
      */
-    private function getFriendlyMessage()
+    private function getFriendlyMessage(): string
     {
+        global $mod_strings;
+
         switch (get_class($this->throwable)) {
             case SearchUserFriendlyException::class:
-                return $this->throwable->getMessage();
+                $message = $this->throwable->getMessage();
+                break;
             case SearchInvalidRequestException::class:
-                return 'An error has occurred while performing the search. Your query syntax might not be valid.';
+                $message = $mod_strings['LBL_ELASTIC_SEARCH_EXCEPTION_SEARCH_INVALID_REQUEST'];
+                break;
             case SearchEngineNotFoundException::class:
-                return 'Unable to find the requested SearchEngine. Try performing the search again.';
+                $message = $mod_strings['LBL_ELASTIC_SEARCH_EXCEPTION_SEARCH_ENGINE_NOT_FOUND'];
+                break;
             case NoNodesAvailableException::class:
-                return 'Failed to connect to the Elasticsearch server.';
+                $message = $mod_strings['LBL_ELASTIC_SEARCH_EXCEPTION_NO_NODES_AVAILABLE'];
+                break;
             case SearchException::class:
-                return 'An error internal to the Search has occurred.';
+                $message = $mod_strings['LBL_ELASTIC_SEARCH_EXCEPTION_SEARCH'];
+                break;
             default:
-                return 'An unknown error has occurred while performing the search.';
+                $message = $mod_strings['LBL_ELASTIC_SEARCH_EXCEPTION_DEFAULT'];
         }
+
+        return $message;
     }
 
     /**
      * Cancels the current output and prints a full screen detailed exception page
      */
-    private function printStackTrace()
+    private function printStackTrace(): void
     {
         $whoops = new Run;
         $handler = new PrettyPageHandler;
@@ -145,7 +156,7 @@ class SearchThrowableHandler
         $whoops->pushHandler($handler);
         $whoops->register();
 
-        $whoops->handleException($this->throwable);
+        echo $whoops->handleException($this->throwable);
     }
 
     /**
@@ -153,7 +164,7 @@ class SearchThrowableHandler
      *
      * @return array
      */
-    private function getSearchWrapperStatus()
+    private function getSearchWrapperStatus(): ?array
     {
         try {
             return [
@@ -162,7 +173,7 @@ class SearchThrowableHandler
                 'Default Search Engine' => SearchWrapper::getDefaultEngine(),
                 'Friendly Error Message' => $this->getFriendlyMessage(),
             ];
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return ['error' => 'failed to get SearchWrapper status'];
         }
     }
@@ -170,10 +181,12 @@ class SearchThrowableHandler
     /**
      * Prints the error on the page.
      */
-    private function printFriendlyMessage()
+    private function printFriendlyMessage(): void
     {
+        global $mod_strings;
+
         $message = $this->getFriendlyMessage();
-        $endMessage = 'Contact an administrator if the problem persists. More information available in the logs.';
+        $endMessage = $mod_strings['LBL_ELASTIC_SEARCH_EXCEPTION_END_MESSAGE'];
 
         echo '<h1>Error</h1>';
         echo "<p class='text-danger'>$message $endMessage</p>";

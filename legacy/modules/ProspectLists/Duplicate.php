@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,13 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 
 
@@ -59,26 +53,24 @@ if (!defined('sugarEntry') || !sugarEntry) {
 global $mod_strings;
 
 
-$focus = new ProspectList();
+$focus = BeanFactory::newBean('ProspectLists');
 
 $focus->retrieve($_POST['record']);
 if (isset($_POST['isDuplicate']) && $_POST['isDuplicate'] == true) {
-
-	$focus->id='';
-	$focus->name=$mod_strings['LBL_COPY_PREFIX'].' '.$focus->name;
-	
-	$focus->save();
-	$return_id=$focus->id; 
-	//duplicate the linked items.
-	$query  = "select * from prospect_lists_prospects where prospect_list_id = '".$_POST['record']."'";
-	$result = $focus->db->query($query);
-	if ($result != null) {
-	
-		while(($row = $focus->db->fetchByAssoc($result)) != null) {
-			$iquery ="INSERT INTO prospect_lists_prospects (id,prospect_list_id, related_id, related_type,date_modified) ";
-			$iquery .= "VALUES ("."'".create_guid()."',"."'".$focus->id."',"."'".$row['related_id']."',"."'".$row['related_type']."',"."'".TimeDate::getInstance()->nowDb()."')";
-			$focus->db->query($iquery); //save the record.	
-		}	
-	}
+    $focus->id='';
+    $focus->name=$mod_strings['LBL_COPY_PREFIX'].' '.$focus->name;
+    
+    $focus->save();
+    $return_id=$focus->id;
+    //duplicate the linked items.
+    $query  = "select * from prospect_lists_prospects where prospect_list_id = '". $focus->db->quote($_POST['record']) ."'";
+    $result = $focus->db->query($query);
+    if ($result != null) {
+        while (($row = $focus->db->fetchByAssoc($result)) != null) {
+            $iquery ="INSERT INTO prospect_lists_prospects (id,prospect_list_id, related_id, related_type,date_modified) ";
+            $iquery .= "VALUES ("."'".create_guid()."',"."'".$focus->id."',"."'".$row['related_id']."',"."'".$row['related_type']."',"."'".TimeDate::getInstance()->nowDb()."')";
+            $focus->db->query($iquery); //save the record.
+        }
+    }
 }
 header("Location: index.php?action=DetailView&module=ProspectLists&record=$return_id");

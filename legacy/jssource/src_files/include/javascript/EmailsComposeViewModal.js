@@ -7,7 +7,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -101,6 +101,9 @@
         composeBox.on('hide.bs.modal', function () {
           composeBox.remove();
         });
+        $( "#emails_email_templates_name" ).change(function() {
+          $.fn.EmailsComposeView.onTemplateChange()
+        });
       }).fail(function (data) {
         composeBox.controls.modal.content.html(SUGAR.language.translate('', 'LBL_EMAIL_ERROR_GENERAL_TITLE'));
       });
@@ -119,6 +122,9 @@
 
   $.fn.openComposeViewModal = function (source) {
     "use strict";
+
+    window.event.preventDefault();
+    window.event.stopImmediatePropagation();
 
     var self = this;
     self.emailComposeView = null;
@@ -191,26 +197,23 @@
         if (dataEmailAddress !== '') {
           populateEmailAddress = dataEmailAddress;
         }
-        if (targetCount > 0) {
-          targetList = targetList + ',';
+        if (populateEmailAddress !== '') {
+          if (targetCount > 0) {
+            targetList = targetList + ',';
+          }
+          targetList = targetList + dataEmailName + ' <' + populateEmailAddress + '>';
+          targetCount++;
         }
-        targetList = targetList + dataEmailName + ' <' + populateEmailAddress + '>';
-        targetCount++;
       });
-      if (targetCount > 0) {
         if (populateEmailAddress !== '') {
           $(self.emailComposeView).find('#to_addrs_names').val(targetList);
-        }
-        else {
-          $(self.emailComposeView).find('#name').val(populateModuleName);
         }
         if (targetCount < 2) {
           $(self.emailComposeView).find('#parent_type').val(populateModule);
           $(self.emailComposeView).find('#parent_name').val(populateModuleName);
           $(self.emailComposeView).find('#parent_id').val(populateModuleRecord);
         }
-      }
-
+      
       $(self.emailComposeView).on('sentEmail', function (event, composeView) {
         composeBox.hide();
         composeBox.remove();
@@ -255,6 +258,9 @@
           mb.remove();
         });
         mb.show();
+      });
+      $( "#emails_email_templates_name" ).change(function() {
+        $.fn.EmailsComposeView.onTemplateChange()
       });
     }).fail(function (data) {
       composeBox.controls.modal.content.html(SUGAR.language.translate('', 'LBL_EMAIL_ERROR_GENERAL_TITLE'));

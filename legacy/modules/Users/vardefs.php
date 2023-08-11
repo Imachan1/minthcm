@@ -1,18 +1,15 @@
 <?php
 
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2021 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,6 +42,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+
 $dictionary['User'] = array(
     'table' => 'users',
     'fields' => array(
@@ -71,7 +73,7 @@ $dictionary['User'] = array(
                 'advanced_search' => false,
             ),
             'api-visible' => false,
-            'vt_validation' => 'AEM(isUnique(user_name,$user_name),\'ERR_USER_NAME_EXISTS_3\')'
+            'vt_validation' => 'AEM(isUnique(\'user_name\',$user_name),\'ERR_USER_NAME_EXISTS_3\')'
         ),
         'user_hash' => array(
             'name' => 'user_hash',
@@ -145,14 +147,14 @@ $dictionary['User'] = array(
             'vname' => 'LBL_FIRST_NAME',
             'dbType' => 'varchar',
             'type' => 'name',
-            'len' => '30',
+            'len' => '255',
         ),
         'last_name' => array(
             'name' => 'last_name',
             'vname' => 'LBL_LAST_NAME',
             'dbType' => 'varchar',
             'type' => 'name',
-            'len' => '30',
+            'len' => '255',
             'importable' => 'required',
             'required' => true,
         ),
@@ -996,8 +998,8 @@ $dictionary['User'] = array(
             ),
         ),
     ),
-    'relationships' => array(
-        'user_direct_reports' => array(
+    'relationships' => [
+        'user_direct_reports' => [
             'lhs_module' => 'Users',
             'lhs_table' => 'users',
             'lhs_key' => 'id',
@@ -1005,8 +1007,8 @@ $dictionary['User'] = array(
             'rhs_table' => 'users',
             'rhs_key' => 'reports_to_id',
             'relationship_type' => 'one-to-many',
-        ),
-        'users_users_signatures' => array(
+        ],
+        'users_users_signatures' => [
             'lhs_module' => 'Users',
             'lhs_table' => 'users',
             'lhs_key' => 'id',
@@ -1014,21 +1016,30 @@ $dictionary['User'] = array(
             'rhs_table' => 'users_signatures',
             'rhs_key' => 'user_id',
             'relationship_type' => 'one-to-many',
-        ),
-        'users_email_addresses' => array(
+        ],
+        'users_users_password_link' =>
+        [
+            'lhs_module' => 'Users',
+            'lhs_table' => 'users',
+            'lhs_key' => 'id',
+            'rhs_table' => 'users_signatures',
+            'rhs_key' => 'user_id',
+            'relationship_type' => 'one-to-many'
+        ],
+        'users_email_addresses' => [
             'lhs_module' => "Users", 'lhs_table' => 'users', 'lhs_key' => 'id',
             'rhs_module' => 'EmailAddresses', 'rhs_table' => 'email_addresses', 'rhs_key' => 'id',
             'relationship_type' => 'many-to-many',
             'join_table' => 'email_addr_bean_rel', 'join_key_lhs' => 'bean_id', 'join_key_rhs' => 'email_address_id',
             'relationship_role_column' => 'bean_module',
             'relationship_role_column_value' => "Users",
-        ),
-        'users_email_addresses_primary' => array('lhs_module' => "Users", 'lhs_table' => 'users', 'lhs_key' => 'id',
+        ],
+        'users_email_addresses_primary' => ['lhs_module' => "Users", 'lhs_table' => 'users', 'lhs_key' => 'id',
             'rhs_module' => 'EmailAddresses', 'rhs_table' => 'email_addresses', 'rhs_key' => 'id',
             'relationship_type' => 'many-to-many',
             'join_table' => 'email_addr_bean_rel', 'join_key_lhs' => 'bean_id', 'join_key_rhs' => 'email_address_id',
             'relationship_role_column' => 'primary_address',
             'relationship_role_column_value' => '1',
-        ),
-    ),
+        ],
+    ],
 );

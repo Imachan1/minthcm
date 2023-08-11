@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,33 +50,20 @@ require_once('include/EditView/SubpanelQuickCreate.php');
  * Quick create form as a pop-up window
  * @api
  */
-class PopupQuickCreate extends SubpanelQuickCreate{
-
-	function __construct($module, $view='QuickCreate'){
-		$this->defaultProcess = false;
-		parent::__construct($module, $view, true);
-		$this->ev->defs['templateMeta']['form']['buttons'] = array('POPUPSAVE', 'POPUPCANCEL');
-	}
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function PopupQuickCreate($module, $view='QuickCreate'){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($module, $view);
+class PopupQuickCreate extends SubpanelQuickCreate
+{
+    public function __construct($module, $view='QuickCreate')
+    {
+        $this->defaultProcess = false;
+        parent::__construct($module, $view, true);
+        $this->ev->defs['templateMeta']['form']['buttons'] = array('POPUPSAVE', 'POPUPCANCEL');
     }
 
-
-	function process($module){
+    public function process($module)
+    {
         $form_name = 'form_QuickCreate_' . $module;
         $this->ev->formName = $form_name;
         $this->ev->process(true, $form_name);
-		return $this->ev->display(false, true);
-	}
+        return $this->ev->display(false, true);
+    }
 }

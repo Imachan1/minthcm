@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -92,7 +92,7 @@ $mod_strings = array(
     'LBL_PARENT_ID' => 'Parent ID:',
     'LBL_CONTACT_PHONE' => 'Contact Phone:',
     'LBL_PARENT_TYPE' => 'Parent Type:',
-    'LBL_TASK_INFORMATION' => 'TASK OVERVIEW',
+    'LBL_TASK_INFORMATION' => 'TASK OVERVIEW', //No need to be translated in all caps. Translation used just in menu action items when using the SuiteP template
     'LBL_EDITLAYOUT' => 'Edit Layout' /*for 508 compliance fix*/,
     'LBL_HISTORY_SUBPANEL_TITLE' => 'Notes',
     'LNK_ES_TASKS_LIST' => 'View ES Tasks',
@@ -100,5 +100,5 @@ $mod_strings = array(
     'LBL_DATE_DUE' => 'Date Due',
     'LBL_RELATED_TO' => 'Related to:',
     'LBL_LIST_TITLE' => 'Task',
-    'LBL_KANBAN_REQUIRED_FIELDS_ERROR' => "To change the entry status, complete the required fields: "
+    'LBL_KANBAN_REQUIRED_FIELDS_ERROR' => "To change the entry status, complete the required fields: ",
 );

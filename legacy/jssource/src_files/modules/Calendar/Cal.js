@@ -278,7 +278,9 @@ CAL.load_form = function (module_name, record, edit_all_recurrences, cal_event) 
    // Mint start
    var url = "index.php?module=" + module_name + "&action=DetailView&record=" + record;
    window.location.assign(url);
-   //   CAL.disable_creating = true;
+   //    CAL.disable_creating = true;
+   //    CAL.reset_edit_dialog();
+   //    CAL.disable_buttons();
    //   var e;
    //   var to_open = true;
    //   if ( module_name != "Meetings" && module_name != "Calls" && module_name != "WorkSchedules" ) {
@@ -648,6 +650,9 @@ CAL.dialog_create = function (date, end_date, user_id) {
    // Mint end
 }
 CAL.dialog_save = function () {
+   if (!check_form('CalendarEditView')) {
+      return;
+   }
    CAL.disable_buttons();
    ajaxStatus.showStatus(SUGAR.language.get('app_strings', 'LBL_SAVING'));
    if (CAL.get("send_invites").value == "1") {
@@ -700,8 +705,8 @@ CAL.dialog_save = function () {
                newEvent.borderColor = '#' + global_colorList[res.module_name].border;
                newEvent.textColor = '#' + global_colorList[res.module_name].text;
             }
-            newEvent.start = new Date(moment.unix(res['ts_start']).format("MM/DD/YYYY") + " " + moment(res['time_start'], 'hh:mma').format("HH:mm"));
-            newEvent.end = moment(new Date(moment.unix(res['ts_start']).format("MM/DD/YYYY") + " " + moment(res['time_start'], 'hh:mma').format("HH:mm"))).add(res['duration_hours'], 'hours').add(res['duration_minutes'], 'minutes');
+            newEvent.start = new Date(moment.utc(moment.unix(res['ts_start'])).format("MM/DD/YYYY") + " " + moment(res['time_start'], 'hh:mma').format("HH:mm"));
+            newEvent.end = moment(new Date(moment.utc(moment.unix(res['ts_start'])).format("MM/DD/YYYY") + " " + moment(res['time_start'], 'hh:mma').format("HH:mm"))).add(res['duration_hours'], 'hours').add(res['duration_minutes'], 'minutes');
             if ((res['duration_hours'] % 24 === 0) && (res['time_start'] == "12:00am")) {
                newEvent.allDay = "true";
             }
@@ -713,8 +718,8 @@ CAL.dialog_save = function () {
                   newEvent.title = res['name'];
                   newEvent.record = value['id'];
                   newEvent.id = value['id'];
-                  newEvent.start = new Date(moment.unix(value['ts_start']).format("MM/DD/YYYY") + " " + moment(res['time_start'], 'hh:mma').format("HH:mm"));
-                  newEvent.end = moment(new Date(moment.unix(value['ts_start']).format("MM/DD/YYYY") + " " + moment(res['time_start'], 'hh:mma').format("HH:mm"))).add(res['duration_hours'], 'hours').add(res['duration_minutes'], 'minutes');
+                  newEvent.start = new Date(moment.utc(moment.unix(value['ts_start'])).format("MM/DD/YYYY") + " " + moment(res['time_start'], 'hh:mma').format("HH:mm"));
+                  newEvent.end = moment(new Date(moment.utc(moment.unix(value['ts_start'])).format("MM/DD/YYYY") + " " + moment(res['time_start'], 'hh:mma').format("HH:mm"))).add(res['duration_hours'], 'hours').add(res['duration_minutes'], 'minutes');
                   if ((res['duration_hours'] % 24 === 0) && (res['time_start'] == "12:00am")) {
                      newEvent.allDay = "true";
                   }
@@ -1188,6 +1193,7 @@ $($.fullCalendar).ready(function () {
                      target: element,
                      event: 'mouseleave',
                      fixed: true,
+                     delay: 500,
                      // event: false
                      // View Tools end #42595
                   },

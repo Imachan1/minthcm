@@ -5,10 +5,10 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -54,24 +54,21 @@ $mod_strings = array(
     'LBL_SEARCH_FORM_TITLE' => 'Target Search',
     'LBL_LIST_FORM_TITLE' => 'Target List',
     'LBL_NEW_FORM_TITLE' => 'New Target',
-    'LBL_BUSINESSCARD' => 'Business Card',
     'LBL_LIST_NAME' => 'Name',
     'LBL_LIST_LAST_NAME' => 'Last Name',
-    'LBL_LIST_TITLE' => 'Title',
+    'LBL_LIST_TITLE' => 'Job Title',
     'LBL_LIST_EMAIL_ADDRESS' => 'Email',
     'LBL_LIST_PHONE' => 'Phone',
     'LBL_LIST_FIRST_NAME' => 'First Name',
     'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
-    'LBL_ASSIGNED_TO_ID' => 'Assigned to:',
+    'LBL_ASSIGNED_TO_ID' => 'Assigned To:',
     'LBL_CAMPAIGN_ID' => 'Campaign ID',
     'LBL_EXISTING_ACCOUNT' => 'Used an existing account',
     'LBL_CREATED_ACCOUNT' => 'Created a new account',
     'LBL_CREATED_CALL' => 'Created a new call',
     'LBL_CREATED_MEETING' => 'Created a new meeting',
-    'LBL_ADDMORE_BUSINESSCARD' => 'Add another business card',
-    'LBL_ADD_BUSINESSCARD' => 'Enter Business Card',
     'LBL_NAME' => 'Name:',
-    'LBL_PROSPECT_INFORMATION' => 'OVERVIEW',
+    'LBL_PROSPECT_INFORMATION' => 'OVERVIEW', //No need to be translated in all caps. Translation used just in menu action items when using the SuiteP template
     'LBL_MORE_INFORMATION' => 'More Information',
     'LBL_FIRST_NAME' => 'First Name:',
     'LBL_OFFICE_PHONE' => 'Office Phone:',
@@ -92,7 +89,7 @@ $mod_strings = array(
     'LBL_ALT_ADDRESS_COUNTRY' => 'Alternate Address Country:',
     'LBL_ALT_ADDRESS_STATE' => 'Alternate Address State:',
     'LBL_ALT_ADDRESS_POSTALCODE' => 'Alternate Address Postal Code:',
-    'LBL_TITLE' => 'Title:',
+    'LBL_TITLE' => 'Job Title:',
     'LBL_DEPARTMENT' => 'Department:',
     'LBL_BIRTHDATE' => 'Birthdate:',
     'LBL_EMAIL_ADDRESS' => 'Email Address:',
@@ -106,7 +103,7 @@ $mod_strings = array(
     'LBL_ALTERNATE_ADDRESS' => 'Other Address:',
     'LBL_ANY_ADDRESS' => 'Any Address:',
     'LBL_CITY' => 'City:',
-    'LBL_STATE' => 'State:',
+    'LBL_STATE' => 'State/Region:',
     'LBL_POSTAL_CODE' => 'Postal Code:',
     'LBL_COUNTRY' => 'Country:',
     'LBL_ADDRESS_INFORMATION' => 'Address Information',

@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 /**
  *
@@ -10,7 +12,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,33 +47,31 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  */
 
 
-require_once('include/MVC/View/views/view.detail.php');
 
-class DocumentsViewDetail extends ViewDetail 
+class DocumentsViewDetail extends ViewDetail
 {
- 	/**
-	 * @see SugarView::_getModuleTitleParams()
-	 */
-	protected function _getModuleTitleParams($browserTitle = false)
-	{
-    	$params = array();
-    	$params[] = $this->_getModuleTitleListParam($browserTitle);
-    	$params[] = $this->bean->document_name;
-    	
-		return $params;
+    /**
+     * @see SugarView::_getModuleTitleParams()
+     */
+    protected function _getModuleTitleParams($browserTitle = false)
+    {
+        $params = array();
+        $params[] = $this->_getModuleTitleListParam($browserTitle);
+        $params[] = $this->bean->document_name;
+        
+        return $params;
     }
 
     public function display()
- 	{
-	//check to see if the file field is empty.  This should not occur and would only happen when an error has ocurred during upload, or from db manipulation of record.
-         if(empty($this->bean->filename)){
-	    //print error to screen
+    {
+        //check to see if the file field is empty.  This should not occur and would only happen when an error has ocurred during upload, or from db manipulation of record.
+        if (empty($this->bean->filename)) {
+            //print error to screen
             $this->errors[] = $GLOBALS['mod_strings']['ERR_MISSING_FILE'];
             $this->displayErrors();
-         }
+        }
 
 
         parent::display();
     }
-    
 }

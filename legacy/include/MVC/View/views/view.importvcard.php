@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,38 +45,30 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 require_once('include/vCard.php');
 require_once __DIR__ . '/../../../../include/utils/layout_utils.php';
 
 class ViewImportvcard extends SugarView
 {
-	var $type = 'edit';
+    public $type = 'edit';
 
     public function __construct()
     {
- 		parent::__construct();
- 	}
+        parent::__construct();
+    }
 
-	/**
+    /**
      * @see SugarView::display()
      */
-	public function display()
+    public function display()
     {
         global $mod_strings, $app_strings, $app_list_strings;
 
         $this->ss->assign("ERROR_TEXT", $app_strings['LBL_EMPTY_VCARD']);
-        if (isset($_REQUEST['error']))
-        {
-            switch ($_REQUEST['error'])
-            {
+        if (isset($_REQUEST['error'])) {
+            switch ($_REQUEST['error']) {
                 case 'vcardErrorFilesize':
                     $error = 'LBL_VCARD_ERROR_FILESIZE';
                     break;
@@ -94,7 +86,7 @@ class ViewImportvcard extends SugarView
         $params = array();
         $params[] = "<a href='index.php?module={$_REQUEST['module']}&action=index'>{$mod_strings['LBL_MODULE_NAME']}</a>";
         $params[] = $app_strings['LBL_IMPORT_VCARD_BUTTON_LABEL'];
-		echo getClassicModuleTitle($mod_strings['LBL_MODULE_NAME'], $params, true);
+        echo getClassicModuleTitle($mod_strings['LBL_MODULE_NAME'], $params, true);
         $this->ss->display($this->getCustomFilePathIfExists('include/MVC/View/tpls/Importvcard.tpl'));
- 	}
+    }
 }

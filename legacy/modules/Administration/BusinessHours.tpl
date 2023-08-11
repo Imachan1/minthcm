@@ -29,7 +29,7 @@
                 {assign var=i value=$i+1}
                 <td width="10%">{$MOD.$label}</td>
                 {* viewTools #38652 end *}
-                <td width="5%"><label for="open_{$day}">{$MOD.LBL_BUSINESS_HOURS_OPEN}</label><input data-day="{$day}" type="checkbox" id="open_{$day}" name="open_{$day}" class="open_check" {if $hours.open}checked="checked"{/if}></td>
+                <td width="5%"><label for="open_status_{$day}">{$MOD.LBL_BUSINESS_HOURS_OPEN}</label><input data-day="{$day}" type="checkbox" id="open_status_{$day}" name="open_status_{$day}" class="open_check" {if $hours.open_status}checked="checked"{/if}></td>
                 <td>
                     <div id="{$day}_times">{$MOD.LBL_BUSINESS_HOURS_FROM} <select name="opening_time_{$day}" tabindex="0" id="opening_time_{$day}">{$hours.opening}</select> {$MOD.LBL_BUSINESS_HOURS_TO} <select name="closing_time_{$day}" tabindex="0" id="closing_time_{$day}">{$hours.closing}</select></div>
                 </td>

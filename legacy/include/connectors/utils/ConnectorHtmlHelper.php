@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -79,24 +79,23 @@ class ConnectorHtmlHelper
     {
         $code = '';
 
-         foreach($shown_sources as $id) {
-             $formatter = FormatterFactory::getInstance($id);
-             $formatter->setModule($module);
-             $formatter->setSmarty($smarty);
-             $formatter_code = $formatter->getDetailViewFormat();
-             if (!empty($formatter_code))
-             {
-                 $iconFilePath = $formatter->getIconFilePath();
-                 $iconFilePath = empty($iconFilePath) ? 'themes/default/images/MoreDetail.png' : $iconFilePath;
+        foreach ($shown_sources as $id) {
+            $formatter = FormatterFactory::getInstance($id);
+            $formatter->setModule($module);
+            $formatter->setSmarty($smarty);
+            $formatter_code = $formatter->getDetailViewFormat();
+            if (!empty($formatter_code)) {
+                $iconFilePath = $formatter->getIconFilePath();
+                $iconFilePath = empty($iconFilePath) ? 'themes/default/images/MoreDetail.png' : $iconFilePath;
 
 
-            $code .= '<!--not_in_theme!--><img id="dswidget_img" border="0" src="' . $iconFilePath .'" alt="'
+                $code .= '<!--not_in_theme!--><img id="dswidget_img" border="0" src="' . $iconFilePath .'" alt="'
                          . $id .'" onclick="show_' . $id . '(event);">';
 
-            $code .= "<script type='text/javascript' src='{sugar_getjspath file='include/connectors/formatters/default/company_detail.js'}'></script>";
-                 //$code .= $formatter->getDetailViewFormat();
-                 $code .= $formatter_code;
-             }
+                $code .= "<script type='text/javascript' src='{sugar_getjspath file='include/connectors/formatters/default/company_detail.js'}'></script>";
+                //$code .= $formatter->getDetailViewFormat();
+                $code .= $formatter_code;
+            }
         }
 
         return $code;
@@ -119,14 +118,12 @@ class ConnectorHtmlHelper
         $formatterCode = '';
         $sourcesDisplayed = 0;
         $singleIcon = '';
-        foreach($shown_sources as $id)
-        {
+        foreach ($shown_sources as $id) {
             $formatter = FormatterFactory::getInstance($id);
             $formatter->setModule($module);
             $formatter->setSmarty($smarty);
             $buttonCode = $formatter->getDetailViewFormat();
-            if (!empty($buttonCode))
-            {
+            if (!empty($buttonCode)) {
                 $sourcesDisplayed++;
                 $singleIcon = $formatter->getIconFilePath();
                 $source = SourceFactory::getSource($id);
@@ -139,21 +136,16 @@ class ConnectorHtmlHelper
             }
         } //for
 
-        if (!empty($formatterCode))
-        {
-            if ($sourcesDisplayed > 1)
-            {
+        if (!empty($formatterCode)) {
+            if ($sourcesDisplayed > 1) {
                 $dswidget_img = SugarThemeRegistry::current()->getImageURL('MoreDetail.png');
                 $code = '<!--not_in_theme!--><img id="dswidget_img" src="' . $dswidget_img . '" width="11" height="7" border="0" alt="'
                         . $app_strings['LBL_CONNECTORS_POPUPS'] . '" onclick="return showConnectorMenu2(this);">';
-            }
-            else
-            {
+            } else {
                 $dswidget_img = SugarThemeRegistry::current()->getImageURL('MoreDetail.png');
                 $singleIcon = empty($singleIcon) ? $dswidget_img : $singleIcon;
                 $code = '<!--not_in_theme!--><img id="dswidget_img" border="0" src="' . $singleIcon . '" alt="'.$app_strings['LBL_CONNECTORS_POPUPS']
                         . '" onclick="return showConnectorMenu2(this);">';
-
             }
             $code .= "<script type='text/javascript' src='{sugar_getjspath file='include/connectors/formatters/default/company_detail.js'}'></script>\n";
             $code .= "<script type='text/javascript'>\n";

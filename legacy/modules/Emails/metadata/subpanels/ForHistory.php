@@ -1,7 +1,9 @@
 <?php
+
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -11,7 +13,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -45,70 +47,65 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-
-
-$subpanel_layout = array(
-	'where'				=> "",
-
-
-	'fill_in_additional_fields'	=> true,
-	'list_fields' => array(
-		'object_image'=>array(
-			'widget_class'			=> 'SubPanelIcon',
- 		 	'width'					=> '2%',
-		),
-		'name' => array(
-			 'vname'				=> 'LBL_LIST_SUBJECT',
-			 'widget_class'			=> 'SubPanelDetailViewLink',
-			 'width'				=> '30%',
-             'parent_info'          => true
-		),
-		'status' => array(
-			 'vname'				=> 'LBL_LIST_STATUS',
-			 'width'				=> '15%',
-		),
-		'reply_to_status' => array(
-			 'usage'				=> 'query_only',
-             'force_exists'			=> true,
-			 'force_default'		=> 0,
-		),
-		'parent_id'=>array(
-            'usage'=>'query_only',
-			'force_exists'=>true
-        ),
-		'parent_type'=>array(
-            'usage'=>'query_only',
-			'force_exists'=>true
-        ),
-		'date_modified' => array(
-			'width'					=> '10%',
-		),
-		'date_entered'=>array(
-			'vname' => 'LBL_LIST_DATE_ENTERED',
-			'width' => '10%',
-		),
-		'assigned_user_name' => array (
-			'name' => 'assigned_user_name',
-			'vname' => 'LBL_LIST_ASSIGNED_TO_NAME',
-			'widget_class' => 'SubPanelDetailViewLink',
-		 	'target_record_key' => 'assigned_user_id',
-			'target_module' => 'Employees',
-			'width' => '10%',			
-		),
-		'edit_button' => array(
-			'vname' => 'LBL_EDIT_BUTTON',
-			'widget_class'			=> 'SubPanelEditButton',
-			 'width'				=> '2%',
-		),
-		'remove_button' => array(
-			'vname' => 'LBL_REMOVE',
-			 'widget_class'			=> 'SubPanelRemoveButton',
-			 'width'				=> '2%',
-		),
-		'filename' => array(
-			'usage'					=> 'query_only',
-			'force_exists'			=> true
-		),
-	), // end list_fields
-);
-
+$subpanel_layout = [
+    'where' => '',
+    'fill_in_additional_fields' => true,
+    'list_fields' => [
+        'object_image' => [
+            'widget_class' => 'SubPanelIcon',
+            'width' => '2%',
+        ],
+        'name' => [
+            'vname' => 'LBL_LIST_SUBJECT',
+            'widget_class' => 'SubPanelDetailViewLink',
+            'width' => '30%',
+            'parent_info' => true
+        ],
+        'status' => [
+            'vname' => 'LBL_LIST_STATUS',
+            'width' => '15%',
+        ],
+        'reply_to_status' => [
+            'usage' => 'query_only',
+            'force_exists' => true,
+            'force_default' => 0,
+        ],
+        'parent_id' => [
+            'usage' => 'query_only',
+            'force_exists' => true
+        ],
+        'parent_type' => [
+            'usage' => 'query_only',
+            'force_exists' => true
+        ],
+        'date_modified' => [
+            'width' => '10%',
+        ],
+        'date_entered' => [
+            'vname' => 'LBL_LIST_DATE_ENTERED',
+            'width' => '10%',
+        ],
+        'assigned_user_name' => [
+            'name' => 'assigned_user_name',
+            'vname' => 'LBL_LIST_ASSIGNED_TO_NAME',
+            'widget_class' => 'SubPanelDetailViewLink',
+            'target_record_key' => 'assigned_user_id',
+            'target_module' => 'Employees',
+            'width' => '10%',
+        ],
+        'edit_button' => [
+            'vname' => 'LBL_EDIT_BUTTON',
+            'widget_class' => 'SubPanelEditButton',
+            'width' => '2%',
+        ],
+        'remove_button' => [
+            'vname' => 'LBL_REMOVE',
+            'widget_class' => 'SubPanelRemoveButton',
+            'width' => '2%',
+        ],
+        'filename' => [
+            'usage' => 'query_only',
+            'force_exists' => true
+        ],
+    ],
+];

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -76,6 +76,55 @@ function getAOPAssignField($assignField, $value)
 }
 
 /**
+ * @param mixed $value
+ * @return string
+ */
+function getAOPAssignFieldDetailView($value)
+{
+    global $app_list_strings, $app_strings;
+
+    if (empty($value)){
+        return '';
+    }
+
+    if (is_string($value)){
+        return $value;
+    }
+
+    $roles = get_bean_select_array(true, 'ACLRole', 'name', '', 'name', true);
+    $securityGroups = get_bean_select_array(true, 'SecurityGroup', 'name', '', 'name', true);
+
+    $field = '';
+    $type = $value[0] ?? null;
+    $field .= $app_list_strings['aow_assign_options'][$type] ?? '';
+
+    if (file_exists('modules/SecurityGroups/SecurityGroup.php'))  {
+        $display = 'none';
+        if (isset($value[0]) && $value[0] === 'security_group') {
+            $display = '';
+        }
+        if ($display !== 'none') {
+            $securityGroup = $value[1] ?? null;
+            $field .= ' | ' . $app_strings['LBL_SECURITYGROUP'] . ': ' . $securityGroups[$securityGroup] ?? '';
+        }
+
+    }
+
+    $display = 'none';
+    if (isset($value[0]) && ($value[0] === 'role' || $value[0] === 'security_group')) {
+        $display = '';
+    }
+
+    if ($display !== 'none') {
+        $role = $value[2] ?? null;
+
+        $field .= ' | ' . $app_strings['LBL_ROLE'] . ': ' .  $roles[$role] ?? '';
+    }
+
+    return $field;
+}
+
+/**
  * @return bool
  */
 function isAOPEnabled()
@@ -110,7 +159,7 @@ function getPortalEmailSettings()
     }
 
     //Fallback to sugar settings
-    $admin = new Administration();
+    $admin = BeanFactory::newBean('Administration');
     $admin->retrieveSettings();
     if (!$settings['from_name']) {
         $settings['from_name'] = $admin->settings['notify_fromname'];
@@ -134,7 +183,6 @@ function aop_parse_template($string, $bean_arr)
     $typeMap = array('dynamicenum' => 'enum');
 
     foreach ($bean_arr as $bean_name => $bean_id) {
-
         $focus = BeanFactory::getBean($bean_name, $bean_id);
 
         if ($bean_name === 'Leads' || $bean_name === 'Prospects') {
@@ -147,12 +195,9 @@ function aop_parse_template($string, $bean_arr)
             }
         }
 
-        if (isset($this) && isset($this->module_dir) && $this->module_dir === 'EmailTemplates') {
-            $string = $this->parse_template_bean($string, $bean_name, $focus);
-        } else {
-            $emailTemplate = new EmailTemplate();
-            $string = $emailTemplate->parse_template_bean($string, $bean_name, $focus);
-        }
+        $emailTemplate = BeanFactory::newBean('EmailTemplates');
+        $string = $emailTemplate->parse_template_bean($string, $bean_name, $focus);
+
     }
 
     return $string;

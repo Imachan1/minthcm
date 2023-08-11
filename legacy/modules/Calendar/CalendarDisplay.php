@@ -85,7 +85,7 @@ class CalendarDisplay {
     * @param string $dashlet_id for dashlet mode
     * @param array $views
     */
-   function __construct(Calendar $cal, $dashlet_id = "", $views = array()) {
+    public function __construct(Calendar $cal, $dashlet_id = "", $views = array()) {
       global $sugar_config;
       if ( isset($sugar_config['CalendarColors']) && is_array($sugar_config['CalendarColors']) ) {
          $this->activity_colors = array_merge($this->activity_colors, $sugar_config['CalendarColors']);
@@ -127,7 +127,7 @@ class CalendarDisplay {
       $ss->assign('cells_per_day', $cal->cells_per_day);
       $ss->assign('activityColors', json_encode($this->checkActivity($this->activity_colors)));
       $ss->assign('dashlet', $cal->dashlet);
-      $ss->assign('grid_start_ts', intval($cal->grid_start_ts));
+      $ss->assign('grid_start_ts', (int)($cal->grid_start_ts));
 
       $ss->assign('year', $cal->date_time->format('Y'));
       $ss->assign('month', $cal->date_time->format('m'));
@@ -156,12 +156,11 @@ class CalendarDisplay {
       $ss->assign('editview_height', SugarConfig::getInstance()->get('calendar.editview_height', 600));
 
       $ss->assign('a_str', json_encode($cal->items));
-        /* MintHCM #84212 START */
-        if (!ACLController::checkAccess('Calendar', 'list', true)) {  
+      /* MintHCM #84212 START */
+         if (!ACLController::checkAccess('Calendar', 'list', true)) {  
             return;
-        }      
-        /* MintHCM #84212 END */
-
+      }      
+      /* MintHCM #84212 END */
       $start = $current_user->getPreference('day_start_time');
       if ( is_null($start) ) {
          $start = SugarConfig::getInstance()->get('calendar.default_day_start', "08:00");
@@ -229,7 +228,7 @@ class CalendarDisplay {
       echo $ss->fetch($main);
    }
 
-   function checkActivity($activity = "") {
+   public function checkActivity($activity = "") {
       global $current_user;
       if ( empty($activity) ) {
          $activity = $this->activity_colors;
@@ -292,38 +291,36 @@ class CalendarDisplay {
       $TIME_MERIDIEM = "";
       $time_pref = $timedate->get_time_format();
       $start_m = "";
-      if ( strpos($time_pref, 'a') || strpos($time_pref, 'A') ) {
-         $num_of_hours = 12;
-         $start_at = 1;
-         $start_m = 'am';
-         if ( $d_start_hour == 0 ) {
+      if (strpos($time_pref, 'a') || strpos($time_pref, 'A')) {
+        $num_of_hours = 12;
+        $start_at = 1;
+        $start_m = 'am';
+        if ($d_start_hour == 0) {
             $d_start_hour = 12;
             $start_m = 'am';
-         } else
-         if ( $d_start_hour == 12 ) {
+        } elseif ($d_start_hour == 12) {
             $start_m = 'pm';
-         }
-         if ( $d_start_hour > 12 ) {
+        }
+        if ($d_start_hour > 12) {
             $d_start_hour = $d_start_hour - 12;
             $start_m = 'pm';
-         }
-         $end_m = 'am';
-         if ( $d_end_hour == 0 ) {
+        }
+        $end_m = 'am';
+        if ($d_end_hour == 0) {
             $d_end_hour = 12;
             $end_m = 'am';
-         } else
-         if ( $d_end_hour == 12 ) {
+        } elseif ($d_end_hour == 12) {
             $end_m = 'pm';
-         }
+        }
 
-         if ( $d_end_hour > 12 ) {
+        if ($d_end_hour > 12) {
             $d_end_hour = $d_end_hour - 12;
             $end_m = 'pm';
-         }
-         if ( strpos($time_pref, 'A') ) {
+        }
+        if (strpos($time_pref, 'A')) {
             $start_m = strtoupper($start_m);
             $end_m = strtoupper($end_m);
-         }
+        }
          $options = strpos($time_pref, 'a') ? $app_list_strings['dom_meridiem_lowercase'] : $app_list_strings['dom_meridiem_uppercase'];
          $TIME_START_MERIDIEM = get_select_options_with_id($options, $start_m);
          $TIME_END_MERIDIEM = get_select_options_with_id($options, $end_m);
@@ -380,7 +377,7 @@ class CalendarDisplay {
 
       if ( $view == 'month' || $view == 'sharedMonth' ) {
          for ( $i = 0; $i < strlen($dateFormat['date']); $i++ ) {
-            switch ( $dateFormat['date']{$i} ) {
+            switch ( $dateFormat['date'][$i] ) {
                case "Y":
                   $str .= " " . $date_time->year;
                   break;
@@ -389,15 +386,14 @@ class CalendarDisplay {
                   break;
             }
          }
-      } else
-      if ( $view == 'agendaWeek' || $view == 'sharedWeek' ) {
+      } elseif ( $view == 'agendaWeek' || $view == 'sharedWeek' ) {
          $first_day = $date_time;
 
          $first_day = CalendarUtils::get_first_day_of_week($date_time);
          $last_day = $first_day->get("+6 days");
 
          for ( $i = 0; $i < strlen($dateFormat['date']); $i++ ) {
-            switch ( $dateFormat['date']{$i} ) {
+            switch ( $dateFormat['date'][$i] ) {
                case "Y":
                   $str .= " " . $first_day->year;
                   break;
@@ -411,7 +407,7 @@ class CalendarDisplay {
          }
          $str .= " - ";
          for ( $i = 0; $i < strlen($dateFormat['date']); $i++ ) {
-            switch ( $dateFormat['date']{$i} ) {
+            switch ( $dateFormat['date'][$i] ) {
                case "Y":
                   $str .= " " . $last_day->year;
                   break;
@@ -423,11 +419,11 @@ class CalendarDisplay {
                   break;
             }
          }
-      } else if ( $view == 'agendaDay' ) {
+      } elseif ( $view == 'agendaDay' ) {
          $str .= $date_time->get_day_of_week() . " ";
 
          for ( $i = 0; $i < strlen($dateFormat['date']); $i++ ) {
-            switch ( $dateFormat['date']{$i} ) {
+            switch ( $dateFormat['date'][$i] ) {
                case "Y":
                   $str .= " " . $date_time->year;
                   break;
@@ -439,11 +435,11 @@ class CalendarDisplay {
                   break;
             }
          }
-      } else if ( $view == 'mobile' ) {
+      } elseif ( $view == 'mobile' ) {
          $str .= $date_time->get_day_of_week() . " ";
 
          for ( $i = 0; $i < strlen($dateFormat['date']); $i++ ) {
-            switch ( $dateFormat['date']{$i} ) {
+            switch ( $dateFormat['date'][$i] ) {
                case "Y":
                   $str .= " " . $date_time->year;
                   break;
@@ -455,7 +451,7 @@ class CalendarDisplay {
                   break;
             }
          }
-      } else if ( $view == 'year' ) {
+      } elseif ( $view == 'year' ) {
          $str .= $date_time->year;
       } else {
          //could be a custom view.
@@ -465,7 +461,7 @@ class CalendarDisplay {
          $last_day = $first_day->get("+6 days");
 
          for ( $i = 0; $i < strlen($dateFormat['date']); $i++ ) {
-            switch ( $dateFormat['date']{$i} ) {
+            switch ( $dateFormat['date'][$i] ) {
                case "Y":
                   $str .= " " . $first_day->year;
                   break;
@@ -479,7 +475,7 @@ class CalendarDisplay {
          }
          $str .= " - ";
          for ( $i = 0; $i < strlen($dateFormat['date']); $i++ ) {
-            switch ( $dateFormat['date']{$i} ) {
+            switch ( $dateFormat['date'][$i] ) {
                case "Y":
                   $str .= " " . $last_day->year;
                   break;
@@ -504,7 +500,6 @@ class CalendarDisplay {
         return translate('LBL_CALENDAR_WEEK_NUMBER','Calendar').": ".$week;
     }
     /* MintHCM #75984 END */
-   
 
    /**
     * Get link to next date range
@@ -553,8 +548,8 @@ class CalendarDisplay {
 
       $ss->assign('print', $this->cal->isPrint());
       if (!ACLController::checkAccess('Calendar', 'list', true)) {
-            echo '<script>function set_focus(){}</script><p class="error" style="margin:auto;">' . translate('LBL_NO_ACCESS', 'ACL') . '</p>'; 
-            return;
+         echo '<script>function set_focus(){}</script><p class="error" style="margin:auto;">' . translate('LBL_NO_ACCESS', 'ACL') . '</p>'; 
+         return;
       }
       if ( $controls ) {
          $current_date = str_pad($this->cal->date_time->month, 2, '0', STR_PAD_LEFT) . "/" . str_pad($this->cal->date_time->day, 2, '0', STR_PAD_LEFT) . "/" . $this->cal->date_time->year;
@@ -562,7 +557,7 @@ class CalendarDisplay {
          $tabs = $this->views;
          $tabs_params = array();
          foreach ( $tabs as $key => $tab ) {
-            if ( ($key != "basicDay") AND ( $key != "basicWeek") ) {
+            if ( ($key != "basicDay") and ( $key != "basicWeek") ) {
                $tabs_params[$key]['title'] = $cal_strings["LBL_" . strtoupper($key)];
                $tabs_params[$key]['id'] = $key . "-tab";
                $tabs_params[$key]['link'] = "window.location.href='" . ajaxLink("index.php?module=Calendar&action=index&view=" . $key . $this->cal->date_time->get_date_str()) . "'";
@@ -586,7 +581,6 @@ class CalendarDisplay {
       $ss->assign('config', $sugar_config);
       $ss->assign('week_info', $this->get_week_info($this->cal->date_time));
       /* MintHCM #75984 END */
-
       $header = get_custom_file_if_exists("modules/Calendar/tpls/header.tpl");
       echo $ss->fetch($header);
    }

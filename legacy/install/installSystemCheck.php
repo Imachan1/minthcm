@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -88,8 +88,7 @@ function runCheck($install_script, $mod_strings = array())
     ';
     }
 
-    if(strpos($server_software,'Microsoft-IIS') !== false)
-    {
+    if(strpos($server_software,'Microsoft-IIS') !== false){
         $iis_version = '';
         if(preg_match_all("/^.*\/(\d+\.?\d*)$/",  $server_software, $out))
             $iis_version = $out[1][0];
@@ -103,26 +102,29 @@ function runCheck($install_script, $mod_strings = array())
             <p><b>'.$mod_strings['LBL_CHECKSYS_IISVER'].'</b></p>
             <p><span class="error">'.$iisVersion.'</span></p>
         ';
-        } else if(php_sapi_name() != 'cgi-fcgi')
-        {
-            installLog($mod_strings['ERR_CHECKSYS_FASTCGI'].' '.$iis_version);
-            $iisVersion = "<b><span class=stop>{$mod_strings['ERR_CHECKSYS_FASTCGI']}</span></b>";
-            $error_found = true;
-            $error_txt .= '
-            <p><b>'.$mod_strings['LBL_CHECKSYS_FASTCGI'].'</b></p>
-            <p><span class="error">'.$iisVersion.'</span></p>
-        ';
-        } else if(ini_get('fastcgi.logging') != '0')
-        {
-            installLog($mod_strings['ERR_CHECKSYS_FASTCGI_LOGGING'].' '.$iis_version);
-            $iisVersion = "<b><span class=stop>{$mod_strings['ERR_CHECKSYS_FASTCGI_LOGGING']}</span></b>";
-            $error_found = true;
-            $error_txt .= '
-            <p><b>'.$mod_strings['LBL_CHECKSYS_FASTCGI'].'</b></p>
-            <p ><span class="error">'.$iisVersion.'</span></p>
-        ';
+        } else{
+        if(php_sapi_name() != 'cgi-fcgi'){
+                installLog($mod_strings['ERR_CHECKSYS_FASTCGI'].' '.$iis_version);
+                $iisVersion = "<b><span class=stop>{$mod_strings['ERR_CHECKSYS_FASTCGI']}</span></b>";
+                $error_found = true;
+                $error_txt .= '
+                <p><b>'.$mod_strings['LBL_CHECKSYS_FASTCGI'].'</b></p>
+                <p><span class="error">'.$iisVersion.'</span></p>
+            ';
+        } else {
+            if(ini_get('fastcgi.logging') != '0')
+            {
+                installLog($mod_strings['ERR_CHECKSYS_FASTCGI_LOGGING'].' '.$iis_version);
+                $iisVersion = "<b><span class=stop>{$mod_strings['ERR_CHECKSYS_FASTCGI_LOGGING']}</span></b>";
+                $error_found = true;
+                $error_txt .= '
+                <p><b>'.$mod_strings['LBL_CHECKSYS_FASTCGI'].'</b></p>
+                <p ><span class="error">'.$iisVersion.'</span></p>
+            ';
+            }
         }
     }
+}
 
 // PHP VERSION
 
@@ -136,19 +138,6 @@ if(check_php_version() === -1) {
             <p><span class="error">'.$phpVersion.'</span></p>
         ';
 }
-
-//Php Backward compatibility checks
-    if(ini_get("zend.ze1_compatibility_mode")) {
-        installLog($mod_strings['LBL_BACKWARD_COMPATIBILITY_ON'].'  '.'Php Backward Compatibility');
-        $phpCompatibility = "<b><span class=stop>{$mod_strings['LBL_BACKWARD_COMPATIBILITY_ON']}</span></b>";
-        $error_found = true;
-        $error_txt .= '
-      <tr>
-        <p><b>Php Backward Compatibility</b></p>
-        <p><span class="error">'.$phpCompatibility.'</span></p>
-    ';
-
-    }
 
 // database and connect
 
@@ -180,6 +169,19 @@ if(check_php_version() === -1) {
     }else{
         installLog("XML Parsing Support Found");
     }
+
+        // JSON Parsing
+        if (!function_exists('json_decode')) {
+            $jsonStatus = "<b><span class=stop>{$mod_strings['ERR_CHECKSYS_JSON_NOT_AVAILABLE']}</span></b>";
+            installLog("ERROR:: {$mod_strings['ERR_CHECKSYS_JSON_NOT_AVAILABLE']}");
+            $error_found = true;
+            $error_txt .= '
+            <p><strong>'.$mod_strings['LBL_CHECKSYS_JSON'].'</strong></p>
+            <p class="error">'.$jsonStatus.'</p>
+        ';
+        } else {
+            installLog("JSON Parsing Support Found");
+        }
 
 
 // mbstrings

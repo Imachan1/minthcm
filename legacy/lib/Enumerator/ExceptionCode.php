@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,7 +44,6 @@
 
 namespace SuiteCRM\Enumerator;
 
-
 /**
  * Class ExceptionCode
  * @package SuiteCRM\Enumerator
@@ -53,6 +52,7 @@ namespace SuiteCRM\Enumerator;
  */
 class ExceptionCode
 {
+    const APPLICATION_MALWARE_FOUND = 4000;
     const APPLICATION_UNHANDLED_BEHAVIOUR = 6000;
     const APPLICTAION_MODULE_NOT_FOUND = 6005;
     const API_EXCEPTION = 8000;

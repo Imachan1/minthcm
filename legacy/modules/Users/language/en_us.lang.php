@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -92,7 +92,7 @@ $mod_strings = array(
     'LBL_ADDRESS_COUNTRY' => 'Address Country',
     'LBL_ADDRESS_INFORMATION' => 'Address Information',
     'LBL_ADDRESS_POSTALCODE' => 'Address Postal Code',
-    'LBL_ADDRESS_STATE' => 'Address State',
+    'LBL_ADDRESS_STATE' => 'Address State/Region',
     'LBL_ADDRESS_STREET' => 'Address Street',
     'LBL_ADDRESS' => 'Address',
     'LBL_ADMIN_USER' => 'System Administrator User',
@@ -100,6 +100,7 @@ $mod_strings = array(
     'LBL_REGULAR_DESC' => 'User can access modules and records based on roles.',
     'LBL_PHOTO' => 'Photo',
     'LBL_ADMIN' => 'System Administrator',
+    'LBL_LAST_ADMIN_NOTICE' => 'Current selection could include yourself. You cannot change your own type of user or status.',    
     'LBL_ADVANCED' => 'Advanced',
     'LBL_ANY_ADDRESS' => 'Any Address:',
     'LBL_ANY_EMAIL' => 'Any Email',
@@ -184,7 +185,7 @@ $mod_strings = array(
     'LBL_LIST_MEMBERSHIP' => 'Membership',
     'LBL_LIST_NAME' => 'Name',
     'LBL_LIST_STATUS' => 'Status',
-    'LBL_LIST_TITLE' => 'Title',
+    'LBL_LIST_TITLE' => 'Job Title',
     'LBL_LIST_USER_NAME' => 'User Name',
     'LBL_LOCALE_DEFAULT_NAME_FORMAT' => 'Name Display Format',
     'LBL_LOCALE_DESC_FIRST' => '[First]',
@@ -304,7 +305,7 @@ $mod_strings = array(
     'LBL_TIME_FORMAT' => 'Time Format',
     'LBL_TIMEZONE_TEXT' => 'Set the current time zone',
     'LBL_TIMEZONE' => 'Time Zone',
-    'LBL_TITLE' => 'Title',
+    'LBL_TITLE' => 'Job Title',
     'LBL_USE_REAL_NAMES' => 'Show Full Names',
     'LBL_USE_REAL_NAMES_DESC' => 'Display users\' full names instead of their User Names in assignment fields.',
     'LBL_USER_INFORMATION' => 'User Profile',
@@ -531,7 +532,7 @@ $mod_strings = array(
     'LBL_CASES_SUBPANEL_TITLE' => 'Cases',
     'LBL_INTENT' => 'Intent',
     'LBL_MESSAGE_ID' => 'Message ID',
-    'LBL_REPLY_HEADER_1' => 'On ',
+    'LBL_REPLY_HEADER_1' => 'On',
     'LBL_REPLY_HEADER_2' => 'wrote:',
     'LBL_REPLY_TO_ADDRESS' => 'Reply-to Address',
     'LBL_REPLY_TO_NAME' => 'Reply-to Name',
@@ -561,11 +562,11 @@ $mod_strings = array(
     'LBL_NEW' => 'New',
     'LBL_NEXT_EMAIL' => 'Next Free Item',
     'LBL_REPLIED' => 'Replied',
-    'LBL_TO' => 'To: ',
+    'LBL_TO' => 'To:',
     'LBL_TOGGLE_ALL' => 'Toggle All',
     'LBL_UNKNOWN' => 'Unknown',
     'LBL_USE' => 'Assign:',
-    'LBL_ASSIGN_SELECTED_RESULTS_TO' => 'Assign Selected Results To: ',
+    'LBL_ASSIGN_SELECTED_RESULTS_TO' => 'Assign Selected Results To:',
     'LBL_USER_SELECT' => 'Select Users',
     'LBL_USING_RULES' => 'Using Rules:',
     'LBL_WARN_NO_DIST' => 'No Distribution Method Selected',
@@ -616,7 +617,7 @@ $mod_strings = array(
     'LBL_SELECTED_ADDR' => 'Selected',
     'LBL_ADD_CC_BCC_SEP' => '|',
     'LBL_SEND_EMAIL_FAIL_TITLE' => 'Error Sending Email',
-    'LBL_EMAIL_DETAIL_VIEW_SHOW' => 'show ',
+    'LBL_EMAIL_DETAIL_VIEW_SHOW' => 'show',
     'LBL_EMAIL_DETAIL_VIEW_MORE' => ' more',
     'LBL_MORE_OPTIONS' => 'More',
     'LBL_LESS_OPTIONS' => 'Less',
@@ -702,8 +703,11 @@ $mod_strings = array(
     'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Management of organizational units',
     'LBL_CLEAR_APP_DATA' => 'Clear app data',
     'LBL_ARE_YOU_SURE_TO_CLEAR_APP_DATA' => 'Are you sure you want to clear app data?',
-
     'LBL_USERS_CONFIRMATION_BUTTON_CONFIRM' => 'YES',
     'LBL_USERS_CONFIRMATION_BUTTON_CANCEL' => 'NO',
-    'LBL_USER_DEACTIVE_SUPERVISOR'=>'The employee you want to deactivate is the current manager of the unit</br> <URL>In order to correctly generate the organizational structure of the department, a new manager should be indicated. Do you want to continue with deactivation?'
+    'LBL_USER_DEACTIVE_SUPERVISOR'=>'The employee you want to deactivate is the current manager of the unit</br> <URL>In order to correctly generate the organizational structure of the department, a new manager should be indicated. Do you want to continue with deactivation?',
+    'LNK_LIST_OUTBOUND_EMAIL_ACCOUNTS' => 'Outbound Email Accounts',
+    'LNK_LIST_INBOUND_EMAIL_ACCOUNTS' => 'Inbound Email Accounts',
+    'LNK_EXTERNAL_OAUTH_CONNECTIONS' => 'External OAuth Connections',
+
 ); // END STRINGS DEFS

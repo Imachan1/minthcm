@@ -5,10 +5,10 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+ * Copyright (C) 2011 - 2021 SalesAgility Ltd.
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,20 +46,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-global $app_language;
-global $sugar_config;
-global $app_list_strings;
-global $app_strings;
-global $mod_strings;
-global $current_language;
+global $app_language, $sugar_config, $app_list_strings, $app_strings, $mod_strings, $current_language;
+
 /** @var DBManager $db */
 $db = DBManagerFactory::getInstance();
 
-require_once('modules/Users/language/en_us.lang.php');
+require_once __DIR__ . '/../../modules/Users/language/en_us.lang.php';
 $mod_strings = return_module_language('', 'Users');
 
-///////////////////////////////////////////////////////////////////////////////
-////	RECAPTCHA CHECK ONLY
+// Recaptcha check
 require_once __DIR__.'/../../include/utils/recaptcha_utils.php';
 if (getRecaptchaChallengeField() !== false) {
     $response =  displayRecaptchaValidation();
@@ -70,40 +65,53 @@ if (getRecaptchaChallengeField() !== false) {
         die($response);
     }
 }
-////	RECAPTCHA CHECK ONLY
-///////////////////////////////////////////////////////////////////////////////
-
 
 ///////////////////////////////////////////////////////////////////////////////
 ////	PASSWORD GENERATED LINK CHECK USING
 ////
 //// This script :  - check the link expiration
 ////			   - send the filled form to authenticate.php after changing the password in the database
-$redirect = '1';
+$redirect = true;
 $errors = '';
-if (isset($_REQUEST['guid'])) {
+if (!empty($_REQUEST['guid']) && !empty($_REQUEST['key'])) {
     // Change 'deleted = 0' clause to 'COALESCE(deleted, 0) = 0' because by default the values were NULL
     $Q = "SELECT * FROM users_password_link WHERE id = '" . $db->quote($_REQUEST['guid']) . "' AND COALESCE(deleted, 0) = '0'";
     $result = DBManagerFactory::getInstance()->limitQuery($Q, 0, 1, false);
     $row = DBManagerFactory::getInstance()->fetchByAssoc($result);
-    if (!empty($row)) {
+
+    $keyHash = !empty($row['keyhash']) ? $row['keyhash'] : null;
+
+    $isValid = false;
+    if ($keyHash !== null) {
+        $isValid = User::checkPassword($_REQUEST['key'], $keyHash);
+    }
+
+    if (!empty($row) && $isValid === true) {
         $pwd_settings = $GLOBALS['sugar_config']['passwordsetting'];
-        $expired = '0';
+        $expired = false;
+
         if ($pwd_settings['linkexpiration']) {
             $delay = $pwd_settings['linkexpirationtime'] * $pwd_settings['linkexpirationtype'];
             $stim = strtotime($row['date_generated']) + date('Z');
             $expiretime = TimeDate::getInstance()->fromTimestamp($stim)->get("+$delay  minutes")->asDb();
             $timenow = TimeDate::getInstance()->nowDb();
             if ($timenow > $expiretime) {
-                $expired = '1';
+                $expired = true;
             }
+        }
+
+        if (!empty($row['user_id'])) {
+            $userBean = BeanFactory::getBean('Users', $row['user_id']);
+        }
+
+        if (empty($userBean)) {
+            $expired = true;
         }
 
         if (!$expired) {
             // if the form is filled and we want to login
             if (isset($_REQUEST['login']) && $_REQUEST['login'] == '1') {
                 if ($row['username'] == $_POST['user_name']) {
-
                     $password = $_POST['new_password'];
                     $usr = new user();
                     $errors = $usr->passwordValidationCheck($password);
@@ -124,15 +132,14 @@ if (isset($_REQUEST['guid'])) {
                             $_REQUEST[$k] = $v;
                             $_GET[$k] = $v;
                         }
-                        unset($_REQUEST['entryPoint']);
-                        unset($_GET['entryPoint']);
+                        unset($_REQUEST['entryPoint'], $_GET['entryPoint']);
                         $GLOBALS['app']->execute();
                         die();
                     }
-                    $redirect = 0;
+                    $redirect = false;
                 }
             } else {
-                $redirect = '0';
+                $redirect = false;
             }
         } else {
             $query2 = "UPDATE users_password_link SET deleted='1' where id='" . $db->quote($_REQUEST['guid']) . "'";
@@ -141,9 +148,9 @@ if (isset($_REQUEST['guid'])) {
     }
 }
 
-if ($redirect != '0') {
+if ($redirect === true) {
     header('location:index.php?action=Login&module=Users');
-    exit ();
+    exit();
 }
 
 ////	PASSWORD GENERATED LINK CHECK USING
@@ -167,8 +174,10 @@ $sugar_smarty->assign('return_action', 'login');
 $sugar_smarty->assign("APP", $app_strings);
 $sugar_smarty->assign("INSTRUCTION", $app_strings['NTC_LOGIN_MESSAGE']);
 $sugar_smarty->assign("ERRORS", $errors);
-$sugar_smarty->assign("USERNAME_FIELD",
-    '<td scope="row" width="30%">' . $mod_strings['LBL_USER_NAME'] . ':</td><td width="70%"><input type="text" size="20" tabindex="1" id="user_name" name="user_name"  value=""></td>');
+$sugar_smarty->assign(
+    "USERNAME_FIELD",
+    '<td scope="row" width="30%">' . $mod_strings['LBL_USER_NAME'] . ':</td><td width="70%"><input type="text" size="20" tabindex="1" id="user_name" name="user_name"  value=""></td>'
+);
 $sugar_smarty->assign('PWDSETTINGS', $GLOBALS['sugar_config']['passwordsetting']);
 
 
@@ -182,5 +191,10 @@ $sugar_smarty->assign('SUBMIT_BUTTON', '<input title="' . $mod_strings['LBL_LOGI
 if (!empty($_REQUEST['guid'])) {
     $sugar_smarty->assign("GUID", $_REQUEST['guid']);
 }
-$sugar_smarty->display('modules/Users/Changenewpassword.tpl');
+if (!empty($_REQUEST['key'])) {
+    $sugar_smarty->assign("KEY", $_REQUEST['key']);
+}
+
+$sugar_smarty->display(get_custom_file_if_exists('modules/Users/Changenewpassword.tpl'));
+
 $view->displayFooter();

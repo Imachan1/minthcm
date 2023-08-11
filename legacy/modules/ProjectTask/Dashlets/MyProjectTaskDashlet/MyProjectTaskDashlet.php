@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,37 +52,26 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('include/Dashlets/DashletGeneric.php');
 
 
-class MyProjectTaskDashlet extends DashletGeneric {
-    function __construct($id, $def = null) {
+class MyProjectTaskDashlet extends DashletGeneric
+{
+    public function __construct($id, $def = null)
+    {
         global $current_user, $app_strings;
-		require('modules/ProjectTask/Dashlets/MyProjectTaskDashlet/MyProjectTaskDashlet.data.php');
+        require('modules/ProjectTask/Dashlets/MyProjectTaskDashlet/MyProjectTaskDashlet.data.php');
 
         parent::__construct($id, $def);
 
-        if(empty($def['title'])) $this->title = translate('LBL_LIST_MY_PROJECT_TASKS', 'ProjectTask');
+        if (empty($def['title'])) {
+            $this->title = translate('LBL_LIST_MY_PROJECT_TASKS', 'ProjectTask');
+        }
 
         $this->searchFields = $dashletData['MyProjectTaskDashlet']['searchFields'];
         $this->columns = $dashletData['MyProjectTaskDashlet']['columns'];
 
-        $this->seedBean = new ProjectTask();
+        $this->seedBean = BeanFactory::newBean('ProjectTask');
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function MyProjectTaskDashlet($id, $def = null){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($id, $def);
-    }
-
-
-    function buildWhere()
+    public function buildWhere()
     {
         $resultArray = parent::buildWhere();
 

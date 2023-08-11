@@ -5,10 +5,10 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,8 +46,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-global $mod_strings;
-global $sugar_config;
+require_once __DIR__ . '/../../install/install_utils.php';
+handleHtaccess();
 
 $ignoreCase = (substr_count(strtolower($_SERVER['SERVER_SOFTWARE']), 'apache/2') > 0) ? '(?i)' : '';
 $htaccess_file = getcwd() . "/.htaccess";
@@ -134,7 +134,7 @@ if (empty($GLOBALS['sugar_config']['upload_dir'])) {
     $GLOBALS['sugar_config']['upload_dir'] = 'upload/';
 }
 
-$uploadHta = "upload://.htaccess";
+$uploadHta = 'upload://.htaccess';
 
 $denyAll = <<<eoq
 	Order Deny,Allow
@@ -146,7 +146,7 @@ if (file_exists($uploadHta) && filesize($uploadHta)) {
     if (is_writable($uploadHta)) {
         $oldHtaccess = file_get_contents($uploadHta);
         // use a different regex boundary b/c .htaccess uses the typicals
-        if (strstr($oldHtaccess, $denyAll) === false) {
+        if (strpos($oldHtaccess, $denyAll) === false) {
             $oldHtaccess .= "\n";
             $oldHtaccess .= $denyAll;
         }
@@ -156,11 +156,8 @@ if (file_exists($uploadHta) && filesize($uploadHta)) {
     } else {
         $htaccess_failed = true;
     }
-} else {
-    // no .htaccess yet, create a fill
-    if (!file_put_contents($uploadHta, $denyAll)) {
-        $htaccess_failed = true;
-    }
+} elseif (!file_put_contents($uploadHta, $denyAll)) {
+    $htaccess_failed = true;
 }
 
 if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'UpgradeAccess') {

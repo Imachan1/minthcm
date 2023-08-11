@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +11,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,34 +51,22 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/Project/Project.php');
 
-class MyProjectDashlet extends DashletGeneric {
-    function __construct($id, $def = null) {
+class MyProjectDashlet extends DashletGeneric
+{
+    public function __construct($id, $def = null)
+    {
         global $current_user, $app_strings;
-		require('modules/Project/Dashlets/MyProjectDashlet/MyProjectDashlet.data.php');
+        require('modules/Project/Dashlets/MyProjectDashlet/MyProjectDashlet.data.php');
 
         parent::__construct($id, $def);
 
-        if(empty($def['title'])) $this->title = translate('LBL_LIST_MY_PROJECT', 'Project');
+        if (empty($def['title'])) {
+            $this->title = translate('LBL_LIST_MY_PROJECT', 'Project');
+        }
 
         $this->searchFields = $dashletData['MyProjectDashlet']['searchFields'];
         $this->columns = $dashletData['MyProjectDashlet']['columns'];
-        $this->seedBean = new Project();
+        $this->seedBean = BeanFactory::newBean('Project');
     }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function MyProjectDashlet($id, $def = null){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($id, $def);
-    }
-
-
 
 }

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,27 +50,27 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 $listViewDefs['ProspectLists'] = array(
     'NAME' => array(
-        'width' => '25', 
-        'label' => 'LBL_LIST_PROSPECT_LIST_NAME', 
+        'width' => '25',
+        'label' => 'LBL_LIST_PROSPECT_LIST_NAME',
         'link' => true,
         'default' => true),
     'LIST_TYPE' => array(
-        'width' => '15', 
-        'label' => 'LBL_LIST_TYPE_LIST_NAME', 
+        'width' => '15',
+        'label' => 'LBL_LIST_TYPE_LIST_NAME',
         'default' => true),
     'DESCRIPTION' => array(
-        'width' => '40', 
-        'label' => 'LBL_LIST_DESCRIPTION', 
+        'width' => '40',
+        'label' => 'LBL_LIST_DESCRIPTION',
         'default' => true),
     'ASSIGNED_USER_NAME' => array(
-        'width' => '10', 
+        'width' => '10',
         'label' => 'LBL_LIST_ASSIGNED_USER',
         'module' => 'Employees',
-        'id' => 'ASSIGNED_USER_ID', 
+        'id' => 'ASSIGNED_USER_ID',
         'default' => true),
-  	'DATE_ENTERED' => array (
-	    'type' => 'datetime',
-	    'label' => 'LBL_DATE_ENTERED',
-	    'width' => '10',
-	    'default' => true),
+    'DATE_ENTERED' => array(
+        'type' => 'datetime',
+        'label' => 'LBL_DATE_ENTERED',
+        'width' => '10',
+        'default' => true),
 );

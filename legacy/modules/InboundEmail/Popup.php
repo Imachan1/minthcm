@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -109,7 +109,7 @@ if(isset($_REQUEST['ssl']) && ($_REQUEST['ssl'] == "true" || $_REQUEST['ssl'] ==
 	$useSsl = true;
 }
         
-$ie                 = new InboundEmail();
+$ie                 = BeanFactory::newBean('InboundEmail');
 if(!empty($_REQUEST['ie_id'])) {
     $ie->retrieve($_REQUEST['ie_id']);
     // MintHCM #110041 START
@@ -131,6 +131,10 @@ if(!empty($_REQUEST['email_password'])) {
     $ie->email_password = str_rot13($ie->email_password);
 }
 $ie->mailbox        = 'INBOX';
+
+if (!empty($_REQUEST['connection_string'])) {
+    $ie->connection_string = urldecode($_REQUEST['connection_string'] ?? '');
+}
 
 if($popupBoolean) {
     $msg = $ie->connectMailserver(true);

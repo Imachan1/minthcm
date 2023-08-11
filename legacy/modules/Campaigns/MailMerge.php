@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,7 +44,7 @@
 
  
 $_SESSION['MAILMERGE_MODULE_FROM_LISTVIEW'] = 'Campaigns';
-$_SESSION['MAILMERGE_MODULE'] = 'Campaigns'; 
+$_SESSION['MAILMERGE_MODULE'] = 'Campaigns';
 $_SESSION['MAILMERGE_RECORDS'] = array($_REQUEST['record']);
 $header_URL = 'Location: index.php?module=MailMerge&action=index';
 

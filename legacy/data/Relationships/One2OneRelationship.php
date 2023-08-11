@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -55,23 +55,21 @@ require_once("data/Relationships/One2MRelationship.php");
  */
 class One2OneRelationship extends M2MRelationship
 {
-
     public function __construct($def)
     {
         parent::__construct($def);
     }
     /**
-     * @param  $lhs SugarBean left side bean to add to the relationship.
-     * @param  $rhs SugarBean right side bean to add to the relationship.
-     * @param  $additionalFields key=>value pairs of fields to save on the relationship
+     * @param SugarBean $lhs left side bean to add to the relationship.
+     * @param SugarBean $rhs right side bean to add to the relationship.
+     * @param mixed $additionalFields key=>value pairs of fields to save on the relationship
      * @return boolean true if successful
      */
     public function add($lhs, $rhs, $additionalFields = array())
     {
         $dataToInsert = $this->getRowToInsert($lhs, $rhs, $additionalFields);
         //If the current data matches the existing data, don't do anything
-        if (!$this->checkExisting($dataToInsert))
-        {
+        if (!$this->checkExisting($dataToInsert)) {
             $lhsLinkName = $this->lhsLink;
             $rhsLinkName = $this->rhsLink;
             //In a one to one, any existing links from both sides must be removed first.
@@ -87,6 +85,4 @@ class One2OneRelationship extends M2MRelationship
         // data matched what was there so return false, since nothing happened
         return false;
     }
-
-
 }

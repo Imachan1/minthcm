@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -78,11 +78,8 @@ class Imap implements ImapInterface
      */
     public function open($mailbox, $username, $password, $options = 0, $n_retries = 0, array $params = null)
     {
-        $state = new StateSaver();
-        $state->pushErrorLevel();
-        error_reporting(0);
         $this->resource = imap_open($mailbox, $username, $password, $options, $n_retries, $params);
-        $state->popErrorLevel();
+
         return $this->resource;
     }
 }

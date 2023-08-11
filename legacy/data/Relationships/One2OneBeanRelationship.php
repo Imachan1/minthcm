@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -54,15 +54,14 @@ require_once("data/Relationships/One2MBeanRelationship.php");
  */
 class One2OneBeanRelationship extends One2MBeanRelationship
 {
-
     public function __construct($def)
     {
         parent::__construct($def);
     }
     /**
-     * @param  $lhs SugarBean left side bean to add to the relationship.
-     * @param  $rhs SugarBean right side bean to add to the relationship.
-     * @param  $additionalFields key=>value pairs of fields to save on the relationship
+     * @param SugarBean $lhs left side bean to add to the relationship.
+     * @param SugarBean $rhs right side bean to add to the relationship.
+     * @param mixed $additionalFields key=>value pairs of fields to save on the relationship
      * @return boolean true if successful
      */
     public function add($lhs, $rhs, $additionalFields = array())
@@ -79,17 +78,22 @@ class One2OneBeanRelationship extends One2MBeanRelationship
     protected function updateLinks($lhs, $lhsLinkName, $rhs, $rhsLinkName)
     {
         //RHS and LHS only ever have one bean
-        if (isset($lhs->$lhsLinkName))
+        if (isset($lhs->$lhsLinkName)) {
             $lhs->$lhsLinkName->beans = array($rhs->id => $rhs);
+        }
 
-        if (isset($rhs->$rhsLinkName))
+        if (isset($rhs->$rhsLinkName)) {
             $rhs->$rhsLinkName->beans = array($lhs->id => $lhs);
+        }
     }
 
     public function getJoin($link, $params = array(), $return_array = false)
     {
         $linkIsLHS = $link->getSide() == REL_LHS;
-        $startingTable = $link->getFocus()->table_name;
+        $startingTable = (empty($params['left_join_table_alias']) ? $link->getFocus()->table_name : $params['left_join_table_alias']);
+        if (!$linkIsLHS) {
+            $startingTable = (empty($params['right_join_table_alias']) ? $link->getFocus()->table_name : $params['right_join_table_alias']);
+        }
         $startingKey = $linkIsLHS ? $this->def['lhs_key'] : $this->def['rhs_key'];
         $targetTable = $linkIsLHS ? $this->def['rhs_table'] : $this->def['lhs_table'];
         $targetTableWithAlias = $targetTable;
@@ -99,8 +103,7 @@ class One2OneBeanRelationship extends One2MBeanRelationship
         $join = '';
 
         //Set up any table aliases required
-        if ( ! empty($params['join_table_alias']))
-        {
+        if (! empty($params['join_table_alias'])) {
             $targetTableWithAlias = $targetTable . " ". $params['join_table_alias'];
             $targetTable = $params['join_table_alias'];
         }
@@ -113,7 +116,7 @@ class One2OneBeanRelationship extends One2MBeanRelationship
         //Next add any role filters
                . $this->getRoleWhere();
 
-        if($return_array){
+        if ($return_array) {
             return array(
                 'join' => $join,
                 'type' => $this->type,

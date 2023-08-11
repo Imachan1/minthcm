@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,7 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-if (!defined('sugarEntry') || !sugarEntry) {
+ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
@@ -91,11 +91,7 @@ function handleSubs($subs, $email, $json, $user = null)
     return $out;
 }
 
-/*********************************************************************************
- * Description:
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc. All Rights
- * Reserved. Contributor(s): ______________________________________..
- *********************************************************************************/
+
 //increate timeout for phpo script execution
 ini_set('max_execution_time', 300);
 //ajaxInit();
@@ -105,18 +101,18 @@ require_once("include/OutboundEmail/OutboundEmail.php");
 require_once("include/ytree/Tree.php");
 require_once("include/ytree/ExtNode.php");
 
-$email = new Email();
+$email = BeanFactory::newBean('Emails');
 $email->email2init();
-$ie = new InboundEmail();
+$ie = BeanFactory::newBean('InboundEmail');
 $ie->email = $email;
 $json = getJSONobj();
 
+global $current_user;
 
 $showFolders = sugar_unserialize(base64_decode($current_user->getPreference('showFolders', 'Emails')));
 
 if (isset($_REQUEST['emailUIAction'])) {
-
-    if (isset($_REQUEST['user']) && $_REQUEST['user']) {
+    if (isset($_REQUEST['user']) && $_REQUEST['user'] && is_admin($current_user)) {
         $cid = $current_user->id;
         $current_user = BeanFactory::getBean('Users', $_REQUEST['user']);
     } else {
@@ -144,8 +140,11 @@ if (isset($_REQUEST['emailUIAction'])) {
                 $ie->email->from_name = $ie->email->from_addr;
                 $email = $ie->email->et->handleReplyType($ie->email, $_REQUEST['composeType']);
                 $ret = $ie->email->et->displayComposeEmail($email);
-                $ret['description'] = empty($email->description_html) ? str_replace("\n", "\n<BR/>",
-                    $email->description) : $email->description_html;
+                $ret['description'] = empty($email->description_html) ? str_replace(
+                    "\n",
+                    "\n<BR/>",
+                    $email->description
+                ) : $email->description_html;
                 //get the forward header and add to description
                 $forward_header = $email->getForwardHeader();
 
@@ -282,36 +281,39 @@ if (isset($_REQUEST['emailUIAction'])) {
 
     case "deleteSignature":
         $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: deleteSignature");
-        if(isset($_REQUEST['id'])) {
-  			require_once("modules/Users/UserSignature.php");
-        	$us = new UserSignature();
-        	$us->mark_deleted($_REQUEST['id']);
+        if (isset($_REQUEST['id'])) {
+            require_once("modules/Users/UserSignature.php");
+            $us = new UserSignature();
+            $us->mark_deleted($_REQUEST['id']);
             $signatureArray = $current_user->getSignaturesArray();
-	        // clean "none"
-	        foreach($signatureArray as $k => $v) {
-	            if($k == "") {
-                 $sigs[$k] = $app_strings['LBL_NONE'];
-	            } else {if (is_array($v) && isset($v['name'])){
-	                $sigs[$k] = $v['name'];
-	            } else{
-	                $sigs[$k] = $v;}
-	            }
-	        }
-	        $out['signatures'] = $signatureArray;
+            // clean "none"
+            foreach ($signatureArray as $k => $v) {
+                if ($k == "") {
+                    $sigs[$k] = $app_strings['LBL_NONE'];
+                } else {
+                    if (is_array($v) && isset($v['name'])) {
+                        $sigs[$k] = $v['name'];
+                    } else {
+                        $sigs[$k] = $v;
+                    }
+                }
+            }
+            $out['signatures'] = $signatureArray;
             $ret = $json->encode($out);
             echo $ret;
         } else {
             die();
         }
-    	break;
+        break;
     case 'getTemplateAttachments':
         $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: getTemplateAttachments");
-        if(isset($_REQUEST['parent_id']) && !empty($_REQUEST['parent_id'])) {$db = DBManagerFactory::getInstance();
+        if (isset($_REQUEST['parent_id']) && !empty($_REQUEST['parent_id'])) {
+            $db = DBManagerFactory::getInstance();
 
 
             $where = "parent_id='{$db->quote($_REQUEST['parent_id'])}'";
             $order = '';
-            $seed = new Note();
+            $seed = BeanFactory::newBean('Notes');
             $fullList = $seed->get_full_list($order, $where, '');
             $all_fields = array_merge($seed->column_fields, $seed->additional_column_fields);
 
@@ -319,14 +321,14 @@ if (isset($_REQUEST['emailUIAction'])) {
 
             $i=1; // js doesn't like 0 index?
             if (!empty($fullList)) {
-                foreach($fullList as $note) {
+                foreach ($fullList as $note) {
                     $js_fields_arr[$i] = array();
 
-                    foreach($all_fields as $field) {
-                        if(isset($note->$field)) {
+                    foreach ($all_fields as $field) {
+                        if (isset($note->$field)) {
                             $note->$field = from_html($note->$field);
-                            $note->$field = preg_replace('/\r\n/','<BR>',$note->$field);
-                            $note->$field = preg_replace('/\n/','<BR>',$note->$field);
+                            $note->$field = preg_replace('/\r\n/', '<BR>', $note->$field);
+                            $note->$field = preg_replace('/\n/', '<BR>', $note->$field);
                             $js_fields_arr[$i][$field] = addslashes($note->$field);
                         }
                     }
@@ -352,12 +354,12 @@ if (isset($_REQUEST['emailUIAction'])) {
 
             switch ($_REQUEST['type']) {
                 case "headers":
-                    $title = "{$app_strings['LBL_EMAIL_VIEW_HEADERS']}";
+                    $title = (string)($app_strings['LBL_EMAIL_VIEW_HEADERS']);
                     $text = $ie->getFormattedHeaders($_REQUEST['uid']);
                     break;
 
                 case "raw":
-                    $title = "{$app_strings['LBL_EMAIL_VIEW_RAW']}";
+                    $title = (string)($app_strings['LBL_EMAIL_VIEW_RAW']);
                     $text = $ie->getFormattedRawSource($_REQUEST['uid']);
                     break;
 
@@ -501,7 +503,6 @@ if (isset($_REQUEST['emailUIAction'])) {
                 } else {
                     echo $ret['html'];
                 }
-
             }
             break;
 
@@ -514,7 +515,7 @@ if (isset($_REQUEST['emailUIAction'])) {
                 $mod = strtolower($_REQUEST['parent_type']);
                 $modId = $_REQUEST['parent_id'];
                 foreach ($uids as $id) {
-                    $email = new Email();
+                    $email = BeanFactory::newBean('Emails');
                     $email->retrieve($id);
                     $email->parent_id = $modId;
                     $email->parent_type = $_REQUEST['parent_type'];
@@ -545,8 +546,13 @@ if (isset($_REQUEST['emailUIAction'])) {
             echo $out;
             break;
         case "doAssignmentAssign":
-            $out = $email->et->doAssignment($_REQUEST['distribute_method'], $_REQUEST['ieId'], $_REQUEST['folder'],
-                $_REQUEST['uids'], $_REQUEST['users']);
+            $out = $email->et->doAssignment(
+                $_REQUEST['distribute_method'],
+                $_REQUEST['ieId'],
+                $_REQUEST['folder'],
+                $_REQUEST['uids'],
+                $_REQUEST['users']
+            );
             echo $out;
             break;
         case "doAssignmentDelete":
@@ -565,8 +571,10 @@ if (isset($_REQUEST['emailUIAction'])) {
             if (isset($_REQUEST['uids']) && !empty($_REQUEST['uids']) &&
                 isset($_REQUEST['type']) && !empty($_REQUEST['type']) &&
                 isset($_REQUEST['folder']) && !empty($_REQUEST['folder']) &&
-                isset($_REQUEST['ieId']) && (!empty($_REQUEST['ieId']) || (empty($_REQUEST['ieId']) && strpos($_REQUEST['folder'],
-                            'sugar::') !== false))
+                isset($_REQUEST['ieId']) && (!empty($_REQUEST['ieId']) || (empty($_REQUEST['ieId']) && strpos(
+                    $_REQUEST['folder'],
+                    'sugar::'
+                ) !== false))
             ) {
                 $uid = $json->decode(from_html($_REQUEST['uids']));
                 $uids = array();
@@ -583,9 +591,13 @@ if (isset($_REQUEST['emailUIAction'])) {
                 $GLOBALS['log']->debug("********** EMAIL 2.0 - Marking emails $uids as {$_REQUEST['type']}");
 
                 $ret = array();
-                if (strpos($_REQUEST['folder'],
-                        'sugar::') !== false && ($_REQUEST['type'] == 'deleted') && !ACLController::checkAccess('Emails',
-                        'delete')
+                if (strpos(
+                    $_REQUEST['folder'],
+                    'sugar::'
+                ) !== false && ($_REQUEST['type'] == 'deleted') && !ACLController::checkAccess(
+                    'Emails',
+                    'delete'
+                        )
                 ) {
                     $ret['status'] = false;
                     $ret['message'] = $app_strings['LBL_EMAIL_DELETE_ERROR_DESC'];
@@ -816,8 +828,11 @@ if (isset($_REQUEST['emailUIAction'])) {
                 } else {
                     $out = $ie->displayOneEmail($_REQUEST['uid'], $_REQUEST['mbox']);
                     $out['meta']['email']['description'] =
-                        empty($email->description_html) ? str_replace("\n", "\n<BR/>",
-                            $email->description) : $email->description_html;
+                        empty($email->description_html) ? str_replace(
+                            "\n",
+                            "\n<BR/>",
+                            $email->description
+                        ) : $email->description_html;
                     $out['meta']['email']['date_start'] = $email->date_start;
                     $out['meta']['email']['time_start'] = $email->time_start;
                     $out['meta']['ieId'] = $_REQUEST['ieId'];
@@ -850,18 +865,30 @@ eoq;
 
                 $out = array();
                 foreach ($exUids as $k => $uid) {
-                    if ($email->et->validCacheFileExists($_REQUEST['ieId'], 'messages',
-                        $_REQUEST['mbox'] . $uid . ".php")
+                    if ($email->et->validCacheFileExists(
+                        $_REQUEST['ieId'],
+                        'messages',
+                        $_REQUEST['mbox'] . $uid . ".php"
+                    )
                     ) {
-                        $msg = $email->et->getCacheValue($_REQUEST['ieId'], 'messages',
-                            $_REQUEST['mbox'] . $uid . ".php", 'out');
+                        $msg = $email->et->getCacheValue(
+                            $_REQUEST['ieId'],
+                            'messages',
+                            $_REQUEST['mbox'] . $uid . ".php",
+                            'out'
+                        );
                     } else {
                         $ie->retrieve($_REQUEST['ieId']);
                         $ie->mailbox = $_REQUEST['mbox'];
                         $ie->setEmailForDisplay($uid, false, true);
                         $msg = $ie->displayOneEmail($uid, $_REQUEST['mbox']);
-                        $email->et->writeCacheFile('out', $msg, $_REQUEST['ieId'], 'messages',
-                            "{$_REQUEST['mbox']}{$uid}.php");
+                        $email->et->writeCacheFile(
+                            'out',
+                            $msg,
+                            $_REQUEST['ieId'],
+                            'messages',
+                            "{$_REQUEST['mbox']}{$uid}.php"
+                        );
                     }
 
                     $out[] = $msg;
@@ -879,7 +906,7 @@ eoq;
                 $out = array();
 
                 foreach ($exIds as $id) {
-                    $e = new Email();
+                    $e = BeanFactory::newBean('Emails');
                     $e->retrieve($id);
                     $e->description_html = from_html($e->description_html);
                     $ie->email = $e;
@@ -924,7 +951,7 @@ eoq;
                 ob_start();
                 echo $out;
                 ob_end_flush();
-                //die();
+            //die();
             } else {
                 echo $msg = 'error: no ieID';
                 $GLOBALS['log']->error($msg);
@@ -957,15 +984,21 @@ eoq;
                 $sortSerial = $current_user->getPreference('folderSortOrder', 'Emails');
                 if (!empty($sortSerial) && !empty($_REQUEST['ieId']) && !empty($_REQUEST['mbox'])) {
                     $sortArray = sugar_unserialize($sortSerial);
-                    $GLOBALS['log']->debug("********** EMAIL 2.0********** ary=" . print_r($sortArray,
-                            true) . ' id=' . $_REQUEST['ieId'] . '; box=' . $_REQUEST['mbox']);
+                    $GLOBALS['log']->debug("********** EMAIL 2.0********** ary=" . print_r(
+                        $sortArray,
+                        true
+                    ) . ' id=' . $_REQUEST['ieId'] . '; box=' . $_REQUEST['mbox']);
                     $sort = $sortArray[$_REQUEST['ieId']][$_REQUEST['mbox']]['current']['sort'];
                     $direction = $sortArray[$_REQUEST['ieId']][$_REQUEST['mbox']]['current']['direction'];
                 }
                 //set sort and direction to user predference
                 if (!empty($_REQUEST['sort']) && !empty($_REQUEST['dir'])) {
-                    $email->et->saveListViewSortOrder($_REQUEST['ieId'], $_REQUEST['mbox'], $_REQUEST['sort'],
-                        $_REQUEST['dir']);
+                    $email->et->saveListViewSortOrder(
+                        $_REQUEST['ieId'],
+                        $_REQUEST['mbox'],
+                        $_REQUEST['sort'],
+                        $_REQUEST['dir']
+                    );
                     $sort = $_REQUEST['sort'];
                     $direction = $_REQUEST['dir'];
                 } else {
@@ -974,8 +1007,13 @@ eoq;
                 }
                 //end
 
-                $metalist = $email->et->folder->getListItemsForEmailXML($_REQUEST['ieId'], $page,
-                    $emailSettings['showNumInList'], $sort, $direction);
+                $metalist = $email->et->folder->getListItemsForEmailXML(
+                    $_REQUEST['ieId'],
+                    $page,
+                    $emailSettings['showNumInList'],
+                    $sort,
+                    $direction
+                );
                 $count = $email->et->folder->getCountItems($_REQUEST['ieId']);
 
                 if (!empty($_REQUEST['getUnread'])) {
@@ -1022,7 +1060,6 @@ eoq;
                 $email->et->folder->setSubscriptions($subs);
 
                 $out = handleSubs($subs, $email, $json);
-
             } elseif (empty($_REQUEST['subscriptions'])) {
                 $email->et->folder->clearSubscriptions();
             } else {
@@ -1036,8 +1073,12 @@ eoq;
                 $rootNode = new ExtNode('', '');
                 $folderOpenState = $current_user->getPreference('folderOpenState', 'Emails');
                 $folderOpenState = (empty($folderOpenState)) ? "" : $folderOpenState;
-                $ret = $email->et->folder->getUserFolders($rootNode, sugar_unserialize($folderOpenState), $current_user,
-                    true);
+                $ret = $email->et->folder->getUserFolders(
+                    $rootNode,
+                    sugar_unserialize($folderOpenState),
+                    $current_user,
+                    true
+                );
                 $out = $json->encode($ret);
                 echo $out;
             } catch (SugarFolderEmptyException $e) {
@@ -1059,8 +1100,13 @@ eoq;
 
         case "moveEmails":
             $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: moveEmails");
-            $ie->moveEmails($_REQUEST['sourceIeId'], $_REQUEST['sourceFolder'], $_REQUEST['destinationIeId'],
-                $_REQUEST['destinationFolder'], $_REQUEST['emailUids']);
+            $ie->moveEmails(
+                $_REQUEST['sourceIeId'],
+                $_REQUEST['sourceFolder'],
+                $_REQUEST['destinationIeId'],
+                $_REQUEST['destinationFolder'],
+                $_REQUEST['emailUids']
+            );
             break;
 
         case "saveNewFolder":
@@ -1153,6 +1199,7 @@ eoq;
                     echo "NOOP - not a Sugar Folder";
                 }
             }
+            // no break
         case "moveFolder":
             $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: moveFolder");
             if (isset($_REQUEST['folderId']) && !empty($_REQUEST['folderId']) && isset($_REQUEST['newParentId']) && !empty($_REQUEST['newParentId']) && $_REQUEST['newParentId'] != $_REQUEST['folderId']) {
@@ -1197,8 +1244,12 @@ eoq;
 
         case "saveListViewSortOrder":
             $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: saveListViewSortOrder");
-            $email->et->saveListViewSortOrder($_REQUEST['ieId'], $_REQUEST['focusFolder'], $_REQUEST['sortBy'],
-                $_REQUEST['reverse']);
+            $email->et->saveListViewSortOrder(
+                $_REQUEST['ieId'],
+                $_REQUEST['focusFolder'],
+                $_REQUEST['sortBy'],
+                $_REQUEST['reverse']
+            );
             break;
         ////    END FOLDER ACTIONS
         ///////////////////////////////////////////////////////////////////////////
@@ -1233,7 +1284,6 @@ eoq;
 
                 $out = $json->encode($ret, true);
                 echo $out;
-
             } else {
                 echo "NOOP";
             }
@@ -1284,14 +1334,13 @@ eoq;
             $oe->user_id = $current_user->id;
             $oe->mail_sendtype = "SMTP";
 
-            $oe->smtp_from_name = $_REQUEST['smtp_from_name'];
-            $oe->smtp_from_addr = $_REQUEST['smtp_from_addr'];
-            $oe->mail_smtpserver = $_REQUEST['mail_smtpserver'];
+            $oe->smtp_from_name = trim($_REQUEST['smtp_from_name']);
+            $oe->smtp_from_addr = trim($_REQUEST['smtp_from_addr']);
+            $oe->mail_smtpserver = trim($_REQUEST['mail_smtpserver']);
             $oe->mail_smtpport = $_REQUEST['mail_smtpport'];
             $oe->mail_smtpssl = $_REQUEST['mail_smtpssl'];
             $oe->mail_smtpauth_req = isset($_REQUEST['mail_smtpauth_req']) ? 1 : 0;
-            $oe->mail_smtpuser = $_REQUEST['mail_smtpuser'];
-            $oe->mail_smtpuser = $_REQUEST['mail_smtpuser'];
+            $oe->mail_smtpuser = trim($_REQUEST['mail_smtpuser']);
             if (!empty($_REQUEST['mail_smtppass'])) {
                 $oe->mail_smtppass = $_REQUEST['mail_smtppass'];
             }
@@ -1303,7 +1352,7 @@ eoq;
             global $current_user;
             $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: saveDefaultOutbound");
             $outbound_id = empty($_REQUEST['id']) ? "" : $_REQUEST['id'];
-            $ie = new InboundEmail();
+            $ie = BeanFactory::newBean('InboundEmail');
             $ie->setUsersDefaultOutboundServerId($current_user, $outbound_id);
             break;
         case "testOutbound":
@@ -1319,10 +1368,16 @@ eoq;
                     $pass = $oe->mail_smtppass;
                 }
             }
-            $out = $email->sendEmailTest($_REQUEST['mail_smtpserver'], $_REQUEST['mail_smtpport'],
+            $out = $email->sendEmailTest(
+                $_REQUEST['mail_smtpserver'],
+                $_REQUEST['mail_smtpport'],
                 $_REQUEST['mail_smtpssl'],
-                (isset($_REQUEST['mail_smtpauth_req']) ? 1 : 0), $_REQUEST['mail_smtpuser'],
-                $pass, $_REQUEST['outboundtest_from_address'], $_REQUEST['outboundtest_from_address']);
+                (isset($_REQUEST['mail_smtpauth_req']) ? 1 : 0),
+                $_REQUEST['mail_smtpuser'],
+                $pass,
+                $_REQUEST['outboundtest_from_address'],
+                $_REQUEST['outboundtest_from_address']
+            );
 
             $out = $json->encode($out);
             echo $out;
@@ -1391,7 +1446,7 @@ eoq;
 
                     if (isset($_REQUEST['account_signature_id'])) {
                         $email_signatures = $current_user->getPreference('account_signatures', 'Emails');
-                        $email_signatures = unserialize(base64_decode($email_signatures));
+                        $email_signatures = sugar_unserialize(base64_decode($email_signatures));
                         if (empty($email_signatures)) {
                             $email_signatures = array();
                         }
@@ -1406,7 +1461,7 @@ eoq;
                             continue;
                         }
                         if ($k == 'stored_options') {
-                            $ie->$k = unserialize(base64_decode($ie->$k));
+                            $ie->$k = sugar_unserialize(base64_decode($ie->$k));
                             if (isset($ie->stored_options['from_name'])) {
                                 $ie->stored_options['from_name'] = from_html($ie->stored_options['from_name']);
                             }
@@ -1444,7 +1499,6 @@ eoq;
                     $oe->mail_smtppass = $outboundMailPass;
                     $oe->save();
                 }
-
             } else {
                 echo "NOOP";
             }
@@ -1455,7 +1509,7 @@ eoq;
             $ieId = $_REQUEST['ieId'];
             $ie->retrieve($ieId);
 
-            if ($ie->group_id == $current_user->id) {
+            if (($ie->group_id == $current_user->id) || ($current_user->is_admin)) {
                 $ret = array();
 
                 foreach ($ie->field_defs as $k => $v) {
@@ -1481,7 +1535,7 @@ eoq;
                 unset($ret['email_password']); // no need to send the password out
 
                 $email_signatures = $current_user->getPreference('account_signatures', 'Emails');
-                $email_signatures = unserialize(base64_decode($email_signatures));
+                $email_signatures = sugar_unserialize(base64_decode($email_signatures));
 
                 if (!empty($email_signatures) && isset($email_signatures[$ieId])) {
                     $ret['email_signatures'] = $email_signatures[$ieId];
@@ -1614,12 +1668,14 @@ eoq;
             }
             $email->et->removeContacts($removeIds);
 
+            // no break
         case "saveContactEdit":
             $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: saveContactEdit");
             if (isset($_REQUEST['args']) && !empty($_REQUEST['args'])) {
                 $email->et->saveContactEdit($_REQUEST['args']);
             }
         // flow into getUserContacts();
+        // no break
         case "addContact":
             $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: addContacts");
             $contacts = array();
@@ -1632,16 +1688,17 @@ eoq;
                 $email->et->setContacts($contacts);
             }
 
+            // no break
         case "addContactsMultiple":
             $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: addContacts");
             if (isset($_REQUEST['contactData'])) {
                 $contacts = $json->decode(from_HTML($_REQUEST['contactData']));
                 if ($contacts) {
-                    //_ppd($contacts);
                     $email->et->setContacts($contacts);
                 }
             }
 
+            // no break
         case "getUserContacts":
             $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: getUserContacts");
             $contacts = $email->et->getContacts();
@@ -1709,7 +1766,7 @@ eoq;
                 $person = $_REQUEST['person'];
             }
             if (!empty($_REQUEST['start'])) {
-                $start = intval($_REQUEST['start']);
+                $start = (int)$_REQUEST['start'];
             } else {
                 $start = 0;
             }
@@ -1732,8 +1789,10 @@ eoq;
                 $sort = ($sort == 'bean_id') ? 'id' : $sort;
                 $sort = ($sort == 'email') ? 'email_address' : $sort;
                 $sort = ($sort == 'name') ? 'last_name' : $sort;
-                $direction = !empty($_REQUEST['dir']) && in_array(strtolower($_REQUEST['dir']),
-                    array("asc", "desc")) ? $_REQUEST['dir'] : "asc";
+                $direction = !empty($_REQUEST['dir']) && in_array(
+                    strtolower($_REQUEST['dir']),
+                    array("asc", "desc")
+                ) ? $_REQUEST['dir'] : "asc";
                 $order = (!empty($sort) && !empty($direction)) ? " ORDER BY {$sort} {$direction}" : "";
 
                 $r = $ie->db->limitQuery($qArray['query'] . " $order ", $start, 25, true);
@@ -1774,5 +1833,4 @@ eoq;
         $current_user->savePreferencesToDB();
         $current_user = BeanFactory::getBean('Users', $cid);
     }
-
 } // if

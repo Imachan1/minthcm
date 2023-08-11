@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -205,7 +205,7 @@ if((count($drop_index) > 0 or count($add_index) > 0 or count($change_index) > 0)
 		echo ($_REQUEST['silent']) ? "" : "<a href='index.php?module=Administration&action=RepairIndex&mode=execute'>Execute Script</a>";
 	}
 
-	$focus = new Account();
+    $focus = BeanFactory::newBean('Accounts');
 	if(count($drop_index) > 0) {
 		if(isset($_REQUEST['mode']) and $_REQUEST['mode']=='execute') {
 			echo ($_REQUEST['silent']) ? "" : $mod_strings['LBL_REPAIR_INDEX_DROPPING'];

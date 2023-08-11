@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,37 +49,28 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
-require_once('include/Dashlets/DashletGeneric.php');
+
+ require_once('include/Dashlets/DashletGeneric.php');
 
 
-class MyTasksDashlet extends DashletGeneric {
-    function __construct($id, $def = null) {
-        global $current_user, $app_strings;
-		require('modules/Tasks/Dashlets/MyTasksDashlet/MyTasksDashlet.data.php');
+ class MyTasksDashlet extends DashletGeneric
+ {
+     public function __construct($id, $def = null)
+     {
+         global $current_user, $app_strings;
+         require('modules/Tasks/Dashlets/MyTasksDashlet/MyTasksDashlet.data.php');
+ 
+         parent::__construct($id, $def);
+ 
+         if (empty($def['title'])) {
+             $this->title = translate('LBL_LIST_MY_TASKS', 'Tasks');
+         }
+ 
+         $this->searchFields = $dashletData['MyTasksDashlet']['searchFields'];
+         $this->columns = $dashletData['MyTasksDashlet']['columns'];
+ 
+         $this->seedBean = BeanFactory::newBean('Tasks');
+     }
 
-        parent::__construct($id, $def);
-
-        if(empty($def['title'])) $this->title = translate('LBL_LIST_MY_TASKS', 'Tasks');
-
-        $this->searchFields = $dashletData['MyTasksDashlet']['searchFields'];
-        $this->columns = $dashletData['MyTasksDashlet']['columns'];
-
-        $this->seedBean = new Task();
-    }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function MyTasksDashlet($id, $def = null){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($id, $def);
-    }
-
-}
-
+ }
+ 

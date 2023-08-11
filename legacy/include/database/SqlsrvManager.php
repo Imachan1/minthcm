@@ -343,8 +343,6 @@ class SqlsrvManager extends MssqlManager {
 
    /**
     * Detect if no clustered index has been created for a table; if none created then just pick the first index and make it that
-    *
-    * @see MssqlHelper::indexSQL()
     */
    public function getConstraintSql($indices, $table) {
       if ( $this->doesTableHaveAClusteredIndexDefined($table) ) {
@@ -523,7 +521,7 @@ EOSQL;
       }
 
       if ( !empty($messages) ) {
-         return join("\n", $messages);
+         return implode("\n", $messages);
       }
       return false;
    }
