@@ -40,10 +40,10 @@ class Init
     public function getData()
     {
         $response_body = array();
+        $response_body['languages'] = $this->languages_controller->getLanguages();
         $response_body['user'] = $this->getCurrentUserData();
         $response_body['preferences'] = $this->preferences_controller->getUserPreferences();
         $response_body['global'] = $this->preferences_controller->getGlobalSettings();
-        $response_body['languages'] = $this->languages_controller->getLanguages();
         [$modules_menu, $modules_data] = $this->getModules();
         $response_body['menu_modules'] = $modules_menu;
         $response_body['modules'] = $modules_data;
@@ -58,13 +58,20 @@ class Init
         if (empty($current_user->id)) {
             return array();
         }
-
+        $preferences = [];
+        $preferences['date_time_preferences'] = $current_user->getUserDateTimePreferences();
+        $preferences['first_day_of_week'] = $current_user->getPreference('fdow');
+        $preferences['timezone'] = $current_user->getPreference('timezone');
+        $preferences['name_format'] = $current_user->getPreference('default_locale_name_format');
         return array(
             "id" => $current_user->id,
             "is_admin" => "1" === $current_user->is_admin ? true : false,
             "first_name" => $current_user->first_name,
             "last_name" => $current_user->last_name,
             "full_name" => $current_user->full_name,
+            "email" => $current_user->email1,
+            "preferences" => $preferences,
+            "show_login_wizard" => empty($current_user->getPreference('ut')),
         );
     }
 

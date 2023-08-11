@@ -4,12 +4,16 @@ import AuthViewForget from '@/views/AuthView/AuthViewForget.vue'
 import LegacyView from '@/views/LegacyView/LegacyView.vue'
 import AuthViewLogin from '@/views/AuthView/AuthViewLogin.vue'
 import AuthViewReset from '@/views/AuthView/AuthViewReset.vue'
+import { Component } from 'vue'
+import GuestLayout from '@/layouts/GuestLayout/GuestLayout.vue'
+import { useAuthStore } from '@/store/auth'
 
 declare module 'vue-router' {
     interface RouteMeta {
         isLegacy?: boolean
         legacyUrl?: string
         auth: boolean
+        layout?: Component
     }
 }
 
@@ -38,6 +42,21 @@ const routes: Array<RouteRecordRaw> = [
                 component: AuthViewReset,
             },
         ],
+    },
+    {
+        path: '/setup',
+        name: 'setup-wizard',
+        component: () => import('@/views/SetupWizard/SetupWizard.vue'),
+        meta: {
+            auth: true,
+            layout: GuestLayout,
+        },
+        beforeEnter: () => {
+            const auth = useAuthStore()
+            if (!auth.user?.show_login_wizard) {
+                return { name: 'dashboard' }
+            }
+        },
     },
     {
         path: '/',

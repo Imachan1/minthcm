@@ -44,7 +44,6 @@ class Preferences
             'date_formats' => $sugar_config["date_formats"],
             'time_formats' => $sugar_config["time_formats"],
             'name_format' => $sugar_config["default_locale_name_format"],
-            'name_formats' => $sugar_config["name_formats"],
             'password_rules' => [
                 'minpwdlength' => $sugar_config['passwordsetting']['minpwdlength'] ?? null,
                 'oneupper' => $sugar_config['passwordsetting']['oneupper'] ?? false,
@@ -52,6 +51,8 @@ class Preferences
                 'onenumber' => $sugar_config['passwordsetting']['onenumber'] ?? false,
                 'onespecial' => $sugar_config['passwordsetting']['onespecial'] ?? false,
             ],
+            'time_zones' => \TimeDate::getTimezoneList(),
+            'name_formats' => (new \Localization())->getUsableLocaleNameOptions($sugar_config['name_formats']),
         );
     }
 
