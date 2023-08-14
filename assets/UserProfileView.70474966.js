@@ -1,1 +1,0 @@
-import{d as o,o as a,c as t,a as s,w as r,V as l,F as n,b as c,e as i}from"./index.2ac368f6.js";const _=c("h1",null,"User Profile",-1),u=o({__name:"UserProfileView",setup(d){function e(){console.log("emit hello")}return(m,f)=>(a(),t(n,null,[_,s(l,{color:"primary",onClick:e},{default:r(()=>[i("asdasd")]),_:1})],64))}});export{u as default};
