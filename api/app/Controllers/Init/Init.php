@@ -122,9 +122,7 @@ class Init
         global $beanList,$current_user;
         foreach($beanList as $key=>$module) {
             if(!array_key_exists($key,$modules_data)){
-                if($current_user->isAdmin()){
-                    $modules_data[$key] = $this->module_init_controller->getModuleData($key);
-                }
+                $modules_data[$key] = $this->module_init_controller->getModuleData($key);
             }
         }
         return [array_keys($modules), $modules_data];
