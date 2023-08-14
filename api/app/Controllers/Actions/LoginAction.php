@@ -2,6 +2,7 @@
 
 namespace MintHCM\Api\Controllers\Actions;
 
+use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Api\Controllers\Init\Languages;
 use MintHCM\Api\Controllers\Init\Preferences;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -12,9 +13,9 @@ class LoginAction
 
     protected $preferences_controller, $languages_controller;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->preferences_controller = new Preferences();
+        $this->preferences_controller = new Preferences($entityManager);
         $this->languages_controller = new Languages();
     }
 

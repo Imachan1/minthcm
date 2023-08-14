@@ -2,6 +2,7 @@
 
 namespace MintHCM\Api\Controllers;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Slim\Psr7\Response;
 use MintHCM\Lib\Search\Search;
 use MintHCM\Utils\LegacyConnector;
@@ -9,6 +10,18 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class GlobalSearchController
 {
+    protected $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+
+        // Workaround for api/lib/Search/Base/SearchResult.php
+        // Passing EntityManager by constructor could make a mess with class structure
+        // It should be replaced with a normal solution
+        global $entityManager;
+        $entityManager = $this->entityManager;
+    }
 
     public function getData(Request $request, Response $response, array $args): Response
     {

@@ -117,4 +117,24 @@ class Installer
         $configFile = preg_replace($pattern, $replacement, $originalConfigFile);
         file_put_contents('./api/app/Config/AppConfig.php', $configFile);
     }
+
+    public function setupDoctrineConfig(array $userData)
+    {
+        $config_file = "./api/configs/mint/config_override.php";
+        $mapping = [
+            'host' => $userData['databaseHost'],
+            'port' => $userData['databasePort'],
+            'user' => $userData['databaseUsername'],
+            'password' => $userData['databasePassword'],
+            'dbname' => $userData['databaseName'],
+        ];
+
+        $final_config = file_exists($config_file)
+            ? file_get_contents($config_file) . "\n"
+            : "<?php\n\n";
+        foreach ($mapping as $key => $value) {
+            $final_config .= "\$mint_config['database']['$key'] = '$value';\n";
+        }
+        file_put_contents($config_file, $final_config);
+    }
 }

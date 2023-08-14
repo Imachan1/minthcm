@@ -2,12 +2,20 @@
 
 namespace MintHCM\Api\Controllers;
 
+use Doctrine\ORM\EntityManagerInterface;
+use MintHCM\Api\Entities\UsersPasswordLink;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Psr7\Response;
 
 class AuthController
 {
+    protected $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     public function login(Request $request, Response $response, array $args): Response
     {
@@ -86,20 +94,21 @@ class AuthController
             return $response;
         }
 
-        $guid = create_guid();
+        $usersPasswordLink = new UsersPasswordLink();
+        $usersPasswordLink->username = $username;
+        $this->entityManager->persist($usersPasswordLink);
+        $this->entityManager->flush();
+
         $emailTemp_id = $sugar_config['passwordsetting']['lostpasswordtmpl'];
-        $url = $sugar_config['site_url'] . "/#/auth/reset?token=$guid";
+
+        $url = $sugar_config['site_url'] . "/#/auth/reset?token={$usersPasswordLink->id}";
         $additionalData = array(
             'link' => true,
             'password' => '',
             'url' => $url,
         );
 
-        $time_now = \TimeDate::getInstance()->nowDb();
-        $q = "INSERT INTO users_password_link (id, username, date_generated) VALUES('" . $guid . "','" . $username . "','" . $time_now . "') ";
-
         chdir('../legacy/');
-        $user->db->query($q);
         $result = $user->sendEmailForPassword($emailTemp_id, $additionalData);
         chdir('../api/');
 
@@ -120,13 +129,9 @@ class AuthController
 
         $token = $request->getAttribute('token');
 
-        chdir('../legacy/');
-        $db = \DBManagerFactory::getInstance();
-        $query = "SELECT * FROM users_password_link WHERE id = '" . $db->quote($token) . "'";
-        $row = $db->fetchOne($query);
-        chdir('../api/');
-
-        if (empty($row)) {
+        $usersPasswordLink = $this->entityManager->getRepository(UsersPasswordLink::class)
+            ->findOneById($token);
+        if (!$usersPasswordLink) {
             $response = $response->withStatus(400);
             return $response;
         }
@@ -135,7 +140,7 @@ class AuthController
         $expired = false;
         if ($pwd_settings['linkexpiration']) {
             $delay = $pwd_settings['linkexpirationtime'] * $pwd_settings['linkexpirationtype'];
-            $stim = strtotime($row['date_generated']) + date('Z');
+            $stim = $usersPasswordLink->date_generated->getTimestamp() + date('Z');
             $expiretime = \TimeDate::getInstance()->fromTimestamp($stim)->get("+$delay  minutes")->asDb();
             $timenow = \TimeDate::getInstance()->nowDb();
             if ($timenow > $expiretime) {
@@ -149,14 +154,14 @@ class AuthController
             return $response;
         }
 
-        if ('1' == $row['deleted']) {
+        if ($usersPasswordLink->deleted) {
             $response = $response->withStatus(403);
             $response->getBody()->write(json_encode(array('message' => 'LBL_TOKEN_USED')));
             return $response;
         }
 
         $response->getBody()->write(json_encode(array(
-            'username' => $row['username'],
+            'username' => $usersPasswordLink->username,
             'password_settings' => array(
                 "oneupper" => !empty($pwd_settings['oneupper']) ? true : false,
                 "onelower" => !empty($pwd_settings['onelower']) ? true : false,
@@ -201,11 +206,10 @@ class AuthController
         $user_id = $user->retrieve_user_id($username);
         $user->retrieve($user_id);
         $user->setNewPassword($new_password);
-
-        $db = \DBManagerFactory::getInstance();
-        $query = "UPDATE users_password_link SET deleted='1' where username='" . $db->quote($username) . "'";
-        $db->query($query);
         chdir('../api/');
+
+        $this->entityManager->getRepository(UsersPasswordLink::class)
+            ->markAllAsDeletedByUsername($username);
 
         return $response;
     }
