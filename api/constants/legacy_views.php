@@ -481,4 +481,8 @@ return [
         'list' => false,
         'record' => true,
     ],
+    'Meetings' => [
+        'list' => false,
+        'record' => true,
+    ],
 ];
