@@ -10,6 +10,7 @@ export interface User {
     last_name: string
     full_name: string
     email: string
+    photo?: string
     show_login_wizard: boolean
     preferences: { [key: string]: any }
 }

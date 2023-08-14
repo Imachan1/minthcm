@@ -1,13 +1,13 @@
 <template>
     <v-menu offset="16">
         <template v-slot:activator="{ props, isActive }">
-            <button
-                class="user-btn"
-                :class="[isActive && 'active']"
-                v-ripple
-                v-bind="props"
-            >
-                <v-icon size="24" icon="mdi-account" />
+            <button class="user-btn" :class="[isActive && 'active']" v-ripple v-bind="props">
+                <img
+                    v-if="auth.user?.photo"
+                    class="user-avatar"
+                    :src="`legacy/index.php?entryPoint=download&type=Users&id=${auth.user?.id}_photo`"
+                />
+                <v-icon v-else icon="mdi-account" class="user-default-avatar" />
                 <span>
                     {{ auth.user?.first_name || auth.user?.last_name }}
                 </span>
@@ -79,10 +79,12 @@ const menuItems = computed<MenuListItem[]>(() => {
     color: rgb(var(--v-theme-secondary));
     background: #f5fbfa;
     border-radius: 50px;
-    padding: 10px 14px;
     display: flex;
     align-items: center;
-    gap: 8px;
+
+    span {
+        padding: 0px 16px;
+    }
 
     &:hover {
         color: rgb(var(--v-theme-secondary-dark));
@@ -92,6 +94,19 @@ const menuItems = computed<MenuListItem[]>(() => {
     &.active {
         color: #f5fbfa;
         background: rgb(var(--v-theme-secondary));
+    }
+
+    .user-avatar {
+        object-fit: cover;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    .user-default-avatar {
+        font-size: 28px;
+        padding: 20px 20px 16px 20px;
+        border-radius: 50%;
     }
 }
 </style>

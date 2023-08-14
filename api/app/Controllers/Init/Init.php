@@ -70,6 +70,7 @@ class Init
             "last_name" => $current_user->last_name,
             "full_name" => $current_user->full_name,
             "email" => $current_user->email1,
+            "photo" => $current_user->photo,
             "preferences" => $preferences,
             "show_login_wizard" => empty($current_user->getPreference('ut')),
         );
