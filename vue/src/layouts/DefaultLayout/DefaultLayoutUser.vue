@@ -105,7 +105,7 @@ const menuItems = computed<MenuListItem[]>(() => {
 
     .user-default-avatar {
         font-size: 28px;
-        padding: 20px 20px 16px 20px;
+        padding: 20px 12px 20px 20px;
         border-radius: 50%;
     }
 }
