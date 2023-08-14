@@ -65,7 +65,7 @@ class Module
             "name" => $module,
             "icon" => $this->modules_icons[$module] ?? $this->modules_icons['default'],
             "actions" => 'Home' === $module ? $this->getHomeMenu() : $this->getModuleMenu($module),
-            "acl" => array_map(function ($view) { return $view['aclaccess']; }, $acl[$module]['module'] ?? []),
+            "acl" => array_map(function ($view) { return (int)$view['aclaccess']; }, $acl[$module]['module'] ?? []),
         );
     }
 
