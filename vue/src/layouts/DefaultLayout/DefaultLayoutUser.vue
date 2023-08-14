@@ -3,7 +3,7 @@
         <template v-slot:activator="{ props, isActive }">
             <button class="user-btn" :class="[isActive && 'active']" v-ripple v-bind="props">
                 <img
-                    v-if="auth.user?.photo"
+                    v-if="auth.user?.photos"
                     class="user-avatar"
                     :src="`legacy/index.php?entryPoint=download&type=Users&id=${auth.user?.id}_photo`"
                 />
@@ -105,7 +105,7 @@ const menuItems = computed<MenuListItem[]>(() => {
 
     .user-default-avatar {
         font-size: 28px;
-        padding: 20px 20px 16px 20px;
+        padding: 20px 12px 20px 20px;
         border-radius: 50%;
     }
 }
