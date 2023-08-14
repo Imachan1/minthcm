@@ -24,8 +24,10 @@ class LoginAction
 
         $response_body = array();
         $response_body['global'] = $this->preferences_controller->getGlobalSettings();
+        global $system_config;
+        $response_body['global']['ldap_enabled'] = !empty($system_config->settings['system_ldap_enabled']) && $system_config->settings['system_ldap_enabled'] == true;
         $response_body['languages'] = $this->languages_controller->getLanguages();
-
+        
         $response->getBody()->write(json_encode($response_body));
         return $response;
     }

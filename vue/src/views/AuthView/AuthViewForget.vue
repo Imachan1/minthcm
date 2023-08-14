@@ -5,8 +5,8 @@
             languages.label('LBL_MINT4_AUTH_FORGET_SUCCESS')
         }}</MintStatusBox>
         <MintStatusBox v-else-if="forgetError" type="error">{{
-            languages.label('LBL_MINT4_AUTH_FORGET_ERROR')
-        }}</MintStatusBox>
+            languages.label(error_label)
+        }} </MintStatusBox>
         <template v-if="!forgetSuccess">
             <v-text-field
                 v-model="authViewStore.username"
@@ -53,6 +53,7 @@ const email = ref('')
 const forgetSuccess = ref(false)
 const forgetError = ref(false)
 const isSubmiting = ref(false)
+const error_label = ref('')
 
 onMounted(() => {
     authViewStore.footerNavAction = {
@@ -67,9 +68,10 @@ async function handleForgetBtnClick() {
         await axios.post('api/forget_password', {
             username: authViewStore.username,
             email: email.value,
-        })
+        });
         forgetSuccess.value = true
     } catch (err) {
+        error_label.value = err.response.data.message;
         forgetError.value = true
     }
 }

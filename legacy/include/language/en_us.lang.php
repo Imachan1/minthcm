@@ -4526,6 +4526,7 @@ $app_strings['LBL_MINT4_AUTH_RESET_SUCCESS'] = 'The password has been changed. Y
 $app_strings['LBL_MINT4_AUTH_RESET_BACK_TO_LOGIN_BTN'] = 'Return to login';
 $app_strings['LBL_MINT4_AUTH_RESET_TOKEN_ERROR'] = 'Invalid or expired token.';
 $app_strings['LBL_MINT4_AUTH_RESET_AGAIN_BTN'] = 'Reset again';
+$app_strings['LBL_PROVIDE_USERNAME_AND_EMAIL'] = 'Incorrect username or email, please try another one.';
 
 // Chat
 $app_strings['LBL_MINT4_CHAT_CREATE_GROUP'] = 'Create Group Conversation';

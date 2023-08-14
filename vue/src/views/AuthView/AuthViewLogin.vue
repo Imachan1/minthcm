@@ -43,6 +43,7 @@ import { useAuthViewStore } from './AuthViewStore'
 import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
 import { useAuthStore } from '@/store/auth'
+import { usePreferencesStore } from '@/store/preferences'
 import { useRouter } from 'vue-router'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintStatusBox from '@/components/MintStatusBox.vue'
@@ -51,11 +52,15 @@ const authViewStore = useAuthViewStore()
 const backend = useBackendStore()
 const languages = useLanguagesStore()
 const auth = useAuthStore()
+const preferences = usePreferencesStore()
 
 onMounted(() => {
-    authViewStore.footerNavAction = {
-        routeName: 'auth-forget',
-        label: languages.label('LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION'),
+    let showForgetLink = !preferences.global?.ldap_enabled
+    if(showForgetLink){
+        authViewStore.footerNavAction = {
+            routeName: 'auth-forget',
+            label: languages.label('LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION'),
+        }
     }
 })
 
