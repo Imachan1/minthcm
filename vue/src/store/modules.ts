@@ -10,6 +10,7 @@ export interface ModulesDefs {
         name: string
         icon: string
         actions: ModuleAction[]
+        acl: { [view: string]: number }
     }
 }
 
@@ -22,6 +23,7 @@ export interface Module {
     label: string
     icon: string
     actions: ModuleAction[]
+    acl: { [view: string]: number }
 }
 
 export interface ModuleAction {
