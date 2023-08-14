@@ -42,21 +42,28 @@ class GlobalSearchController
 
     protected function getBeans($beans)
     {
-        global $app_strings;
-        $timedate = new LegacyConnector("TimeDate");
         $response = array();
-
         foreach ($beans as $bean) {
             $response[] = array(
                 "id" => $bean->id,
                 "module" => $bean->module_name,
                 "name" => $bean->name,
-                "meta" => array(
-                    "label" => $app_strings['LBL_DATE_ENTERED'],
-                    "value" => $timedate->asUser($timedate->fromString($bean->date_entered)),
-                ),
+                "meta" => $this->getAdditionalMetaData($bean),
             );
         }
         return $response;
+    }
+    protected function getAdditionalMetaData($bean)
+    {
+        $meta_field_name = $GLOBALS['dictionary'][$bean->object_name]['full_text_search_meta_field'] ?? null;
+        if (!empty($meta_field_name) && isset($bean->field_defs[$meta_field_name])) {
+            $field = $bean->field_defs[$meta_field_name];
+        } else {
+            $field = $bean->field_defs['date_entered'];
+        }
+        return [
+            "def" => $field,
+            "value" => $bean->{$field['name']},
+        ];
     }
 }
