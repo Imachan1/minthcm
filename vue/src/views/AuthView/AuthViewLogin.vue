@@ -55,8 +55,8 @@ const auth = useAuthStore()
 const preferences = usePreferencesStore()
 
 onMounted(() => {
-    let showForgetLink = !preferences.global?.ldap_enabled
-    if(showForgetLink){
+    const showForgetLink = !preferences.global?.ldap_enabled
+    if (showForgetLink) {
         authViewStore.footerNavAction = {
             routeName: 'auth-forget',
             label: languages.label('LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION'),
