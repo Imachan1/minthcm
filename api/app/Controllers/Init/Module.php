@@ -54,10 +54,18 @@ class Module
 
     public function getModuleData($module)
     {
+        global $current_user;
+        $acl = $_SESSION['ACL'][$current_user->id];
+        if (empty($acl)) {
+            chdir('../legacy');
+            $acl = \ACLAction::getUserActions($current_user->id, false) ?? [];
+            chdir('../api');
+        }
         return array(
             "name" => $module,
             "icon" => $this->modules_icons[$module] ?? $this->modules_icons['default'],
             "actions" => 'Home' === $module ? $this->getHomeMenu() : $this->getModuleMenu($module),
+            "acl" => array_map(function ($view) { return $view['aclaccess']; }, $acl[$module]['module'] ?? []),
         );
     }
 

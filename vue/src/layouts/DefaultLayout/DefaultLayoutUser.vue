@@ -3,7 +3,7 @@
         <template v-slot:activator="{ props, isActive }">
             <button class="user-btn" :class="[isActive && 'active']" v-ripple v-bind="props">
                 <img
-                    v-if="auth.user?.photos"
+                    v-if="auth.user?.photo"
                     class="user-avatar"
                     :src="`legacy/index.php?entryPoint=download&type=Users&id=${auth.user?.id}_photo`"
                 />
