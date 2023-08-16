@@ -3,6 +3,9 @@
 namespace MintHCM\Api\Routes;
 
 use MintHCM\Utils\CustomLoader;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Psr7\Response;
 
 class RouteManager
 {
@@ -94,8 +97,38 @@ class RouteManager
             return false;
         }
 
-        $route_function = empty($route['function']) ? $route['class'] : [$route['class'], $route['function']];
+        $route_function = $this->getRouteFunction($route);
         return $this->app->map($method, $route['path'], $route_function);
+    }
+
+    protected function getRouteFunction(array $route)
+    {
+        if (empty($route['class'])) {
+            return $route['function'];
+        }
+
+        $routeManager = $this;
+        return function (...$arguments) use ($route, $routeManager) {
+            $constructorArguments = $routeManager->prepareConstructorArguments($this, $route['class']);
+            $obj = new $route['class'](...$constructorArguments);
+            $callable = empty($route['function']) ? $obj : [$obj, $route['function']];
+            return $callable(...$arguments);
+        };
+    }
+
+    protected function prepareConstructorArguments(ContainerInterface $di, string $class): array
+    {
+        $reflectionClass = new \ReflectionClass($class);
+        $constructor = $reflectionClass->getConstructor();
+        if (empty($constructor)) {
+            return [];
+        }
+
+        $parameters = $constructor->getParameters();
+        return array_map(function ($parameter) use ($di) {
+            $dependencyType = $parameter->getType()->getName();
+            return $di->get($dependencyType);
+        }, $parameters);
     }
 
     protected function shouldSkipRoute($route)
@@ -174,3 +207,4 @@ class RouteManager
     }
 
 }
+

@@ -10,6 +10,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use MintHCM\Api\ApiManager;
 use MintHCM\Api\Config\AppConfig;
+use MintHCM\Api\Containers\Doctrine\DoctrineContainerBuilder;
 use MintHCM\Utils\CustomLoader;
 use Slim\Factory\AppFactory;
 
@@ -17,7 +18,9 @@ global $app;
 
 $config = CustomLoader::getObject(AppConfig::class);
 
-$app = AppFactory::create();
+$doctrineContainerBuilder = new DoctrineContainerBuilder();
+$doctrineContainer = $doctrineContainerBuilder->build();
+$app = AppFactory::createFromContainer($doctrineContainer);
 $app->setBasePath($config::getBasePath());
 
 $manager = ApiManager::getInstance();

@@ -3,6 +3,7 @@
 namespace MintHCM\Api\Controllers\Init;
 
 use BeanFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use Slim\Psr7\Response;
 use MintHCM\Api\Controllers\Init\Module;
 use MintHCM\Api\Controllers\Init\Languages;
@@ -20,11 +21,11 @@ class Init
         "RecordView",
     ];
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->preferences_controller = new Preferences();
+        $this->preferences_controller = new Preferences($entityManager);
         $this->languages_controller = new Languages();
-        $this->module_init_controller = new Module();
+        $this->module_init_controller = new Module($entityManager);
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response

@@ -2,6 +2,7 @@
 
 namespace MintHCM\Api\Controllers\Init;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
 use Slim\Exception\HttpBadRequestException;
@@ -12,9 +13,9 @@ class Module
 {
     protected $preferences_controller, $sugar_view, $modules_icons, $action_icons;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->preferences_controller = new Preferences();
+        $this->preferences_controller = new Preferences($entityManager);
         $this->sugar_view = new \SugarView();
         $this->modules_icons = include "constants/module_icons.php";
         $this->action_icons = include "constants/menu_icons.php";

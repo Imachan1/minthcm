@@ -17,6 +17,14 @@ $mint_config = array(
             ),
         ),
     ),
+    "database" => array(
+        'driver' => 'pdo_mysql',
+        'host' => "localhost",
+        'port' => '3306',
+        'dbname' => '',
+        'user' => '',
+        'password' => '',
+    ),
 );
 
 $files = scandir(__DIR__);
