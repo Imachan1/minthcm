@@ -321,10 +321,14 @@ class MetaService
         return $array;
     }
 
-    protected function getSubpanelSetup($sb)
+    protected function getSubpanelSetup(\SubPanelDefinitions $sb)
     {
         $array = [];
+        $hidden_subpanels = $sb->get_hidden_subpanels();
         foreach ($sb->layout_defs['subpanel_setup'] as $name => $defs) {
+            if (in_array(strtolower($defs['module'] ?? ''), $hidden_subpanels)) {
+                continue;
+            }
             $module_bean = \BeanFactory::newBean($defs['module']);
             $array[$name]['properties'] = $defs;
             if(!empty($module_bean) && $module_bean instanceof \SugarBean){
