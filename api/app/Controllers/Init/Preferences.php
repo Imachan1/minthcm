@@ -93,6 +93,7 @@ class Preferences
             $this->user_preferences = $preferences;
         } catch (\Exception $e) {
             // TODO: log 'Failed to load user preferences'
+            throw($e);
         }
     }
 }
