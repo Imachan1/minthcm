@@ -148,14 +148,12 @@ if (!window.TWSDashlet) {
         return TWSDashlet.instances[index];
     };
     TWSDashlet.checkIfUserCanAddTimeToWorkSchedule = function (date, workschedule_id) {
-        var curr_date = new Date();
-        var spent_time_date = getDateObject(date);
         var result = false;
         viewTools.api.callCustomApi({
             module: 'SpentTime',
             action: 'canLogTimeToPast',
             format: 'JSON',
-            async: true,
+            async: false,
             dataPOST: {
                 workschedule_id: workschedule_id
             },

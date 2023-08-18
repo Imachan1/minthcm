@@ -874,6 +874,7 @@ SugarWidgetSchedulerAttendees.prototype.display = function () {
          viewTools.api.callCustomApi( {
             module: 'Resources',
             action: 'getBusyTimeSlots',
+            async: false,
             dataPOST: {
                resource_id: row.focus_bean.fields.id,
                timeslots: row.timeslots
