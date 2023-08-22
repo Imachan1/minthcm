@@ -46,6 +46,13 @@ class AttributeObjectHelper
         if ($fields !== null) {
             $attributes = array_intersect_key($attributes, array_flip($fields));
         }
+        // MintHCM #87119 start
+        $attributes['acl_access'] = [
+            'edit' => $bean->ACLAccess('edit'),
+            'view' => $bean->ACLAccess('view'),
+            'delete' => $bean->ACLAccess('delete'),
+        ];
+        // MintHCM #87119 end
 
         unset($attributes['id']);
 
