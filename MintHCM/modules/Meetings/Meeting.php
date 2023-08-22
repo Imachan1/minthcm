@@ -265,6 +265,7 @@ class Meeting extends SugarBean {
       $return_id = parent::save($check_notify);
 
       // MintHCM #111604 start
+      // dev note: whole condition should be moved to new frontend API in Mint4 in order to separate Controllers and Model
       if ( $this->shouldBeProcessedApi() ) {
         $this->createRelationshipFromApi();
         $this->saveRepeatlyApi();
