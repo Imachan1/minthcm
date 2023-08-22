@@ -111,3 +111,5 @@ function format_sidebar_elements(data){
 
     return div_start + edit_link + detail_link + div_close;
 }
+
+$.ajaxSetup({"async": true});
