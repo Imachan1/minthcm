@@ -148,20 +148,28 @@ if (!window.TWSDashlet) {
         return TWSDashlet.instances[index];
     };
     TWSDashlet.checkIfUserCanAddTimeToWorkSchedule = function (date, workschedule_id) {
-        var result = false;
-        viewTools.api.callCustomApi({
-            module: 'SpentTime',
-            action: 'canLogTimeToPast',
-            format: 'JSON',
-            async: false,
-            dataPOST: {
-                workschedule_id: workschedule_id
-            },
-            callback: function (data) {
-                result = data.result;
-            }
-        });
-        return result;
+        if(typeof TWSDashlet.checkIfUserCanAddTimeToWorkSchedule_cache == 'undefined'){
+            TWSDashlet.checkIfUserCanAddTimeToWorkSchedule_cache = {}
+        }
+        if(TWSDashlet.checkIfUserCanAddTimeToWorkSchedule_cache[workschedule_id] == undefined){
+            var result = false;
+            viewTools.api.callCustomApi({
+                module: 'SpentTime',
+                action: 'canLogTimeToPast',
+                format: 'JSON',
+                async: false,
+                dataPOST: {
+                    workschedule_id: workschedule_id
+                },
+                callback: function (data) {
+                    result = data.result;
+                }
+            });
+            TWSDashlet.checkIfUserCanAddTimeToWorkSchedule_cache[workschedule_id] = result;
+            return result;
+        } else {
+            return TWSDashlet.checkIfUserCanAddTimeToWorkSchedule_cache[workschedule_id];
+        }
     }
     TWSDashlet.listItemTemplate = function () {
         return $('#TWSDashletListItemTemplate').html();
