@@ -47,6 +47,37 @@ class ESListViewGetRecords {
         $this->offset = $offset;
         $this->module = $module;
         $this->page = $page;
+
+        $this->handleACL();
+    }
+
+    protected function handleACL()
+    {
+        global $current_user;
+
+        $acl = $this->getACLByModule($this->module);
+        $restriction_filter = $acl->getAccessRestrictionFilter($current_user->id);
+
+        $this->options['filters']['filter'] = array_merge(
+            $this->options['filters']['filter'] ?? [],
+            $restriction_filter
+        );
+    }
+
+    protected function getACLByModule(string $module)
+    {
+        $variants = [
+            [ 'className' => "Custom{$module}ListACL", 'path' => "custom/modules/{$module}/{$module}ListACL.php" ],
+            [ 'className' => "{$module}ListACL", 'path' => "modules/{$module}/{$module}ListACL.php" ],
+            [ 'className' => 'BaseListACL', 'path' => "include/ESListView/BaseListACL.php" ],
+        ];
+
+        foreach ($variants as $variant) {
+            if (file_exists($variant['path'])) {
+                require_once $variant['path'];
+                return new $variant['className']($module);
+            }
+        }
     }
 
     public function get() {
@@ -65,6 +96,14 @@ class ESListViewGetRecords {
             $next_page_exists = true;
             array_pop($this->results);
         }
+
+        if ($number_of_request_into_elasticsearch > 1) {
+            $uid = $GLOBALS['current_user']->id;
+            $GLOBALS['log']->fatal(
+                "[ESListView][Module: {$this->module}][User id: {$uid}][ES Requests: {$number_of_request_into_elasticsearch}] Requests number exceeded 1"
+            );
+        }
+
         $total_records = ($this->page - 1) * $this->itemsPerPage + count($this->results) + $next_page_exists;
         $offset = $this->offset + ($this->itemsPerPage * ($number_of_request_into_elasticsearch - 1)) + $this->add_to_offset + 1;
         return [$total_records, $offset, array_values($this->results)];
