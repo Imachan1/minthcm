@@ -190,7 +190,10 @@ if (!window.TWSDashlet) {
     }
     TWSDashlet.prototype.closeLoading = function () {
         const dashletContainer = this.$root[0]
-        dashletContainer?.querySelector('.twsdashlet-loader')?.remove()
+        if (dashletContainer) {
+            dashletContainer.style.position = null
+            dashletContainer.querySelector('.twsdashlet-loader')?.remove()
+        }
     }
     TWSDashlet.prototype.jQueryAsyncCall = function (props) {
         this.showLoading()
@@ -260,7 +263,7 @@ if (!window.TWSDashlet) {
             }
         }).droppable({
             activeClass: 'ui-state-hover',
-            drop: async function (t, ui) {
+            drop: function (t, ui) {
                 var draggable = ui.draggable,
                     taskId;
                 var go_back_animate = function (ui) {
@@ -274,9 +277,11 @@ if (!window.TWSDashlet) {
                     if (!~_this._currentTasks.map(function (el) {
                         return el.id
                     }).indexOf(taskId)) {
-                        if (!await _this.canPushTask(taskId)) {
-                            go_back_animate(ui);
-                        }
+                        _this.canPushTask(taskId).then((result) => {
+                            if (!result) {
+                                go_back_animate(ui);
+                            }
+                        })
                     } else {
                         go_back_animate(ui);
                     }
@@ -424,15 +429,17 @@ if (!window.TWSDashlet) {
         });
         return $(html).find('tr').get(0);
     };
-    TWSDashlet.prototype.addItemToPlanTaskList = function (item) {
-        this.$listBody.append(this.createListItem(item));
+    TWSDashlet.prototype.addItemToPlanTaskList = async function (item) {
+        this.$listBody.append(await this.createListItem(item));
     };
     TWSDashlet.prototype.removeItemFromPlanTaskList = async function (taskId) {
         return await this.doTaskAction(taskId, 'removeTasksFromPlanForDashlet');
     };
-    TWSDashlet.prototype.createPlanTaskList = function (items) {
+    TWSDashlet.prototype.createPlanTaskList = async function (items) {
         this.$listBody.html('');
-        items.forEach(this.addItemToPlanTaskList.bind(this));
+        for (item of items) {
+            await this.addItemToPlanTaskList(item)
+        }
         if (items.length == 0)
             this.$listBody.html('<tr><td colspan="6"></td></tr>');
         return items;
