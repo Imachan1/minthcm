@@ -30,35 +30,35 @@ if (!window.TWSDashlet) {
         this.$foot = this.$root.find('.TWSListFooter');
         this.current_user_is_admin = ($('#current_user_is_admin').val() == '1');
         this.current_user_id = $('#current_user_id').val();
-        this.$dateInput.change(function () {
+        this.$dateInput.change(async function () {
             _this.$content.hide();
-            _this.changeDisplayByDate(getDateObject(this.value));
+            await _this.changeDisplayByDate(getDateObject(this.value));
         });
-        this.$dateInput.blur(function () {
+        this.$dateInput.blur(async function () {
             _this.$content.hide();
-            _this.changeDisplayByDate(getDateObject(this.value));
+            await _this.changeDisplayByDate(getDateObject(this.value));
         });
-        this.$calendarBefore.click(function () {
+        this.$calendarBefore.click(async function () {
             var current_date = getDateObject(_this.$dateInput.val());
             var next_date = current_date.setDate(current_date.getDate() - 1);
             var finished_date = new Date(next_date);
             var sugar_date = toSugarDate(finished_date);
             _this.$dateInput.val(sugar_date);
             _this.$content.hide();
-            _this.changeDisplayByDate(getDateObject(sugar_date));
+            await _this.changeDisplayByDate(getDateObject(sugar_date));
 
         });
-        this.$calendarNext.click(function () {
+        this.$calendarNext.click(async function () {
             var current_date = getDateObject(_this.$dateInput.val());
             var next_date = current_date.setDate(current_date.getDate() + 1);
             var finished_date = new Date(next_date);
             var sugar_date = toSugarDate(finished_date);
             _this.$dateInput.val(sugar_date);
             _this.$content.hide();
-            _this.changeDisplayByDate(getDateObject(sugar_date));
+            await _this.changeDisplayByDate(getDateObject(sugar_date));
 
         });
-        this.$planSelect.change(function () {
+        this.$planSelect.change(async function () {
             var items = [];
             if (!this.value) {
                 _this.$content.hide();
@@ -72,7 +72,11 @@ if (!window.TWSDashlet) {
                 var isClosed = _this.getCurrentPlanValue('status') == 'closed';
                 _this.$listBody.find('td>div')[isClosed ? 'hide' : 'show']();
                 if (_this.timeline) {
-                    _this.delay(500).then(_this.timeline.displayTimeline.bind(_this.timeline));
+                    _this.showLoading()
+                    await _this.timeline.displayTimeline()
+                    _this.closeLoading()
+                    // MT: do czego ten delay 500ms?
+                    // _this.delay(500).then(_this.timeline.displayTimeline.bind(_this.timeline));
                 }
                 _this.$showPlanButton.parent().show();
                 _this.$editPlanButton.parent().show();
@@ -101,10 +105,10 @@ if (!window.TWSDashlet) {
                 window.open(url);
             }
         });
-        this.$logTimeButton.click(function () {
+        this.$logTimeButton.click(async function () {
             if (_this.$planSelect.val()) {
                 var planId = _this.$planSelect.val() || '';
-                if (!TWSDashlet.checkIfUserCanAddTimeToWorkSchedule(_this.$dateInput.val(), planId)) {
+                if (!await TWSDashlet.checkIfUserCanAddTimeToWorkSchedule(_this.$dateInput.val(), planId)) {
                     alert(SUGAR.language.get('app_strings', 'LBL_CANNOT_ADD_TIME_FOR_PREV_MONTHS'));
                 } else {
                     var planName = _this.getCurrentPlanValue('name') || '';
@@ -132,7 +136,7 @@ if (!window.TWSDashlet) {
             }
         });
         this.initListBody();
-        $(this.initInstance.bind(this));
+        this.initInstance();
     };
 
     TWSDashlet.ATTR_TAKS_ID = 'task-id';
@@ -147,29 +151,19 @@ if (!window.TWSDashlet) {
     TWSDashlet.get = function (index) {
         return TWSDashlet.instances[index];
     };
-    TWSDashlet.checkIfUserCanAddTimeToWorkSchedule = function (date, workschedule_id) {
+    TWSDashlet.checkIfUserCanAddTimeToWorkSchedule = async function (date, workschedule_id) {
         if(typeof TWSDashlet.checkIfUserCanAddTimeToWorkSchedule_cache == 'undefined'){
             TWSDashlet.checkIfUserCanAddTimeToWorkSchedule_cache = {}
         }
         if(TWSDashlet.checkIfUserCanAddTimeToWorkSchedule_cache[workschedule_id] == undefined){
-            var result = false;
-            viewTools.api.callCustomApi({
+            TWSDashlet.checkIfUserCanAddTimeToWorkSchedule_cache[workschedule_id] = await viewTools.api.asyncApiCall({
                 module: 'SpentTime',
                 action: 'canLogTimeToPast',
                 format: 'JSON',
-                async: false,
-                dataPOST: {
-                    workschedule_id: workschedule_id
-                },
-                callback: function (data) {
-                    result = data.result;
-                }
+                dataPOST: { workschedule_id },
             });
-            TWSDashlet.checkIfUserCanAddTimeToWorkSchedule_cache[workschedule_id] = result;
-            return result;
-        } else {
-            return TWSDashlet.checkIfUserCanAddTimeToWorkSchedule_cache[workschedule_id];
         }
+        return TWSDashlet.checkIfUserCanAddTimeToWorkSchedule_cache[workschedule_id]
     }
     TWSDashlet.listItemTemplate = function () {
         return $('#TWSDashletListItemTemplate').html();
@@ -183,26 +177,56 @@ if (!window.TWSDashlet) {
         }
         return template;
     };
+    TWSDashlet.prototype.showLoading = function () {
+        const dashletContainer = this.$root[0]
+        if (!dashletContainer || dashletContainer.querySelector('.twsdashlet-loader')) {
+            return
+        }
+        dashletContainer.style.position = 'relative'
+        const dashletLoader = document.createElement('div')
+        dashletLoader.classList.add('twsdashlet-loader')
+        dashletLoader.innerHTML = "<img src='themes/default/images/loading.gif' alt='loading'>"
+        dashletContainer.appendChild(dashletLoader)
+    }
+    TWSDashlet.prototype.closeLoading = function () {
+        const dashletContainer = this.$root[0]
+        if (dashletContainer) {
+            dashletContainer.style.position = null
+            dashletContainer.querySelector('.twsdashlet-loader')?.remove()
+        }
+    }
+    TWSDashlet.prototype.jQueryAsyncCall = function (props) {
+        this.showLoading()
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                ...props,
+                async: true,
+                success: (response) => {
+                    this.closeLoading()
+                    resolve(response)
+                },
+                error: (err) => {
+                    this.closeLoading()
+                    reject(err)
+                },
+            })
+        })
+    }
     TWSDashlet.prototype.delay = function (msec) {
         return this.promise(function (success) {
             setTimeout(success.bind(null, arguments.callee.returned), msec);
         });
     }
-    TWSDashlet.prototype.initInstance = function () {
+    TWSDashlet.prototype.initInstance = async function () {
         var userDate = Date(),
             date = userDate ? new Date(userDate) : new Date;
         this.initialDateChange = true;
 
-        var dashlet_loaded_before = {};
+        var dashlet_loaded_before = await this.jQueryAsyncCall({
+            url: 'index.php?module=WorkSchedules&action=wasDasheltLoadedBefore&to_pdf=1'
+        });
         var sugar_date = '';
 
-        $.ajax({
-            url: "index.php?module=WorkSchedules&action=wasDasheltLoadedBefore&to_pdf=1",
-            async: false,
-            success: function (result_json) {
-                dashlet_loaded_before = JSON.parse(result_json);
-            }
-        });
 
         if (dashlet_loaded_before.status !== true) {
             sessionStorage.setItem('cookie_date', moment(date).format("YYYY-MM-DD"));
@@ -226,8 +250,8 @@ if (!window.TWSDashlet) {
     TWSDashlet.prototype.initListBody = function () {
         var _this = this;
         this.$listBody.sortable({
-            update: function () {
-                _this.updateTasksOrder();
+            update: async function () {
+                await _this.updateTasksOrder();
             },
             helper: function (e, tr) {
                 var $originals = tr.children(),
@@ -253,9 +277,11 @@ if (!window.TWSDashlet) {
                     if (!~_this._currentTasks.map(function (el) {
                         return el.id
                     }).indexOf(taskId)) {
-                        if (!_this.canPushTask(taskId)) {
-                            go_back_animate(ui);
-                        }
+                        _this.canPushTask(taskId).then((result) => {
+                            if (!result) {
+                                go_back_animate(ui);
+                            }
+                        })
                     } else {
                         go_back_animate(ui);
                     }
@@ -284,10 +310,9 @@ if (!window.TWSDashlet) {
     TWSDashlet.prototype.calculateNextPreviousDate = function (date, type) {
 
     };
-    TWSDashlet.prototype.changeDisplayByDate = function (date) {
+    TWSDashlet.prototype.changeDisplayByDate = async function (date) {
         var _this = this;
         var items = [];
-        ajaxStatus.showStatus(SUGAR.language.get('app_strings', 'LBL_LOADING'));
         if (date instanceof Date && date.toString() !== "Invalid Date") {
             localStorage.setItem(_this.storageKeyDate, date);
 
@@ -297,7 +322,7 @@ if (!window.TWSDashlet) {
                 date = new Date(sessionStorage.getItem('cookie_date'));
             }
 
-            var result = _this.getPlansListForDay(date);
+            var result = await _this.getPlansListForDay(date);
             items = result.items;
             items = _this.createPlanSelectOptions(items);
             if (items.length == 1) {
@@ -314,7 +339,6 @@ if (!window.TWSDashlet) {
                 }
             }
         }
-        ajaxStatus.hideStatus();
         return items;
     };
     TWSDashlet.prototype.createPlanSelectOptions = function (items) {
@@ -336,61 +360,55 @@ if (!window.TWSDashlet) {
         d = d < 10 ? '0' + d : d;
         return y + x + m + x + d;
     };
-    TWSDashlet.prototype.getPlansListForDay = function (date, userId) {
+    TWSDashlet.prototype.getPlansListForDay = async function (date, userId) {
         var _this = this;
         userId = !userId ? TWSDashlet.current_user_id : userId;
         var result = {};
-        $.ajax({
-            dataType: "json",
+        const result_json = await this.jQueryAsyncCall({
             url: "index.php?module=WorkSchedules&user_id=" + userId + "&action=getPlansListForDashlet&sugar_body_only=1&date=" + _this.toDbDate(date) + "&sugar_body_only=1",
-            async: false,
-            success: function (result_json) {
-                if (!(result_json && result_json.items instanceof Array)) {
-                    console.error('Error while loading related redmine tasks');
-                } else {
-                    result_json.items = result_json.items.sort(function (a, b) {
-                        if (a.lp > b.lp)
-                            return 1;
-                        if (a.lp < b.lp)
-                            return -1;
-                        return 0;
-                    });
-                    result = result_json;
-                }
-            }
+            dataType: "json",
         });
+        if (!(result_json && result_json.items instanceof Array)) {
+            console.error('Error while loading related redmine tasks');
+        } else {
+            result_json.items = result_json.items.sort(function (a, b) {
+                if (a.lp > b.lp)
+                    return 1;
+                if (a.lp < b.lp)
+                    return -1;
+                return 0;
+            });
+            result = result_json;
+        }
         return result;
     };
-    TWSDashlet.prototype.getPlanDetailsById = function (id) {
+    TWSDashlet.prototype.getPlanDetailsById = async function (id) {
         localStorage.setItem(this.storageKeyPlanId, id);
         var result;
-        $.ajax({
-            dataType: "json",
+        const result_json = await this.jQueryAsyncCall({
             url: "index.php?module=WorkSchedules&record=" + id + "&action=getPlanDetailsForDashlet&sugar_body_only=1",
-            async: false,
-            success: function (result_json) {
-                if (!(result_json && result_json.items instanceof Array)) {
-                    console.error('Error while loading related redmine tasks');
-                } else {
-                    result_json.items = result_json.items.sort(function (a, b) {
-                        if (a.ord > b.ord) {
-                            return 1;
-                        }
-                        if (a.ord < b.ord) {
-                            return -1;
-                        }
-                        return 0;
-                    });
-                    result = result_json;
+            dataType: "json",
+        })
+        if (!(result_json && result_json.items instanceof Array)) {
+            console.error('Error while loading related redmine tasks');
+        } else {
+            result_json.items = result_json.items.sort(function (a, b) {
+                if (a.ord > b.ord) {
+                    return 1;
                 }
-            }
-        });
+                if (a.ord < b.ord) {
+                    return -1;
+                }
+                return 0;
+            });
+            result = result_json;
+        }
         return result;
     };
-    TWSDashlet.prototype.createListItem = function (item) {
+    TWSDashlet.prototype.createListItem = async function (item) {
         var planId = this.$planSelect.val();
         var display = '';
-        if (!TWSDashlet.checkIfUserCanAddTimeToWorkSchedule(this.$dateInput.val(), planId)) {
+        if (!await TWSDashlet.checkIfUserCanAddTimeToWorkSchedule(this.$dateInput.val(), planId)) {
             display = 'display: none;';
         }
 
@@ -411,15 +429,17 @@ if (!window.TWSDashlet) {
         });
         return $(html).find('tr').get(0);
     };
-    TWSDashlet.prototype.addItemToPlanTaskList = function (item) {
-        this.$listBody.append(this.createListItem(item));
+    TWSDashlet.prototype.addItemToPlanTaskList = async function (item) {
+        this.$listBody.append(await this.createListItem(item));
     };
-    TWSDashlet.prototype.removeItemFromPlanTaskList = function (taskId) {
-        return this.doTaskAction(taskId, 'removeTasksFromPlanForDashlet');
+    TWSDashlet.prototype.removeItemFromPlanTaskList = async function (taskId) {
+        return await this.doTaskAction(taskId, 'removeTasksFromPlanForDashlet');
     };
-    TWSDashlet.prototype.createPlanTaskList = function (items) {
+    TWSDashlet.prototype.createPlanTaskList = async function (items) {
         this.$listBody.html('');
-        items.forEach(this.addItemToPlanTaskList.bind(this));
+        for (item of items) {
+            await this.addItemToPlanTaskList(item)
+        }
         if (items.length == 0)
             this.$listBody.html('<tr><td colspan="6"></td></tr>');
         return items;
@@ -431,57 +451,46 @@ if (!window.TWSDashlet) {
         });
         return order;
     };
-    TWSDashlet.prototype.updateTasksOrder = function () {
+    TWSDashlet.prototype.updateTasksOrder = async function () {
         var _this = this;
-        return $.ajax({
-            dataType: "text",
+        const result = await this.jQueryAsyncCall({
             url: "index.php?module=WorkSchedules&record=" + _this.$planSelect.val() + "&action=updateTasksOrderForDashlet&tasks_order=" + _this.getCurrentTasksOrder() + "&sugar_body_only=1",
-            async: false,
-            success: function (result) {
-                if (result !== '1') {
-                    console.error('Error while updating order: Unknown response: ' + result);
-                }
-            }
-        });
+            dataType: "text",
+        })
+        if (result !== '1') {
+            console.error('Error while updating order: Unknown response: ' + result);
+        }
     };
-    TWSDashlet.prototype.doTaskAction = function (taskId, action) {
+    TWSDashlet.prototype.doTaskAction = async function (taskId, action) {
         var _this = this;
         var errmsg;
-        ajaxStatus.showStatus(SUGAR.language.get('app_strings', 'LBL_SAVING'));
-        $.ajax({
-            dataType: "text",
+        const result = await this.jQueryAsyncCall({
             url: "index.php?module=WorkSchedules&record=" + _this.$planSelect.val() + "&action=" + action + "&task_id=" + taskId + "&sugar_body_only=1",
-            async: false,
-            success: function (result) {
-                if (result === '1') {
-                    _this.$planSelect.trigger('change');
-                } else {
-                    errmsg = 'Error while doing action (' + action + ') on task (' + taskId + '): ';
-                    console.error('Unknown response: ' + result + ' ' + errmsg);
-                }
-            }
-        });
-        ajaxStatus.hideStatus();
+            dataType: "text",
+        })
+        if (result === '1') {
+            _this.$planSelect.trigger('change');
+        } else {
+            errmsg = 'Error while doing action (' + action + ') on task (' + taskId + '): ';
+            console.error('Unknown response: ' + result + ' ' + errmsg);
+        }
     };
-    TWSDashlet.prototype.pushTask = function (taskId) {
-        return this.doTaskAction(taskId, 'addTasksToPlanForDashlet');
+    TWSDashlet.prototype.pushTask = async function (taskId) {
+        return await this.doTaskAction(taskId, 'addTasksToPlanForDashlet');
     };
-    TWSDashlet.prototype.canPushTask = function (taskId) {
+    TWSDashlet.prototype.canPushTask = async function (taskId) {
         var _this = this;
         var response = false;
-        $.ajax({
-            dataType: "text",
+        const result = await this.jQueryAsyncCall({
             url: "index.php?module=WorkSchedules&record=" + _this.$planSelect.val() + "&action=canAddTaskToPlan&task_id=" + taskId + "&sugar_body_only=1",
-            async: false,
-            success: function (result) {
-                if (result !== '1') {
-                    viewTools.GUI.statusBox.showStatus(SUGAR.language.get('app_strings', 'LBL_WRONG_TASK_FOR_PLAN'), 'error', 5000);
-                } else {
-                    _this.pushTask(taskId);
-                    response = true;
-                }
-            }
-        });
+            dataType: "text",
+        })
+        if (result !== '1') {
+            viewTools.GUI.statusBox.showStatus(SUGAR.language.get('app_strings', 'LBL_WRONG_TASK_FOR_PLAN'), 'error', 5000);
+        } else {
+            await _this.pushTask(taskId);
+            response = true;
+        }
         return response;
     };
     $(function () {

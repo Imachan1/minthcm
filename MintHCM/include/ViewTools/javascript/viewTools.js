@@ -53,11 +53,13 @@ window.viewTools.api = {
                   }
                },
                error: function ( e ) {
+                  input.error?.(e)
                   viewTools.console.log( e );
                }
             } );
          }
       } catch ( e ) {
+         input.error?.(e)
          viewTools.console.log( e );
       }
    },
@@ -96,13 +98,35 @@ window.viewTools.api = {
                   }
                },
                error: function ( e ) {
+                  input.error?.(e)
                   viewTools.console.log( e );
                }
             } );
          }
       } catch ( e ) {
+         input.error?.(e)
          viewTools.console.log( e );
       }
+   },
+   asyncControllerCall: function (input) {
+      return new Promise((resolve, reject) => {
+         this.callController({
+            ...input,
+            async: true,
+            callback: resolve,
+            error: input.error ?? reject
+         })
+      })
+   },
+   asyncApiCall: function (input) {
+      return new Promise((resolve, reject) => {
+         this.callCustomApi({
+            ...input,
+            async: true,
+            callback: resolve,
+            error: input.error ?? reject
+         })
+      })
    },
 };
 window.viewTools.console = {
