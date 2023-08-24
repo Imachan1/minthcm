@@ -149,9 +149,9 @@ if (!window.TimePanel) { // avoid multi-declaration
             this.displayTimeline();
         }
     };
-    TimePanel.prototype.displayTimeline = function () {
+    TimePanel.prototype.displayTimeline = async function () {
         try {
-            this.getTimes();
+            await this.getTimes();
             this.createTimeLine();
             this.createTimeLineItems();
         } catch (err) {
@@ -201,20 +201,16 @@ if (!window.TimePanel) { // avoid multi-declaration
 
         return year + date_sep + month + date_sep + day + ' ' + hours + time_sep + minutes + time_sep + seconds;
     };
-    TimePanel.prototype.getTimes = function () {
-        var _this = this;
-        viewTools.api.callController({
-            module: "WorkSchedules",
-            action: "getRelatedTimes",
-            async: false,
+    TimePanel.prototype.getTimes = async function () {
+        const result = await viewTools.api.asyncControllerCall({
+            module: 'WorkSchedules',
+            action: 'getRelatedTimes',
             dataType: 'json',
             dataGET: {
-                record: _this.getPlanId()
+                record: this.getPlanId()
             },
-            callback: function (call_constroller_data) {
-                return _this.currentTimes = call_constroller_data.items;
-            }
-        });
+        })
+        this.currentTimes = result.items
     };
     TimePanel.prototype.createTimeLine = function () {
         var p = this.getCurrentPlanData();
