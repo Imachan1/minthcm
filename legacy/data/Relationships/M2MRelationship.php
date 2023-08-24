@@ -368,6 +368,13 @@ class M2MRelationship extends SugarRelationship
         } //end normal 
         /* END - SECURITY GROUPS */
 
+        // MintHCM #121632 START
+        // I had to call this in such ugly way, because system doesn't allow to create logic hook
+        // for deleting relationship with securitygroups
+        $es_hooks = new SuiteCRM\Search\ElasticSearch\ElasticSearchHooks;
+        $es_hooks->relationshipDeleted($rhs, $lhs);
+        // MintHCM #121632 END
+
         return true;
     }
 
