@@ -5,6 +5,7 @@ use SuiteCRM\Search\SearchWrapper;
 
 class ESListViewGetRecords {
 
+    protected $metadata;
     protected $engine = 'ESElasticSearchEngine';
     protected $options;
     protected $itemsPerPage;
@@ -15,7 +16,7 @@ class ESListViewGetRecords {
     private $add_to_offset = 0;
     private $selected_records = 0;
 
-    public function __construct($module, $itemsPerPage = 10, $offset = 1, $page = 1, $sort_by = '', $sort_order = 'asc', $arguments = []) {
+    public function __construct($metadata, $module, $itemsPerPage = 10, $offset = 1, $page = 1, $sort_by = '', $sort_order = 'asc', $arguments = []) {
         $options = [
             'filter_by_module' => true,
             'module' => $module,
@@ -42,6 +43,7 @@ class ESListViewGetRecords {
         if (!empty($arguments['defaultFilters']['must_not'])) {
             array_push($options['filters']['must_not'], ...$arguments['defaultFilters']['must_not']);
         }
+        $this->metadata = $metadata;
         $this->options = $options;
         $this->itemsPerPage = $itemsPerPage;
         $this->offset = $offset;
@@ -84,7 +86,8 @@ class ESListViewGetRecords {
     }
 
     protected function parseElasticSearchResultsToArray($item) {
-        $columns = $item->column_fields;
+        $columns = $this->getReturnedColumnNames();
+
         $row = [];
         foreach ($columns as $column) {
             $row[$column] = $item->$column;
@@ -103,4 +106,12 @@ class ESListViewGetRecords {
         return [$beans, $results];
     }
 
+    protected function getReturnedColumnNames(): array
+    {
+        return array_unique(array_merge(
+            ['id'],
+            array_keys($this->metadata['columns'] ?? []),
+            array_keys($this->metadata['search'] ?? []),
+        ));
+    }
 }

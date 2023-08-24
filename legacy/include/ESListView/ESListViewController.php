@@ -50,7 +50,7 @@ class ESListViewController {
     public function getResults($options) {
         $this->loadMetadataFile($options['module']);
         $module_name = $this->metadata['es_module'] ?? $options['module'];
-        $get_records = new ESListViewGetRecords($module_name, $options['itemsPerPage'], $options['offset'], $options['page'], $options['sortBy'], $options['sortOrder'], [
+        $get_records = new ESListViewGetRecords($this->metadata, $module_name, $options['itemsPerPage'], $options['offset'], $options['page'], $options['sortBy'], $options['sortOrder'], [
             'myObjects' => $options['myObjects'],
             'searchPhrase' => $options['searchPhrase'] ?? '',
             'defaultFilters' => !empty($this->metadata['query']) ? $this->metadata['query'] : null,
