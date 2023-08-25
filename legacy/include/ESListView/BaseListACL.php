@@ -95,9 +95,11 @@ class BaseListACL
         }
 
         return [
-            'bool' => [
-                'should' => $filters,
-            ],
+            [
+                'bool' => [
+                    'should' => $filters,
+                ],
+            ]
         ];
     }
 
