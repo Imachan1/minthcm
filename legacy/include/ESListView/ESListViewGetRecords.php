@@ -29,7 +29,7 @@ class ESListViewGetRecords {
         ];
         if ($arguments['myObjects'] === true) {
             global $current_user;
-            $options['filters']['filter'][] = ['term' => ['meta.assigned.user_name' => $current_user->user_name]];
+            $options['filters']['filter'][] = ['term' => ['meta.assigned.user_id.keyword' => $current_user->id]];
         }
         if (strlen($options['searchPhrase'])) {
             $searchPhrase = str_replace('+', '', $options['searchPhrase']);

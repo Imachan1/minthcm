@@ -27,26 +27,29 @@ class BaseListACL
     protected function getFiltersByOwner(string $user_id): array
     {
         $bean = BeanFactory::newBean($this->module);
-        if (!$bean->bean_implements('ACL') || !ACLController::requireOwner($bean->module_dir, 'list')) {
+        if (!$bean->bean_implements('ACL') || (
+            !ACLController::requireOwner($bean->module_dir, 'list')
+            && !ACLController::requireSecurityGroup($bean->module_dir, 'list')
+        )) {
             return [];
         }
 
         $filters = [];
         if (isset($bean->field_defs['assigned_user_id'])) {
             $filters[] = [
-                'terms' => [ 'meta.assigned.user_id' => $this->getOwnerIds($user_id) ],
+                'terms' => [ 'meta.assigned.user_id.keyword' => $this->getOwnerIds($user_id) ],
             ];
         }
 
         if ($this->acl_helper->doesModuleUseEmployeeRelationship($this->module)) {
             $filters[] = [
-                'terms' => [ 'employee_id' => $this->getOwnerIds($user_id) ],
+                'terms' => [ 'employee_id.keyword' => $this->getOwnerIds($user_id) ],
             ];
         }
 
         if (empty($filters) && isset($bean->field_defs['created_by'])) {
             $filters[] = [
-                'term' => [ 'meta.created.user_id' => $user_id ],
+                'term' => [ 'meta.created.user_id.keyword' => $user_id ],
             ];
         }
 
@@ -71,7 +74,7 @@ class BaseListACL
                     'path' => 'security_groups',
                     'query' => [
                         'terms' => [
-                            'security_groups.id' => $group_ids,
+                            'security_groups.id.keyword' => $group_ids,
                         ],
                     ],
                 ]
