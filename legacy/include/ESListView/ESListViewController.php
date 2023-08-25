@@ -51,7 +51,7 @@ class ESListViewController {
     {
         $this->loadMetadataFile($options['module']);
         $module_name = $this->metadata['es_module'] ?? $options['module'];
-        if (ACLController::checkAccess($module_name, 'list')) {
+        if (ACLController::checkAccess($module_name, 'list', true)) {
             $get_records = new ESListViewGetRecords($module_name, $options['itemsPerPage'], $options['offset'], $options['page'], $options['sortBy'], $options['sortOrder'], [
                 'myObjects' => $options['myObjects'],
                 'searchPhrase' => $options['searchPhrase'] ?? '',
