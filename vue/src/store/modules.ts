@@ -33,6 +33,16 @@ export interface ModuleAction {
     icon: string
 }
 
+export interface FieldVardef {
+    name: string
+    type: string
+    label: string
+    options?: string
+    options_colors?: string
+    default?: string
+    readonly?: boolean
+}
+
 export const useModulesStore = defineStore('modules', () => {
     const backend = useBackendStore()
     const url = useUrlStore()
