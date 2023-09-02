@@ -2,6 +2,7 @@
 
 namespace MintHCM\Api\Controllers\Init;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
 use Slim\Exception\HttpBadRequestException;
@@ -12,9 +13,9 @@ class Module
 {
     protected $preferences_controller, $sugar_view, $modules_icons, $action_icons;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->preferences_controller = new Preferences();
+        $this->preferences_controller = new Preferences($entityManager);
         $this->sugar_view = new \SugarView();
         $this->modules_icons = include "constants/module_icons.php";
         $this->action_icons = include "constants/menu_icons.php";
@@ -54,10 +55,18 @@ class Module
 
     public function getModuleData($module)
     {
+        global $current_user;
+        $acl = $_SESSION['ACL'][$current_user->id];
+        if (empty($acl)) {
+            chdir('../legacy');
+            $acl = \ACLAction::getUserActions($current_user->id, false) ?? [];
+            chdir('../api');
+        }
         return array(
             "name" => $module,
             "icon" => $this->modules_icons[$module] ?? $this->modules_icons['default'],
             "actions" => 'Home' === $module ? $this->getHomeMenu() : $this->getModuleMenu($module),
+            "acl" => array_map(function ($view) { return (int)$view['aclaccess']; }, $acl[$module]['module'] ?? []),
         );
     }
 

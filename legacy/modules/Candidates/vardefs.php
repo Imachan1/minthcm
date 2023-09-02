@@ -57,6 +57,7 @@ $dictionary['Candidates'] = array(
     'audited' => true,
     'activity_enabled' => false,
     'duplicate_merge' => true,
+    'full_text_search_meta_field' => 'phone_mobile',
     'fields' => array(
         'recr_contact_agree' => array(
             'name' => 'recr_contact_agree',

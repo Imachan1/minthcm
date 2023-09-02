@@ -46,7 +46,7 @@ import { useLanguagesStore } from '@/store/languages'
 import DefaultLayoutAlerts from './DefaultLayoutAlerts.vue'
 import DefaultLayoutUser from './DefaultLayoutUser.vue'
 import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import DefaultLayoutModulesPopup from './DefaultLayoutModulesPopup.vue'
 import DefaultLayoutSearch from './DefaultLayoutSearch.vue'
 

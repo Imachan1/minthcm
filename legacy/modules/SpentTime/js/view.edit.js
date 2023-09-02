@@ -72,7 +72,7 @@ function validateWorkSchedule(form_name) {
       module: 'SpentTime',
       action: 'canLogTimeToPast',
       format: 'JSON',
-      async: true,
+      async: false,
       dataPOST: {
          workschedule_id: $("#" + form_name + " #workschedule_id").val(),
       },
@@ -483,6 +483,7 @@ QSCallbacksArray["EditView_workschedule_name"] = function (sqs) {
    viewTools.api.callCustomApi({
       module: 'SpentTime',
       action: 'getCurrentUserId',
+      async: false,
       callback: function (data) {
          if (data) {
             new_conditions.push(

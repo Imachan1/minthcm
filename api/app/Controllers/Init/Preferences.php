@@ -2,15 +2,19 @@
 
 namespace MintHCM\Api\Controllers\Init;
 
+use MintHCM\Api\Entities\UserPreferences;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 
 class Preferences
 {
+    protected $entityManager;
     protected $user_preferences;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
         $this->setUserPreferences();
     }
 
@@ -44,7 +48,6 @@ class Preferences
             'date_formats' => $sugar_config["date_formats"],
             'time_formats' => $sugar_config["time_formats"],
             'name_format' => $sugar_config["default_locale_name_format"],
-            'name_formats' => $sugar_config["name_formats"],
             'password_rules' => [
                 'minpwdlength' => $sugar_config['passwordsetting']['minpwdlength'] ?? null,
                 'oneupper' => $sugar_config['passwordsetting']['oneupper'] ?? false,
@@ -52,6 +55,8 @@ class Preferences
                 'onenumber' => $sugar_config['passwordsetting']['onenumber'] ?? false,
                 'onespecial' => $sugar_config['passwordsetting']['onespecial'] ?? false,
             ],
+            'time_zones' => \TimeDate::getTimezoneList(),
+            'name_formats' => (new \Localization())->getUsableLocaleNameOptions($sugar_config['name_formats']),
         );
     }
 
@@ -76,13 +81,19 @@ class Preferences
             return array();
         }
 
-        $db = \DBManagerFactory::getInstance();
-        $result = $db->query("SELECT contents, category FROM user_preferences WHERE assigned_user_id='$current_user->id' AND deleted = 0", false, 'Failed to load user preferences');
-        $preferences = [];
-        while ($row = $db->fetchByAssoc($result)) {
-            $category = $row['category'];
-            $preferences[$category] = unserialize(base64_decode($row['contents']));
+        try {
+            $rows = $this->entityManager->getRepository(UserPreferences::class)
+                ->findAllUndeletedByUserId($current_user->id);
+
+            foreach ($rows as $row) {
+                $category = $row['category'];
+                $preferences[$category] = unserialize(base64_decode($row['contents']));
+            }
+
+            $this->user_preferences = $preferences;
+        } catch (\Exception $e) {
+            // TODO: log 'Failed to load user preferences'
+            throw($e);
         }
-        $this->user_preferences = $preferences;
     }
 }

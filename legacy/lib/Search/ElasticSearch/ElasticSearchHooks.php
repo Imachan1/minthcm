@@ -95,6 +95,19 @@ class ElasticSearchHooks
         $this->reIndexSafe($bean);
     }
 
+    // MintHCM #121632 START
+    public function relationshipDeleted($rhs, $lhs)
+    {
+        if ($rhs->module_name !== 'SecurityGroups' && $lhs->module_name !== 'SecurityGroups') {
+            return;
+        }
+
+        $this->action = 'index';
+        $bean_to_index = $rhs->module === 'SecurityGroups' ? $lhs : $rhs;
+        $this->reIndexSafe($bean_to_index);
+    }
+    // MintHCM #121632 END
+
     // ~ ~ ~ ~ ~ ~
     // Private Methods
     // ~ ~ ~ ~ ~ ~

@@ -26,7 +26,8 @@ export const useListViewStore = defineStore('listview', () => {
     const module = ref('')
     const results = ref([]) //todo: decode
     const itemsLength = ref(0)
-    const isLoading = ref(false)
+    const initialLoading = ref(true)
+    const isLoading = ref(true)
     const myObjects = ref(false)
     const activeFilter = ref<string | null>(null)
     const filters = ref({
@@ -43,10 +44,12 @@ export const useListViewStore = defineStore('listview', () => {
     const selected = ref([])
 
     async function init() {
+        initialLoading.value = true
         const result = await axios.post('legacy/index.php?action=ESList', {
             module: url.module,
             function_name: 'getInitialData',
         })
+        initialLoading.value = false
         config.value = result.data?.config
         defs.value = result.data?.defs
         preferences.value = result.data?.preferences
@@ -215,6 +218,7 @@ export const useListViewStore = defineStore('listview', () => {
         filters,
         results,
         customFields,
+        initialLoading,
         isLoading,
         options,
         itemsLength,

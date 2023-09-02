@@ -12,6 +12,7 @@ viewTools.form.beforeSave(function () {
     viewTools.api.callCustomApi({
         module: 'Costs',
         action: 'validateSelectedCurrency',
+        async: false,
         dataPOST: {
             delegation_id: delegation_id,
             currency_id: currency_id,

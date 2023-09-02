@@ -9,6 +9,10 @@ export interface User {
     first_name: string
     last_name: string
     full_name: string
+    email: string
+    photo?: string
+    show_login_wizard: boolean
+    preferences: { [key: string]: any }
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -22,7 +26,10 @@ export const useAuthStore = defineStore('auth', () => {
                 password,
                 login_language: languages.currentLanguage ?? 'pl_PL',
             })
-
+            if (response.status !== 200) {
+                return false
+            }
+            return true
         } catch {
             return false
         }

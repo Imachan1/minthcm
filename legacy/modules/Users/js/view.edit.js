@@ -41,8 +41,8 @@ viewTools.form.afterSave(function(){
         viewTools.api.callCustomApi({
             module: 'Employees',
             action: 'checkIfEmployeeIsSupervisor',
+            async: false,
             dataPOST: {employee_id: employee_id, employee_status: employee_status},
-            async: true,
             callback: function (response) {
                 if (response != false) {
                     displayConfirmationWindow(response);

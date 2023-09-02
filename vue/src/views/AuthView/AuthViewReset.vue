@@ -101,7 +101,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
 import { useAuthViewStore } from './AuthViewStore'
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintStatusBox from '@/components/MintStatusBox.vue'
 import { usePreferencesStore } from '@/store/preferences'
 import axios from 'axios'
@@ -176,7 +176,6 @@ async function submitResetPassword() {
         resetSuccess.value = true
         store.footerNavAction = null
     }
-    console.log(response)
 }
 </script>
 

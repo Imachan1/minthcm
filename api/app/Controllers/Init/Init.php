@@ -3,6 +3,7 @@
 namespace MintHCM\Api\Controllers\Init;
 
 use BeanFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use Slim\Psr7\Response;
 use MintHCM\Api\Controllers\Init\Module;
 use MintHCM\Api\Controllers\Init\Languages;
@@ -20,11 +21,11 @@ class Init
         "RecordView",
     ];
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->preferences_controller = new Preferences();
+        $this->preferences_controller = new Preferences($entityManager);
         $this->languages_controller = new Languages();
-        $this->module_init_controller = new Module();
+        $this->module_init_controller = new Module($entityManager);
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response
@@ -40,10 +41,10 @@ class Init
     public function getData()
     {
         $response_body = array();
+        $response_body['languages'] = $this->languages_controller->getLanguages();
         $response_body['user'] = $this->getCurrentUserData();
         $response_body['preferences'] = $this->preferences_controller->getUserPreferences();
         $response_body['global'] = $this->preferences_controller->getGlobalSettings();
-        $response_body['languages'] = $this->languages_controller->getLanguages();
         [$modules_menu, $modules_data] = $this->getModules();
         $response_body['menu_modules'] = $modules_menu;
         $response_body['modules'] = $modules_data;
@@ -58,13 +59,21 @@ class Init
         if (empty($current_user->id)) {
             return array();
         }
-
+        $preferences = [];
+        $preferences['date_time_preferences'] = $current_user->getUserDateTimePreferences();
+        $preferences['first_day_of_week'] = $current_user->getPreference('fdow');
+        $preferences['timezone'] = $current_user->getPreference('timezone');
+        $preferences['name_format'] = $current_user->getPreference('default_locale_name_format');
         return array(
             "id" => $current_user->id,
             "is_admin" => "1" === $current_user->is_admin ? true : false,
             "first_name" => $current_user->first_name,
             "last_name" => $current_user->last_name,
             "full_name" => $current_user->full_name,
+            "email" => $current_user->email1,
+            "photo" => $current_user->photo,
+            "preferences" => $preferences,
+            "show_login_wizard" => empty($current_user->getPreference('ut')),
         );
     }
 
@@ -114,9 +123,7 @@ class Init
         global $beanList,$current_user;
         foreach($beanList as $key=>$module) {
             if(!array_key_exists($key,$modules_data)){
-                if($current_user->isAdmin()){
-                    $modules_data[$key] = $this->module_init_controller->getModuleData($key);
-                }
+                $modules_data[$key] = $this->module_init_controller->getModuleData($key);
             }
         }
         return [array_keys($modules), $modules_data];

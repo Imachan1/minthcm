@@ -200,6 +200,7 @@ window.viewTools.formula.' . $functionName . '=function(){
       viewTools.api.callCustomApi({
          module:'Home',
          action:'evalServersideFrontend',
+         async: false,
          dataPOST:values,
          callback:function(response){
             if(response!==undefined){

@@ -58,6 +58,7 @@ $dictionary['Candidatures'] = array(
     'audited' => true,
     'activity_enabled' => false,
     'duplicate_merge' => true,
+    'full_text_search_meta_field' => 'status',
     'fields' => array(
         'name' => array(
             'name' => 'name',

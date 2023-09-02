@@ -29,7 +29,7 @@ $unified_search_modules_display = array(
         'visible' => true,
     ),
     'CampaignTrackers' => array(
-        'visible' => true,
+        'visible' => false,
     ),
     'Releases' => array(
         'visible' => true,
@@ -71,7 +71,7 @@ $unified_search_modules_display = array(
         'visible' => true,
     ),
     'Trackers' => array(
-        'visible' => true,
+        'visible' => false,
     ),
     'Connectors' => array(
         'visible' => true,

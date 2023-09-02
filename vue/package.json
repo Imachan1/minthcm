@@ -7,7 +7,6 @@
     "build": "vite build",
     "lint": "vue-cli-service lint",
     "dev": "vite",
-    "build:repo": "npm run build && rm ../assets -rf && cp -r dist/* ../",
     "build:mint": "npm run build && ssh -p 50022 root@localhost 'rm /var/www/test123/assets -rf' && scp -P 50022 -r dist/* root@localhost:/var/www/test123",
     "build:demo": "npm run build && ssh -p 2251 root@minthcm.pp.evolpe.it 'rm /var/www/minthcm/assets -rf' && scp -P 2251 -r dist/* root@minthcm.pp.evolpe.it:/var/www/minthcm"
   },
@@ -48,7 +47,7 @@
     "prettier": "^2.8.7",
     "sass": "^1.60.0",
     "sass-loader": "^13.2.2",
-    "typescript": "~4.5.5",
+    "typescript": "~4.7.4",
     "vite": "^3.0.8",
     "vite-plugin-vuetify": "^1.0.0-alpha.12",
     "vue-cli-plugin-vuetify": "~2.5.8"

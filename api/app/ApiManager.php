@@ -2,6 +2,7 @@
 
 namespace MintHCM\Api;
 
+use MintHCM\Api\ExceptionHandlers\Doctrine\DoctrineConnectionExceptionHandler;
 use MintHCM\Api\Middlewares\Auth\AuthMiddleware;
 use MintHCM\Api\Middlewares\Params\ParamsMiddleware;
 use MintHCM\Api\Middlewares\Parsers\JsonBodyParserMiddleware;
@@ -48,7 +49,10 @@ class ApiManager
 
     protected function setErrorMiddleware()
     {
-        $this->app->addErrorMiddleware(true, false, false);
+        $errorMiddleware = $this->app->addErrorMiddleware(true, false, false);
+        $errorMiddleware->setErrorHandler(
+            \Doctrine\DBAL\Exception\ConnectionException::class,
+            DoctrineConnectionExceptionHandler::class
+        );
     }
-
 }

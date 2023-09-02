@@ -2,6 +2,7 @@
 
 namespace MintHCM\Lib\Search\Base;
 
+use Doctrine\DBAL\Connection;
 use MintHCM\Data\BeanFactory;
 use MintHCM\Utils\LegacyConnector;
 
@@ -170,14 +171,19 @@ abstract class SearchResult
                 $where = empty($where) ? $owner_where : " ({$owner_where} OR {$group_where}) ";
             }
 
-            $db_factory = new LegacyConnector('DBManagerFactory');
-            $query = "SELECT id FROM {$bean->table_name} WHERE {$where} AND {$bean->table_name}.id IN ('" . implode("','", $ids) . "')";
-            $db = $db_factory::getInstance();
-            $result = $db->query($query);
-            $parsed_ids = array();
-            while ($row = $db->fetchByAssoc($result)) {
-                $parsed_ids[] = $row['id'];
-            }
+            global $entityManager;
+            $query = "SELECT id
+                FROM {$bean->table_name}
+                WHERE {$where}
+                    AND id IN (:ids)
+            ";
+            $connection = $entityManager->getConnection();
+            $rows = $connection->executeQuery(
+                $query,
+                ['ids' => $ids],
+                ['ids' => Connection::PARAM_STR_ARRAY]
+            )->fetchAllAssociative();
+            $parsed_ids = array_map(function ($row) { return $row['id']; }, $rows);
 
             $new_ids = array();
 

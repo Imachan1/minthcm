@@ -8,11 +8,11 @@ class IntType extends ParamType
 {
     protected function validate($value): bool
     {
-        return is_int($value);
+        return is_int($value) || preg_match('/^-?\d+$/', $value);
     }
 
     protected function parseValue($value)
     {
-        return $value;
+        return (int)$value;
     }
 }

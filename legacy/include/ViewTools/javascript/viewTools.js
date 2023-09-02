@@ -20,10 +20,6 @@ window.viewTools.api = {
             if ( input.dataType === undefined ) {
                input.dataType = "text";
             }
-            //Check async - false by default
-            if ( input.async === undefined || input.async != true) {
-               input.async = false;
-            }
             //Prepare URL_DATA
             if ( input.dataGET === undefined ) {
                input.dataGET = {};
@@ -48,7 +44,7 @@ window.viewTools.api = {
             $.ajax( {
                dataType: input.dataType,
                url: url,
-               async: input.async,
+               async: input.async ?? true,
                method: 'POST',
                data: input.dataPOST,
                success: function ( response ) {
@@ -57,11 +53,13 @@ window.viewTools.api = {
                   }
                },
                error: function ( e ) {
+                  input.error?.(e)
                   viewTools.console.log( e );
                }
             } );
          }
       } catch ( e ) {
+         input.error?.(e)
          viewTools.console.log( e );
       }
    },
@@ -82,10 +80,6 @@ window.viewTools.api = {
             if ( input.dataType === undefined ) {
                input.dataType = "json";
             }
-            //Check async - false by default
-            if ( input.async === undefined || input.async != true || input.async != false ) {
-               input.async = false;
-            }
             if ( input.dataPOST === undefined ) {
                input.dataPOST = {};
             }
@@ -95,7 +89,7 @@ window.viewTools.api = {
             $.ajax( {
                dataType: input.dataType,
                url: './index.php?entryPoint=viewToolsApi',
-               async: input.async,
+               async: input.async ?? true,
                method: 'POST',
                data: input.dataPOST,
                success: function ( response ) {
@@ -104,13 +98,35 @@ window.viewTools.api = {
                   }
                },
                error: function ( e ) {
+                  input.error?.(e)
                   viewTools.console.log( e );
                }
             } );
          }
       } catch ( e ) {
+         input.error?.(e)
          viewTools.console.log( e );
       }
+   },
+   asyncControllerCall: function (input) {
+      return new Promise((resolve, reject) => {
+         this.callController({
+            ...input,
+            async: true,
+            callback: resolve,
+            error: input.error ?? reject
+         })
+      })
+   },
+   asyncApiCall: function (input) {
+      return new Promise((resolve, reject) => {
+         this.callCustomApi({
+            ...input,
+            async: true,
+            callback: resolve,
+            error: input.error ?? reject
+         })
+      })
    },
 };
 window.viewTools.console = {
@@ -229,6 +245,7 @@ window.viewTools.form = {
                   module: 'Home',
                   action: 'checkForDuplicates',
                   dataPOST: viewTools.form.getFormValues(),
+                  async: false,
                   callback: function ( response ) {
                      //Some duplicate found, display them
                      if ( response.duplicate_count > 0 ) {
@@ -1099,6 +1116,7 @@ window.viewTools.init = {
          viewTools.api.callCustomApi( {
             module: 'Home',
             action: 'getDateTimeFormat',
+            async: false,
             callback: function ( data ) {
                //
                if ( data.dateFormat !== undefined && viewTools.cache.InitialParams.dateFormat === undefined ) {

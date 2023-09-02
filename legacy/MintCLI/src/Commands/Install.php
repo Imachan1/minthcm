@@ -51,6 +51,7 @@ class Install extends Command
         $io->section('Installing system core...');
 
         $installer->prepareConfigurationFile($userData);
+        $installer->setupDoctrineConfig($userData);
         $installer->setupFilesPermissions();
         $backendInstallationStatus = $installer->installBackendApplication();
         if (!$backendInstallationStatus) {

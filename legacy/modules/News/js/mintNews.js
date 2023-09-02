@@ -45,6 +45,7 @@ mintNews = {
          viewTools.api.callCustomApi({
             module: 'UsersNews',
             action: 'createOrUpdateUsersNews',
+            async: false,
             dataPOST: {
                record_id: record_id
             }

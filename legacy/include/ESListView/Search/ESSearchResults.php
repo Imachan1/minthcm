@@ -15,9 +15,8 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
         $parsed = [];
 
         foreach ($hits as $module => $beans) {
-            $beans_arr = $this->getBeans($beans, $module);
             foreach ((array) $beans as $bean) {
-                $obj = $beans_arr[$bean];
+                $obj = BeanFactory::getBean($module, $bean);
 
                 // if a search found a bean but MintHCM does not, it could happens
                 // maybe the bean is deleted but elsasticsearch is not re-indexing yet.
@@ -49,17 +48,7 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
         $this->addACLAccessInfo();
         return $parsed;
     }
-    
-    protected function getBeans($beans_ids, $module) {
-        $focus = BeanFactory::newBean($module);
-        $beans = $focus->get_full_list('', " {$focus->table_name}.id IN ('" . implode("','", $beans_ids) . "')");
-        $beans_arr = [];
-        foreach ($beans as $bean) {
-            $beans_arr[$bean->id] = $bean;
-        }
-        return $beans_arr;
-    }
-    
+        
     protected function addACLAccessInfo(){
         foreach ($this->hits_after_acl as $module => $beans) {
             foreach ((array) $beans as $bean) {

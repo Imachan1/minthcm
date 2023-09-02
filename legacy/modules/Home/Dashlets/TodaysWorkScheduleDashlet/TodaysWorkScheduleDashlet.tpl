@@ -24,3 +24,19 @@
         })();
     {/literal}
 </script>
+{literal}
+<style>
+.twsdashlet-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0001;
+    z-index: 10;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+</style>
+{/literal}
