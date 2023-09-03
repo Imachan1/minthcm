@@ -16,7 +16,7 @@ class UpdateAction
         if(!$this->saveBean($request)) {
             throw new HttpBadRequestException($request);
         }
-        $response->getBody()->write(json_encode(DataHelper::getNewAlerts()));
+        $response->getBody()->write(json_encode((new ListAction)->getListData()));
         return $response;
     }
 

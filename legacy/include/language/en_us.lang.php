@@ -4499,6 +4499,10 @@ $app_strings['LBL_MINT4_STATUS_BOX_ERROR'] = 'Error';
 $app_strings['LBL_MINT4_STATUS_BOX_SUCCESS'] = 'Success';
 $app_strings['LBL_MINT4_STATUS_BOX_INFO'] = 'Attention';
 
+$app_strings['LBL_MINT4_ALERTS_MARK_ALL_READ'] = 'Mark all as read';
+$app_strings['LBL_MINT4_ALERTS_DELETE_ALL'] = 'Delete all';
+$app_strings['LBL_MINT4_ALERTS_DELETE_ALL_CANCEL'] = 'Cancel';
+
 // Login, Forget Password, Reset Password
 $app_strings['LBL_MINT4_AUTH_LOGIN_TITLE'] = 'Login';
 $app_strings['LBL_MINT4_AUTH_LOGIN_BTN'] = 'Log in';

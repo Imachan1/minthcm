@@ -28,7 +28,7 @@ class MassActionController
             }
         }
         $response = $response->withStatus($result ? 200 : 400);
-        $response->getBody()->write(json_encode(DataHelper::getNewAlerts()));
+        $response->getBody()->write(json_encode((new ListAction)->getListData()));
         chdir('../api/');
 
         return $response;
@@ -55,7 +55,7 @@ class MassActionController
             }
         }
         $response = $response->withStatus($result ? 200 : 400);
-        $response->getBody()->write(json_encode(DataHelper::getNewAlerts()));
+        $response->getBody()->write(json_encode((new ListAction)->getListData()));
         chdir('../api/');
 
         return $response;
