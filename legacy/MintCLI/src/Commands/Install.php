@@ -29,19 +29,19 @@ class Install extends Command
         $DBService = new DatabaseService();
         $AppVerService = new AppVersionService();
 
-        $io->title("Welcome to MintHCM Installer.\nProvide all information to start installation process.");
+        $io->title("Welcome to the MintHCM Installer.\nProvide all of the information to start installation process.");
 
         $userData = $this->collectUserData($input, $output);
         
         $output->writeln('');
-        $io->section('Veryfing Database Connection...');
+        $io->section('Verifying Database Connection...');
         $connectionStatus = $DBService->testConnection($userData['databaseHost'], $userData['databasePort'], $userData['databaseUsername'], $userData['databasePassword']);
         if (!$connectionStatus['status']) {
             $io->error('Could not connect to the database.');
             return Command::FAILURE;
         }
 
-        $io->section('Veryfing Database Existance...');
+        $io->section('Verifying Database Existence...');
         $existanceStatus = $DBService->testDatabaseExistance($userData['databaseHost'], $userData['databasePort'], $userData['databaseUsername'], $userData['databasePassword'], $userData['databaseName']);
         if (!$existanceStatus['status']) {
             $io->error('Database "' . $userData['databaseName'] . '" already exists.');
