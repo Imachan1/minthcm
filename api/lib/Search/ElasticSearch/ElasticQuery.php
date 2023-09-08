@@ -6,7 +6,8 @@ use Elasticsearch\Common\Exceptions\InvalidArgumentException;
 use MintHCM\Lib\Search\Base\SearchQuery;
 use MintHCM\Lib\Search\ElasticSearch\ElasticQueryOperatorsManager;
 use MintHCM\Utils\CustomLoader;
-
+use MintHCM\Utils\LegacyConnector;
+use MintHCM\Data\BeanFactory;
 class ElasticQuery extends SearchQuery
 {
     const DEFAULT_SORT_FIELD = "_score";
@@ -17,6 +18,10 @@ class ElasticQuery extends SearchQuery
 
     const ALL_FIELDS = "_all";
 
+    protected $exclude_modules = [];
+
+    protected $add_acl_filters  = false;
+
     protected function setQuery()
     {
         $this->query = array(
@@ -24,6 +29,12 @@ class ElasticQuery extends SearchQuery
             "body" => $this->getBody(),
             "type" => $this->getType(),
         );
+    }
+
+    public function setACLFilters($add_acl_filters)
+    {
+        $this->add_acl_filters = $add_acl_filters;
+        return $this;
     }
 
     protected function setSort()
@@ -83,8 +94,46 @@ class ElasticQuery extends SearchQuery
 
     private function getGlobalQuery()
     {
-        $fields = !empty($this->params['fields']) ? $this->params['fields'] : array(static::ALL_FIELDS);
+        global $current_user;
 
+        if($this->add_acl_filters){
+            $main_acl["bool"]["must"] = $this->noAclGlobalQuery();
+            $main_acl["bool"]["filter"]["bool"]["should"] = [];
+
+
+            $search_modules = $this->getGlobalSearchModuleList();
+            
+            foreach($search_modules as $module_to_search)
+            {
+                $bean = BeanFactory::newBean($module_to_search);
+                $acl_controller = new LegacyConnector('ACLController');
+                if(method_exists($module_to_search,'bean_implements') && $bean->bean_implements('ACL') &&  ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list')) ) {
+                    $module_filters = $this->getACLForModule($module_to_search);
+                    
+                }
+                else {
+                    $module_filters['bool']['must']['term']['_type'] = $module_to_search;
+                }
+                
+                if(is_array($module_filters)){
+                    $main_acl["bool"]["filter"]["bool"]["should"][] = $module_filters;
+                }                
+            }
+
+            if(count($this->exclude_modules)){
+               $main_acl["bool"]["filter"]["bool"]['must_not'] = $this->getExcludeModules();
+            }
+
+            return $main_acl;
+
+        } else {
+            return $this->noAclGlobalQuery();
+        }
+        
+    }
+
+    private function noAclGlobalQuery(){
+        $fields = !empty($this->params['fields']) ? $this->params['fields'] : array(static::ALL_FIELDS);
         return array(
             'query_string' => array(
                 'query' => $this->params['query'],
@@ -101,4 +150,63 @@ class ElasticQuery extends SearchQuery
         return (CustomLoader::getObject(ElasticQueryOperatorsManager::class, $this->params['filters'] ?? []))->getQuery();
     }
 
+    protected function getExcludeModules(){
+        $excluded_queries = [];
+        foreach($this->exclude_modules as $module){
+            $excluded_queries[]['term']['_type'] = $module;
+        }
+        return $excluded_queries;
+    }
+
+    protected function getACLForModule($module)
+    {
+        global $current_user;
+
+        $acl = $this->getACLClassForModule($module);
+        $restriction_filter = $acl->getAccessRestrictionFilter($current_user->id);
+        
+        $single_module['bool']['must']['term']['_type'] = $module;
+        $single_module['bool']['should'] =  $restriction_filter[0]['bool']['should'];
+        
+        return $single_module;
+
+    }
+
+    protected function getACLClassForModule(string $module)
+    {
+        $variants = [
+            [ 'className' => "Custom{$module}ListACL", 'path' => "custom/modules/{$module}/{$module}ListACL.php" ],
+            [ 'className' => "{$module}ListACL", 'path' => "modules/{$module}/{$module}ListACL.php" ],
+            [ 'className' => 'BaseListACL', 'path' => "include/ESListView/BaseListACL.php" ],
+        ];
+
+        foreach ($variants as $variant) {
+            if (file_exists('../legacy/'.$variant['path'])) {
+                require_once $variant['path'];
+                $acl_class = new LegacyConnector($variant['className'],$variant['path'],[$module]);
+                return $acl_class;
+            }
+        }
+    }
+
+    protected function getGlobalSearchModuleList(){
+        include '../legacy/custom/modules/unified_search_modules_display.php';
+        
+        $search_modules = ['Accounts','Contacts','Leads'];
+        $exclude_hardcode = ["Connectors","Currencies","OAuthTokens","OAuthKeys","ACLRoles","ACLActions","EmailMan","Schedulers","SchedulersJobs","CampaignLog","EmailMarketing","AOW_WorkFlow"];
+        
+        
+        
+        if(!empty($unified_search_modules_display)){
+            $search_modules = array_filter(array_map(function($row){ return $row['visible'] === true;},$unified_search_modules_display));    
+            $exclude = array_filter(array_map(function($row){ return $row['visible'] === false;},$unified_search_modules_display));      
+            $this->exclude_modules = array_merge($exclude_hardcode,array_keys($exclude));
+            
+            return array_diff(array_keys($search_modules),$this->exclude_modules);
+        }
+
+        return $search_modules;
+        
+
+    }
 }
