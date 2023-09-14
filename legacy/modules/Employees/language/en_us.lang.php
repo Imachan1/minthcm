@@ -195,7 +195,6 @@ $mod_strings = array(
     'LBL_FACTOR_AUTH_INTERFACE' => 'Factor Auth Interface',
     'LBL_GENERATE_ONBOARDING_OFFBOARDING' => 'Generate Onboarding/Offboarding',
     'LBL_SUBORDINATES' => 'Subordinates',
-    'LBL_EMPLOYEEINTERACTIONTRACKING' => 'Employee Interaction Tracking',
     'LBL_SECURITYGROUPS_MANAGERS' => 'Manager in Organizational Units',
 
     'LBL_LINKED_ALLOCATIONS_TITLE' => 'Allocations',

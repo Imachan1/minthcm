@@ -45,10 +45,27 @@ export const useLanguagesStore = defineStore('languages', () => {
         return null
     }
 
+    function getList(listKey?: string) {
+        return Object.entries(languages.value?.app_list_strings?.[listKey ?? ''] ?? {}).map(
+            (x: [string, string] | [object]) => ({ key: x[0], value: x[1] }),
+        )
+    }
+
+    function translateListValue(value?: string, listKey?: string) {
+        if (!value || !listKey) {
+            return ''
+        }
+        return languages.value?.app_list_strings?.[listKey]?.[value]
+            ? languages.value?.app_list_strings?.[listKey]?.[value]
+            : value
+    }
+
     return {
         currentLanguage,
         languages,
         label,
         fetchModuleLanguage,
+        getList,
+        translateListValue,
     }
 })

@@ -117,7 +117,6 @@ $themedef = array(
         'workingmonths' => 'fa-calendar-week',
         'salaryranges' => 'fa-dollar-sign',
         'dictionaries' => 'fa-list',
-        'employeeinteractiontracking' => 'fa-handshake',
         'kreports' => 'fa-chart-bar',
         'rooms' => 'fa-door-open',
         'allocations' => 'fa-sign-in-alt',

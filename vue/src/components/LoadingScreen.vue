@@ -1,13 +1,10 @@
 <template>
     <div class="loading-screen">
-        <h1 v-text="'Loading...'" />
+        <v-progress-circular indeterminate color="primary" size="128" width="8" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { useUxStore } from '@/store/ux'
-
-const ux = useUxStore()
 </script>
 
 <style scoped lang="scss">
@@ -19,7 +16,7 @@ const ux = useUxStore()
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #000d;
-    color: white;
+    background-image: url('../bg.jpg');
+    background-size: cover;
 }
 </style>

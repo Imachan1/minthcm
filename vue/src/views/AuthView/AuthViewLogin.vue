@@ -43,23 +43,27 @@ import { useAuthViewStore } from './AuthViewStore'
 import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
 import { useAuthStore } from '@/store/auth'
+import { usePreferencesStore } from '@/store/preferences'
 import { useRouter } from 'vue-router'
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintStatusBox from '@/components/MintStatusBox.vue'
 
 const authViewStore = useAuthViewStore()
 const backend = useBackendStore()
 const languages = useLanguagesStore()
 const auth = useAuthStore()
+const preferences = usePreferencesStore()
 
 onMounted(() => {
-    authViewStore.footerNavAction = {
-        routeName: 'auth-forget',
-        label: languages.label('LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION'),
+    const showForgetLink = !preferences.global?.ldap_enabled
+    if (showForgetLink) {
+        authViewStore.footerNavAction = {
+            routeName: 'auth-forget',
+            label: languages.label('LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION'),
+        }
     }
 })
 
-const username = ref('')
 const password = ref('')
 const showPassword = ref(false)
 const isSubmiting = ref(false)
@@ -72,14 +76,12 @@ async function handleSubmit() {
         return
     }
     isSubmiting.value = true
-    await auth.authenticate(authViewStore.username, password.value)
-    await backend.init()
-    if (!auth.user?.id) {
-        loginError.value = true
-    } else if (auth.user.show_login_wizard) {
-        router.push({ name: 'setup-wizard' })
+    const result = await auth.authenticate(authViewStore.username, password.value)
+    if (result) {
+        backend.initialLoading = true
+        router.go(0)
     } else {
-        router.push({ name: 'dashboard' })
+        loginError.value = true
     }
     isSubmiting.value = false
 }

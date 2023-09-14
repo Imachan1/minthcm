@@ -185,6 +185,12 @@ class WorkSchedules extends Basic
         if (empty($this->date_end) || empty($this->date_start)) {
             $GLOBALS['log']->fatal("Date start or date end is empty. Cannot save.Date start: {$this->date_start} date end: {$this->date_end}");
         } else {
+            
+                        // prevent a mass mailing for recurring meetings created in Calendar module
+                        if ( empty($this->id) && !empty($_REQUEST['repeat_type']) && !empty($this->repeat_parent_id) ) {
+                            $check_notify = false;
+                        }
+
             $parent_result = parent::save($check_notify);
             $this->saveRepeatly();
             //prevents work schedule from being saved with spent_time_settlement equals to 0

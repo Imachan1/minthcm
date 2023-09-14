@@ -3,6 +3,7 @@
 namespace MintHCM\Api\Controllers\Init;
 
 use BeanFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use Slim\Psr7\Response;
 use MintHCM\Api\Controllers\Init\Module;
 use MintHCM\Api\Controllers\Init\Languages;
@@ -20,11 +21,11 @@ class Init
         "RecordView",
     ];
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->preferences_controller = new Preferences();
+        $this->preferences_controller = new Preferences($entityManager);
         $this->languages_controller = new Languages();
-        $this->module_init_controller = new Module();
+        $this->module_init_controller = new Module($entityManager);
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response
@@ -70,6 +71,7 @@ class Init
             "last_name" => $current_user->last_name,
             "full_name" => $current_user->full_name,
             "email" => $current_user->email1,
+            "photo" => $current_user->photo,
             "preferences" => $preferences,
             "show_login_wizard" => empty($current_user->getPreference('ut')),
         );
@@ -121,9 +123,7 @@ class Init
         global $beanList,$current_user;
         foreach($beanList as $key=>$module) {
             if(!array_key_exists($key,$modules_data)){
-                if($current_user->isAdmin()){
-                    $modules_data[$key] = $this->module_init_controller->getModuleData($key);
-                }
+                $modules_data[$key] = $this->module_init_controller->getModuleData($key);
             }
         }
         return [array_keys($modules), $modules_data];

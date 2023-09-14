@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintChat from '@/components/MintChat/MintChat.vue'
 import { useMintChatStore } from '@/components/MintChat/MintChatStore'
 import { useUxStore } from '@/store/ux'

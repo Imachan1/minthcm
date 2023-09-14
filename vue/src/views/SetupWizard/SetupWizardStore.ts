@@ -71,6 +71,9 @@ export const useSetupWizardStore = defineStore('setup-wizard', () => {
         try {
             const response = await axios.post('api/confirm_login_wizard', setupData.value)
             if (response.status === 200) {
+                if (auth.user) {
+                    auth.user.show_login_wizard = false
+                }
                 isFinished.value = true
             }
         } finally {

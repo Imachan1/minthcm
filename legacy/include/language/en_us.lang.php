@@ -141,7 +141,6 @@ $app_list_strings = array(
         'Rooms' => 'Rooms',
         'Workplaces' => 'Workplaces',
         'Allocations' => 'Allocations',
-        'EmployeeInteractionTracking' => 'Employee Interaction Tracking',
         'Improvements' => 'Improvements',
         'News' => 'News',
         'NonWorkingDays' => 'Non Working Days Registry',
@@ -214,7 +213,6 @@ $app_list_strings = array(
     	'Rooms' => 'Room',
         'Allocations' => 'Allocation',
         'Workplaces' => 'Workplace',
-        'EmployeeInteractionTracking' => 'Employee Interaction Tracking',
         'Positions' => 'Position',
         'Recruitments' => 'Recruitment',
         'KReports' => 'Advanced Report',
@@ -4463,6 +4461,11 @@ $app_list_strings['parent_type_display_for_candidatures'] = array(
 
 $app_strings['LNK_KANBAN'] = 'Board';
 $app_strings['ERR_KANBAN_COL_ERROR'] = 'Column for Kanban is not defined. Property "column" is missing for kanbanviewdefs.';
+$app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed'; 
+
+$app_list_strings['kanban_module_list'] = array(
+    'Tasks' => 'Tasks',
+);
 
 $app_strings['LBL_WORKSCHEDULES'] = 'Work Schedules';
 $app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed';
@@ -4618,6 +4621,7 @@ $app_strings['LBL_MINT4_AUTH_RESET_SUCCESS'] = 'The password has been changed. Y
 $app_strings['LBL_MINT4_AUTH_RESET_BACK_TO_LOGIN_BTN'] = 'Return to login';
 $app_strings['LBL_MINT4_AUTH_RESET_TOKEN_ERROR'] = 'Invalid or expired token.';
 $app_strings['LBL_MINT4_AUTH_RESET_AGAIN_BTN'] = 'Reset again';
+$app_strings['LBL_PROVIDE_USERNAME_AND_EMAIL'] = 'Incorrect username or email, please try another one.';
 
 // Chat
 $app_strings['LBL_MINT4_CHAT_CREATE_GROUP'] = 'Create Group Conversation';

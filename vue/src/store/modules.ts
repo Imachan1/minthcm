@@ -10,6 +10,7 @@ export interface ModulesDefs {
         name: string
         icon: string
         actions: ModuleAction[]
+        acl: { [view: string]: number }
     }
 }
 
@@ -22,6 +23,7 @@ export interface Module {
     label: string
     icon: string
     actions: ModuleAction[]
+    acl: { [view: string]: number }
 }
 
 export interface ModuleAction {
@@ -29,6 +31,16 @@ export interface ModuleAction {
     url: string
     action: string
     icon: string
+}
+
+export interface FieldVardef {
+    name: string
+    type: string
+    label: string
+    options?: string
+    options_colors?: string
+    default?: string
+    readonly?: boolean
 }
 
 export const useModulesStore = defineStore('modules', () => {

@@ -1,16 +1,9 @@
 <template>
     <div class="search-container">
-        <v-text-field
-            v-model="searchQuery"
-            ref="searchInput"
-            class="search-input"
-            :class="[isFocused && 'search-input-active']"
-            hide-details
-            :placeholder="languages.label('LBL_MINT4_GS_SEARCH_INPUT')"
-            @keyup.enter="goToFullList"
-            variant="plain"
-            @update:focused="isFocused = $event"
-        >
+        <v-text-field v-model="searchQuery" ref="searchInput" class="search-input"
+            :class="[isFocused && 'search-input-active']" hide-details
+            :placeholder="languages.label('LBL_MINT4_GS_SEARCH_INPUT')" @keyup.enter="goToFullList" variant="plain"
+            @update:focused="isFocused = $event">
             <template #prepend-inner>
                 <v-fab-transition class="search-prepend-icon">
                     <v-icon v-if="searchQuery" icon="mdi-close" @click="searchQuery = ''" />
@@ -22,42 +15,34 @@
             <template v-if="isFocused">
                 <v-skeleton-loader v-if="isSearching" type="list-item-two-line" class="search-results" />
                 <div v-else-if="!searchResponse?.results?.length" class="search-results">
-                    <div
-                        class="ma-4 text-caption"
-                        v-text="
-                            !searchResponse?.query || searchResponse.query.length < 3
-                                ? languages.label('LBL_MINT4_GS_HELP_TIP')
-                                : languages.label('LBL_MINT4_GS_NO_RECORDS_FOUND')
-                        "
-                    />
+                    <div class="ma-4 text-caption" v-text="!searchResponse?.query || searchResponse.query.length < 3
+                        ? languages.label('LBL_MINT4_GS_HELP_TIP')
+                        : languages.label('LBL_MINT4_GS_NO_RECORDS_FOUND')
+                        " />
                 </div>
                 <div v-else-if="searchResponse?.results?.length" class="search-results">
-                    <div
-                        v-for="result in searchResponse.results"
-                        :key="result.id"
-                        color="primary"
-                        v-ripple="{ class: 'text-primary' }"
-                        @click="showRecord(result.module, result.id)"
-                        class="search-result"
-                    >
+                    <div v-for="result in searchResponse.results" :key="result.id" color="primary"
+                        v-ripple="{ class: 'text-primary' }" @click="showRecord(result.module, result.id)"
+                        class="search-result">
                         <v-icon :icon="modules.modules[result.module]?.icon || modules.defaultIcon" color="primary" />
                         <div>
                             <span v-html="getHighlightedText(result.name, searchResponse.query)" />
                             <div class="search-result-description">
                                 <span v-text="getModuleName(result.module)" />
-                                <span v-text="`${result.meta?.label} ${result.meta?.value}`" />
+                                <span
+                                    v-text="
+                                        languages.label(result.meta?.def?.vname, result.module) +
+                                        ' ' +
+                                        getFieldValue(result.meta?.def, result.meta?.value)
+                                    " />
                             </div>
                         </div>
                     </div>
                     <div class="search-results-footer">
-                        <span
-                            @click="goToFullList"
-                            v-text="
-                                searchResponse.next_page_exists
-                                    ? languages.label('LBL_MINT4_GS_GO_TO_LIST_MORE')
-                                    : languages.label('LBL_MINT4_GS_GO_TO_LIST')
-                            "
-                        />
+                        <span @click="goToFullList" v-text="searchResponse.next_page_exists
+                            ? languages.label('LBL_MINT4_GS_GO_TO_LIST_MORE')
+                            : languages.label('LBL_MINT4_GS_GO_TO_LIST')
+                            " />
                     </div>
                 </div>
             </template>
@@ -74,6 +59,7 @@ import he from 'he'
 import axios from 'axios'
 import { watch } from 'vue'
 import { useLanguagesStore } from '@/store/languages'
+import { DateTime } from 'luxon'
 
 const modules = useModulesStore()
 const languages = useLanguagesStore()
@@ -111,14 +97,31 @@ function showRecord(module: string, id: string) {
 function getModuleName(module: string) {
     return languages.languages.app_list_strings?.moduleList?.[module] ?? ''
 }
+function getFieldValue(field_definition: object, value: string) {
+    switch (field_definition.type) {
+        case 'date':
+            value = DateTime.fromSQL(value).toFormat('dd.MM.yyyy')
+            break
+        case 'datetimecombo':
+        case 'datetime':
+            value = DateTime.fromSQL(value, { zone: 'UTC' }).toLocal().toFormat('dd.MM.yyyy HH:mm')
+            break
+        case 'enum':
+            value = languages.languages.app_list_strings[field_definition.options][value]
+            break
 
+        default:
+            break
+    }
+    return value
+}
 interface SearchResult {
     id: string
     name: string
     module: string
     meta: {
-        label: string
         value: string
+        def: object
     }
 }
 
@@ -206,12 +209,14 @@ watch(searchQuery, (newVal) => {
     z-index: 1;
     border-radius: 100px;
     transition: all 100ms ease-in-out;
+
     .search-prepend-icon {
         margin: 0px 10px;
         top: -4px;
         opacity: 1;
         color: rgb(var(--v-theme-secondary));
     }
+
     :deep(.v-field__input) {
         padding-top: 0px;
     }
@@ -230,9 +235,11 @@ watch(searchQuery, (newVal) => {
     background: rgb(var(--v-theme-surface));
     border-radius: 0px 0px 24px 24px;
     box-shadow: 0px 3px 6px #00000029;
+
     .search-results-footer {
         margin-top: 8px;
         text-align: center;
+
         span {
             font-size: 12px;
             color: rgb(var(--v-theme-secondary));
@@ -250,6 +257,7 @@ watch(searchQuery, (newVal) => {
     gap: 16px;
     transition: all 200ms ease-in-out;
     cursor: pointer;
+
     &:hover {
         background: rgb(var(--v-theme-primary-light));
     }

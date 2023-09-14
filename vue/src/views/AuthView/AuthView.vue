@@ -1,39 +1,41 @@
 <template>
     <div class="auth-view">
-        <img src="../../assets/mint_logo.png" height="32" />
+        <div class="auth-view-container">
+            <img src="../../assets/mint_logo.png" height="32" />
 
-        <router-view v-slot="{ Component }" class="form-content">
-            <v-slide-x-transition hide-on-leave>
-                <component :is="Component" />
-            </v-slide-x-transition>
-        </router-view>
+            <router-view v-slot="{ Component }" class="form-content">
+                <v-slide-x-transition hide-on-leave>
+                    <component :is="Component" />
+                </v-slide-x-transition>
+            </router-view>
 
-        <div class="auth-footer">
-            <v-slide-x-transition hide-on-leave>
-                <div
-                    v-if="store.footerNavAction"
-                    @click="$router.push({ name: store.footerNavAction.routeName })"
-                    v-text="store.footerNavAction.label"
-                />
-            </v-slide-x-transition>
-            <v-menu offset="16">
-                <template v-slot:activator="{ props, isActive }">
-                    <MintButton
-                        class="ms-auto"
-                        v-bind="props"
-                        variant="nav"
-                        icon="mdi-translate"
-                        :active="isActive"
-                        :tooltip="languages.label('LBL_MINT4_AUTH_LANG_TOOLTIP')"
+            <div class="auth-footer">
+                <v-slide-x-transition hide-on-leave>
+                    <div
+                        v-if="store.footerNavAction"
+                        @click="$router.push({ name: store.footerNavAction.routeName })"
+                        v-text="store.footerNavAction.label"
                     />
-                </template>
-                <MintMenuList
-                    :items="[
-                        { title: 'polski', icon: 'fi-pl', onClick: () => { changeLanguage('pl_PL') } },
-                        { title: 'English', icon: 'fi-gb', onClick: () => { changeLanguage('en_us') } },
-                    ]"
-                />
-            </v-menu>
+                </v-slide-x-transition>
+                <v-menu offset="16">
+                    <template v-slot:activator="{ props, isActive }">
+                        <MintButton
+                            class="ms-auto"
+                            v-bind="props"
+                            variant="nav"
+                            icon="mdi-translate"
+                            :active="isActive"
+                            :tooltip="languages.label('LBL_MINT4_AUTH_LANG_TOOLTIP')"
+                        />
+                    </template>
+                    <MintMenuList
+                        :items="[
+                            { title: 'polski', icon: 'fi-pl', onClick: () => { changeLanguage('pl_PL') } },
+                            { title: 'English', icon: 'fi-gb', onClick: () => { changeLanguage('en_us') } },
+                        ]"
+                    />
+                </v-menu>
+            </div>
         </div>
     </div>
 </template>
@@ -42,7 +44,7 @@
 import { useAuthViewStore } from './AuthViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useBackendStore } from '@/store/backend'
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintMenuList from '@/components/MintMenuList.vue'
 import axios from 'axios'
 
@@ -72,6 +74,17 @@ async function changeLanguage(lang = 'pl_PL') {
 
 <style scoped lang="scss">
 .auth-view {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+}
+
+.auth-view-container {
     background: rgb(var(--v-theme-surface));
     border-radius: 16px;
     box-shadow: 0px 1px 12px #00997619;

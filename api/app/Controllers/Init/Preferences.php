@@ -2,15 +2,19 @@
 
 namespace MintHCM\Api\Controllers\Init;
 
+use MintHCM\Api\Entities\UserPreferences;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 
 class Preferences
 {
+    protected $entityManager;
     protected $user_preferences;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
         $this->setUserPreferences();
     }
 
@@ -77,13 +81,19 @@ class Preferences
             return array();
         }
 
-        $db = \DBManagerFactory::getInstance();
-        $result = $db->query("SELECT contents, category FROM user_preferences WHERE assigned_user_id='$current_user->id' AND deleted = 0", false, 'Failed to load user preferences');
-        $preferences = [];
-        while ($row = $db->fetchByAssoc($result)) {
-            $category = $row['category'];
-            $preferences[$category] = unserialize(base64_decode($row['contents']));
+        try {
+            $rows = $this->entityManager->getRepository(UserPreferences::class)
+                ->findAllUndeletedByUserId($current_user->id);
+
+            foreach ($rows as $row) {
+                $category = $row['category'];
+                $preferences[$category] = unserialize(base64_decode($row['contents']));
+            }
+
+            $this->user_preferences = $preferences;
+        } catch (\Exception $e) {
+            // TODO: log 'Failed to load user preferences'
+            throw($e);
         }
-        $this->user_preferences = $preferences;
     }
 }

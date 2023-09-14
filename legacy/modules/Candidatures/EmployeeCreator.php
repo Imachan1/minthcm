@@ -102,6 +102,7 @@ class EmployeeCreator
         $employee_bean = $this->assignEmployeeContactFields($employee_bean);
 
         $employee_bean->employee_status = self::EMPLOYEE_ACTIVE_STATUS;
+        $employee_bean->skip_vt_validation = true;
         $employee_bean->save();
         $this->addCandidateRelationToUser($employee_bean);
         return $employee_bean;
@@ -133,6 +134,7 @@ class EmployeeCreator
             $related_employee_bean->status = 'Inactive';
         }
         $related_employee_bean->position_id = $this->position_bean->id;
+        $employee_bean->skip_vt_validation = true;
         $related_employee_bean->save();
 
         return $related_employee_bean;

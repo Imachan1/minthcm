@@ -18,7 +18,7 @@
 import { ref, defineEmits, defineProps } from 'vue'
 import { useLanguagesStore } from '@/store/languages'
 import { useListViewStore } from './ListViewStore'
-import MintButton from '@/components/MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 
 const emit = defineEmits(['close'])
 const props = defineProps(['data'])

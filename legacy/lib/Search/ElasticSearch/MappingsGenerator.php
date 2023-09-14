@@ -49,6 +49,20 @@ class MappingsGenerator
         'long' => [
             'type' => 'long',
         ],
+        'security_groups' => [
+            'type' => 'nested',
+            'properties' => [
+                'id' => [
+                    'type' => 'text',
+                    'fields' => [
+                        'keyword' => [
+                            'type' => 'keyword',
+                            'ignore_above' => 256,
+                        ],
+                    ],
+                ],
+            ],
+        ],
     ];
 
     protected function getModulesWithElastic()
@@ -99,6 +113,13 @@ class MappingsGenerator
                     }
                 }
             }
+
+            // Eryk START
+            $module_templates = $GLOBALS["dictionary"][$bean->object_name]["templates"];
+            if (isset($module_templates['security_groups'])) {
+                $mappings['mappings'][$key]['properties']['security_groups'] = $this->types['security_groups'];
+            }
+            // Eryk END
         }
 
         $this->parseMappingsToYaml($mappings);

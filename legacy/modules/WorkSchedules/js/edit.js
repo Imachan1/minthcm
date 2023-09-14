@@ -298,6 +298,7 @@ function validateWorkScheduleCreatedByPeriodicity() {
         viewTools.api.callCustomApi({
             module: "WorkSchedules",
             action: "checkWorkScheduleCreatedByPeriodicity",
+            async: false,
             dataPOST: {
                 data: data,
             },

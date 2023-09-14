@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 import { useMintChatStore } from './MintChatStore'
-import MintButton from '../MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 
 
 const chat = useMintChatStore()

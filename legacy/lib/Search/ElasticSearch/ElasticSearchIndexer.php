@@ -81,6 +81,10 @@ class ElasticSearchIndexer extends AbstractIndexer
     /** @var Carbon|false the timestamp of the last indexing. false if unknown */
     private $lastRunTimestamp = false;
 
+   // MintHCM #121632 START
+   protected $acl_helper;
+   // MintHCM #121632 END
+
     /**
      * ElasticSearchIndexer constructor.
      *
@@ -95,7 +99,12 @@ class ElasticSearchIndexer extends AbstractIndexer
       }
       // View Tools end #60464
 
-        $this->client = $client ?? ElasticSearchClientBuilder::getClient();
+      // MintHCM #121632 START
+      require_once 'include/ESListView/ESListACLHelper.php';
+      $this->acl_helper = new \ESListACLHelper;
+      // MintHCM #121632 END
+
+      $this->client = $client ?? ElasticSearchClientBuilder::getClient();
     }
 
     /**
@@ -306,6 +315,16 @@ class ElasticSearchIndexer extends AbstractIndexer
       // minthcm end
         $args = $this->makeIndexParamsFromBean($bean);
 
+      // MintHCM #121632 START
+      if ($this->acl_helper->doesModuleUseTemplate($bean->module_name, 'security_groups')) {
+         $group_ids = $this->acl_helper->getSecurityGroupIdsRelatedWithRecord($bean->module_name, $bean->id);
+
+         $args['body']['security_groups'] = array_values(array_map(function ($group_id) {
+            return [ 'id' => $group_id ];
+        }, $group_ids));
+      }
+      // MintHCM #121632 END
+
         $this->client->index($args);
     }
 
@@ -448,6 +467,12 @@ class ElasticSearchIndexer extends AbstractIndexer
     {
         $params = ['body' => []];
 
+      // MintHCM #121632 START
+      if ($this->acl_helper->doesModuleUseTemplate($module, 'security_groups')) {
+         $groups_by_records = $this->acl_helper->getSecurityGroupIdsRelatedWithMultipleRecords($module, $beans);
+      }
+      // MintHCM #121632 END
+
         foreach ($beans as $key => $bean) {
             $head = ['_index' => strtolower($module), '_id' => $bean->id];
 
@@ -456,6 +481,16 @@ class ElasticSearchIndexer extends AbstractIndexer
                 $this->removedRecordsCount++;
             } else {
                 $body = $this->makeIndexParamsBodyFromBean($bean);
+
+            // MintHCM #121632 START
+            if (isset($groups_by_records)) {
+               $group_ids = $groups_by_records[$bean->id] ?? [];
+               $body['security_groups'] = array_values(array_map(function ($group_id) {
+                  return [ 'id' => $group_id ];
+               }, $group_ids));
+            }
+            // MintHCM #121632 END
+
                 $params['body'][] = ['index' => $head];
                 $params['body'][] = $body;
                 $this->indexedRecordsCount++;

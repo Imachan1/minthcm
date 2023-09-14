@@ -2,8 +2,10 @@
     <v-app>
         <MintOverlay />
         <MintPopups />
-        <LoadingScreen v-if="backend.initialLoading" />
-        <component v-else :is="ux.layout">
+        <v-fade-transition>
+            <LoadingScreen v-if="backend.initialLoading" />
+        </v-fade-transition>
+        <component :is="ux.layout">
             <v-main
                 class="mint-content"
                 :style="{

@@ -6,10 +6,8 @@
 </template>
 
 <script setup lang="ts">
-import { useSetupWizardStore } from '../SetupWizardStore'
 import { useLanguagesStore } from '@/store/languages'
 
-const store = useSetupWizardStore()
 const languages = useLanguagesStore()
 </script>
 

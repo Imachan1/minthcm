@@ -156,32 +156,8 @@ class AuthenticationController
 			}
 
 			//call business logic hook
-			if(isset($GLOBALS['current_user']))
+			if(isset($GLOBALS['current_user'])){
 				$GLOBALS['current_user']->call_custom_logic('after_login');
-
-            // Check for running Admin Wizard
-            $config = BeanFactory::newBean('Administration');
-			$config->retrieveSettings();
-			$postSilentInstallAdminWizardCompleted = $GLOBALS['current_user']->getPreference('postSilentInstallAdminWizardCompleted');
-		    if ( (is_admin($GLOBALS['current_user']) && empty($config->settings['system_adminwizard']) && $_REQUEST['action'] != 'AdminWizard') ||($postSilentInstallAdminWizardCompleted !== null && !$postSilentInstallAdminWizardCompleted) ) {
-				$GLOBALS['module'] = 'Configurator';
-				$GLOBALS['action'] = 'AdminWizard';
-				ob_clean();
-				header("Location: index.php?module=Configurator&action=AdminWizard");
-				sugar_cleanup(true);
-			}
-
-			$ut = $GLOBALS['current_user']->getPreference('ut');
-			$checkTimeZone = true;
-			if (is_array($PARAMS) && !empty($PARAMS) && isset($PARAMS['passwordEncrypted'])) {
-				$checkTimeZone = false;
-			} // if
-			if(empty($ut) && $checkTimeZone && $_REQUEST['action'] != 'SetTimezone' && $_REQUEST['action'] != 'SaveTimezone' ) {
-				$GLOBALS['module'] = 'Users';
-				$GLOBALS['action'] = 'Wizard';
-				ob_clean();
-				header("Location: index.php?module=Users&action=Wizard");
-				sugar_cleanup(true);
 			}
 		}else{
 			//kbrill bug #13225

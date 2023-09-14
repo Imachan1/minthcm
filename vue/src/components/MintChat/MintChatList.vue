@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { useMintChatStore } from './MintChatStore'
-import MintButton from '../MintButton.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintSearch from '../MintSearch.vue'
 import { useLanguagesStore } from '@/store/languages'
 

@@ -52,6 +52,7 @@ $dictionary['Call'] = array(
    'unified_search' => true,
    'full_text_search' => true,
    'unified_search_default_enabled' => true,
+   'full_text_search_meta_field' => 'date_start',
    'fields' => array(
       'name' => array(
          'name' => 'name',

@@ -377,16 +377,13 @@ class Employee extends Person implements EmailInterface
         return $query;
     }
 
-    public function get_employeeinteractiontracking_for_subpanel()
+    protected function postSave()
     {
-        $return_array['select'] = 'SELECT employeeinteractiontracking.id ';
-        $return_array['select'] = '';
-        $return_array['join'] = " INNER JOIN  users employeeinteractiontracking_rel ON employeeinteractiontracking.assigned_user_id=employeeinteractiontracking_rel.id AND employeeinteractiontracking_rel.deleted=0  ";
-        $return_array['where'] = " WHERE employeeinteractiontracking.assigned_user_id='{$this->id}' and employeeinteractiontracking.deleted=0 ";
-
-        return $return_array;
+        if($this->securitygroup_id != $this->fetched_row['securitygroup_id'] && empty($this->securitygroup_id)){
+            $this->load_relationship('SecurityGroups');
+            $this->SecurityGroups->delete($this->fetched_row['securitygroup_id']);
     }
-
+    }
     // MintHCM end
 
     // MintHCM start
