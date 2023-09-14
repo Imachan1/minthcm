@@ -192,8 +192,8 @@ $dictionary["Employee"]["fields"]["securitygroups_managers"] = array(
     'side' => 'right',
 );
 
-$dictionary["Employee"]["fields"]["securitygroups"] = array(
-    'name' => 'securitygroups',
+$dictionary["Employee"]["fields"]["securitygroups_employees"] = array(
+    'name' => 'securitygroups_employees',
     'type' => 'link',
     'relationship' => 'securitygroups_employees',
     'source' => 'non-db',
@@ -209,7 +209,7 @@ $dictionary["Employee"]["fields"]["securitygroup_name"] = array(
     'vname' => 'LBL_SECURITYGROUP_NAME',
     'save' => true,
     'id_name' => 'securitygroup_id',
-    'link' => 'securitygroups',
+    'link' => 'securitygroups_employees',
     'module' => 'SecurityGroups',
     'table' => 'securitygroups',
     'rname' => 'name',
