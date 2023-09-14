@@ -565,7 +565,7 @@ $beanFiles['Rooms'] = 'modules/Rooms/Rooms.php';
 $beanFiles['Allocations'] = 'modules/Allocations/Allocations.php';
 $beanFiles['Workplaces'] = 'modules/Workplaces/Workplaces.php';
 
-$beanFiles['EmployeeInteractionTracking'] = 'modules/EmployeeInteractionTracking/EmployeeInteractionTracking.php';
+
 $beanFiles['Positions'] = 'modules/Positions/Positions.php';
 $beanFiles['Recruitments'] = 'modules/Recruitments/Recruitments.php';
 $beanFiles['Transportations'] = 'modules/Transportations/Transportations.php';
@@ -637,7 +637,6 @@ $beanList['Ideas'] = 'Ideas';
 $beanList['Rooms'] = 'Rooms';
 $beanList['Allocations'] = 'Allocations';
 $beanList['Workplaces'] = 'Workplaces';
-$beanList['EmployeeInteractionTracking'] = 'EmployeeInteractionTracking';
 $beanList['Positions'] = 'Positions';
 $beanList['Recruitments'] = 'Recruitments';
 $beanList['Transportations'] = 'Transportations';
@@ -702,7 +701,6 @@ $moduleList[] = 'Ideas';
 $moduleList[] = 'Rooms';
 $moduleList[] = 'Allocations';
 $moduleList[] = 'Workplaces';
-$moduleList[] = 'EmployeeInteractionTracking';
 $moduleList[] = 'Positions';
 $moduleList[] = 'Recruitments';
 $moduleList[] = 'EmployeeRoles';

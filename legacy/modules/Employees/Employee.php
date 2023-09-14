@@ -136,7 +136,7 @@ class Employee extends Person implements EmailInterface
 
     public function retrieve_employee_id($employee_name)
     {
-        $query = "SELECT id from users where user_name='$user_name' AND deleted=0";
+        $query = "SELECT id from users where user_name='$employee_name' AND deleted=0";
         $result = $this->db->query($query, false, "Error retrieving employee ID: ");
         $row = $this->db->fetchByAssoc($result);
         return $row['id'];
@@ -372,16 +372,6 @@ class Employee extends Person implements EmailInterface
             $result = true;
         }
         return $result;
-    }
-
-    public function get_employeeinteractiontracking_for_subpanel()
-    {
-        $return_array['select'] = 'SELECT employeeinteractiontracking.id ';
-        $return_array['select'] = '';
-        $return_array['join'] = " INNER JOIN  users employeeinteractiontracking_rel ON employeeinteractiontracking.assigned_user_id=employeeinteractiontracking_rel.id AND employeeinteractiontracking_rel.deleted=0  ";
-        $return_array['where'] = " WHERE employeeinteractiontracking.assigned_user_id='{$this->id}' and employeeinteractiontracking.deleted=0 ";
-
-        return $return_array;
     }
 
     protected function postSave()

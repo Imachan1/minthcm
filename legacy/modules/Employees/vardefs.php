@@ -238,23 +238,6 @@ $dictionary["Employee"]["fields"]["applications"] = array(
     'side' => 'right',
     'vname' => 'LBL_APPLICATIONS_SUBPANEL',
 );
-$dictionary["Employee"]["fields"]["employeeinteractiontracking_employee"] = array(
-    'name' => 'employeeinteractiontracking_employee',
-    'type' => 'link',
-    'relationship' => 'employeeinteractiontracking_employee',
-    'source' => 'non-db',
-    'side' => 'right',
-    'vname' => 'LBL_EMPLOYEEINTERACTIONTRACKING',
-);
-
-$dictionary["Employee"]["fields"]["employeeinteractiontracking_assigned_user"] = array(
-    'name' => 'employeeinteractiontracking_assigned_user',
-    'type' => 'link',
-    'relationship' => 'employeeinteractiontracking_assigned_user',
-    'source' => 'non-db',
-    'side' => 'right',
-    'vname' => 'LBL_EMPLOYEEINTERACTIONTRACKING',
-);
 
 $dictionary["Employee"]["fields"]["prospect_lists"] = array(
     'name' => 'prospect_lists',
