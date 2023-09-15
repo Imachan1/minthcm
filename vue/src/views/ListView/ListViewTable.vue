@@ -41,7 +41,7 @@
             <span v-text="formatMultienum(item.raw[multienum.field], multienum.options)" />
         </template>
         <template v-for="date in store.customFields.dates" v-slot:[`item.${date}`]="{ item }" :key="date">
-            <span v-text="formatDate(item.raw[date])" />
+            <span v-text="item.raw[date]" />
         </template>
         <template v-slot:[`item.actions`]="{ item }">
             <div class="d-flex justify-end" style="gap: 8px">
@@ -122,21 +122,6 @@ function getItemActions(item: any) {
                 onClick: (item) => eval(action.onClick)(item),
             }
         })
-}
-
-function formatDate(date: string) {
-    if (!date) {
-        return ''
-    }
-    if (date.length === 10) {
-        // db date
-        return DateTime.fromSQL(date).toFormat('dd.MM.yyyy') // todo: user format
-    }
-    if (date.length === 19) {
-        // db datetime
-        return DateTime.fromSQL(date, { zone: 'UTC' }).toLocal().toFormat('dd.MM.yyyy HH:mm:ss') // todo: user format
-    }
-    return ''
 }
 
 function formatMultienum(value, labels) {
