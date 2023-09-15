@@ -8,6 +8,9 @@ use MintHCM\Lib\Search\Search;
 use MintHCM\Utils\LegacyConnector;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
+use SuiteCRM\Search\SearchQuery;
+use SuiteCRM\Search\SearchWrapper;
+
 class GlobalSearchController
 {
     protected $entityManager;
@@ -27,7 +30,13 @@ class GlobalSearchController
     {
         $response = $response->withHeader('Content-type', 'application/json');
         try {
+            global $current_user;
+            $query = $request->getAttribute('query');
+
             $search_manager = Search::getManager();
+            ;
+            $search_manager->setElasticACL(!is_admin($current_user));
+
             $search_manager->setQuery(array(
                 "search" => 'global',
                 "fields" => array("name.*^5", "_all"),
@@ -35,16 +44,17 @@ class GlobalSearchController
                 "query" => $request->getAttribute('query'),
                 "sort_order" => "desc",
             ));
-            $search_result = $search_manager->search(true);
+            $search_result = $search_manager->search(false);
+
 
         } catch (BadRequest400Exception $e) {
             throw new HttpBadRequestException($this->request);
         } catch (InvalidArgumentException $e) {
             throw new HttpInternalServerErrorException($this->request);
         }
-
+        
         $data = array(
-            'query' => $request->getAttribute('query'),
+            'query' => $query,
             'next_page_exists' => $search_result->getNextPageExists(),
             'results' => $this->getBeans($search_result->getBeans()),
         );

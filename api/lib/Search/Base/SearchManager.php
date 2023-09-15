@@ -6,10 +6,8 @@ use MintHCM\Lib\Search\Base\SearchResult;
 
 abstract class SearchManager
 {
-    protected $params,
-    $query,
-        $result_manager
-    ;
+    protected $params,$query, $result_manager ;
+    protected $elastic_acl = true;
 
     public function __construct()
     {

@@ -19,7 +19,12 @@ class ElasticSearch extends SearchManager
         parent::__construct($params);
         $this->setClient();
     }
-
+    
+    public function setElasticACL($elastic_acl)
+    {
+        $this->elastic_acl = $elastic_acl;
+    }
+    
     public function search($handle_acl = false): SearchResult
     {
         if (empty($this->query)) {
@@ -33,7 +38,7 @@ class ElasticSearch extends SearchManager
     public function setQuery(array $params): void
     {
         $this->params = $params;
-        $this->query = (new ElasticQuery($params))->getQuery();
+        $this->query = ((new ElasticQuery($params))->setACLFilters($this->elastic_acl))->getQuery();
     }
 
     protected function setResultManager($result, $handle_acl): void

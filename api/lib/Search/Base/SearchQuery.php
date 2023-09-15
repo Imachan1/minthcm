@@ -6,17 +6,19 @@ abstract class SearchQuery
 {
     protected $params, $query, $sort, $size, $from;
 
+    protected $add_acl_filters  = false;
+
     public function __construct(array $params)
     {
         $this->params = $params;
-        $this->setSize();
-        $this->setFrom();
-        $this->setSort();
-        $this->setQuery();
     }
 
     public function getQuery()
     {
+        $this->setSize();
+        $this->setFrom();
+        $this->setSort();
+        $this->setQuery();
         return $this->query;
     }
 
