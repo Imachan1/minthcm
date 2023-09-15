@@ -17,7 +17,6 @@
     "require": {
         "slim/slim": "4.*",
         "slim/psr7": "^1.5",
-        "elasticsearch/elasticsearch": "^5.3",
         "doctrine/orm": "^2.16",
         "php-di/php-di": "^6.3",
         "symfony/cache": "^5.4",

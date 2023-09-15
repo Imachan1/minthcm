@@ -15,7 +15,6 @@ class ComposerStaticInitb37ba7854db44afda592f3ed7ba9e139
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
-        'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
         '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
@@ -49,7 +48,6 @@ class ComposerStaticInitb37ba7854db44afda592f3ed7ba9e139
         ),
         'R' => 
         array (
-            'React\\Promise\\' => 14,
             'Ramsey\\Uuid\\Doctrine\\' => 21,
             'Ramsey\\Uuid\\' => 12,
             'Ramsey\\Collection\\' => 18,
@@ -81,19 +79,10 @@ class ComposerStaticInitb37ba7854db44afda592f3ed7ba9e139
         array (
             'Invoker\\' => 8,
         ),
-        'G' => 
-        array (
-            'GuzzleHttp\\Stream\\' => 18,
-            'GuzzleHttp\\Ring\\' => 16,
-        ),
         'F' => 
         array (
             'Fig\\Http\\Message\\' => 17,
             'FastRoute\\' => 10,
-        ),
-        'E' => 
-        array (
-            'Elasticsearch\\' => 14,
         ),
         'D' => 
         array (
@@ -181,10 +170,6 @@ class ComposerStaticInitb37ba7854db44afda592f3ed7ba9e139
         array (
             0 => __DIR__ . '/..' . '/slim/slim/Slim',
         ),
-        'React\\Promise\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/react/promise/src',
-        ),
         'Ramsey\\Uuid\\Doctrine\\' => 
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid-doctrine/src',
@@ -259,14 +244,6 @@ class ComposerStaticInitb37ba7854db44afda592f3ed7ba9e139
         array (
             0 => __DIR__ . '/..' . '/php-di/invoker/src',
         ),
-        'GuzzleHttp\\Stream\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/streams/src',
-        ),
-        'GuzzleHttp\\Ring\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/ringphp/src',
-        ),
         'Fig\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/fig/http-message-util/src',
@@ -274,10 +251,6 @@ class ComposerStaticInitb37ba7854db44afda592f3ed7ba9e139
         'FastRoute\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
-        ),
-        'Elasticsearch\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/elasticsearch/elasticsearch/src/Elasticsearch',
         ),
         'Doctrine\\Persistence\\' => 
         array (
