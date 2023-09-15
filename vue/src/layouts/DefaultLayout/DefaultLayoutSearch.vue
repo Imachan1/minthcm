@@ -233,7 +233,8 @@ watch(searchQuery, (newVal) => {
 
     .search-prepend-icon {
         margin: 0px 10px;
-        top: -4px;
+        padding-top: 0px;
+        top: -9px;
         opacity: 1;
         color: rgb(var(--v-theme-secondary));
     }
