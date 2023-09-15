@@ -93,18 +93,12 @@ class ElasticSearchIndexer extends AbstractIndexer
     public function __construct(Client $client = null)
     {
         parent::__construct();
-      // View Tools start #60464
-      if ( !empty($GLOBALS['sugar_config']['unique_key']) ) {
-         $this->setIndex($GLOBALS['sugar_config']['unique_key'] . '_shared');
-      }
-      // View Tools end #60464
-
       // MintHCM #121632 START
       require_once 'include/ESListView/ESListACLHelper.php';
       $this->acl_helper = new \ESListACLHelper;
       // MintHCM #121632 END
 
-      $this->client = $client ?? ElasticSearchClientBuilder::getClient();
+      $this->client = !empty($client) ? $client : ElasticSearchClientBuilder::getClient();
     }
 
     /**
@@ -146,18 +140,21 @@ class ElasticSearchIndexer extends AbstractIndexer
             $this->logger->debug('A differential indexing will be performed');
         } else {
             $this->logger->debug('A full indexing will be performed');
-
+            
             foreach ($modules as $module) {
                 try {
+                    $instance_id = $GLOBALS['sugar_config']['unique_key'];
                     $lowercaseModule = strtolower($module);
-                    $this->removeIndex($lowercaseModule);
-                    $this->createIndex($lowercaseModule);
+                    $index =  $instance_id.'_'.$lowercaseModule;
+                    $this->removeIndex($index);
+                    $this->createIndex($index);
                 } catch (Exception $exception) {
-                    $message = "Failed to create index $module! Exception details follow";
+                    $message = "Failed to create index $index! Exception details follow";
                     $this->logger->error($message);
                     $this->logger->error($exception);
                 }
             }
+
         }
 
         foreach ($modules as $module) {
@@ -390,7 +387,7 @@ class ElasticSearchIndexer extends AbstractIndexer
     public function putMeta(string $module, array $meta): void
     {
         $params = [
-            'index' => strtolower($module),
+            'index' => $this->getIndex(),
             'body' => ['_meta' => $meta],
             'ignore_unavailable' => true
         ];
@@ -407,15 +404,17 @@ class ElasticSearchIndexer extends AbstractIndexer
      */
     public function getMeta(string $module): ?array
     {
+        $instance_id = $GLOBALS['sugar_config']['unique_key'];
         $lowercaseModule = strtolower($module);
-        $params = ['index' => $lowercaseModule];
+        $params = ['index' =>  $instance_id.'_'.$lowercaseModule];
+        
         $results = $this->client->indices()->getMapping($params);
 
-        if (!isset($results[$lowercaseModule])) {
+        if (!isset($results[$this->getIndex()])) {
             return null;
         }
 
-        return $results[$lowercaseModule]['mappings']['_meta'];
+        return $results[$this->getIndex()]['mappings']['_meta'];
     }
 
     /**
@@ -474,8 +473,14 @@ class ElasticSearchIndexer extends AbstractIndexer
       // MintHCM #121632 END
 
         foreach ($beans as $key => $bean) {
-            $head = ['_index' => strtolower($module), '_id' => $bean->id];
+            // MintHCM #122342 START
+            //$head = ['_index' => strtolower($module), '_id' => $bean->id];
+            $instance_id = $GLOBALS['sugar_config']['unique_key'];
+            $lowercaseModule = strtolower($module);
+            $this->index =  $instance_id.'_'.$lowercaseModule;
 
+            $head = [ '_index' => $this->index, '_id' => $bean->id ];
+            // MintHCM #122342 END
             if ($bean->deleted) {
                 $params['body'][] = ['delete' => $head];
                 $this->removedRecordsCount++;
@@ -490,6 +495,7 @@ class ElasticSearchIndexer extends AbstractIndexer
                }, $group_ids));
             }
             // MintHCM #121632 END
+                //$body['meta']['module_name'] = $bean->module_dir;
 
                 $params['body'][] = ['index' => $head];
                 $params['body'][] = $body;
@@ -597,8 +603,11 @@ class ElasticSearchIndexer extends AbstractIndexer
      */
     private function makeParamsHeaderFromBean(SugarBean $bean): array
     {
+        $instance_id = $GLOBALS['sugar_config']['unique_key'];
+        $lowercaseModule = strtolower($bean->module_name);
+
         return [
-            'index' => strtolower($bean->module_name),
+            'index' => $instance_id.'_'.$lowercaseModule,
             'id' => $bean->id,
         ];
     }

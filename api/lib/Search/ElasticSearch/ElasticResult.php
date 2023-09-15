@@ -10,9 +10,9 @@ class ElasticResult extends SearchResult
 {
     protected $next_offset, $next_page_exists;
 
-    public function __construct($result, $current_offset, $size, $handle_acl = false)
+    public function __construct($result, $current_offset, $size, $handle_acl = false,$indice_module_map =[] )
     {
-        parent::__construct($result, $current_offset, $size, $handle_acl);
+        parent::__construct($result, $current_offset, $size, $handle_acl,$indice_module_map);
         $this->setNextData();
     }
 
@@ -75,9 +75,10 @@ class ElasticResult extends SearchResult
         if (empty($this->result)) {
             return;
         }
-
+        
         foreach ($this->result["hits"]["hits"] as $hit) {
-            $this->grouped_ids[$hit["_type"]][] = $hit['_id'];
+            $module = $this->indice_module_map[$hit["_index"]];
+            $this->grouped_ids[$module][] = $hit['_id'];
         }
     }
 
@@ -89,12 +90,13 @@ class ElasticResult extends SearchResult
         }
 
         foreach ($this->result["hits"]["hits"] as $hit) {
-            if (!in_array($hit['_id'], $this->grouped_ids[$hit["_type"]] ?? array())) {
+            $module = $this->indice_module_map[$hit["_index"]];
+            if (!in_array($hit['_id'], $this->grouped_ids[$module] ?? array())) {
                 continue;
             }
             $this->hits[] = array(
                 'id' => $hit['_id'],
-                'module' => $hit["_type"],
+                'module' => $module,
             );
         }
     }
@@ -126,7 +128,8 @@ class ElasticResult extends SearchResult
         }
 
         foreach ($this->result["hits"]["hits"] as $hit) {
-            if (!in_array($hit['_id'], $this->grouped_ids[$hit["_type"]] ?? array())) {
+            $module = $this->indice_module_map[$hit["_index"]];
+            if (!in_array($hit['_id'], $this->grouped_ids[$module] ?? array())) {
                 continue;
             }
             $id = $hit['_id'];

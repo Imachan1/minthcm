@@ -10,16 +10,16 @@ abstract class SearchResult
 {
     protected $result, $grouped_ids, $beans, $hits;
 
-    protected $handle_acl;
+    protected $handle_acl,$indice_module_map;
 
     protected $size, $current_offset, $total;
 
-    public function __construct($result, $current_offset, $size, $handle_acl = false)
+    public function __construct($result, $current_offset, $size, $handle_acl = false,$indice_module_map = [])
     {
-        $this->total = $result["hits"]["total"];
+        $this->total = $result["hits"]["total"]['value'];
         $this->size = $size;
         $this->handle_acl = $handle_acl;
-
+        $this->indice_module_map = $indice_module_map;
         $this->setData($result, $current_offset);
     }
 
@@ -165,10 +165,10 @@ abstract class SearchResult
             }
 
             $security_group = new LegacyConnector('SecurityGroup', 'modules/SecurityGroups/SecurityGroup.php');
-            $where = $security_group::getGroupWhere($bean->table_name, $bean->module_dir, $current_user->id);
+            $group_where = $security_group::getGroupWhere($bean->table_name, $bean->module_dir, $current_user->id);
             $owner_where = $bean->getOwnerWhere($current_user->id);
             if (!empty($owner_where)) {
-                $where = empty($where) ? $owner_where : " ({$owner_where} OR {$group_where}) ";
+                $where = empty($group_where) ? $owner_where : " ({$owner_where} OR {$group_where}) ";
             }
 
             global $entityManager;

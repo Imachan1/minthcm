@@ -7,14 +7,20 @@ class LegacyConnector
     protected $class;
     protected static $static_class;
 
-    public function __construct($class_name, $link = null)
+    public function __construct($class_name, $link = null, $params = array())
     {
         chdir('../legacy/');
         if (isset($link)) {
             require_once $link;
         }
-        $this->class = new $class_name();
-        static::$static_class = new $class_name();
+        if(!empty($params)){
+            $this->class = new $class_name(...$params);
+            static::$static_class = new $class_name(...$params);
+        } else {
+            $this->class = new $class_name();
+            static::$static_class = new $class_name();
+        }
+        
         chdir('../api/');
     }
 
