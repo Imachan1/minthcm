@@ -15,6 +15,10 @@ if (typeof Files !== 'function') {
                 'xls': 'file-excel.png',
                 'xlsx': 'file-excel.png',
                 'pdf': 'file-pdf.png',
+                'jpg': 'preview',
+                'png': 'preview',
+                'jpeg': 'preview',
+                'gif': 'preview',
             };
             this.defaultThumbnail = 'file-default.png';
             this.imagesPath = 'themes/SuiteP/images/';
@@ -46,15 +50,20 @@ if (typeof Files !== 'function') {
             const [name, ext] = file.name.split(/\.(?=[^\.]+$)/);
             const fileSize = file.previewElement.querySelector('.dz-size').innerText;
             const iconPath = this.fileTypesMap[ext] ?? this.defaultThumbnail;
-            file.previewElement.classList.remove('dz-file-preview');
-            file.previewElement.querySelector('.dz-image img').src = this.imagesPath + iconPath;
+            if (iconPath !== 'preview') {
+                file.previewElement.classList.remove('dz-file-preview');
+                file.previewElement.querySelector('.dz-image img').src = this.imagesPath + iconPath;
+            }
             file.previewElement.title = `${name} (${fileSize})`;
             this.appendNameToThumbnail(file.previewElement, name);
         }
 
         appendNameToThumbnail(thumbnail, name) {
+            if (thumbnail.querySelector('.dz-custom-thumbnail-name')) {
+                return;
+            }
             const nameDiv = document.createElement('span');
-            nameDiv.classList.add('dz-custom-thumbnail-name')
+            nameDiv.classList.add('dz-custom-thumbnail-name');
             nameDiv.innerText = name;
             thumbnail.append(nameDiv);
         }
