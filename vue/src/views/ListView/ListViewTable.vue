@@ -43,6 +43,13 @@
         <template v-for="date in store.customFields.dates" v-slot:[`item.${date}`]="{ item }" :key="date">
             <span v-text="item.raw[date]" />
         </template>
+        <template
+            v-for="currency in store.customFields.currencies"
+            v-slot:[`item.${currency}`]="{ item }"
+            :key="currency"
+        >
+            <span v-text="numberUtils.formatCurrency(item.raw[currency], item.raw.currency_id)" />
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
             <div class="d-flex justify-end" style="gap: 8px">
                 <v-icon
@@ -76,12 +83,14 @@ import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useUrlStore } from '@/store/url'
 import { usePopupsStore } from '@/store/popups'
+import NumberUtils from '@/utils/numbers'
 
 const router = useRouter()
 const store = useListViewStore()
 const url = useUrlStore()
 const languages = useLanguagesStore()
 const popups = usePopupsStore()
+const numberUtils = new NumberUtils()
 
 const pageText = computed(() => {
     const isOverflow = store.itemsLength > store.options.page * store.options.itemsPerPage

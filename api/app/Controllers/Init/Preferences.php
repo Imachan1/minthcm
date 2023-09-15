@@ -2,8 +2,9 @@
 
 namespace MintHCM\Api\Controllers\Init;
 
-use MintHCM\Api\Entities\UserPreferences;
+use BeanFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use MintHCM\Api\Entities\UserPreferences;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 
@@ -57,7 +58,36 @@ class Preferences
             ],
             'time_zones' => \TimeDate::getTimezoneList(),
             'name_formats' => (new \Localization())->getUsableLocaleNameOptions($sugar_config['name_formats']),
+            'currencies' => $this->getCurrenciesList(),
         );
+    }
+
+    protected function getCurrenciesList()
+    {
+        $return_list = [];
+        chdir('../legacy/');
+        $currency = BeanFactory::getBean('Currencies');
+        $list = $currency->get_full_list('name');
+        $currency->retrieve('-99');
+        if (is_array($list)) {
+            $list = array_merge(array($currency), $list);
+        } else {
+            $list = array($currency);
+        }
+        foreach($list as $currency_bean){
+            $return_list[$currency_bean->id] = [
+                'id' => $currency_bean->id,
+                'iso4217' => $currency_bean->iso4217,
+                'name' => $currency_bean->name,
+                'status' => $currency_bean->status,
+                'conversion_rate' => $currency_bean->conversion_rate,
+                'symbol' => $currency_bean->symbol,
+                'hidden' => $currency_bean->hidden,
+                'currency_on_right' => $currency_bean->currency_on_right,
+            ];
+        }
+        chdir('../api/');
+        return $return_list;
     }
 
     public function getUserPreferences()
@@ -93,7 +123,7 @@ class Preferences
             $this->user_preferences = $preferences;
         } catch (\Exception $e) {
             // TODO: log 'Failed to load user preferences'
-            throw($e);
+            throw ($e);
         }
     }
 }
