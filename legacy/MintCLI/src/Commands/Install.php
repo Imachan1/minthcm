@@ -3,6 +3,7 @@
 namespace MintHCM\MintCLI\Commands;
 
 use MintHCM\MintCLI\Installer\Installer;
+use MintHCM\MintCLI\Services\AppVersionService;
 use MintHCM\MintCLI\Services\DatabaseService;
 use MintHCM\MintCLI\Services\ServerService;
 use Symfony\Component\Console\Command\Command;
@@ -26,23 +27,31 @@ class Install extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $DBService = new DatabaseService();
+        $AppVerService = new AppVersionService();
 
-        $io->title("Welcome to MintHCM Installer.\nProvide all information to start installation process.");
+        $io->title("Welcome to the MintHCM Installer.\nProvide all of the information to start installation process.");
 
         $userData = $this->collectUserData($input, $output);
         
         $output->writeln('');
-        $io->section('Veryfing Database Connection...');
+        $io->section('Verifying Database Connection...');
         $connectionStatus = $DBService->testConnection($userData['databaseHost'], $userData['databasePort'], $userData['databaseUsername'], $userData['databasePassword']);
         if (!$connectionStatus['status']) {
             $io->error('Could not connect to the database.');
             return Command::FAILURE;
         }
 
-        $io->section('Veryfing Database Existance...');
+        $io->section('Verifying Database Existence...');
         $existanceStatus = $DBService->testDatabaseExistance($userData['databaseHost'], $userData['databasePort'], $userData['databaseUsername'], $userData['databasePassword'], $userData['databaseName']);
         if (!$existanceStatus['status']) {
             $io->error('Database "' . $userData['databaseName'] . '" already exists.');
+            return Command::FAILURE;
+        }
+
+        $io->section('Verifying required app versions...');
+        $appVersionsStatus = $AppVerService->verifyAppVersions($userData['rebuildFrontend']);
+        if (!$appVersionsStatus['correctVersions']) {
+            $io->error($appVersionsStatus['messages']);
             return Command::FAILURE;
         }
 
@@ -121,6 +130,9 @@ class Install extends Command
         $question = new \MintHCM\MintCLI\Questions\ApplicationRoot($QH, $input, $output);
         $rootDirectory = $question->ask();
 
+        $question = new \MintHCM\MintCLI\Questions\RebuildFrontend($QH, $input, $output);
+        $rebuildFrontend = $question->ask();
+
         return [
             'systemAdminName' => $systemAdminName,
             'systemAdminPassword' => $systemAdminPassword,
@@ -134,6 +146,7 @@ class Install extends Command
             'ssl' => $ssl,
             'siteUrl' => $siteUrl,
             'rootDirectory' => $rootDirectory,
+            'rebuildFrontend' => $rebuildFrontend
         ];
     }
 }
