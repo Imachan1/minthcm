@@ -1,9 +1,16 @@
 <template>
     <div class="search-container">
-        <v-text-field v-model="searchQuery" ref="searchInput" class="search-input"
-            :class="[isFocused && 'search-input-active']" hide-details
-            :placeholder="languages.label('LBL_MINT4_GS_SEARCH_INPUT')" @keyup.enter="goToFullList" variant="plain"
-            @update:focused="isFocused = $event">
+        <v-text-field
+            v-model="searchQuery"
+            ref="searchInput"
+            class="search-input"
+            :class="[isFocused && 'search-input-active']"
+            hide-details
+            :placeholder="languages.label('LBL_MINT4_GS_SEARCH_INPUT')"
+            @keyup.enter="goToFullList"
+            variant="plain"
+            @update:focused="isFocused = $event"
+        >
             <template #prepend-inner>
                 <v-fab-transition class="search-prepend-icon">
                     <v-icon v-if="searchQuery" icon="mdi-close" @click="searchQuery = ''" />
@@ -15,15 +22,24 @@
             <template v-if="isFocused">
                 <v-skeleton-loader v-if="isSearching" type="list-item-two-line" class="search-results" />
                 <div v-else-if="!searchResponse?.results?.length" class="search-results">
-                    <div class="ma-4 text-caption" v-text="!searchResponse?.query || searchResponse.query.length < 3
-                        ? languages.label('LBL_MINT4_GS_HELP_TIP')
-                        : languages.label('LBL_MINT4_GS_NO_RECORDS_FOUND')
-                        " />
+                    <div
+                        class="ma-4 text-caption"
+                        v-text="
+                            !searchResponse?.query || searchResponse.query.length < 3
+                                ? languages.label('LBL_MINT4_GS_HELP_TIP')
+                                : languages.label('LBL_MINT4_GS_NO_RECORDS_FOUND')
+                        "
+                    />
                 </div>
                 <div v-else-if="searchResponse?.results?.length" class="search-results">
-                    <div v-for="result in searchResponse.results" :key="result.id" color="primary"
-                        v-ripple="{ class: 'text-primary' }" @click="showRecord(result.module, result.id)"
-                        class="search-result">
+                    <div
+                        v-for="result in searchResponse.results"
+                        :key="result.id"
+                        color="primary"
+                        v-ripple="{ class: 'text-primary' }"
+                        @click="showRecord(result.module, result.id)"
+                        class="search-result"
+                    >
                         <v-icon :icon="modules.modules[result.module]?.icon || modules.defaultIcon" color="primary" />
                         <div>
                             <span v-html="getHighlightedText(result.name, searchResponse.query)" />
@@ -34,15 +50,20 @@
                                         languages.label(result.meta?.def?.vname, result.module) +
                                         ' ' +
                                         getFieldValue(result.meta?.def, result.meta?.value)
-                                    " />
+                                    "
+                                />
                             </div>
                         </div>
                     </div>
                     <div class="search-results-footer">
-                        <span @click="goToFullList" v-text="searchResponse.next_page_exists
-                            ? languages.label('LBL_MINT4_GS_GO_TO_LIST_MORE')
-                            : languages.label('LBL_MINT4_GS_GO_TO_LIST')
-                            " />
+                        <span
+                            @click="goToFullList"
+                            v-text="
+                                searchResponse.next_page_exists
+                                    ? languages.label('LBL_MINT4_GS_GO_TO_LIST_MORE')
+                                    : languages.label('LBL_MINT4_GS_GO_TO_LIST')
+                            "
+                        />
                     </div>
                 </div>
             </template>
