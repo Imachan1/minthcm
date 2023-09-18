@@ -47,7 +47,8 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  */
 $dictionary['custom_fields'] = array( 'table' => 'custom_fields'
    , 'fields' => array(
-      array( 'name' => 'bean_id', 'type' => 'varchar', 'len' => '36' )
+      array( 'name' => 'id', 'type' => 'varchar', 'len' => 36 )
+      , array( 'name' => 'bean_id', 'type' => 'varchar', 'len' => '36' )
       , array( 'name' => 'set_num', 'type' => 'int', 'len' => '11', 'default' => '0' )
       , array( 'name' => 'field0', 'type' => 'varchar', 'len' => '255' )
       , array( 'name' => 'field1', 'type' => 'varchar', 'len' => '255' )
@@ -61,6 +62,7 @@ $dictionary['custom_fields'] = array( 'table' => 'custom_fields'
       , array( 'name' => 'field9', 'type' => 'varchar', 'len' => '255' )
       , array( 'name' => 'deleted', 'type' => 'bool', 'len' => '1', 'default' => '0' )
    ), 'indices' => array(
-      array( 'name' => 'idx_beanid_set_num', 'type' => 'index', 'fields' => array( 'bean_id', 'set_num' ) )
+      array( 'name' => 'custom_fieldspk', 'type' => 'primary', 'fields' => array('id') )
+      , array( 'name' => 'idx_beanid_set_num', 'type' => 'index', 'fields' => array( 'bean_id', 'set_num' ) )
    )
 );
