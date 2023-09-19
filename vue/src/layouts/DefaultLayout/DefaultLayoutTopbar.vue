@@ -4,7 +4,7 @@
             <img src="../../assets/mint_logo_white.svg" />
         </router-link>
         <DefaultLayoutSearch />
-        <v-spacer />
+        <div class="flex-grow-1" />
         <v-menu offset="16">
             <template v-slot:activator="{ props, isActive }">
                 <MintButton v-bind="props" variant="nav" icon="mdi-plus" :active="isActive" />
