@@ -5,7 +5,7 @@ const auth = useAuthStore()
 const backend = useBackendStore()
 
 export default class NumberUtils {
-    formatNumber(n, num_grp_sep = null, dec_sep = null, round = null, precision = null) {
+    public static formatNumber(n, num_grp_sep = null, dec_sep = null, round = null, precision = null) {
         if (n == '') {
             return n
         }
@@ -45,9 +45,9 @@ export default class NumberUtils {
         while (num_grp_sep != '' && regex.test(n[0])) n[0] = n[0].toString().replace(regex, '$1' + num_grp_sep + '$2')
         return n[0] + (n.length > 1 && n[1] != '' ? dec_sep + n[1] : '')
     }
-    formatCurrency(n: string | number, currency_id: string | number) {
+    public static formatCurrency(n: string | number, currency_id: string | number) {
         const currency = backend.initData.global.currencies[currency_id] ?? backend.initData.global.currencies[-99]
-        const number = this.formatNumber(n)
+        const number = NumberUtils.formatNumber(n)
         if (currency.currency_on_right) {
             return number + currency.symbol
         } else {

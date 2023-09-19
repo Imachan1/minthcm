@@ -48,7 +48,7 @@
             v-slot:[`item.${currency}`]="{ item }"
             :key="currency"
         >
-            <span v-text="numberUtils.formatCurrency(item.raw[currency], item.raw.currency_id)" />
+            <span v-text="NumberUtils.formatCurrency(item.raw[currency], item.raw.currency_id)" />
         </template>
         <template v-slot:[`item.actions`]="{ item }">
             <div class="d-flex justify-end" style="gap: 8px">
@@ -90,7 +90,6 @@ const store = useListViewStore()
 const url = useUrlStore()
 const languages = useLanguagesStore()
 const popups = usePopupsStore()
-const numberUtils = new NumberUtils()
 
 const pageText = computed(() => {
     const isOverflow = store.itemsLength > store.options.page * store.options.itemsPerPage
