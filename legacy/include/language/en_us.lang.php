@@ -4555,7 +4555,7 @@ $app_strings['LBL_MINT4_USER_MENU_LOGOUT'] = 'Logout';
 
 // Setup Wizard
 $app_strings['LBL_MINT4_SETUP_WIZARD_COOKIES_TITLE'] = 'Cookies';
-$app_strings['LBL_MINT4_SETUP_WIZARD_COOKIES_DESCRIPTION'] = 'Ta aplikacja wykorzystuje pliki cookie, aby zapewnić lepszą funkcjonalność. Kontynuując, zgadzasz się na wykorzystanie plików cookie zgodnie zgodnie z naszą <a href="https://minthcm.org/privacy-policy/" target="_blank">Polityką Prywatności</a>.';
+$app_strings['LBL_MINT4_SETUP_WIZARD_COOKIES_DESCRIPTION'] = 'The application uses cookies in order to improve functionality. By continuing, you consent to the use of cookies in accordance with our <a href="https://minthcm.org/privacy-policy/" target="_blank">Privacy Policy</a>.';
 
 $app_strings['LBL_MINT4_SETUP_WIZARD_USER_PROFILE_TITLE'] = 'User Profile';
 $app_strings['LBL_MINT4_SETUP_WIZARD_USER_PROFILE_FIRST_NAME'] = 'First name';
