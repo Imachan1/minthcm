@@ -62,7 +62,7 @@ use SuiteCRM\Search\Index\Documentify\SearchDefsDocumentifier;
 use SuiteCRM\Search\Index\IndexingLockFileTrait;
 use SuiteCRM\Search\Index\IndexingSchedulerTrait;
 use SuiteCRM\Search\Index\IndexingStatisticsTrait;
-
+use Symfony\Component\Yaml\Parser as YamlParser;
 /**
  * Class ElasticSearchIndexer takes care of creating a search index for the database.
  */
@@ -147,7 +147,9 @@ class ElasticSearchIndexer extends AbstractIndexer
                     $lowercaseModule = strtolower($module);
                     $index =  $instance_id.'_'.$lowercaseModule;
                     $this->removeIndex($index);
-                    $this->createIndex($index);
+                    // MintHCM #121632 START
+                    $this->createIndex($index, $this->getDefaultMapParams($module)?? null);
+                    // MintHCM #121632 END
                 } catch (Exception $exception) {
                     $message = "Failed to create index $index! Exception details follow";
                     $this->logger->error($message);
@@ -215,6 +217,9 @@ class ElasticSearchIndexer extends AbstractIndexer
     /** @inheritdoc */
     public function indexModule($module)
     {
+        // MintHCM #121632 START
+        $GLOBALS['disable_date_format'] = true;
+        // MintHCM #121632 END
         $isDifferential = $this->differentialIndexing();
         $dataPuller = new ElasticSearchModuleDataPuller($module, $isDifferential, $this->logger);
 
@@ -386,8 +391,12 @@ class ElasticSearchIndexer extends AbstractIndexer
      */
     public function putMeta(string $module, array $meta): void
     {
+        $instance_id = $GLOBALS['sugar_config']['unique_key'];
+        $lowercaseModule = strtolower($module);
+        $this->index = $instance_id.'_'.$lowercaseModule;
+
         $params = [
-            'index' => $this->getIndex(),
+            'index' => $this->index,
             'body' => ['_meta' => $meta],
             'ignore_unavailable' => true
         ];
@@ -406,15 +415,16 @@ class ElasticSearchIndexer extends AbstractIndexer
     {
         $instance_id = $GLOBALS['sugar_config']['unique_key'];
         $lowercaseModule = strtolower($module);
-        $params = ['index' =>  $instance_id.'_'.$lowercaseModule];
+        $this->index = $instance_id.'_'.$lowercaseModule;
+        $params = ['index' =>  $this->index];
         
         $results = $this->client->indices()->getMapping($params);
 
-        if (!isset($results[$this->getIndex()])) {
+        if (!isset($results[$this->index])) {
             return null;
         }
 
-        return $results[$this->getIndex()]['mappings']['_meta'];
+        return $results[$this->index]['mappings']['_meta'];
     }
 
     /**
@@ -524,7 +534,23 @@ class ElasticSearchIndexer extends AbstractIndexer
     {
         return $this->differentialIndexing && $this->lastRunTimestamp !== false;
     }
+    // MintHCM #121632 START
+    /**
+    * Retrieves the default params to set up an optimised default index for Elasticsearch.
+    *
+    * @return array
+    */
+    private function getDefaultMapParams($module) {
+        $file = __DIR__ . '/defaultParams.yml';
 
+        $this->logger->debug("Loading mapping file $file");
+
+        $parse = new YamlParser();
+        $parsed = $parse->parseFile($file);
+
+        return [ 'mappings' => $parsed['mappings'][$module] ];
+    }
+    // MintHCM #121632 END
     /**
      * Creates the body of a Elasticsearch request for a given bean.
      *

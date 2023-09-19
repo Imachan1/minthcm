@@ -132,22 +132,22 @@ class ElasticSearchEngine extends SearchEngine
     {
        $options = $query->getOptions();
        if ($options['filter_by_module']) {
-          $params = [
-             'index' => $GLOBALS['sugar_config']['unique_key'].'_'.strtolower($options['module']),
-             'body' => [
-                'query' => [
-                   'bool' => [
-                      'filter' => [
-                         //
-                      ],
-                      'must_not' => [
-                         //
-                      ]
-                   ]
-                ]
-             ]
-          ];
- 
+         $params = [
+            'index' => $GLOBALS['sugar_config']['unique_key'].'_'.strtolower($options['module']),
+            'body' => [
+               'query' => [
+                  'bool' => [
+                     'filter' => [
+                        //
+                     ],
+                     'must_not' => [
+                        //
+                     ]
+                  ]
+               ]
+            ]
+         ];
+          $params= $this->addBasicSearch($params, $options['searchPhrase']);
           $params = $this->addPagination($params, $query->getFrom(), $query->getSize());
           $params = $this->addSorting($params, $query->getOptions()['sorting']);
           $params = $this->addFilters($params, $query->getOptions()['filters']);
@@ -202,10 +202,25 @@ class ElasticSearchEngine extends SearchEngine
 
        return $params;
     }
+    protected function addBasicSearch($params, $query_string) //MintHCM
+    {
+       if(!empty($query_string)){
+         $query_string = str_replace('+', '', strtolower($query_string));
+         $params['body']['query']['bool']['must'] = [
+            'simple_query_string' =>[
+            "query" => $query_string.'*',
+            "fields" => ["*","*name^5","subject^4"]
+            ],  
+         ];
+      }
+       return $params;
+    }
+ 
 
    protected function addPagination($params, $from, $size) //MintHCM
    {
       if (isset($from) && isset($size)) {
+         $from = (($from - 1)<0)? 1 :$from;
          $params['body']['from'] = ($from - 1) * $size;
          $params['body']['size'] = $size;
       }

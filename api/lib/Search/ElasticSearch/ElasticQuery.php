@@ -16,7 +16,7 @@ class ElasticQuery extends SearchQuery
 
     const DEFAULT_TYPE = null;
 
-    const ALL_FIELDS = "_all";
+    const ALL_FIELDS = "*";
 
     protected $exclude_modules = [];
 
@@ -108,8 +108,8 @@ class ElasticQuery extends SearchQuery
             {
                 $bean = BeanFactory::newBean($module_to_search);
                 $acl_controller = new LegacyConnector('ACLController');
-                if(method_exists($module_to_search,'bean_implements') && $bean->bean_implements('ACL') &&  ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list')) ) {
-                    $module_filters = $this->getACLForModule($module_to_search);
+                if( $bean->bean_implements('ACL') &&  ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list')) ) { 
+                  $module_filters = $this->getACLForModule($module_to_search);
                 }
                 else {
                     $module_filters['bool']['must']['term']['_index'] = $uniq.'_'.strtolower($module_to_search);
@@ -117,6 +117,7 @@ class ElasticQuery extends SearchQuery
                 
                 if(is_array($module_filters)){
                     $main_acl["bool"]["filter"]["bool"]["should"][] = $module_filters;
+		            $module_filters = [];
                 }                
             }
 
@@ -165,10 +166,11 @@ class ElasticQuery extends SearchQuery
         $uniq = $GLOBALS['sugar_config']['unique_key'];
         $acl = $this->getACLClassForModule($module);
         $restriction_filter = $acl->getAccessRestrictionFilter($current_user->id);
-        
-        $single_module['bool']['must']['term']['_index'] = $uniq.'_'.strtolower($module);
-        $single_module['bool']['should'] =  $restriction_filter[0]['bool']['should'];
-        
+       
+        $single_module['bool']['must'][]['term']['_index'] = $uniq.'_'.strtolower($module);
+    	if(!empty($restriction_filter[0]['bool']['should'])){
+        	$single_module['bool']['must'][]['bool']['should']  =  $restriction_filter[0]['bool']['should'];
+        }
         return $single_module;
 
     }

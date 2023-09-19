@@ -14,7 +14,7 @@ class Match extends ElasticOperator
         parent::__construct($data);
         $this->operator = $data['operator'] ?? 'and';
         if (empty($this->field)) {
-            $this->field = "_all";
+            $this->field = "*";
         }
     }
 

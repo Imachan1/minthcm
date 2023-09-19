@@ -81,6 +81,7 @@ class ESElasticSearchEngine extends ElasticSearchEngine {
 
     protected function addPagination($params, $from, $size) {
         if (isset($from) && isset($size)) {
+            $from = (($from - 1)<0)? 1 :$from;
             $params['body']['from'] = ($from - 1) ;
             $params['body']['size'] = $size;
         }
