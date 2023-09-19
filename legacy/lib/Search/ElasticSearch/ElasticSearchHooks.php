@@ -76,6 +76,10 @@ class ElasticSearchHooks
      */
     public function beanSaved(SugarBean $bean, $event, $arguments)
     {
+        if ($bean instanceof \Basic && !$bean->getShouldIndex()){
+            return;
+        }
+
         $this->action = 'index';
 
         $this->reIndexSafe($bean);
