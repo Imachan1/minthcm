@@ -64,6 +64,9 @@ class Init
         $preferences['first_day_of_week'] = $current_user->getPreference('fdow');
         $preferences['timezone'] = $current_user->getPreference('timezone');
         $preferences['name_format'] = $current_user->getPreference('default_locale_name_format');
+        $preferences['dec_sep'] = $current_user->getPreference('dec_sep');
+        $preferences['num_grp_sep'] = $current_user->getPreference('num_grp_sep');
+        $preferences['default_currency_significant_digits'] = $current_user->getPreference('default_currency_significant_digits');
         return array(
             "id" => $current_user->id,
             "is_admin" => "1" === $current_user->is_admin ? true : false,
