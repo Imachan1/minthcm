@@ -4614,3 +4614,4 @@ $app_list_strings['parent_type_display_for_files'] = array(
 $app_strings['LBL_NO'] = 'No';
 $app_strings['LBL_YES'] = 'Yes';
 $app_strings['LBL_CONFIRM'] = 'Confirm';
+$app_strings['LBL_MINT4_NO_ACCESS_TO_MODULE'] = 'Warning: You do not have permission to access this module.';

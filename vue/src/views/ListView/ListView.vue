@@ -1,5 +1,5 @@
 <template>
-    <div class="px-8 py-2">
+    <div v-if="access" class="px-8 py-2">
         <h1 v-text="moduleName" />
         <div class="elevation-4 mt-1 list-view">
             <ListViewFilters />
@@ -7,15 +7,19 @@
             <ListViewTable />
         </div>
     </div>
+    <div v-else>
+        <span v-text="languages.languages.app_strings?.LBL_MINT4_NO_ACCESS_TO_MODULE" />
+    </div>
 </template>
 
 <script setup lang="ts">
-import { computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import ListViewHeader from './ListViewHeader.vue'
 import ListViewTable from './ListViewTable.vue'
 import { useListViewStore } from './ListViewStore'
 import { useUrlStore } from '@/store/url'
 import { useLanguagesStore } from '@/store/languages'
+import { useACL } from '@/composables/useACL'
 import ListViewFilters from './ListViewFilters.vue'
 
 const url = useUrlStore()
@@ -24,8 +28,10 @@ const languages = useLanguagesStore()
 
 const module = computed(() => url.module)
 const moduleName = computed(() => languages.languages.app_list_strings?.moduleList?.[module.value])
+const access = ref(false)
 
 onMounted(async () => {
+    access.value = useACL().hasAccess(module.value, 'list', true)
     if (store.module !== module.value) {
         store.$reset()
     }
