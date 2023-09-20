@@ -5,18 +5,6 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'Leads' => [
-        'list' => false,
-        'record' => true,
-    ],
-    'Cases' => [
-        'list' => false,
-        'record' => true,
-    ],
-    'Bugs' => [
-        'list' => false,
-        'record' => true,
-    ],
     'ProspectLists' => [
         'list' => false,
         'record' => true,
@@ -42,18 +30,6 @@ return [
         'record' => true,
     ],
     'Schedulers' => [
-        'list' => false,
-        'record' => true,
-    ],
-    'Contacts' => [
-        'list' => false,
-        'record' => true,
-    ],
-    'Accounts' => [
-        'list' => false,
-        'record' => true,
-    ],
-    'Opportunities' => [
         'list' => false,
         'record' => true,
     ],
@@ -483,6 +459,10 @@ return [
     ],
     'Meetings' => [
         'list' => false,
+        'record' => true,
+    ],
+    'Currencies' => [
+        'list' => true,
         'record' => true,
     ],
 ];
