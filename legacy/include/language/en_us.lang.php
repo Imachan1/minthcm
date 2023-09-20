@@ -4353,8 +4353,11 @@ $app_list_strings['parent_type_display_reactions'] = array(
 );
 
 $app_list_strings['reaction_type_list'] = array(
-   'like' => 'Like',
-   'dislike' => 'Dislike',
+   'like' => '👍',
+   'love' => '❤️',
+   'party' => '🥳',
+   'laugh' => '😆',
+   'wow' => '😲',
 );
 
 $app_list_strings['reaction_icons_list'] = array(

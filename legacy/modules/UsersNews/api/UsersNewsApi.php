@@ -142,7 +142,7 @@ class NewsInfo
     protected function getComments($news_id)
     {
         $bean = BeanFactory::getBean('News', $news_id);
-        return display_comments_for_record($bean, $news_id, true);
+        return display_comments($bean);
     }
 
 }

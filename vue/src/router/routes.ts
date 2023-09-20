@@ -142,6 +142,15 @@ const routes: Array<RouteRecordRaw> = [
         },
     },
     {
+        path: '/comments/:module/:record',
+        name: 'comments-view',
+        component: () => import('@/components/MintComments/MintComments.vue'),
+        meta: {
+            entryPoint: true,
+            auth: true,
+        },
+    },
+    {
         path: '/:catchAll(.*)',
         name: 'legacy',
         component: LegacyView,
