@@ -52,9 +52,5 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
  ********************************************************************************/
-?>
-<?php
-header("Location:index.php?module=Project&action=ResourceList&parentTab=All&ajax_load=1&loadLanguageJS=1");
-die('--');
 
-?>
+SugarApplication::redirect("index.php?module=Project&action=ResourceList");
