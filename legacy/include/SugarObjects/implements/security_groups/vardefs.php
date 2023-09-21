@@ -75,5 +75,14 @@ $vardefs = array(
 
             ),
     ),
-    'indices' => array()
+    'indices' => array(),
+
+    'elasticsearch' => array(
+        'nested' => array(
+            'security_groups' => array(
+                'link' => 'SecurityGroups',
+                'fields' => array('id')
+            )
+        )
+    ),
 );

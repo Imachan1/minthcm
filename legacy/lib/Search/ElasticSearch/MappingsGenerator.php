@@ -6,6 +6,8 @@ if (!defined('sugarEntry')) {
 
 use Symfony\Component\Yaml\Yaml;
 
+require_once 'lib/Search/ElasticSearch/ElasticSearchVardefsReader.php';
+
 class MappingsGenerator
 {
     protected $metadata_file = 'eslistviewdefs.php';
@@ -29,16 +31,6 @@ class MappingsGenerator
         'primary_address_country' => 'address.primary.country',
         'phone_mobile' => '',
     ];
-
-    // From vardefs to elastic
-    protected $type_mapping = [
-        'date' => 'date',
-        'datetime' => 'date',
-        'datetimecombo' => 'date',
-        'bool' => 'boolean',
-        'text' => 'text',
-    ];
-
     protected $types = [
         'date' => [
             'type' => 'date',
@@ -58,20 +50,6 @@ class MappingsGenerator
         ],
         'long' => [
             'type' => 'long',
-        ],
-        'security_groups' => [
-            'type' => 'nested',
-            'properties' => [
-                'id' => [
-                    'type' => 'text',
-                    'fields' => [
-                        'keyword' => [
-                            'type' => 'keyword',
-                            'ignore_above' => 256,
-                        ],
-                    ],
-                ],
-            ],
         ],
     ];
 
@@ -100,6 +78,7 @@ class MappingsGenerator
 
     public function generateMappings()
     {
+        $esv_reader = new \ElasticSearchVardefsReader;
         $modulesWithElastic = $this->getModulesWithElastic();
         $mappings = [];
         foreach ($modulesWithElastic as $module) {
@@ -116,20 +95,75 @@ class MappingsGenerator
 
                 if (!empty($this->not_standard_fields[$field])) {
                     $mappings = $this->handleNotStandardField($this->not_standard_fields[$field], $mappings, $key, $es_type);
-                } else {
-                    $mappings['mappings'][$key]['properties'][$field] = $es_type;
+                } else if (!empty($defs[$field])) {
+                    // Else if jest dlatego, że w innym wypadku sypie się na polach: search_name, recr_contact_agree oraz current_user_only
+                    $mappings['mappings'][$key]['properties'][$field] = $this->getPropertyMappingConfig($defs[$field]);
                 }
             }
 
-            // Eryk START
-            $module_templates = $GLOBALS["dictionary"][$bean->object_name]["templates"];
-            if (isset($module_templates['security_groups'])) {
-                $mappings['mappings'][$key]['properties']['security_groups'] = $this->types['security_groups'];
+            $tracked_links = [];
+            $nested_properties = $esv_reader->getModuleNestedProperties($module['module']);
+            foreach ($nested_properties as $property_name => $nested_config) {
+                $link_field_name = $esv_reader->getLinkFieldName($property_name, $nested_config);
+                if (!$bean->load_relationship($link_field_name)) {
+                    continue;
+                }
+
+                $related_module_name = $esv_reader->getRelatedModuleName($bean, $link_field_name);
+                $related_bean = BeanFactory::newBean($related_module_name);
+
+                $properties = [];
+                foreach ($nested_config['fields'] as $field_name) {
+                    if (!empty($related_bean->field_defs[$field_name])) {
+                        $properties[$field_name] = $this->getPropertyMappingConfig($related_bean->field_defs[$field_name]);
+                    }
+                }
+
+                $mappings['mappings'][$key]['properties'][$property_name] = [
+                    'type' => 'nested',
+                    'properties' => $properties,
+                ];
+
+
+                // Jeżeli w dokumencie zaindeksowane jest coś więcej niż klucz główny
+                // Będziemy musieli się zatroszczyć o to, aby indeksować powiązane rekordy nawet przy zapisie
+                // rekordu innego modułu - nie musi zmieniać się relacja
+                if (!$this->includesAtMostPrimaryKey($nested_config['fields'])) {
+                    $tracked_links[] = $link_field_name;
+                }
             }
-            // Eryk END
+
+            $this->saveNestedTrackingCache($module['module'], $tracked_links);
         }
 
         $this->parseMappingsToYaml($mappings);
+    }
+
+    protected function includesAtMostPrimaryKey(array $fields): bool
+    {
+        return $fields === [] || $fields === ['id'];
+    }
+
+    protected function saveNestedTrackingCache(string $module_name, array $tracked_links): void
+    {
+        $nested_cache_file = "cache/modules/{$module_name}/es.nested.php";
+        $array_items = empty($tracked_links)
+            ? ''
+            : '"' . implode('","', $tracked_links). '"';
+
+        $cache_file_content = '<?php $tracked_links = [' . $array_items . '];';
+        file_put_contents($nested_cache_file, $cache_file_content);
+    }
+
+    protected function getPropertyMappingConfig(array $field_def): array
+    {
+        if (in_array($field_def['type'], ['date', 'datetime', 'datetimecombo'])) {
+            return $this->types['date'];
+        } else if ('bool' == $field_def['type']) {
+            return $this->types['boolean'];
+        } else {
+            return $this->types['text'];
+        }
     }
 
     protected function parseMappingsToYaml($mappings)
