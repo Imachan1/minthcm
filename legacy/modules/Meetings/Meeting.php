@@ -575,10 +575,10 @@ class Meeting extends SugarBean {
          if ( empty($action) ) {
             $action = "index";
          }
-         // MintHCM start #36257
-         $setCompleteUrl = "<a id='meeting_{$this->id}' onclick='SUGAR.util.closeActivityPanel.show(\"{$this->module_dir}\",\"{$this->id}\",\"Held\",\"listview\",\"1\");'>";
+         // MintHCM start #36257,#122649
+         $setCompleteUrl = "<a id='meeting_{$this->id}' onclick='SUGAR.util.closeActivityPanel.show(\"{$this->module_dir}\",\"{$this->id}\",\"Held\",\"listview\",\"1\", this);'>";
          //$setCompleteUrl = "<a id='{$this->id}' onclick='SUGAR.util.closeActivityPanel.show(\"{$this->module_dir}\",\"{$this->id}\",\"Held\",\"listview\",\"1\");'>";
-         // MintHCM end #36257
+         // MintHCM end #36257,#122649
          if ( $this->ACLAccess('edit') ) {
             $meeting_fields['SET_COMPLETE'] = $setCompleteUrl . "<span class='suitepicon suitepicon-action-clear'></span></a></b>";
          } else {
