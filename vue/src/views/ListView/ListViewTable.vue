@@ -31,7 +31,10 @@
             />
         </template>
         <template v-for="list in store.customFields.lists" v-slot:[`item.${list.field}`]="{ item }" :key="list.field">
-            <span v-text="list.options[item.raw[list.field]]" />
+            <v-chip v-if="list.colors" class="enum-chip" :color="list.colors[item.raw[list.field]]">
+                {{ list.options[item.raw[list.field]] }}
+            </v-chip>
+            <span v-else v-text="list.options[item.raw[list.field]]" />
         </template>
         <template
             v-for="multienum in store.customFields.multienums"
@@ -154,5 +157,10 @@ function formatMultienum(value, labels) {
             display: none;
         }
     }
+}
+:deep(.v-chip.v-chip--size-default) {
+    height: 28px;
+    border-radius: 4px;
+    letter-spacing: 0.09px;
 }
 </style>

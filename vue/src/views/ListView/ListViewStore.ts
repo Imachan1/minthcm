@@ -161,6 +161,7 @@ export const useListViewStore = defineStore('listview', () => {
             .filter((col) => col.type === 'enum' && col.options)
             .map((col) => ({
                 field: col.name,
+                colors: languages.languages.app_list_strings[col.options + '_colored'],
                 options:
                     typeof col.options === 'string' ? languages.languages.app_list_strings[col.options] : col.options,
             }))
