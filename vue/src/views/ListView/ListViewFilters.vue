@@ -185,9 +185,10 @@ function setFilters(filterRows: FilterRow[]) {
         const filterType = operator.not ? 'must_not' : 'filter'
         const esKey = store.defs?.search[row.field].key
         operator.filters.forEach((f) => {
+            const keyword_suffix = f.use_keyword_subfield ? '.keyword' : ''
             query[filterType].push({
                 [f.op]: {
-                    [esKey]: replacePlaceholders(f.value, row.inputs),
+                    [esKey + keyword_suffix]: replacePlaceholders(f.value, row.inputs),
                 },
             })
         })
