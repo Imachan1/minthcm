@@ -244,9 +244,8 @@ function getAnyToForm($ignore='', $usePostAsAuthority = false)
 
 function handleRedirect($return_id='', $return_module='', $additionalFlags = false)
 {
-	if(isset($_REQUEST['return_url']) && $_REQUEST['return_url'] != "")
-	{
-		header("Location: ". $_REQUEST['return_url']);
+	if (!empty($_REQUEST['return_url'])) {
+		SugarApplication::redirect($_REQUEST['return_url']);
 		exit;
 	}
 
