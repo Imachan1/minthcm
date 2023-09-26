@@ -161,6 +161,7 @@ export const useListViewStore = defineStore('listview', () => {
             .filter((col) => col.type === 'enum' && col.options)
             .map((col) => ({
                 field: col.name,
+                colors: languages.languages.app_list_strings[col.options + '_colored'],
                 options:
                     typeof col.options === 'string' ? languages.languages.app_list_strings[col.options] : col.options,
             }))
@@ -185,6 +186,14 @@ export const useListViewStore = defineStore('listview', () => {
             .filter((col) => ['date', 'datetime', 'datetimecombo'].includes(col.type))
             .map((col) => col.name)
     })
+    const currencies = computed(() => {
+        if (!isInit.value) {
+            return {}
+        }
+        return Object.values(defs.value?.columns || {})
+            .filter((col) => ['currency'].includes(col.type))
+            .map((col) => col.name)
+    })
     const customFields = computed(() => {
         if (!isInit.value) {
             return {}
@@ -195,6 +204,7 @@ export const useListViewStore = defineStore('listview', () => {
             lists: lists.value,
             multienums: multienums.value,
             dates: dates.value,
+            currencies: currencies.value,
         }
     })
 

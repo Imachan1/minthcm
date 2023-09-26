@@ -49,9 +49,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  global $current_user,$mod_strings, $app_strings;
  $module_menu = [];
  if (is_admin($current_user)) {
-     if (ACLController::checkAccess('Currencies', 'edit', true)) {
-         $module_menu[] = array("index.php?module=Currencies&action=EditView&return_module=Currencies&return_action=DetailView", $mod_strings['LBL_ADD'], "Create");
-     }
      if (ACLController::checkAccess('Currencies', 'list', true)) {
          $module_menu[] = array("index.php?module=Currencies&action=index&return_module=Currencies&return_action=DetailView", $mod_strings['LBL_LIST_FORM_TITLE'], "List");
      }

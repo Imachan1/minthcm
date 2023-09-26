@@ -31,7 +31,13 @@
             />
         </template>
         <template v-for="list in store.customFields.lists" v-slot:[`item.${list.field}`]="{ item }" :key="list.field">
-            <span v-text="list.options[item.raw[list.field]]" />
+            <div
+                v-if="list.colors"
+                class="enum-chip"
+                :style="list.colors[item.raw[list.field]]"
+                v-text="list.options[item.raw[list.field]]"
+            />
+            <span v-else v-text="list.options[item.raw[list.field]]" />
         </template>
         <template
             v-for="multienum in store.customFields.multienums"
@@ -41,7 +47,14 @@
             <span v-text="formatMultienum(item.raw[multienum.field], multienum.options)" />
         </template>
         <template v-for="date in store.customFields.dates" v-slot:[`item.${date}`]="{ item }" :key="date">
-            <span v-text="formatDate(item.raw[date])" />
+            <span v-text="item.raw[date]" />
+        </template>
+        <template
+            v-for="currency in store.customFields.currencies"
+            v-slot:[`item.${currency}`]="{ item }"
+            :key="currency"
+        >
+            <span v-text="NumberUtils.formatCurrency(item.raw[currency], item.raw.currency_id)" />
         </template>
         <template v-slot:[`item.actions`]="{ item }">
             <div class="d-flex justify-end" style="gap: 8px">
@@ -76,6 +89,7 @@ import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useUrlStore } from '@/store/url'
 import { usePopupsStore } from '@/store/popups'
+import NumberUtils from '@/utils/numbers'
 
 const router = useRouter()
 const store = useListViewStore()
@@ -124,21 +138,6 @@ function getItemActions(item: any) {
         })
 }
 
-function formatDate(date: string) {
-    if (!date) {
-        return ''
-    }
-    if (date.length === 10) {
-        // db date
-        return DateTime.fromSQL(date).toFormat('dd.MM.yyyy') // todo: user format
-    }
-    if (date.length === 19) {
-        // db datetime
-        return DateTime.fromSQL(date, { zone: 'UTC' }).toLocal().toFormat('dd.MM.yyyy HH:mm:ss') // todo: user format
-    }
-    return ''
-}
-
 function formatMultienum(value, labels) {
     return value
         .replaceAll('^', '')
@@ -161,5 +160,18 @@ function formatMultienum(value, labels) {
             display: none;
         }
     }
+    .enum-chip {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        font-size: 13px;
+        padding: 4px 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-radius: 5px;
+        letter-spacing: 0.09px;
+    }
 }
+
 </style>

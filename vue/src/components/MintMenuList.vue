@@ -2,7 +2,7 @@
     <v-list class="mint-menu-list" nav density="compact" color="secondary">
         <v-list-item v-for="item in props.items" :key="item.title" :to="item.url" @click="item.onClick" :active="false">
             <template v-if="item.icon" #prepend>
-                <v-icon size="14" :icon="getIcon(item.icon)" />
+                <span style="font-size: 11px"><v-icon :icon="getIcon(item.icon)" /></span>
             </template>
             <v-list-item-title>
                 {{ item.title }}
@@ -12,8 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
-
 export interface MenuListItem {
     title: string
     icon?: string

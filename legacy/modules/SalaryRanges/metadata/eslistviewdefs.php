@@ -17,17 +17,41 @@ $ESListViewDefs['SalaryRanges'] = [
         ],
         'gross_value_from' => [
             'default' => true,
+            'related_fields' => [
+                'currency_id',
+            ],
+            'currency_format' => true,
         ],
         'gross_value_to' => [
             'default' => true,
+            'related_fields' => [
+                'currency_id',
+            ],
+            'currency_format' => true,
         ],
         'net_value_from' => [
+            'related_fields' => [
+                'currency_id',
+            ],
+            'currency_format' => true,
         ],
         'net_value_to' => [
+            'related_fields' => [
+                'currency_id',
+            ],
+            'currency_format' => true,
         ],
         'employer_costs_from' => [
+            'related_fields' => [
+                'currency_id',
+            ],
+            'currency_format' => true,
         ],
         'employer_costs_to' => [
+            'related_fields' => [
+                'currency_id',
+            ],
+            'currency_format' => true,
         ],
         'date_modified' => [
         ],

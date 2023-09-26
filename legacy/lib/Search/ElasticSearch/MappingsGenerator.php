@@ -29,6 +29,16 @@ class MappingsGenerator
         'primary_address_country' => 'address.primary.country',
         'phone_mobile' => '',
     ];
+
+    // From vardefs to elastic
+    protected $type_mapping = [
+        'date' => 'date',
+        'datetime' => 'date',
+        'datetimecombo' => 'date',
+        'bool' => 'boolean',
+        'text' => 'text',
+    ];
+
     protected $types = [
         'date' => [
             'type' => 'date',
@@ -98,19 +108,16 @@ class MappingsGenerator
             $data = $ESListViewDefs[$module['module']];
             $fields_to_map = $this->setFieldsToMap($data);
             $defs = $bean->field_defs;
-            $key = $data['es_module'] ? $data['es_module'] : $module['module'];
+            $key = !empty($data['es_module']) ? $data['es_module'] : $module['module'];
 
             foreach ($fields_to_map as $field) {
+                $es_type_name = $this->type_mapping[$defs[$field]['type']] ?? 'text';
+                $es_type = $this->types[$es_type_name];
+
                 if (!empty($this->not_standard_fields[$field])) {
-                    $mappings = $this->handleNotStandardField($this->not_standard_fields[$field], $mappings, $key);
+                    $mappings = $this->handleNotStandardField($this->not_standard_fields[$field], $mappings, $key, $es_type);
                 } else {
-                    if (in_array($defs[$field]['type'], ['date', 'datetime', 'datetimecombo'])) {
-                        $mappings['mappings'][$key]['properties'][$field] = $this->types['date'];
-                    } else if ('bool' == $defs[$field]['type']) {
-                        $mappings['mappings'][$key]['properties'][$field] = $this->types['boolean'];
-                    } else {
-                        $mappings['mappings'][$key]['properties'][$field] = $this->types['text'];
-                    }
+                    $mappings['mappings'][$key]['properties'][$field] = $es_type;
                 }
             }
 
@@ -131,7 +138,7 @@ class MappingsGenerator
         file_put_contents($this->output_file_path, $yaml);
     }
 
-    protected function handleNotStandardField($es_field, $mappings, $key)
+    protected function handleNotStandardField($es_field, $mappings, $key, $es_type)
     {
         $es_field_parts = explode('.', $es_field);
         $count = count($es_field_parts);
@@ -143,7 +150,7 @@ class MappingsGenerator
             $sub_mappings = &$sub_mappings['properties'][$es_field_part];
             $count--;
             if ($count == 0) {
-                $sub_mappings = $this->types['text'];
+                $sub_mappings = $es_type;
             }
         }
         return $mappings;

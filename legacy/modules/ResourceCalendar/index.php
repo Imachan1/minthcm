@@ -46,9 +46,5 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
-?>
-<?php
-header("Location:index.php?module=Project&action=ResourceList&parentTab=All&ajax_load=1&loadLanguageJS=1");
-die('--');
 
-?>
+SugarApplication::redirect("index.php?module=Project&action=ResourceList");

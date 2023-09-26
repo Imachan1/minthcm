@@ -2224,14 +2224,13 @@ abstract class DBManager
 
                         return 0;
                     }
-                    // ViewTools #67911 START
-                    // return (int)$val
+
+                    // eVolpe #119576 START
                     if ($val === '') {
                         return "NULL";
-                    } else {
-                        return (int) $val;
                     }
-                // ViewTools #67911 END
+                    // eVolpe #119576 END
+                    return intval($val);
                 case 'bigint':
                     // ViewTools #69225 START
                     // $val = (float) $val;
@@ -2246,14 +2245,12 @@ abstract class DBManager
                         return 0;
                     }
 
-                    // ViewTools #67911 START
-                    // return (float)$val
+                    // eVolpe #119576 START
                     if ($val === '') {
                         return "NULL";
-                    } else {
-                        return (float) $val;
                     }
-                // ViewTools #67911 END
+                    // eVolpe #119576 END
+                    return $val;
                 case 'float':
                     if (!empty($fieldDef['required']) && $val == '') {
                         if (isset($fieldDef['default'])) {
@@ -2272,8 +2269,14 @@ abstract class DBManager
                         return (float) unformat_number($val);
                         /* ViewTools #113751 #98811 END */
                     }
-                // ViewTools #67911 END
+                // MintHCM #119576 END
 
+                    */
+                    if ($val === '') {
+                        return "NULL";
+                    }
+                    return floatval(unformat_number($val));
+                    // MintHCM #119576 END
                 case 'time':
                 case 'date':
                     // empty date can't be '', so convert it to either NULL or empty date value

@@ -22,6 +22,9 @@ export const useACL = () => {
             console.warn(`hasAccess: acl is not defined in module "${module}"`)
             return false
         }
+        if (modules.modules[module]?.acl?.length === 0) {
+            return true
+        }
         const acl = modules.modules[module].acl
         const moduleAccess = acl.access === ACL_ALLOW_DEFAULT ? ACL_ALLOW_ENABLED : acl.access
         if (moduleAccess !== ACL_ALLOW_ENABLED) {

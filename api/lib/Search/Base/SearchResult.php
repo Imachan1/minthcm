@@ -165,10 +165,10 @@ abstract class SearchResult
             }
 
             $security_group = new LegacyConnector('SecurityGroup', 'modules/SecurityGroups/SecurityGroup.php');
-            $where = $security_group::getGroupWhere($bean->table_name, $bean->module_dir, $current_user->id);
+            $group_where = $security_group::getGroupWhere($bean->table_name, $bean->module_dir, $current_user->id);
             $owner_where = $bean->getOwnerWhere($current_user->id);
             if (!empty($owner_where)) {
-                $where = empty($where) ? $owner_where : " ({$owner_where} OR {$group_where}) ";
+                $where = empty($group_where) ? $owner_where : " ({$owner_where} OR {$group_where}) ";
             }
 
             global $entityManager;

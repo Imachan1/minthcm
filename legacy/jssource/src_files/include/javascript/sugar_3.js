@@ -2009,8 +2009,8 @@ function sugarListView() {
 }
 
 
-sugarListView.prototype.confirm_action = function (del) {
-   if (del == 1) {
+ sugarListView.prototype.confirm_action = function ( del ) {
+    if ( del == 1 ) {
      return confirm(SUGAR.language.get('app_strings', 'NTC_DELETE_CONFIRMATION_NUM') + sugarListView.get_num_selected_string() + SUGAR.language.get('app_strings', 'NTC_DELETE_SELECTED_RECORDS'));
    }
    else {
@@ -2053,33 +2053,33 @@ sugarListView.get_num_selected_is_exact = function () {
  sugarListView.get_num_selected = function () {
    var the_form = document.MassUpdate;
    if (typeof the_form != 'undefined' && the_form.select_entire_list.value == 1) {
-     var selectCount = $("input[name='selectCount[]']:first");
+    var selectCount = $( "input[name='selectCount[]']:first" );
      if (selectCount.length > 0) {
-       return parseInt(selectCount.val().replace("+", ""));
+       return parseInt( selectCount.val().replace( "+", "" ) );
      }
    }
    return sugarListView.get_checks_count();
  }
  
- sugarListView.update_count = function (count, add) {
-   if (typeof document.MassUpdate != 'undefined') {
-     the_form = document.MassUpdate;
-     for (var wp = 0; wp < the_form.elements.length; wp++) {
-       if (typeof the_form.elements[wp].name != 'undefined' && the_form.elements[wp].name == 'selectCount[]') {
-         if (add) {
-           the_form.elements[wp].value = parseInt(the_form.elements[wp].value, 10) + count;
+ sugarListView.update_count = function ( count, add ) {
+    if ( typeof document.MassUpdate != 'undefined' ) {
+       the_form = document.MassUpdate;
+       for ( var wp = 0; wp < the_form.elements.length; wp++ ) {
+          if ( typeof the_form.elements[wp].name != 'undefined' && the_form.elements[wp].name == 'selectCount[]' ) {
+             if ( add ) {
+                the_form.elements[wp].value = parseInt( the_form.elements[wp].value, 10 ) + count;
            if (!sugarListView.get_num_selected_is_exact()) {
-             the_form.elements[wp].value += '+';
-           }
-         } else {
+                   the_form.elements[wp].value += '+';
+                }
+             } else {
            if (!sugarListView.get_num_selected_is_exact()) {
-             the_form.elements[wp].value = count + '+';
-           } else {
-             the_form.elements[wp].value = count;
-           }
-         }
+                   the_form.elements[wp].value = count + '+';
+                } else {
+                   the_form.elements[wp].value = count;
+                }
+             }
+          }
        }
-     }
    }
  }
 sugarListView.prototype.use_external_mail_client = function ( no_record_txt, module ) {
@@ -2268,14 +2268,14 @@ sugarListView.get_checks_count = function () {
    }
    // build associated array of uids, associated array ensures uniqueness
    inputs = document.MassUpdate.elements;
-   for (i = 0; i < inputs.length; i++) {
+    for ( i = 0; i < inputs.length; i++ ) {
       if (inputs[i].name === 'mass[]') {
         if (inputs[i].value !== '') {
           ar[inputs[i].value] = (inputs[i].checked) ? 1 : 0;
         } else {
           ar[i] = (inputs[i].checked) ? 1 : 0;
-        }
-      }
+       }
+    }
     }
 
    // build regular array of uids
@@ -3023,7 +3023,7 @@ SUGAR.util = function () {
 
                   // Check is ulr cross domain or not
                   var r1 = /:\/\//igm;
-                  if (r1.test(srcResult) && srcResult.indexOf(window.location.hostname) == -1) {
+                   if ( r1.test( srcResult ) && srcResult.indexOf( window.location.hostname ) == -1 ) {
                      // if script is cross domain it cannot be loaded via ajax request
                      // try load script asynchronous by creating script element in the body
                      // YUI 3.3 doesn't allow load scrips synchronously
@@ -3031,20 +3031,20 @@ SUGAR.util = function () {
        
                      $.getScript(srcResult, function( data, textStatus, jqxhr ) {
        
-                     });
+                                 } );
                    } else {
        
                      // Bug #49205 : Subpanels fail to load when selecting subpanel tab
                      // Create a YUI instance using the io-base module.
-                     (function (srcResult) {
+                      (function ( srcResult ) {
                        $.ajax({
                          url: srcResult,
                          async: false,
                          method: 'GET'
                        }).done(function(responseText) {
                          SUGAR.util.globalEval(responseText);
-                       });
-                     })(srcResult);
+                         } );
+                      })( srcResult );
                    }
                } else {
                   // Bug #49205 : Subpanels fail to load when selecting subpanel tab
@@ -3721,7 +3721,7 @@ SUGAR.savedViews = function () {
                var column = columnDefs[columnKey];
                if (!column || !column.sortable) {
                   return;
-               }
+       }
       
                if (column.sortable === true) {
                   sortableColumnsCount++;
@@ -4557,14 +4557,14 @@ function open_popup( module_name, width, height, initial_filter, close_popup, hi
       URL += field_to_name_array_url;
    }
 
-   win = SUGAR.util.openWindow(URL, windowName, windowFeatures);
+    win = SUGAR.util.openWindow( URL, windowName, windowFeatures );
    if(win) {
        $(win).focus(function(){
-         win.focus();
+       win.focus();
        });
-       win.popupCount = popupCount;
-       return win;
-   }
+    win.popupCount = popupCount;
+    return win;
+ }
    return '';
 }
 
@@ -4908,7 +4908,7 @@ SUGAR.append( SUGAR.util, {
    },
 
    closeActivityPanel: {
-      show: function ( module, id, new_status, viewType, parentContainerId ) {
+       show: function ( module, id, new_status, viewType, parentContainerId, childElement = '' ) {
          if ( SUGAR.util.closeActivityPanel.panel )
             SUGAR.util.closeActivityPanel.panel.destroy();
          var singleModule = SUGAR.language.get( "app_list_strings", "moduleListSingular" )[module];
@@ -4943,7 +4943,13 @@ SUGAR.append( SUGAR.util, {
                                      var callback = {
                                         success: function () {
                                            //If the parent entry is not found, refresh the entire page
-                                           var parent = $( 'div[id^="dashlet_entire_"]' ).has( $( "#" + id ) );
+                                            /* MintHCM #122649 START */
+                                            var parent;
+                                            // parent = $( 'div[id^="dashlet_entire_"]' ).has( $( "#" + id ) );
+                                            if(childElement.length != 0){
+                                                parent = $( 'div[id^="dashlet_entire_"]' ).has( $( "#" + childElement.id ) );
+                                               }
+                                            /* MintHCM #122649 END */
                                            if ( parent.length === 0 ) {
                                               window.location.reload( true )
                                            } else {
@@ -5127,3 +5133,4 @@ function convertReportDateTimeToDB( dateValue, timeValue ) {
    }
    return '';
 }
+ 
