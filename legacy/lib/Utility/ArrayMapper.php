@@ -348,6 +348,13 @@ class ArrayMapper {
     * @return bool
     */
    private function handleRegex($value, $path) {
+      // The following module includes custom address fields:
+      // one of them has exact name 'address'
+      // other fields are of format address_<suffix>
+      if ($this->mappable->module_name === 'FP_Event_Locations') {
+         return false;
+      }
+
       foreach ( $this->regexMappings as $regex => $mappedPath ) {
          if ( !preg_match($regex, $path, $matches) ) {
             continue;

@@ -21,6 +21,14 @@ $ESListViewDefs['AOK_KnowledgeBase'] = [
         'revision' => [
             'default' => true,
         ],
+        'created_by_name' => [
+            'link' => true,
+            'default' => true,
+        ],
+        'modified_by_name' => [
+            'link' => true,
+            'default' => true,
+        ],
         'date_entered' => [
             'default' => true,
         ],

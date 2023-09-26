@@ -452,6 +452,12 @@ class ElasticSearchIndexer extends AbstractIndexer {
             }
             // MintHCM #121632 END
 
+            if ($module === 'FP_Event_Locations') {
+                foreach (['address', 'address_city', 'address_country', 'address_postalcode', 'address_state'] as $field) {
+                    unset($body[$field]);
+                }
+            }
+
             $params['body'][] = [ 'index' => $head ];
             $params['body'][] = $body;
             $this->indexedRecordsCount++;
