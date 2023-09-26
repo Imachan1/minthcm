@@ -81,7 +81,7 @@ $mod_strings = array(
     // quick create label
     'LBL_NEW_FORM_TITLE' => 'New Project',
     'LNK_NEW_PROJECT' => 'Create Project',
-    'LNK_PROJECT_LIST' => 'View Project List',
+    'LNK_PROJECT_LIST' => 'View Projects',
     'LNK_NEW_PROJECT_TASK' => 'Create Project Task',
     'LNK_PROJECT_TASK_LIST' => 'View Project Tasks',
     'LBL_DEFAULT_SUBPANEL_TITLE' => 'Projects',
