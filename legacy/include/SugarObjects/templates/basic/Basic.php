@@ -54,6 +54,8 @@ class Basic extends SugarBean
         'Employees'
     );
 
+    private $should_index = true;
+
     /**
      * Constructor
      */
@@ -187,5 +189,15 @@ class Basic extends SugarBean
         $ret = strtolower($ret);
 
         return $ret;
+    }
+
+    public function setShouldIndex(bool $should_index)
+    {
+        $this->should_index = $should_index;
+    }
+
+    public function getShouldIndex(): bool
+    {
+        return $this->should_index;
     }
 }

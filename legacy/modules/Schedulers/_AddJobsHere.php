@@ -878,6 +878,7 @@ require_once 'modules/Schedulers/schedulers/KScheduleReports.ScheduleReports.php
 require_once 'modules/Schedulers/schedulers/clearVcalCron.php';
 require_once 'modules/Schedulers/schedulers/AutomaticCreateNotification.php';
 require_once 'modules/Schedulers/schedulers/LastNextContactsQueueJob.php';
+require_once 'modules/Schedulers/schedulers/indexMissingElasticsearchRecords.php';
 
 if ( file_exists('custom/modules/Schedulers/_AddJobsHere.php') ) {
    require('custom/modules/Schedulers/_AddJobsHere.php');

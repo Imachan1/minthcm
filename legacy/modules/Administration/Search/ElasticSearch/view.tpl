@@ -144,8 +144,6 @@
                 <div>
                     <button class="btn btn-primary" type="button"
                             id="es-full-index">{$MOD.LBL_ELASTIC_SEARCH_INDEX_SCHEDULE_FULL}</button>
-                    <button class="btn btn-default" type="button"
-                            id="es-partial-index">{$MOD.LBL_ELASTIC_SEARCH_INDEX_SCHEDULE_PART}</button>
                 </div>
             </div>
         </div>

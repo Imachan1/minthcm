@@ -1013,6 +1013,17 @@ class Scheduler extends SugarBean {
       $sched17->catch_up = '1';
       $sched17->save();
 
+      $sched18 = new Scheduler();
+      $sched18->name = $mod_strings['LBL_OOTB_ELASTIC_INDEX_MISSING'];
+      $sched18->job = 'function::indexMissingElasticsearchRecords';
+      $sched18->date_time_start = create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+      $sched18->date_time_end = null;
+      $sched18->job_interval = '*/5::*::*::*::*';
+      $sched18->status = 'Active';
+      $sched18->created_by = '1';
+      $sched18->modified_user_id = '1';
+      $sched18->catch_up = '1';
+      $sched18->save();
 
       $this->createJobEntry('AutomaticCreateNotification', '*/15::*::*::*::*', $mod_strings['LBL_AUTOMATICCREATENOTIFICATION']);
       $this->createJobEntry('find_spent_times_without_work_schedule', '0::10::*::*::0', $mod_strings['LBL_FIND_SPENT_TIMES_WITHOUT_WORK_SCHEDULE']);

@@ -216,15 +216,8 @@ class ElasticSearchIndexer extends AbstractIndexer {
       $where = "";
       $showDeleted = 0;
 
-      if ( $isDifferential ) {
-         try {
-            $datetime = $this->getModuleLastIndexed($module);
-            $where = "$tableName.date_modified > '$datetime' OR $tableName.date_entered > '$datetime'";
-            $showDeleted = -1;
-         } catch ( \Exception $exception ) {
-            $this->logger->notice("Time metadata not found for $module, performing full index for this module");
-            $isDifferential = false;
-         }
+      if ( $isDifferential && isset($seed->field_defs['date_indexed']) ) {
+        $where = "$tableName.date_indexed IS NULL OR $tableName.date_indexed < $tableName.date_modified";
       }
 
       try {
@@ -247,7 +240,6 @@ class ElasticSearchIndexer extends AbstractIndexer {
 
       $this->logger->debug(sprintf('Indexing module %s...', $module));
       $this->indexBeans($module, $beans);
-      $this->putMeta($module, [ 'last_index' => $beanTime ]);
       $this->indexedModulesCount++;
    }
 
@@ -303,6 +295,33 @@ class ElasticSearchIndexer extends AbstractIndexer {
       // MintHCM #121632 END
 
       $this->client->index($args);
+      $this->setBeanInstantIndexingDate($bean);
+   }
+
+   protected function setBeanInstantIndexingDate(SugarBean $bean)
+   {
+      $db = \DBManagerFactory::getInstance();
+      $db->query("UPDATE {$bean->table_name}
+         SET date_indexed = '{$bean->date_modified}'
+         WHERE id = '{$bean->id}'
+      ");
+   }
+
+   protected function setBeansDeferredIndexingDate(array $beans)
+   {
+      if (empty($beans)) {
+         return;
+      }
+
+      $ids = implode(',', array_map(function ($bean) { return "'{$bean->id}'"; }, $beans));
+
+      $db = \DBManagerFactory::getInstance();
+      $now_datetime = (new \SugarDateTime)->asDb();
+      $seed = $beans[0];
+      $db->query("UPDATE {$seed->table_name}
+         SET date_indexed = '{$now_datetime}'
+         WHERE id IN ($ids)
+      ");
    }
 
    /** @inheritdoc */
@@ -351,41 +370,6 @@ class ElasticSearchIndexer extends AbstractIndexer {
 
       $this->logger->debug("Ping performed in $elapsed µs");
       return $elapsed;
-   }
-
-   /**
-    * Writes the metadata fields for one index type.
-    *
-    * @param string $module name of the module/type
-    * @param array  $meta   an associative array with the fields to populate
-    */
-   public function putMeta($module, $meta) {
-      $params = [
-         'index' => $this->index,
-         'type' => $module,
-         'body' => [ '_meta' => $meta ],
-      ];
-
-      $this->client->indices()->putMapping($params);
-   }
-
-   /**
-    * Returns the metadata fields for one index type.
-    *
-    * @param string $module name of the module/type
-    *
-    * @return array an associative array with the metadata
-    */
-   public function getMeta($module) {
-      $params = [ 'index' => $this->index, 'filter_path' => "$this->index.mappings.$module._meta" ];
-      $results = $this->client->indices()->getMapping($params);
-
-      if ( !isset($results[$this->index]) ) {
-         return null;
-      }
-
-      $meta = $results[$this->index]['mappings'][$module]['_meta'];
-      return $meta;
    }
 
    /** @return int */
@@ -459,7 +443,9 @@ class ElasticSearchIndexer extends AbstractIndexer {
          }
 
          // Send a batch of $this->batchSize elements to the server
-         if ( $key % $this->batchSize == 0 ) {
+         // MintHCM START
+         if ( $key % $this->batchSize == $this->batchSize - 1 ) {
+         // MintHCM END
             $this->sendBatch($params);
          }
       }
@@ -468,6 +454,8 @@ class ElasticSearchIndexer extends AbstractIndexer {
       if ( !empty($params['body']) ) {
          $this->sendBatch($params);
       }
+
+      $this->setBeansDeferredIndexingDate($beans);
    }
 
    /**
@@ -573,23 +561,6 @@ class ElasticSearchIndexer extends AbstractIndexer {
       ];
 
       return $args;
-   }
-
-   /**
-    * Retrieves the last time a module was indexed from a metadata stored in the Elasticsearch index.
-    *
-    * @param string $module
-    *
-    * @return string a datetime string
-    */
-   private function getModuleLastIndexed($module) {
-      $meta = $this->getMeta($module);
-
-      if ( !isset($meta['last_index']) ) {
-         throw new RuntimeException("Last index metadata not found.");
-      }
-
-      return $meta['last_index'];
    }
 
    /**
