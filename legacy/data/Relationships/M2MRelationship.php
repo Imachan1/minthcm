@@ -281,8 +281,6 @@ class M2MRelationship extends SugarRelationship
 			);
 
             // MintHCM #122704 START
-            // Naprawa błędu, który powodował że w przypadku relacji SecurityGroup pole Link2 nie zostało załadowane
-            // Przez co nigdy nie wykonywały się logic hooki dla tej relacji
             if (!empty($lhsLinkName) && empty($lhs->$lhsLinkName) && !$lhs->load_relationship($lhsLinkName)) {
                 $GLOBALS['log']->fatal("could not load LHS $lhsLinkName");
                 return false;

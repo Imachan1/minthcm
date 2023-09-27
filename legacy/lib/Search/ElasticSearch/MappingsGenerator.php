@@ -96,7 +96,7 @@ class MappingsGenerator
                 if (!empty($this->not_standard_fields[$field])) {
                     $mappings = $this->handleNotStandardField($this->not_standard_fields[$field], $mappings, $key, $es_type);
                 } else if (!empty($defs[$field])) {
-                    // Else if jest dlatego, że w innym wypadku sypie się na polach: search_name, recr_contact_agree oraz current_user_only
+                    // else if because script does not work well for fields: search_name, recr_contact_agree oraz current_user_only
                     $mappings['mappings'][$key]['properties'][$field] = $this->getPropertyMappingConfig($defs[$field]);
                 }
             }
@@ -125,9 +125,9 @@ class MappingsGenerator
                 ];
 
 
-                // Jeżeli w dokumencie zaindeksowane jest coś więcej niż klucz główny
-                // Będziemy musieli się zatroszczyć o to, aby indeksować powiązane rekordy nawet przy zapisie
-                // rekordu innego modułu - nie musi zmieniać się relacja
+                // If more than the primary key is indexed in the document.
+                // We will have to take care to index related records even when writing a record from another module 
+                // - the relationship does not have to change
                 if (!$this->includesAtMostPrimaryKey($nested_config['fields'])) {
                     $tracked_links[] = $link_field_name;
                 }
