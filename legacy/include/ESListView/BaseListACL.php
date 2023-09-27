@@ -52,7 +52,6 @@ class BaseListACL
                 'term' => [ 'meta.created.user_id.keyword' => $user_id ],
             ];
         }
-
         return $filters;
     }
 
@@ -77,6 +76,7 @@ class BaseListACL
                             'security_groups.id.keyword' => $group_ids,
                         ],
                     ],
+                    'ignore_unmapped' => true,
                 ]
             ]
         ];
@@ -90,9 +90,6 @@ class BaseListACL
 
     protected function wrapFiltersWithOrClause(array $filters)
     {
-        if (count($filters) <= 1) {
-            return $filters;
-        }
 
         return [
             [

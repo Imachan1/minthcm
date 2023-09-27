@@ -53,6 +53,7 @@ use SuiteCRM\Search\Exceptions\SearchInvalidRequestException;
 use SuiteCRM\Search\SearchEngine;
 use SuiteCRM\Search\SearchQuery;
 use SuiteCRM\Search\SearchResults;
+use SuiteCRM\Search\ElasticSearch\ElasticSearchEngine;
 
 require_once 'lib/Search/ElasticSearch/ElasticSearchEngine.php';
 require_once 'include/ESListView/Search/ESSearchResults.php';
@@ -65,7 +66,7 @@ class ESElasticSearchEngine extends ElasticSearchEngine {
     /**
      * @inheritdoc
      */
-    public function search(SearchQuery $query) {
+    public function search(SearchQuery $query): SearchResults {
         $this->validateQuery($query);
         $params = $this->createSearchParams($query);
         $params = $this->addKeywordToSort($params);
@@ -75,11 +76,12 @@ class ESElasticSearchEngine extends ElasticSearchEngine {
         $end = microtime(true);
         $searchTime = ($end - $start);
 
-        return new ESSearchResults($results, true, $searchTime, $hits['hits']['total']);
+        return new ESSearchResults($results, true, $searchTime, $hits['hits']['total']['value']);
     }
 
     protected function addPagination($params, $from, $size) {
         if (isset($from) && isset($size)) {
+            $from = (($from - 1)<0)? 1 :$from;
             $params['body']['from'] = ($from - 1) ;
             $params['body']['size'] = $size;
         }

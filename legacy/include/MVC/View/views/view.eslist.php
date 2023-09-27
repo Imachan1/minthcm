@@ -115,10 +115,16 @@ class ViewESList extends SugarView
         $this->eslistmap = $eslistmap;
 
         $host = $sugar_config['search']['ElasticSearch']['host'];
-        $index = $sugar_config['unique_key'] . '_shared';
+        $protocol = $sugar_config['search']['ElasticSearch']['protocol']?? 'http';
+        
         $es_module = $ESListViewDefs[$this->module]['es_module'] ?? $this->module;
-        $mappings = json_decode(file_get_contents("{$host}/{$index}/_mappings/{$es_module}"), true);
-        $this->mappings = array_values($mappings)[0]['mappings'][$es_module];
+        $index = $sugar_config['unique_key'] . '_'.strtolower($es_module);
+        $mappings = json_decode(file_get_contents("{$protocol}://{$host}/{$index}/_mappings"), true);
+        if(empty($mappings)){
+            return;
+        }
+        
+        $this->mappings = array_values($mappings)[0]['mappings'];
     }
 
     protected function prepareConfig()

@@ -77,11 +77,6 @@ class ElasticSearchEngine extends SearchEngine
     */
    public function __construct(Client $client = null)
    {
-      // View Tools start #60464
-      if (!empty($GLOBALS['sugar_config']['unique_key'])) {
-         $this->setIndex($GLOBALS['sugar_config']['unique_key'] . '_shared');
-      }
-      // View Tools end #60464
       $this->client = $client ?? ElasticSearchClientBuilder::getClient();
    }
 
@@ -120,7 +115,7 @@ class ElasticSearchEngine extends SearchEngine
    /**
     * @param SearchQuery $query
     */
-   protected function validateQuery(SearchQuery &$query): void
+   protected function validateQuery(SearchQuery $query): void
    {
       $query->trim();
       $query->convertEncoding();
@@ -135,31 +130,34 @@ class ElasticSearchEngine extends SearchEngine
     */
     protected function createSearchParams(SearchQuery $query): array  //MintHCM
     {
-       if ($query->getOptions()['filter_by_module']) {
-          $params = [
-             'index' => $this->index,
-             'body' => [
-                'query' => [
-                   'bool' => [
-                      'filter' => [
-                         //
-                      ],
-                      'must_not' => [
-                         //
-                      ]
-                   ]
-                ]
-             ]
-          ];
- 
-          $params = $this->addFilterByModule($params, $query->getOptions()['module']);
+       $options = $query->getOptions();
+       if ($options['filter_by_module']) {
+         $params = [
+            'index' => $GLOBALS['sugar_config']['unique_key'].'_'.strtolower($options['module']),
+            'body' => [
+               'query' => [
+                  'bool' => [
+                     'filter' => [
+                        //
+                     ],
+                     'must_not' => [
+                        //
+                     ]
+                  ]
+               ]
+            ]
+         ];
+          $params= $this->addBasicSearch($params, $options['searchPhrase']);
           $params = $this->addPagination($params, $query->getFrom(), $query->getSize());
           $params = $this->addSorting($params, $query->getOptions()['sorting']);
           $params = $this->addFilters($params, $query->getOptions()['filters']);
        } else {
             $searchStr = $query->getSearchString();
             $searchModules = SearchWrapper::getModules();
-            $indexes = implode(',', array_map('strtolower', $searchModules));
+            $searchModules = array_map('strtolower', $searchModules);
+            $searchModules = substr_replace($searchModules, $GLOBALS['sugar_config']['unique_key'].'_', 0, 0);
+
+            $indexes = implode(',', $searchModules);
 
             // Wildcard character required for Elasticsearch
             $wildcardBe = "*";
@@ -204,19 +202,25 @@ class ElasticSearchEngine extends SearchEngine
 
        return $params;
     }
-
-   private function addFilterByModule($params, $data)
-   {
-      if (isset($data)) {
-         $params['type'] = $data;
+    protected function addBasicSearch($params, $query_string) //MintHCM
+    {
+       if(!empty($query_string)){
+         $query_string = str_replace('+', '', strtolower($query_string));
+         $params['body']['query']['bool']['must'] = [
+            'simple_query_string' =>[
+            "query" => $query_string.'*',
+            "fields" => ["*","*name^5","subject^4"]
+            ],  
+         ];
       }
-
-      return $params;
-   }
+       return $params;
+    }
+ 
 
    protected function addPagination($params, $from, $size) //MintHCM
    {
       if (isset($from) && isset($size)) {
+         $from = (($from - 1)<0)? 1 :$from;
          $params['body']['from'] = ($from - 1) * $size;
          $params['body']['size'] = $size;
       }
@@ -243,8 +247,8 @@ class ElasticSearchEngine extends SearchEngine
    private function addFilters($params, $data)
    {
          if (isset($data)) {
-         $params['body']['query']['bool']['filter'] = $data['filter'];
-         $params['body']['query']['bool']['must_not'] = $data['must_not'];
+         $params['body']['query']['bool']['filter'] = is_array($params['body']['query']['bool']['filter'])? array_merge($params['body']['query']['bool']['filter'],$data['filter']):$data['filter'];
+         $params['body']['query']['bool']['must_not'] = is_array($params['body']['query']['bool']['must_not'])? array_merge($params['body']['query']['bool']['must_not'],$data['must_not']):$data['must_not'];
       }
 
       return $params;

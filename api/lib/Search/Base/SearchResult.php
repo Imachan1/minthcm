@@ -10,16 +10,16 @@ abstract class SearchResult
 {
     protected $result, $grouped_ids, $beans, $hits;
 
-    protected $handle_acl;
+    protected $handle_acl,$indice_module_map;
 
     protected $size, $current_offset, $total;
 
-    public function __construct($result, $current_offset, $size, $handle_acl = false)
+    public function __construct($result, $current_offset, $size, $handle_acl = false,$indice_module_map = [])
     {
-        $this->total = $result["hits"]["total"];
+        $this->total = $result["hits"]["total"]['value'];
         $this->size = $size;
         $this->handle_acl = $handle_acl;
-
+        $this->indice_module_map = $indice_module_map;
         $this->setData($result, $current_offset);
     }
 

@@ -12,7 +12,7 @@ use MintHCM\Lib\Search\ElasticSearch\ElasticResult;
 class ElasticSearch extends SearchManager
 {
 
-    protected $client, $result;
+    protected $client, $result, $indice_module_map,$queryClass;
 
     public function __construct(array $params)
     {
@@ -38,12 +38,14 @@ class ElasticSearch extends SearchManager
     public function setQuery(array $params): void
     {
         $this->params = $params;
-        $this->query = ((new ElasticQuery($params))->setACLFilters($this->elastic_acl))->getQuery();
+        $this->queryClass =(new ElasticQuery($params))->setACLFilters($this->elastic_acl);
+        $this->query = $this->queryClass->getQuery();
+        $this->indice_module_map = $this->queryClass->getIndiceToModuleMapping();
     }
 
     protected function setResultManager($result, $handle_acl): void
     {
-        $this->result_manager = new ElasticResult($result, $this->params['from'], $this->params['items'], $handle_acl);
+        $this->result_manager = new ElasticResult($result, $this->params['from'], $this->params['items'], $handle_acl,$this->indice_module_map);
         if ($this->result_manager->shouldSearchAgain()) {
             $this->params['from'] = $this->result_manager->getNextOffset();
             $this->setQuery($this->params);

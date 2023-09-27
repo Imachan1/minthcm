@@ -10,7 +10,7 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
      * @see getHits()
      * @return array
      */
-    public function getHitsAsBeans() {
+    public function getHitsAsBeans(): array  {
         $hits = $this->getHits();
         $parsed = [];
 
@@ -63,7 +63,7 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
         }
     }
 
-    public function getTotal() {
+    public function getTotal():  ?int{
         $total = 0;
         foreach ($this->hits_after_acl as $module_name => $beans) {
             $total += count($beans);
@@ -125,7 +125,7 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
         }
         return $beans;
     }
-    protected function updateObjLinks(SugarBean $obj, &$fieldDef)
+    protected function updateObjLinks(SugarBean $obj, $fieldDef): SugarBean
     {
         if ($fieldDef['type'] == 'relate' && isset($fieldDef['link']) && isset($fieldDef['id_name']) && $fieldDef['id_name']) {
             $relId = $this->getRelatedId($obj, $fieldDef['id_name'], $fieldDef['link']);
@@ -142,7 +142,7 @@ class ESSearchResults extends \SuiteCRM\Search\SearchResults {
         return $link;
     }
 
-    protected function decodeEntities(SugarBean $obj, &$fieldDefs)
+    protected function decodeEntities(SugarBean $obj, $fieldDefs)
     {
         foreach ($fieldDefs as &$fieldDef) {
             if (isset($fieldDef['type']) && in_array($fieldDef['type'], ['name', 'varchar'])) {

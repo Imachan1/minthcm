@@ -16,18 +16,18 @@ class ElasticQuery extends SearchQuery
 
     const DEFAULT_TYPE = null;
 
-    const ALL_FIELDS = "_all";
+    const ALL_FIELDS = "*";
 
     protected $exclude_modules = [];
 
     protected $add_acl_filters  = false;
+    protected $indice_module_map;
 
     protected function setQuery()
     {
         $this->query = array(
-            "index" => $this->getIndex(),
             "body" => $this->getBody(),
-            "type" => $this->getType(),
+            "index" => $this->getIndex(),
         );
     }
 
@@ -58,15 +58,17 @@ class ElasticQuery extends SearchQuery
     private function getIndex()
     {
         if (isset($GLOBALS['sugar_config']['unique_key'])) {
-            return $GLOBALS['sugar_config']['unique_key'] . '_shared';
+            
+            $searchModules = array_map('strtolower', $this->search_modules);
+            $searchModules = substr_replace($searchModules, $GLOBALS['sugar_config']['unique_key'].'_', 0, 0);
+            $indexes = implode(',', $searchModules);
+            $this->indice_module_map = array_combine($searchModules,$this->search_modules);
+
+            return $indexes;
         }
         return null;
     }
 
-    private function getType()
-    {
-        return $this->params['type'] ?? static::DEFAULT_TYPE;
-    }
 
     private function getBody()
     {
@@ -82,7 +84,8 @@ class ElasticQuery extends SearchQuery
     {
         switch (strtolower($this->params['search'])) {
             case "global":
-                return $this->getGlobalQuery();
+                $this->search_modules = $search_modules = $this->getGlobalSearchModuleList();
+                return $this->getGlobalQuery($search_modules);
                 break;
             case "list":
                 return $this->getListQuery();
@@ -92,31 +95,29 @@ class ElasticQuery extends SearchQuery
         }
     }
 
-    private function getGlobalQuery()
+    private function getGlobalQuery($search_modules)
     {
-        global $current_user;
 
         if($this->add_acl_filters){
+            $uniq = $GLOBALS['sugar_config']['unique_key'];
             $main_acl["bool"]["must"] = $this->noAclGlobalQuery();
             $main_acl["bool"]["filter"]["bool"]["should"] = [];
-
-
-            $search_modules = $this->getGlobalSearchModuleList();
+            
             
             foreach($search_modules as $module_to_search)
             {
                 $bean = BeanFactory::newBean($module_to_search);
                 $acl_controller = new LegacyConnector('ACLController');
-                if(method_exists($module_to_search,'bean_implements') && $bean->bean_implements('ACL') &&  ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list')) ) {
-                    $module_filters = $this->getACLForModule($module_to_search);
-                    
+                if( $bean->bean_implements('ACL') &&  ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list')) ) { 
+                  $module_filters = $this->getACLForModule($module_to_search);
                 }
                 else {
-                    $module_filters['bool']['must']['term']['_type'] = $module_to_search;
+                    $module_filters['bool']['must']['term']['_index'] = $uniq.'_'.strtolower($module_to_search);
                 }
                 
                 if(is_array($module_filters)){
                     $main_acl["bool"]["filter"]["bool"]["should"][] = $module_filters;
+		            $module_filters = [];
                 }                
             }
 
@@ -151,9 +152,10 @@ class ElasticQuery extends SearchQuery
     }
 
     protected function getExcludeModules(){
+        $uniq = $GLOBALS['sugar_config']['unique_key'];
         $excluded_queries = [];
         foreach($this->exclude_modules as $module){
-            $excluded_queries[]['term']['_type'] = $module;
+            $excluded_queries[]['term']['_index'] = $uniq.'_'.strtolower($module);
         }
         return $excluded_queries;
     }
@@ -161,13 +163,14 @@ class ElasticQuery extends SearchQuery
     protected function getACLForModule($module)
     {
         global $current_user;
-
+        $uniq = $GLOBALS['sugar_config']['unique_key'];
         $acl = $this->getACLClassForModule($module);
         $restriction_filter = $acl->getAccessRestrictionFilter($current_user->id);
-        
-        $single_module['bool']['must']['term']['_type'] = $module;
-        $single_module['bool']['should'] =  $restriction_filter[0]['bool']['should'];
-        
+       
+        $single_module['bool']['must'][]['term']['_index'] = $uniq.'_'.strtolower($module);
+    	if(!empty($restriction_filter[0]['bool']['should'])){
+        	$single_module['bool']['must'][]['bool']['should']  =  $restriction_filter[0]['bool']['should'];
+        }
         return $single_module;
 
     }
@@ -187,6 +190,10 @@ class ElasticQuery extends SearchQuery
                 return $acl_class;
             }
         }
+    }
+
+    public function getIndiceToModuleMapping(){
+        return $this->indice_module_map;
     }
 
     protected function getGlobalSearchModuleList(){

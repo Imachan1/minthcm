@@ -11,7 +11,7 @@ class Wildcard extends ElasticOperator
     {
         parent::__construct($data);
         if (empty($this->field)) {
-            $this->field = "_all";
+            $this->field = "*";
         }
     }
 
