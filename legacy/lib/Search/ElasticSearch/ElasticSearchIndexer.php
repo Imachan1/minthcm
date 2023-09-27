@@ -216,7 +216,7 @@ class ElasticSearchIndexer extends AbstractIndexer {
       $where = "";
       $showDeleted = 0;
 
-      if ( $isDifferential ) {
+      if ( $isDifferential && isset($seed->field_defs['date_indexed']) ) {
         $where = "$tableName.date_indexed IS NULL OR $tableName.date_indexed < $tableName.date_modified";
       }
 
@@ -313,12 +313,12 @@ class ElasticSearchIndexer extends AbstractIndexer {
          return;
       }
 
-      $bean = $beans[0];
       $ids = implode(',', array_map(function ($bean) { return "'{$bean->id}'"; }, $beans));
 
       $db = \DBManagerFactory::getInstance();
       $now_datetime = (new \SugarDateTime)->asDb();
-      $db->query("UPDATE {$bean->table_name}
+      $seed = $beans[0];
+      $db->query("UPDATE {$seed->table_name}
          SET date_indexed = '{$now_datetime}'
          WHERE id IN ($ids)
       ");
