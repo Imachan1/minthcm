@@ -8,6 +8,9 @@
     RewriteRule ^api/(.*?)$ api/index.php [L]
     RewriteRule ^bg.jpg$ bg.jpg [L]
     RewriteRule ^favicon.ico$ favicon.ico [L]
+    RewriteRule ^Api/(.*?)$ legacy/Api/$1 [R=301,L]
+    RewriteRule ^service/(.*?)$ legacy/service/$1 [L,QSA]
+    RewriteRule ^index.php$ legacy/index.php [L]
 
     RewriteRule .* index.html [L]
 </IfModule>
