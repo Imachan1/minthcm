@@ -62,6 +62,8 @@ use SuiteCRM\Search\Index\IndexingSchedulerTrait;
 use SuiteCRM\Search\Index\IndexingStatisticsTrait;
 use Symfony\Component\Yaml\Parser as YamlParser;
 
+require_once 'lib/Search/ElasticSearch/ElasticSearchVardefsReader.php';
+
 /**
  * Class ElasticSearchIndexer takes care of creating a search index for the database.
  */
@@ -283,19 +285,38 @@ class ElasticSearchIndexer extends AbstractIndexer {
       }
       // minthcm end
       $args = $this->makeIndexParamsFromBean($bean);
-
-      // MintHCM #121632 START
-      if ($this->acl_helper->doesModuleUseTemplate($bean->module_name, 'security_groups')) {
-         $group_ids = $this->acl_helper->getSecurityGroupIdsRelatedWithRecord($bean->module_name, $bean->id);
-
-         $args['body']['security_groups'] = array_values(array_map(function ($group_id) {
-            return [ 'id' => $group_id ];
-        }, $group_ids));
-      }
-      // MintHCM #121632 END
+      $this->fillAllNestedPropertyValues($bean, $args['body']);
 
       $this->client->index($args);
       $this->setBeanInstantIndexingDate($bean);
+   }
+
+   protected function fillAllNestedPropertyValues(SugarBean $bean, array &$args): void
+   {
+      $nested_properties = (new \ElasticSearchVardefsReader)->getModuleNestedProperties($bean->module_name);
+      foreach ($nested_properties as $property_name => $nested_config) {
+         $args[$property_name] = $this->getNestedPropertyValues($bean, $property_name, $nested_config);
+      }
+   }
+
+   protected function getNestedPropertyValues(SugarBean $bean, string $property_name, array $nested_config): array
+   {
+      $link_field_name = $nested_config['link'] ?? $property_name;
+      if (!$bean->load_relationship($link_field_name)) {
+         return [];
+      }
+
+      $related_beans = $bean->$link_field_name->getBeans();
+      $nested_fields = $nested_config['fields'];
+      $nested_data = array_map(function ($related_bean) use ($nested_fields) {
+         $row = [];
+         foreach ($nested_fields as $nested_field) {
+            $row[$nested_field] = $related_bean->$nested_field;
+         }
+         return $row;
+      }, $related_beans);
+
+      return array_values($nested_data);
    }
 
    protected function setBeanInstantIndexingDate(SugarBean $bean)
@@ -412,12 +433,6 @@ class ElasticSearchIndexer extends AbstractIndexer {
    private function indexBatch($module, array $beans) {
       $params = [ 'body' => [] ];
 
-      // MintHCM #121632 START
-      if ($this->acl_helper->doesModuleUseTemplate($module, 'security_groups')) {
-         $groups_by_records = $this->acl_helper->getSecurityGroupIdsRelatedWithMultipleRecords($module, $beans);
-      }
-      // MintHCM #121632 END
-
       foreach ( $beans as $key => $bean ) {
          $head = [ '_index' => $this->index, '_type' => $module, '_id' => $bean->id ];
 
@@ -427,14 +442,8 @@ class ElasticSearchIndexer extends AbstractIndexer {
          } else {
             $body = $this->makeIndexParamsBodyFromBean($bean);
 
-            // MintHCM #121632 START
-            if (isset($groups_by_records)) {
-               $group_ids = $groups_by_records[$bean->id] ?? [];
-               $body['security_groups'] = array_values(array_map(function ($group_id) {
-                  return [ 'id' => $group_id ];
-               }, $group_ids));
-            }
-            // MintHCM #121632 END
+            // TODO: optimize with single load from db before foreach
+            $this->fillAllNestedPropertyValues($bean, $body);
 
             $params['body'][] = [ 'index' => $head ];
             $params['body'][] = $body;

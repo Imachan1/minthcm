@@ -55,6 +55,8 @@ use SuiteCRM\Search\Exceptions\SearchException;
 use SuiteCRM\Utility\SuiteLogger;
 use Throwable;
 
+require_once 'lib/Search/ElasticSearch/ElasticSearchVardefsReader.php';
+
 /**
  * Class ElasticSearchHooks handles logic hooks to keep the elasticsearch index synchronised.
  */
@@ -99,18 +101,23 @@ class ElasticSearchHooks
         $this->reIndexSafe($bean);
     }
 
-    // MintHCM #121632 START
-    public function relationshipDeleted($rhs, $lhs)
+    public function relationshipChange(SugarBean $bean, $event, $arguments)
     {
-        if ($rhs->module_name !== 'SecurityGroups' && $lhs->module_name !== 'SecurityGroups') {
-            return;
-        }
+        $esv_reader = new \ElasticSearchVardefsReader;
 
-        $this->action = 'index';
-        $bean_to_index = $rhs->module === 'SecurityGroups' ? $lhs : $rhs;
-        $this->reIndexSafe($bean_to_index);
+        $nested_properties = $esv_reader->getModuleNestedProperties($bean->module_name);
+        foreach ($nested_properties as $property_name => $nested_config) {
+            $link_field_name = $esv_reader->getLinkFieldName($property_name, $nested_config);
+            if (!$bean->load_relationship($link_field_name)) {
+               continue;
+            }
+
+            $related_module_name = $esv_reader->getRelatedModuleName($bean, $link_field_name);
+            if ($related_module_name === $arguments['related_module']) {
+                $this->beanSaved($bean, $event, $arguments);
+            }
+        }
     }
-    // MintHCM #121632 END
 
     // ~ ~ ~ ~ ~ ~
     // Private Methods
