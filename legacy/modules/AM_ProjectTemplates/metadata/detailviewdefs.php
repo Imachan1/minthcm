@@ -49,17 +49,17 @@ array (
            'file' => 'modules/AM_ProjectTemplates/create_project.js',
           ),
       ),
-      'useTabs' => false,
+      'useTabs' => true,
       'tabDefs' => 
       array (
         'DEFAULT' => 
         array (
-          'newTab' => false,
+          'newTab' => true,
           'panelDefault' => 'expanded',
         ),
         'LBL_PANEL_ASSIGNMENT' =>
         array (
-          'newTab' => false,
+          'newTab' => true,
           'panelDefault' => 'expanded',
         ),
       ),
@@ -89,18 +89,33 @@ array (
             'label' => 'LBL_PRIORITY',
           ),
         ),
-        3 => 
+      ),
+      'LBL_PANEL_ASSIGNMENT' =>
+      array (
+        0 =>
         array (
           0 => 
           array (
             'name' => 'assigned_user_name',
             'label' => 'LBL_ASSIGNED_TO_NAME',
-          ),
-          
+          ), 
         ),
-
-      ),
-      
+        1 => 
+        array (
+          0 => 
+          array (
+            'name' => 'date_entered',
+            'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
+            'label' => 'LBL_DATE_ENTERED',
+          ),
+          1 => 
+          array (
+            'name' => 'date_modified',
+            'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+            'label' => 'LBL_DATE_MODIFIED',
+          ),
+        ),
+      )
     ),
   ),
 );

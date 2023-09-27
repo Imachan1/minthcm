@@ -88,19 +88,13 @@ array (
           0 => 'name',
           1 => 
           array (
-            'name' => 'date_entered',
-            'comment' => 'Date record created',
-            'label' => 'LBL_DATE_ENTERED',
+            'name' => 'capacity',
+            'label' => 'LBL_CAPACITY',
           ),
         ),
         1 => 
         array (
           0 => 'description',
-          1 => 
-          array (
-            'name' => 'capacity',
-            'label' => 'LBL_CAPACITY',
-          ),
         ),
       ),
       'lbl_editview_panel1' => 
