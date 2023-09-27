@@ -42,7 +42,7 @@ return [
         'record' => true,
     ],
     'Schedulers' => [
-        'list' => false,
+        'list' => true,
         'record' => true,
     ],
     'Contacts' => [
