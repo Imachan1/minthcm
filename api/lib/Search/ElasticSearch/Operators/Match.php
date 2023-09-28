@@ -4,7 +4,7 @@ namespace MintHCM\Lib\Search\ElasticSearch\Operators;
 
 use MintHCM\Lib\Search\ElasticSearch\ElasticOperator;
 
-class Match extends ElasticOperator
+class MatchOperator extends ElasticOperator
 {
 
     protected $operator;

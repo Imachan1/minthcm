@@ -5,7 +5,7 @@ namespace MintHCM\Lib\Search\ElasticSearch;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Equals;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Exists;
-use MintHCM\Lib\Search\ElasticSearch\Operators\Match;
+use MintHCM\Lib\Search\ElasticSearch\Operators\MatchOperator;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Range;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Wildcard;
 
@@ -14,7 +14,7 @@ class ElasticQueryOperatorsManager
     const OPERATORS_MAPPER = array(
         'equals' => Equals::class,
         'exists' => Exists::class,
-        'match' => Match::class,
+        'match' => MatchOperator::class,
         'range' => Range::class,
         'wildcard' => Wildcard::class,
     );
