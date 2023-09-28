@@ -72,7 +72,7 @@ function install_es()
 {
     global $sugar_config;
 
-    $sugar_config['search']['ElasticSearch'] = [
+    $options = [
         'enabled' => false,
         'host' => 'localhost',
         'user' => '',
@@ -82,6 +82,18 @@ function install_es()
         'search_wildcard_infront' => true
     ];
 
+    include 'config_si.php';
+    if (isset($sugar_config_si)) {
+        $hostname = $sugar_config_si['setup_es_host'];
+        $port = $sugar_config_si['setup_es_port'];
+
+        $options['enabled'] = true;
+        $options['host'] = "{$hostname}:{$port}";
+        $options['user'] = $sugar_config_si['setup_es_username'];
+        $options['pass'] = $sugar_config_si['setup_es_password'];
+    }
+
+    $sugar_config['search']['ElasticSearch'] = $options;
     ksort($sugar_config);
     write_array_to_file('sugar_config', $sugar_config, 'config.php');
 

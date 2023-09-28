@@ -5,6 +5,7 @@ namespace MintHCM\MintCLI\Commands;
 use MintHCM\MintCLI\Installer\Installer;
 use MintHCM\MintCLI\Services\AppVersionService;
 use MintHCM\MintCLI\Services\DatabaseService;
+use MintHCM\MintCLI\Services\ElasticsearchService;
 use MintHCM\MintCLI\Services\ServerService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,6 +29,7 @@ class Install extends Command
         $io = new SymfonyStyle($input, $output);
         $DBService = new DatabaseService();
         $AppVerService = new AppVersionService();
+        $elasticsearchService = new ElasticsearchService();
 
         $io->title("Welcome to the MintHCM Installer.\nProvide all of the information to start installation process.");
 
@@ -48,6 +50,13 @@ class Install extends Command
             return Command::FAILURE;
         }
 
+        $io->section('Verifying Elasticsearch Connection...');
+        $elasticsearchConnectionStatus = $elasticsearchService->testConnection($userData['elasticsearchHost'], $userData['elasticsearchPort'], $userData['elasticsearchUsername'], $userData['elasticsearchPassword']);
+        if (!$elasticsearchConnectionStatus['status']) {
+            $io->error($elasticsearchConnectionStatus['message']);
+            return Command::FAILURE;
+        }
+
         $io->section('Verifying required app versions...');
         $appVersionsStatus = $AppVerService->verifyAppVersions($userData['rebuildFrontend']);
         if (!$appVersionsStatus['correctVersions']) {
@@ -60,7 +69,7 @@ class Install extends Command
         $io->section('Installing system core...');
 
         $installer->prepareConfigurationFile($userData);
-        $installer->setupDoctrineConfig($userData);
+        $installer->setupApiConfigOverride($userData);
         $installer->setupFilesPermissions();
         $backendInstallationStatus = $installer->installBackendApplication();
         if (!$backendInstallationStatus) {
@@ -113,6 +122,18 @@ class Install extends Command
         $question = new \MintHCM\MintCLI\Questions\DatabaseCollation($QH, $input, $output);
         $databaseCollation = $question->ask();
 
+        $question = new \MintHCM\MintCLI\Questions\ElasticsearchHost($QH, $input, $output);
+        $elasticsearchHost = $question->ask();
+
+        $question = new \MintHCM\MintCLI\Questions\ElasticsearchPort($QH, $input, $output);
+        $elasticsearchPort = $question->ask();
+
+        $question = new \MintHCM\MintCLI\Questions\ElasticsearchUsername($QH, $input, $output);
+        $elasticsearchUsername = $question->ask();
+
+        $question = new \MintHCM\MintCLI\Questions\ElasticsearchPassword($QH, $input, $output);
+        $elasticsearchPassword = $question->ask();
+
         $question = new \MintHCM\MintCLI\Questions\DemoData($QH, $input, $output);
         $demoData = $question->ask();
 
@@ -142,6 +163,10 @@ class Install extends Command
             'databasePassword' => $databasePassword,
             'databaseName' => $databaseName,
             'databaseCollation' => $databaseCollation,
+            'elasticsearchHost' => $elasticsearchHost,
+            'elasticsearchPort' => $elasticsearchPort,
+            'elasticsearchUsername' => $elasticsearchUsername,
+            'elasticsearchPassword' => $elasticsearchPassword,
             'demoData' => $demoData,
             'ssl' => $ssl,
             'siteUrl' => $siteUrl,
