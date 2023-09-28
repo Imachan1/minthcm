@@ -21,7 +21,7 @@ abstract class Middleware
         $routes_data = $this->route_manager->getRoutes();
 
         $route_name = $this->getRouteName($request);
-        if (strpos($route_name, '___') === false) {
+        if (!str_contains($route_name, '___')) {
             return $routes_data[$route_name];
         }
 

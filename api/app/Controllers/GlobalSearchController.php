@@ -47,9 +47,9 @@ class GlobalSearchController
             $search_result = $search_manager->search(false);
 
 
-        } catch (BadRequest400Exception $e) {
+        } catch (BadRequest400Exception) {
             throw new HttpBadRequestException($this->request);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             throw new HttpInternalServerErrorException($this->request);
         }
         

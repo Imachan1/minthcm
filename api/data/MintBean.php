@@ -6,12 +6,10 @@ require_once '../legacy/data/SugarBean.php';
 
 class MintBean
 {
-    protected $legacy_bean;
     protected static $static_legacy_bean;
 
-    public function __construct($legacy_bean)
+    public function __construct(protected $legacy_bean)
     {
-        $this->legacy_bean = $legacy_bean;
         static::$static_legacy_bean = $legacy_bean;
     }
 

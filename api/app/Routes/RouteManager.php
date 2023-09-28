@@ -192,7 +192,7 @@ class RouteManager
             $files = array_diff($files, array('.', '..'));
 
             foreach ($files as $file) {
-                if (strpos($file, ".php") === false) {
+                if (!str_contains($file, ".php")) {
                     continue;
                 }
 
