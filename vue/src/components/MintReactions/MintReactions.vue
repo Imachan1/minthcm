@@ -16,9 +16,14 @@
                 </template>
                 <div>
                     <div>
-                        <b>{{ reactionType.type }}:</b>
+                        <b>{{ reactionType.icon }} {{ reactionType.type }}:</b>
                     </div>
-                    <div v-for="user in reactionUsers[reactionType.type]" :key="user.id" v-text="user.name" />
+                    <div
+                        v-for="user in reactionUsers[reactionType.type].slice(0, MAX_USERS_IN_TOOLTIP)"
+                        :key="user.id"
+                        v-text="user.name"
+                    />
+                    <div v-if="reactionUsers[reactionType.type].length > MAX_USERS_IN_TOOLTIP" v-text="'...'" />
                 </div>
             </v-tooltip>
         </div>
@@ -33,6 +38,7 @@
                         :key="user.id"
                         v-text="user.name"
                     />
+                    <div v-if="allReactedUsers.length > MAX_USERS_IN_TOOLTIP" v-text="'...'" />
                 </div>
             </v-tooltip>
         </div>

@@ -32,12 +32,24 @@ class CommentsController
         if (!$parent->ACLAccess('view')) {
             return $response->withStatus(403);
         }
+        $db = \DBManagerFactory::getInstance();
+        $sql = "SELECT id, user_name, CONCAT_WS(' ', first_name, last_name) name, photo FROM users WHERE deleted = 0";
+        $result = $db->query($sql);
+        $users = [];
+        while ($row = $db->fetchByAssoc($result)) {
+            $users[] = $row;
+        }
         chdir('../api');
 
+        $init_controller = new Init\Init($this->entityManager);
+        $languages_controller = new Init\Languages();
+
         $response->getBody()->write(json_encode([
-            'user' => (new Init\Init($this->entityManager))->getCurrentUserData(),
+            'user' => $init_controller->getCurrentUserData(),
+            'languages' => $languages_controller->getLanguages(),
             'access' => $this->getAccess($parent),
             'comments' => $this->entityManager->getRepository(Comment::class)->get($parent_type, $parent_id),
+            'users' => $users,
         ]));
 
         return $response;
@@ -82,7 +94,8 @@ class CommentsController
             $response = $response->withStatus(404);
             return $response;
         }
-        if (!self::hasAddAccess($parent)) {
+        $access = $this->getAccess($parent);
+        if (!$access['add']) {
             $response = $response->withStatus(403);
             return $response;
         }
@@ -129,30 +142,6 @@ class CommentsController
 
         $response = $response->withStatus(200);
         return $response;
-    }
-
-    protected static function hasAddAccess($parent)
-    {
-        global $current_user;
-        if ($current_user->isAdmin()) {
-            return true;
-        }
-        $users_access_ids = [];
-        $users_access_ids[] = $parent->assigned_user_id;
-        $users_access_ids[] = $parent->created_by;
-        $users_access_ids[] = $parent->supervisor_id;
-        $parent->load_relationship('observerusers');
-        $observerusers_ids = $parent->observerusers->get();
-        foreach($observerusers_ids as $observerusers_id) {
-            $users_access_ids[] = $observerusers_id;
-        }
-        return in_array($current_user->id, $users_access_ids);
-    }
-
-    protected static function hasPinAccess($parent)
-    {
-        global $current_user;
-        return $current_user->isAdmin() || $parent->assigned_user_id === $current_user->id;
     }
 
     protected function getAccess($parent)

@@ -4,11 +4,14 @@ import axios from 'axios'
 import { useRoute } from 'vue-router'
 import { useAuthStore, User } from '@/store/auth'
 import { MintReaction } from '@/components/MintReactions/MintReactions'
+import { useLanguagesStore, Languages } from '@/store/languages'
 
 interface InitialResponse {
     user: User
+    languages: Languages
     access: MintCommentsAccess
     comments: MintComment[]
+    users: User[]
 }
 
 interface MintCommentsAccess {
@@ -34,45 +37,42 @@ export interface MintComment {
     reactions: MintReaction[]
 }
 
-export interface ThreadComment extends MintComment {
-    replies: MintComment[]
-}
-
 export const useMintCommentsStore = defineStore('mint-comments', () => {
     const route = useRoute()
 
+    const isInitialLoading = ref(true)
     const isLoading = ref(false)
     const comments = ref<MintComment[]>([])
+    const users = ref<User[]>([])
     const access = ref<MintCommentsAccess>({
         pin: false,
         add: false,
     })
     const auth = useAuthStore()
+    const languages = useLanguagesStore()
 
-    const threads = computed(() => {
-        const threads: ThreadComment[] = comments.value
-            .filter((comment) => !comment.reply_to_id)
-            .map((comment) => ({ ...comment, replies: [] }))
-        const replies = comments.value.filter((comment) => comment.reply_to_id)
-        replies.forEach((reply) => {
-            threads.find((thread) => thread.id === reply.reply_to_id)?.replies.push(reply)
-        })
-        return threads
+    const threads = computed<MintComment[]>(() => {
+        return comments.value.filter((comment) => !comment.reply_to_id)
     })
 
-    const pinnedThreads = computed<ThreadComment[]>(() => {
+    const pinnedThreads = computed<MintComment[]>(() => {
         return threads.value.filter((thread) => thread.pinned && !thread.removed)
     })
 
     async function fetchInitialData() {
-        isLoading.value = true
         const response = await axios.get<InitialResponse>(
             `api/comments/${route.params.module}/${route.params.record}/init`,
         )
-        isLoading.value = false
         auth.user = response.data.user
+        languages.languages = {
+            app_strings: response.data.languages?.app_strings ?? {},
+            app_list_strings: response.data.languages?.app_list_strings ?? {},
+            modules: {},
+        }
         comments.value = response.data.comments
         access.value = response.data.access
+        users.value = response.data.users
+        isInitialLoading.value = false
     }
 
     async function fetchComments() {
@@ -180,7 +180,9 @@ export const useMintCommentsStore = defineStore('mint-comments', () => {
     return {
         access,
         comments,
+        isInitialLoading,
         isLoading,
+        users,
         threads,
         pinnedThreads,
         fetchInitialData,

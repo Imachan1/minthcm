@@ -1,4 +1,4 @@
-export const MAX_USERS_IN_TOOLTIP = 8
+export const MAX_USERS_IN_TOOLTIP = 10
 
 export interface MintReactionUser {
     id: string

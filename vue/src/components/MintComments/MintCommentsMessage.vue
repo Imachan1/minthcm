@@ -2,102 +2,115 @@
     <div
         :class="{
             'mint-comments-message-container': true,
-            'mint-comments-message-reply': isReply,
-            'mint-comments-message-owner': isOwner,
+            'mint-comments-message-compact': props.compact,
         }"
     >
-        <div class="mint-comments-message-avatar">
-            <img
-                v-if="comment.assigned_user.photo"
-                :src="`legacy/index.php?entryPoint=download&type=Users&id=${comment.assigned_user.id}_photo`"
-            />
-            <v-icon v-else icon="mdi-account" />
-        </div>
-        <div class="mint-comments-message" @mouseover="isHovering = true" @mouseleave="isHovering = false">
-            <div class="mint-comments-message-header">
-                <div class="mint-comments-message-header-info">
-                    <span v-text="comment.assigned_user.name" />
-                    <span class="mint-comments-message-edited" v-if="comment.edited" v-text="'(komentarz edytowany)'" />
-                </div>
-                <span class="mint-comments-message-header-date">{{ dateCreated }}</span>
+        <div class="mint-comments-message-main-comment">
+            <div class="mint-comments-message-avatar" @click="openEmployeeDetailView(comment.assigned_user.id)">
+                <img
+                    v-if="comment.assigned_user.photo"
+                    :src="`legacy/index.php?entryPoint=download&type=Users&id=${comment.assigned_user.id}_photo`"
+                />
+                <v-icon v-else icon="mdi-account" />
             </div>
-            <MintWysiwyg v-if="isEditMode" v-model="commentContent">
-                <template #footer>
-                    <div class="d-flex justify-space-between">
-                        <MintButton variant="text" :text="'Anuluj'" @click="handleCancelEditClick" />
-                        <MintButton
-                            variant="primary"
-                            :text="'Zapisz'"
-                            :disabled="isSaveButtonDisabled"
-                            icon="mdi-check"
-                            @click="handleSaveClick"
-                        />
+            <div class="mint-comments-message">
+                <div class="mint-comments-message-body">
+                    <div class="mint-comments-message-header">
+                        <div class="mint-comments-message-header-info">
+                            <span
+                                class="mint-comments-message-user"
+                                v-text="comment.assigned_user.name"
+                                @click="openEmployeeDetailView(comment.assigned_user.id)"
+                            />
+                            <span
+                                class="mint-comments-message-edited"
+                                v-if="comment.edited && !comment.removed"
+                                v-text="`(${languages.label('LBL_MINT4_COMMENTS_EDITED')})`"
+                            />
+                        </div>
+                        <span class="mint-comments-message-header-date">{{ dateCreated }}</span>
                     </div>
-                </template>
-            </MintWysiwyg>
-            <div
-                v-else-if="props.comment.removed"
-                class="mint-comments-message-deleted"
-                v-text="'Komentarz usunięty'"
-            />
-            <div v-else class="mint-comments-message-content" v-html="comment.description" />
-            <div v-if="!isEditMode && !props.comment.removed" class="mint-comments-message-footer">
-                <div class="mint-comments-message-reactions">
-                    <MintReactions v-if="comment.reactions?.length" :reactions="comment.reactions" />
-                    <v-menu location="top" offset="8">
-                        <template v-slot:activator="{ props, isActive }">
-                            <v-fade-transition>
+                    <MintCommentsEditor v-if="isEditMode" mode="edit" :comment="comment" @close="isEditMode = false" />
+                    <div
+                        v-else-if="props.comment.removed"
+                        class="mint-comments-message-deleted"
+                        v-text="commentRemovedDescription"
+                    />
+                    <div v-else class="mint-comments-message-content" v-html="comment.description" />
+                </div>
+                <div v-if="!isEditMode && !props.comment.removed" class="mint-comments-message-actions">
+                    <div class="mint-comments-message-reactions">
+                        <MintReactions v-if="comment.reactions?.length" :reactions="comment.reactions" />
+                        <v-menu location="top" offset="8">
+                            <template v-slot:activator="{ props, isActive }">
                                 <MintButton
-                                    v-if="isHovering || isActive"
                                     size="small"
                                     v-bind="props"
-                                    icon="mdi-heart-plus"
-                                    variant="nav"
+                                    variant="text"
+                                    :text="languages.label('LBL_MINT4_COMMENTS_REACT_BTN')"
                                     :active="isActive"
                                 />
-                            </v-fade-transition>
-                        </template>
-                        <MintReactionsActions
-                            :active-reaction-type="currentUserReactionType"
-                            @react="handleReactAction"
-                            @delete-reaction="store.deleteCommentReaction(props.comment.id)"
-                        />
-                    </v-menu>
-                </div>
-                <div class="d-flex">
-                    <v-fade-transition>
+                            </template>
+                            <MintReactionsActions
+                                :active-reaction-type="currentUserReactionType"
+                                @react="handleReactAction"
+                                @delete-reaction="store.deleteCommentReaction(props.comment.id)"
+                            />
+                        </v-menu>
+                    </div>
+                    <div class="d-flex">
                         <MintButton
-                            v-if="!isReply && isHovering"
-                            variant="nav"
+                            v-if="!isExpanded && replies.length"
+                            variant="text"
+                            :text="`${languages.label('LBL_MINT4_COMMENTS_EXPAND_BTN')} (${nestedCommentsCount})`"
+                            size="small"
+                            @click="isExpanded = true"
+                        />
+                        <MintButton
+                            v-else-if="store.access.add"
+                            variant="text"
+                            :text="languages.label('LBL_MINT4_COMMENTS_REPLY_BTN')"
                             icon="mdi-reply"
                             size="small"
-                            @click="emit('toggle-expand')"
+                            @click="isReplyMode = true"
                         />
-                    </v-fade-transition>
-                    <v-menu>
-                        <template v-slot:activator="{ props, isActive }">
-                            <v-fade-transition>
+                        <v-menu>
+                            <template v-slot:activator="{ props, isActive }">
                                 <MintButton
-                                    v-if="isHovering || isActive"
+                                    v-if="commentMenuActions.length"
                                     v-bind="props"
                                     icon="mdi-dots-vertical"
                                     variant="nav"
                                     size="small"
                                     :active="isActive"
                                 />
-                            </v-fade-transition>
-                        </template>
-                        <MintMenuList :items="commentMenuActions" />
-                    </v-menu>
+                            </template>
+                            <MintMenuList :items="commentMenuActions" />
+                        </v-menu>
+                    </div>
                 </div>
             </div>
         </div>
+        <v-slide-y-transition>
+            <div
+                v-if="isExpanded && !props.comment.removed && (replies.length || isReplyMode)"
+                class="mint-comments-message-replies"
+            >
+                <MintCommentsMessage v-for="reply in replies" :key="reply.id" :comment="reply" compact />
+                <MintCommentsEditor
+                    v-if="isReplyMode && !props.comment.removed"
+                    mode="reply"
+                    :comment="props.comment"
+                    @close="isReplyMode = false"
+                />
+            </div>
+        </v-slide-y-transition>
     </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import he from 'he'
+import { useRouter } from 'vue-router'
 import { MintComment } from './MintCommentsStore'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
@@ -106,28 +119,43 @@ import MintReactionsActions from '@/components/MintReactions/MintReactionsAction
 import { DateTime } from 'luxon'
 import { useMintCommentsStore } from './MintCommentsStore'
 import { useAuthStore } from '@/store/auth'
-import MintWysiwyg from '../MintWysiwyg.vue'
+import MintCommentsEditor from './MintCommentsEditor.vue'
+import { useLanguagesStore } from '@/store/languages'
 
 interface Props {
     comment: MintComment
     pinned?: boolean
+    compact?: boolean
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits(['toggle-expand'])
+const router = useRouter()
 
 const store = useMintCommentsStore()
 const auth = useAuthStore()
+const languages = useLanguagesStore()
 
-const isHovering = ref(false)
+const isExpanded = ref(!props.pinned)
 const isEditMode = ref(false)
-const commentContent = ref(props.comment.description)
 
-const isReply = computed(() => props.comment.reply_to_id)
-const isOwner = computed(() => props.comment.assigned_user.id === auth.user?.id)
+const isReplyMode = ref(false)
 
-const isSaveButtonDisabled = computed(() => {
-    return !commentContent.value || commentContent.value === props.comment.description
+const replies = computed<MintComment[]>(() => {
+    return store.comments.filter((comment) => comment.reply_to_id === props.comment.id)
+})
+
+const nestedCommentsCount = computed(() => {
+    let count = 0
+    function calculate(comment: MintComment) {
+        const replies = store.comments.filter((c) => c.reply_to_id === comment.id)
+        if (!replies.length) {
+            return
+        }
+        count += replies.length
+        replies.forEach((reply) => calculate(reply))
+    }
+    calculate(props.comment)
+    return count
 })
 
 const dateCreated = computed(() => {
@@ -145,104 +173,165 @@ function handleReactAction(type: string) {
     }
 }
 
+const commentRemovedDescription = computed(() => {
+    if (!nestedCommentsCount.value) {
+        return languages.label('LBL_MINT4_COMMENTS_REMOVED')
+    }
+    if (nestedCommentsCount.value === 1) {
+        return languages.label('LBL_MINT4_COMMENTS_REMOVED_WITH_REPLIES_SINGULAR')
+    }
+    return languages
+        .label('LBL_MINT4_COMMENTS_REMOVED_WITH_REPLIES_PLURAL')
+        .replace('{x}', nestedCommentsCount.value.toString())
+})
+
 const commentMenuActions = computed<MenuListItem[]>(() => {
     const actions: MenuListItem[] = []
     if (auth.user?.id === props.comment.assigned_user.id && !props.comment.removed) {
         actions.push({
-            title: 'Edytuj',
+            title: languages.label('LBL_MINT4_COMMENTS_ACTION_EDIT'),
             icon: 'pencil',
             onClick: () => {
                 isEditMode.value = true
             },
         })
         actions.push({
-            title: 'Usuń',
+            title: languages.label('LBL_MINT4_COMMENTS_ACTION_REMOVE'),
             icon: 'delete',
             onClick: () => {
                 store.deleteComment(props.comment.id)
             },
         })
     }
-    actions.push({
-        title: 'Cytuj',
-        icon: 'format-quote-close',
-        onClick: () => {
-            return
-        },
-    })
-    if (props.comment.pinned && props.pinned) {
-        actions.push({
-            title: 'Odepnij',
-            icon: 'pin-off',
-            onClick: () => store.unpinComment(props.comment.id),
-        })
-    } else if (!props.comment.pinned && !props.pinned) {
-        actions.push({
-            title: 'Przypnij',
-            icon: 'pin',
-            onClick: () => store.pinComment(props.comment.id),
-        })
+    if (!props.comment.reply_to_id && store.access.pin) {
+        if (props.comment.pinned && props.pinned) {
+            actions.push({
+                title: languages.label('LBL_MINT4_COMMENTS_ACTION_UNPIN'),
+                icon: 'pin-off',
+                onClick: () => store.unpinComment(props.comment.id),
+            })
+        } else if (!props.comment.pinned && !props.pinned) {
+            actions.push({
+                title: languages.label('LBL_MINT4_COMMENTS_ACTION_PIN'),
+                icon: 'pin',
+                onClick: () => store.pinComment(props.comment.id),
+            })
+        }
     }
     return actions
 })
 
-function handleCancelEditClick() {
-    commentContent.value = props.comment.description
-    isEditMode.value = false
-}
-
-async function handleSaveClick() {
-    if (commentContent.value) {
-        isEditMode.value = false
-        await store.editCommentDescription(props.comment.id, commentContent.value)
-        store.fetchComments()
-    }
+function openEmployeeDetailView(userId: string) {
+    const userUrl = router.resolve({
+        name: 'module-view',
+        params: {
+            module: 'Employees',
+            action: 'DetailView',
+            record: userId,
+        },
+    })
+    window.open(userUrl.href, '_blank')
 }
 </script>
+<style lang="scss">
+.mint-comments-message-content {
+    all: revert;
+    *:not(table, tr, td) {
+        all: revert;
+    }
+    > :first-child {
+        margin-top: 16px;
+    }
+    > :last-child {
+        margin-bottom: 16px;
+    }
+    blockquote {
+        border-left: thin solid rgb(var(--v-theme-primary));
+        padding-left: 1em;
+        margin-left: 1em;
+        margin-right: 1em;
+        background: rgba(0, 0, 0, 0.04);
+    }
+}
+
+// recursive 2 levels of deepness
+.mint-comments-threads {
+    > .mint-comments-message-container {
+        > .mint-comments-message-replies {
+            padding-left: 64px;
+            > .mint-comments-message-container {
+                > .mint-comments-message-replies {
+                    padding-left: 48px;
+                }
+            }
+        }
+    }
+}
+</style>
 
 <style scoped lang="scss">
 .mint-comments-message-container {
     display: flex;
+    flex-direction: column;
     gap: 16px;
-    width: 100%;
-    margin-left: auto;
+    .mint-comments-message-main-comment {
+        display: flex;
+        gap: 16px;
+        width: 100%;
+    }
+
+    .mint-comments-message-replies {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+}
+
+.mint-comments-message-compact {
+    .mint-comments-message-avatar {
+        > * {
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+        }
+    }
 }
 
 .mint-comments-message-avatar {
     display: flex;
-    margin-top: 16px;
-
+    height: fit-content;
+    cursor: pointer;
     > * {
         font-size: 32px;
-        background: white;
+        background: #eee;
+        color: #444;
         width: 48px;
         height: 48px;
         object-fit: cover;
         border-radius: 50%;
-        // width: 64px;
-        // height: 64px;
-        // border: 2px solid rgb(var(--v-theme-primary));
-        // box-shadow: 1px 1px 6px #0003;
     }
 }
 
 .mint-comments-message {
-    background: rgb(var(--v-theme-primary-lighter));
     width: 100%;
-    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mint-comments-message-body {
+    background: rgb(var(--v-theme-primary-lighter));
     border-radius: 16px;
     padding: 8px 12px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    // border: 2px solid rgb(var(--v-theme-primary));
-    // box-shadow: 1px 1px 8px #0002;
 
     .mint-comments-message-deleted {
         font-style: italic;
         color: #0008;
         letter-spacing: 0.43px;
         font-size: 0.9em;
+        margin: 16px 0px;
     }
 
     .mint-comments-message-content {
@@ -258,9 +347,14 @@ async function handleSaveClick() {
         letter-spacing: 0.43px;
 
         .mint-comments-message-header-info {
+            color: rgb(var(--v-theme-secondary));
             display: flex;
             align-items: center;
             gap: 8px;
+
+            .mint-comments-message-user {
+                cursor: pointer;
+            }
 
             .mint-comments-message-edited {
                 font-style: italic;
@@ -269,24 +363,26 @@ async function handleSaveClick() {
                 font-size: 11px;
                 font-weight: 400;
             }
+        }
 
-            .mint-comments-message-header-date {
-                font-size: 12px;
-                letter-spacing: 0.4px;
-            }
+        .mint-comments-message-header-date {
+            font-size: 12px;
+            letter-spacing: 0.4px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.6);
         }
     }
+}
 
-    .mint-comments-message-footer {
+.mint-comments-message-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 8px;
+
+    .mint-comments-message-reactions {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        min-height: 26px;
-
-        .mint-comments-message-reactions {
-            display: flex;
-            gap: 8px;
-        }
+        gap: 8px;
     }
 }
 </style>

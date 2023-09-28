@@ -1,62 +1,49 @@
 <template>
     <div class="mint-comments">
         <v-fade-transition>
-            <div v-if="store.isLoading" class="mint-comments-overlay">
+            <div
+                v-if="store.isLoading || store.isInitialLoading"
+                :class="{
+                    'mint-comments-overlay': true,
+                    'mint-comments-overlay-initial': store.isInitialLoading,
+                }"
+            >
                 <v-progress-circular size="100" width="7" color="primary" indeterminate />
             </div>
         </v-fade-transition>
-        <h1 class="mb-4">Przypięte komentarze</h1>
+        <template v-if="store.pinnedThreads?.length">
+            <h1 class="mb-4">{{ languages.label('LBL_MINT4_COMMENTS_PINNED_TITLE') }}</h1>
+            <div class="mint-comments-threads">
+                <MintCommentsMessage v-for="thread in store.pinnedThreads" :key="thread.id" :comment="thread" pinned />
+            </div>
+        </template>
+        <h1 class="mb-4">{{ languages.label('LBL_MINT4_COMMENTS_TITLE') }}</h1>
         <div class="mint-comments-threads">
-            <MintCommentsThread v-for="thread in store.pinnedThreads" :key="thread.id" :thread="thread" pinned />
+            <MintCommentsMessage v-for="thread in store.threads" :key="thread.id" :comment="thread" />
         </div>
-        <h1 class="mb-4">Komentarze</h1>
-        <div class="mint-comments-threads">
-            <MintCommentsThread v-for="thread in store.threads" :key="thread.id" :thread="thread" />
-        </div>
-        <MintWysiwyg v-model="newCommentDescription">
-            <template #footer>
-                <MintButton
-                    class="ms-auto"
-                    variant="primary"
-                    :text="'Dodaj komentarz'"
-                    :disabled="!newCommentDescription"
-                    icon="mdi-send"
-                    @click="handleAddCommentClick"
-                />
-            </template>
-        </MintWysiwyg>
+        <MintCommentsEditor v-if="store.access.add" mode="new" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import MintCommentsThread from './MintCommentsThread.vue'
-import MintWysiwyg from '@/components/MintWysiwyg.vue'
-import MintButton from '@/components/MintButtons/MintButton.vue'
+import MintCommentsMessage from './MintCommentsMessage.vue'
 import { useMintCommentsStore } from './MintCommentsStore'
+import MintCommentsEditor from './MintCommentsEditor.vue'
+import { useLanguagesStore } from '@/store/languages'
+
+const languages = useLanguagesStore()
 
 const store = useMintCommentsStore()
-const newCommentDescription = ref('')
-
-onMounted(() => {
-    store.fetchInitialData()
-})
-
-async function handleAddCommentClick() {
-    if (newCommentDescription.value) {
-        await store.addComment(newCommentDescription.value)
-        newCommentDescription.value = ''
-        store.fetchComments()
-    }
-}
+store.fetchInitialData()
 </script>
 
 <style scoped lang="scss">
 .mint-comments {
+    font-family: Barlow;
     position: relative;
     padding: 32px;
-    min-width: 720px;
-    max-width: 720px;
+    min-width: 740px;
+    max-width: 740px;
     display: flex;
     flex-direction: column;
     gap: 48px;
@@ -73,6 +60,10 @@ async function handleAddCommentClick() {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &.mint-comments-overlay-initial {
+        background: #fff;
+    }
 }
 
 .mint-comments-threads {
