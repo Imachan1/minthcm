@@ -64,12 +64,6 @@ class Comment
      */
     public $pinned = false;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="users")
-     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-     */
-    public $assigned_user = null;
-
     public function __construct()
     {
         $this->date_entered = new \DateTime();
