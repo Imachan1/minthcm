@@ -40,4 +40,7 @@ $mod_strings = array(
     "LBL_REPLIES" => "Replies",
     "LBL_NEWS" => "News",
     "LBL_LIST_RELATED_TO_ID" => "Related To (ID)",
+    "LBL_PINNED" => "Pinned",
+    "LBL_REMOVED" => "Removed",
+    "LBL_EDITED" => "Edited",
 );

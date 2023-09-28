@@ -4353,8 +4353,11 @@ $app_list_strings['parent_type_display_reactions'] = array(
 );
 
 $app_list_strings['reaction_type_list'] = array(
-   'like' => 'Like',
-   'dislike' => 'Dislike',
+   'like' => '👍',
+   'love' => '❤️',
+   'party' => '🥳',
+   'laugh' => '😆',
+   'wow' => '😲',
 );
 
 $app_list_strings['reaction_icons_list'] = array(
@@ -4585,6 +4588,27 @@ $app_strings['LBL_MINT4_BACK'] = 'Back';
 $app_strings['LBL_MINT4_NEXT'] = 'Next';
 $app_strings['LBL_MINT4_FINISH'] = 'Finish';
 $app_strings['LBL_MINT4_ERROR_REQUIRED_FIELD'] = 'The field is required';
+
+// Comments
+$app_strings['LBL_MINT4_COMMENTS_TITLE'] = 'Comments';
+$app_strings['LBL_MINT4_COMMENTS_PINNED_TITLE'] = 'Pinned Comments';
+$app_strings['LBL_MINT4_COMMENTS_ADD_COMMENT_BTN'] = 'Add comment';
+$app_strings['LBL_MINT4_COMMENTS_REPLY_BTN'] = 'Reply';
+$app_strings['LBL_MINT4_COMMENTS_CANCEL_BTN'] = 'Cancel';
+$app_strings['LBL_MINT4_COMMENTS_SAVE_BTN'] = 'Save';
+$app_strings['LBL_MINT4_COMMENTS_QUOTE_BTN'] = 'Quote';
+$app_strings['LBL_MINT4_COMMENTS_REACT_BTN'] = 'Like';
+$app_strings['LBL_MINT4_COMMENTS_QUOTE_SUFFIX'] = 'wrote';
+$app_strings['LBL_MINT4_COMMENTS_EDITED'] = 'Comment edited';
+$app_strings['LBL_MINT4_COMMENTS_EXPAND_BTN'] = 'Show replies';
+$app_strings['LBL_MINT4_COMMENTS_REMOVED'] = 'Comment deleted';
+$app_strings['LBL_MINT4_COMMENTS_REMOVED_WITH_REPLIES_SINGULAR'] = 'Comment and 1 reply deleted';
+$app_strings['LBL_MINT4_COMMENTS_REMOVED_WITH_REPLIES_PLURAL'] = 'Comment and {x} replies deleted';
+$app_strings['LBL_MINT4_COMMENTS_ACTION_EDIT'] = 'Edit';
+$app_strings['LBL_MINT4_COMMENTS_ACTION_REMOVE'] = 'Delete';
+$app_strings['LBL_MINT4_COMMENTS_ACTION_PIN'] = 'Pin';
+$app_strings['LBL_MINT4_COMMENTS_ACTION_UNPIN'] = 'Unpin';
+$app_strings['LBL_MINT4_COMMENTS_USERS_HINT_NOT_FOUND'] = 'No users found';
 
 $app_strings['ERR_WORKPLACE_REQUIRED_IF_ASSIGNED_TO_USER'] = 'Workplace is required if user has at least one workplace assigned!';
 

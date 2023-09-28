@@ -10,6 +10,9 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
+    if (to.meta?.entryPoint) {
+        return
+    }
     const backend = useBackendStore()
     const auth = useAuthStore()
     if (!backend.isInit) {
