@@ -2,6 +2,7 @@
 
 namespace MintHCM\MintCLI\Installer;
 
+use MintHCM\MintCLI\Services\ConfigOverrideService;
 use MintHCM\MintCLI\Services\HtaccessService;
 use MintHCM\MintCLI\Services\ServerService;
 
@@ -15,12 +16,14 @@ class Installer
     protected $rootDirectory;
     protected $serverService;
     protected $htaccessService;
+    protected $configOverrideService;
 
     public function __construct($rootDirectory)
     {
         $this->rootDirectory = $rootDirectory;
         $this->serverService = new ServerService();
         $this->htaccessService = new HtaccessService();
+        $this->configOverrideService = new ConfigOverrideService();
     }
 
     public function prepareConfigurationFile($userData)
@@ -33,6 +36,10 @@ class Installer
             '_DB_PORT_' => $userData['databasePort'],
             '_DB_USER_' => $userData['databaseUsername'],
             '_DB_PASSWORD_' => $userData['databasePassword'],
+            '_ES_HOST_' => $userData['elasticsearchHost'],
+            '_ES_PORT_' => $userData['elasticsearchPort'],
+            '_ES_USERNAME_' => $userData['elasticsearchUsername'],
+            '_ES_PASSWORD_' => $userData['elasticsearchPassword'],
             '_DB_NAME_' => $userData['databaseName'],
             '_DB_COLLATION_' => $userData['databaseCollation'],
             '_INSTALL_DD_' => $userData['demoData'] ? 'yes' : 'no',
@@ -118,23 +125,29 @@ class Installer
         file_put_contents('./api/app/Config/AppConfig.php', $configFile);
     }
 
-    public function setupDoctrineConfig(array $userData)
+    public function setupApiConfigOverride(array $userData)
     {
-        $config_file = "./api/configs/mint/config_override.php";
-        $mapping = [
-            'host' => $userData['databaseHost'],
-            'port' => $userData['databasePort'],
-            'user' => $userData['databaseUsername'],
-            'password' => $userData['databasePassword'],
-            'dbname' => $userData['databaseName'],
-        ];
-
-        $final_config = file_exists($config_file)
-            ? file_get_contents($config_file) . "\n"
-            : "<?php\n\n";
-        foreach ($mapping as $key => $value) {
-            $final_config .= "\$mint_config['database']['$key'] = '$value';\n";
-        }
-        file_put_contents($config_file, $final_config);
+        $this->configOverrideService->writeConfigOverride('./api/configs/mint/config_override.php', [
+            'database' => [
+                'host' => $userData['databaseHost'],
+                'port' => $userData['databasePort'],
+                'user' => $userData['databaseUsername'],
+                'password' => $userData['databasePassword'],
+                'dbname' => $userData['databaseName'],
+            ],
+            'search' => [
+                'engines' => [
+                    'ElasticSearch' => [
+                        [
+                            'host' => $userData['elasticsearchHost'],
+                            'port' => $userData['elasticsearchPort'],
+                            'user' => $userData['elasticsearchUsername'],
+                            'pass' => $userData['elasticsearchPassword'],
+                        ]
+                    ]
+                ],
+            ],
+        ]);
     }
+
 }

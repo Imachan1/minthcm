@@ -44,5 +44,9 @@ $sugar_config_si = array(
       'ssl' => false,
       'collation' => '_DB_COLLATION_',
    ),
+    'setup_es_host' => '_ES_HOST_',
+    'setup_es_port' => '_ES_PORT_',
+    'setup_es_username' => '_ES_USERNAME_',
+    'setup_es_password' => '_ES_PASSWORD_',
 );
 ?>
