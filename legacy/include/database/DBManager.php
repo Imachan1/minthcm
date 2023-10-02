@@ -2271,7 +2271,6 @@ abstract class DBManager
                     }
                 // MintHCM #119576 END
 
-                    */
                     if ($val === '') {
                         return "NULL";
                     }
