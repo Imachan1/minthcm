@@ -14,7 +14,7 @@
                 <v-icon v-else icon="mdi-account" />
             </div>
             <div class="mint-comments-message">
-                <div class="mint-comments-message-body">
+                <div class="mint-comments-message-body" ref="commentBodyContainer">
                     <div class="mint-comments-message-header">
                         <div class="mint-comments-message-header-info">
                             <span
@@ -36,7 +36,7 @@
                         class="mint-comments-message-deleted"
                         v-text="commentRemovedDescription"
                     />
-                    <div v-else class="mint-comments-message-content" v-html="comment.description" />
+                    <div v-else class="mint-comments-message-content" v-html="contentHtml" />
                 </div>
                 <div v-if="!isEditMode && !props.comment.removed" class="mint-comments-message-actions">
                     <div class="mint-comments-message-reactions">
@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { MintComment } from './MintCommentsStore'
 import MintButton from '@/components/MintButtons/MintButton.vue'
@@ -140,6 +140,19 @@ const isEditMode = ref(false)
 
 const isReplyMode = ref(false)
 
+const commentBodyContainer = ref<HTMLDivElement | null>(null)
+
+onMounted(() => {
+    if (commentBodyContainer.value) {
+        commentBodyContainer.value.addEventListener('click', (e) => {
+            const userId = (e.target as HTMLElement).dataset.userId
+            if (userId) {
+                openEmployeeDetailView(userId)
+            }
+        })
+    }
+})
+
 const replies = computed<MintComment[]>(() => {
     return store.comments.filter((comment) => comment.reply_to_id === props.comment.id)
 })
@@ -156,6 +169,25 @@ const nestedCommentsCount = computed(() => {
     }
     calculate(props.comment)
     return count
+})
+
+const contentHtml = computed(() => {
+    let content = props.comment.description
+    const matchedUsers = Array.from(content.matchAll(/(\W|^)@(\w*)/g))
+    matchedUsers.forEach((match) => {
+        const username = match[2]
+        const user = store.users.find((user) => user.user_name === username)
+        if (!user) {
+            return
+        }
+        const regex = new RegExp(`(?<=\\W|^)(@${username})(?=\\W)`, 'g')
+        let className = 'mint-comments-message-content-user-highlight'
+        if (user.id === auth.user?.id) {
+            className += ' mint-comments-message-content-user-highlight-owner'
+        }
+        content = content.replace(regex, `<span class="${className}" data-user-id="${user.id}">${user.name}</span>`)
+    })
+    return content
 })
 
 const dateCreated = computed(() => {
@@ -187,7 +219,7 @@ const commentRemovedDescription = computed(() => {
 
 const commentMenuActions = computed<MenuListItem[]>(() => {
     const actions: MenuListItem[] = []
-    if (auth.user?.id === props.comment.assigned_user.id && !props.comment.removed) {
+    if (auth.user?.is_admin || (auth.user?.id === props.comment.assigned_user.id && !props.comment.removed)) {
         actions.push({
             title: languages.label('LBL_MINT4_COMMENTS_ACTION_EDIT'),
             icon: 'pencil',
@@ -251,6 +283,18 @@ function openEmployeeDetailView(userId: string) {
         margin-left: 1em;
         margin-right: 1em;
         background: rgba(0, 0, 0, 0.04);
+    }
+    .mint-comments-message-content-user-highlight {
+        cursor: pointer;
+        font-weight: 600 !important;
+        color: rgb(var(--v-theme-primary)) !important;
+        background: rgba(var(--v-theme-primary-light), 1) !important;
+        border-radius: 4px !important;
+        padding: 2px 4px !important;
+        &.mint-comments-message-content-user-highlight-owner {
+            color: rgb(var(--v-theme-primary-lighter)) !important;
+            background: rgb(var(--v-theme-primary)) !important;
+        }
     }
 }
 

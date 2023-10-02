@@ -11,7 +11,7 @@ interface InitialResponse {
     languages: Languages
     access: MintCommentsAccess
     comments: MintComment[]
-    users: User[]
+    users: MintCommentUser[]
 }
 
 interface MintCommentsAccess {
@@ -23,6 +23,8 @@ interface MintCommentUser {
     id: string
     name: string
     photo: string | null
+    user_name: string
+    status: string
 }
 
 export interface MintComment {
@@ -43,7 +45,7 @@ export const useMintCommentsStore = defineStore('mint-comments', () => {
     const isInitialLoading = ref(true)
     const isLoading = ref(false)
     const comments = ref<MintComment[]>([])
-    const users = ref<User[]>([])
+    const users = ref<MintCommentUser[]>([])
     const access = ref<MintCommentsAccess>({
         pin: false,
         add: false,

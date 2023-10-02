@@ -19,6 +19,10 @@
         </template>
         <h1 class="mb-4">{{ languages.label('LBL_MINT4_COMMENTS_TITLE') }}</h1>
         <div class="mint-comments-threads">
+            <div
+                v-if="!store.access.add && !store.threads?.length"
+                v-text="languages.label('LBL_MINT4_COMMENTS_NO_COMMENTS')"
+            />
             <MintCommentsMessage v-for="thread in store.threads" :key="thread.id" :comment="thread" />
         </div>
         <MintCommentsEditor v-if="store.access.add" mode="new" />

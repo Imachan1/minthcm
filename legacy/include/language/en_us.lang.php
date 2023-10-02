@@ -4609,6 +4609,7 @@ $app_strings['LBL_MINT4_COMMENTS_ACTION_REMOVE'] = 'Delete';
 $app_strings['LBL_MINT4_COMMENTS_ACTION_PIN'] = 'Pin';
 $app_strings['LBL_MINT4_COMMENTS_ACTION_UNPIN'] = 'Unpin';
 $app_strings['LBL_MINT4_COMMENTS_USERS_HINT_NOT_FOUND'] = 'No users found';
+$app_strings['LBL_MINT4_COMMENTS_NO_COMMENTS'] = 'There are no comments';
 
 $app_strings['ERR_WORKPLACE_REQUIRED_IF_ASSIGNED_TO_USER'] = 'Workplace is required if user has at least one workplace assigned!';
 
