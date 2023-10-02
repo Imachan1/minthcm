@@ -7,7 +7,7 @@
         <v-form class="login-form" @submit.prevent="handleSubmit">
             <v-text-field
                 class="login-input"
-                v-model="authViewStore.username"
+                v-model.trim="authViewStore.username"
                 color="primary"
                 name="username"
                 base-color="#00000099"
@@ -19,7 +19,7 @@
             />
             <v-text-field
                 class="login-input"
-                v-model="password"
+                v-model.trim="password"
                 :type="showPassword ? 'text' : 'password'"
                 name="password"
                 color="primary"
