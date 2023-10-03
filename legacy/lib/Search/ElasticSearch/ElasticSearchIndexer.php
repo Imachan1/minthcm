@@ -287,6 +287,7 @@ class ElasticSearchIndexer extends AbstractIndexer {
       $args = $this->makeIndexParamsFromBean($bean);
       $this->fillAllNestedPropertyValues($bean, $args['body']);
 
+      $this->removeErrorProneFields($bean->module_name, $args['body']);
       $this->client->index($args);
       $this->setBeanInstantIndexingDate($bean);
    }
@@ -343,6 +344,17 @@ class ElasticSearchIndexer extends AbstractIndexer {
          SET date_indexed = '{$now_datetime}'
          WHERE id IN ($ids)
       ");
+   }
+
+   protected function removeErrorProneFields(string $module_name, array &$body)
+   {
+      $mapping = [
+         'FP_Event_Locations' => ['address', 'address_city', 'address_country', 'address_postalcode', 'address_state'],
+      ];
+
+      foreach ($mapping[$module_name] ?? [] as $key) {
+         unset($body[$key]);
+      }
    }
 
    /** @inheritdoc */
@@ -445,12 +457,7 @@ class ElasticSearchIndexer extends AbstractIndexer {
             // TODO: optimize with single load from db before foreach
             $this->fillAllNestedPropertyValues($bean, $body);
 
-            if ($module === 'FP_Event_Locations') {
-                foreach (['address', 'address_city', 'address_country', 'address_postalcode', 'address_state'] as $field) {
-                    unset($body[$field]);
-                }
-            }
-
+            $this->removeErrorProneFields($module, $body);
             $params['body'][] = [ 'index' => $head ];
             $params['body'][] = $body;
             $this->indexedRecordsCount++;
