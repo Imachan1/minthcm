@@ -302,7 +302,19 @@ class ElasticSearchIndexer extends AbstractIndexer {
       }
       // MintHCM #121632 END
 
+      $this->removeErrorProneFields($bean->module_name, $args['body']);
       $this->client->index($args);
+   }
+
+   protected function removeErrorProneFields(string $module_name, array &$body)
+   {
+      $mapping = [
+         'FP_Event_Locations' => ['address', 'address_city', 'address_country', 'address_postalcode', 'address_state'],
+      ];
+
+      foreach ($mapping[$module_name] ?? [] as $key) {
+         unset($body[$key]);
+      }
    }
 
    /** @inheritdoc */
@@ -452,12 +464,7 @@ class ElasticSearchIndexer extends AbstractIndexer {
             }
             // MintHCM #121632 END
 
-            if ($module === 'FP_Event_Locations') {
-                foreach (['address', 'address_city', 'address_country', 'address_postalcode', 'address_state'] as $field) {
-                    unset($body[$field]);
-                }
-            }
-
+            $this->removeErrorProneFields($module, $body);
             $params['body'][] = [ 'index' => $head ];
             $params['body'][] = $body;
             $this->indexedRecordsCount++;
