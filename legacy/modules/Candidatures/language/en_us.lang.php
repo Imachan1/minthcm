@@ -167,5 +167,4 @@ $mod_strings = array(
     'LBL_INFO' => 'Select one of the following options:',
     'LNK_ES_CANDIDATURES_LIST' => 'View ES Candidatures',
     'LBL_FILES' => 'Files',
-    'LBL_REFERRER' => 'Referrer',
 );

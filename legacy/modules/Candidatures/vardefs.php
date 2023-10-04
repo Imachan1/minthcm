@@ -825,16 +825,6 @@ $dictionary['Candidatures'] = array(
             'vname' => 'LBL_FILES',
             'label' => 'LBL_FILES',
         ),
-        'referrer' => array(
-            'name' => 'referrer',
-            'vname' => 'LBL_REFERRER',
-            'label' => 'LBL_REFERRER',
-            'type' => 'varchar',
-            'dbType' => 'varchar',
-            'importable' => 'true',
-            'reportable' => true,
-            'audited' => true,
-        ),
     ),
     'relationships' => array(
         'candidate_candidatures' => array(
