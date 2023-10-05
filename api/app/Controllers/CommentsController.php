@@ -133,7 +133,6 @@ class CommentsController
         }
         foreach ($attributes as $field => $value) {
             if (isset($comment->field_defs[$field]) && $field !== 'id') {
-                //TODO: field edit access (pinned/edited/removed) ?
                 $comment->$field = $value;
             }
         }

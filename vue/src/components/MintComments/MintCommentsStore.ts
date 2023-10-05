@@ -32,7 +32,7 @@ export interface MintComment {
     description: string
     pinned: boolean
     removed: boolean
-    edited: boolean
+    date_edited: string
     assigned_user: MintCommentUser
     reply_to_id: string
     date_entered: string
@@ -127,11 +127,7 @@ export const useMintCommentsStore = defineStore('mint-comments', () => {
             return
         }
         comment.description = description
-        comment.edited = true
-        await updateComment(id, {
-            description,
-            edited: true,
-        })
+        await updateComment(id, { description })
     }
 
     async function deleteComment(id: string) {

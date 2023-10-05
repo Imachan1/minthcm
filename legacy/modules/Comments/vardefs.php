@@ -109,11 +109,11 @@ $dictionary['Comments'] = array(
             'audited' => true,
             'importable' => 'false',
         ),
-        'edited' => array(
-            'name' => 'edited',
-            'vname' => 'LBL_EDITED',
-            'label' => 'LBL_EDITED',
-            'type' => 'bool',
+        'date_edited' => array(
+            'name' => 'date_edited',
+            'vname' => 'LBL_DATE_EDITED',
+            'label' => 'LBL_DATE_EDITED',
+            'type' => 'datetime',
             'reportable' => false,
             'audited' => false,
             'importable' => 'false',

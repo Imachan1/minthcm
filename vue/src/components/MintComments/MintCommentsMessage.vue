@@ -24,8 +24,8 @@
                             />
                             <span
                                 class="mint-comments-message-edited"
-                                v-if="comment.edited && !comment.removed"
-                                v-text="`(${languages.label('LBL_MINT4_COMMENTS_EDITED')})`"
+                                v-if="comment.date_edited && !comment.removed"
+                                v-text="`(${languages.label('LBL_MINT4_COMMENTS_EDITED')} ${dateEdited})`"
                             />
                         </div>
                         <span class="mint-comments-message-header-date">{{ dateCreated }}</span>
@@ -251,6 +251,14 @@ const commentMenuActions = computed<MenuListItem[]>(() => {
         }
     }
     return actions
+})
+
+const dateEdited = computed(() => {
+    if (!props.comment.date_edited) {
+        return ''
+    }
+    const dt = DateTime.fromSQL(props.comment.date_edited, { zone: 'UTC' })
+    return dt.toLocal().toFormat('dd.MM.yyyy HH:mm')
 })
 
 function openEmployeeDetailView(userId: string) {
