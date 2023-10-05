@@ -514,7 +514,8 @@ class CalendarDisplay {
       global $cal_strings, $image_path;
       $str = "";
       if ( $_REQUEST['module'] == "Calendar" ) {
-         $str .= "<a href='" . ajaxLink("index.php?action=index&module=Calendar&view=" . $this->cal->view . "&" . $this->cal->get_neighbor_date_str("next")) . "'>";
+         $link = ajaxlink("index.php?action=index&module=Calendar&view=" . $this->cal->view . "&" . $this->cal->get_neighbor_date_str("next"));
+         $str .= "<a href='#' onclick='window.location = \"$link\"'>";
       } else {
          $str .= "<a href='#' onclick='return SUGAR.mySugar.retrieveDashlet(\"" . $this->dashlet_id . "\", \"index.php?module=Home&action=DynamicAction&DynamicAction=displayDashlet&sugar_body_only=1&" . $this->cal->get_neighbor_date_str("next") . "&id=" . $this->dashlet_id . "\")'>";
       }
@@ -531,7 +532,8 @@ class CalendarDisplay {
       global $cal_strings, $image_path;
       $str = "";
       if ( $_REQUEST['module'] == "Calendar" ) {
-         $str .= "<a href='" . ajaxLink("index.php?action=index&module=Calendar&view=" . $this->cal->view . "&" . $this->cal->get_neighbor_date_str("previous") . "") . "'>";
+         $link = ajaxLink("index.php?action=index&module=Calendar&view=" . $this->cal->view . "&" . $this->cal->get_neighbor_date_str("previous"));
+         $str .= "<a href='#' onclick='window.location = \"$link\"'>";
       } else {
          $str .= "<a href='#' onclick='return SUGAR.mySugar.retrieveDashlet(\"" . $this->dashlet_id . "\", \"index.php?module=Home&action=DynamicAction&DynamicAction=displayDashlet&sugar_body_only=1&" . $this->cal->get_neighbor_date_str("previous") . "&id=" . $this->dashlet_id . "\")'>";
       }
