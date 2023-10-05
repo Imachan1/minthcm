@@ -45,6 +45,7 @@ onMounted(() => {
         promotion: false,
         height: 250,
         plugins: 'table, lists',
+        toolbar_mode: 'wrap',
         toolbar:
             'fontselect | fontsizeselect | bold italic underline | forecolor backcolor | styleselect | outdent indent | numlist bullist | table',
         table_toolbar:

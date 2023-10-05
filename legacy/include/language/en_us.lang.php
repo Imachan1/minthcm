@@ -4590,7 +4590,7 @@ $app_strings['LBL_MINT4_FINISH'] = 'Finish';
 $app_strings['LBL_MINT4_ERROR_REQUIRED_FIELD'] = 'The field is required';
 
 // Comments
-$app_strings['LBL_MINT4_COMMENTS_TITLE'] = 'Comments';
+$app_strings['LBL_MINT4_COMMENTS_TITLE'] = 'All Comments';
 $app_strings['LBL_MINT4_COMMENTS_PINNED_TITLE'] = 'Pinned Comments';
 $app_strings['LBL_MINT4_COMMENTS_ADD_COMMENT_BTN'] = 'Add comment';
 $app_strings['LBL_MINT4_COMMENTS_REPLY_BTN'] = 'Reply';

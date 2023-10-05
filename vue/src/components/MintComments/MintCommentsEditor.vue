@@ -120,7 +120,7 @@ const wysiwyg = ref<InstanceType<typeof MintWysiwyg>>()
 const initialDescription = props.mode === 'edit' ? props.comment?.description ?? '' : ''
 const description = ref(initialDescription)
 const userQuery = ref<null | string>(null)
-const isPrimaryButtonDisabled = computed(() => !description.value || description.value === initialDescription)
+const isPrimaryButtonDisabled = computed(() => !description.value)
 
 async function addNewComment() {
     if (description.value) {

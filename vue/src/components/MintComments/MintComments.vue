@@ -12,19 +12,19 @@
             </div>
         </v-fade-transition>
         <template v-if="store.pinnedThreads?.length">
-            <h1 class="mb-4">{{ languages.label('LBL_MINT4_COMMENTS_PINNED_TITLE') }}</h1>
+            <h1 class="mb-2">{{ languages.label('LBL_MINT4_COMMENTS_PINNED_TITLE') }}</h1>
             <div class="mint-comments-threads">
                 <MintCommentsMessage v-for="thread in store.pinnedThreads" :key="thread.id" :comment="thread" pinned />
             </div>
         </template>
-        <h1 class="mb-4">{{ languages.label('LBL_MINT4_COMMENTS_TITLE') }}</h1>
-        <div class="mint-comments-threads">
-            <div
-                v-if="!store.access.add && !store.threads?.length"
-                v-text="languages.label('LBL_MINT4_COMMENTS_NO_COMMENTS')"
-            />
+        <h1 class="mb-2">{{ languages.label('LBL_MINT4_COMMENTS_TITLE') }}</h1>
+        <div v-if="store.threads?.length" class="mint-comments-threads">
             <MintCommentsMessage v-for="thread in store.threads" :key="thread.id" :comment="thread" />
         </div>
+        <div
+            v-if="!store.access.add && !store.threads?.length"
+            v-text="languages.label('LBL_MINT4_COMMENTS_NO_COMMENTS')"
+        />
         <MintCommentsEditor v-if="store.access.add" mode="new" />
     </div>
 </template>

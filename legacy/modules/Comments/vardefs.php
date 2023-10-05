@@ -106,7 +106,7 @@ $dictionary['Comments'] = array(
             'label' => 'LBL_REMOVED',
             'type' => 'bool',
             'reportable' => false,
-            'audited' => false,
+            'audited' => true,
             'importable' => 'false',
         ),
         'edited' => array(
