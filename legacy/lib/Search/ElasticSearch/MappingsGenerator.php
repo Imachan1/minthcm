@@ -31,6 +31,17 @@ class MappingsGenerator
         'primary_address_country' => 'address.primary.country',
         'phone_mobile' => '',
     ];
+
+    // From vardefs to elastic
+    protected $type_mapping = [
+        'date' => 'date',
+        'datetime' => 'date',
+        'datetimecombo' => 'date',
+        'bool' => 'boolean',
+        'text' => 'text',
+        'int' => 'integer',
+    ];
+
     protected $types = [
         'date' => [
             'type' => 'date',
@@ -50,6 +61,9 @@ class MappingsGenerator
         ],
         'long' => [
             'type' => 'long',
+        ],
+        'integer' => [
+            'type' => 'integer',
         ],
     ];
 
