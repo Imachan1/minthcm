@@ -175,6 +175,8 @@ class MappingsGenerator
             return $this->types['date'];
         } else if ('bool' == $field_def['type']) {
             return $this->types['boolean'];
+        } else if ('int' == $field_def['type']) {
+            return $this->types['integer'];
         } else {
             return $this->types['text'];
         }
