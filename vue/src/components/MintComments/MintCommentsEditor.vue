@@ -13,7 +13,12 @@
             <v-icon v-else icon="mdi-account" />
         </div>
         <div class="mint-comments-editor">
-            <MintWysiwyg v-model="description" :options="tinymceConfig" ref="wysiwyg">
+            <MintWysiwyg
+                v-model="description"
+                :options="tinymceConfig"
+                ref="wysiwyg"
+                @cursor-change="calculateUserQuery"
+            >
                 <template #footer>
                     <div class="mint-comments-editor-buttons">
                         <div class="mint-comments-editor-buttons-group">
@@ -61,19 +66,19 @@
                 </template>
             </MintWysiwyg>
         </div>
-        <!-- <v-slide-x-transition>
+        <v-slide-x-transition>
             <MintCommentsUsersHint
-                v-if="showUsersHint"
-                query=""
+                v-if="userQuery !== null"
+                :query="userQuery"
                 class="mint-comments-editor-users-hint"
-                @user-click="pasteUsername"
+                @user-click="insertUsername"
             />
-        </v-slide-x-transition> -->
+        </v-slide-x-transition>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import MintWysiwyg from '@/components/MintWysiwyg.vue'
 import { MintComment, useMintCommentsStore } from './MintCommentsStore'
@@ -113,13 +118,20 @@ const tinymceConfig: TinymceConfig = {
 const wysiwyg = ref<InstanceType<typeof MintWysiwyg>>()
 const initialDescription = props.mode === 'edit' ? props.comment?.description ?? '' : ''
 const description = ref(initialDescription)
-const showUsersHint = computed(() => description.value)
-const isPrimaryButtonDisabled = computed(() => !description.value || description.value === initialDescription)
+const userQuery = ref<null | string>(null)
+const isPrimaryButtonDisabled = computed(() => !description.value)
+
+onMounted(() => {
+    if (props.mode === 'reply' && wysiwyg.value?.tinymceEditor) {
+        wysiwyg.value.tinymceEditor?.focus()
+    }
+})
 
 async function addNewComment() {
     if (description.value) {
         await store.addComment(description.value)
         description.value = ''
+        userQuery.value = null
         store.fetchComments()
     }
 }
@@ -168,13 +180,56 @@ function openEmployeeDetailView() {
     window.open(userUrl.href, '_blank')
 }
 
-function pasteUsername(username: string) {
-    if (!wysiwyg.value) {
+function insertUsername(username: string) {
+    const sel = wysiwyg.value?.tinymceEditor?.selection.getSel()
+    if (!wysiwyg.value || !wysiwyg.value.tinymceEditor || !sel?.focusNode || userQuery.value === null) {
         return
     }
-    wysiwyg.value.insert(` @${username} `)
-    // description.value += `@${username}`
+    const textBeforeCursor = sel.focusNode.textContent?.slice(0, sel?.focusOffset)
+    if (!textBeforeCursor?.includes('@')) {
+        return
+    }
+    const atSymbolPosition = textBeforeCursor.lastIndexOf('@')
+    const newOffset = sel.focusOffset + (username.length - userQuery.value.length)
+    sel.focusNode.textContent =
+        (sel.focusNode.textContent ?? '').slice(0, atSymbolPosition + 1) +
+        username +
+        (sel.focusNode.textContent ?? '').slice(atSymbolPosition + 1 + userQuery.value.length)
+    wysiwyg.value.tinymceEditor.selection.setCursorLocation(sel.focusNode, newOffset)
+    wysiwyg.value.tinymceEditor.focus()
+    wysiwyg.value.tinymceEditor.execCommand('mceInsertContent', false, '&nbsp;')
 }
+
+async function calculateUserQuery() {
+    await nextTick()
+    const sel = wysiwyg.value?.tinymceEditor?.selection.getSel()
+    const textBeforeCursor = sel?.focusNode?.textContent?.slice(0, sel?.focusOffset)
+    if (!textBeforeCursor?.includes('@')) {
+        userQuery.value = null
+        return
+    }
+    const atSymbolPosition = textBeforeCursor.lastIndexOf('@')
+    const characterBeforeAtSymbol = textBeforeCursor[atSymbolPosition - 1]
+    if (characterBeforeAtSymbol?.match(/[a-zA-Z0-9]/g)?.length) {
+        // probably an e-mail address
+        userQuery.value = null
+        return
+    }
+    const textBetweenAtSymbolAndCursor = textBeforeCursor.slice(atSymbolPosition + 1)
+    const numberOfSpaces = textBetweenAtSymbolAndCursor.match(/[\s]/g)?.length ?? 0
+    if (numberOfSpaces > 1) {
+        userQuery.value = null
+        return
+    }
+    const numberOfInvalidCharacters = textBetweenAtSymbolAndCursor.match(/[^a-zA-Z0-9\s]/g)?.length ?? 0
+    if (numberOfInvalidCharacters > 0) {
+        userQuery.value = null
+        return
+    }
+    userQuery.value = textBetweenAtSymbolAndCursor ?? ''
+}
+
+watch(() => description.value, calculateUserQuery)
 </script>
 
 <style scoped lang="scss">

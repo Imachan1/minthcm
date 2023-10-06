@@ -33,7 +33,7 @@ class CommentsController
             return $response->withStatus(403);
         }
         $db = \DBManagerFactory::getInstance();
-        $sql = "SELECT id, user_name, CONCAT_WS(' ', first_name, last_name) name, photo FROM users WHERE deleted = 0";
+        $sql = "SELECT id, user_name, CONCAT_WS(' ', first_name, last_name) name, status, photo FROM users WHERE deleted = 0";
         $result = $db->query($sql);
         $users = [];
         while ($row = $db->fetchByAssoc($result)) {
@@ -133,7 +133,6 @@ class CommentsController
         }
         foreach ($attributes as $field => $value) {
             if (isset($comment->field_defs[$field]) && $field !== 'id') {
-                //TODO: field edit access (pinned/edited/removed) ?
                 $comment->$field = $value;
             }
         }

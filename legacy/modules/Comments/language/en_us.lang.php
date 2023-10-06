@@ -42,5 +42,5 @@ $mod_strings = array(
     "LBL_LIST_RELATED_TO_ID" => "Related To (ID)",
     "LBL_PINNED" => "Pinned",
     "LBL_REMOVED" => "Removed",
-    "LBL_EDITED" => "Edited",
+    "LBL_DATE_EDITED" => "Date Edited",
 );

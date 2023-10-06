@@ -13,7 +13,7 @@ class CommentRepository extends EntityRepository
                     , comments.reply_to_id
                     , comments.date_entered
                     , comments.pinned
-                    , comments.edited
+                    , comments.date_edited
                     , comments.removed
                     , JSON_OBJECT(
                         'id', users.id,
@@ -55,7 +55,6 @@ class CommentRepository extends EntityRepository
             $comments[$index]['assigned_user'] = json_decode($comment['assigned_user'], true);
             $comments[$index]['reactions'] = json_decode($comment['reactions'], true);
             $comments[$index]['pinned'] = boolval($comment['pinned']);
-            $comments[$index]['edited'] = boolval($comment['edited']);
             $comments[$index]['removed'] = boolval($comment['removed']);
         }
         return $comments;

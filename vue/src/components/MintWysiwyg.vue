@@ -14,10 +14,10 @@ import tinymce, { Editor, RawEditorSettings } from 'tinymce'
 
 import 'tinymce/icons/default'
 import 'tinymce/themes/silver'
+import 'tinymce/plugins/table'
+import 'tinymce/plugins/lists'
 import 'tinymce/skins/ui/oxide/skin.css'
 import 'tinymce/skins/ui/oxide/content.min.css'
-import 'tinymce/plugins/lists'
-import 'tinymce/plugins/table'
 
 interface Props {
     modelValue: string
@@ -27,16 +27,15 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     options: () => ({}),
 })
-const emit = defineEmits(['update:modelValue'])
-defineExpose({
-    insert: (html: string) => {
-        tinymceEditor.value?.execCommand('mceInsertContent', false, html)
-    },
-})
+const emit = defineEmits(['update:modelValue', 'cursorChange'])
 
+const tinymceEditor = ref<null | Editor>(null)
 const uuid = uuidv4()
 const selector = `.mint-wysiwyg textarea#${uuid}`
-const tinymceEditor = ref<null | Editor>(null)
+
+defineExpose({
+    tinymceEditor,
+})
 
 onMounted(() => {
     tinymce.init({
@@ -46,6 +45,7 @@ onMounted(() => {
         promotion: false,
         height: 250,
         plugins: 'table, lists',
+        toolbar_mode: 'wrap',
         toolbar:
             'fontselect | fontsizeselect | bold italic underline | forecolor backcolor | styleselect | outdent indent | numlist bullist | table',
         table_toolbar:
@@ -63,6 +63,9 @@ onMounted(() => {
             })
             editor.on('change', () => {
                 emit('update:modelValue', editor.getContent())
+            })
+            editor.on('SelectionChange', () => {
+                emit('cursorChange')
             })
         },
         font_formats:

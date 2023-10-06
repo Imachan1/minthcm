@@ -22,6 +22,7 @@ class Comments extends Basic
     public $assigned_user_id;
     public $assigned_user_name;
     public $assigned_user_link;
+    public $date_edited;
 
     public function bean_implements($interface)
     {
@@ -31,6 +32,12 @@ class Comments extends Basic
         }
 
         return false;
+    }
+
+    public function save($check_notify = false)
+    {
+        $this->setDateEdited();
+        parent::save($check_notify);
     }
 
     public function getAuthorFullName()
@@ -45,4 +52,14 @@ class Comments extends Basic
         return $author->photo;
     }
 
+    protected function setDateEdited()
+    {
+        if (
+            !empty($this->fetched_row)
+            && $this->description !== $this->fetched_row['description']
+        ) {
+            global $timedate;
+            $this->date_edited = $timedate->getNow()->format(TimeDate::DB_DATETIME_FORMAT);
+        }
+    }
 }

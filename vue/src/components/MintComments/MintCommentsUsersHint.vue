@@ -1,7 +1,7 @@
 <template>
-    <div class="mint-comments-users-hint">
+    <div v-if="!isHidden" class="mint-comments-users-hint">
         <div
-            v-for="user in store.users"
+            v-for="user in usersList"
             :key="user.id"
             class="mint-comments-users-hint-user"
             v-ripple
@@ -13,7 +13,11 @@
             </div>
             <div>{{ user.name }}</div>
         </div>
-        <div v-if="!store.users?.length" class="mint-comments-users-hint-message" v-text="languages.label('LBL_MINT4_COMMENTS_USERS_HINT_NOT_FOUND')" />
+        <div
+            v-if="!usersList?.length"
+            class="mint-comments-users-hint-message"
+            v-text="languages.label('LBL_MINT4_COMMENTS_USERS_HINT_NOT_FOUND')"
+        />
     </div>
 </template>
 
@@ -27,13 +31,37 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits(['user-click'])
+const emit = defineEmits<{
+    (event: 'user-click', username: string): void
+}>()
 
 const store = useMintCommentsStore()
 const languages = useLanguagesStore()
 
+// don't show list if there is a space at the end and there is only one possibility
+const isHidden = computed(
+    () =>
+        props.query.match(/\s/g)?.length &&
+        store.users.find((user) => user.user_name.trim().toLocaleLowerCase() === props.query.split(' ')[0].trim()) &&
+        usersList.value.length <= 1,
+)
+
+const standardizedQuery = computed(() => {
+    return props.query.trim().toLowerCase()
+})
+
+const activeUsers = computed(() => store.users.filter((user) => user.status === 'Active'))
+
 const usersList = computed(() => {
-    return false
+    return activeUsers.value
+        .filter(
+            (user) =>
+                !standardizedQuery.value ||
+                [user.user_name, user.name, ...user.name.split(' '), user.name.split(' ').reverse().join(' ')].some(
+                    (name) => name.trim().toLowerCase().startsWith(standardizedQuery.value),
+                ),
+        )
+        .slice(0, 6)
 })
 </script>
 

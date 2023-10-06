@@ -11,7 +11,7 @@ interface InitialResponse {
     languages: Languages
     access: MintCommentsAccess
     comments: MintComment[]
-    users: User[]
+    users: MintCommentUser[]
 }
 
 interface MintCommentsAccess {
@@ -23,6 +23,8 @@ interface MintCommentUser {
     id: string
     name: string
     photo: string | null
+    user_name: string
+    status: string
 }
 
 export interface MintComment {
@@ -30,7 +32,7 @@ export interface MintComment {
     description: string
     pinned: boolean
     removed: boolean
-    edited: boolean
+    date_edited: string
     assigned_user: MintCommentUser
     reply_to_id: string
     date_entered: string
@@ -43,7 +45,7 @@ export const useMintCommentsStore = defineStore('mint-comments', () => {
     const isInitialLoading = ref(true)
     const isLoading = ref(false)
     const comments = ref<MintComment[]>([])
-    const users = ref<User[]>([])
+    const users = ref<MintCommentUser[]>([])
     const access = ref<MintCommentsAccess>({
         pin: false,
         add: false,
@@ -125,11 +127,7 @@ export const useMintCommentsStore = defineStore('mint-comments', () => {
             return
         }
         comment.description = description
-        comment.edited = true
-        await updateComment(id, {
-            description,
-            edited: true,
-        })
+        await updateComment(id, { description })
     }
 
     async function deleteComment(id: string) {
