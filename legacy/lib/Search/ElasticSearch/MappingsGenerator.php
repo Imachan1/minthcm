@@ -217,5 +217,3 @@ class MappingsGenerator
         return $fields_to_map;
     }
 }
-
-/* zmiana */
