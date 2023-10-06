@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import MintWysiwyg from '@/components/MintWysiwyg.vue'
 import { MintComment, useMintCommentsStore } from './MintCommentsStore'
@@ -87,7 +87,6 @@ import { useAuthStore } from '@/store/auth'
 import { useLanguagesStore } from '@/store/languages'
 import MintCommentsUsersHint from './MintCommentsUsersHint.vue'
 import { RawEditorSettings as TinymceConfig } from 'tinymce'
-import { nextTick } from 'vue'
 
 interface Props {
     mode: 'new' | 'edit' | 'reply'
@@ -121,6 +120,12 @@ const initialDescription = props.mode === 'edit' ? props.comment?.description ??
 const description = ref(initialDescription)
 const userQuery = ref<null | string>(null)
 const isPrimaryButtonDisabled = computed(() => !description.value)
+
+onMounted(() => {
+    if (props.mode === 'reply' && wysiwyg.value?.tinymceEditor) {
+        wysiwyg.value.tinymceEditor?.focus()
+    }
+})
 
 async function addNewComment() {
     if (description.value) {
