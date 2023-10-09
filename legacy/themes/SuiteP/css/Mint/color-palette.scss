@@ -122,6 +122,7 @@ $color-116: #FFCF99; // MintHCM Attendee Scheduler - Occasional Leave WorkSchedu
 $color-117: #6BA5C1; // MintHCM Attendee Scheduler - Leave at Request WorkSchedule Slot Border
 $color-118: #ADEBAD; // MintHCM Attendee Scheduler - Overtime WorkSchedule Slot Border
 $color-119: #ADFF2F; // MintHCM Attendee Scheduler - Excused Absence WorkSchedule Slot Border
+$color-120: #64646412; // MintHCM Calendar current day 
 /* MintHCM #75792 END */
 // Mint development color color-palette
 $color-mint-lightgreen: #63c29a;
@@ -145,3 +146,15 @@ $color-mint-orange-darker: #D96464;
 $color-mint-yellow: #FFC338;
 $color-mint-yellow-lighter: #FFDC2B;
 $color-mint-yellow-darker: #E89E1E;
+
+// MintHCM #120479 START
+$lm-primary-accent: #00654e;
+$lm-secondary-accent: #145D7B;
+$lm-dark-bg: #626262;
+$lm-primary-accent--darker: #{darken($lm-primary-accent, 5%)};
+$lm-secondary-accent--darker: #{darken($lm-secondary-accent, 10%)};
+$lm-dark-bg--darker: #{darken($lm-dark-bg, 10%)};
+$lm-hover-bg: #f0fffc;
+$lm-list-border: #efefef;
+$lm-body-text: #585858;
+// MintHCM #120479 END

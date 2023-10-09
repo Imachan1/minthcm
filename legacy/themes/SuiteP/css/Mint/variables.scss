@@ -63,12 +63,16 @@ $brand-danger:          $color-50 !default;
 //** Background color for `<body>`.
 $body-bg:               $color-80 !default;
 //** Global text color on `<body>`.
-$text-color:            $gray-dark !default;
-
+// MintHCM #120479 START
+$text-color:            $lm-body-text !default;
+//$text-color:            $gray-dark !default;
 //** Global textual link color.
-$link-color:            $brand-primary !default;
+//$link-color:            $brand-primary !default;
+$link-color:            $lm-secondary-accent !default;
 //** Link hover color set via `darken()` function.
-$link-hover-color:      darken($link-color, 15%) !default;
+//$link-hover-color:      darken($link-color, 15%) !default;
+$link-hover-color:      $lm-secondary-accent--darker !default;
+// MintHCM #120479 END
 //** Link hover decoration.
 $link-hover-decoration: underline !default;
 
@@ -81,9 +85,10 @@ $font-family-sans-serif:  Arial, "Helvetica Neue", Helvetica, sans-serif !defaul
 $font-family-serif:       Georgia, "Times New Roman", Times, serif !default;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 $font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace !default;
-
-$font-family-base:        Arial, 'Lato', Lato, sans-serif !default;
-
+// MintHCM #120479 START
+//$font-family-base:        Arial, 'Lato', Lato, sans-serif !default;
+$font-family-base:        Barlow, serif !default;
+// MintHCM #120479 END
 $font-size-base:          14px !default;
 $font-size-large:         ceil(($font-size-base * 1.25)) !default; // ~18px
 $font-size-small:         ceil(($font-size-base * 0.85)) !default; // ~12px
@@ -1214,7 +1219,7 @@ $calendar-slot-bg: $color-80;
 $calendar-slot-color: $link-color;
 $calendar-slot-border-color: $color-64;
 $calendar-month-slot-height: 52px;
-$calendar-today-bg: $color-90;
+$calendar-today-bg: $color-120;
 $calendar-today-color: $default-btn-color;
 $calendar-title-bg: #fff;
 $calendar-title-color: $color-mint-grey;
@@ -1223,9 +1228,9 @@ $calendar-user-height: 54px;
 $calendar-user-bg: #fff;
 //$calendar-user-height: 40px;
 $calendar-header-bg: $color-39;
-$calendar-header-color: #fff;
+$calendar-header-color: $color-mint-grey;
 // YUI Popup calendar
-$calendar-month-day-header-bg: $color-20;
+$calendar-month-day-header-bg: $color-120;
 $calendar-month-day-header-color: $color-51;
 $calendar-year-body-bg: $calendar-slot-bg;
 $calendar-year-body-border-color: $calendar-slot-bg;

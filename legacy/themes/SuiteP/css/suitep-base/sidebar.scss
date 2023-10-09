@@ -1,16 +1,19 @@
 /**** SIDEBAR ****/
 
 .sidebar {
-  display: block;
-  position: fixed;
-  top: $navbar-height;
-  bottom: 0;
-  left: 0;
-  background-color: $sidebar-bg;
-  overflow-x: hidden;
-  overflow-y: auto;
-  z-index: 1000;
-  @include BoxShadow(1);
+    display: block;
+    position: fixed;
+    top: $navbar-height;
+    bottom: 0;
+    left: 0;
+    // MintHCM #120479 START
+    //  background-color: $sidebar-bg;
+    background-color: $lm-dark-bg;
+    // MintHCM #120479 END
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1000;
+    @include BoxShadow(1);
 
   .actionMenuSidebar {
     margin-bottom: 10px;
@@ -120,7 +123,10 @@ a.buttontoggle:hover {
 .button-toggle-collapsed {
   position: fixed;
   top: 76px;
-  background: $sidebar-bg;
+  // MintHCM #120479 START
+  //  background: $sidebar-bg;
+  background-color: $lm-dark-bg;
+  // MintHCM #120479 END
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
   width: 30px;
