@@ -4,13 +4,7 @@ $unified_search_modules_display = array(
     'ACLRoles' => array(
         'visible' => true,
     ),
-    'ACLActions' => array(
-        'visible' => true,
-    ),
     'ProspectLists' => array(
-        'visible' => true,
-    ),
-    'Prospects' => array(
         'visible' => true,
     ),
     'Project' => array(
@@ -22,28 +16,13 @@ $unified_search_modules_display = array(
     'Campaigns' => array(
         'visible' => true,
     ),
-    'EmailMarketing' => array(
-        'visible' => true,
-    ),
-    'CampaignLog' => array(
-        'visible' => true,
-    ),
     'CampaignTrackers' => array(
         'visible' => false,
-    ),
-    'Releases' => array(
-        'visible' => true,
-    ),
-    'Groups' => array(
-        'visible' => true,
     ),
     'EmailMan' => array(
         'visible' => true,
     ),
     'Schedulers' => array(
-        'visible' => true,
-    ),
-    'SchedulersJobs' => array(
         'visible' => true,
     ),
     'EmailTemplates' => array(
@@ -67,14 +46,8 @@ $unified_search_modules_display = array(
     'Users' => array(
         'visible' => true,
     ),
-    'Currencies' => array(
-        'visible' => true,
-    ),
     'Trackers' => array(
         'visible' => false,
-    ),
-    'Connectors' => array(
-        'visible' => true,
     ),
     'Documents' => array(
         'visible' => true,
@@ -86,9 +59,6 @@ $unified_search_modules_display = array(
         'visible' => true,
     ),
     'OAuthKeys' => array(
-        'visible' => true,
-    ),
-    'OAuthTokens' => array(
         'visible' => true,
     ),
     'SecurityGroups' => array(
@@ -146,9 +116,6 @@ $unified_search_modules_display = array(
         'visible' => true,
     ),
     'Workplaces' => array(
-        'visible' => true,
-    ),
-    'EmployeeInteractionTracking' => array(
         'visible' => true,
     ),
     'Positions' => array(
@@ -268,9 +235,6 @@ $unified_search_modules_display = array(
     'KTemplates' => array(
         'visible' => true,
     ),
-    'PDFGenerator' => array(
-        'visible' => true,
-    ),
     'PDFTemplates' => array(
         'visible' => true,
     ),
@@ -287,9 +251,6 @@ $unified_search_modules_display = array(
         'visible' => true,
     ),
     'Reactions' => array(
-        'visible' => true,
-    ),
-    'Files' => array(
         'visible' => true,
     ),
 );

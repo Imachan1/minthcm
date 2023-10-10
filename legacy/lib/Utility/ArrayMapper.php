@@ -296,6 +296,10 @@ class ArrayMapper
             return;
         }
 
+        if ($this->handleBoolean($value, $path)) {
+            return;
+        }
+
         if ($this->handleMap($value, $path)) {
             return;
         }
@@ -377,6 +381,24 @@ class ArrayMapper
         }
 
         return false;
+    }
+
+    /**
+     * @param mixed  $value
+     * @param string $path
+     *
+     * @return bool
+     */
+    private function handleBoolean($value, $path)
+    {
+        $field_defs = $this->mappable->field_defs;
+        if (empty($field_defs[$path]) || $field_defs[$path]['type'] !== 'bool') {
+            return false;
+        }
+
+        $this->handleValue($value !== '0', $path);
+        array_pop($this->path);
+        return true;
     }
 
     /**
