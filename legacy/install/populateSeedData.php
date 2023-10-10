@@ -81,7 +81,7 @@ foreach ($sugar_demodata as $module => $records) {
                             $arguments['field'] = $bean->$field;
                         }
                     }
-                    $value = call_user_func_array($value['function'], $arguments);
+                    $value = call_user_func_array($value['function'], array_values($arguments));
                 }
                 $bean->$field_name = $value;
                 if ($field_name == 'assigned_user_id' || ($bean->field_defs[$field_name]['type'] == 'id' && (isset($bean->field_defs[$field_name]['relationship']) || $field_name == 'parent_id'))) {
