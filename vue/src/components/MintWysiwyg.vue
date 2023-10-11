@@ -75,15 +75,6 @@ onMounted(() => {
         ...props.options,
     })
 })
-
-watch(
-    () => props.modelValue,
-    (newVal) => {
-        if (newVal !== tinymceEditor.value?.getContent()) {
-            tinymceEditor.value?.setContent(newVal)
-        }
-    },
-)
 </script>
 
 <style lang="scss">
