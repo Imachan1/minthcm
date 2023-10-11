@@ -44,5 +44,16 @@ $sugar_config_si = array(
       'ssl' => false,
       'collation' => '_DB_COLLATION_',
    ),
+   'search' => array(
+      'ElasticSearch' => array(
+        'enabled' => true,
+        'host' => '_ELASTIC_HOST_',
+        'user' => '_ELASTIC_USER_',
+        'pass' => '_ELASTIC_PASS_',
+        'index' => '_',
+        'search_wildcard_char' => '%',
+        'search_wildcard_infront' => true
+      )
+   )
 );
 ?>

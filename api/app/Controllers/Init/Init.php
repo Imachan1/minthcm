@@ -29,10 +29,16 @@ class Init
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response
-    {
+    {   
         $response = $response->withHeader('Content-type', 'application/json');
 
-        $response_body = $this->getData();
+        if($this->isSystemInstalled()){
+            $response_body = $this->getData();
+        } else {
+            $response_body = array();
+            $response_body['installed'] = false;
+            $response_body['languages'] = $this->languages_controller->getLanguages([], "en_us");
+        }
 
         $response->getBody()->write(json_encode($response_body));
         return $response;
@@ -41,6 +47,7 @@ class Init
     public function getData()
     {
         $response_body = array();
+        $response_body['installed'] = true;
         $response_body['languages'] = $this->languages_controller->getLanguages();
         $response_body['user'] = $this->getCurrentUserData();
         $response_body['preferences'] = $this->preferences_controller->getUserPreferences();
@@ -131,4 +138,19 @@ class Init
         }
         return [array_keys($modules), $modules_data];
     }
+
+    private function isSystemInstalled()
+    {
+        $configFilePath = __DIR__ . '/../../legacy/config.php';
+
+        if (file_exists($configFilePath)) {
+            require($configFilePath);
+            if (isset($sugar_config['installer_locked']) && $sugar_config['installer_locked'] === true) {
+                return true; 
+            }
+        }
+    
+        return false;
+    }
+
 }
