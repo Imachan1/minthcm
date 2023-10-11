@@ -203,7 +203,7 @@ class SugarJobQueue
         $try = $this->jobTries;
         while($try--) {
             // TODO: tranaction start?
-            $id = $this->db->getOne("SELECT id FROM {$this->job_queue_table} WHERE execute_time <= $now AND status = '$queued' ORDER BY date_entered ASC");
+            $id = $this->db->getOne("SELECT id FROM {$this->job_queue_table} WHERE execute_time <= $now AND status = '$queued' and target " . $this->getNextJobSQLTarget() . " ORDER BY date_entered ASC");
             if(empty($id)) {
                 return null;
             }
@@ -230,7 +230,10 @@ class SugarJobQueue
         }
         return $job;
     }
-
+    protected function getNextJobSQLTarget()
+    {
+        return "NOT IN ('')";
+    }
     /**
      * Run schedulers to instantiate scheduled jobs
      */
