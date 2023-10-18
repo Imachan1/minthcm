@@ -148,20 +148,27 @@ class Audit extends SugarBean {
                               $enum_values[] = $app_list_strings[$domain][$enum_key];
                            }
                         }
-                        //View Tools start #41719
+                        //View Tools start #41719 #122844
                         elseif ( isset($focus->field_defs[$row['field_name']]['function']) ) {
-                           if ( isset($focus->field_defs[$row['field_name']]['function']['include']) ) {
-                              $include_file = $focus->field_defs[$row['field_name']]['function']['include'];
-                              require_once $include_file;
-                              if ( is_callable($focus->field_defs[$row['field_name']]['function']['name']) ) {
-                                 $enum_array = call_user_func($focus->field_defs[$row['field_name']]['function']['name']);
-                                 if ( isset($enum_array[$enum_key]) ) {
-                                    $enum_values[] = $enum_array[$enum_key];
+                            if ( isset($focus->field_defs[$row['field_name']]['function']['include']) ) {
+                               $include_file = $focus->field_defs[$row['field_name']]['function']['include'];
+                               if (!file_exists($include_file)) {
+                                  $include_file = str_replace('legacy/', '', $include_file);
+                               }
+                               if (!file_exists($include_file)) {
+                                 $enum_values[] = $enum_key;
+                               } else {
+                                 require_once $include_file;
+                                 if ( is_callable($focus->field_defs[$row['field_name']]['function']['name']) ) {
+                                     $enum_array = call_user_func($focus->field_defs[$row['field_name']]['function']['name']);
+                                     if ( isset($enum_array[$enum_key]) ) {
+                                         $enum_values[] = $enum_array[$enum_key];
+                                     }
                                  }
-                              }
-                           }
-                        }
-                        //View Tools end #41719
+                               }
+                            }
+                         }
+                        //View Tools end #41719 #122844
                      }
                      if ( !empty($enum_values) ) {
                         $temp_list[$field['name']] = implode(', ', $enum_values);
