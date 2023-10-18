@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import tinymce, { Editor, RawEditorSettings } from 'tinymce'
 

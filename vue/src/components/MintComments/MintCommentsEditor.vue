@@ -130,7 +130,7 @@ onMounted(() => {
 async function addNewComment() {
     if (description.value) {
         await store.addComment(description.value)
-        description.value = ''
+        wysiwyg.value?.tinymceEditor?.setContent('')
         userQuery.value = null
         store.fetchComments()
     }
@@ -165,7 +165,7 @@ function quote() {
         quoteBody += `<blockquote>${child.outerHTML}</blockquote>`
         quoteBody += '<p><br data-mce-bogus="1"></p>'
     }
-    description.value += quoteBody
+    wysiwyg.value?.tinymceEditor?.execCommand('mceInsertContent', false, quoteBody)
 }
 
 function openEmployeeDetailView() {
