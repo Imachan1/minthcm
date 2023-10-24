@@ -50,6 +50,7 @@ $mod_strings = array(
     'LBL_ID' => 'ID',
     'LBL_DATE_ENTERED' => 'Date Created',
     'LBL_DATE_MODIFIED' => 'Date Modified',
+    'LBL_DATE_INDEXED' => 'Date Indexed',
     'LBL_MODIFIED' => 'Modified By',
     'LBL_MODIFIED_NAME' => 'Modified By Name',
     'LBL_CREATED' => 'Created By',

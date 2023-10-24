@@ -114,6 +114,24 @@ function installESHooks()
             'class' => 'SuiteCRM\Search\ElasticSearch\ElasticSearchHooks',
             'function' => 'beanDeleted',
         ],
+        [
+            'module' => '',
+            'hook' => 'after_relationship_add',
+            'order' => 1,
+            'description' => 'ElasticSearch Index Changes',
+            'file' => 'lib/Search/ElasticSearch/ElasticSearchHooks.php',
+            'class' => 'SuiteCRM\Search\ElasticSearch\ElasticSearchHooks',
+            'function' => 'relationshipChange',
+        ],
+        [
+            'module' => '',
+            'hook' => 'after_relationship_delete',
+            'order' => 1,
+            'description' => 'ElasticSearch Index Changes',
+            'file' => 'lib/Search/ElasticSearch/ElasticSearchHooks.php',
+            'class' => 'SuiteCRM\Search\ElasticSearch\ElasticSearchHooks',
+            'function' => 'relationshipChange',
+        ],
     ];
 
     foreach ($hooks as $hook) {

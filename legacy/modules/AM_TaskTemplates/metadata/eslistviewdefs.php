@@ -7,9 +7,6 @@ $ESListViewDefs['AM_TaskTemplates'] = [
             'link' => true,
             'default' => true,
         ],
-        'duration' => [
-            'default' => true,
-        ],
         'status' => [
             'default' => true,
         ],
@@ -33,8 +30,6 @@ $ESListViewDefs['AM_TaskTemplates'] = [
         'status' => [
         ],
         'priority' => [
-        ],
-        'duration' => [
         ],
         'am_tasktemplates_am_projecttemplates_name' => [
         ],

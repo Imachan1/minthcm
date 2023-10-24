@@ -53,7 +53,7 @@ class Init
         return $response_body;
     }
 
-    private function getCurrentUserData()
+    public function getCurrentUserData()
     {
         global $current_user;
         if (empty($current_user->id)) {

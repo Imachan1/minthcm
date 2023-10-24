@@ -432,7 +432,7 @@ $dictionary['WorkSchedules'] = array(
       'occasional_leave_type' => array(
          'name' => 'occasional_leave_type',
          'vname' => 'LBL_OCCASIONAL_LEAVE_TYPE',
-         'required' => true,
+         'required' => false,
          'type' => 'enum',
          'massupdate' => false,
          'importable' => 'true',
@@ -445,6 +445,7 @@ $dictionary['WorkSchedules'] = array(
          'size' => '20',
          'options' => 'occasional_leave_type_dom',
          'vt_dependency' => "equals(\$type,'occasional_leave')",
+         'vt_required' => "equals(\$type,'occasional_leave')",
       ),
       'spenttimes' => array(
          'name' => 'spenttimes',

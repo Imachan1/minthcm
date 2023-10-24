@@ -91,6 +91,33 @@ $dictionary['Comments'] = array(
             'group' => 'parent_name',
             'reportable' => false,
         ),
+        'pinned' => array(
+            'name' => 'pinned',
+            'vname' => 'LBL_PINNED',
+            'label' => 'LBL_PINNED',
+            'type' => 'bool',
+            'reportable' => false,
+            'audited' => false,
+            'importable' => 'false',
+        ),
+        'removed' => array(
+            'name' => 'removed',
+            'vname' => 'LBL_REMOVED',
+            'label' => 'LBL_REMOVED',
+            'type' => 'bool',
+            'reportable' => false,
+            'audited' => true,
+            'importable' => 'false',
+        ),
+        'date_edited' => array(
+            'name' => 'date_edited',
+            'vname' => 'LBL_DATE_EDITED',
+            'label' => 'LBL_DATE_EDITED',
+            'type' => 'datetime',
+            'reportable' => false,
+            'audited' => false,
+            'importable' => 'false',
+        ),
     ),
     'relationships' => array(
         'comments_replies' => array(

@@ -73,14 +73,19 @@ array(
           'field' => '30',
         ),
       ),
-      'useTabs' => false,
+      'useTabs' => true,
       'tabDefs' =>
       array(
         'DEFAULT' =>
         array(
-          'newTab' => false,
+          'newTab' => true,
           'panelDefault' => 'expanded',
         ),
+        'LBL_PANEL_ASSIGNMENT' => 
+        array (
+          'newTab' => true,
+          'panelDefault' => 'expanded',
+      ),
       ),
       'syncDetailEditViews' => true,
     ),
@@ -97,16 +102,30 @@ array(
         array(
           0 => 'description',
         ),
-        2 =>
-        array(
-          0 =>
-          array(
-            'name' => 'created_by_name',
-            'label' => 'LBL_CREATED',
-          ),
-          1 => 'date_entered',
-        ),
       ),
+
+      'LBL_PANEL_ASSIGNMENT' => 
+      array (
+        0 => 
+        array (
+          0 => 'assigned_user_name',
+          ),
+        1 => 
+        array (
+          0 => 
+          array (
+            'name' => 'date_entered',
+            'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
+            'label' => 'LBL_DATE_ENTERED',
+        ),
+          1 => 
+          array (
+            'name' => 'date_modified',
+            'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+            'label' => 'LBL_DATE_MODIFIED',
+      ),
+    ),
+  ),
     ),
   ),
 );

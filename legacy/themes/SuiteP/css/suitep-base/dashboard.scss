@@ -17,11 +17,14 @@
 }
 
 #pageContainer .dashletcontainer .hd {
-  background-color: $dashlet-title-bg;
   padding: 0;
   margin: 0;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+      // MintHCM #120479 START
+      //  background-color: $dashlet-title-bg;
+    border-bottom: 1px solid #d0d0d0;
+      // MintHCM #120479 END
 }
 
 .yui-module .hd{
@@ -83,9 +86,22 @@
 }
 
 .dashletPanel thead {
-  background-color: $dashlet-header-bg;
+      // MintHCM #120479 START
+      //  background-color: $dashlet-header-bg;
+      * {
+          font-weight: 400;
 }
 
+      a {
+          color: $lm-primary-accent;
+  
+          &:hover {
+              color: $lm-primary-accent--darker;
+          }
+      }
+      // MintHCM #120479 END
+  }
+  
 #moduleDashlets h3 {
   display: none;
   visibility: collapse;
@@ -299,7 +315,10 @@ ul.subpanelTablist li {
 
 .dashletPanel .hd .hd-center .dashletToolSet a {
   font-size: $dashlet-header-toolset-icon-font-size;
-  color: $dashlet-btn-color;
+      // MintHCM #120479 START
+      //  color: $dashlet-btn-color;
+    color: #000;
+      // MintHCM #120479 END
   padding: 0 0 0 $mint-rem/2;
   line-height: $dashlet-header-toolset-icon-font-size;
 }
@@ -573,7 +592,7 @@ td.dashlet-title > h3 > span {
 }
 
 .dashletPanel .h3Row {
-  background-color: $dashlet-title-bg;
+    // MintHCM #120479  background-color: $dashlet-title-bg;
   color: $default-btn-color;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
@@ -585,17 +604,25 @@ td.dashlet-title > h3 > span {
 }
 
 .dashletPanel .h3Row h3 {
-  font-size: 13px;
   font-weight: bold;
-  color: $dashlet-title-color;
   margin: 0;
   letter-spacing: 1px;
-  text-transform: uppercase;
+      // MintHCM #120479 START
+      // text-transform: uppercase; 
+      // color: $dashlet-title-color;
+      // font-size: 13px;
+      color: #000;
+      font-size: 1.5rem;
+      text-transform: unset;
+      // MintHCM #120479 START
 }
 
 .dashletPanel .h3Row h3 span {
   padding-left: 0;
-  font-weight: 700;
+      // MintHCM #120479 START
+      //font-weight: 700;
+    font-weight: 600;
+      // MintHCM #120479 END
 }
 
 #dashletbuttons {
@@ -610,7 +637,33 @@ td.dashlet-title > h3 > span {
 .dashletToolSet {
   margin: 0;
 }
+  // MintHCM #120479 START
+  .dashletToolSet .suitepicon {
+      &::before {
+          color: $lm-secondary-accent;
+      }
+  }
 
+  @media(hover: hover) and (pointer: fine) {
+      .dashletToolSet .suitepicon {
+          &::before {
+              // color: var(--lm-secondary-accent);
+              // visibility: hidden;
+              opacity: 0;
+              transition: opacity .2s;
+          }
+      
+          &:hover::before {
+              color: var(--lm-secondary-accent--darker);
+          }
+      }
+      
+      .dashletPanel:hover .suitepicon::before {
+          // visibility: visible;
+          opacity: 1;
+      }
+  }
+  // MintHCM #120479 END
 @media (max-width: 750px) {
 
   .dashletcontainer {
@@ -835,7 +888,7 @@ td.dashlet-title > h3 > span {
 .dashboard {
   @include BoxShadow(1);
   border-radius: 4px;
-  background-color: #fff;
+    background-color: transparent;
 }
 
 // eVolpe #119869 START
@@ -843,4 +896,18 @@ td.dashlet-title > h3 > span {
   resize: both;
 }
 // eVolpe #119869 END
+  // MintHCM #120479 START
+  .dashletcontainer>ul>li>.dashletPanel {
+      background-color: #fff;
+    }
 
+    .dashboard .tab-content, .dashboard {
+      background-color: transparent;
+      border: none;
+      box-shadow: none; 
+    }
+  
+  .dashboard .tab-content {
+      padding: 0 0 0px 32px;
+  }
+  // MintHCM #120479 END

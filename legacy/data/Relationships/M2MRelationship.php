@@ -281,6 +281,16 @@ class M2MRelationship extends SugarRelationship
                 $dataToRemove[$this->def['relationship_role_column']] = $this->def['relationship_role_column_value'];
             }
             $dataToRemove['deleted'] = 0;
+            // MintHCM #122704 START
+            if (!empty($lhsLinkName) && empty($lhs->$lhsLinkName) && !$lhs->load_relationship($lhsLinkName)) {
+                $GLOBALS['log']->fatal("could not load LHS $lhsLinkName");
+                return false;
+            }
+            if (!empty($rhsLinkName) && empty($rhs->$rhsLinkName) && !$rhs->load_relationship($rhsLinkName)) {
+                $GLOBALS['log']->fatal("could not load RHS $rhsLinkName");
+                return false;
+            }
+            // MintHCM #122704 END
 
             if (empty($_SESSION['disable_workflow']) || $_SESSION['disable_workflow'] != "Yes") {
                 if (get_class($lhs) != 'SecurityGroup' && $lhs->$lhsLinkName instanceof Link2) {
@@ -355,13 +365,6 @@ class M2MRelationship extends SugarRelationship
             /* BEGIN - SECURITY GROUPS */
         } //end normal
         /* END - SECURITY GROUPS */
-
-        // MintHCM #121632 START
-        // I had to call this in such ugly way, because system doesn't allow to create logic hook
-        // for deleting relationship with securitygroups
-        $es_hooks = new SuiteCRM\Search\ElasticSearch\ElasticSearchHooks;
-        $es_hooks->relationshipDeleted($rhs, $lhs);
-        // MintHCM #121632 END
 
         return true;
     }

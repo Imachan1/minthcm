@@ -1,5 +1,6 @@
 <template>
-    <v-app>
+    <router-view v-if="$route.meta?.entryPoint" :key="$route.fullPath" />
+    <v-app v-else>
         <MintOverlay />
         <MintPopups />
         <v-fade-transition>

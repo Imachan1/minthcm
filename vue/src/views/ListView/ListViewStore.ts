@@ -184,7 +184,10 @@ export const useListViewStore = defineStore('listview', () => {
         }
         return Object.values(defs.value?.columns || {})
             .filter((col) => ['date', 'datetime', 'datetimecombo'].includes(col.type))
-            .map((col) => col.name)
+            .map((col) => ({
+                field: col.name,
+                style: col.custom_field_style?.list,
+            }))
     })
     const currencies = computed(() => {
         if (!isInit.value) {

@@ -691,7 +691,10 @@ slot {
   font-size: 14px;
   font-weight: 400;
   background-color: $detail-view-field-bg;
-  color: $main-font-color;
+    // MintHCM #120479 START
+    //  color: $main-font-color;
+  color: #000;
+    // MintHCM #120479 END
   padding: 10px 10px;
   border: 1px solid transparent;
   border-radius: $border-radius-base;
@@ -813,7 +816,10 @@ option[selected] {
 
 .label {
   font-size: 14px;
-  color: $main-font-color;
+    // MintHCM #120479 START
+    //  color: $main-font-color;   
+  color: #000 !important;
+    // MintHCM #120479 END
 }
 
 .edit > table {
@@ -1895,14 +1901,26 @@ a.tabFormAdvLink:hover {
 
 .evenListRowS1 td {
   background: $table-row-bg;
-  border-top: 1px solid $color-mint-white-hover;
-  border-bottom: 1px solid $color-mint-white-hover;
+    // MintHCM #120479 START
+    // border-top: 1px solid $color-mint-white-hover;
+    // border-bottom: 1px solid $color-mint-white-hover;
+  color: $lm-body-text;
+  border-top: 1px solid $lm-list-border;
+  border-bottom: 1px solid $lm-list-border;
+  transition: background-color .2s;
+    // MintHCM #120479 END
 }
 
 .oddListRowS1 td {
-  background: $table-alternate-row-bg;
-  border-top: 1px solid $color-mint-white-hover;
-  border-bottom: 1px solid $color-mint-white-hover;
+        // MintHCM #120479 START
+    color: $lm-body-text;
+    border-top: 1px solid $lm-list-border;
+    border-bottom: 1px solid $lm-list-border;
+    transition: background-color .2s;
+    // border-top: 1px solid $color-mint-white-hover;
+    // border-bottom: 1px solid $color-mint-white-hover;
+        // MintHCM #120479 END
+    background: $table-alternate-row-bg;
 }
 
 .evenListRowS1:hover td {

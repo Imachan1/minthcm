@@ -133,6 +133,14 @@ const isIcon = computed(() => (props.icon || props.appendIcon) && !props.text)
 }
 
 .mint-button-small {
-    padding: 3px;
+    &.mint-button-icon {
+        padding: 3px;
+    }
+    &.mint-button-text,
+    &.mint-button-primary,
+    &.mint-button-regular {
+        padding: 3px 9px 3px 9px;
+        font-size: 12px;
+    }
 }
 </style>

@@ -1,10 +1,28 @@
 <?php
-// created: 2023-06-20 13:07:24
+// created: 2023-09-26 11:15:36
 $unified_search_modules_display = array(
     'ACLRoles' => array(
         'visible' => true,
     ),
     'ProspectLists' => array(
+        'visible' => true,
+    ),
+    'AOK_KnowledgeBase' => array(
+        'visible' => true,
+    ),
+    'AOK_Knowledge_Base_Categories' => array(
+        'visible' => true,
+    ),
+    'AM_ProjectTemplates' => array(
+        'visible' => true,
+    ),
+    'FP_events' => array(
+        'visible' => true,
+    ),
+    'FP_Event_Locations' => array(
+        'visible' => true,
+    ),
+    'Prospects' => array(
         'visible' => true,
     ),
     'Project' => array(

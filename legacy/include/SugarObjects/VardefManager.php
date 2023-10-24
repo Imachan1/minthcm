@@ -146,6 +146,12 @@ class VardefManager {
          if ( empty($GLOBALS['dictionary'][$object]['indices']) ) {
             $GLOBALS['dictionary'][$object]['indices'] = array();
          }
+         // MintHCM #122704 START
+         if ( empty($GLOBALS['dictionary'][$object]['elasticsearch']) ) {
+            $GLOBALS['dictionary'][$object]['elasticsearch'] = array();
+         }
+         // MintHCM #122704 END
+
          $GLOBALS['dictionary'][$object]['fields'] = array_merge($templates[$template]['fields'], $GLOBALS['dictionary'][$object]['fields']);
          if ( !empty($templates[$template]['relationships']) ) {
             $GLOBALS['dictionary'][$object]['relationships'] = array_merge($templates[$template]['relationships'], $GLOBALS['dictionary'][$object]['relationships']);
@@ -153,6 +159,12 @@ class VardefManager {
          if ( !empty($templates[$template]['indices']) ) {
             $GLOBALS['dictionary'][$object]['indices'] = array_merge($templates[$template]['indices'], $GLOBALS['dictionary'][$object]['indices']);
          }
+         // MintHCM #122704 START
+         if ( !empty($templates[$template]['elasticsearch']) ) {
+            $GLOBALS['dictionary'][$object]['elasticsearch'] = array_merge_recursive($templates[$template]['elasticsearch'], $GLOBALS['dictionary'][$object]['elasticsearch']);
+         }
+         // MintHCM #122704 END
+
          // maintain a record of this objects inheritance from the SugarObject templates...
          $GLOBALS['dictionary'][$object]['templates'][$template] = $template;
       }

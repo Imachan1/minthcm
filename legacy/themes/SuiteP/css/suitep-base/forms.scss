@@ -989,19 +989,24 @@ input[type=button].btn-info:focus {
   border: none;
 }
 
-
+// MintHCM #120479 START
 .button {
-  font-size: $page-font-size;
-  font-weight: 500;
-  background: $danger-btn-bg;
-  color: $default-btn-color;
+//   font-size: $page-font-size;
+//   font-weight: 500;
+//   background: $danger-btn-bg;
+//   color: $default-btn-color;
+//   border: none;
+  font-weight: 600;
   cursor: pointer;
   padding: 0 20px 0 20px;
   margin: 0 0 0 0;
-  border: none;
+  background: #009976;
+  border: 1.5px solid $lm-secondary-accent;
+  color: $lm-secondary-accent;
   border-radius: 3px;
   letter-spacing: 1px;
-  line-height: $button-line-height;
+  line-height: 0;
+  //  line-height: $button-line-height;
   height: $button-line-height;
   text-transform: uppercase;
 }
@@ -1011,37 +1016,47 @@ input[type=submit].button:hover {
 }
 
 input[type=submit] {
+    // font-weight: 500;
+    // background: $danger-btn-bg;
+    // color: $default-btn-color;
+    // border: none;
+    // line-height: $button-line-height;
   font-size: $page-font-size;
-  font-weight: 500;
-  background: $danger-btn-bg;
-  color: $default-btn-color;
+  font-weight: 600;
   cursor: pointer;
   padding: 0 20px 0 20px;
   margin: 0 0 0 0;
-  border: none;
+  background: #fff;
+  border: 1.5px solid $lm-secondary-accent;
+  color: $lm-secondary-accent;
   border-radius: 3px;
   letter-spacing: 1px;
-  line-height: $button-line-height;
+  line-height: 0;
   height: $button-line-height;
   text-transform: uppercase;
 }
 
 input[type=button] {
+    // font-weight: 500;
+    // background: $danger-btn-bg;
+    // color: $default-btn-color;
   font-size: $page-font-size;
-  font-weight: 500;
-  background: $danger-btn-bg;
-  color: $default-btn-color;
+  font-weight: 600;
+  line-height: 0;
+  background: #fff;
+  border: 1.5px solid $lm-secondary-accent;
+  color: $lm-secondary-accent;
   cursor: pointer;
   padding: 0 20px 0 20px;
   margin: 0 0 0 0;
-  border: none;
+  //border: none;
   border-radius: 3px;
   letter-spacing: 1px;
-  line-height: $button-line-height;
+  //line-height: $button-line-height;
   height: $button-line-height;
   text-transform: uppercase;
 }
-
+// MintHCM #120479 END
 input[type=reset] {
   font-size: $page-font-size;
   font-weight: 500;
@@ -1118,11 +1133,12 @@ input[type=reset]:active {
   cursor: pointer;
   @include BoxShadow(4);
 }
-
+// MintHCM #120479 START
 input[type=submit]:focus,
 input[type=button] {
   font-size: $page-font-size;
-  color: #fff;
+  //  color: #fff;
+  color: $lm-secondary-accent;
   cursor: pointer;
 }
 
@@ -1130,7 +1146,8 @@ input[type=submit].button.primary,
 input[type=button].button.primary,
 input[type=reset].button.primary,
 input[type=button]#CloseButton {
-    background: $primary-btn-bg;
+    //    background: $primary-btn-bg;
+    background-color: $lm-secondary-accent;
     border: none;
     color: $primary-btn-color;
 }
@@ -1139,9 +1156,17 @@ input[type=submit].button.primary:hover,
 input[type=button].button.primary:hover,
 input[type=reset].button.primary:hover,
 input[type=button]#CloseButton:hover{
-    background: $primary-btn-bg-hover;
+    //    background: $primary-btn-bg-hover;
+    background-color: $lm-secondary-accent--darker;
 }
 
+input[type=submit].button.primary:active,
+input[type=button].button.primary:active,
+input[type=reset].button.primary:active,
+input[type=button]#CloseButton:active{
+    background-color: $lm-secondary-accent--darker;
+}
+// MintHCM #120479 END
 input.button {
   @include BoxShadow(1);
 }

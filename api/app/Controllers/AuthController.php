@@ -19,8 +19,8 @@ class AuthController
 
     public function login(Request $request, Response $response, array $args): Response
     {
-        $username = $request->getAttribute('username');
-        $password = $request->getAttribute('password');
+        $username = trim($request->getAttribute('username'));
+        $password = trim($request->getAttribute('password'));
         $login_language = $request->getAttribute('login_language');
 
         chdir('../legacy/');

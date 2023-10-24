@@ -77,7 +77,10 @@
 }
 
 .panel-default > .panel-heading  > a:not(.panel-heading a div) {
-  background-color: $panel-expanded-bg;
+    // MintHCM #120479 START
+    //  background-color: $panel-expanded-bg;
+    background-color: $lm-primary-accent;
+    // MintHCM #120479 END
 }
 
 .sub-panel  div.tab-content {

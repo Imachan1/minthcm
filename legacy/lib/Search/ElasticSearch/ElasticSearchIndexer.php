@@ -63,6 +63,8 @@ use SuiteCRM\Search\Index\IndexingLockFileTrait;
 use SuiteCRM\Search\Index\IndexingSchedulerTrait;
 use SuiteCRM\Search\Index\IndexingStatisticsTrait;
 use Symfony\Component\Yaml\Parser as YamlParser;
+require_once 'lib/Search/ElasticSearch/ElasticSearchVardefsReader.php';
+
 /**
  * Class ElasticSearchIndexer takes care of creating a search index for the database.
  */
@@ -225,7 +227,9 @@ class ElasticSearchIndexer extends AbstractIndexer
 
         $this->buildWhereClause($dataPuller, $isDifferential, $module);
 
-        $this->logger->debug(sprintf('Indexing module %s...', $module));
+      if ( $isDifferential && isset($seed->field_defs['date_indexed']) ) {
+        $where = "$tableName.date_indexed IS NULL OR $tableName.date_indexed < $tableName.date_modified";
+      }
 
         try {
             $beanTime = Carbon::now()->toDateTimeString();
@@ -251,10 +255,8 @@ class ElasticSearchIndexer extends AbstractIndexer
             return;
         }
 
-        $this->putMeta($module, [
-            'last_index' => $beanTime,
-            'module_name' => $module
-        ]);
+      $this->logger->debug(sprintf('Indexing module %s...', $module));
+      $this->indexBeans($module, $beans);
         $this->indexedModulesCount++;
     }
 
@@ -316,19 +318,77 @@ class ElasticSearchIndexer extends AbstractIndexer
       }
       // minthcm end
         $args = $this->makeIndexParamsFromBean($bean);
+      $this->fillAllNestedPropertyValues($bean, $args['body']);
 
-      // MintHCM #121632 START
-      if ($this->acl_helper->doesModuleUseTemplate($bean->module_name, 'security_groups')) {
-         $group_ids = $this->acl_helper->getSecurityGroupIdsRelatedWithRecord($bean->module_name, $bean->id);
+      $this->removeErrorProneFields($bean->module_name, $args['body']);
+      $this->client->index($args);
+      $this->setBeanInstantIndexingDate($bean);
+   }
 
-         $args['body']['security_groups'] = array_values(array_map(function ($group_id) {
-            return [ 'id' => $group_id ];
-        }, $group_ids));
+   protected function fillAllNestedPropertyValues(SugarBean $bean, array &$args): void
+   {
+      $nested_properties = (new \ElasticSearchVardefsReader)->getModuleNestedProperties($bean->module_name);
+      foreach ($nested_properties as $property_name => $nested_config) {
+         $args[$property_name] = $this->getNestedPropertyValues($bean, $property_name, $nested_config);
       }
-      // MintHCM #121632 END
+   }
 
-        $this->client->index($args);
-    }
+   protected function getNestedPropertyValues(SugarBean $bean, string $property_name, array $nested_config): array
+   {
+      $link_field_name = $nested_config['link'] ?? $property_name;
+      if (!$bean->load_relationship($link_field_name)) {
+         return [];
+      }
+
+      $related_beans = $bean->$link_field_name->getBeans();
+      $nested_fields = $nested_config['fields'];
+      $nested_data = array_map(function ($related_bean) use ($nested_fields) {
+         $row = [];
+         foreach ($nested_fields as $nested_field) {
+            $row[$nested_field] = $related_bean->$nested_field;
+         }
+         return $row;
+      }, $related_beans);
+
+      return array_values($nested_data);
+   }
+
+   protected function setBeanInstantIndexingDate(SugarBean $bean)
+   {
+      $db = \DBManagerFactory::getInstance();
+      $db->query("UPDATE {$bean->table_name}
+         SET date_indexed = '{$bean->date_modified}'
+         WHERE id = '{$bean->id}'
+      ");
+   }
+
+   protected function setBeansDeferredIndexingDate(array $beans)
+   {
+      if (empty($beans)) {
+         return;
+      }
+
+      $ids = implode(',', array_map(function ($bean) { return "'{$bean->id}'"; }, $beans));
+
+      $db = \DBManagerFactory::getInstance();
+      $now_datetime = (new \SugarDateTime)->asDb();
+      $seed = $beans[0];
+      $db->query("UPDATE {$seed->table_name}
+         SET date_indexed = '{$now_datetime}'
+         WHERE id IN ($ids)
+      ");
+   }
+
+   protected function removeErrorProneFields(string $module_name, array &$body)
+   {
+      $mapping = [
+         'FP_Event_Locations' => ['address', 'address_city', 'address_country', 'address_postalcode', 'address_state'],
+      ];
+
+      foreach ($mapping[$module_name] ?? [] as $key) {
+         unset($body[$key]);
+      }
+   }
 
     /** @inheritdoc */
     public function removeBean(SugarBean $bean)
@@ -384,50 +444,6 @@ class ElasticSearchIndexer extends AbstractIndexer
     }
 
     /**
-     * Writes the metadata fields for one index.
-     *
-     * @param string $module name of the module
-     * @param array $meta an associative array with the fields to populate
-     */
-    public function putMeta(string $module, array $meta): void
-    {
-        $instance_id = $GLOBALS['sugar_config']['unique_key'];
-        $lowercaseModule = strtolower($module);
-        $this->index = $instance_id.'_'.$lowercaseModule;
-
-        $params = [
-            'index' => $this->index,
-            'body' => ['_meta' => $meta],
-            'ignore_unavailable' => true
-        ];
-
-        $this->client->indices()->putMapping($params);
-    }
-
-    /**
-     * Returns the metadata fields for one index.
-     *
-     * @param string $module name of the module
-     *
-     * @return array an associative array with the metadata
-     */
-    public function getMeta(string $module): ?array
-    {
-        $instance_id = $GLOBALS['sugar_config']['unique_key'];
-        $lowercaseModule = strtolower($module);
-        $this->index = $instance_id.'_'.$lowercaseModule;
-        $params = ['index' =>  $this->index];
-        
-        $results = $this->client->indices()->getMapping($params);
-
-        if (!isset($results[$this->index])) {
-            return null;
-        }
-
-        return $results[$this->index]['mappings']['_meta'];
-    }
-
-    /**
      * @return int
      */
     public function getBatchSize(): int
@@ -476,12 +492,6 @@ class ElasticSearchIndexer extends AbstractIndexer
     {
         $params = ['body' => []];
 
-      // MintHCM #121632 START
-      if ($this->acl_helper->doesModuleUseTemplate($module, 'security_groups')) {
-         $groups_by_records = $this->acl_helper->getSecurityGroupIdsRelatedWithMultipleRecords($module, $beans);
-      }
-      // MintHCM #121632 END
-
         foreach ($beans as $key => $bean) {
             // MintHCM #122342 START
             //$head = ['_index' => strtolower($module), '_id' => $bean->id];
@@ -497,16 +507,11 @@ class ElasticSearchIndexer extends AbstractIndexer
             } else {
                 $body = $this->makeIndexParamsBodyFromBean($bean);
 
-            // MintHCM #121632 START
-            if (isset($groups_by_records)) {
-               $group_ids = $groups_by_records[$bean->id] ?? [];
-               $body['security_groups'] = array_values(array_map(function ($group_id) {
-                  return [ 'id' => $group_id ];
-               }, $group_ids));
-            }
-            // MintHCM #121632 END
+            // TODO: optimize with single load from db before foreach
+            $this->fillAllNestedPropertyValues($bean, $body);
                 //$body['meta']['module_name'] = $bean->module_dir;
 
+            $this->removeErrorProneFields($module, $body);
                 $params['body'][] = ['index' => $head];
                 $params['body'][] = $body;
                 $this->indexedRecordsCount++;
@@ -514,7 +519,9 @@ class ElasticSearchIndexer extends AbstractIndexer
             }
 
             // Send a batch of $this->batchSize elements to the server
-            if ($key % $this->batchSize == 0) {
+         // MintHCM START
+         if ( $key % $this->batchSize == $this->batchSize - 1 ) {
+         // MintHCM END
                 $this->sendBatch($params);
             }
         }
@@ -523,6 +530,8 @@ class ElasticSearchIndexer extends AbstractIndexer
         if (!empty($params['body'])) {
             $this->sendBatch($params);
         }
+
+      $this->setBeansDeferredIndexingDate($beans);
     }
 
     /**
@@ -639,24 +648,7 @@ class ElasticSearchIndexer extends AbstractIndexer
     }
 
     /**
-     * Retrieves the last time a module was indexed from a metadata stored in the Elasticsearch index.
-     *
-     * @param string $module
-     *
-     * @return string a datetime string
-     */
-    private function getModuleLastIndexed(string $module): string
-    {
-        $meta = $this->getMeta($module);
-
-        if (!isset($meta['last_index'])) {
-            throw new RuntimeException("Last index metadata not found.");
-        }
-
-        return $meta['last_index'];
-    }
-
-    /**
+    * 
      * @param bool $differential
      * @param int $searchdefs
      */

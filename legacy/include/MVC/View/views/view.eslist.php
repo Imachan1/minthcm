@@ -186,6 +186,7 @@ class ViewESList extends SugarView
                 unset($columns[$field]);
                 continue;
             }
+            $columns[$field] = array_merge($field_defs, $columns[$field]);
             $columns[$field]['name'] = $defs['name'] ?? $field;
             $columns[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field] ?? $field;
             $fieldProps = $this->getMappedFieldProps($columns[$field]['key']);
@@ -225,6 +226,7 @@ class ViewESList extends SugarView
                 unset($search[$field]);
                 continue;
             }
+            $search[$field] = array_merge($field_defs, $search[$field]);
             $search[$field]['name'] = $defs['name'] ?? $field;
             $search[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field] ?? $field;
             $search[$field]['type'] = $defs['type'] ?? $field_defs['type'];

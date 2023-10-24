@@ -46,8 +46,8 @@
         >
             <span v-text="formatMultienum(item.raw[multienum.field], multienum.options)" />
         </template>
-        <template v-for="date in store.customFields.dates" v-slot:[`item.${date}`]="{ item }" :key="date">
-            <span v-text="item.raw[date]" />
+        <template v-for="date in store.customFields.dates" v-slot:[`item.${date.field}`]="{ item }" :key="date.field">
+            <span v-text="item.raw[date.field]" :style="date.style" />
         </template>
         <template
             v-for="currency in store.customFields.currencies"

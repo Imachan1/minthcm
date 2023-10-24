@@ -83,13 +83,3 @@ $("#es-full-index").click(function () {
         alert(SUGAR.language.get("Administration", "LBL_ELASTIC_SEARCH_INDEX_SCHEDULE_FULL_FAIL"));
     });
 });
-
-$("#es-partial-index").click(function () {
-    var url = "index.php?module=Administration&action=ElasticSearchSettings&do=PartialIndex";
-
-    $.ajax(url).done(function () {
-        alert(SUGAR.language.get("Administration", "LBL_ELASTIC_SEARCH_INDEX_SCHEDULE_PART_SUCCESS"));
-    }).error(function () {
-        alert(SUGAR.language.get("Administration", "LBL_ELASTIC_SEARCH_INDEX_SCHEDULE_PART_FAIL"));
-    });
-});

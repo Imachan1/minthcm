@@ -87,21 +87,20 @@ array(
         array(
           0 => 'description',
         ),
-        2 =>
-        array(
-          0 =>
-          array(
-            'name' => 'created_by_name',
-            'label' => 'LBL_CREATED',
+      ),
+      'LBL_PANEL_ASSIGNMENT' =>
+      array (
+        0 =>
+        array (
+          0 => 
+          array (
+            'name' => 'assigned_user_name',
+            'label' => 'LBL_ASSIGNED_TO_NAME',
           ),
           1 =>
-          array(
-            'name' => 'date_entered',
-            'comment' => 'Date record created',
-            'label' => 'LBL_DATE_ENTERED',
+          '',
           ),
+      )
         ),
       ),
-    ),
-  ),
 );

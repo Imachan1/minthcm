@@ -56,7 +56,7 @@ class CommentsApi
             $bean = BeanFactory::getBean($args['comments_module'], $args['comments_record_id']);
             if ($bean->id === $args['comments_record_id']) {
 
-                echo display_comments_for_record($bean, $args['comments_record_id'], true);
+                echo display_comments($bean);
             }
         }
         return '';
