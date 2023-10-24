@@ -14,7 +14,7 @@ class ElasticSearchVardefsReader
 
     public function getLinkFieldName(string $property_name, array $nested_config): string
     {
-        return $nested_config['link'] ?? $property_name;
+        return is_array($nested_config['link']) ? $nested_config['link'][0] : $nested_config['link'] ?? $property_name;
     }
 
     public function getRelatedModuleName(SugarBean $bean, string $link_field_name): string
