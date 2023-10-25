@@ -219,45 +219,61 @@ class ElasticSearchIndexer extends AbstractIndexer
     /** @inheritdoc */
     public function indexModule($module)
     {
-        // MintHCM #121632 START
-        $GLOBALS['disable_date_format'] = true;
-        // MintHCM #121632 END
+        $seed = \BeanFactory::getBean($module);
+        $tableName = $seed->table_name;
         $isDifferential = $this->differentialIndexing();
-        $dataPuller = new ElasticSearchModuleDataPuller($module, $isDifferential, $this->logger);
-
-        $this->buildWhereClause($dataPuller, $isDifferential, $module);
-
-      if ( $isDifferential && isset($seed->field_defs['date_indexed']) ) {
-        $where = "$tableName.date_indexed IS NULL OR $tableName.date_indexed < $tableName.date_modified";
-      }
+  
+        $where = "";
+        $showDeleted = 0;
+  
+        if ( $isDifferential && isset($seed->field_defs['date_indexed']) ) {
+            $where = "$tableName.date_indexed IS NULL OR $tableName.date_indexed < $tableName.date_modified";
+        }    
 
         try {
             $beanTime = Carbon::now()->toDateTimeString();
-
-            while ($beans = $dataPuller->pullNextBatch()) {
-                $this->indexBeans($module, $beans);
-            }
-            $this->logger->debug(sprintf('Finished %s. Processed %d Records', $module, $dataPuller->recordsPulled));
-
+            if ($seed) {
+                $beans = $seed->get_full_list("", $where, false, $showDeleted);
+             }
         } catch (RuntimeException $exception) {
             $this->logger->error("Failed to index module $module");
             $this->logger->error($exception);
 
             return;
         }
-
-        if ($dataPuller->recordsPulled === 0) {
-            if (!$isDifferential) {
-                $this->logger->notice(sprintf('Skipped %s because $beans was null. The table is probably empty',
-                    $module));
+        if ( $beans === null ) {
+            if ( !$isDifferential ) {
+               $this->logger->notice(sprintf('Skipping %s because $beans was null. The table is probably empty', $module));
             }
-
             return;
-        }
+         }
+   
+         $this->logger->debug(sprintf('Indexing module %s...', $module));
+         $this->indexBeans($module, $beans);
+         $this->putMeta($module, [
+            'module_name' => $module
+        ]);
 
-      $this->logger->debug(sprintf('Indexing module %s...', $module));
-      $this->indexBeans($module, $beans);
-        $this->indexedModulesCount++;
+         $this->indexedModulesCount++;
+   
+    }
+
+    /**
+     * Writes the metadata fields for one index.
+     *
+     * @param string $module name of the module
+     * @param array $meta an associative array with the fields to populate
+     */
+
+    public function putMeta(string $module, array $meta): void
+    {
+        $params = [
+            'index' => $this->index,
+            'body' => ['_meta' => $meta],
+            'ignore_unavailable' => true
+        ];
+
+        $this->client->indices()->putMapping($params);
     }
 
     /**
