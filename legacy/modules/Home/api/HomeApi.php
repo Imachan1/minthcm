@@ -258,7 +258,7 @@ class HomeApi {
                require_once('include/SugarQueue/SugarJobQueue.php');
                $job = new SchedulersJob();
                $job->name = "Rebuild View Tools";
-               $job->data = array();
+               $job->data = "";
                $job->target = "function::rebuildViewTools";
                $job->assigned_user_id = 1;
                $jq = new SugarJobQueue();
