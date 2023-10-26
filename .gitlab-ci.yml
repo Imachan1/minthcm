@@ -14,6 +14,8 @@ AutoDeploy:
   - ssh-add <(echo "$SSH_PRIVATE_KEY")
   script:
     - ssh -p2271 root@10.8.0.134 "hostname && bash /var/www/develop/scripts/updateMint4_token.sh develop mint4_php8 && cd /var/www/develop/legacy; sudo -u www-data php rebuildAndRepair.php"
+  variables:
+    GIT_STRATEGY: none
 
 Success Notification:
   stage: notification
@@ -25,6 +27,8 @@ Success Notification:
   rules:
     - if: '$CI_COMMIT_REF_NAME == "mint4_php8"'
       when: on_success
+  variables:
+    GIT_STRATEGY: none
 
 Failure Notification:
   stage: notification
@@ -36,3 +40,5 @@ Failure Notification:
   rules:
     - if: '$CI_COMMIT_REF_NAME == "mint4_php8"'
       when: on_failure
+  variables:
+    GIT_STRATEGY: none
