@@ -1017,11 +1017,6 @@ class Scheduler extends SugarBean
         $sched18->save();
   
         $this->createJobEntry('AutomaticCreateNotification', '*/15::*::*::*::*', $mod_strings['LBL_AUTOMATICCREATENOTIFICATION']);
-        $this->createJobEntry('find_spent_times_without_work_schedule', '0::10::*::*::0', $mod_strings['LBL_FIND_SPENT_TIMES_WITHOUT_WORK_SCHEDULE']);
-        $this->createJobEntry('find_invalid_spent_times', '0::12::*::*::0', $mod_strings['LBL_FIND_INVALID_SPENT_TIMES']);
-        $this->createJobEntry('last_working_day_check', '0::20::*::*::1-5', $mod_strings['LBL_LAST_WORKING_DAY_CHECK']);
-        $this->createJobEntry('calculate_time_and_effectiveness', '0::3::*::*::*', $mod_strings['LBL_CALCULATE_TIME_AND_EFFECTIVENESS']);
-        $this->createJobEntry('find_spent_times_assign_to_different_user_work_schedule', '0::0::*::*::0', $mod_strings['LBL_FIND_SPENT_TIMES_ASSIGN_TO_DIFFERENT_USER_WORK_SCHEDULE']);
      }
   
      protected function createJobEntry($function, $interval, $name = '') {

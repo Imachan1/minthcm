@@ -208,7 +208,7 @@ class VTExpression
             self::loadValueForFieldBasedOnFetchedRowAndBeanValues($bean, $fieldName);
          }
       }
-      if ( !is_null($bean->fetched_row['id']) ) {
+      if ( !empty($bean->fetched_row) && !is_null($bean->fetched_row['id']) ) {
          VTExpression::setRecordId($bean->fetched_row['id']);
       }
       if ( !is_null($bean->module_name) ) {
