@@ -521,6 +521,38 @@ $dictionary['WorkSchedules'] = array(
          'vname' => 'LBL_RELATIONSHIP_WORKPLACE_ID', 
          'audited' => true,
       ),
+
+
+      
+      "assistant_workschedules" => array(
+         'name' => 'assistant_workschedules',
+         'type' => 'link',
+         'relationship' => 'assistant_workschedules',
+         'source' => 'non-db',
+         'module' => 'Users',
+         'bean_name' => 'Users',
+         'vname' => 'LBL_ASSISTANT_NAME',
+         'id_name' => 'assistant_id',
+      ),
+      "assistant_name" => array(
+         'name' => 'assistant_name',
+         'type' => 'relate',
+         'source' => 'non-db',
+         'vname' => 'LBL_ASSISTANT_NAME',
+         'id_name' => 'assistant_id',
+         'link' => 'assistant_workschedules',
+         'module' => 'Users',
+         'table' => 'users',
+         'rname' => 'user_name',
+         'vt_dependency' => "inArray(\$type,'holiday', 'sick', 'sick_care', 'occasional_leave', 'leave_at_request', 'overtime', 'excused_absence')",
+      ),
+      "assistant_id" => array(
+         'name' => 'assistant_id',
+         'relationship' => 'assistant_workschedules',
+         'type' => 'id',
+         'vname' => 'LBL_ASSISTANT_ID', 
+         'audited' => true,
+      ),
    ),
    'indices' => array(
       array(
@@ -557,6 +589,15 @@ $dictionary['WorkSchedules'] = array(
          'rhs_module' => 'WorkSchedules',
          'rhs_table' => 'workschedules',
          'rhs_key' => 'workplace_id',
+         'relationship_type' => 'one-to-many',
+      ),
+      "assistant_workschedules" => array(
+         'lhs_module' => 'Users',
+         'lhs_table' => 'users',
+         'lhs_key' => 'id',
+         'rhs_module' => 'WorkSchedules',
+         'rhs_table' => 'workschedules',
+         'rhs_key' => 'assistant_id',
          'relationship_type' => 'one-to-many',
       ),
    ),
