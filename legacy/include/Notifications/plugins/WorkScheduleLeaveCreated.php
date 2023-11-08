@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,35 +36,48 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-require_once 'include/Notifications/Notification.php';
+require_once 'include/Notifications/NotificationPlugin.php';
 
-abstract class NotificationPlugin {
+class WorkScheduleLeaveCreated extends NotificationPlugin
+{
 
-   public function getNewNotification() {
-      return new Notification;
-   }
+    public function run($work_schedule = null)
+    {
 
-   abstract public function run($o = null);
+        if (!$work_schedule) {
+            return;
+        }
+        if (empty($work_schedule->assigned_user_id)) {
+            return;
+        }
+        $user = BeanFactory::getBean('Users', $work_schedule->assigned_user_id);
+        $superior_id = $user->reports_to_id;
+        if ($superior_id) {
+            $this->getNewNotification()
+                ->setDescription(sprintf(translate('LBL_LEAVE_ALERT', 'WorkSchedules'), $this->getWorkScheduleStartDate($work_schedule->id)))
+                ->setAssignedUserId($superior_id)
+                ->setRelatedBean($work_schedule->id, 'WorkSchedules')
+                ->setType('WorkScheduleLeaveCreated')
+                ->saveAsAlert()->WebPush();
+        }
 
-   public function isWebPushableNotification(){
-      return false;
-   }
+    }
+    public function isWebPushableNotification()
+    {
+        return true;
+    }
 
-   public function getWebPushDescriptionConfig(){
-      return false;
-   }
-   public function getWebPushLinkConfig(){
-      return false;
-   }
-   public function getWebPushOverrideConfig(){
-      return array();
-   }
-
+    protected function getWorkScheduleStartDate($work_schedule_id)
+    {
+        $bean = BeanFactory::getBean('WorkSchedules', $work_schedule_id);
+        $datetime = explode(' ', NotificationManager::toDbDatetime($bean->date_start));
+        return $datetime[0];
+    }
 
 }

@@ -49,7 +49,7 @@ class WorkSchedulesNotPlandForTwoWeeks extends NotificationPlugin
 
     const PLAN_FOR_DAYS = 10;
 
-    public function run()
+    public function run($o = null)
     {
         $work_schedules = $this->getNotPlannedWorkSchedules();
         foreach ($work_schedules as $work_schedule) {

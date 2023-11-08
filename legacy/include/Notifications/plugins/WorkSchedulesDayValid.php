@@ -47,7 +47,7 @@ require_once 'include/Notifications/NotificationPlugin.php';
 
 class WorkSchedulesDayValid extends NotificationPlugin {
 
-   public function run() {
+   public function run($o = null) {
       global $app_strings;
       $work_schedules = $this->getNotClosedWorkSchedules();
       foreach ( $work_schedules as $work_schedule ) {

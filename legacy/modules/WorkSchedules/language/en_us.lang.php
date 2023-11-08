@@ -146,4 +146,5 @@ $mod_strings = array(
     'LBL_DEPUTY' => 'Deputy',
     'LBL_DEPUTY_NAME' => 'Deputy',
     'LBL_DEPUTY_ID' => 'Deputy (ID)',
+    'LBL_LEAVE_ALERT' => "Twój podwładny dodał urlop na dzień %s.",  
 );
