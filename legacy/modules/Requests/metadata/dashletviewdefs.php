@@ -44,42 +44,89 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$mod_strings = array(
-   'LBL_ASSIGNED_TO_ID' => 'Assigned User',
-   'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
-   'LBL_SECURITYGROUPS' => 'Organizational Unit',
-   'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Unit',
-   'LBL_ID' => 'ID',
-   'LBL_DATE_ENTERED' => 'Date Created',
-   'LBL_DATE_MODIFIED' => 'Date Modified',
-   'LBL_MODIFIED' => 'Modified By',
-   'LBL_MODIFIED_NAME' => 'Modified By Name',
-   'LBL_CREATED' => 'Created By',
-   'LBL_DESCRIPTION' => 'Description',
-   'LBL_DELETED' => 'Deleted',
-   'LBL_NAME' => 'Name',
-   'LBL_CREATED_USER' => 'Created by User',
-   'LBL_MODIFIED_USER' => 'Modified by User',
-   'LBL_LIST_NAME' => 'Name',
-   'LBL_EDIT_BUTTON' => 'Edit',
-   'LBL_REMOVE' => 'Remove',
-   'LBL_ASCENDING' => 'Ascending',
-   'LBL_DESCENDING' => 'Descending',
-   'LBL_LIST_FORM_TITLE' => 'Benefits List',
-   'LBL_MODULE_NAME' => 'Benefits',
-   'LBL_MODULE_TITLE' => 'Benefits',
-   'LBL_HOMEPAGE_TITLE' => 'My Benefits',
-   'LNK_NEW_RECORD' => 'Create Benefit',
-   'LNK_LIST' => 'View Benefits',
-   'LNK_IMPORT_BENEFITS' => 'Import Benefits',
-   'LBL_SEARCH_FORM_TITLE' => 'Search Benefits',
-   'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
-   'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-   'LBL_BENEFITS_SUBPANEL_TITLE' => 'Benefits',
-   'LBL_NEW_FORM_TITLE' => 'New Benefit',
-   'LBL_EDITVIEW_PANEL1' => 'OTHER',
-   'LBL_ROLES' => 'Roles',
-   'LBL_POSITIONS' => 'Positions',
-   'LBL_EMPLOYEES' => 'Employees',
-   'LBL_REQUESTS' => 'Requests',
+$dashletData['RequestsDashlet']['searchFields'] = array(
+   'status' =>
+   array(
+      'default' => '',
+   ),
+   'type' =>
+   array(
+      'default' => '',
+   ),
+   'employee_name' => array(
+      'default' => '',
+      'name' => 'employee_name',
+      'label' => 'LBL_EMPLOYEE'
+   ),
+   'assigned_user_name' => array( 'default' => '' ),
+);
+$dashletData['RequestsDashlet']['columns'] = array(
+   'name' =>
+   array(
+      'width' => '40%',
+      'label' => 'LBL_NAME',
+      'link' => true,
+      'default' => true,
+      'name' => 'name',
+   ),
+   'status' =>
+   array(
+      'type' => 'enum',
+      'width' => '15%',
+      'label' => 'LBL_STATUS',
+      'name' => 'status',
+      'default' => true,
+   ),
+   'type' =>
+   array(
+      'type' => 'enum',
+      'width' => '15%',
+      'label' => 'LBL_TYPE',
+      'name' => 'type',
+      'default' => true,
+   ),
+   'assigned_user_name' =>
+   array(
+      'width' => '8%',
+      'label' => 'LBL_ASSIGNED_TO_NAME',
+      'name' => 'assigned_user_name',
+      'default' => true,
+   ),
+   'employee_name' => array(
+      'width' => '15',
+      'label' => 'LBL_EMPLOYEE',
+      'default' => false
+   ),
+   'date_modified' =>
+   array(
+      'width' => '15%',
+      'label' => 'LBL_DATE_MODIFIED',
+      'name' => 'date_modified',
+      'default' => true,
+   ),
+   'date_entered' =>
+   array(
+      'width' => '15%',
+      'label' => 'LBL_DATE_ENTERED',
+      'default' => true,
+      'name' => 'date_entered',
+   ),
+   'created_by_name' =>
+   array(
+      'type' => 'relate',
+      'link' => true,
+      'label' => 'LBL_CREATED',
+      'id' => 'CREATED_BY',
+      'width' => '10%',
+      'default' => false,
+   ),
+   'modified_by_name' =>
+   array(
+      'type' => 'relate',
+      'link' => true,
+      'label' => 'LBL_MODIFIED_NAME',
+      'id' => 'MODIFIED_USER_ID',
+      'width' => '10%',
+      'default' => false,
+   ),
 );

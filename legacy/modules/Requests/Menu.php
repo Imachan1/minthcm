@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -43,43 +42,34 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
+}
 
-$mod_strings = array(
-   'LBL_ASSIGNED_TO_ID' => 'Assigned User',
-   'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
-   'LBL_SECURITYGROUPS' => 'Organizational Unit',
-   'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Unit',
-   'LBL_ID' => 'ID',
-   'LBL_DATE_ENTERED' => 'Date Created',
-   'LBL_DATE_MODIFIED' => 'Date Modified',
-   'LBL_MODIFIED' => 'Modified By',
-   'LBL_MODIFIED_NAME' => 'Modified By Name',
-   'LBL_CREATED' => 'Created By',
-   'LBL_DESCRIPTION' => 'Description',
-   'LBL_DELETED' => 'Deleted',
-   'LBL_NAME' => 'Name',
-   'LBL_CREATED_USER' => 'Created by User',
-   'LBL_MODIFIED_USER' => 'Modified by User',
-   'LBL_LIST_NAME' => 'Name',
-   'LBL_EDIT_BUTTON' => 'Edit',
-   'LBL_REMOVE' => 'Remove',
-   'LBL_ASCENDING' => 'Ascending',
-   'LBL_DESCENDING' => 'Descending',
-   'LBL_LIST_FORM_TITLE' => 'Benefits List',
-   'LBL_MODULE_NAME' => 'Benefits',
-   'LBL_MODULE_TITLE' => 'Benefits',
-   'LBL_HOMEPAGE_TITLE' => 'My Benefits',
-   'LNK_NEW_RECORD' => 'Create Benefit',
-   'LNK_LIST' => 'View Benefits',
-   'LNK_IMPORT_BENEFITS' => 'Import Benefits',
-   'LBL_SEARCH_FORM_TITLE' => 'Search Benefits',
-   'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
-   'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-   'LBL_BENEFITS_SUBPANEL_TITLE' => 'Benefits',
-   'LBL_NEW_FORM_TITLE' => 'New Benefit',
-   'LBL_EDITVIEW_PANEL1' => 'OTHER',
-   'LBL_ROLES' => 'Roles',
-   'LBL_POSITIONS' => 'Positions',
-   'LBL_EMPLOYEES' => 'Employees',
-   'LBL_REQUESTS' => 'Requests',
-);
+global $mod_strings, $app_strings, $sugar_config;
+$module_name = 'Requests';
+
+if ( ACLController::checkAccess($module_name, 'edit', true) ) {
+   $module_menu[] = array(
+      'index.php?module=Requests&action=EditView&return_module=Requests&return_action=DetailView',
+      $mod_strings['LNK_NEW_RECORD'],
+      'Add',
+      $module_name
+   );
+}
+if ( ACLController::checkAccess($module_name, 'list', true) ) {
+   $module_menu[] = array(
+      'index.php?module=Requests&action=index&return_module=Requests&return_action=DetailView',
+      $mod_strings['LNK_LIST'],
+      'View',
+      $module_name
+   );
+}
+if ( ACLController::checkAccess($module_name, 'import', true) ) {
+   $module_menu[] = array(
+      'index.php?module=Import&action=Step1&import_module=Requests&return_module=Requests&return_action=index',
+      $app_strings['LBL_IMPORT'],
+      'Import',
+      $module_name
+   );
+}
