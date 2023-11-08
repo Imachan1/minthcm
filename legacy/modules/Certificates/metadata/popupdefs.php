@@ -49,14 +49,23 @@ $popupMeta = array(
     'orderBy' => 'certificates.name',
     'whereClauses' => array(
         'name' => 'certificates.name',
+        'attempts_number' => 'certificates.attempts_number',
+        'duration' => 'certificates.duration',
+        'pass_rate' => 'certificates.pass_rate',
     ),
     'searchInputs' => array(
         'name',
+        'attempts_number',
+        'duration',
+        'pass_rate',
     ),
     'searchdefs' => array(
         'name' => array(
             'name' => 'name',
         ),
+        'attempts_number',
+        'duration',
+        'pass_rate',
         'assigned_user_id' => array(
             'name' => 'assigned_user_id',
             'label' => 'LBL_ASSIGNED_TO',
@@ -74,6 +83,15 @@ $popupMeta = array(
         'NAME' => array(
             'label' => 'LBL_NAME',
             'link' => true,
+            'default' => true,
+        ),
+        'attempts_number' => array(
+            'default' => true,
+        ),
+        'duration'=> array(
+            'default' => true,
+        ),
+        'pass_rate'=> array(
             'default' => true,
         ),
         'ASSIGNED_USER_NAME' => array(

@@ -80,7 +80,11 @@ $viewdefs[$module_name] = array(
                             'required' => true,
                         ),
                     ),
-                    '',
+                    'attempts_number',
+                ),
+                array(
+                    'duration',
+                    'pass_rate',
                 ),
                 array(
                     'description',
