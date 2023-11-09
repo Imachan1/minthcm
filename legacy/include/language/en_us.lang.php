@@ -4219,6 +4219,7 @@ $app_list_strings['list_type_list'] = array(
     'SpentTime-category' => 'Spent Time - Category',
     'Candidatures-source' => 'Candidatures - Source',
     'Documents-type' => 'Documents - Type',
+    'Requests-type' => 'Requests - Type',
 );
 
 $app_list_strings['reservations_parent_type_list'] = array(
@@ -4643,3 +4644,12 @@ $app_strings['LBL_NO'] = 'No';
 $app_strings['LBL_YES'] = 'Yes';
 $app_strings['LBL_CONFIRM'] = 'Confirm';
 $app_strings['LBL_MINT4_NO_ACCESS_TO_MODULE'] = 'Warning: You do not have permission to access this module.';
+
+$app_list_strings['requests_status_list'] = array(
+    'requested' => 'Requested',
+    'accepted' => 'Accepted',
+    'rejected' => 'Rejected',
+);
+
+$app_list_strings['moduleList']['Requests'] = 'Requests';
+$app_list_strings['moduleListSingular']['Requests'] = 'Request';

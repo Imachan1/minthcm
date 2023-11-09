@@ -44,42 +44,29 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$mod_strings = array(
-   'LBL_ASSIGNED_TO_ID' => 'Assigned User',
-   'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
-   'LBL_SECURITYGROUPS' => 'Organizational Unit',
-   'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Unit',
-   'LBL_ID' => 'ID',
-   'LBL_DATE_ENTERED' => 'Date Created',
-   'LBL_DATE_MODIFIED' => 'Date Modified',
-   'LBL_MODIFIED' => 'Modified By',
-   'LBL_MODIFIED_NAME' => 'Modified By Name',
-   'LBL_CREATED' => 'Created By',
-   'LBL_DESCRIPTION' => 'Description',
-   'LBL_DELETED' => 'Deleted',
-   'LBL_NAME' => 'Name',
-   'LBL_CREATED_USER' => 'Created by User',
-   'LBL_MODIFIED_USER' => 'Modified by User',
-   'LBL_LIST_NAME' => 'Name',
-   'LBL_EDIT_BUTTON' => 'Edit',
-   'LBL_REMOVE' => 'Remove',
-   'LBL_ASCENDING' => 'Ascending',
-   'LBL_DESCENDING' => 'Descending',
-   'LBL_LIST_FORM_TITLE' => 'Benefits List',
-   'LBL_MODULE_NAME' => 'Benefits',
-   'LBL_MODULE_TITLE' => 'Benefits',
-   'LBL_HOMEPAGE_TITLE' => 'My Benefits',
-   'LNK_NEW_RECORD' => 'Create Benefit',
-   'LNK_LIST' => 'View Benefits',
-   'LNK_IMPORT_BENEFITS' => 'Import Benefits',
-   'LBL_SEARCH_FORM_TITLE' => 'Search Benefits',
-   'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
-   'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-   'LBL_BENEFITS_SUBPANEL_TITLE' => 'Benefits',
-   'LBL_NEW_FORM_TITLE' => 'New Benefit',
-   'LBL_EDITVIEW_PANEL1' => 'OTHER',
-   'LBL_ROLES' => 'Roles',
-   'LBL_POSITIONS' => 'Positions',
-   'LBL_EMPLOYEES' => 'Employees',
-   'LBL_REQUESTS' => 'Requests',
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/06_Customer_Center/10_Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+/*
+ * Created on July 12, 2007
+ *
+ * To change the template for this generated file go to
+ * Window - Preferences - PHPeclipse - PHP - Code Templates
+ */
+$module_name = 'Requests';
+$metafiles[$module_name] = array(
+   'detailviewdefs' => 'modules/' . $module_name . '/metadata/detailviewdefs.php',
+   'editviewdefs' => 'modules/' . $module_name . '/metadata/editviewdefs.php',
+   'listviewdefs' => 'modules/' . $module_name . '/metadata/listviewdefs.php',
+   'eslistviewdefs' => 'modules/' . $module_name . '/metadata/eslistviewdefs.php',
+   'searchdefs' => 'modules/' . $module_name . '/metadata/searchdefs.php',
+   'popupdefs' => 'modules/' . $module_name . '/metadata/popupdefs.php',
+   'searchfields' => 'modules/' . $module_name . '/metadata/SearchFields.php',
 );

@@ -70,5 +70,6 @@ return array(
     "EmployeeInteractionTracking" => "handshake",
     "KReports" => "chart-bar",
     "Calendar" => "calendar-blank",
+    "Requests" => "file-document-edit",
     "default" => "star",
 );

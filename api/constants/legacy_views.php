@@ -465,4 +465,8 @@ return [
         'list' => true,
         'record' => true,
     ],
+    'Requests' => [
+        'list' => false,
+        'record' => true,
+    ],
 ];

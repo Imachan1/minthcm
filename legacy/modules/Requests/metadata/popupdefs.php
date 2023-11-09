@@ -43,84 +43,96 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-
-$layout_defs['Benefits'] = array(
-   'subpanel_setup' => array(
-      'securitygroups' => array(
-         'top_buttons' => array( array( 'widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'SecurityGroups', 'mode' => 'MultiSelect' ), ),
-         'order' => 900,
-         'sort_by' => 'name',
-         'sort_order' => 'asc',
-         'module' => 'SecurityGroups',
-         'refresh_page' => 1,
-         'subpanel_name' => 'default',
-         'get_subpanel_data' => 'SecurityGroups',
-         'add_subpanel_data' => 'securitygroup_id',
-         'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
+$table_name = 'requests';
+$popupMeta = array(
+   'moduleMain' => 'Requests',
+   'varName' => 'Requests',
+   'orderBy' => $table_name . '.name',
+   'whereClauses' => array(
+      'name' => $table_name . '.name',
+      'status' => $table_name . '.status',
+      'type' => $table_name . '.type',
+      'assigned_user_name' => $table_name . '.assigned_user_name',
+      'employee_name' => $table_name . '.employee_name',
+   ),
+   'searchInputs' => array(
+      'name',
+      'status',
+      'type',
+      'assigned_user_name',
+      'employee_name',
+   ),
+   'searchdefs' => array(
+      'name' => array(
+         'name' => 'name',
       ),
-      'employees' => array(
-         'order' => 100,
+      'status' => array(
+         'name' => 'status',
+      ),
+      'assigned_user_id' =>
+      array(
+         'name' => 'assigned_user_id',
+         'label' => 'LBL_ASSIGNED_TO',
+         'type' => 'enum',
+         'function' =>
+         array(
+            'name' => 'get_user_array',
+            'params' =>
+            array(
+               false,
+            ),
+         ),
+         'width' => '10%',
+      ),
+      'employee_id' =>
+      array(
+         'name' => 'employee_id',
+         'label' => 'LBL_EMPLOYEE',
+         'type' => 'enum',
+         'function' =>
+         array(
+            'name' => 'get_user_array',
+            'params' =>
+            array(
+               false,
+            ),
+         ),
+         'default' => true,
+         'width' => '10%',
+      ),
+   ),
+   'listviewdefs' => array(
+      'name' => array(
+         'label' => 'LBL_NAME',
+         'link' => true,
+         'default' => true,
+      ),
+      'status' => array(
+         'default' => true,
+         'label' => 'LBL_STATUS',
+         'name' => 'status',
+      ),
+      'type' => array(
+         'default' => true,
+         'label' => 'LBL_TYPE',
+         'name' => 'type',
+      ),
+      'assigned_user_name' =>
+      array(
+         'width' => '9%',
+         'label' => 'LBL_ASSIGNED_TO_NAME',
          'module' => 'Employees',
-         'subpanel_name' => 'ForBenefits',
-         'sort_order' => 'asc',
-         'sort_by' => 'id',
-         'title_key' => 'LBL_EMPLOYEES',
-         'get_subpanel_data' => 'employees',
-         'top_buttons' =>
-         array(
-            array(
-               'widget_class' => 'SubPanelTopSelectButton',
-               'mode' => 'MultiSelect',
-            ),
-         ),
+         'id' => 'ASSIGNED_USER_ID',
+         'default' => true,
+         'name' => 'assigned_user_name',
       ),
-      'positions' => array(
-         'order' => 100,
-         'module' => 'Positions',
-         'subpanel_name' => 'default',
-         'sort_order' => 'asc',
-         'sort_by' => 'id',
-         'title_key' => 'LBL_POSITIONS',
-         'get_subpanel_data' => 'positions',
-         'top_buttons' =>
-         array(
-            array(
-               'widget_class' => 'SubPanelTopSelectButton',
-               'mode' => 'MultiSelect',
-            ),
-            array(
-               'widget_class' => 'SubPanelTopButtonQuickCreate',
-            ),
-         ),
-      ),
-      'roles' => array(
-         'order' => 100,
-         'module' => 'EmployeeRoles',
-         'subpanel_name' => 'ForBenefits',
-         'sort_order' => 'asc',
-         'sort_by' => 'id',
-         'title_key' => 'LBL_ROLES',
-         'get_subpanel_data' => 'roles',
-         'top_buttons' =>
-         array(
-            array(
-               'widget_class' => 'SubPanelTopSelectButton',
-               'mode' => 'MultiSelect',
-            ),
-            array(
-               'widget_class' => 'SubPanelTopButtonQuickCreate',
-            ),
-         ),
-      ),
-      'requests' => array(
-        'order' => 100,
-        'module' => 'Requests',
-        'subpanel_name' => 'default',
-        'sort_order' => 'desc',
-        'sort_by' => 'date_modified',
-        'title_key' => 'LBL_REQUESTS',
-        'get_subpanel_data' => 'requests',
-        'top_buttons' => array(),
+      'employee_name' =>
+      array(
+         'width' => '9%',
+         'label' => 'LBL_EMPLOYEE',
+         'module' => 'Employees',
+         'default' => true,
+         'name' => 'employee_name',
       ),
    ),
 );

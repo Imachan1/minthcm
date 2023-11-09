@@ -44,42 +44,97 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$mod_strings = array(
-   'LBL_ASSIGNED_TO_ID' => 'Assigned User',
-   'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
-   'LBL_SECURITYGROUPS' => 'Organizational Unit',
-   'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Unit',
-   'LBL_ID' => 'ID',
-   'LBL_DATE_ENTERED' => 'Date Created',
-   'LBL_DATE_MODIFIED' => 'Date Modified',
-   'LBL_MODIFIED' => 'Modified By',
-   'LBL_MODIFIED_NAME' => 'Modified By Name',
-   'LBL_CREATED' => 'Created By',
-   'LBL_DESCRIPTION' => 'Description',
-   'LBL_DELETED' => 'Deleted',
-   'LBL_NAME' => 'Name',
-   'LBL_CREATED_USER' => 'Created by User',
-   'LBL_MODIFIED_USER' => 'Modified by User',
-   'LBL_LIST_NAME' => 'Name',
-   'LBL_EDIT_BUTTON' => 'Edit',
-   'LBL_REMOVE' => 'Remove',
-   'LBL_ASCENDING' => 'Ascending',
-   'LBL_DESCENDING' => 'Descending',
-   'LBL_LIST_FORM_TITLE' => 'Benefits List',
-   'LBL_MODULE_NAME' => 'Benefits',
-   'LBL_MODULE_TITLE' => 'Benefits',
-   'LBL_HOMEPAGE_TITLE' => 'My Benefits',
-   'LNK_NEW_RECORD' => 'Create Benefit',
-   'LNK_LIST' => 'View Benefits',
-   'LNK_IMPORT_BENEFITS' => 'Import Benefits',
-   'LBL_SEARCH_FORM_TITLE' => 'Search Benefits',
-   'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
-   'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-   'LBL_BENEFITS_SUBPANEL_TITLE' => 'Benefits',
-   'LBL_NEW_FORM_TITLE' => 'New Benefit',
-   'LBL_EDITVIEW_PANEL1' => 'OTHER',
-   'LBL_ROLES' => 'Roles',
-   'LBL_POSITIONS' => 'Positions',
-   'LBL_EMPLOYEES' => 'Employees',
-   'LBL_REQUESTS' => 'Requests',
+// created: 2015-04-29 15:00:21
+$searchFields['Requests'] = array(
+   'name' =>
+   array(
+      'query_type' => 'default',
+   ),
+   'status' =>
+   array(
+      'query_type' => 'default',
+   ),
+   'type' =>
+   array(
+      'query_type' => 'default',
+   ),
+   'current_user_only' =>
+   array(
+      'query_type' => 'default',
+      'db_field' =>
+      array(
+         'assigned_user_id',
+      ),
+      'my_items' => true,
+      'vname' => 'LBL_CURRENT_USER_FILTER',
+      'type' => 'bool',
+   ),
+   'favorites_only' =>
+   array(
+      'query_type' => 'format',
+      'operator' => 'subquery',
+      'checked_only' => true,
+      'subquery' => 'SELECT sugarfavorites.record_id FROM sugarfavorites 
+			                    WHERE sugarfavorites.deleted=0 
+			                        and sugarfavorites.module = \'Applications\' 
+			                        and sugarfavorites.assigned_user_id = \'{0}\'',
+      'db_field' =>
+      array(
+         'id',
+      ),
+   ),
+   'range_start_date' =>
+   array(
+      'query_type' => 'default',
+      'enable_range_search' => true,
+      'is_date_field' => true,
+   ),
+   'start_range_start_date' =>
+   array(
+      'query_type' => 'default',
+      'enable_range_search' => true,
+      'is_date_field' => true,
+   ),
+   'end_range_start_date' =>
+   array(
+      'query_type' => 'default',
+      'enable_range_search' => true,
+      'is_date_field' => true,
+   ),
+   'range_end_date' =>
+   array(
+      'query_type' => 'default',
+      'enable_range_search' => true,
+      'is_date_field' => true,
+   ),
+   'start_range_end_date' =>
+   array(
+      'query_type' => 'default',
+      'enable_range_search' => true,
+      'is_date_field' => true,
+   ),
+   'end_range_end_date' =>
+   array(
+      'query_type' => 'default',
+      'enable_range_search' => true,
+      'is_date_field' => true,
+   ),
+   'range_start_date' =>
+   array(
+      'query_type' => 'default',
+      'enable_range_search' => true,
+      'is_date_field' => true,
+   ),
+   'start_range_start_date' =>
+   array(
+      'query_type' => 'default',
+      'enable_range_search' => true,
+      'is_date_field' => true,
+   ),
+   'end_range_start_date' =>
+   array(
+      'query_type' => 'default',
+      'enable_range_search' => true,
+      'is_date_field' => true,
+   ),
 );

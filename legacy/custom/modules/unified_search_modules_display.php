@@ -307,4 +307,7 @@ $unified_search_modules_display = array(
     'Files' => array(
         'visible' => true,
     ),
+    "Requests" => array(
+        'visible' => true,
+    ),
 );

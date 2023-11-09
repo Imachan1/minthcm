@@ -77,6 +77,17 @@ $dictionary['Benefits'] = array(
          'bean_name' => 'EmployeeRoles',
          'vname' => 'LBL_ROLES',
       ),
+      'requests' => array(
+        'name' => 'requests',
+        'type' => 'link',
+        'relationship' => 'benefit_requests',
+        'source' => 'non-db',
+        'module' => 'Requests',
+        'bean_name' => 'Requests',
+        'vname' => 'LBL_REQUESTS',
+        'label' => 'LBL_REQUESTS',
+        'side' => 'right',
+    ),
    ),
    'relationships' => array(
    ),
