@@ -217,7 +217,7 @@ class WorkSchedules extends Basic
     {
         if ($new_record && in_array($this->type , ['holiday', 'sick', 'sick_care', 'occasional_leave', 'leave_at_request', 'overtime', 'excused_absence'])) {
             require_once 'include/Notifications/plugins/WorkScheduleLeaveCreated.php';
-            (new WorkScheduleLeaveCreated())->run($this);
+            (new WorkScheduleLeaveCreated($this))->run();
         }
     }
     protected function checkUniqueTime()

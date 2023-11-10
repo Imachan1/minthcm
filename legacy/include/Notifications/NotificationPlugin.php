@@ -51,7 +51,7 @@ abstract class NotificationPlugin {
       return new Notification;
    }
 
-   abstract public function run($o = null);
+   abstract public function run();
 
    public function isWebPushableNotification(){
       return false;
