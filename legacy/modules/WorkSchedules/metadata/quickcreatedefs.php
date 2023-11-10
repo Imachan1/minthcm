@@ -103,6 +103,9 @@ $viewdefs[$module_name] = array(
                ),
             ),
             array(
+                'deputy_name',
+            ),
+            array(
                array(
                   'name' => 'comments',
                   'label' => 'LBL_COMMENTS',

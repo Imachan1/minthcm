@@ -59,6 +59,9 @@ $dashletData['WorkSchedulesDashlet']['searchFields'] = array(
     'assigned_user_id' => array(
         'default' => '',
     ),
+    'deputy_name' => array(
+        'default' => '',
+    ),
 );
 $dashletData['WorkSchedulesDashlet']['columns'] = array(
     'assigned_user_name' => array(
@@ -126,5 +129,12 @@ $dashletData['WorkSchedulesDashlet']['columns'] = array(
         'id' => 'WORKPLACE_ID',
         'width' => '10%',
         'default' => true,
+    ),
+    'deputy_name' => array(
+        'type' => 'relate',
+        'link' => true,
+        'label' => 'LBL_DEPUTY_NAME',
+        'id' => 'DEPUTY_ID',
+        'width' => '10%',
     ),
 );

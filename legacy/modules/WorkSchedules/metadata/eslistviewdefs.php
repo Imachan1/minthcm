@@ -19,6 +19,8 @@ $ESListViewDefs['WorkSchedules'] = [
         'assigned_user_name' => [
             'default' => true,
         ],
+        'deputy_name' => [
+        ],
         'date_start' => [
         ],
         'date_end' => [
@@ -46,6 +48,7 @@ $ESListViewDefs['WorkSchedules'] = [
         'spent_time_settlement' => [],
         'workplace_name' => [],
         'assigned_user_name' => [],
+        'deputy_name' => [],
         'date_entered' => [],
         'date_modified' => [],
         'created_by_name' => [],

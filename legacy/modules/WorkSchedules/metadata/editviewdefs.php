@@ -68,7 +68,7 @@ array(
                     ),
                 ),
                 array(
-                    'assistant_name',
+                    'deputy_name',
                 ),
                 array(
                     array(

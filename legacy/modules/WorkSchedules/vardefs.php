@@ -521,36 +521,33 @@ $dictionary['WorkSchedules'] = array(
          'vname' => 'LBL_RELATIONSHIP_WORKPLACE_ID', 
          'audited' => true,
       ),
-
-
-      
-      "assistant_workschedules" => array(
-         'name' => 'assistant_workschedules',
+      "deputy" => array(
+         'name' => 'deputy',
          'type' => 'link',
-         'relationship' => 'assistant_workschedules',
+         'relationship' => 'deputy_workschedules',
          'source' => 'non-db',
          'module' => 'Users',
          'bean_name' => 'Users',
-         'vname' => 'LBL_ASSISTANT_NAME',
-         'id_name' => 'assistant_id',
+         'vname' => 'LBL_DEPUTY',
+         'id_name' => 'deputy_id',
       ),
-      "assistant_name" => array(
-         'name' => 'assistant_name',
+      "deputy_name" => array(
+         'name' => 'deputy_name',
          'type' => 'relate',
          'source' => 'non-db',
-         'vname' => 'LBL_ASSISTANT_NAME',
-         'id_name' => 'assistant_id',
-         'link' => 'assistant_workschedules',
+         'vname' => 'LBL_DEPUTY_NAME',
+         'id_name' => 'deputy_id',
+         'link' => 'deputy_workschedules',
          'module' => 'Users',
          'table' => 'users',
          'rname' => 'user_name',
          'vt_dependency' => "inArray(\$type,'holiday', 'sick', 'sick_care', 'occasional_leave', 'leave_at_request', 'overtime', 'excused_absence')",
       ),
-      "assistant_id" => array(
-         'name' => 'assistant_id',
-         'relationship' => 'assistant_workschedules',
+      "deputy_id" => array(
+         'name' => 'deputy_id',
+         'relationship' => 'deputy_workschedules',
          'type' => 'id',
-         'vname' => 'LBL_ASSISTANT_ID', 
+         'vname' => 'LBL_DEPUTY_ID', 
          'audited' => true,
       ),
    ),
@@ -591,13 +588,13 @@ $dictionary['WorkSchedules'] = array(
          'rhs_key' => 'workplace_id',
          'relationship_type' => 'one-to-many',
       ),
-      "assistant_workschedules" => array(
+      "deputy_workschedules" => array(
          'lhs_module' => 'Users',
          'lhs_table' => 'users',
          'lhs_key' => 'id',
          'rhs_module' => 'WorkSchedules',
          'rhs_table' => 'workschedules',
-         'rhs_key' => 'assistant_id',
+         'rhs_key' => 'deputy_id',
          'relationship_type' => 'one-to-many',
       ),
    ),

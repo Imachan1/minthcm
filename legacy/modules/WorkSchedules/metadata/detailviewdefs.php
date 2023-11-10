@@ -75,7 +75,7 @@ array(
                     ),
                 ),
                 array(
-                    0 => 'assistant_name',
+                    0 => 'deputy_name',
                 ),
                 array(
                     0 => array(
