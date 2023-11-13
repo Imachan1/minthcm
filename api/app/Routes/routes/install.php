@@ -123,7 +123,7 @@ $routes = array(
                 "type" => StringType::class,
                 "required" => true,
                 "desc" => 'Database collation',
-                "example" => 'utf8_general_ci'
+                "example" => 'utf8mb4_general_ci'
             ),
         ),
     ),

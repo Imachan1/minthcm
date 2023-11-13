@@ -35,7 +35,7 @@ $request = new Request(
 
 // UNCOMMENT ANY TESTS U WANT TO PERFORM -> FILL IN THE DATA FOR THE POST REQUESTS
 
-//testLicense($installController, $request);
+// testLicense($installController, $request);
 // testVerifyEnvironment($installController, $request);
 // testDBConnections($installController, $request);
 // testDBValidate($installController, $request);

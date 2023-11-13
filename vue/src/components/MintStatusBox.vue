@@ -22,7 +22,10 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const title = computed(() => languages.label(`LBL_MINT4_STATUS_BOX_${props.type?.toUpperCase()}`) + '! ')
+const title = computed(() => {
+    const type = props.type?.toUpperCase()
+    return (languages.languages.app_strings?.[`LBL_MINT4_STATUS_BOX_${type}`] ?? type) + '! '
+})
 const icons = {
     error: 'mdi-alert-outline',
     success: 'mdi-check',

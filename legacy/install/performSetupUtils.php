@@ -15,7 +15,7 @@ function installStatus($msg, $cmd = null, $overwrite = false, $before = '[ok]<br
 }
 
 function setMintInstallStatus($step, $message){
-    $statusFile = __DIR__ . '/../api/install/Assets/status.json';
+    $statusFile = __DIR__ . '/../../install/assets/status.json';
 
     $statusData = [];
 
@@ -27,7 +27,7 @@ function setMintInstallStatus($step, $message){
         }
     }
 
-    $statusData[] = [$step => $message];
+    $statusData[$step] = $message;
 
     $encodedStatusData = json_encode($statusData, JSON_PRETTY_PRINT);
 

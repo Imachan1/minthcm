@@ -73,16 +73,24 @@ class InstallController
      */
     public function checkAvailableDBConnection(Request $request, Response $response): Response
     {
+        chdir('../legacy');
         $DbDrivers = \DBManagerFactory::getDbDrivers();
+        chdir('../api');
 
         if (!empty($DbDrivers)) {
             $status = 1;
+            $DbDrivers = array_map(function ($db) {
+                return [
+                    'dbType' => $db->dbType,
+                    'variant' => $db->variant,
+                    'label' => $db->label,
+                ];
+            }, $DbDrivers);
             $message = "LBL_FOUND_DB_CONNECTIONS";
         } else {
             $status = 0;
             $message = "LBL_CANT_FIND_DB_CONNECTIONS";
         }
-
 
         return $this->responseWithJson($response, ["status" => $status, "message" => $message, "dbConnections" => $DbDrivers]);
     }
@@ -188,7 +196,7 @@ class InstallController
 
     /**
      * Performs the installation using the mechanisms from 
-     * MintCLI for maintainability. This process can only be triggered
+     * MintCLI for mainptainability. This process can only be triggered
      * after you've triggered the previous functions to save the 
      * rootDirectory, dbData and elasticData
      */
