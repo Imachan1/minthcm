@@ -80,5 +80,6 @@ $mod_strings = array(
    'LBL_EDITVIEW_PANEL1' => 'OTHER',
    'LBL_ROLES' => 'Roles',
    'LBL_POSITIONS' => 'Positions',
-   'LBL_EMPLOYEES' => 'Employees'
+   'LBL_EMPLOYEES' => 'Employees',
+   'LBL_REQUESTS' => 'Requests',
 );

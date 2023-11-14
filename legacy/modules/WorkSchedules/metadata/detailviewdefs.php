@@ -58,11 +58,11 @@ array(
         ),
         'panels' => array(
             'default' => array(
-                0 => array(
+                array(
                     0 => 'name',
                     1 => 'assigned_user_name',
                 ),
-                1 => array(
+                array(
                     0 => array(
                         'name' => 'type',
                         'studio' => 'visible',
@@ -74,7 +74,10 @@ array(
                         'label' => 'LBL_STATUS',
                     ),
                 ),
-                2 => array(
+                array(
+                    0 => 'deputy_name',
+                ),
+                array(
                     0 => array(
                         'name' => 'comments',
                         'label' => 'LBL_COMMENTS',
@@ -84,7 +87,7 @@ array(
                         'label' => 'LBL_OCCASIONAL_LEAVE_TYPE',
                     ),
                 ),
-                3 => array(
+                array(
                     0 => array(
                         'name' => 'date_start',
                         'label' => 'LBL_DATE_START',
@@ -94,15 +97,15 @@ array(
                         'label' => 'LBL_DATE_END',
                     ),
                 ),
-                4 => array(
+                array(
                     0 => 'spent_time',
                     1 => '',
                 ),
-                5 => array(
+                array(
                     0 => 'spent_time_settlement',
                     1 => 'delegation_name',
                 ),
-                6 => array(
+                array(
                     0 => array(
                         'name' => 'supervisor_acceptance',
                         'studio' => 'visible',
@@ -110,17 +113,17 @@ array(
                     ),
                     1 => '',
                 ),
-                7 => array(
+                array(
                     0 => array(
                         'name' => 'workplace_name',
                         'label' => 'LBL_RELATIONSHIP_WORKPLACE_NAME',
                     ),
                     '',
                 ),
-                8 => array(
+                array(
                     0 => 'delegation_duration',
                 ),
-                9 => array(
+                array(
                     0 => 'description',
                 ),
             ),

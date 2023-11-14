@@ -760,6 +760,11 @@ $moduleList[] = 'EmployeeCertificates';
 $beanList['Files'] = 'Files';
 $beanFiles['Files'] = 'modules/Files/Files.php';
 $moduleList[] = 'Files';
+
+$beanList['Requests'] = 'Requests';
+$beanFiles['Requests'] = 'modules/Requests/Requests.php';
+$moduleList[] = 'Requests';
+
 if (file_exists('include/modules_override.php')) {
     include 'include/modules_override.php';
 }

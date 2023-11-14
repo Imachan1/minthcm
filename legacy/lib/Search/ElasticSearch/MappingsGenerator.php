@@ -104,14 +104,16 @@ class MappingsGenerator
             $key = !empty($data['es_module']) ? $data['es_module'] : $module['module'];
 
             foreach ($fields_to_map as $field) {
-                $es_type_name = $this->type_mapping[$defs[$field]['type']] ?? 'text';
-                $es_type = $this->types[$es_type_name];
+                if ($defs[$field]['source'] != "non-db") {
+                    $es_type_name = $this->type_mapping[$defs[$field]['type']] ?? 'text';
+                    $es_type = $this->types[$es_type_name];
 
-                if (!empty($this->not_standard_fields[$field])) {
-                    $mappings = $this->handleNotStandardField($this->not_standard_fields[$field], $mappings, $key, $es_type);
-                } else if (!empty($defs[$field])) {
-                    // else if because script does not work well for fields: search_name, recr_contact_agree oraz current_user_only
-                    $mappings['mappings'][$key]['properties'][$field] = $this->getPropertyMappingConfig($defs[$field]);
+                    if (!empty($this->not_standard_fields[$field])) {
+                        $mappings = $this->handleNotStandardField($this->not_standard_fields[$field], $mappings, $key, $es_type);
+                    } else if (!empty($defs[$field])) {
+                        // else if because script does not work well for fields: search_name, recr_contact_agree oraz current_user_only
+                        $mappings['mappings'][$key]['properties'][$field] = $this->getPropertyMappingConfig($defs[$field]);
+                    }
                 }
             }
 

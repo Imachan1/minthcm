@@ -14,6 +14,12 @@ $ESListViewDefs['EmployeeCertificates'] = [
         ],
         'end_date' => [
         ],
+        'attempts_number' => [
+            'default' => true,
+        ],
+        'points_scored' => [
+            'default' => true,
+        ],
         'employee_name' => [
             'default' => true,
         ],
@@ -50,5 +56,7 @@ $ESListViewDefs['EmployeeCertificates'] = [
         'date_modified' => [],
         'created_by_name' => [],
         'modified_by_name' => [],
+        'attempts_number' => [],
+        'points_scored' => [],
     ],
 ];

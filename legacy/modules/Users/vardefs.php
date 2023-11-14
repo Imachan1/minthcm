@@ -976,6 +976,14 @@ $dictionary['User'] = array(
             'bean_name' => 'ScheduleReports',
             'vname' => 'LBL_SCHEDULEREPORTS',
         ),
+        'deputy' => array(
+            'name' => 'deputy',
+            'type' => 'link',
+            'relationship' => 'deputy_workschedules',
+            'source' => 'non-db',
+            'side' => 'left',
+            'vname' => 'LBL_DEPUTY',
+        ),
     ),
     'indices' => array(
         array(

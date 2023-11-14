@@ -93,4 +93,7 @@ $mod_strings = array(
     'LBL_RELATIONSHIP_CANDIDATE_NAME' => 'Candidate',
     'LBL_CERTIFICATE_SUBPANEL_TITLE' => 'Employee Certificates',
     'LBL_EMPLOYEE_CERTIFICATES' => 'Employee Certificates',
+    'LBL_ATTEMPTS_NUMBER' => 'Number of Attempts',
+    'LBL_DURATION' => 'Duration',
+    'LBL_PASS_RATE' => 'Pass Rate',
 );

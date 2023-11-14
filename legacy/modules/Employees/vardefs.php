@@ -294,6 +294,14 @@ $dictionary['Employee']['fields']['candidatures'] = array(
     'vname' => 'LBL_CANDIDATURES',
     'label' => 'LBL_CANDIDATURES',
 );
+$dictionary['Employee']['fields']['deputy'] = array(
+    'name' => 'deputy',
+    'type' => 'link',
+    'relationship' => 'deputy_workschedules',
+    'source' => 'non-db',
+    'side' => 'left',
+    'vname' => 'LBL_DEPUTY',
+);
 
 $dictionary["Employee"]["audited"] = true;
 $dictionary["Employee"]["fields"]["employee_status"]["audited"] = true;

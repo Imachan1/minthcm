@@ -53,4 +53,16 @@ $dashletData['EmployeeCertificatesDashlet']['columns'] = array (
     'width' => '10%',
     'default' => true,
   ),
+  'attempts_number' => 
+  array (
+    'label' => 'LBL_ATTEMPTS_NUMBER',
+    'width' => '10%',
+    'default' => false,
+  ),
+  'points_scored' => 
+  array (
+    'label' => 'LBL_POINTS_SCORED',
+    'width' => '10%',
+    'default' => false,
+  ),
 );

@@ -92,4 +92,5 @@ $mod_strings = array(
     'LBL_RELATIONSHIP_ELEMENTS_ID' => 'Element ID',
     'LBL_CLOSE_TRAINING_BUTTON' => 'Close',
     'LBL_FILES' => 'Files',
+    'LBL_REQUESTS' => 'Requests',
 );

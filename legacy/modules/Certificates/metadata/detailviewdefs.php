@@ -82,7 +82,11 @@ $viewdefs[$module_name] = array(
             'lbl_default' => array(
                 array(
                     'name',
-                    '',
+                    'attempts_number',
+                ),
+                array(
+                    'duration',
+                    'pass_rate',
                 ),
                 array(
                     'description',

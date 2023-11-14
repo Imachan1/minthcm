@@ -7,6 +7,15 @@ $ESListViewDefs['Certificates'] = [
             'link' => true,
             'default' => true,
         ],
+        'attempts_number' => [
+            'default' => true,
+        ],
+        'duration' => [
+            'default' => true,
+        ],
+        'pass_rate' => [
+            'default' => true,
+        ],
         'assigned_user_name' => [
             'default' => true,
         ],
@@ -14,13 +23,13 @@ $ESListViewDefs['Certificates'] = [
             'default' => true,
         ],
         'date_modified' => [
-            'default' => true,
+            'default' => false,
         ],
         'created_by_name' => [
-            'link' => true,
+            'link' => false,
         ],
         'modified_by_name' => [
-            'link' => true,
+            'link' => false,
         ],
     ],
     'search' => [
@@ -29,6 +38,9 @@ $ESListViewDefs['Certificates'] = [
         'date_entered' => [],
         'date_modified' => [],
         'created_by_name' => [],
-        'modified_by_name' => [],        
+        'modified_by_name' => [],
+        'attempts_number' => [],
+        'duration' => [],
+        'pass_rate' => [],       
     ],
 ];

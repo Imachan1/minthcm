@@ -89,6 +89,10 @@ $viewdefs[$module_name] = array(
                     'end_date',
                 ),
                 array(
+                    'attempts_number',
+                    'points_scored',
+                ),
+                array(
                     array(
                         'name' => 'certificate_name',
                         'label' => 'LBL_RELATIONSHIP_CERTIFICATE_NAME',

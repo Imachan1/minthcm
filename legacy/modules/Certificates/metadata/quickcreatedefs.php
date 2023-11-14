@@ -65,6 +65,11 @@ $viewdefs[$module_name]['QuickCreate'] = array(
         'default' => array(
             array(
                 'name',
+                'attempts_number',
+            ),
+            array(
+                'duration',
+                'pass_rate',
             ),
             array(
                 'assigned_user_name',

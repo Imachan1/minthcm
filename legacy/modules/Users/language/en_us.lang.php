@@ -706,6 +706,8 @@ $mod_strings = array(
     'LBL_USERS_CONFIRMATION_BUTTON_CONFIRM' => 'YES',
     'LBL_USERS_CONFIRMATION_BUTTON_CANCEL' => 'NO',
     'LBL_USER_DEACTIVE_SUPERVISOR'=>'The employee you want to deactivate is the current manager of the unit</br> <URL>In order to correctly generate the organizational structure of the department, a new manager should be indicated. Do you want to continue with deactivation?',
+    'LBL_DEPUTY'=>'Deputy',
+    
     'LNK_LIST_OUTBOUND_EMAIL_ACCOUNTS' => 'Outbound Email Accounts',
     'LNK_LIST_INBOUND_EMAIL_ACCOUNTS' => 'Inbound Email Accounts',
     'LNK_EXTERNAL_OAUTH_CONNECTIONS' => 'External OAuth Connections',

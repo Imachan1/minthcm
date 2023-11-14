@@ -203,4 +203,5 @@ $mod_strings = array(
     'LBL_BUSINESS_ROLE' => 'Business Role',
     'LBL_EMPLOYEES_CONFIRMATION_BUTTON_CONFIRM' => 'YES',
     'LBL_EMPLOYEES_CONFIRMATION_BUTTON_CANCEL' => 'NO',
+    'LBL_DEPUTY'=>'Deputy',
 );

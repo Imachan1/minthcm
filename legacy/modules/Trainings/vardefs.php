@@ -270,6 +270,17 @@ $dictionary['Trainings'] = array(
             'vname' => 'LBL_FILES',
             'label' => 'LBL_FILES',
         ),
+        'requests' => array(
+            'name' => 'requests',
+            'type' => 'link',
+            'relationship' => 'training_requests',
+            'source' => 'non-db',
+            'module' => 'Requests',
+            'bean_name' => 'Requests',
+            'vname' => 'LBL_REQUESTS',
+            'label' => 'LBL_REQUESTS',
+            'side' => 'right',
+        ),
     ),
     'relationships' => array(
         "onboardingoffboardingelements_trainings" => array(

@@ -271,4 +271,7 @@ $unified_search_modules_display = array(
     'Reactions' => array(
         'visible' => true,
     ),
+    "Requests" => array(
+        'visible' => true,
+    ),
 );

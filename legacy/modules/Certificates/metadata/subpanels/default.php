@@ -69,6 +69,18 @@ $subpanel_layout = array(
             'widget_class' => 'SubPanelDetailViewLink',
             'width' => '15%',
         ),
+        'attempts_number' => array(
+            'vname' => 'LBL_ATTEMPTS_NUMBER',
+            'width' => '15%',
+        ),
+        'duration' => array(
+            'vname' => 'LBL_DURATION',
+            'width' => '15%',
+        ),
+        'pass_rate' => array(
+            'vname' => 'LBL_PASS_RATE',
+            'width' => '15%',
+        ),
         'assigned_user_name' => array(
             'vname' => 'LBL_ASSIGNED_TO_NAME',
             'width' => '15%',

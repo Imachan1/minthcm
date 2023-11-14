@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+import { defineProps } from 'vue'
 import { FieldVardef } from '@/store/modules'
 
 interface Props {
@@ -27,6 +28,7 @@ const props = defineProps<Props>()
 .v-input {
     :deep(.v-selection-control) {
         flex-direction: row-reverse;
+        justify-content: space-between;
     }
     :deep(.v-selection-control--dirty) {
         padding-right: 8px;

@@ -112,5 +112,15 @@ $layout_defs['Benefits'] = array(
             ),
          ),
       ),
+      'requests' => array(
+        'order' => 100,
+        'module' => 'Requests',
+        'subpanel_name' => 'default',
+        'sort_order' => 'desc',
+        'sort_by' => 'date_modified',
+        'title_key' => 'LBL_REQUESTS',
+        'get_subpanel_data' => 'requests',
+        'top_buttons' => array(),
+      ),
    ),
 );

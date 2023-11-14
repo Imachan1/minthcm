@@ -181,6 +181,7 @@ class WorkSchedules extends Basic
         // MintHCM #76236 END
 
         $this->beforeSave();
+        $new_record = empty($this->fetched_row);
 
         if (empty($this->date_end) || empty($this->date_start)) {
             $GLOBALS['log']->fatal("Date start or date end is empty. Cannot save.Date start: {$this->date_start} date end: {$this->date_end}");
@@ -202,6 +203,7 @@ class WorkSchedules extends Basic
             }
         }
 
+        $this->addNotification($new_record);
         if ($parent_result) {
             if (isset($_REQUEST['return_module']) && ($_REQUEST['return_module'] == 'Calendar' || $_REQUEST['return_module'] == 'Home')) {
                 header("Location: index.php?module={$_REQUEST['return_module']}&action=index");
@@ -211,7 +213,13 @@ class WorkSchedules extends Basic
         }
         return $parent_result;
     }
-
+    protected function addNotification($new_record)
+    {
+        if ($new_record && in_array($this->type , ['holiday', 'sick', 'sick_care', 'occasional_leave', 'leave_at_request', 'overtime', 'excused_absence'])) {
+            require_once 'include/Notifications/plugins/WorkScheduleLeaveCreated.php';
+            (new WorkScheduleLeaveCreated($this))->run();
+        }
+    }
     protected function checkUniqueTime()
     {
         global $db, $current_user;

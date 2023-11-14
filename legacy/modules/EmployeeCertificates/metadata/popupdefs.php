@@ -54,6 +54,8 @@ $popupMeta = array(
         'status' => 'cemployeeertificates.status',
         'candidate_name' => 'candidates.candidate_name',
         'certificate_name' => 'certificates.certificate_name',
+        'attempts_number' => 'certificates.attempts_number',
+        'points_scored' => 'certificates.points_scored',
     ),
     'searchInputs' => array(
         'name',
@@ -62,6 +64,8 @@ $popupMeta = array(
         'status',
         'candidate_name',
         'certificate_name',
+        'attempts_number',
+        'points_scored',
     ),
     'searchdefs' => array(
         'name' => array(
@@ -72,6 +76,12 @@ $popupMeta = array(
         ),
         'end_date' => array(
             'name' => 'end_date',
+        ),
+        'attempts_number' => array(
+            'name' => 'attempts_number',
+        ),
+        'points_scored' => array(
+            'name' => 'points_scored',
         ),
         'status' => array(
             'name' => 'status',
