@@ -701,3 +701,4 @@ class M2MRelationship extends SugarRelationship
         return $fields;
     }
 }
+

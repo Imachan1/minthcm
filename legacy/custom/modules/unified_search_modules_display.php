@@ -22,6 +22,21 @@ $unified_search_modules_display = array(
     'FP_Event_Locations' => array(
         'visible' => true,
     ),
+    'AOK_KnowledgeBase' => array(
+        'visible' => true,
+    ),
+    'AOK_Knowledge_Base_Categories' => array(
+        'visible' => true,
+    ),
+    'AM_ProjectTemplates' => array(
+        'visible' => true,
+    ),
+    'FP_events' => array(
+        'visible' => true,
+    ),
+    'FP_Event_Locations' => array(
+        'visible' => true,
+    ),
     'Prospects' => array(
         'visible' => true,
     ),
@@ -269,6 +284,9 @@ $unified_search_modules_display = array(
         'visible' => true,
     ),
     'Reactions' => array(
+        'visible' => true,
+    ),
+    "Requests" => array(
         'visible' => true,
     ),
     "Requests" => array(

@@ -681,3 +681,4 @@ class ElasticSearchIndexer extends AbstractIndexer
         $indexer->index();
     }
 }
+
