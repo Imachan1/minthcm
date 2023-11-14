@@ -188,25 +188,24 @@ class ElasticQuery extends SearchQuery
             }
         }
     }
-
     protected function getGlobalSearchModuleList(){
         include '../legacy/custom/modules/unified_search_modules_display.php';
         
-        $search_modules = ['Accounts','Contacts','Leads'];
+        $search_modules = [];
         $exclude_hardcode = ["Connectors","Currencies","OAuthTokens","OAuthKeys","ACLRoles","ACLActions","EmailMan","Schedulers","SchedulersJobs","CampaignLog","EmailMarketing","AOW_WorkFlow"];
-        
-        
-        
+        global $beanList;
         if(!empty($unified_search_modules_display)){
-            $search_modules = array_filter(array_map(function($row){ return $row['visible'] === true;},$unified_search_modules_display));    
+            $search_modules = array_filter(array_map(function($row){ return $row['visible'] === true ;},$unified_search_modules_display));    
+            foreach(array_keys($search_modules) as $module_name){
+                if(!isset($beanList[$module_name])){
+                    unset($search_modules[$module_name]);
+                }
+            }
             $exclude = array_filter(array_map(function($row){ return $row['visible'] === false;},$unified_search_modules_display));      
             $this->exclude_modules = array_merge($exclude_hardcode,array_keys($exclude));
-            
             return array_diff(array_keys($search_modules),$this->exclude_modules);
         }
 
         return $search_modules;
-        
-
     }
 }

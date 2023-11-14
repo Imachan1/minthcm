@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -7,8 +7,8 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2019 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -35,12 +35,13 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
- * If the display of the logos is not reasonably feasible for technical reasons, the
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
 
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
@@ -49,11 +50,18 @@ if (!defined('sugarEntry') || !sugarEntry) {
 global $moduleList;
 global $beanList;
 global $beanFiles;
+global $customBeanList;
+global $customObjectList;
+global $customBeanFiles;
 global $modInvisList;
 global $adminOnlyList;
 global $report_include_modules;
 
-$moduleList = array();
+$customBeanList = [];
+$customObjectList = [];
+$customBeanFiles = [];
+
+$moduleList = [];
 // this list defines the modules shown in the top tab list of the app
 //the order of this list is the default order displayed - do not change the order unless it is on purpose
 $moduleList[] = 'Home';
@@ -62,55 +70,55 @@ $moduleList[] = 'Calls';
 $moduleList[] = 'Meetings';
 $moduleList[] = 'Tasks';
 $moduleList[] = 'Notes';
-$moduleList[] = 'Leads';
-$moduleList[] = 'Contacts';
-$moduleList[] = 'Accounts';
-$moduleList[] = 'Opportunities';
+// $moduleList[] = 'Leads';
+// $moduleList[] = 'Contacts';
+// $moduleList[] = 'Accounts';
+// $moduleList[] = 'Opportunities';
 
 $moduleList[] = 'Emails';
 $moduleList[] = 'EmailTemplates';
 $moduleList[] = 'Campaigns';
-$moduleList[] = 'Prospects';
+// $moduleList[] = 'Prospects';
 $moduleList[] = 'ProspectLists';
 
 $moduleList[] = 'Documents';
-$moduleList[] = 'Cases';
+// $moduleList[] = 'Cases';
 $moduleList[] = 'Project';
-$moduleList[] = 'Bugs';
+// $moduleList[] = 'Bugs';
 $moduleList[] = 'ResourceCalendar';
 $moduleList[] = 'AOBH_BusinessHours';
 $moduleList[] = 'Employees';
 
-$moduleList[] = 'Spots';
+// $moduleList[] = 'Spots';
 
 // this list defines all of the module names and bean names in the app
 // to create a new module's bean class, add the bean definition here
-$beanList = array();
+$beanList = [];
 //ACL Objects
 $beanList['ACLRoles'] = 'ACLRole';
 $beanList['ACLActions'] = 'ACLAction';
 //END ACL OBJECTS
-$beanList['Leads'] = 'Lead';
-$beanList['Cases'] = 'aCase';
-$beanList['Bugs'] = 'Bug';
+// $beanList['Leads'] = 'Lead';
+// $beanList['Cases'] = 'aCase';
+// $beanList['Bugs'] = 'Bug';
 $beanList['ProspectLists'] = 'ProspectList';
-$beanList['Prospects'] = 'Prospect';
+// $beanList['Prospects'] = 'Prospect';
 $beanList['Project'] = 'Project';
 $beanList['ProjectTask'] = 'ProjectTask';
 $beanList['Campaigns'] = 'Campaign';
 $beanList['EmailMarketing'] = 'EmailMarketing';
 $beanList['CampaignLog'] = 'CampaignLog';
 $beanList['CampaignTrackers'] = 'CampaignTracker';
-$beanList['Releases'] = 'Release';
+// $beanList['Releases'] = 'Release';
 $beanList['Groups'] = 'Group';
 $beanList['EmailMan'] = 'EmailMan';
 $beanList['Schedulers'] = 'Scheduler';
 $beanList['SchedulersJobs'] = 'SchedulersJob';
-$beanList['Contacts'] = 'Contact';
-$beanList['Accounts'] = 'Account';
+// $beanList['Contacts'] = 'Contact';
+// $beanList['Accounts'] = 'Account';
 $beanList['DynamicFields'] = 'DynamicField';
 $beanList['EditCustomFields'] = 'FieldsMetaData';
-$beanList['Opportunities'] = 'Opportunity';
+// $beanList['Opportunities'] = 'Opportunity';
 $beanList['EmailTemplates'] = 'EmailTemplate';
 $beanList['Notes'] = 'Note';
 $beanList['Calls'] = 'Call';
@@ -148,38 +156,38 @@ $beanList['EmailText'] = 'EmailText';
 $beanList['Relationships'] = 'Relationship';
 $beanList['Employees'] = 'Employee';
 
-$beanList['Spots'] = 'Spots';
+// $beanList['Spots'] = 'Spots';
 $beanList['AOBH_BusinessHours'] = 'AOBH_BusinessHours';
 
 // this list defines all of the files that contain the SugarBean class definitions from $beanList
 // to create a new module's bean class, add the file definition here
-$beanFiles = array();
+$beanFiles = [];
 
 $beanFiles['ACLAction'] = 'modules/ACLActions/ACLAction.php';
 $beanFiles['ACLRole'] = 'modules/ACLRoles/ACLRole.php';
 $beanFiles['Relationship'] = 'modules/Relationships/Relationship.php';
 
-$beanFiles['Lead'] = 'modules/Leads/Lead.php';
-$beanFiles['aCase'] = 'modules/Cases/Case.php';
-$beanFiles['Bug'] = 'modules/Bugs/Bug.php';
+// $beanFiles['Lead'] = 'modules/Leads/Lead.php';
+// $beanFiles['aCase'] = 'modules/Cases/Case.php';
+// $beanFiles['Bug'] = 'modules/Bugs/Bug.php';
 $beanFiles['Group'] = 'modules/Groups/Group.php';
 $beanFiles['CampaignLog'] = 'modules/CampaignLog/CampaignLog.php';
 $beanFiles['Project'] = 'modules/Project/Project.php';
 $beanFiles['ProjectTask'] = 'modules/ProjectTask/ProjectTask.php';
 $beanFiles['Campaign'] = 'modules/Campaigns/Campaign.php';
 $beanFiles['ProspectList'] = 'modules/ProspectLists/ProspectList.php';
-$beanFiles['Prospect'] = 'modules/Prospects/Prospect.php';
+// $beanFiles['Prospect'] = 'modules/Prospects/Prospect.php';
 
 $beanFiles['EmailMarketing'] = 'modules/EmailMarketing/EmailMarketing.php';
 $beanFiles['CampaignTracker'] = 'modules/CampaignTrackers/CampaignTracker.php';
-$beanFiles['Release'] = 'modules/Releases/Release.php';
+// $beanFiles['Release'] = 'modules/Releases/Release.php';
 $beanFiles['EmailMan'] = 'modules/EmailMan/EmailMan.php';
 
 $beanFiles['Scheduler'] = 'modules/Schedulers/Scheduler.php';
 $beanFiles['SchedulersJob'] = 'modules/SchedulersJobs/SchedulersJob.php';
-$beanFiles['Contact'] = 'modules/Contacts/Contact.php';
-$beanFiles['Account'] = 'modules/Accounts/Account.php';
-$beanFiles['Opportunity'] = 'modules/Opportunities/Opportunity.php';
+// $beanFiles['Contact'] = 'modules/Contacts/Contact.php';
+// $beanFiles['Account'] = 'modules/Accounts/Account.php';
+// $beanFiles['Opportunity'] = 'modules/Opportunities/Opportunity.php';
 $beanFiles['EmailTemplate'] = 'modules/EmailTemplates/EmailTemplate.php';
 $beanFiles['Note'] = 'modules/Notes/Note.php';
 $beanFiles['Call'] = 'modules/Calls/Call.php';
@@ -202,8 +210,7 @@ $beanFiles['Role'] = 'modules/Roles/Role.php';
 $beanFiles['Document'] = 'modules/Documents/Document.php';
 $beanFiles['DocumentRevision'] = 'modules/DocumentRevisions/DocumentRevision.php';
 $beanFiles['FieldsMetaData'] = 'modules/DynamicFields/FieldsMetaData.php';
-
-//$beanFiles['Audit']           = 'modules/Audit/Audit.php';
+$beanFiles['Audit'] = 'modules/Audit/Audit.php';
 
 // deferred
 //$beanFiles['Queue'] = 'modules/Queues/Queue.php';
@@ -218,11 +225,12 @@ $beanFiles['EmailText'] = 'modules/EmailText/EmailText.php';
 
 $beanFiles['Configurator'] = 'modules/Configurator/Configurator.php';
 
-$beanFiles['Spots'] = 'modules/Spots/Spots.php';
+// $beanFiles['Spots'] = 'modules/Spots/Spots.php';
 $beanFiles['AOBH_BusinessHours'] = 'modules/AOBH_BusinessHours/AOBH_BusinessHours.php';
 
+
 // added these lists for security settings for tabs
-$modInvisList = array(
+$modInvisList = [
     'Administration',
     'Currencies',
     'CustomFields',
@@ -242,7 +250,7 @@ $modInvisList = array(
     'Connectors',
     'Employees',
     'Calendar',
-    'Releases',
+    // 'Releases',
     'Sync',
     'Users',
     'Versions',
@@ -263,7 +271,7 @@ $modInvisList = array(
     'CampaignTrackers',
     'CampaignLog',
     'EmailMan',
-    'Prospects',
+    // 'Prospects',
     'ProspectLists',
     'Groups',
     'InboundEmail',
@@ -275,25 +283,25 @@ $modInvisList = array(
     'Alert',
     'ResourceCalendar',
     'AOBH_BusinessHours',
-);
+];
 
-$adminOnlyList = array(
+$adminOnlyList = [
     //module => list of actions  (all says all actions are admin only)
-    //'Administration'=>array('all'=>1, 'SupportPortal'=>'allow'),
-    'Dropdown' => array('all' => 1),
-    'Dynamic' => array('all' => 1),
-    'DynamicFields' => array('all' => 1),
-    'Currencies' => array('all' => 1),
-    'EditCustomFields' => array('all' => 1),
-    'FieldsMetaData' => array('all' => 1),
-    'LabelEditor' => array('all' => 1),
-    'ACL' => array('all' => 1),
-    'ACLActions' => array('all' => 1),
-    'ACLRoles' => array('all' => 1),
-    'UpgradeWizard' => array('all' => 1),
-    'Studio' => array('all' => 1),
-    'Schedulers' => array('all' => 1),
-);
+    //'Administration' => ['all'=>1, 'SupportPortal'=>'allow'],
+    'Dropdown' => ['all' => 1],
+    'Dynamic' => ['all' => 1],
+    'DynamicFields' => ['all' => 1],
+    'Currencies' => ['all' => 1],
+    'EditCustomFields' => ['all' => 1],
+    'FieldsMetaData' => ['all' => 1],
+    'LabelEditor' => ['all' => 1],
+    'ACL' => ['all' => 1],
+    'ACLActions' => ['all' => 1],
+    'ACLRoles' => ['all' => 1],
+    'UpgradeWizard' => ['all' => 1],
+    'Studio' => ['all' => 1],
+    'Schedulers' => ['all' => 1],
+];
 
 $modInvisList[] = 'ACL';
 $modInvisList[] = 'ACLRoles';
@@ -305,13 +313,13 @@ $modInvisList[] = 'SavedSearch';
 $modInvisList[] = 'Studio';
 $modInvisList[] = 'Connectors';
 
-$report_include_modules = array();
+$report_include_modules = [];
 $report_include_modules['Currencies'] = 'Currency';
 //add prospects
-$report_include_modules['Prospects'] = 'Prospect';
+// $report_include_modules['Prospects'] = 'Prospect';
 $report_include_modules['DocumentRevisions'] = 'DocumentRevision';
-$report_include_modules['ProductCategories'] = 'ProductCategory';
-$report_include_modules['ProductTypes'] = 'ProductType';
+// $report_include_modules['ProductCategories'] = 'ProductCategory';
+// $report_include_modules['ProductTypes'] = 'ProductType';
 //add Tracker modules
 
 $report_include_modules['Trackers'] = 'Tracker';
@@ -322,7 +330,7 @@ $modInvisList[] = 'SugarFeed';
 
 // This is the mapping for modules that appear under a different module's tab
 // Be sure to also add the modules to $modInvisList, otherwise their tab will still appear
-$GLOBALS['moduleTabMap'] = array(
+$GLOBALS['moduleTabMap'] = [
     'UpgradeWizard' => 'Administration',
     'EmailMan' => 'Administration',
     'ModuleBuilder' => 'Administration',
@@ -332,7 +340,7 @@ $GLOBALS['moduleTabMap'] = array(
     'SugarFeed' => 'Administration',
     'DocumentRevisions' => 'Documents',
     'EmailMarketing' => 'Campaigns',
-);
+];
 $beanList['EAPM'] = 'EAPM';
 $beanFiles['EAPM'] = 'modules/EAPM/EAPM.php';
 $modules_exempt_from_availability_check['EAPM'] = 'EAPM';
@@ -360,8 +368,8 @@ $beanFiles['Favorites'] = 'modules/Favorites/Favorites.php';
 //Object list is only here to correct for modules that break
 //the bean class name == dictionary entry/object name convention
 //No future module should need an entry here.
-$objectList = array();
-$objectList['Cases'] = 'Case';
+$objectList = [];
+// $objectList['Cases'] = 'Case';
 $objectList['Groups'] = 'User';
 $objectList['Users'] = 'User';
 
@@ -401,16 +409,16 @@ $modules_exempt_from_availability_check['AOD_Index'] = 'AOD_Index';
 $report_include_modules['AOD_Index'] = 'AOD_Index';
 $modInvisList[] = 'AOD_Index';
 
-$beanList['AOP_Case_Events'] = 'AOP_Case_Events';
-$beanFiles['AOP_Case_Events'] = 'modules/AOP_Case_Events/AOP_Case_Events.php';
-$modules_exempt_from_availability_check['AOP_Case_Events'] = 'AOP_Case_Events';
-$report_include_modules['AOP_Case_Events'] = 'AOP_Case_Events';
-$modInvisList[] = 'AOP_Case_Events';
-$beanList['AOP_Case_Updates'] = 'AOP_Case_Updates';
-$beanFiles['AOP_Case_Updates'] = 'modules/AOP_Case_Updates/AOP_Case_Updates.php';
-$modules_exempt_from_availability_check['AOP_Case_Updates'] = 'AOP_Case_Updates';
-$report_include_modules['AOP_Case_Updates'] = 'AOP_Case_Updates';
-$modInvisList[] = 'AOP_Case_Updates';
+// $beanList['AOP_Case_Events'] = 'AOP_Case_Events';
+// $beanFiles['AOP_Case_Events'] = 'modules/AOP_Case_Events/AOP_Case_Events.php';
+// $modules_exempt_from_availability_check['AOP_Case_Events'] = 'AOP_Case_Events';
+// $report_include_modules['AOP_Case_Events'] = 'AOP_Case_Events';
+// $modInvisList[] = 'AOP_Case_Events';
+// $beanList['AOP_Case_Updates'] = 'AOP_Case_Updates';
+// $beanFiles['AOP_Case_Updates'] = 'modules/AOP_Case_Updates/AOP_Case_Updates.php';
+// $modules_exempt_from_availability_check['AOP_Case_Updates'] = 'AOP_Case_Updates';
+// $report_include_modules['AOP_Case_Updates'] = 'AOP_Case_Updates';
+// $modInvisList[] = 'AOP_Case_Updates';
 
 $beanList['AOR_Reports'] = 'AOR_Report';
 $beanFiles['AOR_Report'] = 'modules/AOR_Reports/AOR_Report.php';
@@ -434,34 +442,34 @@ $beanList['AOR_Scheduled_Reports'] = 'AOR_Scheduled_Reports';
 $beanFiles['AOR_Scheduled_Reports'] = 'modules/AOR_Scheduled_Reports/AOR_Scheduled_Reports.php';
 $moduleList[] = 'AOR_Scheduled_Reports';
 
-$beanList['AOS_Contracts'] = 'AOS_Contracts';
-$beanFiles['AOS_Contracts'] = 'modules/AOS_Contracts/AOS_Contracts.php';
-$moduleList[] = 'AOS_Contracts';
-$beanList['AOS_Invoices'] = 'AOS_Invoices';
-$beanFiles['AOS_Invoices'] = 'modules/AOS_Invoices/AOS_Invoices.php';
-$moduleList[] = 'AOS_Invoices';
+// $beanList['AOS_Contracts'] = 'AOS_Contracts';
+// $beanFiles['AOS_Contracts'] = 'modules/AOS_Contracts/AOS_Contracts.php';
+// $moduleList[] = 'AOS_Contracts';
+// $beanList['AOS_Invoices'] = 'AOS_Invoices';
+// $beanFiles['AOS_Invoices'] = 'modules/AOS_Invoices/AOS_Invoices.php';
+// $moduleList[] = 'AOS_Invoices';
 $beanList['AOS_PDF_Templates'] = 'AOS_PDF_Templates';
 $beanFiles['AOS_PDF_Templates'] = 'modules/AOS_PDF_Templates/AOS_PDF_Templates.php';
 $moduleList[] = 'AOS_PDF_Templates';
-$beanList['AOS_Product_Categories'] = 'AOS_Product_Categories';
-$beanFiles['AOS_Product_Categories'] = 'modules/AOS_Product_Categories/AOS_Product_Categories.php';
-$moduleList[] = 'AOS_Product_Categories';
-$beanList['AOS_Products'] = 'AOS_Products';
-$beanFiles['AOS_Products'] = 'modules/AOS_Products/AOS_Products.php';
-$moduleList[] = 'AOS_Products';
-$beanList['AOS_Products_Quotes'] = 'AOS_Products_Quotes';
-$beanFiles['AOS_Products_Quotes'] = 'modules/AOS_Products_Quotes/AOS_Products_Quotes.php';
-$modules_exempt_from_availability_check['AOS_Products_Quotes'] = 'AOS_Products_Quotes';
-$report_include_modules['AOS_Products_Quotes'] = 'AOS_Products_Quotes';
-$modInvisList[] = 'AOS_Products_Quotes';
-$beanList['AOS_Line_Item_Groups'] = 'AOS_Line_Item_Groups';
-$beanFiles['AOS_Line_Item_Groups'] = 'modules/AOS_Line_Item_Groups/AOS_Line_Item_Groups.php';
-$modules_exempt_from_availability_check['AOS_Line_Item_Groups'] = 'AOS_Line_Item_Groups';
-$report_include_modules['AOS_Line_Item_Groups'] = 'AOS_Line_Item_Groups';
-$modInvisList[] = 'AOS_Line_Item_Groups';
-$beanList['AOS_Quotes'] = 'AOS_Quotes';
-$beanFiles['AOS_Quotes'] = 'modules/AOS_Quotes/AOS_Quotes.php';
-$moduleList[] = 'AOS_Quotes';
+// $beanList['AOS_Product_Categories'] = 'AOS_Product_Categories';
+// $beanFiles['AOS_Product_Categories'] = 'modules/AOS_Product_Categories/AOS_Product_Categories.php';
+// $moduleList[] = 'AOS_Product_Categories';
+// $beanList['AOS_Products'] = 'AOS_Products';
+// $beanFiles['AOS_Products'] = 'modules/AOS_Products/AOS_Products.php';
+// $moduleList[] = 'AOS_Products';
+// $beanList['AOS_Products_Quotes'] = 'AOS_Products_Quotes';
+// $beanFiles['AOS_Products_Quotes'] = 'modules/AOS_Products_Quotes/AOS_Products_Quotes.php';
+// $modules_exempt_from_availability_check['AOS_Products_Quotes'] = 'AOS_Products_Quotes';
+// $report_include_modules['AOS_Products_Quotes'] = 'AOS_Products_Quotes';
+// $modInvisList[] = 'AOS_Products_Quotes';
+// $beanList['AOS_Line_Item_Groups'] = 'AOS_Line_Item_Groups';
+// $beanFiles['AOS_Line_Item_Groups'] = 'modules/AOS_Line_Item_Groups/AOS_Line_Item_Groups.php';
+// $modules_exempt_from_availability_check['AOS_Line_Item_Groups'] = 'AOS_Line_Item_Groups';
+// $report_include_modules['AOS_Line_Item_Groups'] = 'AOS_Line_Item_Groups';
+// $modInvisList[] = 'AOS_Line_Item_Groups';
+// $beanList['AOS_Quotes'] = 'AOS_Quotes';
+// $beanFiles['AOS_Quotes'] = 'modules/AOS_Quotes/AOS_Quotes.php';
+// $moduleList[] = 'AOS_Quotes';
 
 $beanList['AOW_Actions'] = 'AOW_Action';
 $beanFiles['AOW_Action'] = 'modules/AOW_Actions/AOW_Action.php';
@@ -482,18 +490,18 @@ $modules_exempt_from_availability_check['AOW_Conditions'] = 'AOW_Conditions';
 $report_include_modules['AOW_Conditions'] = 'AOW_Conditions';
 $modInvisList[] = 'AOW_Conditions';
 
-$beanList['jjwg_Maps'] = 'jjwg_Maps';
-$beanFiles['jjwg_Maps'] = 'modules/jjwg_Maps/jjwg_Maps.php';
-$moduleList[] = 'jjwg_Maps';
-$beanList['jjwg_Markers'] = 'jjwg_Markers';
-$beanFiles['jjwg_Markers'] = 'modules/jjwg_Markers/jjwg_Markers.php';
-$moduleList[] = 'jjwg_Markers';
-$beanList['jjwg_Areas'] = 'jjwg_Areas';
-$beanFiles['jjwg_Areas'] = 'modules/jjwg_Areas/jjwg_Areas.php';
-$moduleList[] = 'jjwg_Areas';
-$beanList['jjwg_Address_Cache'] = 'jjwg_Address_Cache';
-$beanFiles['jjwg_Address_Cache'] = 'modules/jjwg_Address_Cache/jjwg_Address_Cache.php';
-$moduleList[] = 'jjwg_Address_Cache';
+// $beanList['jjwg_Maps'] = 'jjwg_Maps';
+// $beanFiles['jjwg_Maps'] = 'modules/jjwg_Maps/jjwg_Maps.php';
+// $moduleList[] = 'jjwg_Maps';
+// $beanList['jjwg_Markers'] = 'jjwg_Markers';
+// $beanFiles['jjwg_Markers'] = 'modules/jjwg_Markers/jjwg_Markers.php';
+// $moduleList[] = 'jjwg_Markers';
+// $beanList['jjwg_Areas'] = 'jjwg_Areas';
+// $beanFiles['jjwg_Areas'] = 'modules/jjwg_Areas/jjwg_Areas.php';
+// $moduleList[] = 'jjwg_Areas';
+// $beanList['jjwg_Address_Cache'] = 'jjwg_Address_Cache';
+// $beanFiles['jjwg_Address_Cache'] = 'modules/jjwg_Address_Cache/jjwg_Address_Cache.php';
+// $moduleList[] = 'jjwg_Address_Cache';
 
 $beanList['Calls_Reschedule'] = 'Calls_Reschedule';
 $beanFiles['Calls_Reschedule'] = 'modules/Calls_Reschedule/Calls_Reschedule.php';
@@ -511,6 +519,14 @@ $modules_exempt_from_availability_check['OutboundEmailAccounts'] = 'OutboundEmai
 $report_include_modules['OutboundEmailAccounts'] = 'OutboundEmailAccounts';
 $modInvisList[] = 'OutboundEmailAccounts';
 
+$beanList['ExternalOAuthConnection'] = 'ExternalOAuthConnection';
+$beanFiles['ExternalOAuthConnection'] = 'modules/ExternalOAuthConnection/ExternalOAuthConnection.php';
+$modInvisList[] = 'ExternalOAuthConnection';
+
+$beanList['ExternalOAuthProvider'] = 'ExternalOAuthProvider';
+$beanFiles['ExternalOAuthProvider'] = 'modules/ExternalOAuthProvider/ExternalOAuthProvider.php';
+$modInvisList[] = 'ExternalOAuthProvider';
+
 $beanList['TemplateSectionLine'] = 'TemplateSectionLine';
 $beanFiles['TemplateSectionLine'] = 'modules/TemplateSectionLine/TemplateSectionLine.php';
 $modules_exempt_from_availability_check['TemplateSectionLine'] = 'TemplateSectionLine';
@@ -524,6 +540,8 @@ $modInvisList[] = 'OAuth2Tokens';
 $beanList['OAuth2Clients'] = 'OAuth2Clients';
 $beanFiles['OAuth2Clients'] = 'modules/OAuth2Clients/OAuth2Clients.php';
 $modInvisList[] = 'OAuth2Clients';
+
+
 
 $beanList['SurveyResponses'] = 'SurveyResponses';
 $beanFiles['SurveyResponses'] = 'modules/SurveyResponses/SurveyResponses.php';
