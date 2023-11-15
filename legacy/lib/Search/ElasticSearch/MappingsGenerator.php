@@ -29,7 +29,7 @@ class MappingsGenerator
         'primary_address_postalcode' => 'address.primary.postalcode',
         'primary_address_street' => 'address.primary.street',
         'primary_address_country' => 'address.primary.country',
-        'phone_mobile' => '',
+        'phone_mobile' => 'phone.mobile',
     ];
 
     // From vardefs to elastic
