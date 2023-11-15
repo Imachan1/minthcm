@@ -124,22 +124,23 @@ class WorkSchedulesApi
         if ($workplace) {
             $workplace->load_relationship('workplaces_allocations');
             $allocations = $workplace->workplaces_allocations->getBeans();
-            while (list($allocation_id, $allocation) = each($allocations)) {
-                $start_date = strtotime($date_start);
-                $end_date = strtotime($date_end);
-                $from_date = strtotime($allocation->date_from);
-                $to_date = strtotime($allocation->date_to);
-                if (empty($to_date)) {
-                    if ($start_date >= $from_date) {
+            if(is_array($allocations)){
+                foreach($allocations as $allocation_id => $allocation){
+                    $start_date = strtotime($date_start);
+                    $end_date = strtotime($date_end);
+                    $from_date = strtotime($allocation->date_from);
+                    $to_date = strtotime($allocation->date_to);
+                    if (empty($to_date)) {
+                        if ($start_date >= $from_date) {
+                            return true;
+                        }
+
+                    } else if ($start_date >= $from_date && $end_date <= $to_date) {
                         return true;
+                    } else {
+                        return false;
                     }
-
-                } else if ($start_date >= $from_date && $end_date <= $to_date) {
-                    return true;
-                } else {
-                    return false;
                 }
-
             }
         }
         return $return;
@@ -161,16 +162,17 @@ class WorkSchedulesApi
 
     public function validateDelegationDurationValue($args)
     {
-        $delegation_duration = unformat_number($args['delegation_duration']);
-        if (!empty($delegation_duration)) {
-            if (is_numeric($delegation_duration) && $delegation_duration >= 0) {
-                return true;
-            } else {
-                return false;
+        if(is_array($args)){
+            $delegation_duration = unformat_number($args['delegation_duration']);
+            if (!empty($delegation_duration)) {
+                if (is_numeric($delegation_duration) && $delegation_duration >= 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
-        } else {
-            return true;
         }
+        return true;
     }
 
     public function getActiveWorkplaces($args) {

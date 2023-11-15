@@ -129,14 +129,10 @@ class ElasticSearchIndexer extends AbstractIndexer
 
         $this->logger->debug('Indexing is performed using ' . $this->getDocumentifierName());
 
-        if ($this->differentialIndexing) {
-            $this->lastRunTimestamp = $this->readLockFile();
-        }
-
         $modules = $this->getModulesToIndex();
         $start = microtime(true);
 
-        if ($this->differentialIndexing()) {
+        if ($this->isDifferentialIndexing()) {
             $this->logger->debug('A differential indexing will be performed');
         } else {
             $this->logger->debug('A full indexing will be performed');
@@ -543,15 +539,6 @@ class ElasticSearchIndexer extends AbstractIndexer
       $this->setBeansDeferredIndexingDate($beans);
     }
 
-    /**
-     * Returns true if differentialIndexing is enabled and a previous run timestamp was found.
-     *
-     * @return bool
-     */
-    private function differentialIndexing(): bool
-    {
-        return $this->differentialIndexing && $this->lastRunTimestamp !== false;
-    }
     // MintHCM #121632 START
     /**
     * Retrieves the default params to set up an optimised default index for Elasticsearch.
