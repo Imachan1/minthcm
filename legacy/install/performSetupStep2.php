@@ -101,6 +101,7 @@ $setup_site_log_level = 'fatal';
 ///////////////////////////////////////////////////////////////////////////////
 ////    START CREATE DEFAULTS
 installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS'], null, false, '');
+setMintInstallStatus(9, "LBL_INSTALLATION_DEFAULT_SETTINGS");
 installLog("Begin creating Defaults");
 installerHook('pre_createDefaultSettings');
 installLog("insert defaults into config table");
@@ -136,11 +137,13 @@ installDelegationPDFTemplate();
 install_mint_dashlets($db);
 installLog($mod_strings['LBL_PERFORM_VIEW_TOOLS']);
 installStatus($mod_strings['STAT_PERFORM_VIEW_TOOLS']);
+setMintInstallStatus(10,"LBL_INSTALLATION_REBUILDING_VIEW_TOOLS");
 rebuildWithViewTools(false);
 
 // Enable Sugar Feeds and add all feeds by default
 installLog("Enable SugarFeeds");
 installStatus($mod_strings['STAT_ENABLE_SUGARFEEDS']);
+setMintInstallStatus(11,"LBL_INSTALLATION_ENABLE_SUGARFEEDS");
 enableSugarFeeds();
 
 ///////////////////////////////////////////////////////////////////////////
@@ -176,6 +179,8 @@ if (!empty($_SESSION['setup_system_name'])) {
     $admin=BeanFactory::newBean('Administration');
     $admin->saveSetting('system', 'name', $_SESSION['setup_system_name']);
 }
+
+setMintInstallStatus(12,"LBL_INSTALLATION_DASHLETS");
 
 // Bug 28601 - Set the default list of tabs to show
 $enabled_tabs = array();
@@ -327,4 +332,5 @@ require_once('modules/UpgradeWizard/uw_utils.php');
 rebuildSprites(true);
 } */
 
+setMintInstallStatus(13,"LBL_INSTALLATION_DASHLETS");
 installStatus('', array('function' => 'next_step', 'step' => 2, 'skip_minify' => true)); //mn

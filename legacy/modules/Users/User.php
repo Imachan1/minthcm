@@ -682,7 +682,31 @@ class User extends Person implements EmailInterface
 
         if (!$this->verify_data()) {
             SugarApplication::appendErrorMessage($this->error_string);
-            return SugarApplication::redirect('Location: index.php?action=Error&module=Users');
+            return SugarApplication::redirect('index.php?action=Error&module=Users');
+        }
+
+        if ((isset($_POST['old_password']) || $this->portal_only) &&
+            (isset($_POST['new_password']) && !empty($_POST['new_password'])) &&
+            /* MintHCM #74303 START */
+            //  (isset($_POST['password_change']) && $_POST['password_change'] === 'true') ) {
+            (isset($_POST['password_change']) && 'true' === $_POST['password_change'])
+            && (!isset($_POST['password_change_attempt_made']) || true !== $_POST['password_change_attempt_made'])) {
+            $_POST['password_change_attempt_made'] = true;
+            /* MintHCM #74303 END */
+            if (!$this->change_password($_POST['old_password'], $_POST['new_password'])) {
+                if (isset($_POST['page']) && 'EditView' === $_POST['page']) {
+                    SugarApplication::appendErrorMessage($this->error_string);
+                    SugarApplication::redirect("index.php?action=EditView&module=Users&record=" .
+                        $_POST['record']);
+                }
+                if (isset($_POST['page']) && 'Change' === $_POST['page']) {
+                    SugarApplication::appendErrorMessage($this->error_string);
+                    SugarApplication::redirect("index.php?action=ChangePassword&module=Users&record=" .
+                        $_POST['record']);
+                }
+
+                return null;
+            }
         }
 
         $retId = parent::save($check_notify);
@@ -716,28 +740,6 @@ class User extends Person implements EmailInterface
         $this->saveFormPreferences();
 
         $this->savePreferencesToDB();
-
-        if ((isset($_POST['old_password']) || $this->portal_only) &&
-            (isset($_POST['new_password']) && !empty($_POST['new_password'])) &&
-            /* MintHCM #74303 START */
-            //  (isset($_POST['password_change']) && $_POST['password_change'] === 'true') ) {
-            (isset($_POST['password_change']) && 'true' === $_POST['password_change'])
-            && (!isset($_POST['password_change_attempt_made']) || true !== $_POST['password_change_attempt_made'])) {
-            $_POST['password_change_attempt_made'] = true;
-            /* MintHCM #74303 END */
-            if (!$this->change_password($_POST['old_password'], $_POST['new_password'])) {
-                if (isset($_POST['page']) && 'EditView' === $_POST['page']) {
-                    SugarApplication::appendErrorMessage($this->error_string);
-                    SugarApplication::redirect("Location: index.php?action=EditView&module=Users&record=" .
-                        $_POST['record']);
-                }
-                if (isset($_POST['page']) && 'Change' === $_POST['page']) {
-                    SugarApplication::appendErrorMessage($this->error_string);
-                    SugarApplication::redirect("Location: index.php?action=ChangePassword&module=Users&record=" .
-                        $_POST['record']);
-                }
-            }
-        }
 
         // User Profile specific save for Email addresses
         $this->lastSaveErrorIsEmailAddressSaveError = false;

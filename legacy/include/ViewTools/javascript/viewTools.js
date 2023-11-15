@@ -260,6 +260,9 @@ window.viewTools.form = {
       return ret;
    },
    focusOnFirstError: function () {
+      if ($('.validation-message').length === 0) {
+        return;
+      }
       $( '.validation-message' ).first().parent().find( '.vt_formulaSelector' ).focus();
       viewTools.form.scrollToFirstError();
    },

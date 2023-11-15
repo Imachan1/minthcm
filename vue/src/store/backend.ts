@@ -1,4 +1,4 @@
-import { ref, nextTick } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '@/composables/useApi'
@@ -37,6 +37,7 @@ export const useBackendStore = defineStore('backend', () => {
     const initData = ref<InitResponse | null>(null)
     const isInit = ref(false)
     const initialLoading = ref(true)
+    const isInstalled = ref(true)
 
     async function init() {
         const auth = useAuthStore()
@@ -70,6 +71,9 @@ export const useBackendStore = defineStore('backend', () => {
                 if (router.currentRoute.value.meta?.auth !== false) {
                     router.push({ name: 'auth-login' })
                 }
+            } else if ((err as AxiosError).response?.status === 307) {
+                isInstalled.value = false
+                router.push({ name: 'install' })
             }
         } finally {
             isInit.value = true
@@ -82,5 +86,6 @@ export const useBackendStore = defineStore('backend', () => {
         initialLoading,
         isInit,
         initData,
+        isInstalled,
     }
 })

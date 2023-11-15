@@ -416,10 +416,9 @@ $dictionary['User'] = array(
         'employee_status' => array(
             'name' => 'employee_status',
             'vname' => 'LBL_EMPLOYEE_STATUS',
-            'type' => 'varchar',
+            'type' => 'enum',
             'function' => array(
                 'name' => 'getEmployeeStatusOptions',
-                'returns' => 'html',
                 'include' => 'modules/Employees/EmployeeStatus.php',
             ),
             'len' => 100,

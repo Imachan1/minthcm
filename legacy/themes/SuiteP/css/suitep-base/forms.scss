@@ -1495,9 +1495,24 @@ textarea {
 }
 
 select[size] {
-  background: url($select-size-background-url) no-repeat right $input-select-option;
-  background-color: $input-select-option;
-  background-size: 52px 52px;
+  // MintHCM #122992 START
+  //   background: url("../../../../../themes/SuiteP/images/forms/select.ico") no-repeat right $input-select-option;
+  //   background-color: $input-select-option;
+  //   background-size: 52px 52px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, white 50%),
+    linear-gradient(135deg, white 50%, transparent 50%),
+    linear-gradient(to right, #009976, #009976);
+  background-position:
+    calc(100% - 15px),
+    calc(100% - 7px),
+    101% 0;
+  background-size:
+    8px 8px,
+    8px 8px,
+    2.5em 2.5em;
+  background-repeat: no-repeat;
+  // MintHCM #122992 END
   overflow-y: hidden;
   color: $main-font-color;
   padding: 0 52px 0 5px;
@@ -1515,9 +1530,24 @@ select[size] {
 }
 
 select.form-control {
-  background: url($select-form-control-background-url) no-repeat right $input-select-option;
-  background-color: $input-select-option;
-  background-size: 52px 52px;
+  // MintHCM #122992 START
+  //   background: url("../../../../../themes/SuiteP/images/forms/select.ico") no-repeat right $input-select-option;
+  //   background-color: $input-select-option;
+  //   background-size: 52px 52px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, white 50%),
+    linear-gradient(135deg, white 50%, transparent 50%),
+    linear-gradient(to right, #009976, #009976);
+  background-position:
+    calc(100% - 15px),
+    calc(100% - 7px),
+    101% 0;
+  background-size:
+    8px 8px,
+    8px 8px,
+    2.5em 2.5em;
+  background-repeat: no-repeat;
+  // MintHCM #122992 END
   color: $main-font-color;
   padding: 0 52px 0 5px;
   border-color: $input-select-bg;
@@ -1535,9 +1565,24 @@ select.form-control {
 }
 
 select {
-  background: url($select-background-url) no-repeat right $input-select-option;
-  background-color: $input-select-option;
-  background-size: 52px 52px;
+  // MintHCM #122992 START
+  //   background: url("../../../../../themes/SuiteP/images/forms/select.ico") no-repeat right $input-select-option;
+  //   background-color: $input-select-option;
+  //   background-size: 52px 52px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, white 50%),
+    linear-gradient(135deg, white 50%, transparent 50%),
+    linear-gradient(to right, #009976, #009976);
+  background-position:
+    calc(100% - 15px),
+    calc(100% - 7px),
+    101% 0;
+  background-size:
+    8px 8px,
+    8px 8px,
+    2.5em 2.5em;
+  background-repeat: no-repeat;
+  // MintHCM #122992 END
   color: $main-font-color;
   padding: 0 52px 0 5px;
   border-color: $input-select-bg;
@@ -1587,9 +1632,24 @@ option:checked {
 }
 
 .saved_search_select {
-  background: url($saved-search-select-background-url) no-repeat right $input-select-option;
-  background-color: $input-select-option;
-  background-size: 52px 52px;
+  // MintHCM #122992 START
+  //   background: url("../../../../../themes/SuiteP/images/forms/select.ico") no-repeat right $input-select-option;
+  //   background-color: $input-select-option;
+  //   background-size: 52px 52px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, white 50%),
+    linear-gradient(135deg, white 50%, transparent 50%),
+    linear-gradient(to right, #009976, #009976);
+  background-position:
+    calc(100% - 15px),
+    calc(100% - 7px),
+    101% 0;
+  background-size:
+    8px 8px,
+    8px 8px,
+    2.5em 2.5em;
+  background-repeat: no-repeat;
+  // MintHCM #122992 END
   padding: 16px 55px 16px 5px;
   border-color: $input-select-bg;
   border-style: solid;
@@ -1607,9 +1667,24 @@ select[multiple] {
 }
 
 select.ui-widget-content {
-  background: url($select-ui-widget-control-background-url) no-repeat right $input-select-option;
-  background-color: $input-select-option;
-  background-size: 52px 52px;
+  // MintHCM #122992 START
+  //   background: url("../../../../../themes/SuiteP/images/forms/select.ico") no-repeat right $input-select-option;
+  //   background-color: $input-select-option;
+  //   background-size: 52px 52px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, white 50%),
+    linear-gradient(135deg, white 50%, transparent 50%),
+    linear-gradient(to right, #009976, #009976);
+  background-position:
+    calc(100% - 15px),
+    calc(100% - 7px),
+    101% 0;
+  background-size:
+    8px 8px,
+    8px 8px,
+    2.5em 2.5em;
+  background-repeat: no-repeat;
+  // MintHCM #122992 END
   color: $main-font-color;
   padding: 0 52px 0 5px;
   border-color: $input-select-bg;
@@ -1991,3 +2066,4 @@ font[color=red] {
 // .modal-search .col-lg-4 {
 //     width: 100%;
 // }
+

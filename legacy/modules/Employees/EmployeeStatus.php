@@ -54,32 +54,19 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 function getEmployeeStatusOptions($focus, $name = 'employee_status', $value = null, $view = 'DetailView')
 {
+    $employee_status_options = $GLOBALS['app_list_strings']['employee_status_dom'];
 
-	
-	global $current_user, $app_list_strings;
-    if(($view == 'EditView' || $view == 'MassUpdate') && is_admin($current_user)) {
-	   
-	   	$employee_status  = "<select name='$name'";
-		if(!empty($sugar_config['default_user_name']) 
-			&& $sugar_config['default_user_name'] == $focus->user_name 
-			&& isset($sugar_config['lock_default_user_name']) 
-			&& $sugar_config['lock_default_user_name'])
-		    {
-				$employee_status .= " disabled ";
-			}
-			$employee_status .= ">";
-			$employee_status .= get_select_options_with_id($app_list_strings['employee_status_dom'], $focus->employee_status);
-			$employee_status .= "</select>\n";
-			return $employee_status;
-	 }
-	   	
-	 if ( isset($app_list_strings['employee_status_dom'][$focus->employee_status]) )
-	 {
-        return $app_list_strings['employee_status_dom'][$focus->employee_status];
-	 }
-	  
-	 return $focus->employee_status;
-		
+    if ($view === 'eslist'
+        || (is_admin($GLOBALS['current_user']) && in_array($view, ['EditView', 'MassUpdate']))
+    ) {
+        return $employee_status_options;
+    }
+
+    $values = array_filter($employee_status_options, function ($key) use ($focus) {
+        return $key === $focus->employee_status;
+    }, ARRAY_FILTER_USE_KEY);
+
+    return $values;
 }
 
 function getMessengerTypeOptions($focus, $name = 'messenger_type', $value = null, $view = 'DetailView')

@@ -71,7 +71,6 @@ require_once 'lib/Search/ElasticSearch/ElasticSearchVardefsReader.php';
 class ElasticSearchIndexer extends AbstractIndexer
 {
     use IndexingStatisticsTrait;
-    use IndexingLockFileTrait;
     use IndexingSchedulerTrait;
 
     /** @var string The name of the Elasticsearch index to use. */
@@ -81,7 +80,6 @@ class ElasticSearchIndexer extends AbstractIndexer
     /** @var int the size of the batch to be sent to the Elasticsearch while batch indexing */
     private $batchSize = 1000;
     /** @var Carbon|false the timestamp of the last indexing. false if unknown */
-    private $lastRunTimestamp = false;
 
    // MintHCM #121632 START
    protected $acl_helper;
@@ -172,11 +170,6 @@ class ElasticSearchIndexer extends AbstractIndexer
         }
 
         $end = microtime(true);
-
-        if ($this->differentialIndexing) {
-            $this->writeLockFile();
-        }
-
         $this->statistics($end, $start);
 
         $this->logger->info("Indexing complete");
@@ -221,7 +214,7 @@ class ElasticSearchIndexer extends AbstractIndexer
     {
         $seed = \BeanFactory::getBean($module);
         $tableName = $seed->table_name;
-        $isDifferential = $this->differentialIndexing();
+      $isDifferential = $this->isDifferentialIndexing();
   
         $where = "";
         $showDeleted = 0;
