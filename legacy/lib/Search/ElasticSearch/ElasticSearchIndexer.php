@@ -56,8 +56,6 @@ use JsonSchema\Exception\RuntimeException;
 use Monolog\Logger;
 use SugarBean;
 use SuiteCRM\Search\Index\AbstractIndexer;
-use SuiteCRM\Search\Index\Documentify\AbstractDocumentifier;
-use SuiteCRM\Search\Index\IndexingLockFileTrait;
 use SuiteCRM\Search\Index\IndexingSchedulerTrait;
 use SuiteCRM\Search\Index\IndexingStatisticsTrait;
 use Symfony\Component\Yaml\Parser as YamlParser;
@@ -70,7 +68,6 @@ require_once 'lib/Search/ElasticSearch/ElasticSearchVardefsReader.php';
 class ElasticSearchIndexer extends AbstractIndexer {
 
    use IndexingStatisticsTrait;
-   use IndexingLockFileTrait;
    use IndexingSchedulerTrait;
 
    /** @var string The name of the Elasticsearch index to use. */
@@ -80,7 +77,6 @@ class ElasticSearchIndexer extends AbstractIndexer {
    /** @var int the size of the batch to be sent to the Elasticsearch while batch indexing */
    private $batchSize = 1000;
    /** @var Carbon|false the timestamp of the last indexing. false if unknown */
-   private $lastRunTimestamp = false;
 
    // MintHCM #121632 START
    protected $acl_helper;
@@ -132,15 +128,15 @@ class ElasticSearchIndexer extends AbstractIndexer {
 
       $this->logger->debug('Indexing is performed using ' . $this->getDocumentifierName());
 
-      if ( $this->differentialIndexing ) {
-         $this->lastRunTimestamp = $this->readLockFile();
-      }
-
-      if ( $this->differentialIndexing() ) {
+      if ($this->isDifferentialIndexing()) {
          $this->logger->debug('A differential indexing will be performed');
       } else {
          $this->logger->debug('A full indexing will be performed');
          $this->removeIndex();
+      }
+
+      if (!$this->doesIndexExist($this->index)) {
+         $this->logger->debug('Creating index');
          $this->createIndex($this->index, $this->getDefaultMapParams());
       }
 
@@ -159,11 +155,6 @@ class ElasticSearchIndexer extends AbstractIndexer {
       }
 
       $end = microtime(true);
-
-      if ( $this->differentialIndexing ) {
-         $this->writeLockFile();
-      }
-
       $this->statistics($end, $start);
 
       $this->logger->info("Indexing complete");
@@ -213,7 +204,7 @@ class ElasticSearchIndexer extends AbstractIndexer {
    public function indexModule($module) {
       $seed = BeanFactory::getBean($module);
       $tableName = $seed->table_name;
-      $isDifferential = $this->differentialIndexing();
+      $isDifferential = $this->isDifferentialIndexing();
 
       $where = "";
       $showDeleted = 0;
@@ -481,15 +472,6 @@ class ElasticSearchIndexer extends AbstractIndexer {
    }
 
    /**
-    * Returns true if differentialIndexing is enabled and a previous run timestamp was found.
-    *
-    * @return bool
-    */
-   private function differentialIndexing() {
-      return $this->differentialIndexing && $this->lastRunTimestamp !== false;
-   }
-
-   /**
     * Retrieves the default params to set up an optimised default index for Elasticsearch.
     *
     * @return array
@@ -599,4 +581,8 @@ class ElasticSearchIndexer extends AbstractIndexer {
       $indexer->index();
    }
 
+   public function doesIndexExist(string $indexName): bool
+   {
+       return $this->client->indices()->exists(['index' => $indexName]);
+   }
 }
