@@ -29,11 +29,10 @@ class Init
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response
-    {
+    {   
         $response = $response->withHeader('Content-type', 'application/json');
 
         $response_body = $this->getData();
-
         $response->getBody()->write(json_encode($response_body));
         return $response;
     }
@@ -41,6 +40,7 @@ class Init
     public function getData()
     {
         $response_body = array();
+        $response_body['installed'] = true;
         $response_body['languages'] = $this->languages_controller->getLanguages();
         $response_body['user'] = $this->getCurrentUserData();
         $response_body['preferences'] = $this->preferences_controller->getUserPreferences();

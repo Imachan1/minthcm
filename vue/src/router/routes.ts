@@ -14,10 +14,20 @@ declare module 'vue-router' {
         legacyUrl?: string
         auth: boolean
         layout?: Component
+        entryPoint?: boolean
     }
 }
 
 const routes: Array<RouteRecordRaw> = [
+    {
+        path: '/install',
+        name: 'install',
+        component: () => import('@/views/InstallView/InstallView.vue'),
+        meta: {
+            auth: false,
+            entryPoint: true,
+        },
+    },
     {
         path: '/auth',
         component: AuthView,

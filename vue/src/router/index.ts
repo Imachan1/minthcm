@@ -14,6 +14,9 @@ router.beforeEach(async (to, from) => {
         return
     }
     const backend = useBackendStore()
+    if (!backend.isInstalled) {
+        return { name: 'install' }
+    }
     const auth = useAuthStore()
     if (!backend.isInit) {
         await backend.init()
