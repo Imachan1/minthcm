@@ -242,22 +242,35 @@ class ViewESList extends SugarView
         }
     }
 
-    protected function getEnumOptionsFromFunction($field, $field_defs)
+    protected function getEnumOptionsFromFunction(string $field, array $field_defs): ?array
     {
-        if ($field_defs['type'] === 'enum' && !empty($field_defs['function'])) {
-            $func_def = $field_defs['function'];
-            $callback = $func_def['name'];
+        $func_def = $this->unifyFunctionDefs($field_defs['function']);
+        $callback = $func_def['name'];
 
-            if (!empty($func_def['include'])) {
-                require_once $func_def['include'];
-            }
-
-            if (empty($func_def['params'])) {
-                return $callback($this->bean, $field, $this->bean->$field, 'eslist', $func_def['additional_params']);
-            } else {
-                return call_user_func_array($callback, $func_def['params']);
-            }
+        if (!empty($func_def['include'])) {
+            include_once $func_def['include'];
         }
+
+        if (!function_exists($callback)) {
+            return null;
+        }
+
+        if (empty($func_def['params'])) {
+            return $callback($this->bean, $field, $this->bean->$field, 'eslist', $func_def['additional_params']);
+        } else {
+            return call_user_func_array($callback, $func_def['params']);
+        }
+    }
+
+    protected function unifyFunctionDefs($func_def): array
+    {
+        if (is_array($func_def)) {
+            return $func_def;
+        }
+
+        return [
+            'name' => $func_def,
+        ];
     }
 
     protected function prepareUserPreferences()
