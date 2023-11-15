@@ -2,22 +2,28 @@ var viewTools = window.viewTools;
 viewTools.form._save_button_selector = 'form input[id^=SAVE],form input[title="Zapisz"][class="button"],form input[title="Save"][class="button"],form input[id^="save"],form button[id^="save"],form div.buttons>input[type="button"][id="CLOSE_CREATE_HEADER"], .popupBody form[name^="form_QuickCreate"] div.buttons input[id$="save_button"]';
 viewTools.form.error_count = 0;
 viewTools.form.validation_state = 0; // 0 - waiting, 1 - prepared, 2 - validating
+viewTools.form.throttle_save = false
 viewTools.form.prepareViewToolsValidation = function () {
-   var save_button_handler = $( viewTools.form._save_button_selector );
    if ( viewTools.form.validation_state != 0 ) {
       return false;
    }
+
+   if (viewTools.form.throttle_save) {
+      return false;
+   } 
+   viewTools.form.throttle_save = true;
+
+   viewTools.form.disableSaveButton();
    viewTools.form.validation_state = 1;
-   save_button_handler.attr( 'disabled', 'disabled' );
    viewTools.GUI.fieldErrorUnmark();
    setTimeout( viewTools.form.startViewToolsValidation.call( this ), 20 );
 };
 viewTools.form.startViewToolsValidation = function () {
    if ( viewTools.form.validation_state != 1 ) {
+      viewTools.form.throttle_save = false;
       return false;
    }
    viewTools.form.validation_state = 2;
-   var save_button_handler = $( viewTools.form._save_button_selector );
    var form = $( this ).closest( 'form' );
    viewTools.form.error_count = 0;
    if ( viewTools.cache.requiredsToSetBeforeSave.length > 0 ) {
@@ -98,13 +104,15 @@ viewTools.form.startViewToolsValidation = function () {
    }
 };
 viewTools.form.onValidationEnd = function () {
-   var save_button_handler = $( viewTools.form._save_button_selector );
-   save_button_handler.removeAttr( 'disabled' );
    if ( viewTools.form.error_count > 0 ) {
       viewTools.GUI.statusBox.showStatus( SUGAR.language.get( 'app_strings', 'LBL_FORM_WITH_ERRORS' ), 'error', 6000 );
+   } else {
+      viewTools.GUI.statusBox.showStatus( viewTools.language.get('app_strings', 'LBL_SAVING') + '...', 'success');
    }
    setTimeout( function () {
       viewTools.form.validation_state = 0;
+      viewTools.form.enableSaveButton();
+      viewTools.form.throttle_save = false;
    }, 20 );
 };
 viewTools.form.calculateSelectors = function () {
@@ -117,6 +125,16 @@ viewTools.form.calculateSelectors = function () {
       } );
    }
 };
+viewTools.form.disableSaveButton = function () {
+    var save_button_handler = $( viewTools.form._save_button_selector );
+    save_button_handler.prop('disabled', true);
+    save_button_handler.css({ 'height': '32px', 'background-color': '#888' });
+}
+viewTools.form.enableSaveButton = function () {
+   var save_button_handler = $( viewTools.form._save_button_selector );
+   save_button_handler.css({ 'height': '', 'background-color': '' });
+   save_button_handler.prop('disabled', false);
+}
 if ( window.disable_vt_tools === undefined || window.disable_vt_tools === false ) {
    $( document ).on( 'blur', '.vt_formulaSelector', function () {
       viewTools.form.fieldChangeEvent( this );
