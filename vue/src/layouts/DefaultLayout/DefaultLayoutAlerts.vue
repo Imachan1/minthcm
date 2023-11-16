@@ -1,11 +1,13 @@
 <template>
-    <v-card class="pt-4 pb-2">
-        <v-list>
+    <v-card>
+        <div
+            :class="{
+                'alerts-list': true,
+                'alerts-list-disabled': alerts.isClosingAll,
+            }"
+        >
             <template v-if="alerts.sortedAlerts?.length">
-                <v-list-item
-                    v-for="alert in alerts.sortedAlerts"
-                    :key="alert.id"
-                >
+                <div v-for="alert in alerts.sortedAlerts" :key="alert.id">
                     <div
                         class="alert"
                         v-ripple="{ class: 'text-primary' }"
@@ -13,14 +15,8 @@
                         @click="redirectToAlert(alert)"
                     >
                         <div class="alert-body">
-                            <span
-                                class="alert-title"
-                                v-text="alert.description"
-                            />
-                            <span
-                                class="alert-date"
-                                v-text="toRelativeDate(alert.date_entered)"
-                            />
+                            <span class="alert-title" v-text="alert.description" />
+                            <span class="alert-date" v-text="toRelativeDate(alert.date_entered)" />
                         </div>
                         <div class="alert-nav">
                             <v-btn
@@ -43,34 +39,50 @@
                             />
                         </div>
                     </div>
-                </v-list-item>
+                </div>
             </template>
             <span v-else v-text="languages.label('LBL_MINT4_NO_ALERTS')" class="px-4" />
-        </v-list>
-        <!-- <div class="alerts-footer">
-            <v-tooltip text="Mark all as read" location="top left">
+        </div>
+        <div v-if="alerts.sortedAlerts.length" class="alerts-footer">
+            <v-tooltip :text="languages.label('LBL_MINT4_ALERTS_MARK_ALL_READ')" location="top left">
                 <template v-slot:activator="{ props }">
-                    <v-btn
+                    <MintButton
                         v-bind="props"
-                        color="secondary"
+                        @click="alerts.markAllAsRead"
+                        variant="text"
                         icon="mdi-email-open"
-                        variant="text"
                         size="small"
                     />
                 </template>
             </v-tooltip>
-            <v-tooltip text="Delete all" location="top left">
+            <v-tooltip
+                v-if="alerts.isClosingAll"
+                :text="languages.label('LBL_MINT4_ALERTS_DELETE_ALL_CANCEL')"
+                location="top left"
+            >
                 <template v-slot:activator="{ props }">
-                    <v-btn
+                    <MintButton
                         v-bind="props"
-                        color="secondary"
-                        icon="mdi-delete-sweep"
+                        @click="alerts.cancelCloseAll"
                         variant="text"
+                        icon="mdi-window-close"
                         size="small"
                     />
                 </template>
             </v-tooltip>
-        </div> -->
+            <v-tooltip v-else :text="languages.label('LBL_MINT4_ALERTS_DELETE_ALL')" location="top left">
+                <template v-slot:activator="{ props }">
+                    <MintButton
+                        v-bind="props"
+                        @click="alerts.closeAll"
+                        variant="text"
+                        icon="mdi-delete-sweep"
+                        size="small"
+                    />
+                </template>
+            </v-tooltip>
+        </div>
+        <v-progress-linear v-if="alerts.isClosingAll" color="secondary" indeterminate />
     </v-card>
 </template>
 
@@ -80,6 +92,9 @@ import { DateTime } from 'luxon'
 import { useAlertsStore, Alert } from '@/store/alerts'
 import { useLanguagesStore } from '@/store/languages'
 import { useUrlStore } from '@/store/url'
+import MintButton from '@/components/MintButtons/MintButton.vue'
+
+const emit = defineEmits(['close'])
 
 const router = useRouter()
 const alerts = useAlertsStore()
@@ -101,15 +116,31 @@ function redirectToAlert(alert: Alert) {
     if (alert.url_redirect) {
         router.push(url.fromLegacyUrl(alert.url_redirect))
     }
+    emit('close')
 }
 </script>
 
 <style scoped lang="scss">
+.alerts-list {
+    max-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 8px;
+    overflow: auto;
+}
+
+.alerts-list-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 .alerts-footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    padding: 16px 0px;
 }
 
 .alert {

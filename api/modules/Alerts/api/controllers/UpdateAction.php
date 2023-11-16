@@ -2,6 +2,7 @@
 
 namespace MintHCM\Modules\Alerts\api\controllers;
 
+use MintHCM\Modules\Alerts\api\helpers\DataHelper;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Slim\Exception\HttpBadRequestException;
@@ -15,7 +16,7 @@ class UpdateAction
         if(!$this->saveBean($request)) {
             throw new HttpBadRequestException($request);
         }
-        $response->getBody()->write(json_encode(["messeage" => 'Saved']));
+        $response->getBody()->write(json_encode((new ListAction)->getListData()));
         return $response;
     }
 
@@ -27,7 +28,7 @@ class UpdateAction
 
         chdir('../legacy/');
         $alert = \BeanFactory::getBean('Alerts', $id);
-        if (empty($alert->id)) {
+        if (empty($alert->id) || !DataHelper::isAssignedUserCurrentUser($alert)) {
             return false;
         }
 
