@@ -1,6 +1,6 @@
 <?php
 
-$folderPath = '../testtest';
+$folderPath = '../api';
 
 
 function updateHeader($filePath)
@@ -76,8 +76,14 @@ function processPhpFiles($folderPath)
 {
     $phpFiles = scanPhpFiles($folderPath );
     
+    $excluded_array = ['vendor'];
+
     foreach ($phpFiles as $filePath) {
-        updateHeader($filePath);
+        foreach($excluded_array as $excluded){
+            if (!str_contains($filePath, $excluded)) {
+                updateHeader($filePath);
+            }
+        }
     }
 }
 
