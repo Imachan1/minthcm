@@ -213,7 +213,7 @@ class VersionValidator
             $message = "";
         } else {
             $status = -1;
-            $message = "ERR_SUHOSIN";
+            $message = "Suhosin error";
         }
 
         return ['label' => 'PHP allows stream', 'status' => $status, 'message' => $message];

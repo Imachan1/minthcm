@@ -173,7 +173,7 @@ $varStack['defined_vars'] = get_defined_vars();
 $_REQUEST = array_merge($_REQUEST, $_SESSION);
 $_POST = array_merge($_POST, $_SESSION);
 
-setMintInstallStatus(16, 'LBL_INSTALL_FINISHING');
+setMintInstallStatus(16, 'Finishing backend installation...');
 installStatus($mod_strings['STAT_INSTALL_FINISH']);
 installLog('Save configuration settings..');
 
@@ -240,7 +240,7 @@ if (!empty($currency->id)
     $currency->save();
 }
 
-setMintInstallStatus(17,"LBL_INSTALLATION_USER_SETTINGS");
+setMintInstallStatus(17,"Setting up user settings...");
 installLog('Save user settings..');
 
 //      <------------------------------------------------
@@ -282,7 +282,7 @@ $_POST['reminder_time'] = 1800;
 $_POST['email_reminder_time'] = 3600;
 $_POST['mailmerge_on'] = 'on';
 $_POST['receive_notifications'] = $current_user->receive_notifications;
-setMintInstallStatus(18,"LBL_INSTALLATION_SETTING_CURRENCY");
+setMintInstallStatus(18,"Setting up currencies...");
 installLog('DBG: SugarThemeRegistry::getDefault');
 $_POST['user_theme'] = (string) SugarThemeRegistry::getDefault();
 
@@ -334,5 +334,5 @@ echo $out;
 
 
 $loginURL = str_replace('install.php', 'index.php', "//$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
-setMintInstallStatus(19,"LBL_INSTALLATION_SUCCESS");
+setMintInstallStatus(19,"Backend installation successful - continuing...");
 installStatus(sprintf($mod_strings['STAT_INSTALL_FINISH_LOGIN'], $loginURL ) , array('function' => 'redirect', 'arguments' => $loginURL) );

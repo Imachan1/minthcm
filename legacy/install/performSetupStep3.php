@@ -109,7 +109,7 @@ if ($_SESSION['demoData'] != 'no') {
     installerHook('pre_installDemoData');
 
     installStatus($mod_strings['LBL_PERFORM_DEMO_DATA'], null, false, '');
-    setMintInstallStatus(14,"LBL_INSTALLATION_DEMO_DATA");
+    setMintInstallStatus(14,"Adding demo data...");
 
     global $current_user;
     $current_user = new User();
@@ -119,5 +119,5 @@ if ($_SESSION['demoData'] != 'no') {
 }
 deploy_mint_dashlets();
 
-setMintInstallStatus(15,"LBL_INSTALLATION_DEPLOYING");
+setMintInstallStatus(15,"Deploying mint dashlets...");
 installStatus('', array('function' => 'next_step', 'step' => 3, 'skip_minify' => true)); //mn
