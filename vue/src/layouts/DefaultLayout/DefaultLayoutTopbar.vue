@@ -18,7 +18,7 @@
             :active="!!popups.popups.find((p) => p.component === DefaultLayoutModulesPopup)"
         />
 
-        <v-menu offset="16" :close-on-content-click="false">
+        <v-menu v-model="alertsMenu" offset="16" :close-on-content-click="false">
             <template v-slot:activator="{ props, isActive }">
                 <v-badge
                     v-bind="props"
@@ -30,14 +30,14 @@
                     <MintButton icon="mdi-bell" variant="nav" :active="isActive" />
                 </v-badge>
             </template>
-            <DefaultLayoutAlerts />
+            <DefaultLayoutAlerts @close="alertsMenu = false" />
         </v-menu>
         <DefaultLayoutUser />
     </nav>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useBackendStore } from '@/store/backend'
 import { useAlertsStore } from '@/store/alerts'
 import { usePopupsStore } from '@/store/popups'
@@ -55,6 +55,8 @@ const alerts = useAlertsStore()
 const popups = usePopupsStore()
 const modules = useModulesStore()
 const languages = useLanguagesStore()
+
+const alertsMenu = ref(false)
 
 const quickCreateMenu = computed<MenuListItem[]>(() => {
     if (!backend.initData?.quick_create) {
