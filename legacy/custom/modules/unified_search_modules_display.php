@@ -37,9 +37,6 @@ $unified_search_modules_display = array(
     'FP_Event_Locations' => array(
         'visible' => true,
     ),
-    'Prospects' => array(
-        'visible' => true,
-    ),
     'Project' => array(
         'visible' => true,
     ),
