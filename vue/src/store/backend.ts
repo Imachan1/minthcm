@@ -51,7 +51,7 @@ export const useBackendStore = defineStore('backend', () => {
                 app_list_strings: initResponse.data.languages?.app_list_strings ?? {},
                 modules: {},
             }
-            languages.currentLanguage = initResponse.data.global?.default_language ?? 'pl_PL'
+            languages.currentLanguage = initResponse.data.global?.default_language ?? 'en_us'
             modules.modulesDefs = initResponse.data?.modules ?? {}
             alerts.init()
             favorites.fetch()
@@ -67,7 +67,7 @@ export const useBackendStore = defineStore('backend', () => {
                     },
                 }
                 preferences.global = loginData.global
-                languages.currentLanguage = loginData.global?.default_language ?? 'pl_PL'
+                languages.currentLanguage = loginData.global?.default_language ?? 'en_us'
                 if (router.currentRoute.value.meta?.auth !== false) {
                     router.push({ name: 'auth-login' })
                 }
