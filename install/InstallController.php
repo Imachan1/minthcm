@@ -29,7 +29,7 @@ class InstallController
         require_once '../legacy/minthcm_version.php';
         return [
             'version' => $minthcm_version,
-            'license' => trim(file_get_contents('assets/LICENSE.txt')),
+            'license' => trim(file_get_contents('../LICENSE')),
             'environment' => (new VersionValidator)->runValidations(),
         ];
     }
