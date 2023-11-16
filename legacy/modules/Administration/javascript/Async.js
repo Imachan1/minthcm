@@ -6,7 +6,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -34,12 +34,11 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
- */
-var AjaxObject={ret:'',currentRequestObject:null,timeout:30000,forceAbort:false,_reset:function(){this.timeout=30000;this.forceAbort=false;},handleFailure:function(o){alert('asynchronous call failed.');},startRequest:function(callback,args,forceAbort){if(this.currentRequestObject!=null){if(this.forceAbort==true||callback.forceAbort==true){YAHOO.util.Connect.abort(this.currentRequestObject,null,false);}}
+ */var AjaxObject={ret:'',currentRequestObject:null,timeout:30000,forceAbort:false,_reset:function(){this.timeout=30000;this.forceAbort=false;},handleFailure:function(o){alert('asynchronous call failed.');},startRequest:function(callback,args,forceAbort){if(this.currentRequestObject!=null){if(this.forceAbort==true||callback.forceAbort==true){YAHOO.util.Connect.abort(this.currentRequestObject,null,false);}}
 this.currentRequestObject=YAHOO.util.Connect.asyncRequest('POST',"./index.php?module=Administration&action=Async&to_pdf=true",callback,args);this._reset();},refreshEstimate:function(o){this.ret=YAHOO.lang.JSON.parse(o.responseText);document.getElementById('repairXssDisplay').style.display='inline';document.getElementById('repairXssCount').value=this.ret.count;SUGAR.Administration.RepairXSS.toRepair=this.ret.toRepair;},showRepairXssResult:function(o){var resultCounter=document.getElementById('repairXssResultCount');this.ret=YAHOO.lang.JSON.parse(o.responseText);document.getElementById('repairXssResults').style.display='inline';if(this.ret.msg=='success'){SUGAR.Administration.RepairXSS.repairedCount+=this.ret.count;resultCounter.value=SUGAR.Administration.RepairXSS.repairedCount;}else{resultCounter.value=this.ret;}
 SUGAR.Administration.RepairXSS.executeRepair();}};var callbackRepairXssRefreshEstimate={success:AjaxObject.refreshEstimate,failure:AjaxObject.handleFailure,timeout:AjaxObject.timeout,scope:AjaxObject};var callbackRepairXssExecute={success:AjaxObject.showRepairXssResult,failure:AjaxObject.handleFailure,timeout:AjaxObject.timeout,scope:AjaxObject};

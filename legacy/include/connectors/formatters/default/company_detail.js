@@ -39,9 +39,7 @@
  * If the display of the logos is not reasonably feasible for technical reasons, the
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
- */
-
-function CompanyDetailsDialog(div_id,text,x,y){this.div_id=div_id;this.text=text;this.width=300;this.header='';this.footer='';this.x=x;this.y=y;}
+ */function CompanyDetailsDialog(div_id,text,x,y){this.div_id=div_id;this.text=text;this.width=300;this.header='';this.footer='';this.x=x;this.y=y;}
 function header(header){this.header=header;}
 function footer(footer){this.footer=footer;}
 function display(){if(typeof(dialog)!='undefined'&&dialog.destroy&&typeof(dialog.destroy)=='function')

@@ -23,8 +23,7 @@
  >  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  >  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  >  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-(function(){window.$jit=function(w){w=w||window;for(var k in $jit){if($jit[k].$extend){w[k]=$jit[k];}}};$jit.version='2.0.0b';var $=function(d){return document.getElementById(d);};$.empty=function(){};function pad(number,length){var str=''+number;while(str.length<length){str=str+'0';}
+ */(function(){window.$jit=function(w){w=w||window;for(var k in $jit){if($jit[k].$extend){w[k]=$jit[k];}}};$jit.version='2.0.0b';var $=function(d){return document.getElementById(d);};$.empty=function(){};function pad(number,length){var str=''+number;while(str.length<length){str=str+'0';}
 return str;};var Url={encode:function(string){return escape(this._utf8_encode(string));},decode:function(string){return this._utf8_decode(unescape(string));},_utf8_encode:function(string){string=string.replace(/\r\n/g,"\n");var utftext="";for(var n=0;n<string.length;n++){var c=string.charCodeAt(n);if(c<128){utftext+=String.fromCharCode(c);}
 else if((c>127)&&(c<2048)){utftext+=String.fromCharCode((c>>6)|192);utftext+=String.fromCharCode((c&63)|128);}
 else{utftext+=String.fromCharCode((c>>12)|224);utftext+=String.fromCharCode(((c>>6)&63)|128);utftext+=String.fromCharCode((c&63)|128);}}
