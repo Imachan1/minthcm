@@ -685,6 +685,7 @@ class User extends Person implements EmailInterface
             return SugarApplication::redirect('index.php?action=Error&module=Users');
         }
 
+        $set_new_password_after_save = false;
         if ((isset($_POST['old_password']) || $this->portal_only) &&
             (isset($_POST['new_password']) && !empty($_POST['new_password'])) &&
             /* MintHCM #74303 START */
@@ -693,7 +694,7 @@ class User extends Person implements EmailInterface
             && (!isset($_POST['password_change_attempt_made']) || true !== $_POST['password_change_attempt_made'])) {
             $_POST['password_change_attempt_made'] = true;
             /* MintHCM #74303 END */
-            if (!$this->change_password($_POST['old_password'], $_POST['new_password'])) {
+            if (!$this->change_password($_POST['old_password'], $_POST['new_password'], '0', true)) {
                 if (isset($_POST['page']) && 'EditView' === $_POST['page']) {
                     SugarApplication::appendErrorMessage($this->error_string);
                     SugarApplication::redirect("index.php?action=EditView&module=Users&record=" .
@@ -704,12 +705,12 @@ class User extends Person implements EmailInterface
                     SugarApplication::redirect("index.php?action=ChangePassword&module=Users&record=" .
                         $_POST['record']);
                 }
-
-                return null;
             }
+            $set_new_password_after_save = true;
         }
 
         $retId = parent::save($check_notify);
+        
         if (!$retId) {
             LoggerManager::getLogger()->fatal('save error: User is not saved, Person ID is not returned.');
         }
@@ -740,6 +741,10 @@ class User extends Person implements EmailInterface
         $this->saveFormPreferences();
 
         $this->savePreferencesToDB();
+
+        if ($set_new_password_after_save === true) {
+            $this->setNewPassword($_POST['new_password']);
+        }
 
         // User Profile specific save for Email addresses
         $this->lastSaveErrorIsEmailAddressSaveError = false;
@@ -1321,9 +1326,10 @@ EOQ;
      * @param string $username_password - Must be non null and at least 1 character.
      * @param string $new_password - Must be non null and at least 1 character.
      * @param string $system_generated
+     * @param boolean $validate_only - skip update query
      * @return boolean - If passwords pass verification and query succeeds, return true, else return false.
      */
-    public function change_password($username_password, $new_password, $system_generated = '0')
+    public function change_password($username_password, $new_password, $system_generated = '0', $validate_only = false)
     {
         global $mod_strings;
         global $current_user;
@@ -1349,7 +1355,9 @@ EOQ;
             }
         }
 
-        $this->setNewPassword($new_password, $system_generated);
+        if ($validate_only !== true) {
+            $this->setNewPassword($new_password, $system_generated);
+        }
         return true;
     }
 

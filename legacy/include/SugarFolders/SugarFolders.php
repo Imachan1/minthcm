@@ -1561,6 +1561,7 @@ class SugarFolder
      */
     protected function getUserAccessibleInboundIds(?User $user): array
     {
+        return []; // missing getUserInboundAccounts method
         $userAccessibleInboundAccountIds = [];
         /** @var InboundEmail $inboundEmail */
         $inboundEmail = BeanFactory::newBean('InboundEmail');
