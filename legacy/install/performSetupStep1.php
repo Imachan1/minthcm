@@ -46,7 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 require_once 'install/performSetupUtils.php';
 installStatus($mod_strings['LBL_START'], null, true, '');
-setMintInstallStatus(4, 'LBL_INSTALLATION_START');
+setMintInstallStatus(4, 'Installing...');
 
 // This file will load the configuration settings from session data,
 // write to the config file, and execute any necessary database steps.
@@ -103,7 +103,7 @@ $setup_site_log_level = 'fatal';
 
 
 installStatus($mod_strings['STAT_CONFIGURATION'], null, false, '');
-setMintInstallStatus(5, 'LBL_INSTALL_CONFIGURATION');
+setMintInstallStatus(5, 'Setting up basic configuration...');
 installLog("calling handleSugarConfig()");
 $bottle = handleSugarConfig();
 //installLog("calling handleLog4Php()");
@@ -166,7 +166,7 @@ $nonStandardModules = array(
 /**
  * loop through all the Beans and create their tables
  */
-setMintInstallStatus(6, "LBL_INSTALLATION_DB_CREATION");
+setMintInstallStatus(6, "Setting up basic bean tables...");
 installStatus($mod_strings['STAT_CREATE_DB']);
 installLog("looping through all the Beans and create their tables");
 //start by clearing out the vardefs
@@ -190,7 +190,7 @@ foreach ($beanFiles as $bean => $file) {
 
     $table_name = $focus->table_name;
     //installStatus(sprintf($mod_strings['STAT_CREATE_DB_TABLE'], $focus->table_name ));
-    setMintInstallStatus(7, "LBL_INSTALLATION_DB_TABLE_CREATION");
+    setMintInstallStatus(7, "Creating the database table...");
     installLog("processing table ".$focus->table_name);
     // check to see if we have already setup this table
     if (!in_array($table_name, $processed_tables)) {
@@ -241,7 +241,7 @@ installerHook('post_createAllModuleTables');
 ///////////////////////////////////////////////////////////////////////////////
 ////    START RELATIONSHIP CREATION
 
-setMintInstallStatus(8, "LBL_INSTALLATION_RELATIONSHIPS");
+setMintInstallStatus(8, "Setting up relationships...");
 
 ksort($rel_dictionary);
 foreach ($rel_dictionary as $rel_name => $rel_data) {
