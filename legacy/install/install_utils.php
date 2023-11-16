@@ -809,6 +809,7 @@ function handleSugarConfig($lock = false) {
    );
 
    $sugar_config['hide_subpanels'] = true;
+   $sugar_config['disableAjaxUI'] = true;
 
    // Setup FTS
    if ( !empty($_SESSION['setup_fts_type']) ) {
