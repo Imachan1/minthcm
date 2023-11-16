@@ -79,10 +79,10 @@ class InstallController
             'databaseName' => $data['db']['dbname'],
             'databaseCollation' => $data['db']['collation'],
 
-            'elasticHost' => $data['elastic']['host'],
-            'elasticPort' => $data['elastic']['port'],
-            'elasticUser' => $data['elastic']['username'],
-            'elasticPass' => $data['elastic']['password'],
+            'elasticsearchHost' => $data['elastic']['host'],
+            'elasticsearchPort' => $data['elastic']['port'],
+            'elasticsearchUsername' => $data['elastic']['username'],
+            'elasticsearchPassword' => $data['elastic']['password'],
             
             'demoData' => $data['site']['demodata'],
             'systemAdminName' => $data['site']['username'],
@@ -98,29 +98,29 @@ class InstallController
 
             $this->service->clearStatusJson();
 
-            $this->service->setMintInstallStatus(1, "LBL_INSTALLATION_SETUP_DOCTRINE");
+            $this->service->setMintInstallStatus(1, "Setting up Doctrine...");
 
-            $installer->setupDoctrineConfig($cfg);
+            $installer->setupApiConfigOverride($cfg);
 
-            $this->service->setMintInstallStatus(2, "LBL_INSTALLATION_FILE_PERMISSIONS");
+            $this->service->setMintInstallStatus(2, "Modifying file permissions...");
             $installer->setupFilesPermissions();
 
-            $this->service->setMintInstallStatus(3, "LBL_INSTALLATION_STARTING_BACKEND");
+            $this->service->setMintInstallStatus(3, "Starting backend installation...");
             $installer->installBackendApplication();
 
             // // Sudden progress jump due to backend doing a lot of other stuff
-            $this->service->setMintInstallStatus(20, "LBL_INSTALLATION_FRONTEND_APPLICATION");
+            $this->service->setMintInstallStatus(20, "Starting frontend installation...");
             $installer->installFrontendApplication();
 
-            $this->service->setMintInstallStatus(21, "LBL_INSTALLATION_FILE_PERMISSIONS");
+            $this->service->setMintInstallStatus(21, "Setting up file permissions...");
             $installer->setupFilesPermissions();
 
-            $this->service->setMintInstallStatus(22, "LBL_INSTALLATION_HTACCESS");
+            $this->service->setMintInstallStatus(22, "Setting up htacess...");
             $installer->setupHtaccess();
 
-            return ["status" => 1, "message" => "LBL_INSTALLATION_SUCCESS"];
+            return ["status" => 1, "message" => "Installation finished successfully."];
         } catch (\Exception $e) {
-            return ["status" => 0, "message" => "ERR_INSTALLATION_FAILURE", "error" => $e];
+            return ["status" => 0, "message" => "Installation failed.", "error" => $e];
         }
     }
 }
