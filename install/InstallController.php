@@ -6,8 +6,8 @@ require '../legacy/MintCLI/vendor/autoload.php';
 require '../api/vendor/autoload.php';
 require './Installer.php';
 
-use Elasticsearch\ClientBuilder;
 use MintHCM\MintCLI\Services\DatabaseService;
+use MintHCM\MintCLI\Services\ElasticsearchService;
 
 class InstallController
 {
@@ -49,18 +49,17 @@ class InstallController
 
     public function validateElastic($data)
     {
-        $client = ClientBuilder::create()
-            ->setHosts([$data['username'] . ':' . $data['password'] . '@' . $data['host'] . ":" . $data['port']])
-            ->build();
-
-        try {
-            $status = $client->ping();
-            if ($status) {
-                return ["status" => 1, "message" => "ok"];
+        $service = new ElasticsearchService();
+        $response = $service -> testConnection($data['host'], $data['port'], $data['username'], $data['password']);
+        if($response['status']){
+            return ["status" => 1, "message" => "ok"];
+        } else {
+            if(isset($response['message'])){
+                $message = $response['message'];
+            } else {
+                $message = "Elastic connection failed";
             }
-            return ["status" => 0, "message" => "Elastic connection failed"];
-        } catch (\Exception $e) {
-            return ["status" => 0, "message" => "Elastic error", "error" => $e->getMessage()];
+            return ["status" => 0, "message" => $message];
         }
     }
 
