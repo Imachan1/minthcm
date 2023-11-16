@@ -17,7 +17,7 @@
                         v-text="store.footerNavAction.label"
                     />
                 </v-slide-x-transition>
-                <v-menu offset="16">
+                <v-menu offset="16" v-if="languagesList.length > 1">
                     <template v-slot:activator="{ props, isActive }">
                         <MintButton
                             class="ms-auto"
@@ -28,12 +28,7 @@
                             :tooltip="languages.label('LBL_MINT4_AUTH_LANG_TOOLTIP')"
                         />
                     </template>
-                    <MintMenuList
-                        :items="[
-                            { title: 'polski', icon: 'fi-pl', onClick: () => { changeLanguage('pl_PL') } },
-                            { title: 'English', icon: 'fi-gb', onClick: () => { changeLanguage('en_us') } },
-                        ]"
-                    />
+                    <MintMenuList :items="languagesList" />
                 </v-menu>
             </div>
         </div>
@@ -41,16 +36,29 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useAuthViewStore } from './AuthViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useBackendStore } from '@/store/backend'
 import MintButton from '@/components/MintButtons/MintButton.vue'
-import MintMenuList from '@/components/MintMenuList.vue'
+import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 import axios from 'axios'
+import { usePreferencesStore } from '@/store/preferences'
 
 const languages = useLanguagesStore()
 const backend = useBackendStore()
 const store = useAuthViewStore()
+const preferences = usePreferencesStore()
+
+const languagesList = computed<MenuListItem[]>(() => {
+    return Object.entries(preferences.global?.languages ?? {}).map(([code, title]) => ({
+        title: title?.toString() || '',
+        icon: `fi-${code.split('_')?.[1]?.toLowerCase()}`, // en_us => fi-us, pl_PL => fi-pl
+        onClick: () => {
+            changeLanguage(code)
+        },
+    }))
+})
 
 async function changeLanguage(lang = 'pl_PL') {
     backend.initialLoading = true
