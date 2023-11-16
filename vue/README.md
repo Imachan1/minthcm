@@ -1,7 +1,7 @@
 # DEVELOPMENT
 * npm install
-* skopiuj plik .env.example i nazwij go jako .env
-* zmień PROXY_URL na link do swojej instancji
+* copy file .env.example and change name on .env
+* change PROXY_URL on link to your instance
 * npm run dev
 
 # PRODUCTION
