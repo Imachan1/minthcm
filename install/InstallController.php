@@ -79,10 +79,10 @@ class InstallController
             'databaseName' => $data['db']['dbname'],
             'databaseCollation' => $data['db']['collation'],
 
-            'elasticHost' => $data['elastic']['host'],
-            'elasticPort' => $data['elastic']['port'],
-            'elasticUser' => $data['elastic']['username'],
-            'elasticPass' => $data['elastic']['password'],
+            'elasticsearchHost' => $data['elastic']['host'],
+            'elasticsearchPort' => $data['elastic']['port'],
+            'elasticsearchUsername' => $data['elastic']['username'],
+            'elasticsearchPassword' => $data['elastic']['password'],
             
             'demoData' => $data['site']['demodata'],
             'systemAdminName' => $data['site']['username'],
@@ -100,7 +100,7 @@ class InstallController
 
             $this->service->setMintInstallStatus(1, "LBL_INSTALLATION_SETUP_DOCTRINE");
 
-            $installer->setupDoctrineConfig($cfg);
+            $installer->setupApiConfigOverride($cfg);
 
             $this->service->setMintInstallStatus(2, "LBL_INSTALLATION_FILE_PERMISSIONS");
             $installer->setupFilesPermissions();
