@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted, computed, watch } from 'vue'
 import { useInstallViewStore } from '../InstallViewStore'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { nextTick } from 'vue'
 
 const store = useInstallViewStore()
@@ -61,8 +61,10 @@ async function fetchStatus() {
             status.value = response.data || {}
         }
     } catch (err) {
-        if (checkStatusInterval.value) {
-            clearInterval(checkStatusInterval.value)
+        if (err instanceof AxiosError && err.response?.status === 404) {
+            // api/install/status returns 404 because htaccess has been replaced
+            // replacing htaccess is the last step of installation, so it means, that installation is completed
+            store.isInstallationCompleted = true
         }
     }
 }
