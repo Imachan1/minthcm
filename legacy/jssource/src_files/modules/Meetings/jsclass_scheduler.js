@@ -221,7 +221,7 @@ SugarWidgetSchedulerSearch.submit = function ( form ) {
 
    var query = {
         // MintHCM #54195 #59793 #43484 #117141 Start
-        "modules": ["Users", "Contacts", "Leads", "Candidates", "Resources", "SecurityGroups"],
+        "modules": ["Users", "Candidates", "Resources", "SecurityGroups"],
         "field_list": [ 'id', 'name', 'full_name', 'email1', 'phone_work', 'phone_mobile', 'show_on_employees', 'group_type'],
         // MintHCM #54195 #59793 #43484 #117141 End
         "group": "and",

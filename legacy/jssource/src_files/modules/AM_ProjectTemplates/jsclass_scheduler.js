@@ -173,7 +173,7 @@ SugarWidgetSchedulerSearch.submit = function (form) {
   }
 
   var query = {
-    "modules": ["Users", "Contacts"],
+    "modules": ["Users"],
     "group": "and",
     "field_list": ['id', 'full_name', 'email1', 'phone_work'],
     "conditions": conditions
@@ -347,12 +347,6 @@ SugarWidgetSchedulerSearch.prototype.display = function () {
   form1.setAttribute('name', 'createInviteeForm');
   form1.setAttribute('id', 'createInviteeForm');
   form1.setAttribute('onsubmit', 'SugarWidgetSchedulerSearch.createInvitee(this); return false;');
-
-  var input4 = document.createElement("input");
-  input4.setAttribute('name', 'inviteeModule');
-  input4.setAttribute('value', 'Contacts');
-  input4.setAttribute('type', 'hidden');
-  form1.appendChild(input4);
 
   var table3 = document.createElement("table");
   table3.setAttribute('class', 'edit view');
