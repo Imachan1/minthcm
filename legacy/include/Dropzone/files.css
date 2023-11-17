@@ -77,3 +77,6 @@
 .dropzone .dz-preview .dz-remove {
     font-size: 10px;
 }
+.dropzone .dz-preview.dz-image-preview .dz-details {
+    cursor: pointer;
+}
