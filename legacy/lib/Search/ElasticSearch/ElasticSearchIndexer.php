@@ -204,46 +204,40 @@ class ElasticSearchIndexer extends AbstractIndexer
 
         $this->logger->debug("Created new index '$index'");
     }
-
+    
     /** @inheritdoc */
     public function indexModule($module)
     {
         $seed = \BeanFactory::getBean($module);
         $tableName = $seed->table_name;
-      $isDifferential = $this->isDifferentialIndexing();
+        $isDifferential = $this->isDifferentialIndexing();
   
         $where = "";
         $showDeleted = 0;
-  
+
         if ( $isDifferential && isset($seed->field_defs['date_indexed']) ) {
             $where = "$tableName.date_indexed IS NULL OR $tableName.date_indexed < $tableName.date_modified";
-        }    
+        }
 
         try {
             $beanTime = Carbon::now()->toDateTimeString();
             if ($seed) {
                 $beans = $seed->get_full_list("", $where, false, $showDeleted);
-             }
+            }
         } catch (RuntimeException $exception) {
             $this->logger->error("Failed to index module $module");
             $this->logger->error($exception);
-
             return;
         }
-        $this->putMeta($module, [
-           'module_name' => $module
-        ]);
         if ( $beans === null ) {
-            if ( !$isDifferential ) {
-               $this->logger->notice(sprintf('Skipping %s because $beans was null. The table is probably empty', $module));
-            }
-            return;
-         }
-   
-         $this->logger->debug(sprintf('Indexing module %s...', $module));
-         $this->indexBeans($module, $beans);
-         $this->indexedModulesCount++;
-   
+            $beans = [];
+        }
+        $this->logger->debug(sprintf('Indexing module %s...', $module));
+        $this->indexBeans($module, $beans);
+        $this->putMeta($module, [
+            'module_name' => $module
+        ]);
+        $this->indexedModulesCount++;
     }
 
     /**
