@@ -230,6 +230,9 @@ class ElasticSearchIndexer extends AbstractIndexer
 
             return;
         }
+        $this->putMeta($module, [
+           'module_name' => $module
+        ]);
         if ( $beans === null ) {
             if ( !$isDifferential ) {
                $this->logger->notice(sprintf('Skipping %s because $beans was null. The table is probably empty', $module));
@@ -239,10 +242,6 @@ class ElasticSearchIndexer extends AbstractIndexer
    
          $this->logger->debug(sprintf('Indexing module %s...', $module));
          $this->indexBeans($module, $beans);
-         $this->putMeta($module, [
-            'module_name' => $module
-        ]);
-
          $this->indexedModulesCount++;
    
     }
