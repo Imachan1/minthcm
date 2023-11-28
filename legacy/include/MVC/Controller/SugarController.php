@@ -1185,6 +1185,18 @@ class SugarController
 
     public function action_ESList()
     {
+        if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
+            $data = json_decode(file_get_contents('php://input'), true);
+        } else {
+            $data = $_REQUEST;
+        }
+        if(!empty($data['module'])){
+            $bean = BeanFactory::newBean($data['module']);
+            if(!empty($bean)){
+                $this->bean = $bean;
+            }
+        }
+
         $module_path = "modules/{$this->bean->module_dir}/ESListViewController.php";
         $include_path = "include/ESListView/ESListViewController.php";
         if (file_exists('custom/'.$module_path)) {
@@ -1204,11 +1216,6 @@ class SugarController
             $object = new $class_name($this->bean);
         } else {
             sugar_die('Class does not exist: '.$class_name);
-        }
-        if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
-            $data = json_decode(file_get_contents('php://input'), true);
-        } else {
-            $data = $_REQUEST;
         }
         $action = $data['function_name'];
         if (method_exists($object, $action)) {
