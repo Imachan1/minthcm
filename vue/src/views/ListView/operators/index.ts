@@ -16,4 +16,5 @@ export const typeMap = {
     decimal: 'numeric',
     currency: 'numeric',
     ColoredActivityStatus: 'enum',
+    ColoredEnum: 'enum',
 }
