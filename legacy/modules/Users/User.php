@@ -2451,6 +2451,12 @@ EOQ;
 
     public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set')
     {
+        // MintHCM #123323 START
+        global $current_user;
+        if('list' === $this->ACLNormalizeViewContext($view) && !$current_user->isAdmin()){
+            return false;
+        }
+        // MintHCM #123323 END
         $result = parent::ACLAccess($view, $is_owner, $in_group);
         if (isset($_REQUEST['module']) && 'SecurityGroups' == $_REQUEST['module'] && isset($_REQUEST['record']) && $this->isGroupPrivate($_REQUEST['record'])) {
             $result = false;
