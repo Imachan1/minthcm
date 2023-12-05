@@ -42,10 +42,12 @@ export const useListViewStore = defineStore('listview', () => {
         sortBy: [],
     })
     const selected = ref([])
+    const defaultAction = "ESList";
+    const defaultActionUrl = "legacy/index.php?";
 
     async function init() {
         initialLoading.value = true
-        const result = await axios.post('legacy/index.php?action=ESList', {
+        const result = await axios.post(getListActionUrl(), {
             module: url.module,
             function_name: 'getInitialData',
         })
@@ -59,7 +61,7 @@ export const useListViewStore = defineStore('listview', () => {
 
     async function getData() {
         isLoading.value = true
-        const result = await axios.post('legacy/index.php?action=ESList', {
+        const result = await axios.post(getListActionUrl(), {
             module: url.module,
             function_name: 'getResults',
             page: options.value.page,
@@ -81,11 +83,15 @@ export const useListViewStore = defineStore('listview', () => {
     }
 
     async function savePreferences() {
-        const response = await axios.post('legacy/index.php?action=ESList', {
+        const response = await axios.post(getListActionUrl(), {
             module: module.value,
             preferences: preferences.value,
             function_name: 'savePreferences',
         })
+    }
+
+    function getListActionUrl(){
+        return defaultActionUrl + 'action=' + defaultAction;
     }
 
     function setDefaultColumns() {
