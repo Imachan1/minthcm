@@ -1,0 +1,15 @@
+The .htaccess file could not be found in your installation directory.
+
+Please create a .htaccess file in root directory of your instance.
+The file should contain:
+
+<IfModule mod_rewrite.c>
+    Options +SymLinksIfOwnerMatch
+    RewriteEngine On
+
+    RewriteRule ^api/(.*?)$ install/index.php [L]
+
+    RewriteRule ^assets/(.*?)$ assets/$1 [L]
+    RewriteRule ^favicon.ico$ favicon.ico [L]
+    RewriteRule ^bg.jpg$ bg.jpg [L]
+</IfModule>
