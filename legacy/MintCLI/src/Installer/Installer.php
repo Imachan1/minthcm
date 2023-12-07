@@ -71,13 +71,17 @@ class Installer
     public function installBackendApplication()
     {
         chdir(self::INSTANCE_DIR);
-        exec("php install.php SilentInstall true", $result, $status);
+        // exec("php install.php SilentInstall true", $result, $status);
+        global $argv;
+        $argv[1] = 'SilentInstall';
+        $argv[2] = 'true';
+        include 'install.php';
         chdir('../');
         file_put_contents(self::INSTALL_LOG_FILE, "Installing MintHCM System Core...\n\n");
-        file_put_contents(self::INSTALL_LOG_FILE, implode("\n", $result), FILE_APPEND);
-        if ($status !== 0) {
-            return false;
-        }
+        // file_put_contents(self::INSTALL_LOG_FILE, implode("\n", $result), FILE_APPEND);
+        // if ($status !== 0) {
+        //     return false;
+        // }
         $this->setupApiBasePath();
         return true;
     }
