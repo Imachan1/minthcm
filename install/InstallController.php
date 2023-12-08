@@ -12,6 +12,7 @@ use MintHCM\MintCLI\Services\ElasticsearchService;
 class InstallController
 {
     private $service;
+    const LAST_BACKEND_STEP = 19;
 
     public function __construct()
     {
@@ -26,11 +27,14 @@ class InstallController
 
     public function getInitialData()
     {
+        $isInstalling = !empty($this->service->readMintInstallStatus()['step']);
+
         require_once '../legacy/minthcm_version.php';
         return [
             'version' => $minthcm_version,
             'license' => trim(file_get_contents('../LICENSE')),
             'environment' => (new VersionValidator)->runValidations(),
+            'isInstalling' => (bool)$isInstalling,
         ];
     }
 
@@ -107,6 +111,11 @@ class InstallController
             $this->service->setMintInstallStatus(3, "Starting backend installation...");
             $installer->installBackendApplication();
 
+            $lastStep = $this->service->readMintInstallStatus();
+            if($lastStep["step"] != self::LAST_BACKEND_STEP){
+                return ["status" => 0, "message" => "Installation failed.", "error" => "Backend installation failed"];
+            }
+
             // // Sudden progress jump due to backend doing a lot of other stuff
             $this->service->setMintInstallStatus(20, "Starting frontend installation...");
             $installer->installFrontendApplication();
@@ -116,6 +125,9 @@ class InstallController
 
             $this->service->setMintInstallStatus(22, "Setting up htacess...");
             $installer->setupHtaccess();
+
+            // $this->service->setMintInstallStatus(23, "Reindexing ElasticSearch");
+            // $installer->reindexElastic();
 
             return ["status" => 1, "message" => "Installation finished successfully."];
         } catch (\Exception $e) {

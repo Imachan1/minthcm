@@ -22,6 +22,7 @@ export const useInstallViewStore = defineStore('install-view', () => {
     const version = ref('')
     const license = ref<null | string>(null)
     const environment = ref<null | InstallEnvironment>(null)
+    const isInstalling = ref<boolean>(false)
     const databaseConfig = ref({
         dbname: 'minthcm',
         host: 'localhost',
@@ -37,7 +38,7 @@ export const useInstallViewStore = defineStore('install-view', () => {
         password: '',
     })
     const siteConfig = ref({
-        url: '',
+        url: window.location.href.split('#')[0],
         username: 'admin',
         password: '',
         demodata: false,
@@ -55,7 +56,12 @@ export const useInstallViewStore = defineStore('install-view', () => {
             version.value = response.data?.version ?? ''
             license.value = response.data?.license ?? ''
             environment.value = response.data?.environment ?? ''
+            isInstalling.value = response.data?.isInstalling ?? false
             isInitialLoading.value = false
+
+            if (response.data?.isInstalling) {
+                currentStepNumber.value = INSTALL_CONFIG.steps.length - 1
+            }
         } catch (err) {
             if ((err as AxiosError).response?.status === 404) {
                 router.push({ name: 'dashboard' })
@@ -112,6 +118,10 @@ export const useInstallViewStore = defineStore('install-view', () => {
     }
 
     async function install() {
+        if (isInstalling.value == true) {
+            return true
+        }
+
         const response = await axios.post('api/install/submit', {
             db: databaseConfig.value,
             elastic: elasticConfig.value,
