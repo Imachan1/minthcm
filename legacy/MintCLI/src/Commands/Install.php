@@ -90,6 +90,8 @@ class Install extends Command
         $io->section('Setting up files permissions...');
         $installer->setupFilesPermissions();
 
+        //CR ti też należy dodać indeksacje rekordów.
+
         $io->success('Installation finished successfuly');
         return Command::SUCCESS;
     }
