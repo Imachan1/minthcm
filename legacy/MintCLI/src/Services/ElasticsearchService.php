@@ -49,6 +49,14 @@ class ElasticsearchService
         return $options;
     }
 
+    protected function reindexElastic(){
+        try {
+            $indexer = new ElasticSearchIndexer();
+            $indexer->index();
+        } catch (\Exception $e) {
+        }
+    }
+
     private function ok(): array
     {
         return [
