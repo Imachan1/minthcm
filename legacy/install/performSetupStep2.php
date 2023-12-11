@@ -64,7 +64,7 @@ require_once 'modules/TableDictionary.php';
 $trackerManager = TrackerManager::getInstance();
 $trackerManager->pause();
 
-$cache_dir = sugar_cached("");
+global $cache_dir; $cache_dir = sugar_cached("");
 $line_entry_format = "&nbsp&nbsp&nbsp&nbsp&nbsp<b>";
 $line_exit_format = "... &nbsp&nbsp</b>";
 $rel_dictionary = $dictionary; // sourced by modules/TableDictionary.php
