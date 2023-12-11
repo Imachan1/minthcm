@@ -185,11 +185,24 @@ class TabController
         }
     }
 
-    public function get_user_tabs(&$user, $type='display')
+    public function get_user_tabs(&$user, $type = 'display')
     {
         $system_tabs = $this->get_system_tabs();
-        $tabs = $user->getPreference($type .'_tabs');
+        $tabs = $user->getPreference($type . '_tabs');
         if (!empty($tabs)) {
+            if ($type == 'display' && $user->user_preferences['global']['sort_modules_by_name'] == 'on') {
+                $home = $tabs[0]; unset($tabs[0]);
+
+                $translatedValues = [];
+                foreach ($tabs as $index => $value) {
+                    $translatedValues[$index] = $GLOBALS['app_list_strings']['moduleList'][$value];
+                }
+
+                array_multisort($translatedValues, $tabs); 
+
+                array_unshift($tabs, $home);
+            }
+
             $tabs = self::get_key_array($tabs);
             if ($type == 'display') {
                 $tabs['Home'] =  'Home';
