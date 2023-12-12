@@ -17,6 +17,7 @@ class InstallController
     public function __construct()
     {
         $this->service = new InstallService();
+        $this->elasticService = new ElasticsearchService();
     }
 
     public function redirectToInstaller()
@@ -53,8 +54,7 @@ class InstallController
 
     public function validateElastic($data)
     {
-        $service = new ElasticsearchService();
-        $response = $service -> testConnection($data['host'], $data['port'], $data['username'], $data['password']);
+        $response = $this->elasticService->testConnection($data['host'], $data['port'], $data['username'], $data['password']);
         if($response['status']){
             return ["status" => 1, "message" => "ok"];
         } else {
@@ -126,8 +126,8 @@ class InstallController
             $this->service->setMintInstallStatus(22, "Setting up htacess...");
             $installer->setupHtaccess();
 
-            // $this->service->setMintInstallStatus(23, "Reindexing ElasticSearch");
-            // $installer->reindexElastic();
+            $this->service->setMintInstallStatus(23, "Reindexing ElasticSearch");
+            $this->elasticService->reindexElastic();
 
             return ["status" => 1, "message" => "Installation finished successfully."];
         } catch (\Exception $e) {

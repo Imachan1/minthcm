@@ -9,12 +9,4 @@ class Installer extends CLIInstaller
     const FRONTEND_DIR = '../vue';
     const CLI_DIR = '../legacy/MintCLI/src';
     const INSTALL_LOG_FILE = './install.log';
-
-    function reindexElastic(){
-        try {
-            $indexer = new ElasticSearchIndexer();
-            $indexer->index();
-        } catch (\Exception $e) {
-        }
-    }
 }

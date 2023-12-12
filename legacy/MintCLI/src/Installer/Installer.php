@@ -132,6 +132,12 @@ class Installer
         file_put_contents('./api/app/Config/AppConfig.php', $configFile);
     }
 
+    public function reindexElastic()
+    {
+        $elasticSearchService = new ElasticSearchService;
+        $elasticSearchService->reindexElastic();
+    }
+
     public function setupApiConfigOverride(array $userData): void
     {
         $this->configOverrideService->writeConfigOverride('./api/configs/mint/config_override.php', [
