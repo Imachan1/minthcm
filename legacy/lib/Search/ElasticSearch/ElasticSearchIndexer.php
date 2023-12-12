@@ -490,12 +490,13 @@ class ElasticSearchIndexer extends AbstractIndexer
     {
         $params = ['body' => []];
 
+        $instance_id = $GLOBALS['sugar_config']['unique_key'];
+        $lowercaseModule = strtolower($module);
+        $this->index =  $instance_id.'_'.$lowercaseModule;
+        
         foreach ($beans as $key => $bean) {
             // MintHCM #122342 START
             //$head = ['_index' => strtolower($module), '_id' => $bean->id];
-            $instance_id = $GLOBALS['sugar_config']['unique_key'];
-            $lowercaseModule = strtolower($module);
-            $this->index =  $instance_id.'_'.$lowercaseModule;
 
             $head = [ '_index' => $this->index, '_id' => $bean->id ];
             // MintHCM #122342 END
