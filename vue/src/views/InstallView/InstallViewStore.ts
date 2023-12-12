@@ -74,9 +74,13 @@ export const useInstallViewStore = defineStore('install-view', () => {
         license.value = response.data?.license ?? ''
     }
 
-    async function fetchEnvironment() {
-        const response = await axios.get<InstallEnvironment>('api/install/environment')
-        environment.value = response.data
+    async function recheckEnvironment() {
+        isLoading.value = true
+        const response = await axios.get('api/install/init')
+        if (response.data.environment) {
+            environment.value = response.data.environment
+        }
+        isLoading.value = false
     }
 
     async function validateDb() {
@@ -166,7 +170,7 @@ export const useInstallViewStore = defineStore('install-view', () => {
         prevStep,
         nextStep,
         fetchLicense,
-        fetchEnvironment,
+        recheckEnvironment,
         fetchInitialData,
         validateDb,
         validateElastic,
