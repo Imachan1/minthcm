@@ -26,10 +26,21 @@ class ElasticsearchService
 
         $major_version = explode('.', $response['version']['number'])[0];
         if ($major_version !== '7') {
-            return $this->error("MintHCM currently supports only Elasticsearch 5, you tried to connect with $es_version");
+            return $this->error("MintHCM currently supports only Elasticsearch 5, you tried to connect with $major_version");
         }
 
         return $this->ok();
+    }
+
+    public function reindexElastic(){
+        try {
+            chdir('legacy');
+            require 'include/entryPoint.php';
+            $indexer = new \SuiteCRM\Search\ElasticSearch\ElasticSearchIndexer;
+            $indexer->index();
+            chdir('../api');
+        } catch (\Exception $e) {
+        }
     }
 
     protected function setupCurlOptions(string $host, string $port, ?string $username, ?string $password)
@@ -47,14 +58,6 @@ class ElasticsearchService
         }
 
         return $options;
-    }
-
-    protected function reindexElastic(){
-        try {
-            $indexer = new ElasticSearchIndexer();
-            $indexer->index();
-        } catch (\Exception $e) {
-        }
     }
 
     private function ok(): array

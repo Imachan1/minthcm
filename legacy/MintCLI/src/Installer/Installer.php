@@ -5,6 +5,7 @@ namespace MintHCM\MintCLI\Installer;
 use MintHCM\MintCLI\Services\ConfigOverrideService;
 use MintHCM\MintCLI\Services\HtaccessService;
 use MintHCM\MintCLI\Services\ServerService;
+use MintHCM\MintCLI\Services\ElasticsearchService;
 
 class Installer
 {

@@ -6,11 +6,6 @@ class InstallService
 {
     const STATUSFILE = __DIR__ . '/assets/status.json';
 
-    public function validateElasticConnection($host, $port, $user, $password)
-    {
-
-    }
-
     public function clearStatusJson()
     {
         $statusFile = __DIR__ . '/assets/status.json';

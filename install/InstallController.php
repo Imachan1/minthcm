@@ -11,8 +11,10 @@ use MintHCM\MintCLI\Services\ElasticsearchService;
 
 class InstallController
 {
-    private $service;
     const LAST_BACKEND_STEP = 19;
+
+    private $service;
+    private $elasticService;
 
     public function __construct()
     {
@@ -116,7 +118,7 @@ class InstallController
                 return ["status" => 0, "message" => "Installation failed.", "error" => "Backend installation failed"];
             }
 
-            // // Sudden progress jump due to backend doing a lot of other stuff
+            // Sudden progress jump due to backend doing a lot of other stuff
             $this->service->setMintInstallStatus(20, "Starting frontend installation...");
             $installer->installFrontendApplication();
 
@@ -127,7 +129,7 @@ class InstallController
             $installer->setupHtaccess();
 
             $this->service->setMintInstallStatus(23, "Reindexing ElasticSearch");
-            $this->elasticService->reindexElastic();
+            $installer->reindexElastic();
 
             return ["status" => 1, "message" => "Installation finished successfully."];
         } catch (\Exception $e) {
