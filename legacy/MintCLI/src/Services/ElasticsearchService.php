@@ -35,7 +35,7 @@ class ElasticsearchService
     public function reindexElastic(){
         try {
             chdir('legacy');
-            require 'include/entryPoint.php';
+            require_once 'include/entryPoint.php';
             $indexer = new \SuiteCRM\Search\ElasticSearch\ElasticSearchIndexer;
             $indexer->index();
             chdir('../api');

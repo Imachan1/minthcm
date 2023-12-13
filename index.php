@@ -1,5 +1,9 @@
 <?php
 
+if(!is_writable('index.php')){
+  die('index.php is not writable. Please make sure that you have set correct permissions for whole directory.');
+}
+
 if(!file_exists('.htaccess')) {
   $htaccess_body = "<IfModule mod_rewrite.c>
   Options +SymLinksIfOwnerMatch
