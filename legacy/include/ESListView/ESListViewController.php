@@ -1,45 +1,48 @@
 <?php
 
-use SuiteCRM\Search\SearchQuery;
-use SuiteCRM\Search\SearchWrapper;
-use SuiteCRM\Search\UI\SearchThrowableHandler;
 use MassUpdate;
-use SuiteCRM\Search\ElasticSearch\ElasticSearchIndexer;
+use SuiteCRM\Search\SearchQuery;
+use SuiteCRM\Search\UI\SearchThrowableHandler;
 
 require_once 'include/ESListView/ESListViewGetRecords.php';
 require_once 'lib/Search/ElasticSearch/ElasticSearchIndexer.php';
 
-class ESListViewController {
+class ESListViewController
+{
 
     protected $bean, $query, $per_page, $page, $engine, $options, $metadata;
 
-    public function __construct($bean) {
+    public function __construct(SugarBean | null $bean)
+    {
         $this->bean = $bean;
     }
 
     //temp
-    public function getInitialData($options) {
+    public function getInitialData(array $options): array
+    {
         $view = new ViewESList();
         $module = $options['module'];
         $view->module = $module;
         $view->seed = BeanFactory::newBean($module);
         $view->bean = BeanFactory::newBean($module);
         $data = $view->getInitialData();
+        $preferences = json_decode($data->preferences, true);
         return [
             'config' => json_decode($data->config, true),
             'defs' => json_decode($data->defs, true),
             'module' => $data->module,
-            'preferences' => json_decode($data->preferences, true),
+            'preferences' => $preferences,
         ];
     }
 
-    public function massUpdate() {
+    public function massUpdate(): void
+    {
         require_once 'include/MassUpdate.php';
         $_POST['mass'] = $_POST['IDs'];
         $_REQUEST['massupdate'] = true;
         $updater = new MassUpdate();
         $updater->setSugarBean($this->bean);
-        if ($_POST['action_name'] === 'delete') {
+        if ('delete' === $_POST['action_name']) {
             $_POST['Delete'] = true;
         }
         $updater->handleMassUpdate();
@@ -47,7 +50,7 @@ class ESListViewController {
         echo json_encode(['success' => true]);
     }
 
-    public function getResults($options)
+    public function getResults(array $options): array | bool
     {
         $this->loadMetadataFile($options['module']);
         $module_name = $this->metadata['es_module'] ?? $options['module'];
@@ -72,12 +75,14 @@ class ESListViewController {
         }
     }
 
-    public function handleThrowable($throwable, SearchQuery $query) {
+    public function handleThrowable(Throwable $throwable, SearchQuery $query): void
+    {
         $handler = new SearchThrowableHandler($throwable, $query);
         $handler->handle();
     }
 
-    public function savePreferences($data) {
+    public function savePreferences(array $data): bool
+    {
         global $current_user;
         $module = $data['module'];
         $preferences = $data['preferences'];
@@ -87,25 +92,28 @@ class ESListViewController {
         return true;
     }
 
-    public function updatePreferences($data) {
-        if (empty($data['module']) || empty($data['itemsPerPage'])) {
+    public function updatePreferences(array &$options)
+    {
+        if (empty($options['module']) || empty($options['itemsPerPage'])) {
             return false;
         }
         global $current_user;
-        $preferences = (new UserPreference($current_user))->getPreference($data['module'], 'eslist');
+        $preferences = (new UserPreference($current_user))->getPreference($options['module'], 'eslist');
         if (
             empty($preferences['items_per_page'])
-            || $data['itemsPerPage'] != $preferences['items_per_page']
+            || $options['itemsPerPage'] != $preferences['items_per_page']
         ) {
-            $preferences['items_per_page'] = $data['itemsPerPage'];
+            $preferences['items_per_page'] = $options['itemsPerPage'];
             $this->savePreferences([
-                'module' => $data['module'],
+                'module' => $options['module'],
                 'preferences' => $preferences,
             ]);
         }
+
     }
 
-    public function deleteRecord($data) {
+    public function deleteRecord(array $data): bool
+    {
         if (empty($data['module']) || empty($data['record_id'])) {
             return false;
         }
@@ -119,7 +127,8 @@ class ESListViewController {
         return true;
     }
 
-    protected function loadMetadataFile($module) {
+    protected function loadMetadataFile(string $module): void
+    {
         if (!empty($this->metadata)) {
             return;
         }
