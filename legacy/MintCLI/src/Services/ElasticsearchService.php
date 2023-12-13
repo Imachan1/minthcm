@@ -26,7 +26,7 @@ class ElasticsearchService
 
         $major_version = explode('.', $response['version']['number'])[0];
         if ($major_version !== '7') {
-            return $this->error("MintHCM currently supports only Elasticsearch 5, you tried to connect with $major_version");
+            return $this->error("MintHCM currently supports only Elasticsearch 7, you tried to connect with $major_version");
         }
 
         return $this->ok();
