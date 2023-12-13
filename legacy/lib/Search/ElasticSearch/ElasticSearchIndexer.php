@@ -333,10 +333,16 @@ class ElasticSearchIndexer extends AbstractIndexer
 
    protected function getNestedPropertyValues(SugarBean $bean, string $property_name, array $nested_config): array
    {
-      $link_field_name = $nested_config['link'] ?? $property_name;
-      if (!$bean->load_relationship($link_field_name)) {
-         return [];
-      }
+    $link_field_name = $nested_config['link'] ?? $property_name;
+    if(!isset($bean->field_defs) || !is_array($bean->field_defs)){
+      return [];
+    }
+    if(is_array($link_field_name)){
+        $link_field_name = $link_field_name[0];
+    }
+    if (!$bean->load_relationship($link_field_name)) {
+       return [];
+    }
 
       $related_beans = $bean->$link_field_name->getBeans();
       $nested_fields = $nested_config['fields'];

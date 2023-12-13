@@ -125,11 +125,11 @@ class InstallController
             $this->service->setMintInstallStatus(21, "Setting up file permissions...");
             $installer->setupFilesPermissions();
 
-            $this->service->setMintInstallStatus(22, "Setting up htacess...");
-            $installer->setupHtaccess();
-
-            $this->service->setMintInstallStatus(23, "Reindexing ElasticSearch");
+            $this->service->setMintInstallStatus(22, "Reindexing ElasticSearch");
             $installer->reindexElastic();
+
+            $this->service->setMintInstallStatus(23, "Setting up htacess...");
+            $installer->setupHtaccess();
 
             return ["status" => 1, "message" => "Installation finished successfully."];
         } catch (\Exception $e) {

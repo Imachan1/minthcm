@@ -38,8 +38,9 @@ class ElasticsearchService
             require_once 'include/entryPoint.php';
             $indexer = new \SuiteCRM\Search\ElasticSearch\ElasticSearchIndexer;
             $indexer->index();
-            chdir('../api');
+            chdir('..');
         } catch (\Exception $e) {
+            $x = 12;
         }
     }
 
