@@ -40,7 +40,7 @@ class ElasticsearchService
             $indexer->index();
             chdir('..');
         } catch (\Exception $e) {
-            $x = 12;
+            
         }
     }
 
