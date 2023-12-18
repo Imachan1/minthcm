@@ -16,7 +16,7 @@
 [MintHCM](https://minthcm.org/) is a professional tool for Human Capital Management. It's based on two popular, well-known business applications: SugarCRM Community Edition and SuiteCRM. This is why we often say that **MintHCM is CRM reinvented**. You all know how much goes into technological development of this type of business software… <br> **That's why we need your help.**<br> Thanks to the open code of both SugarCRM CE and SuiteCRM we were able to reintroduce some features, redesign other, and provide brand new system to the users. The code of MintHCM remains open so feel free to use it.
 Have a look at the official [MintHCM website](https://minthcm.com/) for a list of MintHCM's features and use cases. 
 
-<img src="https://minthcm.org/assets/mintgif.gif">
+<img src="https://minthcm.org/wp-content/uploads/2023/11/MintHCM4-gif.gif">
 
 This repository contains a source code of MintHCM system.
 
@@ -37,7 +37,11 @@ We don't have any rigid rules. We don't want to cut back your creativity in deve
 
 ## Requirements 💻
 
-MintHCM requirements: **PHP 7.4-8.0** and **MySQL 5.7 or 8.0**. All web browsers with Chromium and Firefox are supported by MintHCM. <br> Unfortunately, it doesn't support IE 😭 
+MintHCM requirements:
+
+* **PHP 7.4-8.0**
+* **MySQL 5.7 or 8.0** or **Percona 8.0** or **MariaDB 10**. 
+* All web browsers with Chromium and Firefox are supported by MintHCM. <br> Unfortunately, it doesn't support IE 😭 
 
 ## License 🌐
 
