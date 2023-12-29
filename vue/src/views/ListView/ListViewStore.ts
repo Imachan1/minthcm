@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useUrlStore } from '@/store/url'
 import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
+import { FilterRow } from './ListViewFilterRow.vue'
 
 interface Preferences {
     columns: string[]
@@ -215,6 +216,20 @@ export const useListViewStore = defineStore('listview', () => {
         return Object.values(defs.value?.search || {}).sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
     })
 
+    const filterRows = ref<FilterRow[]>([])
+
+    function addFilterRow() {
+        filterRows.value.push({
+            field: null,
+            operator: null,
+            inputs: [],
+        })
+    }
+
+    function deleteFilterRow(index: number) {
+        filterRows.value = filterRows.value.filter((filterRow, filterIndex) => index !== filterIndex)
+    }
+
     watch(options, () => {
         getData()
     })
@@ -245,5 +260,8 @@ export const useListViewStore = defineStore('listview', () => {
         setDefaultColumns,
         pageOffsetMap,
         selected,
+        filterRows,
+        addFilterRow,
+        deleteFilterRow,
     }
 })

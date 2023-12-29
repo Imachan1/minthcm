@@ -18,12 +18,6 @@
             </template>
         </v-switch>
         <MintButton
-            variant="primary"
-            icon="mdi-plus"
-            :text="languages.label('LBL_ESLIST_ADD_FILTER')"
-            @click="addFilterRow"
-        />
-        <MintButton
             icon="mdi-content-save-outline"
             :disabled="!filterRows.length"
             :text="languages.label('LBL_ESLIST_SAVE_FILTER')"
@@ -71,7 +65,6 @@
             :key="row"
             :index="index"
             :row="row"
-            @delete-filter-row="deleteFilterRow"
         />
     </div>
 </template>
@@ -89,13 +82,11 @@ import ListViewSaveFilterPopup from './ListViewSaveFilterPopup.vue'
 import cloneDeep from 'lodash.clonedeep'
 
 const store = useListViewStore()
-const { activeFilter } = storeToRefs(useListViewStore())
+const { activeFilter, filterRows } = storeToRefs(useListViewStore())
 const languages = useLanguagesStore()
 const popups = usePopupsStore()
 
 const searchPhraseDebounceTimer = ref<number | null>(null)
-
-const filterRows = ref<FilterRow[]>([])
 
 function updateOptionsDebounce() {
     if (searchPhraseDebounceTimer.value) {
@@ -111,14 +102,6 @@ function handleSearchPhraseEnterKey() {
     store.getData()
 }
 
-function addFilterRow() {
-    filterRows.value.push({
-        field: null,
-        operator: null,
-        inputs: [],
-    })
-}
-
 function showSaveFilterPopup() {
     popups.showPopup({
         title: languages.label('LBL_ESLIST_SAVE_FILTER'),
@@ -128,10 +111,6 @@ function showSaveFilterPopup() {
             filterRows,
         },
     })
-}
-
-function deleteFilterRow(index: number) {
-    filterRows.value = filterRows.value.filter((filterRow, filterIndex) => index !== filterIndex)
 }
 
 function replacePlaceholders(placeholders, inputs) {
@@ -230,7 +209,6 @@ watch(activeFilter, () => {
 .filters-rows {
     display: flex;
     flex-direction: column;
-    gap: 16px;
 }
 
 .filters-search {

@@ -10,6 +10,7 @@
                 autocomplete="off"
                 :error="!isValidDate"
                 hide-details
+                density="compact"
             />
         </template>
         <VueDatePicker
