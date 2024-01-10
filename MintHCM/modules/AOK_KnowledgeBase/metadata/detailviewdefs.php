@@ -125,25 +125,30 @@ array (
             'label' => 'LBL_ADDITIONAL_INFO',
           ),
         ),
-        4 => 
+        4 =>
         array (
-          0 => 'date_entered',
-          1 => 
+          0 =>
           array (
             'name' => 'author',
             'studio' => 'visible',
             'label' => 'LBL_AUTHOR',
           ),
-        ),
-        5 => 
-        array (
-          0 => 'date_modified',
           1 => 
           array (
             'name' => 'approver',
             'studio' => 'visible',
             'label' => 'LBL_APPROVER',
           ),
+        ),
+        5 => 
+        array (
+          0 => 'assigned_user_name',
+          1 => '',
+        ),
+        6 => 
+        array (
+          0 => 'date_entered',
+          1 => 'date_modified',
         ),
       ),
     ),
