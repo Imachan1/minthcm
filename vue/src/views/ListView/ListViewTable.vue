@@ -173,5 +173,4 @@ function formatMultienum(value, labels) {
         letter-spacing: 0.09px;
     }
 }
-
 </style>

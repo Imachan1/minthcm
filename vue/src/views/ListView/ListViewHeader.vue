@@ -47,7 +47,7 @@ const massActions = computed(() => {
     if (!store.config?.config?.mass_actions) {
         return null
     }
-    return store.config.config.mass_actions.map(action => ({
+    return store.config.config.mass_actions.map((action) => ({
         icon: action.icon,
         title: languages.label(action.label, store.module),
         onClick: () => MassActions[action.action]?.(store.selected),

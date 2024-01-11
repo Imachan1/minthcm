@@ -47,7 +47,6 @@ watch(module, (newVal, oldVal) => {
         store.init()
     }
 })
-
 </script>
 
 <style scoped lang="scss">

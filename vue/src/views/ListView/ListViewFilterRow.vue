@@ -33,7 +33,7 @@
                     :is="getInputComponent(input.type)"
                     :fieldDefs="fieldDefs"
                     :input="input"
-                    @update:modelValue="newValue => input.value = newValue"
+                    @update:modelValue="(newValue) => (input.value = newValue)"
                 />
             </v-col>
         </v-row>
@@ -66,12 +66,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits([
-    'update:field',
-    'update:operator',
-    'update:inputs',
-    'delete-filter-row',
-])
+const emit = defineEmits(['update:field', 'update:operator', 'update:inputs', 'delete-filter-row'])
 const store = useListViewStore()
 const languages = useLanguagesStore()
 const field = ref(props.row.field ?? '')
@@ -86,11 +81,7 @@ const operatorList = computed(() => {
         return {}
     }
     const type = fieldDefs.value.type
-    return (
-        operatorDefs[type] ??
-        operatorDefs[operatorDefs.typeMap[type]] ??
-        operatorDefs[operatorDefs.defaultOperator]
-    )
+    return operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
 })
 const operatorItems = computed(() => {
     return Object.entries(operatorList.value).map(([key, op]) => ({
