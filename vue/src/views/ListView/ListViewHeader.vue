@@ -13,6 +13,12 @@
             <MintMenuList :items="massActions" />
         </v-menu>
         <MintButton
+            variant="primary"
+            icon="mdi-plus"
+            :text="languages.label('LBL_ESLIST_ADD_FILTER')"
+            @click="store.addFilterRow"
+        />
+        <MintButton
             class="ms-auto"
             icon="mdi-playlist-plus"
             :text="languages.label('LBL_ESLIST_COLUMNS')"
@@ -32,6 +38,7 @@ import ListViewColumnsPopup from './ListViewColumnsPopup.vue'
 import MassActions from './MassActions'
 
 const store = useListViewStore()
+
 const languages = useLanguagesStore()
 const popups = usePopupsStore()
 

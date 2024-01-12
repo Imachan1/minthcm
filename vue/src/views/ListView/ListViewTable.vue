@@ -5,7 +5,6 @@
         :items="store.results"
         :items-length="store.itemsLength || 0"
         :loading="store.isLoading || store.initialLoading"
-        height="calc(100vh - 400px)"
         fixed-header
         must-sort
         :show-select="!!store.config?.config?.mass_actions?.length"
