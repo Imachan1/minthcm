@@ -4658,6 +4658,7 @@ $app_strings['LBL_MINT4_GS_HELP_TIP'] = 'Enter at least 3 characters to find rec
 $app_strings['LBL_MINT4_GS_NO_RECORDS_FOUND'] = 'No records found';
 
 $app_strings['LBL_MINT4_FIND_MODULE'] = 'Find module...';
+$app_strings['LBL_MINT4_NO_MODULES_FOUND'] = 'No modules found';
 $app_strings['LBL_MINT4_RECENTLY_VIEWED'] = 'Recently viewed';
 $app_strings['LBL_MINT4_FAVORITE_RECORDS'] = 'Favorite records';
 $app_strings['LBL_MINT4_ALL_MODULES'] = 'All modules';

@@ -6,11 +6,17 @@
                 class="filters-search"
                 variant="plain"
                 :placeholder="languages.label('LBL_MINT4_GS_SEARCH_INPUT')"
-                prepend-inner-icon="mdi-magnify"
-                @keyup.enter="handleSearchPhraseEnterKey"
                 @input="updateOptionsDebounce"
+                @keyup.enter="searchByPhrase"
                 hide-details
-            />
+            >
+                <template #prepend-inner>
+                    <v-fab-transition>
+                        <v-icon v-if="store.searchPhrase" icon="mdi-close" @click="clearInput" />
+                        <v-icon v-else icon="mdi-magnify" />
+                    </v-fab-transition>
+                </template>
+            </v-text-field>
         </v-col>
         <v-switch v-model="store.myObjects" class="flex-grow-0" @change="store.getData" color="secondary" hide-details>
             <template #label>
@@ -104,7 +110,7 @@ function updateOptionsDebounce() {
     searchPhraseDebounceTimer.value = setTimeout(store.getData, 1000)
 }
 
-function handleSearchPhraseEnterKey() {
+function searchByPhrase() {
     if (searchPhraseDebounceTimer.value) {
         clearTimeout(searchPhraseDebounceTimer.value)
     }
@@ -162,6 +168,11 @@ function isInputValid(input) {
         (input.type !== 'date' || input.value.length === 10) && // todo: date format validation
         (input.type !== 'multiselect' || input.value.length)
     )
+}
+
+function clearInput() {
+    store.searchPhrase = ''
+    searchByPhrase()
 }
 
 function isFilterRowValid(row: FilterRow) {
