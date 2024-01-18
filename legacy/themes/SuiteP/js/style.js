@@ -76,6 +76,11 @@ $(document).ready(function () {
       eventUrl = new URL(href)
     }
 
+    if(e.target.parentElement.parentElement.dataset.openLinksInNew === "true") {
+        e.preventDefault();
+        return window.open(eventUrl, "_blank")
+      }
+
     if(!eventUrl || eventUrl.protocol === 'javascript:') {
         return
     }
