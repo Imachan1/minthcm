@@ -70,8 +70,28 @@ $(document).ready(function () {
       return
     }
     const href = e.target?.href ?? e.target?.closest('a')?.href
-    if (href && !['#', 'javascript:void(0)'].includes(href) && !href.includes('javascript:') && !href.includes('#')) {
-      window.parent.postMessage(href)
+    let eventUrl = null
+
+    if (href) {
+      eventUrl = new URL(href)
+    }
+
+    if(e.target.parentElement.parentElement.dataset.openLinksInNew === "true") {
+        e.preventDefault();
+        return window.open(eventUrl, "_blank")
+      }
+
+    if(!eventUrl || eventUrl.protocol === 'javascript:') {
+        return
+    }
+    
+    if (eventUrl.origin !== location.origin) {
+    e.preventDefault();
+    return window.open(eventUrl, "_blank")
+    }
+
+    if (!eventUrl.hash && href.at(-1) !== '#') {
+    window.parent.postMessage(href)
     }
   })
   // #Mint-Vue End
