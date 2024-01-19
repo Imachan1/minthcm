@@ -76,7 +76,7 @@ $(document).ready(function () {
       eventUrl = new URL(href)
     }
 
-    if(e.target.parentElement.parentElement.dataset.openLinksInNew === "true") {
+    if (e.target.closest('[data-open-links-in-new]')?.dataset.openLinksInNew === 'true') {
         e.preventDefault();
         return window.open(eventUrl, "_blank")
       }
