@@ -83,7 +83,6 @@
 import axios from 'axios'
 import { computed } from 'vue'
 import { VDataTableServer, VDataTableFooter } from 'vuetify/labs/VDataTable'
-import { DateTime } from 'luxon'
 import { useRouter } from 'vue-router'
 import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'
