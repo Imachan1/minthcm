@@ -122,6 +122,16 @@ $dictionary["Employee"]["fields"]["goals"] = array(
     'side' => 'right',
     'vname' => 'LBL_GOALS',
 );
+$dictionary["Employee"]["fields"]["kudos"] = array(
+    'name' => 'kudos',
+    'type' => 'link',
+    'relationship' => 'kudos_employee',
+    'module' => 'Kudos',
+    'bean_name' => 'Kudos',
+    'source' => 'non-db',
+    'side' => 'right',
+    'vname' => 'LBL_KUDOS',
+);
 $dictionary["Employee"]["fields"]["appraisals"] = array(
     'name' => 'appraisals',
     'type' => 'link',
