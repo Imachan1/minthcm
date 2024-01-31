@@ -574,6 +574,12 @@ class EditView {
                // the list's name, but the list itself (the developper comment show us that developper expected to
                // retrieve list's name and not the options array)
                $this->fieldDefs[$name]['options'] = $app_list_strings[$this->fieldDefs[$name]['options']];
+               /* eVolpe #102684 START */
+                if(isset($this->fieldDefs[$name]['options_colors'])){
+                    $this->fieldDefs[$name]['options_colors'] = $app_list_strings[$this->fieldDefs[$name]['options_colors']];
+                }
+               /* eVolpe #102684 END */
+
             }
 
             if (

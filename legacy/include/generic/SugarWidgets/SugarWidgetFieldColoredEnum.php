@@ -1,5 +1,9 @@
-{*
-/*********************************************************************************
+<?php
+
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
+}
+/* * *******************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
 
@@ -35,18 +39,8 @@
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
  * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * ****************************************************************************** */
 
-*}
-{* This is here so currency fields, who don't really have dropdown
-lists can work. *}
-{if is_string({{sugarvar key='options' string=true}})}
-<input type="hidden" class="sugar_field" id="{{sugarvar key='name'}}" value="{ {{sugarvar key='options' string=true}} }">
-{ {{sugarvar key='options' string=true}} }
-{else}
-<input type="hidden" class="sugar_field" id="{{sugarvar key='name'}}" value="{ {{sugarvar key='value' string=true}} }">
-{ {{sugarvar key='options' string=true}}[{{sugarvar key='value' string=true}}]}
-{/if}
-{{if !empty($displayParams.enableConnectors)}}
-{{sugarvar_connector view='DetailView'}}
-{{/if}}
+class SugarWidgetFieldColoredEnum extends SugarWidgetFieldEnum {
+   
+}

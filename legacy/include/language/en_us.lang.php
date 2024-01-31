@@ -4791,3 +4791,103 @@ $app_list_strings['requests_status_list'] = array(
 
 $app_list_strings['moduleList']['Requests'] = 'Requests';
 $app_list_strings['moduleListSingular']['Requests'] = 'Request';
+
+// ColoredEnum Lists START
+
+$gray_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#616161; background-color:#dbdbdb; border:1px solid #616161;";
+$blue_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#316b95; background-color: #e0f1ff; border:1px solid #316b95;";
+$green_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#316b95; background-color: #e0f1ff; border:1px solid #316b95;";
+$yellow_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#5b5800; background-color: #f8f0aa; border:1px solid #5b5800;";
+$green_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#006222; background-color:#e1ffeb; border:1px solid #006222;";
+$red_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#b00020; background-color:#ffe0e8; border:1px solid #b00020;";
+
+$app_list_strings['workschedules_status_dom_colored'] = array(
+    'planned' => $blue_status,
+    'worked' => $yellow_status,
+    'closed' => $green_status,
+);
+$app_list_strings['position_status_colored'] = array(
+    'planned' => $blue_status,
+    'active' => $green_status,
+    'inactive' => $gray_status,
+);
+
+$app_list_strings['meeting_status_dom_colored'] = array(
+    'Planned' => $blue_status,
+    'Held' => $green_status,
+    'Not Held' => $red_status,
+);
+
+$app_list_strings['call_status_dom_colored'] = array(
+    'Planned' => $blue_status,
+    'Held' => $green_status,
+    'Not Held' => $red_status,
+);
+$app_list_strings['project_status_dom_colored'] = array(
+    'Draft' => $gray_status,
+    'In Review' => $yellow_status,
+    'Underway' => $yellow_status,
+    'On_Hold' => $yellow_status,
+    'Completed' => $green_status,
+);
+$app_list_strings['survey_status_list_colored'] = array(
+    'Draft' => $gray_status,
+    'Active' => $green_status,
+    'Closed' => $green_status,
+);
+$app_list_strings['exit_interview_status_list_colored'] = array(
+    'planned' => $blue_status,
+    'held' => $green_status,
+    'not_held' => $red_status,
+);
+$app_list_strings['goals_status_list_colored'] = array(
+    'planned' => $blue_status,
+    'in_progress' => $yellow_status,
+    'completed' => $green_status,
+    'uncompleted' => $gray_status,
+);
+$app_list_strings['onboarding_status_list_colored'] = array(
+    'in_progress' => $yellow_status,
+    'held' => $green_status,
+);
+$app_list_strings['task_status_dom_colored'] = array(
+    'Not Started' => $gray_status,
+    'In Progress' => $yellow_status,
+    'Completed' => $green_status,
+    'Pending Input' => $yellow_status,
+    'Deferred' => $gray_status,
+);
+$app_list_strings['project_status_list_colored'] = array(
+    'for_approval' => $yellow_status,
+    'plan' => $blue_status,
+    'open' => $green_status,
+    'close' => $red_status,
+);
+$app_list_strings['appraisals_status_list_colored'] = array(
+    'planned' => $blue_status,
+    'in_progress' => $yellow_status,
+    'held' => $green_status,
+    'not_held' => $red_status,
+);
+$app_list_strings['aok_status_list_colored'] = array(
+    'Draft' => $gray_status,
+    'Expired' => $red_status,
+    'In_Review' => $yellow_status,
+    'published_private' => $green_status,
+    'published_public' => $green_status,
+);
+$app_list_strings['workplace_room_status_colored'] = array(
+    '' => '',
+    'active' => $green_status,
+    'inactive' => $gray_status,
+    'planned' => $blue_status,
+);
+
+$app_list_strings['applications_status_list_colored'] = array(
+    'new' => $blue_status,
+    'in_progress' => $yellow_status,
+    'accepted' => $green_status,
+    'rejected' => $red_status,
+);
+
+// ColoredEnum Lists END
