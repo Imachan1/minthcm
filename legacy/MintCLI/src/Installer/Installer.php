@@ -78,7 +78,6 @@ class Installer
         include 'install.php';
         chdir('../');
         file_put_contents(self::INSTALL_LOG_FILE, "Installing MintHCM System Core...\n\n");
-        $this->setupApiBasePath();
         return true;
     }
 
@@ -115,17 +114,6 @@ class Installer
             // return false;
         // }
         return true;
-    }
-
-    public function setupApiBasePath()
-    {
-        $basePath = $this->serverService->getSystemBasePath($this->rootDirectory);
-        $basePath = $basePath == '/' ? '/api' : $basePath . '/api';
-        $originalConfigFile = file_get_contents('./api/app/Config/AppConfig.php');
-        $pattern = '/return .*?api.*?\n/i';
-        $replacement = "return '$basePath';\n";
-        $configFile = preg_replace($pattern, $replacement, $originalConfigFile);
-        file_put_contents('./api/app/Config/AppConfig.php', $configFile);
     }
 
     public function reindexElastic()
