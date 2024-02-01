@@ -206,8 +206,8 @@ class ElasticSearchIndexer extends AbstractIndexer
     }
     
     /** @inheritdoc */
-    public function indexModule($module)
-    {
+   public function indexModule($module) {
+      global $sugar_config;
         $seed = \BeanFactory::getBean($module);
         $tableName = $seed->table_name;
         $isDifferential = $this->isDifferentialIndexing();
@@ -219,21 +219,34 @@ class ElasticSearchIndexer extends AbstractIndexer
             $where = "$tableName.date_indexed IS NULL OR $tableName.date_indexed < $tableName.date_modified";
         }
 
+      $old_disable_date_format = $GLOBALS['disable_date_format'];
+      // prevent date format conversion in get_list
+      $GLOBALS['disable_date_format'] = true;
+
+      $batchOffset = 0;
+      $maxBatchSize = $sugar_config['search']['ElasticSearch']['max_batch_size'] ?? 50000;
+      $totalRecordsCount = 0;
+      $oldIndexedRecordsCount = $this->indexedRecordsCount;
         try {
-            $beanTime = Carbon::now()->toDateTimeString();
-            if ($seed) {
-                $beans = $seed->get_full_list("", $where, false, $showDeleted);
+         do {
+            $batch = $seed->get_list("$tableName.date_entered", $where, $batchOffset, $maxBatchSize, $maxBatchSize, $showDeleted);
+            if (empty($batch['list'])) {
+               break;
             }
+            $totalRecordsCount += count($batch['list']);
+            $this->indexBatch($module, $batch['list']);
+            $batchOffset += $maxBatchSize;
+         } while (true);
         } catch (RuntimeException $exception) {
             $this->logger->error("Failed to index module $module");
             $this->logger->error($exception);
             return;
+      } finally {
+         $GLOBALS['disable_date_format'] = $old_disable_date_format;
         }
-        if ( $beans === null ) {
-            $beans = [];
-        }
-        $this->logger->debug(sprintf('Indexing module %s...', $module));
-        $this->indexBeans($module, $beans);
+      $indexedRecordsCount = $this->indexedRecordsCount - $oldIndexedRecordsCount;
+      $type = $totalRecordsCount === $indexedRecordsCount ? Logger::DEBUG : Logger::WARNING;
+      $this->logger->log($type, sprintf('Indexed %d/%d %s', $indexedRecordsCount, $totalRecordsCount, $module));
         $this->putMeta($module, [
             'module_name' => $module
         ]);
