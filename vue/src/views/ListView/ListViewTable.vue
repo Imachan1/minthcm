@@ -11,6 +11,7 @@
         :show-select="!!store.config?.config?.mass_actions?.length"
         v-model="store.selected"
         @update:options="store.options = $event"
+        :no-data-text="languages.label('LBL_ESLIST_NO_DATA_AVAILABLE')"
     >
         <template
             v-for="link in store.customFields.links"
@@ -83,7 +84,6 @@
 import axios from 'axios'
 import { computed } from 'vue'
 import { VDataTableServer, VDataTableFooter } from 'vuetify/labs/VDataTable'
-import { DateTime } from 'luxon'
 import { useRouter } from 'vue-router'
 import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'
