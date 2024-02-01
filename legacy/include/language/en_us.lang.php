@@ -2275,7 +2275,8 @@ $app_strings = array(
     'LBL_ESLIST_NOT_CONTAIN' => 'Doesn\'t contain',
     'LBL_ESLIST_GREATER_OR_EQUAL' => 'Greater than/Equal',
     'LBL_ESLIST_CONTAIN_WORD' => 'Contains word',
-    'LBL_ESLIST_NOT_CONTAIN_WORD' => 'Doesn\'t contains word',
+    'LBL_ESLIST_NOT_CONTAIN_WORD' => 'Doesn\'t contain word',
+    'LBL_ESLIST_NO_DATA_AVAILABLE' => 'No data available',
     'LBL_ESLIST_LESS_OR_EQUAL' => 'Less than/Equal',
     'LBL_ESLIST_GREATER_THAN' => 'Greater than',
     'LBL_ESLIST_LESS_THAN' => 'Less than',
@@ -2290,6 +2291,7 @@ $app_strings = array(
     'LBL_ESLIST_LOADING' => 'Loading...',
     'LBL_ESLIST_NO_DATA' => 'No options available',
     'LBL_ESLIST_DATE' => 'Date',
+    'LBL_ESLIST_SELECT_DATE' => 'Select',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
