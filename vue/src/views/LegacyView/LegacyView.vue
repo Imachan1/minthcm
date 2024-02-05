@@ -27,8 +27,6 @@ async function handleMessageEvent(e: MessageEvent) {
     const resolved = router.resolve(path)
     if (resolved.meta?.auth === false) {
         router.go(0) //refresh
-    } else if (resolved.meta?.isLegacy && resolved.name === 'dashboard') {
-        history.replaceState(null, '', resolved.href)
     } else {
         router.push(path)
 
