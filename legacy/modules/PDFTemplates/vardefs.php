@@ -80,7 +80,7 @@
  * ****************************************************************************** */
 global $sugar_config;
 $dictionary['PDFTemplates'] = array(
-   'table' => 'PDFTemplates',
+   'table' => 'pdftemplates',
    'audited' => false,
    'fields' => array(
       'template' =>

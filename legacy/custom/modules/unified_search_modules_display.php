@@ -25,9 +25,6 @@ $unified_search_modules_display = array(
     'FP_Event_Locations' => array(
         'visible' => true,
     ),
-    'Prospects' => array(
-        'visible' => true,
-    ),
     'Project' => array(
         'visible' => true,
     ),
@@ -46,13 +43,7 @@ $unified_search_modules_display = array(
     'CampaignTrackers' => array(
         'visible' => false,
     ),
-    'Releases' => array(
-        'visible' => true,
-    ),
     'Groups' => array(
-        'visible' => true,
-    ),
-    'EmailMan' => array(
         'visible' => true,
     ),
     'Schedulers' => array(
@@ -87,9 +78,6 @@ $unified_search_modules_display = array(
     ),
     'Trackers' => array(
         'visible' => false,
-    ),
-    'Connectors' => array(
-        'visible' => true,
     ),
     'Documents' => array(
         'visible' => true,
@@ -161,9 +149,6 @@ $unified_search_modules_display = array(
         'visible' => true,
     ),
     'Workplaces' => array(
-        'visible' => true,
-    ),
-    'EmployeeInteractionTracking' => array(
         'visible' => true,
     ),
     'Positions' => array(
@@ -281,9 +266,6 @@ $unified_search_modules_display = array(
         'visible' => true,
     ),
     'KTemplates' => array(
-        'visible' => true,
-    ),
-    'PDFGenerator' => array(
         'visible' => true,
     ),
     'PDFTemplates' => array(
