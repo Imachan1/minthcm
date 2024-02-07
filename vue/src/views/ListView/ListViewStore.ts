@@ -5,6 +5,7 @@ import { useUrlStore } from '@/store/url'
 import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
 import { FilterRow } from './ListViewFilterRow.vue'
+import { getAllTypesMatchingTo } from './operators'
 
 interface Preferences {
     columns: string[]
@@ -164,8 +165,9 @@ export const useListViewStore = defineStore('listview', () => {
         if (!isInit.value) {
             return {}
         }
+
         return Object.values(defs.value?.columns || {})
-            .filter((col) => col.type === 'enum' && col.options)
+            .filter((col) => getAllTypesMatchingTo('enum').includes(col.type) && col.options)
             .map((col) => ({
                 field: col.name,
                 colors: languages.languages.app_list_strings[col.options + '_colored'],
@@ -208,6 +210,7 @@ export const useListViewStore = defineStore('listview', () => {
         if (!isInit.value) {
             return {}
         }
+
         return {
             links: links.value,
             booleans: booleans.value,
