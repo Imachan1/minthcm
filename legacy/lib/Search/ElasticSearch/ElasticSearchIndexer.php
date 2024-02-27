@@ -209,6 +209,10 @@ class ElasticSearchIndexer extends AbstractIndexer
    public function indexModule($module) {
       global $sugar_config;
         $seed = \BeanFactory::getBean($module);
+      if (empty($seed->table_name)) {
+         $this->logger->error("Table not found for module $module. Skipping this module!");
+         return;
+      }
         $tableName = $seed->table_name;
         $isDifferential = $this->isDifferentialIndexing();
   
