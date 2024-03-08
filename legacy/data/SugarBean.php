@@ -394,6 +394,13 @@ class SugarBean {
      */
     public $createdAuditRecords;
 
+    // MintHCM #122846 START
+    /**
+     * @var bool $mint_is_update
+     */
+    public $mint_is_update;
+    // MintHCM #122846 END
+
     /**
      * Keeps track of emails sent to notify_user ids to avoid duplicate emails
      * @var array $sentAssignmentNotifications
@@ -2329,6 +2336,7 @@ class SugarBean {
             $this->track_view($current_user->id, $this->module_dir, 'save');
          }
          #MintHCM start
+         $this->mint_is_update = $isUpdate;
          $this->postSave();
          #MintHCM end
          $this->call_custom_logic('after_save', '');
