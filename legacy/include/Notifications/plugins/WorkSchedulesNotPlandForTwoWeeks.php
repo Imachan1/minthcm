@@ -43,6 +43,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 require_once 'include/Notifications/NotificationPlugin.php';
+require_once 'include/Integrations/Firebase/autoload.php'; // MintHCM #122506
 
 class WorkSchedulesNotPlandForTwoWeeks extends NotificationPlugin
 {
@@ -66,6 +67,13 @@ class WorkSchedulesNotPlandForTwoWeeks extends NotificationPlugin
                 ->setAssignedUserId($work_schedule['id'])->setRelatedBean($work_schedule['id'], 'Users')
                 ->setDescription(translate('LBL_TWO_WEEKS_ALERT', 'WorkSchedules'))->setType('WorkSchedulesNotPlandForTwoWeeks')
                 ->saveAsAlert(true,$options)->WebPush(true,true,$options);
+            // MintHCM #122506 start
+            (new MintHCM\Firebase\PushNotifications\GeneralNotificationToUser())->execute([
+                'user_id' => $work_schedule['id'],
+                'title' => translate('LBL_LIST_TITLE', 'WorkSchedules'),
+                'body' => translate('LBL_TWO_WEEKS_ALERT', 'WorkSchedules')
+            ]);
+            // MintHCM #122506 end
         }
     }
 

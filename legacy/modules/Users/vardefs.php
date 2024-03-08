@@ -1001,6 +1001,22 @@ $dictionary['User'] = array(
             'side' => 'left',
             'vname' => 'LBL_DEPUTY',
         ),
+        // MintHCM #122506 start
+        "app_tokens" => array(
+            'name' => 'app_tokens',
+            'vname' => 'LBL_APP_TOKENS',
+            'label' => 'LBL_APP_TOKENS',
+            'type' => 'text',
+            'rows' => 6,
+            'cols' => 80,
+            'size' => 30,
+            'duplicate_merge' => 'enabled',
+            'audited' => false,
+            'massupdate' => false,
+            'importable' => false,
+            'reportable' => false,
+        ),
+        // MintHCM #122506 end
     ),
     'indices' => array(
         array(

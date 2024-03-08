@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 require_once 'include/Notifications/NotificationPlugin.php';
+require_once 'include/Integrations/Firebase/autoload.php'; // MintHCM #122506
 
 class WorkSchedulesDayValid extends NotificationPlugin {
 
@@ -68,6 +69,13 @@ class WorkSchedulesDayValid extends NotificationPlugin {
                  ->setRelatedBean($work_schedule['id'], 'WorkSchedules')
                  ->setType('WorkSchedulesDayValid')
                  ->saveAsAlert()->WebPush();
+         // MintHCM #122506 start
+         (new MintHCM\Firebase\PushNotifications\GeneralNotificationToUser())->execute([
+            'user_id' => $work_schedule['assigned_user_id'],
+            'title' => translate('LBL_LIST_TITLE', 'WorkSchedules'),
+            'body' => sprintf(translate('LBL_APPROVED_ALERT', 'WorkSchedules'), $this->getWorkScheduleStartDate($work_schedule['id']))
+         ]);
+         // MintHCM #122506 end
       }
 
       $this->removeIncorrectNotifications();
