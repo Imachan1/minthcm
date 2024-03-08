@@ -470,4 +470,21 @@ class Employee extends Person implements EmailInterface
     {
         return !empty($this->id) && !$this->new_with_id;
     }
+
+    // MintHCM #123323 Users|Employees ACLAccess START
+    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set')
+    {
+        global $current_user;
+        if ('edit' == $this->ACLNormalizeViewContext($view)) {
+            return is_admin($current_user)
+            || $this->id == $current_user->id
+            || empty($this->id)
+            || $this->created_by == $current_user->id
+            // || ACLAction::userHasAccess($current_user->id, $this->module_name, 'edit')
+            ;
+        }
+        return parent::ACLAccess($view, $is_owner, $in_group);
+    }
+    // MintHCM #123323 Users|Employees ACLAccess END
+
 }
