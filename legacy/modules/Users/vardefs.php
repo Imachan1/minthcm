@@ -158,6 +158,15 @@ $dictionary['User'] = array(
             'importable' => 'required',
             'required' => true,
         ),
+        'date_indexed' => array(
+            'name' => 'date_indexed',
+            'vname' => 'LBL_DATE_INDEXED',
+            'type' => 'datetime',
+            'comment' => 'Date record last indexed',
+            'enable_range_search' => true,
+            'options' => 'date_range_search_dom',
+            'inline_edit' => false,
+        ),
         'full_name' => array(
             'name' => 'full_name',
             'rname' => 'full_name',
