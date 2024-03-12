@@ -154,7 +154,9 @@ if (is_array($_POST['merged_ids'])) {
                 $relName = $mergeSource->$name->getRelatedModuleName();
                 if (!empty($relName) && strtolower($relName) == 'emailaddresses') {
                     //handle email address merge
-                    handleEmailMerge($focus, $name, $mergeSource->$name->get());
+                    /* MintHCM #129284 START */
+                    //handleEmailMerge($focus, $name, $mergeSource->$name->get());
+                    /* MintHCM #129284 END */
                 } else {
                     $data = $mergeSource->$name->get();
                     if (is_array($data) && $focus->merge_bean->load_relationship($name)) {

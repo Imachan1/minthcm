@@ -217,6 +217,26 @@ function copy_value(json_array)
             }
         }
 	}
+    /* MintHCM #129284 START */
+    else if(json_array['field_type'] == 'email'){
+        let module = $("#EditView input[name='merge_module']").val();
+        let widget_index = '0';
+        let instance_name = module + widget_index;
+        let email_addresses = [];
+
+        $(".email-address-input-group :input[type='email']").each((i, input) => {
+            if(input.id.length > 0 && input.id !== 'email-address-input'){
+                email_addresses.push(input.value);
+            }
+        });
+
+        json_array['field_value'].forEach( (value, index) => {
+            if(!email_addresses.includes(value)){
+                SUGAR.EmailAddressWidget.instances[instance_name].addEmailAddress(module + 'emailAddressesTable' + widget_index, value, false);
+            }
+        });  
+    }
+    /* MintHCM #129284 END */
 	else
 	{
 		target_element.value = json_array['field_value'];
