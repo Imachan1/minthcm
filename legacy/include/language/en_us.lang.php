@@ -61,7 +61,7 @@ $app_list_strings = array(
     ],
     'moduleList' => array(
         'Home' => 'Home',
-        'ResourceCalendar' => 'Resource Calendar',
+        'ResourceCalendar' => 'Resources Calendar',
         'Contacts' => 'Contacts',
         'Accounts' => 'Accounts',
         'Alerts' => 'Alerts',
