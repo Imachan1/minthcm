@@ -1025,7 +1025,7 @@ class Scheduler extends SugarBean {
       $sched18->catch_up = '1';
       $sched18->save();
 
-      $this->createJobEntry('AutomaticCreateNotification', '*/15::*::*::*::*', $mod_strings['LBL_AUTOMATICCREATENOTIFICATION']);
+      $this->createJobEntry('AutomaticCreateNotification', '*/15::*::*::*::*', $mod_strings['LBL_AUTOMATICCREATENOTIFICATION'],'Inactive');
       $this->createJobEntry('find_spent_times_without_work_schedule', '0::10::*::*::0', $mod_strings['LBL_FIND_SPENT_TIMES_WITHOUT_WORK_SCHEDULE']);
       $this->createJobEntry('find_invalid_spent_times', '0::12::*::*::0', $mod_strings['LBL_FIND_INVALID_SPENT_TIMES']);
       $this->createJobEntry('last_working_day_check', '0::20::*::*::1-5', $mod_strings['LBL_LAST_WORKING_DAY_CHECK']);
@@ -1033,14 +1033,14 @@ class Scheduler extends SugarBean {
       $this->createJobEntry('find_spent_times_assign_to_different_user_work_schedule', '0::0::*::*::0', $mod_strings['LBL_FIND_SPENT_TIMES_ASSIGN_TO_DIFFERENT_USER_WORK_SCHEDULE']);
    }
 
-   protected function createJobEntry($function, $interval, $name = '') {
+   protected function createJobEntry($function, $interval, $name = '', $status='Active') {
       $job = BeanFactory::getBean('Schedulers');
       $job->name = $name;
       $job->job = 'function::' . $function;
       $job->date_time_start = '2005-01-01 00:00:00';
       $job->date_time_end = null;
       $job->job_interval = $interval;
-      $job->status = 'Active';
+      $job->status = $status;
       $job->created_by = '1';
       $job->modified_user_id = '1';
       $job->catch_up = '1';
