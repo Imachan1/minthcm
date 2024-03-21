@@ -53,6 +53,7 @@ require_once("data/Relationships/One2MRelationship.php");
  * Represents 1-1 relationship
  * @api
  */
+#[\AllowDynamicProperties]
 class One2OneRelationship extends M2MRelationship
 {
     public function __construct($def)

@@ -52,6 +52,7 @@ require_once("data/Relationships/SugarRelationship.php");
  * Represents a many to many relationship that is table based.
  * @api
  */
+#[\AllowDynamicProperties]
 class M2MRelationship extends SugarRelationship
 {
     public $type = "many-to-many";

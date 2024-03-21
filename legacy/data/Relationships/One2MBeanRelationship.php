@@ -52,6 +52,7 @@ require_once("data/Relationships/One2MRelationship.php");
  * Represents a one to many relationship that is table based.
  * @api
  */
+#[\AllowDynamicProperties]
 class One2MBeanRelationship extends One2MRelationship
 {
     //Type is read in sugarbean to determine query construction
@@ -347,7 +348,7 @@ class One2MBeanRelationship extends One2MRelationship
         $alias = empty($params['join_table_alias']) ? "{$link->name}_rel": $params['join_table_alias'];
         $alias = DBManagerFactory::getInstance()->getValidDBName($alias, false, 'alias');
 
-        $tableInRoleFilter = "";
+        $tableInRoleFilter = $startingTable;
         if (
             (
                 $startingTable == "meetings"
@@ -363,7 +364,7 @@ class One2MBeanRelationship extends One2MRelationship
                 || $targetTable == "tasks"
                 || $targetTable == "calls"
             )
-            && substr($alias, 0, 12 + strlen($targetTable)) == $targetTable . "_activities_"
+            && substr((string) $alias, 0, 12 + strlen((string) $targetTable)) == $targetTable . "_activities_"
         ) {
             $tableInRoleFilter = $linkIsLHS ? $alias : $startingTable;
         }

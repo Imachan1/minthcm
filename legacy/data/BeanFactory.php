@@ -54,6 +54,7 @@ require_once 'data/SugarBean.php';
  *
  * @api
  */
+#[\AllowDynamicProperties]
 class BeanFactory
 {
     /**

@@ -61,6 +61,7 @@ require_once "data/Relationships/RelationshipFactory.php";
  * a bean should be plural (e.g. contacts).
  * @api
  */
+#[\AllowDynamicProperties]
 class SugarBean {
 
    /**
@@ -552,7 +553,7 @@ class SugarBean {
                   // no break
                default:
                   if ( isset($value['default']) && $value['default'] !== '' ) {
-                     $this->$field = htmlentities($value['default'], ENT_QUOTES, 'UTF-8');
+                    $this->$field = htmlentities((string) $value['default'], ENT_QUOTES, 'UTF-8');
                   } else {
                      $this->$field = '';
                   }
@@ -573,8 +574,11 @@ class SugarBean {
     *
     * @throws \Exception
     */
-   protected function parseDateDefault($value, $time = false) {
+   protected function parseDateDefault($value, $time = false) 
+   {
       global $timedate;
+      $results = false;
+
       if ( $time ) {
          $dtAry = explode('&', $value, 2);
          $now = $timedate->getNow(true);
@@ -650,8 +654,8 @@ class SugarBean {
                $GLOBALS['log']->fatal('Relationship definitions should be an array');
                $RelationshipDefs = ( array ) $RelationshipDefs;
             }
-            foreach ( $RelationshipDefs as $rel_name ) {
-               Relationship::delete($rel_name, $db);
+            foreach ($RelationshipDefs as $rel_name => $rel_def) {
+                Relationship::delete($rel_name, $db);
             }
          }
       }
@@ -796,7 +800,7 @@ class SugarBean {
       $final_query = '';
       $final_query_rows = '';
       $subpanel_list = array();
-      if ( method_exists($subpanel_def, 'isCollection') ) {
+      if (method_exists($subpanel_def ?? '', 'isCollection')) {
          if ( $subpanel_def->isCollection() ) {
             if ( $subpanel_def->load_sub_subpanels() === false ) {
                $subpanel_list = array();
@@ -877,8 +881,8 @@ class SugarBean {
 
             // Find related email address for sub panel ordering
             if ( $order_by && isset($subpanel_def->panel_definition['list_fields'][$order_by]['widget_class']) &&
-                    $subpanel_def->panel_definition['list_fields'][$order_by]['widget_class'] == 'SubPanelEmailLink' &&
-                    !in_array($order_by, array_keys($subquery['query_fields'])) ) {
+            $subpanel_def->panel_definition['list_fields'][$order_by]['widget_class'] === 'SubPanelEmailLink' &&
+            !array_key_exists($order_by, $subquery['query_fields'])) {
                $relatedBeanTable = $subpanel_def->table_name;
                $relatedBeanModule = $subpanel_def->get_module_name();
                $subquery['select'] .= ",
@@ -902,8 +906,8 @@ class SugarBean {
                $first = false;
             }
             $query_array = $subquery['query_array'];
-            $select_position = strpos($query_array['select'], "SELECT");
-            $distinct_position = strpos($query_array['select'], "DISTINCT");
+            $select_position = strpos((string) $query_array['select'], "SELECT");
+            $distinct_position = strpos((string) $query_array['select'], "DISTINCT");
             if ( !empty($subquery['params']['distinct']) && !empty($subpanel_def->table_name) ) {
                $query_rows = "( SELECT count(DISTINCT " . $subpanel_def->table_name . ".id)"
                        . $subquery['from_min'] . $query_array['join'] . $subquery['where'] . ' )';
@@ -972,7 +976,7 @@ class SugarBean {
          return $response;
       }
 
-      if ( method_exists($parentbean, 'process_union_list_query') ) {
+      if (method_exists($parentbean ?? '', 'process_union_list_query')) {
          return $parentbean->process_union_list_query(
                          $parentbean, $final_query, $row_offset, $limit, $max, '', $subpanel_def, $final_query_rows, $secondary_queries
          );
@@ -982,161 +986,178 @@ class SugarBean {
       return null;
    }
 
-   /**
-    * @param $subpanel_list
-    * @param $subpanel_def
-    * @param $parentbean
-    * @param $order_by
-    *
-    * @return array
-    */
-   protected static function build_sub_queries_for_union($subpanel_list, $subpanel_def, $parentbean, $order_by) {
+    /**
+     * @param $subpanel_list
+     * @param $subpanel_def
+     * @param $parentbean
+     * @param $order_by
+     *
+     * @return array
+     */
+    protected static function build_sub_queries_for_union($subpanel_list, $subpanel_def, $parentbean, $order_by)
+    {
+        global $beanList;
+        $subqueries = array();
 
-      global $beanList;
-      $subqueries = array();
+        if (!is_array($subpanel_list) || is_object($subpanel_list)) {
+            $GLOBALS['log']->fatal('Invalid Argument: Subpanel list should be an array.');
+            $subpanel_list = (array) $subpanel_list;
+        }
 
-      if ( !is_array($subpanel_list) or is_object($subpanel_list) ) {
-         $GLOBALS['log']->fatal('Invalid Argument: Subpanel list should be an array.');
-         $subpanel_list = ( array ) $subpanel_list;
-      }
-
-      foreach ( $subpanel_list as $this_subpanel ) {
-         if (
-                 method_exists($this_subpanel, 'isDatasourceFunction')
-         ) {
-            if ( !$this_subpanel->isDatasourceFunction() || ($this_subpanel->isDatasourceFunction() && isset($this_subpanel->_instance_properties['generate_select']) && $this_subpanel->_instance_properties['generate_select'])
+        foreach ($subpanel_list as $this_subpanel) {
+            if (
+                is_object($this_subpanel) &&
+                method_exists($this_subpanel, 'isDatasourceFunction')
             ) {
-               //the custom query function must return an array with
-               if ( $this_subpanel->isDatasourceFunction() ) {
-                  $shortcut_function_name = $this_subpanel->get_data_source_name();
-                  $parameters = $this_subpanel->get_function_parameters();
-                  if ( !empty($parameters) ) {
-                     //if the import file function is set, then import the file to call the custom function from
-                     if ( is_array($parameters) && isset($parameters['import_function_file']) ) {
-                        //this call may happen multiple times, so only require if function does not exist
-                        if ( !function_exists($shortcut_function_name) ) {
-                           require_once($parameters['import_function_file']);
+                if (!$this_subpanel->isDatasourceFunction() || ($this_subpanel->isDatasourceFunction()
+                        && isset($this_subpanel->_instance_properties['generate_select'])
+                        && $this_subpanel->_instance_properties['generate_select'])
+                ) {
+                    //the custom query function must return an array with
+                    if ($this_subpanel->isDatasourceFunction()) {
+                        $shortcut_function_name = $this_subpanel->get_data_source_name();
+                        $parameters = $this_subpanel->get_function_parameters();
+                        $query_array = [];
+                        if (!empty($parameters)) {
+                            //if the import file function is set, then import the file to call the custom function from
+                            if (is_array($parameters) && isset($parameters['import_function_file'])) {
+                                //this call may happen multiple times, so only require if function does not exist
+                                if (!function_exists($shortcut_function_name)) {
+                                    require_once($parameters['import_function_file']);
+                                }
+                                //call function from required file
+                                $query_array = $shortcut_function_name($parameters);
+                            } elseif (!empty($parentbean)) {
+                                //call function from parent bean
+                                $query_array = $parentbean->$shortcut_function_name($parameters);
+                            }
+                        } elseif (!empty($parentbean)) {
+                            $query_array = $parentbean->$shortcut_function_name();
                         }
-                        //call function from required file
-                        $query_array = $shortcut_function_name($parameters);
-                     } else {
-                        //call function from parent bean
-                        $query_array = $parentbean->$shortcut_function_name($parameters);
-                     }
-                  } else {
-                     $query_array = $parentbean->$shortcut_function_name();
-                  }
-               } else {
-                  $related_field_name = $this_subpanel->get_data_source_name();
-                  if ( !method_exists($parentbean, 'load_relationship') ) {
-                     $GLOBALS['log']->fatal('Fatal error:  Call to a member function load_relationship() ' .
-                             'on an invalid object');
-                  } else {
-                     if ( !$parentbean->load_relationship($related_field_name) ) {
-                        if ( isset($parentbean->$related_field_name) ) {
-                           unset($parentbean->$related_field_name);
+                    } else {
+                        $related_field_name = $this_subpanel->get_data_source_name();
+                        if (!method_exists($parentbean ?? '', 'load_relationship')) {
+                            $GLOBALS['log']->fatal('Fatal error:  Call to a member function load_relationship() ' .
+                                'on an invalid object');
+                        } else {
+                            if (!$parentbean->load_relationship($related_field_name)) {
+                                if (isset($parentbean->$related_field_name)) {
+                                    unset($parentbean->$related_field_name);
+                                }
+                                continue;
+                            }
+                            $query_array = $parentbean->$related_field_name->getSubpanelQuery(array(), true);
                         }
-                        continue;
-                     }
-                     $query_array = $parentbean->$related_field_name->getSubpanelQuery(array(), true);
-                  }
-               }
-               $table_where = preg_replace('/^\s*WHERE/i', '', $this_subpanel->get_where());
-               $queryArrayWhere = '';
-               if ( isset($query_array) ) {
-                  $queryArrayWhere = $query_array['where'];
-               } else {
-                  $GLOBALS['log']->fatal('Undefined variable: query_array');
-               }
-               $where_definition = preg_replace('/^\s*WHERE/i', '', $queryArrayWhere);
+                    }
+                    $table_where = preg_replace('/^\s*WHERE/i', '', (string) $this_subpanel->get_where());
+                    $queryArrayWhere = '';
+                    if (isset($query_array)) {
+                        $queryArrayWhere = $query_array['where'];
+                    } else {
+                        $GLOBALS['log']->fatal('Undefined variable: query_array');
+                    }
+                    $where_definition = preg_replace('/^\s*WHERE/i', '', (string) $queryArrayWhere);
 
-               if ( !empty($table_where) ) {
-                  if ( empty($where_definition) ) {
-                     $where_definition = $table_where;
-                  } else {
-                     $where_definition .= ' AND ' . $table_where;
-                  }
-               }
+                    if (!empty($table_where)) {
+                        if (empty($where_definition)) {
+                            $where_definition = $table_where;
+                        } else {
+                            $where_definition .= ' AND ' . $table_where;
+                        }
+                    }
 
-               if ( isset($this_subpanel->_instance_properties['module']) ) {
-                  $submodulename = $this_subpanel->_instance_properties['module'];
-               } else {
-                  $GLOBALS['log']->fatal('Undefined index: module');
-                  $submodulename = '';
-               }
-               if ( isset($beanList[$submodulename]) ) {
-                  $submoduleclass = $beanList[$submodulename];
-               } else {
-                  $GLOBALS['log']->fatal('Undefined index: ' . $submodulename);
-                  $submoduleclass = null;
-               }
+                    if (isset($this_subpanel->_instance_properties['module'])) {
+                        $submodulename = $this_subpanel->_instance_properties['module'];
+                    } else {
+                        $GLOBALS['log']->fatal('Undefined index: module');
+                        $submodulename = '';
+                    }
+                    if (isset($beanList[$submodulename])) {
+                        $submoduleclass = $beanList[$submodulename];
+                    } else {
+                        $GLOBALS['log']->fatal('Undefined index: ' . $submodulename);
+                        $submoduleclass = null;
+                    }
 
-               /** @var SugarBean $submodule */
-               if ( class_exists($submoduleclass) ) {
-                  $submodule = new $submoduleclass();
-               } else {
-                  $GLOBALS['log']->fatal('Class name must be a valid object or a string');
-                  $submodule = null;
-               }
-               $subwhere = $where_definition;
+                    /** @var SugarBean $submodule */
+                    if (class_exists($submoduleclass)) {
+                        $submodule = new $submoduleclass();
+                    } else {
+                        $GLOBALS['log']->fatal('Class name must be a valid object or a string');
+                        $submodule = null;
+                    }
+                    $subwhere = $where_definition;
 
 
-               $list_fields = $this_subpanel->get_list_fields();
-               foreach ( $list_fields as $list_key => $list_field ) {
-                  if ( isset($list_field['usage']) && $list_field['usage'] == 'display_only' ) {
-                     unset($list_fields[$list_key]);
-                  }
-               }
+                    $list_fields = $this_subpanel->get_list_fields();
+                    foreach ($list_fields as $list_key => $list_field) {
+                        if (isset($list_field['usage']) && $list_field['usage'] == 'display_only') {
+                            unset($list_fields[$list_key]);
+                        }
+                    }
 
 
-               if ( !method_exists($subpanel_def, 'isCollection') ) {
-                  $GLOBALS['log']->fatal('Call to a member function isCollection() on an invalid object');
-               }
-               if (
-                       method_exists($subpanel_def, 'isCollection') &&
-                       !$subpanel_def->isCollection() &&
-                       isset($list_fields[$order_by]) &&
-                       isset($submodule->field_defs[$order_by]) &&
-                       (!isset($submodule->field_defs[$order_by]['source']) || $submodule->field_defs[$order_by]['source'] == 'db')
-               ) {
-                  $order_by = $submodule->table_name . '.' . $order_by;
-               }
-               $panel_name = $this_subpanel->name;
-               $params = array();
-               $params['distinct'] = $this_subpanel->distinct_query();
+                    if (!method_exists($subpanel_def ?? '', 'isCollection')) {
+                        $GLOBALS['log']->fatal('Call to a member function isCollection() on an invalid object');
+                    }
+                    if (
+                        method_exists($subpanel_def ?? '', 'isCollection') &&
+                        !$subpanel_def->isCollection() &&
+                        isset($list_fields[$order_by]) &&
+                        isset($submodule->field_defs[$order_by]) &&
+                        (!isset($submodule->field_defs[$order_by]['source'])
+                            || $submodule->field_defs[$order_by]['source'] == 'db')
+                    ) {
+                        $order_by = $submodule->table_name . '.' . $order_by;
+                    }
+                    $panel_name = $this_subpanel->name;
+                    $params = array();
+                    $params['distinct'] = $this_subpanel->distinct_query();
 
-               $params['joined_tables'] = isset($query_array['join_tables']) ? $query_array['join_tables'] : null;
-               $params['include_custom_fields'] = method_exists($subpanel_def, 'isCollection') ? !$subpanel_def->isCollection() : null;
-               $params['collection_list'] = method_exists($subpanel_def, 'get_inst_prop_value') ? $subpanel_def->get_inst_prop_value('collection_list') : null;
+                    $params['joined_tables'] = isset($query_array['join_tables']) ? $query_array['join_tables'] : null;
+                    $params['include_custom_fields'] = method_exists($subpanel_def ?? '', 'isCollection')
+                        ? !$subpanel_def->isCollection() : null;
+                    $params['collection_list'] = method_exists($subpanel_def ?? '', 'get_inst_prop_value')
+                        ? $subpanel_def->get_inst_prop_value('collection_list') : null;
 
-               // use single select in case when sorting by relate field
-               $singleSelect = method_exists($submodule, 'is_relate_field') ? $submodule->is_relate_field($order_by) : null;
+                    // use single select in case when sorting by relate field
+                    $singleSelect = method_exists($submodule ?? '', 'is_relate_field')
+                        ? $submodule->is_relate_field($order_by) : null;
 
-               $subquery = method_exists($submodule, 'create_new_list_query') ? $submodule->create_new_list_query(
-                               '', $subwhere, $list_fields, $params, 0, '', true, $parentbean, $singleSelect
-                       ) : null;
+                    $subquery = method_exists($submodule ?? '', 'create_new_list_query')
+                        ? $submodule->create_new_list_query(
+                            '',
+                            $subwhere,
+                            $list_fields,
+                            $params,
+                            0,
+                            '',
+                            true,
+                            $parentbean,
+                            $singleSelect
+                        ) : null;
 
-               if ( isset($subquery['select']) ) {
-                  $subquery['select'] .= " , '$panel_name' panel_name ";
-               } else {
-                  $subquery['select'] = " , '$panel_name' panel_name ";
-               }
-               if ( isset($query_array) ) {
-                  $subquery['from'] .= $query_array['join'];
-                  $subquery['query_array'] = $query_array;
-               } else {
-                  $subquery['query_array'] = null;
-               }
-               $subquery['params'] = $params;
+                    if (isset($subquery['select'])) {
+                        $subquery['select'] .= " , '$panel_name' panel_name ";
+                    } else {
+                        $subquery['select'] = " , '$panel_name' panel_name ";
+                    }
+                    if (isset($query_array)) {
+                        $subquery['from'] .= $query_array['join'];
+                        $subquery['query_array'] = $query_array;
+                    } else {
+                        $subquery['query_array'] = null;
+                    }
+                    $subquery['params'] = $params;
 
-               $subqueries[] = $subquery;
+                    $subqueries[] = $subquery;
+                }
+            } else {
+                $GLOBALS['log']->fatal('isDatasourceFunction() is not implemented.');
             }
-         } else {
-            $GLOBALS['log']->fatal('isDatasourceFunction() is not implemented.');
-         }
-      }
-      return $subqueries;
-   }
+        }
+        return $subqueries;
+    }
 
    /**
     * Applies pagination window to union queries used by list view and subpanels,
@@ -1157,6 +1178,7 @@ class SugarBean {
    public function process_union_list_query(
            $parent_bean, $query, $row_offset, $limit = -1, $max_per_page = -1, $where = '', $subpanel_def = null, $query_row_count = '', $secondary_queries = array()
    ) {
+      $current_bean = null;
       if ( is_null($subpanel_def) ) {
          $GLOBALS['log']->fatal('subpanel_def is null');
       }
@@ -1430,7 +1452,7 @@ class SugarBean {
    public function _get_num_rows_in_query($query, $is_count_query = false) {
       $num_rows_in_query = 0;
       if ( !$is_count_query ) {
-         $count_query = SugarBean::create_list_count_query($query);
+        $count_query = $this->create_list_count_query($query);
       } else {
          $count_query = $query;
       }
@@ -1859,7 +1881,7 @@ class SugarBean {
             if ( !is_array($properties) ) {
                $GLOBALS['log']->fatal('array_search() expects parameter 2 to be array, ' .
                        gettype($properties) . ' given');
-            } elseif ( array_search('link', $properties) === 'type' ) {
+            } elseif ( array_search('link', $properties, true) === 'type' ) {
                $linked_fields[$name] = $properties;
             }
          }
@@ -2271,6 +2293,7 @@ class SugarBean {
          unset($this->date_entered);
       }
       // call the custom business logic
+      $custom_logic_arguments = [];
       $custom_logic_arguments['check_notify'] = $check_notify;
 
       // View Tools start ev formula logic before hooks
@@ -2425,30 +2448,31 @@ class SugarBean {
    /**
     * Cleans char, varchar, text, etc. fields of XSS type materials
     */
-   public function cleanBean() {
-      if ( !is_array($this->field_defs) && !is_object($this->field_defs) ) {
-         $GLOBALS['log']->fatal('SugarBean::$filed_defs should be an array');
-      } else {
-         foreach ( ( array ) $this->field_defs as $key => $def ) {
-            $type = '';
-            if ( isset($def['type']) ) {
-               $type = $def['type'];
-            }
-            if ( isset($def['dbType']) ) {
-               $type .= $def['dbType'];
-            }
+    public function cleanBean()
+    {
+        if (!is_array($this->field_defs) && !is_object($this->field_defs)) {
+            $GLOBALS['log']->fatal('SugarBean::$filed_defs should be an array');
+        } else {
+            foreach ((array)$this->field_defs as $key => $def) {
+                $type = '';
+                if (isset($def['type'])) {
+                    $type = $def['type'];
+                }
+                if (isset($def['dbType'])) {
+                    $type .= $def['dbType'];
+                }
 
-            if ( isset($def['type']) && ($def['type'] == 'html' || $def['type'] == 'longhtml') ) {
-               $this->$key = htmlentities(SugarCleaner::cleanHtml($this->$key, true));
-            } elseif (
-                    (strpos($type, 'char') !== false || strpos($type, 'text') !== false || $type == 'enum') &&
+                if (isset($def['type']) && ($def['type'] == 'html' || $def['type'] == 'longhtml')) {
+                    $this->$key = purify_html($this->$key);
+                } elseif (
+                    (strpos((string) $type, 'char') !== false || strpos((string) $type, 'text') !== false || $type == 'enum') &&
                     !empty($this->$key)
-            ) {
-               $this->$key = htmlentities(SugarCleaner::cleanHtml($this->$key, true));
+                ) {
+                    $this->$key = purify_html($this->$key);
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
    /**
     * Function corrects any bad formatting done by 3rd party/custom code
@@ -2484,7 +2508,7 @@ class SugarBean {
                         $this->$field = '';
                         break;
                      }
-                     if ( !preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $this->$field) ) {
+                     if ( !preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', (string) $this->$field) ) {
                         $this->$field = $timedate->to_db($this->$field);
                         $reformatted = true;
                      }
@@ -2494,7 +2518,7 @@ class SugarBean {
                         $this->$field = '';
                         break;
                      }
-                     if ( !preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $this->$field) ) {
+                     if ( !preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', (string) $this->$field) ) {
                         $this->$field = $timedate->to_db_date($this->$field, false);
                         $reformatted = true;
                      }
@@ -2504,7 +2528,7 @@ class SugarBean {
                         $this->$field = '';
                         break;
                      }
-                     if ( preg_match('/(am|pm)/i', $this->$field) ) {
+                     if ( preg_match('/(am|pm)/i', (string) $this->$field) ) {
                         $fromUserTime = $timedate->fromUserTime($this->$field);
                         if ( is_object($fromUserTime) && method_exists($fromUserTime, 'format') ) {
                            $this->$field = $fromUserTime->format(TimeDate::DB_TIME_FORMAT);
@@ -2845,7 +2869,7 @@ class SugarBean {
                         //if before value is not empty then attempt to delete relationship
                         $GLOBALS['log']->debug("save_relationship_changes(): From field_defs - attempting to " .
                                 "remove the relationship record: {$linkField} = " .
-                                (string)($this->rel_fields_before_value[$idName]));
+                                $this->rel_fields_before_value[$idName]);
                         $success = $this->$linkField->delete(
                                 $this->id, $this->rel_fields_before_value[$idName]
                         );
@@ -3276,7 +3300,7 @@ class SugarBean {
       $xtpl->assign("ASSIGNED_USER", $this->new_assigned_user_name);
       $xtpl->assign("ASSIGNER", $current_user->name);
 
-      $parsedSiteUrl = parse_url($sugar_config['site_url']);
+      $parsedSiteUrl = parse_url((string) $sugar_config['site_url']);
       $host = $parsedSiteUrl['host'];
       if ( !isset($parsedSiteUrl['port']) ) {
          $parsedSiteUrl['port'] = 80;
@@ -3656,7 +3680,7 @@ class SugarBean {
             $selectedFields["$this->table_name.$field"] = true;
          } elseif ( (!isset($data['source']) || $data['source'] == 'custom_fields') && (!empty($alias) || !empty($filter)) ) {
             //add this column only if it has NOT already been added to select statement string
-            $colPos = strpos($ret_array['select'], (string)$this->table_name . "_cstm" . ".$field");
+            $colPos = strpos($ret_array['select'], $this->table_name . "_cstm" . ".$field");
             if ( !$colPos || $colPos < 0 ) {
                $ret_array['select'] .= ", $this->table_name" . "_cstm" . ".$field $alias";
             }
@@ -4111,7 +4135,9 @@ class SugarBean {
     * @param string $where Optional, additional filter criteria.
     * @return array Fetched data
     */
-   public function process_list_query($query, $row_offset, $limit = -1, $max_per_page = -1, $where = '') {
+   public function process_list_query($query, $row_offset, $limit = -1, $max_per_page = -1, $where = '') 
+   {
+      $rows_found = 0;
       global $sugar_config;
       $db = DBManagerFactory::getInstance('listviews');
       /**
@@ -4211,9 +4237,9 @@ class SugarBean {
             $next_offset--;
             $previous_offset++;
          }
-      } elseif ( !isset($rows_found) ) {
-         $rows_found = $row_offset + count($list);
-      }
+        } elseif ($rows_found == 0) {
+            $rows_found = $row_offset + count($list);
+        }
 
       $response = array();
       $response['list'] = $list;
@@ -4415,7 +4441,9 @@ class SugarBean {
     *
     * Internal function, do not override.
     */
-   public function retrieve($id = -1, $encode = true, $deleted = true) {
+   public function retrieve($id = -1, $encode = true, $deleted = true) 
+   {
+      $custom_logic_arguments = [];
       $custom_logic_arguments['id'] = $id;
       $this->call_custom_logic('before_retrieve', $custom_logic_arguments);
 
@@ -5024,6 +5052,7 @@ class SugarBean {
       $isFirstTime = true;
       $bean = new $class();
 
+      $list = [];
       // We have some data.
       while ( ($row = $bean->db->fetchByAssoc($result)) != null ) {
          $row = $this->convertRow($row);
@@ -5081,6 +5110,7 @@ class SugarBean {
          $this->mark_undeleted($id);
       } else {
          // call the custom business logic
+         $custom_logic_arguments = [];
          $custom_logic_arguments['id'] = $id;
          $this->call_custom_logic("before_delete", $custom_logic_arguments);
          #MintHCM start
@@ -5123,7 +5153,9 @@ class SugarBean {
     * Internal function, do not override.
     * @param string $id
     */
-   public function mark_undeleted($id) {
+   public function mark_undeleted($id) 
+   {
+      $custom_logic_arguments = [];
       // call the custom business logic
       $custom_logic_arguments['id'] = $id;
       $this->call_custom_logic("before_restore", $custom_logic_arguments);
