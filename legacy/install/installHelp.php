@@ -46,7 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
-
+ #[\AllowDynamicProperties]
 class HelpItem {
    var $associated_field = '';
    var $title = '';

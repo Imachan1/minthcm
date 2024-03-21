@@ -278,7 +278,7 @@ if (isset($_SESSION['installation_scenarios'])) {
         //If the item is not in $_SESSION['scenarios'], then unset them as they are not required
         if (!in_array($scenario['key'], $_SESSION['scenarios'])) {
             foreach ($scenario['modules'] as $module) {
-                if (($removeKey = array_search($module, $enabled_tabs)) !== false) {
+                if (($removeKey = array_search($module, $enabled_tabs, true)) !== false) {
                     unset($enabled_tabs[$removeKey]);
                 }
             }

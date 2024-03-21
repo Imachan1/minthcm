@@ -45,7 +45,7 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-
+#[\AllowDynamicProperties]
 class UserDemoData {
 	public $_user;
 	public $_large_scale_test;

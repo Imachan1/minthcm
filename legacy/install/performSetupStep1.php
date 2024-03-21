@@ -109,7 +109,7 @@ $bottle = handleSugarConfig();
 //handleLog4Php();
 
 $server_software = $_SERVER["SERVER_SOFTWARE"];
-if (strpos($server_software, 'Microsoft-IIS') !== false) {
+if (strpos((string) $server_software, 'Microsoft-IIS') !== false) {
     installLog("calling handleWebConfig()");
     handleWebConfig();
 } else {

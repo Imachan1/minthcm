@@ -87,7 +87,7 @@ $setup_site_admin_user_name = $_SESSION['setup_site_admin_user_name'];
 $setup_site_admin_password = $_SESSION['setup_site_admin_password'];
 $setup_site_guid = (isset($_SESSION['setup_site_specify_guid']) && $_SESSION['setup_site_specify_guid'] != '') ? $_SESSION['setup_site_guid'] : '';
 $setup_site_url = $_SESSION['setup_site_url'];
-$parsed_url = parse_url($setup_site_url);
+$parsed_url = parse_url((string) $setup_site_url);
 $setup_site_host_name = $parsed_url['host'];
 $setup_site_log_dir = isset($_SESSION['setup_site_custom_log_dir']) ? $_SESSION['setup_site_log_dir'] : '.';
 $setup_site_log_file = 'minthcm.log'; // may be an option later
@@ -247,7 +247,9 @@ $_POST['user_theme'] = (string) SugarThemeRegistry::getDefault();
 $_REQUEST['do_not_redirect'] = true;
 
 // restore superglobals and vars
-$GLOBALS = $varStack['GLOBALS'];
+foreach ($varStack['GLOBALS'] ?? [] as $index => $item) {
+    $GLOBALS[$index] = $item;
+}
 foreach ($varStack['defined_vars'] as $__key => $__value) {
     $$__key = $__value;
 }
@@ -256,11 +258,11 @@ $endTime = microtime(true);
 $deltaTime = $endTime - $startTime;
 
 if (!is_array($bottle) || !is_object($bottle)) {
-    $bottle = (array) $bottle;
+    $bottle = $bottle;
     LoggerManager::getLogger()->warn('Bottle needs to be an array to perform setup');
 }
 
-if (count($bottle) > 0) {
+if (is_countable($bottle) && count($bottle) > 0) {
     foreach ($bottle as $bottle_message) {
         $bottleMsg .= "{$bottle_message}\n";
     }
