@@ -7,6 +7,7 @@ use Api\V8\JsonApi\Helper\RelationshipObjectHelper;
 use Api\V8\Param\MonthInfoParams;
 use Slim\Http\Request;
 
+#[\AllowDynamicProperties]
 class MonthInfoService
 {
     protected $beanManager;
@@ -54,7 +55,7 @@ class MonthInfoService
             while (($row = $db->fetchByAssoc($module_data)) != null) {
                 $data[][$value] = [
                     'id' => $row['id'],
-                    'type' => ($key === 'WorkSchedules') ? $key : ucfirst($value),
+                    'type' => ('WorkSchedules' === $key) ? $key : ucfirst($value),
                     'attributes' => array_map(function ($value) {
                         return is_string($value)
                         ? (\DateTime::createFromFormat('Y-m-d H:i:s', $value)
