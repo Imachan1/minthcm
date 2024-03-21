@@ -9,7 +9,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -210,7 +210,7 @@ function get_modified_entries($session, $module_name, $ids, $select_fields)
         }
         $field_select .= $table_name.".".$field;
 
-        if ($index < (count($select_fields) - 1)) {
+        if ($index < ((is_countable($select_fields) ? count($select_fields) : 0) - 1)) {
             $field_select .= ",";
             $index++;
         }
