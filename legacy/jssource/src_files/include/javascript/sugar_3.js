@@ -3719,13 +3719,13 @@ SUGAR.savedViews = function () {
          if(columnDefs && typeof columnDefs === 'object' && Object.keys(columnDefs))  {
             Object.keys(columnDefs).forEach(function (columnKey) {
                var column = columnDefs[columnKey];
-               if (!column || !column.sortable) {
-                  return;
-       }
-      
-               if (column.sortable === true) {
-                  sortableColumnsCount++;
-               }
+               if (!column) {
+                return;
+              }
+    
+              if (column.sortable !== false) {
+                sortableColumnsCount++;
+              }
             })
          }
       
