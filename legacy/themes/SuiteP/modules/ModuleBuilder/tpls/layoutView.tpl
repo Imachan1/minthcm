@@ -6,7 +6,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -92,14 +92,14 @@
                 {/if}
                 <span id='le_label_{$idCount}'>
                 {if !empty($translate) && isset($col.label) && !empty($col.label)}
-                    {eval var=$col.label data2=$col assign='newLabel'}
+                    {eval var=$col.label assign='newLabel'}
                     {if $from_mb}
                     {$current_mod_strings[$newLabel]}
                     {else}
                     {sugar_translate label=$newLabel module=$language}
                     {/if}
                  {else}
-                    {assign var='label' data=$col value=$col.label}
+                    {assign var='label' value=$col.label}
                     {if !empty($current_mod_strings[$label])}
                         {$current_mod_strings[$label]}
                     {else}
@@ -182,7 +182,7 @@
                         {/if}
                         <span id='le_label_{$idCount}'>
                         {if !empty($translate) && isset($col.label) && !empty($col.label)}
-                            {eval var=$col.label data1=$col assign='label'}
+                            {eval var=$col.label assign='label'}
                             {sugar_translate label=$label module=$language}
                         {else}
                             {assign var='label' value=$col.label}

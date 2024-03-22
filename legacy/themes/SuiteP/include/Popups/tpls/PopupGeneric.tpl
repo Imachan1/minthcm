@@ -174,7 +174,9 @@
 							{sugar_evalcolumn_old var=$params.customCode rowData=$rowData}
 						{elseif $params.currency_format}
 							{sugar_currency_format
+								id=$rowData.ID
 	                            var=$rowData.$col
+								field_name=$params.name
 	                            round=$params.currency_format.round
 	                            decimals=$params.currency_format.decimals
 	                            symbol=$params.currency_format.symbol
