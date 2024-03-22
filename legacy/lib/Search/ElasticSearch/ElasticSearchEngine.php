@@ -62,6 +62,7 @@ use SuiteCRM\Search\SearchWrapper;
 /**
  * SearchEngine that use Elasticsearch index for performing almost real-time search.
  */
+#[\AllowDynamicProperties]
 class ElasticSearchEngine extends SearchEngine
 {
 
@@ -164,10 +165,10 @@ class ElasticSearchEngine extends SearchEngine
 
             // Override frontend wildcard character
             if (isset($GLOBALS['sugar_config']['search_wildcard_char'])) {
-                $wildcardFe = $GLOBALS['sugar_config']['search_wildcard_char'];
-                if ($wildcardFe !== $wildcardBe && strlen($wildcardFe) === 1) {
-                    $searchStr = str_replace($wildcardFe, $wildcardBe, $searchStr);
-                }
+               $wildcardFe = $GLOBALS['sugar_config']['search_wildcard_char'];
+               if ($wildcardFe !== $wildcardBe && strlen((string) $wildcardFe) === 1) {
+                  $searchStr = str_replace($wildcardFe, $wildcardBe, $searchStr);
+               }
             }
 
             // Add wildcard at the beginning of the search string

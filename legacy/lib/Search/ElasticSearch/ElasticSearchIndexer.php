@@ -68,6 +68,7 @@ require_once 'lib/Search/ElasticSearch/ElasticSearchVardefsReader.php';
 /**
  * Class ElasticSearchIndexer takes care of creating a search index for the database.
  */
+#[\AllowDynamicProperties]
 class ElasticSearchIndexer extends AbstractIndexer
 {
     use IndexingStatisticsTrait;
@@ -104,7 +105,7 @@ class ElasticSearchIndexer extends AbstractIndexer
     /**
      * Returns whether the Elasticsearch is enabled by user configuration or not.
      *
-     * @return bool
+     * @return bool|null
      */
     public static function isEnabled(): ?bool
     {
@@ -683,4 +684,44 @@ class ElasticSearchIndexer extends AbstractIndexer
         }
         $indexer->index();
     }
+    // #TODO Mint Upgrade #129887 START
+    // Do we need these methods? If not, we should consider changing buildWhereClause().
+    /**
+     * Returns the metadata fields for one index.
+     *
+     * @param string $module name of the module
+     *
+     * @return mixed[]|null an associative array with the metadata
+     */
+    // public function getMeta(string $module): ?array
+    // {
+    //     $lowercaseModule = strtolower($module);
+    //     $params = ['index' => $lowercaseModule];
+    //     $results = $this->client->indices()->getMapping($params);
+
+    //     if (!isset($results[$lowercaseModule])) {
+    //         return null;
+    //     }
+
+    //     return $results[$lowercaseModule]['mappings']['_meta'] ?? array();
+    // }
+
+    /**
+     * Retrieves the last time a module was indexed from a metadata stored in the Elasticsearch index.
+     *
+     * @param string $module
+     *
+     * @return string a datetime string
+     */
+    // private function getModuleLastIndexed(string $module): string
+    // {
+    //     $meta = $this->getMeta($module);
+
+    //     if (!isset($meta['last_index'])) {
+    //         throw new RuntimeException("Last index metadata not found.");
+    //     }
+
+    //     return $meta['last_index'];
+    // }
+    // #TODO Mint Upgrade #129887 END
 }

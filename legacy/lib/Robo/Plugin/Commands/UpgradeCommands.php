@@ -6,7 +6,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2019 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -47,6 +47,7 @@ namespace SuiteCRM\Robo\Plugin\Commands;
 use Robo\Tasks;
 use SuiteCRM\Robo\Traits\RoboTrait;
 
+#[\AllowDynamicProperties]
 class UpgradeCommands extends Tasks
 {
     use RoboTrait;

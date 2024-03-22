@@ -5,7 +5,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -67,6 +67,7 @@ use SuiteCRM\Search\SearchWrapper;
  *
  * @see \SuiteCRM\Search\ElasticSearch\ElasticSearchIndexer
  */
+#[\AllowDynamicProperties]
 abstract class AbstractIndexer
 {
     /** @var bool when enabled only beans changed after the last indexing should be indexed */
@@ -194,7 +195,7 @@ abstract class AbstractIndexer
      */
     public function setDifferentialIndexing($differentialIndexing)
     {
-        $this->differentialIndexing = boolval($differentialIndexing);
+        $this->differentialIndexing = (bool) $differentialIndexing;
     }
 
     /**
@@ -253,7 +254,7 @@ abstract class AbstractIndexer
         }
 
         if (isset($this->logger)) {
-            $this->logger->debug('Modules have been set to ' . json_encode($modules));
+            $this->logger->debug('Modules have been set to ' . json_encode($modules, JSON_THROW_ON_ERROR));
         }
 
         $this->modulesToIndex = $modules;

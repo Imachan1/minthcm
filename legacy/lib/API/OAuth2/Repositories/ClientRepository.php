@@ -6,7 +6,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -47,6 +47,7 @@ namespace SuiteCRM\API\OAuth2\Repositories;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use SuiteCRM\API\OAuth2\Entities\ClientEntity;
 
+#[\AllowDynamicProperties]
 class ClientRepository implements ClientRepositoryInterface
 {
     /**

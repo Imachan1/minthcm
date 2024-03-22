@@ -5,7 +5,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2021 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -99,11 +99,11 @@ class SimpleSqlSearchEngine extends SearchEngine
         $filteredFields = [];
 
         foreach ($fields as $name => $type) {
-            if (strpos($type, 'varchar') === 0) {
+            if (strpos((string) $type, 'varchar') === 0) {
                 $filteredFields[$name] = 'varchar';
             }
 
-            if (strpos($type, 'text') === 0) {
+            if (strpos((string) $type, 'text') === 0) {
                 $filteredFields[$name] = 'text';
             }
         }

@@ -6,7 +6,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -47,10 +47,11 @@ namespace SuiteCRM\API\v8\Exception;
  * Class BadRequestException
  * @package SuiteCRM\API\v8\Exception
  */
+#[\AllowDynamicProperties]
 class BadRequestException extends ApiException
 {
-    const MSG_PREFIX = '[BadRequest]';
-    const DEFAULT_CODE = 8020;
-    const HTTP_STATUS = 400;
-    const DETAIL_TEXT_LABEL = 'LBL_BAD_REQUEST_EXCEPTION_DETAIL';
+    public const MSG_PREFIX = '[BadRequest]';
+    public const DEFAULT_CODE = 8020;
+    public const HTTP_STATUS = 400;
+    public const DETAIL_TEXT_LABEL = 'LBL_BAD_REQUEST_EXCEPTION_DETAIL';
 }

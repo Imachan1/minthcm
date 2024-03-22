@@ -6,7 +6,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -48,9 +48,10 @@ namespace SuiteCRM\API\v8\Exception;
  * Class NotImplementedException
  * @package SuiteCRM\API\v8\Exception
  */
+#[\AllowDynamicProperties]
 class NotImplementedException extends ApiException
 {
-    const MSG_PREFIX = '[NotImplementedException]';
-    const DEFAULT_CODE = 8035;
-    const HTTP_STATUS = 500;
+    public const MSG_PREFIX = '[NotImplementedException]';
+    public const DEFAULT_CODE = 8035;
+    public const HTTP_STATUS = 500;
 }

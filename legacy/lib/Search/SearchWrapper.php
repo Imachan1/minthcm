@@ -5,7 +5,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2021 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -58,6 +58,7 @@ use SuiteCRM\Search\Exceptions\SearchEngineNotFoundException;
  *
  * @author Vittorio Iocolano
  */
+#[\AllowDynamicProperties]
 class SearchWrapper
 {
     /**
@@ -93,7 +94,7 @@ class SearchWrapper
      */
     public static function searchAndDisplay(SearchQuery $query): void
     {
-        $engine = $query->getEngine() ?: self::getDefaultEngine();
+        $engine = !empty($query->getEngine()) ? $query->getEngine() : self::getDefaultEngine();
 
         $engine = self::fetchEngine($engine);
         $engine->searchAndDisplay($query);
@@ -142,7 +143,7 @@ class SearchWrapper
         $default = array_keys(self::$engines);
         $custom = [];
         foreach (glob(self::$customEnginePath . '*.php', GLOB_NOSORT) as $file) {
-            $file = pathinfo($file);
+            $file = pathinfo((string) $file);
             $custom[] = $file['filename'];
         }
 
