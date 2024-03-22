@@ -9,7 +9,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+#[\AllowDynamicProperties]
 class ModuleScanner
 {
     private $manifestMap = array(
@@ -524,10 +525,10 @@ class ModuleScanner
     public function isConfigFile($file)
     {
         $real = realpath($file);
-        if ($real == realpath("config.php")) {
+        if ($real === realpath("config.php")) {
             return true;
         }
-        if (file_exists("config_override.php") && $real == realpath("config_override.php")) {
+        if (file_exists("config_override.php") && $real === realpath("config_override.php")) {
             return true;
         }
         return false;
@@ -606,6 +607,8 @@ class ModuleScanner
         }
         $contents = file_get_contents($file);
         if (!$this->isPHPFile($contents)) {
+            $issues[] = translate('ML_INVALID_PHP_FILE', 'Administration');
+            $this->issues['file'][$file] = $issues;
             return $issues;
         }
         $tokens = @token_get_all($contents);
@@ -884,7 +887,7 @@ class ModuleScanner
             echo '<h2 class="error">' . ucfirst($type) . ' ' . translate('ML_ISSUES', 'Administration') . '</h2>';
             echo '<div id="details' . $type . '" >';
             foreach ($issues as $file => $issue) {
-                $file = preg_replace('/.*\//', '', $file);
+                $file = preg_replace('/.*\//', '', (string) $file);
                 echo '<div style="position:relative;left:10px"><b>' . $file . '</b></div><div style="position:relative;left:20px">';
                 if (is_array($issue)) {
                     foreach ($issue as $i) {
@@ -912,7 +915,7 @@ class ModuleScanner
                     'Administration') . '</h2>';
             $message .= '<div id="details' . $type . '" >';
             foreach ($issues as $file => $issue) {
-                $file = preg_replace('/.*\//', '', $file);
+                $file = preg_replace('/.*\//', '', (string) $file);
                 $message .= '<div style="position:relative;left:10px"><b>' . $file . '</b></div><div style="position:relative;left:20px">';
                 if (is_array($issue)) {
                     foreach ($issue as $i) {

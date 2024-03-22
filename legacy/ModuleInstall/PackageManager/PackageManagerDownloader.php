@@ -6,7 +6,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -44,6 +44,7 @@
 
 define('PACKAGE_MANAGER_DOWNLOAD_SERVER', 'https://depot.sugarcrm.com/depot/');
 define('PACKAGE_MANAGER_DOWNLOAD_PAGE', 'download.php');
+#[\AllowDynamicProperties]
 class PackageManagerDownloader
 {
 
@@ -57,7 +58,7 @@ class PackageManagerDownloader
      *
      * @return string the full path of the saved file
      */
-    public function download($session_id, $file_name, $save_dir = '', $download_server = '')
+    public static function download($session_id, $file_name, $save_dir = '', $download_server = '')
     {
         if (empty($save_dir)) {
             $save_dir = "upload://";
