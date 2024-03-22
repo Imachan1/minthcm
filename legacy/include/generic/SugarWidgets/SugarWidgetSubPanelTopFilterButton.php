@@ -45,6 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class SugarWidgetSubPanelTopFilterButton extends SugarWidgetSubPanelTopButton
 {
     public function display($defines, $additionalFormFields = null, $nonbutton = false)

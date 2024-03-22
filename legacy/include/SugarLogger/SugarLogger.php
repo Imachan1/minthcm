@@ -59,6 +59,7 @@ require_once('include/SugarLogger/LoggerTemplate.php');
  * Default SugarCRM Logger
  * @api
  */
+#[\AllowDynamicProperties]
 class SugarLogger implements LoggerTemplate
 {
     /**

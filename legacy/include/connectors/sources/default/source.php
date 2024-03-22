@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * source is the parent class of any source object.
  * @api
  */
+#[\AllowDynamicProperties]
 abstract class source
 {
     /**
@@ -142,6 +143,7 @@ abstract class source
      */
     public function loadVardefs()
     {
+        $dictionary = [];
         $class = get_class($this);
         $dir = str_replace('_', '/', $class);
         if (file_exists("custom/modules/Connectors/connectors/sources/{$dir}/vardefs.php")) {

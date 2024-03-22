@@ -43,7 +43,7 @@
  */
 
 require_once('include/SugarFields/Fields/Base/SugarFieldBase.php');
-
+#[\AllowDynamicProperties]
 class SugarFieldDatetime extends SugarFieldBase {
 
     function getEditViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex) {

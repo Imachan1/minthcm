@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
      * ListView for the subpanel- list of many objects
      * @api
      */
+    #[\AllowDynamicProperties]
     class ListViewSubPanel extends ListView
     {
         protected $smartyTemplate;

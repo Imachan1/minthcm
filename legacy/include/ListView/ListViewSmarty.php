@@ -6,7 +6,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -50,7 +50,7 @@ require_once('include/ListView/ListViewDisplay.php');
 
 
 require_once('include/contextMenus/contextMenu.php');
-
+#[\AllowDynamicProperties]
 class ListViewSmarty extends ListViewDisplay
 {
     public $data;
@@ -252,8 +252,13 @@ class ListViewSmarty extends ListViewDisplay
             $this->ss->assign('contextMenuScript', $script);
         }
 
-        $module = isset($_REQUEST['module']) ? $_REQUEST['module'] : null;
-        $this->ss->assign('showFilterIcon', !in_array($module, isset($sugar_config['enable_legacy_search']) ? $sugar_config['enable_legacy_search'] : array()));
+        $module = $_REQUEST['module'] ?? null;
+
+        if (isset($sugar_config['hideColumnFilter'][$module]) && $sugar_config['hideColumnFilter'][$module]) {
+            $this->ss->assign('hideColumnFilter', true);
+        }
+
+        $this->ss->assign('showFilterIcon', !in_array($module, $sugar_config['enable_legacy_search'] ?? array()));
     }
 
     /**
@@ -290,8 +295,8 @@ class ListViewSmarty extends ListViewDisplay
         global $app_strings, $sugar_version, $sugar_flavor, $currentModule, $app_list_strings;
         $this->ss->assign('moduleListSingular', $app_list_strings["moduleListSingular"]);
         $this->ss->assign('moduleList', $app_list_strings['moduleList']);
-        $this->ss->assign('data', $this->data['data']);
-        $this->ss->assign('query', $this->data['query']);
+        $this->ss->assign('data', $this->data['data'] ?? []);
+        $this->ss->assign('query', $this->data['query'] ?? '');
         $this->ss->assign('sugar_info', array("sugar_version" => $sugar_version,
             "sugar_flavor" => $sugar_flavor));
 
@@ -307,7 +312,7 @@ class ListViewSmarty extends ListViewDisplay
             $this->data['pageData']['offsets']['lastOffsetOnPage'] = $this->data['pageData']['offsets']['current'] + count((array)$this->data['data']);
         }
 
-        $this->ss->assign('pageData', $this->data['pageData']);
+        $this->ss->assign('pageData', $this->data['pageData'] ?? []);
 
         $navStrings = array('next' => $app_strings['LNK_LIST_NEXT'],
             'previous' => $app_strings['LNK_LIST_PREVIOUS'],

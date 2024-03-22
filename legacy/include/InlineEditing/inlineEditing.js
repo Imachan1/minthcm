@@ -354,7 +354,8 @@ $(document).on("click", function(e) {
                     ) + " " + message_field
                 );
                 if (r == true) {
-                    var output = setValueClose(output_value);
+		    // Fix #9412 - Wrong email value displayed when aborting an inline edition
+                    var output = setValueClose(output_value, false);
                     clickListenerActive = false;
                 } else {
                     $("#" + field).focus();
@@ -401,17 +402,17 @@ function getInputValue(field, type) {
                 if ($("#" + field + "_date").val().length > 0) {
                     var date = $("#" + field + "_date").val();
                 } else {
-                    var date = 00;
+                    var date = '00';
                 }
                 if ($("#" + field + "_hours :selected").text().length > 0) {
                     var hours = $("#" + field + "_hours :selected").text();
                 } else {
-                    var hours = 00;
+                    var hours = '00';
                 }
                 if ($("#" + field + "_minutes :selected").text().length > 0) {
                     var minutes = $("#" + field + "_minutes :selected").text();
                 } else {
-                    var minutes = 00;
+                    var minutes = '00';
                 }
                 if ($("#" + field + "_meridiem :selected").text().length > 0) {
                     var meridiem = $("#" + field + "_meridiem :selected").text();

@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Old EditView
  * @deprecated
  */
+#[\AllowDynamicProperties]
 class EditView
 {
     /**

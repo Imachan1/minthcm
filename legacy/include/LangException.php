@@ -59,6 +59,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * (We can use any kind of exception if it's an interface but
  * can not guarantee the proper translation in each implementation)
  */
+#[\AllowDynamicProperties]
 class LangException extends Exception implements LangExceptionInterface
 {
 
@@ -72,8 +73,8 @@ class LangException extends Exception implements LangExceptionInterface
      *
      * @param string $message
      * @param integer $code
-     * @param Exception $previous (Throwable)
-     * @param LangText $langMessage
+     * @param Exception|null $previous (Throwable)
+     * @param \SuiteCRM\LangText|null $langMessage
      */
     public function __construct($message = "", $code = 0, Exception $previous = null, LangText $langMessage = null)
     {

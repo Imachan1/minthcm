@@ -42,7 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-
+#[\AllowDynamicProperties]
 class contextMenu
 {
     public $menuItems;

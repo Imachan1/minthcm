@@ -46,6 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
+#[\AllowDynamicProperties]
 class SugarWidgetFieldRelate extends SugarWidgetReportField
 {
     /**
@@ -71,7 +72,7 @@ class SugarWidgetFieldRelate extends SugarWidgetReportField
             if (in_array($row['id'], $values)) {
                 $html .= ' selected="selected"';
             }
-            $html .= '>' . htmlspecialchars($row['title']) . '</option>';
+            $html .= '>' . htmlspecialchars((string) $row['title']) . '</option>';
         }
 
         $html .= '</select>';

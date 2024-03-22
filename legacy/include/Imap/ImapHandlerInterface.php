@@ -385,6 +385,7 @@ interface ImapHandlerInterface
         int $offset,
         int $pageSize,
         array &$mailboxInfo,
-        array $columns
+        array $columns,
+        string $auth_type
     ): array;
 }

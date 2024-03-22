@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Filter factory
  * @api
  */
+#[\AllowDynamicProperties]
 class FilterFactory
 {
     public static $filter_map = array();
@@ -64,7 +65,7 @@ class FilterFactory
             }
 
             //split the wrapper name to find the path to the file.
-            $dir = str_replace('_', '/', $filter_name);
+            $dir = str_replace('_', '/', (string) $filter_name);
             $parts = explode("/", $dir);
             $file = $parts[count($parts)-1];
 

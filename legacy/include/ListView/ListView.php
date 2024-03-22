@@ -976,7 +976,7 @@ class ListView
 
         foreach ($priority_map as $p) {
             if (array_key_exists($p, $sortOrderList)) {
-                $order = strtolower($sortOrderList[$p]);
+                $order = strtolower($sortOrderList[$p] ?? '');
                 if (in_array($order, array('asc', 'desc'))) {
                     return $order;
                 }
@@ -1136,8 +1136,9 @@ class ListView
         $_SESSION['last_sub' .$this->subpanel_module. '_url'] = $this->getBaseURL($html_var);
 
         // Bug 8139 - Correct Subpanel sorting on 'name', when subpanel sorting default is 'last_name, first_name'
+        $sortBy = $subpanel_def->_instance_properties['sort_by'] ?? '';
         if (($this->sortby == 'name' || $this->sortby == 'last_name') &&
-            str_replace(' ', '', trim($subpanel_def->_instance_properties['sort_by'])) == 'last_name,first_name') {
+            str_replace(' ', '', trim($sortBy)) == 'last_name,first_name') {
             $this->sortby = 'last_name '.$this->sort_order.', first_name ';
         }
         try {

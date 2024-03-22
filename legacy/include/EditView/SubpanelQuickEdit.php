@@ -51,6 +51,7 @@ require_once('include/EditView/EditView2.php');
  * Quick edit form in the subpanel
  * @api
  */
+#[\AllowDynamicProperties]
 class SubpanelQuickEdit
 {
     public $defaultProcess = true;

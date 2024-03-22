@@ -43,7 +43,7 @@
  */
 
 require_once('include/SugarFields/Fields/Base/SugarFieldBase.php');
-
+#[\AllowDynamicProperties]
 class SugarFieldAssigned_user_name extends SugarFieldBase {
 
 	function getSearchViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex) {

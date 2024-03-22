@@ -45,6 +45,7 @@
 
 require_once("include/SugarCharts/JsChart.php");
 
+#[\AllowDynamicProperties]
 class Jit extends JsChart
 {
     public $supports_image_export = true;

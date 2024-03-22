@@ -50,6 +50,7 @@ require_once('include/EditView/EditView2.php');
  * Quick create form in the subpanel
  * @api
  */
+#[\AllowDynamicProperties]
 class SubpanelQuickCreate
 {
     public $defaultProcess = true;

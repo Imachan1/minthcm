@@ -51,6 +51,7 @@ require_once('include/SubPanel/registered_layout_defs.php');
  * Subpanel
  * @api
  */
+#[\AllowDynamicProperties]
 class SubPanel
 {
     public $hideNewButton = false;

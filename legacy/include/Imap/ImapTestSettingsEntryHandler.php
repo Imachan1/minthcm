@@ -56,6 +56,7 @@ require_once __DIR__ . '/ImapHandlerException.php';
  *
  * @author gyula
  */
+#[\AllowDynamicProperties]
 class ImapTestSettingsEntryHandler
 {
 

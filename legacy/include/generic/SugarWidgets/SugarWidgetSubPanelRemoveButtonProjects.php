@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
+#[\AllowDynamicProperties]
 class SugarWidgetSubPanelRemoveButtonProjects extends SugarWidgetField
 {
     public function displayHeaderCell($layout_def)

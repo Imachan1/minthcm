@@ -9,7 +9,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
+#[\AllowDynamicProperties]
 class SugarWidgetSubPanelTopButton_c extends SugarWidget
 {
     public $module;
@@ -221,13 +222,18 @@ class SugarWidgetSubPanelTopButton_c extends SugarWidget
             }
         }
 
-        if ($defines['focus']->object_name=='Opportunity') {
+        if ($defines['focus']->object_name === 'Opportunity') {
             $additionalFormFields['account_id'] = $defines['focus']->account_id;
             $additionalFormFields['account_name'] = $defines['focus']->account_name;
         }
 
-        if (!empty($defines['child_module_name']) and $defines['child_module_name']=='Contacts' and !empty($defines['parent_bean_name']) and $defines['parent_bean_name']=='contact') {
-            if (!empty($defines['focus']->id) and !empty($defines['focus']->name)) {
+        if (
+            !empty($defines['child_module_name']) &&
+            $defines['child_module_name'] === 'Contacts' &&
+            !empty($defines['parent_bean_name']) &&
+            $defines['parent_bean_name'] === 'contact'
+        ) {
+            if (!empty($defines['focus']->id) && !empty($defines['focus']->name)) {
                 $formValues['reports_to_id'] = $defines['focus']->id;
                 $formValues['reports_to_name'] = $defines['focus']->name;
             }
@@ -277,6 +283,7 @@ class SugarWidgetSubPanelTopButton_c extends SugarWidget
 
         global $app_strings;
 
+        $button = '';
         if (isset($_REQUEST['layout_def_key']) && $_REQUEST['layout_def_key'] == 'UserEAPM') {
             // Subpanels generally don't go on the editview, so we have to handle this special
             $megaLink = $this->_get_form($defines, $additionalFormFields, true);

@@ -51,6 +51,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Vardef Handler Object
  * @api
  */
+#[\AllowDynamicProperties]
 class VarDefHandler
 {
     public $meta_array_name;

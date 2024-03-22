@@ -55,6 +55,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Form layout manager
  * @api
  */
+#[\AllowDynamicProperties]
 class LayoutManager
 {
     public $defs = array();

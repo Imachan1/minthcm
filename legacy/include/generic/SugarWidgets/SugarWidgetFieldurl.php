@@ -46,6 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
+#[\AllowDynamicProperties]
 class SugarWidgetFieldURL extends SugarWidgetFieldVarchar
 {
     /* Display item as link

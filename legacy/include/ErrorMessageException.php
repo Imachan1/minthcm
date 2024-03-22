@@ -57,6 +57,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * @author gyula
  */
+#[\AllowDynamicProperties]
 class ErrorMessageException extends Exception
 {
 }

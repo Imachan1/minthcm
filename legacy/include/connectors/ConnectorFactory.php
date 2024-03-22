@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Connector factory
  * @api
  */
+#[\AllowDynamicProperties]
 class ConnectorFactory
 {
     public static $source_map = array();

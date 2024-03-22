@@ -51,6 +51,9 @@ require_once('include/externalAPI/Base/ExternalAPIBase.php');
  */
 class OAuthPluginBase extends ExternalAPIBase implements ExternalOAuthAPIPlugin
 {
+    public $oauth_token;
+    public $oauth_secret;
+    public $eapmBean;
     public $authMethod = 'oauth';
     protected $oauthParams = array();
     protected $oauth_keys_initialized = false;

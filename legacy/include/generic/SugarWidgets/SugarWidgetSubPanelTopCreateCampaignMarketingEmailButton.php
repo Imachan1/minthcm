@@ -45,6 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class SugarWidgetSubPanelTopCreateCampaignMarketingEmailButton extends SugarWidgetSubPanelTopButton
 {
     public function display($layout_def, $additionalFormFields = null, $nonbutton = false)

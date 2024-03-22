@@ -43,7 +43,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 require_once('include/SugarFields/Fields/Base/SugarFieldBase.php');
-
+#[\AllowDynamicProperties]
 class SugarFieldEnum extends SugarFieldBase {
 
    function getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex) {

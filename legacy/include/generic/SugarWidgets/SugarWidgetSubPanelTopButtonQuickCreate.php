@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
+#[\AllowDynamicProperties]
 class SugarWidgetSubPanelTopButtonQuickCreate extends SugarWidgetSubPanelTopButton
 {
     public function &_get_form($defines, $additionalFormFields = null, $asUrl = false)

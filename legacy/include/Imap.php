@@ -55,6 +55,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * @author gyula
  */
+#[\AllowDynamicProperties]
 class Imap implements ImapInterface
 {
     
@@ -72,7 +73,7 @@ class Imap implements ImapInterface
      * @param string $password
      * @param int $options
      * @param int $n_retries
-     * @param array $params
+     * @param mixed[]|null $params
      *
      * @return resource or <b>FALSE</b> on error.
      */

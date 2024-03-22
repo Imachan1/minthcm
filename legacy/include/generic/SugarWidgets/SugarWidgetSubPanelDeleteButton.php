@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
+#[\AllowDynamicProperties]
 class SugarWidgetSubPanelDeleteButton extends SugarWidgetField
 {
     public function displayList(&$layout_def)

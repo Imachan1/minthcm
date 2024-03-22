@@ -53,6 +53,7 @@ require_once('include/JSON.php');
  * Class JQueryTree
  * @inheritdoc
  */
+#[\AllowDynamicProperties]
 class JQueryTree extends  Tree
 {
     public $tree_style = '';

@@ -47,6 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
+#[\AllowDynamicProperties]
 class SugarWidgetFieldparent_type extends SugarWidgetFieldEnum
 {
     public function __construct(&$layout_manager)

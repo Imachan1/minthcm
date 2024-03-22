@@ -160,7 +160,7 @@ class SugarFieldFile extends SugarFieldBase {
         } else if ( ! empty($old_id) ) {
             // It's a duplicate, I think
 
-            if ( empty($params[$prefix . $vardef['docUrl'] ]) ) {
+            if (empty($params[$prefix . ($vardef['docUrl'] ?? '') ])) {
                 $upload_file->duplicate_file($old_id, $bean->id, $bean->$field);
             } else {
                 $docType = $vardef['docType'];

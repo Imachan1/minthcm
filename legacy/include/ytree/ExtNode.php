@@ -52,6 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * predefined properties for a node are  id, label, target and href. label is required property.
  * set the target and href property for cases where target is an iframe.
  */
+#[\AllowDynamicProperties]
 class ExtNode
 {
     // predefined node properties.
@@ -115,7 +116,7 @@ class ExtNode
      * add a child node.
      * @param $node
      */
-    function add_node($node)
+    public function add_node($node)
     {
         $this->nodes[$node->uid] = $node;
     }
@@ -127,7 +128,7 @@ class ExtNode
      * nodes: definition of children nodes.
      *
      */
-    function get_definition()
+    public function get_definition()
     {
         $ret = array();
 

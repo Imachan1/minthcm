@@ -6,7 +6,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -56,6 +56,7 @@ require_once __DIR__ . '/../../modules/Meetings/Meeting.php';
  * @author Benjamin Long <ben@offsite.guru>
  */
 
+#[\AllowDynamicProperties]
 class GoogleSyncHelper
 {
     /**
@@ -64,8 +65,8 @@ class GoogleSyncHelper
      * When given a single calendar object, determine its type and return an action.
      * At least one of the params is required.
      *
-     * @param Meeting $meeting (optional) Meeting Bean
-     * @param \Google\Service\Calendar\Event $event (optional) Google\Service\Calendar\Event Object
+     * @param Meeting|null $meeting (optional) Meeting Bean
+     * @param \Google\Service\Calendar\Event|null $event (optional) Google\Service\Calendar\Event Object
      *
      * @return string push, pull, skip, or false on error
      */

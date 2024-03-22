@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 /**
  * Class SugarWidgetSubPanelEmailLink
  */
+#[\AllowDynamicProperties]
 class SugarWidgetSubPanelEmailLink extends SugarWidgetField
 {
     /**

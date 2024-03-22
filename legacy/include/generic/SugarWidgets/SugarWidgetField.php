@@ -45,6 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+ #[\AllowDynamicProperties]
 class SugarWidgetField extends SugarWidget
 {
     public function __construct(&$layout_manager)

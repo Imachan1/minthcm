@@ -52,6 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class SugarWidgetSubPanelTopScheduleMeetingButton extends SugarWidgetSubPanelTopButtonQuickCreate
 {
+    public $subpanelDiv;
     public function &_get_form($defines, $additionalFormFields = null, $asUrl = false)
     {
         global $app_strings;

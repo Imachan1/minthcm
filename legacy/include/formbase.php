@@ -260,6 +260,7 @@ function handleRedirect($return_id='', $return_module='', $additionalFlags = fal
 //eggsurplus: abstract to simplify unit testing
 function buildRedirectURL($return_id='', $return_module='')
 {
+    $status = '';
     if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != "") {
         $return_module = $_REQUEST['return_module'];
     } else {

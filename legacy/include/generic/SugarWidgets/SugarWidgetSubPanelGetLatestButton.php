@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 //this widget is used only by the contracts module..
 
 
+#[\AllowDynamicProperties]
 class SugarWidgetSubPanelGetLatestButton extends SugarWidgetField
 {
     public function displayHeaderCell($layout_def)
@@ -62,8 +63,13 @@ class SugarWidgetSubPanelGetLatestButton extends SugarWidgetField
         //if the contract has been executed or selected_revision is same as latest revision
         //then hide the latest button.
         //if the contract state is executed or document is not a template hide this action.
-        if ((!empty($layout_def['fields']['CONTRACT_STATUS']) && $layout_def['fields']['CONTRACT_STATUS']=='executed') or
-            $layout_def['fields']['SELECTED_REVISION_ID']== $layout_def['fields']['LATEST_REVISION_ID']) {
+        if (
+            (
+                !empty($layout_def['fields']['CONTRACT_STATUS']) &&
+                $layout_def['fields']['CONTRACT_STATUS'] === 'executed'
+            ) ||
+            $layout_def['fields']['SELECTED_REVISION_ID'] === $layout_def['fields']['LATEST_REVISION_ID']
+        ) {
             return "";
         }
         

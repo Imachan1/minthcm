@@ -58,6 +58,7 @@ require_once 'include/OutboundEmail/OutboundEmail.php';
  * Sugar mailer
  * @api
  */
+#[\AllowDynamicProperties]
 class SugarPHPMailer extends PHPMailer
 {
     // MintHCM #110041 START
@@ -228,7 +229,7 @@ class SugarPHPMailer extends PHPMailer
             $this->Subject = $locale->translateCharset($subjectUTF8, 'UTF-8', $OBCharset);
 
             // HTML email RFC compliance
-            if ($this->ContentType === 'text/html' && strpos($this->Body, '<html') === false) {
+            if ($this->ContentType === 'text/html' && strpos((string) $this->Body, '<html') === false) {
                 $langHeader = get_language_header();
 
                 $head = <<<eoq
@@ -275,7 +276,7 @@ eoq;
                 continue;
             }
             if ($object) {
-                if (preg_match('#&(?:amp;)?type=([\w]+)#i', $matches[0][$i], $typematch)) {
+                if (preg_match('#&(?:amp;)?type=([\w]+)#i', (string) $matches[0][$i], $typematch)) {
                     switch (strtolower($typematch[1])) {
                         case 'documents':
                             $beanname = 'DocumentRevisions';
@@ -320,7 +321,7 @@ eoq;
         $this->clearAttachments();
 
         //replace references to cache/images with cid tag
-        $this->Body = preg_replace(';=\s*"' . preg_quote(sugar_cached('images/'), ';') . ';', '="cid:', $this->Body);
+        $this->Body = preg_replace(';=\s*"' . preg_quote((string) sugar_cached('images/'), ';') . ';', '="cid:', $this->Body);
 
         $this->replaceImageByRegex("(?:{$sugar_config['site_url']})?/?cache/images/", sugar_cached('images/'));
 
@@ -357,7 +358,7 @@ eoq;
             }
 
             $filename =
-                substr($filename, 36, strlen($filename)); // strip GUID	for PHPMailer class to name outbound file
+            substr((string) $filename, 36, strlen((string) $filename)); // strip GUID	for PHPMailer class to name outbound file
             if (!$note->embed_flag) {
                 $this->addAttachment($file_location, $filename, 'base64', $mime_type);
             } // else

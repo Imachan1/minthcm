@@ -47,6 +47,7 @@ namespace SuiteCRM;
  * Class HTMLPurifierFilterXmp
  * @package SuiteCRM
  */
+#[\AllowDynamicProperties]
 class HTMLPurifierFilterXmp extends \HTMLPurifier_Filter
 {
 

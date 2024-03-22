@@ -48,6 +48,7 @@
      * Sugar Oauth consumer
      * @api
      */
+    #[\AllowDynamicProperties]
     class SugarOAuth extends Zend_Oauth_Consumer
     {
         protected $_last = '';

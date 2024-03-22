@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 /**
  * Class SugarControllerException
  */
+#[\AllowDynamicProperties]
 class SugarControllerException extends Exception
 {
 }

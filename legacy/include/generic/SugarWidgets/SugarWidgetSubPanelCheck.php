@@ -48,6 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 include_once('include/generic/SugarWidgets/SugarWidgetField.php');
 
 
+#[\AllowDynamicProperties]
 class SugarWidgetSubPanelCheck extends SugarWidgetField
 {
     public function displayListPlain($layout_def)

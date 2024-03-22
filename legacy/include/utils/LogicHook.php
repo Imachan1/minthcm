@@ -70,6 +70,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  *
  * @api
  */
+#[\AllowDynamicProperties]
 class LogicHook {
 
    var $bean = null;
@@ -116,7 +117,7 @@ class LogicHook {
                   foreach ( $hook_array as $type => $hookg ) {
                      foreach ( $hookg as $index => $hook ) {
                         $this->hookscan[$type][] = $hook;
-                        $idx = count($this->hookscan[$type]) - 1;
+                        $idx = (is_countable($this->hookscan[$type]) ? count($this->hookscan[$type]) : 0)-1;
                         $this->hook_map[$type][$idx] = array("file" => $extpath . '/' . $entry, "index" => $index);
                      }
                   }

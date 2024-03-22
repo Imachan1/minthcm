@@ -87,7 +87,6 @@ $contents = file_get_contents($filePath);
 
 // Remove \n,\r characters to allow for better text parsing
 $contents = $this->trimHTML($contents);
-$contents = $this->stripFlavorTags($contents);
 
 
 // Notes DetailView.html file is messed up

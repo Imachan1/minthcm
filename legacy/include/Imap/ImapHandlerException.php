@@ -6,7 +6,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -51,9 +51,10 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * @author gyula
  */
+#[\AllowDynamicProperties]
 class ImapHandlerException extends Exception
 {
-    const ERR_TEST_SET_NOT_EXISTS = 1;
-    const ERR_KEY_NOT_FOUND = 2;
-    const ERR_KEY_SAVE_ERROR = 3;
+    public const ERR_TEST_SET_NOT_EXISTS = 1;
+    public const ERR_KEY_NOT_FOUND = 2;
+    public const ERR_KEY_SAVE_ERROR = 3;
 }

@@ -61,6 +61,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * has been left for backwards compatibility.
  * @api
  */
+#[\AllowDynamicProperties]
 class JSON
 {
 

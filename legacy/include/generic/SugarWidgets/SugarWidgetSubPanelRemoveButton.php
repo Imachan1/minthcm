@@ -46,6 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+#[\AllowDynamicProperties]
 class SugarWidgetSubPanelRemoveButton extends SugarWidgetField
 {
     public function displayHeaderCell($layout_def)
@@ -113,6 +114,11 @@ class SugarWidgetSubPanelRemoveButton extends SugarWidgetField
         if ($linked_field === 'get_emails_by_assign_or_link') {
             $linked_field = 'emails';
         }
+
+        if ($linked_field === 'get_unlinked_email_query'){
+            $hideremove = true;
+        }
+
         //based on listview since that lets you select records
         if ($layout_def['ListView'] && !$hideremove) {
             $retStr = "<a href=\"javascript:sub_p_rem('$subpanel', '$linked_field'"

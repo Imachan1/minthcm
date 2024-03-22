@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 //TODO Rename this to edit link
+#[\AllowDynamicProperties]
 class SugarWidgetSubPanelRelFieldEditButton extends SugarWidgetField
 {
     public function displayHeaderCell($layout_def)

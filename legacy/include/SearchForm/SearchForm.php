@@ -48,6 +48,7 @@ require_once('include/tabs.php');
  * Old search form
  * @api
  */
+#[\AllowDynamicProperties]
 class SearchForm
 {
     /**
