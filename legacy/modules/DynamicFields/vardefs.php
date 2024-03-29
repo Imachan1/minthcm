@@ -9,7 +9,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -48,8 +48,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 $dictionary['FieldsMetaData'] = array(
     'table' => 'fields_meta_data',
-	'fields' => array (
-		'id'=>array('name' =>'id', 'type' =>'varchar', 'len'=>'190', 'reportable'=>false),
+    'fields' => array(
+        'id'=>array('name' =>'id', 'type' =>'varchar', 'len'=>'255', 'reportable'=>false),
         'name'=>array('name' =>'name', 'vname'=>'COLUMN_TITLE_NAME', 'type' =>'varchar', 'len'=>'255'),
         'vname'=>array('name' =>'vname' ,'type' =>'varchar','vname'=>'COLUMN_TITLE_LABEL',  'len'=>'255'),
         'comments'=>array('name' =>'comments' ,'type' =>'varchar','vname'=>'COLUMN_TITLE_LABEL',  'len'=>'255'),

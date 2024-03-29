@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  require_once('include/Dashlets/Dashlet.php');
 
 
+ #[\AllowDynamicProperties]
  class JotPadDashlet extends Dashlet
  {
      public $savedText; // users's saved text
@@ -174,10 +175,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
       */
      public function saveText()
      {
+        $optionsArray = [];
          $json = getJSONobj();
          if (isset($_REQUEST['savedText'])) {
              $optionsArray = $this->loadOptions();
-             $optionsArray['savedText']=$json->decode(html_entity_decode($_REQUEST['savedText']));
+             $optionsArray['savedText']=$json->decode(html_entity_decode((string) $_REQUEST['savedText']));
              $optionsArray['savedText']=SugarCleaner::cleanHtml(nl2br($optionsArray['savedText']));
              $this->storeOptions($optionsArray);
          } else {

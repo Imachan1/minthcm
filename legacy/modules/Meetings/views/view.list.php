@@ -48,6 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('include/MVC/View/views/view.list.php');
 require_once('modules/Meetings/MeetingsListViewSmarty.php');
 
+#[\AllowDynamicProperties]
 class MeetingsViewList extends ViewList
 {
 

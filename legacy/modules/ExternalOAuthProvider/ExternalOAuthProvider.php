@@ -45,6 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 /**
  * OAuth provider
  */
+#[\AllowDynamicProperties]
 class ExternalOAuthProvider extends Basic
 {
     public $module_dir = 'ExternalOAuthProvider';
@@ -81,7 +82,7 @@ class ExternalOAuthProvider extends Basic
     {
         $result = parent::retrieve($id, $encode, $deleted);
 
-        if (!empty($result) && !$this->checkPersonalAccountAccess()) {
+        if (!empty($result) && !$this->hasAccessToPersonalAccount()) {
             $this->logPersonalAccountAccessDenied('retrieve');
 
             return null;
@@ -95,7 +96,7 @@ class ExternalOAuthProvider extends Basic
      */
     public function save($check_notify = false)
     {
-        if (!$this->checkPersonalAccountAccess()) {
+        if (!$this->hasAccessToPersonalAccount()) {
             $this->logPersonalAccountAccessDenied('save');
             throw new RuntimeException('Access Denied');
         }
@@ -110,7 +111,7 @@ class ExternalOAuthProvider extends Basic
      * Check if user has access to personal account
      * @return bool
      */
-    public function checkPersonalAccountAccess(): bool
+    public function hasAccessToPersonalAccount(): bool
     {
         global $current_user;
 
@@ -174,7 +175,7 @@ class ExternalOAuthProvider extends Basic
             return false;
         }
 
-        if (!$this->checkPersonalAccountAccess()) {
+        if (!$this->hasAccessToPersonalAccount()) {
             $this->logPersonalAccountAccessDenied("ACLAccess-$view");
 
             return false;
@@ -183,7 +184,7 @@ class ExternalOAuthProvider extends Basic
         $isPersonal = $this->type === 'personal';
         $isAdmin = is_admin($current_user);
 
-        if ($isPersonal === true && $this->checkPersonalAccountAccess()) {
+        if ($isPersonal === true && $this->hasAccessToPersonalAccount()) {
             return true;
         }
 
@@ -322,7 +323,7 @@ class ExternalOAuthProvider extends Basic
 
         $siteUrl = $sugar_config['site_url'] ?? '';
 
-        $siteUrl = str_ireplace('index.php', '', $siteUrl);
+        $siteUrl = str_ireplace('index.php', '', (string) $siteUrl);
         $siteUrl = rtrim($siteUrl, " \t\n\r\0\x0B\/");
 
         return $siteUrl . '/index.php?entryPoint=setExternalOAuthToken';
@@ -377,7 +378,7 @@ class ExternalOAuthProvider extends Basic
         }
 
         try {
-            $params = json_decode(html_entity_decode($this->$field), true, 512, JSON_THROW_ON_ERROR);
+            $params = json_decode(html_entity_decode((string) $this->$field), true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
             return [];
         }

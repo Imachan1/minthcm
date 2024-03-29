@@ -49,8 +49,8 @@ $viewdefs['Users']['DetailView'] = array(
                                 array('label' => '10', 'field' => '30')
                             ),
                             'form' => array(
-                                'headerTpl'=>'modules/Users/tpls/DetailViewHeader.tpl',
-                                'footerTpl'=>'modules/Users/tpls/DetailViewFooter.tpl',
+                                'headerTpl'=>'include/DetailView/header.tpl',
+                                'footerTpl'=>'include/DetailView/footer.tpl',
                             ),
                       ),
     'panels' => array (
@@ -64,9 +64,9 @@ $viewdefs['Users']['DetailView'] = array(
                   '',
             ),
             array(array(
-                      'name'=>'UserType',
-                      'customCode'=>'{$USER_TYPE_READONLY}',
-                  ),
+                    'name'=>'UserType',
+                    'customCode'=>'{if isset($USER_TYPE_READONLY)}{$USER_TYPE_READONLY}{/if}',
+                ),
             ),
         ),
     ),

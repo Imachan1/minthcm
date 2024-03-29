@@ -46,6 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 // User is used to store customer information.
+#[\AllowDynamicProperties]
 class UserSignature extends SugarBean {
 	public $id;
 	public $date_entered;

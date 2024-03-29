@@ -86,7 +86,7 @@ $viewdefs['Users']['DetailView'] = array(
                 0 => 'status',
                 1 => array(
                     'name' => 'UserType',
-                    'customCode' => '{$USER_TYPE_READONLY}',
+                    'customCode' => '{if isset($USER_TYPE_READONLY)}{$USER_TYPE_READONLY}{/if}',
                 ),
             ),
             2 => array(

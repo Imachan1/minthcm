@@ -44,6 +44,7 @@
 
 
 
+#[\AllowDynamicProperties]
 class ActivitiesViewList extends ViewList
 {
     public function display()

@@ -43,6 +43,7 @@
  */
 
 
+#[\AllowDynamicProperties]
 class OAuthKeysController extends SugarController
 {
     public function process()

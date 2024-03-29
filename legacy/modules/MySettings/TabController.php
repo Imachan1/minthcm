@@ -46,6 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
+#[\AllowDynamicProperties]
 class TabController
 {
     public $required_modules = array('Home');

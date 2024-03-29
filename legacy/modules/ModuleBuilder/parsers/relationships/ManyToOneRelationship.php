@@ -9,7 +9,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -59,6 +59,10 @@ class ManyToOneRelationship extends AbstractRelationship
 {
     
 
+    public $one_to_many;
+    public $relationship_only;
+    public $lhs_module;
+    public $relationship_name;
     /*
      * Constructor
      * @param array $definition Parameters passed in as array defined in parent::$definitionKeys
@@ -122,8 +126,8 @@ class ManyToOneRelationship extends AbstractRelationship
         if ($this->relationship_only) {
             return array() ;
         }
- 
-        return array( $this->lhs_module => $this->getValidDBName($this->relationship_name . "_name") ) ; // this must match the name of the relate field from buildVardefs
+
+        return array( $this->lhs_module => static::getValidDBName($this->relationship_name . "_name") ) ; // this must match the name of the relate field from buildVardefs
     }
        
     /*

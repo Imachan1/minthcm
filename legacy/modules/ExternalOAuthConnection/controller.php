@@ -41,17 +41,18 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+#[\AllowDynamicProperties]
 class ExternalOAuthConnectionController extends SugarController
 {
     public function action_EditView() {
         $this->view = 'edit';
 
-        if (empty($_REQUEST['type'])){
-            $_REQUEST['type'] = 'personal';
+        if (isset($this->bean->type)){
+            $_REQUEST['type'] = $this->bean->type;
         }
 
-        if (!empty($this->bean)) {
-            $this->bean->type = $_REQUEST['type'];
+        if (empty($_REQUEST['type'])){
+            $_REQUEST['type'] = 'personal';
         }
 
         if (empty($_REQUEST['record']) && $_REQUEST['type'] === 'personal') {
@@ -59,7 +60,7 @@ class ExternalOAuthConnectionController extends SugarController
             return;
         }
 
-        if (!empty($this->bean) && $_REQUEST['type'] === 'personal' && $this->bean->checkPersonalAccountAccess()) {
+        if (!empty($this->bean) && $_REQUEST['type'] === 'personal' && $this->bean->hasAccessToPersonalAccount()) {
             $this->hasAccess = true;
         }
     }

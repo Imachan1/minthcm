@@ -46,6 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
+#[\AllowDynamicProperties]
 class ACLRole extends SugarBean
 {
     public $module_dir = 'ACLRoles';

@@ -48,6 +48,7 @@ if(!class_exists('Tracker')){
 
 require_once 'data/SugarBean.php';
 
+#[\AllowDynamicProperties]
 class Tracker extends SugarBean
 {
     var $module_dir = 'Trackers';
@@ -121,7 +122,7 @@ class Tracker extends SugarBean
         // MintHCM #100495 START
         $list = $breadCrumb->getBreadCrumbList($modules, $history_max_viewed);
         // MintHCM #100495 END
-        $GLOBALS['log']->info("Tracker: retrieving ".count($list)." items");
+        $GLOBALS['log']->info("Tracker: retrieving ".(is_countable($list) ? count($list) : 0)." items");
         return $list;
     }
 

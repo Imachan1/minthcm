@@ -53,6 +53,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
+#[\AllowDynamicProperties]
 class EmailTemplatesViewClassic extends ViewClassic
 {
     public function __construct()

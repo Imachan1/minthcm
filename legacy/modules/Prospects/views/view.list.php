@@ -48,6 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('modules/Prospects/ProspectsListViewSmarty.php');
 
+#[\AllowDynamicProperties]
 class ProspectsViewList extends ViewList
 {
     public function LeadsViewList()

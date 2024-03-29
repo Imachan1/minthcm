@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 
+#[\AllowDynamicProperties]
 class SchedulersViewDetail extends ViewDetail 
 {
 

@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 /**
  * Class OAuth2Tokens
  */
+#[\AllowDynamicProperties]
 class OAuth2Tokens extends SugarBean
 {
     /**
@@ -121,7 +122,7 @@ class OAuth2Tokens extends SugarBean
      */
     public function get_summary_text()
     {
-        return substr($this->id, 0, 10) . '...';
+        return substr((string) $this->id, 0, 10) . '...';
     }
 
     /**

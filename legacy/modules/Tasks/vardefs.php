@@ -104,6 +104,7 @@ $dictionary['Task'] = array(
             'importable' => 'false',
             'massupdate' => false,
             'audited' => true,
+            'inline_edit' => false,
         ),
         'date_start_flag' => array(
             'name' => 'date_start_flag',

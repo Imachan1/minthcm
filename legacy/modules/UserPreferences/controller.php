@@ -43,6 +43,7 @@
  */
 
 
+#[\AllowDynamicProperties]
 class UserPreferencesController extends SugarController
 {
 	public function action_save_rich_text_preferences() {

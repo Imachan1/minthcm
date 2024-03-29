@@ -50,6 +50,7 @@ require_once('include/EditView/QuickCreate.php');
 
 
 
+#[\AllowDynamicProperties]
 class AccountsQuickCreate extends QuickCreate
 {
     public $javascript;

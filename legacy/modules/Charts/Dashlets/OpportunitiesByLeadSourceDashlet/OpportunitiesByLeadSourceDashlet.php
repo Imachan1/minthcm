@@ -51,6 +51,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/Dashlets/DashletGenericChart.php');
 
+#[\AllowDynamicProperties]
 class OpportunitiesByLeadSourceDashlet extends DashletGenericChart
 {
     public $pbls_lead_sources = array();
@@ -230,6 +231,7 @@ EOD;
 
     protected function prepareChartData($data, $currency_symbol, $thousands_symbol)
     {
+        $chart = [];
         //return $data;
         $chart['labels'] = [];
         $chart['data'] = [];

@@ -6,7 +6,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -55,6 +55,7 @@ require_once 'modules/ModuleBuilder/parsers/views/History.php';
  * - Deployed modules (such as OOB modules and deployed ModuleBuilder modules) that are located in the /modules directory and have metadata in modules/<name>/metadata and in the custom directory
  * - WIP modules which are being worked on in ModuleBuilder and that are located in custom
  */
+#[\AllowDynamicProperties]
 abstract class AbstractMetaDataImplementation
 {
     /**
@@ -174,6 +175,7 @@ abstract class AbstractMetaDataImplementation
      */
     protected function _loadFromFile($filename)
     {
+        $viewdefs = [];
         // BEGIN ASSERTIONS
         if (!file_exists($filename)) {
             return null;
@@ -191,8 +193,8 @@ abstract class AbstractMetaDataImplementation
 
         $variables = array();
         foreach ($moduleVariables as $name) {
-            if (isset($$name)) {
-                $variables [$name] = $$name;
+            if (isset(${$name})) {
+                $variables [$name] = ${$name};
             }
         }
 
@@ -200,7 +202,7 @@ abstract class AbstractMetaDataImplementation
             // get view name by performing a case insensitive search on each key
             $key = '';
             foreach ($viewdefs[$this->_moduleName] as $viewdefKey => $viewdefVal) {
-                if (stristr($viewdefKey, $this->_view) !== false) {
+                if (stristr((string) $viewdefKey, $this->_view) !== false) {
                     $key = $viewdefKey;
                     break;
                 }
@@ -215,7 +217,7 @@ abstract class AbstractMetaDataImplementation
 
         // Extract the layout definition from the loaded file - the layout definition is held under a variable name that varies between the various layout types (e.g., listviews hold it in listViewDefs, editviews in viewdefs)
         $viewVariable = $this->_fileVariables [$this->_view];
-        $defs = $$viewVariable;
+        $defs = ${$viewVariable};
 
         // Now tidy up the module name in the viewdef array
         // MB created definitions store the defs under packagename_modulename and later methods that expect to find them under modulename will fail
@@ -259,7 +261,7 @@ abstract class AbstractMetaDataImplementation
 
         require $filename; // loads the viewdef - must be a require not require_once to ensure can reload if called twice in succession
         $viewVariable = $this->_fileVariables [$this->_view];
-        $defs = $$viewVariable;
+        $defs = ${$viewVariable};
         if (!$forSave) {
             //Now we will unset the reserve field in pop definition file.
             $limitFields = PopupMetaDataParser::$reserveProperties;
@@ -344,7 +346,7 @@ abstract class AbstractMetaDataImplementation
 
         mkdir_recursive(dirname($filename));
 
-        $useVariables = (count($this->_variables) > 0) && $useVariables; // only makes sense to do the variable replace if we have variables to replace...
+        $useVariables = (count((array) $this->_variables) > 0) && $useVariables; // only makes sense to do the variable replace if we have variables to replace...
 
         // create the new metadata file contents, and write it out
         $out = "<?php\n";
@@ -427,7 +429,7 @@ EOQ;
         }
     }
     //MintHCM end
-    
+
     /**
      * @param $defs array The definitions to save
      * @return bool

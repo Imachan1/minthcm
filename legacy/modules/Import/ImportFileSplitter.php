@@ -51,6 +51,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * All Rights Reserved.
  */
 
+ #[\AllowDynamicProperties]
  class ImportFileSplitter
  {
      /**
@@ -150,8 +151,8 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
              $enclosure = trim($enclosure);
              if (!empty($enclosure)) {
                  foreach ($row as $key => $v) {
-                     $row[$key] = str_replace($enclosure, $enclosure.$enclosure, $v);
-                 }
+                    $row[$key] = str_replace($enclosure, $enclosure.$enclosure, (string) $v);
+                }
              }
              $line = $enclosure.implode($enclosure.$delimiter.$enclosure, $row).$enclosure.PHP_EOL;
              //Would normally use fputcsv() here. But when enclosure character is used and the field value doesn't include delimiter, enclosure, escape character, "\n", "\r", "\t", or " ", php default function 'fputcsv' will not use enclosure for this string.

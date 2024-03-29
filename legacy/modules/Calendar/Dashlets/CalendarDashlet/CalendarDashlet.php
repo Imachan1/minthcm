@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once 'modules/Calendar/Calendar.php';
 require_once 'include/Dashlets/Dashlet.php';
 
+#[\AllowDynamicProperties]
 class CalendarDashlet extends Dashlet
 {
     public $view = 'week';

@@ -44,6 +44,7 @@
 
 
 require_once('include/MVC/Controller/SugarController.php');
+#[\AllowDynamicProperties]
 class CampaignsController extends SugarController
 {
     public function action_newsletterlist()

@@ -95,5 +95,7 @@ $mod_strings = array(
     'LBL_EMPLOYEES' => 'Employees',
     'LBL_CANDIDATES' => 'Candidates',
 
+    'LBL_ASCENDING' => 'Ascending',
+    'LBL_DESCENDING' => 'Descending',
 );
 

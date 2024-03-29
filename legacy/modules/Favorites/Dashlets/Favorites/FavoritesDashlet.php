@@ -56,19 +56,28 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/Favorites/Favorites.php');
 
-class FavoritesDashlet extends DashletGeneric {
-    public function __construct($id, $def = null) {
-		global $current_user, $app_strings;
-		require('modules/Favorites/metadata/dashletviewdefs.php');
+#[\AllowDynamicProperties]
+class FavoritesDashlet extends DashletGeneric
+{
+    public function __construct($id, $def = null)
+    {
+        global $current_user, $app_strings, $dashletData;
+
+        $dashletData = $dashletData ?? [];
+
+        require('modules/Favorites/metadata/dashletviewdefs.php');
 
         parent::__construct($id, $def);
 
-        if(empty($def['title'])) $this->title = translate('LBL_HOMEPAGE_TITLE', 'Favorites');
+        if (empty($def['title'])) {
+            $this->title = translate('LBL_HOMEPAGE_TITLE', 'Favorites');
+        }
 
         $this->searchFields = $dashletData['FavoritesDashlet']['searchFields'];
         $this->columns = $dashletData['FavoritesDashlet']['columns'];
 
         $this->seedBean = BeanFactory::newBean('Favorites');
     }
+
 
 }

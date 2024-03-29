@@ -273,12 +273,13 @@ if (!defined('sugarEntry') || !sugarEntry) {
               'options'=> 'record_type_display_notes',
           ],
       'show_preview' =>
-          [
-              'name' => 'show_preview',
-              'type' => 'bool',
-              'source' => 'non-db',
-              'reportable' => false
-          ],
+            [
+                'name' => 'show_preview',
+                'type' => 'bool',
+                'source' => 'non-db',
+                'reportable' => false,
+                'mass_update' => false
+            ],
        'account_id' =>
           [
               'name' => 'account_id',

@@ -46,6 +46,7 @@ require_once('include/ListView/ListViewSmarty.php');
 require_once('AM_ProjectTemplatesListViewData.php');
 
 
+#[\AllowDynamicProperties]
 class AM_ProjectTemplatesListViewSmarty extends ListViewSmarty
 {
 

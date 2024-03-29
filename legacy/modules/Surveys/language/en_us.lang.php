@@ -105,7 +105,6 @@ $mod_strings = array(
     'LBL_MATRIX_NEITHER_TEXT' => 'Neither Satisfied nor Dissatisfied',
     'LBL_MATRIX_DISSATISFIED_TEXT' => 'Dissatisfied',
     'LBL_HIDE_RESPONSES' => 'Hide responses',
-    'LBL_SHOW_RESPONSES' => 'Show responses',
     'LBL_RESPONSES' => 'Responses',
     'LBL_SURVEYS_SENT' => 'Surveys Sent',
     'LBL_DISTINCT_SURVEYS_SENT' => 'Distinct Surveys Sent',
@@ -127,5 +126,6 @@ $mod_strings = array(
     'LBL_SURVEY_DISTINCT' => 'Distinct Surveys Sent:',
     'LBL_DRAFT' => 'Draft',
     'LBL_SUBMIT' => 'Submit',
-    'LBL_STARS' => 'Stars'
+    'LBL_STARS' => 'Stars',
+    'LBL_SURVEY_CLOSE_RESPONSE' => 'Thanks for your interest but this survey is now closed.',
 );

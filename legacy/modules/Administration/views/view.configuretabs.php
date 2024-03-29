@@ -51,6 +51,7 @@ require_once('modules/Administration/Forms.php');
 require_once('include/SubPanel/SubPanelDefinitions.php');
 require_once('modules/MySettings/TabController.php');
 
+#[\AllowDynamicProperties]
 class ViewConfiguretabs extends SugarView
 {
     /**

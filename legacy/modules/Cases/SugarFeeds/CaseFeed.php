@@ -48,6 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('modules/SugarFeed/feedLogicBase.php');
 
 
+#[\AllowDynamicProperties]
 class CaseFeed extends FeedLogicBase
 {
     public $module = 'Cases';
@@ -62,7 +63,7 @@ class CaseFeed extends FeedLogicBase
             }
             $text =  '{SugarFeed.CREATED_CASE} [' . $bean->module_dir . ':' . $bean->id . ':' . $bean->name.'] {SugarFeed.FOR} [Accounts:' . $bean->account_id . ':' . $accountName . ']: '. $bean->description;
         } else {
-            if (!empty($bean->fetched_row['status']) && $bean->fetched_row['status'] != $bean->status && strpos($bean->status, 'Closed') !== false) {
+            if (!empty($bean->fetched_row['status']) && $bean->fetched_row['status'] != $bean->status && strpos((string) $bean->status, 'Closed') !== false) {
                 $text =  '{SugarFeed.CLOSED_CASE} [' . $bean->module_dir . ':' . $bean->id . ':' . $bean->name. '] {SugarFeed.FOR} [Accounts:' . $bean->account_id . ':' . $bean->account_name . ']';
             }
         }

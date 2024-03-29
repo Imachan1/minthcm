@@ -55,6 +55,7 @@ if (file_exists("modules/ACLActions/actiondefs.override.php")) {
 /* END - SECURITY GROUPS */
 require_once('modules/ACL/ACLJSController.php');
 
+#[\AllowDynamicProperties]
 class ACLController
 {
     /* BEGIN - SECURITY GROUPS - added $in_group */

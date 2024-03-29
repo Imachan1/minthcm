@@ -10,7 +10,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -51,6 +51,7 @@ require_once('include/Sugar_Smarty.php');
 require_once('include/externalAPI/ExternalAPIFactory.php');
 
 
+#[\AllowDynamicProperties]
 class DocumentsViewExtdoc extends SugarView
 {
     public $options = array('show_header' => false, 'show_title' => false, 'show_subpanels' => false, 'show_search' => true, 'show_footer' => false, 'show_javascript' => false, 'view_print' => false,);

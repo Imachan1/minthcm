@@ -47,6 +47,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class AlertsViewDefault extends SugarView {
 
    /**

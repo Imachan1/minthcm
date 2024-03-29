@@ -43,6 +43,7 @@
  */
 require_once('include/SugarTinyMCE.php');
 
+#[\AllowDynamicProperties]
 class CasesViewEdit extends ViewEdit
 {
     public function __construct()

@@ -42,6 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class LeadsController extends SugarController
 {
     public function __construct()
@@ -56,7 +57,7 @@ class LeadsController extends SugarController
             $prospect=BeanFactory::newBean('Prospects');
             $prospect->retrieve($_REQUEST['return_id']);
             foreach ($prospect->field_defs as $key=>$value) {
-                if ($key == 'id' or $key=='deleted') {
+                if ($key == 'id' || $key=='deleted') {
                     continue;
                 }
                 if (isset($this->bean->field_defs[$key])) {

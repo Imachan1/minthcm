@@ -62,6 +62,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 // Bug is used to store customer information.
+#[\AllowDynamicProperties]
 class Bug extends SugarBean
 {
     public $field_name_map = array();
@@ -179,7 +180,7 @@ class Bug extends SugarBean
         } else {
             $query .= "where ".$where_auto;
         }
-        if (substr_count($order_by, '.') > 0) {
+        if (substr_count((string) $order_by, '.') > 0) {
             $query .= " ORDER BY $order_by";
         } else {
             if ($order_by != "") {

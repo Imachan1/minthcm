@@ -56,6 +56,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
+#[\AllowDynamicProperties]
 class Release extends SugarBean
 {
     // Stored fields

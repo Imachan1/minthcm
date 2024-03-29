@@ -47,6 +47,7 @@
  * PLEASE DO NOT CHANGE THIS CLASS
  * PLACE ANY CUSTOMIZATIONS IN FP_events
  */
+#[\AllowDynamicProperties]
 class FP_events_sugar extends Basic
 {
     public $new_schema = true;

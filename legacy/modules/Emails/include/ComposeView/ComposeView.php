@@ -43,6 +43,7 @@
  */
 
 require_once('include/EditView/EditView2.php');
+#[\AllowDynamicProperties]
 class ComposeView extends EditView
 {
     /**

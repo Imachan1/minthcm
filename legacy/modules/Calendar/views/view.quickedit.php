@@ -46,6 +46,7 @@
 require_once('include/EditView/EditView2.php');
 
 
+#[\AllowDynamicProperties]
 class CalendarViewQuickEdit extends SugarView {
 
 	public $ev;

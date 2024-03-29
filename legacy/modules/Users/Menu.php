@@ -82,7 +82,7 @@ if (is_admin($current_user)) {
 
 // MintHCM #123323 START
 if($GLOBALS['current_user']->isAdminForModule('Users')){
-    $module_menu[]= array("index.php?module=InboundEmail&action=index", $mod_strings['LNK_LIST_INBOUND_EMAIL_ACCOUNTS'],"List");
+    $module_menu[]= array("index.php?module=InboundEmail&action=index", $mod_strings['LNK_LIST_INBOUND_EMAIL_ACCOUNTS'] ?? '',"List");
     $module_menu[]= array("index.php?module=OutboundEmailAccounts&action=index", $mod_strings['LNK_LIST_OUTBOUND_EMAIL_ACCOUNTS'],"List");
     $module_menu[]= array("index.php?module=ExternalOAuthConnection&action=index", $mod_strings['LNK_EXTERNAL_OAUTH_CONNECTIONS'],"List"); 
 }

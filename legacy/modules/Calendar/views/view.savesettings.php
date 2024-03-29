@@ -44,6 +44,7 @@
 
  require_once('include/MVC/View/SugarView.php');
 
+ #[\AllowDynamicProperties]
  class CalendarViewSaveSettings extends SugarView
  {
      public function CalendarViewSettings()
@@ -60,9 +61,12 @@
      {
          global $current_user;
          
-         $db_start = $this->to_db_time($_REQUEST['day_start_hours'], $_REQUEST['day_start_minutes'], $_REQUEST['day_start_meridiem']);
-         $db_end = $this->to_db_time($_REQUEST['day_end_hours'], $_REQUEST['day_end_minutes'], $_REQUEST['day_end_meridiem']);
-         
+         $dayStartMeridiem = $_REQUEST['day_start_meridiem'] ?? '';
+         $dayEndMeridiem = $_REQUEST['day_end_meridiem'] ?? '';
+ 
+         $db_start = $this->to_db_time($_REQUEST['day_start_hours'], $_REQUEST['day_start_minutes'], $dayStartMeridiem);
+         $db_end = $this->to_db_time($_REQUEST['day_end_hours'], $_REQUEST['day_end_minutes'], $dayEndMeridiem);
+ 
          $current_user->setPreference('day_start_time', $db_start, 0, 'global', $current_user);
          $current_user->setPreference('day_end_time', $db_end, 0, 'global', $current_user);
          

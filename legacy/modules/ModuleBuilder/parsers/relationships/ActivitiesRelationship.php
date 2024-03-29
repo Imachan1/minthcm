@@ -9,7 +9,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -76,6 +76,7 @@ require_once 'modules/ModuleBuilder/parsers/relationships/OneToManyRelationship.
  * A link field which references the shared Relationship
  */
 
+#[\AllowDynamicProperties]
 class ActivitiesRelationship extends OneToManyRelationship
 {
     protected static $subpanelsAdded = array();
@@ -99,7 +100,7 @@ class ActivitiesRelationship extends OneToManyRelationship
      * Define the labels to be added to the module for the new relationships
      * @return array    An array of system value => display value
      */
-    public function buildLabels()
+    public function buildLabels($update = false)
     {
         $labelDefinitions = array( ) ;
         if (!$this->relationship_only) {
@@ -158,7 +159,7 @@ class ActivitiesRelationship extends OneToManyRelationship
         return $vardefs ;
     }
 
-    protected function getLinkFieldDefinition($sourceModule, $relationshipName)
+    protected function getLinkFieldDefinition($sourceModule, $relationshipName, $right_side = false, $vname = "", $id_name = false)
     {
         $vardef = array( ) ;
         $vardef [ 'name' ] = $relationshipName;
@@ -191,7 +192,7 @@ class ActivitiesRelationship extends OneToManyRelationship
         }
 
         ActivitiesRelationship::$subpanelsAdded[$this->lhs_module] = true;
-        $relationshipName = substr($this->relationship_name, 0, strrpos($this->relationship_name, '_'));
+        $relationshipName = substr((string) $this->relationship_name, 0, strrpos((string) $this->relationship_name, '_'));
         return array( $this->lhs_module => array(
                       'activities' => $this->buildActivitiesSubpanelDefinition($relationshipName),
                       'history' => $this->buildHistorySubpanelDefinition($relationshipName) ,

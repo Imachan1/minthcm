@@ -48,6 +48,7 @@
 
  require_once('modules/Calendar/Calendar.php');
 
+ #[\AllowDynamicProperties]
  class vCal extends SugarBean
  {
 
@@ -72,10 +73,10 @@
      // This is used to retrieve related fields from form posts.
      public $additional_column_fields = array();
 
-     const UTC_FORMAT = 'Ymd\THi00\Z';
-     const EOL = "\r\n";
-     const TAB = "\t";
-     const CHARSPERLINE = 75;
+     public const UTC_FORMAT = 'Ymd\THi00\Z';
+     public const EOL = "\r\n";
+     public const TAB = "\t";
+     public const CHARSPERLINE = 75;
 
      public function __construct()
      {
@@ -306,9 +307,9 @@
       */
      public static function create_ical_array_from_string($ical_string)
      {
-         $ical_string = preg_replace("/\r\n\s+/", "", $ical_string);
-         $lines = preg_split("/\r?\n/", $ical_string);
-         $ical_array = array();
+        $ical_string = preg_replace("/\r\n\s+/", "", (string) $ical_string);
+        $lines = preg_split("/\r?\n/", $ical_string);
+        $ical_array = array();
 
          foreach ($lines as $line) {
              $line = self::unescape_ical_chars($line);

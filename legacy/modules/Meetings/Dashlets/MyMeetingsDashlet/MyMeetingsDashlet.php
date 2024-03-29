@@ -47,12 +47,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 require_once 'include/Dashlets/DashletGeneric.php';
 
+#[\AllowDynamicProperties]
 class MyMeetingsDashlet extends DashletGeneric
 {
 
     public function __construct($id, $def = null)
     {
         require 'modules/Meetings/metadata/dashletviewdefs.php'; //MintHCM #60356
+
+        $dashletData = $dashletData ?? [];
 
         parent::__construct($id, $def);
 

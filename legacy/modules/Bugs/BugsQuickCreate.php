@@ -50,6 +50,7 @@ require_once('include/EditView/QuickCreate.php');
 
 
 
+#[\AllowDynamicProperties]
 class BugsQuickCreate extends QuickCreate
 {
     public $javascript;

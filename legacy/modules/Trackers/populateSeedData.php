@@ -54,6 +54,7 @@ require_once('modules/Trackers/TrackerUtility.php');
 
 require_once('install/UserDemoData.php');
 
+#[\AllowDynamicProperties]
 class populateSeedData {
 
 var $monitorIds = 500;

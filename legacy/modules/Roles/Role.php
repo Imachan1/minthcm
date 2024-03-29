@@ -57,6 +57,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
+#[\AllowDynamicProperties]
 class Role extends SugarBean
 {
     public $field_name_map;

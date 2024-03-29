@@ -59,6 +59,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/EditView/EditView2.php');
 
+#[\AllowDynamicProperties]
 class UsersViewQuickedit extends ViewQuickEdit
 {
     /**

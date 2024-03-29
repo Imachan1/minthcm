@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 require_once('modules/Administration/Common.php');
+#[\AllowDynamicProperties]
 class TabGroupHelper
 {
     public $modules = array();

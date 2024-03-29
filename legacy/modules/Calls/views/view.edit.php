@@ -47,6 +47,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 require_once('include/json_config.php');
 
+#[\AllowDynamicProperties]
 class CallsViewEdit extends ViewEdit
 {
  	/**

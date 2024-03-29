@@ -45,6 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class updateDependencies
 {
     public function update_dependency(&$bean, $event, $arguments)
@@ -62,7 +63,7 @@ class updateDependencies
 
         if ($bean->date_finish != $fetchedDateFinish) { //if the end date of a current task is changed
 
-            $diff = $this->count_days($bean->date_finish, $bean->fetched_row['date_finish']); //Gets the difference in days
+            $diff = $this->count_days($bean->date_finish, $bean->fetched_row['date_finish'] ?? ''); //Gets the difference in days
 
             if ($tasks) {
                 foreach ($tasks as $task) { //loop through all dependant tasks

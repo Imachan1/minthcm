@@ -50,6 +50,7 @@
  */
 require_once 'include/MVC/Controller/SugarController.php';
 
+#[\AllowDynamicProperties]
 class NotesController extends SugarController
 {
     public function action_save()

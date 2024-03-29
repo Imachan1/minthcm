@@ -64,8 +64,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  global $timedate;
  $time_format = $timedate->get_user_time_format();
  $time_separator = ":";
- if (preg_match('/\d+([^\d])\d+([^\d]*)/s', $time_format, $match)) {
-	 $time_separator = $match[1];
+ if (preg_match('/\d+([^\d])\d+([^\d]*)/s', (string) $time_format, $match)) {
+	$time_separator = $match[1];
  }
  
  if (!empty($_POST[$prefix.'due_meridiem'])) {

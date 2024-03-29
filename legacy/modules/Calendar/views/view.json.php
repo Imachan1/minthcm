@@ -44,6 +44,7 @@
 
 require_once('include/MVC/View/SugarView.php');
 
+#[\AllowDynamicProperties]
 class CalendarViewJson extends SugarView 
 {
 

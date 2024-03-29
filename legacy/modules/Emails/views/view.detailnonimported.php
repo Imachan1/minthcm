@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('modules/Emails/include/DetailView/EmailsNonImportedDetailView.php');
 
+#[\AllowDynamicProperties]
 class EmailsViewDetailNonImported extends ViewDetail
 {
     /**
@@ -97,6 +98,7 @@ class EmailsViewDetailNonImported extends ViewDetail
 
     private function getFieldsInViewDefinitions($metadataFile)
     {
+        $viewdefs = [];
         require_once $metadataFile;
         $fields_in_definition = array();
         $module_name = 'Emails';

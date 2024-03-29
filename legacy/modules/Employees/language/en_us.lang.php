@@ -204,4 +204,7 @@ $mod_strings = array(
     'LBL_EMPLOYEES_CONFIRMATION_BUTTON_CONFIRM' => 'YES',
     'LBL_EMPLOYEES_CONFIRMATION_BUTTON_CANCEL' => 'NO',
     'LBL_DEPUTY'=>'Deputy',
+
+    'LBL_FACTOR_AUTH_INTERFACE' => 'Two Factor Authentication Interface:',
+    'LBL_EDITOR_TYPE' => 'Editor',
 );

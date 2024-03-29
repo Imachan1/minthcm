@@ -56,6 +56,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('modules/Project/ProjectListViewSmarty.php');
 
+#[\AllowDynamicProperties]
 class ProjectViewList extends ViewList
 {
     public function __construct()

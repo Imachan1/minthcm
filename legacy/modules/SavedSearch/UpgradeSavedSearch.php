@@ -45,10 +45,13 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+ #[\AllowDynamicProperties]
  class UpgradeSavedSearch
  {
 	 public function __construct()
 	 {
+		 $searchdefs = [];
+         $searchFields = [];
 		 $result = DBManagerFactory::getInstance()->query("SELECT id FROM saved_search");
 		 while ($row = DBManagerFactory::getInstance()->fetchByAssoc($result)) {
 			 $focus = BeanFactory::newBean('SavedSearch');

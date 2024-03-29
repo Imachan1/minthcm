@@ -47,6 +47,7 @@
 require_once('modules/Import/sources/ImportDataSource.php');
 
 
+#[\AllowDynamicProperties]
 class ExternalSourceEAPMAdapter extends ImportDataSource
 {
 

@@ -47,6 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
+#[\AllowDynamicProperties]
 class AccountsViewEdit extends ViewEdit
 {
     public function __construct()

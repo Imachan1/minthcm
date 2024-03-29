@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 global $timedate;
 
+#[\AllowDynamicProperties]
 class CalendarGrid {
 
 	protected $cal; // Calendar object
@@ -198,6 +199,8 @@ class CalendarGrid {
 
 		$str = "<div class='mobile_calendar_container'>";
 
+		$agenda_array = [];
+
 		foreach($this->cal->items as $cal_item){
 
 			if(date("Y-m-d", $cal_item['ts_start']) >= date("Y-m-d", $this->today_ts)){
@@ -221,7 +224,7 @@ class CalendarGrid {
 
                 $i = 0;
 
-                while($i < count($agenda_array[$day])){
+                while ($i < (is_countable($agenda_array[$day]) ? count($agenda_array[$day]) : 0)) {
 
                     $day_item = $agenda_array[$day][$i];
 

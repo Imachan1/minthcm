@@ -9,7 +9,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -50,13 +50,13 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
  ********************************************************************************/
 
-if($current_user->is_admin){
-require_once('modules/Currencies/ListCurrency.php');
-$lc = new ListCurrency();
-$lc->handleDelete();
-$lc->handleAdd();
-$lc->handleUpdate();
-echo $lc->getTable();
-			}else{
-				echo 'Admin\'s Only';	
-			}
+if ($current_user->is_admin) {
+    require_once('modules/Currencies/ListCurrency.php');
+    $lc = new ListCurrency();
+    $lc->handleDelete();
+    $lc->handleAdd();
+    $lc->handleUpdate();
+    echo $lc->getTable();
+} else {
+    echo 'Admin\'s Only';
+}

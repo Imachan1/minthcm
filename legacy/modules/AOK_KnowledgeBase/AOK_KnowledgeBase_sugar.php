@@ -49,6 +49,7 @@
  */
 
 
+#[\AllowDynamicProperties]
 class AOK_KnowledgeBase_sugar extends Basic
 {
     public $new_schema = true;

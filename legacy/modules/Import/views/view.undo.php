@@ -53,7 +53,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 require_once('modules/Import/views/ImportView.php');
-        
+
+#[\AllowDynamicProperties]
 class ImportViewUndo extends ImportView 
 {	
 

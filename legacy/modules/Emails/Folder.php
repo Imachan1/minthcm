@@ -55,6 +55,7 @@ use SuiteCRM\Utility\SuiteValidator;
  * represent a fake SugarBean:
  * in legacy logic, Folder ID equals to an Inbound Email ID
  */
+#[\AllowDynamicProperties]
 class Folder
 {
 

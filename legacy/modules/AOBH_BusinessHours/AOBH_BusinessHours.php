@@ -45,6 +45,7 @@
 /**
  * Class AOBH_BusinessHours
  */
+#[\AllowDynamicProperties]
 class AOBH_BusinessHours extends Basic
 {
     public $new_schema = true;
@@ -92,7 +93,7 @@ class AOBH_BusinessHours extends Basic
     public function areBusinessHoursSet()
     {
         if ($this->businessHoursSet === null) {
-            $this->businessHoursSet = count($this->get_full_list());
+            $this->businessHoursSet = is_countable($this->get_full_list()) ? count($this->get_full_list()) : 0;
         }
 
         return $this->businessHoursSet;

@@ -6,7 +6,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -43,6 +43,7 @@
  */
 
 
+#[\AllowDynamicProperties]
 class DropDownBrowser
 {
     // Restrict the full dropdown list to remove some options that shouldn't be edited by the end users

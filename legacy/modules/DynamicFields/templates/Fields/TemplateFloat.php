@@ -9,7 +9,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -61,6 +61,9 @@ class TemplateFloat extends TemplateRange
         $this->vardef_map['precision']='ext1';
         //$this->vardef_map['precision']='precision';
     }
+
+
+
 
     public function get_field_def()
     {

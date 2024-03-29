@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 /**
  * OAuth customer key
  */
+#[\AllowDynamicProperties]
 class OAuthKey extends Basic
 {
     public $module_dir = 'OAuthKeys';

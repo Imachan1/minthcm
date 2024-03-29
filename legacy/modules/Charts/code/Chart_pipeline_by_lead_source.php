@@ -42,12 +42,13 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-if (!defined('sugarEntry') || !sugarEntry) {
+ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
 require_once('include/charts/Charts.php');
 
+#[\AllowDynamicProperties]
 class Chart_pipeline_by_lead_source
 {
     public $order = 0;
@@ -57,9 +58,12 @@ class Chart_pipeline_by_lead_source
     {
     }
 
+
+
+
     public function draw($extra_tools)
     {
-        global $app_list_strings, $current_language, $ids, $sugar_config ,$theme;
+        global $app_list_strings, $current_language, $ids, $sugar_config ,$theme, $mod_strings;
         $current_module_strings = return_module_language($current_language, 'Charts');
 
 
@@ -75,11 +79,11 @@ class Chart_pipeline_by_lead_source
         //get list of sales stage keys to display
         global $current_user;
         $user_tempx = $current_user->getPreference('pbls_lead_sources');
-        if (!empty($user_tempx) && count($user_tempx) > 0 && !isset($_REQUEST['pbls_lead_sources'])) {
+        if (!empty($user_tempx) && (is_countable($user_tempx) ? count($user_tempx) : 0) > 0 && !isset($_REQUEST['pbls_lead_sources'])) {
             $tempx = $user_tempx;
             $GLOBALS['log']->debug("USER PREFERENCES['pbls_lead_sources'] is:");
             $GLOBALS['log']->debug($user_tempx);
-        } elseif (isset($_REQUEST['pbls_lead_sources']) && count($_REQUEST['pbls_lead_sources']) > 0) {
+        } elseif (isset($_REQUEST['pbls_lead_sources']) && (is_countable($_REQUEST['pbls_lead_sources']) ? count($_REQUEST['pbls_lead_sources']) : 0) > 0) {
             $tempx = $_REQUEST['pbls_lead_sources'];
             $current_user->setPreference('pbls_lead_sources', $_REQUEST['pbls_lead_sources']);
             $GLOBALS['log']->debug("_REQUEST['pbls_lead_sources'] is:");
@@ -89,7 +93,7 @@ class Chart_pipeline_by_lead_source
         }
 
         //set $datax using selected sales stage keys
-        if (count($tempx) > 0) {
+        if ((is_countable($tempx) ? count($tempx) : 0) > 0) {
             foreach ($tempx as $key) {
                 $datax[$key] = $app_list_strings['lead_source_dom'][$key];
                 array_push($selected_datax, $key);
@@ -104,13 +108,13 @@ class Chart_pipeline_by_lead_source
         $ids = array();
         $user_ids = $current_user->getPreference('pbls_ids');
         //get list of user ids for which to display data
-        if (!empty($user_ids) && count($user_ids) != 0 && !isset($_REQUEST['pbls_ids'])) {
+        if (!empty($user_ids) && (is_countable($user_ids) ? count($user_ids) : 0) != 0 && !isset($_REQUEST['pbls_ids'])) {
             if (isset($_SESSION['pbls_ids'])) {
                 $ids = $_SESSION['pbls_ids'];
             }
             $GLOBALS['log']->debug("USER PREFERENCES['pbls_ids'] is:");
             $GLOBALS['log']->debug($user_ids);
-        } elseif (isset($_REQUEST['pbls_ids']) && count($_REQUEST['pbls_ids']) > 0) {
+        } elseif (isset($_REQUEST['pbls_ids']) && (is_countable($_REQUEST['pbls_ids']) ? count($_REQUEST['pbls_ids']) : 0) > 0) {
             $ids = $_REQUEST['pbls_ids'];
             $current_user->setPreference('pbls_ids', $ids);
             $GLOBALS['log']->debug("_REQUEST['pbls_ids'] is:");
@@ -234,7 +238,7 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
             $where="";
             //build the where clause for the query that matches $user
 
-            $count = count($user_id);
+            $count = is_countable($user_id) ? count($user_id) : 0;
             $id = array();
             if ($count > 0 && !empty($user_id)) {
                 foreach ($user_id as $the_id) {
@@ -247,7 +251,7 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
                 $where .= 'AND';
             }
             //build the where clause for the query that matches $datax
-            $count = count($legends);
+            $count = is_countable($legends) ? count($legends) : 0;
             $legendItem = array();
             if ($count > 0 && !empty($legends)) {
                 foreach ($legends as $key=>$value) {
@@ -346,11 +350,11 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
         //get list of sales stage keys to display
         global $current_user;
         $user_tempx = $current_user->getPreference('pbls_lead_sources');
-        if (!empty($user_tempx) && count($user_tempx) > 0 && !isset($_REQUEST['pbls_lead_sources'])) {
+        if (!empty($user_tempx) && (is_countable($user_tempx) ? count($user_tempx) : 0) > 0 && !isset($_REQUEST['pbls_lead_sources'])) {
             $tempx = $user_tempx;
             $GLOBALS['log']->debug("USER PREFERENCES['pbls_lead_sources'] is:");
             $GLOBALS['log']->debug($user_tempx);
-        } elseif (isset($_REQUEST['pbls_lead_sources']) && count($_REQUEST['pbls_lead_sources']) > 0) {
+        } elseif (isset($_REQUEST['pbls_lead_sources']) && (is_countable($_REQUEST['pbls_lead_sources']) ? count($_REQUEST['pbls_lead_sources']) : 0) > 0) {
             $tempx = $_REQUEST['pbls_lead_sources'];
             $current_user->setPreference('pbls_lead_sources', $_REQUEST['pbls_lead_sources']);
             $GLOBALS['log']->debug("_REQUEST['pbls_lead_sources'] is:");
@@ -360,7 +364,7 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
         }
 
         //set $datax using selected sales stage keys
-        if (count($tempx) > 0) {
+        if ((is_countable($tempx) ? count($tempx) : 0) > 0) {
             foreach ($tempx as $key) {
                 $datax[$key] = $app_list_strings['lead_source_dom'][$key];
                 array_push($selected_datax, $key);
@@ -375,13 +379,13 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
         $ids = array();
         $user_ids = $current_user->getPreference('pbls_ids');
         //get list of user ids for which to display data
-        if (!empty($user_ids) && count($user_ids) != 0 && !isset($_REQUEST['pbls_ids'])) {
+        if (!empty($user_ids) && (is_countable($user_ids) ? count($user_ids) : 0) != 0 && !isset($_REQUEST['pbls_ids'])) {
             if (isset($_SESSION['pbls_ids'])) {
                 $ids = $_SESSION['pbls_ids'];
             }
             $GLOBALS['log']->debug("USER PREFERENCES['pbls_ids'] is:");
             $GLOBALS['log']->debug($user_ids);
-        } elseif (isset($_REQUEST['pbls_ids']) && count($_REQUEST['pbls_ids']) > 0) {
+        } elseif (isset($_REQUEST['pbls_ids']) && (is_countable($_REQUEST['pbls_ids']) ? count($_REQUEST['pbls_ids']) : 0) > 0) {
             $ids = $_REQUEST['pbls_ids'];
             $current_user->setPreference('pbls_ids', $ids);
             $GLOBALS['log']->debug("_REQUEST['pbls_ids'] is:");
@@ -401,7 +405,7 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
         $where="";
         //build the where clause for the query that matches $user
 
-        $count = count($user_id);
+        $count = is_countable($user_id) ? count($user_id) : 0;
         $id = array();
         if ($count > 0 && !empty($user_id)) {
             foreach ($user_id as $the_id) {
@@ -414,7 +418,7 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
             $where .= 'AND';
         }
         //build the where clause for the query that matches $datax
-        $count = count($legends);
+        $count = is_countable($legends) ? count($legends) : 0;
         $legendItem = array();
         if ($count > 0 && !empty($legends)) {
             foreach ($legends as $key=>$value) {

@@ -45,6 +45,7 @@
 /**
  * Class AOP_Case_Events.
  */
+#[\AllowDynamicProperties]
 class AOP_Case_Events extends basic
 {
     public $new_schema = true;

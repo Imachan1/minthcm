@@ -47,6 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
  require_once('modules/SugarFeed/linkHandlers/Link.php');
 
+ #[\AllowDynamicProperties]
  class FeedLinkHandlerImage extends FeedLinkHandlerLink
  {
      public function getDisplay(&$data)

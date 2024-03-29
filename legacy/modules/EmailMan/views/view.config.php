@@ -53,6 +53,7 @@ require_once('modules/EmailMan/Forms.php');
 require_once 'modules/EAPM/OAuth2InfoObtainer.php';
 // MintHCM #110041 END
 
+#[\AllowDynamicProperties]
 class ViewConfig extends SugarView
 {
     // MintHCM #110041 START

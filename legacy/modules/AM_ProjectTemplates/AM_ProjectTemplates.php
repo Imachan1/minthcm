@@ -46,6 +46,7 @@
  * THIS CLASS IS FOR DEVELOPERS TO MAKE CUSTOMIZATIONS IN
  */
 require_once('modules/AM_ProjectTemplates/AM_ProjectTemplates_sugar.php');
+#[\AllowDynamicProperties]
 class AM_ProjectTemplates extends AM_ProjectTemplates_sugar
 {
     public function __construct()

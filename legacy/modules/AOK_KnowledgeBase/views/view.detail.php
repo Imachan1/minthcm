@@ -46,6 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
+#[\AllowDynamicProperties]
 class AOK_KnowledgeBaseViewDetail extends ViewDetail
 {
     public function __construct()
@@ -61,6 +62,6 @@ class AOK_KnowledgeBaseViewDetail extends ViewDetail
 
     public function setDecodeHTML()
     {
-        $this->bean->description = html_entity_decode('<span data-open-links-in-new=true>'.str_replace('&nbsp;', ' ', $this->bean->description).'</span>');
+        $this->bean->description = html_entity_decode('<span data-open-links-in-new=true>'.str_replace('&nbsp;', ' ', (string) $this->bean->description).'</span>');
     }
 }

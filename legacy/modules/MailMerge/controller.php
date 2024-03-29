@@ -43,6 +43,7 @@
  */
 
 require_once('soap/SoapHelperFunctions.php');
+#[\AllowDynamicProperties]
 class MailMergeController extends SugarController
 {
     public function __construct()

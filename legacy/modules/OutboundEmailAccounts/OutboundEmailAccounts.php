@@ -46,6 +46,7 @@
  * THIS CLASS IS FOR DEVELOPERS TO MAKE CUSTOMIZATIONS IN
  */
 require_once('modules/OutboundEmailAccounts/OutboundEmailAccounts_sugar.php');
+#[\AllowDynamicProperties]
 class OutboundEmailAccounts extends OutboundEmailAccounts_sugar
 {
 
@@ -96,7 +97,7 @@ class OutboundEmailAccounts extends OutboundEmailAccounts_sugar
 
     public function save($check_notify = false)
     {
-        if (!$this->checkPersonalAccountAccess()) {
+        if (!$this->hasAccessToPersonalAccount()) {
             $this->logPersonalAccountAccessDenied('save');
             throw new RuntimeException('Access Denied');
         }
@@ -132,7 +133,7 @@ class OutboundEmailAccounts extends OutboundEmailAccounts_sugar
     {
         $results = parent::retrieve($id, $encode, $deleted);
 
-        if (!empty($results) && !$this->checkPersonalAccountAccess()) {
+        if (!empty($results) && !$this->hasAccessToPersonalAccount()) {
             $this->logPersonalAccountAccessDenied('retrieve');
             return null;
         }
@@ -221,7 +222,7 @@ class OutboundEmailAccounts extends OutboundEmailAccounts_sugar
      * Check if user has access to personal account
      * @return bool
      */
-    public function checkPersonalAccountAccess() : bool {
+    public function hasAccessToPersonalAccount() : bool {
         global $current_user;
 
         if (is_admin($current_user)) {
@@ -270,15 +271,19 @@ class OutboundEmailAccounts extends OutboundEmailAccounts_sugar
             return false;
         }
 
-        if (!$this->checkPersonalAccountAccess()) {
+        if (!$this->hasAccessToPersonalAccount()) {
             $this->logPersonalAccountAccessDenied("ACLAccess-$view");
             return false;
+        }
+
+        if (empty($this->type) && $this->assigned_user_id === $current_user->id){
+            $this->type = 'user';
         }
 
         $isPersonal = $this->type === 'user';
         $isAdmin = is_admin($current_user);
 
-        if ($isPersonal === true && $this->checkPersonalAccountAccess()) {
+        if ($isPersonal === true && $this->hasAccessToPersonalAccount()) {
             return true;
         }
 

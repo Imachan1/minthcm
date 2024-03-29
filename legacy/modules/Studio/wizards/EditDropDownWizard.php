@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 require_once('modules/Studio/DropDowns/DropDownHelper.php');
+#[\AllowDynamicProperties]
 class EditDropDownWizard extends StudioWizard
 {
     public $wizard = 'EditDropDownWizard';

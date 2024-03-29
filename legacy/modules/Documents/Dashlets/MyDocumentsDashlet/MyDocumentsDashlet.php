@@ -9,7 +9,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -48,11 +48,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/Dashlets/DashletGeneric.php');
 
+#[\AllowDynamicProperties]
 class MyDocumentsDashlet extends DashletGeneric
 {
     public function __construct($id, $def = null)
     {
-        global $current_user, $app_strings;
+        global $current_user, $app_strings, $dashletData;
+
+        $dashletData = $dashletData ?? [];
+
         require('modules/Documents/Dashlets/MyDocumentsDashlet/MyDocumentsDashlet.data.php');
 
         parent::__construct($id, $def);
@@ -66,6 +70,9 @@ class MyDocumentsDashlet extends DashletGeneric
 
         $this->seedBean = BeanFactory::newBean('Documents');
     }
+
+
+
 
     public function displayOptions()
     {

@@ -46,6 +46,7 @@
  * THIS CLASS IS FOR DEVELOPERS TO MAKE CUSTOMIZATIONS IN
  */
 require_once('modules/TemplateSectionLine/TemplateSectionLine_sugar.php');
+#[\AllowDynamicProperties]
 class TemplateSectionLine extends TemplateSectionLine_sugar
 {
     public function __construct()

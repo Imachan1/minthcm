@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/Dashlets/DashletGenericChart.php');
 
+#[\AllowDynamicProperties]
 class OpportunitiesByLeadSourceByOutcomeDashlet extends DashletGenericChart
 {
     public $lsbo_lead_sources = array();
@@ -274,6 +275,7 @@ EOD;
 
     protected function prepareChartData($data, $currency_symbol, $thousands_symbol)
     {
+        $chart = [];
         //Use the  lead_source to categorise the data for the charts
         $chart['labels'] = array();
         $chart['data'] = array();

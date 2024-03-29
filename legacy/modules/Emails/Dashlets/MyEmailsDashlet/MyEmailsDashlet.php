@@ -52,6 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('include/Dashlets/DashletGeneric.php');
 
 
+#[\AllowDynamicProperties]
 class MyEmailsDashlet extends DashletGeneric
 {
     public function __construct($id, $def = null)

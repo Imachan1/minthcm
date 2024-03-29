@@ -57,6 +57,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 /**
  * class GoogleApiKeySaverEntryPoint
  */
+#[\AllowDynamicProperties]
 class GoogleApiKeySaverEntryPoint
 {
 

@@ -6,7 +6,7 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -54,10 +54,10 @@
 <li>
     <input type="checkbox" name="{$action.name}" value="{$action.name}" checked="checked" />
     {$action.label}
-</li> 
+</li>
 {/foreach}
 </ul>
 </form>
-<button id="execute_repair" onclick="this.disabled = true;
+<button class="button primary" id="execute_repair" onclick="this.disabled = true;
 ajaxStatus.showStatus(SUGAR.language.get('ModuleBuilder', 'LBL_AJAX_LOADING'));
 ModuleBuilder.submitForm('remove_custom')">{sugar_translate label="LBL_RESET"}</button>

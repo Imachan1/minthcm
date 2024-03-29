@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once 'modules/Emails/include/DetailView/EmailsDetailView.php';
 
+#[\AllowDynamicProperties]
 class EmailsViewDetail extends ViewDetail
 {
     /**

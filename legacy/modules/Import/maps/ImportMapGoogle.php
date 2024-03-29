@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('modules/Import/maps/ImportMapOther.php');
 
+#[\AllowDynamicProperties]
 class ImportMapGoogle extends ImportMapOther
 {
 	/**

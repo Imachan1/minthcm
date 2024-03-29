@@ -52,6 +52,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  */
 require_once('modules/Import/sources/ImportFile.php');
 
+#[\AllowDynamicProperties]
 class ImportFieldSanitize
 {
     /**
@@ -169,7 +170,7 @@ class ImportFieldSanitize
             $sea = new SugarEmailAddress;
         }
         
-        if (!empty($value) && !preg_match($sea->regex, $value)) {
+        if (!empty($value) && !preg_match($sea->regex, (string) $value)) {
             return false;
         }
 
@@ -281,7 +282,7 @@ class ImportFieldSanitize
 
         $dateparts = array();
         $reg = $timedate->get_regular_expression($format);
-        preg_match('@'.$reg['format'].'@', $value, $dateparts);
+        preg_match('@'.$reg['format'].'@', (string) $value, $dateparts);
 
         if (empty($dateparts)) {
             return false;

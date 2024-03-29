@@ -56,6 +56,7 @@ require_once('include/externalAPI/ExternalAPIFactory.php');
 require_once('modules/Import/Importer.php');
 
 
+#[\AllowDynamicProperties]
 class ImportViewStep1 extends ImportView
 {
     protected $pageTitleKey = 'LBL_STEP_1_TITLE';

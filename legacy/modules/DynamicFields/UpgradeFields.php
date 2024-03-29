@@ -9,7 +9,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -100,7 +100,7 @@ require_once('modules/DynamicFields/DynamicField.php');
                  echo "Dropping Column $col from $mod->table_name" . "_cstm for module $the_module<br>";
              } else {
                  if ($col != 'id_c') {
-                     if (trim($the_field->get_db_type()) != trim($type)) {
+                     if (trim($the_field->get_db_type()) !== trim($type)) {
                          echo "Fixing Column Type for $col changing $type to ". $the_field->get_db_type() . "<br>";
                          if (!$simulate) {
                              $db->query($the_field->get_db_modify_alter_table($mod->table_name . '_cstm'));
@@ -130,7 +130,7 @@ require_once('modules/DynamicFields/DynamicField.php');
  }
 
 
-    DynamicField::deleteCache();
+    (new DynamicField())->deleteCache();
     echo '<br>Done<br>';
     if ($simulate) {
         echo '<a href="index.php?module=Administration&action=UpgradeFields&run=true">Execute non-simulation mode</a>';

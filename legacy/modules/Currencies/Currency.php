@@ -10,7 +10,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -55,6 +55,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * formatting in the SugarCRM application.
  *
  */
+#[\AllowDynamicProperties]
 class Currency extends SugarBean {
 
    // Stored fields
@@ -426,14 +427,16 @@ function format_number($amount, $round = null, $decimals = null, $params = array
       $symbol = $locale->translateCharset($symbol, 'UTF-8', $locale->getExportCharset());
    }
 
+   $checkAmount = 0;
+
    if ( empty($params['human']) ) {
       $amount = number_format(round($amount, $round), $decimals, $dec_sep, $num_grp_sep);
       $amount = format_place_symbol($amount, $symbol, (empty($params['symbol_space']) ? false : true), $currency); // View Tools #40674 ($currency)
    } else {
       // If amount is more greater than a thousand(positive or negative)
-      if ( strpos($amount, '.') > 0 ) {
-         $checkAmount = strlen(substr($amount, 0, strpos($amount, '.')));
-      }
+      if (strpos((string) $amount, '.') > 0) {
+         $checkAmount = strlen(substr((string) $amount, 0, strpos((string) $amount, '.')));
+     }
 
       if ( $checkAmount >= 1000 || $checkAmount <= -1000 ) {
          $amount = round(($amount / 1000), 0);

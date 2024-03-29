@@ -82,9 +82,9 @@ foreach ($beanFiles as $beanname=>$beanpath) {
 	foreach ($indices as $definition) {
 		//database helpers do not know how to handle full text indices
 		if ($definition['type']=='fulltext') {
-			if (isset($definition['db']) and $definition['db'] != DBManagerFactory::getInstance()->dbType) {
-				continue;
-			}
+            if (isset($definition['db']) && $definition['db'] != DBManagerFactory::getInstance()->dbType) {
+                continue;
+            }
 
 			echo "Rebuilding Index {$definition['name']} <BR/>";
 			DBManagerFactory::getInstance()->query('alter index ' .$definition['name'] . " REBUILD");

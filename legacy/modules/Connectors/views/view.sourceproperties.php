@@ -10,7 +10,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -48,12 +48,16 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
+#[\AllowDynamicProperties]
 class ViewSourceProperties extends ViewList
 {
     public function __construct()
     {
         parent::__construct();
     }
+
+
+
 
     public function display()
     {
@@ -81,7 +85,7 @@ class ViewSourceProperties extends ViewList
             $connector_language['LBL_LICENSING_INFO'] = str_replace(
                 '{$SITE_URL}',
                 $siteUrl,
-                $connector_language['LBL_LICENSING_INFO']
+                (string) $connector_language['LBL_LICENSING_INFO']
             );
         }
 

@@ -56,6 +56,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
+#[\AllowDynamicProperties]
 class ProspectList extends SugarBean
 {
     public $field_name_map;

@@ -43,6 +43,7 @@
  */
 include_once 'modules/Favorites/Favorites.php';
 
+#[\AllowDynamicProperties]
 class FavoritesController extends SugarController
 {
     public function action_create_record()

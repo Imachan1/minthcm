@@ -42,6 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+ #[\AllowDynamicProperties]
  class HomeViewModulelistmenu extends ViewModulelistmenu
  {
      public function display()

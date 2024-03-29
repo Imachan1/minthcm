@@ -44,6 +44,7 @@
 
 require_once 'include/ListView/ListViewSmarty.php';
 
+#[\AllowDynamicProperties]
 class SpotsListViewSmarty extends ListViewSmarty
 {
 

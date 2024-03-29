@@ -46,6 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+#[\AllowDynamicProperties]
 class OAuth2ClientsViewEdit extends ViewEdit
 {
     /**

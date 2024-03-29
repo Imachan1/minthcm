@@ -56,11 +56,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/AM_ProjectTemplates/AM_ProjectTemplates.php');
 
+#[\AllowDynamicProperties]
 class AM_ProjectTemplatesDashlet extends DashletGeneric
 {
     public function __construct($id, $def = null)
     {
-        global $current_user, $app_strings;
+        global $current_user, $app_strings, $dashletData;
+
+        $dashletData = $dashletData ?? [];
+
         require('modules/AM_ProjectTemplates/metadata/dashletviewdefs.php');
 
         parent::__construct($id, $def);
@@ -74,5 +78,4 @@ class AM_ProjectTemplatesDashlet extends DashletGeneric
 
         $this->seedBean = BeanFactory::newBean('AM_ProjectTemplates');
     }
-
 }

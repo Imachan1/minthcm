@@ -55,6 +55,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * contains the incorrectly called action-method name
  *
  */
+#[\AllowDynamicProperties]
 class SyncInboundEmailAccountsInvalidSubActionArgumentsException extends Exception
 {
 

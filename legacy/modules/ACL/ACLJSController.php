@@ -47,6 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
+#[\AllowDynamicProperties]
 class ACLJSController
 {
     public function __construct($module, $form='', $is_owner=false)

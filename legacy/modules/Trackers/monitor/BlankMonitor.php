@@ -50,6 +50,7 @@ require_once('modules/Trackers/monitor/Monitor.php');
 require_once('modules/Trackers/Metric.php');
 require_once('modules/Trackers/Trackable.php');
 
+#[\AllowDynamicProperties]
 class BlankMonitor extends Monitor implements Trackable {
 
     /**
@@ -94,8 +95,8 @@ class BlankMonitor extends Monitor implements Trackable {
      * the flush method passing with the montior ($this) instance.
      *
      */
-    public function save() {
-
+    public function save($flush = \true)
+    {
     }
 
 

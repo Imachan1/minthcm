@@ -44,6 +44,7 @@
  */
 
 
+#[\AllowDynamicProperties]
 class ProjectViewTemplatesEdit extends ViewEdit
 {
     /**

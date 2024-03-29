@@ -49,6 +49,7 @@ require_once('modules/Trackers/monitor/Monitor.php');
 
 
 
+#[\AllowDynamicProperties]
 class TrackerManager {
 
 private static $instance;

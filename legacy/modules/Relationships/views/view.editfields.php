@@ -47,6 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
  
 
+#[\AllowDynamicProperties]
 class ViewEditFields extends ViewAjax
 {
     public function __construct()

@@ -406,7 +406,7 @@ function docUpload() {
 	   }
     }
 
-	var url ='index.php?module=EmailTemplates&action=AttachDocuments';
+	var url ='index.php?module=EmailTemplates&action=AttachFiles';
 	YAHOO.util.Connect.asyncRequest('POST', url, callback,null);
     //AJAX call ends
 

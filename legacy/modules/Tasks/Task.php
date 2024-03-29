@@ -46,6 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 // Task is used to store customer information.
+#[\AllowDynamicProperties]
 class Task extends SugarBean
 {
     public $field_name_map;
@@ -187,7 +188,7 @@ class Task extends SugarBean
             $this->parent_name_owner = $row['parent_name_owner'];
             $this->parent_name_mod = $this->parent_type;
         }
-        if (is_subclass_of($parent, 'Person') and $row != null) {
+        if (is_subclass_of($parent, 'Person') && $row != null) {
             $this->parent_name = $locale->getLocaleFormattedName(stripslashes($row['first_name']), stripslashes($row['last_name']));
         } else if (is_subclass_of($parent, 'File') && $row != null) {
             $this->parent_name = $row['document_name'];

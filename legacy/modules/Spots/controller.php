@@ -49,6 +49,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 /**
  * Class SpotsController.
  */
+#[\AllowDynamicProperties]
 class SpotsController extends SugarController {
 
    protected $nullSqlPlaceholder = '';

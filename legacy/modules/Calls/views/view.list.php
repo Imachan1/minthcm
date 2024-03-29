@@ -45,6 +45,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  */
 
 
+#[\AllowDynamicProperties]
 class CallsViewList extends ViewList
 {
     public function listViewProcess()

@@ -46,6 +46,9 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
+ 
+#[\AllowDynamicProperties]
  class RemindersController extends SugarController
  {
      public function action_getInviteesPersonName()

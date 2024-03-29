@@ -55,7 +55,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 $uwFilesCurrent = findAllFiles('modules/UpgradeWizard/', array());
 
 // handle 4.x to 4.5.x+ (no UpgradeWizard module)
-if (count($uwFilesCurrent) < 5) {
+if ((is_countable($uwFilesCurrent) ? count($uwFilesCurrent) : 0) < 5) {
     $uwFiles = array(
         'modules/UpgradeWizard/language/en_us.lang.php',
         'modules/UpgradeWizard/cancel.php',
@@ -86,7 +86,7 @@ if (count($uwFilesCurrent) < 5) {
 
     $uwFiles = array();
     foreach ($uwFilesCurrent as $file) {
-        $uwFiles[] = str_replace("./", "", clean_path($file));
+        $uwFiles[] = str_replace("./", "", (string) clean_path($file));
     }
 }
 ////	END DYNAMICALLY GENERATE UPGRADEWIZARD MODULE FILE LIST

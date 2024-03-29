@@ -9,7 +9,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -72,6 +72,7 @@ define('MB_MAXDBIDENTIFIERLENGTH', 30); // maximum length of any identifier in o
 define('MB_EXPORTPREPEND', 'project_');
 define('MB_VISIBILITY', 'visibility');
 
+#[\AllowDynamicProperties]
 class MBConstants
 {
     public static $EMPTY = array( 'name' => '(empty)' , 'label' => '(empty)' ) ;

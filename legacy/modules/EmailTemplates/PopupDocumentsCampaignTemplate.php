@@ -48,6 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/Popups/Popup_picker.php');
 
+#[\AllowDynamicProperties]
 class DocumentPopupPicker extends Popup_Picker
 {
     public function __construct()

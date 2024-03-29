@@ -46,6 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
+#[\AllowDynamicProperties]
 class BreadCrumbStack {
 
    /**
@@ -219,9 +220,10 @@ class BreadCrumbStack {
     *
     * @return int - the number of elements in the stack
     */
-   public function length(){
-   		return count($this->stack);
-   }
+    public function length()
+    {
+        return is_countable($this->stack) ? count($this->stack) : 0;
+    }
 
    /**
     * Return the list of breadcrubmbs currently in memory

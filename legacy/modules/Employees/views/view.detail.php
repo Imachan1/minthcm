@@ -48,6 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 require_once 'include/MVC/View/views/view.detail.php';
 
+
 class EmployeesViewDetail extends ViewDetail
 {
 
@@ -63,11 +64,11 @@ class EmployeesViewDetail extends ViewDetail
         global $current_user;
 
         $theTitle = "<div class='moduleTitle'>\n";
-
-        $module = preg_replace("/ /", "", $this->module);
+        
+        $module = preg_replace("/ /", "", (string) $this->module);
 
         $params = $this->_getModuleTitleParams();
-        $count = count($params);
+        $count = is_countable($params) ? count($params) : 0;
         $index = 0;
 
         if (SugarThemeRegistry::current()->directionality == "rtl") {

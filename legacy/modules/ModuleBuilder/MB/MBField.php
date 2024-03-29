@@ -42,6 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class MBField
 {
     public $type = 'varchar';

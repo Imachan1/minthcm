@@ -52,6 +52,7 @@ require_once 'modules/SecurityGroups/PrivateGroup.php';
 // MintHCM #77675 end
 
 // Employee is used to store customer information.
+#[\AllowDynamicProperties]
 class Employee extends Person implements EmailInterface
 {
     // Stored fields

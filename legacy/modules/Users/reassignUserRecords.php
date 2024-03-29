@@ -219,7 +219,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
                  break;
              default:
                  //echo "Skipping field {$meta['name']} since the type is not supported<BR>";
-                 continue;
+                 break;
          }
              echo "<$tag $size name=\"$name\" $multi>\n$extra";
              echo "<BR>\n";
@@ -343,12 +343,10 @@ if (!defined('sugarEntry') || !sugarEntry) {
                              }
                              $in_string .= "'$onevalue', ";
                          }
-                         $in_string = substr($in_string, 0, count($in_string) - 3);
+                         $in_string = substr($in_string, 0, (is_countable($in_string) ? count($in_string) : 0) - 3);
                          $q_where .= " and ({$tableName}{$addcstm}.{$meta['dbname']} in ($in_string) $empty_check)";
                          break;
                      default:
-                         //echo "Skipping field {$meta['name']} since the type is not supported<BR>";
-                         continue;
                          break;
                  }
              }

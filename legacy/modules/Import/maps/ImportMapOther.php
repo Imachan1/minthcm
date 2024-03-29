@@ -52,6 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * All Rights Reserved.
  */
 
+#[\AllowDynamicProperties]
 class ImportMapOther
 {
 	/**

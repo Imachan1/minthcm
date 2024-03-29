@@ -54,6 +54,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('modules/Trackers/store/Store.php');
 
+#[\AllowDynamicProperties]
 class SugarLogStore implements Store {
     
     public function flush($monitor) {

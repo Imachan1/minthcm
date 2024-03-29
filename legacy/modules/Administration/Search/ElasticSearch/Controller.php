@@ -97,7 +97,7 @@ class Controller extends AbstractController
         $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
         $pass = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_STRING);
 
-        $enabled = boolval(intval($enabled));
+        $enabled = (bool) (int) $enabled;
 
         $cfg = new Configurator();
 
@@ -120,6 +120,7 @@ class Controller extends AbstractController
      */
     public function doTestConnection()
     {
+        $return = [];
         $input = INPUT_POST;
 
         $host = filter_input($input, 'host', FILTER_SANITIZE_STRING);
@@ -190,6 +191,12 @@ class Controller extends AbstractController
         $where = "schedulers.job='function::runElasticSearchIndexerScheduler'";
         /** @var Scheduler[]|null $schedulers */
         $schedulers = BeanFactory::getBean('Schedulers')->get_full_list(null, $where);
+        
+        foreach ($schedulers as &$scheduler) {
+            $scheduler->check_date_relationships_load();
+        }
+        unset($scheduler);
+
         return $schedulers;
     }
 

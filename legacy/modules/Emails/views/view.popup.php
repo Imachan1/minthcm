@@ -47,6 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 
+#[\AllowDynamicProperties]
 class EmailsViewPopup extends ViewPopup
 {
     /**

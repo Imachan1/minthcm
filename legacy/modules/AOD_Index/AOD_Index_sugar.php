@@ -53,6 +53,7 @@
  * @deprecated since v7.12.0
  * Class AOD_Index_sugar
  */
+#[\AllowDynamicProperties]
 class AOD_Index_sugar extends Basic
 {
     public $new_schema = true;

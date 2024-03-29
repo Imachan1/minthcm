@@ -10,7 +10,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2023 MintHCM
  *
@@ -50,6 +50,7 @@ require_once('include/connectors/sources/SourceFactory.php');
 require_once('include/connectors/ConnectorFactory.php');
 require_once('include/MVC/Controller/SugarController.php');
 
+#[\AllowDynamicProperties]
 class ConnectorsController extends SugarController
 {
     public $admin_actions = array('ConnectorSettings', 'DisplayProperties', 'MappingProperties', 'ModifyMapping', 'ModifyDisplay', 'ModifyProperties',
@@ -118,6 +119,7 @@ class ConnectorsController extends SugarController
      */
     public function action_RetrieveSourceDetails()
     {
+        $results = [];
         $this->view = 'ajax';
         $source_id = $_REQUEST['source_id'];
         $record_id = $_REQUEST['record_id'];
@@ -145,8 +147,8 @@ class ConnectorsController extends SugarController
 
             $val = $result->$field;
             if (!empty($val)) {
-                if (strlen($val) > 50) {
-                    $val = substr($val, 0, 47) . '...';
+                if (strlen((string) $val) > 50) {
+                    $val = substr((string) $val, 0, 47) . '...';
                 }
                 $str .= $label . ': ' .  $val.'<br/>';
             }
@@ -274,7 +276,7 @@ class ConnectorsController extends SugarController
 
         $url = $_REQUEST['url'];
 
-        if (!preg_match('/^http[s]{0,1}\:\/\//', $url)) {
+        if (!preg_match('/^http[s]{0,1}\:\/\//', (string) $url)) {
             throw new RuntimeException('Illegal request');
         }
 
@@ -524,7 +526,7 @@ class ConnectorsController extends SugarController
             if (empty($sources_modules[$source])) {
                 //Now write the new mapping entry to the custom folder
                 $dir = $connectors[$id]['directory'];
-                if (!preg_match('/^custom\//', $dir)) {
+                if (!preg_match('/^custom\//', (string) $dir)) {
                     $dir = 'custom/' . $dir;
                 }
 
@@ -595,7 +597,7 @@ class ConnectorsController extends SugarController
 
             //Now write the new mapping entry to the custom folder
             $dir = $connectors[$id]['directory'];
-            if (!preg_match('/^custom\//', $dir)) {
+            if (!preg_match('/^custom\//', (string) $dir)) {
                 $dir = 'custom/' . $dir;
             }
 
@@ -677,7 +679,7 @@ class ConnectorsController extends SugarController
 
             //Now write the new mapping entry to the custom folder
             $dir = $source_entries[$id]['directory'];
-            if (!preg_match('/^custom\//', $dir)) {
+            if (!preg_match('/^custom\//', (string) $dir)) {
                 $dir = 'custom/' . $dir;
             }
 
@@ -774,6 +776,7 @@ class ConnectorsController extends SugarController
                 )
         );
 
+        $layout = [];
         $layout[$module] = $field_name;
 
         require_once('ModuleInstall/ModuleInstaller.php');

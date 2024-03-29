@@ -55,6 +55,7 @@ require_once("include/SugarObjects/templates/company/Company.php");
 require_once __DIR__ . '/../../include/EmailInterface.php';
 
 // Account is used to store account information.
+#[\AllowDynamicProperties]
 class Account extends Company implements EmailInterface
 {
     public $field_name_map = array();
@@ -313,7 +314,7 @@ class Account extends Company implements EmailInterface
                         $joinAlias . '.' . $field_def['rname'],
                         $newWhereClause
                     );
-                    $where = str_replace($whereClause, $newWhereClause, $where);
+                    $where = str_replace($whereClause, $newWhereClause, (string) $where);
                 }
             }
         }

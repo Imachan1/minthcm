@@ -42,6 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class AlertsController extends SugarController
 {
     public function action_get()

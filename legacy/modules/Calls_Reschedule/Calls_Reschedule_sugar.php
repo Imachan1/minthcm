@@ -49,6 +49,7 @@
  */
 
 
+#[\AllowDynamicProperties]
 class Calls_Reschedule_sugar extends Basic
 {
     public $new_schema = true;

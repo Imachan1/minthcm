@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 
+#[\AllowDynamicProperties]
 class StudioWizard
 {
     public $tplfile = 'modules/Studio/wizards/tpls/wizard.tpl';

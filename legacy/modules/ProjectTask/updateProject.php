@@ -44,6 +44,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+#[\AllowDynamicProperties]
 class updateEndDate
 {
     // logic hook is used to update "project end date" when task "end date" exceeds project end date

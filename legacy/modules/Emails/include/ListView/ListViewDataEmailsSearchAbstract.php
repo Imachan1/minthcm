@@ -49,6 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 /**
  * Class ListViewDataEmailsSearchAbstract
  */
+#[\AllowDynamicProperties]
 abstract class ListViewDataEmailsSearchAbstract
 {
 

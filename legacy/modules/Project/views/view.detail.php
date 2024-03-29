@@ -56,6 +56,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  ********************************************************************************/
 
 
+#[\AllowDynamicProperties]
 class ProjectViewDetail extends ViewDetail
 {
     /**
