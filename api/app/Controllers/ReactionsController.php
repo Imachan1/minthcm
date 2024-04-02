@@ -51,6 +51,7 @@ use MintHCM\Api\Entities\Reaction;
 use Slim\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
+#[\AllowDynamicProperties]
 class ReactionsController
 {
     protected $entityManager;

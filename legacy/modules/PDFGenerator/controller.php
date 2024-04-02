@@ -50,6 +50,7 @@ require_once('modules/Administration/QuickRepairAndRebuild.php');
 require_once('modules/PDFGenerator/config/config.php');
 require_once 'modules/PDFGenerator/ButtonParser.php';
 
+#[\AllowDynamicProperties]
 class PDFGeneratorController extends SugarController {
 
     public function action_repair() {

@@ -47,6 +47,7 @@
 require_once 'include/Notifications/Notification.php';
 require_once 'include/Notifications/NotificationPlugin.php';
 
+#[\AllowDynamicProperties]
 class NotificationManager {
 
    const PLUGINS_DIRECTORY = "./include/Notifications/plugins";

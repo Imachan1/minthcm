@@ -48,6 +48,7 @@ SugarAutoLoader::requireWithCustom('modules/SchedulersJobs/SchedulersJob.php');
 SugarAutoLoader::requireWithCustom('include/SugarQueue/SugarJobQueue.php');
 SugarAutoLoader::requireWithCustom('include/Notifications/Notification.php');
 
+#[\AllowDynamicProperties]
 class MassConfirmation {
 
    protected $user_id = '';
@@ -91,7 +92,7 @@ class MassConfirmation {
    }
 
    protected function getAlertDescription() {
-      $success_count = count($this->success);
+      $success_count = is_countable($this->success) ? count($this->success) : 0;
       $total_count = $success_count + count($this->errors);
       $ret = $GLOBALS['app_strings']['LBL_WSMASSCONFIRMATION_ALERT'];
       $ret .= ' (' . $success_count . '/' . $total_count . ')';

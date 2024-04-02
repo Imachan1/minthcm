@@ -42,6 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class CompetenciesController extends SugarController
 {
     const TEMPLATE = 'Competencies';

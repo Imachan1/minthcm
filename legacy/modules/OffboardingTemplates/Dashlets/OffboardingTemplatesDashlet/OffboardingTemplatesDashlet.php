@@ -49,6 +49,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/OffboardingTemplates/OffboardingTemplates.php');
 
+#[\AllowDynamicProperties]
 class OffboardingTemplatesDashlet extends DashletGeneric {
 
    function __construct($id, $def = null) {

@@ -46,6 +46,7 @@
 
 require_once 'modules/Resources/SugarFeeds/ResourcesFeed.php';
 
+#[\AllowDynamicProperties]
 class Resources extends Basic {
 
    public $new_schema = true;

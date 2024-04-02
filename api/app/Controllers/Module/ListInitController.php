@@ -52,6 +52,7 @@ use Slim\Exception\HttpNotFoundException;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
 
+#[\AllowDynamicProperties]
 class ListInitController
 {
     const METADATA_FILES = array(

@@ -45,6 +45,7 @@
 
 require_once 'modules/Ideas/SugarFeeds/IdeasFeed.php';
 
+#[\AllowDynamicProperties]
 class Ideas extends Basic
 {
 

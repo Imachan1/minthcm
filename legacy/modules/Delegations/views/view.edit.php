@@ -49,6 +49,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 }
 require_once('include/MVC/View/views/view.edit.php');
 
+#[\AllowDynamicProperties]
 class DelegationsViewEdit extends ViewEdit {
 
    function display() {

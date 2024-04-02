@@ -48,6 +48,7 @@ namespace MintHCM\Lib\Search\Base;
 
 use MintHCM\Lib\Search\Base\SearchResult;
 
+#[\AllowDynamicProperties]
 abstract class SearchManager
 {
     protected $params,$query, $result_manager ;

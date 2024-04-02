@@ -60,6 +60,7 @@
  * PLEASE DO NOT CHANGE THIS CLASS
  * PLACE ANY CUSTOMIZATIONS IN Candidatures
  */
+#[\AllowDynamicProperties]
 class Candidatures_sugar extends Basic {
 
    public $new_schema = true;

@@ -45,6 +45,7 @@
  */
 require_once 'include/Notifications/Notification.php';
 
+#[\AllowDynamicProperties]
 abstract class NotificationPlugin {
 
    public function getNewNotification() {

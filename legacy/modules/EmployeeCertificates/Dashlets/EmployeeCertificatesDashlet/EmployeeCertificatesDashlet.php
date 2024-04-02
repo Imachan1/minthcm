@@ -60,12 +60,13 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/EmployeeCertificates/EmployeeCertificates.php');
 
+#[\AllowDynamicProperties]
 class EmployeeCertificatesDashlet extends DashletGeneric {
 
    function EmployeeCertificatesDashlet($id, $def = null) {
       require('modules/EmployeeCertificates/metadata/dashletviewdefs.php');
 
-      parent::DashletGeneric($id, $def);
+      parent::__construct($id, $def);
 
       if ( empty($def['title']) )
          $this->title = translate('LBL_HOMEPAGE_TITLE', 'EmployeeCertificates');

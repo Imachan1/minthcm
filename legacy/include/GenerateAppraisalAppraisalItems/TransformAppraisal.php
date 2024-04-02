@@ -49,6 +49,7 @@ SugarAutoLoader::requireWithCustom('include/GenerateAppraisalAppraisalItems/Crea
 SugarAutoLoader::requireWithCustom('include/GenerateAppraisalAppraisalItems/CreateNewAppraisalRecord.php');
 SugarAutoLoader::requireWithCustom('include/Notifications/Notification.php');
 
+#[\AllowDynamicProperties]
 class TransformAppraisal extends SugarController {
 
    public $transformed_module_name = '';

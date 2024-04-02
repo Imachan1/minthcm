@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class KTreeViewGenerator {
 
    const TREE_COLUMN_NAME = 'tree_column';

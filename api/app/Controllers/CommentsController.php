@@ -52,6 +52,7 @@ use Slim\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use MintHCM\Modules\Comments\AccessChecker;
 
+#[\AllowDynamicProperties]
 class CommentsController
 {
     protected $entityManager;

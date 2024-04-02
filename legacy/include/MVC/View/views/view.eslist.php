@@ -43,6 +43,7 @@
  */
 require_once('include/MVC/View/SugarView.php');
 
+#[\AllowDynamicProperties]
 class ViewESList extends SugarView
 {
     /**

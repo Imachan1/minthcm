@@ -50,6 +50,7 @@ use MintHCM\Api\Entities\UsersPasswordLink;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+#[\AllowDynamicProperties]
 class UsersPasswordLinkRepository extends EntityRepository
 {
     public function markAllAsDeletedByUsername($username): int

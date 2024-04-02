@@ -46,6 +46,7 @@
 
 namespace MintHCM\Lib\Search;
 
+#[\AllowDynamicProperties]
 abstract class SearchManager
 {
     protected $params;

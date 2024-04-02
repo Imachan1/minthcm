@@ -55,6 +55,7 @@ if ( file_exists('custom/include/tcpdf/tcpdf.php') ) {
    require_once('include/tcpdf/tcpdf.php');
 }
 
+#[\AllowDynamicProperties]
 class MintPDF extends TCPDF {
 
    protected $footer;

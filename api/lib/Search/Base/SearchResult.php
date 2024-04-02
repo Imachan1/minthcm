@@ -50,6 +50,7 @@ use Doctrine\DBAL\Connection;
 use MintHCM\Data\BeanFactory;
 use MintHCM\Utils\LegacyConnector;
 
+#[\AllowDynamicProperties]
 abstract class SearchResult
 {
     protected $result, $grouped_ids, $beans, $hits;

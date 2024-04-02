@@ -164,7 +164,7 @@ class ACLController
      * Determines if user requires ownership
      *
      * @param string $category
-     * @param Bool $value
+     * @param string $value
      * @param string $type
      * @return bool
      */
@@ -184,7 +184,7 @@ class ACLController
      * Determines if user requires a security group
      *
      * @param string $category
-     * @param Bool $value
+     * @param string $value
      * @param string $type
      * @return bool
      */

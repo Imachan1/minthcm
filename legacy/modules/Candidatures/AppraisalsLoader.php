@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class AppraisalsLoader {
 
    const APPRAISAL_ITEMS_MODULE_NAME = 'AppraisalItems';

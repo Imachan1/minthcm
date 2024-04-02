@@ -48,6 +48,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
    die('Not A Valid Entry Point');
 }
 
+#[\AllowDynamicProperties]
 class CandidaturesHooks {
 
    public function count_employees_number($bean, $event, $arguments) {

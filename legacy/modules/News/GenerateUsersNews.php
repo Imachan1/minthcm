@@ -48,6 +48,7 @@ if (!defined('sugarEntry')) {
 }
 require_once 'include/Notifications/Notification.php';
 
+#[\AllowDynamicProperties]
 class GenerateUsersNews
 {
 

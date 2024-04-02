@@ -52,6 +52,7 @@ use MintHCM\Api\Entities\UserPreferences;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 
+#[\AllowDynamicProperties]
 class Preferences
 {
     protected $entityManager;

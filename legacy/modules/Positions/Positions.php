@@ -60,6 +60,7 @@
 require_once 'modules/Positions/Positions_sugar.php';
 require_once 'modules/Positions/SugarFeeds/PositionsFeed.php';
 
+#[\AllowDynamicProperties]
 class Positions extends Positions_sugar {
 
    public function save($check_notify = false) {

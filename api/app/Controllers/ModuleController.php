@@ -51,6 +51,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
 
+#[\AllowDynamicProperties]
 class ModuleController
 {
 

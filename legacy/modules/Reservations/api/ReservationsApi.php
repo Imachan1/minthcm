@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class ReservationsApi {
 
    CONST RESERVATION_BEAN = 'Reservations';
@@ -86,6 +87,7 @@ class ReservationsApi {
 
 }
 
+#[\AllowDynamicProperties]
 class ReservationInfo {
 
    public $id;

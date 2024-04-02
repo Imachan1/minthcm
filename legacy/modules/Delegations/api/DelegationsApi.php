@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class DelegationsApi {
 
    public function checkDelegationLocalCurrencyId($delegation_locale_id) {

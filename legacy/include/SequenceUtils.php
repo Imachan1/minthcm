@@ -44,9 +44,12 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class SequenceUtils {
 
    protected const table_name = 'sequences';
+   protected $db;
+   protected $db_name;
 
    public function __construct() {
       $this->tryDatabase();
@@ -71,7 +74,7 @@ class SequenceUtils {
       $result = $this->db->query($query);
       $row = $this->db->fetchByAssoc($result);
 
-      if ( $result->num_rows != 0 ) {
+      if ( is_object($result) && $result->num_rows != 0 ) {
          $next = $row['value'] + 1;
          $this->db->query("UPDATE `" . $this->db_name . "`.`" . static::table_name .
             "` SET `value` = '" . $next . "' WHERE `" . static::table_name . "`.`name` = '" . $name . "' LIMIT 1 ;");
@@ -88,7 +91,7 @@ class SequenceUtils {
       $result = $this->db->query($query);
       $row = $this->db->fetchByAssoc($result);
       $current = $row['value'];
-      if ( $result->num_rows == 0 ) {
+      if ( is_object($result) && $result->num_rows == 0 ) {
          $current = 1;
          $this->db->query("INSERT INTO `" . $this->db_name . "`.`" . static::table_name .
             "` VALUES ('" . $name . "', '1');");
@@ -99,7 +102,7 @@ class SequenceUtils {
    public function setValue($name, $value) {
       $query = "SELECT * FROM `" . static::table_name . "` WHERE `name` = '" . $name . "'";
       $result = $this->db->query($query);
-      if ( $result->num_rows == 0 ) {
+      if ( is_object($result) && $result->num_rows == 0 ) {
          $this->db->query("INSERT INTO `" . $this->db_name . "`.`" . static::table_name .
             "` VALUES ('" . $name . "', '" . $value . "');");
       } else {
@@ -111,7 +114,7 @@ class SequenceUtils {
    public function decrement($name) {
       $query = "SELECT * FROM `" . static::table_name . "` WHERE `name` = '" . $name . "'";
       $result = $this->db->query($query);
-      if ( $result->num_rows == 0 ) {
+      if ( is_object($result) && $result->num_rows == 0 ) {
          $this->db->query("INSERT INTO `" . $this->db_name . "`.`" . static::table_name .
             "` VALUES ('" . $name . "', '0');");
       } else {

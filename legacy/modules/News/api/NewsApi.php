@@ -46,6 +46,7 @@
 SugarAutoLoader::requireWithCustom('include/ScheduleGenerateUsersNews/ScheduleGenerateUsersNews.php');
 SugarAutoLoader::requireWithCustom('include/SugarQueue/SugarJobQueue.php');
 
+#[\AllowDynamicProperties]
 class NewsApi
 {
 

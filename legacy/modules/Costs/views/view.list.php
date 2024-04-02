@@ -46,6 +46,7 @@
 
 require_once('include/MVC/View/views/view.list.php');
 
+#[\AllowDynamicProperties]
 class CostsViewList extends ViewList {
 
    function __construct() {

@@ -50,6 +50,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 
 require_once('modules/SugarFeed/feedLogicBase.php');
 
+#[\AllowDynamicProperties]
 class CompetenciesFeed extends FeedLogicBase {
 
    public $module = 'Competencies';

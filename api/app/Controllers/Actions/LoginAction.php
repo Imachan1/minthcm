@@ -52,6 +52,7 @@ use MintHCM\Api\Controllers\Init\Preferences;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 
+#[\AllowDynamicProperties]
 class LoginAction
 {
 

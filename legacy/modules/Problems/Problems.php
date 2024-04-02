@@ -46,6 +46,7 @@
 
 require_once('modules/Problems/SugarFeeds/ProblemsFeed.php');
 
+#[\AllowDynamicProperties]
 class Problems extends Basic {
 
    public $new_schema = true;

@@ -46,14 +46,14 @@
 
 require_once 'include/ViewTools/ViewToolsQueue.php';
 
+#[\AllowDynamicProperties]
 class Related {
 
    /**
     * Method used as GlobalHook
-    * @global type $dictionary
     * @param SugarBean $bean
-    * @param type $event
-    * @param type $arguments
+    * @param string|bool $event
+    * @param array $arguments
     */
    public function relatedRecalculation(SugarBean &$bean, $event = false, $arguments = false) {
       if(file_exists('include/ViewTools/Expressions/cache.php')){

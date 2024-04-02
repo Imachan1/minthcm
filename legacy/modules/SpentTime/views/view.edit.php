@@ -50,6 +50,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 
 require_once('include/MVC/View/views/view.edit.php');
 
+#[\AllowDynamicProperties]
 class SpentTimeViewEdit extends ViewEdit {
 
    protected $user;

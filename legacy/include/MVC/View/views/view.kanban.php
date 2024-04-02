@@ -46,6 +46,7 @@ require_once('include/MVC/View/SugarView.php');
 
 require_once('include/KanbanView/KanbanViewSmarty.php');
 
+#[\AllowDynamicProperties]
 class ViewKanban extends SugarView
 {
     /**

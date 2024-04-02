@@ -46,6 +46,7 @@
 
 namespace MintHCM\Lib\Search\Base;
 
+#[\AllowDynamicProperties]
 abstract class SearchQuery
 {
     protected $params, $query, $sort, $size, $from;

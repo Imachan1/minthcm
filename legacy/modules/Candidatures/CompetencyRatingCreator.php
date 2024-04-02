@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class CompetencyRatingCreator {
 
    protected $appraisal_item_module_bean = array();

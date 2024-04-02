@@ -50,6 +50,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 
 require_once('include/MVC/View/views/view.list.php');
 
+#[\AllowDynamicProperties]
 class ReservationsCalendarViewList extends ViewList {
 
    public function display() {

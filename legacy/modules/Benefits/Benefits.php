@@ -46,6 +46,7 @@
 
 require_once('modules/Benefits/SugarFeeds/BenefitsFeed.php');
 
+#[\AllowDynamicProperties]
 class Benefits extends Basic {
 
    public $new_schema = true;

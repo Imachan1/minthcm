@@ -49,6 +49,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/ResponsibilityActivities/ResponsibilityActivities.php');
 
+#[\AllowDynamicProperties]
 class ResponsibilityActivitiesDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {

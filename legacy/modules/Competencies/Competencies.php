@@ -44,6 +44,7 @@
  */
 require_once 'modules/Competencies/SugarFeeds/CompetenciesFeed.php';
 
+#[\AllowDynamicProperties]
 class Competencies extends Basic {
 
    public $new_schema = true;

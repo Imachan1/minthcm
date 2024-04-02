@@ -47,6 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/MVC/View/views/view.popup.php');
 
+#[\AllowDynamicProperties]
 class WorkSchedulesViewPopup extends ViewPopup
 {
 

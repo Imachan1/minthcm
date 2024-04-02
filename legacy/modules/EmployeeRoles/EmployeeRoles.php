@@ -46,6 +46,7 @@
 
 require_once('modules/EmployeeRoles/SugarFeeds/EmployeeRolesFeed.php');
 
+#[\AllowDynamicProperties]
 class EmployeeRoles extends Basic {
 
    public $new_schema = true;

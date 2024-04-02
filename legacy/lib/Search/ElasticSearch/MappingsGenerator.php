@@ -8,6 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 
 require_once 'lib/Search/ElasticSearch/ElasticSearchVardefsReader.php';
 
+#[\AllowDynamicProperties]
 class MappingsGenerator
 {
     protected $metadata_file = 'eslistviewdefs.php';
@@ -193,7 +194,7 @@ class MappingsGenerator
     protected function handleNotStandardField($es_field, $mappings, $key, $es_type)
     {
         $es_field_parts = explode('.', $es_field);
-        $count = count($es_field_parts);
+        $count = is_countable($es_field_parts) ? count($es_field_parts) : 0;
         $sub_mappings = &$mappings['mappings'][$key];
         foreach ($es_field_parts as $es_field_part) {
             if (!isset($sub_mappings['properties'][$es_field_part])) {

@@ -55,6 +55,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
  *   @ORM\Index(name="idx_username", columns={"username"})
  * })
  */
+#[\AllowDynamicProperties]
 class UsersPasswordLink
 {
     /**

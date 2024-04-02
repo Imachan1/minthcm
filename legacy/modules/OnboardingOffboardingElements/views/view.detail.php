@@ -47,6 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/MVC/View/views/view.detail.php');
 
+#[\AllowDynamicProperties]
 class OnboardingOffboardingElementsViewDetail extends ViewDetail
 {
 

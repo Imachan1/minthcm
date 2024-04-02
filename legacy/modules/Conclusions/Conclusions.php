@@ -46,6 +46,7 @@
 
 require_once('modules/Conclusions/SugarFeeds/ConclusionsFeed.php');
 
+#[\AllowDynamicProperties]
 class Conclusions extends Basic {
 
    public $new_schema = true;

@@ -46,6 +46,7 @@
 
 namespace MintHCM\Utils;
 
+#[\AllowDynamicProperties]
 class LegacyConnector
 {
     protected $class;

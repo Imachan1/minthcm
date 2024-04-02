@@ -42,6 +42,7 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+#[\AllowDynamicProperties]
 class AppraisalItems extends Basic {
 
    public $new_schema = true;
@@ -69,6 +70,7 @@ class AppraisalItems extends Basic {
    public $parent_name;
    public $parent_type;
    public $parent_id;
+   public $appraisal_id;
 
    public function bean_implements($interface) {
       $result = false;

@@ -53,6 +53,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
  * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\CommentRepository")
  * @ORM\Table(name="comments")
  */
+#[\AllowDynamicProperties]
 class Comment
 {
     /**

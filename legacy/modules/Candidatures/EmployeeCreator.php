@@ -45,6 +45,7 @@
 
 SugarAutoLoader::requireWithCustom('CompetencyRatingCreator.php');
 
+#[\AllowDynamicProperties]
 class EmployeeCreator
 {
 
@@ -134,7 +135,7 @@ class EmployeeCreator
             $related_employee_bean->status = 'Inactive';
         }
         $related_employee_bean->position_id = $this->position_bean->id;
-        $employee_bean->skip_vt_validation = true;
+        $related_employee_bean->skip_vt_validation = true;
         $related_employee_bean->save();
 
         return $related_employee_bean;

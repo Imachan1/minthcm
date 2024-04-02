@@ -40,6 +40,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 require_once ('include/Dashlets/DashletGeneric.php');
 require_once ('modules/WorkSchedules/WorkSchedules.php');
 
+#[\AllowDynamicProperties]
 class WorkSchedulesDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {

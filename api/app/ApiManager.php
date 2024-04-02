@@ -53,6 +53,7 @@ use MintHCM\Api\Middlewares\Parsers\JsonBodyParserMiddleware;
 use MintHCM\Api\Routes\RouteManager;
 use MintHCM\Utils\CustomLoader;
 
+#[\AllowDynamicProperties]
 class ApiManager
 {
     protected static $_instance;

@@ -45,6 +45,7 @@
 
 require_once 'modules/PDFGenerator/lib/BasePDFGenerator.php';
 
+#[\AllowDynamicProperties]
 class PDF extends BasePDFGenerator
 {
 

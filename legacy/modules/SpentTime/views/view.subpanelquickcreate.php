@@ -50,6 +50,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 
 require_once('include/EditView/SubpanelQuickCreate.php');
 
+#[\AllowDynamicProperties]
 class SpentTimeSubpanelQuickCreate extends SubpanelQuickCreate {
 
    protected $user;

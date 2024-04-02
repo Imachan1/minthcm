@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class ForceDashboardRelationships {
 
    public function clearUserRelationshipsWithDM($bean, $event_name, $arguments) {

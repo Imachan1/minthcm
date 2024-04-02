@@ -52,6 +52,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Psr7\Response;
 
+#[\AllowDynamicProperties]
 class AuthController
 {
     protected $entityManager;

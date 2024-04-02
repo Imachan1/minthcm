@@ -48,6 +48,7 @@ namespace MintHCM\Data;
 
 require_once '../legacy/data/SugarBean.php';
 
+#[\AllowDynamicProperties]
 class MintBean
 {
     protected static $static_legacy_bean;

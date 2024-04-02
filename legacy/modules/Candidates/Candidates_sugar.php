@@ -61,6 +61,7 @@
  */
 require_once 'include/SugarObjects/templates/person/Person.php';
 
+#[\AllowDynamicProperties]
 class Candidates_sugar extends Person {
 
    public $new_schema = true;

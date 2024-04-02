@@ -49,6 +49,7 @@ namespace MintHCM\Api\Middlewares\Params;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
 
+#[\AllowDynamicProperties]
 abstract class ParamType
 {
     public function __invoke(Request $request, $value, $required = false)

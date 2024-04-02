@@ -3,6 +3,7 @@
 use SuiteCRM\Search\SearchQuery;
 use SuiteCRM\Search\SearchWrapper;
 
+#[\AllowDynamicProperties]
 class ESListViewGetRecords {
 
     protected $metadata;

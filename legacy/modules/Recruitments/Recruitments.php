@@ -47,6 +47,7 @@
 require_once 'modules/Recruitments/Recruitments_sugar.php';
 require_once 'modules/Recruitments/SugarFeeds/RecruitmentsFeed.php';
 
+#[\AllowDynamicProperties]
 class Recruitments extends Recruitments_sugar {
 
    public $counted = false;

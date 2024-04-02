@@ -50,6 +50,7 @@ use MintHCM\Api\Entities\UserPreferences;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+#[\AllowDynamicProperties]
 class UserPreferencesRepository extends EntityRepository
 {
     public function findAllUndeletedByUserId($user_id): array

@@ -46,6 +46,7 @@
 
 require_once('include/EditView/SubpanelQuickCreate.php');
 
+#[\AllowDynamicProperties]
 class CostsSubpanelQuickCreate extends SubpanelQuickCreate {
 
    public function process($module) {

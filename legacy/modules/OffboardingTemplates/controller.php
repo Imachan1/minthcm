@@ -42,6 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 require_once 'modules/OnboardingTemplates/controller.php';
+#[\AllowDynamicProperties]
 class OffboardingTemplatesController extends OnboardingTemplatesController
 {
     const TEMPLATE = 'OffboardingTemplates';

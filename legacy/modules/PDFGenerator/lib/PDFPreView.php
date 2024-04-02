@@ -46,6 +46,7 @@
 
 require_once('modules/PDFGenerator/lib/BasePDFGenerator.php');
 
+#[\AllowDynamicProperties]
 class PDFPreView extends BasePDFGenerator {
     
     
@@ -76,7 +77,7 @@ class PDFPreView extends BasePDFGenerator {
 
         $this->Output(array('FAKE_ID'));
     }
-    protected function getBean($module, $id) {
+    protected function getBean($module, $id, $parent_bean = null) {
         return $this->prepareDemoData($module);
     }
     protected function getNewBlockForBlockLink($block, $parent_bean, $relation_field_name, $depth, $block_after) {
@@ -218,7 +219,7 @@ class PDFPreView extends BasePDFGenerator {
             $taxRates = $field_name['function']['name']();
             $return = key(array_slice($taxRates, rand(0, count($taxRates)), 1));
         } else if (isset($field_name['options']) && isset($app_list_strings[$field_name['options']])) {
-            $list_count = count($app_list_strings[$field_name['options']]);
+            $list_count = is_countable($app_list_strings[$field_name['options']]) ? count($app_list_strings[$field_name['options']]) : 0;
             $loop = 0;
             foreach ((array) $app_list_strings[$field_name['options']] as $list_key => $list_value) {
                 if ($list_count > 1 && $loop == 1) {

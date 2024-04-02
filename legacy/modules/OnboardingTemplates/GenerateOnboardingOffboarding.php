@@ -47,6 +47,7 @@ if (!defined('sugarEntry')) {
 
 SugarAutoLoader::requireWithCustom('include/Notifications/Notification.php');
 
+#[\AllowDynamicProperties]
 class GenerateOnboardingOffboarding
 {
     protected $module_name;

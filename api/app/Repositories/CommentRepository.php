@@ -48,6 +48,7 @@ namespace MintHCM\Api\Repositories;
 
 use Doctrine\ORM\EntityRepository;
 
+#[\AllowDynamicProperties]
 class CommentRepository extends EntityRepository
 {
     public function get($parent_type, $parent_id)

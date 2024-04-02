@@ -44,6 +44,7 @@
  */
 require_once('modules/Goals/SugarFeeds/GoalsFeed.php');
 
+#[\AllowDynamicProperties]
 class Goals extends Basic {
 
    public $new_schema = true;

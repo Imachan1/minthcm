@@ -45,6 +45,7 @@
 
 require_once 'modules/OnboardingTemplates/OnboardingTemplates.php';
 
+#[\AllowDynamicProperties]
 class OffboardingTemplates extends OnboardingTemplates
 {
 

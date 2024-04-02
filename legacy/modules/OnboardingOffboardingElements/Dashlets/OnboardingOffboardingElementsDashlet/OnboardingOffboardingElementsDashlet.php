@@ -48,6 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once 'include/Dashlets/DashletGeneric.php';
 require_once 'modules/OnboardingOffboardingElements/OnboardingOffboardingElements.php';
 
+#[\AllowDynamicProperties]
 class OnboardingOffboardingElementsDashlet extends DashletGeneric
 {
 

@@ -53,6 +53,7 @@ use MintHCM\Lib\Search\ElasticSearch\Operators\MatchOperator;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Range;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Wildcard;
 
+#[\AllowDynamicProperties]
 class ElasticQueryOperatorsManager
 {
     const OPERATORS_MAPPER = array(

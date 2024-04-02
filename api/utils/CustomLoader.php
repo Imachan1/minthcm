@@ -46,6 +46,7 @@
 
 namespace MintHCM\Utils;
 
+#[\AllowDynamicProperties]
 class CustomLoader
 {
     public static function getObject($class, ...$args)

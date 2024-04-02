@@ -56,7 +56,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * @author SalesAgility
  */
-
+#[\AllowDynamicProperties]
 class StateSaverException extends Exception
 {
 }

@@ -45,6 +45,7 @@
 
 SugarAutoLoader::requireWithCustom('modules/Candidatures/CandidatureConverter.php');
 
+#[\AllowDynamicProperties]
 class CandidaturesController extends SugarController
 {
 

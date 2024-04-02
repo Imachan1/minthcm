@@ -47,6 +47,8 @@
 namespace MintHCM\Api\Controllers;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Slim\Exception\HttpBadRequestException;
+use Slim\Exception\HttpInternalServerErrorException;
 use Slim\Psr7\Response;
 use MintHCM\Lib\Search\Search;
 use MintHCM\Utils\LegacyConnector;
@@ -55,6 +57,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use SuiteCRM\Search\SearchQuery;
 use SuiteCRM\Search\SearchWrapper;
 
+#[\AllowDynamicProperties]
 class GlobalSearchController
 {
     protected $entityManager;

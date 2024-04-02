@@ -48,6 +48,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
    die('Not A Valid Entry Point');
 }
 
+#[\AllowDynamicProperties]
 class ReservationsController extends SugarController {
 
    protected function post_save() {

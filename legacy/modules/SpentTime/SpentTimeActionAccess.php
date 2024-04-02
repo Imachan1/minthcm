@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class SpentTimeActionAccess {
     const ALLOWED_TIME = '11';
    protected $bean;
@@ -80,7 +81,7 @@ class SpentTimeActionAccess {
                $return = $result && $acl;
             } else if ( $this->actions[$action_name]['conditions'] == "AND" ) {
                $result = $this->conditionsAND($this->actions[$action_name]['methods']);
-               $return = (count($this->errors) > 0 || !$result) ? false : true;
+               $return = (is_countable($this->errors) ? count($this->errors) > 0 : 0 || !$result) ? false : true;
             }
          }
       }

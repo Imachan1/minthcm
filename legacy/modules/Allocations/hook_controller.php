@@ -43,6 +43,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class AllocationsLogicHooks
 {
     public function before_relationship_add($bean, $event, $arguments)

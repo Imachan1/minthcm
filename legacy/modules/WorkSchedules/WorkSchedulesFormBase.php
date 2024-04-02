@@ -50,6 +50,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 
 require_once('include/SugarObjects/forms/FormBase.php');
 
+#[\AllowDynamicProperties]
 class WorkSchedulesFormBase extends FormBase {
 
    protected static function updateFields(SugarBean $bean, $fields = array(), $prefix = '') {

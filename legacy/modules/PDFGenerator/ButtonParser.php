@@ -50,6 +50,7 @@
  * and open the template in the editor.
  */
 
+#[\AllowDynamicProperties]
 class ButtonParser {
 
    /**
@@ -163,7 +164,8 @@ class ButtonParser {
    protected function checkIfLinkExist($defs_links) {
       $button_exist = false;
       if ( is_array($defs_links) ) {
-         for ( $i = 0; $i < count($defs_links); $i++ ) {
+         $count = is_countable($defs_links) ? count($defs_links) : 0;
+         for ( $i = 0; $i < $count; $i++ ) {
             if ( preg_match('/id="pdf_generator"/', $defs_links[$i]) ) {
                $button_exist = true;
                break;
@@ -265,7 +267,8 @@ class ButtonParser {
    }
 
    protected function checkfExistOpenPdfJsInIncludes($defs, $change) {
-      for ( $i = 0; $i < count($defs['includes']); $i++ ) {
+      $count = is_countable($defs['includes']) ? count($defs['includes']) : 0;
+      for ( $i = 0; $i < $count; $i++ ) {
          if ( PDFTEMPLATES_PATH_OPENPDF_JS == $defs['includes'][$i]['file'] ) {
             unset($defs['includes'][$i]);
             $change = true;
@@ -277,7 +280,8 @@ class ButtonParser {
 
    protected function checkIfLinkExistForRemove($defs, $change, $module) {
       if ( is_array($defs['form']['links']) ) {
-         for ( $i = 0; $i < count($defs['form']['links']); $i++ ) {
+         $count = is_countable($defs['form']['links']) ? count($defs['form']['links']) : 0;
+         for ( $i = 0; $i < $count; $i++ ) {
             if ( preg_match('/id="pdf_generator"/', $defs['form']['links'][$i]) ) {
                $change = true;
                unset($defs['form']['links'][$i]);
@@ -294,7 +298,8 @@ class ButtonParser {
    }
 
    protected function findIfExistButtonToUnset($defs, $change) {
-      for ( $i = 0; $i < count($defs['form']['buttons']); $i++ ) {
+      $count = is_countable($defs['form']['buttons']) ? count($defs['form']['buttons']) : 0;
+      for ( $i = 0; $i < $count; $i++ ) {
          $button = $defs['form']['buttons'][$i];
          list($change, $defs) = $this->fixButtonDelInDetailView($button, $i, $defs, $change);
          if ( $change ) {

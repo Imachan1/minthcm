@@ -46,6 +46,7 @@
 
 require_once('modules/Improvements/SugarFeeds/ImprovementsFeed.php');
 
+#[\AllowDynamicProperties]
 class Improvements extends Basic {
 
    public $new_schema = true;

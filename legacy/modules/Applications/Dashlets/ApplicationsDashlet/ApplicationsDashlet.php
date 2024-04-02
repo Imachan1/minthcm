@@ -60,12 +60,13 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/Applications/Applications.php');
 
+#[\AllowDynamicProperties]
 class ApplicationsDashlet extends DashletGeneric {
 
    function ApplicationsDashlet($id, $def = null) {
       require('modules/Applications/metadata/dashletviewdefs.php');
 
-      parent::DashletGeneric($id, $def);
+      parent::__construct($id, $def);
 
       if ( empty($def['title']) )
          $this->title = translate('LBL_HOMEPAGE_TITLE', 'Applications');

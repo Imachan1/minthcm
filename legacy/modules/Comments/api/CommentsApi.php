@@ -47,6 +47,7 @@
 // SugarAutoLoader::requireWithCustom('include/SugarQueue/SugarJobQueue.php');
 SugarAutoLoader::requireWithCustom('modules/Comments/RelatedComments.php');
 
+#[\AllowDynamicProperties]
 class CommentsApi
 {
 

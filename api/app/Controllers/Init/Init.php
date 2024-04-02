@@ -54,6 +54,7 @@ use MintHCM\Api\Controllers\Init\Languages;
 use MintHCM\Api\Controllers\Init\Preferences;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
+#[\AllowDynamicProperties]
 class Init
 {
     protected $preferences_controller, $languages_controller, $module_init_controller;

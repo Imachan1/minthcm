@@ -48,6 +48,7 @@ namespace MintHCM\Api\Repositories;
 
 use Doctrine\ORM\EntityRepository;
 
+#[\AllowDynamicProperties]
 class ReactionRepository extends EntityRepository
 {
     public function getUserReactionId($parent_type, $parent_id, $user_id)

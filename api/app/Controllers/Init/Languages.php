@@ -49,6 +49,7 @@ namespace MintHCM\Api\Controllers\Init;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 
+#[\AllowDynamicProperties]
 class Languages
 {
 

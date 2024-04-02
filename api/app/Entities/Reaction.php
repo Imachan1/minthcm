@@ -53,6 +53,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
  * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\ReactionRepository")
  * @ORM\Table(name="reactions")
  */
+#[\AllowDynamicProperties]
 class Reaction
 {
     /**

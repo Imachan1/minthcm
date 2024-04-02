@@ -60,6 +60,7 @@
  * PLEASE DO NOT CHANGE THIS CLASS
  * PLACE ANY CUSTOMIZATIONS IN Positions
  */
+#[\AllowDynamicProperties]
 class Positions_sugar extends Basic {
 
    public $new_schema = true;

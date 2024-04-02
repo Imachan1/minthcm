@@ -55,6 +55,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * @author SalesAgility
  */
+#[\AllowDynamicProperties]
 class StateCheckerException extends Exception
 {
 }

@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class AllocationsApi {
 
    public function checkWorkplacePeriods($id, $workplace_id, $mode, $date_from, $date_to) {

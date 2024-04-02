@@ -47,6 +47,7 @@ require_once 'include/CalendarActivities/CalendarActivities.php';
 require_once 'include/DateFunctions/DateFormatter.php';
 require_once 'modules/WorkSchedules/AcceptWorkScheduleValidator.php';
 
+#[\AllowDynamicProperties]
 class WorkSchedules extends Basic
 {
 
@@ -207,8 +208,6 @@ class WorkSchedules extends Basic
         if ($parent_result) {
             if (isset($_REQUEST['return_module']) && ($_REQUEST['return_module'] == 'Calendar' || $_REQUEST['return_module'] == 'Home')) {
                 header("Location: index.php?module={$_REQUEST['return_module']}&action=index");
-            } else if ($redirect) {
-                handleRedirect($return_id, 'Calls');
             }
         }
         return $parent_result;
@@ -346,7 +345,9 @@ class WorkSchedules extends Basic
                 CalendarUtils::markRepeatDeleted($this);
             }
 
-            if (count($repeatArr) < $limit && isset($repeatArr) && is_array($repeatArr) && count($repeatArr) > 0) {
+            $repeat_arr_count = is_countable($repeatArr) ? count($repeatArr) : 0;
+
+            if ($repeat_arr_count < $limit && isset($repeatArr) && is_array($repeatArr) && $repeat_arr_count > 0) {
                 CalendarUtils::save_repeat_activities($this, $repeatArr);
             }
         }

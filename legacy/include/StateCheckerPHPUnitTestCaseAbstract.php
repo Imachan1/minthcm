@@ -56,6 +56,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * @author SalesAgility
  */
+#[\AllowDynamicProperties]
 abstract class StateCheckerPHPUnitTestCaseAbstract extends PHPUnit_Framework_TestCase
 {
     use StateCheckerTrait;

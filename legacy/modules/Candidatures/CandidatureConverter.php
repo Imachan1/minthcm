@@ -48,6 +48,7 @@ SugarAutoLoader::requireWithCustom('modules/Candidatures/EmployeeCreator.php');
 SugarAutoLoader::requireWithCustom('modules/Candidatures/AppraisalsLoader.php');
 SugarAutoLoader::requireWithCustom('modules/Candidatures/CertificatesUpdater.php');
 
+#[\AllowDynamicProperties]
 class CandidatureConverter
 {
 

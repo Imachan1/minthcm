@@ -55,6 +55,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
  *   @ORM\Index(name="idx_userprefnamecat", columns={"assigned_user_id", "category"})
  * })
  */
+#[\AllowDynamicProperties]
 class UserPreferences
 {
     /**

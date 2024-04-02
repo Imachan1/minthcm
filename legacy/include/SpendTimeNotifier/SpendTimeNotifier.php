@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class SpendTimeNotifier
 {
     protected $db;
@@ -92,7 +93,7 @@ class SpendTimeNotifier
     {
         $this->findInvalidSpendTimes();
 
-        if (count($this->spent_times_ids) > 0) {
+        if (is_countable($this->spent_times_ids) ? count($this->spent_times_ids) > 0 : 0) {
             $body = $this->buildBody();
             $this->sendReport($body);
         }

@@ -60,6 +60,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/Recruitments/Recruitments.php');
 
+#[\AllowDynamicProperties]
 class RecruitmentsDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {

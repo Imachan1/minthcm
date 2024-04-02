@@ -48,6 +48,7 @@ namespace MintHCM\Lib\Search\ElasticSearch;
 
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 
+#[\AllowDynamicProperties]
 abstract class ElasticOperator
 {
     protected $field, $value, $not, $boost;

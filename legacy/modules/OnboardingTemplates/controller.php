@@ -42,6 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class OnboardingTemplatesController extends SugarController
 {
     const TEMPLATE = 'OnboardingTemplates';

@@ -51,6 +51,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/Appraisals/Appraisals.php');
 
+#[\AllowDynamicProperties]
 class AppraisalsDashlet extends DashletGeneric {
 
    public function __construct($id, $def = null) {

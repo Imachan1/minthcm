@@ -57,6 +57,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * @author SalesAgility
  */
+#[\AllowDynamicProperties]
 class StateSaver
 {
     const UNDEFINED = '__reserved_value_of_undefined__';

@@ -58,6 +58,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * @author SalesAgility
  */
+#[\AllowDynamicProperties]
 abstract class StateCheckerUnitAbstract extends Unit
 {
     use StateCheckerTrait;

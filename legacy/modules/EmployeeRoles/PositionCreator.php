@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class PositionCreator {
 
    const POSITIONS_MODULE_NAME = "Positions";

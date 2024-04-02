@@ -44,6 +44,7 @@
  */
 require_once('modules/Onboardings/Onboardings.php');
 
+#[\AllowDynamicProperties]
 class Offboardings extends Onboardings {
 
    public $module_dir = 'Offboardings';

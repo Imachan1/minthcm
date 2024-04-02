@@ -52,6 +52,7 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Psr7\Response;
 
+#[\AllowDynamicProperties]
 class AuthMiddleware extends Middleware
 {
     public function __invoke(Request $request, RequestHandler $handler): Response

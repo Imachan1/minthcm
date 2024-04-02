@@ -2,6 +2,7 @@
 
 namespace MintHCM\MintCLI\Services;
 
+#[\AllowDynamicProperties]
 class ElasticsearchService
 {
     public function testConnection(string $host, string $port, ?string $username, ?string $password)

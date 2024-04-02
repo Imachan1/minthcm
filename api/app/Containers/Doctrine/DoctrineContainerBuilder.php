@@ -59,6 +59,7 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
+#[\AllowDynamicProperties]
 class DoctrineContainerBuilder extends ContainerBuilder
 {
     public function __construct()

@@ -46,6 +46,7 @@
 
 SugarAutoLoader::requireWithCustom('modules/EmployeeRoles/PositionCreator.php');
 
+#[\AllowDynamicProperties]
 class EmployeeRolesController extends SugarController {
 
    function action_createPosition() {

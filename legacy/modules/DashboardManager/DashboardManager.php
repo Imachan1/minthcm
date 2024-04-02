@@ -45,6 +45,7 @@
 
 require_once 'modules/DashboardManager/src/DashboardDeployer.php';
 
+#[\AllowDynamicProperties]
 class DashboardManager extends Basic
 {
 

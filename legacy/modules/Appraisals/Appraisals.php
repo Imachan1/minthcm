@@ -47,6 +47,7 @@ require_once 'modules/AppraisalItems/AppraisalItems.php';
 require_once 'modules/Appraisals/SugarFeeds/AppraisalsFeed.php';
 require_once 'modules/Appraisals/AppraisalTokenController.php';
 
+#[\AllowDynamicProperties]
 class Appraisals extends Basic
 {
 
@@ -71,6 +72,7 @@ class Appraisals extends Basic
     public $assigned_user_name;
     public $assigned_user_link;
     public $SecurityGroups;
+    public $evaluator_id;
 
     public function bean_implements($interface)
     {

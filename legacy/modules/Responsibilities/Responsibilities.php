@@ -46,6 +46,7 @@
 
 require_once('modules/Responsibilities/SugarFeeds/ResponsibilitiesFeed.php');
 
+#[\AllowDynamicProperties]
 class Responsibilities extends Basic {
 
    public $new_schema = true;

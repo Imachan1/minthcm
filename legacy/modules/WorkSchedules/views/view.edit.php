@@ -50,6 +50,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 
 require_once('include/MVC/View/views/view.edit.php');
 
+#[\AllowDynamicProperties]
 class WorkSchedulesViewEdit extends ViewEdit {
 
    private function assignStrings() {

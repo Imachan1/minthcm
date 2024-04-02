@@ -55,6 +55,7 @@ use Slim\Exception\HttpInternalServerErrorException;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
 
+#[\AllowDynamicProperties]
 class ListController
 {
     private $request, $params, $search_result, $list_response;

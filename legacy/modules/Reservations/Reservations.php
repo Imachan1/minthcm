@@ -46,6 +46,7 @@
 
 require_once 'modules/Reservations/SugarFeeds/ReservationsFeed.php';
 
+#[\AllowDynamicProperties]
 class Reservations extends Basic {
 
    public $new_schema = true;

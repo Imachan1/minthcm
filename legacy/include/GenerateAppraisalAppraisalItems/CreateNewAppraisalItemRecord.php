@@ -44,12 +44,15 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties] 
 class CreateNewAppraisalItemRecord {
 
-   public $transformed_module_name = '';
    protected static $EMPLOYEES_MODULE_NAME = 'Employees';
    protected static $CANDIDATURES_MODULE_NAME = 'Candidatures';
    protected static $POSITIONS_MODULE_NAME = 'Positions';
+
+   public function __construct(public $transformed_module_name = '')
+   {}
 
    public function newAppraisalItem($transformed_record_bean, $appraisal_bean) {
       $this->transformed_module_name = $transformed_record_bean->module_name;

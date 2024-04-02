@@ -72,6 +72,7 @@ include_once __DIR__ . '/StateCheckerDirectoryIterator.php';
  *
  * @author SalesAgility
  */
+#[\AllowDynamicProperties]
 class StateChecker
 {
 

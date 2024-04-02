@@ -46,6 +46,7 @@
 
 SugarAutoLoader::requireWithCustom('SetAppraisalRelatedModulesRelations.php');
 
+#[\AllowDynamicProperties]
 class CreateNewAppraisalRecord {
 
    public $transformed_module_name = '';

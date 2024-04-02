@@ -53,6 +53,7 @@ use Slim\Exception\HttpBadRequestException;
 use MintHCM\Api\Controllers\Init\Preferences;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
+#[\AllowDynamicProperties]
 class Module
 {
     protected $preferences_controller, $sugar_view, $modules_icons, $action_icons;

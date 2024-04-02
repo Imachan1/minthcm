@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+ #[\AllowDynamicProperties]
 class RoomsApi {
    public function canSelectSecurityGroup($security_group_id) {
       $group = BeanFactory::getBean('SecurityGroups',$security_group_id);

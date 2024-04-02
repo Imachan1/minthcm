@@ -45,6 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+#[\AllowDynamicProperties]
 class KanbanViewSmarty
 {
     public $columns;
@@ -54,6 +55,7 @@ class KanbanViewSmarty
     public $moduleString;
     public $seed;
     public $templateMeta = array();
+    public $displayColumns;
 
     /**
      * Constructor, Smarty object immediately available after

@@ -43,6 +43,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 
 require_once('include/MVC/View/views/view.detail.php');
 
+#[\AllowDynamicProperties]
 class NewsViewDetail extends ViewDetail {
 
    public function display() {

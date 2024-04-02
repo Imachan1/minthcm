@@ -353,7 +353,7 @@ function currency_format_number($amount, $params = array()) {
  *        String  $params['type'] - pass in 'pdf' for pdf currency symbol conversion
  *        String  $params['currency_id'] - currency_id to retreive, defaults to current user
  *        String  $params['human'] - formatting that truncates the first thousands and appends "k"
- * @return String formatted currency value
+ * @return string formatted currency value
  * @see include/Localization/Localization.php
  */
 function format_number($amount, $round = null, $decimals = null, $params = array()) {
