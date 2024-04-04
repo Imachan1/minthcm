@@ -106,13 +106,12 @@ class SugarWidgetSubPanelTopComposeEmailButton extends SugarWidgetSubPanelTopBut
 
             $emailUI = new EmailUI();
             $emailUI->appendTick = false;
-            $button = '<a class="email-link" onclick="$(document).openComposeViewModal(this);" data-module="'
+            $button = '<input type="button" class="button" onclick="$(document).openComposeViewModal(this);" data-module="'
             . $bean->module_name . '" data-record-id="'
             . $bean->id . '" data-module-name="'
-            . $bean->name .'" data-email-address="'
-            . $bean->email1 .'">'
-            . $app_strings['LBL_COMPOSE_EMAIL_BUTTON_LABEL']
-            . '</a>';
+            . $bean->name .'" data-email-address="' . $bean->email1 . '"'
+            . ' value="' . $app_strings['LBL_COMPOSE_EMAIL_BUTTON_LABEL'] . '"'
+            . ' />';
         }
 
         return $button;
@@ -131,10 +130,6 @@ class SugarWidgetSubPanelTopComposeEmailButton extends SugarWidgetSubPanelTopBut
 
         global $current_user;
         $client = $current_user->getEmailClient();
-
-        if ($client == 'sugar') {
-            $button .= "<input class='button' onclick='return false;' type='button' id='$inputID' value='$this->form_value'>";
-        }
 
         return $button;
     }

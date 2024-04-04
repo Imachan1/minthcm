@@ -4901,3 +4901,27 @@ $app_list_strings['applications_status_list_colored'] = array(
 );
 
 // ColoredEnum Lists END
+
+$app_list_strings['source_list'] = array(
+    '' => '',
+    'Base' => 'Database of Candidates',
+    'CareersLibrary' => 'Career\'s Office',
+    'CodersLab' => 'CodersLab',
+    'EmployeeCommendation' => 'Employee Recommendation',
+    'GrowthPoland' => 'Growth Poland',
+    'Indeed' => 'Indeed',
+    'Jooble' => 'Jooble',
+    'LoboHR' => 'Lobo HR',
+    'Milado' => 'Milado',
+    'Pracapl' => 'Praca.pl',
+    'Pracujpl' => 'Pracuj.pl',
+    'Website' => 'Website',
+    'facebook' => 'Facebook',
+    'goldenline' => 'GoldenLine',
+    'justjoin.it' => 'justjoin.it',
+    'linkedin' => 'LinkedIn',
+    'nofluffjobs' => 'No Fluff Jobs',
+    'not_applicable' => 'Not Applicable',
+    'other' => 'Other',
+ );
+ 
