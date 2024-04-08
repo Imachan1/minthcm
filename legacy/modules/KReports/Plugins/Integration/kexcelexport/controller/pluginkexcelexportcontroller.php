@@ -62,6 +62,7 @@
 if ( !defined('sugarEntry') || !sugarEntry )
    die('Not A Valid Entry Point');
 
+#[\AllowDynamicProperties]
 class pluginkexcelexportcontroller {
 
    public function action_export($requestParams) {
