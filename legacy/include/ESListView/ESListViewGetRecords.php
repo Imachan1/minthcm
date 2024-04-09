@@ -35,7 +35,7 @@ class ESListViewGetRecords {
         if (strlen($options['searchPhrase'])) {
             $searchPhrase = str_replace('+', '', $options['searchPhrase']);
             $searchPhrase = strtolower($searchPhrase) . '*';
-            $options['filters']['filter'][] = ['wildcard' => ['_all' => $searchPhrase]];
+            $options['filters']['filter'][] = ['query_string' => ['query' => $searchPhrase]];
         }
         if (!empty($arguments['defaultFilters']['filter'])) {
             array_push($options['filters']['filter'], ...$arguments['defaultFilters']['filter']);
