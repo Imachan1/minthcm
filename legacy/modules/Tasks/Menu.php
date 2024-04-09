@@ -51,6 +51,6 @@ if (ACLController::checkAccess('Tasks', 'edit', true)) $module_menu[] = array("i
 if (ACLController::checkAccess('Tasks', 'list', true)) $module_menu[] = array("index.php?module=Tasks&action=index&return_module=Tasks&return_action=DetailView", $mod_strings['LNK_TASK_LIST'], "List");
 if (ACLController::checkAccess('Tasks', 'import', true)) $module_menu[] = array("index.php?module=Import&action=Step1&import_module=Tasks&return_module=Tasks&return_action=index", $mod_strings['LNK_IMPORT_TASKS'], "Import", 'Contacts');
 if (ACLController::checkAccess('Tasks', 'list', true)) {
-    $module_menu[] = array('index.php?module=Tasks&action=kanban&return_module=Tasks&return_action=DetailView', $app_strings['LNK_KANBAN'], 'View', 'Tasks');
+    $module_menu[] = array('index.php?module=Tasks&action=kanban&return_module=Tasks&return_action=DetailView', $app_strings['LNK_KANBAN'], 'Kanban', 'Tasks');
 }
 
