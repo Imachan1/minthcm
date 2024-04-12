@@ -2453,7 +2453,10 @@ EOQ;
     {
         // MintHCM #123323 START
         global $current_user;
-        if(in_array($this->ACLNormalizeViewContext($view), ['edit', 'delete', 'list', 'view']) && !$current_user->isAdmin()){
+        if(in_array($this->ACLNormalizeViewContext($view), ['delete']) && !$current_user->isAdmin()){
+            return false;
+        }
+        if(!empty($this->id) && in_array($this->ACLNormalizeViewContext($view), ['edit']) && !($current_user->isAdmin() || $this->id == $current_user->id)){
             return false;
         }
         // MintHCM #123323 END
