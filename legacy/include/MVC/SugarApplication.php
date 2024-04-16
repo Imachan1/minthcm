@@ -674,7 +674,7 @@ class SugarApplication
                     echo <<<EOF
                     <script type="text/javascript">
                         let url = location.origin + location.pathname.replace('index.php', '')
-                        if (!url.includes('#')){
+                        if (!url.includes('#') && !url.includes('legacy')){
                             url += '#/'
                         }
                         url += '$url'
