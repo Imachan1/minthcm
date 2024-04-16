@@ -1281,7 +1281,8 @@ p.error {
 .error {
   border: none;
   color: $alert-danger-text-color;
-  background: $error-background-color;
+  background: transparent;
+  font-weight: bold;
 }
 
 .error:empty {
