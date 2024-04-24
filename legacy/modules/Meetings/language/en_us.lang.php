@@ -175,9 +175,11 @@ $mod_strings = array(
    'LBL_APPRAISALS' => 'Appraisals',
    'LBL_CONCLUSIONS' => 'Conclusions',
    'LBL_RESERVATIONS' => 'Reservations',
+   'LBL_RESERVATIONS_MEETINGS' => 'Reservations',
    'LBL_RESOURCES' => 'Resources',
    'LBL_ADD_INVITEE' => 'Add Invitees/Resources',
    'LBL_FIRST_NAME' => 'First Name/Resource Name',
    'LBL_LIST_TITLE' => 'Meeting',
    'LBL_MEETING' => 'Meeting',
+   'LNK_NEW_RECORD' => 'Create Meeting',  // MintHCM
 );
