@@ -7,6 +7,7 @@
         :loading="store.isLoading || store.initialLoading"
         fixed-header
         must-sort
+        :height="store.mode === 'relate' ? 'calc(100vh - 400px)' : null"
         :show-select="store.itemsSelectable"
         v-model="store.selected"
         @update:options="store.options = $event"
