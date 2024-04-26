@@ -1,6 +1,6 @@
 <template>
     <div class="list-header">
-        <v-menu v-if="store.config?.config?.mass_actions?.length" offset="16">
+        <v-menu v-if="store.mode === 'list' && store.config?.config?.mass_actions?.length" offset="16">
             <template v-slot:activator="{ props, isActive }">
                 <MintButton
                     v-bind="props"
@@ -12,6 +12,13 @@
             </template>
             <MintMenuList :items="massActions" />
         </v-menu>
+        <MintButton
+            v-else-if="store.mode === 'relate' && store.itemsSelectable"
+            variant="primary"
+            :text="languages.label('LBL_SELECT_BUTTON_LABEL')"
+            @click="store.handleSelectRelate"
+            :disabled="!store.selected?.length"
+        />
         <MintButton
             variant="primary"
             icon="mdi-plus"
