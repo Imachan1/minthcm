@@ -15,12 +15,13 @@
         <MintButton
             v-else-if="store.mode === 'relate' && store.itemsSelectable"
             variant="primary"
+            icon="mdi-check"
             :text="languages.label('LBL_SELECT_BUTTON_LABEL')"
             @click="store.handleSelectRelate"
             :disabled="!store.selected?.length"
         />
         <MintButton
-            variant="primary"
+            :variant="store.mode === 'list' ? 'primary' : 'regular'"
             icon="mdi-plus"
             :text="languages.label('LBL_ESLIST_ADD_FILTER')"
             @click="store.addFilterRow"
