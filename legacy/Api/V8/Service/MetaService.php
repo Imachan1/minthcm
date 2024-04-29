@@ -283,6 +283,9 @@ class MetaService
                         unset($array[$panel][$arr_key][$k]['vname']);
                         continue;
                     }
+                    if (empty($v) && $v !== '0') {
+                        continue; // #MintHCM #131001 - empty panel name causes a fatal error
+                    }
                     if (empty($module_fields[$v['name']])) {
                         continue;
                     }
