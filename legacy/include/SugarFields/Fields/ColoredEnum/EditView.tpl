@@ -40,12 +40,12 @@
 *}
 
 {if !isset($config.enable_autocomplete) || $config.enable_autocomplete==false}
-	<select name="{{if empty($displayParams.idName)}}{{sugarvar key='name'}}{{else}}{{$displayParams.idName}}{{/if}}" 
+	<select class="vt_formulaSelector{{if $vardef.vt_enforced!='false' and $vardef.vt_calculated!=''}} vt_enforced{{/if}}" name="{{if empty($displayParams.idName)}}{{sugarvar key='name'}}{{else}}{{$displayParams.idName}}{{/if}}" 
 	id="{{if empty($displayParams.idName)}}{{sugarvar key='name'}}{{else}}{{$displayParams.idName}}{{/if}}" 
 	title='{{$vardef.help}}' {{if !empty($tabindex)}} tabindex="{{$tabindex}}" {{/if}}
     {{if !empty($displayParams.accesskey)}} accesskey='{{$displayParams.accesskey}}' {{/if}}  {{$displayParams.field}}
-	{{if isset($displayParams.javascript)}}{{$displayParams.javascript}}{{/if}}>
-
+	{{if isset($displayParams.javascript)}}{{$displayParams.javascript}}{{/if}}
+    {{include file='include/SugarFields/include/formulaInclude.tpl'}}>
 	{if isset({{sugarvar key='value' string=true}}) && {{sugarvar key='value' string=true}} != ''}
 		{html_options options={{sugarvar key='options' string=true}} selected={{sugarvar key='value' string=true}}}
 	{else}
