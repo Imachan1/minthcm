@@ -6,11 +6,11 @@ export const useUrlStore = defineStore('url', () => {
     const DEFAULT_MODULE = 'Home'
     const route = useRoute()
 
-    // tutaj nazwy 'module' 'action' czy 'record' nie zawsze odpowiadają wartością jakie mają przypisane
-    // na teraz nic nie zmieniam, ale miałem z tym problem dla dodania drugiego widoku listy
-    // bo zarówno w stałej module jak i action była przypisana nazwa modułu, a w stałej record nazwa akcji
-    // z tego co rozmawialiśmy w EWL fajnie by było zrobić to generycznie aby dało się w miarę łatwy sposób
-    // dodać kolejny widok listy. Tylko że wtedy by trzeba było jakoś dla odpowiedniego route zwracać poprawne nazwy parametrów
+    // here the names 'module' 'action' or 'record' do not always correspond to the values they are assigned
+    // for now I am not changing anything, but I had a problem with adding a second list view
+    // because both in the module constant and action constant the module name was assigned, and in the record constant the action name
+    // from what we talked about in EWL it would be nice to do it generically so that it could be done in a relatively easy way
+    // add another list view. Only then would it be necessary to somehow return the correct parameter names for the appropriate route
 
     const path = computed(() => {
         return route.path.split('/')
