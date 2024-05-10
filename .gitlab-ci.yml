@@ -8,12 +8,12 @@ AutoDeploy:
   tags:
     - docker
   only:
-    - develop
+    - mobile
   before_script:
   - eval $(ssh-agent -s)
   - ssh-add <(echo "$SSH_PRIVATE_KEY")
   script:
-    - ssh -p2271 root@10.8.0.134 "hostname && bash /var/www/develop/scripts/updateMint4_token.sh develop develop && cd /var/www/develop/legacy; sudo -u www-data php rebuildAndRepair.php"
+    - ssh -p2271 root@10.8.0.134 "hostname && bash /var/www/mint4_mobile/scripts/updateMint4_token.sh mint4_mobile mobile && cd /var/www/mint4_mobile/legacy; sudo -u www-data php rebuildAndRepair.php"
   variables:
     GIT_STRATEGY: none
 
@@ -25,7 +25,7 @@ Success Notification:
   script:
     - "curl -X POST -H 'Content-Type: application/json' --data '{\"text\":\":tak: Poprawny auto deploy dla brancha *'$CI_COMMIT_BRANCH'*\\nPipeline: '$CI_PIPELINE_URL'\"}' https://chat.evolpe.it/hooks/648af321d5a3b64cbf2842cd/ePW2g7qwYajnJjHADjkWb8aPbS69CkdWPSnyhcsysw4otSoH"
   rules:
-    - if: '$CI_COMMIT_REF_NAME == "develop"'
+    - if: '$CI_COMMIT_REF_NAME == "mobile"'
       when: on_success
   variables:
     GIT_STRATEGY: none
@@ -38,7 +38,7 @@ Failure Notification:
   script:
     - "curl -X POST -H 'Content-Type: application/json' --data '{\"text\":\":nie: :hellmo: Coś poszło nie tak w pipeline dla brancha *'$CI_COMMIT_BRANCH'*\\nPipeline: '$CI_PIPELINE_URL'\"}' https://chat.evolpe.it/hooks/648af321d5a3b64cbf2842cd/ePW2g7qwYajnJjHADjkWb8aPbS69CkdWPSnyhcsysw4otSoH"
   rules:
-    - if: '$CI_COMMIT_REF_NAME == "develop"'
+    - if: '$CI_COMMIT_REF_NAME == "mobile"'
       when: on_failure
   variables:
     GIT_STRATEGY: none
