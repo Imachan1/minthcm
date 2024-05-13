@@ -286,7 +286,7 @@ export const useListViewStore = defineStore('listview', () => {
     })
 
     const itemsSelectable = computed(() => {
-        return (
+        return !!(
             (mode.value === 'list' && config.value.config?.mass_actions?.length)
             || (mode.value === 'relate' && relatePopup.value?.data?.popupMode && relatePopup.value.data.popupMode !== 'single')
         )

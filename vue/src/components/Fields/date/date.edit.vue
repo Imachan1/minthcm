@@ -24,7 +24,6 @@
 import { ref, computed, watch } from 'vue'
 import { DateTime } from 'luxon'
 import { FieldVardef } from '@/store/modules'
-import { VDatePicker } from 'vuetify/labs/VDatePicker'
 
 interface Props {
     defs: FieldVardef
