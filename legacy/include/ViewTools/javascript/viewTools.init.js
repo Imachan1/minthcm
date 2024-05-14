@@ -108,7 +108,9 @@ viewTools.form.startViewToolsValidation = function () {
 viewTools.form.onValidationEnd = function () {
    if ( viewTools.form.error_count > 0 ) {
       viewTools.GUI.statusBox.showStatus( SUGAR.language.get( 'app_strings', 'LBL_FORM_WITH_ERRORS' ), 'error', 6000 );
-      $("#bootstrap-container .mask").remove()
+      $("#bootstrap-container .mask").remove() //CR uwaga, wydaje mi się, że w wyniku Twojej zmianny, maska nie jest usuwana
+      //CR PS może warto było by dodac nowy param do showStatus aby móc zdefiniować czy ma być maska czy nie
+      //CR a wtedy hideStatus mógłby zawsze dodatkowo ściągac maskę. 
    } else {
       viewTools.GUI.statusBox.showStatus( viewTools.language.get('app_strings', 'LBL_SAVING') + '...', 'info');
    }
