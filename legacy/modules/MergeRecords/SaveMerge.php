@@ -152,10 +152,7 @@ if (is_array($_POST['merged_ids'])) {
             if ($mergeSource->load_relationship($name)) {
                 //check to see if loaded relationship is with email address
                 $relName = $mergeSource->$name->getRelatedModuleName();
-                if (!empty($relName) && strtolower($relName) == 'emailaddresses') {
-                    //handle email address merge
-                    handleEmailMerge($focus, $name, $mergeSource->$name->get());
-                } else {
+                if (empty($relName) || strtolower($relName) != 'emailaddresses') {
                     $data = $mergeSource->$name->get();
                     if (is_array($data) && $focus->merge_bean->load_relationship($name)) {
                         foreach ($data as $related_id) {

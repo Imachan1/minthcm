@@ -218,6 +218,10 @@ foreach ( $temp_field_array as $field_array ) {
          $field_check = 'text';
       }
 
+        if ('email1' === $field_array['name']) {
+            $field_check = 'email';
+        }
+
       $xtpl->assign("EDIT_FIELD_NAME", $tempName);
       $xtpl->assign("TAB_INDEX", $field_count);
 
@@ -226,18 +230,23 @@ foreach ( $temp_field_array as $field_array ) {
          case ('varchar'):
          case ('phone'):
          case ('num'):
-         case ('email'):
          case ('custom_fields'):
          case ('url'):
          case ('int'):
          case ('float'):
          case ('double'):
          case ('currency'):
-
             $xtpl->assign("EDIT_FIELD_VALUE", $select_row_curr_field_value);
             $xtpl->assign("CELL_WIDTH", $col_width);
             $xtpl->parse("main." . $section_name . ".merge_cell_edit_text");
             break;
+            case ('email'):
+                require_once 'modules/MergeRecords/EmailAddressMergeWidget/EmailMergeViewProcessor.php';
+                $emailMergeViewProcessor = new EmailMergeViewProcessor($focus->merge_bean);
+                $xtpl->assign("EDIT_FIELD_VALUE", $emailMergeViewProcessor->getProcessedView());
+                $xtpl->assign("CELL_WIDTH", $col_width);
+                $xtpl->parse("main." . $section_name . ".merge_cell_edit_email");
+                break;
          case ('text'):
             $xtpl->assign("EDIT_FIELD_VALUE", $select_row_curr_field_value);
             $xtpl->assign("CELL_WIDTH", $col_width);
@@ -351,6 +360,20 @@ foreach ( $temp_field_array as $field_array ) {
                }
                $field_name = "main." . $section_name . ".merge_cell_field_value";
                break;
+                case ('email'):
+                    $display_value = "";
+                    $value_array = [];
+                    if ($mergeBeanArray[$id]->load_relationship('email_addresses')) {
+                        $email_addresses = $mergeBeanArray[$id]->email_addresses->getBeans();
+                        foreach ($email_addresses as $email_address) {
+                            $value_array[] = $email_address->email_address;
+                            $display_value .= $email_address->email_address . "<br>";
+                        }
+                    }
+                    $xtpl->assign("FIELD_VALUE", $display_value);
+                    $xtpl->assign("HOVER_TEXT", $mod_strings['LBL_MERGE_VALUE_OVER'] . ": " . implode(", ", $value_array));
+                    $field_name = "main." . $section_name . ".merge_cell_field_value_email";
+                    break;
             case ('relate'):
             case ('link'):
                $related_name = false;
@@ -383,7 +406,10 @@ foreach ( $temp_field_array as $field_array ) {
                 $json_data['field_value3'] = $mergeBeanArray[$id]->team_set_id;
             } elseif ('multienum' == $field_check) {
                 $json_data['field_value'] = unencodeMultienum($mergeBeanArray[$id]->$tempName);
-            } else {
+            } else if ('email' == $field_check) {
+                $json_data['field_value'] = $value_array;
+            }
+            else {
                 $json_data['field_value'] = $mergeBeanArray[$id]->$tempName;
             }
          $encoded_json_data = $json->encode($json_data);
