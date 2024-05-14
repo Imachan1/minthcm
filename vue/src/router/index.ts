@@ -42,7 +42,7 @@ router.beforeEach(async (to, from) => {
         if (backend.initData?.legacy_views?.[module]?.list) {
             return legacy_list_params;
         }
-        if(backend.initData?.legacy_views?.[module] === undefined){
+        if(backend.initData?.legacy_views?.[module]?.list === undefined){
             console.warn('Legacy views not defined for module: ' + module + ". Using legacy list view.");
             return legacy_list_params;
         }
