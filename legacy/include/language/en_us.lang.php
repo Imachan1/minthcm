@@ -538,6 +538,7 @@ $app_list_strings = array(
         'AOS_Invoices' => 'Invoice',
         'AOS_Quotes' => 'Quote',
         'AOS_Products' => 'Product',
+        'Appraisals' => 'Appraisal',
     ),
     'parent_type_display' => array(
         'Tasks' => 'Task',
