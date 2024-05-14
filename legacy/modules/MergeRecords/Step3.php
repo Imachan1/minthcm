@@ -247,7 +247,6 @@ foreach ($temp_field_array as $field_array) {
                 $xtpl->assign("CELL_WIDTH", $col_width);
                 $xtpl->parse("main." . $section_name . ".merge_cell_edit_textarea");
                 break;
-            /* MintHCM #129282 START */
             case ('enum'):
             case ('multienum'):
                 $cell_name = '.merge_cell_edit_dropdown';
@@ -260,19 +259,7 @@ foreach ($temp_field_array as $field_array) {
                 $xtpl->assign("CELL_WIDTH", $col_width);
                 $xtpl->parse("main." . $section_name . $cell_name);
                 break;
-            // case ('enum'):
-            // $xtpl->assign("SELECT_OPTIONS", get_select_options_with_id($app_list_strings[$field_array['options']], $select_row_curr_field_value));
-            // $xtpl->assign("CELL_WIDTH", $col_width);
-            // $xtpl->parse("main." . $section_name . ".merge_cell_edit_dropdown");
-            // break;
-            // case ('multienum'):
-            //     $select_row_curr_field_value = unencodeMultienum($select_row_curr_field_value);
-            //     $xtpl->assign("SELECT_OPTIONS", get_select_options_with_id($app_list_strings[$field_array['options']], $select_row_curr_field_value));
-            //     $xtpl->assign("CELL_WIDTH", $col_width);
-            //     $xtpl->parse("main." . $section_name . ".merge_cell_edit_multidropdown");
-            //     break;
             //popup fields need to be fixed.., cant automate with vardefs
-            /* MintHCM #129282 END */
             case ('relate'):
                 if (!empty($field_array['link'])) {
                     $exclude[$field_array['link']] = $field_array['link'];
@@ -349,7 +336,6 @@ foreach ($temp_field_array as $field_array) {
                     }
                     $field_name = "main." . $section_name . ".merge_cell_field_value_checkbox";
                     break;
-                /* MintHCM #129282 START */
                 case ('enum'):
                 case ('multienum'):
                     if (isset($field_array['function']) && 'getDictionary' === $field_array['function']['name']) {
@@ -369,23 +355,6 @@ foreach ($temp_field_array as $field_array) {
                     }
                     $field_name = "main." . $section_name . ".merge_cell_field_value";
                     break;
-                // case ('enum'):
-                //     if ( $mergeBeanArray[$id]->$tempName != '' and isset($field_array['options']) and isset($app_list_strings[$field_array['options']][$mergeBeanArray[$id]->$tempName]) ) {
-                //        display_field_value($app_list_strings[$field_array['options']][$mergeBeanArray[$id]->$tempName]);
-                //     } else {
-                //        display_field_value($mergeBeanArray[$id]->$tempName);
-                //     }
-                //     $field_name = "main." . $section_name . ".merge_cell_field_value";
-                //     break;
-                // case ('multienum'):
-                //     if ('' != $mergeBeanArray[$id]->$tempName and isset($field_array['options']) and isset($app_list_strings[$field_array['options']][$mergeBeanArray[$id]->$tempName])) {
-                //         display_field_value(str_replace("^", "", $app_list_strings[$field_array['options']][$mergeBeanArray[$id]->$tempName]));
-                //     } else {
-                //         display_field_value(str_replace("^", "", $mergeBeanArray[$id]->$tempName));
-                //     }
-                //     $field_name = "main." . $section_name . ".merge_cell_field_value";
-                //     break;
-                /* MintHCM #129282 END */
                 case ('relate'):
                 case ('link'):
                     $related_name = false;
@@ -587,7 +556,6 @@ function get_related_name($field_def, $id_value)
     return false;
 }
 
-/* MintHCM #129282 START */
 function get_select_options_dictionary($field_array, $select_row_curr_field_value)
 {
     global $app_list_strings;
@@ -598,4 +566,3 @@ function get_select_options_dictionary($field_array, $select_row_curr_field_valu
     }
     return $options;
 }
-/* MintHCM #129282 START */
