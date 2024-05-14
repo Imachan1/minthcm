@@ -217,7 +217,6 @@ function copy_value(json_array)
             }
         }
 	}
-    /* MintHCM #129284 START */
     else if(json_array['field_type'] == 'email'){
         let module = $("#EditView input[name='merge_module']").val();
         let widget_index = '0';
@@ -236,7 +235,6 @@ function copy_value(json_array)
             }
         });  
     }
-    /* MintHCM #129284 END */
 	else
 	{
 		target_element.value = json_array['field_value'];

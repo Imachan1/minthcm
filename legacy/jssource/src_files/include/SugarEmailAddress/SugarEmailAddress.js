@@ -287,13 +287,11 @@
           removeButton.attr( 'module', this.module );
           removeButton.click( _eaw.removeEmailAddress );
  
-         //MintHCM #129284 Start
          if(_eaw.totalEmailAddresses < 1 && $("input[name='merge_module']").length > 0){
              viewTools.form.hideRemoveButtonsEmail();
          }else{
              viewTools.form.showRemoveButtonsEmail();
          }
-         //MintHCM #129284 End
  
           // Record id
           var recordId = lineContainer.find( 'input#record-id' );
@@ -435,13 +433,11 @@
  
           _eaw.totalEmailAddresses = $( '.email-address-line-container:not(.template)' ).length;
  
-         //MintHCM #129284 Start
          if(_eaw.totalEmailAddresses < 2 && $("input[name='merge_module']").length > 0) {
              viewTools.form.hideRemoveButtonsEmail();
          } else {
              viewTools.form.showRemoveButtonsEmail();
          }
-         //MintHCM #129284 End
  
           //var primaryFound = ($('[name='+ module + '0emailAddressPrimaryFlag]:checked').length != 0);
           if ( $( '[name=' + module + id + 'emailAddressPrimaryFlag]:checked' ).length == 0 ) {
