@@ -60,6 +60,7 @@ if (!window.TWSDashlet) {
         });
         this.$planSelect.change(async function () {
             var items = [];
+            localStorage.setItem(_this.storageKeyPlanId, this.value);
             if (!this.value) {
                 _this.$content.hide();
                 localStorage.removeItem(_this.storageKeyPlanId);
@@ -343,13 +344,25 @@ if (!window.TWSDashlet) {
         this.$planSelect.append(new Option('', ''));
         let lp = 1;
         let selected = false;
+        let selectedPlanId = localStorage.getItem(this.storageKeyPlanId) ?? undefined;
         items.forEach(function (item) {
-            var n = lp + ". " + item.startTime + " - " + item.endTime + ' - ' + TWSDashlet.planStatusDom[item.status];
-            if((item.status === 'planned' || item.status === 'worked') && !selected){
+
+            let planName = lp 
+            + ". " 
+            + moment(item.startTime, "HH:mm").format(viewTools.date.getTimeFormat()) 
+            + " - "
+            + moment(item.endTime, "HH:mm").format(viewTools.date.getTimeFormat()) 
+            + ' - ' 
+            + TWSDashlet.planStatusDom[item.status];
+
+            if((item.status === 'planned' || item.status === 'worked') && !selected && selectedPlanId === undefined){
                 selected = true;
-                this.$planSelect.append(new Option(n, item.id, selected, selected));
+                this.$planSelect.append(new Option(planName, item.id, selected, selected));
+            } else if(selectedPlanId === item.id) {
+                selected = true;
+                this.$planSelect.append(new Option(planName, item.id, selected, selected));
             } else {
-                this.$planSelect.append(new Option(n, item.id));
+                this.$planSelect.append(new Option(planName, item.id));
             }
             lp++;
         }.bind(this));
