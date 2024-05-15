@@ -208,6 +208,8 @@ watch(
 )
 
 watch(activeFilter, () => {
+    store.preferences.activeFilter = activeFilter.value
+    store.savePreferences()
     filterRows.value = cloneDeep(
         store.preferences?.saved_filters?.find((f) => f.name === activeFilter.value)?.filters ?? [],
     )

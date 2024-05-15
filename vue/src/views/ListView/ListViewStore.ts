@@ -62,6 +62,7 @@ export const useListViewStore = defineStore('listview', () => {
             module: module.value,
             function_name: 'getInitialData',
         })
+        activeFilter.value = result.data?.preferences?.activeFilter
         initialLoading.value = false
         config.value = result.data?.config
         defs.value = result.data?.defs
