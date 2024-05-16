@@ -538,6 +538,7 @@ $app_list_strings = array(
         'AOS_Invoices' => 'Invoice',
         'AOS_Quotes' => 'Quote',
         'AOS_Products' => 'Product',
+        'Appraisals' => 'Appraisal',
     ),
     'parent_type_display' => array(
         'Tasks' => 'Task',
@@ -2372,6 +2373,7 @@ $app_strings = array(
     'LBL_ESLIST_NO_DATA' => 'No options available',
     'LBL_ESLIST_DATE' => 'Date',
     'LBL_ESLIST_SELECT_DATE' => 'Select',
+    'LBL_ESLIST_OVERWRITE_FILTER_CONFIRM' => 'Filter with that name already exists. Do you want to overwrite it?',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';

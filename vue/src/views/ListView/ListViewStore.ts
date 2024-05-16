@@ -53,13 +53,16 @@ export const useListViewStore = defineStore('listview', () => {
     const selected = ref([])
     const defaultAction = 'ESList'
     const defaultActionUrl = 'legacy/index.php?'
+    let requestCount = 0;
 
     async function init() {
+        requestCount = 0;
         initialLoading.value = true
         const result = await axios.post(getListActionUrl(), {
             module: module.value,
             function_name: 'getInitialData',
         })
+        activeFilter.value = result.data?.preferences?.activeFilter
         initialLoading.value = false
         config.value = result.data?.config
         defs.value = result.data?.defs
@@ -69,7 +72,8 @@ export const useListViewStore = defineStore('listview', () => {
     }
 
     async function getData() {
-        isLoading.value = true
+        requestCount++;
+        isLoading.value = requestCount > 0;
         const result = await axios.post(getListActionUrl(), {
             module: module.value,
             function_name: 'getResults',
@@ -82,7 +86,8 @@ export const useListViewStore = defineStore('listview', () => {
             sortBy: defs.value?.columns[options.value.sortBy[0]?.key]?.key,
             sortOrder: options.value.sortBy[0]?.order ?? 'asc',
         })
-        isLoading.value = false
+        requestCount--;
+        isLoading.value = requestCount > 0;
         results.value = result.data?.results
         itemsLength.value = result.data?.total
         if (options.value.page === 1) {

@@ -4,6 +4,7 @@ class CandidatesRepository
 {
     public static function getDuplicatedCandidatesEmployeesRecordsIds($bean)
     {
+        $bean->phone_number_short = substr($bean->phone_mobile, -9);
         $db = DBManagerFactory::getInstance();
         $result_employees = $db->query(static::getDuplicateQueryEmployees($bean));
         $result_candidates = $db->query(static::getDuplicateQueryCandidates($bean));
@@ -39,9 +40,21 @@ class CandidatesRepository
                                 JOIN 
                                     users ON users.id = er.bean_id
                                 WHERE 
-                                    ea.email_address = '{$bean->email1}'
-                                    AND users.phone_mobile = '{$bean->phone_mobile}'
-                                    AND users.show_on_employees = 1
+                                    users.show_on_employees = 1
+                                    AND
+                                    (
+                                        (
+                                            ea.email_address = '{$bean->email1}'
+                                            AND users.first_name = '{$bean->first_name}'
+                                            AND users.last_name = '{$bean->last_name}'
+                                        )
+                                        OR
+                                        (
+                                            SUBSTRING(users.phone_mobile, -9) = '{$bean->phone_number_short}'
+                                            AND users.first_name = '{$bean->first_name}'
+                                            AND users.last_name = '{$bean->last_name}'
+                                        )
+                                    )
         ";
         return $duplicated_employees;
     }
@@ -58,11 +71,24 @@ class CandidatesRepository
                                     users ON users.id = er.bean_id
                                 JOIN 
                                     candidates_employees ON candidates_employees.employee_id = users.id
-                                WHERE 
-                                    ea.email_address = '{$bean->email1}'
-                                    AND users.phone_mobile = '{$bean->phone_mobile}'
-                                    AND users.show_on_employees = 1
+                                WHERE
+                                    users.show_on_employees = 1
+                                    AND users.deleted = 0
                                     AND candidates_employees.candidate_id = '{$bean->id}'
+                                    AND
+                                    (
+                                        (
+                                            ea.email_address = '{$bean->email1}'
+                                            AND users.first_name = '{$bean->first_name}'
+                                            AND users.last_name = '{$bean->last_name}'
+                                        )
+                                        OR
+                                        (
+                                            SUBSTRING(users.phone_mobile, -9) = '{$bean->phone_number_short}'
+                                            AND users.first_name = '{$bean->first_name}'
+                                            AND users.last_name = '{$bean->last_name}'
+                                        )
+                                    )
                             ";
         return $candidate_employee_query;
     }
@@ -78,9 +104,22 @@ class CandidatesRepository
                                 JOIN 
                                     candidates ON candidates.id = er.bean_id
                                 WHERE 
-                                    ea.email_address = '{$bean->email1}'
-                                    AND candidates.phone_mobile = '{$bean->phone_mobile}'
-                                    AND candidates.id != '{$bean->id}'
+                                    candidates.id != '{$bean->id}'
+                                    AND candidates.deleted = 0
+                                    AND
+                                    (
+                                        (
+                                            ea.email_address = '{$bean->email1}'
+                                            AND candidates.first_name = '{$bean->first_name}'
+                                            AND candidates.last_name = '{$bean->last_name}'
+                                        )
+                                        OR
+                                        (
+                                            SUBSTRING(candidates.phone_mobile, -9) = '{$bean->phone_number_short}'
+                                            AND candidates.first_name = '{$bean->first_name}'
+                                            AND candidates.last_name = '{$bean->last_name}'
+                                        )
+                                    )
         ";
         return $duplicated_candidates;
     }

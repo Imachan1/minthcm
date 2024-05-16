@@ -277,6 +277,15 @@ $dictionary['Appraisals'] = array(
                 'include' => 'modules/AppraisalItems/LineItems/LineItems.php'
             ),
         ),
+        "notes" => array(
+            'name' => 'notes',
+            'type' => 'link',
+            'relationship' => 'appraisal_notes',
+            'source' => 'non-db',
+            'module' => 'Notes',
+            'bean_name' => 'Note',
+            'vname' => 'LBL_NOTES_TITLE',
+        ),
     ),
     'relationships' => array(
         "candidatures_appraisals" => array(
@@ -305,6 +314,17 @@ $dictionary['Appraisals'] = array(
             'rhs_table' => 'appraisals',
             'rhs_key' => 'evaluator_id',
             'relationship_type' => 'one-to-many',
+        ),
+        'appraisal_notes' => array(
+            'lhs_module' => 'Appraisals',
+            'lhs_table' => 'appraisals',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Notes',
+            'rhs_table' => 'notes',
+            'relationship_role_column_value' => 'appraisals',
+            'rhs_key' => 'parent_id',
+            'relationship_type' => 'one-to-many',
+            'relationship_role_column' => 'parent_type',
         ),
     ),
     'optimistic_locking' => true,
