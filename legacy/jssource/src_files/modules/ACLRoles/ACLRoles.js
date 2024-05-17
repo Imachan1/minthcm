@@ -61,7 +61,8 @@ var aclviewer = function () {
         ajaxStatus.showStatus(SUGAR.language.get('app_strings', 'LBL_SAVING'));
       },
       postSave: function (o) {
-        viewTools.GUI.statusBox.hideStatus()
+        viewTools.GUI.statusBox.hideStatus();
+        viewTools.GUI.mask.hide();
         SUGAR.util.globalEval(o.responseText);
         aclviewer.view(result['role_id'], result['module']);
       },
