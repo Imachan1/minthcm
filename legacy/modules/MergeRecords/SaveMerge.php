@@ -82,7 +82,7 @@ foreach ($_REQUEST['merged_ids'] as $mergeId) {
 foreach ($focus->merge_bean->column_fields as $field) {
     if (isset($_POST[$field])) {
         $value = $_POST[$field];
-        if (is_array($value) && !empty($focus->merge_bean->field_defs[$field]['isMultiSelect'])) {
+        if (is_array($value) && $focus->merge_bean->field_defs[$field]['type'] === 'multienum') {
             if (empty($value[0])) {
                 unset($value[0]);
             }
