@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2019 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -82,7 +82,7 @@ foreach ($_REQUEST['merged_ids'] as $mergeId) {
 foreach ($focus->merge_bean->column_fields as $field) {
     if (isset($_POST[$field])) {
         $value = $_POST[$field];
-        if (is_array($value) && !empty($focus->merge_bean->field_defs[$field]['isMultiSelect'])) {
+        if (is_array($value) && $focus->merge_bean->field_defs[$field]['type'] === 'multienum') {
             if (empty($value[0])) {
                 unset($value[0]);
             }
