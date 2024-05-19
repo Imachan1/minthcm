@@ -42,9 +42,18 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 require_once('include/MVC/View/SugarView.php');
+require_once '../api/vendor/autoload.php';
+
+use MintHCM\Data\MassActions\Actions as MassActions;
 
 class ViewESList extends SugarView
 {
+    const DEFAULT_MASS_ACTIONS = [
+        MassActions\Delete::class,
+        MassActions\Export::class,
+        MassActions\Merge::class,
+    ];
+
     /**
      * @var string $type
      */
@@ -132,8 +141,18 @@ class ViewESList extends SugarView
             $this->config['actions'] = $this->ESListViewDefs[$this->module]['actions'] ?? [];
         }
 
-        if (isset($this->ESListViewDefs[$this->module]['mass_actions'])) {
-            $this->config['mass_actions'] = array_values($this->ESListViewDefs[$this->module]['mass_actions']) ?? [];
+        $mass_actions = [];
+        if (isset($this->ESListViewDefs[$this->module]['massActions'])) {
+            $mass_actions = $this->ESListViewDefs[$this->module]['massActions'];
+        } else {
+            $mass_actions = self::DEFAULT_MASS_ACTIONS;
+        }
+
+        foreach ($mass_actions as $action) {
+            $mass_action = new $action($this->module, []);
+            if ($mass_action->hasAccess()) {
+                $this->config['massActions'][] = $mass_action->getFrontendData();
+            }
         }
 
         foreach ($theme as $property => $objects) {
