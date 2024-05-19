@@ -6,7 +6,6 @@ use MintHCM\Lib\Search\ElasticSearch\ElasticOperator;
 
 class Exists extends ElasticOperator
 {
-
     public function __construct(array $data)
     {
         parent::__construct($data);
