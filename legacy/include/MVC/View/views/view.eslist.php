@@ -154,12 +154,14 @@ class ViewESList extends SugarView
             $mass_actions = self::DEFAULT_MASS_ACTIONS;
         }
 
+        chdir('../api');
         foreach ($mass_actions as $action) {
             $mass_action = new $action($this->module, []);
             if ($mass_action->hasAccess()) {
                 $this->config['massActions'][] = $mass_action->getFrontendData();
             }
         }
+        chdir('../legacy');
 
         foreach ($theme as $property => $objects) {
             foreach ($objects as $object => $value) {
