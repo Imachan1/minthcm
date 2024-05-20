@@ -20,7 +20,7 @@
         </template>
         <template
             v-for="link in store.customFields.links"
-            v-slot:item.${link.nameField}="{ item }"
+            v-slot:[`item.${link.nameField}`]="{ item }"
             :key="link.nameField"
         >
             <router-link
@@ -31,13 +31,13 @@
             />
             <span v-else v-text="item[link.nameField]" />
         </template>
-        <template v-for="bool in store.customFields.booleans" v-slot:item.${bool}="{ item }" :key="bool">
+        <template v-for="bool in store.customFields.booleans" v-slot:[`item.${bool}`]="{ item }" :key="bool">
             <v-icon
                 color="secondary"
                 :icon="item[bool] && item[bool] !== '0' ? 'mdi-checkbox-marked-circle' : 'mdi-close'"
             />
         </template>
-        <template v-for="list in store.customFields.lists" v-slot:item.${list.field}="{ item }" :key="list.field">
+        <template v-for="list in store.customFields.lists" v-slot:[`item.${list.field}`]="{ item }" :key="list.field">
             <div
                 v-if="list.colors"
                 class="enum-chip"
@@ -48,17 +48,17 @@
         </template>
         <template
             v-for="multienum in store.customFields.multienums"
-            v-slot:item.${multienum.field}="{ item }"
+            v-slot:[`item.${multienum.field}`]="{ item }"
             :key="multienum.field"
         >
             <span v-text="formatMultienum(item[multienum.field], multienum.options)" />
         </template>
-        <template v-for="date in store.customFields.dates" v-slot:item.${date.field}="{ item }" :key="date.field">
+        <template v-for="date in store.customFields.dates" v-slot:[`item.${date.field}`]="{ item }" :key="date.field">
             <span v-text="item[date.field]" :style="date.style" />
         </template>
         <template
             v-for="currency in store.customFields.currencies"
-            v-slot:item.${currency}="{ item }"
+            v-slot:[`item.${currency}`]="{ item }"
             :key="currency"
         >
             <span v-text="NumberUtils.formatCurrency(item[currency], item.currency_id)" />
