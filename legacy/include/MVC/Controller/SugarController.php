@@ -1181,7 +1181,7 @@ class SugarController
         if (method_exists($object, $action)) {
             return json_encode($object->$action($_REQUEST));
         } else {
-            $action = htmlspecialchars($action);  // MintHCM #132345
+            $action = htmlspecialchars($action);
             sugar_die('Class does not have function: '.$class_name.'->'.$action);
         }
     }
@@ -1226,7 +1226,7 @@ class SugarController
             echo json_encode($object->$action($data));
             exit;
         } else {
-            $action = htmlspecialchars($action);  // MintHCM #132345
+            $action = htmlspecialchars($action);
             sugar_die('Class does not have function: '.$class_name.'->'.$action);
         }
     }
