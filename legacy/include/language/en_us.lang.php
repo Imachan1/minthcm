@@ -4903,4 +4903,23 @@ $app_list_strings['applications_status_list_colored'] = array(
     'rejected' => $red_status,
 );
 
+$app_list_strings['status_list_colored'] = array(
+    'Acceptance' => $yellow_status,
+    'AfterEntryInterview' => $yellow_status,
+    'CandidateResignation' => $red_status,
+    'EntryInterview' => $yellow_status,
+    'Hired' => $green_status,
+    'InProgress' => $yellow_status,
+    'MeetingAdditional' => $yellow_status,
+    'MeetingPrimary' => $yellow_status,
+    'Negotation' => $yellow_status,
+    'New' => $blue_status,
+    'Offer' => $yellow_status,
+    'PracticalTask' => $yellow_status,
+    'Preselection' => $yellow_status,
+    'Rejected' => $red_status,
+    'Scored' => $yellow_status,
+    'Scored2' => $yellow_status,
+);
+
 // ColoredEnum Lists END
