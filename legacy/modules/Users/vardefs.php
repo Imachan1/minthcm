@@ -1001,6 +1001,20 @@ $dictionary['User'] = array(
             'side' => 'left',
             'vname' => 'LBL_DEPUTY',
         ),
+        'birthdate' => array(
+            'name' => 'birthdate',
+            'label' => 'LBL_BIRTHDATE',
+            'vname' => 'LBL_BIRTHDATE',
+            'type' => 'date',
+            'required' => false,
+            'audited' => true,
+            'mass_update' => false,
+            'duplicate_merge' => '1',
+            'reportable' => true,
+            'importable' => true,
+            'options' => 'date_range_search_dom',
+            'enable_range_search' => '1',
+        ),
     ),
     'indices' => array(
         array(

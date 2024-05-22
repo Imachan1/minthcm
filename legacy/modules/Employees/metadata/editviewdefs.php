@@ -118,6 +118,10 @@ $viewdefs ['Employees'] = array(
                ),
             ),
             array(
+                'birthdate',
+                '',
+            ),
+            array(
                array(
                   'name' => 'position_name',
                   'customCode' => '<input type="text" name="{$fields.position_name.name}" class="sqsEnabled" tabindex="0" id="{$fields.position_name.name}" size="" value="{$fields.position_name.value}" title="" autocomplete="off" >{$REPORTS_TO_JS}<input type="hidden" name="{$fields.position_id.name}" id="{$fields.position_id.name}" value="{$fields.position_id.value}"> <span class="id-ff multiple"><button type="button" name="btn_{$fields.position_name.name}" tabindex="0" title="{$APP.LBL_SELECT_BUTTON_TITLE}" class="button firstChild" value="{$APP.LBL_SELECT_BUTTON_LABEL}" onclick=\'open_popup("{$fields.position_name.module}", 600, 400, "", true, false, {literal}{"call_back_function":"set_return","form_name":"EditView","field_to_name_array":{"id":"position_id","name":"position_name"}}{/literal}, "single", true);\'><span class="suitepicon suitepicon-action-select"></span></button><button type="button" name="btn_clr_{$fields.position_name.name}" tabindex="0" title="{$APP.LBL_CLEAR_BUTTON_TITLE}" class="button lastChild" onclick="this.form.{$fields.position_name.name}.value = \'\'; this.form.{$fields.position_id.name}.value = \'\';" value="{$APP.LBL_CLEAR_BUTTON_LABEL}"><span class="suitepicon suitepicon-action-clear"></span></button></span>',

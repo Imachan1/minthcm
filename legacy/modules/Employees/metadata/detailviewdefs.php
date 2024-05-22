@@ -173,6 +173,7 @@ $viewdefs['Employees'] = array(
                 ),
                 array(
                     'name',
+                    'birthdate',
                 ),
                 array(
                     'position_name',
