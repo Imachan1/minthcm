@@ -168,7 +168,7 @@ export const useListViewStore = defineStore('listview', () => {
             return {}
         }
         return Object.values(defs.value?.columns || {})
-            .filter((col) => col.link && !['name', 'full_name'].includes(col.name))
+            .filter((col) => col.link && (!['name', 'full_name'].includes(col.name) || mode.value === 'list'))
             .map((col) => ({
                 nameField: col.name,
                 urlField: `${col.name}_link`,
