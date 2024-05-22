@@ -4229,6 +4229,7 @@ $app_list_strings['reason_for_rejection_list'] = array(
     'unreachable' => 'Unreachable',
     'no_meeting' => 'He did not come to the meeting',
     'low_experience_skills' => 'Low experience/skills',
+    'not_enough_points' => 'Not Enough Points',
     'too_high_requirements' => 'Too high financial requirements',
     'lack_of_open_recrutation' => 'No open recruitment',
     'closed_recrutation' => 'Completed recruitment',

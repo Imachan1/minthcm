@@ -214,6 +214,7 @@ function populateFromRow(&$focus, $row)
         'messenger_type',
         'email1',
         'securitygroup_id',
+        'birthdate',
     );
 
     if (is_admin($GLOBALS['current_user'])) {

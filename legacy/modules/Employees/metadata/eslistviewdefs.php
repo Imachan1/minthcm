@@ -41,6 +41,8 @@ $ESListViewDefs['Employees'] = [
         ],
         'date_entered' => [
         ],
+        'birthdate' => [
+        ],
     ],
     'search' => [
         'first_name' => [
@@ -64,6 +66,8 @@ $ESListViewDefs['Employees'] = [
         'address_postalcode' => [
         ],
         'address_country' => [
+        ],
+        'birthdate' => [
         ],
     ],
 ];
