@@ -45,7 +45,7 @@ require_once('include/MVC/View/SugarView.php');
 
 class ViewESList extends SugarView
 {
-    /**
+        /**
      * @var string $type
      */
     public $type = 'ESList';
@@ -99,7 +99,7 @@ class ViewESList extends SugarView
 
     protected function prepareESListView()
     {
-        global $sugar_config;
+        global $sugar_config, $mint_config;
         if (!isset($this->bean->module_name)) {
             LoggerManager::getLogger()->fatal('Undefined module for eslist view');
             return false;
@@ -115,6 +115,8 @@ class ViewESList extends SugarView
         $this->eslistmap = $eslistmap;
 
         $host = $sugar_config['search']['ElasticSearch']['host'];
+        $port = $mint_config['search']['engines']['ElasticSearch'][0]['port'];
+        $host = $this->validateHostAndPort($host, $port);
         $protocol = $sugar_config['search']['ElasticSearch']['protocol']?? 'http';
         
         $es_module = $ESListViewDefs[$this->module]['es_module'] ?? $this->module;
@@ -125,6 +127,21 @@ class ViewESList extends SugarView
         }
         
         $this->mappings = array_values($mappings)[0]['mappings'];
+    }
+
+    protected function validateHostAndPort($host, $port) {
+        if (strpos($host, ':') !== false) {
+            return $host;
+        }
+
+        if (!filter_var($host, FILTER_VALIDATE_IP) && !preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $host) && preg_match("/^.{1,253}$/", $host) && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $host)) {
+            throw new Exception('Elasticsearch: Invalid host');
+        }
+    
+        if (!filter_var($port, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>65535)))) {
+            throw new Exception('Elasticsearch: Invalid port');
+        }
+        return $host . ":" . $port;
     }
 
     protected function prepareConfig()
@@ -141,7 +158,7 @@ class ViewESList extends SugarView
         if (isset($this->ESListViewDefs[$this->module]['mass_actions'])) {
             $this->config['mass_actions'] = array_values($this->ESListViewDefs[$this->module]['mass_actions']) ?? [];
         }
-
+        
         foreach ($theme as $property => $objects) {
             foreach ($objects as $object => $value) {
                 $theme[$property][$object] = $variables[$property][$value];
@@ -197,7 +214,7 @@ class ViewESList extends SugarView
             $columns[$field]['options'] = $field_defs['options'];
             $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
             $columns[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
-            $this->assignDynamicOptionsIfFunction($columns, $field, $field_defs);
+$this->assignDynamicOptionsIfFunction($columns, $field, $field_defs);
         }
         return $columns;
     }
@@ -231,12 +248,12 @@ class ViewESList extends SugarView
             $search[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field] ?? $field;
             $search[$field]['type'] = $defs['type'] ?? $field_defs['type'];
             if (!empty($search[$field]['type']) && in_array($search[$field]['type'], ['multienum', 'enum'])) {
-                $search[$field]['key'] .= '.keyword';
-            }
+                    $search[$field]['key'] .= '.keyword';
+                            }
             $search[$field]['options'] = $field_defs['options'];
             $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
             $search[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
-            $this->assignDynamicOptionsIfFunction($search, $field, $field_defs);
+$this->assignDynamicOptionsIfFunction($search, $field, $field_defs);
         }
         return $search;
     }
