@@ -108,7 +108,7 @@ class ViewESList extends SugarView
 
     protected function prepareESListView()
     {
-        global $sugar_config;
+        global $sugar_config, $mint_config;
         if (!isset($this->bean->module_name)) {
             LoggerManager::getLogger()->fatal('Undefined module for eslist view');
             return false;
@@ -124,6 +124,8 @@ class ViewESList extends SugarView
         $this->eslistmap = $eslistmap;
 
         $host = $sugar_config['search']['ElasticSearch']['host'];
+        $port = $mint_config['search']['engines']['ElasticSearch'][0]['port'];
+        $host = $this->validateHostAndPort($host, $port);
         $protocol = $sugar_config['search']['ElasticSearch']['protocol']?? 'http';
         
         $es_module = $ESListViewDefs[$this->module]['es_module'] ?? $this->module;
@@ -134,6 +136,21 @@ class ViewESList extends SugarView
         }
         
         $this->mappings = array_values($mappings)[0]['mappings'];
+    }
+
+    protected function validateHostAndPort($host, $port) {
+        if (strpos($host, ':') !== false) {
+            return $host;
+        }
+
+        if (!filter_var($host, FILTER_VALIDATE_IP) && !preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $host) && preg_match("/^.{1,253}$/", $host) && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $host)) {
+            throw new Exception('Elasticsearch: Invalid host');
+        }
+    
+        if (!filter_var($port, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>65535)))) {
+            throw new Exception('Elasticsearch: Invalid port');
+        }
+        return $host . ":" . $port;
     }
 
     protected function prepareConfig()
