@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { useBackendStore } from './backend'
 import { useUrlStore } from './url'
 import { useLanguagesStore } from './languages'
+import { useRoute } from 'vue-router'
 
 /** backend defs */
 export interface ModulesDefs {
@@ -10,6 +11,8 @@ export interface ModulesDefs {
         name: string
         icon: string
         actions: ModuleAction[]
+        vardefs: unknown
+        metadata: ModuleMetadata
         acl: { [view: string]: number }
     }
 }
@@ -23,6 +26,8 @@ export interface Module {
     label: string
     icon: string
     actions: ModuleAction[]
+    vardefs: unknown
+    metadata: ModuleMetadata
     acl: { [view: string]: number }
 }
 
@@ -31,6 +36,23 @@ export interface ModuleAction {
     url: string
     action: string
     icon: string
+}
+
+interface SubpanelColumn {
+    name: string
+    label: string
+    type: string
+    usage?: string
+}
+
+export interface ModuleMetadata {
+    Subpanels: {
+        [key: string]: {
+            properties: { [key: string]: string | number }
+            columns: null | { [key: string]: SubpanelColumn }
+        }
+    }
+    RecordView: any
 }
 
 export interface FieldVardef {
@@ -72,8 +94,13 @@ export const useModulesStore = defineStore('modules', () => {
         return modules
     })
 
-    const activeModule = computed(() => {
-        return modules.value[url.module]
+    const currentModule = computed(() => {
+        const route = useRoute()
+        const moduleName = route.params.module
+        if (moduleName && typeof moduleName === 'string') {
+            return modules.value[moduleName]
+        }
+        return null
     })
 
     const visibleModules = computed(() => {
@@ -85,6 +112,6 @@ export const useModulesStore = defineStore('modules', () => {
         modulesDefs,
         defaultIcon,
         visibleModules,
-        activeModule,
+        currentModule,
     }
 })
