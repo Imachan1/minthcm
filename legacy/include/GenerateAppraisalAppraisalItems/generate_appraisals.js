@@ -65,17 +65,13 @@ generateAppraisalDialogBox = {
        } ).done( function ( data ) {
           if ( data.indexOf( 'AppraisalJobAdded' ) != -1 ) {
              _this.showInfoPopup(LBL_SUCCESS);
-             viewTools.GUI.statusBox.showStatus( LBL_SUCCESS, 'success', 1500 );
           } else {
              _this.showInfoPopup(LBL_FAIL);
-             viewTools.GUI.statusBox.showStatus( LBL_FAIL, 'error', 1500 );
           }
        } ).fail( function () {
-          _this.showInfoPopup(LBL_FAIL);
           viewTools.GUI.statusBox.showStatus( LBL_FAIL, 'error', 1500 );
           console.log( 'There was a problem handling Ajax request' );
        } );
-       ;
     },
     getBodyOfDialog: function () {
        var recordData = this.getRecordData();
