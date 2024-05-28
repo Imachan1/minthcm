@@ -1,6 +1,6 @@
 <?php
 
-$path = "../MintHCM/";
+$path = "../legacy/";
 $directores_to_scan = ['include', 'install', 'modules'];
 function scan($source_path, $subdir, $output_dir_name)
 {
@@ -9,12 +9,12 @@ function scan($source_path, $subdir, $output_dir_name)
     if ($handle = opendir($path_wih_source)) {
 
         while (false !== ($entry = readdir($handle))) {
-            if ($entry != "." && $entry != "..") {
+            if ("." != $entry && ".." != $entry) {
                 $file_path = $path_wih_source . "/" . $entry;
                 $relative_path = $subdir . "/" . $entry;
                 if (!is_dir($file_path) && substr($entry, 0, strlen('en_us')) == 'en_us' && !is_excluded_folder($relative_path)) {
                     // echo $path_wih_source . "/" . $entry."\n";
-                    if (!is_dir($output_dir_name / $subdir)) {
+                    if (!is_dir($output_dir_name . "/" . $subdir)) {
                         if (!mkdir("$output_dir_name/$subdir", 0777, true)) {
                             // echo "Failed to create folder $output_dir_name/$subdir\n";
                         }
@@ -37,7 +37,6 @@ mkdir('output', 0777, true);
 foreach ($directores_to_scan as $subdir) {
     $files = scan($path, $subdir, 'output');
 }
-
 
 function is_excluded_folder($path)
 {

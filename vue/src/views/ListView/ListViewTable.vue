@@ -7,10 +7,17 @@
         :loading="store.isLoading || store.initialLoading"
         fixed-header
         must-sort
-        :show-select="!!store.config?.config?.mass_actions?.length"
+        :height="store.mode === 'relate' ? 'calc(100vh - 400px)' : null"
+        :show-select="store.itemsSelectable"
         v-model="store.selected"
         @update:options="store.options = $event"
+        :no-data-text="languages.label('LBL_ESLIST_NO_DATA_AVAILABLE')"
     >
+        <template v-slot:[`item.name`]="{ item }">
+            <a @click="store.handleNameClick(item.raw)" class="list-table-name-link">
+                {{ item.raw.name || item.raw.full_name }}
+            </a>
+        </template>
         <template
             v-for="link in store.customFields.links"
             v-slot:[`item.${link.nameField}`]="{ item }"
@@ -19,6 +26,7 @@
             <router-link
                 v-if="item.raw[link.urlField]"
                 :to="url.fromLegacyUrl(item.raw[link.urlField])"
+                :target="store.mode === 'relate' ? '_blank' : null"
                 v-text="item.raw[link.nameField]"
             />
             <span v-else v-text="item.raw[link.nameField]" />
@@ -82,7 +90,6 @@
 import axios from 'axios'
 import { computed } from 'vue'
 import { VDataTableServer, VDataTableFooter } from 'vuetify/labs/VDataTable'
-import { DateTime } from 'luxon'
 import { useRouter } from 'vue-router'
 import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'
@@ -170,6 +177,9 @@ function formatMultienum(value, labels) {
         text-transform: uppercase;
         border-radius: 5px;
         letter-spacing: 0.09px;
+    }
+    .list-table-name-link {
+        cursor: pointer;
     }
 }
 </style>

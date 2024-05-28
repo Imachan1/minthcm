@@ -84,6 +84,7 @@ return array(
     'Api\\V8\\Param\\Options\\ModuleName' => $baseDir . '/Api/V8/Param/Options/ModuleName.php',
     'Api\\V8\\Param\\Options\\Page' => $baseDir . '/Api/V8/Param/Options/Page.php',
     'Api\\V8\\Param\\Options\\Sort' => $baseDir . '/Api/V8/Param/Options/Sort.php',
+    'Api\\V8\\Param\\Options\\Date' => $baseDir . '/Api/V8/Param/Options/Timestamp.php', // MintHCM #87887
     'Api\\V8\\Param\\Options\\Type' => $baseDir . '/Api/V8/Param/Options/Type.php',
     'Api\\V8\\Param\\PageParams' => $baseDir . '/Api/V8/Param/PageParams.php',
     'Api\\V8\\Param\\UpdateModuleDataParams' => $baseDir . '/Api/V8/Param/UpdateModuleDataParams.php',
