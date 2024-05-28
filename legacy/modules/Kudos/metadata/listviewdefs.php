@@ -44,14 +44,46 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-return array(
-    "Ideas" => translate("LBL_LIST_TITLE", "Ideas"),
-    "Kudos" => translate("LBL_LIST_TITLE", "Kudos"),
-    "Notes" => translate("LBL_LIST_TITLE", "Notes"),
-    "Reservations" => translate("LBL_LIST_TITLE", "Reservations"),
-    "WorkSchedules" => translate("LBL_LIST_TITLE", "WorkSchedules"),
-    "Appraisals" => translate("LBL_LIST_TITLE", "Appraisals"),
-    "Tasks" => translate("LBL_LIST_TITLE", "Tasks"),
-    "Calls" => translate("LBL_LIST_TITLE", "Calls"),
-    "Meetings" => translate("LBL_LIST_TITLE", "Meetings"),
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
+}
+
+$module_name = 'Kudos';
+$listViewDefs[$module_name] = array(
+   'NAME' =>
+   array(
+      'width' => '32%',
+      'label' => 'LBL_NAME',
+      'default' => true,
+      'link' => true,
+   ),
+   'ASSIGNED_USER_NAME' =>
+   array(
+      'width' => '9%',
+      'label' => 'LBL_ASSIGNED_TO_NAME',
+      'module' => 'Employees',
+      'id' => 'ASSIGNED_USER_ID',
+      'default' => true,
+   ),
+   'EMPLOYEE_NAME' => array(
+      'width' => '9%',
+      'label' => 'LBL_EMPLOYEE_NAME',
+      'module' => 'Employees',
+      'id' => 'EMPLOYEE_ID',
+      'default' => true,
+  ),
+   'DATE_ENTERED' =>
+   array(
+      'type' => 'datetime',
+      'label' => 'LBL_DATE_ENTERED',
+      'width' => '10%',
+      'default' => true,
+   ),
+   'ANONYMOUS' =>
+   array(
+      'width' => '10%',
+      'label' => 'LBL_NAME',
+      'default' => true,
+      'link' => true,
+   ),
 );

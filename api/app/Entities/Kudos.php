@@ -44,14 +44,77 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-return array(
-    "Ideas" => translate("LBL_LIST_TITLE", "Ideas"),
-    "Kudos" => translate("LBL_LIST_TITLE", "Kudos"),
-    "Notes" => translate("LBL_LIST_TITLE", "Notes"),
-    "Reservations" => translate("LBL_LIST_TITLE", "Reservations"),
-    "WorkSchedules" => translate("LBL_LIST_TITLE", "WorkSchedules"),
-    "Appraisals" => translate("LBL_LIST_TITLE", "Appraisals"),
-    "Tasks" => translate("LBL_LIST_TITLE", "Tasks"),
-    "Calls" => translate("LBL_LIST_TITLE", "Calls"),
-    "Meetings" => translate("LBL_LIST_TITLE", "Meetings"),
-);
+namespace MintHCM\Api\Entities;
+
+use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
+
+/**
+ * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\KudosRepository")
+ * @ORM\Table(name="kudos")
+ */
+class Kudos
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     */
+    public $id;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    public $name;
+    
+    /**
+     * @ORM\Column(type="string", nullable=false)
+     */
+    public $assigned_user_id;
+       
+    /**
+     * @ORM\Column(type="string", nullable=false)
+     */
+    public $employee_id;
+    
+    /**
+     * @ORM\Column(type="string", length=36)
+     */
+    public $created_by;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    public $date_entered;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    public $date_modified;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    public $description;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    public $announced;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    public $private;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    public $deleted = false;
+
+    public function __construct()
+    {
+        $this->date_entered = new \DateTime();
+    }
+}

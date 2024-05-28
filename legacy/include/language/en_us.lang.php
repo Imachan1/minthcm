@@ -4924,3 +4924,27 @@ $app_list_strings['status_list_colored'] = array(
 );
 
 // ColoredEnum Lists END
+$app_strings['LBL_YOU_RECEIVED_KUDOS'] = '<b>You received</b> kudos!';
+$app_strings['LBL_USER_RECEIVED_KUDOS'] = 'received kudos from <b>you</b>!';
+$app_strings['LBL_GIVE_KUDOS'] = 'GIVE KUDOS';
+$app_strings['LBL_KUDOS_TO'] = 'Kudos to';
+$app_strings['LBL_KUDOS_MESSAGE'] = 'Message';
+$app_strings['LBL_KUDOS_PRIVATE'] = 'Private';
+$app_strings['LBL_KUDOS_PRIVATE_TEXT_ON_FORM'] = 'Only the recipient will see the message and the sender.';
+$app_strings['LBL_KUDOS_PRIVATE_TEXT_ON_MESSAGE'] = 'Private - only {name} can see the message and the sender';
+$app_strings['LBL_KUDOS_PRIVATE_TEXT_ONLY_YOU'] = 'Private - only you can see the message and the sender';
+$app_strings['LBL_KUDOS_SEND_BUTTON'] = 'SEND';
+$app_strings['LBL_KUDOS_UPDATE_BUTTON'] = 'UPDATE';
+$app_strings['LBL_KUDOS_CANCEL_BUTTON'] = 'CANCEL';
+$app_strings['LBL_KUDOS_REMOVE_BUTTON'] = 'REMOVE';
+$app_strings['LBL_KUDOS_UNPUBLISHED'] = 'Unpublished';
+$app_list_strings['kudos_navbar_item_list'] = array(
+    'all' => 'All',
+    'received' => 'Received',
+    'given' => 'Given',
+);
+$app_strings['LBL_KUDOS_SUCCESS'] = 'Success!';
+$app_strings['LBL_KUDOS_SUCCESS_MESSAGE_YOUR_KUDOS_TO'] = 'Your kudos to';
+$app_strings['LBL_KUDOS_SUCCESS_MESSAGE_HAS_BEEN_SENT'] = 'has been sent.';
+$app_strings['LBL_KUDOS_SUCCESS_BUTTON'] = 'RETURN TO THE LIST';
+$app_strings['LBL_KUDOS_ERROR'] = 'An error occurred. Try again later.';

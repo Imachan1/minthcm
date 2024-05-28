@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,21 +36,49 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-return array(
-    "Ideas" => translate("LBL_LIST_TITLE", "Ideas"),
-    "Kudos" => translate("LBL_LIST_TITLE", "Kudos"),
-    "Notes" => translate("LBL_LIST_TITLE", "Notes"),
-    "Reservations" => translate("LBL_LIST_TITLE", "Reservations"),
-    "WorkSchedules" => translate("LBL_LIST_TITLE", "WorkSchedules"),
-    "Appraisals" => translate("LBL_LIST_TITLE", "Appraisals"),
-    "Tasks" => translate("LBL_LIST_TITLE", "Tasks"),
-    "Calls" => translate("LBL_LIST_TITLE", "Calls"),
-    "Meetings" => translate("LBL_LIST_TITLE", "Meetings"),
-);
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+
+require_once 'include/Dashlets/DashletGeneric.php';
+require_once 'modules/Kudos/Kudos.php';
+
+class KudosDashlet extends DashletGeneric
+{
+
+    public function __construct($id, $def = null)
+    {
+        require 'modules/Kudos/metadata/dashletviewdefs.php';
+
+        parent::__construct($id, $def);
+
+        if (empty($def['title'])) {
+            $this->title = translate('LBL_HOMEPAGE_TITLE', 'Kudos');
+        }
+
+        $this->searchFields = $dashletData['KudosDashlet']['searchFields'];
+        $this->columns = $dashletData['KudosDashlet']['columns'];
+
+        $this->seedBean = BeanFactory::newBean('Kudos');
+    }
+
+    public function buildWhere()
+    {
+        global $current_user;
+        $returnArray = parent::buildWhere();
+        if($current_user->isAdmin()) {
+            return $returnArray;
+        }
+        $returnArray[] = " ('{$current_user->id}' IN (kudos.assigned_user_id, kudos.employee_id, kudos.created_by) )";
+         
+        return $returnArray;
+    }
+
+}

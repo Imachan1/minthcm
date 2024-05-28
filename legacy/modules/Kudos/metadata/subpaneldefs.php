@@ -44,14 +44,19 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-return array(
-    "Ideas" => translate("LBL_LIST_TITLE", "Ideas"),
-    "Kudos" => translate("LBL_LIST_TITLE", "Kudos"),
-    "Notes" => translate("LBL_LIST_TITLE", "Notes"),
-    "Reservations" => translate("LBL_LIST_TITLE", "Reservations"),
-    "WorkSchedules" => translate("LBL_LIST_TITLE", "WorkSchedules"),
-    "Appraisals" => translate("LBL_LIST_TITLE", "Appraisals"),
-    "Tasks" => translate("LBL_LIST_TITLE", "Tasks"),
-    "Calls" => translate("LBL_LIST_TITLE", "Calls"),
-    "Meetings" => translate("LBL_LIST_TITLE", "Meetings"),
+$layout_defs['Kudos'] = array(
+   'subpanel_setup' => array(
+      'securitygroups' => array(
+         'top_buttons' => array( array( 'widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'SecurityGroups', 'mode' => 'MultiSelect' ), ),
+         'order' => 900,
+         'sort_by' => 'name',
+         'sort_order' => 'asc',
+         'module' => 'SecurityGroups',
+         'refresh_page' => 1,
+         'subpanel_name' => 'default',
+         'get_subpanel_data' => 'SecurityGroups',
+         'add_subpanel_data' => 'securitygroup_id',
+         'title_key' => 'LBL_SECURITYGROUPS_SUBPANEL_TITLE',
+      ),
+   ),
 );

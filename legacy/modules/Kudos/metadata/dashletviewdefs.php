@@ -44,14 +44,47 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-return array(
-    "Ideas" => translate("LBL_LIST_TITLE", "Ideas"),
-    "Kudos" => translate("LBL_LIST_TITLE", "Kudos"),
-    "Notes" => translate("LBL_LIST_TITLE", "Notes"),
-    "Reservations" => translate("LBL_LIST_TITLE", "Reservations"),
-    "WorkSchedules" => translate("LBL_LIST_TITLE", "WorkSchedules"),
-    "Appraisals" => translate("LBL_LIST_TITLE", "Appraisals"),
-    "Tasks" => translate("LBL_LIST_TITLE", "Tasks"),
-    "Calls" => translate("LBL_LIST_TITLE", "Calls"),
-    "Meetings" => translate("LBL_LIST_TITLE", "Meetings"),
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
+}
+
+global $current_user;
+
+$dashletData['KudosDashlet']['searchFields'] = array(
+   'date_entered' => array( 'default' => '' ),
+   'date_modified' => array( 'default' => '' ),
+   'created_by_name' => array( 'default' => '' ),
+   'modified_by_name' => array( 'default' => '' ),
+   'assigned_user_id' => array(
+      'type' => 'assigned_user_name',
+      'default' => $current_user->name
+   ),
+);
+$dashletData['KudosDashlet']['columns'] = array(
+   'name' => array(
+      'width' => '40',
+      'label' => 'LBL_LIST_NAME',
+      'link' => true,
+      'default' => true
+   ),
+   'date_entered' => array(
+      'width' => '15',
+      'label' => 'LBL_DATE_ENTERED',
+      'default' => true
+   ),
+   'date_modified' => array(
+      'width' => '15',
+      'label' => 'LBL_DATE_MODIFIED',
+      'default' => true
+   ),
+   'assigned_user_name' => array(
+      'width' => '8',
+      'label' => 'LBL_AUTHOR',
+      'default' => true
+   ),
+   'employee_name' => array(
+      'label' => 'LBL_EMPLOYEE_NAME',
+      'name' => 'employee_name',
+      'width' => '8',
+   ),
 );

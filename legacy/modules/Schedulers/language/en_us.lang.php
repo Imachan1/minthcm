@@ -179,4 +179,7 @@ $mod_strings = array(
    'LBL_AUTOMATICCREATENOTIFICATION' => 'Create Work Schedule Alerts',
    'LBL_SEND_REPORTS' => "Send generated KReports PDFs",
 
+   'LBL_SEND_KUDOS' => 'Publish Kudos',
+   'LBL_KUDOS_NOTIFICATION' => 'You received a kudos!',
+
 );

@@ -6445,3 +6445,30 @@ function isSelfRequest($endpoint) : bool {
 
     return stripos($endpoint, $domain) !== false || stripos($endpoint, $siteUrl) !== false;
 }
+
+function fixupView($view)
+{
+    $view = strtolower($view);
+    switch ($view) {
+        case 'list':
+        case 'index':
+        case 'listview':
+            return "list";
+        case 'edit':
+        case 'save':
+        case 'popupeditview':
+        case 'editview':
+            return "edit";
+        case 'view':
+        case 'detail':
+        case 'detailview':
+            return "view";
+        case 'delete':
+            return "delete";
+        case 'export':
+            return "export";
+        case 'import':
+            return "import";
+    }
+    return $view;
+}

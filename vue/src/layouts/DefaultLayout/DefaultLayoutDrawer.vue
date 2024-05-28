@@ -1,21 +1,27 @@
 <template>
     <div class="drawer">
         <div class="drawer-nav">
-            <MintButton icon="mdi-thumb-up" variant="nav" />
+            <MintButton
+                icon="mdi-thumb-up"
+                variant="nav"
+                :active="ux.drawer === 'kudos'"
+                @click="ux.drawer = ux.drawer === 'kudos' ? null : 'kudos'"
+            />
             <v-badge
                 :content="chat.unreadConversationsCount"
                 color="error"
                 location="bottom end"
                 :model-value="chat.unreadConversationsCount > 0"
-                @click="ux.drawer = !ux.drawer"
+                @click="ux.drawer = ux.drawer === 'chat' ? null : 'chat'"
             >
-                <MintButton icon="mdi-chat" variant="nav" :active="ux.drawer" />
+                <MintButton icon="mdi-chat" variant="nav" :active="ux.drawer === 'chat'" />
             </v-badge>
             <MintButton icon="mdi-newspaper-variant" variant="nav" />
         </div>
-        <v-slide-x-transition hide-on-leave>
-            <div v-if="ux.drawer" class="drawer-content">
-                <MintChat />
+        <v-slide-x-transition>
+            <div v-if="ux.drawer" class="drawer-content" ref="drawerContentRef" @scroll="handleScroll">
+                <MintKudos v-if="ux.drawer === 'kudos'" />
+                <MintChat v-if="ux.drawer === 'chat'" />
             </div>
         </v-slide-x-transition>
     </div>
@@ -24,11 +30,29 @@
 <script setup lang="ts">
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintChat from '@/components/MintChat/MintChat.vue'
+import MintKudos from '@/components/MintKudos/MintKudos.vue'
 import { useMintChatStore } from '@/components/MintChat/MintChatStore'
 import { useUxStore } from '@/store/ux'
+import { ref } from 'vue'
+import { useMintKudosStore } from '@/components/MintKudos/MintKudosStore'
 
 const ux = useUxStore()
 const chat = useMintChatStore()
+
+const drawerContentRef = ref<any>(null)
+const kudosStore = useMintKudosStore()
+
+function handleScroll() {
+    if (ux.drawer === 'kudos') {
+        if (
+            !kudosStore.fetchedAllKudos &&
+            drawerContentRef?.value?.scrollTop + drawerContentRef?.value?.clientHeight >=
+                drawerContentRef?.value.scrollHeight
+        ) {
+            kudosStore.fetchKudos()
+        }
+    }
+}
 </script>
 
 <style scoped lang="scss">
@@ -44,6 +68,7 @@ const chat = useMintChatStore()
         width: var(--v-drawer-width);
         background: rgb(var(--v-theme-surface));
         height: 100%;
+        overflow: auto;
     }
 }
 .drawer-nav {

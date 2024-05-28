@@ -44,14 +44,48 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-return array(
-    "Ideas" => translate("LBL_LIST_TITLE", "Ideas"),
-    "Kudos" => translate("LBL_LIST_TITLE", "Kudos"),
-    "Notes" => translate("LBL_LIST_TITLE", "Notes"),
-    "Reservations" => translate("LBL_LIST_TITLE", "Reservations"),
-    "WorkSchedules" => translate("LBL_LIST_TITLE", "WorkSchedules"),
-    "Appraisals" => translate("LBL_LIST_TITLE", "Appraisals"),
-    "Tasks" => translate("LBL_LIST_TITLE", "Tasks"),
-    "Calls" => translate("LBL_LIST_TITLE", "Calls"),
-    "Meetings" => translate("LBL_LIST_TITLE", "Meetings"),
+if ( !defined('sugarEntry') || !sugarEntry ) {
+   die('Not A Valid Entry Point');
+}
+
+$module_name = 'Kudos';
+$subpanel_layout = array(
+   'top_buttons' => array(
+      array( 'widget_class' => 'SubPanelTopCreateButton' ),
+      array( 'widget_class' => 'SubPanelTopSelectButton', 'popup_module' => $module_name ),
+   ),
+   'where' => '',
+   'list_fields' => array(
+      'name' => array(
+         'vname' => 'LBL_NAME',
+         'widget_class' => 'SubPanelDetailViewLink',
+         'width' => '15%',
+      ),
+      'date_modified' => array(
+         'vname' => 'LBL_DATE_MODIFIED',
+         'width' => '15%',
+      ),
+      'assigned_user_name' =>
+      array(
+         'vname' => 'LBL_ASSIGNED_TO_NAME',
+         'width' => '15%',
+      ),
+      'employee_name' => array(
+         'vname' => 'LBL_EMPLOYEE_NAME',
+         'widget_class' => 'SubPanelDetailViewLink',
+         'width' => '20%',
+      ),
+      'edit_button' => array(
+         'vname' => 'LBL_EDIT_BUTTON',
+         'widget_class' => 'SubPanelEditButton',
+         'module' => $module_name,
+         'width' => '4%',
+      ),
+      'remove_button' => array(
+         'vname' => 'LBL_REMOVE',
+         'widget_class' => 'SubPanelRemoveButton',
+         'module' => $module_name,
+         'width' => '5%',
+      ),
+   ),
 );
