@@ -9,6 +9,7 @@ import { getAllTypesMatchingTo } from './operators'
 import { useRouter } from 'vue-router'
 import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
+import MassActions from '@/business/MassActions'
 
 interface Preferences {
     columns: string[]
@@ -22,6 +23,12 @@ interface Defs {
 }
 
 export type Mode = 'list' | 'relate'
+
+interface MassAction {
+    icon: string
+    title: string
+    onClick: () => void
+}
 
 export const useListViewStore = defineStore('listview', () => {
     const mode = ref<Mode>('list')
@@ -292,6 +299,31 @@ export const useListViewStore = defineStore('listview', () => {
         relatePopup.value.data?.onConfirm({ selectionList })
         usePopupsStore().closePopup(relatePopup.value)
     }
+    const massActions = computed<MassAction[]>(() => {
+        if (!isInit.value || !config.value?.config?.massActions?.length) {
+            return []
+        }
+        const massActions: MassAction[] = []
+        config.value.config.massActions.forEach((massAction) => {
+            const actionClass = MassActions[massAction.action]
+            if (!actionClass) {
+                console.error('Mass action not found', massAction.action)
+                return
+            }
+            massActions.push({
+                icon: massAction.icon,
+                title: languages.label(massAction.label, module.value),
+                onClick: async () => {
+                    const result = await new actionClass(module.value, selected.value).execute()
+                    if (result) {
+                        selected.value = []
+                        getData()
+                    }
+                },
+            })
+        })
+        return massActions
+    })
 
     watch(options, () => {
         getData()
@@ -305,8 +337,8 @@ export const useListViewStore = defineStore('listview', () => {
     })
 
     const itemsSelectable = computed(() => {
-        return (
-            (mode.value === 'list' && config.value.config?.mass_actions?.length)
+        return !!(
+            (mode.value === 'list' && massActions.value.length)
             || (mode.value === 'relate' && relatePopup.value?.data?.popupMode && relatePopup.value.data.popupMode !== 'single')
         )
     })
@@ -344,5 +376,6 @@ export const useListViewStore = defineStore('listview', () => {
         handleNameClick,
         handleSelectRelate,
         itemsSelectable,
+        massActions,
     }
 })
