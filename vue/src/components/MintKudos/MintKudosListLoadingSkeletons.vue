@@ -4,11 +4,7 @@
     <v-skeleton-loader type="card" class="kudos-skeleton"></v-skeleton-loader>
 </template>
 
-<script setup lang="ts">
-import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
-</script>
-
-<!-- zerknąć na margin, bo po zmianie kolejności w MintKudosList zniknął -->
+<script setup lang="ts"></script>
 
 <style scoped lang="scss">
 .kudos-skeleton {
