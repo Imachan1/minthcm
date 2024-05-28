@@ -371,6 +371,6 @@ class ViewESList extends SugarView
         $function = $field_defs['function']['name'] ?? $field_defs['function'];
         $additional_params = $field_defs['function']['additional_params'] ?? null;
 
-        return call_user_func($function, null, null, null, null, $additional_params);
+        return call_user_func($function, null, null, null, 'eslist', $additional_params);
     }
 }
