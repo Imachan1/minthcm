@@ -4953,4 +4953,11 @@ $app_list_strings['status_list_colored'] = array(
     'Scored2' => $yellow_status,
 );
 
+$app_list_strings['campaign_status_dom_colored'] = array(
+    'Planning' => $blue_status,
+    'Active' => $yellow_status,
+    'Inactive' => $gray_status,
+    'Complete' => $green_status,
+);
+
 // ColoredEnum Lists END
