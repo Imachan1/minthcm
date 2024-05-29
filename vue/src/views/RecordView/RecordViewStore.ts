@@ -106,7 +106,9 @@ export const useRecordViewStore = defineStore('recordview', () => {
         return await axios.delete(`api/${bean.value.module_name}/${bean.value.id}`)
     }
 
-    const view = ref<string>('detail')
+    const view = ref<'detail' | 'edit' | 'list'>('detail')
+    const inlineEditField = ref<string>('')
+    const inlineEditFieldSaving = ref<string>('')
 
     const panels = computed(() => {
         let panels: Panel[] = []
@@ -203,6 +205,8 @@ export const useRecordViewStore = defineStore('recordview', () => {
     return {
         defs,
         view,
+        inlineEditField,
+        inlineEditFieldSaving,
         bean,
         isBeanChanged,
         resetBean,
