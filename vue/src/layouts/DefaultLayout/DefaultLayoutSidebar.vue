@@ -10,7 +10,7 @@
         rail-width="76"
     >
         <v-list
-            v-if="modules.activeModule?.name !== 'Home' && modules.activeModule?.actions"
+            v-if="modules.activeModule?.actions"
             nav
             bg-color="primary"
             class="nav-list flex-shrink-0 py-4"
@@ -20,7 +20,7 @@
                 :key="action.action+modules.activeModule"
                 class="nav-item module-action"
                 :value="action.action"
-                :to="url.fromLegacyUrl(action.url)"
+                :to="action.url ? url.fromLegacyUrl(action.url) : ''"
                 :active="false"
             >
                 <div class="nav-title">
