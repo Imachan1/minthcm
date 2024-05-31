@@ -72,7 +72,6 @@ export interface FieldVardef {
 
 export const useModulesStore = defineStore('modules', () => {
     const backend = useBackendStore()
-    const url = useUrlStore()
     const languages = useLanguagesStore()
     const route = useRoute()
 
@@ -104,8 +103,9 @@ export const useModulesStore = defineStore('modules', () => {
         return modules
     })
 
-    const currentModule = computed(() => {
-        const moduleName = route.params.module
+    const currentModule = computed(() => {        
+        const url = useUrlStore()
+        const moduleName = route.params.module ?? url.module
         if (moduleName && typeof moduleName === 'string') {
             return modules.value[moduleName]
         }
