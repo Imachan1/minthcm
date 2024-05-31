@@ -109,8 +109,9 @@ class Module
         return array(
             "name" => $module,
             "icon" => $this->modules_icons[$module] ?? $this->modules_icons['default'],
-            "actions" => 'Home' === $module ? $this->getHomeMenu() : $this->getModuleMenu($module),
+            "actions" => $this->getModuleMenu($module),
             "acl" => array_map(function ($view) { return (int)$view['aclaccess']; }, $acl[$module]['module'] ?? []),
+            "dashboards" => 'Home' === $module ? $this->getHomeMenu() : array(),
         );
     }
 
@@ -145,6 +146,7 @@ class Module
                 "name" => $item[1],
                 "action" => $item[2],
                 "icon" => $this->action_icons[strtolower($item[2])] ?? $this->action_icons['default'],
+                "params" => $item[3] ?? array(),
             );
             if (isset($item[3])) {
                 $row['module'] = $item[3];
