@@ -11,6 +11,8 @@ export interface ModulesDefs {
         name: string
         icon: string
         actions: ModuleAction[]
+        vardefs: unknown
+        metadata: ModuleMetadata
         acl: { [view: string]: number }
     }
 }
@@ -24,6 +26,8 @@ export interface Module {
     label: string
     icon: string
     actions: ModuleAction[]
+    vardefs: unknown
+    metadata: ModuleMetadata
     acl: { [view: string]: number }
 }
 
@@ -39,6 +43,23 @@ export interface ModuleActionParams {
     view: string
 }
 
+interface SubpanelColumn {
+    name: string
+    label: string
+    type: string
+    usage?: string
+}
+
+export interface ModuleMetadata {
+    Subpanels: {
+        [key: string]: {
+            properties: { [key: string]: string | number }
+            columns: null | { [key: string]: SubpanelColumn }
+        }
+    }
+    RecordView: any
+}
+
 export interface FieldVardef {
     name: string
     type: string
@@ -50,8 +71,7 @@ export interface FieldVardef {
 }
 
 export const useModulesStore = defineStore('modules', () => {
-    const backend = useBackendStore()
-    const url = useUrlStore()
+    const backend = useBackendStore() 
     const languages = useLanguagesStore()
     const route = useRoute()
 
@@ -83,15 +103,20 @@ export const useModulesStore = defineStore('modules', () => {
         return modules
     })
 
-    const activeModule = computed(() => {
-        return modules.value[url.module]
+    const currentModule = computed(() => {        
+        const url = useUrlStore()
+        const moduleName = route.params.module ?? url.module
+        if (moduleName && typeof moduleName === 'string') {
+            return modules.value[moduleName]
+        }
+        return null
     })
 
     const visibleModules = computed(() => {
         return backend.initData?.menu_modules.map((moduleName) => modules.value[moduleName]) ?? []
     })
 
-    function getModuleActions(actions: Array<ModuleAction>) {
+    function getModuleActions(actions: Array<ModuleAction>) { 
         const response: ModuleAction[] = []
         for (const action of actions) {
             if (action.params?.view && action.params.view != route.params.action) {
@@ -111,6 +136,6 @@ export const useModulesStore = defineStore('modules', () => {
         modulesDefs,
         defaultIcon,
         visibleModules,
-        activeModule,
+        currentModule,
     }
 })
