@@ -105,7 +105,6 @@ export const useModulesStore = defineStore('modules', () => {
     })
 
     const currentModule = computed(() => {
-        const route = useRoute()
         const moduleName = route.params.module
         if (moduleName && typeof moduleName === 'string') {
             return modules.value[moduleName]
