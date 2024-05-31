@@ -10,14 +10,14 @@
         rail-width="76"
     >
         <v-list
-            v-if="modules.activeModule?.actions"
+            v-if="modules.currentModule?.actions"
             nav
             bg-color="primary"
             class="nav-list flex-shrink-0 py-4"
         >
             <v-list-item
-                v-for="action in modules.activeModule.actions"
-                :key="action.action+modules.activeModule"
+                v-for="action in modules.currentModule.actions"
+                :key="action.action+modules.currentModule"
                 class="nav-item module-action"
                 :value="action.action"
                 :to="action.url ? url.fromLegacyUrl(action.url) : ''"
