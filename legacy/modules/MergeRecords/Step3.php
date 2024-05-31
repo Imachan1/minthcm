@@ -171,8 +171,7 @@ $field_count = 1;
 $json = new JSON();
 $diff_field_count = 0;
 foreach ( $temp_field_array as $field_array ) {
-   if ( show_field($field_array)
-   ) {
+    if (show_field($field_array)) {
       $tempName = $field_array['name'];
       $select_row_curr_field_value = null;
       $b_values_different = false;
@@ -264,7 +263,6 @@ foreach ( $temp_field_array as $field_array ) {
             $xtpl->assign("CELL_WIDTH", $col_width);
                 $xtpl->parse("main." . $section_name . $cell_name);
             break;
-         //popup fields need to be fixed.., cant automate with vardefs
          case ('relate'):
             if ( !empty($field_array['link']) ) {
                $exclude[$field_array['link']] = $field_array['link'];
@@ -348,12 +346,14 @@ foreach ( $temp_field_array as $field_array ) {
                         $app_list_strings[$field_array['function']['name']] = getDictionary('', '', '', '', $field_array['function']['additional_params']);
                }
                     if ('' != $mergeBeanArray[$id]->$tempName and isset($field_array['options']) and isset($app_list_strings[$field_array['options']][$mergeBeanArray[$id]->$tempName])) {
-                        display_field_value('multienum' === $field_check ?
+                        display_field_value(
+                            'multienum' === $field_check ?
                             str_replace("^", "", $app_list_strings[$field_array['options']][$mergeBeanArray[$id]->$tempName]) :
                             $app_list_strings[$field_array['options']][$mergeBeanArray[$id]->$tempName]
                         );
                } else {
-                        display_field_value('multienum' === $field_check ?
+                        display_field_value(
+                            'multienum' === $field_check ?
                             str_replace("^", "", $mergeBeanArray[$id]->$tempName) :
                             $mergeBeanArray[$id]->$tempName
                         );
