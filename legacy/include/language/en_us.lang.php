@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -4857,3 +4856,5 @@ $app_list_strings['contract_type_list'] = array(
     'contract_of_commission' => 'Contract of commission',
     'other' => 'Other',
 );
+
+$app_strings['LBL_NOTIFICATIONS_NONE'] = 'None';

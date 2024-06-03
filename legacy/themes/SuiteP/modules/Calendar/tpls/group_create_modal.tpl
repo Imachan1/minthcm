@@ -1,8 +1,4 @@
-<?php
-
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
+{*
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -12,7 +8,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,62 +42,25 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-
-if(!ACLController::checkAccess('Calendar', 'list', true)){
-	ACLController::displayNoAccess(true);
-}
-
-require_once('modules/Calendar/Calendar.php');
-require_once('modules/Calendar/CalendarDisplay.php');
-
-$views = array("agendaDay" => array(),"basicDay" => array(), "basicWeek" => array(), "agendaWeek" => array(),"month" => array(), "sharedMonth" => array(), "sharedWeek" => array());
-
-global $cal_strings, $current_language;
-$cal_strings = return_module_language($current_language, 'Calendar');
-
-if(empty($_REQUEST['view'])) {
-    if (isset($_SESSION['CALENDAR_VIEW']) && in_array($_SESSION['CALENDAR_VIEW'], $views)) {
-        $_REQUEST['view'] = $_SESSION['CALENDAR_VIEW'];
-    } else {
-        $_REQUEST['view'] = SugarConfig::getInstance()->get('calendar.default_view','agendaWeek');
-    }
-}
-
-	$_SESSION['CALENDAR_VIEW'] = $_REQUEST['view'];
-
-$cal = new Calendar($_REQUEST['view'], array(), $views);
+*}
 
 
-if($cal->view == "sharedMonth" || $cal->view == "sharedWeek"){
-	$cal->init_shared();	
-	global $shared_user;				
-    $shared_user = BeanFactory::newBean('Users');
-	foreach($cal->shared_ids as $member){
-		$shared_user->retrieve($member);
-		$cal->add_activities($shared_user);
-	}
-}else {
-	if (array_key_exists($cal->view,$views)) {
-		$cal->add_activities($GLOBALS['current_user']);
-	}
-}
-
-if(array_key_exists($cal->view, $views)){
-	$cal->load_activities();
-}
-
-if (!empty($_REQUEST['print']) && $_REQUEST['print'] == 'true') {
-    $cal->setPrint(true);
-}
-
-$display = new CalendarDisplay($cal,"", $views);
-
-	$display->display_title();
-	if ($cal->view == "sharedMonth" || $cal->view == "sharedWeek") {
-		$display->display_shared_html($cal->view);
-		$display->display_group_modals($cal->view);        
-    }
-	$display->display_calendar_header();
-	$display->display();
-	$display->display_calendar_footer();
-
+<div class="modal fade modal-group-creation" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" style="width: 600px; margin: 0 auto;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<h4 class="modal-title">{$MOD.LBL_GROUP_CREATION}</h4>
+			</div>
+			<div class="modal-body">
+				<label for="group-creation-group-name"><b>{$MOD.LBL_GROUP_NAME}</b></label>
+				<input type="text" id="group-creation-group-name" name="group-creation-group-name"/>
+				<br>
+				<p id="group-creation-empty-group-name" style="color: red;">{$MOD.LBL_EMPTY_GROUP_NAME}</p>
+			</div>
+			<div class="modal-footer">
+				<button id="group-creation-create-button" class="btn btn-primary" type="button">{$MOD.LBL_CREATE_BUTTON}</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
