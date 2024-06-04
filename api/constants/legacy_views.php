@@ -529,4 +529,8 @@ return [
         'list' => false,
         'record' => true,
     ],
+    'Kudos' => [
+        'list' => false,
+        'record' => true,
+    ],
 ];
