@@ -37,6 +37,8 @@ export interface FieldVardef {
     name: string
     type: string
     label: string
+    id_name?: string
+    type_name?: string
     options?: string
     options_colors?: string
     default?: string

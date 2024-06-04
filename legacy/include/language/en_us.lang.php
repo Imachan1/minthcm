@@ -2372,6 +2372,9 @@ $app_strings = array(
     'LBL_ESLIST_NO_DATA' => 'No options available',
     'LBL_ESLIST_DATE' => 'Date',
     'LBL_ESLIST_SELECT_DATE' => 'Select',
+    'LBL_ADVANCED_SEARCH_BUTTON' => 'Advanced Search',
+    'LBL_ASSIGNED_TO_MODULE' => 'Assigned to (module)',
+    'LBL_ASSIGNED_TO_RECORD' => 'Assigned to (record)',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
