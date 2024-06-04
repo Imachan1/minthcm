@@ -533,4 +533,8 @@ return [
         'list' => false,
         'record' => true,
     ],
+    'Recruitments' => [
+        'list' => false,
+        'record' => true,
+    ],
 ];
