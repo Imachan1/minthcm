@@ -71,9 +71,9 @@ export interface FieldVardef {
 }
 
 export const useModulesStore = defineStore('modules', () => {
+    const route = useRoute()
     const backend = useBackendStore()
     const languages = useLanguagesStore()
-    const route = useRoute()
 
     const modulesDefs = ref<ModulesDefs | null>(null)
 

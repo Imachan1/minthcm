@@ -2371,6 +2371,7 @@ $app_strings = array(
     'LBL_ESLIST_FILTER' => 'Filter',
     'LBL_ESLIST_LOADING' => 'Loading...',
     'LBL_ESLIST_NO_DATA' => 'No options available',
+    'LBL_DETAILS' => 'Details',
     'LBL_ESLIST_DATE' => 'Date',
     'LBL_ESLIST_SELECT_DATE' => 'Select',
     'LBL_ESLIST_OVERWRITE_FILTER_CONFIRM' => 'Filter with that name already exists. Do you want to overwrite it?',
