@@ -128,7 +128,7 @@ export const useModulesStore = defineStore('modules', () => {
             }
 
             const recordId: string = route.params?.record ?? ''
-            action.url = action.url?.replace('{record_id}', recordId)
+            action.url = action.original_url?.replace('{record_id}', recordId)
 
             response.push(action)
         }
