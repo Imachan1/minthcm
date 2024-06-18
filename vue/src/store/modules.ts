@@ -35,6 +35,7 @@ export interface ModuleAction {
     name: string
     url: string
     action: string
+    original_url: string
     icon: string
     params: ModuleActionParams
 }
@@ -119,6 +120,9 @@ export const useModulesStore = defineStore('modules', () => {
     function getModuleActions(actions: Array<ModuleAction>) {
         const response: ModuleAction[] = []
         for (const action of actions) {
+            if(!action.original_url){
+                action.original_url = action.url
+            }
             if (action.params?.view && action.params.view != route.params.action) {
                 continue 
             }
