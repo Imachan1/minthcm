@@ -133,7 +133,7 @@ class Module
         return array(
             "name" => $module,
             "icon" => $this->modules_icons[$module] ?? $this->modules_icons['default'],
-            "actions" => 'Home' === $module ? $this->getHomeMenu() : $this->getModuleMenu($module),
+            "actions" => $this->getModuleMenu($module),
             "vardefs" => $this->getVardefs($module),
             "metadata" => $this->getMetadata($module),
             "acl" => array_map(function ($view) { return (int)$view['aclaccess']; }, $acl[$module]['module'] ?? []),
