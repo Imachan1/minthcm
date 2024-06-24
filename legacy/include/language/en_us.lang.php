@@ -4956,3 +4956,5 @@ $app_strings['LBL_KUDOS_SUCCESS_MESSAGE_YOUR_KUDOS_TO'] = 'Your kudos to';
 $app_strings['LBL_KUDOS_SUCCESS_MESSAGE_HAS_BEEN_SENT'] = 'has been sent.';
 $app_strings['LBL_KUDOS_SUCCESS_BUTTON'] = 'RETURN TO THE LIST';
 $app_strings['LBL_KUDOS_ERROR'] = 'An error occurred. Try again later.';
+$app_strings['LBL_KUDOS_CHARACTERS_WARNING'] = 'Maximum number of characters is 255';
+$app_strings['LBL_KUDOS_EMPTY_MESSAGE'] = 'Enter a message, please';

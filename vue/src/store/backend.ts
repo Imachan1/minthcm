@@ -10,6 +10,7 @@ import { useLanguagesStore, Languages } from './languages'
 import axios, { AxiosError } from 'axios'
 import { useModulesStore, ModulesDefs } from './modules'
 import { usePreferencesStore } from './preferences'
+import { Settings } from 'luxon'
 
 interface QuickCreate {
     module: string
@@ -58,7 +59,8 @@ export const useBackendStore = defineStore('backend', () => {
                 app_list_strings: initResponse.data.languages?.app_list_strings ?? {},
                 modules: {},
             }
-            languages.currentLanguage = initResponse.data.global?.default_language ?? 'en_us'
+            Settings.defaultLocale = initData.value.user.preferences.language.split('_')[0] ?? 'en_us'
+            languages.currentLanguage = initData.value.user.preferences.language ?? 'en_us'
             modules.modulesDefs = initResponse.data?.modules ?? {}
             alerts.init()
             favorites.fetch()

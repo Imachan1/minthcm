@@ -111,6 +111,7 @@ class Init
         $preferences['dec_sep'] = $current_user->getPreference('dec_sep');
         $preferences['num_grp_sep'] = $current_user->getPreference('num_grp_sep');
         $preferences['default_currency_significant_digits'] = $current_user->getPreference('default_currency_significant_digits');
+        $preferences['language'] = $_SESSION['authenticated_user_language'];
         return array(
             "id" => $current_user->id,
             "is_admin" => "1" === $current_user->is_admin ? true : false,

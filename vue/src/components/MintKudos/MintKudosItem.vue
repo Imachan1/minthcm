@@ -26,9 +26,7 @@ const props = defineProps(['kudos'])
 const languages = useLanguagesStore()
 const date = computed(() => {
     return props.kudos.announcement_date
-        ? DateTime.fromSQL(props.kudos.announcement_date).toRelative({
-              locale: languages.currentLanguage.split('_')[0],
-          })
+        ? DateTime.fromSQL(props.kudos.announcement_date).toRelative()
         : languages.label('LBL_KUDOS_UNPUBLISHED')
 })
 </script>
