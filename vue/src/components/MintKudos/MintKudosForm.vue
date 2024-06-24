@@ -105,8 +105,8 @@ async function deleteKudos() {
 }
 
 const rules = [
-    (v: string) => v.length <= 255 || 'Maximum number of characters is 255',
-    (v: string) => !!v || 'Enter a message, please',
+    (v: string) => v.length <= 255 || languages.label('LBL_KUDOS_CHARACTERS_WARNING'),
+    (v: string) => !!v || languages.label('LBL_KUDOS_EMPTY_MESSAGE'),
 ]
 </script>
 

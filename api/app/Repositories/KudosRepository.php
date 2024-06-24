@@ -54,7 +54,7 @@ class KudosRepository extends EntityRepository
     {
         global $current_user;
         $list_type_where = $current_user->isAdmin() ? ''
-                                                    : 'AND (kudos.announced IS NULL AND kudos.assigned_user_id =  ' ."'$current_user->id'" .')
+                                                    : 'AND ((kudos.announced IS NULL OR kudos.announced = 0) AND kudos.assigned_user_id = ' ."'$current_user->id'" .')
                                                        OR kudos.announced = 1';
         if($list_type === 'received') {
             $list_type_where = 'AND kudos.announced = 1 AND kudos.employee_id = ' ."'$current_user->id'" .'';
