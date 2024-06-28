@@ -60,23 +60,9 @@ const languagesList = computed<MenuListItem[]>(() => {
     }))
 })
 
-async function changeLanguage(lang = 'pl_PL') {
-    backend.initialLoading = true
-    const response = await axios.get('api/languages', {
-        params: {
-            lang,
-        },
-    })
-    if (!response?.data) {
-        return
-    }
-    languages.languages = {
-        app_strings: response.data.app_strings,
-        app_list_strings: response.data.app_list_strings,
-        modules: {},
-    }
-    languages.currentLanguage = lang
-    backend.initialLoading = false
+async function changeLanguage(lang = 'en_us') {
+    localStorage.setItem('currentLang', lang)
+    document.location.reload()
 }
 </script>
 
