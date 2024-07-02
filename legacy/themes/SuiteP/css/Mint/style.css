@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -32038,3 +32038,28 @@ input[type=text] {
  * Font Awesome Free 5.11.2 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */@font-face{font-family:"Font Awesome 5 Free";font-style:normal;font-weight:900;font-display:auto;src:url("../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts/fa-solid-900.eot");src:url("../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts/fa-solid-900.eot?#iefix") format("embedded-opentype"),url("../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts/fa-solid-900.woff2") format("woff2"),url("../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts/fa-solid-900.woff") format("woff"),url("../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts/fa-solid-900.ttf") format("truetype"),url("../../../../../themes/SuiteP/css/Mint/fonts/fa/webfonts/fa-solid-900.svg#fontawesome") format("svg")}.fa,.fas{font-family:"Font Awesome 5 Free";font-weight:900}/*# sourceMappingURL=style.css.map */
+
+html[dir='rtl'] div.detail-view div.row.detail-view-row,
+html[dir='rtl'] div#EditView_tabs div.row.edit-view-row {
+  display: flex;
+  flex-direction: row;
+}
+
+html[dir='rtl'] div.detail-view div.row.detail-view-row div.detail-view-row-item,
+html[dir='rtl'] div#EditView_tabs div.row.edit-view-row div.edit-view-row-item,
+html[dir='rtl'] div.detail-view div.row.detail-view-row div.detail-view-row-item div.label,
+html[dir='rtl'] div#EditView_tabs div.row.edit-view-row div.edit-view-row-item div.label,
+html[dir='rtl'] ul.nav.nav-tabs,
+html[dir='rtl'] form#formDetailView div.buttons,
+html[dir='rtl'] div.detail-view div.row.detail-view-row div.detail-view-row-item div.detail-view-field {
+  display: flex;
+}
+
+html[dir='rtl'] div#EditView_tabs div.row.edit-view-row div.edit-view-row-item fieldset tr > td:first-child {
+    float: right;
+}
+
+html[dir='rtl'] div.detail-view div.row.detail-view-row div.detail-view-row-item div.label {
+  padding-left: 0;
+  padding-right: 32px;
+}

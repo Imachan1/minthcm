@@ -5748,6 +5748,21 @@ function get_language_header()
 }
 
 /**
+ * get_direction_header.
+ *
+ * @return string The dir=[direction] markup to insert into the <html> tag
+ */
+function get_direction_header()
+{
+    $lang = isset($GLOBALS['current_language']) ? $GLOBALS['current_language'] : "en";
+    $dir = 'ltr';
+    if(in_array($lang, ['ar_SA'])){
+        $dir = 'rtl';
+    }
+    return "dir='$dir'";
+}
+
+/**
  * get_custom_file_if_exists.
  *
  * This function handles the repetitive code we have where we first check if a file exists in the
