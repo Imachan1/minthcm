@@ -75,7 +75,15 @@ export const useBackendStore = defineStore('backend', () => {
                 }
                 preferences.global = loginData.global
                 languages.currentLanguage = loginData.global?.default_language ?? 'en_us'
-                if (router.currentRoute.value.meta?.auth !== false) {
+                if(window.location.href.search('/auth/reset') !== -1){
+                    const token = window.location.hash.substring(1).split('?').reduce(function (previousValue, currentParam) {
+                            const parts = currentParam.split('=');
+                            previousValue[parts[0]] = parts[1];
+                            return previousValue;
+                        }, {} as any
+                    )?.token;
+                    router.push({ name: 'auth-reset', query: { token: token} })
+                } else if (router.currentRoute.value.meta?.auth !== false) {
                     router.push({ name: 'auth-login' })
                 }
             } else if ((err as AxiosError).response?.status === 307) {
