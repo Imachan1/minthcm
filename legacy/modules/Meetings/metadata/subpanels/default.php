@@ -83,14 +83,12 @@ $subpanel_layout = array(
 			 'widget_class' => 'SubPanelRemoveButton',
 			 'width' => '2%',
 		),
-        // eVolpe #133686 - START
         'close_button' =>array(
             'widget_class' => 'SubPanelCloseButton',
             'vname' => 'LBL_LIST_CLOSE',
             'sortable' => false,
             'width' => '2%',
         ),
-        // eVolpe #133686 - END
 		'recurring_source'=>array(
 			'usage'=>'query_only',	
 		),
