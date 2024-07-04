@@ -444,7 +444,7 @@ class Employee extends Person implements EmailInterface
         }
 
         if (empty($current_user->id)) {
-            return false;
+            return true;
         }
 
         $sameUser = $current_user->id === $this->id;
