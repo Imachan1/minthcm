@@ -5756,7 +5756,8 @@ function get_direction_header()
 {
     $lang = isset($GLOBALS['current_language']) ? $GLOBALS['current_language'] : "en";
     $dir = 'ltr';
-    if(in_array($lang, ['ar_SA'])){
+    $lang = strtolower(strtok($lang, '_'));
+    if(in_array($lang, ['ar','fa','he','ur','yi'])){
         $dir = 'rtl';
     }
     return "dir='$dir'";
