@@ -51,9 +51,16 @@ const store = useAuthViewStore()
 const preferences = usePreferencesStore()
 
 const languagesList = computed<MenuListItem[]>(() => {
+    const getFlagCode = (code: string) => {
+        let [lang, country] = code.split('_')
+        if (['ar','fa','he','ur','yi'].includes(lang.toLowerCase())){
+            country = 'arab'
+        }
+        return `fi-${country.toLowerCase()}`
+    }
     return Object.entries(preferences.global?.languages ?? {}).map(([code, title]) => ({
         title: title?.toString() || '',
-        icon: `fi-${code.split('_')?.[1]?.toLowerCase()}`, // en_us => fi-us, pl_PL => fi-pl
+        icon: getFlagCode(code),
         onClick: () => {
             changeLanguage(code)
         },
