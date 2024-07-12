@@ -37859,3 +37859,28 @@ readers do not read off random characters that represent icons */
 }
 
 /*# sourceMappingURL=style.css.map */
+
+html[dir='rtl'] div.detail-view div.row.detail-view-row,
+html[dir='rtl'] div#EditView_tabs div.row.edit-view-row {
+  display: flex;
+  flex-direction: row;
+}
+
+html[dir='rtl'] div.detail-view div.row.detail-view-row div.detail-view-row-item,
+html[dir='rtl'] div#EditView_tabs div.row.edit-view-row div.edit-view-row-item,
+html[dir='rtl'] div.detail-view div.row.detail-view-row div.detail-view-row-item div.label,
+html[dir='rtl'] div#EditView_tabs div.row.edit-view-row div.edit-view-row-item div.label,
+html[dir='rtl'] ul.nav.nav-tabs,
+html[dir='rtl'] form#formDetailView div.buttons,
+html[dir='rtl'] div.detail-view div.row.detail-view-row div.detail-view-row-item div.detail-view-field {
+  display: flex;
+}
+
+html[dir='rtl'] div#EditView_tabs div.row.edit-view-row div.edit-view-row-item fieldset tr > td:first-child {
+    float: right;
+}
+
+html[dir='rtl'] div.detail-view div.row.detail-view-row div.detail-view-row-item div.label {
+  padding-left: 0;
+  padding-right: 32px;
+}
