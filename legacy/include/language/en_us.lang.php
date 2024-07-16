@@ -4799,6 +4799,8 @@ $app_list_strings['requests_status_list'] = array(
 $app_list_strings['moduleList']['Requests'] = 'Requests';
 $app_list_strings['moduleListSingular']['Requests'] = 'Request';
 
+$app_list_strings['moduleList']['Kudos'] = 'Kudos';
+$app_list_strings['moduleListSingular']['Kudos'] = 'Kudos';
 $app_strings['LBL_YOU_RECEIVED_KUDOS'] = '<b>You received</b> kudos!';
 $app_strings['LBL_USER_RECEIVED_KUDOS'] = 'received kudos from <b>you</b>!';
 $app_strings['LBL_GIVE_KUDOS'] = 'GIVE KUDOS';
@@ -4813,6 +4815,7 @@ $app_strings['LBL_KUDOS_UPDATE_BUTTON'] = 'UPDATE';
 $app_strings['LBL_KUDOS_CANCEL_BUTTON'] = 'CANCEL';
 $app_strings['LBL_KUDOS_REMOVE_BUTTON'] = 'REMOVE';
 $app_strings['LBL_KUDOS_UNPUBLISHED'] = 'Unpublished';
+$app_strings['LBL_KUDOS_NOTIFICATION'] = 'You received a kudos!';
 $app_list_strings['kudos_navbar_item_list'] = array(
     'all' => 'All',
     'received' => 'Received',
