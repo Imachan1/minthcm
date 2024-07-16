@@ -4823,6 +4823,7 @@ $app_strings['LBL_KUDOS_UPDATE_BUTTON'] = 'UPDATE';
 $app_strings['LBL_KUDOS_CANCEL_BUTTON'] = 'CANCEL';
 $app_strings['LBL_KUDOS_REMOVE_BUTTON'] = 'REMOVE';
 $app_strings['LBL_KUDOS_UNPUBLISHED'] = 'Unpublished';
+$app_strings['LBL_KUDOS_NOTIFICATION'] = 'You received a kudos!';
 $app_list_strings['kudos_navbar_item_list'] = array(
     'all' => 'All',
     'received' => 'Received',
