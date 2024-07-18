@@ -57,6 +57,7 @@ export const useBackendStore = defineStore('backend', () => {
                 app_list_strings: initResponse.data.languages?.app_list_strings ?? {},
                 modules: {},
             }
+            Settings.defaultLocale = initData.value.user.preferences.language.split('_')[0] ?? 'en_us'
             languages.currentLanguage =
                 localStorage.getItem('currentLang') ?? initResponse.data.global?.default_language ?? 'en_us'
             modules.modulesDefs = initResponse.data?.modules ?? {}
