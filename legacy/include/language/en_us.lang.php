@@ -541,10 +541,6 @@ $app_list_strings = array(
         'Candidates' => 'Candidate',
         'Campaigns' => 'Campaign',
         'Recruitments' => 'Recruitment',
-        'AOS_Contracts' => 'Contract',
-        'AOS_Invoices' => 'Invoice',
-        'AOS_Quotes' => 'Quote',
-        'AOS_Products' => 'Product',
         'Appraisals' => 'Appraisal',
     ),
     'parent_type_display' => array(
@@ -556,10 +552,6 @@ $app_list_strings = array(
         'Candidatures' => 'Candidature',
         'Offboardings' => 'Offboardings',
         'Onboardings' => 'Onboardings',
-        'AOS_Contracts' => 'Contract',
-        'AOS_Invoices' => 'Invoice',
-        'AOS_Quotes' => 'Quote',
-        'AOS_Products' => 'Product',
     ),
     'parent_line_items' => array(
         'AOS_Quotes' => 'Quotes',
