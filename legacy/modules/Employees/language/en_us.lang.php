@@ -139,6 +139,7 @@ $mod_strings = array(
     'LBL_ADDRESS_POSTALCODE' => 'Address Postal Code',
     'LBL_ADDRESS_STATE' => 'Address State',
     'LBL_ADDRESS_STREET' => 'Address Street',
+    'LBL_PRIMARY_STREET' => 'Address Street',
     'LBL_DATE_MODIFIED' => 'Date Modified',
     'LBL_DATE_ENTERED' => 'Date Entered',
     'LBL_DELETED' => 'Deleted',
@@ -208,4 +209,5 @@ $mod_strings = array(
     'LBL_CANDIDATES_MODULE_DUP' => 'Candidates',
     'MSG_SHOW_DUPLICATES' => 'The record you are about to create might be a duplicate of a Candidates or Employees record that already exists. Candidates and Employees records containing similar names are listed below.<br>Click Create to continue creating this new Candidate, or select an existing listed below.',
     /* MintHCM #84233 END */
+    'LBL_BIRTHDATE' => 'Birthdate',
 );

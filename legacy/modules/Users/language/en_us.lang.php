@@ -711,5 +711,6 @@ $mod_strings = array(
     'LNK_LIST_OUTBOUND_EMAIL_ACCOUNTS' => 'Outbound Email Accounts',
     'LNK_LIST_INBOUND_EMAIL_ACCOUNTS' => 'Inbound Email Accounts',
     'LNK_EXTERNAL_OAUTH_CONNECTIONS' => 'External OAuth Connections',
+    'LBL_BIRTHDATE' => 'Birthdate',
 
 ); // END STRINGS DEFS
