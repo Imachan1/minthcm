@@ -4954,3 +4954,5 @@ $app_list_strings['status_list_colored'] = array(
 );
 
 // ColoredEnum Lists END
+
+$app_strings['LBL_YEARS'] = 'Years';
