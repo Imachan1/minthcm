@@ -118,8 +118,7 @@ $viewdefs ['Employees'] = array(
                ),
             ),
             array(
-                'birthdate',
-                '',
+               'birthdate',
             ),
             array(
                array(
@@ -165,37 +164,17 @@ $viewdefs ['Employees'] = array(
             ),
             array(
                array(
-                  'name' => 'address_street',
-                  'type' => 'text',
-                  'label' => 'LBL_PRIMARY_ADDRESS',
-                  'displayParams' =>
-                  array(
+                    'name' => 'primary_address_street',
+                    'hideLabel' => true,
+                    'type' => 'address',
+                    'displayParams' => array(
+                        'key' => 'primary',
                      'rows' => 2,
                      'cols' => 30,
+                        'maxlength' => 150,
                   ),
+                    'label' => 'LBL_ADDRESS_STREET'
                ),
-               array(
-                  'name' => 'address_city',
-                  'label' => 'LBL_CITY',
-               ),
-            ),
-            array(
-               array(
-                  'name' => 'address_state',
-                  'label' => 'LBL_STATE',
-               ),
-               array(
-                  'name' => 'address_postalcode',
-                  'label' => 'LBL_POSTAL_CODE',
-               ),
-            ),
-            array(
-               array(
-                  'name' => 'address_country',
-                  'label' => 'LBL_COUNTRY',
-               ),
-            ),
-            array(
                array(
                   'name' => 'email1',
                   'label' => 'LBL_EMAIL',

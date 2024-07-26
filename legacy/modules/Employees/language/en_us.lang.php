@@ -139,6 +139,7 @@ $mod_strings = array(
     'LBL_ADDRESS_POSTALCODE' => 'Address Postal Code',
     'LBL_ADDRESS_STATE' => 'Address State',
     'LBL_ADDRESS_STREET' => 'Address Street',
+    'LBL_PRIMARY_STREET' => 'Address Street',
     'LBL_DATE_MODIFIED' => 'Date Modified',
     'LBL_DATE_ENTERED' => 'Date Entered',
     'LBL_DELETED' => 'Deleted',
