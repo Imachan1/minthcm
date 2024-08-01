@@ -193,8 +193,16 @@ if (!defined('sugarEntry') || !sugarEntry) {
              }
              $GLOBALS['savePreferencesToDBCats'][$category] = true;
          }
- 
+         if($category === 'eslist' && isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'])){
+            $activeFilter = $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'];
+         }
          $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name] = $value;
+         if(
+            $category === 'eslist' 
+            && !array_key_exists('activeFilter', $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name])
+        ){
+            $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'] = $activeFilter;
+         }
      }
  
      /**
