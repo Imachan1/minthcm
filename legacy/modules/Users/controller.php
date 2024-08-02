@@ -201,6 +201,7 @@ class UsersController extends SugarController
         // redirect to home
         SugarApplication::redirect('index.php?action=index&module=Home');
 
+        require 'modules/Users/Save.php'; // MintHCM #62537
     }
 
     protected function action_saveftsmodules()
@@ -213,7 +214,7 @@ class UsersController extends SugarController
     {
         $this->view = 'edit';
         if (!(is_admin($GLOBALS['current_user']) || $_REQUEST['record'] == $GLOBALS['current_user']->id)) {
-            SugarApplication::redirect("index.php?module=Home&action=index");
+            sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
         }
     }
 
@@ -221,7 +222,7 @@ class UsersController extends SugarController
     {
         $this->view = 'detail';
         if (!(is_admin($GLOBALS['current_user']) || $_REQUEST['record'] == $GLOBALS['current_user']->id)) {
-            SugarApplication::redirect("index.php?module=Home&action=index");
+            sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
         }
     }
 

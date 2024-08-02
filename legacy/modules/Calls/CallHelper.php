@@ -51,6 +51,10 @@
  */
 function getDurationMinutesOptions($focus, $field, $value, $view)
 {
+    if (empty($focus)) {
+        return '';
+    }
+
     if (isset($_REQUEST['duration_minutes'])) {
         $focus->duration_minutes = $_REQUEST['duration_minutes'];
     }
@@ -80,7 +84,7 @@ function getDurationMinutesOptions($focus, $field, $value, $view)
         }
 
         $html .=  'name="duration_minutes">';
-        $html .= get_select_options_with_id($focus->minutes_values, $focus->duration_minutes);
+        $html .= get_select_options_with_id($focus->minutes_values, intval($focus->duration_minutes));
         $html .= '</select>';
         return $html;
     }

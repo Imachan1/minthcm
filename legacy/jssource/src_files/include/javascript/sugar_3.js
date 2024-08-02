@@ -4489,7 +4489,35 @@ function get_close_popup() {
    return window.document.close_popup;
 }
 
-function open_popup( module_name, width, height, initial_filter, close_popup, hide_clear_button, popup_request_data, popup_mode, create, metadata ) {
+ async function open_popup( module_name, width, height, initial_filter, close_popup, hide_clear_button, popup_request_data, popup_mode, create, metadata ) {
+   const result = await window.LegacyEventManager.emit('OpenRelatePopup', {
+      moduleName: module_name,
+      fieldToNameArray: popup_request_data?.field_to_name_array,
+      popupMode: popup_mode?.toLowerCase(),
+    })
+
+    if (result === false) {
+      return
+    }
+
+    if (result) {
+      const call_back_function = eval(popup_request_data?.call_back_function ?? 'viewTools.form.function.set_return')
+      const call_back_data = {
+         form_name: popup_request_data?.form_name ?? 'EditView',
+      }
+      if (result.nameToValueArray) {
+         call_back_data.name_to_value_array = result.nameToValueArray
+      }
+      if (result.selectionList) {
+         call_back_data.selection_list = result.selectionList
+      }
+      if (popup_request_data?.passthru_data) {
+         call_back_data.passthru_data = popup_request_data.passthru_data
+      }
+      call_back_function(call_back_data)
+      return
+    }
+   
    if ( typeof (popupCount) == "undefined" || popupCount == 0 )
       popupCount = 1;
 
@@ -4950,7 +4978,7 @@ SUGAR.append( SUGAR.util, {
                                                 parent = $( 'div[id^="dashlet_entire_"]' ).has( $( "#" + childElement.id ) );
                                                }
                                             /* MintHCM #122649 END */
-                                           if ( parent.length === 0 ) {
+                                           if ( jQuery.isEmptyObject(parent) || parent.length === 0 ) {
                                               window.location.reload( true )
                                            } else {
                                               //else just refresh the parent panel using the SUGAR.mysugar.retrieveDashlet method

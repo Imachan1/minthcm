@@ -815,6 +815,7 @@ class ComposerStaticInit39ad14f11ae792001fdf64c62743e5c7
         'Api\\V8\\Param\\Options\\ModuleName' => __DIR__ . '/../..' . '/Api/V8/Param/Options/ModuleName.php',
         'Api\\V8\\Param\\Options\\Page' => __DIR__ . '/../..' . '/Api/V8/Param/Options/Page.php',
         'Api\\V8\\Param\\Options\\Sort' => __DIR__ . '/../..' . '/Api/V8/Param/Options/Sort.php',
+        'Api\\V8\\Param\\Options\\Timestamp' => __DIR__ . '/../..' . '/Api/V8/Param/Options/Timestamp.php', // MintHCM #87887
         'Api\\V8\\Param\\Options\\Type' => __DIR__ . '/../..' . '/Api/V8/Param/Options/Type.php',
         'Api\\V8\\Param\\PageParams' => __DIR__ . '/../..' . '/Api/V8/Param/PageParams.php',
         'Api\\V8\\Param\\UpdateModuleDataParams' => __DIR__ . '/../..' . '/Api/V8/Param/UpdateModuleDataParams.php',

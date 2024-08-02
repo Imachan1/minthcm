@@ -77,6 +77,15 @@ $dictionary['Scheduler'] = array('table' => 'schedulers',
 			'type' => 'datetime',
 			'required' => true,
 		),
+        'date_indexed' => array(
+            'name' => 'date_indexed',
+            'vname' => 'LBL_DATE_INDEXED',
+            'type' => 'datetime',
+            'comment' => 'Date record last indexed',
+            'enable_range_search' => true,
+            'options' => 'date_range_search_dom',
+            'inline_edit' => false,
+        ),
 		'created_by' => array (
 			'name' => 'created_by',
 			'rname' => 'user_name',
@@ -98,8 +107,7 @@ $dictionary['Scheduler'] = array('table' => 'schedulers',
 			'bean_name' => 'User',
 			'source' => 'non-db',
 		),
-	  	'created_by_name' =>
-    	  array (
+        'created_by_name' => array(
     	    'name' => 'created_by_name',
     		'vname' => 'LBL_CREATED',
     		'type' => 'relate',
@@ -136,8 +144,7 @@ $dictionary['Scheduler'] = array('table' => 'schedulers',
 			'bean_name' => 'User',
 			'source' => 'non-db',
 		),
-		'modified_by_name' =>
-    	  array (
+        'modified_by_name' => array(
     	    'name' => 'modified_by_name',
     	    'vname' => 'LBL_MODIFIED_NAME',
     	    'type' => 'relate',
@@ -176,7 +183,7 @@ $dictionary['Scheduler'] = array('table' => 'schedulers',
 			'required' => false,
 			'reportable' => false,
 			'source' => 'non-db',
-			'dependency' => 'equal($job_function, "url::")'
+            'dependency' => 'equal($job_function, "url::")',
 		),
 		'job_function' => array (
 			'name' => 'job_function',
@@ -196,7 +203,7 @@ $dictionary['Scheduler'] = array('table' => 'schedulers',
 			'reportable' => false,
 			//Previously Editview on scheduler assigned default value as $timedate->fromString('2005-01-01')
             //the bottom value follows previous default value.
-            'display_default' => '2005/01/01'
+            'display_default' => '2005/01/01',
 		),
 		'date_time_end' => array (
 			'name' => 'date_time_end',
@@ -276,18 +283,18 @@ $dictionary['Scheduler'] = array('table' => 'schedulers',
 			'name' =>'schedulerspk',
 			'type' =>'primary',
 			'fields' => array(
-				'id'
-			)
+                'id',
 		),
+        ),
 		array(
 		'name' =>'idx_schedule',
 		'type'=>'index',
 		'fields' => array(
 			'date_time_start',
-			'deleted'
-			)
+                'deleted',
 		),
 	),
+    ),
 	'relationships' => array (
 		'schedulers_created_by_rel' => array (
 			'lhs_module'		=> 'Users',
@@ -296,7 +303,7 @@ $dictionary['Scheduler'] = array('table' => 'schedulers',
 			'rhs_module'		=> 'Schedulers',
 			'rhs_table'			=> 'schedulers',
 			'rhs_key'			=> 'created_by',
-			'relationship_type'	=> 'one-to-one'
+            'relationship_type' => 'one-to-one',
 		),
 		'schedulers_modified_user_id_rel' => array (
 			'lhs_module'		=> 'Users',
@@ -305,7 +312,7 @@ $dictionary['Scheduler'] = array('table' => 'schedulers',
 			'rhs_module'		=> 'Schedulers',
 			'rhs_table'			=> 'schedulers',
 			'rhs_key'			=> 'modified_user_id',
-			'relationship_type'	=> 'one-to-many'
+            'relationship_type' => 'one-to-many',
 		),
 		'schedulers_jobs_rel' => array(
 			'lhs_module'					=> 'Schedulers',
@@ -316,7 +323,7 @@ $dictionary['Scheduler'] = array('table' => 'schedulers',
 			'rhs_key' 						=> 'scheduler_id',
 			'relationship_type' 			=> 'one-to-many',
 		),
-	)
+    ),
 );
 
 //VardefManager::createVardef('Schedulers','Scheduler', array('default'));

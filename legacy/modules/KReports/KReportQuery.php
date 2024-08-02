@@ -920,6 +920,10 @@ class KReportQuery
             $kOrgUnits = true;
         }
 
+      /* Mint Suite 8 #116492 START */
+      $this->tablePath = $this->tablePath ?? [];
+      /* Mint Sutie 8 #116492 END */
+
         /*
          * Build the array for the joins based on the various Path we have
          */
@@ -955,7 +959,10 @@ class KReportQuery
         $this->joinSegments['root:' . $this->root_module]['object'] = BeanFactory::getBean($this->root_module);
 
         // check for Custom Fields
-        if ($this->joinSegments['root:' . $this->root_module]['object']->hasCustomFields()) {
+      // Mint Suite8 #116492 START
+      // if ( $this->joinSegments['root:' . $this->root_module]['object']->hasCustomFields() ) {
+      if ( $this->joinSegments['root:' . $this->root_module]['object'] !== false && $this->joinSegments['root:' . $this->root_module]['object']->hasCustomFields() ) {
+      //Mint Suite8 #116492 END
             $this->joinSegments['root:' . $this->root_module]['customjoin'] = randomstring();
             $this->fromString .= ' LEFT JOIN ' . $this->get_table_for_module($this->root_module) . '_cstm as ' . $this->joinSegments['root:' . $this->root_module]['customjoin'] . '  ON ' . $this->rootGuid . '.id = ' . $this->joinSegments['root:' . $this->root_module]['customjoin'] . '.id_c';
         }
@@ -1121,7 +1128,6 @@ class KReportQuery
                                 /* MintHCM #70811 START */
                             }
                             /* MintHCM #70811 END */
-
                             // check for Custom Fields
                             if ($this->joinSegments[$thisPath]['object']->hasCustomFields()) {
                                 $this->joinSegments[$thisPath]['customjoin'] = randomstring();
@@ -1916,28 +1922,30 @@ class KReportQuery
                 }
                 break;
             case 'today':
-                $todayDate = date('Y-m-d', mktime());
+            //$todayDate = date('Y-m-d', mktime());
+            $today_date = new DateTime("now");
+            $todayDate = $today_date->format('Y-m-d');
                 $thisWhereString .= ' >= \'' . $todayDate . ' 00:00:00\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' <= \'' . $todayDate . ' 23:59:59\'';
                 break;
             case 'past':
-                $thisWhereString .= ' <= \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
+            $thisWhereString .= ' <= \'' . date('Y-m-d H:i:s', time()) . '\'';
                 break;
             case 'future':
-                $thisWhereString .= ' >= \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
+            $thisWhereString .= ' >= \'' . date('Y-m-d H:i:s', time()) . '\'';
                 break;
             case 'lastndays':
-                $date = gmmktime();
-                $thisWhereString .= ' >= \'' . date('Y-m-d H:i:s', gmmktime() - $value * 86400) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
+            $date = time();
+            $thisWhereString .= ' >= \'' . date('Y-m-d H:i:s', time() - $value * 86400) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . date('Y-m-d H:i:s', time()) . '\'';
                 break;
             case 'lastnfdays':
-                $date = gmmktime(0, 0, 0, date('m', gmmktime()), date('d', gmmktime()), date('Y', gmmktime()));
+            $date = gmmktime(0, 0, 0, date('m', time()), date('d', time()), date('Y', time()));
                 $thisWhereString .= ' >= \'' . gmdate('Y-m-d H:i:s', $date - $value * 86400) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . gmdate('Y-m-d H:i:s', $date) . '\'';
                 break;
             case 'lastnddays':
                 // if numeric we still have the number of days .. else we have a date
                 if (is_numeric($value)) {
-                    $date = gmmktime();
-                    $thisWhereString .= ' >= \'' . date('Y-m-d H:i:s', gmmktime() - $value * 86400) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
+               $date = time();
+               $thisWhereString .= ' >= \'' . date('Y-m-d H:i:s', time() - $value * 86400) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . date('Y-m-d H:i:s', time()) . '\'';
                 } else
                 // 2011-03-25 date handling no on client side
                 //$thisWhereString .= ' >= \'' . $GLOBALS['timedate']->to_db_date($value, false) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
@@ -1947,12 +1955,12 @@ class KReportQuery
 
                 break;
             case 'lastnweeks':
-                $date = gmmktime();
-                $thisWhereString .= ' >= \'' . date('Y-m-d H:i:s', gmmktime() - $value * 604800) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
+            $date = time();
+            $thisWhereString .= ' >= \'' . date('Y-m-d H:i:s', time() - $value * 604800) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . date('Y-m-d H:i:s', time()) . '\'';
                 break;
             case 'notlastnweeks':
-                $date = gmmktime();
-                $thisWhereString .= ' <= \'' . date('Y-m-d H:i:s', gmmktime() - $value * 604800) . '\' OR ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
+            $date = time();
+            $thisWhereString .= ' <= \'' . date('Y-m-d H:i:s', time() - $value * 604800) . '\' OR ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s', time()) . '\'';
                 break;
             case 'lastnfweeks':
                 $dayofWeek = date('N');
@@ -2008,42 +2016,42 @@ class KReportQuery
                 $thisWhereString .= ' >= \'' . gmdate('Y-m-d H:i:s', $startStamp) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . gmdate('Y-m-d H:i:s', $startStamp + 604800 - 1) . '\'';
                 break;
             case 'nextndays':
-                $date = gmmktime();
-                $thisWhereString .= ' <= \'' . date('Y-m-d H:i:s', gmmktime() + $value * 86400) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
+            $date = time();
+            $thisWhereString .= ' <= \'' . date('Y-m-d H:i:s', time() + $value * 86400) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s', time()) . '\'';
                 break;
             case 'nextnddays':
                 // if numeric we still have the number of days .. else we have a date
                 if (is_numeric($value)) {
-                    $date = gmmktime();
-                    $thisWhereString .= ' <= \'' . date('Y-m-d H:i:s', gmmktime() + $value * 86400) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
+               $date = time();
+               $thisWhereString .= ' <= \'' . date('Y-m-d H:i:s', time() + $value * 86400) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s', time()) . '\'';
                 } else {
                     //$conCatAdd = ' <= \'' . $GLOBALS['timedate']->to_db_date($value) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s') . '\'';
                     // 2011-03-25 date handling now on client side
-                    // $thisWhereString .= ' <= \'' . $GLOBALS['timedate']->to_db_date($value, false) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
-                    $thisWhereString .= ' <= \'' . $value . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
+               // $thisWhereString .= ' <= \'' . $GLOBALS['timedate']->to_db_date($value, false) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s', time()) . '\'';
+               $thisWhereString .= ' <= \'' . $value . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s', time()) . '\'';
                 }
                 break;
             //2011-05-20 added between n days option
             case 'betwndays':
-                $date = gmmktime(0, 0, 0, date('m', gmmktime()), date('d', gmmktime()), date('Y', gmmktime()));
+            $date = gmmktime(0, 0, 0, date('m', time()), date('d', time()), date('Y', time()));
                 $thisWhereString .= ' >= \'' . gmdate('Y-m-d H:i:s', $date + $value * 86400) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . gmdate('Y-m-d H:i:s', $date + $valueto * 86400) . '\'';
                 break;
                 break;
             case 'betwnddays':
                 if (is_numeric($value)) {
-                    $date = gmmktime(0, 0, 0, date('m', gmmktime()), date('d', gmmktime()), date('Y', gmmktime()));
+               $date = gmmktime(0, 0, 0, date('m', time()), date('d', time()), date('Y', time()));
                     $thisWhereString .= ' >= \'' . gmdate('Y-m-d H:i:s', $date + $value * 86400) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . gmdate('Y-m-d H:i:s', $date + $valueto * 86400) . '\'';
                 } else {
                     $thisWhereString .= ' >= \'' . $value . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . $valueto . '\'';
                 }
                 break;
             case 'nextnweeks':
-                $date = gmmktime();
-                $thisWhereString .= ' <= \'' . date('Y-m-d H:i:s', gmmktime() + $value * 604800) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
+            $date = time();
+            $thisWhereString .= ' <= \'' . date('Y-m-d H:i:s', time() + $value * 604800) . '\' AND ' . $this->get_field_name($path, $fieldname, $fieldid) . ' > \'' . date('Y-m-d H:i:s', time()) . '\'';
                 break;
             case 'notnextnweeks':
-                $date = gmmktime();
-                $thisWhereString .= ' >= \'' . date('Y-m-d H:i:s', gmmktime() + $value * 604800) . '\' OR ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . date('Y-m-d H:i:s', gmmktime()) . '\'';
+            $date = time();
+            $thisWhereString .= ' >= \'' . date('Y-m-d H:i:s', time() + $value * 604800) . '\' OR ' . $this->get_field_name($path, $fieldname, $fieldid) . ' < \'' . date('Y-m-d H:i:s', time()) . '\'';
                 break;
             case 'firstdayofmonth':
                 $dateArray = getdate();
@@ -2497,8 +2505,9 @@ class KReportQuery
 
             global $beanList;
             // 2010-25-10 replace the -> object name with get_class function to handle also the funny aCase obejcts
+         if(isset($this->joinSegments[$path]) && isset($this->joinSegments[$path]['object'])){
             $thisModule = array_search(get_class($this->joinSegments[$path]['object']), $beanList);
-
+         }
             // bugfix 2011-03-21 moved up to allow proper value handling in tree
             // get the field details
             $thisFieldIdEntry = $this->get_listfieldentry_by_fieldid($fieldid);

@@ -361,6 +361,7 @@ function get_sugar_config_defaults(): array
             'ssl' => false,
         ],
         'default_action' => 'index',
+        'currency_on_right' => false,
         'default_charset' => return_session_value_or_default('default_charset',
             'UTF-8'),
         'default_currency_name' => return_session_value_or_default('default_currency_name',
@@ -5744,6 +5745,22 @@ function get_language_header()
 {
     return isset($GLOBALS['current_language']) ? "lang='{$GLOBALS['current_language']}'"
     : "lang='en'";
+}
+
+/**
+ * get_direction_header.
+ *
+ * @return string The dir=[direction] markup to insert into the <html> tag
+ */
+function get_direction_header()
+{
+    $lang = isset($GLOBALS['current_language']) ? $GLOBALS['current_language'] : "en";
+    $dir = 'ltr';
+    $lang = strtolower(strtok($lang, '_'));
+    if(in_array($lang, ['ar','fa','he','ur','yi'])){
+        $dir = 'rtl';
+    }
+    return "dir='$dir'";
 }
 
 /**

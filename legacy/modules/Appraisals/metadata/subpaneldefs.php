@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -53,9 +52,8 @@ $layout_defs["Appraisals"]["subpanel_setup"] = array(
       'sort_by' => 'id',
       'title_key' => 'LBL_MEETINGS',
       'get_subpanel_data' => 'meetings',
-      'top_buttons' =>
+        'top_buttons' => array(
       array(
-         array(
             'widget_class' => 'SubPanelTopButtonQuickCreate',
          ),
          array(
@@ -72,9 +70,26 @@ $layout_defs["Appraisals"]["subpanel_setup"] = array(
       'sort_by' => 'id',
       'title_key' => 'LBL_ROLES',
       'get_subpanel_data' => 'roles',
-      'top_buttons' =>
+        'top_buttons' => array(
       array(
+                'widget_class' => 'SubPanelTopButtonQuickCreate',
+            ),
          array(
+                'widget_class' => 'SubPanelTopSelectButton',
+                'mode' => 'MultiSelect',
+            ),
+        ),
+    ),
+    'notes' => array(
+        'order' => 100,
+        'module' => 'Notes',
+        'subpanel_name' => 'ForAppraisals',
+        'sort_order' => 'asc',
+        'sort_by' => 'id',
+        'title_key' => 'LBL_NOTES',
+        'get_subpanel_data' => 'notes',
+        'top_buttons' => array(
+            array(
             'widget_class' => 'SubPanelTopButtonQuickCreate',
          ),
          array(
@@ -91,9 +106,8 @@ $layout_defs["Appraisals"]["subpanel_setup"] = array(
       'sort_by' => 'id',
       'title_key' => 'LBL_DOCUMENTS',
       'get_subpanel_data' => 'documents',
-      'top_buttons' =>
+        'top_buttons' => array(
       array(
-         array(
             'widget_class' => 'SubPanelTopButtonQuickCreate',
          ),
          array(
@@ -103,7 +117,7 @@ $layout_defs["Appraisals"]["subpanel_setup"] = array(
       ),
    ),
    'securitygroups' => array(
-      'top_buttons' => array( array( 'widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'SecurityGroups', 'mode' => 'MultiSelect' ), ),
+        'top_buttons' => array(array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'SecurityGroups', 'mode' => 'MultiSelect')),
       'order' => 900,
       'sort_by' => 'name',
       'sort_order' => 'asc',

@@ -406,6 +406,13 @@ $app_list_strings = array(
         'Pending Input' => 'Pending Input',
         'Deferred' => 'Deferred',
     ),
+    'task_status_dom_coloredenum' => array(
+        'Not Started' => 'blue',
+        'In Progress' => 'yellow',
+        'Completed' => 'green',
+        'Pending Input' => 'yellow',
+        'Deferred' => 'grey',
+    ),
     'meeting_status_default' => 'Planned',
     'meeting_status_dom' => array(
         'Planned' => 'Planned',
@@ -538,6 +545,7 @@ $app_list_strings = array(
         'AOS_Invoices' => 'Invoice',
         'AOS_Quotes' => 'Quote',
         'AOS_Products' => 'Product',
+        'Appraisals' => 'Appraisal',
     ),
     'parent_type_display' => array(
         'Tasks' => 'Task',
@@ -2380,6 +2388,7 @@ $app_strings = array(
     'LBL_ESLIST_NO_DATA' => 'No options available',
     'LBL_ESLIST_DATE' => 'Date',
     'LBL_ESLIST_SELECT_DATE' => 'Select',
+    'LBL_ESLIST_OVERWRITE_FILTER_CONFIRM' => 'Filter with that name already exists. Do you want to overwrite it?',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
@@ -3957,7 +3966,7 @@ $app_strings['LBL_APPRAISAL_ITEM_ERROR'] = 'This field is required';
 $app_strings['LBL_APPRAISAL_ITEM_TYPE_ERROR'] = 'The recruitment appraisal may have positions only on competence subject';
 $app_strings['LBL_CHOOSE_PLAN'] = 'You must to choose plan';
 $app_strings['LBL_PLAN_NOT_CHOOSED'] = 'Plan is not choosed';
-$app_strings['LBL_CLOSE_PLAN_CONFIRM'] = 'Are you sure you want to approve this plan?';
+$app_strings['LBL_CLOSE_PLAN_CONFIRM'] = 'Are you sure you want to confirm this schedule?';
 $app_strings['LBL_CREATE_RESOURCE_CONFIRM'] = 'Are you sure you want to create resource from this record?';
 $app_strings['ERR_CLOSE_PLAN'] = 'You cannot approve this plan "{name}", because there are gaps between spent times or his time frames do not coincide with working times';
 $app_strings['ERR_CLOSE_PLAN_WORK'] = 'You cannot approve this plan "{name}", because workplace has not been selected.';
@@ -4222,12 +4231,36 @@ $app_list_strings['status_list'] = array(
     'Scored' => 'Task Scored',
     'Scored2' => 'After Preliminary Meeting',
 );
+$app_list_strings['status_list_coloredenum'] = array(
+    'Acceptance' => 'yellow',
+    'AfterEntryInterview' => 'yellow',
+    'CandidateResignation' => 'grey',
+    'EntryInterview' => 'yellow',
+    'Hired' => 'green',
+    'InProgress' => 'yellow',
+    'MeetingAdditional' => 'yellow',
+    'MeetingPrimary' => 'yellow',
+    'Negotation' => 'yellow',
+    'New' => 'blue',
+    'Offer' => 'yellow',
+    'PracticalTask' => 'yellow',
+    'Preselection' => 'yellow',
+    'Rejected' => 'red',
+    'Scored' => 'yellow',
+    'Scored2' => 'yellow',
+);
 
 $app_list_strings['project_status_list'] = array(
     'for_approval' => 'For approval',
     'plan' => 'Planned',
     'open' => 'Open',
     'close' => 'Closed',
+);
+$app_list_strings['project_status_list_coloredenum'] = array(
+    'for_approval' => 'blue',
+    'plan' => 'yellow',
+    'open' => 'green',
+    'close' => 'grey',
 );
 
 $app_list_strings['reason_for_rejection_list'] = array(
@@ -4524,21 +4557,26 @@ $app_list_strings['dom_imaptype_options'] = array(
 
 $app_strings['LBL_RN_108842_SETOAUTH2MAILINGCONFIGURATION'] = 'Configure oauth2 mailing';
  
-$app_strings['LBL_PASSWORD_LOGIN_ERROR_USER'] = 'Missing username and password';
-$app_strings['LBL_LOGIN_ERROR_USER'] = 'Username is missing';
-$app_strings['LBL_PASSWORD_ERROR_USER'] = 'The password is missing';
+$app_strings['LBL_APP_PLEASE_FILL_IT'] = 'Please fill it in.';
+$app_strings['LBL_APP_PLEASE_FILL_THEM'] = 'Please fill them in.';
+$app_strings['LBL_PASSWORD_LOGIN_ERROR_USER'] = 'The username and password are required.';
+$app_strings['LBL_LOGIN_ERROR_USER'] = 'The username is required.';
+$app_strings['LBL_PASSWORD_ERROR_USER'] = 'The password is required.';
 $app_strings['LBL_BAD_LOGIN_PASSWORD'] = 'Incorrect username or password';
 $app_strings['LBL_USERNAME'] = 'Username';
 $app_strings['LBL_PASSWORD'] = 'Password';
 $app_strings['LBL_WELCOME'] = 'Welcome';
 $app_strings['LBL_NO_LANGUAGES'] = 'No languages ​​available';
 $app_strings['LBL_NETWORK_ERROR'] = 'Network error';
+$app_strings['LBL_APP_LOGIN_FAILED'] = "Login failed";
+$app_strings['LBL_APP_NETWORK'] = "Could not find the server. Check internet connection or try providing another address.";
+$app_strings['LBL_APP_BAD_LOGIN_PASSWORD'] = "Incorrect username or password. Try another one.";
 $app_strings['LBL_LOGIN'] = 'Sign In';
 $app_strings['LBL_DASHBOARD'] = 'Dashboard';
 $app_strings['LBL_RESET'] = 'Reset';
 $app_strings['LBL_NO_FILTERS'] = 'No Filters';
-$app_strings['LBL_RECORD_CONFIRM_SUCCESS'] = 'Success! Record has been confirmed';
-$app_strings['LBL_RECORD_CONFIRM_FAILURE'] = "Failure! Record hasn't been confirmed";
+$app_strings['LBL_RECORD_CONFIRM_SUCCESS'] = 'Success! Schedule has been confirmed';
+$app_strings['LBL_RECORD_CONFIRM_FAILURE'] = "Failure! Schedule hasn't been confirmed";
 $app_strings['LBL_RECORD_DELETE_SUCCESS'] = 'Record deleted successfully';
 $app_strings['LBL_RECORD_DELETE_FAILURE'] = 'The record could not be deleted';
 $app_strings['LBL_RECORD_SAVE_SUCCESS'] = 'Record was successfully saved';
@@ -4631,9 +4669,9 @@ $app_strings['LBL_MINT4_AUTH_LOGIN_TITLE'] = 'Login';
 $app_strings['LBL_MINT4_AUTH_LOGIN_BTN'] = 'Log in';
 $app_strings['LBL_MINT4_AUTH_BACK_TO_LOGIN'] = 'Back to login';
 $app_strings['LBL_MINT4_AUTH_LOGIN_ERROR'] = 'Incorrect email or password, please try another one.';
-$app_strings['LBL_MINT4_AUTH_FORGET_TITLE'] = 'Forget Password';
+$app_strings['LBL_MINT4_AUTH_FORGET_TITLE'] = 'Forgot Password';
 $app_strings['LBL_MINT4_AUTH_FORGET_BTN'] = 'Reset Password';
-$app_strings['LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION'] = 'Forget password?';
+$app_strings['LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION'] = 'Forgot password?';
 $app_strings['LBL_MINT4_AUTH_FORGET_SUCCESS'] = 'Shortly, you will receive an email with a link to reset your password.';
 $app_strings['LBL_MINT4_AUTH_FORGET_ERROR'] = 'Incorrect username or email, please try another one.';
 $app_strings['LBL_MINT4_AUTH_RESET_TITLE'] = 'Password Reset';
@@ -4732,6 +4770,10 @@ $app_strings['LBL_MINT4_COMMENTS_ACTION_PIN'] = 'Pin';
 $app_strings['LBL_MINT4_COMMENTS_ACTION_UNPIN'] = 'Unpin';
 $app_strings['LBL_MINT4_COMMENTS_USERS_HINT_NOT_FOUND'] = 'No users found';
 $app_strings['LBL_MINT4_COMMENTS_NO_COMMENTS'] = 'There are no comments';
+
+$app_strings['LBL_MINT4_MASS_DELETE_CONFIRM'] = 'Are you sure you want to delete selected items?';
+$app_strings['LBL_MINT4_MASS_DELETE_ERROR'] = 'Failed to delete selected items';
+
 
 $app_strings['ERR_WORKPLACE_REQUIRED_IF_ASSIGNED_TO_USER'] = 'Workplace is required if user has at least one workplace assigned!';
 
@@ -4898,6 +4940,25 @@ $app_list_strings['applications_status_list_colored'] = array(
     'in_progress' => $yellow_status,
     'accepted' => $green_status,
     'rejected' => $red_status,
+);
+
+$app_list_strings['status_list_colored'] = array(
+    'Acceptance' => $yellow_status,
+    'AfterEntryInterview' => $yellow_status,
+    'CandidateResignation' => $red_status,
+    'EntryInterview' => $yellow_status,
+    'Hired' => $green_status,
+    'InProgress' => $yellow_status,
+    'MeetingAdditional' => $yellow_status,
+    'MeetingPrimary' => $yellow_status,
+    'Negotation' => $yellow_status,
+    'New' => $blue_status,
+    'Offer' => $yellow_status,
+    'PracticalTask' => $yellow_status,
+    'Preselection' => $yellow_status,
+    'Rejected' => $red_status,
+    'Scored' => $yellow_status,
+    'Scored2' => $yellow_status,
 );
 
 // ColoredEnum Lists END

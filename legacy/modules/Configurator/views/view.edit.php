@@ -53,11 +53,11 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * Contributor(s): ______________________________________..
  * ****************************************************************************** */
 
-require_once('modules/Configurator/Forms.php');
-require_once('modules/Administration/Forms.php');
-require_once('modules/Configurator/Configurator.php');
-require_once('include/SugarLogger/SugarLogger.php');
-require_once('modules/Leads/Lead.php');
+require_once 'modules/Configurator/Forms.php';
+require_once 'modules/Administration/Forms.php';
+require_once 'modules/Configurator/Configurator.php';
+require_once 'include/SugarLogger/SugarLogger.php';
+require_once 'modules/Leads/Lead.php';
 
 #[\AllowDynamicProperties]
 class ConfiguratorViewEdit extends ViewEdit {
@@ -70,30 +70,36 @@ class ConfiguratorViewEdit extends ViewEdit {
    /**
     * @see SugarView::preDisplay()
     */
-   public function preDisplay() {
+    public function preDisplay()
+    {
       global $app_list_strings;
       $this->ss->assign("SUBPANEL_COUNT_METHODS", get_select_options_with_id($app_list_strings['subpanel_count_methods'], isset($this->configurator->config['subpanel_count_method']) ? $this->configurator->config['subpanel_count_method'] : 'count'));
-      if ( !is_admin($GLOBALS['current_user']) )
+        if (!is_admin($GLOBALS['current_user'])) {
          sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
    }
+
+    }
 
    /**
     * @see SugarView::_getModuleTitleParams()
     */
-   protected function _getModuleTitleParams($browserTitle = false) {
+    protected function _getModuleTitleParams($browserTitle = false)
+    {
       global $mod_strings;
 
       return array(
          "<a href='index.php?module=Administration&action=index'>" . translate('LBL_MODULE_NAME', 'Administration') . "</a>",
-         $mod_strings['LBL_SYSTEM_SETTINGS']
+            $mod_strings['LBL_SYSTEM_SETTINGS'],
       );
    }
 
-   public function __construct() {
+    public function __construct()
+    {
       $this->configurator = new Configurator;
    }
 
-   public function process() {
+    public function process()
+    {
       if ( isset($this->errors['company_logo']) ) {
          $this->configurator->errors['company_logo'] = $this->errors['company_logo'];
          unset($this->errors['company_logo']);
@@ -105,7 +111,8 @@ class ConfiguratorViewEdit extends ViewEdit {
    /**
     * @see SugarView::display()
     */
-   public function display() {
+    public function display()
+    {
       global $current_user, $mod_strings, $app_strings, $app_list_strings, $sugar_config, $locale;
 
       $configurator = $this->configurator;
@@ -117,7 +124,6 @@ class ConfiguratorViewEdit extends ViewEdit {
       if ( !empty($_POST['restore']) ) {
          $configurator->restoreConfig();
       }
-
 
       $mailSendType = null;
       if ( isset($focus->settings['mail_sendtype']) ) {
@@ -151,11 +157,6 @@ class ConfiguratorViewEdit extends ViewEdit {
          $this->ss->assign('log_levels', get_select_options_with_id(LoggerManager::getLoggerLevels(), $configurator->config['logger']['level']));
       } else {
          $this->ss->assign('log_levels', get_select_options_with_id(LoggerManager::getLoggerLevels(), ''));
-      }
-      if ( !empty($configurator->config['lead_conv_activity_opt']) ) {
-         $this->ss->assign('lead_conv_activities', get_select_options_with_id(Lead::getActivitiesOptions(), $configurator->config['lead_conv_activity_opt']));
-      } else {
-         $this->ss->assign('lead_conv_activities', get_select_options_with_id(Lead::getActivitiesOptions(), ''));
       }
       if ( !empty($configurator->config['logger']['file']['suffix']) ) {
          $this->ss->assign('filename_suffix', get_select_options_with_id(SugarLogger::$filename_suffix, $configurator->config['logger']['file']['suffix']));
@@ -194,7 +195,8 @@ class ConfiguratorViewEdit extends ViewEdit {
     * 
     * @param string $googleAuthJSON
     */
-   protected function checkGoogleSyncJSON($googleAuthJSON) {
+    protected function checkGoogleSyncJSON($googleAuthJSON)
+    {
       $json = base64_decode($googleAuthJSON);
       $config = json_decode($json, true);
       if ( $config ) {

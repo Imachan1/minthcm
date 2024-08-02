@@ -33,7 +33,11 @@ class ESListViewGetRecords {
             global $current_user;
             $options['filters']['filter'][] = ['term' => ['meta.assigned.user_id.keyword' => $current_user->id]];
         }
-
+        if (strlen($options['searchPhrase'])) {
+            $searchPhrase = str_replace('+', '', $options['searchPhrase']);
+            $searchPhrase = strtolower($searchPhrase) . '*';
+            $options['filters']['filter'][] = ['query_string' => ['query' => $searchPhrase]];
+        }
         if (!empty($arguments['defaultFilters']['filter'])) {
             array_push($options['filters']['filter'], ...$arguments['defaultFilters']['filter']);
         }
@@ -104,7 +108,7 @@ class ESListViewGetRecords {
         }
 
         $total_records = ($this->page - 1) * $this->itemsPerPage + count($this->results) + $next_page_exists;
-        $offset = $this->offset + ($this->itemsPerPage * ($number_of_request_into_elasticsearch - 1)) + $this->add_to_offset + 1;
+        $offset = $this->offset + ($this->itemsPerPage * ($number_of_request_into_elasticsearch - 1)) + $this->add_to_offset;
         return [$total_records, $offset, array_values($this->results)];
     }
 
@@ -145,7 +149,7 @@ class ESListViewGetRecords {
      * @return array
      */
     protected function getRecordsFromElasticSearch($query, $per_page, $offset, $engine, $options) {
-        $search_query = SearchQuery::fromString($query, $per_page, $offset, $engine, $options);
+        $search_query = SearchQuery::fromString($query, $per_page, $offset + 1, $engine, $options);
         $results = SearchWrapper::search($search_query->getEngine(), $search_query);
         $beans = $results->getHitsAsBeans();
         return [$beans, $results];

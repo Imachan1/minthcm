@@ -45,36 +45,40 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-
 $dictionary['ACLRole'] = array('table' => 'acl_roles', 'comment' => 'ACL Role definition'
 , 'fields' => array(
-        'id' =>
-            array(
+        'id' => array(
                 'name' => 'id',
                 'vname' => 'LBL_ID',
                 'required' => true,
                 'type' => 'id',
                 'reportable' => false,
-                'comment' => 'Unique identifier'
+            'comment' => 'Unique identifier',
             ),
-        'date_entered' =>
-            array(
+        'date_entered' => array(
                 'name' => 'date_entered',
                 'vname' => 'LBL_DATE_ENTERED',
                 'type' => 'datetime',
                 'required' => true,
-                'comment' => 'Date record created'
+            'comment' => 'Date record created',
             ),
-        'date_modified' =>
-            array(
+        'date_modified' => array(
                 'name' => 'date_modified',
                 'vname' => 'LBL_DATE_MODIFIED',
                 'type' => 'datetime',
                 'required' => true,
-                'comment' => 'Date record last modified'
+            'comment' => 'Date record last modified',
             ),
-        'modified_user_id' =>
-            array(
+        'date_indexed' => array(
+            'name' => 'date_indexed',
+            'vname' => 'LBL_DATE_INDEXED',
+            'type' => 'datetime',
+            'comment' => 'Date record last indexed',
+            'enable_range_search' => true,
+            'options' => 'date_range_search_dom',
+            'inline_edit' => false,
+        ),
+        'modified_user_id' => array(
                 'name' => 'modified_user_id',
                 'rname' => 'user_name',
                 'id_name' => 'modified_user_id',
@@ -86,10 +90,9 @@ $dictionary['ACLRole'] = array('table' => 'acl_roles', 'comment' => 'ACL Role de
                 'required' => false,
                 'len' => 36,
                 'reportable' => true,
-                'comment' => 'User who last modified record'
+            'comment' => 'User who last modified record',
             ),
-        'created_by' =>
-            array(
+        'created_by' => array(
                 'name' => 'created_by',
                 'rname' => 'user_name',
                 'id_name' => 'created_by',
@@ -99,49 +102,43 @@ $dictionary['ACLRole'] = array('table' => 'acl_roles', 'comment' => 'ACL Role de
                 'isnull' => 'false',
                 'dbType' => 'id',
                 'len' => 36,
-                'comment' => 'User who created record'
+            'comment' => 'User who created record',
             ),
-        'name' =>
-            array(
+        'name' => array(
                 'name' => 'name',
                 'type' => 'varchar',
                 'vname' => 'LBL_NAME',
                 'len' => 150,
-                'comment' => 'The role name'
+            'comment' => 'The role name',
             ),
-        'description' =>
-            array(
+        'description' => array(
                 'name' => 'description',
                 'vname' => 'LBL_DESCRIPTION',
                 'type' => 'text',
-                'comment' => 'The role description'
+            'comment' => 'The role description',
             ),
-        'deleted' =>
-            array(
+        'deleted' => array(
                 'name' => 'deleted',
                 'vname' => 'LBL_DELETED',
                 'type' => 'bool',
                 'reportable' => false,
-                'comment' => 'Record deletion indicator'
+            'comment' => 'Record deletion indicator',
             ),
-        'users' =>
-            array(
+        'users' => array(
                 'name' => 'users',
                 'type' => 'link',
                 'relationship' => 'acl_roles_users',
                 'source' => 'non-db',
                 'vname' => 'LBL_USERS',
             ),
-        'actions' =>
-            array(
+        'actions' => array(
                 'name' => 'actions',
                 'type' => 'link',
                 'relationship' => 'acl_roles_actions',
                 'source' => 'non-db',
                 'vname' => 'LBL_USERS',
             ),
-        'SecurityGroups' =>
-            array(
+        'SecurityGroups' => array(
                 'name' => 'SecurityGroups',
                 'type' => 'link',
                 'relationship' => 'securitygroups_acl_roles',
@@ -154,6 +151,6 @@ $dictionary['ACLRole'] = array('table' => 'acl_roles', 'comment' => 'ACL Role de
 , 'indices' => array(
         array('name' => 'aclrolespk', 'type' => 'primary', 'fields' => array('id')),
         array('name' => 'idx_aclrole_id_del', 'type' => 'index', 'fields' => array('id', 'deleted')),
-    )
+    ),
 
 );

@@ -47,11 +47,12 @@
 lists can work. *}
 {if is_string({{sugarvar key='options' string=true}})}
 <input type="hidden" class="sugar_field" id="{{sugarvar key='name'}}" value="{ {{sugarvar key='options' string=true}} }">
-{ {{sugarvar key='options' string=true}} }
+    {if empty($status)} { {{sugarvar key='options' string=true}} } {else} <span style="{{$displayParams.style}}"><b>{{$status}}</b></span> {/if}
 {else}
 <input type="hidden" class="sugar_field" id="{{sugarvar key='name'}}" value="{ {{sugarvar key='value' string=true}} }">
-{ {{sugarvar key='options' string=true}}[{{sugarvar key='value' string=true}}]}
+    {if empty($status)} { {{sugarvar key='options' string=true}}[{{sugarvar key='value' string=true}}]} {else} <span style="{{$displayParams.style}}"><b>{{$status}}</b></span> {/if}
 {/if}
+
 {{if !empty($displayParams.enableConnectors)}}
 {{sugarvar_connector view='DetailView'}}
 {{/if}}

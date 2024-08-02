@@ -81,4 +81,9 @@ class EmployeesController extends SugarController {
       }
    }
 
+   public function action_showduplicates()
+   {
+       $this->view = "showduplicates";
+   }
+
 }

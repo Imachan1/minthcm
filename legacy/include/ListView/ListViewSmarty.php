@@ -46,8 +46,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-require_once('include/ListView/ListViewDisplay.php');
+require_once 'include/ListView/ListViewDisplay.php';
 
+require_once 'include/contextMenus/contextMenu.php';
 
 require_once('include/contextMenus/contextMenu.php');
 #[\AllowDynamicProperties]
@@ -119,7 +120,7 @@ class ListViewSmarty extends ListViewDisplay
             return;
         }
         global $odd_bg, $even_bg, $hilite_bg, $app_strings, $sugar_config;
-
+        if (is_object($this->seed) || class_exists($this->seed)) {
         $seedClass = get_parent_class($this->seed);
         if (in_array($seedClass, array('Company', 'Person'), true)) {
             $configurator = new Configurator();
@@ -129,6 +130,7 @@ class ListViewSmarty extends ListViewDisplay
                     $this->actionsMenuExtraItems[] = $this->buildSendConfirmOptInEmailToPersonAndCompany();
                 }
             }
+        }
         }
 
         parent::process($file, $data, $htmlpublic);
@@ -240,7 +242,6 @@ class ListViewSmarty extends ListViewDisplay
         $this->ss->assign('is_admin_for_user', $GLOBALS['current_user']->isAdminForModule('Users'));
         $this->ss->assign('is_admin', $GLOBALS['current_user']->isAdmin());
 
-
         if ($this->contextMenus && !empty($contextMenuObjectsTypes)) {
             $script = '';
             $cm = new contextMenu();
@@ -278,8 +279,6 @@ class ListViewSmarty extends ListViewDisplay
         $this->ss->assign('arrowHeight', $height);
         $this->ss->assign('arrowAlt', translate('LBL_SORT'));
     }
-
-
 
     /**
      * Displays the xtpl, either echo or returning the contents
@@ -321,14 +320,14 @@ class ListViewSmarty extends ListViewDisplay
             'of' => $app_strings['LBL_LIST_OF']);
         $this->ss->assign('navStrings', $navStrings);
 
-        if ($this->displayEmptyDataMessages === null) {
+        if (null === $this->displayEmptyDataMessages) {
             $displayEmptyDataMessages = true;
         } else {
             $displayEmptyDataMessages = $this->displayEmptyDataMessages;
         }
         //TODO: Cleanup, better logic for which modules are exempt from the new messaging.
         $modulesExemptFromEmptyDataMessages = array('WorkFlow','ContractTypes', 'OAuthKeys', 'TimePeriods');
-        if ((isset($GLOBALS['moduleTabMap'][$currentModule]) && $GLOBALS['moduleTabMap'][$currentModule] == 'Administration')
+        if ((isset($GLOBALS['moduleTabMap'][$currentModule]) && 'Administration' == $GLOBALS['moduleTabMap'][$currentModule])
             || isset($GLOBALS['adminOnlyList'][$currentModule]) || in_array($currentModule, $modulesExemptFromEmptyDataMessages)) {
             $displayEmptyDataMessages = false;
         }
@@ -340,20 +339,18 @@ class ListViewSmarty extends ListViewDisplay
         return $str . $this->ss->fetch($this->tpl) . (($end) ? $strend : '');
     }
 
-
     private function getSearchIcon()
     {
         global $sugar_config;
 
         $searchFormInPopup = !in_array($_REQUEST['module'], isset($sugar_config['enable_legacy_search']) ? $sugar_config['enable_legacy_search'] : array());
-        if ($sugar_config['save_query'] == 'populate_only' && !$searchFormInPopup) {
+        if ('populate_only' == $sugar_config['save_query'] && !$searchFormInPopup) {
             return ;
         }
         $ss = new Sugar_Smarty();
         $ss->assign('currentModule', $_REQUEST['module']);
         return $ss->fetch('include/ListView/ListViewSearchLink.tpl') . '<br>';
     }
-
 
     public function displayEnd()
     {

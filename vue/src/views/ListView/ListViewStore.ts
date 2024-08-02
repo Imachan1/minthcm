@@ -6,6 +6,10 @@ import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
 import { FilterRow } from './ListViewFilterRow.vue'
 import { getAllTypesMatchingTo } from './operators'
+import { useRouter } from 'vue-router'
+import { usePopupsStore } from '@/store/popups'
+import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
+import MassActions from '@/business/MassActions'
 
 interface Preferences {
     columns: string[]
@@ -18,14 +22,24 @@ interface Defs {
     search: object
 }
 
+export type Mode = 'list' | 'relate'
+
+interface MassAction {
+    icon: string
+    title: string
+    onClick: () => void
+}
+
 export const useListViewStore = defineStore('listview', () => {
+    const mode = ref<Mode>('list')
     const languages = useLanguagesStore()
     const url = useUrlStore()
+    const router = useRouter()
     const isInit = ref(false)
     const config = ref({})
     const defs = ref<Defs | null>(null)
     const preferences = ref<Preferences | null>(null)
-    const module = ref('')
+    const module = ref(url.module)
     const results = ref([]) //todo: decode
     const itemsLength = ref(0)
     const initialLoading = ref(true)
@@ -44,13 +58,15 @@ export const useListViewStore = defineStore('listview', () => {
         sortBy: [],
     })
     const selected = ref([])
-    const defaultAction = "ESList";
-    const defaultActionUrl = "legacy/index.php?";
+    const defaultAction = 'ESList'
+    const defaultActionUrl = 'legacy/index.php?'
+    let requestCount = 0;
 
     async function init() {
+        requestCount = 0;
         initialLoading.value = true
         const result = await axios.post(getListActionUrl(), {
-            module: url.module,
+            module: module.value,
             function_name: 'getInitialData',
         })
         initialLoading.value = false
@@ -62,9 +78,10 @@ export const useListViewStore = defineStore('listview', () => {
     }
 
     async function getData() {
-        isLoading.value = true
+        requestCount++;
+        isLoading.value = requestCount > 0;
         const result = await axios.post(getListActionUrl(), {
-            module: url.module,
+            module: module.value,
             function_name: 'getResults',
             page: options.value.page,
             itemsPerPage: options.value.itemsPerPage === -1 ? 100 : options.value.itemsPerPage,
@@ -75,7 +92,8 @@ export const useListViewStore = defineStore('listview', () => {
             sortBy: defs.value?.columns[options.value.sortBy[0]?.key]?.key,
             sortOrder: options.value.sortBy[0]?.order ?? 'asc',
         })
-        isLoading.value = false
+        requestCount--;
+        isLoading.value = requestCount > 0;
         results.value = result.data?.results
         itemsLength.value = result.data?.total
         if (options.value.page === 1) {
@@ -93,7 +111,7 @@ export const useListViewStore = defineStore('listview', () => {
     }
 
     function getListActionUrl(){
-        return defaultActionUrl + 'action=' + defaultAction;
+        return defaultActionUrl + 'action=' + defaultAction
     }
 
     function setDefaultColumns() {
@@ -132,6 +150,7 @@ export const useListViewStore = defineStore('listview', () => {
             sortable: !(col.sortable === false),
             class: col.name == 'name' ? 'stickyColumn' : '',
         }))
+        if (mode.value === 'list') {
         headers.push({
             value: 'actions',
             key: 'actions',
@@ -139,6 +158,7 @@ export const useListViewStore = defineStore('listview', () => {
             sortable: false,
             align: 'end',
         })
+        }
         return headers
     })
 
@@ -147,7 +167,7 @@ export const useListViewStore = defineStore('listview', () => {
             return {}
         }
         return Object.values(defs.value?.columns || {})
-            .filter((col) => col.link)
+            .filter((col) => col.link && (!['name', 'full_name'].includes(col.name) || mode.value === 'list'))
             .map((col) => ({
                 nameField: col.name,
                 urlField: `${col.name}_link`,
@@ -239,11 +259,92 @@ export const useListViewStore = defineStore('listview', () => {
         filterRows.value = filterRows.value.filter((filterRow, filterIndex) => index !== filterIndex)
     }
 
+    function handleNameClick(item: any) {
+        if (!item?.id) {
+            return
+        }
+        if (mode.value === 'list') {
+            const link = item.name_link ?? item.full_name_link
+            if (!link) {
+                return
+            }
+            router.push(url.fromLegacyUrl(link))
+        } else if (mode.value === 'relate') {
+            if (!relatePopup.value) {
+                return
+            }
+            const nameToValueArray: { [key: string]: string } = {}
+            for (const key in relatePopup.value.data.fieldToNameArray) {
+                if (['full_name', 'name', 'last_name', 'first_name'].includes(key)) {
+                    nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] = item.full_name || item.name || item.last_name || item.first_name || ''
+                } else if (!nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] && key === 'subpanel_id') {
+                    nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] = item.id
+                } else {
+                    nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] = item[key] ?? ''
+                }
+            }
+            relatePopup.value.data?.onConfirm({ nameToValueArray })
+            usePopupsStore().closePopup(relatePopup.value)
+        }
+    }
+
+    function handleSelectRelate() {
+        if (!relatePopup.value || !selected.value.length) {
+            return
+        }
+        const selectionList: { [key: string]: string } = {}
+        selected.value.forEach((item, index) => {
+            selectionList[`ID_${index + 1}`] = item
+        })
+        relatePopup.value.data?.onConfirm({ selectionList })
+        usePopupsStore().closePopup(relatePopup.value)
+    }
+    const massActions = computed<MassAction[]>(() => {
+        if (!isInit.value || !config.value?.config?.massActions?.length) {
+            return []
+        }
+        const massActions: MassAction[] = []
+        config.value.config.massActions.forEach((massAction) => {
+            const actionClass = MassActions[massAction.action]
+            if (!actionClass) {
+                console.error('Mass action not found', massAction.action)
+                return
+            }
+            massActions.push({
+                icon: massAction.icon,
+                title: languages.label(massAction.label, module.value),
+                onClick: async () => {
+                    const result = await new actionClass(module.value, selected.value).execute()
+                    if (result) {
+                        selected.value = []
+                        getData()
+                    }
+                },
+            })
+        })
+        return massActions
+    })
+
     watch(options, () => {
         getData()
     })
 
+    const relatePopup = computed(() => {
+        if (mode.value !== 'relate') {
+            return null
+        }
+        return usePopupsStore().popups.find((popup) => popup.component === MintPopupRelate)
+    })
+
+    const itemsSelectable = computed(() => {
+        return !!(
+            (mode.value === 'list' && massActions.value.length)
+            || (mode.value === 'relate' && relatePopup.value?.data?.popupMode && relatePopup.value.data.popupMode !== 'single')
+        )
+    })
+
     return {
+        mode,
         init,
         getData,
         isInit,
@@ -272,5 +373,9 @@ export const useListViewStore = defineStore('listview', () => {
         filterRows,
         addFilterRow,
         deleteFilterRow,
+        handleNameClick,
+        handleSelectRelate,
+        itemsSelectable,
+        massActions,
     }
 })

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -47,42 +46,33 @@
 #[\AllowDynamicProperties]
 class WorkplacesApi {
 
-
-   public function canSelectRoom($room_id) {
-      $room = BeanFactory::getBean('Rooms',$room_id);
-      if($room->availability!='active')
-         return false;
-      else return true;
+    public function canSelectRoom($args)
+    {
+        $room = BeanFactory::getBean('Rooms', $args['room_id']);
+        return 'active' === $room->availability;
    }
 
-   public function canChangeMode($id,$mode) {
+    public function canChangeMode($args)
+    {
       $result = true;  
-      $workplace = BeanFactory::getBean('Workplaces',$id);
+        $workplace = BeanFactory::getBean('Workplaces', $args['id']);
       $prev_mode=$workplace->fetched_row['mode'];
-      if($prev_mode!=null&&$prev_mode!=$mode){
+        if (null !== $prev_mode && $prev_mode !== $args['mode']) {
          $result=$this->checkForCurrentAllocation($workplace);
       }
       return $result;
    }
 
-
-   protected function checkForCurrentAllocation($workplace){
-      $db = DBManagerFactory::getInstance();
-      global $timedate;
-      $db_format = $timedate->get_db_date_time_format();
-
+    protected function checkForCurrentAllocation($workplace)
+    {
       $workplace->load_relationship('workplaces_allocations');
       $allocations = $workplace->workplaces_allocations->getBeans();
       $today = strtotime(date("Y-m-d"));
 
-      while(list($allocation_id,$allocation) = each($allocations)){
-         $start_date = strtotime($allocation->date_from);
+        foreach ($allocations as $allocation) {
          $end_date = strtotime($allocation->date_to);
-         if(empty($end_date)){
+            if (empty($end_date) || $end_date >= $today) {
             return false;
-         }else{
-            if($end_date>=$today)
-               return false;
          }
       }
       return true;
