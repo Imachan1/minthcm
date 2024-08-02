@@ -4953,4 +4953,14 @@ $app_list_strings['status_list_colored'] = array(
     'Scored2' => $yellow_status,
 );
 
+$app_list_strings['dom_email_status_colored'] = array(
+    'archived' => $yellow_status,
+    'closed' => $green_status,
+    'draft' => $gray_status,
+    'read' => $green_status,
+    'replied' => $blue_status,
+    'sent' => $green_status,
+    'send_error' => $red_status,
+    'unread' => $yellow_status,
+);
 // ColoredEnum Lists END

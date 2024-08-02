@@ -170,9 +170,10 @@ $dictionary['Email'] = array(
       'status' => array(
          'name' => 'status',
          'vname' => 'LBL_STATUS',
-         'type' => 'enum',
+         'type' => 'ColoredEnum',
          'len' => 100,
          'options' => 'dom_email_status',
+         'options_colors' => 'dom_email_status_colored',
          'inline_edit' => false,
       ),
       'flagged' => array(
