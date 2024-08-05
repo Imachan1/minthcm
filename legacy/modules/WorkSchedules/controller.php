@@ -124,10 +124,25 @@ class WorkSchedulesController extends SugarController
         $q = "SELECT *, DATE_FORMAT(date_start,'%H:%i') as startTime, DATE_FORMAT(date_end,'%H:%i') as endTime FROM workschedules " . "WHERE assigned_user_id='$user_id' AND schedule_date='$date' AND deleted=0 ORDER BY date_start ASC";
         $r = $db->query($q);
         while ($row = $db->fetchByAssoc($r)) {
+            $row['startTime'] = $this->addOffset($row['startTime']);
+            $row['endTime'] = $this->addOffset($row['endTime']);
             array_push($plans['items'], $row);
         }
         ob_clean();
         echo json_encode($plans);
+    }
+
+    private function addOffset($time) {
+        global $timedate;
+        $user_timezone = new DateTimeZone($timedate->userTimezone());
+        $user_offset = $user_timezone->getOffset(new DateTime());
+        $plus_hours = 0;
+        if(0 !== $user_offset) {
+            $plus_hours = (int)$user_offset / 3600;
+        }
+        $times = explode(':', $time);
+        $times[0] = $times[0] + $plus_hours;
+        return implode(':', $times);
     }
 
     protected function action_getWorkSchedulesDates()
