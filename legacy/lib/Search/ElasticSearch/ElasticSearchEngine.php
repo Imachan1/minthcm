@@ -58,6 +58,7 @@ use SuiteCRM\Search\SearchEngine;
 use SuiteCRM\Search\SearchQuery;
 use SuiteCRM\Search\SearchResults;
 use SuiteCRM\Search\SearchWrapper;
+use Symfony\Component\Yaml\Parser as YamlParser;
 
 /**
  * SearchEngine that use Elasticsearch index for performing almost real-time search.
@@ -147,7 +148,7 @@ class ElasticSearchEngine extends SearchEngine
                ]
             ]
          ];
-          $params= $this->addBasicSearch($params, $options['searchPhrase']);
+          $params = $this->addBasicSearch($params, $options['searchPhrase']);
           $params = $this->addPagination($params, $query->getFrom(), $query->getSize());
           $params = $this->addSorting($params, $query->getOptions()['sorting']);
           $params = $this->addFilters($params, $query->getOptions()['filters']);
@@ -202,6 +203,7 @@ class ElasticSearchEngine extends SearchEngine
 
        return $params;
     }
+
     protected function addBasicSearch($params, $query_string) //MintHCM
     {
        if(!empty($query_string)){
@@ -209,7 +211,7 @@ class ElasticSearchEngine extends SearchEngine
          $params['body']['query']['bool']['must'] = [
             'simple_query_string' =>[
             "query" => $query_string.'*',
-            "fields" => ["*","*name^5","subject^4"]
+            "fields" => [ "*" ]
             ],  
          ];
       }
@@ -228,7 +230,7 @@ class ElasticSearchEngine extends SearchEngine
       return $params;
    }
 
-   private function addSorting($params, $data)
+   protected function addSorting($params, $data)
    {
       if (isset($data)) {
          $column = $data['column'];
@@ -244,7 +246,7 @@ class ElasticSearchEngine extends SearchEngine
       return $params;
    }
 
-   private function addFilters($params, $data)
+   protected function addFilters($params, $data)
    {
          if (isset($data)) {
          $params['body']['query']['bool']['filter'] = is_array($params['body']['query']['bool']['filter'])? array_merge($params['body']['query']['bool']['filter'],$data['filter']):$data['filter'];
@@ -295,5 +297,20 @@ class ElasticSearchEngine extends SearchEngine
         }
 
         return $searchResults;
+    }
+
+    /**
+     * Retrieves the default params to set up an optimised default index for Elasticsearch.
+     *
+     * @return array
+     */
+    protected function getDefaultMapParams($module)
+    {
+        $file = __DIR__ . '/defaultParams.yml';
+
+        $parse = new YamlParser();
+        $parsed = $parse->parseFile($file);
+
+        return ['mappings' => $parsed['mappings'][$module]];
     }
 }

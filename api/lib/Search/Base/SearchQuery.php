@@ -63,12 +63,15 @@ abstract class SearchQuery
         $this->setFrom();
         $this->setSort();
         $this->setQuery();
+        $this->setIndicesBoost();
         return $this->query;
     }
 
     abstract protected function setSort();
 
     abstract protected function setQuery();
+
+    abstract protected function setIndicesBoost();
 
     protected function setSize()
     {
