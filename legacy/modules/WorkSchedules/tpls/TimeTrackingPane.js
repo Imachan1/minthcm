@@ -151,7 +151,7 @@ if (!window.TimePanel) { // avoid multi-declaration
     TimePanel.prototype.displayTimeline = async function () {
         try {
             await this.getTimes();
-            this.createTimeLine();
+            await this.createTimeLine();
             this.createTimeLineItems();
         } catch (err) {
             console.error(err);
@@ -160,17 +160,35 @@ if (!window.TimePanel) { // avoid multi-declaration
     TimePanel.prototype.getPlanId = function () {
         return this.inDashlet ? this.taskman.$planSelect.val() : this.getRecordID();
     };
-    TimePanel.prototype.getCurrentPlanData = function () {
-        var start, end, plan;
+    TimePanel.prototype.getCurrentUserTimezoneOffset = function () {
+        return new Promise(function(resolve, reject) {
+            viewTools.api.callCustomApi({
+                module: 'WorkSchedules',
+                action: 'getCurrentUserTimezoneOffset',
+                async: true,
+                callback: function (offset) {
+                    if(offset) {
+                        resolve(offset);
+                    } else {
+                        reject();
+                    }
+                }
+            });
+        }.bind(this));
+    };
+    TimePanel.prototype.getCurrentPlanData = async function () {
+        var start, end, plan, datesFormatted;
 
         if (this.inDashlet) {
             plan = this.taskman._currentPlans.filter(function (i) {
                 return i.id == this.taskman.$planSelect.val();
             }.bind(this)).pop();
             start = fromDbFormat(plan.date_start);
-            start.setMinutes(start.getMinutes() + start.getTimezoneOffset() * -1);
             end = fromDbFormat(plan.date_end);
-            end.setMinutes(end.getMinutes() + end.getTimezoneOffset() * -1);
+            await this.getCurrentUserTimezoneOffset().then((offset) => {
+                start.setMinutes(start.getMinutes() + offset);
+                end.setMinutes(end.getMinutes() + offset);
+            });
         } else {
             start = this.formatToDBDateTime(getDateObject($('#date_start').val()));
             end = this.formatToDBDateTime(getDateObject($('#date_end').val()));
@@ -211,14 +229,14 @@ if (!window.TimePanel) { // avoid multi-declaration
         })
         this.currentTimes = result.items
     };
-    TimePanel.prototype.createTimeLine = function () {
-        var p = this.getCurrentPlanData();
+    TimePanel.prototype.createTimeLine = async function () {
+        var p = await this.getCurrentPlanData();
         var t = this.timeline;
 
         t.start = fromDbFormat(p.date_start);
         t.end = fromDbFormat(p.date_end);
         t.minutes = (+t.end - +t.start) / 1000 / 60;
-        t.offset = t.start.getTimezoneOffset();
+        t.offset = await this.getCurrentUserTimezoneOffset();
 
         this.root.find('tr>td.TimePanelLeft').html(toSugarTime(t.start));
         this.root.find('tr>td.TimePanelMiddle').html('&nbsp;');
@@ -242,8 +260,8 @@ if (!window.TimePanel) { // avoid multi-declaration
             /* MintHCM #93842 END */
             var pos = (+start - +timeline.start) / 1000 / 60;
             var left = (pos + timeline.offset * -1) * +div.toFixed(2);
-            start.setMinutes(start.getMinutes() + Math.abs(this.timeline.start.getTimezoneOffset()));
-            end.setMinutes(end.getMinutes() + Math.abs(this.timeline.start.getTimezoneOffset()));
+            start.setMinutes(start.getMinutes() + this.timeline.offset);
+            end.setMinutes(end.getMinutes() + this.timeline.offset);
             if (!i.$el) {
                 var css_classes = this.getTimeCellCssClasses(i);
                 /* MintHCM #93842 START */
