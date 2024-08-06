@@ -92,7 +92,7 @@ class Init
         [$modules_menu, $modules_data] = $this->getModules();
         $response_body['menu_modules'] = $modules_menu;
         $response_body['modules'] = $modules_data;
-        $response_body['quick_create'] = $this->getQuickCreate();
+        $response_body['quick_create'] = $this->getQuickCreate($modules_menu);
         $response_body['legacy_views'] = $this->getLegacyViews($modules_data);
         return $response_body;
     }
@@ -140,7 +140,7 @@ class Init
         return $this->getMenuForAllModules($modules_data,$modules);
     }
 
-    private function getQuickCreate()
+    private function getQuickCreate($modules_menu)
     {
         chdir('../api');
         $modules = include "constants/quick_create.php";
@@ -151,6 +151,9 @@ class Init
         }
 
         foreach ($modules as $module => $name) {
+            if(!in_array($module, $modules_menu)) {
+                continue;
+            }
             $response[] = array(
                 "module" => $module,
                 "name" => $name,
