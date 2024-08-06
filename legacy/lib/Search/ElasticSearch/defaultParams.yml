@@ -51,6 +51,12 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
@@ -81,21 +87,35 @@ mappings:
       estimated_start_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      estimated_end_date:
-        type: date
-        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      estimated_end_date:
+        type: date
+        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -121,6 +141,32 @@ mappings:
       date_finish:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          created:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          modified:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       priority:
         type: text
         fields:
@@ -129,18 +175,6 @@ mappings:
             ignore_above: 256
       percent_complete:
         type: integer
-      meta:
-        properties:
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -182,11 +216,25 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       start_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
@@ -242,6 +290,12 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
@@ -284,16 +338,30 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          created:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
             properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
   Calls:
     properties:
       name:
@@ -323,6 +391,12 @@ mappings:
         type: integer
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
@@ -339,16 +413,30 @@ mappings:
     properties:
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       date_sent_received:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
@@ -396,6 +484,12 @@ mappings:
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
@@ -436,16 +530,30 @@ mappings:
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
   Users:
     properties:
       user_name:
@@ -476,30 +584,33 @@ mappings:
         type: boolean
       is_group:
         type: boolean
-      address_street:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      address_city:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      address_state:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      address_country:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
+      address:
+        properties:
+          primary:
+            properties:
+              street:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              city:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              state:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              country:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              postalcode:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      birthdate:
+        type: date
+        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       name:
         properties:
           first:
@@ -515,12 +626,6 @@ mappings:
                 type: keyword
                 ignore_above: 256
       title:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      address_postalcode:
         type: text
         fields:
           keyword:
@@ -551,16 +656,30 @@ mappings:
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          modified:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       template_type:
         type: text
         fields:
@@ -600,30 +719,33 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
-      address_street:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      address_city:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      address_state:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      address_country:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
+      address:
+        properties:
+          primary:
+            properties:
+              street:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              city:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              state:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              country:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              postalcode:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      birthdate:
+        type: date
+        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       meta:
         properties:
           created:
@@ -645,12 +767,6 @@ mappings:
               keyword:
                 type: keyword
                 ignore_above: 256
-      address_postalcode:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
   AOBH_BusinessHours:
     properties:
       name:
@@ -693,6 +809,10 @@ mappings:
         properties:
           assigned:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               user_id:
                 type: text
                 fields:
@@ -745,16 +865,30 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       override_business_hours:
         type: boolean
   AM_TaskTemplates:
@@ -785,6 +919,10 @@ mappings:
         properties:
           assigned:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               user_id:
                 type: text
                 fields:
@@ -803,14 +941,28 @@ mappings:
         properties:
           created:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
           modified:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
   AOK_KnowledgeBase:
     properties:
       name:
@@ -837,14 +989,28 @@ mappings:
         properties:
           created:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
           modified:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -878,16 +1044,30 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -915,16 +1095,30 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -983,6 +1177,10 @@ mappings:
         properties:
           assigned:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               user_id:
                 type: text
                 fields:
@@ -1005,16 +1203,30 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
   AOR_Scheduled_Reports:
     properties:
       name:
@@ -1078,14 +1290,28 @@ mappings:
         properties:
           created:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
           modified:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -1119,16 +1345,30 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -1174,6 +1414,14 @@ mappings:
               keyword:
                 type: keyword
                 ignore_above: 256
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
   SecurityGroups:
     properties:
       name:
@@ -1190,10 +1438,52 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
-      noninheritable:
-        type: boolean
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          created:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          modified:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      noninheritable:
+        type: boolean
+  Kudos:
+    properties:
+      name:
+        properties:
+          name:
+            type: text
+            fields:
+              keyword:
+                type: keyword
+                ignore_above: 256
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
@@ -1204,6 +1494,23 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      private:
+        type: boolean
+      security_groups:
+        type: nested
+        properties:
+          id:
+            type: text
+            fields:
+              keyword:
+                type: keyword
+                ignore_above: 256
   OutboundEmailAccounts:
     properties:
       name:
@@ -1281,15 +1588,21 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
-      token_is_revoked:
-        type: boolean
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      token_is_revoked:
+        type: boolean
       access_token_expires:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
@@ -1318,6 +1631,14 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
   SurveyResponses:
     properties:
       name:
@@ -1332,6 +1653,10 @@ mappings:
         properties:
           assigned:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               user_id:
                 type: text
                 fields:
@@ -1355,24 +1680,38 @@ mappings:
               keyword:
                 type: keyword
                 ignore_above: 256
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          created:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          modified:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
-        properties:
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -1396,6 +1735,10 @@ mappings:
         properties:
           assigned:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               user_id:
                 type: text
                 fields:
@@ -1423,6 +1766,10 @@ mappings:
         properties:
           assigned:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               user_id:
                 type: text
                 fields:
@@ -1450,6 +1797,10 @@ mappings:
         properties:
           assigned:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               user_id:
                 type: text
                 fields:
@@ -1475,16 +1826,36 @@ mappings:
                 ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -1504,7 +1875,7 @@ mappings:
               keyword:
                 type: keyword
                 ignore_above: 256
-      description:
+      employee_name:
         type: text
         fields:
           keyword:
@@ -1512,16 +1883,36 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      description:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -1543,16 +1934,36 @@ mappings:
                 ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -1579,11 +1990,25 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -1605,16 +2030,36 @@ mappings:
                 ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -1636,16 +2081,36 @@ mappings:
                 ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -1667,16 +2132,36 @@ mappings:
                 ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -1720,18 +2205,32 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       skype:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      goldenline:
+      github:
         type: text
         fields:
           keyword:
@@ -1840,16 +2339,36 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       source:
         type: text
         fields:
@@ -1920,6 +2439,18 @@ mappings:
               keyword:
                 type: keyword
                 ignore_above: 256
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              user_id:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       type:
         type: text
         fields:
@@ -1947,14 +2478,6 @@ mappings:
       cost_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
-        properties:
-          assigned:
-            properties:
-              user_id:
-                type: text
-                fields:
-                  keyword: { type: keyword, ignore_above: 256 }
       accommodation_no:
         type: text
         fields:
@@ -1986,6 +2509,32 @@ mappings:
               keyword:
                 type: keyword
                 ignore_above: 256
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          created:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          modified:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       obtained_sum:
         type: text
         fields:
@@ -2060,18 +2609,6 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
-        properties:
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -2132,16 +2669,30 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -2175,24 +2726,38 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          created:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          modified:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       room_surface:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
-        properties:
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -2226,13 +2791,27 @@ mappings:
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
           modified:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
@@ -2274,8 +2853,22 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
@@ -2306,16 +2899,30 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -2347,21 +2954,35 @@ mappings:
       end_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      start_work_date:
-        type: date
-        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      start_work_date:
+        type: date
+        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       salary_from:
         type: text
         fields:
@@ -2409,6 +3030,28 @@ mappings:
               keyword:
                 type: keyword
                 ignore_above: 256
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              user_id:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          created:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          modified:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       from_city:
         type: text
         fields:
@@ -2430,24 +3073,6 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
-        properties:
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
-            properties:
-              user_id:
-                type: text
-                fields:
-                  keyword: { type: keyword, ignore_above: 256 }
       other_transportation:
         type: text
         fields:
@@ -2481,16 +3106,30 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -2512,16 +3151,30 @@ mappings:
                 ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -2543,16 +3196,30 @@ mappings:
                 ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -2650,6 +3317,32 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          created:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          modified:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
@@ -2674,18 +3367,6 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
-        properties:
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -2709,6 +3390,32 @@ mappings:
         type: integer
       working_hours:
         type: integer
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          created:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          modified:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       year:
         type: integer
       months:
@@ -2717,18 +3424,6 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
-        properties:
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -2770,11 +3465,19 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
   Resources:
     properties:
       name:
@@ -2795,16 +3498,36 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -2837,11 +3560,31 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -2861,24 +3604,44 @@ mappings:
               keyword:
                 type: keyword
                 ignore_above: 256
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          created:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          modified:
+            properties:
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       starting_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       ending_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
-        properties:
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -2916,6 +3679,38 @@ mappings:
       contract_ending_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          created:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          modified:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       daily_working_time:
         type: text
         fields:
@@ -2925,18 +3720,6 @@ mappings:
       date_of_signing:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
-        properties:
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -2983,15 +3766,35 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       meta:
         properties:
-          modified:
+          assigned:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          created:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          modified:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
@@ -3039,11 +3842,25 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3079,6 +3896,16 @@ mappings:
         type: integer
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              user_id:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
@@ -3089,13 +3916,13 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
-            properties:
-              user_id:
-                type: text
-                fields:
-                  keyword: { type: keyword, ignore_above: 256 }
       user_id:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      employee_id:
         type: text
         fields:
           keyword:
@@ -3122,16 +3949,30 @@ mappings:
                 ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3153,16 +3994,30 @@ mappings:
                 ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3194,6 +4049,18 @@ mappings:
       date_end:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      offboarding_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       meta:
         properties:
           modified:
@@ -3201,11 +4068,25 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3237,6 +4118,12 @@ mappings:
       date_end:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       meta:
         properties:
           modified:
@@ -3244,11 +4131,25 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3283,6 +4184,12 @@ mappings:
       date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       meta:
         properties:
           modified:
@@ -3290,11 +4197,25 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3348,18 +4269,38 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3388,18 +4329,38 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3427,22 +4388,40 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              user_id:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
-            properties:
-              user_id:
+              user_name:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       employee_id:
         type: text
         fields:
@@ -3481,11 +4460,31 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -3548,21 +4547,35 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
-      publication_date:
-        type: date
-        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      publication_date:
+        type: date
+        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -3589,6 +4602,16 @@ mappings:
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              user_id:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
@@ -3599,12 +4622,6 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
-            properties:
-              user_id:
-                type: text
-                fields:
-                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3632,16 +4649,30 @@ mappings:
         type: integer
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3675,16 +4706,36 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -3706,19 +4757,31 @@ mappings:
                 ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              user_id:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
-            properties:
-              user_id:
+              user_name:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
@@ -3748,19 +4811,31 @@ mappings:
             ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              user_id:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
-            properties:
-              user_id:
+              user_name:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
@@ -3776,19 +4851,31 @@ mappings:
                 ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              user_id:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
-            properties:
-              user_id:
+              user_name:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
@@ -3833,11 +4920,25 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
   ScheduleReports:
     properties:
       name:
@@ -3922,8 +5023,16 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
@@ -3970,8 +5079,16 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
@@ -4040,11 +5157,25 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -4080,6 +5211,12 @@ mappings:
         type: integer
       points_scored:
         type: integer
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       meta:
         properties:
           created:
@@ -4087,11 +5224,25 @@ mappings:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -4151,6 +5302,10 @@ mappings:
         properties:
           assigned:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               user_id:
                 type: text
                 fields:
@@ -4169,6 +5324,10 @@ mappings:
         properties:
           assigned:
             properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
               user_id:
                 type: text
                 fields:
@@ -4195,18 +5354,38 @@ mappings:
           keyword:
             type: keyword
             ignore_above: 256
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       meta:
         properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           modified:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
           created:
             properties:
               date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
