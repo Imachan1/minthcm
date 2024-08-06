@@ -443,6 +443,9 @@ class Employee extends Person implements EmailInterface
             return true;
         }
 
+        //FIXME CR - wydaje mi się, że problem jest bardziej z tym, że $current_user->id jest puste
+        // walidacja powinna sprawdzić ostatni warunek i pozwolić zapisać jeśli jestem adminem (wtedy mogę zapisać każdemu pracownikowi)
+        // lub jeśli ja jako zalogowany użytkownik edytuję samego siebie to też mogę to zrobić. Teraz w zasadzie omijamy walidację
         if (empty($current_user->id)) {
             return true;
         }
