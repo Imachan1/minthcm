@@ -186,7 +186,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
  
          // preferences changed or a new preference, save it to DB
          if (!isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name])
-             || (isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]) && $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name] != $value)) {
+             || (
+                isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]) 
+                && $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name] != $value
+            )
+            || $category === 'eslist' 
+        ) {
              $GLOBALS['savePreferencesToDB'] = true;
              if (!isset($GLOBALS['savePreferencesToDBCats'])) {
                  $GLOBALS['savePreferencesToDBCats'] = array();
@@ -199,7 +204,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
          $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name] = $value;
          if(
             $category === 'eslist' 
-            && !array_key_exists('activeFilter', $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name])
+            && (
+                !array_key_exists('activeFilter', $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name])
+                || empty($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'])
+            )
+            && !isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['deleteActiveFilter'])
         ){
             $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'] = $activeFilter;
          }
