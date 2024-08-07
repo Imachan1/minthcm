@@ -202,12 +202,15 @@ function setFilters(filterRows: FilterRow[]) {
 
 function deleteSavedFilter(filter: string) {
     store.preferences.saved_filters = store.preferences?.saved_filters.filter((f) => f.name !== filter)
+    activeFilter.value = null
+    store.preferences.deleteActiveFilter = true
     store.savePreferences()
 }
 
 watch(
     filterRows,
     (newFilterRows) => {
+        store.preferences.activeFilter = activeFilter.value
         setFilters(newFilterRows)
     },
     { deep: true },
@@ -215,6 +218,9 @@ watch(
 
 watch(activeFilter, () => {
     store.preferences.activeFilter = activeFilter.value
+    if(!activeFilter.value){
+        store.preferences.deleteActiveFilter = true
+    }
     store.savePreferences()
     filterRows.value = cloneDeep(
         store.preferences?.saved_filters?.find((f) => f.name === activeFilter.value)?.filters ?? [],

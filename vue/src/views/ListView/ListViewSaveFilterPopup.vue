@@ -49,8 +49,8 @@ function save() {
                 saved_filters: [...savedFilters, { filters: props.data.filterRows, name }],
             }
         }
-        store.savePreferences()
         store.activeFilter = name
+        store.savePreferences()
         emit('close')
     }
 }
