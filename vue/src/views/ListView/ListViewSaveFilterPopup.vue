@@ -63,8 +63,8 @@ async function save() {
                 }],
             }
         }
-        store.savePreferences()
         store.activeFilter = name
+        store.savePreferences()
         emit('close')
     }
 }

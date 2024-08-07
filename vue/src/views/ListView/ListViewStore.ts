@@ -92,6 +92,7 @@ export const useListViewStore = defineStore('listview', () => {
             offset: pageOffsetMap.value[options.value.page - 1],
             sortBy: defs.value?.columns[options.value.sortBy[0]?.key]?.key,
             sortOrder: options.value.sortBy[0]?.order ?? 'asc',
+            activeFilter: activeFilter.value,
         })
         requestCount--;
         isLoading.value = requestCount > 0;
