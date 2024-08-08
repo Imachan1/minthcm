@@ -26,6 +26,7 @@ class ESListViewController
         $view->seed = BeanFactory::newBean($module);
         $view->bean = BeanFactory::newBean($module);
         $data = $view->getInitialData();
+        $preferences['initFilters'] = isset($preferences['filterRows']) && !empty($preferences['filterRows']);
         return [
             'config' => json_decode($data->config, true),
             'defs' => json_decode($data->defs, true),
@@ -51,6 +52,7 @@ class ESListViewController
 
     public function getResults($options)
     {
+        $this->processSortBy($options);
         $this->loadMetadataFile($options['module']);
         if (ACLController::checkAccess($this->acl_module_name, 'list', true)) {
             $get_records = new ESListViewGetRecords($this->metadata, $this->module_name, $options['itemsPerPage'], $options['offset'], $options['page'], $options['sortBy'], $options['sortOrder'], [
@@ -98,10 +100,25 @@ class ESListViewController
         global $current_user;
         $preferences = (new UserPreference($current_user))->getPreference($data['module'], 'eslist');
         if (
-            empty($preferences['items_per_page'])
-            || $data['itemsPerPage'] != $preferences['items_per_page']
+            $data['isInit']
+            && (
+                empty($preferences['items_per_page'])
+                || empty($preferences['sortBy']) 
+                || empty($preferences['sortOrder'])
+                || empty($preferences['filters'])
+                || empty($preferences['filterRows'])
+                || $data['itemsPerPage'] != $preferences['items_per_page']
+                || $data['sortBy'] != $preferences['sortBy']
+                || $data['sortOrder'] != $preferences['sortOrder']
+                || $data['filters'] != $preferences['filters']
+                || $data['filterRows'] != $preferences['filterRows']
+            )
         ) {
             $preferences['items_per_page'] = $data['itemsPerPage'];
+            $preferences['sortBy'] = $data['sortBy'];
+            $preferences['sortOrder'] = $data['sortOrder'];
+            $preferences['filters'] = $data['filters'];
+            $preferences['filterRows'] = $data['filterRows'];
             $this->savePreferences([
                 'module' => $data['module'],
                 'preferences' => $preferences,
@@ -142,5 +159,21 @@ class ESListViewController
         $this->acl_module_name = $acl_module_name ?? $module;
         $this->module_name = $module_name ?? $module;
         $this->metadata = $ESListViewDefs[$module];
+    }
+    
+    protected function processSortBy(array &$options): void
+    {
+        global $current_user;
+        $preferences = (new UserPreference($current_user))->getPreference($options['module'], 'eslist');
+
+        if(!isset($preferences['sortBy']) && !isset($preferences['sortOrder'])){
+            return;
+        }
+
+        if(!empty($preferences['sortBy']) && !isset($options['sortBy'])){
+            $options['sortBy'] = $preferences['sortBy'];
+            $options['sortOrder'] = $preferences['sortOrder'] ?? $options['sortOrder'];
+        }
+        
     }
 }
