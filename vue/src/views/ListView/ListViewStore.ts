@@ -63,18 +63,19 @@ export const useListViewStore = defineStore('listview', () => {
     let requestCount = 0;
 
     async function init() {
-        requestCount = 0;
         initialLoading.value = true
         const result = await axios.post(getListActionUrl(), {
             module: module.value,
             function_name: 'getInitialData',
         })
-        initialLoading.value = false
-        config.value = result.data?.config
-        defs.value = result.data?.defs
-        preferences.value = result.data?.preferences
-        module.value = result.data?.module
-        isInit.value = true
+        if(module.value === result.data.module){
+            initialLoading.value = false
+            config.value = result.data?.config
+            defs.value = result.data?.defs
+            preferences.value = result.data?.preferences
+            module.value = result.data?.module
+            isInit.value = true
+        }
     }
 
     async function getData() {
@@ -93,13 +94,16 @@ export const useListViewStore = defineStore('listview', () => {
             sortOrder: options.value.sortBy[0]?.order ?? 'asc',
         })
         requestCount--;
-        isLoading.value = requestCount > 0;
-        results.value = result.data?.results
-        itemsLength.value = result.data?.total
-        if (options.value.page === 1) {
-            pageOffsetMap.value = {}
+        if(module.value === result.data.module && requestCount <= 0){
+            requestCount = 0;
+            isLoading.value = false;
+            results.value = result.data?.results
+            itemsLength.value = result.data?.total
+            if (options.value.page === 1) {
+                pageOffsetMap.value = {}
+            }
+            pageOffsetMap.value[options.value.page] = result.data?.offset ?? 0
         }
-        pageOffsetMap.value[options.value.page] = result.data?.offset ?? 0
     }
 
     async function savePreferences() {
