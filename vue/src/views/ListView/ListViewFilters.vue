@@ -187,7 +187,8 @@ function setFilters(filterRows: FilterRow[]) {
     })
     const filtersChanged = JSON.stringify(query) !== JSON.stringify(store.filters)
     store.filters = query
-    if (filtersChanged) {
+    if (filtersChanged || store.preferences.initFilters) {
+        store.preferences.filterRows = JSON.stringify(filterRows);
         store.getData()
     }
 }

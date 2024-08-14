@@ -55,7 +55,7 @@ export const useListViewStore = defineStore('listview', () => {
     const options = ref({
         page: 1,
         itemsPerPage: 10,
-        sortBy: [],
+        sortBy: new Array,
     })
     const selected = ref([])
     const defaultAction = 'ESList'
@@ -76,6 +76,13 @@ export const useListViewStore = defineStore('listview', () => {
             preferences.value = result.data?.preferences
             module.value = result.data?.module
             isInit.value = true
+            options.value.sortBy.push({
+                "order": preferences.value?.sortOrder,
+                "key": preferences.value?.sortBy
+            })
+            filters.value.filter = preferences.value?.filters['filter'] ?? []
+            filters.value.must_not = preferences.value?.filters['must_not'] ?? []
+            filterRows.value = JSON.parse(preferences.value?.filterRows) ?? []
         }
     }
 
@@ -94,6 +101,8 @@ export const useListViewStore = defineStore('listview', () => {
             sortBy: defs.value?.columns[options.value.sortBy[0]?.key]?.key,
             sortOrder: options.value.sortBy[0]?.order ?? 'asc',
             activeFilter: activeFilter.value,
+            filterRows: preferences.value?.filterRows ?? [],
+            isInit: isInit.value,
         })
         requestCount--;
         if(module.value === result.data.module && requestCount <= 0){
