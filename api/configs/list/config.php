@@ -122,6 +122,12 @@ $list_config = array(
         'primary_address_postalcode' => 'address.primary.postalcode',
         'primary_address_street' => 'address.primary.street',
         'primary_address_country' => 'address.primary.country',
+        'employee_id' => 'employee_id',
+        'employee_name' => 'employee_name',
+        'offboarding_id' => 'offboarding_id',
+        'offboarding_name' => 'offboarding_name',
+        'parent_id' => 'parent.id',
+        'parent_name' => 'parent.name',
     ),
     "sort_mappings" => array(
         "name" => "name.name.keyword",
@@ -141,6 +147,12 @@ $list_config = array(
         "primary_address_postalcode" => "address.primary.postalcode.keyword",
         "primary_address_street" => "address.primary.street.keyword",
         "primary_address_country" => "address.primary.country.keyword",
+        'employee_id' => 'employee_id.keyword',
+        'employee_name' => 'employee_name.keyword',
+        'offboarding_id' => 'offboarding_id.keyword',
+        'offboarding_name' => 'offboarding_name.keyword',
+        'parent_id' => 'parent.id.keyword',
+        'parent_name' => 'parent.name.keyword',
     ),
 );
 

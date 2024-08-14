@@ -30,6 +30,10 @@ class MappingsGenerator
         'primary_address_street' => 'address.primary.street',
         'primary_address_country' => 'address.primary.country',
         'phone_mobile' => 'phone.mobile',
+        'employee_id' => 'employee_id',
+        'employee_name' => 'employee_name',
+        'offboarding_id' => 'offboarding_id',
+        'offboarding_name' => 'offboarding_name',
     ];
 
     // From vardefs to elastic
@@ -104,7 +108,13 @@ class MappingsGenerator
             $key = !empty($data['es_module']) ? $data['es_module'] : $module['module'];
 
             foreach ($fields_to_map as $field) {
-                if ($defs[$field]['source'] != "non-db") {
+                if (
+                    $defs[$field]['source'] != "non-db" 
+                    || (
+                        ( $defs[$field]['type'] == 'relate' || $defs[$field]['type'] == 'parent' )
+                        && !empty($this->not_standard_fields[$field])
+                    )
+                ) {
                     $es_type_name = $this->type_mapping[$defs[$field]['type']] ?? 'text';
                     $es_type = $this->types[$es_type_name];
 
