@@ -6486,6 +6486,7 @@ function fixupView($view)
             return "import";
     }
     return $view;
+}
 
 /**
  * Returns all keys in given array
