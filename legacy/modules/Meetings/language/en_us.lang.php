@@ -182,4 +182,7 @@ $mod_strings = array(
    'LBL_LIST_TITLE' => 'Meeting',
    'LBL_MEETING' => 'Meeting',
    'LNK_NEW_RECORD' => 'Create Meeting',  // MintHCM
+   'LBL_EDIT_ALL_RECURRENCES' => 'Edit All Recurrences',
+   'LBL_REMOVE_ALL_RECURRENCES' => 'Delete All Recurrences',
+   'LBL_CONFIRM_REMOVE_ALL_RECURRING' => 'Are you sure you want to remove all recurring records?',
 );
