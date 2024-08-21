@@ -22,7 +22,7 @@
             <template v-slot:activator="{ props, isActive }">
                 <v-badge
                     v-bind="props"
-                    :content="alerts.unreadAlertsCount"
+                    :content="alerts.unreadAlertsCountText"
                     color="error"
                     location="bottom end"
                     :model-value="alerts.unreadAlertsCount > 0"
