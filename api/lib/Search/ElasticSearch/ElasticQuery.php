@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,21 +36,23 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 namespace MintHCM\Lib\Search\ElasticSearch;
 
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
+use MintHCM\Data\BeanFactory;
 use MintHCM\Lib\Search\Base\SearchQuery;
 use MintHCM\Lib\Search\ElasticSearch\ElasticQueryOperatorsManager;
 use MintHCM\Utils\CustomLoader;
 use MintHCM\Utils\LegacyConnector;
-use MintHCM\Data\BeanFactory;
+use Symfony\Component\Yaml\Parser as YamlParser;
+
 class ElasticQuery extends SearchQuery
 {
     const DEFAULT_SORT_FIELD = "_score";
@@ -65,8 +66,9 @@ class ElasticQuery extends SearchQuery
     protected $exclude_modules = [];
     protected $search_modules = [];
 
-    protected $add_acl_filters  = false;
+    protected $add_acl_filters = false;
     protected $indice_module_map;
+    protected $parsed = [];
 
     protected function setQuery()
     {
@@ -86,7 +88,7 @@ class ElasticQuery extends SearchQuery
     {
         global $list_config;
 
-        $field = !empty($this->params["sort_by"]) ? $this->params['sort_by'] : static::DEFAULT_SORT_FIELD;
+        $field = !empty($this->params["sort_by"]) ? $this->params['sort_by']: static::DEFAULT_SORT_FIELD;
         if (isset($list_config['sort_mappings'][$field])) {
             $field = $list_config['sort_mappings'][$field];
         } else if (static::DEFAULT_SORT_FIELD !== $field) {
@@ -100,19 +102,18 @@ class ElasticQuery extends SearchQuery
         );
     }
 
-
     private function getIndex()
     {
         if (isset($GLOBALS['sugar_config']['unique_key'])) {
-            if(isset($this->params['search']) && $this->params['search'] == 'list' && !empty($this->params['type'])){
+            if (isset($this->params['search']) && 'list' == $this->params['search'] && !empty($this->params['type'])) {
                 $search_modules = [$this->params['type']];
-            }else{
+            } else {
                 $search_modules = $this->getGlobalSearchModuleList();
             }
             $searchModules = array_map('strtolower', $search_modules);
-            $searchModules = substr_replace($searchModules, $GLOBALS['sugar_config']['unique_key'].'_', 0, 0);
+            $searchModules = substr_replace($searchModules, $GLOBALS['sugar_config']['unique_key'] . '_', 0, 0);
             $indexes = implode(',', $searchModules);
-            $this->indice_module_map = array_combine($searchModules,$search_modules);
+            $this->indice_module_map = array_combine($searchModules, $search_modules);
 
             return $indexes;
         }
@@ -146,31 +147,29 @@ class ElasticQuery extends SearchQuery
     private function getGlobalQuery()
     {
 
-        if($this->add_acl_filters){
+        if ($this->add_acl_filters) {
             $uniq = $GLOBALS['sugar_config']['unique_key'];
             $main_acl["bool"]["must"] = $this->noAclGlobalQuery();
             $main_acl["bool"]["filter"]["bool"]["should"] = [];
             $search_modules = $this->getGlobalSearchModuleList();
-            
-            foreach($search_modules as $module_to_search)
-            {
+
+            foreach ($search_modules as $module_to_search) {
                 $bean = BeanFactory::newBean($module_to_search);
                 $acl_controller = new LegacyConnector('ACLController');
-                if( $bean->bean_implements('ACL') &&  ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list')) ) { 
-                  $module_filters = $this->getACLForModule($module_to_search);
+                if ($bean->bean_implements('ACL') && ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list'))) {
+                    $module_filters = $this->getACLForModule($module_to_search);
+                } else {
+                    $module_filters['bool']['must']['term']['_index'] = $uniq . '_' . strtolower($module_to_search);
                 }
-                else {
-                    $module_filters['bool']['must']['term']['_index'] = $uniq.'_'.strtolower($module_to_search);
-                }
-                
-                if(is_array($module_filters)){
+
+                if (is_array($module_filters)) {
                     $main_acl["bool"]["filter"]["bool"]["should"][] = $module_filters;
-		            $module_filters = [];
-                }                
+                    $module_filters = [];
+                }
             }
 
-            if(count($this->exclude_modules)){
-               $main_acl["bool"]["filter"]["bool"]['must_not'] = $this->getExcludeModules();
+            if (count($this->exclude_modules)) {
+                $main_acl["bool"]["filter"]["bool"]['must_not'] = $this->getExcludeModules();
             }
 
             return $main_acl;
@@ -178,10 +177,11 @@ class ElasticQuery extends SearchQuery
         } else {
             return $this->noAclGlobalQuery();
         }
-        
+
     }
 
-    private function noAclGlobalQuery(){
+    private function noAclGlobalQuery()
+    {
         $fields = !empty($this->params['fields']) ? $this->params['fields'] : array(static::ALL_FIELDS);
         return array(
             'query_string' => array(
@@ -199,11 +199,12 @@ class ElasticQuery extends SearchQuery
         return (CustomLoader::getObject(ElasticQueryOperatorsManager::class, $this->params['filters'] ?? []))->getQuery();
     }
 
-    protected function getExcludeModules(){
+    protected function getExcludeModules()
+    {
         $uniq = $GLOBALS['sugar_config']['unique_key'];
         $excluded_queries = [];
-        foreach($this->exclude_modules as $module){
-            $excluded_queries[]['term']['_index'] = $uniq.'_'.strtolower($module);
+        foreach ($this->exclude_modules as $module) {
+            $excluded_queries[]['term']['_index'] = $uniq . '_' . strtolower($module);
         }
         return $excluded_queries;
     }
@@ -214,10 +215,10 @@ class ElasticQuery extends SearchQuery
         $uniq = $GLOBALS['sugar_config']['unique_key'];
         $acl = $this->getACLClassForModule($module);
         $restriction_filter = $acl->getAccessRestrictionFilter($current_user->id);
-       
-        $single_module['bool']['must'][]['term']['_index'] = $uniq.'_'.strtolower($module);
-    	if(!empty($restriction_filter[0]['bool']['should'])){
-        	$single_module['bool']['must'][]['bool']['should']  =  $restriction_filter[0]['bool']['should'];
+
+        $single_module['bool']['must'][]['term']['_index'] = $uniq . '_' . strtolower($module);
+        if (!empty($restriction_filter[0]['bool']['should'])) {
+            $single_module['bool']['must'][]['bool']['should'] = $restriction_filter[0]['bool']['should'];
         }
         return $single_module;
 
@@ -226,44 +227,100 @@ class ElasticQuery extends SearchQuery
     protected function getACLClassForModule(string $module)
     {
         $variants = [
-            [ 'className' => "Custom{$module}ListACL", 'path' => "custom/modules/{$module}/{$module}ListACL.php" ],
-            [ 'className' => "{$module}ListACL", 'path' => "modules/{$module}/{$module}ListACL.php" ],
-            [ 'className' => 'BaseListACL', 'path' => "include/ESListView/BaseListACL.php" ],
+            ['className' => "Custom{$module}ListACL", 'path' => "custom/modules/{$module}/{$module}ListACL.php"],
+            ['className' => "{$module}ListACL", 'path' => "modules/{$module}/{$module}ListACL.php"],
+            ['className' => 'BaseListACL', 'path' => "include/ESListView/BaseListACL.php"],
         ];
 
         foreach ($variants as $variant) {
-            if (file_exists('../legacy/'.$variant['path'])) {
+            if (file_exists('../legacy/' . $variant['path'])) {
                 require_once $variant['path'];
-                $acl_class = new LegacyConnector($variant['className'],$variant['path'],[$module]);
+                $acl_class = new LegacyConnector($variant['className'], $variant['path'], [$module]);
                 return $acl_class;
             }
         }
     }
-    public function getIndiceToModuleMapping(){
+    public function getIndiceToModuleMapping()
+    {
         return $this->indice_module_map;
     }
 
-    protected function getGlobalSearchModuleList(){
-        if(!empty($this->search_modules)){
+    protected function getGlobalSearchModuleList()
+    {
+        if (!empty($this->search_modules)) {
             return $this->search_modules;
         }
         include '../legacy/custom/modules/unified_search_modules_display.php';
-        
+
         $search_modules = [];
-        $exclude_hardcode = ["Connectors","Currencies","OAuthTokens","OAuthKeys","ACLRoles","ACLActions","EmailMan","Schedulers","SchedulersJobs","CampaignLog","EmailMarketing","AOW_WorkFlow"];
+        $exclude_hardcode = ["Connectors", "Currencies", "OAuthTokens", "OAuthKeys", "ACLRoles", "ACLActions", "EmailMan", "Schedulers", "SchedulersJobs", "CampaignLog", "EmailMarketing", "AOW_WorkFlow"];
         global $beanList;
-        if(!empty($unified_search_modules_display)){
-            $search_modules = array_filter(array_map(function($row){ return $row['visible'] === true;},$unified_search_modules_display));    
-            foreach(array_keys($search_modules) as $module_name){
-                if(!isset($beanList[$module_name])){
+        if (!empty($unified_search_modules_display)) {
+            $search_modules = array_filter(array_map(function ($row) {return true === $row['visible'];}, $unified_search_modules_display));
+            foreach (array_keys($search_modules) as $module_name) {
+                if (!isset($beanList[$module_name])) {
                     unset($search_modules[$module_name]);
                 }
             }
-            $exclude = array_filter(array_map(function($row){ return $row['visible'] === false;},$unified_search_modules_display));      
-            $this->exclude_modules = array_merge($exclude_hardcode,array_keys($exclude));
-            return array_diff(array_keys($search_modules),$this->exclude_modules);
+            $exclude = array_filter(array_map(function ($row) {return false === $row['visible'];}, $unified_search_modules_display));
+            $this->exclude_modules = array_merge($exclude_hardcode, array_keys($exclude));
+            return array_diff(array_keys($search_modules), $this->exclude_modules);
         }
         $this->search_modules = $search_modules;
         return $search_modules;
     }
+
+    protected function setIndicesBoost()
+    {
+        if (empty($this->search_modules)) {
+            $search_modules = $this->getGlobalSearchModuleList();
+        } else {
+            $search_modules = $this->search_modules;
+        }
+
+        $boost_array = $this->query['body']['query']['query_string']['fields'];
+
+        foreach ($search_modules as $module_name) {
+            $module_bean = BeanFactory::getBean($module_name);
+
+            $mappings = $this->getDefaultMapParams($module_name);
+
+            if (isset($module_bean->search_boost)) {
+                $boost_array[] = $module_name . '*^' . $module_bean->search_boost;
+            }
+
+            foreach ($module_bean->field_defs as $field_key => $value) {
+                if (isset($value['search_boost'])) {
+                    $field_name = getSimilarIndiceKey($field_key, $mappings['mappings']['properties']);
+
+                    if (is_array($mappings['mappings']['properties'][$field_name]['properties'])) {
+                        $boost_array[] = $field_name . '.*^' . $value['search_boost'];
+                    } else {
+                        $boost_array[] = $field_name . '^' . $value['search_boost'];
+                    }
+                }
+            }
+
+        }
+        $this->query['body']['query']['query_string']['fields'] = $boost_array;
+    }
+
+    /**
+     * Retrieves the default params to set up an optimised default index for Elasticsearch.
+     *
+     * @return array
+     */
+    protected function getDefaultMapParams($module)
+    {
+        if (empty($this->parsed)) {
+            $file = realpath(__DIR__ . '/../../../../legacy/lib/Search/ElasticSearch/defaultParams.yml');
+
+            $parse = new YamlParser();
+            $this->parsed = $parse->parseFile($file);
+        }
+
+        return ['mappings' => $this->parsed['mappings'][$module]];
+
+    }
+
 }
