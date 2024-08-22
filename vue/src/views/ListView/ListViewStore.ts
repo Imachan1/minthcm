@@ -79,9 +79,10 @@ export const useListViewStore = defineStore('listview', () => {
             "order": preferences.value?.sortOrder,
             "key": preferences.value?.sortBy
         })
-        filters.value.filter = preferences.value?.filters['filter'] ?? []
-        filters.value.must_not = preferences.value?.filters['must_not'] ?? []
-        filterRows.value = JSON.parse(preferences.value?.filterRows) ?? []
+        let saved_filters = preferences.value?.filters ?? {}
+        filters.value.filter = saved_filters?.filter ?? []
+        filters.value.must_not = saved_filters?.must_not ?? []
+        filterRows.value = JSON.parse(preferences.value?.filterRows ?? '[]') ?? []
     }
 
     async function getData() {
