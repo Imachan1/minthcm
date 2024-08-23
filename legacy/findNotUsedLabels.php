@@ -41,8 +41,7 @@ function getFilesFromDirectory($directory)
     return $files;
 }
 
-$getUsedLabels = function () use (&$directories_used_labels, &$directories_used_labels_exclude_dir, &$labels_prefixes, &$used_labels_by_application)
-{
+$getUsedLabels = function () use (&$directories_used_labels, &$directories_used_labels_exclude_dir, &$labels_prefixes, &$used_labels_by_application) {
     //read all files from $directories_used_labels and find text in the files by reqex, then add to $all_labels
     foreach ($directories_used_labels as $directories_used_label) {
 
@@ -55,7 +54,7 @@ $getUsedLabels = function () use (&$directories_used_labels, &$directories_used_
 
             $content = file_get_contents($file);
             foreach ($labels_prefixes as $labels_prefix) {
-                
+
                 $pattern = '/\b' . $labels_prefix . '.*?\b/i';
                 preg_match_all($pattern, $content, $matches);
 
@@ -67,17 +66,27 @@ $getUsedLabels = function () use (&$directories_used_labels, &$directories_used_
             }
         }
     }
+    include_once 'modules/Schedulers/_AddJobsHere.php';
+    foreach ($job_strings as $k => $v) {
+        $used_labels_by_application['LBL_' . strtoupper($v)] = 'LBL_' . strtoupper($v);
+    }
+    global $beanList;
+    foreach($beanList as $module => $class) {
+        $used_labels_by_application['LBL_' . strtoupper($module)] = 'LBL_' . strtoupper($module);
+        if (substr($module, -1) == 's') {
+            $used_labels_by_application['LBL_' . strtoupper(substr($module, 0, -1))] = 'LBL_' . strtoupper(substr($module, 0, -1));
+        }
+    }
 };
 
-$findNotUsedLabels = function () use (&$label_dirs, &$label_file_name_prefix, &$used_labels_by_application, &$labels_prefixes, &$not_used_labels)
-{
+$findNotUsedLabels = function () use (&$label_dirs, &$label_file_name_prefix, &$used_labels_by_application, &$labels_prefixes, &$not_used_labels) {
     $label_files = [];
     foreach ($label_dirs as $label_dir) {
         $label_files = array_merge($label_files, array_filter(getFilesFromDirectory($label_dir), function ($file) use ($label_file_name_prefix) {
             return strpos($file, $label_file_name_prefix) !== false;
         }));
     }
-    
+
     foreach ($label_files as $label_file) {
         $mod_strings = [];
         $app_strings = [];
@@ -101,39 +110,31 @@ $findNotUsedLabels = function () use (&$label_dirs, &$label_file_name_prefix, &$
     }
 };
 
-$createOutput = function () use (&$not_used_labels)
-{
-    if(!empty($not_used_labels))
-    {
-        foreach($not_used_labels as $key => $labels)
-        {
-            $output_string = $key . " => [";
-            foreach($labels as $label) 
-            {
+$createOutput = function () use (&$not_used_labels) {
+    if (!empty($not_used_labels)) {
+        foreach ($not_used_labels as $key => $labels) {
+            $output_string = "\n" . $key . " => [";
+            foreach ($labels as $label) {
                 $output_string .= $label . ", ";
             }
             $output_string = rtrim($output_string, ', ');
             $output_string .= "]\n";
             echo $output_string;
         }
-        
+
     }
 };
 
-$deleteNotUsedLabels = function () use (&$not_used_labels)
-{
-    foreach($not_used_labels as $key => $labels)
-    {
-        foreach($labels as $label)
-        {
+$deleteNotUsedLabels = function () use (&$not_used_labels) {
+    foreach ($not_used_labels as $key => $labels) {
+        foreach ($labels as $label) {
             $content = file_get_contents($key);
             $lines = explode("\n", $content);
             $exclude = [];
-            
-            foreach($lines as $line) 
-            {
-                if (strpos($line, $label) !== FALSE) {
-                    if(strpos($line, '=> \'' . $label) == FALSE) {
+
+            foreach ($lines as $line) {
+                if (strpos($line, $label) !== false) {
+                    if (strpos($line, '=> \'' . $label) == false) {
                         continue;
                     }
                 }
@@ -141,24 +142,18 @@ $deleteNotUsedLabels = function () use (&$not_used_labels)
             }
             file_put_contents($key, implode("\n", $exclude));
         }
-        
+
     }
 };
 
 function runScript($getUsedLabels, $findNotUsedLabels, $createOutput, $deleteNotUsedLabels, $delete_not_used_labels = false)
 {
-    if($delete_not_used_labels === true)
-    {
-        $getUsedLabels();
-        $findNotUsedLabels();
-        $createOutput();
+    $getUsedLabels();
+    $findNotUsedLabels();
+    $createOutput();
+    if (true === $delete_not_used_labels) {
         $deleteNotUsedLabels();
-    } else {
-        $getUsedLabels();
-        $findNotUsedLabels();
-        $createOutput();
     }
 }
 
-runScript($getUsedLabels, $findNotUsedLabels, $createOutput, $deleteNotUsedLabels);
-
+runScript($getUsedLabels, $findNotUsedLabels, $createOutput, $deleteNotUsedLabels, false);
