@@ -176,5 +176,5 @@ $mod_strings = array(
 
    'LBL_SENDKUDOS' => 'Publish Kudos',
    'LBL_KUDOS_NOTIFICATION' => 'You received a kudos!',
-   'LBL_UPDATE_NEWS_BY_PROSPECT_LISTS' => 'Update news by Prospect Lists',
+   'LBL_UPDATENEWSBYPROSPECTLISTS' => 'Update news by Prospect Lists',
 );
