@@ -1041,7 +1041,7 @@ class Scheduler extends SugarBean
         $sched20->save();
   
       $this->createJobEntry('AutomaticCreateNotification', '*/15::*::*::*::*', $mod_strings['LBL_AUTOMATICCREATENOTIFICATION'],'Inactive');
-      $this->createJobEntry('updateNewsByProspectLists', '0::2::*::*::*', $mod_strings['LBL_UPDATE_NEWS_BY_PROSPECT_LISTS']);
+      $this->createJobEntry('updateNewsByProspectLists', '0::2::*::*::*', $mod_strings['LBL_UPDATENEWSBYPROSPECTLISTS']);
      }
   
    protected function createJobEntry($function, $interval, $name = '', $status='Active') {
