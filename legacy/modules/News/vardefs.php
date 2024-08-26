@@ -206,6 +206,13 @@ $dictionary['News'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_REACTIONS',
         ),
+        'prospectlists' => array(
+            'name' => 'prospectlists',
+            'vname' => 'LBL_PROSPECT_LISTS',
+            'type' => 'link',
+            'relationship' => 'prospect_list_news',
+            'source' => 'non-db',
+        ),
     ),
     'relationships' => array(
         'news_comments' => array(
