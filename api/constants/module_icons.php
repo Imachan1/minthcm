@@ -116,4 +116,5 @@ return array(
     "Calendar" => "calendar-blank",
     "Requests" => "file-document-edit",
     "default" => "star",
+    "Kudos" => "thumb-up",
 );

@@ -255,7 +255,7 @@ class ElasticSearchIndexer extends AbstractIndexer
         $indexedRecordsCount = $this->indexedRecordsCount - $oldIndexedRecordsCount;
         $type = $totalRecordsCount === $indexedRecordsCount ? Logger::DEBUG : Logger::WARNING;
         $this->logger->log($type, sprintf('Indexed %d/%d %s', $indexedRecordsCount, $totalRecordsCount, $module));
-        
+
         $this->putMeta($module, [
             'module_name' => $module,
         ]);
@@ -341,6 +341,7 @@ class ElasticSearchIndexer extends AbstractIndexer
         $this->fillAllNestedPropertyValues($bean, $args['body']);
 
         $this->removeErrorProneFields($bean->module_name, $args['body']);
+        $this->fixUpIndicesParams($args['body'][1], $this->getDefaultMapParams($bean->module_name));
         $this->client->index($args);
         $this->setBeanInstantIndexingDate($bean);
     }
@@ -521,7 +522,7 @@ class ElasticSearchIndexer extends AbstractIndexer
         $instance_id = $GLOBALS['sugar_config']['unique_key'];
         $lowercaseModule = strtolower($module);
         $this->index = $instance_id . '_' . $lowercaseModule;
-
+        $bean_params_index = 1;
         foreach ($beans as $key => $bean) {
             // MintHCM #122342 START
             //$head = ['_index' => strtolower($module), '_id' => $bean->id];
@@ -541,6 +542,8 @@ class ElasticSearchIndexer extends AbstractIndexer
                 $this->removeErrorProneFields($module, $body);
                 $params['body'][] = ['index' => $head];
                 $params['body'][] = $body;
+                $this->fixUpIndicesParams($params['body'][$bean_params_index], $this->getDefaultMapParams($module));
+                $bean_params_index += 2;
                 $this->indexedRecordsCount++;
                 $this->indexedFieldsCount += count($body);
             }
@@ -559,6 +562,29 @@ class ElasticSearchIndexer extends AbstractIndexer
         }
 
         $this->setBeansDeferredIndexingDate($beans);
+    }
+
+    /**
+     * Fixes up the indices in the params to match the ones in the defaultParams.yml.
+     *
+     * @param array $params
+     * @param array $mappings
+     */
+    private function fixUpIndicesParams(array &$params, array $mappings)
+    {
+        if (is_array($params)) {
+            foreach ($params as $key => $value) {
+                if (is_array($params[$key])) {
+                    $this->fixUpIndicesParams($params[$key], $mappings);
+                }
+                $prefix = '__';
+                $new_key = getSimilarIndiceKey($prefix . $key, $mappings['mappings']['properties']);
+                if ($new_key != $prefix . $key) {
+                    $params[$new_key] = $params[$key];
+                    unset($params[$key]);
+                }
+            }
+        }
     }
 
     // MintHCM #121632 START

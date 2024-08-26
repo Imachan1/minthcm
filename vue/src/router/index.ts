@@ -54,6 +54,7 @@ router.beforeEach(async (to, from) => {
                 params: {
                     module,
                     action: 'DetailView',
+                    record: to.params.id,
                 },
             }
         }
