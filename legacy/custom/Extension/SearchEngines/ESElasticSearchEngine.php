@@ -147,7 +147,7 @@ class ESElasticSearchEngine extends ElasticSearchEngine
             $params = $this->addBasicSearch($params, $options['searchPhrase']);
             $params = $this->addFieldsBoosting($params, $options['module']);
             $params = $this->addPagination($params, $query->getFrom(), $query->getSize());
-            $params = $this->addSorting($params, ['direction' => 'desc']);
+            $params = $this->addSorting($params, $query->getOptions()['sorting']);
             $params = $this->addFilters($params, $query->getOptions()['filters']);
             $params = $this->fixQueries($params);
         } else {

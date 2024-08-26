@@ -34,6 +34,8 @@ class MappingsGenerator
         'employee_name' => 'employee_name',
         'offboarding_id' => 'offboarding_id',
         'offboarding_name' => 'offboarding_name',
+        'parent_id' => 'parent.id',
+        'parent_name' => 'parent.name',
     ];
 
     // From vardefs to elastic

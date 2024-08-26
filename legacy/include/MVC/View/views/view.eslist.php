@@ -227,10 +227,18 @@ class ViewESList extends SugarView
             }
             $columns[$field] = array_merge($field_defs, $columns[$field]);
             $columns[$field]['name'] = $defs['name'] ?? $field;
-            $columns[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field] ?? $field;
-            $fieldProps = $this->getMappedFieldProps($columns[$field]['key']);
-            if (!empty($fieldProps) && 'text' === $fieldProps['type']) {
-                $columns[$field]['key'] .= '.keyword';
+            $columns[$field]['key'] = $defs['key'];
+            if(empty($defs['key'])){
+                $nestedProps = explode('.', $this->eslistmap[$field] ?? $field);
+                $column_keys = [];
+                foreach ($nestedProps as $prop) {
+                    $column_keys[] = $this->bean->module_name . "__" . $prop;
+                }
+                $columns[$field]['key'] = implode('.', $column_keys);
+                $fieldProps = $this->getMappedFieldProps($columns[$field]['key']) ?? $fieldProps = $this->getMappedFieldProps($field);
+                if (!empty($fieldProps) && 'text' === $fieldProps['type']) {
+                    $columns[$field]['key'] .= '.keyword';
+                }
             }
             $columns[$field]['type'] = $defs['type'] ?? $field_defs['type'];
             $columns[$field]['options'] = $this->getParsedOptions($field_defs);
@@ -312,16 +320,20 @@ class ViewESList extends SugarView
 
     protected function getMappedFieldProps($key)
     {
+        $module_prefix = $this->bean->module_name . "__";
         if (empty($this->mappings) || empty($key)) {
             return null;
         }
         $nestedProps = explode('.', $key);
         $fieldProps = $this->mappings;
         foreach ($nestedProps as $prop) {
-            if (empty($fieldProps['properties'][$prop])) {
+            if (
+                empty($fieldProps['properties'][$module_prefix . $prop]) 
+                && empty($fieldProps['properties'][$prop])
+            ) {
                 return null;
             }
-            $fieldProps = $fieldProps['properties'][$prop];
+            $fieldProps = $fieldProps['properties'][$module_prefix . $prop] ?? $fieldProps['properties'][$prop];
         }
         return $fieldProps;
     }

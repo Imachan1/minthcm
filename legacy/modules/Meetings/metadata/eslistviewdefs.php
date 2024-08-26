@@ -39,7 +39,6 @@ $ESListViewDefs[$module_name] = [
             'link' => true,
             'default' => true,
             'ACLTag' => 'PARENT',
-            'sortable' => false,
         ],
         'DATE_START' => [
             'width' => '10%',
