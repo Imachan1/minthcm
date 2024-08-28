@@ -227,10 +227,18 @@ class ViewESList extends SugarView
             }
             $columns[$field] = array_merge($field_defs, $columns[$field]);
             $columns[$field]['name'] = $defs['name'] ?? $field;
-            $columns[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field] ?? $field;
-            $fieldProps = $this->getMappedFieldProps($columns[$field]['key']);
-            if (!empty($fieldProps) && 'text' === $fieldProps['type']) {
-                $columns[$field]['key'] .= '.keyword';
+            $columns[$field]['key'] = $defs['key'];
+            if(empty($defs['key'])){
+                $nestedProps = explode('.', $this->eslistmap[$field] ?? $field);
+                $column_keys = [];
+                foreach ($nestedProps as $prop) {
+                    $column_keys[] = $this->bean->module_name . "__" . $prop;
+                }
+                $columns[$field]['key'] = implode('.', $column_keys);
+                $fieldProps = $this->getMappedFieldProps($columns[$field]['key']) ?? $fieldProps = $this->getMappedFieldProps($field);
+                if (!empty($fieldProps) && 'text' === $fieldProps['type']) {
+                    $columns[$field]['key'] .= '.keyword';
+                }
             }
             $columns[$field]['type'] = $defs['type'] ?? $field_defs['type'];
             $columns[$field]['options'] = $this->getParsedOptions($field_defs);
@@ -270,13 +278,29 @@ class ViewESList extends SugarView
             $search[$field]['key'] = $defs['key'] ?? $this->eslistmap[$search_field_name] ?? $search_field_name;
             $search[$field]['type'] = $defs['type'] ?? $field_defs['type'];
             if (!empty($search[$field]['type'])) {
-                if (in_array($search[$field]['type'], ['multienum', 'enum'])) {
+                if (in_array($search[$field]['type'], ['multienum', 'enum', 'ColoredEnum'])) {
                     $search[$field]['key'] .= '.keyword';
                 } else if ('relate' === $search[$field]['type']) {
                     $field_id = $field_defs['id_name'];
                     $search[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field_id] ?? $field_id;
                 }
             }
+            $nestedProps = explode('.', $search[$field]['key']);
+            $search_keys = [];
+            $keyword = '';
+            foreach ($nestedProps as $prop) {
+                if($prop === "keyword"){
+                    $keyword = '.' . $prop;
+                    continue;
+                }
+                if(!empty($field_id) && str_contains($field_id, $prop)){
+                    $search_keys[] = $prop;
+                } else {
+                    $search_keys[] = $this->bean->module_name . "__" . $prop;
+                }
+            }
+            $search[$field]['key'] = implode('.', $search_keys) . $keyword;
+
             $search[$field]['options'] = $this->getParsedOptions($field_defs);
             $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
             $search[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
@@ -312,16 +336,20 @@ class ViewESList extends SugarView
 
     protected function getMappedFieldProps($key)
     {
+        $module_prefix = $this->bean->module_name . "__";
         if (empty($this->mappings) || empty($key)) {
             return null;
         }
         $nestedProps = explode('.', $key);
         $fieldProps = $this->mappings;
         foreach ($nestedProps as $prop) {
-            if (empty($fieldProps['properties'][$prop])) {
+            if (
+                empty($fieldProps['properties'][$module_prefix . $prop]) 
+                && empty($fieldProps['properties'][$prop])
+            ) {
                 return null;
             }
-            $fieldProps = $fieldProps['properties'][$prop];
+            $fieldProps = $fieldProps['properties'][$module_prefix . $prop] ?? $fieldProps['properties'][$prop];
         }
         return $fieldProps;
     }

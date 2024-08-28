@@ -186,9 +186,15 @@ function setFilters(filterRows: FilterRow[]) {
         })
     })
     const filtersChanged = JSON.stringify(query) !== JSON.stringify(store.filters)
-    store.filters = query
     if (filtersChanged || store.preferences.initFilters) {
-        store.preferences.filterRows = JSON.stringify(filterRows);
+        if(filterRows.length > 0 || activeFilter.value == null){
+            store.filters = query
+            store.preferences.filterRows = JSON.stringify(filterRows);
+            store.filterRows = filterRows
+        } else {
+            filterRows = JSON.parse(store.preferences.filterRows ?? '[]');
+            store.filterRows = JSON.parse(store.preferences.filterRows ?? '[]');
+        }
         store.getData()
     }
 }

@@ -212,6 +212,17 @@ if (!defined('sugarEntry') || !sugarEntry) {
         ){
             $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'] = $activeFilter;
          }
+        if(
+            isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['deleteActiveFilter'])
+            && $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['deleteActiveFilter']
+            && $activeFilter
+        ){
+            unset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['filterRows']);
+            $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['filters'] = [
+                'filter' => [],
+                'must_not' => [],
+            ];
+        }
      }
  
      /**
