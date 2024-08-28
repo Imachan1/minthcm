@@ -94,6 +94,10 @@ $mod_strings = array(
     'LBL_EMAIL_MARKETING' => 'Email Marketing',
     'LBL_EMPLOYEES' => 'Employees',
     'LBL_CANDIDATES' => 'Candidates',
-
+    'LBL_NEWS' => 'News',
+    'LBL_AUTOMATIC_UPDATE' => "Automatic Update",
+    'LBL_KREPORTS' => "Reports",
+    'LBL_KREPORT_ID' => "Report ID",
+    'LBL_KREPORT_NAME' => "Report",
 );
 

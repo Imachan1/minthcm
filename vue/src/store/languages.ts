@@ -8,6 +8,10 @@ export interface Languages {
     modules: { [key: string]: { [key: string]: string } }
 }
 
+interface Placeholders {
+    [key: string]: string
+}
+
 export const useLanguagesStore = defineStore('languages', () => {
     const currentLanguage = 'en_us'
     const languages = ref<Languages>({
@@ -17,13 +21,18 @@ export const useLanguagesStore = defineStore('languages', () => {
     })
 
     const label = computed(() => {
-        return (lbl: string, module?: string) => {
+        return (lbl: string, module?: string | null, placeholders?: Placeholders) => {
             let label = ''
             if (module) {
                 label = languages.value.modules?.[module]?.[lbl]
             }
             if (!label) {
                 label = languages.value.app_strings?.[lbl]
+            }
+            if (placeholders) {
+                for (const [key, value] of Object.entries(placeholders)) {
+                    label = label.replaceAll(`{${key}}`, value)
+                }
             }
             return label || lbl
         }

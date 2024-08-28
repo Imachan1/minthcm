@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,8 +8,8 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -37,22 +36,22 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 namespace MintHCM\Api\Controllers\Init;
 
-use BeanFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use Slim\Psr7\Response;
-use MintHCM\Api\Controllers\Init\Module;
 use MintHCM\Api\Controllers\Init\Languages;
+use MintHCM\Api\Controllers\Init\Module;
 use MintHCM\Api\Controllers\Init\Preferences;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Psr7\Response;
+use User;
 
 class Init
 {
@@ -73,7 +72,7 @@ class Init
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response
-    {   
+    {
         $response = $response->withHeader('Content-type', 'application/json');
 
         $response_body = $this->getData();
@@ -92,13 +91,14 @@ class Init
         [$modules_menu, $modules_data] = $this->getModules();
         $response_body['menu_modules'] = $modules_menu;
         $response_body['modules'] = $modules_data;
-        $response_body['quick_create'] = $this->getQuickCreate();
+        $response_body['quick_create'] = $this->getQuickCreate($modules_menu);
         $response_body['legacy_views'] = $this->getLegacyViews($modules_data);
         return $response_body;
     }
 
     public function getCurrentUserData()
     {
+        /** @var User $current_user */
         global $current_user;
         if (empty($current_user->id)) {
             return array();
@@ -111,6 +111,7 @@ class Init
         $preferences['dec_sep'] = $current_user->getPreference('dec_sep');
         $preferences['num_grp_sep'] = $current_user->getPreference('num_grp_sep');
         $preferences['default_currency_significant_digits'] = $current_user->getPreference('default_currency_significant_digits');
+        $preferences['language'] = $_SESSION['authenticated_user_language'];
         return array(
             "id" => $current_user->id,
             "is_admin" => "1" === $current_user->is_admin ? true : false,
@@ -137,10 +138,10 @@ class Init
         foreach ($modules as $module) {
             $modules_data[$module] = $this->module_init_controller->getModuleData($module);
         }
-        return $this->getMenuForAllModules($modules_data,$modules);
+        return $this->getMenuForAllModules($modules_data, $modules);
     }
 
-    private function getQuickCreate()
+    private function getQuickCreate($modules_menu)
     {
         chdir('../api');
         $modules = include "constants/quick_create.php";
@@ -151,6 +152,9 @@ class Init
         }
 
         foreach ($modules as $module => $name) {
+            if(!in_array($module, $modules_menu)) {
+                continue;
+            }
             $response[] = array(
                 "module" => $module,
                 "name" => $name,
@@ -163,31 +167,49 @@ class Init
     {
         $legacy_views = include "constants/legacy_views.php";
         chdir('../legacy');
-        foreach($modules_data as $module => $data){
-            if(
-                (
-                    !array_key_exists($module, $legacy_views)
-                    || !isset($legacy_views[$module]['list'])
-                )
-                && (
-                    file_exists('modules/' . $module . '/metadata/eslistviewdefs.php')
-                    || file_exists('custom/modules/' . $module . '/metadata/eslistviewdefs.php')
-                )
-            ){
-                $legacy_views[$module] = [
-                    'list' => false,
-                ];
-            }
+        foreach ($modules_data as $module => $data) {
+            $this->processESListViewConfig($module, $legacy_views);
+            $this->processRecordViewConfig($module, $legacy_views);
         }
         chdir('../api');
         return $legacy_views;
     }
 
-    private function getMenuForAllModules($modules_data,$modules)
+    private function processESListViewConfig(string $module, array &$legacy_views): void
     {
-        global $beanList,$current_user;
-        foreach($beanList as $key=>$module) {
-            if(!array_key_exists($key,$modules_data)){
+        if (!$this->isModuleConfigured($module, $legacy_views, 'list') && $this->checkMetadataFiles($module, 'eslist')) {
+            $legacy_views[$module]['list'] = false;
+        }
+    }
+
+    private function processRecordViewConfig(string $module, array &$legacy_views): void
+    {
+        if (!$this->checkMetadataFiles($module, 'record')) {
+            $legacy_views[$module]['record'] = true;
+        }
+    }
+
+    private function isModuleConfigured(string $module, array $config, string $view): bool
+    {
+        return (
+            array_key_exists($module, $config)
+            && isset($config[$module][$view])
+        );
+    }
+
+    private function checkMetadataFiles(string $module, string $view): bool
+    {
+        return (
+            file_exists('modules/' . $module . '/metadata/' . $view . 'viewdefs.php')
+            || file_exists('custom/modules/' . $module . '/metadata/' . $view . 'viewdefs.php')
+        );
+    }
+
+    private function getMenuForAllModules($modules_data, $modules)
+    {
+        global $beanList;
+        foreach ($beanList as $key => $module) {
+            if (!array_key_exists($key, $modules_data)) {
                 $modules_data[$key] = $this->module_init_controller->getModuleData($key);
             }
         }

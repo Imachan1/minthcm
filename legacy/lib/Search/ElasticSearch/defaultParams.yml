@@ -1,27 +1,27 @@
 mappings:
   ACLRoles:
     properties:
-      name:
+      ACLRoles__name:
         properties:
-          name:
+          ACLRoles__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-          first:
+          ACLRoles__first:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-          last:
+          ACLRoles__last:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      description:
+      ACLRoles__description:
         type: text
         fields:
           keyword:
@@ -29,73 +29,80 @@ mappings:
             ignore_above: 256
   ProspectLists:
     properties:
-      name:
+      ProspectLists__name:
         properties:
-          name:
+          ProspectLists__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      list_type:
+      ProspectLists__list_type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      description:
+      ProspectLists__description:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      ProspectLists__meta:
         properties:
-          created:
+          ProspectLists__created:
             properties:
-              date:
+              ProspectLists__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
   Project:
     properties:
-      name:
+      Project__name:
         properties:
-          name:
+          Project__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      priority:
+      Project__priority:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      status:
+      Project__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      estimated_start_date:
+      Project__estimated_start_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      Project__estimated_end_date:
+        type: date
+        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      Project__meta:
+        properties:
+          Project__created:
+            properties:
+              Project__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          Project__modified:
+            properties:
+              Project__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       estimated_end_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
-        properties:
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -107,38 +114,38 @@ mappings:
                 ignore_above: 256
   ProjectTask:
     properties:
-      name:
+      ProjectTask__name:
         properties:
-          name:
+          ProjectTask__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      date_start:
+      ProjectTask__date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_finish:
+      ProjectTask__date_finish:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      priority:
+      ProjectTask__priority:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      percent_complete:
+      ProjectTask__percent_complete:
         type: integer
-      meta:
+      ProjectTask__meta:
         properties:
-          created:
+          ProjectTask__created:
             properties:
-              date:
+              ProjectTask__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          ProjectTask__modified:
             properties:
-              date:
+              ProjectTask__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -152,73 +159,73 @@ mappings:
                 ignore_above: 256
   Campaigns:
     properties:
-      name:
+      Campaigns__name:
         properties:
-          name:
+          Campaigns__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Campaigns__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      campaign_type:
+      Campaigns__campaign_type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      end_date:
+      Campaigns__end_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      Campaigns__meta:
         properties:
-          created:
+          Campaigns__created:
             properties:
-              date:
+              Campaigns__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Campaigns__modified:
             properties:
-              date:
+              Campaigns__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      start_date:
+      Campaigns__start_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
   EmailMan:
     properties:
-      send_date_time:
+      EmailMan__send_date_time:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      send_attempts:
+      EmailMan__send_attempts:
         type: integer
-      in_queue:
+      EmailMan__in_queue:
         type: boolean
   Schedulers:
     properties:
-      name:
+      Schedulers__name:
         properties:
-          name:
+          Schedulers__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      job_interval:
+      Schedulers__job_interval:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      date_time_start:
+      Schedulers__date_time_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      status:
+      Schedulers__status:
         type: text
         fields:
           keyword:
@@ -226,41 +233,41 @@ mappings:
             ignore_above: 256
   EmailTemplates:
     properties:
-      name:
+      EmailTemplates__name:
         properties:
-          name:
+          EmailTemplates__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      type:
+      EmailTemplates__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      EmailTemplates__meta:
         properties:
-          modified:
+          EmailTemplates__modified:
             properties:
-              date:
+              EmailTemplates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-              user_name:
+              EmailTemplates__user_name:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-          created:
+          EmailTemplates__created:
             properties:
-              date:
+              EmailTemplates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-              user_name:
+              EmailTemplates__user_name:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-      subject:
+      EmailTemplates__subject:
         type: text
         fields:
           keyword:
@@ -268,99 +275,99 @@ mappings:
             ignore_above: 256
   Notes:
     properties:
-      name:
+      Notes__name:
         properties:
-          name:
+          Notes__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      filename:
+      Notes__filename:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Notes__meta:
         properties:
-          modified:
+          Notes__modified:
             properties:
-              date:
+              Notes__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Notes__created:
             properties:
-              date:
+              Notes__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
   Calls:
     properties:
-      name:
+      Calls__name:
         properties:
-          name:
+          Calls__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Calls__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      direction:
+      Calls__direction:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      date_start:
+      Calls__date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      duration_minutes:
+      Calls__duration_minutes:
         type: integer
-      meta:
+      Calls__meta:
         properties:
-          created:
+          Calls__created:
             properties:
-              date:
+              Calls__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Calls__modified:
             properties:
-              date:
+              Calls__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      duration_hours:
+      Calls__duration_hours:
         type: integer
   Emails:
     properties:
-      meta:
+      Emails__meta:
         properties:
-          created:
+          Emails__created:
             properties:
-              date:
+              Emails__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Emails__modified:
             properties:
-              date:
+              Emails__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_sent_received:
+      Emails__date_sent_received:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      category_id:
+      Emails__category_id:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      name:
+      Emails__name:
         properties:
-          name:
+          Emails__name:
             type: text
             fields:
               keyword:
@@ -368,159 +375,163 @@ mappings:
                 ignore_above: 256
   Meetings:
     properties:
-      name:
+      Meetings__name:
         properties:
-          name:
+          Meetings__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Meetings__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      type:
+      Meetings__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      date_start:
+      Meetings__date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_end:
+      Meetings__date_end:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      Meetings__meta:
         properties:
-          created:
+          Meetings__created:
             properties:
-              date:
+              Meetings__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Meetings__modified:
             properties:
-              date:
+              Meetings__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
   Tasks:
     properties:
-      name:
+      Tasks__name:
         properties:
-          name:
+          Tasks__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Tasks__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      priority:
+      Tasks__priority:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      date_due:
+      Tasks__date_due:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_start:
+      Tasks__date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      Tasks__meta:
         properties:
-          created:
+          Tasks__created:
             properties:
-              date:
+              Tasks__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Tasks__modified:
             properties:
-              date:
+              Tasks__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
   Users:
     properties:
-      user_name:
+      Users__user_name:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      business_role:
+      Users__business_role:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      phone_work:
+      Users__phone_work:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      status:
+      Users__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      is_admin:
+      Users__is_admin:
         type: boolean
-      is_group:
+      Users__is_group:
         type: boolean
-      address_street:
+      Users__address_street:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      address_city:
+      Users__address_city:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      address_state:
+      Users__address_state:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      address_country:
+      Users__address_country:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      name:
+      Users__name:
         properties:
-          first:
+          Users__first:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-          last:
+          Users__last:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      title:
+      Users__title:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      address_postalcode:
+      Users__address_postalcode:
         type: text
         fields:
           keyword:
@@ -528,59 +539,59 @@ mappings:
             ignore_above: 256
   Documents:
     properties:
-      document_name:
+      Documents__document_name:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      category_id:
+      Documents__category_id:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      subcategory_id:
+      Documents__subcategory_id:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      exp_date:
+      Documents__exp_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      Documents__meta:
         properties:
-          created:
+          Documents__created:
             properties:
-              date:
+              Documents__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Documents__modified:
             properties:
-              date:
+              Documents__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      template_type:
+      Documents__template_type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      active_date:
+      Documents__active_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
   Roles:
     properties:
-      name:
+      Roles__name:
         properties:
-          name:
+          Roles__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      description:
+      Roles__description:
         type: text
         fields:
           keyword:
@@ -588,64 +599,64 @@ mappings:
             ignore_above: 256
   Employees:
     properties:
-      phone_work:
+      Employees__phone_work:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      employee_status:
+      Employees__employee_status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      address_street:
+      Employees__address_street:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      address_city:
+      Employees__address_city:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      address_state:
+      Employees__address_state:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      address_country:
+      Employees__address_country:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Employees__meta:
         properties:
-          created:
+          Employees__created:
             properties:
-              date:
+              Employees__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      name:
+      Employees__name:
         properties:
-          first:
+          Employees__first:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-          last:
+          Employees__last:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      address_postalcode:
+      Employees__address_postalcode:
         type: text
         fields:
           keyword:
@@ -653,198 +664,210 @@ mappings:
             ignore_above: 256
   AOBH_BusinessHours:
     properties:
-      name:
+      AOBH_BusinessHours__name:
         properties:
-          name:
+          AOBH_BusinessHours__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      AOBH_BusinessHours__meta:
         properties:
+          AOBH_BusinessHours__assigned:
+            properties:
+              AOBH_BusinessHours__user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+              AOBH_BusinessHours__user_id:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+  SugarFeed:
+    properties:
+      SugarFeed__name:
+        properties:
+          SugarFeed__name:
+            type: text
+            fields:
+              keyword:
+                type: keyword
+                ignore_above: 256
+      SugarFeed__description:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      SugarFeed__meta:
+        properties:
+          SugarFeed__assigned:
+            properties:
+              SugarFeed__user_id:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+  OAuthKeys:
+    properties:
+      OAuthKeys__name:
+        properties:
+          OAuthKeys__name:
+            type: text
+            fields:
+              keyword:
+                type: keyword
+                ignore_above: 256
+      OAuthKeys__c_key:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      OAuthKeys__meta:
+        properties:
+          OAuthKeys__assigned:
+            properties:
+              OAuthKeys__user_id:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+  AM_ProjectTemplates:
+    properties:
+      AM_ProjectTemplates__name:
+        properties:
+          AM_ProjectTemplates__name:
+            type: text
+            fields:
+              keyword:
+                type: keyword
+                ignore_above: 256
+      AM_ProjectTemplates__status:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      AM_ProjectTemplates__priority:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      AM_ProjectTemplates__meta:
+        properties:
+          AM_ProjectTemplates__created:
+            properties:
+              AM_ProjectTemplates__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          AM_ProjectTemplates__modified:
+            properties:
+              AM_ProjectTemplates__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      AM_ProjectTemplates__override_business_hours:
+        type: boolean
+  AM_TaskTemplates:
+    properties:
+      AM_TaskTemplates__name:
+        properties:
+          AM_TaskTemplates__name:
+            type: text
+            fields:
+              keyword:
+                type: keyword
+                ignore_above: 256
+      AM_TaskTemplates__status:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      AM_TaskTemplates__priority:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      AM_TaskTemplates__milestone_flag:
+        type: boolean
+      AM_TaskTemplates__meta:
+        properties:
+          AM_TaskTemplates__assigned:
+            properties:
+              AM_TaskTemplates__user_id:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+  AOK_Knowledge_Base_Categories:
+    properties:
+      AOK_Knowledge_Base_Categories__name:
+        properties:
+          AOK_Knowledge_Base_Categories__name:
+            type: text
+            fields:
+              keyword:
+                type: keyword
+                ignore_above: 256
+      AOK_Knowledge_Base_Categories__meta:
+        properties:
+          AOK_Knowledge_Base_Categories__created:
+            properties:
+              AOK_Knowledge_Base_Categories__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          AOK_Knowledge_Base_Categories__modified:
+            properties:
+              AOK_Knowledge_Base_Categories__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
           assigned:
             properties:
               user_name:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-              user_id:
-                type: text
-                fields:
-                  keyword: { type: keyword, ignore_above: 256 }
-  SugarFeed:
-    properties:
-      name:
-        properties:
-          name:
-            type: text
-            fields:
-              keyword:
-                type: keyword
-                ignore_above: 256
-      description:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      meta:
-        properties:
-          assigned:
-            properties:
-              user_id:
-                type: text
-                fields:
-                  keyword: { type: keyword, ignore_above: 256 }
-  OAuthKeys:
-    properties:
-      name:
-        properties:
-          name:
-            type: text
-            fields:
-              keyword:
-                type: keyword
-                ignore_above: 256
-      c_key:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      meta:
-        properties:
-          assigned:
-            properties:
-              user_id:
-                type: text
-                fields:
-                  keyword: { type: keyword, ignore_above: 256 }
-  AM_ProjectTemplates:
-    properties:
-      name:
-        properties:
-          name:
-            type: text
-            fields:
-              keyword:
-                type: keyword
-                ignore_above: 256
-      status:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      priority:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      meta:
-        properties:
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      override_business_hours:
-        type: boolean
-  AM_TaskTemplates:
-    properties:
-      name:
-        properties:
-          name:
-            type: text
-            fields:
-              keyword:
-                type: keyword
-                ignore_above: 256
-      status:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      priority:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      milestone_flag:
-        type: boolean
-      meta:
-        properties:
-          assigned:
-            properties:
-              user_id:
-                type: text
-                fields:
-                  keyword: { type: keyword, ignore_above: 256 }
-  AOK_Knowledge_Base_Categories:
-    properties:
-      name:
-        properties:
-          name:
-            type: text
-            fields:
-              keyword:
-                type: keyword
-                ignore_above: 256
-      meta:
-        properties:
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
   AOK_KnowledgeBase:
     properties:
-      name:
+      AOK_KnowledgeBase__name:
         properties:
-          name:
+          AOK_KnowledgeBase__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      AOK_KnowledgeBase__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      revision:
+      AOK_KnowledgeBase__revision:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      AOK_KnowledgeBase__meta:
         properties:
-          created:
+          AOK_KnowledgeBase__created:
             properties:
-              date:
+              AOK_KnowledgeBase__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          AOK_KnowledgeBase__modified:
             properties:
-              date:
+              AOK_KnowledgeBase__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -856,38 +879,42 @@ mappings:
                 ignore_above: 256
   FP_events:
     properties:
-      name:
+      FP_events__name:
         properties:
-          name:
+          FP_events__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      date_start:
+      FP_events__date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_end:
+      FP_events__date_end:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      budget:
+      FP_events__budget:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      FP_events__meta:
         properties:
-          created:
+          FP_events__created:
             properties:
-              date:
+              FP_events__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          FP_events__modified:
             properties:
-              date:
+              FP_events__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -899,32 +926,36 @@ mappings:
                 ignore_above: 256
   FP_Event_Locations:
     properties:
-      name:
+      FP_Event_Locations__name:
         properties:
-          name:
+          FP_Event_Locations__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      capacity:
+      FP_Event_Locations__capacity:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      FP_Event_Locations__meta:
         properties:
-          created:
+          FP_Event_Locations__created:
             properties:
-              date:
+              FP_Event_Locations__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          FP_Event_Locations__modified:
             properties:
-              date:
+              FP_Event_Locations__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -936,34 +967,34 @@ mappings:
                 ignore_above: 256
   AOD_IndexEvent:
     properties:
-      record_module:
+      AOD_IndexEvent__record_module:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      name:
+      AOD_IndexEvent__name:
         properties:
-          name:
+          AOD_IndexEvent__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      AOD_IndexEvent__meta:
         properties:
-          modified:
+          AOD_IndexEvent__modified:
             properties:
-              date:
+              AOD_IndexEvent__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
+          AOD_IndexEvent__assigned:
             properties:
-              user_id:
+              AOD_IndexEvent__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-      error:
+      AOD_IndexEvent__error:
         type: text
         fields:
           keyword:
@@ -971,82 +1002,86 @@ mappings:
             ignore_above: 256
   AOD_Index:
     properties:
-      name:
+      AOD_Index__name:
         properties:
-          name:
+          AOD_Index__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      AOD_Index__meta:
         properties:
-          assigned:
+          AOD_Index__assigned:
             properties:
-              user_id:
+              AOD_Index__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
   AOR_Reports:
     properties:
-      name:
+      AOR_Reports__name:
         properties:
-          name:
+          AOR_Reports__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      report_module:
+      AOR_Reports__report_module:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      AOR_Reports__meta:
         properties:
-          created:
+          AOR_Reports__created:
             properties:
-              date:
+              AOR_Reports__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          AOR_Reports__modified:
             properties:
-              date:
+              AOR_Reports__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-  AOR_Scheduled_Reports:
-    properties:
-      name:
-        properties:
-          name:
-            type: text
-            fields:
-              keyword:
-                type: keyword
-                ignore_above: 256
-      status:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      meta:
-        properties:
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
-            properties:
               user_name:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-          created:
+  AOR_Scheduled_Reports:
+    properties:
+      AOR_Scheduled_Reports__name:
+        properties:
+          AOR_Scheduled_Reports__name:
+            type: text
+            fields:
+              keyword:
+                type: keyword
+                ignore_above: 256
+      AOR_Scheduled_Reports__status:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      AOR_Scheduled_Reports__meta:
+        properties:
+          AOR_Scheduled_Reports__modified:
             properties:
-              date:
+              AOR_Scheduled_Reports__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          AOR_Scheduled_Reports__assigned:
+            properties:
+              AOR_Scheduled_Reports__user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          AOR_Scheduled_Reports__created:
+            properties:
+              AOR_Scheduled_Reports__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -1060,32 +1095,38 @@ mappings:
                 ignore_above: 256
   AOS_PDF_Templates:
     properties:
-      name:
+      AOS_PDF_Templates__name:
         properties:
-          name:
+          AOS_PDF_Templates__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      type:
+      AOS_PDF_Templates__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      AOS_PDF_Templates__meta:
         properties:
-          created:
+          AOS_PDF_Templates__created:
             properties:
-              date:
+              AOS_PDF_Templates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          AOS_PDF_Templates__modified:
             properties:
-              date:
+              AOS_PDF_Templates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -1097,38 +1138,42 @@ mappings:
                 ignore_above: 256
   AOW_WorkFlow:
     properties:
-      name:
+      AOW_WorkFlow__name:
         properties:
-          name:
+          AOW_WorkFlow__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      flow_module:
+      AOW_WorkFlow__flow_module:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      status:
+      AOW_WorkFlow__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      AOW_WorkFlow__meta:
         properties:
-          created:
+          AOW_WorkFlow__created:
             properties:
-              date:
+              AOW_WorkFlow__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          AOW_WorkFlow__modified:
             properties:
-              date:
+              AOW_WorkFlow__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -1140,97 +1185,122 @@ mappings:
                 ignore_above: 256
   AOW_Processed:
     properties:
-      parent_type:
+      AOW_Processed__parent_type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      status:
+      AOW_Processed__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      AOW_Processed__meta:
         properties:
-          created:
+          AOW_Processed__created:
             properties:
-              date:
+              AOW_Processed__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          AOW_Processed__modified:
             properties:
-              date:
+              AOW_Processed__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
   Calls_Reschedule:
     properties:
-      name:
+      Calls_Reschedule__name:
         properties:
-          name:
+          Calls_Reschedule__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-  SecurityGroups:
-    properties:
-      name:
-        properties:
-          name:
-            type: text
-            fields:
-              keyword:
-                type: keyword
-                ignore_above: 256
-      group_type:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      noninheritable:
-        type: boolean
-      meta:
-        properties:
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-  OutboundEmailAccounts:
-    properties:
-      name:
-        properties:
-          name:
-            type: text
-            fields:
-              keyword:
-                type: keyword
-                ignore_above: 256
-      mail_smtpuser:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      mail_smtpserver:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
       meta:
         properties:
           assigned:
             properties:
-              user_id:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+  SecurityGroups:
+    properties:
+      SecurityGroups__name:
+        properties:
+          SecurityGroups__name:
+            type: text
+            fields:
+              keyword:
+                type: keyword
+                ignore_above: 256
+      SecurityGroups__group_type:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      SecurityGroups__noninheritable:
+        type: boolean
+      SecurityGroups__meta:
+        properties:
+          SecurityGroups__created:
+            properties:
+              SecurityGroups__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          SecurityGroups__modified:
+            properties:
+              SecurityGroups__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      private:
+        type: boolean
+      security_groups:
+        type: nested
+        properties:
+          id:
+            type: text
+            fields:
+              keyword:
+                type: keyword
+                ignore_above: 256
+  OutboundEmailAccounts:
+    properties:
+      OutboundEmailAccounts__name:
+        properties:
+          OutboundEmailAccounts__name:
+            type: text
+            fields:
+              keyword:
+                type: keyword
+                ignore_above: 256
+      OutboundEmailAccounts__mail_smtpuser:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      OutboundEmailAccounts__mail_smtpserver:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      OutboundEmailAccounts__meta:
+        properties:
+          OutboundEmailAccounts__assigned:
+            properties:
+              OutboundEmailAccounts__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
@@ -1245,58 +1315,58 @@ mappings:
                 ignore_above: 256
   TemplateSectionLine:
     properties:
-      name:
+      TemplateSectionLine__name:
         properties:
-          name:
+          TemplateSectionLine__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      grp:
+      TemplateSectionLine__grp:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      description:
+      TemplateSectionLine__description:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      TemplateSectionLine__meta:
         properties:
-          assigned:
+          TemplateSectionLine__assigned:
             properties:
-              user_id:
+              TemplateSectionLine__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
   OAuth2Tokens:
     properties:
-      id:
+      OAuth2Tokens__id:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      token_is_revoked:
+      OAuth2Tokens__token_is_revoked:
         type: boolean
-      meta:
+      OAuth2Tokens__meta:
         properties:
-          created:
+          OAuth2Tokens__created:
             properties:
-              date:
+              OAuth2Tokens__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      access_token_expires:
+      OAuth2Tokens__access_token_expires:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      refresh_token_expires:
+      OAuth2Tokens__refresh_token_expires:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      grant_type:
+      OAuth2Tokens__grant_type:
         type: text
         fields:
           keyword:
@@ -1304,35 +1374,43 @@ mappings:
             ignore_above: 256
   OAuth2Clients:
     properties:
-      name:
+      OAuth2Clients__name:
         properties:
-          name:
+          OAuth2Clients__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      allowed_grant_type:
+      OAuth2Clients__allowed_grant_type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
+      meta:
+        properties:
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
   SurveyResponses:
     properties:
-      name:
+      SurveyResponses__name:
         properties:
-          name:
+          SurveyResponses__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      SurveyResponses__meta:
         properties:
-          assigned:
+          SurveyResponses__assigned:
             properties:
-              user_id:
+              SurveyResponses__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
@@ -1347,30 +1425,30 @@ mappings:
                 ignore_above: 256
   Surveys:
     properties:
-      name:
+      Surveys__name:
         properties:
-          name:
+          Surveys__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Surveys__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Surveys__meta:
         properties:
-          created:
+          Surveys__created:
             properties:
-              date:
+              Surveys__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Surveys__modified:
             properties:
-              date:
+              Surveys__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -1384,19 +1462,19 @@ mappings:
                 ignore_above: 256
   SurveyQuestionResponses:
     properties:
-      name:
+      SurveyQuestionResponses__name:
         properties:
-          name:
+          SurveyQuestionResponses__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      SurveyQuestionResponses__meta:
         properties:
-          assigned:
+          SurveyQuestionResponses__assigned:
             properties:
-              user_id:
+              SurveyQuestionResponses__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
@@ -1411,19 +1489,19 @@ mappings:
                 ignore_above: 256
   SurveyQuestions:
     properties:
-      name:
+      SurveyQuestions__name:
         properties:
-          name:
+          SurveyQuestions__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      SurveyQuestions__meta:
         properties:
-          assigned:
+          SurveyQuestions__assigned:
             properties:
-              user_id:
+              SurveyQuestions__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
@@ -1438,19 +1516,19 @@ mappings:
                 ignore_above: 256
   SurveyQuestionOptions:
     properties:
-      name:
+      SurveyQuestionOptions__name:
         properties:
-          name:
+          SurveyQuestionOptions__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      SurveyQuestionOptions__meta:
         properties:
-          assigned:
+          SurveyQuestionOptions__assigned:
             properties:
-              user_id:
+              SurveyQuestionOptions__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
@@ -1465,26 +1543,36 @@ mappings:
                 ignore_above: 256
   Skills:
     properties:
-      name:
+      Skills__name:
         properties:
-          name:
+          Skills__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      Skills__meta:
         properties:
-          created:
+          Skills__created:
             properties:
-              date:
+              Skills__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Skills__modified:
             properties:
-              date:
+              Skills__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -1496,32 +1584,42 @@ mappings:
                 ignore_above: 256
   Attitudes:
     properties:
-      name:
+      Attitudes__name:
         properties:
-          name:
+          Attitudes__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
+      Attitudes__description:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      Attitudes__meta:
+        properties:
+          Attitudes__modified:
+            properties:
+              Attitudes__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          Attitudes__created:
+            properties:
+              Attitudes__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       description:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
-        properties:
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -1533,26 +1631,36 @@ mappings:
                 ignore_above: 256
   Knowledge:
     properties:
-      name:
+      Knowledge__name:
         properties:
-          name:
+          Knowledge__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      Knowledge__meta:
         properties:
-          created:
+          Knowledge__created:
             properties:
-              date:
+              Knowledge__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Knowledge__modified:
             properties:
-              date:
+              Knowledge__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -1564,26 +1672,36 @@ mappings:
                 ignore_above: 256
   ResponsibilityActivities:
     properties:
-      name:
+      ResponsibilityActivities__name:
         properties:
-          name:
+          ResponsibilityActivities__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      ResponsibilityActivities__meta:
         properties:
-          modified:
+          ResponsibilityActivities__modified:
             properties:
-              date:
+              ResponsibilityActivities__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          ResponsibilityActivities__created:
             properties:
-              date:
+              ResponsibilityActivities__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -1595,26 +1713,36 @@ mappings:
                 ignore_above: 256
   Improvements:
     properties:
-      name:
+      Improvements__name:
         properties:
-          name:
+          Improvements__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      Improvements__meta:
         properties:
-          created:
+          Improvements__created:
             properties:
-              date:
+              Improvements__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Improvements__modified:
             properties:
-              date:
+              Improvements__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -1626,26 +1754,36 @@ mappings:
                 ignore_above: 256
   Conclusions:
     properties:
-      name:
+      Conclusions__name:
         properties:
-          name:
+          Conclusions__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      Conclusions__meta:
         properties:
-          created:
+          Conclusions__created:
             properties:
-              date:
+              Conclusions__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Conclusions__modified:
             properties:
-              date:
+              Conclusions__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -1657,26 +1795,36 @@ mappings:
                 ignore_above: 256
   Problems:
     properties:
-      name:
+      Problems__name:
         properties:
-          name:
+          Problems__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      Problems__meta:
         properties:
-          created:
+          Problems__created:
             properties:
-              date:
+              Problems__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Problems__modified:
             properties:
-              date:
+              Problems__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -1688,100 +1836,100 @@ mappings:
                 ignore_above: 256
   Candidates:
     properties:
-      phone:
+      Candidates__phone:
         properties:
-          mobile:
+          Candidates__mobile:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      potential:
+      Candidates__potential:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      birthdate:
+      Candidates__birthdate:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      relocation:
+      Candidates__relocation:
         type: boolean
-      last_time_contact:
+      Candidates__last_time_contact:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_planned_contact:
+      Candidates__date_planned_contact:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      Candidates__meta:
         properties:
-          created:
+          Candidates__created:
             properties:
-              date:
+              Candidates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Candidates__modified:
             properties:
-              date:
+              Candidates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      skype:
+      Candidates__skype:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      goldenline:
+      Candidates__goldenline:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      name:
+      Candidates__name:
         properties:
-          last:
+          Candidates__last:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-          first:
+          Candidates__first:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      linkedin:
+      Candidates__linkedin:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      address:
+      Candidates__address:
         properties:
-          primary:
+          Candidates__primary:
             properties:
-              street:
+              Candidates__street:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-              city:
+              Candidates__city:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-              state:
+              Candidates__state:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-              country:
+              Candidates__country:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-              postalcode:
+              Candidates__postalcode:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-      facebook:
+      Candidates__facebook:
         type: text
         fields:
           keyword:
@@ -1798,104 +1946,104 @@ mappings:
                 ignore_above: 256
   Candidatures:
     properties:
-      name:
+      Candidatures__name:
         properties:
-          name:
+          Candidatures__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Candidatures__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      to_decision:
+      Candidatures__to_decision:
         type: boolean
-      net_amount:
+      Candidatures__net_amount:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      gross_amount:
+      Candidatures__gross_amount:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      dg_amount:
+      Candidatures__dg_amount:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      scoring:
+      Candidatures__scoring:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Candidatures__meta:
         properties:
-          modified:
+          Candidatures__modified:
             properties:
-              date:
+              Candidatures__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Candidatures__created:
             properties:
-              date:
+              Candidatures__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      source:
+      Candidatures__source:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      start_date:
+      Candidatures__start_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      notice:
+      Candidatures__notice:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      notice_final_expectations:
+      Candidatures__notice_final_expectations:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      final_employment_form:
+      Candidatures__final_employment_form:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      employment_form:
+      Candidatures__employment_form:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      salary_net:
+      Candidatures__salary_net:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      task_grade:
+      Candidatures__task_grade:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      reason_for_rejection:
+      Candidatures__reason_for_rejection:
         type: text
         fields:
           keyword:
@@ -1912,56 +2060,56 @@ mappings:
                 ignore_above: 256
   Costs:
     properties:
-      name:
+      Costs__name:
         properties:
-          name:
+          Costs__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      type:
+      Costs__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      cost_amount:
+      Costs__cost_amount:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      cost_amount_usdollars:
+      Costs__cost_amount_usdollars:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      cost_city:
+      Costs__cost_city:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      cost_date:
+      Costs__cost_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      Costs__meta:
         properties:
-          assigned:
+          Costs__assigned:
             properties:
-              user_id:
+              Costs__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-      accommodation_no:
+      Costs__accommodation_no:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      type_of_meal:
+      Costs__type_of_meal:
         type: text
         fields:
           keyword:
@@ -1978,98 +2126,98 @@ mappings:
                 ignore_above: 256
   Delegations:
     properties:
-      name:
+      Delegations__name:
         properties:
-          name:
+          Delegations__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      obtained_sum:
+      Delegations__obtained_sum:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      obtained_sum_usdollars:
+      Delegations__obtained_sum_usdollars:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      purpose:
+      Delegations__purpose:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      return_sum_usdollar:
+      Delegations__return_sum_usdollar:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      start_date:
+      Delegations__start_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      end_date:
+      Delegations__end_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      total_expenses_usdollar:
+      Delegations__total_expenses_usdollar:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      transport_cost_usdollar:
+      Delegations__transport_cost_usdollar:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      regiments_usdollar:
+      Delegations__regiments_usdollar:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      total_accommodation_usdollar:
+      Delegations__total_accommodation_usdollar:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      accommodation_lump_sum_usdollar:
+      Delegations__accommodation_lump_sum_usdollar:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      other_usdollar:
+      Delegations__other_usdollar:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      owner:
+      Delegations__owner:
         type: boolean
-      payoff_sum_usdollar:
+      Delegations__payoff_sum_usdollar:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Delegations__meta:
         properties:
-          created:
+          Delegations__created:
             properties:
-              date:
+              Delegations__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Delegations__modified:
             properties:
-              date:
+              Delegations__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -2083,27 +2231,27 @@ mappings:
                 ignore_above: 256
   DelegationsLocale:
     properties:
-      name:
+      DelegationsLocale__name:
         properties:
-          name:
+          DelegationsLocale__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      regimen_value:
+      DelegationsLocale__regimen_value:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      accommodation_value:
+      DelegationsLocale__accommodation_value:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      archival:
+      DelegationsLocale__archival:
         type: boolean
       security_groups:
         type: nested
@@ -2116,32 +2264,36 @@ mappings:
                 ignore_above: 256
   Ideas:
     properties:
-      name:
+      Ideas__name:
         properties:
-          name:
+          Ideas__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Ideas__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Ideas__meta:
         properties:
-          modified:
+          Ideas__modified:
             properties:
-              date:
+              Ideas__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Ideas__created:
             properties:
-              date:
+              Ideas__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -2153,44 +2305,44 @@ mappings:
                 ignore_above: 256
   Rooms:
     properties:
-      name:
+      Rooms__name:
         properties:
-          name:
+          Rooms__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      reservation_type:
+      Rooms__reservation_type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      number_of_seats:
+      Rooms__number_of_seats:
         type: integer
-      availability:
+      Rooms__availability:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      room_surface:
+      Rooms__room_surface:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Rooms__meta:
         properties:
-          modified:
+          Rooms__modified:
             properties:
-              date:
+              Rooms__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Rooms__created:
             properties:
-              date:
+              Rooms__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -2204,36 +2356,36 @@ mappings:
                 ignore_above: 256
   Allocations:
     properties:
-      name:
+      Allocations__name:
         properties:
-          name:
+          Allocations__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      mode:
+      Allocations__mode:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      date_from:
+      Allocations__date_from:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_to:
+      Allocations__date_to:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      Allocations__meta:
         properties:
-          created:
+          Allocations__created:
             properties:
-              date:
+              Allocations__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Allocations__modified:
             properties:
-              date:
+              Allocations__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -2247,36 +2399,36 @@ mappings:
                 ignore_above: 256
   Workplaces:
     properties:
-      name:
+      Workplaces__name:
         properties:
-          name:
+          Workplaces__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      mode:
+      Workplaces__mode:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      availability:
+      Workplaces__availability:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Workplaces__meta:
         properties:
-          created:
+          Workplaces__created:
             properties:
-              date:
+              Workplaces__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Workplaces__modified:
             properties:
-              date:
+              Workplaces__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -2290,32 +2442,36 @@ mappings:
                 ignore_above: 256
   Positions:
     properties:
-      name:
+      Positions__name:
         properties:
-          name:
+          Positions__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Positions__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Positions__meta:
         properties:
-          modified:
+          Positions__modified:
             properties:
-              date:
+              Positions__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Positions__created:
             properties:
-              date:
+              Positions__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -2327,64 +2483,64 @@ mappings:
                 ignore_above: 256
   Recruitments:
     properties:
-      name:
+      Recruitments__name:
         properties:
-          name:
+          Recruitments__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      project_status:
+      Recruitments__project_status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      start_date:
+      Recruitments__start_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      end_date:
+      Recruitments__end_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      start_work_date:
+      Recruitments__start_work_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      Recruitments__meta:
         properties:
-          created:
+          Recruitments__created:
             properties:
-              date:
+              Recruitments__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Recruitments__modified:
             properties:
-              date:
+              Recruitments__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      salary_from:
+      Recruitments__salary_from:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      salary_to:
+      Recruitments__salary_to:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      recruitment_channels:
+      Recruitments__recruitment_channels:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      vacancy:
+      Recruitments__vacancy:
         type: integer
-      employees_number:
+      Recruitments__employees_number:
         type: integer
-      recruitment_type:
+      Recruitments__recruitment_type:
         type: text
         fields:
           keyword:
@@ -2401,54 +2557,54 @@ mappings:
                 ignore_above: 256
   Transportations:
     properties:
-      name:
+      Transportations__name:
         properties:
-          name:
+          Transportations__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      from_city:
+      Transportations__from_city:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      to_city:
+      Transportations__to_city:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      trans_date:
+      Transportations__trans_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      type:
+      Transportations__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Transportations__meta:
         properties:
-          created:
+          Transportations__created:
             properties:
-              date:
+              Transportations__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Transportations__modified:
             properties:
-              date:
+              Transportations__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
+          Transportations__assigned:
             properties:
-              user_id:
+              Transportations__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-      other_transportation:
+      Transportations__other_transportation:
         type: text
         fields:
           keyword:
@@ -2465,32 +2621,36 @@ mappings:
                 ignore_above: 256
   EmployeeRoles:
     properties:
-      name:
+      EmployeeRoles__name:
         properties:
-          name:
+          EmployeeRoles__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      EmployeeRoles__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      EmployeeRoles__meta:
         properties:
-          created:
+          EmployeeRoles__created:
             properties:
-              date:
+              EmployeeRoles__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          EmployeeRoles__modified:
             properties:
-              date:
+              EmployeeRoles__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -2502,26 +2662,30 @@ mappings:
                 ignore_above: 256
   Benefits:
     properties:
-      name:
+      Benefits__name:
         properties:
-          name:
+          Benefits__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      Benefits__meta:
         properties:
-          created:
+          Benefits__created:
             properties:
-              date:
+              Benefits__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Benefits__modified:
             properties:
-              date:
+              Benefits__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -2533,26 +2697,30 @@ mappings:
                 ignore_above: 256
   Responsibilities:
     properties:
-      name:
+      Responsibilities__name:
         properties:
-          name:
+          Responsibilities__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      Responsibilities__meta:
         properties:
-          created:
+          Responsibilities__created:
             properties:
-              date:
+              Responsibilities__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Responsibilities__modified:
             properties:
-              date:
+              Responsibilities__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -2564,52 +2732,52 @@ mappings:
                 ignore_above: 256
   SpentTime:
     properties:
-      name:
+      SpentTime__name:
         properties:
-          name:
+          SpentTime__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      work_date:
+      SpentTime__work_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      type:
+      SpentTime__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      category:
+      SpentTime__category:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      description:
+      SpentTime__description:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      spent_time:
+      SpentTime__spent_time:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      date_start:
+      SpentTime__date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_end:
+      SpentTime__date_end:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      SpentTime__meta:
         properties:
-          assigned:
+          SpentTime__assigned:
             properties:
-              user_id:
+              SpentTime__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
@@ -2624,66 +2792,66 @@ mappings:
                 ignore_above: 256
   WorkSchedules:
     properties:
-      name:
+      WorkSchedules__name:
         properties:
-          name:
+          WorkSchedules__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      type:
+      WorkSchedules__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      status:
+      WorkSchedules__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      supervisor_acceptance:
+      WorkSchedules__supervisor_acceptance:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      date_start:
+      WorkSchedules__date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_end:
+      WorkSchedules__date_end:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      spent_time:
+      WorkSchedules__spent_time:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      spent_time_settlement:
+      WorkSchedules__spent_time_settlement:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      delegation_duration:
+      WorkSchedules__delegation_duration:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      WorkSchedules__meta:
         properties:
-          created:
+          WorkSchedules__created:
             properties:
-              date:
+              WorkSchedules__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          WorkSchedules__modified:
             properties:
-              date:
+              WorkSchedules__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -2697,36 +2865,36 @@ mappings:
                 ignore_above: 256
   WorkingMonths:
     properties:
-      name:
+      WorkingMonths__name:
         properties:
-          name:
+          WorkingMonths__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      working_days:
+      WorkingMonths__working_days:
         type: integer
-      working_hours:
+      WorkingMonths__working_hours:
         type: integer
-      year:
+      WorkingMonths__year:
         type: integer
-      months:
+      WorkingMonths__months:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      WorkingMonths__meta:
         properties:
-          created:
+          WorkingMonths__created:
             properties:
-              date:
+              WorkingMonths__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          WorkingMonths__modified:
             properties:
-              date:
+              WorkingMonths__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -2740,71 +2908,85 @@ mappings:
                 ignore_above: 256
   NonWorkingDays:
     properties:
-      name:
+      NonWorkingDays__name:
         properties:
-          name:
+          NonWorkingDays__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      date:
+      NonWorkingDays__date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      week_day:
+      NonWorkingDays__week_day:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      NonWorkingDays__meta:
         properties:
-          assigned:
+          NonWorkingDays__assigned:
             properties:
+              NonWorkingDays__user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          NonWorkingDays__created:
+            properties:
+              NonWorkingDays__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          NonWorkingDays__modified:
+            properties:
+              NonWorkingDays__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
               user_name:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
   Resources:
     properties:
-      name:
+      Resources__name:
         properties:
-          name:
+          Resources__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      unavailable:
+      Resources__unavailable:
         type: boolean
-      type:
+      Resources__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Resources__meta:
         properties:
-          created:
+          Resources__created:
             properties:
-              date:
+              Resources__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Resources__modified:
             properties:
-              date:
+              Resources__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -2816,32 +2998,48 @@ mappings:
                 ignore_above: 256
   PeriodsOfEmployment:
     properties:
-      name:
+      PeriodsOfEmployment__name:
         properties:
-          name:
+          PeriodsOfEmployment__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      period_starting_date:
+      PeriodsOfEmployment__period_starting_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      period_ending_date:
+      PeriodsOfEmployment__period_ending_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      PeriodsOfEmployment__meta:
         properties:
-          modified:
+          PeriodsOfEmployment__modified:
             properties:
-              date:
+              PeriodsOfEmployment__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          PeriodsOfEmployment__created:
             properties:
-              date:
+              PeriodsOfEmployment__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -2853,30 +3051,30 @@ mappings:
                 ignore_above: 256
   Reservations:
     properties:
-      name:
+      Reservations__name:
         properties:
-          name:
+          Reservations__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      starting_date:
+      Reservations__starting_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      ending_date:
+      Reservations__ending_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      Reservations__meta:
         properties:
-          created:
+          Reservations__created:
             properties:
-              date:
+              Reservations__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Reservations__modified:
             properties:
-              date:
+              Reservations__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -2890,51 +3088,51 @@ mappings:
                 ignore_above: 256
   Contracts:
     properties:
-      name:
+      Contracts__name:
         properties:
-          name:
+          Contracts__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Contracts__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      contract_type:
+      Contracts__contract_type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      contract_starting_date:
+      Contracts__contract_starting_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      contract_ending_date:
+      Contracts__contract_ending_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      daily_working_time:
+      Contracts__daily_working_time:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      date_of_signing:
+      Contracts__date_of_signing:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      Contracts__meta:
         properties:
-          modified:
+          Contracts__modified:
             properties:
-              date:
+              Contracts__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Contracts__created:
             properties:
-              date:
+              Contracts__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -2948,51 +3146,51 @@ mappings:
                 ignore_above: 256
   TermsOfEmployment:
     properties:
-      name:
+      TermsOfEmployment__name:
         properties:
-          name:
+          TermsOfEmployment__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      term_starting_date:
+      TermsOfEmployment__term_starting_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      term_ending_date:
+      TermsOfEmployment__term_ending_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_of_signing:
+      TermsOfEmployment__date_of_signing:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      gross:
+      TermsOfEmployment__gross:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      net:
+      TermsOfEmployment__net:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      employer_cost:
+      TermsOfEmployment__employer_cost:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      TermsOfEmployment__meta:
         properties:
-          modified:
+          TermsOfEmployment__modified:
             properties:
-              date:
+              TermsOfEmployment__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          TermsOfEmployment__created:
             properties:
-              date:
+              TermsOfEmployment__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -3006,44 +3204,54 @@ mappings:
                 ignore_above: 256
   Trainings:
     properties:
-      name:
+      Trainings__name:
         properties:
-          name:
+          Trainings__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Trainings__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      date_start:
+      Trainings__date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_end:
+      Trainings__date_end:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      training_type:
+      Trainings__training_type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Trainings__meta:
         properties:
-          modified:
+          Trainings__modified:
             properties:
-              date:
+              Trainings__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Trainings__created:
             properties:
-              date:
+              Trainings__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3055,47 +3263,53 @@ mappings:
                 ignore_above: 256
   OnboardingOffboardingElements:
     properties:
-      name:
+      OnboardingOffboardingElements__name:
         properties:
-          name:
+          OnboardingOffboardingElements__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      kind_of_element:
+      OnboardingOffboardingElements__kind_of_element:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      type:
+      OnboardingOffboardingElements__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      days_from_start:
+      OnboardingOffboardingElements__days_from_start:
         type: integer
-      meta:
+      OnboardingOffboardingElements__meta:
         properties:
-          modified:
+          OnboardingOffboardingElements__modified:
             properties:
-              date:
+              OnboardingOffboardingElements__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          OnboardingOffboardingElements__created:
             properties:
-              date:
+              OnboardingOffboardingElements__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
+          OnboardingOffboardingElements__assigned:
             properties:
-              user_id:
+              OnboardingOffboardingElements__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-      user_id:
+      OnboardingOffboardingElements__user_id:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      employee_id:
         type: text
         fields:
           keyword:
@@ -3112,26 +3326,30 @@ mappings:
                 ignore_above: 256
   OnboardingTemplates:
     properties:
-      name:
+      OnboardingTemplates__name:
         properties:
-          name:
+          OnboardingTemplates__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      OnboardingTemplates__meta:
         properties:
-          modified:
+          OnboardingTemplates__modified:
             properties:
-              date:
+              OnboardingTemplates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          OnboardingTemplates__created:
             properties:
-              date:
+              OnboardingTemplates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3143,26 +3361,30 @@ mappings:
                 ignore_above: 256
   OffboardingTemplates:
     properties:
-      name:
+      OffboardingTemplates__name:
         properties:
-          name:
+          OffboardingTemplates__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      OffboardingTemplates__meta:
         properties:
-          modified:
+          OffboardingTemplates__modified:
             properties:
-              date:
+              OffboardingTemplates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          OffboardingTemplates__created:
             properties:
-              date:
+              OffboardingTemplates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3174,38 +3396,48 @@ mappings:
                 ignore_above: 256
   ExitInterviews:
     properties:
-      name:
+      ExitInterviews__name:
         properties:
-          name:
+          ExitInterviews__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      ExitInterviews__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      date_start:
+      ExitInterviews__date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_end:
+      ExitInterviews__date_end:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      ExitInterviews__meta:
         properties:
-          modified:
+          ExitInterviews__modified:
             properties:
-              date:
+              ExitInterviews__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          ExitInterviews__created:
             properties:
-              date:
+              ExitInterviews__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3217,38 +3449,48 @@ mappings:
                 ignore_above: 256
   Goals:
     properties:
-      name:
+      Goals__name:
         properties:
-          name:
+          Goals__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Goals__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      date_start:
+      Goals__date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      date_end:
+      Goals__date_end:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      Goals__meta:
         properties:
-          modified:
+          Goals__modified:
             properties:
-              date:
+              Goals__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Goals__created:
             properties:
-              date:
+              Goals__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3260,41 +3502,51 @@ mappings:
                 ignore_above: 256
   Appraisals:
     properties:
-      name:
+      Appraisals__name:
         properties:
-          name:
+          Appraisals__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Appraisals__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      type:
+      Appraisals__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      date:
+      Appraisals__date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      Appraisals__meta:
         properties:
-          modified:
+          Appraisals__modified:
             properties:
-              date:
+              Appraisals__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Appraisals__created:
             properties:
-              date:
+              Appraisals__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3306,15 +3558,15 @@ mappings:
                 ignore_above: 256
   AppraisalItems:
     properties:
-      name:
+      AppraisalItems__name:
         properties:
-          name:
+          AppraisalItems__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      value:
+      AppraisalItems__value:
         type: text
         fields:
           keyword:
@@ -3331,35 +3583,39 @@ mappings:
                 ignore_above: 256
   Onboardings:
     properties:
-      name:
+      Onboardings__name:
         properties:
-          name:
+          Onboardings__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      date_start:
+      Onboardings__date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      status:
+      Onboardings__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Onboardings__meta:
         properties:
-          created:
+          Onboardings__created:
             properties:
-              date:
+              Onboardings__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Onboardings__modified:
             properties:
-              date:
+              Onboardings__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3371,35 +3627,39 @@ mappings:
                 ignore_above: 256
   Offboardings:
     properties:
-      name:
+      Offboardings__name:
         properties:
-          name:
+          Offboardings__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      date_start:
+      Offboardings__date_start:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      status:
+      Offboardings__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Offboardings__meta:
         properties:
-          created:
+          Offboardings__created:
             properties:
-              date:
+              Offboardings__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Offboardings__modified:
             properties:
-              date:
+              Offboardings__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3411,39 +3671,39 @@ mappings:
                 ignore_above: 256
   CompetencyRatings:
     properties:
-      name:
+      CompetencyRatings__name:
         properties:
-          name:
+          CompetencyRatings__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      rating:
+      CompetencyRatings__rating:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      CompetencyRatings__meta:
         properties:
-          created:
+          CompetencyRatings__created:
             properties:
-              date:
+              CompetencyRatings__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          CompetencyRatings__modified:
             properties:
-              date:
+              CompetencyRatings__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
+          CompetencyRatings__assigned:
             properties:
-              user_id:
+              CompetencyRatings__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-      employee_id:
+      CompetencyRatings__employee_id:
         type: text
         fields:
           keyword:
@@ -3460,32 +3720,42 @@ mappings:
                 ignore_above: 256
   Competencies:
     properties:
-      name:
+      Competencies__name:
         properties:
-          name:
+          Competencies__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      competencies_type:
+      Competencies__competencies_type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Competencies__meta:
         properties:
-          modified:
+          Competencies__modified:
             properties:
-              date:
+              Competencies__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Competencies__created:
             properties:
-              date:
+              Competencies__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -3497,24 +3767,24 @@ mappings:
                 ignore_above: 256
   CareerPaths:
     properties:
-      name:
+      CareerPaths__name:
         properties:
-          name:
+          CareerPaths__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      CareerPaths__meta:
         properties:
-          modified:
+          CareerPaths__modified:
             properties:
-              date:
+              CareerPaths__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          CareerPaths__created:
             properties:
-              date:
+              CareerPaths__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
@@ -3528,41 +3798,48 @@ mappings:
                 ignore_above: 256
   News:
     properties:
-      name:
+      News__name:
         properties:
-          name:
+          News__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      news_type:
+      News__news_type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      news_status:
+      News__news_status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
+      News__publication_date:
+        type: date
+        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      News__meta:
+        properties:
+          News__modified:
+            properties:
+              News__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          News__created:
+            properties:
+              News__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       publication_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
-        properties:
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -3574,34 +3851,34 @@ mappings:
                 ignore_above: 256
   UsersNews:
     properties:
-      name:
+      UsersNews__name:
         properties:
-          name:
+          UsersNews__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      news_read:
+      UsersNews__news_read:
         type: boolean
-      not_display:
+      UsersNews__not_display:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      meta:
+      UsersNews__meta:
         properties:
-          created:
+          UsersNews__created:
             properties:
-              date:
+              UsersNews__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          UsersNews__modified:
             properties:
-              date:
+              UsersNews__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
+          UsersNews__assigned:
             properties:
-              user_id:
+              UsersNews__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
@@ -3616,32 +3893,36 @@ mappings:
                 ignore_above: 256
   Certificates:
     properties:
-      name:
+      Certificates__name:
         properties:
-          name:
+          Certificates__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      attempts_number:
+      Certificates__attempts_number:
         type: integer
-      duration:
+      Certificates__duration:
         type: integer
-      pass_rate:
+      Certificates__pass_rate:
         type: integer
-      meta:
+      Certificates__meta:
         properties:
-          created:
+          Certificates__created:
             properties:
-              date:
+              Certificates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          Certificates__modified:
             properties:
-              date:
+              Certificates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -3653,38 +3934,48 @@ mappings:
                 ignore_above: 256
   Applications:
     properties:
-      name:
+      Applications__name:
         properties:
-          name:
+          Applications__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Applications__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      type:
+      Applications__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Applications__meta:
         properties:
-          modified:
+          Applications__modified:
             properties:
-              date:
+              Applications__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Applications__created:
             properties:
-              date:
+              Applications__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+      employee_name:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
       security_groups:
         type: nested
         properties:
@@ -3696,173 +3987,183 @@ mappings:
                 ignore_above: 256
   DashboardBackups:
     properties:
-      name:
+      DashboardBackups__name:
         properties:
-          name:
+          DashboardBackups__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      DashboardBackups__meta:
         properties:
-          created:
+          DashboardBackups__created:
             properties:
-              date:
+              DashboardBackups__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          DashboardBackups__modified:
             properties:
-              date:
+              DashboardBackups__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
+          DashboardBackups__assigned:
             properties:
-              user_id:
+              DashboardBackups__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
   DashboardManager:
     properties:
-      name:
+      DashboardManager__name:
         properties:
-          name:
+          DashboardManager__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      is_loaded:
+      DashboardManager__is_loaded:
         type: boolean
-      business_role:
+      DashboardManager__business_role:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      description:
+      DashboardManager__description:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      DashboardManager__meta:
         properties:
-          created:
+          DashboardManager__created:
             properties:
-              date:
+              DashboardManager__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          DashboardManager__modified:
             properties:
-              date:
+              DashboardManager__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
+          DashboardManager__assigned:
             properties:
-              user_id:
+              DashboardManager__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
   DashboardHistory:
     properties:
-      name:
+      DashboardHistory__name:
         properties:
-          name:
+          DashboardHistory__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      DashboardHistory__meta:
         properties:
-          created:
+          DashboardHistory__created:
             properties:
-              date:
+              DashboardHistory__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          DashboardHistory__modified:
             properties:
-              date:
+              DashboardHistory__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          assigned:
+          DashboardHistory__assigned:
             properties:
-              user_id:
+              DashboardHistory__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
   KReports:
     properties:
-      name:
+      KReports__name:
         properties:
-          name:
+          KReports__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      report_module:
+      KReports__report_module:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      report_status:
+      KReports__report_status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      listtype:
+      KReports__listtype:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      description:
+      KReports__description:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      KReports__meta:
         properties:
-          created:
+          KReports__created:
             properties:
-              date:
+              KReports__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          KReports__modified:
             properties:
-              date:
+              KReports__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
   ScheduleReports:
     properties:
-      name:
+      ScheduleReports__name:
         properties:
-          name:
+          ScheduleReports__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      active:
+      ScheduleReports__active:
         type: boolean
-      frequency_performance:
+      ScheduleReports__frequency_performance:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      description:
+      ScheduleReports__description:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      template_id:
+      ScheduleReports__template_id:
         type: text
         fields:
           keyword:
@@ -3870,64 +4171,64 @@ mappings:
             ignore_above: 256
   ScheduleReportsLogs:
     properties:
-      name:
+      ScheduleReportsLogs__name:
         properties:
-          name:
+          ScheduleReportsLogs__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      execute_data:
+      ScheduleReportsLogs__execute_data:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      status:
+      ScheduleReportsLogs__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      ScheduleReportsLogs__meta:
         properties:
-          assigned:
+          ScheduleReportsLogs__assigned:
             properties:
-              user_name:
+              ScheduleReportsLogs__user_name:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-              user_id:
+              ScheduleReportsLogs__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
   KTemplates:
     properties:
-      name:
+      KTemplates__name:
         properties:
-          name:
+          KTemplates__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      KTemplates__meta:
         properties:
-          assigned:
+          KTemplates__assigned:
             properties:
-              user_name:
+              KTemplates__user_name:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-          modified:
+          KTemplates__modified:
             properties:
-              date:
+              KTemplates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          KTemplates__created:
             properties:
-              date:
+              KTemplates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      relatedmodule:
+      KTemplates__relatedmodule:
         type: text
         fields:
           keyword:
@@ -3935,44 +4236,114 @@ mappings:
             ignore_above: 256
   PDFTemplates:
     properties:
-      name:
+      PDFTemplates__name:
         properties:
-          name:
+          PDFTemplates__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      is_default:
+      PDFTemplates__is_default:
         type: boolean
-      relatedmodule:
+      PDFTemplates__relatedmodule:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      type:
+      PDFTemplates__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      orientation:
+      PDFTemplates__orientation:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      PDFTemplates__meta:
         properties:
-          modified:
+          PDFTemplates__modified:
             properties:
-              date:
+              PDFTemplates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          PDFTemplates__created:
             properties:
-              date:
+              PDFTemplates__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          PDFTemplates__assigned:
+            properties:
+              PDFTemplates__user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+  SalaryRanges:
+    properties:
+      SalaryRanges__name:
+        properties:
+          SalaryRanges__name:
+            type: text
+            fields:
+              keyword:
+                type: keyword
+                ignore_above: 256
+      SalaryRanges__start_date:
+        type: date
+        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      SalaryRanges__end_date:
+        type: date
+        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+      SalaryRanges__gross_value_from:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      SalaryRanges__gross_value_to:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      SalaryRanges__net_value_from:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      SalaryRanges__net_value_to:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      SalaryRanges__employer_costs_from:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      SalaryRanges__employer_costs_to:
+        type: text
+        fields:
+          keyword:
+            type: keyword
+            ignore_above: 256
+      SalaryRanges__meta:
+        properties:
+          SalaryRanges__modified:
+            properties:
+              SalaryRanges__date:
+                type: date
+                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+          SalaryRanges__created:
+            properties:
+              SalaryRanges__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
           assigned:
@@ -3981,70 +4352,6 @@ mappings:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
-  SalaryRanges:
-    properties:
-      name:
-        properties:
-          name:
-            type: text
-            fields:
-              keyword:
-                type: keyword
-                ignore_above: 256
-      start_date:
-        type: date
-        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      end_date:
-        type: date
-        format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      gross_value_from:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      gross_value_to:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      net_value_from:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      net_value_to:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      employer_costs_from:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      employer_costs_to:
-        type: text
-        fields:
-          keyword:
-            type: keyword
-            ignore_above: 256
-      meta:
-        properties:
-          modified:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
-            properties:
-              date:
-                type: date
-                format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
       security_groups:
         type: nested
         properties:
@@ -4056,42 +4363,52 @@ mappings:
                 ignore_above: 256
   EmployeeCertificates:
     properties:
-      name:
+      EmployeeCertificates__name:
         properties:
-          name:
+          EmployeeCertificates__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      EmployeeCertificates__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      start_date:
+      EmployeeCertificates__start_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      end_date:
+      EmployeeCertificates__end_date:
         type: date
         format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-      attempts_number:
+      EmployeeCertificates__attempts_number:
         type: integer
-      points_scored:
+      EmployeeCertificates__points_scored:
         type: integer
-      meta:
+      EmployeeCertificates__meta:
         properties:
-          created:
+          EmployeeCertificates__created:
             properties:
-              date:
+              EmployeeCertificates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          modified:
+          EmployeeCertificates__modified:
             properties:
-              date:
+              EmployeeCertificates__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
+          assigned:
+            properties:
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:
@@ -4103,110 +4420,114 @@ mappings:
                 ignore_above: 256
   Dictionaries:
     properties:
-      name:
+      Dictionaries__name:
         properties:
-          name:
+          Dictionaries__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      list_type:
+      Dictionaries__list_type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      list_module:
+      Dictionaries__list_module:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      is_active:
+      Dictionaries__is_active:
         type: boolean
-      meta:
+      Dictionaries__meta:
         properties:
-          modified:
+          Dictionaries__modified:
             properties:
-              date:
+              Dictionaries__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Dictionaries__created:
             properties:
-              date:
+              Dictionaries__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
   Comments:
     properties:
-      name:
+      Comments__name:
         properties:
-          name:
+          Comments__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      Comments__meta:
         properties:
-          assigned:
+          Comments__assigned:
             properties:
-              user_id:
+              Comments__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
   Reactions:
     properties:
-      name:
+      Reactions__name:
         properties:
-          name:
+          Reactions__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      meta:
+      Reactions__meta:
         properties:
-          assigned:
+          Reactions__assigned:
             properties:
-              user_id:
+              Reactions__user_id:
                 type: text
                 fields:
                   keyword: { type: keyword, ignore_above: 256 }
   Requests:
     properties:
-      name:
+      Requests__name:
         properties:
-          name:
+          Requests__name:
             type: text
             fields:
               keyword:
                 type: keyword
                 ignore_above: 256
-      status:
+      Requests__status:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      type:
+      Requests__type:
         type: text
         fields:
           keyword:
             type: keyword
             ignore_above: 256
-      meta:
+      Requests__meta:
         properties:
-          modified:
+          Requests__modified:
             properties:
-              date:
+              Requests__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-          created:
+          Requests__created:
             properties:
-              date:
+              Requests__date:
                 type: date
                 format: 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
+              user_name:
+                type: text
+                fields:
+                  keyword: { type: keyword, ignore_above: 256 }
       security_groups:
         type: nested
         properties:

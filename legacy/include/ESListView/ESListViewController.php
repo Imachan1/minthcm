@@ -12,13 +12,13 @@ class ESListViewController
 
     protected $bean, $query, $per_page, $page, $engine, $options, $metadata, $module_name, $acl_module_name;
 
-    public function __construct($bean)
+    public function __construct(SugarBean | null $bean)
     {
         $this->bean = $bean;
     }
 
     //temp
-    public function getInitialData($options)
+    public function getInitialData(array $options): array
     {
         $view = new ViewESList();
         $module = $options['module'];
@@ -26,16 +26,17 @@ class ESListViewController
         $view->seed = BeanFactory::newBean($module);
         $view->bean = BeanFactory::newBean($module);
         $data = $view->getInitialData();
+        $preferences = json_decode($data->preferences, true);
         $preferences['initFilters'] = isset($preferences['filterRows']) && !empty($preferences['filterRows']);
         return [
             'config' => json_decode($data->config, true),
             'defs' => json_decode($data->defs, true),
             'module' => $data->module,
-            'preferences' => json_decode($data->preferences, true),
+            'preferences' => $preferences,
         ];
     }
 
-    public function massUpdate()
+    public function massUpdate(): void
     {
         require_once 'include/MassUpdate.php';
         $_POST['mass'] = $_POST['IDs'];
@@ -50,7 +51,7 @@ class ESListViewController
         echo json_encode(['success' => true]);
     }
 
-    public function getResults($options)
+    public function getResults(array $options): array | bool
     {
         $this->processSortBy($options);
         $this->loadMetadataFile($options['module']);
@@ -64,7 +65,7 @@ class ESListViewController
             try {
                 list($total, $offset, $results) = $get_records->get();
                 $this->updatePreferences($options);
-                return ['total' => $total, 'offset' => $offset, 'results' => $results];
+                return ['total' => $total, 'offset' => $offset, 'results' => $results, 'module' => $options['module']];
             } catch (Exception $exception) {
                 $GLOBALS['log']->fatal($exception->getMessage());
                 return false;
@@ -75,13 +76,13 @@ class ESListViewController
         }
     }
 
-    public function handleThrowable($throwable, SearchQuery $query)
+    public function handleThrowable(Throwable $throwable, SearchQuery $query): void
     {
         $handler = new SearchThrowableHandler($throwable, $query);
         $handler->handle();
     }
 
-    public function savePreferences($data)
+    public function savePreferences(array $data): bool
     {
         global $current_user;
         $module = $data['module'];
@@ -92,41 +93,42 @@ class ESListViewController
         return true;
     }
 
-    public function updatePreferences($data)
+    public function updatePreferences(array &$options)
     {
-        if (empty($data['module']) || empty($data['itemsPerPage'])) {
+        if (empty($options['module']) || empty($options['itemsPerPage'])) {
             return false;
         }
         global $current_user;
-        $preferences = (new UserPreference($current_user))->getPreference($data['module'], 'eslist');
+        $preferences = (new UserPreference($current_user))->getPreference($options['module'], 'eslist');
         if (
-            $data['isInit']
+            $options['isInit']
             && (
                 empty($preferences['items_per_page'])
                 || empty($preferences['sortBy']) 
                 || empty($preferences['sortOrder'])
                 || empty($preferences['filters'])
                 || empty($preferences['filterRows'])
-                || $data['itemsPerPage'] != $preferences['items_per_page']
-                || $data['sortBy'] != $preferences['sortBy']
-                || $data['sortOrder'] != $preferences['sortOrder']
-                || $data['filters'] != $preferences['filters']
-                || $data['filterRows'] != $preferences['filterRows']
+                || $options['itemsPerPage'] != $preferences['items_per_page']
+                || $options['sortBy'] != $preferences['sortBy']
+                || $options['sortOrder'] != $preferences['sortOrder']
+                || $options['filters'] != $preferences['filters']
+                || $options['filterRows'] != $preferences['filterRows']
             )
         ) {
-            $preferences['items_per_page'] = $data['itemsPerPage'];
-            $preferences['sortBy'] = $data['sortBy'];
-            $preferences['sortOrder'] = $data['sortOrder'];
-            $preferences['filters'] = $data['filters'];
-            $preferences['filterRows'] = $data['filterRows'];
+            $preferences['items_per_page'] = $options['itemsPerPage'];
+            $preferences['sortBy'] = $options['sortBy'];
+            $preferences['sortOrder'] = $options['sortOrder'];
+            $preferences['filters'] = $options['filters'];
+            $preferences['filterRows'] = $options['filterRows'];
             $this->savePreferences([
-                'module' => $data['module'],
+                'module' => $options['module'],
                 'preferences' => $preferences,
             ]);
         }
+
     }
 
-    public function deleteRecord($data)
+    public function deleteRecord(array $data): bool
     {
         if (empty($data['module']) || empty($data['record_id'])) {
             return false;
@@ -140,7 +142,7 @@ class ESListViewController
         return true;
     }
 
-    protected function loadMetadataFile($module)
+    protected function loadMetadataFile(string $module): void
     {
         if (!empty($this->metadata)) {
             return;

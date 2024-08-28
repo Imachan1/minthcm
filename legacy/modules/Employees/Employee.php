@@ -77,11 +77,11 @@ class Employee extends Person implements EmailInterface
     public $phone_fax;
     public $email1;
     public $email2;
-    public $address_street;
-    public $address_city;
-    public $address_state;
-    public $address_postalcode;
-    public $address_country;
+    public $primary_address_street;
+    public $primary_address_city;
+    public $primary_address_state;
+    public $primary_address_postalcode;
+    public $primary_address_country;
     public $date_entered;
     public $date_modified;
     public $modified_user_id;
@@ -324,7 +324,7 @@ class Employee extends Person implements EmailInterface
     public function save($check_notify = false)
     {
         global $current_user;
-        if ($current_user->id) {
+        if ($current_user->id && $this->id != $current_user->id) {
             if (
                 !is_admin($current_user) &&
                 !ACLAction::userHasAccess($GLOBALS['current_user']->id, 'Employees', 'edit'
@@ -444,7 +444,7 @@ class Employee extends Person implements EmailInterface
         }
 
         if (empty($current_user->id)) {
-            return false;
+            return true;
         }
 
         $sameUser = $current_user->id === $this->id;
