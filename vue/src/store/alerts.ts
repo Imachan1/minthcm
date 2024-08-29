@@ -21,6 +21,7 @@ export const useAlertsStore = defineStore('alerts', () => {
     const alerts = ref<Alert[]>([])
     const isFetching = ref(false)
     const isClosingAll = ref(false)
+    const moreResults = ref(false)
 
     function init() {
         fetchAlerts()
@@ -33,7 +34,8 @@ export const useAlertsStore = defineStore('alerts', () => {
         }
         isFetching.value = true
         const response = await axios.get('api/Alerts')
-        alerts.value = response.data ?? []
+        alerts.value = response.data?.alerts ?? []
+        moreResults.value = response.data?.moreResults ?? false
         isFetching.value = false
     }
 
@@ -53,6 +55,10 @@ export const useAlertsStore = defineStore('alerts', () => {
 
     const unreadAlertsCount = computed(() => {
         return alerts.value.filter((alert) => !alert.is_read).length
+    })
+
+    const unreadAlertsCountText = computed(() => {
+        return (moreResults.value && unreadAlertsCount.value >= 50) ? unreadAlertsCount.value + "+" : unreadAlertsCount.value
     })
 
     const sortedAlerts = computed(() => {
@@ -104,5 +110,6 @@ export const useAlertsStore = defineStore('alerts', () => {
         closeAll,
         isClosingAll,
         cancelCloseAll,
+        unreadAlertsCountText,
     }
 })
