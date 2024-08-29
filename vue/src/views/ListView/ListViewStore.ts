@@ -60,10 +60,10 @@ export const useListViewStore = defineStore('listview', () => {
     const selected = ref([])
     const defaultAction = 'ESList'
     const defaultActionUrl = 'legacy/index.php?'
-    let requestCount = 0;
+    let requestCount = 0
 
     async function init() {
-        requestCount = 0;
+        requestCount = 0
         initialLoading.value = true
         const result = await axios.post(getListActionUrl(), {
             module: module.value,
@@ -78,8 +78,8 @@ export const useListViewStore = defineStore('listview', () => {
     }
 
     async function getData() {
-        requestCount++;
-        isLoading.value = requestCount > 0;
+        requestCount++
+        isLoading.value = requestCount > 0
         const result = await axios.post(getListActionUrl(), {
             module: module.value,
             function_name: 'getResults',
@@ -92,8 +92,8 @@ export const useListViewStore = defineStore('listview', () => {
             sortBy: defs.value?.columns[options.value.sortBy[0]?.key]?.key,
             sortOrder: options.value.sortBy[0]?.order ?? 'asc',
         })
-        requestCount--;
-        isLoading.value = requestCount > 0;
+        requestCount--
+        isLoading.value = requestCount > 0
         results.value = result.data?.results
         itemsLength.value = result.data?.total
         if (options.value.page === 1) {
@@ -110,7 +110,7 @@ export const useListViewStore = defineStore('listview', () => {
         })
     }
 
-    function getListActionUrl(){
+    function getListActionUrl() {
         return defaultActionUrl + 'action=' + defaultAction
     }
 
@@ -151,13 +151,13 @@ export const useListViewStore = defineStore('listview', () => {
             class: col.name == 'name' ? 'stickyColumn' : '',
         }))
         if (mode.value === 'list') {
-        headers.push({
-            value: 'actions',
-            key: 'actions',
-            title: languages.label('LBL_ESLIST_ACTIONS'),
-            sortable: false,
-            align: 'end',
-        })
+            headers.push({
+                value: 'actions',
+                key: 'actions',
+                title: languages.label('LBL_ESLIST_ACTIONS'),
+                sortable: false,
+                align: 'end',
+            })
         }
         return headers
     })
@@ -276,7 +276,8 @@ export const useListViewStore = defineStore('listview', () => {
             const nameToValueArray: { [key: string]: string } = {}
             for (const key in relatePopup.value.data.fieldToNameArray) {
                 if (['full_name', 'name', 'last_name', 'first_name'].includes(key)) {
-                    nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] = item.full_name || item.name || item.last_name || item.first_name || ''
+                    nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] =
+                        item.full_name || item.name || item.last_name || item.first_name || ''
                 } else if (!nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] && key === 'subpanel_id') {
                     nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] = item.id
                 } else {
@@ -338,8 +339,10 @@ export const useListViewStore = defineStore('listview', () => {
 
     const itemsSelectable = computed(() => {
         return !!(
-            (mode.value === 'list' && massActions.value.length)
-            || (mode.value === 'relate' && relatePopup.value?.data?.popupMode && relatePopup.value.data.popupMode !== 'single')
+            (mode.value === 'list' && massActions.value.length) ||
+            (mode.value === 'relate' &&
+                relatePopup.value?.data?.popupMode &&
+                relatePopup.value.data.popupMode !== 'single')
         )
     })
 
