@@ -7216,6 +7216,9 @@ var EventPointing = /** @class */ (function (_super) {
         component.bindSegHandlerToEl(el, 'auxclick', this.handleAuxclick.bind(this));
     };
     EventPointing.prototype.handleAuxclick = function (seg, ev) {
+        if(ev.button == 2) {
+            return;
+        }
         var res = this.component.publiclyTrigger('eventAuxclick', {
             context: seg.el[0],
             args: [seg.footprint.getEventLegacy(), ev, this.view]
