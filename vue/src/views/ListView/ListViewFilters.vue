@@ -187,7 +187,11 @@ function setFilters(filterRows: FilterRow[]) {
     })
     const filtersChanged = JSON.stringify(query) !== JSON.stringify(store.filters)
     if (filtersChanged || store.preferences.initFilters) {
-        if(filterRows.length > 0 || activeFilter.value == null){
+        if(
+            (filterRows.length > 0 && activeFilter.value == null)
+            || (filterRows.length <= 0 && !store.preferences.initFilters)
+            || (activeFilter.value && !store.preferences.initFilters)
+        ){
             store.filters = query
             store.preferences.filterRows = JSON.stringify(filterRows);
             store.filterRows = filterRows
@@ -195,6 +199,7 @@ function setFilters(filterRows: FilterRow[]) {
             filterRows = JSON.parse(store.preferences.filterRows ?? '[]');
             store.filterRows = JSON.parse(store.preferences.filterRows ?? '[]');
         }
+        store.preferences.initFilters = false;
         store.getData()
     }
 }
