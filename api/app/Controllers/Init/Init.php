@@ -82,7 +82,7 @@ class Init
         return $response;
     }
 
-    public function getFullData($minified = false)
+    public function getFullData($only_minimum_data = false)
     {
         $rebuild_array = json_decode(base64_decode($this->mintRebuildID), true) ?? [];
 
@@ -90,11 +90,11 @@ class Init
         $response_body['installed'] = true;
         $response_body['user'] = $this->getCurrentUserData();
         $response_body['preferences'] = $this->preferences_controller->getUserPreferences();
-        $response_body['global'] = $this->preferences_controller->getGlobalSettings($minified, $rebuild_array);
-        $response_body['responseType'] = $minified ? 'minified' : 'full';
+        $response_body['global'] = $this->preferences_controller->getGlobalSettings($only_minimum_data, $rebuild_array);
+        $response_body['responseType'] = $only_minimum_data ? 'minified' : 'full';
 
         if (
-            (!$minified && empty($rebuild_array))
+            (!$only_minimum_data && empty($rebuild_array))
             || $this->request_language !== $_SESSION["authenticated_user_language"]
         ) {
             $response_body['languages'] = $this->languages_controller->getLanguages();
@@ -102,7 +102,7 @@ class Init
 
         if (
             in_array('reload_module_menu', $rebuild_array)
-            || (!$minified && empty($rebuild_array))
+            || (!$only_minimum_data && empty($rebuild_array))
             || $response_body['user']['id'] !== $this->user_id
             || false !== $response_body['user']['preferences']['reload_module_menu'] || $this->request_language !== $_SESSION["authenticated_user_language"]
         ) {
