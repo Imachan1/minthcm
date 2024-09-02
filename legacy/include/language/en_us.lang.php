@@ -4954,3 +4954,13 @@ $app_list_strings['status_list_colored'] = array(
 );
 
 // ColoredEnum Lists END
+
+$app_list_strings['contract_type_list'] = array(
+    '' => '',
+    'contract_of_employment' => 'Contract of employment',
+    'contract_of_mandate' => 'Contract of mandate',
+    'self_employment' => 'Self employment',
+    'agency_outsourcing' => 'Agency outsourcing',
+    'contract_of_commission' => 'Contract of commission',
+    'other' => 'Other',
+);
