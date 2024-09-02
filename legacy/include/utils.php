@@ -6528,3 +6528,33 @@ function getSimilarIndiceKey(string $key, array $array)
 
     return empty($evaluated_keys) ? $key : array_keys($evaluated_keys, max($evaluated_keys))[0];
 }
+
+function updateMintRebuildFile($extra_data = null, $return_value = false)
+{
+    if(isset($_SESSION['mintRebuildID'])) {
+        unset($_SESSION['mintRebuildID']);
+    }
+    $file_dir = "cache/mintRebuild";
+    $file_content = '';
+    
+    if(file_exists($file_dir)){
+        $rebuild_file = fopen($file_dir, "r");
+        $file_content = fread($rebuild_file, filesize($file_dir));
+        fclose($rebuild_file);
+        unlink($file_dir);
+    }
+
+    if(!empty(json_decode(base64_decode($file_content))) && !empty($extra_data)){
+        $file_content = array_unique(array_merge($extra_data, json_decode(base64_decode($file_content))));
+    } else{
+        $file_content = $extra_data;
+    }
+
+    $rebuild_file = fopen($file_dir, "w");
+    $rebuild_id = empty($file_content) ? md5(time()) : base64_encode(json_encode($file_content));
+    fwrite($rebuild_file, $rebuild_id);
+    fclose($rebuild_file);
+    if($return_value){
+        return $rebuild_id;
+    }
+}

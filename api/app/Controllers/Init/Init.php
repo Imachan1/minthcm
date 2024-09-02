@@ -55,7 +55,7 @@ use User;
 
 class Init
 {
-    protected $preferences_controller, $languages_controller, $module_init_controller;
+    protected $preferences_controller, $languages_controller, $module_init_controller, $mintRebuildID, $request_language, $user_id;
 
     const VIEW_META = [
         "DetailView",
@@ -73,32 +73,60 @@ class Init
 
     public function __invoke(Request $request, Response $response, array $args): Response
     {
+        $this->mintRebuildID = $this->getMintRebuildID();
+        $this->request_language = $request->getAttribute('current_language');
+        $this->user_id = $request->getAttribute('user_id');
         $response = $response->withHeader('Content-type', 'application/json');
-
-        $response_body = $this->getData();
+        $response_body = $request->getAttribute('mintRebuildID') === $this->mintRebuildID ? $this->getFullData(true) : $this->getFullData();
         $response->getBody()->write(json_encode($response_body));
         return $response;
     }
 
-    public function getData()
+    public function getFullData($only_minimum_data = false)
     {
-        $response_body = array();
+        $rebuild_array = json_decode(base64_decode($this->mintRebuildID), true) ?? [];
+
+        $response_body = [];
         $response_body['installed'] = true;
-        $response_body['languages'] = $this->languages_controller->getLanguages();
         $response_body['user'] = $this->getCurrentUserData();
         $response_body['preferences'] = $this->preferences_controller->getUserPreferences();
-        $response_body['global'] = $this->preferences_controller->getGlobalSettings();
+        $response_body['global'] = $this->preferences_controller->getGlobalSettings($only_minimum_data, $rebuild_array);
+        $response_body['responseType'] = $only_minimum_data ? 'minified' : 'full';
+
+        if (
+            (!$only_minimum_data && empty($rebuild_array))
+            || $this->request_language !== $_SESSION["authenticated_user_language"]
+        ) {
+            $response_body['languages'] = $this->languages_controller->getLanguages();
+        }
+
+        if (
+            in_array('reload_module_menu', $rebuild_array)
+            || (!$only_minimum_data && empty($rebuild_array))
+            || $response_body['user']['id'] !== $this->user_id
+            || false !== $response_body['user']['preferences']['reload_module_menu'] || $this->request_language !== $_SESSION["authenticated_user_language"]
+        ) {
         [$modules_menu, $modules_data] = $this->getModules();
         $response_body['menu_modules'] = $modules_menu;
         $response_body['modules'] = $modules_data;
         $response_body['quick_create'] = $this->getQuickCreate($modules_menu);
         $response_body['legacy_views'] = $this->getLegacyViews($modules_data);
+        }
+
+        if (!empty($rebuild_array)) {
+            chdir('../legacy');
+            $this->mintRebuildID = updateMintRebuildFile(null, true);
+            chdir('../api');
+        }
+        $response_body['mintRebuildID'] = $this->mintRebuildID;
         return $response_body;
     }
 
     public function getCurrentUserData()
     {
-        /** @var User $current_user */
+        /**
+         * @var User $current_user
+         * */
         global $current_user;
         if (empty($current_user->id)) {
             return array();
@@ -110,6 +138,8 @@ class Init
         $preferences['name_format'] = $current_user->getPreference('default_locale_name_format');
         $preferences['dec_sep'] = $current_user->getPreference('dec_sep');
         $preferences['num_grp_sep'] = $current_user->getPreference('num_grp_sep');
+        $preferences['reload_module_menu'] = $current_user->getPreference('reload_module_menu');
+        $current_user->setPreference('reload_module_menu', false, 0, 'global');
         $preferences['default_currency_significant_digits'] = $current_user->getPreference('default_currency_significant_digits');
         $preferences['language'] = $_SESSION['authenticated_user_language'];
         return array(
@@ -214,5 +244,23 @@ class Init
             }
         }
         return [array_keys($modules), $modules_data];
+    }
+
+    private function getMintRebuildID()
+    {
+        if (isset($_SESSION['mintRebuildID']) && !empty($_SESSION['mintRebuildID'])) {
+            return $_SESSION['mintRebuildID'];
+}
+        chdir('../legacy');
+        $mintRebuildFile = fopen("cache/mintRebuild", 'r');
+        if (!$mintRebuildFile) {
+            $_SESSION['mintRebuildID'] = updateMintRebuildFile(null, true);
+            return $_SESSION['mintRebuildID'];
+        }
+        $mintRebuildID = fread($mintRebuildFile, filesize("cache/mintRebuild"));
+        $_SESSION['mintRebuildID'] = $mintRebuildID;
+        fclose($mintRebuildFile);
+        chdir('../api');
+        return $mintRebuildID;
     }
 }
