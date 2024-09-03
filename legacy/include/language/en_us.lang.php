@@ -406,6 +406,13 @@ $app_list_strings = array(
         'Pending Input' => 'Pending Input',
         'Deferred' => 'Deferred',
     ),
+    'task_status_dom_coloredenum' => array(
+        'Not Started' => 'blue',
+        'In Progress' => 'yellow',
+        'Completed' => 'green',
+        'Pending Input' => 'yellow',
+        'Deferred' => 'grey',
+    ),
     'meeting_status_default' => 'Planned',
     'meeting_status_dom' => array(
         'Planned' => 'Planned',
@@ -538,6 +545,7 @@ $app_list_strings = array(
         'AOS_Invoices' => 'Invoice',
         'AOS_Quotes' => 'Quote',
         'AOS_Products' => 'Product',
+        'Appraisals' => 'Appraisal',
     ),
     'parent_type_display' => array(
         'Tasks' => 'Task',
@@ -2373,6 +2381,7 @@ $app_strings = array(
     'LBL_DETAILS' => 'Details',
     'LBL_ESLIST_DATE' => 'Date',
     'LBL_ESLIST_SELECT_DATE' => 'Select',
+    'LBL_ESLIST_OVERWRITE_FILTER_CONFIRM' => 'Filter with that name already exists. Do you want to overwrite it?',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
@@ -4215,12 +4224,36 @@ $app_list_strings['status_list'] = array(
     'Scored' => 'Task Scored',
     'Scored2' => 'After Preliminary Meeting',
 );
+$app_list_strings['status_list_coloredenum'] = array(
+    'Acceptance' => 'yellow',
+    'AfterEntryInterview' => 'yellow',
+    'CandidateResignation' => 'grey',
+    'EntryInterview' => 'yellow',
+    'Hired' => 'green',
+    'InProgress' => 'yellow',
+    'MeetingAdditional' => 'yellow',
+    'MeetingPrimary' => 'yellow',
+    'Negotation' => 'yellow',
+    'New' => 'blue',
+    'Offer' => 'yellow',
+    'PracticalTask' => 'yellow',
+    'Preselection' => 'yellow',
+    'Rejected' => 'red',
+    'Scored' => 'yellow',
+    'Scored2' => 'yellow',
+);
 
 $app_list_strings['project_status_list'] = array(
     'for_approval' => 'For approval',
     'plan' => 'Planned',
     'open' => 'Open',
     'close' => 'Closed',
+);
+$app_list_strings['project_status_list_coloredenum'] = array(
+    'for_approval' => 'blue',
+    'plan' => 'yellow',
+    'open' => 'green',
+    'close' => 'grey',
 );
 
 $app_list_strings['reason_for_rejection_list'] = array(
@@ -4629,9 +4662,9 @@ $app_strings['LBL_MINT4_AUTH_LOGIN_TITLE'] = 'Login';
 $app_strings['LBL_MINT4_AUTH_LOGIN_BTN'] = 'Log in';
 $app_strings['LBL_MINT4_AUTH_BACK_TO_LOGIN'] = 'Back to login';
 $app_strings['LBL_MINT4_AUTH_LOGIN_ERROR'] = 'Incorrect email or password, please try another one.';
-$app_strings['LBL_MINT4_AUTH_FORGET_TITLE'] = 'Forget Password';
+$app_strings['LBL_MINT4_AUTH_FORGET_TITLE'] = 'Forgot Password';
 $app_strings['LBL_MINT4_AUTH_FORGET_BTN'] = 'Reset Password';
-$app_strings['LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION'] = 'Forget password?';
+$app_strings['LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION'] = 'Forgot password?';
 $app_strings['LBL_MINT4_AUTH_FORGET_SUCCESS'] = 'Shortly, you will receive an email with a link to reset your password.';
 $app_strings['LBL_MINT4_AUTH_FORGET_ERROR'] = 'Incorrect username or email, please try another one.';
 $app_strings['LBL_MINT4_AUTH_RESET_TITLE'] = 'Password Reset';
@@ -4730,6 +4763,10 @@ $app_strings['LBL_MINT4_COMMENTS_ACTION_PIN'] = 'Pin';
 $app_strings['LBL_MINT4_COMMENTS_ACTION_UNPIN'] = 'Unpin';
 $app_strings['LBL_MINT4_COMMENTS_USERS_HINT_NOT_FOUND'] = 'No users found';
 $app_strings['LBL_MINT4_COMMENTS_NO_COMMENTS'] = 'There are no comments';
+
+$app_strings['LBL_MINT4_MASS_DELETE_CONFIRM'] = 'Are you sure you want to delete selected items?';
+$app_strings['LBL_MINT4_MASS_DELETE_ERROR'] = 'Failed to delete selected items';
+
 
 $app_strings['ERR_WORKPLACE_REQUIRED_IF_ASSIGNED_TO_USER'] = 'Workplace is required if user has at least one workplace assigned!';
 
@@ -4896,6 +4933,25 @@ $app_list_strings['applications_status_list_colored'] = array(
     'in_progress' => $yellow_status,
     'accepted' => $green_status,
     'rejected' => $red_status,
+);
+
+$app_list_strings['status_list_colored'] = array(
+    'Acceptance' => $yellow_status,
+    'AfterEntryInterview' => $yellow_status,
+    'CandidateResignation' => $red_status,
+    'EntryInterview' => $yellow_status,
+    'Hired' => $green_status,
+    'InProgress' => $yellow_status,
+    'MeetingAdditional' => $yellow_status,
+    'MeetingPrimary' => $yellow_status,
+    'Negotation' => $yellow_status,
+    'New' => $blue_status,
+    'Offer' => $yellow_status,
+    'PracticalTask' => $yellow_status,
+    'Preselection' => $yellow_status,
+    'Rejected' => $red_status,
+    'Scored' => $yellow_status,
+    'Scored2' => $yellow_status,
 );
 
 // ColoredEnum Lists END

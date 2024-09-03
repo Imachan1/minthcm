@@ -9,6 +9,7 @@ import { Component } from 'vue'
 import GuestLayout from '@/layouts/GuestLayout/GuestLayout.vue'
 import { useAuthStore } from '@/store/auth'
 import ListView from '@/views/ListView/ListView.vue'
+import customRoutes from '@/custom/router'
 
 declare module 'vue-router' {
     interface RouteMeta {
@@ -20,7 +21,7 @@ declare module 'vue-router' {
     }
 }
 
-const routes: Array<RouteRecordRaw> = [
+const coreRoutes: Array<RouteRecordRaw> = [
     {
         path: '/install',
         name: 'install',
@@ -114,6 +115,17 @@ const routes: Array<RouteRecordRaw> = [
         },
     },
     {
+        path: '/MergeRecords',
+        name: 'merge-records',
+        component: LegacyView,
+        alias: ['/modules/MergeRecords'],
+        meta: {
+            isLegacy: true,
+            legacyUrl: 'legacy/index.php?module=MergeRecords',
+            auth: true,
+        },
+    },
+    {
         path: '/Administration',
         name: 'administration',
         component: LegacyView,
@@ -180,5 +192,7 @@ const routes: Array<RouteRecordRaw> = [
         },
     },
 ]
+
+const routes: Array<RouteRecordRaw> = [...coreRoutes, ...customRoutes]
 
 export default routes
