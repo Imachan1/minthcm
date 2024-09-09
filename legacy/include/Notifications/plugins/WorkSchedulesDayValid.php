@@ -48,6 +48,11 @@ require_once 'include/Integrations/Firebase/autoload.php'; // MintHCM #122506
 
 class WorkSchedulesDayValid extends NotificationPlugin {
 
+    public function __construct()
+    {
+        $this->setType('WorkSchedulesDayValid');
+    }
+
    public function run() {
       global $app_strings;
       $work_schedules = $this->getNotClosedWorkSchedules();
@@ -56,10 +61,10 @@ class WorkSchedulesDayValid extends NotificationPlugin {
             continue;
          }
          if(empty($work_schedule['assigned_user_id'])){
-            $GLOBALS['log']->fatal("WorkSchedulesDayValid: There is Work Schedule without assigned user id (WS id: ".$work_schedule['id'].")");
+            $GLOBALS['log']->fatal($this->getType().": There is Work Schedule without assigned user id (WS id: ".$work_schedule['id'].")");
             continue;
          }
-         if(NotificationManager::notificationForRecordWithId('WorkSchedules',$work_schedule['id'],'WorkSchedulesDayValid')){
+         if(NotificationManager::notificationForRecordWithId('WorkSchedules',$work_schedule['id'],$this->getType())){
             continue;
          }
 
@@ -67,7 +72,7 @@ class WorkSchedulesDayValid extends NotificationPlugin {
                  ->setDescription(sprintf(translate('LBL_APPROVED_ALERT', 'WorkSchedules'), $this->getWorkScheduleStartDate($work_schedule['id'])))
                  ->setAssignedUserId($work_schedule['assigned_user_id'])
                  ->setRelatedBean($work_schedule['id'], 'WorkSchedules')
-                 ->setType('WorkSchedulesDayValid')
+                 ->setType($this->getType())
                  ->saveAsAlert()->WebPush();
          // MintHCM #122506 start
          (new MintHCM\Firebase\PushNotifications\GeneralNotificationToUser())->execute([

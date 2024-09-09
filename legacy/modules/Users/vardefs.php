@@ -365,32 +365,32 @@ $dictionary['User'] = array(
             'required' => true,
             'api-visible' => false,
         ),
-        'address_street' => array(
-            'name' => 'address_street',
+        'primary_address_street' => array(
+            'name' => 'primary_address_street',
             'vname' => 'LBL_ADDRESS_STREET',
             'type' => 'varchar',
             'len' => '150',
         ),
-        'address_city' => array(
-            'name' => 'address_city',
+        'primary_address_city' => array(
+            'name' => 'primary_address_city',
             'vname' => 'LBL_ADDRESS_CITY',
             'type' => 'varchar',
             'len' => '100',
         ),
-        'address_state' => array(
-            'name' => 'address_state',
+        'primary_address_state' => array(
+            'name' => 'primary_address_state',
             'vname' => 'LBL_ADDRESS_STATE',
             'type' => 'varchar',
             'len' => '100',
         ),
-        'address_country' => array(
-            'name' => 'address_country',
+        'primary_address_country' => array(
+            'name' => 'primary_address_country',
             'vname' => 'LBL_ADDRESS_COUNTRY',
             'type' => 'varchar',
             'len' => 100,
         ),
-        'address_postalcode' => array(
-            'name' => 'address_postalcode',
+        'primary_address_postalcode' => array(
+            'name' => 'primary_address_postalcode',
             'vname' => 'LBL_ADDRESS_POSTALCODE',
             'type' => 'varchar',
             'len' => '20',
@@ -1001,6 +1001,22 @@ $dictionary['User'] = array(
             'side' => 'left',
             'vname' => 'LBL_DEPUTY',
         ),
+        'birthdate' => array(
+            'name' => 'birthdate',
+            'label' => 'LBL_BIRTHDATE',
+            'vname' => 'LBL_BIRTHDATE',
+            'comments' => '',
+            'help' => '',
+            'type' => 'date',
+            'required' => false,
+            'audited' => false,
+            'mass_update' => false,
+            'duplicate_merge' => '1',
+            'reportable' => true,
+            'importable' => true,
+            'options' => 'date_range_search_dom',
+            'enable_range_search' => '1',
+        ),
         // MintHCM #122506 start
         "app_tokens" => array(
             'name' => 'app_tokens',
@@ -1015,6 +1031,7 @@ $dictionary['User'] = array(
             'massupdate' => false,
             'importable' => false,
             'reportable' => false,
+
         ),
         // MintHCM #122506 end
     ),
