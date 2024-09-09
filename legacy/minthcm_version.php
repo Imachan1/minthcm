@@ -47,4 +47,4 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 $minthcm_version = '4.0.6';
-$minthcm_timestamp = '2024-09-06 09:00:00';
+$minthcm_timestamp = '2024-09-09 09:00:00';
