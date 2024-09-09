@@ -541,10 +541,6 @@ $app_list_strings = array(
         'Candidates' => 'Candidate',
         'Campaigns' => 'Campaign',
         'Recruitments' => 'Recruitment',
-        'AOS_Contracts' => 'Contract',
-        'AOS_Invoices' => 'Invoice',
-        'AOS_Quotes' => 'Quote',
-        'AOS_Products' => 'Product',
         'Appraisals' => 'Appraisal',
     ),
     'parent_type_display' => array(
@@ -556,10 +552,6 @@ $app_list_strings = array(
         'Candidatures' => 'Candidature',
         'Offboardings' => 'Offboardings',
         'Onboardings' => 'Onboardings',
-        'AOS_Contracts' => 'Contract',
-        'AOS_Invoices' => 'Invoice',
-        'AOS_Quotes' => 'Quote',
-        'AOS_Products' => 'Product',
     ),
     'parent_line_items' => array(
         'AOS_Quotes' => 'Quotes',
@@ -4803,3 +4795,5 @@ $app_strings['LBL_KUDOS_SUCCESS_BUTTON'] = 'RETURN TO THE LIST';
 $app_strings['LBL_KUDOS_ERROR'] = 'An error occurred. Try again later.';
 $app_strings['LBL_KUDOS_CHARACTERS_WARNING'] = 'Maximum number of characters is 255';
 $app_strings['LBL_KUDOS_EMPTY_MESSAGE'] = 'Enter a message, please';
+
+$app_strings['LBL_YEARS'] = 'Years';

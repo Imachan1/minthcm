@@ -69,6 +69,7 @@ class MetaController
         foreach($viewdefs[$module]['panels'] as $panel=>$panel_defs){
             $views[$panel]['fields'] = $panel_defs['data']['fields'];
             $data['recordview']['panels'][$panel] = $viewdefs[$module]['panels'][$panel];
+            $data['recordview']['panels'][$panel]['data']['title'] = $viewdefs[$module]['panels'][$panel]['title'];
             $data['recordview']['panels'][$panel]['data']['fields'] = $this->mergeModuleFields($views[$panel],$module_fields)['fields'];
         }
         $data['recordview']['order'] = $viewdefs[$module]['order'];
