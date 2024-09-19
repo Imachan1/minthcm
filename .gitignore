@@ -1,4 +1,5 @@
 .vscode/settings.json
+.vscode/launch.json
 .htaccess
 legacy/.htaccess
 legacy/cache/**/*
