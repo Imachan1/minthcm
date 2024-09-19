@@ -6,6 +6,7 @@
             :defs="defs"
             :label="label"
             :modelValue="modelValue"
+            :hidePencil="hidePencil"
             :class="`${view}-field-container`"
             @update:modelValue="(v) => $emit('update:modelValue', v)"
             @inlineEditBtnClicked="(fieldName: string) => $emit('inlineEditBtnClicked', fieldName)"
@@ -26,6 +27,7 @@ interface Props {
     data?: any
     modelValue?: any
     label?: string
+    hidePencil?: boolean
 }
 
 const props = defineProps<Props>()

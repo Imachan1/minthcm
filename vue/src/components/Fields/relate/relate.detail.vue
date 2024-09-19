@@ -1,12 +1,13 @@
 <template>
     <div>
         <label>{{ props.label }}</label>
-        <div class="detail-field-row" @keyup.enter="$emit('inlineEditSave')">
+        <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()" @keyup.enter="$emit('inlineEditSave')">
             <router-link :to="recordUrl" class="relate-field">
                 {{ props.modelValue }}
             </router-link>
             <Pencil
                 :defs="props.defs"
+                :hidePencil="hidePencil"
                 @inlineEditBtnClicked="(fieldName: string) => $emit('inlineEditBtnClicked', fieldName)"
             />
         </div>
@@ -23,15 +24,22 @@ interface Props {
     label: string
     modelValue?: any
     data?: any
+    hidePencil?: boolean
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits(['inlineEditBtnClicked'])
 
 const recordUrl = computed(() => {
     const module = props.defs.module
     const id = props.data.bean[props.defs.id_name]
     return `/modules/${module}/DetailView/${id}`
 })
+function startInlineEdit() {
+    if (props?.defs?.name && typeof props.defs.name === 'string' && props.defs.name.length > 0) {
+        emit('inlineEditBtnClicked', props.defs.name)
+    }
+}
 </script>
 
 <style scoped lang="scss">
