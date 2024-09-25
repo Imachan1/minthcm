@@ -4769,6 +4769,16 @@ $app_list_strings['dom_email_status_colored'] = array(
     'unread' => $yellow_status,
 );
 // ColoredEnum Lists END
+
+$app_list_strings['contract_type_list'] = array(
+    '' => '',
+    'contract_of_employment' => 'Contract of employment',
+    'contract_of_mandate' => 'Contract of mandate',
+    'self_employment' => 'Self employment',
+    'agency_outsourcing' => 'Agency outsourcing',
+    'contract_of_commission' => 'Contract of commission',
+    'other' => 'Other',
+);
 $app_strings['LBL_YOU_RECEIVED_KUDOS'] = '<b>You received</b> kudos!';
 $app_strings['LBL_USER_RECEIVED_KUDOS'] = 'received kudos from <b>you</b>!';
 $app_strings['LBL_GIVE_KUDOS'] = 'GIVE KUDOS';
