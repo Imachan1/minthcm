@@ -98,9 +98,11 @@ const inlineEditBtnClicked = (event: string) => {
 }
 
 const edit = () => {
+    store.bean.dirtyFields.clear()
     store.view = 'edit'
     store.inlineEditField = ''
     store.inlineEditFieldSaving = ''
+    saveStatus.value = ''
 }
 
 const cancel = () => {
@@ -113,6 +115,15 @@ const cancel = () => {
 }
 
 const save = async () => {
+    if (saveStatus.value === 'saving') {
+        return
+    }
+    if (store.bean.dirtyFields?.size === 0) {
+        store.view = 'detail'
+        store.inlineEditField = ''
+        store.inlineEditFieldSaving = ''
+        return
+    }
     const prevInlineEditField = store.inlineEditField
     if (prevInlineEditField) {
         store.inlineEditFieldSaving = prevInlineEditField
@@ -121,16 +132,14 @@ const save = async () => {
     saveStatus.value = 'saving'
     const response = await store.saveBean()
     saveStatus.value = [200, 201].includes(response.status) ? 'saved' : 'error'
-    setTimeout(() => {
-        if (saveStatus.value === 'saved') {
-            store.view = 'detail'
-            store.inlineEditField = ''
-            store.inlineEditFieldSaving = ''
-        } else {
-            store.inlineEditField = prevInlineEditField
-        }
-        saveStatus.value = ''
-    }, 2000)
+    if (saveStatus.value === 'saved') {
+        store.view = 'detail'
+        store.inlineEditField = ''
+        store.inlineEditFieldSaving = ''
+    } else {
+        store.inlineEditField = prevInlineEditField
+    }
+    saveStatus.value = ''
 }
 </script>
 

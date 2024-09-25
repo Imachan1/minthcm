@@ -1,7 +1,7 @@
 <template>
     <v-progress-circular v-if="store.inlineEditFieldSaving === props.defs?.name" size="16" indeterminate />
     <v-icon
-        v-else-if="!props.defs?.readonly"
+        v-else-if="!props.defs?.readonly && !hidePencil"
         icon="mdi-pencil"
         size="small"
         class="detail-view-edit-icon"
@@ -15,6 +15,7 @@ import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 const store = useRecordViewStore()
 interface Props {
     defs?: FieldVardef
+    hidePencil?: boolean
 }
 const props = defineProps<Props>()
 const emit = defineEmits(['inlineEditBtnClicked'])
