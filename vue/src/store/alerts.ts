@@ -1,6 +1,7 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import Favico from 'favico.js'
 
 export interface Alert {
     id: string
@@ -22,6 +23,7 @@ export const useAlertsStore = defineStore('alerts', () => {
     const isFetching = ref(false)
     const isClosingAll = ref(false)
     const moreResults = ref(false)
+    const favico = new Favico()
 
     function init() {
         fetchAlerts()
@@ -98,6 +100,12 @@ export const useAlertsStore = defineStore('alerts', () => {
         isClosingAll.value = false
         fetchAlerts()
     }
+
+    watch(unreadAlertsCount, (newCount) => {
+        if (newCount && favico) {
+            favico.badge(newCount)
+        }
+    })
 
     return {
         init,
