@@ -27,5 +27,4 @@ return array(
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
     'JShrink' => array($vendorDir . '/tedivm/jshrink/src'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
-    'Behat\\Gherkin' => array($vendorDir . '/behat/gherkin/src'),
 );

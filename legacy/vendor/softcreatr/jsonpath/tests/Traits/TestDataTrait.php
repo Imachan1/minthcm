@@ -6,33 +6,32 @@
  * @license https://github.com/SoftCreatR/JSONPath/blob/main/LICENSE  MIT License
  */
 
-declare(strict_types=1);
-
 namespace Flow\JSONPath\Test\Traits;
 
-use ArrayAccess;
+use JsonException;
 use RuntimeException;
+
+use const JSON_ERROR_NONE;
+use const JSON_THROW_ON_ERROR;
 
 trait TestDataTrait
 {
     /**
      * Returns decoded JSON from a given file either as array or object.
      *
-     * @param bool|int $asArray
-     *
-     * @return array|ArrayAccess|null
+     * @throws JsonException
      */
-    protected function getData(string $type, $asArray = true)
+    protected function getData(string $type, bool|int $asArray = true): mixed
     {
-        $filePath = sprintf('%s/data/%s.json', dirname(__DIR__, 1), $type);
+        $filePath = \sprintf('%s/data/%s.json', \dirname(__DIR__), $type);
 
-        if (!file_exists($filePath)) {
+        if (!\file_exists($filePath)) {
             throw new RuntimeException("File {$filePath} does not exist.");
         }
 
-        $json = json_decode(file_get_contents($filePath), (bool)$asArray);
+        $json = \json_decode(\file_get_contents($filePath), (bool)$asArray, 512, JSON_THROW_ON_ERROR);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (\json_last_error() !== JSON_ERROR_NONE) {
             throw new RuntimeException("File {$filePath} does not contain valid JSON.");
         }
 

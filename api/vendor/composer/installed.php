@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-develop',
-        'version' => 'dev-develop',
-        'reference' => 'bc831361fceabea529b8bdf486eb39d9536d451e',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '06c3125d9c2eb7eac19d75bd43be83e1f1030e37',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-develop',
-            'version' => 'dev-develop',
-            'reference' => 'bc831361fceabea529b8bdf486eb39d9536d451e',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '06c3125d9c2eb7eac19d75bd43be83e1f1030e37',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -332,9 +332,9 @@
             ),
         ),
         'slim/psr7' => array(
-            'pretty_version' => '1.5',
-            'version' => '1.5.0.0',
-            'reference' => 'a47b43a8da7c0208b4c228af0cb29ea36080635a',
+            'pretty_version' => '1.5.1',
+            'version' => '1.5.1.0',
+            'reference' => '2867758fcd4c92c6c767df7c3f5f28ab2df40c1b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../slim/psr7',
             'aliases' => array(),
@@ -464,9 +464,9 @@
             'dev_requirement' => false,
         ),
         'symfony/service-contracts' => array(
-            'pretty_version' => 'v1.1.2',
-            'version' => '1.1.2.0',
-            'reference' => '191afdcb5804db960d26d8566b7e9a2843cab3a0',
+            'pretty_version' => 'v2.5.3',
+            'version' => '2.5.3.0',
+            'reference' => 'a2329596ddc8fd568900e3fc76cba42489ecc7f3',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/service-contracts',
             'aliases' => array(),

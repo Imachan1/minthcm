@@ -1,18 +1,18 @@
 # Changelog
 
+### 0.8.2
+- AccessHelper & RecursiveFilter now return a plain `object`, rather than an `ArrayAccess` object
+
+### 0.8.1
+- Removed strict_types
+- Applied some PSR-12 related changes
+- Small code optimizations
+
 ### 0.8.0
 🔻 Breaking changes ahead:
 
  - Dropped support for PHP < 8.0
  - Removed deprecated method `JSONPath->data()`
-
-### 0.7.6
-🔻 Breaking changes ahead:
-
-- Removed support for PHP >= 8.0 (use version 0.8.0+ instead)
-- Switched `roave/security-advisories` from `dev-master` to `dev-latest`
-
-This is probably the last version for PHP 7.1 - 7.4.
 
 ### 0.7.5
  - Added support for $.length
