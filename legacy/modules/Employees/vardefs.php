@@ -350,3 +350,15 @@ $dictionary['Employee']['fields']['birthdate'] = [
     'options' => 'date_range_search_dom',
     'enable_range_search' => '1',
 ];
+
+$dictionary['Employee']['fields']['files'] = [
+    'name' => 'files',
+    'type' => 'link',
+    'relationship' => 'employees_files',
+    'source' => 'non-db',
+    'module' => 'Files',
+    'bean_name' => 'Files',
+    'vname' => 'LBL_FILES',
+    'label' => 'LBL_FILES',
+];
+
