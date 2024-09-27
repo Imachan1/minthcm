@@ -325,3 +325,30 @@ $dictionary["Employee"]["fields"]["primary_address_country"]["audited"] = true;
 $dictionary["Employee"]["fields"]["primary_address_postalcode"]["audited"] = true;
 $dictionary["Employee"]["fields"]["business_role"]["audited"] = false;
 $dictionary["Employee"]["fields"]["candidate_id"]["audited"] = false;
+
+$dictionary['Employee']['fields']['birthdate'] = [
+    'name' => 'birthdate',
+    'label' => 'LBL_BIRTHDATE',
+    'vname' => 'LBL_BIRTHDATE',
+    'type' => 'date',
+    'required' => false,
+    'audited' => true,
+    'mass_update' => false,
+    'duplicate_merge' => '1',
+    'reportable' => true,
+    'importable' => true,
+    'options' => 'date_range_search_dom',
+    'enable_range_search' => '1',
+];
+
+$dictionary['Employee']['fields']['files'] = [
+    'name' => 'files',
+    'type' => 'link',
+    'relationship' => 'employees_files',
+    'source' => 'non-db',
+    'module' => 'Files',
+    'bean_name' => 'Files',
+    'vname' => 'LBL_FILES',
+    'label' => 'LBL_FILES',
+];
+
