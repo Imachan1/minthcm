@@ -102,8 +102,10 @@ export const useAlertsStore = defineStore('alerts', () => {
     }
 
     watch(unreadAlertsCount, (newCount) => {
-        if (newCount && favico) {
+        if (newCount) {
             favico.badge(newCount)
+        } else {
+            favico.reset()
         }
     })
 
