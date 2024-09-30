@@ -1,4 +1,4 @@
-import { modifiers } from '.'
+import { modifiers } from './_modifiers'
 
 export default {
     equal: {
