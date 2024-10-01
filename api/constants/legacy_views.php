@@ -103,7 +103,7 @@ return [
     ],
     'Employees' => [
         'list' => false,
-        'record' => false,
+        'record' => true,
     ],
     'Spots' => [
         'list' => false,
