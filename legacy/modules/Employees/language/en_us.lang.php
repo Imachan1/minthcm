@@ -205,4 +205,5 @@ $mod_strings = array(
     /* MintHCM #84233 END */
     'LBL_BIRTHDATE' => 'Birthdate',
     'LBL_KUDOS' => 'Kudos',
+    'LBL_FILES' => 'Files'
 );
