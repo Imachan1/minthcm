@@ -4793,3 +4793,13 @@ $app_list_strings['campaign_status_dom_colored'] = array(
 // ColoredEnum Lists END
 
 $app_strings['LBL_YEARS'] = 'Years';
+
+$app_list_strings['contract_type_list'] = array(
+    '' => '',
+    'contract_of_employment' => 'Contract of employment',
+    'contract_of_mandate' => 'Contract of mandate',
+    'self_employment' => 'Self employment',
+    'agency_outsourcing' => 'Agency outsourcing',
+    'contract_of_commission' => 'Contract of commission',
+    'other' => 'Other',
+);
