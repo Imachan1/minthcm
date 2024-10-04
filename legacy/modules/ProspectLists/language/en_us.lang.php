@@ -63,6 +63,7 @@ $mod_strings = array(
     'LBL_DATE_ENTERED' => 'Date Created',
     'LBL_MARKETING_ID' => 'Marketing Id',
     'LBL_DATE_MODIFIED' => 'Date Modified',
+    'LBL_DATE_INDEXED' => 'Date Indexed',
     'LBL_MODIFIED' => 'Modified by',
     'LBL_CREATED' => 'Created by',
     'LBL_ASSIGNED_TO' => 'Assigned to',
