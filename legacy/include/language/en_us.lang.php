@@ -4666,6 +4666,35 @@ $app_list_strings['requests_status_list'] = array(
 $app_list_strings['moduleList']['Requests'] = 'Requests';
 $app_list_strings['moduleListSingular']['Requests'] = 'Request';
 
+$app_list_strings['moduleList']['Kudos'] = 'Kudos';
+$app_list_strings['moduleListSingular']['Kudos'] = 'Kudos';
+$app_strings['LBL_YOU_RECEIVED_KUDOS'] = '<b>You received</b> kudos!';
+$app_strings['LBL_USER_RECEIVED_KUDOS'] = 'received kudos from <b>you</b>!';
+$app_strings['LBL_GIVE_KUDOS'] = 'GIVE KUDOS';
+$app_strings['LBL_KUDOS_TO'] = 'Kudos to';
+$app_strings['LBL_KUDOS_MESSAGE'] = 'Message';
+$app_strings['LBL_KUDOS_PRIVATE'] = 'Private';
+$app_strings['LBL_KUDOS_PRIVATE_TEXT_ON_FORM'] = 'Only the recipient will see the message and the sender.';
+$app_strings['LBL_KUDOS_PRIVATE_TEXT_ON_MESSAGE'] = 'Private - only {name} can see the message and the sender';
+$app_strings['LBL_KUDOS_PRIVATE_TEXT_ONLY_YOU'] = 'Private - only you can see the message and the sender';
+$app_strings['LBL_KUDOS_SEND_BUTTON'] = 'SEND';
+$app_strings['LBL_KUDOS_UPDATE_BUTTON'] = 'UPDATE';
+$app_strings['LBL_KUDOS_CANCEL_BUTTON'] = 'CANCEL';
+$app_strings['LBL_KUDOS_REMOVE_BUTTON'] = 'REMOVE';
+$app_strings['LBL_KUDOS_UNPUBLISHED'] = 'Unpublished';
+$app_strings['LBL_KUDOS_NOTIFICATION'] = 'You received a kudos!';
+$app_list_strings['kudos_navbar_item_list'] = array(
+    'all' => 'All',
+    'received' => 'Received',
+    'given' => 'Given',
+);
+$app_strings['LBL_KUDOS_SUCCESS'] = 'Success!';
+$app_strings['LBL_KUDOS_SUCCESS_MESSAGE_YOUR_KUDOS_TO'] = 'Your kudos to';
+$app_strings['LBL_KUDOS_SUCCESS_MESSAGE_HAS_BEEN_SENT'] = 'has been sent.';
+$app_strings['LBL_KUDOS_SUCCESS_BUTTON'] = 'RETURN TO THE LIST';
+$app_strings['LBL_KUDOS_ERROR'] = 'An error occurred. Try again later.';
+$app_strings['LBL_KUDOS_CHARACTERS_WARNING'] = 'Maximum number of characters is 255';
+$app_strings['LBL_KUDOS_EMPTY_MESSAGE'] = 'Enter a message, please';
 // ColoredEnum Lists START
 
 $gray_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#616161; background-color:#dbdbdb; border:1px solid #616161;";

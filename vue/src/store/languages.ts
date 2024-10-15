@@ -13,6 +13,10 @@ interface Placeholders {
     [key: string]: string
 }
 
+interface Placeholders {
+    [key: string]: string
+}
+
 export const useLanguagesStore = defineStore('languages', () => {
     const currentLanguage = 'en_us'
     const languages = ref<Languages>({

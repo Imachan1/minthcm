@@ -141,6 +141,7 @@ class Init
         $preferences['reload_module_menu'] = $current_user->getPreference('reload_module_menu');
         $current_user->setPreference('reload_module_menu', false, 0, 'global');
         $preferences['default_currency_significant_digits'] = $current_user->getPreference('default_currency_significant_digits');
+        $preferences['language'] = $_SESSION['authenticated_user_language'];
         return array(
             "id" => $current_user->id,
             "is_admin" => "1" === $current_user->is_admin ? true : false,
