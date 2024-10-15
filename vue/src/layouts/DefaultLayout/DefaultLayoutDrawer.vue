@@ -1,27 +1,23 @@
 <template>
     <div class="drawer">
         <div class="drawer-nav">
-            <MintButton
-                icon="mdi-thumb-up"
-                variant="nav"
-                :active="ux.drawer === 'kudos'"
-                @click="ux.drawer = ux.drawer === 'kudos' ? null : 'kudos'"
-            />
-            <v-badge
-                :content="chat.unreadConversationsCount"
-                color="error"
-                location="bottom end"
-                :model-value="chat.unreadConversationsCount > 0"
-                @click="ux.drawer = ux.drawer === 'chat' ? null : 'chat'"
-            >
-                <MintButton icon="mdi-chat" variant="nav" :active="ux.drawer === 'chat'" />
-            </v-badge>
-            <MintButton icon="mdi-newspaper-variant" variant="nav" />
+            <template v-for="drawer in bundle.drawers" :key="drawer.key">
+                <v-badge
+                    :content="drawer.badge?.()"
+                    color="error"
+                    location="bottom end"
+                    :model-value="!!drawer.badge?.()"
+                    @click="ux.drawer = ux.drawer === drawer.key ? null : drawer.key"
+                >
+                    <MintButton :icon="drawer.icon" variant="nav" :active="ux.drawer === drawer.key" />
+                </v-badge>
+            </template>
         </div>
         <v-slide-x-transition>
             <div v-if="ux.drawer" class="drawer-content" ref="drawerContentRef" @scroll="handleScroll">
-                <MintKudos v-if="ux.drawer === 'kudos'" />
-                <MintChat v-if="ux.drawer === 'chat'" />
+                <template v-for="drawer in bundle.drawers" :key="drawer.key">
+                    <component v-if="ux.drawer === drawer.key" :is="drawer.component" />
+                </template>
             </div>
         </v-slide-x-transition>
     </div>
@@ -29,29 +25,17 @@
 
 <script setup lang="ts">
 import MintButton from '@/components/MintButtons/MintButton.vue'
-import MintChat from '@/components/MintChat/MintChat.vue'
-import MintKudos from '@/components/MintKudos/MintKudos.vue'
-import { useMintChatStore } from '@/components/MintChat/MintChatStore'
 import { useUxStore } from '@/store/ux'
-import { ref } from 'vue'
-import { useMintKudosStore } from '@/components/MintKudos/MintKudosStore'
+import { computed, ref } from 'vue'
+import bundle from '@/bundler'
 
 const ux = useUxStore()
-const chat = useMintChatStore()
-
 const drawerContentRef = ref<any>(null)
-const kudosStore = useMintKudosStore()
+
+const activeDrawer = computed(() => bundle.drawers.find((drawer: any) => drawer.key === ux.drawer))
 
 function handleScroll() {
-    if (ux.drawer === 'kudos') {
-        if (
-            !kudosStore.fetchedAllKudos &&
-            drawerContentRef?.value?.scrollTop + drawerContentRef?.value?.clientHeight >=
-                drawerContentRef?.value.scrollHeight
-        ) {
-            kudosStore.fetchKudos()
-        }
-    }
+    activeDrawer.value?.onScroll(drawerContentRef.value)
 }
 </script>
 
