@@ -17,15 +17,16 @@ import { computed } from 'vue'
 import { DateTime } from 'luxon'
 import { FieldVardef } from '@/store/modules'
 import Pencil from '../Pencil.vue'
+import { usePreferencesStore } from '@/store/preferences';
 
 interface Props {
     defs: FieldVardef
     label: string
     modelValue?: any
     data?: any
-    hidePencil?: boolean
 }
 
+const preferences = usePreferencesStore()
 const props = defineProps<Props>()
 const emit = defineEmits(['inlineEditBtnClicked'])
 const parsedDate = computed(() => {
@@ -37,7 +38,7 @@ const parsedDate = computed(() => {
     if (!dt.isValid) {
         return ''
     }
-    return dt.toFormat('dd.MM.yyyy')
+    return dt.toFormat(preferences.user?.date_format || 'dd.MM.yyyy')
 })
 function startInlineEdit() {
     if (props?.defs?.name && typeof props.defs.name === 'string' && props.defs.name.length > 0) {

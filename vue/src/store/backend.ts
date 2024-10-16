@@ -103,6 +103,7 @@ export const useBackendStore = defineStore('backend', () => {
             languages.currentLanguage =
                 localStorage.getItem('currentLang') ?? initData.value.global?.default_language ?? 'en_us'
             modules.modulesDefs = initData.value?.modules ?? {}
+            preferences.user = initData.value.preferences
             
             caches.open('mint-rebuild').then(function(cache) {
                 cache.put('api/init', new Response(JSON.stringify(initData.value)));
