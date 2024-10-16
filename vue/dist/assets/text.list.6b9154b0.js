@@ -1,1 +1,0 @@
-import{l as a,n,q as s,t as o}from"./index.396e8d41.js";const l=a({__name:"text.list",props:{defs:{},data:{}},setup(t){const e=t;return(p,r)=>(n(),s("span",null,o(e.data.bean[e.defs.name]),1))}});export{l as default};
