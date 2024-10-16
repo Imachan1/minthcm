@@ -6,15 +6,66 @@ class UpdateNewsByProspectLists
 {
     public function run()
     {
+
         $prospect_list_ids = $this->getProspectListIDs();
         foreach ($prospect_list_ids as $prospect_list_id) {
-            $prospect_list_employee_ids = $this->getProspectListEmployeeIDs($prospect_list_id);
             $prospect_list = BeanFactory::getBean('ProspectLists', $prospect_list_id);
-            $report_employee_ids = $this->getReportEmployeeIDs($prospect_list);
-            if (!empty($report_employee_ids) || !empty($prospect_list_employee_ids)) {
-                $this->createOrDeleteUsersNewsForEmployee($prospect_list_employee_ids, $prospect_list, $report_employee_ids);
+            if(!empty($prospect_list->id)){
+                $this->updateTargetListAndUserNews($prospect_list);
             }
         }
+    }
+
+    protected function updateTargetListAndUserNews(ProspectList $prospect_list){
+        $current_employees = $this->getProspectListEmployeeIDs($prospect_list->id);
+        if($prospect_list->automatic_update){
+            $target_employees = $this->getReportEmployeeIDs($prospect_list);
+            $this->updateListOfTargets($prospect_list, $current_employees, $target_employees);
+            $this->updateUserNews($prospect_list, $target_employees);
+        } else {
+            $this->updateUserNews($prospect_list, $current_employees);
+        }
+    }
+    protected function updateUserNews(ProspectList $prospect_list, $target_employees){
+        $prospect_list->load_relationship('news');
+        $prospect_list_news_list = $prospect_list->news->get();
+        if(is_array($prospect_list_news_list)){
+            foreach($prospect_list_news_list as $news_id){
+                $this->updateUserNewsToListOfEmployees($news_id, $target_employees);
+            }
+        }
+    }
+    protected function updateUserNewsToListOfEmployees($news_id, $target_employees){
+        $sql = "SELECT assigned_user_id FROM usersnews WHERE deleted=0 AND news_id = '$news_id'";
+        global $db;
+        $result = $db->query($sql);
+        $list_of_current_user_news = [];
+        while (($row = $db->fetchByAssoc($result)) != null) {
+            $list_of_current_user_news[] = $row['assigned_user_id'];
+        }
+        $employees_to_add = array_diff($target_employees, $list_of_current_user_news);
+        $employees_to_remove = array_diff($list_of_current_user_news, $target_employees);
+        $this->createUserNewsForEmployees($employees_to_add, $news_id);
+        $this->deleteUserNewsForEmployees($employees_to_remove, $news_id);
+    }
+    protected function createUserNewsForEmployees(array $employees_to_add, $news_id){
+        foreach($employees_to_add as $employee_id){
+            $this->createUsersNewsRecord($news_id, $employee_id);    
+            $this->addUserPrivateGroupToNews($news_id, $employee_id);
+        }
+    }
+    protected function deleteUserNewsForEmployees(array $employees_to_remove, $news_id){
+        foreach($employees_to_remove as $employee_id){
+                $this->deleteUsersNewsRecord($employee_id, $news_id);
+                $this->deleteUserPrivateGroupFromNews($employee_id, $news_id);
+        }
+    }
+    protected function updateListOfTargets($prospect_list, $current_employees, $target_employees)
+    {
+        $employees_to_add = array_diff($target_employees, $current_employees);
+        $employees_to_remove = array_diff($current_employees, $target_employees);
+        $this->handleEmployeesToAdd($employees_to_add, $prospect_list->id);
+        $this->handleEmployeesToRemove($employees_to_remove, $prospect_list);
     }
 
     protected function getProspectListIDs()
@@ -23,13 +74,11 @@ class UpdateNewsByProspectLists
         $prospect_list_ids = [];
         $sql = "
             SELECT
-                id
+                prospectlist_id id
             FROM 
-                prospect_lists
+                prospect_list_news
             WHERE
                 deleted='0'
-            AND
-                automatic_update='1'
         ";
         $prospect_lists = $db->query($sql);
         while (($row = $db->fetchByAssoc($prospect_lists)) != null) {
@@ -64,6 +113,9 @@ class UpdateNewsByProspectLists
     protected function getReportEmployeeIDs($prospect_list)
     {
         $assigned_advanced_report = BeanFactory::getBean('KReports', $prospect_list->kreport_id);
+        if(empty($assigned_advanced_report->id)){
+            return [];
+        }
         $reportParams = array('toCSV' => true);
         $report_results = $assigned_advanced_report->getSelectionResults($reportParams);
         $report_employee_ids = [];
@@ -85,14 +137,10 @@ class UpdateNewsByProspectLists
         $this->handleEmployeesToRemove($employees_to_remove, $prospect_list, $prospect_list_news_list);
     }
 
-    protected function handleEmployeesToAdd($employees_to_add, $prospect_list_id, $prospect_list_news_list)
+    protected function handleEmployeesToAdd($employees_to_add, $prospect_list_id)
     {
         foreach ($employees_to_add as $employee_to_add) {
             $this->createNewProspectListProspectsTableRecord($employee_to_add, $prospect_list_id);
-            foreach ($prospect_list_news_list as $prospect_list_news) {
-                $this->createUsersNewsRecord($prospect_list_news, $employee_to_add);
-                $this->addUserPrivateGroupToNews($prospect_list_news, $employee_to_add);
-            }
         }
     }
 
@@ -109,39 +157,34 @@ class UpdateNewsByProspectLists
         $db->query($insert_sql);
     }
 
-    protected function createUsersNewsRecord($prospect_list_news, $employee_to_add)
+    protected function createUsersNewsRecord($news_id, $employee_id)
     {
-        $news = BeanFactory::getBean('News', $prospect_list_news);
+        $news = BeanFactory::getBean('News', $news_id);
         $users_news = BeanFactory::newBean('UsersNews');
         $users_news->news_id = $news->id;
         $users_news->news_name = $news->name;
-        $users_news->assigned_user_id = $employee_to_add;
+        $users_news->assigned_user_id = $employee_id;
         $users_news->save();
         $override = [
-            'description' => translate("LBL_NEW_USERS_NEWS", "News") . ": " . $news->name,
-            'url_redirect' => 'index.php?module=Home&action=index',
+            'description' => translate("LBL_NEW_USERS_NEWS", "News") . ": " . $news->name
         ];
-        (new Notification())->setRelatedBeanFromBean($news)->setAssignedUserId($employee_to_add)->setName($users_news->news_name)->setType('UserNews')
+        (new Notification())->setRelatedBeanFromBean($news)->setAssignedUserId($employee_id)->setName($users_news->news_name)->setType('UserNews')
             ->simpleAlert(true, $override)->WebPush(false, true, $override);
     }
 
-    protected function addUserPrivateGroupToNews($prospect_list_news, $employee_to_add)
+    protected function addUserPrivateGroupToNews($news_id, $employee_id)
     {
-        $news = BeanFactory::getBean('News', $prospect_list_news);
-        $user = BeanFactory::getBean('Users', $employee_to_add);
+        $news = BeanFactory::getBean('News', $news_id);
+        $user = BeanFactory::getBean('Users', $employee_id);
         $user_private_group_id = $user->getUserPrivateGroup();
         $news->load_relationship('SecurityGroups');
         $news->SecurityGroups->add($user_private_group_id);
     }
 
-    protected function handleEmployeesToRemove($employees_to_remove, $prospect_list, $prospect_list_news_list)
+    protected function handleEmployeesToRemove($employees_to_remove, $prospect_list)
     {
         foreach ($employees_to_remove as $employee_to_remove) {
             $this->deleteProspectListsProspectsTableRecord($employee_to_remove, $prospect_list);
-            foreach ($prospect_list_news_list as $prospect_list_news) {
-                $this->deleteUsersNewsRecord($employee_to_remove, $prospect_list_news);
-                $this->deleteUserPrivateGroupFromNews($employee_to_remove, $prospect_list_news);
-            }
         }
     }
 
@@ -159,22 +202,22 @@ class UpdateNewsByProspectLists
         $db->query($delete_sql);
     }
 
-    protected function deleteUsersNewsRecord($employee_to_remove, $prospect_list_news)
+    protected function deleteUsersNewsRecord($employee_id, $news_id)
     {
-        $news = BeanFactory::getBean('News', $prospect_list_news);
+        $news = BeanFactory::getBean('News', $news_id);
         $news->load_relationship('usersnews');
         foreach ($news->usersnews->get() as $users_news_id) {
             $users_news = BeanFactory::getBean('UsersNews', $users_news_id);
-            if ($users_news->assigned_user_id == $employee_to_remove) {
+            if ($users_news->assigned_user_id == $employee_id) {
                 $users_news->mark_deleted($users_news->id);
             }
         }
     }
 
-    protected function deleteUserPrivateGroupFromNews($employee_to_remove, $prospect_list_news)
+    protected function deleteUserPrivateGroupFromNews($employee_id, $news_id)
     {
-        $news = BeanFactory::getBean('News', $prospect_list_news);
-        $user = BeanFactory::getBean('Users', $employee_to_remove);
+        $news = BeanFactory::getBean('News', $news_id);
+        $user = BeanFactory::getBean('Users', $employee_id);
         $user_private_group_id = $user->getUserPrivateGroup();
         $news->load_relationship('SecurityGroups');
         $news->SecurityGroups->delete($user_private_group_id);

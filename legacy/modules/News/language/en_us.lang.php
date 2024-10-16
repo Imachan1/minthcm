@@ -94,4 +94,5 @@ $mod_strings = array(
     'LBL_REACTIONS' => "Reactions",
     'LBL_PROSPECT_LISTS' => 'Target Lists',
     'LBL_NO_TARGET_MSG' => 'To publish news, you need to define a group of recipients',
+    'LBL_PHOTO' => "Photo",
 );

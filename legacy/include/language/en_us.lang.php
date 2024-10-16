@@ -4419,11 +4419,6 @@ $app_list_strings['reaction_type_list'] = array(
     'wow' => '😲',
 );
 
-$app_list_strings['reaction_icons_list'] = array(
-    'like' => 'thumbs-up',
-    'dislike' => 'thumbs-down',
-);
-
 $app_list_strings['parent_type_display_for_candidatures'] = array(
     'Candidates' => 'Candidate',
     'Employees' => 'Employee',
@@ -4848,6 +4843,7 @@ $app_strings['LBL_KUDOS_SUCCESS_BUTTON'] = 'RETURN TO THE LIST';
 $app_strings['LBL_KUDOS_ERROR'] = 'An error occurred. Try again later.';
 $app_strings['LBL_KUDOS_CHARACTERS_WARNING'] = 'Maximum number of characters is 255';
 $app_strings['LBL_KUDOS_EMPTY_MESSAGE'] = 'Enter a message, please';
+$app_strings['LBL_MINT4_WALL_READ_MORE'] = 'Read More';
 
 $app_strings['LBL_YEARS'] = 'Years';
 
