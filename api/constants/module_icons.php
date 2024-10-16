@@ -117,4 +117,8 @@ return array(
     "Requests" => "file-document-edit",
     "default" => "star",
     "Kudos" => "thumb-up",
+    "ProspectLists" => "bullseye-arrow",
+    "Home" => "home",
+    "ResourceCalendar" => "calendar-lock",
+    "Campaigns" => "email-newsletter",
 );
