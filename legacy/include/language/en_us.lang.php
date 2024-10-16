@@ -2245,6 +2245,74 @@ $app_strings = array(
     'LBL_ESLIST_DATE' => 'Date',
     'LBL_ESLIST_SELECT_DATE' => 'Select',
     'LBL_ESLIST_OVERWRITE_FILTER_CONFIRM' => 'Filter with that name already exists. Do you want to overwrite it?',
+    //MOBILE START
+    'LBL_ID_FF_SELECT' => 'Select',
+    'LBL_INSTANCE_ADDRESS' => 'Server Address',
+    'LBL_ARE_YOU_SURE_TO_CLEAR_APP_DATA' => 'Are you sure you want to clear app data?',
+    'LBL_CLEAR_APP_DATA' => 'Clear App Data',
+    'LBL_CHANGE_LANGUAGE' => 'Change Language',
+    'LBL_APP_VERSION' => 'App Version',
+    'LBL_ENTER_INSTANCE_INFO' => 'Enter the Instance Information',
+    'LBL_INSTANCE_CLIENT_ID' => 'Client ID',
+    'LBL_INSTANCE_CLIENT_SECRET' => 'Client Secret',
+    'LBL_UNSAVED_WARNING' => 'Warning! You are trying to leave unsaved record. Continue?',
+    'LBL_BAD_REQUEST_INSTANCE' => 'Bad request, check server properties',
+    'LBL_DASHBOARDS' => 'Dashboards',
+    'LBL_UPLOAD' => 'Upload',
+    'LBL_RECORD_CONFIRM_SUCCESS' => 'Success! Schedule has been confirmed',
+    'LBL_RECORD_CONFIRM_FAILURE' => "Failure! Schedule hasn't been confirmed",
+    'LBL_RECORD_DELETE_SUCCESS' => 'Record deleted successfully',
+    'LBL_RECORD_DELETE_FAILURE' => 'The record could not be deleted',
+    'LBL_RECORD_SAVE_SUCCESS' => 'Record was successfully saved',
+    'LBL_RECORD_SAVE_FAILURE' => 'The record could not be saved',
+    'LBL_RELATION_SAVE_FAILURE' => 'The record could not be linked',
+    'LBL_RELATION_SAVE_SUCCESS' => 'The record has been linked',
+    'LBL_UNSUPPORTED_FORMAT' => 'This file format is not supported',
+    'LBL_NOTIFICATION' => 'Notification',
+    'LBL_MORE_THAN_10MB' => 'File can not have more than 10 MB',
+    'LBL_MORE_THAN_20MB' => 'File can not have more than 20 MB',
+    'LBL_MAX_FILE_SIZE_20MB' => 'Max file size 20 MB',
+    'LBL_RELATION_TYPE' => 'Relation type',
+    'LBL_RELATION_NAME' => 'Relation name',
+    'LBL_COUNTRY_CODE' => 'Country code',
+    'LBL_ERR_AT_LEAST_3_CHAR' => 'Enter at least 3 characters',
+    'LBL_WORKERS_LACK' => 'No workers available',
+    'LBL_NO_ONE_SET' => 'No one set',
+    'LBL_INVITE_SOMEBODY' => 'Invite somebody!',
+    'LBL_TABGROUP_ACTIVITIES' => 'Activities',
+    'LBL_ENTER_INSTANCE_ADDRESS' => 'Enter the instance address',
+    'LBL_NO_FILTERS' => 'No Filters',
+    'LBL_INSTANCE_ERROR' => 'Instance address field is required',
+    'LBL_INSTANCE_ADDRESS' => 'Instance address',
+    'LBL_NO_LANGUAGES' => 'No languages ​​available',
+    'LBL_DAILY' => 'Daily',
+    'LBL_EVERY_WEEKDAY' => 'Every Weekday',
+    'LBL_WEEKLY' => 'Weekly',
+    'LBL_EVERY_TWO_WEEKS' => 'Every Two Weeks',
+    'LBL_MONTHLY' => 'Monthly',
+    'LBL_END_OF_WEEK' => 'Till the end of the week',
+    'LBL_END_OF_MONTH' => 'Till the end of the month',
+    'LBL_END_OF_YEAR' => 'Till the end of the year',
+    'LBL_TIMES' => 'Times',
+    'LBL_UNTIL' => 'Until',
+    'LBL_TIME_EXTENDS_SCHEDULE' => 'This time exceeds work schedule',
+    'LBL_TIME_OVERLAPS' => 'Spent time overlaps',
+    'LBL_END_TIME' => 'End time',
+    'LBL_NO_ROOMS' => 'Lack of Rooms',
+    'LBL_NO_PLACES' => 'Lack of Workplaces',
+    'LBL_LABEL_LOADING' => 'Loading the label...',
+    'LBL_APP_PLEASE_FILL_IT' => 'Please fill it in.',
+    'LBL_APP_PLEASE_FILL_THEM' => 'Please fill them in.',
+    'LBL_PASSWORD_LOGIN_ERROR_USER' => 'The username and password are required.',
+    'LBL_LOGIN_ERROR_USER' => 'The username is required.',
+    'LBL_PASSWORD_ERROR_USER' => 'The password is required.',
+    'LBL_BAD_LOGIN_PASSWORD' => 'Incorrect username or password',
+    'LBL_APP_LOGIN_FAILED' => "Login failed",
+    'LBL_APP_NETWORK' => "Could not find the server. Check internet connection or try providing another address.",
+    'LBL_APP_BAD_LOGIN_PASSWORD' => "Incorrect username or password. Try another one.",
+    'LBL_BAD_REQUEST' => 'Bad request',
+    'LBL_NO_INTERNET_CONNECTION' => 'No Internet Connection!',
+    //MOBILE END
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
@@ -4351,11 +4419,6 @@ $app_list_strings['reaction_type_list'] = array(
    'wow' => '😲',
 );
 
-$app_list_strings['reaction_icons_list'] = array(
-   'like' => 'thumbs-up',
-   'dislike' => 'thumbs-down',
-);
-
 $app_list_strings['parent_type_display_for_candidatures'] = array(
     'Candidates' => 'Candidate',
     'Employees' => 'Employee',
@@ -4396,7 +4459,6 @@ $app_list_strings['dom_imaptype_options'] = array(
     'other' => 'Other',
 );
 
- 
 $app_strings['LBL_USERNAME'] = 'Username';
 $app_strings['LBL_PASSWORD'] = 'Password';
 $app_strings['LBL_WELCOME'] = 'Welcome';
@@ -4545,8 +4607,6 @@ $app_strings['LBL_MINT4_COMMENTS_NO_COMMENTS'] = 'There are no comments';
 $app_strings['LBL_MINT4_MASS_DELETE_CONFIRM'] = 'Are you sure you want to delete selected items?';
 $app_strings['LBL_MINT4_MASS_DELETE_ERROR'] = 'Failed to delete selected items';
 
-
-
 $app_list_strings['dropzone_labels'] = [
     'dictDefaultMessage' => "Drop files here or click to upload<br />(Maximum file size is 3MB)",
     'dictFallbackMessage' => 'Your browser does not support drag\'n\'drop file uploads',
@@ -4581,10 +4641,8 @@ $app_strings['LBL_CONFIRM'] = 'Confirm';
 $app_strings['LBL_LEGACY_MPDF_ENGINE'] = 'Legacy MPDF Engine';
 $app_strings['LBL_TCPDF_ENGINE'] = 'TCPDF Engine';
 
-
 $app_strings['LBL_LOGGER_VALID_FILENAME_CHARACTERS'] = 'This can only be alphanumeric characters, plus \'.\' , \'-\' and \'_\'';
 $app_strings['LBL_LOGGER_INVALID_FILENAME'] = 'Invalid import file name';
-
 
 $app_strings['WARN_OAUTH_TOKEN_SESSION_EXPIRED'] = 'Your IMAP OAuth session has expired, please login again in the connection: ';
 
@@ -4770,16 +4828,6 @@ $app_list_strings['dom_email_status_colored'] = array(
     'unread' => $yellow_status,
 );
 // ColoredEnum Lists END
-
-$app_list_strings['contract_type_list'] = array(
-    '' => '',
-    'contract_of_employment' => 'Contract of employment',
-    'contract_of_mandate' => 'Contract of mandate',
-    'self_employment' => 'Self employment',
-    'agency_outsourcing' => 'Agency outsourcing',
-    'contract_of_commission' => 'Contract of commission',
-    'other' => 'Other',
-);
 $app_strings['LBL_YOU_RECEIVED_KUDOS'] = '<b>You received</b> kudos!';
 $app_strings['LBL_USER_RECEIVED_KUDOS'] = 'received kudos from <b>you</b>!';
 $app_strings['LBL_GIVE_KUDOS'] = 'GIVE KUDOS';
@@ -4806,5 +4854,16 @@ $app_strings['LBL_KUDOS_SUCCESS_BUTTON'] = 'RETURN TO THE LIST';
 $app_strings['LBL_KUDOS_ERROR'] = 'An error occurred. Try again later.';
 $app_strings['LBL_KUDOS_CHARACTERS_WARNING'] = 'Maximum number of characters is 255';
 $app_strings['LBL_KUDOS_EMPTY_MESSAGE'] = 'Enter a message, please';
+$app_strings['LBL_MINT4_WALL_READ_MORE'] = 'Read More';
 
 $app_strings['LBL_YEARS'] = 'Years';
+
+$app_list_strings['contract_type_list'] = array(
+    '' => '',
+    'contract_of_employment' => 'Contract of employment',
+    'contract_of_mandate' => 'Contract of mandate',
+    'self_employment' => 'Self employment',
+    'agency_outsourcing' => 'Agency outsourcing',
+    'contract_of_commission' => 'Contract of commission',
+    'other' => 'Other',
+);

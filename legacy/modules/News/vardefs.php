@@ -213,6 +213,20 @@ $dictionary['News'] = array(
             'relationship' => 'prospect_list_news',
             'source' => 'non-db',
         ),
+        'photo' => array(
+            'name' => 'photo',
+            'vname' => 'LBL_PHOTO',
+            'type' => 'image',
+            'massupdate' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => false,
+            'reportable' => true,
+            'len' => 255,
+            'dbType' => 'varchar',
+            'width' => '250',
+            'height' => '250',
+        ),
     ),
     'relationships' => array(
         'news_comments' => array(
