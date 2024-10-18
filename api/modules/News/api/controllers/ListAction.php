@@ -22,8 +22,7 @@ class ListAction
         chdir('../legacy/');
         $db = \DBManagerFactory::getInstance();
         $result = $db->query($this->getNewsQuery());
-        while (($row = $db->fetchByAssoc($result)) != null) {
-            $row['content_of_announcement'] = html_entity_decode($row['content_of_announcement']);
+        while (($row = $db->fetchByAssoc($result, false)) != null) {
             $row['photo'] = (!empty($row['photo']) ? "legacy/index.php?entryPoint=download&type=News&id=" . $row['id'] . "_photo" : '');
             $row['author'] = [
                 'id' => $row['author_id'],
