@@ -112,6 +112,9 @@ class Init
         $response_body['quick_create'] = $this->getQuickCreate($modules_menu);
         $response_body['legacy_views'] = $this->getLegacyViews($modules_data);
         }
+        if ($only_minimum_data) {
+            $response_body['acls'] = $this->module_init_controller->getACLs();
+        }
 
         if (!empty($rebuild_array)) {
             chdir('../legacy');
@@ -157,7 +160,7 @@ class Init
 
     private function getModules()
     {
-        global $current_user, $app_list_strings;
+        global $current_user;
         chdir('../legacy');
         $modules = query_module_access_list($current_user);
         chdir('../api');

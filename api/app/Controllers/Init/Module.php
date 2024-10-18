@@ -109,6 +109,28 @@ class Module
 
     public function getModuleData($module)
     {
+        return array(
+            "name" => $module,
+            "icon" => $this->modules_icons[$module] ?? $this->modules_icons['default'],
+            "actions" => $this->getModuleMenu($module),
+            "vardefs" => $this->getVardefs($module),
+            "metadata" => $this->getMetadata($module),
+            "acl" => $this->getACLForModule($module),
+            "dashboards" => 'Home' === $module ? $this->getHomeMenu() : array(),
+        );
+    }
+
+    public function getACLs(){
+        global $moduleList;
+        $acls = array();
+        foreach ($moduleList as $module) {
+            $acls[$module] = $this->getACLForModule($module);
+        }
+        return $acls;
+    }
+
+    private function getACLForModule($module)
+    {
         global $current_user;
         $acl = $_SESSION['ACL'][$current_user->id];
         if (empty($acl)) {
@@ -130,15 +152,7 @@ class Module
                 }
             }
         }
-        return array(
-            "name" => $module,
-            "icon" => $this->modules_icons[$module] ?? $this->modules_icons['default'],
-            "actions" => $this->getModuleMenu($module),
-            "vardefs" => $this->getVardefs($module),
-            "metadata" => $this->getMetadata($module),
-            "acl" => array_map(function ($view) { return (int)$view['aclaccess']; }, $acl[$module]['module'] ?? []),
-            "dashboards" => 'Home' === $module ? $this->getHomeMenu() : array(),
-        );
+        return array_map(function ($view) { return (int)$view['aclaccess']; }, $acl[$module]['module'] ?? []);
     }
 
     private function getHomeMenu()

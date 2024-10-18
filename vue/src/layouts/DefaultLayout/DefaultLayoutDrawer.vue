@@ -2,7 +2,7 @@
     <div class="drawer">
         <div class="drawer-nav">
             <template v-for="drawer in bundle.drawers" :key="drawer.key">
-                <v-badge
+                <v-badge v-if="drawer.isAvaliable?.()"
                     :content="drawer.badge?.()"
                     color="error"
                     location="bottom end"

@@ -1,5 +1,6 @@
 import { useMintKudosStore } from '@/components/MintKudos/MintKudosStore'
 import MintKudos from '@/components/MintKudos/MintKudos.vue'
+import { useACL } from '@/composables/useACL'
 
 export default {
     icon: 'mdi-thumb-up',
@@ -15,5 +16,8 @@ export default {
         ) {
             store.fetchKudos()
         }
+    },
+    isAvaliable: () => {
+        return useACL().hasAccess('Kudos', 'list', true)
     },
 }
