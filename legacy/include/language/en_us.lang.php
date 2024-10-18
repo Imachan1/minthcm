@@ -4625,6 +4625,7 @@ $app_list_strings['moduleListSingular']['Files'] = 'File';
 $app_list_strings['parent_type_display_for_files'] = array(
     'Candidatures' => 'Candidature',
     'Candidates' => 'Candidate',
+    'Employees' => 'Employees',
     'Resources' => 'Resource',
     'Positions' => 'Position',
     'Workplaces' => 'Workplace',
