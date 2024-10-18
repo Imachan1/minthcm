@@ -136,9 +136,44 @@ class Module
             "actions" => $this->getModuleMenu($module),
             "vardefs" => $this->getVardefs($module),
             "metadata" => $this->getMetadata($module),
-            "acl" => array_map(function ($view) { return (int)$view['aclaccess']; }, $acl[$module]['module'] ?? []),
+            "acl" => $this->getACLForModule($module),
             "dashboards" => 'Home' === $module ? $this->getHomeMenu() : array(),
         );
+    }
+
+    public function getACLs(){
+        global $moduleList;
+        $acls = array();
+        foreach ($moduleList as $module) {
+            $acls[$module] = $this->getACLForModule($module);
+        }
+        return $acls;
+    }
+
+    private function getACLForModule($module)
+    {
+        global $current_user;
+        $acl = $_SESSION['ACL'][$current_user->id];
+        if (empty($acl)) {
+            chdir('../legacy');
+            $acl = \ACLAction::getUserActions($current_user->id, false) ?? [];
+            chdir('../api');
+        }
+        if(is_array($acl[$module]['module'])){
+            foreach($acl[$module]['module'] as $view => $access){
+                if($current_user->isAdmin()){
+                    switch($view){
+                        case 'access':
+                            $acl[$module]['module'][$view]['aclaccess'] = ACL_ALLOW_ENABLED;
+                        break;
+                        default:
+                            $acl[$module]['module'][$view]['aclaccess'] = ACL_ALLOW_ALL;
+                        break;
+                    }
+                }
+            }
+        }
+        return array_map(function ($view) { return (int)$view['aclaccess']; }, $acl[$module]['module'] ?? []);
     }
 
     private function getHomeMenu()
