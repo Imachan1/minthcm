@@ -109,27 +109,6 @@ class Module
 
     public function getModuleData($module)
     {
-        global $current_user;
-        $acl = $_SESSION['ACL'][$current_user->id];
-        if (empty($acl)) {
-            chdir('../legacy');
-            $acl = \ACLAction::getUserActions($current_user->id, false) ?? [];
-            chdir('../api');
-        }
-        if(is_array($acl[$module]['module'])){
-            foreach($acl[$module]['module'] as $view => $access){
-                if($current_user->isAdmin()){
-                    switch($view){
-                        case 'access':
-                            $acl[$module]['module'][$view]['aclaccess'] = ACL_ALLOW_ENABLED;
-                        break;
-                        default:
-                            $acl[$module]['module'][$view]['aclaccess'] = ACL_ALLOW_ALL;
-                        break;
-                    }
-                }
-            }
-        }
         return array(
             "name" => $module,
             "icon" => $this->modules_icons[$module] ?? $this->modules_icons['default'],
