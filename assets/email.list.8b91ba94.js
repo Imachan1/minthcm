@@ -1,1 +1,5 @@
+<<<<<<<< HEAD:assets/email.list.8b91ba94.js
 import{l as s,n as a,q as n,w as o,C as l,O as _,x as c,y as d,r as i,t as m,_ as r}from"./index.1a9ac9a1.js";const f=["href"],p=s({__name:"email.list",props:{defs:{},data:{}},setup(t){const e=t;return(u,x)=>(a(),n("a",{class:"mint-email-list-field",href:`mailto:${e.data.bean[e.defs.name]}`},[e.data.bean[e.defs.name]?(a(),o(c,{key:0,size:"x-small"},{default:l(()=>[_("mdi-email")]),_:1})):d("",!0),i("span",null,m(e.data.bean[e.defs.name]),1)],8,f))}});const y=r(p,[["__scopeId","data-v-fcea801d"]]);export{y as default};
+========
+import{l as s,n as a,q as n,w as o,C as l,N as _,x as c,y as d,r as i,t as m,_ as r}from"./index.af03a0f5.js";const f=["href"],p=s({__name:"email.list",props:{defs:{},data:{}},setup(t){const e=t;return(u,x)=>(a(),n("a",{class:"mint-email-list-field",href:`mailto:${e.data.bean[e.defs.name]}`},[e.data.bean[e.defs.name]?(a(),o(c,{key:0,size:"x-small"},{default:l(()=>[_("mdi-email")]),_:1})):d("",!0),i("span",null,m(e.data.bean[e.defs.name]),1)],8,f))}});const y=r(p,[["__scopeId","data-v-fcea801d"]]);export{y as default};
+>>>>>>>> 4.1.0:assets/email.list.064fb7e1.js

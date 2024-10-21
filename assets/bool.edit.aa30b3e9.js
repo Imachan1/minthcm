@@ -1,1 +1,5 @@
+<<<<<<<< HEAD:assets/bool.edit.aa30b3e9.js
 import{l as d,n as s,w as n,bg as _,_ as p}from"./index.1a9ac9a1.js";const u=d({__name:"bool.edit",props:{defs:{},label:{},modelValue:{},data:{}},setup(l){const e=l;return(a,o)=>(s(),n(_,{label:e.label,"hide-details":"",density:"compact",color:"secondary",modelValue:!!Number(e.modelValue),"onUpdate:modelValue":o[0]||(o[0]=t=>a.$emit("update:modelValue",t?"1":"0"))},null,8,["label","modelValue"]))}});const m=p(u,[["__scopeId","data-v-af684d02"]]);export{m as default};
+========
+import{l as d,n as s,w as n,bg as _,_ as p}from"./index.af03a0f5.js";const u=d({__name:"bool.edit",props:{defs:{},label:{},modelValue:{},data:{}},setup(l){const e=l;return(a,o)=>(s(),n(_,{label:e.label,"hide-details":"",density:"compact",color:"secondary",modelValue:!!Number(e.modelValue),"onUpdate:modelValue":o[0]||(o[0]=t=>a.$emit("update:modelValue",t?"1":"0"))},null,8,["label","modelValue"]))}});const m=p(u,[["__scopeId","data-v-af684d02"]]);export{m as default};
+>>>>>>>> 4.1.0:assets/bool.edit.554c61ff.js

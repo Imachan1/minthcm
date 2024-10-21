@@ -1,1 +1,5 @@
+<<<<<<<< HEAD:assets/varchar.list.794d20db.js
 import{l as t,n as s,q as o,t as r}from"./index.1a9ac9a1.js";const l=t({__name:"varchar.list",props:{defs:{},data:{}},setup(a){const e=a;return(n,p)=>(s(),o("span",null,r(e.data.bean[n.defs.name]),1))}});export{l as default};
+========
+import{l as t,n as s,q as o,t as r}from"./index.af03a0f5.js";const l=t({__name:"varchar.list",props:{defs:{},data:{}},setup(a){const e=a;return(n,p)=>(s(),o("span",null,r(e.data.bean[n.defs.name]),1))}});export{l as default};
+>>>>>>>> 4.1.0:assets/varchar.list.661b24f0.js
