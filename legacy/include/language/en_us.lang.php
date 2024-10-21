@@ -2241,6 +2241,7 @@ $app_strings = array(
     'LBL_ESLIST_FILTER' => 'Filter',
     'LBL_ESLIST_LOADING' => 'Loading...',
     'LBL_ESLIST_NO_DATA' => 'No options available',
+    'LBL_DETAILS' => 'Details',
     'LBL_ESLIST_DATE' => 'Date',
     'LBL_ESLIST_SELECT_DATE' => 'Select',
     'LBL_ESLIST_OVERWRITE_FILTER_CONFIRM' => 'Filter with that name already exists. Do you want to overwrite it?',
@@ -4186,6 +4187,7 @@ $app_list_strings['reason_for_rejection_list'] = array(
     'unreachable' => 'Unreachable',
     'no_meeting' => 'He did not come to the meeting',
     'low_experience_skills' => 'Low experience/skills',
+    'not_enough_points' => 'Not Enough Points',
     'too_high_requirements' => 'Too high financial requirements',
     'lack_of_open_recrutation' => 'No open recruitment',
     'closed_recrutation' => 'Completed recruitment',
@@ -4417,11 +4419,6 @@ $app_list_strings['reaction_type_list'] = array(
     'wow' => '😲',
 );
 
-$app_list_strings['reaction_icons_list'] = array(
-    'like' => 'thumbs-up',
-    'dislike' => 'thumbs-down',
-);
-
 $app_list_strings['parent_type_display_for_candidatures'] = array(
     'Candidates' => 'Candidate',
     'Employees' => 'Employee',
@@ -4628,6 +4625,7 @@ $app_list_strings['moduleListSingular']['Files'] = 'File';
 $app_list_strings['parent_type_display_for_files'] = array(
     'Candidatures' => 'Candidature',
     'Candidates' => 'Candidate',
+    'Employees' => 'Employees',
     'Resources' => 'Resource',
     'Positions' => 'Position',
     'Workplaces' => 'Workplace',
@@ -4666,6 +4664,35 @@ $app_list_strings['requests_status_list'] = array(
 $app_list_strings['moduleList']['Requests'] = 'Requests';
 $app_list_strings['moduleListSingular']['Requests'] = 'Request';
 
+$app_list_strings['moduleList']['Kudos'] = 'Kudos';
+$app_list_strings['moduleListSingular']['Kudos'] = 'Kudos';
+$app_strings['LBL_YOU_RECEIVED_KUDOS'] = '<b>You received</b> kudos!';
+$app_strings['LBL_USER_RECEIVED_KUDOS'] = 'received kudos from <b>you</b>!';
+$app_strings['LBL_GIVE_KUDOS'] = 'GIVE KUDOS';
+$app_strings['LBL_KUDOS_TO'] = 'Kudos to';
+$app_strings['LBL_KUDOS_MESSAGE'] = 'Message';
+$app_strings['LBL_KUDOS_PRIVATE'] = 'Private';
+$app_strings['LBL_KUDOS_PRIVATE_TEXT_ON_FORM'] = 'Only the recipient will see the message and the sender.';
+$app_strings['LBL_KUDOS_PRIVATE_TEXT_ON_MESSAGE'] = 'Private - only {name} can see the message and the sender';
+$app_strings['LBL_KUDOS_PRIVATE_TEXT_ONLY_YOU'] = 'Private - only you can see the message and the sender';
+$app_strings['LBL_KUDOS_SEND_BUTTON'] = 'SEND';
+$app_strings['LBL_KUDOS_UPDATE_BUTTON'] = 'UPDATE';
+$app_strings['LBL_KUDOS_CANCEL_BUTTON'] = 'CANCEL';
+$app_strings['LBL_KUDOS_REMOVE_BUTTON'] = 'REMOVE';
+$app_strings['LBL_KUDOS_UNPUBLISHED'] = 'Unpublished';
+$app_strings['LBL_KUDOS_NOTIFICATION'] = 'You received a kudos!';
+$app_list_strings['kudos_navbar_item_list'] = array(
+    'all' => 'All',
+    'received' => 'Received',
+    'given' => 'Given',
+);
+$app_strings['LBL_KUDOS_SUCCESS'] = 'Success!';
+$app_strings['LBL_KUDOS_SUCCESS_MESSAGE_YOUR_KUDOS_TO'] = 'Your kudos to';
+$app_strings['LBL_KUDOS_SUCCESS_MESSAGE_HAS_BEEN_SENT'] = 'has been sent.';
+$app_strings['LBL_KUDOS_SUCCESS_BUTTON'] = 'RETURN TO THE LIST';
+$app_strings['LBL_KUDOS_ERROR'] = 'An error occurred. Try again later.';
+$app_strings['LBL_KUDOS_CHARACTERS_WARNING'] = 'Maximum number of characters is 255';
+$app_strings['LBL_KUDOS_EMPTY_MESSAGE'] = 'Enter a message, please';
 // ColoredEnum Lists START
 
 $gray_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#616161; background-color:#dbdbdb; border:1px solid #616161;";
@@ -4791,5 +4818,42 @@ $app_list_strings['campaign_status_dom_colored'] = array(
 );
 
 // ColoredEnum Lists END
+$app_strings['LBL_YOU_RECEIVED_KUDOS'] = '<b>You received</b> kudos!';
+$app_strings['LBL_USER_RECEIVED_KUDOS'] = 'received kudos from <b>you</b>!';
+$app_strings['LBL_GIVE_KUDOS'] = 'GIVE KUDOS';
+$app_strings['LBL_KUDOS_TO'] = 'Kudos to';
+$app_strings['LBL_KUDOS_MESSAGE'] = 'Message';
+$app_strings['LBL_KUDOS_PRIVATE'] = 'Private';
+$app_strings['LBL_KUDOS_PRIVATE_TEXT_ON_FORM'] = 'Only the recipient will see the message and the sender.';
+$app_strings['LBL_KUDOS_PRIVATE_TEXT_ON_MESSAGE'] = 'Private - only {name} can see the message and the sender';
+$app_strings['LBL_KUDOS_PRIVATE_TEXT_ONLY_YOU'] = 'Private - only you can see the message and the sender';
+$app_strings['LBL_KUDOS_SEND_BUTTON'] = 'SEND';
+$app_strings['LBL_KUDOS_UPDATE_BUTTON'] = 'UPDATE';
+$app_strings['LBL_KUDOS_CANCEL_BUTTON'] = 'CANCEL';
+$app_strings['LBL_KUDOS_REMOVE_BUTTON'] = 'REMOVE';
+$app_strings['LBL_KUDOS_UNPUBLISHED'] = 'Unpublished';
+$app_list_strings['kudos_navbar_item_list'] = array(
+    'all' => 'All',
+    'received' => 'Received',
+    'given' => 'Given',
+);
+$app_strings['LBL_KUDOS_SUCCESS'] = 'Success!';
+$app_strings['LBL_KUDOS_SUCCESS_MESSAGE_YOUR_KUDOS_TO'] = 'Your kudos to';
+$app_strings['LBL_KUDOS_SUCCESS_MESSAGE_HAS_BEEN_SENT'] = 'has been sent.';
+$app_strings['LBL_KUDOS_SUCCESS_BUTTON'] = 'RETURN TO THE LIST';
+$app_strings['LBL_KUDOS_ERROR'] = 'An error occurred. Try again later.';
+$app_strings['LBL_KUDOS_CHARACTERS_WARNING'] = 'Maximum number of characters is 255';
+$app_strings['LBL_KUDOS_EMPTY_MESSAGE'] = 'Enter a message, please';
+$app_strings['LBL_MINT4_WALL_READ_MORE'] = 'Read More';
 
 $app_strings['LBL_YEARS'] = 'Years';
+
+$app_list_strings['contract_type_list'] = array(
+    '' => '',
+    'contract_of_employment' => 'Contract of employment',
+    'contract_of_mandate' => 'Contract of mandate',
+    'self_employment' => 'Self employment',
+    'agency_outsourcing' => 'Agency outsourcing',
+    'contract_of_commission' => 'Contract of commission',
+    'other' => 'Other',
+);
