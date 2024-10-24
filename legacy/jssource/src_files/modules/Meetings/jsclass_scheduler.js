@@ -990,7 +990,9 @@ SugarWidgetScheduleRow.prototype.display = function () {
          tr = document.createElement( 'tr' );
          /* MintHCM #122808 END */
       }
-      tr.className = "schedulerAttendeeRow";
+      if (tr) {
+        tr.className = "schedulerAttendeeRow";
+      }
       $( tr ).attr( 'data-id', this.focus_bean.fields.id );
       // MintHCM #54195 #59793 Start
       if ( this.focus_bean.module == 'Candidates' || this.focus_bean.module == 'Resources' ) {
