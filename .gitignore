@@ -49,6 +49,7 @@ legacy/custom/modules/Positions/logic_hooks.php
 legacy/include/ViewTools/Expressions/VTExpression_getUploadMaxsize.php
 legacy/include/ViewTools/Expressions/documentation.html
 legacy/include/ViewTools/javascript/viewTools.cache.js
+legacy/include/SugarEmailAddress/SugarEmailAddress.js
 
 legacy/include/ViewTools/javascript/viewTools.cache.js
 legacy/include/ViewTools/Expressions/documentation.html
@@ -56,3 +57,8 @@ legacy/include/ViewTools/Expressions/documentation.html
 api/var/cache/*
 legacy/custom/include/language/en_us.lang.php
 legacy/custom/modules/Connectors/metadata/connectors.php
+
+legacy/lib/Search/ElasticSearch/defaultParams.yml
+legacy/modules/ACLRoles/ACLRoles.js
+legacy/modules/Meetings/jsclass_scheduler.js
+assets/mint_logo_white.*.svg
