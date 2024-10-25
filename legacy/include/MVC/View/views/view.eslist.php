@@ -49,9 +49,15 @@ use MintHCM\Data\MassActions\Actions as MassActions;
 class ViewESList extends SugarView
 {
     const DEFAULT_MASS_ACTIONS = [
-        MassActions\Delete::class,
-        MassActions\Export::class,
-        MassActions\Merge::class,
+        'Delete',
+        'Export',
+        'Merge',
+    ];
+    const MASS_ACTIONS = [
+        'Delete' => MassActions\Delete::class,
+        'Export' => MassActions\Export::class,
+        'Merge' => MassActions\Merge::class,
+        'MassConfirmation' => MassActions\MassConfirmation::class,
     ];
 
     /**
@@ -174,6 +180,7 @@ class ViewESList extends SugarView
 
         chdir('../api');
         foreach ($mass_actions as $action) {
+            $action = self::MASS_ACTIONS[$action];
             $mass_action = new $action($this->module, []);
             if ($mass_action->hasAccess()) {
                 $this->config['massActions'][] = $mass_action->getFrontendData();
