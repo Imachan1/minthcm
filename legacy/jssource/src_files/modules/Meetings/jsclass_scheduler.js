@@ -990,53 +990,54 @@ SugarWidgetScheduleRow.prototype.display = function () {
          tr = document.createElement( 'tr' );
          /* MintHCM #122808 END */
       }
+      // MintHCM #139132 Start
       if (tr) {
         tr.className = "schedulerAttendeeRow";
-      }
-      $( tr ).attr( 'data-id', this.focus_bean.fields.id );
-      // MintHCM #54195 #59793 Start
-      if ( this.focus_bean.module == 'Candidates' || this.focus_bean.module == 'Resources' ) {
-         $( tr ).attr( 'data-module', this.focus_bean.module );
-      } else {
-         $( tr ).attr( 'data-module', this.focus_bean.module + 's' );
-      }
-      // MintHCM #54195 #59793 End
-      td = document.createElement( 'td' );
-      tr.appendChild( td );
-      //insertCell(tr.cells.length);
+        $( tr ).attr( 'data-id', this.focus_bean.fields.id );
+        // MintHCM #54195 #59793 Start
+        if ( this.focus_bean.module == 'Candidates' || this.focus_bean.module == 'Resources' ) {
+          $( tr ).attr( 'data-module', this.focus_bean.module );
+        } else {
+          $( tr ).attr( 'data-module', this.focus_bean.module + 's' );
+        }
+        // MintHCM #54195 #59793 End
+        td = document.createElement( 'td' );
+        tr.appendChild( td );
+        //insertCell(tr.cells.length);
 
-      // icon + full name
-      td.scope = 'row';
-      var img = '<span class="suitepicon suitepicon-module-' + this.focus_bean.module.toLowerCase().replace( '_', '-' ) + '"></span>';
+        // icon + full name
+        td.scope = 'row';
+        var img = '<span class="suitepicon suitepicon-module-' + this.focus_bean.module.toLowerCase().replace( '_', '-' ) + '"></span>';
 
-      td.innerHTML = img;
+        td.innerHTML = img;
 
-      td.innerHTML = td.innerHTML;
+        td.innerHTML = td.innerHTML;
 
-      if ( this.focus_bean.fields.full_name )
-         td.innerHTML += ' ' + this.focus_bean.fields.full_name;
-      else
-         td.innerHTML += ' ' + this.focus_bean.fields.name;
-      // add freebusy tds here:
-      this.add_freebusy_nodes( tr );
+        if ( this.focus_bean.fields.full_name )
+          td.innerHTML += ' ' + this.focus_bean.fields.full_name;
+        else
+          td.innerHTML += ' ' + this.focus_bean.fields.name;
+        // add freebusy tds here:
+        this.add_freebusy_nodes( tr );
 
-      // delete button
-      var td = document.createElement( 'td' );
-      tr.appendChild( td );
-      //var td = tr.insertCell(tr.cells.length);
-      td.className = 'schedulerAttendeeDeleteCell';
-      td.noWrap = true;
-      //CCL - Remove check to disallow removal of assigned user or current user
-      //if ( GLOBAL_REGISTRY.focus.fields.assigned_user_id != this.focus_bean.fields.id && GLOBAL_REGISTRY.current_user.fields.id != this.focus_bean.fields.id) {
-      td.innerHTML = '<a title="' + GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE']
-              + '" class="listViewTdToolsS1" style="text-decoration:none;" '
-              + 'href="javascript:SugarWidgetScheduleRow.deleteRow(\'' + this.focus_bean.fields.id + '\');">&nbsp;'
-              + '<img src="index.php?entryPoint=getImage&themeName=' + SUGAR.themes.theme_name + '&imageName=delete_inline.gif" '
-              + 'align="absmiddle" alt="' + GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE'] + '" border="0"> '
-              + GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE'] + '</a>';
-      //}
-      this.element = tr;
-      this.element_index = this.thetable.rows.length - 1;
+        // delete button
+        var td = document.createElement( 'td' );
+        tr.appendChild( td );
+        //var td = tr.insertCell(tr.cells.length);
+        td.className = 'schedulerAttendeeDeleteCell';
+        td.noWrap = true;
+        //CCL - Remove check to disallow removal of assigned user or current user
+        //if ( GLOBAL_REGISTRY.focus.fields.assigned_user_id != this.focus_bean.fields.id && GLOBAL_REGISTRY.current_user.fields.id != this.focus_bean.fields.id) {
+        td.innerHTML = '<a title="' + GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE']
+                + '" class="listViewTdToolsS1" style="text-decoration:none;" '
+                + 'href="javascript:SugarWidgetScheduleRow.deleteRow(\'' + this.focus_bean.fields.id + '\');">&nbsp;'
+                + '<img src="index.php?entryPoint=getImage&themeName=' + SUGAR.themes.theme_name + '&imageName=delete_inline.gif" '
+                + 'align="absmiddle" alt="' + GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE'] + '" border="0"> '
+                + GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE'] + '</a>';
+        //}
+        this.element = tr;
+        this.element_index = this.thetable.rows.length - 1;
+    // MintHCM #139132 end
 
         /* MintHCM #122808 START */
         if(GLOBAL_REGISTRY['users_rows_ids'] != undefined && !(this.focus_bean.fields.id in GLOBAL_REGISTRY['users_rows_ids'])){
@@ -1051,6 +1052,7 @@ SugarWidgetScheduleRow.prototype.display = function () {
         }
         this.thetable.innerHTML = GLOBAL_REGISTRY['schedulerTable'] + users_rows_html;
         /* MintHCM #122808 END */
+      }
    }, null, this );
 }
 
