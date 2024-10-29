@@ -23,10 +23,10 @@
  * @link      https://www.smarty.net/
  * @copyright 2018 New Digital Group, Inc.
  * @copyright 2018 Uwe Tews
- * @author Monte Ohrt <monte at ohrt dot com>
+ * @author    Monte Ohrt <monte at ohrt dot com>
  * @author    Uwe Tews   <uwe dot tews at gmail dot com>
  * @author    Rodney Rehm
- * @package Smarty
+ * @package   Smarty
  */
 /**
  * set SMARTY_DIR to absolute path to Smarty library files.
@@ -107,22 +107,22 @@ class Smarty extends Smarty_Internal_TemplateBase
     /**
      * smarty version
      */
-    const SMARTY_VERSION = '4.3.1';
+    const SMARTY_VERSION = '4.5.4';
     /**
      * define variable scopes
      */
-    const SCOPE_LOCAL = 1;
-    const SCOPE_PARENT = 2;
+    const SCOPE_LOCAL    = 1;
+    const SCOPE_PARENT   = 2;
     const SCOPE_TPL_ROOT = 4;
-    const SCOPE_ROOT = 8;
-    const SCOPE_SMARTY = 16;
-    const SCOPE_GLOBAL = 32;
+    const SCOPE_ROOT     = 8;
+    const SCOPE_SMARTY   = 16;
+    const SCOPE_GLOBAL   = 32;
     /**
      * define caching modes
      */
-    const CACHING_OFF = 0;
+    const CACHING_OFF              = 0;
     const CACHING_LIFETIME_CURRENT = 1;
-    const CACHING_LIFETIME_SAVED = 2;
+    const CACHING_LIFETIME_SAVED   = 2;
     /**
      * define constant for clearing cache files be saved expiration dates
      */
@@ -130,30 +130,30 @@ class Smarty extends Smarty_Internal_TemplateBase
     /**
      * define compile check modes
      */
-    const COMPILECHECK_OFF = 0;
-    const COMPILECHECK_ON = 1;
+    const COMPILECHECK_OFF       = 0;
+    const COMPILECHECK_ON        = 1;
     const COMPILECHECK_CACHEMISS = 2;
     /**
      * define debug modes
      */
-    const DEBUG_OFF = 0;
-    const DEBUG_ON = 1;
+    const DEBUG_OFF        = 0;
+    const DEBUG_ON         = 1;
     const DEBUG_INDIVIDUAL = 2;
 
     /**
      * filter types
      */
-    const FILTER_POST = 'post';
-    const FILTER_PRE = 'pre';
-    const FILTER_OUTPUT = 'output';
+    const FILTER_POST     = 'post';
+    const FILTER_PRE      = 'pre';
+    const FILTER_OUTPUT   = 'output';
     const FILTER_VARIABLE = 'variable';
     /**
      * plugin types
      */
-    const PLUGIN_FUNCTION = 'function';
-    const PLUGIN_BLOCK = 'block';
-    const PLUGIN_COMPILER = 'compiler';
-    const PLUGIN_MODIFIER = 'modifier';
+    const PLUGIN_FUNCTION         = 'function';
+    const PLUGIN_BLOCK            = 'block';
+    const PLUGIN_COMPILER         = 'compiler';
+    const PLUGIN_MODIFIER         = 'modifier';
     const PLUGIN_MODIFIERCOMPILER = 'modifiercompiler';
 
     /**
@@ -307,12 +307,12 @@ class Smarty extends Smarty_Internal_TemplateBase
     public $merge_compiled_includes = false;
 
     /*
-     * flag for behaviour when extends: resource  and {extends} tag are used simultaneous
-     *   if false disable execution of {extends} in templates called by extends resource.
-     *   (behaviour as versions < 3.1.28)
-     *
-     * @var boolean
-     */
+    * flag for behaviour when extends: resource  and {extends} tag are used simultaneous
+    *   if false disable execution of {extends} in templates called by extends resource.
+    *   (behaviour as versions < 3.1.28)
+    *
+    * @var boolean
+    */
     public $extends_recursion = true;
 
     /**
@@ -645,8 +645,8 @@ class Smarty extends Smarty_Internal_TemplateBase
      */
     protected $accessMap = array(
         'template_dir' => 'TemplateDir', 'config_dir' => 'ConfigDir',
-        'plugins_dir' => 'PluginsDir', 'compile_dir' => 'CompileDir',
-        'cache_dir' => 'CacheDir',
+        'plugins_dir'  => 'PluginsDir', 'compile_dir' => 'CompileDir',
+        'cache_dir'    => 'CacheDir',
     );
 
     /**
@@ -666,13 +666,13 @@ class Smarty extends Smarty_Internal_TemplateBase
             mb_internal_encoding(Smarty::$_CHARSET);
         }
         $this->start_time = microtime(true);
-        if (isset($_SERVER['SCRIPT_NAME'])) {
-            Smarty::$global_tpl_vars['SCRIPT_NAME'] = new Smarty_Variable($_SERVER['SCRIPT_NAME']);
+        if (isset($_SERVER[ 'SCRIPT_NAME' ])) {
+            Smarty::$global_tpl_vars[ 'SCRIPT_NAME' ] = new Smarty_Variable($_SERVER[ 'SCRIPT_NAME' ]);
         }
         // Check if we're running on windows
         Smarty::$_IS_WINDOWS = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
         // let PCRE (preg_*) treat strings as ISO-8859-1 if we're not dealing with UTF-8
-        if ('UTF-8' !== Smarty::$_CHARSET) {
+        if (Smarty::$_CHARSET !== 'UTF-8') {
             Smarty::$_UTF8_MODIFIER = '';
         }
     }
@@ -744,15 +744,15 @@ class Smarty extends Smarty_Internal_TemplateBase
                     $dir[] = $v;
                 } else {
                     // string indexes are overridden
-                    $dir[$k] = $v;
-                    unset($processed[$key]);
+                    $dir[ $k ] = $v;
+                    unset($processed[ $key ]);
                 }
             }
         } else {
-            if (null !== $key) {
+            if ($key !== null) {
                 // override directory at specified index
-                $dir[$key] = $template_dir;
-                unset($processed[$key]);
+                $dir[ $key ] = $template_dir;
+                unset($processed[ $key ]);
             } else {
                 // append new directory
                 $dir[] = $template_dir;
@@ -779,8 +779,8 @@ class Smarty extends Smarty_Internal_TemplateBase
         if ($isConfig ? !$this->_configDirNormalized : !$this->_templateDirNormalized) {
             $this->_normalizeTemplateConfig($isConfig);
         }
-        if (null !== $index) {
-            return isset($dir[$index]) ? $dir[$index] : null;
+        if ($index !== null) {
+            return isset($dir[ $index ]) ? $dir[ $index ] : null;
         }
         return $dir;
     }
@@ -855,7 +855,7 @@ class Smarty extends Smarty_Internal_TemplateBase
         if (empty($this->plugins_dir)) {
             $this->plugins_dir[] = SMARTY_PLUGINS_DIR;
         }
-        $this->plugins_dir = array_merge($this->plugins_dir, (array) $plugins_dir);
+        $this->plugins_dir = array_merge($this->plugins_dir, (array)$plugins_dir);
         $this->_pluginsDirNormalized = false;
         return $this;
     }
@@ -873,12 +873,12 @@ class Smarty extends Smarty_Internal_TemplateBase
         }
         if (!$this->_pluginsDirNormalized) {
             if (!is_array($this->plugins_dir)) {
-                $this->plugins_dir = (array) $this->plugins_dir;
+                $this->plugins_dir = (array)$this->plugins_dir;
             }
             foreach ($this->plugins_dir as $k => $v) {
-                $this->plugins_dir[$k] = $this->_realpath(rtrim($v ?? '', '/\\') . DIRECTORY_SEPARATOR, true);
+                $this->plugins_dir[ $k ] = $this->_realpath(rtrim($v ?? '', '/\\') . DIRECTORY_SEPARATOR, true);
             }
-            $this->_cache['plugin_files'] = array();
+            $this->_cache[ 'plugin_files' ] = array();
             $this->_pluginsDirNormalized = true;
         }
         return $this->plugins_dir;
@@ -893,7 +893,7 @@ class Smarty extends Smarty_Internal_TemplateBase
      */
     public function setPluginsDir($plugins_dir)
     {
-        $this->plugins_dir = (array) $plugins_dir;
+        $this->plugins_dir = (array)$plugins_dir;
         $this->_pluginsDirNormalized = false;
         return $this;
     }
@@ -967,11 +967,11 @@ class Smarty extends Smarty_Internal_TemplateBase
      */
     public function createTemplate($template, $cache_id = null, $compile_id = null, $parent = null, $do_clone = true)
     {
-        if (null !== $cache_id && (is_object($cache_id) || is_array($cache_id))) {
+        if ($cache_id !== null && (is_object($cache_id) || is_array($cache_id))) {
             $parent = $cache_id;
             $cache_id = null;
         }
-        if (null !== $parent && is_array($parent)) {
+        if ($parent !== null && is_array($parent)) {
             $data = $parent;
             $parent = null;
         } else {
@@ -982,13 +982,13 @@ class Smarty extends Smarty_Internal_TemplateBase
         }
         $_templateId = $this->_getTemplateId($template, $cache_id, $compile_id);
         $tpl = null;
-        if ($this->caching && isset(Smarty_Internal_Template::$isCacheTplObj[$_templateId])) {
-            $tpl = $do_clone ? clone Smarty_Internal_Template::$isCacheTplObj[$_templateId] :
-            Smarty_Internal_Template::$isCacheTplObj[$_templateId];
+        if ($this->caching && isset(Smarty_Internal_Template::$isCacheTplObj[ $_templateId ])) {
+            $tpl = $do_clone ? clone Smarty_Internal_Template::$isCacheTplObj[ $_templateId ] :
+                Smarty_Internal_Template::$isCacheTplObj[ $_templateId ];
             $tpl->inheritance = null;
             $tpl->tpl_vars = $tpl->config_vars = array();
-        } elseif (!$do_clone && isset(Smarty_Internal_Template::$tplObjCache[$_templateId])) {
-            $tpl = clone Smarty_Internal_Template::$tplObjCache[$_templateId];
+        } elseif (!$do_clone && isset(Smarty_Internal_Template::$tplObjCache[ $_templateId ])) {
+            $tpl = clone Smarty_Internal_Template::$tplObjCache[ $_templateId ];
             $tpl->inheritance = null;
             $tpl->tpl_vars = $tpl->config_vars = array();
         } else {
@@ -1004,13 +1004,13 @@ class Smarty extends Smarty_Internal_TemplateBase
         if (!empty($data) && is_array($data)) {
             // set up variable values
             foreach ($data as $_key => $_val) {
-                $tpl->tpl_vars[$_key] = new Smarty_Variable($_val);
+                $tpl->tpl_vars[ $_key ] = new Smarty_Variable($_val);
             }
         }
-        if ($this->debugging || 'URL' === $this->debugging_ctrl) {
+        if ($this->debugging || $this->debugging_ctrl === 'URL') {
             $tpl->smarty->_debug = new Smarty_Internal_Debug();
             // check URL debugging control
-            if (!$this->debugging && 'URL' === $this->debugging_ctrl) {
+            if (!$this->debugging && $this->debugging_ctrl === 'URL') {
                 $tpl->smarty->_debug->debugUrl($tpl->smarty);
             }
         }
@@ -1053,18 +1053,18 @@ class Smarty extends Smarty_Internal_TemplateBase
         Smarty_Internal_Template $template = null
     ) {
         $template_name = (strpos($template_name, ':') === false) ? "{$this->default_resource_type}:{$template_name}" :
-        $template_name;
-        $cache_id = null === $cache_id ? $this->cache_id : $cache_id;
-        $compile_id = null === $compile_id ? $this->compile_id : $compile_id;
-        $caching = (int) (null === $caching ? $this->caching : $caching);
+            $template_name;
+        $cache_id = $cache_id === null ? $this->cache_id : $cache_id;
+        $compile_id = $compile_id === null ? $this->compile_id : $compile_id;
+        $caching = (int)($caching === null ? $this->caching : $caching);
         if ((isset($template) && strpos($template_name, ':.') !== false) || $this->allow_ambiguous_resources) {
             $_templateId =
-            Smarty_Resource::getUniqueTemplateName((isset($template) ? $template : $this), $template_name) .
+                Smarty_Resource::getUniqueTemplateName((isset($template) ? $template : $this), $template_name) .
                 "#{$cache_id}#{$compile_id}#{$caching}";
         } else {
             $_templateId = $this->_joined_template_dir . "#{$template_name}#{$cache_id}#{$compile_id}#{$caching}";
         }
-        if (isset($_templateId[150])) {
+        if (isset($_templateId[ 150 ])) {
             $_templateId = sha1($_templateId);
         }
         return $_templateId;
@@ -1091,17 +1091,17 @@ class Smarty extends Smarty_Internal_TemplateBase
             $path,
             $parts
         );
-        $path = $parts['path'];
-        if ('\\' === $parts['root']) {
-            $parts['root'] = substr(getcwd(), 0, 2) . $parts['root'];
+        $path = $parts[ 'path' ];
+        if ($parts[ 'root' ] === '\\') {
+            $parts[ 'root' ] = substr(getcwd(), 0, 2) . $parts[ 'root' ];
         } else {
-            if (null !== $realpath && !$parts['root']) {
+            if ($realpath !== null && !$parts[ 'root' ]) {
                 $path = getcwd() . DIRECTORY_SEPARATOR . $path;
             }
         }
         // normalize DIRECTORY_SEPARATOR
-        $path = str_replace($nds[DIRECTORY_SEPARATOR], DIRECTORY_SEPARATOR, $path);
-        $parts['root'] = str_replace($nds[DIRECTORY_SEPARATOR], DIRECTORY_SEPARATOR, $parts['root']);
+        $path = str_replace($nds[ DIRECTORY_SEPARATOR ], DIRECTORY_SEPARATOR, $path);
+        $parts[ 'root' ] = str_replace($nds[ DIRECTORY_SEPARATOR ], DIRECTORY_SEPARATOR, $parts[ 'root' ]);
         do {
             $path = preg_replace(
                 array('#[\\\\/]{2}#', '#[\\\\/][.][\\\\/]#', '#[\\\\/]([^\\\\/.]+)[\\\\/][.][.][\\\\/]#'),
@@ -1111,7 +1111,7 @@ class Smarty extends Smarty_Internal_TemplateBase
                 $count
             );
         } while ($count > 0);
-        return false !== $realpath ? $parts['root'] . $path : str_ireplace(getcwd(), '.', $parts['root'] . $path);
+        return $realpath !== false ? $parts[ 'root' ] . $path : str_ireplace(getcwd(), '.', $parts[ 'root' ] . $path);
     }
 
     /**
@@ -1310,11 +1310,11 @@ class Smarty extends Smarty_Internal_TemplateBase
      */
     public function __get($name)
     {
-        if (isset($this->accessMap[$name])) {
-            $method = 'get' . $this->accessMap[$name];
+        if (isset($this->accessMap[ $name ])) {
+            $method = 'get' . $this->accessMap[ $name ];
             return $this->{$method}();
-        } elseif (isset($this->_cache[$name])) {
-            return $this->_cache[$name];
+        } elseif (isset($this->_cache[ $name ])) {
+            return $this->_cache[ $name ];
         } elseif (in_array($name, $this->obsoleteProperties)) {
             return null;
         } else {
@@ -1334,8 +1334,8 @@ class Smarty extends Smarty_Internal_TemplateBase
      */
     public function __set($name, $value)
     {
-        if (isset($this->accessMap[$name])) {
-            $method = 'set' . $this->accessMap[$name];
+        if (isset($this->accessMap[ $name ])) {
+            $method = 'set' . $this->accessMap[ $name ];
             $this->{$method}($value);
         } elseif (in_array($name, $this->obsoleteProperties)) {
             return;
@@ -1372,17 +1372,17 @@ class Smarty extends Smarty_Internal_TemplateBase
             $dir = &$this->template_dir;
         }
         if (!is_array($dir)) {
-            $dir = (array) $dir;
+            $dir = (array)$dir;
         }
         foreach ($dir as $k => $v) {
-            if (!isset($processed[$k])) {
-                $dir[$k] = $v = $this->_realpath(rtrim($v ?? '', "/\\") . DIRECTORY_SEPARATOR, true);
-                $processed[$k] = true;
+            if (!isset($processed[ $k ])) {
+                $dir[ $k ] = $v = $this->_realpath(rtrim($v ?? '', "/\\") . DIRECTORY_SEPARATOR, true);
+                $processed[ $k ] = true;
             }
         }
         $isConfig ? $this->_configDirNormalized = true : $this->_templateDirNormalized = true;
         $isConfig ? $this->_joined_config_dir = join('#', $this->config_dir) :
-        $this->_joined_template_dir = join('#', $this->template_dir);
+            $this->_joined_template_dir = join('#', $this->template_dir);
     }
 
     /**
@@ -1390,8 +1390,7 @@ class Smarty extends Smarty_Internal_TemplateBase
      *
      * @void
      */
-    public function muteUndefinedOrNullWarnings(): void
-    {
+    public function muteUndefinedOrNullWarnings(): void {
         $this->isMutingUndefinedOrNullWarnings = true;
     }
 
@@ -1399,25 +1398,8 @@ class Smarty extends Smarty_Internal_TemplateBase
      * Indicates if Smarty will mute errors for "undefined index", "undefined array key" and "trying to read property of null".
      * @bool
      */
-    public function isMutingUndefinedOrNullWarnings(): bool
-    {
+    public function isMutingUndefinedOrNullWarnings(): bool {
         return $this->isMutingUndefinedOrNullWarnings;
     }
-    public function trigger_error($error_msg, $error_type = E_USER_WARNING)
-    {
-        $msg = htmlentities($error_msg);
-        trigger_error("Smarty error: $msg", $error_type);
 
-        $msg = htmlentities($error_msg);
-        /* MintHCM #112747 START */
-        switch ($error_type) {
-            case E_USER_ERROR:
-                $GLOBALS['log']->fatal("Smarty fatal: $msg");
-                break;
-            default:
-                $GLOBALS['log']->debug("Smarty error: $msg");
-        }
-        /* MintHCM #112747 END */
-        trigger_error("Smarty error: $msg", $error_type);
-    }
 }

@@ -66,7 +66,7 @@
 <input type="hidden" name="offset" value="{$offset}">
 {{if isset($form.hidden)}}
 {{foreach from=$form.hidden item=field}}
-{{$field}}   
+{{$field}}
 {{/foreach}}
 {{/if}}
 

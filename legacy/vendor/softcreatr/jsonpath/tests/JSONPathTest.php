@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace Flow\JSONPath\Test;
 
-use Flow\JSONPath\{JSONPath, JSONPathException};
+use Flow\JSONPath\JSONPath;
+use Flow\JSONPath\JSONPathException;
 use Flow\JSONPath\Test\Traits\TestDataTrait;
+use JsonException;
 use PHPUnit\Framework\TestCase;
 
-use function is_object;
-use function json_decode;
-use function json_encode;
+use const JSON_THROW_ON_ERROR;
 
 class JSONPathTest extends TestCase
 {
@@ -25,7 +25,7 @@ class JSONPathTest extends TestCase
     /**
      * $.store.books[0].title
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testChildOperators(): void
     {
@@ -36,7 +36,7 @@ class JSONPathTest extends TestCase
     }
 
     /**
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testIndexesObject(): void
     {
@@ -49,7 +49,7 @@ class JSONPathTest extends TestCase
     /**
      * $['store']['books'][0]['title']
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testChildOperatorsAlt(): void
     {
@@ -62,7 +62,7 @@ class JSONPathTest extends TestCase
     /**
      * $.array[start:end:step]
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testFilterSliceA(): void
     {
@@ -244,7 +244,7 @@ class JSONPathTest extends TestCase
      *
      * This notation is only partially implemented eg. hacked in
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testChildQuery(): void
     {
@@ -258,7 +258,7 @@ class JSONPathTest extends TestCase
      * $.store.books[?(@.price < 10)].title
      * Filter books that have a price less than 10
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchLessThan(): void
     {
@@ -272,7 +272,7 @@ class JSONPathTest extends TestCase
      * $.store.books[?(@.price > 10)].title
      * Filter books that have a price more than 10
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchMoreThan(): void
     {
@@ -286,7 +286,7 @@ class JSONPathTest extends TestCase
      * $.store.books[?(@.price <= 12.99)].title
      * Filter books that have a price less or equal to 12.99
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchLessOrEqual(): void
     {
@@ -300,7 +300,7 @@ class JSONPathTest extends TestCase
      * $.store.books[?(@.price >= 12.99)].title
      * Filter books that have a price less or equal to 12.99
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchEqualOrMore(): void
     {
@@ -314,7 +314,7 @@ class JSONPathTest extends TestCase
      * $..books[?(@.author == "J. R. R. Tolkien")]
      * Filter books that have an author equal to "..."
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchEquals(): void
     {
@@ -328,7 +328,7 @@ class JSONPathTest extends TestCase
      * $..books[?(@.author = 1)]
      * Filter books that have a title equal to "..."
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchEqualsWithUnquotedInteger(): void
     {
@@ -343,7 +343,7 @@ class JSONPathTest extends TestCase
      * $..books[?(@.author != "J. R. R. Tolkien")]
      * Filter books that have an author not equal to "..."
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchNotEqualsTo(): void
     {
@@ -372,7 +372,7 @@ class JSONPathTest extends TestCase
      * $..books[?(@.author =~ /nigel ree?s/i)]
      * Filter books where author matches regex
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchWithRegexCaseSensitive(): void
     {
@@ -395,7 +395,7 @@ class JSONPathTest extends TestCase
      * $..books[?(@.author =~ "J. R. R. Tolkien")]
      * Filter books where author matches invalid regex
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchWithInvalidRegex(): void
     {
@@ -409,7 +409,7 @@ class JSONPathTest extends TestCase
      * $..books[?(@.author in ["J. R. R. Tolkien", "Nigel Rees"])]
      * Filter books that have a title in ["...", "..."]
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchIn(): void
     {
@@ -423,7 +423,7 @@ class JSONPathTest extends TestCase
      * $..books[?(@.author nin ["J. R. R. Tolkien", "Nigel Rees"])]
      * Filter books that don't have a title in ["...", "..."]
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchNin(): void
     {
@@ -437,7 +437,7 @@ class JSONPathTest extends TestCase
      * $..books[?(@.author nin ["J. R. R. Tolkien", "Nigel Rees"])]
      * Filter books that don't have a title in ["...", "..."]
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchNotIn(): void
     {
@@ -450,7 +450,7 @@ class JSONPathTest extends TestCase
     /**
      * $.store.books[*].author
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testWildcardAltNotation(): void
     {
@@ -463,7 +463,7 @@ class JSONPathTest extends TestCase
     /**
      * $..author
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testRecursiveChildSearch(): void
     {
@@ -478,20 +478,20 @@ class JSONPathTest extends TestCase
      * all things in store
      * the structure of the example data makes this test look weird
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testWildCard(): void
     {
         $result = (new JSONPath($this->getData('example')))
             ->find('$.store.*');
 
-        if (is_object($result[0][0])) {
+        if (\is_object($result[0][0])) {
             self::assertEquals('Sayings of the Century', $result[0][0]->title);
         } else {
             self::assertEquals('Sayings of the Century', $result[0][0]['title']);
         }
 
-        if (is_object($result[1])) {
+        if (\is_object($result[1])) {
             self::assertEquals('red', $result[1]->color);
         } else {
             self::assertEquals('red', $result[1]['color']);
@@ -502,7 +502,7 @@ class JSONPathTest extends TestCase
      * $.store..price
      * the price of everything in the store.
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testRecursiveChildSearchAlt(): void
     {
@@ -516,7 +516,7 @@ class JSONPathTest extends TestCase
      * $..books[2]
      * the third book
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testRecursiveChildSearchWithChildIndex(): void
     {
@@ -529,7 +529,7 @@ class JSONPathTest extends TestCase
     /**
      * $..books[(@.length-1)]
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testRecursiveChildSearchWithChildQuery(): void
     {
@@ -543,7 +543,7 @@ class JSONPathTest extends TestCase
      * $..books[-1:]
      * Return the last results
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testRecursiveChildSearchWithSliceFilter(): void
     {
@@ -557,7 +557,7 @@ class JSONPathTest extends TestCase
      * $..books[?(@.isbn)]
      * filter all books with isbn number
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testRecursiveWithQueryMatch(): void
     {
@@ -571,13 +571,18 @@ class JSONPathTest extends TestCase
      * .data.tokens[?(@.Employee.FirstName)]
      * Verify that it is possible to filter with a key containing punctuation
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testRecursiveWithQueryMatchWithDots(): void
     {
         $result = (new JSONPath($this->getData('with-dots')))
             ->find(".data.tokens[?(@.Employee.FirstName)]");
-        $result = json_decode(json_encode($result), true);
+        $result = \json_decode(
+            \json_encode($result, JSON_THROW_ON_ERROR),
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
 
         self::assertEquals([['Employee.FirstName' => 'Jack']], $result);
     }
@@ -586,13 +591,18 @@ class JSONPathTest extends TestCase
      * $..*
      * All members of JSON structure
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testRecursiveWithWildcard(): void
     {
         $result = (new JSONPath($this->getData('example')))
             ->find('$..*');
-        $result = json_decode(json_encode($result), true);
+        $result = \json_decode(
+            \json_encode($result, JSON_THROW_ON_ERROR),
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
 
         self::assertEquals('Sayings of the Century', $result[0]['books'][0]['title']);
         self::assertEquals(19.95, $result[27]);
@@ -634,7 +644,7 @@ class JSONPathTest extends TestCase
     }
 
     /**
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testMatchWithComplexSquareBrackets(): void
     {
@@ -645,7 +655,7 @@ class JSONPathTest extends TestCase
     }
 
     /**
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryMatchWithRecursive(): void
     {
@@ -656,7 +666,7 @@ class JSONPathTest extends TestCase
     }
 
     /**
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testFirst(): void
     {
@@ -667,7 +677,7 @@ class JSONPathTest extends TestCase
     }
 
     /**
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testLast(): void
     {
@@ -678,7 +688,7 @@ class JSONPathTest extends TestCase
     }
 
     /**
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testSlashesInIndex(): void
     {
@@ -769,7 +779,7 @@ class JSONPathTest extends TestCase
     /**
      * Test: ensure trailing comma is stripped during parsing
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testTrailingComma(): void
     {
@@ -782,7 +792,7 @@ class JSONPathTest extends TestCase
     /**
      * Test: ensure negative indexes return -n from last index
      *
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testNegativeIndex(): void
     {
@@ -793,7 +803,7 @@ class JSONPathTest extends TestCase
     }
 
     /**
-     * @throws JSONPathException
+     * @throws JSONPathException|JsonException
      */
     public function testQueryAccessWithNumericalIndexes(): void
     {

@@ -43,7 +43,6 @@
  */
 
 *}
-
 <script type="text/javascript" language="javascript">
 var emailAddressWidgetLoaded = false;
 </script>

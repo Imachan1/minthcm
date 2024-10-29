@@ -6,13 +6,7 @@
  * @license https://github.com/SoftCreatR/JSONPath/blob/main/LICENSE  MIT License
  */
 
-declare(strict_types=1);
-
 namespace Flow\JSONPath;
-
-use function class_exists;
-use function in_array;
-use function ucfirst;
 
 class JSONPathToken
 {
@@ -20,18 +14,20 @@ class JSONPathToken
      * Tokens
      */
     public const T_INDEX = 'index';
+
     public const T_RECURSIVE = 'recursive';
+
     public const T_QUERY_RESULT = 'queryResult';
+
     public const T_QUERY_MATCH = 'queryMatch';
+
     public const T_SLICE = 'slice';
+
     public const T_INDEXES = 'indexes';
 
-    /**
-     * @var string
-     */
-    public $type;
+    public string $type;
 
-    public $value;
+    public mixed $value;
 
     /**
      * @throws JSONPathException
@@ -49,7 +45,7 @@ class JSONPathToken
      */
     public function validateType(string $type): void
     {
-        if (!in_array($type, static::getTypes(), true)) {
+        if (!\in_array($type, static::getTypes(), true)) {
             throw new JSONPathException('Invalid token: ' . $type);
         }
     }
@@ -71,9 +67,9 @@ class JSONPathToken
      */
     public function buildFilter(bool $options)
     {
-        $filterClass = 'Flow\\JSONPath\\Filters\\' . ucfirst($this->type) . 'Filter';
+        $filterClass = 'Flow\\JSONPath\\Filters\\' . \ucfirst($this->type) . 'Filter';
 
-        if (!class_exists($filterClass)) {
+        if (!\class_exists($filterClass)) {
             throw new JSONPathException("No filter class exists for token [{$this->type}]");
         }
 

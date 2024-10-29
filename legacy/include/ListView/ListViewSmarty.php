@@ -50,7 +50,6 @@ require_once 'include/ListView/ListViewDisplay.php';
 
 require_once 'include/contextMenus/contextMenu.php';
 
-require_once('include/contextMenus/contextMenu.php');
 #[\AllowDynamicProperties]
 class ListViewSmarty extends ListViewDisplay
 {

@@ -62,11 +62,11 @@
 <script type='text/javascript' src='{sugar_getjspath file='include/javascript/popup_helper.js'}'></script>
 <script type="text/javascript" src="{sugar_getjspath file='cache/include/javascript/sugar_grp_yui2.js'}"></script>
 <script type="text/javascript" src="{sugar_getjspath file='cache/include/javascript/sugar_grp_yui_widgets.js'}"></script>
-  
+
 <script type="text/javascript">
 {literal}
 
-document.getElementById("date_start").value = new Date().toLocaleString(); 
+document.getElementById("date_start").value = new Date().toLocaleString();
 
 SUGAR.projects = {};
 var projectsLoader = new YAHOO.util.YUILoader({
@@ -77,7 +77,7 @@ var projectsLoader = new YAHOO.util.YUILoader({
         defaultSkin: ''
     },
     onSuccess: function(){
-		
+
 		SUGAR.projects.fill_invitees = function() {
 			if (typeof(GLOBAL_REGISTRY) != 'undefined')  {
 				SugarWidgetScheduler.fill_invitees(document.EditView);
