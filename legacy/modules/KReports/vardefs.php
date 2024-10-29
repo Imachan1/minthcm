@@ -16,7 +16,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-$dictionary['KReport'] = array('table' => 'kreports',
+$dictionary['KReport'] = array(
+    'table' => 'kreports',
     'fields' => array(
         'report_module' => array(
             'name' => 'report_module',
@@ -101,6 +102,15 @@ $dictionary['KReport'] = array('table' => 'kreports',
             'name' => 'advancedoptions',
             'type' => 'text',
             'vname' => 'LBL_ADVANCEDOPTIONS',
+        ),
+        'prospectlists' => array(
+            'name' => 'prospectlists',
+            'type' => 'link',
+            'relationship' => 'prospectlists',
+            'source' => 'non-db',
+            'module' => 'prospectlists',
+            'bean_name' => 'ProspectList',
+            'vname' => 'LBL_PROSPECTLISTS',
         ),
     ),
     'indices' => array(

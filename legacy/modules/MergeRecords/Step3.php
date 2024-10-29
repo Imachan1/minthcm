@@ -347,18 +347,18 @@ foreach ( $temp_field_array as $field_array ) {
                     if (isset($field_array['function']) && 'getDictionary' === $field_array['function']['name']) {
                         $field_array['options'] = $field_array['function']['name'];
                         $app_list_strings[$field_array['function']['name']] = getDictionary('', '', '', '', $field_array['function']['additional_params']);
-                    }
+               }
                     if ('' != $mergeBeanArray[$id]->$tempName and isset($field_array['options']) and isset($app_list_strings[$field_array['options']][$mergeBeanArray[$id]->$tempName])) {
                         display_field_value(
                             'multienum' === $field_check ?
-                                str_replace("^", "", $app_list_strings[$field_array['options']][$mergeBeanArray[$id]->$tempName]) :
-                                $app_list_strings[$field_array['options']][$mergeBeanArray[$id]->$tempName]
+                            str_replace("^", "", $app_list_strings[$field_array['options']][$mergeBeanArray[$id]->$tempName]) :
+                            $app_list_strings[$field_array['options']][$mergeBeanArray[$id]->$tempName]
                         );
                } else {
                         display_field_value(
                             'multienum' === $field_check ?
-                                str_replace("^", "", $mergeBeanArray[$id]->$tempName) :
-                                $mergeBeanArray[$id]->$tempName
+                            str_replace("^", "", $mergeBeanArray[$id]->$tempName) :
+                            $mergeBeanArray[$id]->$tempName
                         );
                }
                $field_name = "main." . $section_name . ".merge_cell_field_value";
@@ -413,8 +413,8 @@ foreach ( $temp_field_array as $field_array ) {
                 $json_data['field_value'] = $value_array;
             }
             else {
-                    $json_data['field_value'] = $mergeBeanArray[$id]->$tempName;
-                }
+                $json_data['field_value'] = $mergeBeanArray[$id]->$tempName;
+            }
          $encoded_json_data = $json->encode($json_data);
          $xtpl->assign('ENCODED_JSON_DATA', $encoded_json_data);
          $xtpl->parse($field_name);
@@ -502,7 +502,7 @@ function show_field($field_def)
    }
    //field has 'duplicate_merge property set to disabled?'
    if ( isset($field_def['duplicate_merge']) ) {
-      if ($field_def['duplicate_merge']=='disabled' || $field_def['duplicate_merge']==false) {
+     if ($field_def['duplicate_merge']=='disabled' || $field_def['duplicate_merge']==false) {
          return false;
      }
      if ($field_def['duplicate_merge']=='enabled' || $field_def['duplicate_merge']==true) {

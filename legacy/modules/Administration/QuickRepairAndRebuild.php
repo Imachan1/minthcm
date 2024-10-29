@@ -126,13 +126,13 @@ class RepairAndClear
                 $this->rebuildAuditTables();
                 $this->generateMappings();
                 $this->repairDatabase();
+                updateMintRebuildFile();
                 break;
         }
         }
     }
 
     /////////////OLD
-
 
     public function repairDatabase()
     {

@@ -2243,7 +2243,12 @@ abstract class DBManager
                         return 0;
                     }
 
-                    return $val === '' ? 'NULL' : (int)$val; // Fix #9440 - Forcing default null value for numeric fields.
+                    // MintHCM #119576 START
+                    if ($val === '') {
+                        return "NULL";
+                    }
+                    // MintHCM #119576 END
+                    return intval($val);
                 case 'bigint':
                     // ViewTools #69225 START
                     // $val = (float) $val;
@@ -2258,11 +2263,11 @@ abstract class DBManager
                         return 0;
                     }
 
-                    // eVolpe #119576 START
+                    // MintHCM #119576 START
                     if ($val === '') {
                         return "NULL";
                     }
-                    // eVolpe #119576 END
+                    // MintHCM #119576 END
                     return $val;
                 case 'float':
                     if (!empty($fieldDef['required']) && $val == '') {
