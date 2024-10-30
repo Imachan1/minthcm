@@ -852,6 +852,12 @@ class Meeting extends SugarBean {
 
       foreach ( $this->candidates_arr as $candidate_id ) {
          $notify_user = BeanFactory::getBean('Candidates', $candidate_id);
+         // MintHCM #129887 Start
+         if (empty($notify_user->id)) {
+            $GLOBALS['log']->fatal("Missing candidate {$candidate_id} in Meeting::get_notification_recipients");
+            continue;
+         }
+         // MintHCM #129887 End
          $notify_user->new_assigned_user_name = $notify_user->full_name;
          $GLOBALS['log']->info("Notifications: recipient is $notify_user->new_assigned_user_name");
          $list[$notify_user->id] = $notify_user;
@@ -861,6 +867,12 @@ class Meeting extends SugarBean {
       foreach ( $this->users_arr as $user_id ) {
         $notify_user = BeanFactory::newBean('Users');
          $notify_user->retrieve($user_id);
+         // MintHCM #129887 Start
+         if (empty($notify_user->id)) {
+            $GLOBALS['log']->fatal("Missing user {$user_id} in Meeting::get_notification_recipients");
+            continue;
+         }
+         // MintHCM #129887 End
          $notify_user->new_assigned_user_name = $notify_user->full_name;
          $GLOBALS['log']->info("Notifications: recipient is $notify_user->new_assigned_user_name");
          $list[$notify_user->id] = $notify_user;

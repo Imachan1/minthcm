@@ -408,7 +408,7 @@
         $(htmlSignature).appendTo(signatureElement);
       }
 
-      if (tinymce.editors.length < 1) {
+      if (!tinymce.get(0)) { // MintHCM #137532
         console.warn('unable to find tinymce editor');
         return false;
       }
@@ -1361,7 +1361,7 @@
 
         var intervalCheckTinymce = window.setInterval(function () {
           var isFromPopulated = $('#from_addr_name').prop("tagName").toLowerCase() === 'select';
-          if (tinymce.editors.length > 0 && isFromPopulated === true) {
+          if (tinymce.get(0) && isFromPopulated === true) { // MintHCM #137532
             self.updateSignature();
             clearInterval(intervalCheckTinymce);
           }
