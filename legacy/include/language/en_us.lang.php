@@ -4857,3 +4857,5 @@ $app_list_strings['contract_type_list'] = array(
     'contract_of_commission' => 'Contract of commission',
     'other' => 'Other',
 );
+
+$app_strings['LBL_DASHBOARD'] = 'Dashboard';
