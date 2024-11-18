@@ -537,7 +537,9 @@ SugarWidgetScheduler.sortByType = function ( a, b ) {
  */
 
 SugarWidgetScheduler.createDialog = function ( elementId, body, caption, width, theme ) {
-
+    if (document.activeElement) {
+        document.activeElement.blur();
+    }
    caption = caption.replace( SUGAR.language.get( 'app_strings', 'LBL_ADDITIONAL_DETAILS' ), '' );
 
    $( ".ui-dialog" ).find( ".open" ).dialog( "close" );
