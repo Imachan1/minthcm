@@ -53,7 +53,10 @@ $ESListViewDefs[$module_name] = [
             'default' => false,
         ],
         'DURATION' => [
+            'width' => '15%',
+            'label' => 'LBL_DURATION',
             'default' => false,
+            'type' => 'varchar',
         ],
         'ASSIGNED_USER_NAME' => [
             'width' => '10%',
