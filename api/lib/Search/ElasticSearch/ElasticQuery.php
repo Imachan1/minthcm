@@ -196,7 +196,45 @@ class ElasticQuery extends SearchQuery
 
     private function getListQuery()
     {
-        return (CustomLoader::getObject(ElasticQueryOperatorsManager::class, $this->params['filters'] ?? []))->getQuery();
+        $query =  (CustomLoader::getObject(ElasticQueryOperatorsManager::class, $this->params['filters'] ?? []))->getQuery();
+        $query = $this->fixFieldModulePrefix($query);
+        return $query;
+    }
+
+    private function fixFieldModulePrefix($query) {
+        $mappings = $this->getDefaultMapParams($this->params['type']);
+        $field_name = key($query['bool']['filter'][0]['wildcard']);
+        $field_parts = explode('.', $field_name);
+        
+        if(isset($mappings['mappings']['properties'][$this->params['type'] . '__' . $field_parts[0]])) {
+            foreach($field_parts as $key => $part) {
+                $field_parts[$key] = $this->params['type'] . '__' . $part;
+            }
+
+            $field_parts = implode('.', $field_parts);
+
+            $query['bool']['filter'][0]['wildcard'][$field_parts] = $query['bool']['filter'][0]['wildcard'][$field_name];
+            unset($query['bool']['filter'][0]['wildcard'][$field_name]);
+        }
+
+        if(isset($this->sort)) {
+            $sort_field = key($this->sort);
+            $sort_parts = explode('.', $sort_field);
+
+            if(isset($mappings['mappings']['properties'][$this->params['type'] . '__' . $sort_parts[0]])) {
+                foreach($sort_parts as $key => $part) {
+                    if($part == 'keyword') {
+                        continue;
+                    }
+                    $sort_parts[$key] = $this->params['type'] . '__' . $part;
+                }
+                $sort_parts = implode('.', $sort_parts);
+            
+                $this->sort[$sort_parts] = $this->sort[$sort_field];
+                unset($this->sort[$sort_field]);
+            }
+        }
+        return $query;
     }
 
     protected function getExcludeModules()
@@ -276,6 +314,10 @@ class ElasticQuery extends SearchQuery
             $search_modules = $this->getGlobalSearchModuleList();
         } else {
             $search_modules = $this->search_modules;
+        }
+
+        if(!isset($this->query['body']['query']['query_string']['fields'])) {
+            return;
         }
 
         $boost_array = $this->query['body']['query']['query_string']['fields'];
