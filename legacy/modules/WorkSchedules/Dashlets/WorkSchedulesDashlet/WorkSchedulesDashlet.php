@@ -39,10 +39,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * ****************************************************************************** */
 require_once 'include/Dashlets/DashletGeneric.php';
 require_once 'modules/WorkSchedules/WorkSchedules.php';
+require_once 'modules/WorkSchedules/WorkSchedulesListViewSmarty.php';
 
 class WorkSchedulesDashlet extends DashletGeneric
 {
-
+    public $displayTpl = 'modules/WorkSchedules/tpls/WorkSchedulesDashlet.tpl';
     public function __construct($id, $def = null)
     {
         require 'modules/WorkSchedules/metadata/dashletviewdefs.php';
@@ -57,5 +58,6 @@ class WorkSchedulesDashlet extends DashletGeneric
         $this->columns = $dashletData['WorkSchedulesDashlet']['columns'];
 
         $this->seedBean = BeanFactory::getBean('WorkSchedules');
+        $this->lvs = new WorkSchedulesListViewSmarty();
     }
 }

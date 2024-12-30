@@ -4869,4 +4869,4 @@ $app_list_strings['contract_type_list'] = array(
     'other' => 'Other',
 );
 
-$app_strings['LBL_DASHBOARD'] = 'Dashboard';
+$app_strings['LBL_DASHBOARD'] = 'Dashboard';$app_strings['LNK_ACCEPT'] = 'Accept';

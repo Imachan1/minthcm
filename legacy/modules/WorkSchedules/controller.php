@@ -280,4 +280,19 @@ class WorkSchedulesController extends SugarController
         echo json_encode(['status' => $_SESSION['dashlet_loaded_before']]);
     }
 
+    public function action_acceptWorkSchedule()
+    {
+        if(empty($_REQUEST['work_schedule_id'])) {
+            return;
+        }
+        $workSchedule = BeanFactory::getBean("WorkSchedules", $_REQUEST['work_schedule_id']);
+
+        if(empty($workSchedule->id) || !$workSchedule->canBeAccepted()){
+            return;
+        }
+
+        $workSchedule->supervisor_acceptance = 'accepted';
+        $workSchedule->save();
+        echo true;
+    }
 }
