@@ -82,7 +82,7 @@ class SugarSecure
         }
     }
 
-    public function scanContents($contents)
+    public function scanContents($contents, $file)
     {
         return;
     }
