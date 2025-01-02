@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:vue/dist/assets/currency.edit.e52c1f7b.js
-import{l as d,n,w as s,A as c,_}from"./index.f7154982.js";const r=d({__name:"currency.edit",props:{defs:{},label:{},modelValue:{},data:{}},setup(a){const e=a;return(t,l)=>(n(),s(c,{label:e.label,variant:"outlined",density:"compact","hide-details":"",modelValue:e.modelValue,"onUpdate:modelValue":l[0]||(l[0]=o=>t.$emit("update:modelValue",o))},null,8,["label","modelValue"]))}});const p=_(r,[["__scopeId","data-v-213c5274"]]);export{p as default};
-========
-import{l as d,n,w as s,A as c,_}from"./index.2d936f3b.js";const r=d({__name:"currency.edit",props:{defs:{},label:{},modelValue:{},data:{}},setup(a){const e=a;return(t,l)=>(n(),s(c,{label:e.label,variant:"outlined",density:"compact","hide-details":"",modelValue:e.modelValue,"onUpdate:modelValue":l[0]||(l[0]=o=>t.$emit("update:modelValue",o))},null,8,["label","modelValue"]))}});const p=_(r,[["__scopeId","data-v-213c5274"]]);export{p as default};
->>>>>>>> master:vue/dist/assets/currency.edit.91a40118.js
