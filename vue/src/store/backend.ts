@@ -52,17 +52,20 @@ export const useBackendStore = defineStore('backend', () => {
     async function init() {
         const auth = useAuthStore()
         try {
-
-            await caches.match('api/init').then(function(response) {
-                if (!response) {
-                    return;
-                }
-                return response.json()
-            }).then(function(response) {
-                if(cachedConfig){
-                    cachedConfig.value = response;
-                }
-            })
+            if (typeof caches === "undefined") {
+                console.warn('Cache API not supported.')
+            } else {
+                await caches.match('api/init').then(function(response) {
+                    if (!response) {
+                        return;
+                    }
+                    return response.json()
+                }).then(function(response) {
+                    if(cachedConfig){
+                        cachedConfig.value = response;
+                    }
+                })
+            }
             let mintRebuildID = cachedConfig.value?.mintRebuildID ?? '';
             const current_language = cachedConfig.value?.languages?.current_language ?? '';
             if(mintRebuildID === false){
@@ -108,10 +111,11 @@ export const useBackendStore = defineStore('backend', () => {
             languages.currentLanguage =
                 localStorage.getItem('currentLang') ?? initData.value.global?.default_language ?? 'en_us'
             modules.modulesDefs = initData.value?.modules ?? {}
-            
-            caches.open('mint-rebuild').then(function(cache) {
-                cache.put('api/init', new Response(JSON.stringify(initData.value)));
-            })
+            if (typeof caches !== "undefined") {
+                caches.open('mint-rebuild').then(function(cache) {
+                    cache.put('api/init', new Response(JSON.stringify(initData.value)));
+                })
+            }
             alerts.init()
             favorites.fetch()
             recents.fetch()
