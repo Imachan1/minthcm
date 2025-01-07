@@ -158,7 +158,7 @@
 			</div>
 			<div class="modal-footer">
 				<button id="sharedCalUsersSelectBtn" data-dismiss="modal" class="btn btn-default" type="button">{$MOD.LBL_CANCEL_BUTTON}</button>
-				<button id="sharedCalUsersSelectBtn" onclick="showLoadingScreen('{$MOD.LBL_APPLY_BUTTON}', viewTools.language.get('app_strings', 'LBL_LOADING')); $('#shared_cal').submit();" class="btn btn-danger" type="button">{$MOD.LBL_APPLY_BUTTON}</button>
+				<button id="sharedCalUsersSelectBtn" onclick="showLoadingScreen('{$MOD.LBL_MODULE_NAME}', viewTools.language.get('app_strings', 'LBL_LOADING')); $('#shared_cal').submit();" class="btn btn-danger" type="button">{$MOD.LBL_APPLY_BUTTON}</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

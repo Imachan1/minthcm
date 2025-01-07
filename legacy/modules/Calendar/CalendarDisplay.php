@@ -506,11 +506,12 @@ class CalendarDisplay {
     * @return string
     */
    protected function get_next_calendar() {
-      global $cal_strings, $image_path;
+      global $cal_strings, $image_path, $mod_strings;
       $str = "";
+      $next = $mod_strings['LBL_NEXT_SHARED'];
       if ( $_REQUEST['module'] == "Calendar" ) {
          $link = ajaxlink("index.php?action=index&module=Calendar&view=" . $this->cal->view . "&" . $this->cal->get_neighbor_date_str("next"));
-         $str .= "<a href='#' onclick='window.location = \"$link\"'>";
+         $str .= "<a href='#' onclick='showLoadingScreen(\"$next\", viewTools.language.get(\"app_strings\", \"LBL_LOADING\")); window.location = \"$link\"'>";
       } else {
          $str .= "<a href='#' onclick='return SUGAR.mySugar.retrieveDashlet(\"" . $this->dashlet_id . "\", \"index.php?module=Home&action=DynamicAction&DynamicAction=displayDashlet&sugar_body_only=1&" . $this->cal->get_neighbor_date_str("next") . "&id=" . $this->dashlet_id . "\")'>";
       }
@@ -524,11 +525,12 @@ class CalendarDisplay {
     * @return string
     */
    protected function get_previous_calendar() {
-      global $cal_strings, $image_path;
+      global $cal_strings, $image_path, $mod_strings;
       $str = "";
+      $previous = $mod_strings['LBL_PREVIOUS_SHARED'];
       if ( $_REQUEST['module'] == "Calendar" ) {
          $link = ajaxLink("index.php?action=index&module=Calendar&view=" . $this->cal->view . "&" . $this->cal->get_neighbor_date_str("previous"));
-         $str .= "<a href='#' onclick='window.location = \"$link\"'>";
+         $str .= "<a href='#' onclick='showLoadingScreen(\"$previous\", viewTools.language.get(\"app_strings\", \"LBL_LOADING\")); window.location = \"$link\"'>";
       } else {
          $str .= "<a href='#' onclick='return SUGAR.mySugar.retrieveDashlet(\"" . $this->dashlet_id . "\", \"index.php?module=Home&action=DynamicAction&DynamicAction=displayDashlet&sugar_body_only=1&" . $this->cal->get_neighbor_date_str("previous") . "&id=" . $this->dashlet_id . "\")'>";
       }
