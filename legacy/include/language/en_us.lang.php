@@ -4870,3 +4870,5 @@ $app_list_strings['contract_type_list'] = array(
 );
 
 $app_strings['LBL_DASHBOARD'] = 'Dashboard';$app_strings['LNK_ACCEPT'] = 'Accept';
+
+$app_strings['LBL_ACCEPT_INLINE'] = "Accept";
