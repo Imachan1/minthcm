@@ -4870,3 +4870,16 @@ $app_list_strings['contract_type_list'] = array(
 );
 
 $app_strings['LBL_DASHBOARD'] = 'Dashboard';
+
+$app_list_strings['source_list'] = array(
+    '' => '',
+    'Base' => 'Database of Candidates',
+    'CareersLibrary' => 'Career\'s Office',
+    'EmployeeCommendation' => 'Employee Recommendation',
+    'Website' => 'Website',
+    'facebook' => 'Facebook',
+    'goldenline' => 'GoldenLine',
+    'linkedin' => 'LinkedIn',
+    'not_applicable' => 'Not Applicable',
+    'other' => 'Other',
+);
