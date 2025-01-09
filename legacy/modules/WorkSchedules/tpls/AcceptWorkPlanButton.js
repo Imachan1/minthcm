@@ -32,7 +32,7 @@ function acceptWorkPlan() {
    } );
 }
 
-function acceptWorkPlanForDashlet(record_id) {
+function acceptWorkPlanForDashlet(record_id, dashlet_id) {
     viewTools.GUI.statusBox.showStatus( SUGAR.language.get( 'app_strings', 'LBL_SAVING' ), 'info' );
     if(record_id == undefined || !record_id){
         viewTools.GUI.statusBox.showStatus( SUGAR.language.get( 'app_strings', 'LBL_ERROR' ), 'error', 3000 );
@@ -57,6 +57,7 @@ function acceptWorkPlanForDashlet(record_id) {
              console.error( call_constroller_data );
           } else {
             viewTools.GUI.statusBox.hideStatus();
+            SUGAR.mySugar.retrieveDashlet( dashlet_id, '' );
           }
        }
     } );
