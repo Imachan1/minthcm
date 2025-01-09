@@ -214,7 +214,7 @@
                 <a title='{$viewLinkString}' class="list-view-data-icon" href='index.php?action=DetailView&module={$pageData.bean.moduleDir}&record={$rowData[$params.parent_id]|default:$rowData.ID}&offset={$pageData.offsets.current+$smarty.foreach.rowIteration.iteration}&stamp={$pageData.stamp}&return_module=Home&return_action=index' title="{sugar_translate label="LBL_VIEW_INLINE"}"> <span class="suitepicon suitepicon-action-view-record"></span></a>
 				{/if}                
                 {if isset($show_accept_button[$id]) && $show_accept_button[$id] == true}
-                    <a class="list-view-data-icon" href="javascript:void(0)" onclick="acceptWorkPlanForDashlet('{$data[$id].ID}', '{$dashletId}');" title="{sugar_translate label="LBL_ACCEPT_INLINE"}"> <span class="suitepicon suitepicon-action-confirm"></span></a>
+                    <a class="list-view-data-icon" href="javascript:void(0)" onclick="acceptWorkPlanForDashlet('{$data[$id].ID}', '{$dashletId}', '{$pageData.urls.currentPage}');" title="{sugar_translate label="LBL_ACCEPT_INLINE"}"> <span class="suitepicon suitepicon-action-confirm"></span></a>
                 {/if}
 			</td>
 			{/if}
