@@ -248,7 +248,10 @@ class SearchResults
     {
         global $sugar_config;
 
-        return "<a href=\"{$sugar_config['site_url']}/index.php?action={$action}&module={$module}&record={$record}&offset=1\"><span>{$label}</span></a>";
+        $slash = '';
+        substr($sugar_config['site_url'], -1) != '/' ? $slash ='/' : $slash = '';
+
+        return "<a href=\"{$sugar_config['site_url']}{$slash}legacy/index.php?action={$action}&module={$module}&record={$record}&offset=1\"><span>{$label}</span></a>";
     }
 
     /**

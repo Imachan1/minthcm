@@ -4894,3 +4894,5 @@ $app_list_strings['source_list'] = array(
     'other' => 'Other',
 );
 
+$app_strings['LBL_ES_ELASTIC_SEARCH_ENGINE'] = 'Elastic Search Engine';
+

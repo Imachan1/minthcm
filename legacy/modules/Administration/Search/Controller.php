@@ -72,14 +72,14 @@
      public function doSave(): void
      {
          $searchEngine = filter_input(INPUT_POST, 'search-engine', FILTER_SANITIZE_STRING);
-         $aod = $searchEngine === 'BasicAndAodEngine';
+         //$aod = $searchEngine === 'BasicAndAodEngine';
  
          SearchConfigurator::make()
              ->setEngine($searchEngine)
              ->save();
  
          SearchModules::saveGlobalSearchSettings();
-         $this->doSaveAODConfig($aod);
+         //$this->doSaveAODConfig($aod);
  
          if ($this->isAjax()) {
              $this->yieldJson(['status' => 'success']);
