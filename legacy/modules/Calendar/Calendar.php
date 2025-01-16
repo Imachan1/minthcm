@@ -462,13 +462,15 @@ class Calendar
 
     public static function getRedirectUrl(string $date_start = '', string $return_module = "Calendar"): string
     {
+        global $timedate;
         $params = [
             'module' => $return_module,
             'action' => 'index',
         ];
 
         if (!empty($date_start) && 'Calendar' === $return_module) {
-            $calendar_date_elements = explode('-', (new SugarDateTime($date_start))->asDbDate());
+            $calendar_date = SugarDateTime::createFromFormat($timedate->get_date_format() . ' ' . $timedate->get_time_format(), $date_start);
+            $calendar_date_elements = explode('-', $calendar_date->asDbDate());
             $params['year'] = $calendar_date_elements[0];
             $params['month'] = $calendar_date_elements[1];
             $params['day'] = $calendar_date_elements[2];
