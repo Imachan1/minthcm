@@ -62,6 +62,17 @@ class LeaveOfAbsenceDashlet extends Dashlet
         'friday' => true,
         'saturday' => false, // 6 - saturday
     ];
+    protected $show_type_of_absence = [
+        'home' => true, 
+        'sick' => true,
+        'holiday' => true,
+        'sick_care' => true,
+        'delegation' => true,
+        'occasional_leave' => true,
+        'leave_at_request' => true,
+        'overtime' => true,
+        'excused_absence' => true,
+    ];
     protected $first_day_of_week = 1;
 
     /**
@@ -98,6 +109,13 @@ class LeaveOfAbsenceDashlet extends Dashlet
             $this->show_days_of_week[$day] = !!$showed;
         }
 
+        if (!empty($def['show_type_of_absence']) && is_array($def['show_type_of_absence'])) {
+            $this->show_type_of_absence = $def['show_type_of_absence'];
+        }
+        foreach ($this->show_type_of_absence as $type => $showed) {
+            $this->show_type_of_absence[$type] = !!$showed;
+        }
+
         $this->autoRefresh = false;
 
         parent::__construct($id); // call parent constructor
@@ -123,6 +141,7 @@ class LeaveOfAbsenceDashlet extends Dashlet
         $ss->assign('lang', $lang);
         $ss->assign('first_day_of_week', $this->first_day_of_week);
         $ss->assign('show_days_of_week', $this->show_days_of_week);
+        $ss->assign('show_type_of_absence', $this->show_type_of_absence);
         $str = $ss->fetch('modules/Home/Dashlets/LeaveOfAbsenceDashlet/LeaveOfAbsenceDashlet.tpl');
         return parent::display($this->dashletStrings['LBL_DBLCLICK_HELP']) . $str;
     }
@@ -143,6 +162,7 @@ class LeaveOfAbsenceDashlet extends Dashlet
         $ss->assign('DASHLET_STRINGS', $this->dashletStrings);
         $ss->assign('title', $this->title);
         $ss->assign('show_days_of_week', $this->show_days_of_week);
+        $ss->assign('show_type_of_absence', $this->show_type_of_absence);
 
         return parent::displayOptions() .
         $ss->fetch('modules/Home/Dashlets/LeaveOfAbsenceDashlet/LeaveOfAbsenceDashletOptions.tpl');
@@ -162,6 +182,7 @@ class LeaveOfAbsenceDashlet extends Dashlet
         $options['height'] = $req['height'];
         $options['autoRefresh'] = 0;
         $options['show_days_of_week'] = $this->show_days_of_week;
+        $options['show_type_of_absence'] = $this->show_type_of_absence;
 
         foreach (array_keys($options['show_days_of_week']) as $day) {
             $options['show_days_of_week'][$day] = false;
@@ -177,6 +198,13 @@ class LeaveOfAbsenceDashlet extends Dashlet
                     break;
                 }
                 $i++;
+            }
+        }
+
+        foreach (array_keys($options['show_type_of_absence']) as $type) {
+            $options['show_type_of_absence'][$type] = false;
+            if (isset($req['show_' . $type])) {
+                $options['show_type_of_absence'][$type] = true;
             }
         }
         return $options;

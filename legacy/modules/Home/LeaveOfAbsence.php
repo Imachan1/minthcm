@@ -44,6 +44,52 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+function buildWhere() {
+   $types_of_absence = [
+      'sick',
+      'holiday',
+      'sick_care',
+      'delegation',
+      'occasional_leave',
+      'leave_at_request',
+   ];
+   $where = "";
+
+   foreach($types_of_absence as $type) {
+      if(isset($_GET[$type]) && $_GET[$type] == '1') {
+         if(empty($where)) {
+            $where .= "(";
+         }
+         $where .= "A.type = '{$type}' OR ";
+      }
+   }
+
+   if(!empty($where)) {
+      $where = substr($where, 0, -3);
+      $where .= ")";
+   }
+
+   if(isset($_GET['home']) && $_GET['home'] == '1') {
+      if(!empty($where)) {
+         $where .= " OR ";
+      }
+
+      $where .= "(A.type = 'home' AND 11 BETWEEN HOUR(A.date_start) AND HOUR(A.date_end))";
+   }
+
+   foreach(['overtime', 'excused_absence'] as $type) {
+      if(isset($_GET[$type]) && $_GET[$type] == '1') {
+         if(!empty($where)) {
+            $where .= " OR ";
+         }
+
+         $where .= "(A.type = '{$type}' AND duration_hours >= 4)";
+      }
+   }
+
+   return $where;
+}
+
 global $db, $current_user;
 $tz = $current_user->getPreference('timezone');
 if ( empty($tz) ) {
@@ -66,21 +112,7 @@ FROM
    workschedules A 
    INNER JOIN users  B ON A.assigned_user_id = B.id
 WHERE (
-         (
-               A.type = 'holiday'     
-            OR A.type='sick'
-            OR A.type='sick_care'
-            OR A.type='delegation'
-            OR A.type='occasional_leave'
-            OR A.type='leave_at_request'
-         )
-         OR 
-         (
-            A.type='home'
-            AND 11 BETWEEN HOUR(A.date_start) AND HOUR(A.date_end)
-         )
-         OR ( A.type = 'overtime'        AND duration_hours >= 4 )
-         OR ( A.type = 'excused_absence' AND duration_hours >= 4 )
+         ".buildWhere()."
       )
       AND A.deleted = 0
       AND B.deleted = 0
