@@ -99,6 +99,7 @@ class User extends Person implements EmailInterface
     public $is_group;
     public $accept_status; // to support Meetings
     //adding a property called team_id so we can populate it for use in the team widget
+    public $workschedule_type;
     public $team_id;
     public $receive_notifications;
     public $reports_to_name;
@@ -1594,6 +1595,7 @@ EOQ;
         return $user_fields;
     }
 
+
     public function list_view_parse_additional_sections(&$list_form)
     {
         return $list_form;
@@ -2229,6 +2231,7 @@ EOQ;
                 $ret_array['from'] = $new_left_str;
             }
         }
+
 
         //return array or query string
         if ($return_array) {
