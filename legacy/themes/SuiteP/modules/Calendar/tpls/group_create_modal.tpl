@@ -1,6 +1,4 @@
-<?php
-
-
+{*
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -10,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,16 +42,25 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-return array(
-    "Ideas" => translate("LBL_LIST_TITLE", "Ideas"),
-    "Kudos" => translate("LBL_LIST_TITLE", "Kudos"),
-    "Notes" => translate("LBL_LIST_TITLE", "Notes"),
-    "Reservations" => translate("LBL_LIST_TITLE", "Reservations"),
-    "WorkSchedules" => translate("LBL_LIST_TITLE", "WorkSchedules"),
-    "Appraisals" => translate("LBL_LIST_TITLE", "Appraisals"),
-    "Tasks" => translate("LBL_LIST_TITLE", "Tasks"),
-    "Calls" => translate("LBL_LIST_TITLE", "Calls"),
-    "Meetings" => translate("LBL_LIST_TITLE", "Meetings"),
-    "Candidates" => translate("LBL_LIST_TITLE", "Candidates"),
-    "Recruitments" => translate("LBL_LIST_TITLE", "Recruitments"),
-);
+*}
+
+
+<div class="modal fade modal-group-creation" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" style="width: 600px; margin: 0 auto;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<h4 class="modal-title">{$MOD.LBL_GROUP_CREATION}</h4>
+			</div>
+			<div class="modal-body">
+				<label for="group-creation-group-name"><b>{$MOD.LBL_GROUP_NAME}</b></label>
+				<input type="text" id="group-creation-group-name" name="group-creation-group-name"/>
+				<br>
+				<p id="group-creation-empty-group-name" style="color: red;">{$MOD.LBL_EMPTY_GROUP_NAME}</p>
+			</div>
+			<div class="modal-footer">
+				<button id="group-creation-create-button" class="btn btn-primary" type="button">{$MOD.LBL_CREATE_BUTTON}</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>

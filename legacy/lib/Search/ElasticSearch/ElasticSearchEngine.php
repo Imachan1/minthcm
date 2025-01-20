@@ -81,6 +81,11 @@ class ElasticSearchEngine extends SearchEngine
       $this->client = $client ?? ElasticSearchClientBuilder::getClient();
    }
 
+    public function globalSearch(SearchQuery $query): SearchResults
+    {
+        return $this->search($query);
+    }
+
    /**
     * @throws InvalidArgumentException
     * @inheritdoc

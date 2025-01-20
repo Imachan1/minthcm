@@ -47,7 +47,7 @@ $module_name = 'SalaryRanges';
 $viewdefs[$module_name] = array(
     'EditView' => array(
         'templateMeta' => array(
-            'useTabs' => true,
+            'useTabs' => false,
             'maxColumns' => '2',
             'widths' => array(
                 array(
@@ -57,12 +57,6 @@ $viewdefs[$module_name] = array(
                 array(
                     'label' => '10',
                     'field' => '30',
-                ),
-            ),
-            'tabDefs' => array(
-                'LBL_RECORDVIEW_PANEL1' => array(
-                    'newTab' => true,
-                    'panelDefault' => 'expanded',
                 ),
             ),
         ),
@@ -87,8 +81,15 @@ $viewdefs[$module_name] = array(
                     'employer_costs_from',
                     'employer_costs_to',
                 ),
+                array(
+                    'description',
+                ),
             ),
-
+            'LBL_PANEL_ASSIGNMENT' => array(
+                array(
+                    'assigned_user_name',
+                ),
+            ),
         ),
     ),
 );
