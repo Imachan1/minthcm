@@ -146,7 +146,7 @@ $mod_strings = array(
    'LBL_NO_ACCESS' => 'You have no access to create $module',  // Create invitee functionallity
    'LBL_REPEAT_TYPE' => 'Repeat Type',
    'LBL_REPEAT_INTERVAL' => 'Repeat Interval',
-   'LBL_REPEAT_DOW' => 'Repeat Dow',
+   'LBL_REPEAT_DOW' => 'on',
    'LBL_REPEAT_UNTIL' => 'Repeat Until',
    'LBL_REPEAT_COUNT' => 'Repeat Count',
    'LBL_REPEAT_PARENT_ID' => 'Repeat Parent ID',
@@ -179,4 +179,6 @@ $mod_strings = array(
    'LBL_FIRST_NAME' => 'First Name/Resource Name',
    'LBL_LIST_TITLE' => 'Meeting',
    'LNK_NEW_RECORD' => 'Create Meeting',  // MintHCM
+   'LBL_REPEAT_END' => 'End',
+   'LBL_PERIODICITY_ERROR' => 'Please select days on which the Meeting should be repeated.',
 );

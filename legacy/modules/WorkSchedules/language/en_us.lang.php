@@ -89,7 +89,7 @@ $mod_strings = array(
     'LBL_REMOVE' => 'Remove',
     'LBL_REMOVE_ALL_RECURRENCES' => 'Delete all cycles',
     'LBL_REPEAT_COUNT' => 'Cycles Count',
-    'LBL_REPEAT_DOW' => 'in',
+    'LBL_REPEAT_DOW' => 'on',
     'LBL_REPEAT_END' => 'End',
     'LBL_REPEAT_END_AFTER' => 'after',
     'LBL_REPEAT_END_BY' => 'by',
@@ -141,4 +141,5 @@ $mod_strings = array(
     'LBL_DEPUTY_NAME' => 'Deputy',
     'LBL_DEPUTY_ID' => 'Deputy (ID)',
     'LBL_LEAVE_ALERT' => "%s added a/an %s on %s.",  
+    'LBL_PERIODICITY_ERROR' => 'Please select days on which the Work Schedule should be repeated.',
 );
