@@ -363,6 +363,6 @@ $unified_search_modules_display = array (
   ),
   'AOS_PDF_Templates' => 
   array (
-    'visible' => false,
+    'visible' => true,
   ),
 );
