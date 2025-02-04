@@ -230,18 +230,17 @@ class WorkSchedulesController extends SugarController
     protected function post_save()
     {
         if (isset($_REQUEST['return_module']) && ('Calendar' == $_REQUEST['return_module'] || 'Home' == $_REQUEST['return_module'])) {
-            $url = Calendar::getRedirectUrl(
+            header("Location: index.php?" . Calendar::getRedirectUrl(
                 !empty($_REQUEST['date_start']) ? $_REQUEST['date_start'] : '', 
                 $_REQUEST['return_module']
-            );
+            ));
         } else {
             $module = $this->module;
             $action = (!empty($this->return_action) ? $this->return_action : 'DetailView');
             $id = (!empty($this->return_id) ? $this->return_id : $this->bean->id);
             $url = "index.php?module=" . $module . "&action=" . $action . "&record=" . $id;
+            $this->set_redirect($url);
         }
-
-        $this->set_redirect($url);
     }
 
     public function action_isUniqueWorkSchedule()
