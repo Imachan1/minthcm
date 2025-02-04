@@ -171,6 +171,7 @@ $dictionary['Email'] = array(
          'name' => 'status',
          'vname' => 'LBL_STATUS',
          'type' => 'ColoredEnum',
+         'dbType' => 'varchar',
          'len' => 100,
          'options' => 'dom_email_status',
          'options_colors' => 'dom_email_status_colored',
