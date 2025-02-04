@@ -191,6 +191,9 @@ class WorkSchedulesApi
         global $timedate;
         $user_timezone = new DateTimeZone($timedate->userTimezone());
         $user_offset = $user_timezone->getOffset(new DateTime());
+        if($user_offset == 0) {
+            return $user_offset;
+        }
         return $user_offset/60;
     }
 }

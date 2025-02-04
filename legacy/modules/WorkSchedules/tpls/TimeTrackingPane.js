@@ -151,7 +151,7 @@ if (!window.TimePanel) { // avoid multi-declaration
     TimePanel.prototype.displayTimeline = async function () {
         try {
             await this.getTimes();
-            await this.createTimeLine();
+            this.createTimeLine();
             this.createTimeLineItems();
         } catch (err) {
             console.error(err);
@@ -161,22 +161,21 @@ if (!window.TimePanel) { // avoid multi-declaration
         return this.inDashlet ? this.taskman.$planSelect.val() : this.getRecordID();
     };
     TimePanel.prototype.getCurrentUserTimezoneOffset = function () {
-        return new Promise(function(resolve, reject) {
-            viewTools.api.callCustomApi({
-                module: 'WorkSchedules',
-                action: 'getCurrentUserTimezoneOffset',
-                async: true,
-                callback: function (offset) {
-                    if(offset) {
-                        resolve(offset);
-                    } else {
-                        reject();
-                    }
-                }
-            });
-        }.bind(this));
+        var offset = 0;
+        viewTools.api.callCustomApi({
+            module: 'WorkSchedules',
+            action: 'getCurrentUserTimezoneOffset',
+            async: false,
+            callback: function (data) {
+                if(typeof data !== 'undefined') {
+                    offset = data;
+                } 
+            }.bind(this)
+        });
+
+        return offset;
     };
-    TimePanel.prototype.getCurrentPlanData = async function () {
+    TimePanel.prototype.getCurrentPlanData = function () {
         var start, end, plan, datesFormatted;
 
         if (this.inDashlet) {
@@ -185,10 +184,9 @@ if (!window.TimePanel) { // avoid multi-declaration
             }.bind(this)).pop();
             start = fromDbFormat(plan.date_start);
             end = fromDbFormat(plan.date_end);
-            await this.getCurrentUserTimezoneOffset().then((offset) => {
-                start.setMinutes(start.getMinutes() + offset);
-                end.setMinutes(end.getMinutes() + offset);
-            });
+            var offset = this.getCurrentUserTimezoneOffset();
+            start.setMinutes(start.getMinutes() + offset);
+            end.setMinutes(end.getMinutes() + offset);
         } else {
             start = this.formatToDBDateTime(getDateObject($('#date_start').val()));
             end = this.formatToDBDateTime(getDateObject($('#date_end').val()));
@@ -229,14 +227,14 @@ if (!window.TimePanel) { // avoid multi-declaration
         })
         this.currentTimes = result.items
     };
-    TimePanel.prototype.createTimeLine = async function () {
-        var p = await this.getCurrentPlanData();
+    TimePanel.prototype.createTimeLine = function () {
+        var p = this.getCurrentPlanData();
         var t = this.timeline;
 
         t.start = fromDbFormat(p.date_start);
         t.end = fromDbFormat(p.date_end);
         t.minutes = (+t.end - +t.start) / 1000 / 60;
-        t.offset = await this.getCurrentUserTimezoneOffset();
+        t.offset = this.getCurrentUserTimezoneOffset();
 
         this.root.find('tr>td.TimePanelLeft').html(toSugarTime(t.start));
         this.root.find('tr>td.TimePanelMiddle').html('&nbsp;');
@@ -254,14 +252,14 @@ if (!window.TimePanel) { // avoid multi-declaration
         this.currentTimes.forEach(function (i) {
             var start = fromDbFormat(i.date_start);
             var end = fromDbFormat(i.date_end);
+            start.setMinutes(start.getMinutes() + timeline.offset);
+            end.setMinutes(end.getMinutes() + timeline.offset);
             var minutes = (+end - +start) / 1000 / 60;
             /* MintHCM #93842 START */
             var dislpayed_minutes = minutes % 60 < 10 ? '0' + minutes % 60 : minutes % 60;
             /* MintHCM #93842 END */
             var pos = (+start - +timeline.start) / 1000 / 60;
-            var left = (pos + timeline.offset * -1) * +div.toFixed(2);
-            start.setMinutes(start.getMinutes() + this.timeline.offset);
-            end.setMinutes(end.getMinutes() + this.timeline.offset);
+            var left = (pos) * +div.toFixed(2);
             if (!i.$el) {
                 var css_classes = this.getTimeCellCssClasses(i);
                 /* MintHCM #93842 START */
