@@ -4150,6 +4150,7 @@ $app_list_strings['status_list'] = array(
     'Rejected' => 'Rejected',
     'Scored' => 'Task Scored',
     'Scored2' => 'After Preliminary Meeting',
+    'ToBeVerifiedInOtherRecruitments' => 'To Be Verified In Other Recruitments',
 );
 $app_list_strings['status_list_coloredenum'] = array(
     'Acceptance' => 'yellow',
@@ -4182,6 +4183,7 @@ $app_list_strings['project_status_list_coloredenum'] = array(
     'open' => 'green',
     'close' => 'grey',
 );
+
 
 $app_list_strings['reason_for_rejection_list'] = array(
     '' => '',
@@ -4459,6 +4461,7 @@ $app_list_strings['dom_imaptype_options'] = array(
     'exchange_online' => 'Exchange Online',
     'other' => 'Other',
 );
+
 
 $app_strings['LBL_USERNAME'] = 'Username';
 $app_strings['LBL_PASSWORD'] = 'Password';
@@ -4870,8 +4873,8 @@ $app_list_strings['contract_type_list'] = array(
 );
 
 $app_strings['LBL_DASHBOARD'] = 'Dashboard';
-$app_strings['LNK_ACCEPT'] = 'Accept';
 
+$app_strings['LBL_RN_108842_SETOAUTH2MAILINGCONFIGURATION'] = 'Configure oauth2 mailing';
 $app_list_strings['source_list'] = array(
     '' => '',
     'Base' => 'Database of Candidates',
