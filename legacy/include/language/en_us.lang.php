@@ -2314,6 +2314,9 @@ $app_strings = array(
     'LBL_BAD_REQUEST' => 'Bad request',
     'LBL_NO_INTERNET_CONNECTION' => 'No Internet Connection!',
     //MOBILE END
+    'LBL_ADVANCED_SEARCH_BUTTON' => 'Advanced Search',
+    'LBL_ASSIGNED_TO_MODULE' => 'Assigned to (module)',
+    'LBL_ASSIGNED_TO_RECORD' => 'Assigned to (record)',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
