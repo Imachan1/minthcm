@@ -22,6 +22,9 @@ $(document).ready(function () {
             selectGroup($(this).attr('value'));
         }
     });
+    $('#sharedCalUsersApplyBtn').on('click', function () {
+        unselectGroup();
+    });
 });
 
 function showCreateGroupModal() {
@@ -84,6 +87,34 @@ function deleteGroup(group_name) {
         dataPOST: {
             group_name: group_name,
         },
+        callback: function (call_constroller_data) {
+            if (
+                call_constroller_data == false ||
+                call_constroller_data == null
+            ) {
+                console.error(call_constroller_data);
+                viewTools.GUI.statusBox.showStatus(
+                    SUGAR.language.get("app_strings", "LBL_ERROR"),
+                    "error",
+                    3000
+                );
+            } else {
+                location.reload();
+            }
+        },
+    });
+}
+
+function unselectGroup(group_name) {
+    viewTools.GUI.statusBox.showStatus(
+        SUGAR.language.get("app_strings", "LBL_SAVING"),
+        "info"
+    );
+    viewTools.api.callController({
+        module: "Calendar",
+        action: "unselectGroup",
+        dataType: "json",
+        async: false,
         callback: function (call_constroller_data) {
             if (
                 call_constroller_data == false ||

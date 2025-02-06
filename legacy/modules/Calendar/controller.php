@@ -380,4 +380,10 @@ class CalendarController extends SugarController {
       echo true;
    }
 
+   protected function action_unselectGroup() {
+      global $current_user;
+      $current_user->setPreference('shared_ids_last_group', '');
+      echo true;
+   }
+
 }

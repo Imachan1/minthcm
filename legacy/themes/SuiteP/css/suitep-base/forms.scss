@@ -872,25 +872,25 @@ fieldset[disabled] .btn-primary.active {
 .btn-primary {
   background-color: $primary-btn-bg;
   color: $primary-btn-color;
-  border: none;
+  border: 1px solid $primary-btn-bg;
 }
 
 .btn-primary:hover {
   background-color: $primary-btn-bg-hover;
   color: $primary-btn-color;
-  border: none;
+  border: 1px solid $primary-btn-bg-hover;
 }
 
 .btn-primary:active {
   background-color: $primary-btn-bg-hover;
   color: $primary-btn-color;
-  border: none;
+  border: 1px solid $primary-btn-bg-hover;
 }
 
 .btn-primary:focus {
   background-color: $primary-btn-bg-hover;
   color: $primary-btn-color;
-  border: none;
+  border: 1px solid $primary-btn-bg-hover;
 }
 
 .btn-info {
