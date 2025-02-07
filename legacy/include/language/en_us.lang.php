@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -4891,3 +4890,4 @@ $app_list_strings['source_list'] = array(
     'other' => 'Other',
 );
 $app_strings['LBL_ACCEPT_INLINE'] = "Accept";
+$app_strings['LBL_NOTIFICATIONS_NONE'] = 'None';
