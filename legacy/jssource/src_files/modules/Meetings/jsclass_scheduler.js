@@ -544,7 +544,9 @@ SugarWidgetScheduler.sortByType = function ( a, b ) {
  */
 
 SugarWidgetScheduler.createDialog = function ( elementId, body, caption, width, theme ) {
-
+    if (document.activeElement) {
+        document.activeElement.blur();
+    }
    caption = caption.replace( SUGAR.language.get( 'app_strings', 'LBL_ADDITIONAL_DETAILS' ), '' );
 
    $( ".ui-dialog" ).find( ".open" ).dialog( "close" );
@@ -882,6 +884,7 @@ SugarWidgetSchedulerAttendees.prototype.display = function () {
    for ( var i = 0; i < GLOBAL_REGISTRY.focus.users_arr.length; i++ ) {
       var row = new SugarWidgetScheduleRow( this.timeslots );
       row.focus_bean = GLOBAL_REGISTRY.focus.users_arr[i];
+      row.data_position = i;
       GLOBAL_REGISTRY.focus.users_arr_hash[ GLOBAL_REGISTRY.focus.users_arr[i]['fields']['id']] = GLOBAL_REGISTRY.focus.users_arr[i];
       // MintHCM #59793 Start
       if ( GLOBAL_REGISTRY.focus.users_arr[i].module === 'Resources' ) {
@@ -991,6 +994,7 @@ SugarWidgetScheduleRow.prototype.display = function () {
          /* MintHCM #122808 END */
       }
       if (tr) {
+        $(tr).attr('data-position', this.data_position);
         this.thetable.appendChild( tr );
         tr.className = "schedulerAttendeeRow";
         $( tr ).attr( 'data-id', this.focus_bean.fields.id );
@@ -1037,6 +1041,19 @@ SugarWidgetScheduleRow.prototype.display = function () {
         //}
         this.element = tr;
         this.element_index = this.thetable.rows.length - 1;
+
+        $('#'+this.thetableid).each(function() {
+            let collection = Array.from(this.querySelectorAll('.schedulerAttendeeRow'))
+            .sort(function(x,y) {
+                let posX = +x.dataset.position;
+                let posY = +y.dataset.position;
+                return posX > posY ? 1 : -1;
+            });
+
+            collection.forEach(element => {
+                this.querySelector('tbody').append(element);
+            })
+        });
 
         /* MintHCM #122808 START */
         if(GLOBAL_REGISTRY['users_rows_ids'] != undefined && !(this.focus_bean.fields.id in GLOBAL_REGISTRY['users_rows_ids'])){
