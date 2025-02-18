@@ -22,8 +22,8 @@ export const useAlertsStore = defineStore('alerts', () => {
     const alerts = ref<Alert[]>([])
     const isFetching = ref(false)
     const isClosingAll = ref(false)
-    const moreResults = ref(false)
     const favico = new Favico()
+    const moreResults = ref(false)
 
     function init() {
         fetchAlerts()

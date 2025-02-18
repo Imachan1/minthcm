@@ -89,7 +89,7 @@ class CalendarDisplay {
     * @param string $dashlet_id for dashlet mode
     * @param array $views
     */
-   public function __construct(Calendar $cal, $dashlet_id = "", $views = array()) {
+    public function __construct(Calendar $cal, $dashlet_id = "", $views = array()) {
       global $sugar_config;
       if ( isset($sugar_config['CalendarColors']) && is_array($sugar_config['CalendarColors']) ) {
          $this->activity_colors = array_merge($this->activity_colors, $sugar_config['CalendarColors']);
@@ -291,38 +291,38 @@ class CalendarDisplay {
       $TIME_MERIDIEM = "";
       $time_pref = $timedate->get_time_format();
       $start_m = "";
-      if ( strpos($time_pref, 'a') || strpos($time_pref, 'A') ) {
-         $num_of_hours = 12;
-         $start_at = 1;
-         $start_m = 'am';
-         if ( $d_start_hour == 0 ) {
+      if (strpos($time_pref, 'a') || strpos($time_pref, 'A')) {
+        $num_of_hours = 12;
+        $start_at = 1;
+        $start_m = 'am';
+        if ($d_start_hour == 0) {
             $d_start_hour = 12;
             $start_m = 'am';
          } else
          if ( $d_start_hour == 12 ) {
             $start_m = 'pm';
-         }
-         if ( $d_start_hour > 12 ) {
+        }
+        if ($d_start_hour > 12) {
             $d_start_hour = $d_start_hour - 12;
             $start_m = 'pm';
-         }
-         $end_m = 'am';
-         if ( $d_end_hour == 0 ) {
+        }
+        $end_m = 'am';
+        if ($d_end_hour == 0) {
             $d_end_hour = 12;
             $end_m = 'am';
          } else
          if ( $d_end_hour == 12 ) {
             $end_m = 'pm';
-         }
+        }
 
-         if ( $d_end_hour > 12 ) {
+        if ($d_end_hour > 12) {
             $d_end_hour = $d_end_hour - 12;
             $end_m = 'pm';
-         }
-         if ( strpos($time_pref, 'A') ) {
+        }
+        if (strpos($time_pref, 'A')) {
             $start_m = strtoupper($start_m);
             $end_m = strtoupper($end_m);
-         }
+        }
          $options = strpos($time_pref, 'a') ? $app_list_strings['dom_meridiem_lowercase'] : $app_list_strings['dom_meridiem_uppercase'];
          $TIME_START_MERIDIEM = get_select_options_with_id($options, $start_m);
          $TIME_END_MERIDIEM = get_select_options_with_id($options, $end_m);
@@ -422,7 +422,7 @@ class CalendarDisplay {
                   break;
             }
          }
-      } else if ( $view == 'agendaDay' ) {
+      } elseif ( $view == 'agendaDay' ) {
          $str .= $date_time->get_day_of_week() . " ";
 
          for ( $i = 0; $i < strlen($dateFormat['date']); $i++ ) {
@@ -438,7 +438,7 @@ class CalendarDisplay {
                   break;
             }
          }
-      } else if ( $view == 'mobile' ) {
+      } elseif ( $view == 'mobile' ) {
          $str .= $date_time->get_day_of_week() . " ";
 
          for ( $i = 0; $i < strlen($dateFormat['date']); $i++ ) {
@@ -454,7 +454,7 @@ class CalendarDisplay {
                   break;
             }
          }
-      } else if ( $view == 'year' ) {
+      } elseif ( $view == 'year' ) {
          $str .= $date_time->year;
       } else {
          //could be a custom view.
@@ -700,7 +700,7 @@ class CalendarDisplay {
       $ss->assign("view", $view);
       $tpl = get_custom_file_if_exists("modules/Calendar/tpls/group_create_modal.tpl");
       echo $ss->fetch($tpl);
-   }
+}
 
 }
 

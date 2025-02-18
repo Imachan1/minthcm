@@ -1,1 +1,5 @@
+<<<<<<<< HEAD:assets/date.list.8d68495a.js
 import{l as o,e as d,ad as s,n as i,q as m,t as l}from"./index.937bfef2.js";const c=o({__name:"date.list",props:{defs:{},data:{}},setup(n){const a=n,r=d(()=>{const t=a.data.bean[a.defs.name].trim();if(!t)return"";let e=s.fromFormat(t,"dd.MM.yyyy");return e.isValid||(e=s.fromSQL(t)),e.isValid?e.toFormat("dd.MM.yyyy"):t});return(t,e)=>(i(),m("span",null,l(r.value),1))}});export{c as default};
+========
+import{l as o,e as d,ad as s,n as i,q as m,t as l}from"./index.94e4d627.js";const c=o({__name:"date.list",props:{defs:{},data:{}},setup(n){const a=n,r=d(()=>{const t=a.data.bean[a.defs.name].trim();if(!t)return"";let e=s.fromFormat(t,"dd.MM.yyyy");return e.isValid||(e=s.fromSQL(t)),e.isValid?e.toFormat("dd.MM.yyyy"):t});return(t,e)=>(i(),m("span",null,l(r.value),1))}});export{c as default};
+>>>>>>>> master:assets/date.list.0715e2f2.js
