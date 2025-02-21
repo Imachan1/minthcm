@@ -6,6 +6,8 @@ if (! defined('sugarEntry') || ! sugarEntry) {
 
 class MeetingsListViewSubPanel extends ListViewSubPanel
 {
+    //FIXME CR - tak samo jak dla rozmów, wywołaj parenta
+    //Zrób też format kodu jako że to nasza klasa
     public function process_dynamic_listview_rows($data, $parent_data, $smartyTemplateSection, $html_varName, $subpanel_def)
     {
         global $subpanel_item_count;

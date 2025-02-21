@@ -6,6 +6,18 @@ if (! defined('sugarEntry') || ! sugarEntry) {
 
 class CallsListViewSubPanel extends ListViewSubPanel
 {
+    //FIXME CR - zamiast kopiować cały kod możesz po prostu wywołać metodę parenta i za wywołaniem dodać kod od planów pracy, bo w kodzie parenta nic nie zmieniałeś.
+    //Zrób też format kodu jako że to nasza klasa
+    /*
+            parent::process_dynamic_listview_rows()
+
+            if($subpanel_def->bean_name == 'User') {
+                if(!empty($widget_contents)) {
+                    $parent_id = isset($subpanel_def->parent_bean->id) ? $subpanel_def->parent_bean->id : $_REQUEST['record'];
+                    $widget_contents = $this->getWorkScheduleTypes($widget_contents, $parent_id);
+                }
+            }
+    */
     public function process_dynamic_listview_rows($data, $parent_data, $smartyTemplateSection, $html_varName, $subpanel_def)
     {
         global $subpanel_item_count;
