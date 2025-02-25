@@ -45,3 +45,14 @@ async function setNewsStatus(status) {
     }
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.detail-view-row-item .label').forEach(label => {
+        if (label.innerText.trim().includes("Photo")) {
+            label.style.display = 'none';
+        }
+        if (label.innerText.trim().includes("Content of News")) {
+            label.style.display = 'none';
+        }
+    });
+});
+

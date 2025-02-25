@@ -220,13 +220,13 @@ $dictionary['News'] = array(
             'massupdate' => false,
             'comments' => '',
             'help' => '',
-            'importable' => true,//изменили
+            'importable' => true,
             'reportable' => true,
             'len' => 255,
             'dbType' => 'varchar',
             'width' => '250',
             'height' => '250',
-            'studio' => 'visible',  // Показывать в студии для редактирования
+            'studio' => 'visible',
         ),
     ),
     'relationships' => array(
