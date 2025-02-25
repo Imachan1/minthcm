@@ -44,3 +44,4 @@ async function setNewsStatus(status) {
         viewTools.GUI.statusBox.showStatus(viewTools.language.get('News', 'LBL_' + status.toUpperCase() + '_ERROR'), 'error', 2000);
     }
 }
+
