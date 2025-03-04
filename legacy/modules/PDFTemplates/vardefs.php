@@ -79,6 +79,27 @@
  * "Powered by SugarCRM".
  * ****************************************************************************** */
 global $sugar_config;
+
+
+function transformWithLeadingSlash($url)
+{
+    if (empty($url)) {
+        return '';
+    }
+    $parsed_url = parse_url($url);
+    if (!isset($parsed_url['path'])) {
+        $parsed_url['path'] = '/';
+    }
+    $url = $parsed_url['scheme'] . "://" . $parsed_url['host'] . $parsed_url['path'];
+    if (!empty($url['query'])) {
+        $url .= '?' . $parsed_url['query'];
+    }
+    if (!empty($url['fragment'])) {
+        $url .= '#' . $parsed_url['fragment'];
+    }
+    return $url;
+}
+
 $dictionary['PDFTemplates'] = array(
    'table' => 'pdftemplates',
    'audited' => false,
@@ -199,7 +220,7 @@ $dictionary['PDFTemplates'] = array(
          'vname' => 'LBL_PREVIEW',
          'type' => 'iframe',
          'massupdate' => '0',
-         'default' => $sugar_config['site_url'].'legacy/modules/PDFTemplates/templates/template-{id}.html',
+         'default' => transformWithLeadingSlash($sugar_config['site_url']) . '/legacy/modules/PDFTemplates/templates/template-{id}.html',
          'comments' => NULL,
          'help' => NULL,
          'importable' => 'true',
