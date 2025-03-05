@@ -212,7 +212,9 @@
 	</div><!-- /.modal-dialog -->
 </div>
 <style>
+{literal}
 div#subpanel_settings_user_list ul.list-group li.list-group-item {
     cursor: pointer;
 }
+{/literal}
 </style>
