@@ -39,10 +39,7 @@ function showCreateGroupModal() {
 }
 
 function saveGroup(group_name) {
-    viewTools.GUI.statusBox.showStatus(
-        SUGAR.language.get("app_strings", "LBL_SAVING"),
-        "info"
-    );
+    showLoadingScreen(viewTools.language.get("app_strings", "LBL_SAVING"), viewTools.language.get("app_strings", "LBL_LOADING"));
     var user_ids = getUserIds();
     viewTools.api.callController({
         module: "Calendar",
@@ -59,6 +56,7 @@ function saveGroup(group_name) {
                 call_constroller_data == null
             ) {
                 console.error(call_constroller_data);
+                closeLoadingScreen();
                 viewTools.GUI.statusBox.showStatus(
                     SUGAR.language.get("app_strings", "LBL_ERROR"),
                     "error",
@@ -72,10 +70,7 @@ function saveGroup(group_name) {
 }
 
 function deleteGroup(group_name) {
-    viewTools.GUI.statusBox.showStatus(
-        SUGAR.language.get("app_strings", "LBL_SAVING"),
-        "info"
-    );
+    showLoadingScreen(viewTools.language.get("app_strings", "LBL_SAVING"), viewTools.language.get("app_strings", "LBL_LOADING"));
     viewTools.api.callController({
         module: "Calendar",
         action: "deleteGroup",
@@ -90,6 +85,7 @@ function deleteGroup(group_name) {
                 call_constroller_data == null
             ) {
                 console.error(call_constroller_data);
+                closeLoadingScreen();
                 viewTools.GUI.statusBox.showStatus(
                     SUGAR.language.get("app_strings", "LBL_ERROR"),
                     "error",
@@ -103,6 +99,7 @@ function deleteGroup(group_name) {
 }
 
 function selectGroup(group_name) {
+    showLoadingScreen(viewTools.language.get("app_strings", "LBL_SELECT_BUTTON_LABEL"), viewTools.language.get("app_strings", "LBL_LOADING"));
     viewTools.api.callController({
         module: "Calendar",
         action: "selectGroup",
@@ -117,6 +114,7 @@ function selectGroup(group_name) {
                 call_constroller_data == null
             ) {
                 console.error(call_constroller_data);
+                closeLoadingScreen();
                 viewTools.GUI.statusBox.showStatus(
                     SUGAR.language.get("app_strings", "LBL_ERROR"),
                     "error",
