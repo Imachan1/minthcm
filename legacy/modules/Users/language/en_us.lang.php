@@ -673,5 +673,9 @@ $mod_strings = array(
     'LNK_LIST_INBOUND_EMAIL_ACCOUNTS' => 'Inbound Email Accounts',
     'LNK_EXTERNAL_OAUTH_CONNECTIONS' => 'External OAuth Connections',
     'LBL_BIRTHDATE' => 'Birthdate',
+    'LBL_MANAGE_NOTIFICATIONS' => 'Manage Notifications',
+    'LBL_ENABLE_NOTIFICATIONS' => 'Enable Notifications',
+    'LBL_ENABLE_NOTIFICATION_TYPE' => 'Notification Type',
+    'LBL_ENABLE_NOTIFICATION' => 'Notification Enabled',
 
 ); // END STRINGS DEFS
