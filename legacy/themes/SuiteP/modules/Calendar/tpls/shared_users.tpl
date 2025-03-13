@@ -211,10 +211,32 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div>
-<style>
 {literal}
-div#subpanel_settings_user_list ul.list-group li.list-group-item {
-    cursor: pointer;
+<style type="text/css">
+.delete-users-group, .update-users-group {
+	float: right; 
+	margin-left: 10px; 
 }
-{/literal}
+
+.users-group-selected {
+	color: white; 
+	background-color: rgb(0, 153, 118);
+
+	.delete-users-group, .update-users-group {
+		color: white;
+	}
+}
+
+.users-group-select {
+	cursor: pointer;
+	&:hover {
+		background-color: rgb(99, 194, 154);
+		color: white;
+
+		.delete-users-group, .update-users-group {
+			color: white;
+		}
+	}
+}
 </style>
+{/literal}
