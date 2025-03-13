@@ -164,13 +164,13 @@
 													{if $name eq $shared_ids_last_group}
 													<li class="list-group-item d-flex justify-content-between align-items-center users-group-select users-group-selected" value="{$name}">
 													{$name}
-														<a href="javascript:void(0)" class="delete-users-group" value="{$name}"><span class="suitepicon suitepicon-action-delete"></span></a>
-														<a href="javascript:void(0)" class="update-users-group" value="{$name}">AKTUALIZUJ</a>
+														<a href="javascript:void(0)" class="delete-users-group" style="float: right; margin-left: 10px; color: white;" value="{$name}"><span class="suitepicon suitepicon-action-delete"></span></a>
+														<a href="javascript:void(0)" class="update-users-group" style="float: right; margin-left: 10px; color: white;" value="{$name}">{$APP.LBL_UPDATE}</a>
 													{else}
 													<li class="list-group-item d-flex justify-content-between align-items-center users-group-select" value="{$name}">
 													{$name}
-														<a href="javascript:void(0)" class="delete-users-group" value="{$name}"><span class="suitepicon suitepicon-action-delete"></span></a>
-														<a href="javascript:void(0)" class="update-users-group" value="{$name}">AKTUALIZUJ</a>
+														<a href="javascript:void(0)" class="delete-users-group" style="float: right; margin-left: 10px" value="{$name}"><span class="suitepicon suitepicon-action-delete"></span></a>
+														<a href="javascript:void(0)" class="update-users-group" style="float: right; margin-left: 10px" value="{$name}">{$APP.LBL_UPDATE}</a>
 													{/if}
 													</li>
 												{/foreach}
