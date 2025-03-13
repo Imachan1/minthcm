@@ -71,7 +71,7 @@ class DemoDataDumpCommand extends Command
             mkdir(self::$demoDataDestinationFilesPath, 0777, true);
         }
         foreach($config['files'] as $file_config){
-            $sql = "SELECT CONCAT({$file_config['column']}, '{$file_config['postfix']}') AS file_name FROM {$file_config['table']}";
+            $sql = "SELECT CONCAT({$file_config['column']}, '{$file_config['postfix']}') AS file_name FROM {$file_config['table']} WHERE deleted=0";
             $result = $this->mysql_connection->query($sql);
             if (!$result) {
                 $this->io->error("SQL error \n {$this->mysql_connection->error}");
@@ -146,7 +146,7 @@ class DemoDataDumpCommand extends Command
         if (!file_exists(self::$demoDataDestinationPath)) {
             mkdir(self::$demoDataDestinationPath, 0777, true);
         }
-        if(!empty($sql))
+        if(!empty($sqls))
         {
             $file = fopen(self::$demoDataDestinationPath . "/{$table}.sql", "w");
             foreach ($sqls as $sql) {
