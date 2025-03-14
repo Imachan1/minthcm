@@ -211,7 +211,6 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div>
-
 {literal}
 <style type="text/css">
 .delete-users-group, .update-users-group {
