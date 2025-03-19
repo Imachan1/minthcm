@@ -46,13 +46,21 @@ require_once('include/MVC/View/views/view.detail.php');
 #[\AllowDynamicProperties]
 class NewsViewDetail extends ViewDetail {
 
-   public function display() {
+    public function display()
+    {
       $this->setDecodeHTML();
       parent::display();
    }
 
-   public function setDecodeHTML() {
-      $this->bean->content_of_announcement = html_entity_decode('<span data-open-links-in-new=true>'.str_replace('&nbsp;', ' ', $this->bean->content_of_announcement).'</span>');
+    public function setDecodeHTML()
+    {
+        $photo_html = '';
+        if (!empty($this->bean->photo)) {
+            $photo_html = '<div class="news-photo">
+                <img src="index.php?entryPoint=download&type=News&id='.$this->bean->id.'_photo&photo='.$this->bean->photo.'" 
+                alt="'.$this->bean->photo.'" />
+            </div>';
  }
-
+        $this->bean->content_of_announcement = html_entity_decode($photo_html . str_replace('&nbsp;', ' ', $this->bean->content_of_announcement));
+}
 }

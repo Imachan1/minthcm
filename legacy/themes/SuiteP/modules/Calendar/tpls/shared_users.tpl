@@ -158,19 +158,19 @@
                                             </div>
                                             <hr>
                                             <div class="col-12">
-                                            <ul class="list-group" style="max-height: 128px; overflow-y: scroll;">
+                                            <ul class="list-group" style="max-height: 128px; overflow-y: auto;">
 											{foreach from=$shared_ids_groups key=arrayKey  item=group_name}
 												{foreach from=$group_name key=name item=ids}
 													{if $name eq $shared_ids_last_group}
 													<li class="list-group-item d-flex justify-content-between align-items-center users-group-select" value="{$name}" style="color: white; background-color: rgb(0, 153, 118);">
 													{$name}
 														<a href="javascript:void(0)" class="delete-users-group" style="float: right; margin-left: 10px; color: white;" value="{$name}"><span class="suitepicon suitepicon-action-delete"></span></a>
-														<a href="javascript:void(0)" class="update-users-group" style="float: right; margin-left: 10px; color: white;" value="{$name}">AKTUALIZUJ</a>
+														<a href="javascript:void(0)" class="update-users-group" style="float: right; margin-left: 10px; color: white;" value="{$name}">{$APP.LBL_UPDATE}</a>
 													{else}
 													<li class="list-group-item d-flex justify-content-between align-items-center users-group-select" value="{$name}">
 													{$name}
 														<a href="javascript:void(0)" class="delete-users-group" style="float: right; margin-left: 10px" value="{$name}"><span class="suitepicon suitepicon-action-delete"></span></a>
-														<a href="javascript:void(0)" class="update-users-group" style="float: right; margin-left: 10px" value="{$name}">AKTUALIZUJ</a>
+														<a href="javascript:void(0)" class="update-users-group" style="float: right; margin-left: 10px" value="{$name}">{$APP.LBL_UPDATE}</a>
 													{/if}
 													</li>
 												{/foreach}
@@ -211,3 +211,32 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div>
+{literal}
+<style type="text/css">
+.delete-users-group, .update-users-group {
+	float: right; 
+	margin-left: 10px; 
+}
+
+.users-group-selected {
+	color: white; 
+	background-color: rgb(0, 153, 118);
+
+	.delete-users-group, .update-users-group {
+		color: white;
+	}
+}
+
+.users-group-select {
+	cursor: pointer;
+	&:hover {
+		background-color: rgb(99, 194, 154);
+		color: white;
+
+		.delete-users-group, .update-users-group {
+			color: white;
+		}
+	}
+}
+</style>
+{/literal}

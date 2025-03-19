@@ -102,7 +102,7 @@ class Delegations extends Delegations_sugar
         $related_costs   = $this->costs->getBeans();
         foreach ($related_costs as $cost) {
             if ($cost->currency_id != '-99') {
-                $this->costs_sum += $cost->cost_amount;
+                $this->costs_sum += (float) $cost->cost_amount;
             }
         }
     }
@@ -119,8 +119,8 @@ class Delegations extends Delegations_sugar
     public function convertCurrencyFields()
     {
         $exchange_rate                         = $this->getExchangeRate();
-        $this->regiments_usdollar              = $this->regiments * $exchange_rate;
-        $this->accommodation_lump_sum_usdollar = (float) $this->accommodation_lump_sum * $exchange_rate;
+        $this->regiments_usdollar              = $this->getAmount('regiments') * $exchange_rate;
+        $this->accommodation_lump_sum_usdollar = $this->getAmount('accommodation_lump_sum') * $exchange_rate;
         $this->total_expenses_usdollar         = $this->total_expenses * $exchange_rate;
         $this->obtained_sum_usdollar           = $this->obtained_sum * $$exchange_rate;
         $this->payoff_sum_usdollar             = $this->payoff_sum * $exchange_rate;
@@ -360,8 +360,7 @@ class Delegations extends Delegations_sugar
 
     public function countTotalExpenses()
     {
-        $this->total_expenses = $this->other + $this->accommodation_lump_sum + $this->total_accommodation + $this->regiments
-            + $this->transport_cost;
+        $this->total_expenses = $this->getAmount('other') + $this->getAmount('accommodation_lump_sum') + $this->getAmount('total_accommodation') + $this->getAmount('regiments') + $this->getAmount('transport_cost');
     }
 
     public function countPayoffSum()
@@ -378,5 +377,9 @@ class Delegations extends Delegations_sugar
         $this->obtained_sum = (float) $this->obtained_sum;
         $this->return_sum = ($this->total_expenses - $this->obtained_sum) < 0 ? ($this->obtained_sum - $this->total_expenses)
                 : 0;
+    }
+
+    private function getAmount($field_name) : float{
+        return (float) $this->$field_name ?? 0;
     }
 }
