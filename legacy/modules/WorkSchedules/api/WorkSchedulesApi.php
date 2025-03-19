@@ -186,5 +186,16 @@ class WorkSchedulesApi
         }   
         return $employee->getActiveWorkplaces(null, $date_start, $date_end);
     }
+
+    public function getCurrentUserTimezoneOffset()
+    {
+        global $timedate;
+        $user_timezone = new DateTimeZone($timedate->userTimezone());
+        $user_offset = $user_timezone->getOffset(new DateTime());
+        if($user_offset == 0) {
+            return $user_offset;
+        }
+        return $user_offset/60;
+    }
 }
 

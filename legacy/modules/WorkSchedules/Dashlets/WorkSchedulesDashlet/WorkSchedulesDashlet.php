@@ -37,24 +37,24 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  * ****************************************************************************** */
-require_once ('include/Dashlets/DashletGeneric.php');
-require_once ('modules/WorkSchedules/WorkSchedules.php');
+require_once 'include/Dashlets/DashletGeneric.php';
+require_once 'modules/WorkSchedules/WorkSchedules.php';
+require_once 'modules/WorkSchedules/WorkSchedulesListViewSmarty.php';
 
 #[\AllowDynamicProperties]
 class WorkSchedulesDashlet extends DashletGeneric {
 
-   public function __construct($id, $def = null) {
-      require ('modules/WorkSchedules/metadata/dashletviewdefs.php');
-
       parent::__construct($id, $def);
 
-      if ( empty($def['title']) )
+        if (empty($def['title'])) {
          $this->title = translate('LBL_HOMEPAGE_TITLE', 'WorkSchedules');
+        }
 
       $this->searchFields = $dashletData['WorkSchedulesDashlet']['searchFields'];
       $this->columns = $dashletData['WorkSchedulesDashlet']['columns'];
 
       $this->seedBean = BeanFactory::getBean('WorkSchedules');
+        $this->lvs = new WorkSchedulesListViewSmarty();
    }
 
 }

@@ -456,7 +456,14 @@ SugarWidgetScheduler.update_time = function () {
    GLOBAL_REGISTRY.focus.fields.duration_hours = document.forms[form_name].duration_hours.value;
    GLOBAL_REGISTRY.focus.fields.duration_minutes = document.forms[form_name].duration_minutes.value;
    GLOBAL_REGISTRY.focus.fields.datetime_start = SugarDateTime.mysql2jsDateTime( GLOBAL_REGISTRY.focus.fields.date_start, GLOBAL_REGISTRY.focus.fields.time_start );
-
+    /* MintHCM #122808 START */
+    if(GLOBAL_REGISTRY['users_rows'] != undefined){
+        GLOBAL_REGISTRY['users_rows'] = [];
+    }
+    if(GLOBAL_REGISTRY['users_rows_ids'] != undefined){
+        GLOBAL_REGISTRY['users_rows_ids'] = {};
+    }
+    /* MintHCM #122808 END */
    GLOBAL_REGISTRY.scheduler_attendees_obj.init();
    GLOBAL_REGISTRY.scheduler_attendees_obj.display();
 }
@@ -537,7 +544,9 @@ SugarWidgetScheduler.sortByType = function ( a, b ) {
  */
 
 SugarWidgetScheduler.createDialog = function ( elementId, body, caption, width, theme ) {
-
+    if (document.activeElement) {
+        document.activeElement.blur();
+    }
    caption = caption.replace( SUGAR.language.get( 'app_strings', 'LBL_ADDITIONAL_DETAILS' ), '' );
 
    $( ".ui-dialog" ).find( ".open" ).dialog( "close" );
@@ -787,7 +796,6 @@ SugarWidgetSchedulerAttendees.prototype.load = function ( parentNode ) {
 }
 
 SugarWidgetSchedulerAttendees.prototype.display = function () {
-
    var form_name;
    if ( typeof document.EditView != 'undefined' )
       form_name = "EditView";
@@ -838,6 +846,15 @@ SugarWidgetSchedulerAttendees.prototype.display = function () {
 
    html += '<td>&nbsp;</td>';
    html += '</tr>';
+
+    /* MintHCM #122808 START */
+    if ( typeof (GLOBAL_REGISTRY) == 'undefined' ) {
+        return;
+    }
+
+    GLOBAL_REGISTRY['schedulerTable'] = html;
+    /* MintHCM #122808 START */
+
    html += '</table>';
    if ( this.parentNode.childNodes.length < 1 )
       this.parentNode.innerHTML += '<div class="schedulerDiv">' + html + '</div>';
@@ -846,9 +863,11 @@ SugarWidgetSchedulerAttendees.prototype.display = function () {
 
    var thetable = "schedulerTable";
 
-   if ( typeof (GLOBAL_REGISTRY) == 'undefined' ) {
-      return;
-   }
+    /* MintHCM #122808 START */
+    // if ( typeof (GLOBAL_REGISTRY) == 'undefined' ) {
+    //     return;
+    // }
+    /* MintHCM #122808 END */
 
    //set the current user (as event-coordinator) so that they can be added to invitee list
    //only IF the first removed flag has not been set AND this is a new record
@@ -865,6 +884,7 @@ SugarWidgetSchedulerAttendees.prototype.display = function () {
    for ( var i = 0; i < GLOBAL_REGISTRY.focus.users_arr.length; i++ ) {
       var row = new SugarWidgetScheduleRow( this.timeslots );
       row.focus_bean = GLOBAL_REGISTRY.focus.users_arr[i];
+      row.data_position = i;
       GLOBAL_REGISTRY.focus.users_arr_hash[ GLOBAL_REGISTRY.focus.users_arr[i]['fields']['id']] = GLOBAL_REGISTRY.focus.users_arr[i];
       // MintHCM #59793 Start
       if ( GLOBAL_REGISTRY.focus.users_arr[i].module === 'Resources' ) {
@@ -935,7 +955,6 @@ SugarWidgetScheduleRow.prototype.init = function ( timeslots ) {
 SugarWidgetScheduleRow.prototype.load = function ( thetableid ) {
    this.thetableid = thetableid;
    var self = this;
-
    vcalClient = new SugarVCalClient();
    if ( typeof (GLOBAL_REGISTRY['freebusy_adjusted']) == 'undefined' || typeof (GLOBAL_REGISTRY['freebusy_adjusted'][this.focus_bean.fields.id]) == 'undefined' ) {
       global_request_registry[req_count] = [ this, 'display' ];
@@ -947,20 +966,36 @@ SugarWidgetScheduleRow.prototype.load = function ( thetableid ) {
 }
 
 SugarWidgetScheduleRow.prototype.display = function () {
+    /* MintHCM #122808 START */
+    if(GLOBAL_REGISTRY['users_rows'] == undefined){
+        GLOBAL_REGISTRY['users_rows'] = [];
+    }
+    if(GLOBAL_REGISTRY['users_rows_ids'] == undefined){
+        GLOBAL_REGISTRY['users_rows_ids'] = {};
+    }
+    /* MintHCM #122808 END */
    SUGAR.util.doWhen( "document.getElementById('" + this.thetableid + "') != null", function () {
-      var tr;
+      let tr;
       this.thetable = document.getElementById( this.thetableid );
 
       if ( typeof (this.element) != 'undefined' ) {
          if ( this.element.parentNode != null )
-            this.thetable.deleteRow( this.element.rowIndex );
-
+            /* MintHCM #122808 START */
+            //this.thetable.deleteRow( this.element.rowIndex );
+            /* MintHCM #122808 END */
          tr = document.createElement( 'tr' );
-         this.thetable.appendChild( tr );
+         /* MintHCM #122808 START */
+         //this.thetable.appendChild( tr );
+         /* MintHCM #122808 END */
       } else {
-         tr = this.thetable.insertRow( this.thetable.rows.length );
+        /* MintHCM #122808 START */
+        //tr = this.thetable.insertRow( this.thetable.rows.length );
+         tr = document.createElement( 'tr' );
+         /* MintHCM #122808 END */
       }
       if (tr) {
+        $(tr).attr('data-position', this.data_position);
+        this.thetable.appendChild( tr );
         tr.className = "schedulerAttendeeRow";
         $( tr ).attr( 'data-id', this.focus_bean.fields.id );
         // MintHCM #54195 #59793 Start
@@ -1006,6 +1041,26 @@ SugarWidgetScheduleRow.prototype.display = function () {
         //}
         this.element = tr;
         this.element_index = this.thetable.rows.length - 1;
+
+        $('#'+this.thetableid).each(function() {
+            let collection = Array.from(this.querySelectorAll('.schedulerAttendeeRow'))
+            .sort(function(x,y) {
+                let posX = +x.dataset.position;
+                let posY = +y.dataset.position;
+                return posX > posY ? 1 : -1;
+            });
+
+            collection.forEach(element => {
+                this.querySelector('tbody').append(element);
+            })
+        });
+
+        /* MintHCM #122808 START */
+        if(GLOBAL_REGISTRY['users_rows_ids'] != undefined && !(this.focus_bean.fields.id in GLOBAL_REGISTRY['users_rows_ids'])){
+            GLOBAL_REGISTRY['users_rows_ids'][this.focus_bean.fields.id] = tr.outerHTML;
+            GLOBAL_REGISTRY['users_rows'].push(tr);
+        }
+        /* MintHCM #122808 END */
       }
    }, null, this );
 }
@@ -1023,6 +1078,14 @@ SugarWidgetScheduleRow.deleteRow = function ( bean_id ) {
          GLOBAL_REGISTRY.focus.users_arr.splice( i, 1 );
          //set first remove flag to true for processing in display() function
          GLOBAL_REGISTRY.FIRST_REMOVE = true;
+         /* MintHCM #122808 START */
+         if(GLOBAL_REGISTRY['users_rows_ids'][bean_id] != undefined){
+            if($.inArray(GLOBAL_REGISTRY['users_rows_ids'][bean_id], GLOBAL_REGISTRY['users_rows']) != -1){
+                GLOBAL_REGISTRY['users_rows'].splice($.inArray(GLOBAL_REGISTRY['users_rows_ids'][bean_id], GLOBAL_REGISTRY['users_rows']),1);
+                delete GLOBAL_REGISTRY['users_rows_ids'][bean_id];
+            }
+         }
+         /* MintHCM #122808 END */
          GLOBAL_REGISTRY.container.root_widget.display();
       }
    }
@@ -1087,7 +1150,7 @@ SugarWidgetScheduleRow.prototype.add_freebusy_nodes = function ( tr, attendee ) 
 
    for ( var i = 0; i < this.timeslots.length; i++ ) {
 
-      var td = document.createElement( 'td' );
+      let td = document.createElement( 'td' );
       tr.appendChild( td );
       //var td = tr.insertCell(tr.cells.length);
       td.innerHTML = '&nbsp;';

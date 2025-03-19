@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -2193,7 +2192,7 @@ $app_strings = array(
     'LBL_ESLIST_ADD_FILTER' => 'Add filter',
     'LBL_ESLIST_COLUMNS' => 'Columns',
     'LBL_ESLIST_MY_OBJECTS' => 'Only my objects',
-    'LBL_ESLIST_MASS_ACTION' => 'Mass action',
+    'LBL_ESLIST_MASS_ACTION' => 'Bulk actions',
     'LBL_ESLIST_COLUMNS_MANAGEMENT' => 'Column management',
     'LBL_ESLIST_HIDDEN_COLUMNS' => 'Hidden columns',
     'LBL_ESLIST_VISIBLE_COLUMNS' => 'Visible columns',
@@ -2253,6 +2252,7 @@ $app_strings = array(
     'LBL_ESLIST_DATE' => 'Date',
     'LBL_ESLIST_SELECT_DATE' => 'Select',
     'LBL_ESLIST_OVERWRITE_FILTER_CONFIRM' => 'Filter with that name already exists. Do you want to overwrite it?',
+    'LBL_ESLIST_REFRESH' => 'Refresh',
     //MOBILE START
     'LBL_ID_FF_SELECT' => 'Select',
     'LBL_INSTANCE_ADDRESS' => 'Server Address',
@@ -2321,6 +2321,9 @@ $app_strings = array(
     'LBL_BAD_REQUEST' => 'Bad request',
     'LBL_NO_INTERNET_CONNECTION' => 'No Internet Connection!',
     //MOBILE END
+    'LBL_ADVANCED_SEARCH_BUTTON' => 'Advanced Search',
+    'LBL_ASSIGNED_TO_MODULE' => 'Assigned to (module)',
+    'LBL_ASSIGNED_TO_RECORD' => 'Assigned to (record)',
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
@@ -4157,6 +4160,7 @@ $app_list_strings['status_list'] = array(
     'Rejected' => 'Rejected',
     'Scored' => 'Task Scored',
     'Scored2' => 'After Preliminary Meeting',
+    'ToBeVerifiedInOtherRecruitments' => 'To Be Verified In Other Recruitments',
 );
 $app_list_strings['status_list_coloredenum'] = array(
     'Acceptance' => 'yellow',
@@ -4189,6 +4193,7 @@ $app_list_strings['project_status_list_coloredenum'] = array(
     'open' => 'green',
     'close' => 'grey',
 );
+
 
 $app_list_strings['reason_for_rejection_list'] = array(
     '' => '',
@@ -4466,6 +4471,7 @@ $app_list_strings['dom_imaptype_options'] = array(
     'exchange_online' => 'Exchange Online',
     'other' => 'Other',
 );
+
 
 $app_strings['LBL_USERNAME'] = 'Username';
 $app_strings['LBL_PASSWORD'] = 'Password';
@@ -4825,6 +4831,16 @@ $app_list_strings['campaign_status_dom_colored'] = array(
     'Complete' => $green_status,
 );
 
+$app_list_strings['dom_email_status_colored'] = array(
+    'archived' => $yellow_status,
+    'closed' => $green_status,
+    'draft' => $gray_status,
+    'read' => $green_status,
+    'replied' => $blue_status,
+    'sent' => $green_status,
+    'send_error' => $red_status,
+    'unread' => $yellow_status,
+);
 // ColoredEnum Lists END
 
 $app_list_strings['source_list'] = array(
@@ -4889,3 +4905,21 @@ $app_list_strings['contract_type_list'] = array(
     'contract_of_commission' => 'Contract of commission',
     'other' => 'Other',
 );
+
+$app_strings['LBL_DASHBOARD'] = 'Dashboard';
+
+$app_strings['LBL_RN_108842_SETOAUTH2MAILINGCONFIGURATION'] = 'Configure oauth2 mailing';
+$app_list_strings['source_list'] = array(
+    '' => '',
+    'Base' => 'Database of Candidates',
+    'CareersLibrary' => 'Career\'s Office',
+    'EmployeeCommendation' => 'Employee Recommendation',
+    'Website' => 'Website',
+    'facebook' => 'Facebook',
+    'goldenline' => 'GoldenLine',
+    'linkedin' => 'LinkedIn',
+    'not_applicable' => 'Not Applicable',
+    'other' => 'Other',
+);
+$app_strings['LBL_ACCEPT_INLINE'] = "Accept";
+$app_strings['LBL_NOTIFICATIONS_NONE'] = 'None';

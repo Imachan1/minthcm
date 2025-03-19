@@ -44,6 +44,7 @@
  */
 
 require_once 'include/CalendarActivities/CalendarActivities.php';
+require_once 'modules/Calendar/Calendar.php';
 require_once 'include/DateFunctions/DateFormatter.php';
 require_once 'modules/WorkSchedules/AcceptWorkScheduleValidator.php';
 
@@ -205,11 +206,6 @@ class WorkSchedules extends Basic
         }
 
         $this->addNotification($new_record);
-        if ($parent_result) {
-            if (isset($_REQUEST['return_module']) && ($_REQUEST['return_module'] == 'Calendar' || $_REQUEST['return_module'] == 'Home')) {
-                header("Location: index.php?module={$_REQUEST['return_module']}&action=index");
-            }
-        }
         return $parent_result;
     }
     protected function addNotification($new_record)
@@ -428,4 +424,11 @@ class WorkSchedules extends Basic
     }
     // MintHCM #76236 END
 
+
+    public function canBeAccepted() {
+        if(!$this->checkOwner() && $this->supervisor_acceptance == 'wait' && $this->ACLAccess('edit')) {
+            return true;
+}
+        return false;
+    }
 }

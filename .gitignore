@@ -1,5 +1,6 @@
 .vscode/*
 .vscode/settings.json
+.vscode/launch.json
 .htaccess
 legacy/.htaccess
 legacy/cache/**/*
@@ -61,4 +62,3 @@ legacy/custom/modules/Connectors/metadata/connectors.php
 legacy/lib/Search/ElasticSearch/defaultParams.yml
 legacy/modules/ACLRoles/ACLRoles.js
 legacy/modules/Meetings/jsclass_scheduler.js
-assets/mint_logo_white.*.svg
