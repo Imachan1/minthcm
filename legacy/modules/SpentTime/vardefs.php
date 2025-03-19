@@ -150,7 +150,6 @@ $dictionary['SpentTime'] = array(
         ),
         'remaining_hours' => array(
             'importable' => 'required',
-            'required' => true,
             'name' => 'remaining_hours',
             'vname' => 'LBL_REMAINIG_HOURS',
             'type' => 'float',
