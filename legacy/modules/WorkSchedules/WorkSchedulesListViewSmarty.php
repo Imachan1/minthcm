@@ -42,15 +42,11 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-#[\AllowDynamicProperties]
-class ScheduleGenerateUsersNews
-{
 
 require_once 'include/ListView/ListViewDisplay.php';
 require_once 'include/ListView/ListViewSmarty.php';
-
 require_once 'include/contextMenus/contextMenu.php';
-
+#[\AllowDynamicProperties]
 class WorkSchedulesListViewSmarty extends ListViewSmarty
     {
     /**

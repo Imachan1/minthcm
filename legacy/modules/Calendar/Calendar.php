@@ -358,7 +358,8 @@ class Calendar
                 $this->shared_ids = array($current_user->id);
             }
         }
-
+    }
+    
     /**
      * Calculate timestamp the calendar grid should be started from
      */

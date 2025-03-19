@@ -1,7 +1,7 @@
 <?php
 
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 /* * *******************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,18 +42,21 @@ require_once 'modules/WorkSchedules/WorkSchedules.php';
 require_once 'modules/WorkSchedules/WorkSchedulesListViewSmarty.php';
 
 #[\AllowDynamicProperties]
-class WorkSchedulesDashlet extends DashletGeneric {
-
-      parent::__construct($id, $def);
+class WorkSchedulesDashlet extends DashletGeneric
+{
+    public function __construct($id, $def = null)
+    {
+        require('modules/WorkSchedules/metadata/dashletviewdefs.php');
+        parent::__construct($id, $def);
 
         if (empty($def['title'])) {
-         $this->title = translate('LBL_HOMEPAGE_TITLE', 'WorkSchedules');
+            $this->title = translate('LBL_HOMEPAGE_TITLE', 'WorkSchedules');
         }
 
-      $this->searchFields = $dashletData['WorkSchedulesDashlet']['searchFields'];
-      $this->columns = $dashletData['WorkSchedulesDashlet']['columns'];
+        $this->searchFields = $dashletData['WorkSchedulesDashlet']['searchFields'];
+        $this->columns = $dashletData['WorkSchedulesDashlet']['columns'];
 
-      $this->seedBean = BeanFactory::getBean('WorkSchedules');
+        $this->seedBean = BeanFactory::getBean('WorkSchedules');
         $this->lvs = new WorkSchedulesListViewSmarty();
-   }
+    }
 }
