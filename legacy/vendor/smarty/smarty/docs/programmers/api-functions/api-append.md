@@ -56,5 +56,6 @@ NOTE.PARAMETER.MERGE
 
        
 
-See also [`assign()`](#api.assign) and
+See also [`appendByRef()`](#api.append.by.ref),
+[`assign()`](#api.assign) and
 [`getTemplateVars()`](#api.get.template.vars)

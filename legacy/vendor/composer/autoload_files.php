@@ -33,6 +33,5 @@ return array(
     'ce9671a430e4846b44e1c68c7611f9f5' => $vendorDir . '/mockery/mockery/library/Mockery.php',
     'ec07570ca5a812141189b1fa81503674' => $vendorDir . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
     '38143a9afc50997d55e4815db8489d1c' => $vendorDir . '/rector/rector/bootstrap.php',
-    'c15d4a1253e33e055d05e547c61dcb71' => $vendorDir . '/smarty/smarty/src/functions.php',
     '7a0ad07370fbb64ef7408584da831451' => $baseDir . '/deprecated.php',
 );

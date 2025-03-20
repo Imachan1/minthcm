@@ -1,4 +1,4 @@
-# Custom Tags
+# Custom Functions
 
 Smarty comes with several custom plugin functions that you can use in
 the templates.

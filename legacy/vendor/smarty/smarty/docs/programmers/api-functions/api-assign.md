@@ -78,6 +78,7 @@ To access more complex array assignments see
 [`{foreach}`](#language.function.foreach) and
 [`{section}`](#language.function.section)
 
-See also [`getTemplateVars()`](#api.get.template.vars),
+See also [`assignByRef()`](#api.assign.by.ref),
+[`getTemplateVars()`](#api.get.template.vars),
 [`clearAssign()`](#api.clear.assign), [`append()`](#api.append) and
 [`{assign}`](#language.function.assign)

@@ -31,9 +31,7 @@ PARAMETER.COMPILEID
 
 
     <?php
-
-    use Smarty\Smarty;
-
+    include(SMARTY_DIR.'Smarty.class.php');
     $smarty = new Smarty();
     $smarty->setCaching(true);
 

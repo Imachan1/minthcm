@@ -209,7 +209,8 @@ fetching the data up front?
 You can do this by writing a custom plugin for fetching the content and
 assigning it to a template variable.
 
-`function.load_ticker.php`
+`function.load_ticker.php` - drop file in
+[`$plugins directory`](../programmers/api-variables/variable-plugins-dir.md)
 
 ```php
 

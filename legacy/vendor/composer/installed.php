@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'salesagility/suitecrm',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-develop',
+        'version' => 'dev-develop',
+        'reference' => '13c346e303268ae325f5f25b113f4e77f869816c',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -906,9 +906,9 @@
             'dev_requirement' => false,
         ),
         'salesagility/suitecrm' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
+            'reference' => '13c346e303268ae325f5f25b113f4e77f869816c',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1077,9 +1077,9 @@
             'dev_requirement' => false,
         ),
         'smarty/smarty' => array(
-            'pretty_version' => 'v5.4.3',
-            'version' => '5.4.3.0',
-            'reference' => 'c6bff5795081ca5e60aabda59fb87daa511acd1e',
+            'pretty_version' => 'v4.5.5',
+            'version' => '4.5.5.0',
+            'reference' => 'c4851c12e34ff80073ddeb7d98b059d57dea9de2',
             'type' => 'library',
             'install_path' => __DIR__ . '/../smarty/smarty',
             'aliases' => array(),

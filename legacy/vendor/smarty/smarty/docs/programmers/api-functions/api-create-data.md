@@ -30,7 +30,7 @@ be used to control which variables are seen by which templates.
 
 
     <?php
-    use Smarty\Smarty;
+    include('Smarty.class.php');
     $smarty = new Smarty;
 
     // create data object with its private variable scope

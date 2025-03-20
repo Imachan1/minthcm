@@ -128,7 +128,7 @@ SugarWidgetScheduleRow.prototype.init=function(timeslots){this.timeslots=timeslo
 SugarWidgetScheduleRow.prototype.load=function(thetableid){this.thetableid=thetableid;var self=this;vcalClient=new SugarVCalClient();if(typeof(GLOBAL_REGISTRY['freebusy_adjusted'])=='undefined'||typeof(GLOBAL_REGISTRY['freebusy_adjusted'][this.focus_bean.fields.id])=='undefined'){global_request_registry[req_count]=[this,'display'];vcalClient.load(this.focus_bean.fields.id,req_count);req_count++;}else{this.display();}}
 SugarWidgetScheduleRow.prototype.display=function(){SUGAR.util.doWhen("document.getElementById('"+this.thetableid+"') != null",function(){var tr;this.thetable=document.getElementById(this.thetableid);if(typeof(this.element)!='undefined'){if(this.element.parentNode!=null)
 this.thetable.deleteRow(this.element.rowIndex);tr=document.createElement('tr');this.thetable.appendChild(tr);}else{tr=this.thetable.insertRow(this.thetable.rows.length);}
-tr.className="schedulerAttendeeRow";$(tr).attr('data-id',this.focus_bean.fields.id);if(this.focus_bean.module=='Candidates'||this.focus_bean.module=='Resources'){$(tr).attr('data-module',this.focus_bean.module);}else{$(tr).attr('data-module',this.focus_bean.module+'s');}
+if(tr){tr.className="schedulerAttendeeRow";$(tr).attr('data-id',this.focus_bean.fields.id);if(this.focus_bean.module=='Candidates'||this.focus_bean.module=='Resources'){$(tr).attr('data-module',this.focus_bean.module);}else{$(tr).attr('data-module',this.focus_bean.module+'s');}
 td=document.createElement('td');tr.appendChild(td);td.scope='row';var img='<span class="suitepicon suitepicon-module-'+this.focus_bean.module.toLowerCase().replace('_','-')+'"></span>';td.innerHTML=img;td.innerHTML=td.innerHTML;if(this.focus_bean.fields.full_name)
 td.innerHTML+=' '+this.focus_bean.fields.full_name;else
 td.innerHTML+=' '+this.focus_bean.fields.name;this.add_freebusy_nodes(tr);var td=document.createElement('td');tr.appendChild(td);td.className='schedulerAttendeeDeleteCell';td.noWrap=true;td.innerHTML='<a title="'+GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE']
@@ -136,7 +136,7 @@ td.innerHTML+=' '+this.focus_bean.fields.name;this.add_freebusy_nodes(tr);var td
 +'href="javascript:SugarWidgetScheduleRow.deleteRow(\''+this.focus_bean.fields.id+'\');">&nbsp;'
 +'<img src="index.php?entryPoint=getImage&themeName='+SUGAR.themes.theme_name+'&imageName=delete_inline.gif" '
 +'align="absmiddle" alt="'+GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE']+'" border="0"> '
-+GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE']+'</a>';this.element=tr;this.element_index=this.thetable.rows.length-1;},null,this);}
++GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE']+'</a>';this.element=tr;this.element_index=this.thetable.rows.length-1;}},null,this);}
 SugarWidgetScheduleRow.deleteRow=function(bean_id){for(var i=0;i<GLOBAL_REGISTRY.focus.users_arr.length;i++){if(GLOBAL_REGISTRY.focus.users_arr[i]['fields']['id']==bean_id){delete GLOBAL_REGISTRY.focus.users_arr_hash[GLOBAL_REGISTRY.focus.users_arr[i]['fields']['id']];GLOBAL_REGISTRY.focus.users_arr.splice(i,1);GLOBAL_REGISTRY.FIRST_REMOVE=true;GLOBAL_REGISTRY.container.root_widget.display();}}}
 function DL_GetElementLeft(eElement){if(!eElement&&this){eElement=this;}
 var nLeftPos=eElement.offsetLeft;var eParElement=eElement.offsetParent;while(eParElement!=null){nLeftPos+=eParElement.offsetLeft;eParElement=eParElement.offsetParent;}

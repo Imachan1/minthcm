@@ -80,7 +80,7 @@ following parameters:
 
 
     <?php
-    use Smarty\Smarty;
+    include('Smarty.class.php');
     $smarty = new Smarty;
 
     // create template object with its private variable scope

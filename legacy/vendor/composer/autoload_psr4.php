@@ -40,7 +40,6 @@ return array(
     'SuiteCRM\\Modules\\' => array($baseDir . '/modules'),
     'SuiteCRM\\Custom\\' => array($baseDir . '/custom/lib'),
     'SuiteCRM\\' => array($baseDir . '/lib', $baseDir . '/include', $baseDir . '/tests/SuiteCRM', $baseDir . '/tests/unit/phpunit/lib/SuiteCRM'),
-    'Smarty\\' => array($vendorDir . '/smarty/smarty/src'),
     'Slim\\' => array($vendorDir . '/slim/slim/Slim'),
     'SelfUpdate\\' => array($vendorDir . '/consolidation/self-update/src'),
     'ScssPhp\\ScssPhp\\' => array($vendorDir . '/scssphp/scssphp/src'),

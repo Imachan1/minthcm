@@ -50,7 +50,7 @@ parameters:
 
 
     <?php
-    use Smarty\Smarty;
+    include('Smarty.class.php');
     $smarty = new Smarty;
 
     // force compilation of all config files
