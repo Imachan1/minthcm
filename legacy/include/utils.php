@@ -1214,6 +1214,7 @@ function return_app_list_strings_language($language)
 
     foreach ($langs as $lang) {
         $app_list_strings = array();
+        chdir('../legacy');
         if (file_exists("include/language/$lang.lang.php")) {
             include "include/language/$lang.lang.php";
             $GLOBALS['log']->info("Found language file: $lang.lang.php");
@@ -1953,8 +1954,7 @@ function get_select_options_with_id_separate_key($label_list, $key_list,
         // the system is evaluating $selected_key == 0 || '' to true.  Be very careful when changing this.  Test all cases.
         // The bug was only happening with one of the users in the drop down.  It was being replaced by none.
         if (
-            ($option_key !== '' && $selected_key === $option_key) || (
-                $option_key === '' && (($selected_key === '' && !$massupdate) || $selected_key === '__SugarMassUpdateClearField__')
+            ('' !== $option_key && $selected_key == $option_key) || ('' === $option_key && (('' === $selected_key && !$massupdate) || '__SugarMassUpdateClearField__' === $selected_key)
             ) || (is_array($selected_key) && in_array($option_key, $selected_key))
         ) {
             $selected_string = 'selected ';
@@ -6490,4 +6490,30 @@ function updateMintRebuildFile($extra_data = null, $return_value = false)
     if($return_value){
         return $rebuild_id;
     }
+}
+function fixupView($view)
+{
+    $view = strtolower($view);
+    switch ($view) {
+        case 'list':
+        case 'index':
+        case 'listview':
+            return "list";
+        case 'edit':
+        case 'save':
+        case 'popupeditview':
+        case 'editview':
+            return "edit";
+        case 'view':
+        case 'detail':
+        case 'detailview':
+            return "view";
+        case 'delete':
+            return "delete";
+        case 'export':
+            return "export";
+        case 'import':
+            return "import";
+    }
+    return $view;
 }

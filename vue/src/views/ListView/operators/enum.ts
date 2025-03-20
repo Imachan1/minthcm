@@ -1,3 +1,5 @@
+import { modifiers } from './_modifiers'
+
 export default {
     equal: {
         label: 'LBL_ESLIST_EQUAL',

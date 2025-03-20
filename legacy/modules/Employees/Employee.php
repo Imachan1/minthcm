@@ -324,11 +324,11 @@ class Employee extends Person implements EmailInterface
     public function save($check_notify = false)
     {
         global $current_user;
-        if ($current_user->id) {
+        if ($current_user->id && $this->id != $current_user->id) {
             if (
                 !is_admin($current_user) &&
-                !ACLAction::userHasAccess($GLOBALS['current_user']->id, 'Employees', 'edit'
-                )) {
+                !ACLAction::userHasAccess($GLOBALS['current_user']->id, 'Employees', 'edit', 'module', $current_user->id == $this->id)
+                ) {
                 $GLOBALS['log']->security("{$current_user->name} tried to update {$this->name} record with out permission.");
                 $GLOBALS['log']->fatal("You can change only your own employee data.");
 
@@ -444,7 +444,7 @@ class Employee extends Person implements EmailInterface
         }
 
         if (empty($current_user->id)) {
-            return false;
+            return true;
         }
 
         $sameUser = $current_user->id === $this->id;

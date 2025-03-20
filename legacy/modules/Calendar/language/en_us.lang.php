@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,17 +35,19 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
 $mod_strings = array(
+   'LBL_SHAREDWEEK' => 'Shared Week',
+   'LBL_SHAREDMONTH' => 'Shared Month',
    'LBL_MODULE_NAME' => 'Calendar',
    'LBL_MODULE_TITLE' => 'Calendar',
    'LNK_NEW_CALL' => 'Schedule Call',
@@ -63,19 +64,39 @@ $mod_strings = array(
    'LNK_IMPORT_CALLS' => 'Import Calls',
    'LNK_IMPORT_MEETINGS' => 'Import Meetings',
    'LNK_IMPORT_TASKS' => 'Import Tasks',
+   'LBL_MONTH' => 'Month',
+   'LBL_AGENDADAY' => 'Day',
    'LBL_YEAR' => 'Year',
+   'LBL_AGENDAWEEK' => 'Week',
+   'LBL_PREVIOUS_MONTH' => 'Previous Month',
+   'LBL_PREVIOUS_DAY' => 'Previous Day',
+   'LBL_PREVIOUS_YEAR' => 'Previous Year',
+   'LBL_PREVIOUS_WEEK' => 'Previous Week',
    'LBL_NEXT_MONTH' => 'Next Month',
+   'LBL_NEXT_DAY' => 'Next Day',
    'LBL_NEXT_YEAR' => 'Next Year',
    'LBL_NEXT_WEEK' => 'Next Week',
+   'LBL_AM' => 'AM',
+   'LBL_PM' => 'PM',
+   'LBL_SCHEDULED' => 'Scheduled',
+   'LBL_BUSY' => 'Busy',
+   'LBL_CONFLICT' => 'Conflict',
+   'LBL_USER_CALENDARS' => 'User Calendars',
+   'LBL_SHARED' => 'Shared',
+   'LBL_PREVIOUS_SHARED' => 'Previous',
+   'LBL_NEXT_SHARED' => 'Next',
+   'LBL_SHARED_CAL_TITLE' => 'Shared Calendar',
    'LBL_USERS' => 'Users',
    'LBL_REFRESH' => 'Refresh',
    'LBL_EDIT_USERLIST' => 'User List',
    'LBL_SELECT_USERS' => 'Select users for calendar display',
+   'LBL_FILTER_BY_TEAM' => 'Filter user list by team:',
    'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
    'LBL_DATE' => 'Start Date & Time',
    'LBL_CREATE_MEETING' => 'Schedule Meeting',
    'LBL_CREATE_CALL' => 'Log Call',
    'LBL_HOURS_ABBREV' => 'h',
+   'LBL_MINS_ABBREV' => 'm',
    'LBL_YES' => 'Yes',
    'LBL_NO' => 'No',
    'LBL_SETTINGS' => 'Settings',
@@ -88,7 +109,11 @@ $mod_strings = array(
    'LBL_EDIT_RECORD' => 'Edit Activity',
    'LBL_ERROR_SAVING' => 'Error while saving',
    'LBL_ERROR_LOADING' => 'Error while loading',
+   'LBL_GOTO_DATE' => 'Go to Date',
    'NOTICE_DURATION_TIME' => 'Duration time must be greater than 0',
+   'LBL_STYLE_BASIC' => 'BASIC',
+   'LBL_STYLE_ADVANCED' => 'ADVANCED',
+   'LBL_NO_USER' => 'No match for field: Assigned to',
    'LBL_SUBJECT' => 'Subject',
    'LBL_DURATION' => 'Duration',
    'LBL_STATUS' => 'Status',
@@ -106,6 +131,9 @@ $mod_strings = array(
    'LBL_APPLY_BUTTON' => 'Apply',
    'LBL_SEND_INVITES' => 'Save & Send Invites',
    'LBL_CANCEL_BUTTON' => 'Cancel',
+   'LBL_CLOSE_BUTTON' => 'Close',
+   'LBL_GENERAL_TAB' => 'Details',
+   'LBL_PARTICIPANTS_TAB' => 'Invitees',
    'LBL_REPEAT_TAB' => 'Recurrence',
    'LBL_REPEAT_TYPE' => 'Repeat',
    'LBL_REPEAT_INTERVAL' => 'Every',
@@ -123,6 +151,7 @@ $mod_strings = array(
    'ERR_YEAR_BETWEEN' => 'Sorry, calendar cannot handle the year you requested<br>Year must be between 1970 and 2037',
    'ERR_NEIGHBOR_DATE' => 'get_neighbor_date_str: not defined for this view',
    'LBL_NO_ITEMS_MOBILE' => 'Your calendar is clear for the week.',
+   'LBL_GENERAL_SETTINGS' => 'General Settings',
    'LBL_COLOR_SETTINGS' => 'Colour Settings',
    'LBL_MODULE' => 'Module',
    'LBL_BODY' => 'Body',
@@ -134,67 +163,65 @@ $mod_strings = array(
    'LBL_WORKSCHEDULES_DATE_END_BEFORE_START' => 'Date end can\'t be before date start',
    'LBL_WORKSCHEDULES_DURATION_LESS_OR_EQUAL_ZERO' => 'Duration must be greater than zero',
    'LBL_CALENDAR_WEEK_NUMBER' => 'Week number',
+   'LBL_CREATE_USERS_GROUP_BUTTON' => 'CREATE GROUP',
+   'LBL_UPDATE_USERS_GROUP_BUTTON' => 'Update',
+   'LBL_DELETE_USERS_GROUP_BUTTON' => 'Delete',
+   'LBL_CREATE_GROUP_DESCRIPTION' => 'Create a group containing selected users',
+   'LBL_GROUP_CREATION' => 'Group creation',
+   'LBL_GROUP_NAME' => 'Group name',
+   'LBL_CREATE_BUTTON' => 'Create',
+   'LBL_EMPTY_GROUP_NAME' => 'Group name can\'t be empty',
+   'LBL_UPDATE_USERS_GROUP_CONFIRM' => 'Are you sure you want to update the group',
+   'LBL_DELETE_USERS_GROUP_CONFIRM' => 'Are you sure you want to delete the group',
 );
-
-
-
-
-
-
-
 
 $mod_list_strings = array(
-   'dom_cal_weekdays' =>
-   array(
-      '0' => "Sun",
-      '1' => "Mon",
-      '2' => "Tue",
-      '3' => "Wed",
-      '4' => "Thu",
-      '5' => "Fri",
-      '6' => "Sat",
-   ),
-   'dom_cal_weekdays_long' =>
-   array(
-      '0' => "Sunday",
-      '1' => "Monday",
-      '2' => "Tuesday",
-      '3' => "Wednesday",
-      '4' => "Thursday",
-      '5' => "Friday",
-      '6' => "Saturday",
-   ),
-   'dom_cal_month' =>
-   array(
-      '0' => "",
-      '1' => "Jan",
-      '2' => "Feb",
-      '3' => "Mar",
-      '4' => "Apr",
-      '5' => "May",
-      '6' => "Jun",
-      '7' => "Jul",
-      '8' => "Aug",
-      '9' => "Sep",
-      '10' => "Oct",
-      '11' => "Nov",
-      '12' => "Dec",
-   ),
-   'dom_cal_month_long' =>
-   array(
-      '0' => "",
-      '1' => "January",
-      '2' => "February",
-      '3' => "March",
-      '4' => "April",
-      '5' => "May",
-      '6' => "June",
-      '7' => "July",
-      '8' => "August",
-      '9' => "September",
-      '10' => "October",
-      '11' => "November",
-      '12' => "December",
-   ),
+    'dom_cal_weekdays' => array(
+        '0' => "Sun",
+        '1' => "Mon",
+        '2' => "Tue",
+        '3' => "Wed",
+        '4' => "Thu",
+        '5' => "Fri",
+        '6' => "Sat",
+    ),
+    'dom_cal_weekdays_long' => array(
+        '0' => "Sunday",
+        '1' => "Monday",
+        '2' => "Tuesday",
+        '3' => "Wednesday",
+        '4' => "Thursday",
+        '5' => "Friday",
+        '6' => "Saturday",
+    ),
+    'dom_cal_month' => array(
+        '0' => "",
+        '1' => "Jan",
+        '2' => "Feb",
+        '3' => "Mar",
+        '4' => "Apr",
+        '5' => "May",
+        '6' => "Jun",
+        '7' => "Jul",
+        '8' => "Aug",
+        '9' => "Sep",
+        '10' => "Oct",
+        '11' => "Nov",
+        '12' => "Dec",
+    ),
+    'dom_cal_month_long' => array(
+        '0' => "",
+        '1' => "January",
+        '2' => "February",
+        '3' => "March",
+        '4' => "April",
+        '5' => "May",
+        '6' => "June",
+        '7' => "July",
+        '8' => "August",
+        '9' => "September",
+        '10' => "October",
+        '11' => "November",
+        '12' => "December",
+    ),
 );
-

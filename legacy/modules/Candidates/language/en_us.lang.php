@@ -143,7 +143,7 @@ $mod_strings = array(
     'LBL_EMAILS_TITLE' => 'E-mails',
     'LBL_NOTES_TITLE' => 'Notes',
     'LBL_TASKS_TITLE' => 'Tasks',
-    'LBL_GOLDENLINE' => 'Goldenline',
+    'LBL_GITHUB' => 'Github',
     'LBL_BIRTHDATE' => 'Birthdate',
     'LBL_SKYPE' => 'Skype',
     'LBL_RECORDVIEW_PANEL2' => 'Other',
@@ -166,4 +166,5 @@ $mod_strings = array(
     'LBL_FILES' => 'Files',
     'LBL_EMPLOYEES_MODULE_DUP' => 'Employees',
     'MSG_SHOW_DUPLICATES' => 'The record you are about to create might be a duplicate of a Candidates or Employees record that already exists. Candidates and Employees records containing similar names are listed below.<br>Click Create to continue creating this new Candidate, or select an existing listed below.',
+    'LBL_LIST_TITLE' => 'Candidate',
 );
