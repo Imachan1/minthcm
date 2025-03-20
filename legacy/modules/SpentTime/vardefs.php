@@ -170,6 +170,7 @@ $dictionary['SpentTime'] = array(
                 'min' => 0,
                 'max' => 1000,
             ),
+            'default' => '0.00',
         ),
         'current_done_ratio' => array(
             'importable' => 'required',
