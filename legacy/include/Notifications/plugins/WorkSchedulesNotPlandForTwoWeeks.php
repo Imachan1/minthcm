@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -108,7 +108,7 @@ class WorkSchedulesNotPlandForTwoWeeks extends NotificationPlugin
         $non_working_days = $this->getNonWorkingDays();
         $work_days = array();
         $shift = 0;
-        while (count($work_days) < self::PLAN_FOR_DAYS) {
+        while (is_countable($work_days) ? count($work_days) < self::PLAN_FOR_DAYS : 0) {
             $date = date("Y-m-d", strtotime("+ $shift days"));
             if (date('w', strtotime($date)) == 0 || date('w', strtotime($date)) == 6 || in_array($date, $non_working_days)) {
                 $shift++;

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,7 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-if (!defined('sugarEntry') || !sugarEntry) {
+ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
@@ -110,11 +110,11 @@ $datax = array();
 $selected_datax = array();
 //get list of sales stage keys to display
 $user_sales_stage = $current_user->getPreference('mypbss_sales_stages');
-if (!empty($user_sales_stage) && count($user_sales_stage) > 0 && !isset($_REQUEST['mypbss_sales_stages'])) {
+if (!empty($user_sales_stage) && (is_countable($user_sales_stage) ? count($user_sales_stage) : 0) > 0 && !isset($_REQUEST['mypbss_sales_stages'])) {
     $tempx = $user_sales_stage;
     $GLOBALS['log']->debug("USER PREFERENCES['mypbss_sales_stages'] is:");
     $GLOBALS['log']->debug($user_sales_stage);
-} elseif (isset($_REQUEST['mypbss_sales_stages']) && count($_REQUEST['mypbss_sales_stages']) > 0) {
+} elseif (isset($_REQUEST['mypbss_sales_stages']) && (is_countable($_REQUEST['mypbss_sales_stages']) ? count($_REQUEST['mypbss_sales_stages']) : 0) > 0) {
     $tempx = $_REQUEST['mypbss_sales_stages'];
     $current_user->setPreference('mypbss_sales_stages', $_REQUEST['mypbss_sales_stages']);
     $GLOBALS['log']->debug("_REQUEST['mypbss_sales_stages'] is:");
@@ -124,7 +124,7 @@ if (!empty($user_sales_stage) && count($user_sales_stage) > 0 && !isset($_REQUES
 }
 
 //set $datax using selected sales stage keys
-if (count($tempx) > 0) {
+if ((is_countable($tempx) ? count($tempx) : 0) > 0) {
     foreach ($tempx as $key) {
         $datax[$key] = $app_list_strings['sales_stage_dom'][$key];
         array_push($selected_datax, $key);
@@ -249,7 +249,7 @@ function gen_xml_pipeline_by_sales_stage(
     $chart_size = 'hBarF',
     $current_module_strings = null
 ) {
-    global $app_strings, $charset, $lang, $barChartColors, $current_user, $current_language;
+    global $app_strings, $charset, $lang, $barChartColors, $current_user, $current_language, $timedate;
 
     // set $current_module_strings to 'Charts' module strings by default
     if (empty($current_module_strings)) {
@@ -257,7 +257,7 @@ function gen_xml_pipeline_by_sales_stage(
     }
 
     $kDelim = $current_user->getPreference('num_grp_sep');
-    global $timedate;
+    $new_ids = [];
 
     if (!file_exists($cache_file_name) || $refresh == true) {
         $GLOBALS['log']->debug("starting pipeline chart");
@@ -415,6 +415,7 @@ function gen_xml_pipeline_by_sales_stage(
 
     function constructQuery()
     {
+
         global $current_user;
         global $timedate;
 
@@ -454,6 +455,7 @@ function gen_xml_pipeline_by_sales_stage(
         }
 
         $user_id = array($current_user->id);
+        $datax = [];
 
         $opp = new Opportunity;
         $where="";
@@ -472,7 +474,8 @@ function gen_xml_pipeline_by_sales_stage(
             $where .= "opportunities.assigned_user_id IN ($ids) ";
         }
         //build the where clause for the query that matches $datax
-        $count = count($datax);
+
+        $count = $datax === [] ? 0 : count($datax);
         $dataxArr = array();
         if ($count>0) {
             foreach ($datax as $key=>$value) {

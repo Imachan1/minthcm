@@ -1,5 +1,6 @@
 <?php
 
+#[\AllowDynamicProperties]
 class OnboardingStatus
 {
     protected $focus;

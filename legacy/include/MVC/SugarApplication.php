@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -819,7 +819,7 @@ EOF;
         }
         if ($domain === null) {
             if (isset($_SERVER["HTTP_HOST"])) {
-                $domain = $_SERVER["HTTP_HOST"];
+                $domain = preg_replace('/(\:\d+)$/', '', $_SERVER["HTTP_HOST"]); // Fix #9898 Invalid cookie domain when using non-standard HTTP Port.
             } else {
                 $domain = 'localhost';
             }

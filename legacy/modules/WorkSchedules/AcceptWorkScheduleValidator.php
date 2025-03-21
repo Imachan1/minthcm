@@ -1,5 +1,6 @@
 <?php
 
+#[\AllowDynamicProperties]
 class AcceptWorkScheduleValidator
 {
     protected $workschedule;

@@ -9,9 +9,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,6 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 // Contact is used to store customer information.
+#[\AllowDynamicProperties]
 class ContactOpportunityRelationship extends SugarBean
 {
     // Stored fields
@@ -92,6 +93,9 @@ class ContactOpportunityRelationship extends SugarBean
 
         $this->disable_row_level_security =true;
     }
+
+
+
 
     public function fill_in_additional_detail_fields()
     {

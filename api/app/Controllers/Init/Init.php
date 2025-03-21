@@ -53,6 +53,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use User;
 
+#[\AllowDynamicProperties]
 class Init
 {
     protected $preferences_controller, $languages_controller, $module_init_controller, $mintRebuildID, $request_language, $user_id;

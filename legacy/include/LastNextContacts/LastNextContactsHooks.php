@@ -4,6 +4,7 @@ require_once 'include/LastNextContacts/LastNextContactsConfig.php';
 require_once 'include/LastNextContacts/LastNextContactsBase.php';
 require_once 'include/LastNextContacts/LastNextContactsQueue.php';
 
+#[\AllowDynamicProperties]
 class LastNextContactsHooks extends LastNextContactsBase
 {
 
@@ -40,7 +41,7 @@ class LastNextContactsHooks extends LastNextContactsBase
             $module_lowercase = strtolower($module);
             if (is_object($bean->$module_lowercase)) {
                 $beans = $this->getAllRelatedBeans($bean->$module_lowercase->rows, $module);
-                if (count($beans) > 0) {
+                if (is_countable($beans) ? count($beans) > 0 : false) {
                     $this->setSessionValue($module_lowercase, $beans);
                 }
             }
@@ -209,7 +210,7 @@ class LastNextContactsHooks extends LastNextContactsBase
     }
     private function getSessionValue($key)
     {
-        return $_SESSION[$this->sessionKey($key)] = $beans;
+        return $_SESSION[$this->sessionKey($key)];
     }
     private function isSetSessionValue($key)
     {

@@ -42,6 +42,7 @@ if (file_exists('./custom/modules/KReports/includes')) {
     }
 }
 
+#[\AllowDynamicProperties]
 class KReportPluginManager
 {
 
@@ -267,15 +268,15 @@ class KReportPluginManager
         }
         $pluginData = '<script type="text/javascript">';
 
-        if (count($presentationPlugins) > 0) {
+        if (is_countable($presentationPlugins) ? count($presentationPlugins) > 0 : 0) {
             $pluginData .= 'var kreporterPresentationPlugins = \'' . json_encode($presentationPlugins) . '\';';
         }
 
-        if (count($visualizationPlugins) > 0) {
+        if (is_countable($visualizationPlugins) ? count($visualizationPlugins) > 0 : 0) {
             $pluginData .= 'var kreporterVisualizationPlugins = \'' . json_encode($visualizationPlugins) . '\';';
         }
 
-        if (count($integrationPlugins) > 0) {
+        if (is_countable($integrationPlugins) ? count($integrationPlugins) > 0 : 0) {
             $pluginData .= 'var kreporterIntegrationPlugins = \'' . json_encode($integrationPlugins) . '\';';
         }
 
@@ -338,6 +339,7 @@ class KReportPluginManager
 
 }
 
+#[\AllowDynamicProperties]
 class KReport extends SugarBean
 {
 
@@ -517,7 +519,7 @@ class KReport extends SugarBean
             }
         }
 
-        if (count($retArray) > 0) {
+        if (is_countable($retArray) ? count($retArray) > 0 : 0) {
             return $retArray;
         } else {
             return '';
@@ -813,41 +815,41 @@ class KReport extends SugarBean
 
                             }
                         } else {
-                           // 2011-03-07 add the orig value for the treeid
-                           $returnArray[$fieldID . '_val'] = $fieldValue;
-                           // chek if we have a function set
-                           // Mint start #58178
-                           if (isset($this->fieldNameMap[$fieldID]['fields_name_map_entry']['function']) && is_array($this->fieldNameMap[$fieldID]['fields_name_map_entry']['function'])) {
-                               // Mint end #58178
-                               $fielName = $this->fieldNameMap[$fieldID]['fields_name_map_entry']['function']['include'];
-                               require_once $fielName;
-                               $functionName = $this->fieldNameMap[$fieldID]['fields_name_map_entry']['function']['name'];
-                               // Mint start #59232 #74399
-                               // $fieldValue = $functionName(null, $this->fieldNameMap[$fieldID]['fieldname'], $fieldValue, '');
+                            // 2011-03-07 add the orig value for the treeid
+                            $returnArray[$fieldID . '_val'] = $fieldValue;
+                            // chek if we have a function set
+                            // Mint start #58178
+                            if (isset($this->fieldNameMap[$fieldID]['fields_name_map_entry']['function']) && is_array($this->fieldNameMap[$fieldID]['fields_name_map_entry']['function'])) {
+                                // Mint end #58178
+                                $fielName = $this->fieldNameMap[$fieldID]['fields_name_map_entry']['function']['include'];
+                                require_once $fielName;
+                                $functionName = $this->fieldNameMap[$fieldID]['fields_name_map_entry']['function']['name'];
+                                // Mint start #59232 #74399
+                                // $fieldValue = $functionName(null, $this->fieldNameMap[$fieldID]['fieldname'], $fieldValue, '');
                                 $function_result = formatEnumArray($functionName(null, $this->fieldNameMap[$fieldID]['fieldname'], $fieldValue, 'KReporterOptions'));
-                               if (!empty($function_result)) {
-                                   foreach ($function_result as $pair) {
-                                       if (
-                                           isset($pair['value'])
-                                           && isset($pair['text'])
-                                           && $pair['value'] == $fieldValue
-                                       ) {
-                                           $fieldValue = $pair['text'];
-                                       }
-                                   }
-                               }
-                               // Mint end #59232 #74399
-                           } else {
-                               // bug 2011-03-07 fields might have different options if in a join
-                               //$fieldValue = $app_list_strings[$this->fieldNameMap[$fieldID]['fields_name_map_entry']['options']][$fieldValue];
-                               //Mint start #60147
-                               //if ( $fieldValue != '' && isset($this->kQueryArray->queryArray [(isset($fieldArray ['unionid']) ? $fieldArray ['unionid'] : 'root')] ['kQuery']->fieldNameMap [$fieldID] ['fields_name_map_entry'] ['options']) )
-                               if (isset($this->kQueryArray->queryArray[(isset($fieldArray['unionid']) ? $fieldArray['unionid'] : 'root')]['kQuery']->fieldNameMap[$fieldID]['fields_name_map_entry']['options'])) {
-                                   $fieldValue = $app_list_strings[$this->kQueryArray->queryArray[(isset($fieldArray['unionid']) ? $fieldArray['unionid'] : 'root')]['kQuery']->fieldNameMap[$fieldID]['fields_name_map_entry']['options']][$fieldValue];
-                               }
-                               //Mint end #60147
-                           }
-                       }
+                                if (!empty($function_result)) {
+                                    foreach ($function_result as $pair) {
+                                        if (
+                                            isset($pair['value'])
+                                            && isset($pair['text'])
+                                            && $pair['value'] == $fieldValue
+                                        ) {
+                                            $fieldValue = $pair['text'];
+                                        }
+                                    }
+                                }
+                                // Mint end #59232 #74399
+                            } else {
+                                // bug 2011-03-07 fields might have different options if in a join
+                                //$fieldValue = $app_list_strings[$this->fieldNameMap[$fieldID]['fields_name_map_entry']['options']][$fieldValue];
+                                //Mint start #60147
+                                //if ( $fieldValue != '' && isset($this->kQueryArray->queryArray [(isset($fieldArray ['unionid']) ? $fieldArray ['unionid'] : 'root')] ['kQuery']->fieldNameMap [$fieldID] ['fields_name_map_entry'] ['options']) )
+                                if (isset($this->kQueryArray->queryArray[(isset($fieldArray['unionid']) ? $fieldArray['unionid'] : 'root')]['kQuery']->fieldNameMap[$fieldID]['fields_name_map_entry']['options'])) {
+                                    $fieldValue = $app_list_strings[$this->kQueryArray->queryArray[(isset($fieldArray['unionid']) ? $fieldArray['unionid'] : 'root')]['kQuery']->fieldNameMap[$fieldID]['fields_name_map_entry']['options']][$fieldValue];
+                                }
+                                //Mint end #60147
+                            }
+                        }
 
                         // bug 2011-05-25
                         // if value is empty we return the original value
@@ -861,7 +863,7 @@ class KReport extends SugarBean
                         if ('' == $this->fieldNameMap[$fieldID]['sqlFunction']) {
                             $fieldArray = preg_split('/\^,\^/', $fieldValue);
                             //bugfix 2010-09-22 if only one value is selected
-                            if (is_array($fieldArray) && count($fieldArray) > 1) {
+                            if (is_array($fieldArray) && is_countable($fieldArray) ? count($fieldArray) > 1 : 0) {
                                 $fieldValue = '';
                                 foreach ($fieldArray as $thisFieldValue) {
                                     if ('' != $fieldValue) {
@@ -1105,7 +1107,7 @@ class KReport extends SugarBean
         //see if we have dynamic cols in the Request ...
         if ('' != $dynamicolsOverride) {
             if(!is_array($dynamicolsOverride)){
-                $dynamicolsOverride = json_decode(html_entity_decode($dynamicolsOverride, ENT_QUOTES, 'UTF-8'), true);
+            $dynamicolsOverride = json_decode(html_entity_decode($dynamicolsOverride, ENT_QUOTES, 'UTF-8'), true);
             }
             $overrideMap = array();
             foreach ($dynamicolsOverride as $thisOverrideKey => $thisOverrideEntry) {
@@ -1113,7 +1115,8 @@ class KReport extends SugarBean
             }
 
             //loop over the listfields
-            for ($i = 0; $i < count($arrayList); $i++) {
+            $array_list_count = is_countable($arrayList) ? count($arrayList) : 0;
+            for ($i = 0; $i < $array_list_count; $i++) {
                 if (isset($overrideMap[$arrayList[$i]['fieldid']])) {
                     // set the display flag
                     if ('true' == $dynamicolsOverride[$overrideMap[$arrayList[$i]['fieldid']]]['isHidden']) {
@@ -1146,7 +1149,7 @@ class KReport extends SugarBean
             }
         }
 
-        if (count($results) > 0) {
+        if (is_countable($results) ? count($results) > 0 : 0) {
             foreach ($results as $record) {
                 $getHeader = ('' == $header) ? true : false;
                 foreach ($record as $key => $value) {
@@ -1214,7 +1217,7 @@ class KReport extends SugarBean
         //see if we have dynamic cols in the Request ...
         if ('' != $dynamicolsOverride) {
             if(!is_array($dynamicolsOverride)){
-                $dynamicolsOverride = json_decode(html_entity_decode($dynamicolsOverride, ENT_QUOTES, 'UTF-8'), true);
+            $dynamicolsOverride = json_decode(html_entity_decode($dynamicolsOverride, ENT_QUOTES, 'UTF-8'), true);
             }
             $overrideMap = array();
             foreach ($dynamicolsOverride as $thisOverrideKey => $thisOverrideEntry) {
@@ -1222,7 +1225,8 @@ class KReport extends SugarBean
             }
 
             //loop over the listfields
-            for ($i = 0; $i < count($arrayList); $i++) {
+            $array_list_count = is_countable($arrayList) ? count($arrayList) : 0;
+            for ($i = 0; $i < $array_list_count; $i++) {
                 if (isset($overrideMap[$arrayList[$i]['fieldid']])) {
                     // set the display flag
                     if ('true' == $dynamicolsOverride[$overrideMap[$arrayList[$i]['fieldid']]]['isHidden']) {
@@ -1258,7 +1262,7 @@ class KReport extends SugarBean
         }
         $row_id++;
 
-        if (count($results) > 0) {
+        if (is_countable($results) ? count($results) > 0 : 0) {
             foreach ($results as $record) {
 
                 foreach ($arrayList as $fieldId => $fieldArray) {
@@ -1282,7 +1286,7 @@ class KReport extends SugarBean
 
         $results = $this->getSelectionResults(array());
 
-        if (count($results) > 0) {
+        if (is_countable($results) ? count($results > 0) : 0) {
             require_once 'modules/ProspectLists/ProspectList.php';
             $newProspectList = new ProspectList();
 
@@ -1846,7 +1850,7 @@ class KReport extends SugarBean
             $lat_bean = $this->kQueryArray->queryArray['root']['kQuery']->joinSegments[$this->kQueryArray->fieldNameMap[$mapDetails->latitude]['path']]['object'];
         }
 
-        if (count($results) > 0) {
+        if (is_countable($results) ? count($results) > 0 : 0) {
 
             $mapService = new kReportBingMaps();
             require_once 'modules/Accounts/Account.php';
@@ -1914,7 +1918,7 @@ class KReport extends SugarBean
 
         $mapBounds = array('topLeft' => array('x' => 0, 'y' => 0), 'bottomRight' => array('x' => 0, 'y' => 0));
 
-        if (count($results > 0)) {
+        if (is_countable($results) ? count($results > 0) : 0) {
             foreach ($results as $thisRecord) {
                 //see if we have a category
 
@@ -2121,8 +2125,8 @@ class KReport extends SugarBean
         $pathArray = explode('::', $path);
 
         // get Field and Module from the path
-        $fieldArray = explode(':', $pathArray[count($pathArray) - 1]);
-        $moduleArray = explode(':', $pathArray[count($pathArray) - 2]);
+        $fieldArray = explode(':', $pathArray[is_countable($pathArray) ? count($pathArray) - 1 : 0]);
+        $moduleArray = explode(':', $pathArray[is_countable($pathArray) ? count($pathArray) - 2 : 0]);
 
         // load the parent module
         require_once $beanFiles[$beanList[$moduleArray[1]]];
@@ -2232,6 +2236,7 @@ class KReport extends SugarBean
  * renderes are returned from getXtyperenderer and are the sames as in the userinterface in Sencha
  */
 
+#[\AllowDynamicProperties]
 class KReportRenderer
 {
 
@@ -2301,7 +2306,7 @@ class KReportRenderer
                 $fielName = $this->report->fieldNameMap[$fieldid]['fields_name_map_entry']['function']['include'];
                 require_once $fielName;
                 $functionName = $this->report->fieldNameMap[$fieldid]['fields_name_map_entry']['function']['name'];
-                if(isset($this->report->fieldNameMap[$fieldid]['fields_name_map_entry']['function']['additional_params'])) {
+                if (isset($this->report->fieldNameMap[$fieldid]['fields_name_map_entry']['function']['additional_params'])) {
                     $options_list = $functionName(null, null, null, null, $this->report->fieldNameMap[$fieldid]['fields_name_map_entry']['function']['additional_params']);
                     $fieldValue = $options_list[$record[$fieldid]];
                 } else {
@@ -2342,7 +2347,7 @@ class KReportRenderer
             // Mint end #41967
             $fieldArray = preg_split('/\^,\^/', $record[$fieldid]);
             //bugfix 2010-09-22 if only one value is selected
-            if (is_array($fieldArray) && count($fieldArray) > 1) {
+            if (is_array($fieldArray) && is_countable($fieldArray) ? count($fieldArray) > 1 : 0) {
                 $fieldValue = '';
                 foreach ($fieldArray as $thisFieldValue) {
                     if ('' != $fieldValue) {
@@ -2376,8 +2381,8 @@ class KReportRenderer
 
     public static function kintRenderer($fieldid, $record)
     {
-        // Mint start ref #48478 Nieprawidłowe przekazywanie liczb zmiennoprzecinkowych do wykresów
-        return number_format($record[$fieldid], 0, $GLOBALS['current_user']->getPreference('dec_sep'), $GLOBALS['current_user']->getPreference('num_grp_sep'));
+        // Mint start ref #48478 Nieprawidłowe przekazywanie liczb zmiennoprzecinkowych do wykresów, #137532
+        return number_format((float)$record[$fieldid], 0, $GLOBALS['current_user']->getPreference('dec_sep'), $GLOBALS['current_user']->getPreference('num_grp_sep'));
         // return round($record[$fieldid]);
         // Mint end #48478 Nieprawidłowe przekazywanie liczb zmiennoprzecinkowych do wykresów
         //        return format_number($record[$fieldid], 0);

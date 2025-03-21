@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -778,6 +778,12 @@ $app_list_strings = array(
         'Active' => 'Active',
         'Inactive' => 'Inactive',
     ],
+
+    'dom_email_body_filtering_option' => [
+        'multi' => 'Multi Word Search',
+        'single' => 'Single Word Search',
+    ],
+
     'dom_email_types' => array(
         'out' => 'Sent',
         'archived' => 'Archived',
@@ -1194,6 +1200,8 @@ $app_strings = array(
     'LBL_EMAIL_ACCOUNTS_SMTPUSER' => 'SMTP Username',
     'LBL_EMAIL_ACCOUNTS_SMTPDEFAULT' => 'Default',
     'LBL_EMAIL_WARNING_MISSING_USER_CREDS' => 'Warning: Missing username and password for outgoing mail account.',
+    'LBL_OAUTH_CONNECTION_NOT_SET' => 'Please set an External OAuth Connection.',
+    'LBL_EMAIL_PASSWORD_NOT_SET' => 'Warning: A password has not been set.',
     'LBL_EMAIL_WARNING_MISSING_CREDS' => 'Warning: Missing credentials',
     'LBL_EMAIL_ACCOUNTS_SUBTITLE' => 'Set up Mail Accounts to view incoming emails from your email accounts.',
     'LBL_EMAIL_ACCOUNTS_OUTBOUND_SUBTITLE' => 'Provide SMTP mail server information to use for outgoing email in Mail Accounts.',
@@ -4835,6 +4843,30 @@ $app_list_strings['dom_email_status_colored'] = array(
     'unread' => $yellow_status,
 );
 // ColoredEnum Lists END
+
+$app_list_strings['source_list'] = array(
+    '' => '',
+    'Base' => 'Database of Candidates',
+    'CareersLibrary' => 'Career\'s Office',
+    'CodersLab' => 'CodersLab',
+    'EmployeeCommendation' => 'Employee Recommendation',
+    'GrowthPoland' => 'Growth Poland',
+    'Indeed' => 'Indeed',
+    'Jooble' => 'Jooble',
+    'LoboHR' => 'Lobo HR',
+    'Milado' => 'Milado',
+    'Pracapl' => 'Praca.pl',
+    'Pracujpl' => 'Pracuj.pl',
+    'Website' => 'Website',
+    'facebook' => 'Facebook',
+    'goldenline' => 'GoldenLine',
+    'justjoin.it' => 'justjoin.it',
+    'linkedin' => 'LinkedIn',
+    'nofluffjobs' => 'No Fluff Jobs',
+    'not_applicable' => 'Not Applicable',
+    'other' => 'Other',
+ );
+ 
 $app_strings['LBL_YOU_RECEIVED_KUDOS'] = '<b>You received</b> kudos!';
 $app_strings['LBL_USER_RECEIVED_KUDOS'] = 'received kudos from <b>you</b>!';
 $app_strings['LBL_GIVE_KUDOS'] = 'GIVE KUDOS';

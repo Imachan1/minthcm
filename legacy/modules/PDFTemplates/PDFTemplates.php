@@ -41,6 +41,7 @@
 require_once 'modules/PDFTemplates/PDFTemplates_sugar.php';
 require_once 'modules/Administration/QuickRepairAndRebuild.php';
 
+#[\AllowDynamicProperties]
 class PDFTemplates extends PDFTemplates_sugar
 {
 

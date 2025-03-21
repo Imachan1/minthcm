@@ -11,7 +11,7 @@ use SuiteCRM\Utility\SuiteValidator;
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -189,7 +189,7 @@ function pollMonitoredInboxes() {
                         if ( $ieX->isMailBoxTypeCreateCase() ) {
                            $userId = "";
                            if ( $distributionMethod == 'roundRobin' ) {
-                              if ( count($users) == 1 ) {
+                              if (count($users) === 1) {
                                  $userId = $users[0];
                                  $lastRobin = $users[0];
                               } else {
@@ -204,7 +204,7 @@ function pollMonitoredInboxes() {
                                  }
                               } // else
                            } else {
-                              if ( count($users) == 1 ) {
+                              if (count($users) === 1) {
                                  foreach ( $users as $k => $value ) {
                                     $userId = $value;
                                  } // foreach
@@ -321,7 +321,7 @@ function pruneDatabase() {
          }
 
          $custom_columns = array();
-         if ( array_search($table . '_cstm', $tables) ) {
+         if (array_search($table . '_cstm', $tables, true)) {
             $custom_columns = $db->get_columns($table . '_cstm');
             if ( empty($custom_columns['id_c']) ) {
                $custom_columns = array();
@@ -818,6 +818,7 @@ function processAOW_Workflow() {
    return $workflow->run_flows();
 }
 
+#[\AllowDynamicProperties]
 class AORScheduledReportJob implements RunnableSchedulerJob {
 
    public function setJob(SchedulersJob $job) {
@@ -885,17 +886,13 @@ EOF;
 
 }
 
-function runElasticSearchIndexerScheduler($data) {
-   $options = [];
-   if(!empty($data)){
-      $options = json_decode(htmlspecialchars_decode($data->data), true);
-   }
-   return \SuiteCRM\Search\ElasticSearch\ElasticSearchIndexer::schedulerJob($options);
+function runElasticSearchIndexerScheduler($job, $data = '{}')
+{
+    return \SuiteCRM\Search\ElasticSearch\ElasticSearchIndexer::schedulerJob(json_decode(html_entity_decode($data), true));
 }
 
 require_once 'modules/Schedulers/schedulers/GenerateAppraisalAppraisalItemsJob.php';
 require_once 'modules/Schedulers/schedulers/GenerateOnboardingOffboardingJob.php';
-require_once 'modules/Schedulers/schedulers/GenerateUsersNewsJob.php';
 require_once 'modules/Schedulers/schedulers/MassConfirmationJob.php';
 require_once 'modules/Schedulers/schedulers/RepairPrivateGroupsJob.php';
 require_once 'modules/Schedulers/schedulers/UpdateNewsDisplayDate.php';

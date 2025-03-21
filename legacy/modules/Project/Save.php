@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -117,7 +117,8 @@ $sugarbean->save($check_notify);
 $return_id = $sugarbean->id;
 
 if (isset($_REQUEST['save_type']) || isset($_REQUEST['duplicateSave']) && $_REQUEST['duplicateSave'] === "true") {
-    for ($i = 0; $i < count($projectTasks); $i++) {
+    $projectTasksCount = count($projectTasks);
+    for ($i = 0; $i < $projectTasksCount; $i++) {
         if (isset($_REQUEST['save_type']) || (isset($_REQUEST['duplicateSave']) && $_REQUEST['duplicateSave'] === "true")) {
             $projectTasks[$i]->id = '';
             $projectTasks[$i]->project_id = $sugarbean->id;
@@ -125,7 +126,7 @@ if (isset($_REQUEST['save_type']) || isset($_REQUEST['duplicateSave']) && $_REQU
         if ($sugarbean->is_template) {
             $projectTasks[$i]->assigned_user_id = '';
         }
-        $projectTasks[$i]->team_id = $sugarbean->team_id;
+        $projectTasks[$i]->team_id = $sugarbean->team_id ?? '';
         if (empty($projectTasks[$i]->duration_unit)) {
             $projectTasks[$i]->duration_unit = " ";
         } //Since duration_unit cannot be null.

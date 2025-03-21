@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -56,6 +56,7 @@ if (file_exists('custom/include/tcpdf/tcpdf.php')) {
 require_once 'modules/PDFGenerator/lib/MintPDF.php';
 require_once 'modules/PDFGenerator/lib/simple_html_dom.php';
 
+#[\AllowDynamicProperties]
 class BasePDFGenerator
 {
 
@@ -119,7 +120,7 @@ class BasePDFGenerator
     protected function prepareFileName($bean, $regex)
     {
         $parts = explode('/', $regex);
-        $filename_index = count($parts) - 1;
+        $filename_index = is_countable($parts) ? count($parts) - 1 : 0;
         $filename = $parts[$filename_index];
         $file_name_tmp = !empty($filename) ? $filename : '$name';
         foreach ($bean->field_defs as $field_def) {
@@ -348,10 +349,10 @@ class BasePDFGenerator
     protected function getFieldValue($name, $bean)
     {
         $r = explode('__', $name);
-        if (count($r) == 1) {
+        if (is_countable($r) ? count($r) == 1 : 0) {
             $value = $this->getFieldValueForOne($name, $bean, $r);
         }
-        if (count($r) > 1) {
+        if (is_countable($r) ? count($r) > 1 : 0) {
             $value = $this->getFieldValueForRelated($name, $bean, $r);
         }
         return $value;

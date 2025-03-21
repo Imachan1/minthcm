@@ -49,6 +49,7 @@ require_once __DIR__ . '/../provider/ExternalOAuthProviderConnectorInterface.php
 require_once __DIR__ . '/../provider/Generic/GenericOAuthProviderConnector.php';
 require_once __DIR__ . '/../provider/Microsoft/MicrosoftOAuthProviderConnector.php';
 
+#[\AllowDynamicProperties]
 class OAuthAuthorizationService
 {
 

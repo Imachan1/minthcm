@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,6 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * This is the SugarView subclass to handle displaying the list of duplicate Leads found when attempting to create
  * a new Lead.  This class is called from the LeadFormBase class handleSave function.
  */
+#[\AllowDynamicProperties]
 class ViewShowDuplicates extends SugarView
 {
     public function display()
@@ -83,7 +84,7 @@ class ViewShowDuplicates extends SugarView
         $query = 'SELECT id, first_name, last_name, title FROM leads WHERE deleted=0 ';
 
         $duplicates = $_POST['duplicate'];
-        $count = count($duplicates);
+        $count = is_countable($duplicates) ? count($duplicates) : 0;
         $db = DBManagerFactory::getInstance();
         if ($count > 0) {
             $query .= "and (";
@@ -112,13 +113,13 @@ class ViewShowDuplicates extends SugarView
         $input = '';
         foreach ($lead->column_fields as $field) {
             if (!empty($_POST['Leads'.$field])) {
-                $input .= "<input type='hidden' name='$field' value='${_POST['Leads'.$field]}'>\n";
+                $input .= "<input type='hidden' name='$field' value='{$_POST['Leads'.$field]}'>\n";
             }
         }
 
         foreach ($lead->additional_column_fields as $field) {
             if (!empty($_POST['Leads'.$field])) {
-                $input .= "<input type='hidden' name='$field' value='${_POST['Leads'.$field]}'>\n";
+                $input .= "<input type='hidden' name='$field' value='{$_POST['Leads'.$field]}'>\n";
             }
         }
 

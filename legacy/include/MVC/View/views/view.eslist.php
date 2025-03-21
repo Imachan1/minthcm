@@ -7,8 +7,8 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -35,10 +35,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
- * If the display of the logos is not reasonably feasible for technical reasons, the
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 require_once 'include/MVC/View/SugarView.php';
@@ -46,6 +46,7 @@ require_once '../api/vendor/autoload.php';
 
 use MintHCM\Data\MassActions\Actions as MassActions;
 
+#[\AllowDynamicProperties]
 class ViewESList extends SugarView
 {
     const DEFAULT_MASS_ACTIONS = [
@@ -132,15 +133,15 @@ class ViewESList extends SugarView
         $host = $sugar_config['search']['ElasticSearch']['host'];
         $port = $mint_config['search']['engines']['ElasticSearch'][0]['port'];
         $host = $this->validateHostAndPort($host, $port);
-        $protocol = $sugar_config['search']['ElasticSearch']['protocol'] ?? 'http';
-
+        $protocol = $sugar_config['search']['ElasticSearch']['protocol']?? 'http';
+        
         $es_module = $ESListViewDefs[$this->module]['es_module'] ?? $this->module;
-        $index = $sugar_config['unique_key'] . '_' . strtolower($es_module);
+        $index = $sugar_config['unique_key'] . '_'.strtolower($es_module);
         $mappings = json_decode(file_get_contents("{$protocol}://{$host}/{$index}/_mappings"), true);
-        if (empty($mappings)) {
+        if(empty($mappings)){
             return;
         }
-
+        
         $this->mappings = array_values($mappings)[0]['mappings'];
     }
 
@@ -285,12 +286,12 @@ class ViewESList extends SugarView
             $search[$field]['key'] = $defs['key'] ?? $this->eslistmap[$search_field_name] ?? $search_field_name;
             $search[$field]['type'] = $defs['type'] ?? $field_defs['type'];
             if (!empty($search[$field]['type'])) {
-                if (in_array($search[$field]['type'], ['multienum', 'enum', 'ColoredEnum'])) {
-                    $search[$field]['key'] .= '.keyword';
+                if (in_array($search[$field]['type'], ['multienum', 'enum'])) {
+                $search[$field]['key'] .= '.keyword';
                 } else if ('relate' === $search[$field]['type']) {
                     $field_id = $field_defs['id_name'];
                     $search[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field_id] ?? $field_id;
-                }
+            }
             }
             $nestedProps = explode('.', $search[$field]['key']);
             $search_keys = [];
@@ -325,15 +326,15 @@ class ViewESList extends SugarView
 
     protected function getTplFile()
     {
-        $module_path = 'modules/' . $this->module . '/include/ESListView/ESListViewGeneric.tpl';
-        if (file_exists('custom/' . $module_path)) {
-            return 'custom/' . $module_path;
+        $module_path = 'modules/'.$this->module.'/include/ESListView/ESListViewGeneric.tpl';
+        if (file_exists('custom/'.$module_path)) {
+            return 'custom/'.$module_path;
         } else if (file_exists($module_path)) {
             return $module_path;
         }
         $include_path = 'include/ESListView/ESListViewGeneric.tpl';
-        if (file_exists('custom/' . $include_path)) {
-            return 'custom/' . $include_path;
+        if (file_exists('custom/'.$include_path)) {
+            return 'custom/'.$include_path;
         } else if (file_exists($include_path)) {
             return $include_path;
         }
@@ -381,7 +382,7 @@ class ViewESList extends SugarView
                 if ($options[$key - 1]['value'] != $maxItemsPerPage) {
                     $options[$key] = [
                         'value' => $maxItemsPerPage,
-                        'title' => (string) $maxItemsPerPage,
+                        'title' => (string)$maxItemsPerPage,
                     ];
                 }
                 return $options;
@@ -390,7 +391,7 @@ class ViewESList extends SugarView
         if (end($options)['value'] < $maxItemsPerPage) {
             array_push($options, [
                 'value' => $maxItemsPerPage,
-                'title' => (string) $maxItemsPerPage,
+                'title' => (string)$maxItemsPerPage,
             ]);
         }
 
@@ -401,7 +402,7 @@ class ViewESList extends SugarView
     {
         if (isset($field_defs['options']) && is_string($field_defs['options'])) {
             return $field_defs['options'];
-        }
+}
         if (empty($field_defs['function'])) {
             return null;
         }

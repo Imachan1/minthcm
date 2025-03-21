@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -74,7 +74,7 @@ $xtpl->assign("MOD", $mod_strings);
 $xtpl->assign("APP", $app_strings);
 $xtpl->assign("PRINT_URL", "index.php?".$GLOBALS['request_string']);
 $xtpl->assign("MODULE", $_REQUEST['module']);
-if ($error_msg != '') {
+if ($error_msg !== '') {
     $xtpl->assign("ERROR", $error_msg);
     $xtpl->parse("main.error");
 }
@@ -91,7 +91,7 @@ $GLOBALS['check_notify'] = false;
 
 $query = 'select id, name, website, billing_address_city  from accounts where deleted=0 ';
 $duplicates = $_POST['duplicate'];
-$count = count($duplicates);
+$count = is_countable($duplicates) ? count($duplicates) : 0;
 $db = DBManagerFactory::getInstance();
 if ($count > 0) {
     $query .= "and (";

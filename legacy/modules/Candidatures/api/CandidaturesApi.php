@@ -1,5 +1,6 @@
 <?php
 
+#[\AllowDynamicProperties]
 class CandidaturesApi
 {
     public function setStatusHiredAndRejected($args)

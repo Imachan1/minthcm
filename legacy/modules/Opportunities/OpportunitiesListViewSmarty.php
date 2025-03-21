@@ -2,15 +2,19 @@
 
 require_once('include/ListView/ListViewSmarty.php');
 
-class OpportunitiesListViewSmarty extends ListViewSmarty {
-
-    function __construct() {
-
+#[\AllowDynamicProperties]
+class OpportunitiesListViewSmarty extends ListViewSmarty
+{
+    public function __construct()
+    {
         parent::__construct();
     }
 
-    function buildExportLink($id = 'export_link') {
 
+
+
+    public function buildExportLink($id = 'export_link')
+    {
         global $app_strings;
 
         $script = "<a href='javascript:void(0)' class=\"parent-dropdown-action-handler\" id='export_listview_top' ".
@@ -25,5 +29,4 @@ class OpportunitiesListViewSmarty extends ListViewSmarty {
 
         return $script;
     }
-
 }
