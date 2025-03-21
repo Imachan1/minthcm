@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  require_once('include/Dashlets/Dashlet.php');
 
 
+ #[\AllowDynamicProperties]
  class iFrameDashlet extends Dashlet
  {
      public $displayTpl = 'modules/Home/Dashlets/iFrameDashlet/display.tpl';
@@ -98,7 +99,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
      protected function checkURL()
      {
-         $scheme = parse_url($this->url, PHP_URL_SCHEME);
+        $scheme = parse_url((string) $this->url, PHP_URL_SCHEME);
          if (!in_array($scheme, $this->allowed_schemes)) {
              $this->url = 'about:blank';
              return false;
@@ -155,7 +156,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
          $out_url = str_replace(
              array('@@LANG@@','@@VER@@','@@EDITION@@'),
              array($GLOBALS['current_language'],$GLOBALS['sugar_config']['sugar_version'],$sugar_edition),
-             $this->url
+             (string) $this->url
          );
          $title = $this->title;
          if (empty($title)) {

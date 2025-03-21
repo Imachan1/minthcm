@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -96,7 +96,7 @@ function str_get_html($str, $lowercase = true) {
 function dump_html_tree($node, $show_attr = true, $deep = 0) {
    $lead = str_repeat('    ', $deep);
    echo $lead . $node->tag;
-   if ( $show_attr && count($node->attr) > 0 ) {
+   if ( $show_attr && (is_countable($node->attr) ? count($node->attr) > 0 : 0) ) {
       echo '(';
       foreach ( $node->attr as $k => $v ) {
          echo "[$k]=>\"" . $node->$k . '", ';
@@ -602,7 +602,7 @@ class simple_html_dom {
       $count = preg_match_all($pattern, $this->doc, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
 
       for ( $i = $count - 1; $i > -1; --$i ) {
-         $key = '___noise___' . sprintf('% 3d', count($this->noise) + 100);
+         $key = '___noise___' . sprintf('% 3d', (is_countable($this->noise) ? count($this->noise) : 0) + 100);
          $idx = ($remove_tag) ? 0 : 1;
          $this->noise[$key] = $matches[$i][$idx][0];
          $this->doc = substr_replace($this->doc, $key, $matches[$i][$idx][1], strlen($matches[$i][$idx][0]));

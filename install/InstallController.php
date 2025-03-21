@@ -9,6 +9,7 @@ require './Installer.php';
 use MintHCM\MintCLI\Services\DatabaseService;
 use MintHCM\MintCLI\Services\ElasticsearchService;
 
+#[\AllowDynamicProperties]
 class InstallController
 {
     const LAST_BACKEND_STEP = 19;

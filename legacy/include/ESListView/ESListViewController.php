@@ -7,6 +7,7 @@ use SuiteCRM\Search\UI\SearchThrowableHandler;
 require_once 'include/ESListView/ESListViewGetRecords.php';
 require_once 'lib/Search/ElasticSearch/ElasticSearchIndexer.php';
 
+#[\AllowDynamicProperties]
 class ESListViewController
 {
 

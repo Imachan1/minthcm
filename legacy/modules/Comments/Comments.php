@@ -1,5 +1,6 @@
 <?php
 
+#[\AllowDynamicProperties]
 class Comments extends Basic
 {
     public $new_schema = true;

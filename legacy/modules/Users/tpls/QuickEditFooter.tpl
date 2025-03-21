@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,7 +49,7 @@
         <td>
         <input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="button primary" onclick="quickEditSave(); return false;" type="submit" name="Users_dcmenu_save_button" id="Users_dcmenu_save_button" value="{$APP.LBL_SAVE_BUTTON_LABEL}">
         {{foreach from=$form.buttons key=val item=button}}
-           {{sugar_button module="$module" id="$button" view="$view"}}
+           {{sugar_button module="$module" id=$button view="$view"}}
         {{/foreach}}
         </td>
         <td align="right" nowrap>

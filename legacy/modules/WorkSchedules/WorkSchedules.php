@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,6 +48,7 @@ require_once 'modules/Calendar/Calendar.php';
 require_once 'include/DateFunctions/DateFormatter.php';
 require_once 'modules/WorkSchedules/AcceptWorkScheduleValidator.php';
 
+#[\AllowDynamicProperties]
 class WorkSchedules extends Basic
 {
 
@@ -187,11 +188,11 @@ class WorkSchedules extends Basic
         if (empty($this->date_end) || empty($this->date_start)) {
             $GLOBALS['log']->fatal("Date start or date end is empty. Cannot save.Date start: {$this->date_start} date end: {$this->date_end}");
         } else {
-
-            // prevent a mass mailing for recurring meetings created in Calendar module
-            if ( empty($this->id) && !empty($_REQUEST['repeat_type']) && !empty($this->repeat_parent_id) ) {
-                $check_notify = false;
-            }
+            
+                        // prevent a mass mailing for recurring meetings created in Calendar module
+                        if ( empty($this->id) && !empty($_REQUEST['repeat_type']) && !empty($this->repeat_parent_id) ) {
+                            $check_notify = false;
+                        }
 
             $parent_result = parent::save($check_notify);
             $this->saveRepeatly();
@@ -340,7 +341,9 @@ class WorkSchedules extends Basic
                 CalendarUtils::markRepeatDeleted($this);
             }
 
-            if (count($repeatArr) < $limit && isset($repeatArr) && is_array($repeatArr) && count($repeatArr) > 0) {
+            $repeat_arr_count = is_countable($repeatArr) ? count($repeatArr) : 0;
+
+            if ($repeat_arr_count < $limit && isset($repeatArr) && is_array($repeatArr) && $repeat_arr_count > 0) {
                 CalendarUtils::save_repeat_activities($this, $repeatArr);
             }
         }
@@ -351,7 +354,7 @@ class WorkSchedules extends Basic
         require_once 'modules/WorkSchedules/WorkSchedulesACLAccess.php';
         $acl = new WorkSchedulesACLAccess($this, parent::ACLAccess($view, $is_owner));
         return $acl->ACLAccess($view, $is_owner, $in_group);
-
+        
     }
 
     protected function setSupervisorAcceptance()
@@ -425,7 +428,7 @@ class WorkSchedules extends Basic
     public function canBeAccepted() {
         if(!$this->checkOwner() && $this->supervisor_acceptance == 'wait' && $this->ACLAccess('edit')) {
             return true;
-        }
+}
         return false;
     }
 }

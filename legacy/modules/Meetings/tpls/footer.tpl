@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -62,7 +62,7 @@
 <script type='text/javascript' src='{sugar_getjspath file='include/javascript/popup_helper.js'}'></script>
 <script type="text/javascript" src="{sugar_getjspath file='cache/include/javascript/sugar_grp_yui2.js'}"></script>
 <script type="text/javascript" src="{sugar_getjspath file='cache/include/javascript/sugar_grp_yui_widgets.js'}"></script>
-  
+
 <script type="text/javascript">
 {literal}
 SUGAR.meetings = {};
@@ -118,7 +118,7 @@ YAHOO.util.Event.onContentReady("{/literal}{{$form_name}}{literal}",function() {
 <div class="buttons">
 {{if !empty($form) && !empty($form.buttons_footer)}}
    {{foreach from=$form.buttons_footer key=val item=button}}
-      {{sugar_button module="$module" id="$button" location="FOOTER" view="$view"}}
+      {{sugar_button module="$module" id=$button location="FOOTER" view="$view"}}
    {{/foreach}}
 {{else}}
 	{{sugar_button module="$module" id="SAVE" view="$view"}}
@@ -126,4 +126,4 @@ YAHOO.util.Event.onContentReady("{/literal}{{$form_name}}{literal}",function() {
 {{/if}}
 
 {{sugar_button module="$module" id="Audit" view="$view"}}
-</div> 
+</div>
