@@ -3226,7 +3226,7 @@ function repairDBForUpgrade($execute=false, $path='')
     global $dictionary;
     set_time_limit(3600);
 
-    $db = &DBManagerFactory::getInstance();
+    $db = DBManagerFactory::getInstance();
     $sql = '';
     VardefManager::clearVardef();
     require_once('include/ListView/ListView.php');
