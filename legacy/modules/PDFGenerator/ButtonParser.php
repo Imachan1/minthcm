@@ -376,7 +376,7 @@ class ButtonParser {
    }
 
    protected function getRelatedModules() {
-      $db = &DBManagerFactory::getInstance();
+      $db = DBManagerFactory::getInstance();
       $sql = 'SELECT distinct relatedmodule FROM pdftemplates WHERE deleted=0 and type="standard"';
       $r = $db->query($sql);
       while ( $row = $db->fetchByAssoc($r) ) {

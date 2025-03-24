@@ -55,7 +55,7 @@ class PDFTemplatesController extends SugarController
    
     public function __construct()
     {
-      $this->db = &DBManagerFactory::getInstance();
+      $this->db = DBManagerFactory::getInstance();
       parent::__construct();
    }
 

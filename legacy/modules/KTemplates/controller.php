@@ -64,7 +64,7 @@ class KTemplatesController extends SugarController {
 
    function action_templates() {
       global $moduleList;
-      $db = &DBManagerFactory::getInstance();
+      $db = DBManagerFactory::getInstance();
       if ( isset($_POST['rmodule']) && in_array($_POST['rmodule'], $moduleList) ) {
          $rmodule = $_POST['rmodule'];
       }

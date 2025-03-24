@@ -496,7 +496,7 @@ if ($upgradeType !== constant('DCE_INSTANCE')) {
     $zip_from_dir = substr($patchName, 0, -4); // patch folder name (minus ".zip")
     $path = $argv[2]; // custom log file, if blank will use ./upgradeWizard.log
 
-    $db = &DBManagerFactory::getInstance();
+    $db = DBManagerFactory::getInstance();
     $UWstrings = return_module_language('en_us', 'UpgradeWizard');
     $adminStrings = return_module_language('en_us', 'Administration');
     $app_list_strings = return_app_list_strings_language('en_us');
