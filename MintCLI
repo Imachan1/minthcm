@@ -8,5 +8,7 @@ use Symfony\Component\Console\Application;
 $application = new Application();
 
 $application->add(new MintHCM\MintCLI\Commands\Install());
+$application->add(new MintHCM\MintCLI\Commands\DemoDataDumpCommand());
+$application->add(new MintHCM\MintCLI\Commands\DemoDataInstallCommand());
 
 $application->run();
