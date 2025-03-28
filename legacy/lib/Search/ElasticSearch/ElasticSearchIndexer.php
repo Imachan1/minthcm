@@ -140,7 +140,7 @@ class ElasticSearchIndexer extends AbstractIndexer
 
             foreach ($modules as $module) {
                 try {
-                    $instance_id = $GLOBALS['sugar_config']['unique_key'];
+                    $instance_id = static::getIndexPrefix();
                     $lowercaseModule = strtolower($module);
                     $index = $instance_id . '_' . $lowercaseModule;
                     $this->removeIndex($index);
@@ -520,9 +520,8 @@ class ElasticSearchIndexer extends AbstractIndexer
     {
         $params = ['body' => []];
 
-        $instance_id = $GLOBALS['sugar_config']['unique_key'];
         $lowercaseModule = strtolower($module);
-        $this->index = $instance_id . '_' . $lowercaseModule;
+        $this->index = static::getIndexPrefix() . '_' . $lowercaseModule;
         $bean_params_index = 1;
         foreach ($beans as $key => $bean) {
             // MintHCM #122342 START
@@ -684,11 +683,11 @@ class ElasticSearchIndexer extends AbstractIndexer
      */
     private function makeParamsHeaderFromBean(SugarBean $bean): array
     {
-        $instance_id = $GLOBALS['sugar_config']['unique_key'];
+        $index_prefix = static::getIndexPrefix();
         $lowercaseModule = strtolower($bean->module_name);
 
         return [
-            'index' => $instance_id . '_' . $lowercaseModule,
+            'index' => $index_prefix . '_' . $lowercaseModule,
             'id' => $bean->id,
         ];
     }
@@ -710,44 +709,9 @@ class ElasticSearchIndexer extends AbstractIndexer
         }
         $indexer->index();
     }
-    // #TODO Mint Upgrade #129887 START
-    // Do we need these methods? If not, we should consider changing buildWhereClause().
-    /**
-     * Returns the metadata fields for one index.
-     *
-     * @param string $module name of the module
-     *
-     * @return mixed[]|null an associative array with the metadata
-     */
-    // public function getMeta(string $module): ?array
-    // {
-    //     $lowercaseModule = strtolower($module);
-    //     $params = ['index' => $lowercaseModule];
-    //     $results = $this->client->indices()->getMapping($params);
 
-    //     if (!isset($results[$lowercaseModule])) {
-    //         return null;
-    //     }
-
-    //     return $results[$lowercaseModule]['mappings']['_meta'] ?? array();
-    // }
-
-    /**
-     * Retrieves the last time a module was indexed from a metadata stored in the Elasticsearch index.
-     *
-     * @param string $module
-     *
-     * @return string a datetime string
-     */
-    // private function getModuleLastIndexed(string $module): string
-    // {
-    //     $meta = $this->getMeta($module);
-
-    //     if (!isset($meta['last_index'])) {
-    //         throw new RuntimeException("Last index metadata not found.");
-    //     }
-
-    //     return $meta['last_index'];
-    // }
-    // #TODO Mint Upgrade #129887 END
+    public static function getIndexPrefix() : string
+    {
+        return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
+}
 }
