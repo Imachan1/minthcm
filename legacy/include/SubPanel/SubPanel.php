@@ -174,7 +174,7 @@ class SubPanel
         $lv_subpanel_class = 'ListViewSubPanel';
         if(file_exists('custom/modules/'.$this->parent_module.'/views/view.subpanel.php')){
             require_once 'custom/modules/'.$this->parent_module.'/views/view.subpanel.php';
-            $lv_subpanel_class = $this->parent_module.'ListViewSubPanel';
+            $lv_subpanel_class = 'Custom'.$this->parent_module.'ListViewSubPanel';
         } else if(file_exists('modules/'.$this->parent_module.'/views/view.subpanel.php')) {
             require_once 'modules/'.$this->parent_module.'/views/view.subpanel.php';
             $lv_subpanel_class = $this->parent_module.'ListViewSubPanel';

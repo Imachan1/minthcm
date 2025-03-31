@@ -6,8 +6,7 @@ if (! defined('sugarEntry') || ! sugarEntry) {
 
 class MeetingsListViewSubPanel extends ListViewSubPanel
 {
-    //FIXME CR - tak samo jak dla rozmów, wywołaj parenta
-    //Zrób też format kodu jako że to nasza klasa
+
     public function process_dynamic_listview_rows($data, $parent_data, $smartyTemplateSection, $html_varName, $subpanel_def)
     {
         global $subpanel_item_count;
@@ -37,8 +36,8 @@ class MeetingsListViewSubPanel extends ListViewSubPanel
         $this->smartyTemplate->assign('CHECKALL', SugarThemeRegistry::current()->getImage('blank', '', 1, 1, ".gif", ''));
         //$this->smartyTemplate->assign("BG_CLICK", $click_bg);
         $subpanel_item_count = 0;
-        $oddRow              = true;
-        $count               = 0;
+        $oddRow = true;
+        $count = 0;
         reset($data);
 
         //GETTING OFFSET
@@ -59,7 +58,7 @@ class MeetingsListViewSubPanel extends ListViewSubPanel
 
         foreach ($subpanel_list as $this_subpanel) {
             if ($this_subpanel->is_fill_in_additional_fields()) {
-                $fill_additional_fields[]                          = $this_subpanel->bean_name;
+                $fill_additional_fields[] = $this_subpanel->bean_name;
                 $fill_additional_fields[$this_subpanel->bean_name] = true;
             }
         }
@@ -85,7 +84,7 @@ class MeetingsListViewSubPanel extends ListViewSubPanel
                 $aItem->parent_name = $parent_data[$aItem->id]['parent_name'];
                 if (! empty($parent_data[$aItem->id]['parent_name_owner'])) {
                     $aItem->parent_name_owner = $parent_data[$aItem->id]['parent_name_owner'];
-                    $aItem->parent_name_mod   = $parent_data[$aItem->id]['parent_name_mod'];
+                    $aItem->parent_name_mod = $parent_data[$aItem->id]['parent_name_mod'];
                 }
             }
             $fields = $aItem->get_list_view_data();
@@ -151,7 +150,7 @@ class MeetingsListViewSubPanel extends ListViewSubPanel
             /* END - SECURITY GROUPS */
 
             //get data source name
-            $linked_field     = $thepanel->get_data_source_name();
+            $linked_field = $thepanel->get_data_source_name();
             $linked_field_set = $thepanel->get_data_source_name(true);
             static $count;
             if (! isset($count)) {
@@ -165,12 +164,12 @@ class MeetingsListViewSubPanel extends ListViewSubPanel
              */
             //pass is_owner, in_group...vars defined above
             $field_acl['DetailView'] = $aItem->ACLAccess('DetailView', $aclaccess_is_owner, $aclaccess_in_group);
-            $field_acl['ListView']   = $aItem->ACLAccess('ListView', $aclaccess_is_owner, $aclaccess_in_group);
-            $field_acl['EditView']   = $aItem->ACLAccess('EditView', $aclaccess_is_owner, $aclaccess_in_group);
+            $field_acl['ListView'] = $aItem->ACLAccess('ListView', $aclaccess_is_owner, $aclaccess_in_group);
+            $field_acl['EditView'] = $aItem->ACLAccess('EditView', $aclaccess_is_owner, $aclaccess_in_group);
             /* END - SECURITY GROUPS */
             foreach ($thepanel->get_list_fields() as $field_name => $list_field) {
                 //add linked field attribute to the array.
-                $list_field['linked_field']     = $linked_field;
+                $list_field['linked_field'] = $linked_field;
                 $list_field['linked_field_set'] = $linked_field_set;
 
                 $usage = empty($list_field['usage']) ? '' : $list_field['usage'];
@@ -184,18 +183,18 @@ class MeetingsListViewSubPanel extends ListViewSubPanel
                         $list_field['name'] = $field_name;
 
                         $module_field = $field_name . '_mod';
-                        $owner_field  = $field_name . '_owner';
+                        $owner_field = $field_name . '_owner';
                         if (! empty($aItem->$module_field)) {
-                            $list_field['owner_id']     = $aItem->$owner_field;
+                            $list_field['owner_id'] = $aItem->$owner_field;
                             $list_field['owner_module'] = $aItem->$module_field;
                         } else {
-                            $list_field['owner_id']     = false;
+                            $list_field['owner_id'] = false;
                             $list_field['owner_module'] = false;
                         }
                         if (isset($list_field['alias'])) {
                             $list_field['name'] = $list_field['alias'];
                             // Clone field def from origin field def to alias field def
-                            $alias_field_def         = $aItem->field_defs[$field_name];
+                            $alias_field_def = $aItem->field_defs[$field_name];
                             $alias_field_def['name'] = $list_field['alias'];
                             // Add alias field def into bean to can render field in subpanel
                             $aItem->field_defs[$list_field['alias']] = $alias_field_def;
@@ -206,11 +205,11 @@ class MeetingsListViewSubPanel extends ListViewSubPanel
                         } else {
                             $list_field['name'] = $field_name;
                         }
-                        $list_field['fields']             = $fields;
-                        $list_field['module']             = $aItem->module_dir;
+                        $list_field['fields'] = $fields;
+                        $list_field['module'] = $aItem->module_dir;
                         $list_field['start_link_wrapper'] = $this->start_link_wrapper;
-                        $list_field['end_link_wrapper']   = $this->end_link_wrapper;
-                        $list_field['subpanel_id']        = $this->subpanel_id;
+                        $list_field['end_link_wrapper'] = $this->end_link_wrapper;
+                        $list_field['subpanel_id'] = $this->subpanel_id;
                         $list_field += $field_acl;
                         if (isset($aItem->field_defs[strtolower($list_field['name'])])) {
                             require_once 'include/SugarFields/SugarFieldHandler.php';
@@ -220,7 +219,7 @@ class MeetingsListViewSubPanel extends ListViewSubPanel
                             $vardef = $aItem->field_defs[strtolower($list_field['name'])];
                             if (isset($vardef['type'])) {
                                 $fieldType = isset($vardef['custom_type']) ? $vardef['custom_type'] : $vardef['type'];
-                                $tmpField  = SugarFieldHandler::getSugarField($fieldType, true);
+                                $tmpField = SugarFieldHandler::getSugarField($fieldType, true);
                             } else {
                                 $tmpField = null;
                             }
@@ -302,8 +301,8 @@ class MeetingsListViewSubPanel extends ListViewSubPanel
             $count++;
         }
 
-        if($subpanel_def->bean_name == 'User') {
-            if(!empty($widget_contents)) {
+        if ($subpanel_def->bean_name == 'User') {
+            if (! empty($widget_contents)) {
                 $parent_id = isset($subpanel_def->parent_bean->id) ? $subpanel_def->parent_bean->id : $_REQUEST['record'];
                 $widget_contents = $this->getWorkScheduleTypes($widget_contents, $parent_id);
             }
@@ -313,10 +312,11 @@ class MeetingsListViewSubPanel extends ListViewSubPanel
         $this->smartyTemplate->assign('ROWS_BUTTONS', $button_contents);
     }
 
-    protected function getWorkScheduleTypes($widget_contents, $parent_id) {
+    protected function getWorkScheduleTypes($widget_contents, $parent_id)
+    {
         $user_ids = '(';
-        foreach($widget_contents as $key => $value) {
-            $user_ids .= "'". $key . "'" . ",";
+        foreach ($widget_contents as $key => $value) {
+            $user_ids .= "'" . $key . "'" . ",";
         }
         $user_ids = rtrim($user_ids, ',');
         $user_ids .= ')';
@@ -332,28 +332,29 @@ class MeetingsListViewSubPanel extends ListViewSubPanel
             OR
             (workschedules.date_start <= meetings.date_start AND workschedules.date_end >= meetings.date_end)
         )
-        AND workschedules.deleted = 0 
+        AND workschedules.deleted = 0
         ORDER BY workschedules.date_end ASC";
         $db = DBManagerFactory::getInstance();
         $result = $db->query($sql);
         $ws_types = [];
-        while($rows = $db->fetchByAssoc($result)) {
+        while ($rows = $db->fetchByAssoc($result)) {
             $ws_types[$rows['user_id']][] = $rows['workschedule_type'];
         }
 
         $ws_types_names = $this->translateWorkScheduleTypes($ws_types);
 
-        foreach($ws_types_names as $key => $value) {
+        foreach ($ws_types_names as $key => $value) {
             $widget_contents[$key]['workschedule_type'] = $value;
         }
 
         return $widget_contents;
     }
 
-    protected function translateWorkScheduleTypes($ws_types) {
+    protected function translateWorkScheduleTypes($ws_types)
+    {
         global $app_list_strings;
-        foreach($ws_types as $key => $values) {
-            foreach($values as &$value) {
+        foreach ($ws_types as $key => $values) {
+            foreach ($values as &$value) {
                 $value = $app_list_strings['workschedule_type_list'][$value] ?? $value;
             }
             $ws_types[$key] = implode(", ", $values);
