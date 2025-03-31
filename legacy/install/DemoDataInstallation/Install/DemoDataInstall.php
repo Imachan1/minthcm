@@ -25,7 +25,7 @@ class DemoDataInstall
 
     protected function pushDates($table_name)
     {  
-        $sql = "SELECT DISTINCT(COLUMN_NAME) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{$table_name}' AND (DATA_TYPE = 'datetime' OR DATA_TYPE = 'date')"; 
+        $sql = "SELECT DISTINCT(COLUMN_NAME) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{$table_name}' AND (DATA_TYPE = 'datetime' OR DATA_TYPE = 'date') AND TABLE_SCHEMA='{$this->DDService->getSchemaName()}'";
         $result = $this->mysql_connection->query($sql);
         if (!$result) {
             $this->logger->error("SQL error \n {$this->mysql_connection->error}");
@@ -34,7 +34,7 @@ class DemoDataInstall
 
         $fields = $result->fetch_all(MYSQLI_ASSOC);
         foreach($fields as $field) {
-            $sql = "SELECT MIN({$field['COLUMN_NAME']}) FROM {$table_name}";
+		    $sql = "SELECT MIN({$field['COLUMN_NAME']}) FROM {$table_name}";
             $result = $this->mysql_connection->query($sql);
             if (!$result) {
                 $this->logger->error("SQL error \n {$this->mysql_connection->error}");
