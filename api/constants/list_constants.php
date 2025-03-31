@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+
 global $list_config;
 
 $list_config = array(
@@ -144,11 +145,16 @@ $list_config = array(
     ),
 );
 
-$files = scandir(__DIR__);
+chdir('../');
+$files = scandir('custom/api/constants/list_constants/');
 if (is_array($files)) {
-    $files = array_diff($files, array('.', '..', 'config.php'));
+    $files = array_diff($files, array('.', '..'));
     foreach ($files as $file) {
-        include __DIR__ . '/' . $file;
+        if(substr($custom_file, -4) !== '.php') {
+            continue;
+        }
+        include 'custom/api/constants/list_constants/' . $file;
     }
 }
+chdir('api/');
 unset($files);

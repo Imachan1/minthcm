@@ -11,7 +11,7 @@
         },
         "files": [
             "configs/mint/config.php",
-            "configs/list/config.php"
+            "constants/list_constants.php"
         ]
     },
     "require": {
