@@ -19,12 +19,14 @@ $(document).ready(function () {
     });
     $(".users-group-select").on("click", function (e) {
         if(e.target == this) {
+            showLoadingScreen('Calendar', viewTools.language.get('app_strings', 'LBL_LOADING'));
             selectGroup($(this).attr('value'));
         }
     });
-    $('#sharedCalUsersApplyBtn').on('click', function () {
+    $("#sharedCalUsersSelectBtn").on("click", function () {
         unselectGroup();
     });
+
 });
 
 function showCreateGroupModal() {
@@ -35,6 +37,7 @@ function showCreateGroupModal() {
         if($('#group-creation-group-name').val().trim() == '') {
             $('#group-creation-empty-group-name').show();
         } else {
+            $('#shared_cal').submit();
             saveGroup($('#group-creation-group-name').val());
             $('.modal-group-creation').modal('hide');
         }
@@ -217,4 +220,33 @@ function deleteGroupConfirmation(group_name) {
         .dialog("open")
         .show();
 }
+
+function unselectGroup() {
+    var user_ids = getUserIds();
+    viewTools.api.callController({
+        module: "Calendar",
+        action: "unselectGroup",
+        dataType: "json",
+        async: false,
+        dataPOST: {
+            user_ids: user_ids,
+        },
+        callback: function (call_constroller_data) {
+            if (
+                call_constroller_data == false ||
+                call_constroller_data == null
+            ) {
+                console.error(call_constroller_data);
+                viewTools.GUI.statusBox.showStatus(
+                    SUGAR.language.get("app_strings", "LBL_ERROR"),
+                    "error",
+                    3000
+                );
+            } else {
+                location.reload();
+            }
+        },
+    });
+}
+
 
