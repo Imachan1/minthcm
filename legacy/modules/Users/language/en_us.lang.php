@@ -674,5 +674,6 @@ $mod_strings = array(
     'LNK_LIST_INBOUND_EMAIL_ACCOUNTS' => 'Inbound Email Accounts',
     'LNK_EXTERNAL_OAUTH_CONNECTIONS' => 'External OAuth Connections',
     'LBL_BIRTHDATE' => 'Birthdate',
+    'LBL_LIST_WORKSCHEDULE_TYPE' => 'Work Schedules',
 
 ); // END STRINGS DEFS
