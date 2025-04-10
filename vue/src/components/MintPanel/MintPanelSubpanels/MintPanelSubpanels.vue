@@ -41,17 +41,17 @@
                                         return_action: 'DetailView',
                                         parent_id: store.bean.id,
                                         return_id: store.bean.id,
-                                        return_module: store.bean.module_name,
-                                        parent_type: store.bean.module_name,
+                                        return_module: store.bean.module,
+                                        parent_type: store.bean.module,
                                         parent_name: store.bean.attributes.name,
-                                        candidate_id: store.bean.module_name === 'Candidates' ? store.bean.id : null,
+                                        candidate_id: store.bean.module === 'Candidates' ? store.bean.id : null,
                                         candidate_name:
-                                            store.bean.module_name === 'Candidates' ? store.bean.attributes.name : null,
-                                        employee_id: store.bean.module_name === 'Employees' ? store.bean.id : null,
+                                            store.bean.module === 'Candidates' ? store.bean.attributes.name : null,
+                                        employee_id: store.bean.module === 'Employees' ? store.bean.id : null,
                                         employee_name:
-                                            store.bean.module_name === 'Employees' ? store.bean.attributes.name : null,
+                                            store.bean.module === 'Employees' ? store.bean.attributes.name : null,
                                         employees_name:
-                                            store.bean.module_name === 'Employees' ? store.bean.attributes.name : null,
+                                            store.bean.module === 'Employees' ? store.bean.attributes.name : null,
                                     },
                                 })
                         "

@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { useModulesStore } from '@/store/modules'
 import axios from 'axios'
 import { useLanguagesStore } from '@/store/languages'
+import { useBean } from '@/composables/useBean'
 
 interface Panel {
     component: string
@@ -16,94 +17,42 @@ interface RecordViewDefs {
     panels: { [key: string]: Panel }
 }
 
-export interface Bean {
-    id: string
-    module_name: string
-    acl_access: { [key: string]: boolean }
-    attributes: { [key: string]: any }
-    syncAttributes: { [key: string]: any }
-    dirtyFields: Set<string>
-}
-
 export const useRecordViewStore = defineStore('recordview', () => {
+    const modulesStore = useModulesStore()
+
     const route = useRoute()
 
-    const defs = computed<RecordViewDefs | []>(() => {
-        const modules = useModulesStore()
-        const module = modules.currentModule
-        if (!module) {
+    const defs = computed<RecordViewDefs>(() => {
+        if (!modulesStore.currentModule) {
             return []
         }
-        const recordViewDefs = module.metadata.RecordView
+        const recordViewDefs = modulesStore.currentModule.metadata.RecordView
         if (!recordViewDefs || typeof recordViewDefs !== 'object') {
             return []
         }
         return recordViewDefs
     })
 
-    const bean = ref<Bean>({
-        id: '',
-        module_name: '',
-        acl_access: {},
-        attributes: {},
-        syncAttributes: {},
-        dirtyFields: new Set(),
+    const module = computed(() => {
+        if (typeof route.params.module === 'string') {
+            return route.params.module
+        }
+        return ''
     })
 
-    const isBeanChanged = computed(() => {
-        return Array.from(bean.value.dirtyFields).some((f) => bean.value.attributes[f] !== bean.value.syncAttributes[f])
+    const recordId = computed(() => {
+        if (typeof route.params.id === 'string') {
+            return route.params.id
+        }
+        return ''
     })
+
+    const bean = ref<ReturnType<typeof useBean>>(useBean(module.value, recordId.value))
 
     function resetBean() {
-        bean.value = {
-            id: '',
-            module_name: '',
-            acl_access: {},
-            attributes: {},
-            syncAttributes: {},
-            dirtyFields: new Set(),
-        }
+        bean.value = useBean(module.value, recordId.value)
+        view.value = 'detail'
         subpanelsData.value = null
-    }
-
-    async function fetchBean() {
-        const response = await axios.get(`api/${route.params.module}/Get/${route.params.id}`)
-        if (response.status === 200 && response.data) {
-            bean.value = {
-                id: response.data.id,
-                module_name: response.data.module_name,
-                acl_access: response.data.acl_access,
-                attributes: { ...response.data },
-                syncAttributes: { ...response.data },
-                dirtyFields: new Set(),
-            }
-        }
-    }
-
-    async function saveBean() {
-        const response = await axios.patch(`api/${bean.value.module_name}/Update/${bean.value.id}`, {
-            record_data: Object.fromEntries(
-                Array.from(bean.value.dirtyFields)
-                    .filter((f) => bean.value.attributes[f] !== bean.value.syncAttributes[f])
-                    .map((f) => [f, bean.value.attributes[f]]),
-            ),
-        })
-
-        if ([200, 201].includes(response.status) && response.data) {
-            bean.value = {
-                id: response.data.id,
-                module_name: response.data.module_name,
-                acl_access: response.data.acl_access,
-                attributes: { ...response.data },
-                syncAttributes: { ...response.data },
-                dirtyFields: new Set(),
-            }
-        }
-        return response
-    }
-
-    async function deleteBean() {
-        return await axios.delete(`api/${bean.value.module_name}/${bean.value.id}`)
     }
 
     const view = ref<'detail' | 'edit' | 'list'>('detail')
@@ -129,9 +78,8 @@ export const useRecordViewStore = defineStore('recordview', () => {
     //DEV: defs - (await axios.get('api/init')).data.modules.Candidates.metadata.Subpanels
     //DEV: data - (await axios.get('api/Candidates/subpanel/meetings/5ad6d7fd-e141-0a2c-4944-6449a8e50ad3')).data
     const subpanels = computed(() => {
-        const modules = useModulesStore()
         const languages = useLanguagesStore()
-        const module = modules.currentModule
+        const module = modulesStore.currentModule
         if (!module) {
             return []
         }
@@ -195,11 +143,9 @@ export const useRecordViewStore = defineStore('recordview', () => {
         })
     }
 
-    function updateField(field: string, additionalFields: string[]) {
-        bean.value.dirtyFields.add(field)
-        if (Array.isArray(additionalFields)) {
-            additionalFields.forEach((field) => bean.value.dirtyFields.add(field))
-        }
+    function updateField(field: string, value: any, additionalFields: { [fieldName: string]: any }) {
+        const updatedValues = { [field]: value, ...(additionalFields || {}) }
+        bean.value.updateFields(updatedValues)
     }
 
     return {
@@ -208,11 +154,7 @@ export const useRecordViewStore = defineStore('recordview', () => {
         inlineEditField,
         inlineEditFieldSaving,
         bean,
-        isBeanChanged,
         resetBean,
-        fetchBean,
-        saveBean,
-        deleteBean,
         panels,
         subpanels,
         fetchSubpanelsData,

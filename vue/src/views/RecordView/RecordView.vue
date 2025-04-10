@@ -18,10 +18,9 @@ const languages = useLanguagesStore()
 const backend = useBackendStore()
 
 store.resetBean()
-store.$reset()
 
 onMounted(() => {
-    store.fetchBean()
+    store.bean.init()
 })
 
 watch(

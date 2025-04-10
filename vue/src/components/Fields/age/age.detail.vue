@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
+import { computed } from 'vue'
 import { DateTime } from 'luxon'
 import { FieldVardef } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'

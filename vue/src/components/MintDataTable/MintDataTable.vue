@@ -18,7 +18,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import Field from '@/components/Fields/Field.vue'
 
 interface Props {

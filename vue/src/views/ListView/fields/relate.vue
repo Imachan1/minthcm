@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 
 const DEBOUNCE_DELAY_MS = 500

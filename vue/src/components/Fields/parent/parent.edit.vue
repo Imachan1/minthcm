@@ -1,17 +1,19 @@
 <template>
     <div class="parent-container">
-    <v-autocomplete
+        <v-autocomplete
             :items="languages.getList(props.defs?.options)"
             :label="languages.label('LBL_ASSIGNED_TO_MODULE')"
-        variant="outlined"
-        density="compact"
-        hide-details
+            variant="outlined"
+            density="compact"
+            hide-details
+            :error="props.state === 'error'"
             v-model="parentModel"
+            v-bind="$attrs"
             item-value="value"
             item-title="key"
-        @keyup.enter="$emit('inlineEditSave')"
-        @keyup.esc="$emit('inlineEditCancel')"
-    />
+            @keyup.enter="$emit('inlineEditSave')"
+            @keyup.esc="$emit('inlineEditCancel')"
+        />
         <v-menu v-model="menuOpen" :location="'bottom'">
             <template v-slot:activator="val">
                 <v-text-field
@@ -33,7 +35,7 @@
                             />
                             <v-icon v-else icon="mdi-magnify" />
                         </v-fab-transition>
-</template>
+                    </template>
                 </v-text-field>
             </template>
             <v-list>
@@ -70,23 +72,16 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, ref, defineEmits } from 'vue'
+import { computed, ref } from 'vue'
 import axios from 'axios'
-import { FieldVardef } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'
 import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import he from 'he'
+import { FieldProps } from '../Field.model'
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const emit = defineEmits(['update:modelValue'])
 
 const DEBOUNCE_TIME = 500
@@ -111,9 +106,8 @@ const recordModel = computed({
         return currentRecordItem.value
     },
     set(newVal) {
-        props.data.bean[props.defs.id_name] = newVal.id
         currentRecordItem.value = newVal
-        emit('update:modelValue', [props.defs.id_name])
+        updateValue()
     },
 })
 const currentTypeItem = ref('')
@@ -130,9 +124,15 @@ const parentModel = computed({
         props.data.bean[props.defs.type_name] = selectedKey
         currentTypeItem.value = selectedKey
         recordModel.value = { id: '', name: '' }
-        emit('update:modelValue', [props.defs.type_name])
+        updateValue()
     },
 })
+function updateValue() {
+    emit('update:modelValue', recordModel.value.name, {
+        [props.defs.id_name]: recordModel.value.id,
+        [props.defs.type_name]: parentModel.value,
+    })
+}
 const isLoading = ref(false)
 async function fetchRecordItems(e) {
     if (recordModel.value.name.length >= 3) {
@@ -149,20 +149,20 @@ async function fetchRecordItems(e) {
             clearTimeout(debounceTimeout)
         }
         debounceTimeout = window.setTimeout(async () => {
-    const response = await axios.post(`api/${props.data.bean.parent_type}`, {
-        offset: 0,
+            const response = await axios.post(`api/${props.data.bean.parent_type}`, {
+                offset: 0,
                 sortBy: 'name',
                 filters: [filter],
-    })
-    if (response.data?.results?.length) {
-        items.value = response.data.results.sort((a, b) => a.name.localeCompare(b.name, 'pl'))
-    }
+            })
+            if (response.data?.results?.length) {
+                items.value = response.data.results.sort((a, b) => a.name.localeCompare(b.name, 'pl'))
+            }
             isLoading.value = false
         }, DEBOUNCE_TIME)
     } else {
         items.value = []
-}
     }
+}
 
 function openRelatePopup() {
     popupsStore.showPopup({
@@ -177,7 +177,7 @@ function openRelatePopup() {
                 recordModel.value = {
                     id: data.nameToValueArray[props.defs.id_name],
                     name: data.nameToValueArray[props.defs.name],
-    }
+                }
             },
             onClose: () => {},
         },
@@ -188,8 +188,8 @@ function clickOnMenuItem(item) {
     recordModel.value = {
         id: item.id,
         name: item.name,
-        }
     }
+}
 
 function getHighlightedText(text: string, query: string) {
     query = he.encode(query)

@@ -4892,3 +4892,7 @@ $app_list_strings['source_list'] = array(
 $app_strings['LBL_ACCEPT_INLINE'] = "Accept";
 $app_strings['LBL_NOTIFICATIONS_NONE'] = 'None';
 $app_strings['LBL_ES_ELASTIC_SEARCH_ENGINE'] = 'Elastic Search Engine';
+
+$app_strings['LBL_REQUIRED'] = 'Required';
+$app_strings['ERR_FIELD_REQUIRED'] = 'This field is required';
+$app_strings['ERR_NOT_UNIQUE'] = 'Record is not unique';

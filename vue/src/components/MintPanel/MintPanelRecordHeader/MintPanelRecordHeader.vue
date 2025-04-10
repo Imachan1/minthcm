@@ -5,19 +5,15 @@
             <div class="name-container">
                 <div class="module-name">{{ modules?.currentModule?.label }}</div>
                 <div class="bean-name">
-                    <div>{{ store.bean.syncAttributes.name }}</div>
+                    <div>{{ store.bean.name }}</div>
                     <MintButton
                         :icon="isFavorite ? 'mdi-heart-circle' : 'mdi-heart-outline'"
                         variant="text"
                         size="small"
                         @click="
                             isFavorite
-                                ? favorites.removeFromFavorites(store.bean.module_name, store.bean.id)
-                                : favorites.addToFavorites(
-                                      store.bean.module_name,
-                                      store.bean.id,
-                                      store.bean.syncAttributes.name,
-                                  )
+                                ? favorites.removeFromFavorites(store.bean.module, store.bean.id)
+                                : favorites.addToFavorites(store.bean.module, store.bean.id, store.bean.name)
                         "
                     />
                 </div>
@@ -44,8 +40,7 @@
                         :defs="row[n - 1]"
                         :label="languages.label(row[n - 1].label, modules.currentModule?.name)"
                         :data="{ bean: store.bean.attributes }"
-                        v-model="store.bean.syncAttributes[row[n - 1].name]"
-                        @update:modelValue="(additionalFields) => store.updateField(row[n - 1].name, additionalFields)"
+                        :modelValue="store.bean.syncAttributes[row[n - 1].name]"
                     />
                 </div>
             </div>
@@ -54,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useFavoritesStore } from '@/store/favorites'
@@ -86,18 +81,18 @@ const actions = computed<MenuListItem[]>(() => {
             icon: 'mdi-history',
             onClick: () =>
                 window.open(
-                    `legacy/index.php?module=Audit&action=Popup&record=${store.bean.id}&module_name=${store.bean.module_name}`,
-                    `Audit_popup_window_record_${store.bean.id}_module_name_${store.bean.module_name}`,
-                    'width=800,height=800,resizable=1,scrollbars=1',
+                    `legacy/index.php?module=Audit&action=Popup&record=${store.bean.id}&module_name=${store.bean.module}`,
+                    `Audit_popup_window_record_${store.bean.id}_module_name_${store.bean.module}`,
+                    'width=800,height=800,resizable=1,scrollbars=1'
                 ),
         },
     ]
-    if (store.bean.acl_access?.delete === true) {
+    if (store.bean.aclAccess?.delete === true) {
         actions.push({
             title: languages.label('LBL_DELETE_BUTTON_LABEL'),
             icon: 'mdi-trash-can-outline',
             onClick: async () => {
-                await store.deleteBean()
+                await store.bean.markDeleted()
                 router.push({ name: 'list', params: { module: modules.currentModule?.name } })
             },
         })
@@ -111,7 +106,7 @@ const goBack = () => {
     }
     router.back()
 }
-const isFavorite = computed(() => favorites.isFavorite(store.bean.module_name, store.bean.id))
+const isFavorite = computed(() => favorites.isFavorite(store.bean.module, store.bean.id))
 </script>
 
 <style scoped lang="scss">
