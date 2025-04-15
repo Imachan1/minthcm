@@ -4934,3 +4934,7 @@ $app_strings['LBL_ES_ELASTIC_SEARCH_ENGINE'] = 'Elastic Search Engine';
 $app_strings['LBL_ACCEPT_INLINE'] = "Accept";
 $app_strings['LBL_NOTIFICATIONS_NONE'] = 'None';
 $app_strings['LBL_ES_ELASTIC_SEARCH_ENGINE'] = 'Elastic Search Engine';
+
+$app_strings['twsdashlet_show'] = 'Show';
+$app_strings['twsdashlet_edit'] = 'Edit';
+$app_strings['twsdashlet_add_time'] = 'Add time';
