@@ -4891,3 +4891,7 @@ $app_list_strings['source_list'] = array(
 );
 $app_strings['LBL_ACCEPT_INLINE'] = "Accept";
 $app_strings['LBL_NOTIFICATIONS_NONE'] = 'None';
+
+$app_strings['twsdashlet_show'] = 'Show';
+$app_strings['twsdashlet_edit'] = 'Edit';
+$app_strings['twsdashlet_add_time'] = 'Add time';
