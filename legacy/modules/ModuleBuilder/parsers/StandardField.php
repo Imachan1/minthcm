@@ -141,11 +141,9 @@ class StandardField extends DynamicField
                 unset($this->custom_def[$property]);
             }
 
-            // eVolpe #136126 start
             if ($property === 'options' && empty($newDef[$property])) {
                 continue;
             }
-            // eVolpe #136126 end
 
             //Handle overrides of out of the box definitions with empty
             if (!empty($this->base_def[$property]) && !isset($newDef[$property])) {

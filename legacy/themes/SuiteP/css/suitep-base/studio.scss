@@ -86,7 +86,7 @@
 }
 
 .le_row {
-  background: #e0e0e0;
+  background: $color-68;
   border-radius: $border-radius-base;
 }
 
@@ -163,7 +163,7 @@ body > .le_panel .le_edit, #toolbox .le_panel .le_edit {
 }
 
 .le_field {
-  color: #145d7b;
+  color: $lm-secondary-accent;
   background: $main-bg;
   cursor: all-scroll;
 }
