@@ -45,7 +45,7 @@
 
 namespace SuiteCRM\Search\AOD;
 
-// TODO EV: DO usunięcia
+// TODO: TO delete
 use ACLController;
 use BeanFactory;
 use SecurityGroup;
