@@ -42,10 +42,6 @@ class ElasticSearchReindex extends Command
 
         $io->title("Reindexing ElasticSearch\n");
 
-        $QH = $this->getHelper('question');
-        $question = new \MintHCM\MintCLI\Questions\ElasticSearchReindex($QH, $input, $output);
-        $demoData = $question->ask();
-
         try {
             $indexer = new ElasticSearchIndexer();
             $indexer->index();
