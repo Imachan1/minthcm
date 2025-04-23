@@ -1021,6 +1021,10 @@ $dictionary['User'] = array(
             'label' => 'LBL_WORKSCHEDULE_TYPE',
             'type' => 'varchar',
             'source' => 'non-db',
+            'audited' => false,
+            'mass_update' => false,
+            'reportable' => false,
+            'importable' => false,
         )
     ),
     'indices' => array(
