@@ -1,5 +1,5 @@
 <template>
-    <div class="header-panel">
+    <div v-if="!store.bean.isNew" class="header-panel">
         <div class="flex-container">
             <MintButton icon="mdi-arrow-left" @click="goBack" />
             <div class="name-container">
@@ -45,6 +45,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div v-else>
+        <h1>{{ modules?.currentModule?.label }}</h1>
     </div>
 </template>
 

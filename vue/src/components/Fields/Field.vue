@@ -53,7 +53,7 @@ const errorMessage = computed(() => {
         return languagesStore.label(props.errorMessage, modulesStore.currentModule?.name)
     }
     if (props.isDirty && props.required && !props.modelValue) {
-        return languagesStore.label('ERR_REQUIRED_FIELD', modulesStore.currentModule?.name)
+        return languagesStore.label('ERR_FIELD_REQUIRED', modulesStore.currentModule?.name)
     }
     return ''
 })

@@ -126,7 +126,11 @@ class ModuleController
         $disable_date_format = $GLOBALS['disable_date_format'];
         $GLOBALS['disable_date_format'] = true;
 
-        $bean = BeanFactory::getBean($module, $record_id);
+        if (!empty($record_id)) {
+            $bean = BeanFactory::getBean($module, $record_id);
+        } else {
+            $bean = BeanFactory::newBean($module);
+        }
 
         if (empty($bean) || $bean->id !== $record_id) {
             return $response->withStatus(404);
@@ -153,7 +157,7 @@ class ModuleController
         date_default_timezone_set($current_time_zone);
         $GLOBALS['disable_date_format'] = $disable_date_format;
 
-        if (!empty($bean) && $bean->id === $record_id) {
+        if (!empty($bean) && ($bean->id === $record_id || empty($record_id))) {
             $record_data = $this->mergeRecordData($bean);
         }
 
@@ -175,7 +179,11 @@ class ModuleController
         $disable_date_format = $GLOBALS['disable_date_format'];
         $GLOBALS['disable_date_format'] = true;
 
-        $bean = BeanFactory::getBean($module,$record_id);
+        if (!empty($record_id)) {
+            $bean = BeanFactory::getBean($module,$record_id);
+        } else {
+            $bean = BeanFactory::newBean($module);
+        }
 
         date_default_timezone_set($current_time_zone);
         $GLOBALS['disable_date_format'] = $disable_date_format;
@@ -201,11 +209,16 @@ class ModuleController
         $attributes = $request->getAttribute("attributes");
         $triggerFields = $request->getAttribute("triggerFields");
         chdir('../legacy/');
-        $bean = BeanFactory::getBean($module, $record_id);
-        if (empty($bean->id)) {
-            $response = $response->withStatus(404);
-            return $response;
+        if (!empty($record_id)) {
+            $bean = BeanFactory::getBean($module, $record_id);
+            if (empty($bean->id)) {
+                $response = $response->withStatus(404);
+                return $response;
+            }
+        } else {
+            $bean = BeanFactory::newBean($module);
         }
+
         foreach ($attributes as $field => $value) {
             $bean->{$field} = $value;
         }

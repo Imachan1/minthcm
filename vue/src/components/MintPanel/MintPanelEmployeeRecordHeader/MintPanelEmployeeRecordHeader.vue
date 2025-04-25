@@ -1,108 +1,110 @@
 <template>
-    <v-snackbar v-model="appraisalSnackBar" color="secondary" location="top">
-        {{ languages.label('LBL_SUCCESS_ADDING_APPRAISAL_JOB', 'Candidatures') }}
-    </v-snackbar>
-    <v-dialog v-model="appraisalDialog" width="400">
-        <v-card class="appraisal-name">
-            <v-card-title>
-                <h3>{{ languages.label('LBL_CREATE_APPRAISAL', modules.currentModule?.name) }}</h3>
-            </v-card-title>
-            <v-card-text>
-                <Field
-                    :view="'edit'"
-                    :defs="{
-                        type: 'varchar',
-                    }"
-                    :label="languages.label('LBL_NAME', modules.currentModule?.name)"
-                    v-model="appraisalName"
-                />
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer />
-                <MintButton
-                    :text="languages.label('LBL_CANCEL_BUTTON_TITLE', modules.currentModule?.name)"
-                    @click="appraisalDialog = false"
-                />
-                <MintButton
-                    :disabled="!appraisalName.length"
-                    class="ml-2"
-                    variant="primary"
-                    :text="languages.label('LBL_CREATE_BUTTON_LABEL', modules.currentModule?.name)"
-                    @click="createAppraisal"
-                />
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
-    <div class="header-panel">
-        <div class="flex-container">
-            <MintButton icon="mdi-arrow-left" @click="goBack" />
-            <v-avatar
-                v-if="store.bean.syncAttributes.photo"
-                class="photo"
-                size="120"
-                :image="`legacy/index.php?entryPoint=download&id=${store.bean.id}_photo&type=Users`"
-                variant="outlined"
-                color="surface"
-            />
-            <v-avatar v-else class="photo" size="120" color="secondary">
-                <h1>
-                    {{
-                        (store.bean.syncAttributes?.first_name?.[0] || '') +
-                        (store.bean.syncAttributes?.last_name?.[0] || '')
-                    }}
-                </h1>
-            </v-avatar>
-            <div class="name-container">
-                <div class="module-name">{{ modules?.currentModule?.label }}</div>
-                <div class="bean-name">
-                    <div>{{ store.bean.name }}</div>
-                    <MintButton
-                        :icon="isFavorite ? 'mdi-heart-circle' : 'mdi-heart-outline'"
-                        variant="text"
-                        size="small"
-                        @click="
-                            isFavorite
-                                ? favorites.removeFromFavorites(store.bean.module, store.bean.id)
-                                : favorites.addToFavorites(store.bean.module, store.bean.id, store.bean.name)
-                        "
-                    />
+    <template v-if="!store.bean.isNew">
+        <v-snackbar v-model="appraisalSnackBar" color="secondary" location="top">
+            {{ languages.label('LBL_SUCCESS_ADDING_APPRAISAL_JOB', 'Candidatures') }}
+        </v-snackbar>
+        <v-dialog v-model="appraisalDialog" width="400">
+            <v-card class="appraisal-name">
+                <v-card-title>
+                    <h3>{{ languages.label('LBL_CREATE_APPRAISAL', modules.currentModule?.name) }}</h3>
+                </v-card-title>
+                <v-card-text>
                     <Field
-                        v-if="store.bean.syncAttributes.game_score"
-                        :view="'detail'"
-                        :defs="{ name: 'game_score', type: 'achievements' }"
-                        :data="{ bean: store.bean.attributes }"
-                        :modelValue="store.bean.syncAttributes.game_score"
+                        :view="'edit'"
+                        :defs="{
+                            type: 'varchar',
+                        }"
+                        :label="languages.label('LBL_NAME', modules.currentModule?.name)"
+                        v-model="appraisalName"
                     />
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer />
+                    <MintButton
+                        :text="languages.label('LBL_CANCEL_BUTTON_TITLE', modules.currentModule?.name)"
+                        @click="appraisalDialog = false"
+                    />
+                    <MintButton
+                        :disabled="!appraisalName.length"
+                        class="ml-2"
+                        variant="primary"
+                        :text="languages.label('LBL_CREATE_BUTTON_LABEL', modules.currentModule?.name)"
+                        @click="createAppraisal"
+                    />
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <div class="header-panel">
+            <div class="flex-container">
+                <MintButton icon="mdi-arrow-left" @click="goBack" />
+                <v-avatar
+                    v-if="store.bean.syncAttributes.photo"
+                    class="photo"
+                    size="120"
+                    :image="`legacy/index.php?entryPoint=download&id=${store.bean.id}_photo&type=Users`"
+                    variant="outlined"
+                    color="surface"
+                />
+                <v-avatar v-else class="photo" size="120" color="secondary">
+                    <h1>
+                        {{
+                            (store.bean.syncAttributes?.first_name?.[0] || '') +
+                            (store.bean.syncAttributes?.last_name?.[0] || '')
+                        }}
+                    </h1>
+                </v-avatar>
+                <div class="name-container">
+                    <div class="module-name">{{ modules?.currentModule?.label }}</div>
+                    <div class="bean-name">
+                        <div>{{ store.bean.name }}</div>
+                        <MintButton
+                            :icon="isFavorite ? 'mdi-heart-circle' : 'mdi-heart-outline'"
+                            variant="text"
+                            size="small"
+                            @click="
+                                isFavorite
+                                    ? favorites.removeFromFavorites(store.bean.module, store.bean.id)
+                                    : favorites.addToFavorites(store.bean.module, store.bean.id, store.bean.name)
+                            "
+                        />
+                        <Field
+                            v-if="store.bean.syncAttributes.game_score"
+                            :view="'detail'"
+                            :defs="{ name: 'game_score', type: 'achievements' }"
+                            :data="{ bean: store.bean.attributes }"
+                            :modelValue="store.bean.syncAttributes.game_score"
+                        />
+                    </div>
+                </div>
+                <v-menu offset="16">
+                    <template v-slot:activator="{ props, isActive }">
+                        <MintButton
+                            class="ml-auto"
+                            v-bind="props"
+                            :active="isActive"
+                            append-icon="mdi-menu-down"
+                            :text="languages.label('LBL_ESLIST_ACTIONS')"
+                        />
+                    </template>
+                    <MintMenuList :items="/*props.data.actions*/ actions || []" />
+                </v-menu>
+            </div>
+            <div v-if="props.data?.fields?.length" class="fields-container">
+                <div v-for="(row, i) in props.data.fields" class="row" :key="i">
+                    <div v-for="n in store.columns" :key="n - 1">
+                        <Field
+                            v-if="row[n - 1]"
+                            :view="'detail'"
+                            :defs="row[n - 1]"
+                            :label="languages.label(row[n - 1].label, modules.currentModule?.name)"
+                            :data="{ bean: store.bean.attributes }"
+                            :modelValue="store.bean.syncAttributes[row[n - 1].name]"
+                        />
+                    </div>
                 </div>
             </div>
-            <v-menu offset="16">
-                <template v-slot:activator="{ props, isActive }">
-                    <MintButton
-                        class="ml-auto"
-                        v-bind="props"
-                        :active="isActive"
-                        append-icon="mdi-menu-down"
-                        :text="languages.label('LBL_ESLIST_ACTIONS')"
-                    />
-                </template>
-                <MintMenuList :items="/*props.data.actions*/ actions || []" />
-            </v-menu>
         </div>
-        <div v-if="props.data?.fields?.length" class="fields-container">
-            <div v-for="(row, i) in props.data.fields" class="row" :key="i">
-                <div v-for="n in store.columns" :key="n - 1">
-                    <Field
-                        v-if="row[n - 1]"
-                        :view="'detail'"
-                        :defs="row[n - 1]"
-                        :label="languages.label(row[n - 1].label, modules.currentModule?.name)"
-                        :data="{ bean: store.bean.attributes }"
-                        :modelValue="store.bean.syncAttributes[row[n - 1].name]"
-                    />
-                </div>
-            </div>
-        </div>
-    </div>
+    </template>
 </template>
 
 <script setup lang="ts">
@@ -147,7 +149,7 @@ const actions = computed<MenuListItem[]>(() => {
                 window.open(
                     `legacy/index.php?module=Audit&action=Popup&record=${store.bean.id}&module_name=${store.bean.module}`,
                     `Audit_popup_window_record_${store.bean.id}_module_name_${store.bean.module}`,
-                    'width=800,height=800,resizable=1,scrollbars=1'
+                    'width=800,height=800,resizable=1,scrollbars=1',
                 ),
         },
     ]
@@ -177,7 +179,7 @@ const appraisalSnackBar = ref<boolean>(false)
 const createAppraisal = async () => {
     appraisalDialog.value = false
     const response = await axios.get(
-        `legacy/index.php?entryPoint=scheduleAppraisalAndAppraisalItems&module=${route.params.module}&appraisal_name=${appraisalName.value}&record_id=${route.params.id}`
+        `legacy/index.php?entryPoint=scheduleAppraisalAndAppraisalItems&module=${route.params.module}&appraisal_name=${appraisalName.value}&record_id=${route.params.id}`,
     )
     appraisalName.value = ''
     appraisalSnackBar.value = response.status === 200

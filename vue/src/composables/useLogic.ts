@@ -1,3 +1,4 @@
+import { useModulesStore } from '@/store/modules'
 import { computed, ref } from 'vue'
 
 interface Logic {
@@ -16,8 +17,17 @@ interface Rule {
     logic: Logic
 }
 
-export const useLogic = () => {
+export const useLogic = (module: string) => {
+    const modulesStore = useModulesStore()
+
     const rules = ref<Rule[]>([])
+
+    const formFields = computed(() => {
+        const formPanel = Object.values(modulesStore.modules[module]?.metadata.RecordView?.panels ?? {}).find(
+            (panel) => panel.component === 'MintPanelRecordDetails',
+        )
+        return (formPanel?.data?.fields?.flat() ?? []).map((field) => field.name)
+    })
 
     const activeRules = computed(() => rules.value.filter((rule) => rule.trigger))
 
@@ -57,7 +67,12 @@ export const useLogic = () => {
         const requiredFields = [] as string[]
         activeRules.value.forEach((s) => {
             Object.entries(s.logic.required).forEach(([fieldName, value]) => {
-                if (value && !hiddenFields.value.includes(fieldName) && !readonlyFields.value.includes(fieldName)) {
+                if (
+                    value &&
+                    formFields.value.includes(fieldName) &&
+                    !hiddenFields.value.includes(fieldName) &&
+                    !readonlyFields.value.includes(fieldName)
+                ) {
                     requiredFields.push(fieldName)
                 } else if (requiredFields.includes(fieldName)) {
                     requiredFields.splice(requiredFields.indexOf(fieldName), 1)
@@ -71,7 +86,7 @@ export const useLogic = () => {
         const hiddenFields = [] as string[]
         activeRules.value.forEach((s) => {
             Object.entries(s.logic.visible).forEach(([fieldName, value]) => {
-                if (!value) {
+                if (!formFields.value.includes(fieldName) || !value) {
                     hiddenFields.push(fieldName)
                 } else if (hiddenFields.includes(fieldName)) {
                     hiddenFields.splice(hiddenFields.indexOf(fieldName), 1)

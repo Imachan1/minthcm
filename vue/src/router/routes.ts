@@ -158,6 +158,7 @@ const coreRoutes: Array<RouteRecordRaw> = [
     },
     {
         path: '/modules/:module/DetailView/:id',
+        alias: '/modules/:module/EditView/:id?',
         name: 'record',
         component: RecordView,
         meta: {
