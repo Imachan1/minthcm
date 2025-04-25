@@ -9,8 +9,8 @@
             :error="props.state === 'error'"
             v-model="parentModel"
             v-bind="$attrs"
-            item-value="value"
-            item-title="key"
+            item-value="key"
+            item-title="value"
             @keyup.enter="$emit('inlineEditSave')"
             @keyup.esc="$emit('inlineEditCancel')"
         />
@@ -113,16 +113,11 @@ const recordModel = computed({
 const currentTypeItem = ref('')
 const parentModel = computed({
     get() {
-        return languages.translateListValue(
-            props.data.bean.parent_type ?? props.defs?.default ?? '',
-            props.defs?.options,
-        )
+        return props.data.bean.parent_type ?? props.defs?.default ?? ''
     },
     set(newValue) {
-        let optionKeys = languages.languages.app_list_strings[props.defs?.options]
-        let selectedKey = Object.keys(optionKeys).find((key) => optionKeys[key] === newValue)
-        props.data.bean[props.defs.type_name] = selectedKey
-        currentTypeItem.value = selectedKey
+        props.data.bean[props.defs.type_name] = newValue
+        currentTypeItem.value = newValue
         recordModel.value = { id: '', name: '' }
         updateValue()
     },
