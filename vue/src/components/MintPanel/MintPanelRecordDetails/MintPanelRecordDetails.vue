@@ -15,7 +15,7 @@
                 />
                 <div class="buttons" v-if="store.view === 'edit'">
                     <MintButton
-                        v-if="!store.bean.isSaving"
+                        v-if="!store.bean.isSaving && !store.bean.isNew"
                         icon="mdi-close"
                         :text="languages.label('LBL_CANCEL_BUTTON_LABEL')"
                         @click="cancel"

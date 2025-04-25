@@ -111,6 +111,9 @@ export const useRecordViewStore = defineStore('recordview', () => {
     })
 
     async function fetchSubpanelsData() {
+        if (bean.value.isNew) {
+            return
+        }
         const route = useRoute()
         const data = await Promise.all(
             subpanels.value.map((subpanel) =>

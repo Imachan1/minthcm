@@ -2,14 +2,17 @@ import axios from 'axios'
 import { computed, ref, watch } from 'vue'
 import { useLogic } from './useLogic'
 import { useDebounceFn, useThrottleFn } from '@vueuse/core'
+import { useRouter } from 'vue-router'
 
 export const useBean = (module: string, id: string) => {
+    const router = useRouter()
+
     const attributes = ref<{ [key: string]: any }>({})
     const syncAttributes = ref<{ [key: string]: any }>({})
     const aclAccess = ref<{ [key: string]: boolean }>({})
     const dirtyFields = ref(new Set<string>())
 
-    const logic = useLogic()
+    const logic = useLogic(module)
 
     const attributesToSave = computed(() => {
         const attributesToSave = {} as { [key: string]: any }
@@ -51,6 +54,10 @@ export const useBean = (module: string, id: string) => {
         return id
     })
 
+    const isNew = computed(() => {
+        return !id || attributes.value.new_with_id
+    })
+
     const isChanged = computed(() => {
         return Array.from(dirtyFields.value).some((f) => attributes.value[f] !== syncAttributes.value[f])
     })
@@ -68,27 +75,30 @@ export const useBean = (module: string, id: string) => {
 
     function updateFields(fields: { [fieldName: string]: any }) {
         Object.entries(fields || {}).forEach(([key, value]) => {
-            attributes.value[key] = value
+            attributes.value = {
+                ...attributes.value,
+                [key]: value,
+            }
             dirtyFields.value.add(key)
         })
     }
 
     async function retrieve() {
         isRetrieving.value = true
-        const response = await axios.get(`api/${module}/Get/${id}`)
+        const response = await axios.get(`api/${module}/Get${id ? `/${id}` : ''}`)
         if (response.status === 200 && response.data) {
             aclAccess.value = response.data.acl_access
             attributes.value = response.data.attributes
             syncAttributes.value = structuredClone(response.data.attributes)
-            dirtyFields.value = new Set()
             logic.rules.value = response.data.logic?.rules ?? {}
             updateFields(logic.getUpdatedFields())
+            dirtyFields.value = new Set()
         }
         isRetrieving.value = false
     }
 
     async function fetchLogic(triggerFields: string[] = []) {
-        const response = await axios.post(`api/${module}/Logic/${id}`, {
+        const response = await axios.post(`api/${module}/Logic${id ? `/${id}` : ''}`, {
             attributes: attributesToSave.value,
             triggerFields,
         })
@@ -107,14 +117,23 @@ export const useBean = (module: string, id: string) => {
     async function save() {
         isDirty.value = true
         if (!isValid.value) {
+            console.log('Invalid data')
             return false
         }
         isSaving.value = true
         try {
-            const response = await axios.patch(`api/${module}/Update/${id}`, {
+            const response = await axios.patch(`api/${module}/Update${id ? `/${id}` : ''}`, {
                 record_data: attributesToSave.value,
             })
-            if ([200, 201].includes(response.status)) {
+            if (!id && response.data.id) {
+                router.push({
+                    name: 'record',
+                    params: {
+                        module,
+                        id: response.data.id,
+                    },
+                })
+            } else if ([200, 201].includes(response.status)) {
                 await retrieve()
             }
             return response
@@ -137,8 +156,8 @@ export const useBean = (module: string, id: string) => {
         () => {
             const newAttributes = JSON.parse(JSON.stringify(attributes.value))
             const updatedFields = {} as { [key: string]: any }
-            Object.entries(newAttributes).forEach(([key, value]) => {
-                if (JSON.stringify(value) !== JSON.stringify(prevAttributes.value[key])) {
+            Object.entries(prevAttributes.value).forEach(([key, value]) => {
+                if (JSON.stringify(value) !== JSON.stringify(newAttributes[key])) {
                     dirtyFields.value.add(key)
                     updatedFields[key] = value
                 }
@@ -172,6 +191,7 @@ export const useBean = (module: string, id: string) => {
         id,
         module,
         name,
+        isNew,
         attributes,
         syncAttributes,
         aclAccess,

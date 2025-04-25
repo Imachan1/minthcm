@@ -1,7 +1,6 @@
 <?php
 
 namespace MintHCM\Lib\MintLogic;
-
 use MintHCM\Lib\MintLogic\Exceptions\ValidationException;
 
 class MintLogic
@@ -92,7 +91,7 @@ class MintLogic
     {
         $requiredFields = [];
         foreach ($this->bean->field_defs as $field => $vardef) {
-            if (isset($vardef['required']) && $vardef['required'] === true) {
+            if (isset($vardef['required']) && $vardef['required'] === true && $vardef['name'] !== 'id') {
                 $requiredFields[] = $field;
             }
         }
@@ -113,7 +112,7 @@ class MintLogic
         $logic['visible'] = self::calculateExpression($rule['logic']['visible'], $this->bean) ?? [];
         foreach ($logic['visible'] as $field => $isVisible) {
             if (!$isVisible) {
-                $this->bean->{$field} = null; // TODO: default z vardefsów?
+                $this->bean->{$field} = null;
                 $logic['update'][$field] = null;
             }
         }

@@ -1,5 +1,5 @@
 <template>
-    <div class="subpanels-panel">
+    <div v-if="!store.bean.isNew" class="subpanels-panel">
         <h1>{{ languages.label('LBL_RELATED_RECORDS') }}</h1>
         <v-expansion-panels v-model="expandedSubpanels" class="subpanels-accordion" multiple variant="accordion">
             <v-expansion-panel

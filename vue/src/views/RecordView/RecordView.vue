@@ -19,8 +19,11 @@ const backend = useBackendStore()
 
 store.resetBean()
 
-onMounted(() => {
-    store.bean.init()
+onMounted(async () => {
+    await store.bean.init()
+    if (store.bean.isNew) {
+        store.view = 'edit'
+    }
 })
 
 watch(

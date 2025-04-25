@@ -100,7 +100,7 @@ $routes = array(
     ),
     "update" => array(
         "method" => "PATCH",
-        "path" => "/Update/{id}",
+        "path" => "/Update[/{id}]",
         "class" => ModuleController::class,
         "function" => 'update',
         "desc" => "Update records",
@@ -110,7 +110,7 @@ $routes = array(
         "pathParams" => array(
             "id" => array(
                 "type" => StringType::class,
-                "required" => true,
+                "required" => false,
                 "desc" => "Module id",
                 "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
             ),
@@ -132,7 +132,7 @@ $routes = array(
     ),
     "get_record" => array(
         "method" => "GET",
-        "path" => "/Get/{id}",
+        "path" => "/Get[/{id}]",
         "class" => ModuleController::class,
         "function" => 'getRecord',
         "desc" => "Get record fields",
@@ -142,7 +142,7 @@ $routes = array(
         "pathParams" => array(
             "id" => array(
                 "type" => StringType::class,
-                "required" => true,
+                "required" => false,
                 "desc" => "Module id",
                 "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
             ),
@@ -152,7 +152,7 @@ $routes = array(
     ),
     "get_record_logic" => array(
         "method" => "POST",
-        "path" => "/Logic/{id}",
+        "path" => "/Logic[/{id}]",
         "class" => ModuleController::class,
         "function" => 'getRecordLogic',
         "desc" => "Get record logic",
@@ -162,7 +162,7 @@ $routes = array(
         "pathParams" => array(
             "id" => array(
                 "type" => StringType::class,
-                "required" => true,
+                "required" => false,
                 "desc" => "Module id",
                 "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
             ),
