@@ -7,7 +7,11 @@
             <MintKudosItemFooter :kudos="props.kudos" />
         </li>
         <div class="d-flex px-3">
-            <p class="mr-3 text-caption">{{ date }}</p>
+            <v-tooltip :text="tooltipdate" v-if="props.kudos.announcement_date" location="start">
+                <template v-slot:activator="{ props }">
+                    <p class="mr-3 text-caption" v-bind="props">{{ date }}</p>
+                </template>
+            </v-tooltip>
             <MintKudosItemReactions v-if="props.kudos.announced" :kudos="props.kudos" />
         </div>
     </div>
@@ -21,13 +25,26 @@ import MintKudosItemMessage from '@/components/MintKudos/MintKudosItemMessage.vu
 import MintKudosItemFooter from '@/components/MintKudos/MintKudosItemFooter.vue'
 import MintKudosItemReactions from '@/components/MintKudos/MintKudosItemReactions.vue'
 import { useLanguagesStore } from '@/store/languages'
+import { useBackendStore } from '@/store/backend'
 
 const props = defineProps(['kudos'])
 const languages = useLanguagesStore()
+const backend = useBackendStore()
 const date = computed(() => {
     return props.kudos.announcement_date
         ? DateTime.fromSQL(props.kudos.announcement_date).toRelative()
         : languages.label('LBL_KUDOS_UNPUBLISHED')
+})
+const tooltipdate = computed(() => {
+    const format = {
+        date: backend.initData?.preferences?.date_format ?? 'dd/MM/y',
+        time: backend.initData?.preferences?.time_format ?? 'H:mm',
+    }
+    return props.kudos.announcement_date
+        ? DateTime
+            .fromSQL(props.kudos.announcement_date)
+            .toFormat(format.date + ' ' + format.time)
+        : props.kudos.announcement_date
 })
 </script>
 
