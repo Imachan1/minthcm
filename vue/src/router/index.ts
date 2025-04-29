@@ -54,7 +54,7 @@ router.beforeEach(async (to, from) => {
                 name: 'module-view',
                 params: {
                     module,
-                    action: 'DetailView',
+                    action: to.path.split('/')[3] || 'DetailView',
                     record: to.params.id,
                 },
             }
