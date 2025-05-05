@@ -364,6 +364,7 @@ $dictionary['User'] = array(
             'importable' => 'required',
             'required' => true,
             'api-visible' => false,
+            'default' => 'Inactive',
         ),
         'primary_address_street' => array(
             'name' => 'primary_address_street',
