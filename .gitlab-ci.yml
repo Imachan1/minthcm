@@ -1,4 +1,4 @@
 include:
   - project: "qa/ci-cd-templates"
-    file: "/templates/MintHCM/php8.0-no-partial-testing-automatic-instance-update.yml"
+    file: "/templates/MintHCM/php8.2-no-partial-testing-automatic-instance-update.yml"
     ref: "master"
