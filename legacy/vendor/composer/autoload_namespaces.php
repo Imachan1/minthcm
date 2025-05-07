@@ -26,4 +26,6 @@ return array(
     'Pimple' => array($vendorDir . '/pimple/pimple/src'),
     'JShrink' => array($vendorDir . '/tedivm/jshrink/src'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
+    'Flow\\JSONPath\\Test' => array($vendorDir . '/flow/jsonpath/tests'),
+    'Flow\\JSONPath' => array($vendorDir . '/flow/jsonpath/src'),
 );
