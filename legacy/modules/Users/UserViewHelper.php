@@ -460,9 +460,9 @@ class UserViewHelper
         /* MintHCM #138652 START */
         $site_url = rtrim($sugar_config['site_url'], '/');
         $publish_url = $site_url . '/vcal_server.php';
+        $token = "?";
         /* MintHCM #138652 END */
 
-        $token = "/";
         //determine if the web server is running IIS
         //if so then change the publish url
         if (isset($_SERVER) && !empty($_SERVER['SERVER_SOFTWARE'])) {
@@ -481,7 +481,7 @@ class UserViewHelper
 
         /* MintHCM #138652 START */
         $ical_url = $site_url . "/ical_server.php?type=ics&key=<span id=\"ical_pub_key_span\">$publish_key</span>";
-        /* MintHCMMM #138652 END */
+        /* MintHCM #138652 END */
 
         if (!empty($this->bean->email1)) {
             $ical_url .= '&email=' . $this->bean->email1;
@@ -491,7 +491,7 @@ class UserViewHelper
 
         $this->ss->assign("CALENDAR_PUBLISH_URL", $publish_url);
         /* MintHCM #138652 START */
-        $this->ss->assign("CALENDAR_SEARCH_URL", $site_url . "/vcal_server.php/type=vfb&key=<span id=\"search_pub_key_span\">$publish_key</span>&email=%NAME%@%SERVER%");
+        $this->ss->assign("CALENDAR_SEARCH_URL", $site_url . "/vcal_server.php?type=vfb&key=<span id=\"search_pub_key_span\">$publish_key</span>&email=%NAME%@%SERVER%");
         /* MintHCM #138652 END */
         $this->ss->assign("CALENDAR_ICAL_URL", $ical_url);
 
