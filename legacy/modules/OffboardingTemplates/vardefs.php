@@ -56,7 +56,7 @@ $dictionary['OffboardingTemplates'] = array(
             'module' => 'Positions',
             'bean_name' => 'Positions',
             'side' => 'right',
-            'vname' => 'LBL_ONBOARDINGTEMPLATES_POSITIONS_TITLE',
+            'vname' => 'LBL_OFFBOARDINGTEMPLATES_POSITIONS_TITLE',
         ),
         'offboardings' => array(
             'name' => 'offboardings',
