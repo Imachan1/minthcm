@@ -207,8 +207,7 @@ class ElasticSearchIndexer extends AbstractIndexer
     }
 
     /** @inheritdoc */
-    public function indexModule($module)
-    {
+   public function indexModule($module) {
         global $sugar_config;
         $seed = \BeanFactory::getBean($module);
         if (empty($seed->table_name)) {
@@ -349,7 +348,7 @@ class ElasticSearchIndexer extends AbstractIndexer
 
     protected function fillAllNestedPropertyValues(SugarBean $bean, array &$args): void
     {
-        $nested_properties = (new \ElasticSearchVardefsReader)->getModuleNestedProperties($bean->module_name);
+      $nested_properties = (new \ElasticSearchVardefsReader)->getModuleNestedProperties($bean->object_name);
         foreach ($nested_properties as $property_name => $nested_config) {
             $args[$property_name] = $this->getNestedPropertyValues($bean, $property_name, $nested_config);
         }
