@@ -46,13 +46,8 @@ require_once 'include/Notifications/NotificationPlugin.php';
 
 class WorkSchedulesNotPlandForTwoWeeks extends NotificationPlugin
 {
-
+    const TYPE = 'WorkSchedulesNotPlandForTwoWeeks';
     const PLAN_FOR_DAYS = 10;
-
-    public function __construct()
-    {
-        $this->setType('WorkSchedulesNotPlandForTwoWeeks');
-    }
 
     public function run()
     {

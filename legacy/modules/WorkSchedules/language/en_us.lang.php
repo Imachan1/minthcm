@@ -142,4 +142,5 @@ $mod_strings = array(
     'LBL_DEPUTY_ID' => 'Deputy (ID)',
     'LBL_LEAVE_ALERT' => "%s added a/an %s on %s.",  
     'LBL_ACCEPT' => 'Accept',
+    'LBL_WORKSCHEDULE_ACCEPTED_NOTIFICATION' => 'Your Work Schedule %s has been accepted.',
 );

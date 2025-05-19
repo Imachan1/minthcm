@@ -46,11 +46,7 @@
 require_once 'include/Notifications/NotificationPlugin.php';
 
 class WorkSchedulesDayValid extends NotificationPlugin {
-
-    public function __construct()
-    {
-        $this->setType('WorkSchedulesDayValid');
-    }
+    const TYPE = 'WorkSchedulesDayValid';
 
    public function run() {
       global $app_strings;

@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,56 +42,40 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-require_once 'include/Notifications/Notification.php';
 
-abstract class NotificationPlugin
+require_once 'include/Notifications/NotificationPlugin.php';
+
+class WorkSchedulesAcceptance extends NotificationPlugin
 {
-    protected $bean;
-    protected $type;
+    const TYPE = 'WorkSchedulesAcceptance';
+    public $user_id;
 
-    const TYPE = 'notification';
-
-    abstract public function run();
-
-    public function __construct(?SugarBean $bean = null)
+    public function __construct(?SugarBean $bean = null) 
     {
-        $this->bean = $bean;
-        $this->setType(static::TYPE);
+        parent::__construct($bean);
+        if ($this->bean) {
+            $this->user_id = $this->bean->assigned_user_id;
+        }
     }
 
-    public function getNewNotification()
+    public function run() 
     {
-        return new Notification;
+        if (!$this->bean) {
+            return;
+        }
+        
+        $this->getNewNotification()
+            ->setRelatedBeanFromBean($this->bean)
+            ->setAssignedUserId($this->user_id)
+            ->disableUniqueValidation()
+            ->setType($this->getType())
+            ->setDescription(sprintf(translate('LBL_WORKSCHEDULE_ACCEPTED_NOTIFICATION', 'WorkSchedules'), $this->bean->schedule_date))
+            ->saveAsAlert(true)
+            ->WebPush(false, true);
     }
-
+    
     public function isWebPushableNotification()
     {
-        return false;
+        return true;
     }
-
-    public function getWebPushDescriptionConfig()
-    {
-        return false;
-    }
-
-    public function getWebPushLinkConfig()
-    {
-        return false;
-    }
-
-    public function getWebPushOverrideConfig()
-    {
-        return array();
-    }
-
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    protected function setType($type)
-    {
-        $this->type = $type;
-    }
-
 }
