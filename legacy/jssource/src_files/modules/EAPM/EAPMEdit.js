@@ -125,6 +125,11 @@ function EAPMSetFieldRequired(fieldName, isRequired) {
             validate[formname][i][2] = isRequired;
 		}
     }
+    if(!isRequired) {
+        const item = $('[data-field="' + fieldName + '"]');
+        item.find('.bold_required_field').removeClass('bold_required_field');
+        item.find(".required").hide();
+    }
 }
 
 function EAPMEditStart(userIsAdmin) {
