@@ -47,20 +47,16 @@
 namespace MintHCM\Lib\Search\ElasticSearch\Operators;
 
 use MintHCM\Lib\Search\ElasticSearch\ElasticOperator;
+use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 
 class Equals extends ElasticOperator
 {
 
-    public function __construct(array $data)
-    {
-        parent::__construct($data);
-    }
-
-    protected function getDataArray(): array
+    protected function getDataArray(ModulePrefixer $prefixer): array
     {
         return array(
             'term' => array(
-                $this->field => $this->value,
+                $prefixer->modify($this->field) => $this->value,
             ),
         );
     }

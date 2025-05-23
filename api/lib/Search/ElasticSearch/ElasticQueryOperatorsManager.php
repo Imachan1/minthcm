@@ -52,6 +52,7 @@ use MintHCM\Lib\Search\ElasticSearch\Operators\Exists;
 use MintHCM\Lib\Search\ElasticSearch\Operators\MatchOperator;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Range;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Wildcard;
+use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 
 #[\AllowDynamicProperties]
 class ElasticQueryOperatorsManager
@@ -64,11 +65,12 @@ class ElasticQueryOperatorsManager
         'wildcard' => Wildcard::class,
     );
 
-    protected $query, $filters;
+    protected $query, $filters, $module;
 
-    public function __construct(array $filters)
+    public function __construct(array $filters, ?string $module)
     {
         $this->filters = $filters;
+        $this->module = $module;
         $this->setQuery();
     }
 
@@ -92,7 +94,7 @@ class ElasticQueryOperatorsManager
             }
             $class = $this::OPERATORS_MAPPER[$filter['type']];
             $operator = new $class($filter);
-            $data = $operator->getData();
+            $data = $operator->getData(new ModulePrefixer($this->module));
             $this->query['bool'][$operator->getArrayKey()][] = $data;
         }
     }

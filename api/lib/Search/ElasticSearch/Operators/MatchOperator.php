@@ -47,6 +47,7 @@
 namespace MintHCM\Lib\Search\ElasticSearch\Operators;
 
 use MintHCM\Lib\Search\ElasticSearch\ElasticOperator;
+use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 
 class MatchOperator extends ElasticOperator
 {
@@ -62,11 +63,11 @@ class MatchOperator extends ElasticOperator
         }
     }
 
-    protected function getDataArray(): array
+    protected function getDataArray(ModulePrefixer $prefixer): array
     {
         return array(
             'match' => array(
-                $this->field => array(
+                $prefixer->modify($this->field) => array(
                     "query" => $this->value,
                     "operator" => $this->operator,
                 ),

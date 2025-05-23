@@ -51,6 +51,7 @@ use MintHCM\Lib\Search\Base\SearchQuery;
 use MintHCM\Lib\Search\ElasticSearch\ElasticQueryOperatorsManager;
 use MintHCM\Utils\CustomLoader;
 use MintHCM\Utils\LegacyConnector;
+use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 use Symfony\Component\Yaml\Parser as YamlParser;
 
 class ElasticQuery extends SearchQuery
@@ -94,7 +95,8 @@ class ElasticQuery extends SearchQuery
         } else if (static::DEFAULT_SORT_FIELD !== $field) {
             $field .= self::SORT_KEYWORD;
         }
-
+        $modifier = new ModulePrefixer($this->params['type'] ?? null);
+        $field = $modifier->modify($field);
         $this->sort = array(
             $field => array(
                 "order" => !empty($this->params["sort_order"]) ? $this->params['sort_order'] : 'asc',
@@ -177,11 +179,9 @@ class ElasticQuery extends SearchQuery
             }
 
             return $main_acl;
-
         } else {
             return $this->noAclGlobalQuery();
         }
-
     }
 
     private function noAclGlobalQuery()
@@ -200,45 +200,7 @@ class ElasticQuery extends SearchQuery
 
     private function getListQuery()
     {
-        $query =  (CustomLoader::getObject(ElasticQueryOperatorsManager::class, $this->params['filters'] ?? []))->getQuery();
-        $query = $this->fixFieldModulePrefix($query);
-        return $query;
-    }
-
-    private function fixFieldModulePrefix($query) {
-        $mappings = $this->getDefaultMapParams($this->params['type']);
-        $field_name = key($query['bool']['filter'][0]['wildcard']);
-        $field_parts = explode('.', $field_name);
-        
-        if(isset($mappings['mappings']['properties'][$this->params['type'] . '__' . $field_parts[0]])) {
-            foreach($field_parts as $key => $part) {
-                $field_parts[$key] = $this->params['type'] . '__' . $part;
-            }
-
-            $field_parts = implode('.', $field_parts);
-
-            $query['bool']['filter'][0]['wildcard'][$field_parts] = $query['bool']['filter'][0]['wildcard'][$field_name];
-            unset($query['bool']['filter'][0]['wildcard'][$field_name]);
-        }
-
-        if(isset($this->sort)) {
-            $sort_field = key($this->sort);
-            $sort_parts = explode('.', $sort_field);
-
-            if(isset($mappings['mappings']['properties'][$this->params['type'] . '__' . $sort_parts[0]])) {
-                foreach($sort_parts as $key => $part) {
-                    if($part == 'keyword') {
-                        continue;
-                    }
-                    $sort_parts[$key] = $this->params['type'] . '__' . $part;
-                }
-                $sort_parts = implode('.', $sort_parts);
-            
-                $this->sort[$sort_parts] = $this->sort[$sort_field];
-                unset($this->sort[$sort_field]);
-            }
-        }
-        return $query;
+        return (CustomLoader::getObject(ElasticQueryOperatorsManager::class, $this->params['filters'] ?? [], $this->params['type'] ?? null))->getQuery();
     }
 
     protected function getExcludeModules()
@@ -263,7 +225,6 @@ class ElasticQuery extends SearchQuery
             $single_module['bool']['must'][]['bool']['should'] = $restriction_filter[0]['bool']['should'];
         }
         return $single_module;
-
     }
 
     protected function getACLClassForModule(string $module)
@@ -298,13 +259,17 @@ class ElasticQuery extends SearchQuery
         $exclude_hardcode = ["Connectors", "Currencies", "OAuthTokens", "OAuthKeys", "ACLRoles", "ACLActions", "EmailMan", "Schedulers", "SchedulersJobs", "CampaignLog", "EmailMarketing", "AOW_WorkFlow"];
         global $beanList;
         if (!empty($unified_search_modules_display)) {
-            $search_modules = array_filter(array_map(function ($row) {return true === $row['visible'];}, $unified_search_modules_display));
+            $search_modules = array_filter(array_map(function ($row) {
+                return true === $row['visible'];
+            }, $unified_search_modules_display));
             foreach (array_keys($search_modules) as $module_name) {
                 if (!isset($beanList[$module_name])) {
                     unset($search_modules[$module_name]);
                 }
             }
-            $exclude = array_filter(array_map(function ($row) {return false === $row['visible'];}, $unified_search_modules_display));
+            $exclude = array_filter(array_map(function ($row) {
+                return false === $row['visible'];
+            }, $unified_search_modules_display));
             $this->exclude_modules = array_merge($exclude_hardcode, array_keys($exclude));
             return array_diff(array_keys($search_modules), $this->exclude_modules);
         }
@@ -346,29 +311,11 @@ class ElasticQuery extends SearchQuery
                     }
                 }
             }
-
         }
         $this->query['body']['query']['query_string']['fields'] = $boost_array;
     }
 
-    /**
-     * Retrieves the default params to set up an optimised default index for Elasticsearch.
-     *
-     * @return array
-     */
-    protected function getDefaultMapParams($module)
-    {
-        if (empty($this->parsed)) {
-            $file = realpath(__DIR__ . '/../../../../legacy/lib/Search/ElasticSearch/defaultParams.yml');
-
-            $parse = new YamlParser();
-            $this->parsed = $parse->parseFile($file);
         }
-
-        return ['mappings' => $this->parsed['mappings'][$module]];
-
-    }
-
     public static function getIndexPrefix():string
     {
         return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
