@@ -315,7 +315,6 @@ class ElasticQuery extends SearchQuery
         $this->query['body']['query']['query_string']['fields'] = $boost_array;
     }
 
-        }
     public static function getIndexPrefix():string
     {
         return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
