@@ -47,6 +47,7 @@
 namespace MintHCM\Lib\Search\ElasticSearch\Operators;
 
 use MintHCM\Lib\Search\ElasticSearch\ElasticOperator;
+use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 
 class Wildcard extends ElasticOperator
 {
@@ -59,11 +60,11 @@ class Wildcard extends ElasticOperator
         }
     }
 
-    protected function getDataArray(): array
+    protected function getDataArray(ModulePrefixer $prefixer): array
     {
         return array(
             'wildcard' => array(
-                $this->field => array(
+                $prefixer->modify($this->field) => array(
                     "value" => $this->value,
                     "boost" => $this->boost ?? 1.0,
                 ),
