@@ -47,19 +47,15 @@
 namespace MintHCM\Lib\Search\ElasticSearch\Operators;
 
 use MintHCM\Lib\Search\ElasticSearch\ElasticOperator;
+use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 
 class Exists extends ElasticOperator
 {
-    public function __construct(array $data)
-    {
-        parent::__construct($data);
-    }
-
-    protected function getDataArray(): array
+    protected function getDataArray(ModulePrefixer $prefixer): array
     {
         return array(
             'exists' => array(
-                "field" => $this->field,
+                "field" => $prefixer->modify($this->field),
             ),
         );
     }

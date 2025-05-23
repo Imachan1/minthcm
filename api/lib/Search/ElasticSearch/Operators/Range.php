@@ -47,6 +47,7 @@
 namespace MintHCM\Lib\Search\ElasticSearch\Operators;
 
 use MintHCM\Lib\Search\ElasticSearch\ElasticOperator;
+use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 
 class Range extends ElasticOperator
 {
@@ -66,21 +67,22 @@ class Range extends ElasticOperator
         }
     }
 
-    protected function getDataArray(): array
+    protected function getDataArray(ModulePrefixer $prefixer): array
     {
+        $field = $prefixer->modify($this->field);
         $response = array(
             'range' => array(
-                $this->field => array(
+                $field => array(
                 ),
             ),
         );
 
         foreach ($this->operators as $sign => $value) {
-            $response['range'][$this->field][$sign] = $value;
+            $response['range'][$field][$sign] = $value;
         }
 
         if (!empty($this->format)) {
-            $response['range'][$this->field]['format'] = $this->format;
+            $response['range'][$field]['format'] = $this->format;
         }
 
         return $response;

@@ -49,6 +49,9 @@ namespace MintHCM\Lib\Search\ElasticSearch;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use MintHCM\Utils\ConstantsLoader;
 
+use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
+
+#[\AllowDynamicProperties]
 abstract class ElasticOperator
 {
     protected $field, $value, $not, $boost;
@@ -65,13 +68,13 @@ abstract class ElasticOperator
         $this->boost = $data['boost'] ?? 1.0;
     }
 
-    public function getData()
+    public function getData(ModulePrefixer $prefixer)
     {
         if (!$this->validateData()) {
             throw new BadRequest400Exception;
         }
 
-        return $this->getDataArray();
+        return $this->getDataArray($prefixer);
     }
 
     public function getArrayKey()
@@ -83,7 +86,7 @@ abstract class ElasticOperator
         return 'filter';
     }
 
-    abstract protected function getDataArray(): array;
+    abstract protected function getDataArray(ModulePrefixer $prefixer): array;
 
     abstract protected function validateData(): bool;
 
