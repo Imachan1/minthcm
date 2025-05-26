@@ -74,4 +74,6 @@ $mod_strings = array(
     'LBL_ACTION_ACCESS' => 'Access',
     'LBL_ACTION_ADMIN' => 'Access Type',
     'LBL_ACCESS_DEFAULT' => 'Not Set',
+    'LBL_ACCESS' => 'Access',
+    'LBL_TYPE' => 'Type',
 );

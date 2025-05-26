@@ -121,4 +121,8 @@ $mod_strings = array(
     'LBL_OFFBOARDINGTEMPLATE_ID' => 'Offboarding Template (ID)',
     'LBL_ONBOARDINGTEMPLATE_ID' => 'Onboarding Template (ID)',
     'LBL_FILES' => 'Files',
+    'LBL_OFFBOARDINGTEMPLATES_POSITIONS' => 'Offboarding Templates',
+    'LBL_ONBOARDINGTEMPLATES_POSITIONS' => 'Onboarding Templates',
+    'LBL_SALARYRANGES' => 'Salary Ranges',
+    'LBL_TERMSOFEMPLOYMENT' => 'Terms of Employment',
 );

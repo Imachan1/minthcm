@@ -170,7 +170,7 @@ $popupMeta = array(
             'type' => 'enum',
             'default' => true,
             'studio' => 'visible',
-            'label' => 'SCORING',
+            'label' => 'LBL_SCORING',
         ),
         'ASSIGNED_USER_NAME' => array(
             'label' => 'LBL_ASSIGNED_TO_NAME',
