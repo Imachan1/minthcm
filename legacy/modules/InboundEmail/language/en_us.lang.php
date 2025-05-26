@@ -197,5 +197,6 @@ $mod_strings = array(
     'LBL_SET_AS_DEFAULT_BUTTON' => 'Set as default',
 
     'LBL_MOVE_MESSAGES_TO_TRASH_AFTER_IMPORT' => 'Move Messages To Trash After Import?',
+    'LBL_EAPM_ID' => 'EAPM (ID)'
 );
 

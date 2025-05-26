@@ -106,4 +106,5 @@ $mod_strings = array(
     'LBL_MAIN_GROUPS' => 'Main Group:',
     'LBL_CHAR_UNNAMED_DEFAULT_TITLE' => 'Unnamed Chart',
     'LBL_REPORT' => 'Report',
+    'LBL_AOR_CHARTS' => 'Charts',
 );

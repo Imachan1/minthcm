@@ -68,11 +68,13 @@ $dictionary['SurveyResponses'] = array(
         ),
         'happiness' => array(
             'name' => 'happiness',
+            'vname' => 'LBL_HAPPINESS',
             'type' => 'int',
             'label' => 'LBL_HAPPINESS',
         ),
         'email_response_sent' => array(
             'name' => 'email_response_sent',
+            'vname' => 'LBL_EMAIL_RESPONSE_SENT',
             'type' => 'bool',
             'label' => 'LBL_EMAIL_RESPONSE_SENT',
         ),
