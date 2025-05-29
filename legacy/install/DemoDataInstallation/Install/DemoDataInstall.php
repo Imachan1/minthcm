@@ -104,7 +104,9 @@ class DemoDataInstall
             }
             while ($row = $result->fetch_assoc()) {
                 $sqls[] = $row['file_name'];
-                if(!copy($demoDataStartingFilesPath."/{$row['file_name']}", $demoDataDestinationFilesPath."/{$row['file_name']}")){
+                if(!file_exists($demoDataStartingFilesPath."/{$row['file_name']}")){
+                    $this->logger->warning("File {$row['file_name']} does not exist in the demo data directory.");
+                } elseif (!copy($demoDataStartingFilesPath."/{$row['file_name']}", $demoDataDestinationFilesPath."/{$row['file_name']}")){
                     $this->logger->error("Failed to copy file {$row['file_name']}");
                 }
             }
