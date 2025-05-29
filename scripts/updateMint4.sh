@@ -40,6 +40,8 @@ echo "aktualizacja vendor\n"
 cp -r ${tmp_dir}/legacy/vendor/* /var/www/${instance_dir}/legacy/vendor/
 echo "aktualizacja lib\n"
 cp -r ${tmp_dir}/legacy/lib/* /var/www/${instance_dir}/legacy/lib/
+echo "aktualizacja minthcm_version\n"
+cp -r ${tmp_dir}/legacy/minthcm_version.php /var/www/${instance_dir}/legacy/minthcm_version.php
 echo "aktualizacja frontend\n"
 cp -r ${tmp_dir}/vue/dist/* /var/www/${instance_dir}/
 echo "aktualizacja api\n"
