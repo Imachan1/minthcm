@@ -13,7 +13,7 @@ AutoDeploy:
   - eval $(ssh-agent -s)
   - ssh-add <(echo "$SSH_PRIVATE_KEY")
   script:
-    - ssh -p2271 root@10.8.0.134 "hostname && bash /var/www/mint4_mobile/scripts/updateMint4_token.sh mint4_mobile mobile && cd /var/www/mint4_mobile/legacy; sudo -u www-data php rebuildAndRepair.php"
+    - ssh -p2574 root@10.8.0.134 "hostname && bash /var/www/mint4_mobile/scripts/updateMint4_token.sh mint4_mobile mobile && cd /var/www/mint4_mobile/legacy; sudo -u www-data php rebuildAndRepair.php"
   variables:
     GIT_STRATEGY: none
 
