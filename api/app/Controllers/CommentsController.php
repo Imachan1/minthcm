@@ -51,6 +51,7 @@ use MintHCM\Api\Entities\Comment;
 use Slim\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use MintHCM\Modules\Comments\AccessChecker;
+use MintHCM\Api\Entities\User;
 
 #[\AllowDynamicProperties]
 class CommentsController
@@ -77,15 +78,8 @@ class CommentsController
         if (!$parent->ACLAccess('view')) {
             return $response->withStatus(403);
         }
-        $db = \DBManagerFactory::getInstance();
-        $sql = "SELECT id, user_name, CONCAT_WS(' ', first_name, last_name) name, status, photo FROM users WHERE deleted = 0";
-        $result = $db->query($sql);
-        $users = [];
-        while ($row = $db->fetchByAssoc($result)) {
-            $users[] = $row;
-        }
         chdir('../api');
-
+        $users = $this->entityManager->getRepository(User::class)->getActiveUsers();
         $init_controller = new Init\Init($this->entityManager);
         $languages_controller = new Init\Languages();
 

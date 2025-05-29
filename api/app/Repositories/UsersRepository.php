@@ -84,6 +84,27 @@ class UsersRepository extends EntityRepository implements UserRepositoryInterfac
 
         return $user;
     }
+    
+    public function getActiveUsers($user_id = null) 
+    {
+        $without_user_id = !empty($user_id) ? 'AND u.id != :user_id' : '';
+        $query = "SELECT u.id,
+                u.user_name,
+                CONCAT(u.first_name, ' ', u.last_name) full_name,
+                u.status,
+                u.photo
+                FROM MintHCM\Api\Entities\User u
+                WHERE u.deleted = 0
+                    AND u.status = 'active'
+                    $without_user_id
+                ORDER BY u.first_name ASC, u.last_name ASC";
+
+        $em = $this->getEntityManager()->createQuery($query);
+        if (!empty($user_id)) {
+            $em->setParameter('user_id', $user_id);
+        }
+        return $em->getResult();
+    }
 
     /**
      * Check that password matches existing hash
