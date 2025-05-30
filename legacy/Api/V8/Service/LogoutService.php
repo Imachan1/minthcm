@@ -5,6 +5,7 @@ use Api\V8\BeanDecorator\BeanManager;
 use Api\V8\JsonApi\Response\DocumentResponse;
 use Api\V8\JsonApi\Response\MetaResponse;
 
+#[\AllowDynamicProperties]
 class LogoutService
 {
     /**
@@ -26,7 +27,7 @@ class LogoutService
      * @return DocumentResponse
      * @throws \InvalidArgumentException When access token is not found.
      */
-    public function logout($accessToken, $request) // MintHCM #122506
+    public function logout($accessToken, $request) // MintHCM #136592
     {
         // same logic in Access and Refresh token repository, refactor this later
         $token = $this->beanManager->newBeanSafe(\OAuth2Tokens::class);
@@ -40,7 +41,7 @@ class LogoutService
 
         $token->mark_deleted($token->id);
 
-        // MintHCM #122506 start
+        // MintHCM #136592 start
         $device_id = $request->getParam('device_id');
         $user_name = $request->getParam('user_name');
         $user_bean = $this->beanManager->newBeanSafe('Users'); /** @var User $user_bean */
@@ -54,7 +55,7 @@ class LogoutService
                 $user_bean->save();
             }
         }
-        // MintHCM #122506 end
+        // MintHCM #136592 end
 
         $response = new DocumentResponse();
         $response->setMeta(

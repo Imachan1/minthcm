@@ -19,4 +19,13 @@ class ext_eapm_firebase extends source
         return null;
     }
 
+    /** {@inheritdoc} */
+    public function saveConfig()
+    {
+        if (file_exists('include/Integrations/Firebase/Cache/token.cache')) {
+            unlink('include/Integrations/Firebase/Cache/token.cache');
+        }
+        parent::saveConfig();
+    }
+
 }

@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -72,13 +72,13 @@ class WorkSchedulesNotPlandForTwoWeeks extends NotificationPlugin
                 ->setAssignedUserId($work_schedule['id'])->setRelatedBean($work_schedule['id'], 'Users')
                 ->setDescription(translate('LBL_TWO_WEEKS_ALERT', 'WorkSchedules'))->setType($this->getType())
                 ->saveAsAlert(true,$options)->WebPush(true,true,$options);
-            // MintHCM #122506 start
+            // MintHCM #136592 start
             (new MintHCM\Firebase\PushNotifications\GeneralNotificationToUser())->execute([
                 'user_id' => $work_schedule['id'],
                 'title' => translate('LBL_LIST_TITLE', 'WorkSchedules'),
                 'body' => translate('LBL_TWO_WEEKS_ALERT', 'WorkSchedules')
             ]);
-            // MintHCM #122506 end
+            // MintHCM #136592 end
         }
     }
 
