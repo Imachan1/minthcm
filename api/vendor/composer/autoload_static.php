@@ -21,7 +21,6 @@ class ComposerStaticInitb37ba7854db44afda592f3ed7ba9e139
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         'b33e3d135e5d9e47d845c576147bda89' => __DIR__ . '/..' . '/php-di/php-di/src/functions.php',
         'f881e40a2efd4c02f2013a3f1d7a4749' => __DIR__ . '/../..' . '/configs/mint/config.php',
-        '7d4ec65b5c7562e04db30f206f853b4d' => __DIR__ . '/../..' . '/constants/list_constants.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -181,8 +180,8 @@ class ComposerStaticInitb37ba7854db44afda592f3ed7ba9e139
         ),
         'Psr\\Http\\Server\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-server-middleware/src',
-            1 => __DIR__ . '/..' . '/psr/http-server-handler/src',
+            0 => __DIR__ . '/..' . '/psr/http-server-handler/src',
+            1 => __DIR__ . '/..' . '/psr/http-server-middleware/src',
         ),
         'Psr\\Http\\Message\\' => 
         array (

@@ -44,10 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-
-global $list_config;
-
-$list_config = array(
+return array(
     "config" => array(
         "actions" => ["edit", "view", "delete"],
         "itemsPerPageOptions" => [5, 10, 20, 50, 100, 200, 500, 1000],
@@ -144,17 +141,3 @@ $list_config = array(
         "primary_address_country" => "address.primary.country.keyword",
     ),
 );
-
-chdir('../');
-$files = scandir('custom/api/constants/list_constants/');
-if (is_array($files)) {
-    $files = array_diff($files, array('.', '..'));
-    foreach ($files as $file) {
-        if(substr($custom_file, -4) !== '.php') {
-            continue;
-        }
-        include 'custom/api/constants/list_constants/' . $file;
-    }
-}
-chdir('api/');
-unset($files);

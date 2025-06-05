@@ -10,8 +10,7 @@
             "MintHCM\\Data\\": "data/"
         },
         "files": [
-            "configs/mint/config.php",
-            "constants/list_constants.php"
+            "configs/mint/config.php"
         ]
     },
     "require": {

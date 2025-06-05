@@ -20,5 +20,4 @@ return array(
     '0d59ee240a4cd96ddbb4ff164fccea4d' => $vendorDir . '/symfony/polyfill-php73/bootstrap.php',
     'b33e3d135e5d9e47d845c576147bda89' => $vendorDir . '/php-di/php-di/src/functions.php',
     'f881e40a2efd4c02f2013a3f1d7a4749' => $baseDir . '/configs/mint/config.php',
-    '7d4ec65b5c7562e04db30f206f853b4d' => $baseDir . '/constants/list_constants.php',
 );

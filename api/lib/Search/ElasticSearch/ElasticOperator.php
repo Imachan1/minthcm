@@ -47,6 +47,7 @@
 namespace MintHCM\Lib\Search\ElasticSearch;
 
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use MintHCM\Utils\ConstantsLoader;
 
 abstract class ElasticOperator
 {
@@ -54,8 +55,7 @@ abstract class ElasticOperator
 
     public function __construct(array $data)
     {
-        global $list_config;
-
+        $list_config = ConstantsLoader::getConstants('list_constants');
         $this->field = $data['field'] ?? null;
         if (isset($list_config['fields_mappigs'][$this->field])) {
             $this->field = $list_config['fields_mappigs'][$this->field];

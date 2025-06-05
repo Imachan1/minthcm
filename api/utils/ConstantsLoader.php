@@ -4,11 +4,10 @@ namespace MintHCM\Utils;
 
 class ConstantsLoader
 {
-    private const NORMAL_PATH = 'api/constants/';
-    private const CUSTOM_PATH = 'custom/api/constants/';
+    private const NORMAL_PATH = 'constants/';
+    private const CUSTOM_PATH = 'custom/constants/';
 
     public static function getConstants(string $name): array | false {
-        chdir('../');
         $file_path = self::NORMAL_PATH . $name . '.php';
         $custom_files_path = self::CUSTOM_PATH . $name .'/';
 
@@ -26,10 +25,8 @@ class ConstantsLoader
                 }
             }
         } else {
-            chdir('api/');
             return false;
         }
-        chdir('api/');
         return $include_content;
     }
 }
