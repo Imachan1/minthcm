@@ -23,9 +23,15 @@ use function sprintf;
 
 abstract class Message implements MessageInterface
 {
-    protected string $protocolVersion = '1.1';
+    /**
+     * @var string
+     */
+    protected $protocolVersion = '1.1';
 
-    protected static array $validProtocolVersions = [
+    /**
+     * @var array
+     */
+    protected static $validProtocolVersions = [
         '1.0' => true,
         '1.1' => true,
         '2.0' => true,
@@ -67,7 +73,7 @@ abstract class Message implements MessageInterface
      * @return static
      * {@inheritdoc}
      */
-    public function withProtocolVersion($version): MessageInterface
+    public function withProtocolVersion($version)
     {
         if (!isset(self::$validProtocolVersions[$version])) {
             throw new InvalidArgumentException(
@@ -119,7 +125,7 @@ abstract class Message implements MessageInterface
      * @return static
      * {@inheritdoc}
      */
-    public function withHeader($name, $value): MessageInterface
+    public function withHeader($name, $value)
     {
         $clone = clone $this;
         $clone->headers->setHeader($name, $value);
@@ -135,7 +141,7 @@ abstract class Message implements MessageInterface
      * @return static
      * {@inheritdoc}
      */
-    public function withAddedHeader($name, $value): MessageInterface
+    public function withAddedHeader($name, $value)
     {
         $clone = clone $this;
         $clone->headers->addHeader($name, $value);
@@ -151,7 +157,7 @@ abstract class Message implements MessageInterface
      * @return static
      * {@inheritdoc}
      */
-    public function withoutHeader($name): MessageInterface
+    public function withoutHeader($name)
     {
         $clone = clone $this;
         $clone->headers->removeHeader($name);
@@ -175,7 +181,7 @@ abstract class Message implements MessageInterface
      * @return static
      * {@inheritdoc}
      */
-    public function withBody(StreamInterface $body): MessageInterface
+    public function withBody(StreamInterface $body)
     {
         $clone = clone $this;
         $clone->body = $body;

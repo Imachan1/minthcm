@@ -62,12 +62,12 @@ class UriFactory implements UriFactoryInterface
     public function createFromGlobals(array $globals): Uri
     {
         // Scheme
-        $https = $globals['HTTPS'] ?? false;
+        $https = isset($globals['HTTPS']) ? $globals['HTTPS'] : false;
         $scheme = !$https || $https === 'off' ? 'http' : 'https';
 
         // Authority: Username and password
-        $username = $globals['PHP_AUTH_USER'] ?? '';
-        $password = $globals['PHP_AUTH_PW'] ?? '';
+        $username = isset($globals['PHP_AUTH_USER']) ? $globals['PHP_AUTH_USER'] : '';
+        $password = isset($globals['PHP_AUTH_PW']) ? $globals['PHP_AUTH_PW'] : '';
 
         // Authority: Host
         $host = '';
@@ -94,7 +94,10 @@ class UriFactory implements UriFactoryInterface
         }
 
         // Query string
-        $queryString = $globals['QUERY_STRING'] ?? '';
+        $queryString = '';
+        if (isset($globals['QUERY_STRING'])) {
+            $queryString = $globals['QUERY_STRING'];
+        }
 
         // Request URI
         $requestUri = '';
@@ -103,7 +106,7 @@ class UriFactory implements UriFactoryInterface
             $requestUri = $uriFragments[0];
 
             if ($queryString === '' && count($uriFragments) > 1) {
-                $queryString = parse_url('https://www.example.com' . $globals['REQUEST_URI'], PHP_URL_QUERY) ?? '';
+                $queryString = parse_url('http://www.example.com' . $globals['REQUEST_URI'], PHP_URL_QUERY) ?? '';
             }
         }
 

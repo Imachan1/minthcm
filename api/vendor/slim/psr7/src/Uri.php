@@ -23,7 +23,6 @@ use function method_exists;
 use function preg_replace_callback;
 use function rawurlencode;
 use function str_replace;
-use function str_starts_with;
 use function strtolower;
 
 use const FILTER_FLAG_IPV6;
@@ -39,38 +38,59 @@ class Uri implements UriInterface
 
     /**
      * Uri scheme (without "://" suffix)
+     *
+     * @var string
      */
-    protected string $scheme = '';
+    protected $scheme = '';
 
-    protected string $user = '';
+    /**
+     * @var string
+     */
+    protected $user = '';
 
-    protected string $password = '';
+    /**
+     * @var string
+     */
+    protected $password = '';
 
-    protected string $host = '';
+    /**
+     * @var string
+     */
+    protected $host = '';
 
-    protected ?int $port;
+    /**
+     * @var null|int
+     */
+    protected $port;
 
-    protected string $path = '';
+    /**
+     * @var string
+     */
+    protected $path = '';
 
     /**
      * Uri query string (without "?" prefix)
+     *
+     * @var string
      */
-    protected string $query = '';
+    protected $query = '';
 
     /**
      * Uri fragment string (without "#" prefix)
+     *
+     * @var string
      */
-    protected string $fragment = '';
+    protected $fragment = '';
 
     /**
-     * @param string   $scheme   Uri scheme.
-     * @param string   $host     Uri host.
-     * @param int|null $port     Uri port number.
-     * @param string   $path     Uri path.
-     * @param string   $query    Uri query string.
-     * @param string   $fragment Uri fragment.
-     * @param string   $user     Uri user.
-     * @param string   $password Uri password.
+     * @param string $scheme   Uri scheme.
+     * @param string $host     Uri host.
+     * @param int    $port     Uri port number.
+     * @param string $path     Uri path.
+     * @param string $query    Uri query string.
+     * @param string $fragment Uri fragment.
+     * @param string $user     Uri user.
+     * @param string $password Uri password.
      */
     public function __construct(
         string $scheme,
@@ -88,8 +108,8 @@ class Uri implements UriInterface
         $this->path = $this->filterPath($path);
         $this->query = $this->filterQuery($query);
         $this->fragment = $this->filterFragment($fragment);
-        $this->user = $this->filterUserInfo($user);
-        $this->password = $this->filterUserInfo($password);
+        $this->user = $user;
+        $this->password = $password;
     }
 
     /**
@@ -102,9 +122,8 @@ class Uri implements UriInterface
 
     /**
      * {@inheritdoc}
-     * @return static
      */
-    public function withScheme($scheme): UriInterface
+    public function withScheme($scheme)
     {
         $scheme = $this->filterScheme($scheme);
         $clone = clone $this;
@@ -158,7 +177,7 @@ class Uri implements UriInterface
     {
         $info = $this->user;
 
-        if ($this->password !== '') {
+        if (isset($this->password) && $this->password !== '') {
             $info .= ':' . $this->password;
         }
 
@@ -167,9 +186,8 @@ class Uri implements UriInterface
 
     /**
      * {@inheritdoc}
-     * @return static
      */
-    public function withUserInfo($user, $password = null): UriInterface
+    public function withUserInfo($user, $password = null)
     {
         $clone = clone $this;
         $clone->user = $this->filterUserInfo($user);
@@ -199,7 +217,7 @@ class Uri implements UriInterface
         }
 
         $match =  preg_replace_callback(
-            '/(?:[^%a-zA-Z0-9_\-\.~\pL!\$&\'\(\)\*\+,;=]+|%(?![A-Fa-f0-9]{2}))/u',
+            '/(?:[^a-zA-Z0-9_\-\.~!\$&\'\(\)\*\+,;=]+|%(?![A-Fa-f0-9]{2}))/u',
             function ($match) {
                 return rawurlencode($match[0]);
             },
@@ -219,9 +237,8 @@ class Uri implements UriInterface
 
     /**
      * {@inheritdoc}
-     * @return static
      */
-    public function withHost($host): UriInterface
+    public function withHost($host)
     {
         $clone = clone $this;
         $clone->host = $this->filterHost($host);
@@ -268,9 +285,8 @@ class Uri implements UriInterface
 
     /**
      * {@inheritdoc}
-     * @return static
      */
-    public function withPort($port): UriInterface
+    public function withPort($port)
     {
         $port = $this->filterPort($port);
         $clone = clone $this;
@@ -292,21 +308,15 @@ class Uri implements UriInterface
     /**
      * Filter Uri port.
      *
-     * @param  int|string|null $port The Uri port number.
+     * @param  null|int $port The Uri port number.
      *
-     * @return int|null
+     * @return null|int
      *
      * @throws InvalidArgumentException If the port is invalid.
      */
     protected function filterPort($port): ?int
     {
-        if (is_null($port)) {
-            return null;
-        }
-
-        $port = (int) $port;
-
-        if ($port >= 1 && $port <= 65535) {
+        if (is_null($port) || (is_integer($port) && ($port >= 1 && $port <= 65535))) {
             return $port;
         }
 
@@ -318,19 +328,13 @@ class Uri implements UriInterface
      */
     public function getPath(): string
     {
-        if (str_starts_with($this->path, '/')) {
-            // Use only one leading slash to prevent XSS attempts.
-            return '/' . ltrim($this->path, '/');
-        }
-
         return $this->path;
     }
 
     /**
      * {@inheritdoc}
-     * @return static
      */
-    public function withPath($path): UriInterface
+    public function withPath($path)
     {
         if (!is_string($path)) {
             throw new InvalidArgumentException('Uri path must be a string');
@@ -358,7 +362,9 @@ class Uri implements UriInterface
     {
         $match = preg_replace_callback(
             '/(?:[^a-zA-Z0-9_\-\.~:@&=\+\$,\/;%]+|%(?![A-Fa-f0-9]{2}))/',
-            fn (array $match) => rawurlencode($match[0]),
+            function ($match) {
+                return rawurlencode($match[0]);
+            },
             $path
         );
 
@@ -375,9 +381,8 @@ class Uri implements UriInterface
 
     /**
      * {@inheritdoc}
-     * @return static
      */
-    public function withQuery($query): UriInterface
+    public function withQuery($query)
     {
         $query = ltrim($this->filterQuery($query), '?');
         $clone = clone $this;
@@ -426,9 +431,8 @@ class Uri implements UriInterface
 
     /**
      * {@inheritdoc}
-     * @return static
      */
-    public function withFragment($fragment): UriInterface
+    public function withFragment($fragment)
     {
         $fragment = $this->filterFragment($fragment);
         $clone = clone $this;
@@ -476,7 +480,7 @@ class Uri implements UriInterface
     {
         $scheme = $this->getScheme();
         $authority = $this->getAuthority();
-        $path = $this->path;
+        $path = $this->getPath();
         $query = $this->getQuery();
         $fragment = $this->getFragment();
 
