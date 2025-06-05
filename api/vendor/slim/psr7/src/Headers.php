@@ -28,16 +28,19 @@ use function trim;
 
 class Headers implements HeadersInterface
 {
-    protected array $globals;
+    /**
+     * @var array
+     */
+    protected $globals;
 
     /**
      * @var Header[]
      */
-    protected array $headers;
+    protected $headers;
 
     /**
-     * @param array      $headers
-     * @param array|null $globals
+     * @param array $headers
+     * @param array $globals
      */
     final public function __construct(array $headers = [], ?array $globals = null)
     {
@@ -178,7 +181,7 @@ class Headers implements HeadersInterface
     {
         $hasAuthorizationHeader = false;
         foreach ($headers as $name => $value) {
-            if (strtolower((string) $name) === 'authorization') {
+            if (strtolower($name) === 'authorization') {
                 $hasAuthorizationHeader = true;
                 break;
             }
@@ -188,7 +191,7 @@ class Headers implements HeadersInterface
             if (isset($this->globals['REDIRECT_HTTP_AUTHORIZATION'])) {
                 $headers['Authorization'] = $this->globals['REDIRECT_HTTP_AUTHORIZATION'];
             } elseif (isset($this->globals['PHP_AUTH_USER'])) {
-                $pw = $this->globals['PHP_AUTH_PW'] ?? '';
+                $pw = isset($this->globals['PHP_AUTH_PW']) ? $this->globals['PHP_AUTH_PW'] : '';
                 $headers['Authorization'] = 'Basic ' . base64_encode($this->globals['PHP_AUTH_USER'] . ':' . $pw);
             } elseif (isset($this->globals['PHP_AUTH_DIGEST'])) {
                 $headers['Authorization'] = $this->globals['PHP_AUTH_DIGEST'];

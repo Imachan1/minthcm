@@ -34,30 +34,43 @@ class UploadedFile implements UploadedFileInterface
 {
     /**
      * The client-provided full path to the file
+     *
+     * @var string
      */
-    protected string $file;
+    protected $file;
 
     /**
      * The client-provided file name.
+     *
+     * @var string|null
      */
-    protected ?string $name;
+    protected $name;
 
     /**
      * The client-provided media type of the file.
+     *
+     * @var string|null
      */
-    protected ?string $type;
+    protected $type;
 
-    protected ?int $size;
+    /**
+     * @var int|null
+     */
+    protected $size;
 
     /**
      * A valid PHP UPLOAD_ERR_xxx code for the file upload.
+     *
+     * @var int
      */
-    protected int $error = UPLOAD_ERR_OK;
+    protected $error = UPLOAD_ERR_OK;
 
     /**
      * Indicates if the upload is from a SAPI environment.
+     *
+     * @var bool
      */
-    protected bool $sapi = false;
+    protected $sapi = false;
 
     /**
      * @var StreamInterface|null
@@ -66,8 +79,10 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * Indicates if the uploaded file has already been moved.
+     *
+     * @var bool
      */
-    protected bool $moved = false;
+    protected $moved = false;
 
     /**
      * @param string|StreamInterface $fileNameOrStream The full path to the uploaded file provided by the client,
@@ -109,9 +124,8 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * {@inheritdoc}
-     * @return StreamInterface
      */
-    public function getStream(): StreamInterface
+    public function getStream()
     {
         if ($this->moved) {
             throw new RuntimeException(sprintf('Uploaded file %s has already been moved', $this->name));
@@ -223,7 +237,7 @@ class UploadedFile implements UploadedFileInterface
         }
 
         if (!empty($_FILES)) {
-            return self::parseUploadedFiles($_FILES);
+            return static::parseUploadedFiles($_FILES);
         }
 
         return [];
@@ -244,7 +258,7 @@ class UploadedFile implements UploadedFileInterface
         foreach ($uploadedFiles as $field => $uploadedFile) {
             if (!isset($uploadedFile['error'])) {
                 if (is_array($uploadedFile)) {
-                    $parsed[$field] = self::parseUploadedFiles($uploadedFile);
+                    $parsed[$field] = static::parseUploadedFiles($uploadedFile);
                 }
                 continue;
             }
@@ -253,9 +267,9 @@ class UploadedFile implements UploadedFileInterface
             if (!is_array($uploadedFile['error'])) {
                 $parsed[$field] = new static(
                     $uploadedFile['tmp_name'],
-                    $uploadedFile['name'] ?? null,
-                    $uploadedFile['type'] ?? null,
-                    $uploadedFile['size'] ?? null,
+                    isset($uploadedFile['name']) ? $uploadedFile['name'] : null,
+                    isset($uploadedFile['type']) ? $uploadedFile['type'] : null,
+                    isset($uploadedFile['size']) ? $uploadedFile['size'] : null,
                     $uploadedFile['error'],
                     true
                 );
@@ -269,7 +283,7 @@ class UploadedFile implements UploadedFileInterface
                     $subArray[$fileIdx]['error'] = $uploadedFile['error'][$fileIdx];
                     $subArray[$fileIdx]['size'] = $uploadedFile['size'][$fileIdx];
 
-                    $parsed[$field] = self::parseUploadedFiles($subArray);
+                    $parsed[$field] = static::parseUploadedFiles($subArray);
                 }
             }
         }

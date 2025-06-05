@@ -30,9 +30,15 @@ use function is_string;
 
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {
-    protected StreamFactoryInterface $streamFactory;
+    /**
+     * @var StreamFactoryInterface|StreamFactory
+     */
+    protected $streamFactory;
 
-    protected UriFactoryInterface $uriFactory;
+    /**
+     * @var UriFactoryInterface|UriFactory
+     */
+    protected $uriFactory;
 
     /**
      * @param StreamFactoryInterface|null $streamFactory
@@ -40,8 +46,16 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
      */
     public function __construct(?StreamFactoryInterface $streamFactory = null, ?UriFactoryInterface $uriFactory = null)
     {
-        $this->streamFactory = $streamFactory ?? new StreamFactory();
-        $this->uriFactory = $uriFactory ?? new UriFactory();
+        if (!isset($streamFactory)) {
+            $streamFactory = new StreamFactory();
+        }
+
+        if (!isset($uriFactory)) {
+            $uriFactory = new UriFactory();
+        }
+
+        $this->streamFactory = $streamFactory;
+        $this->uriFactory = $uriFactory;
     }
 
     /**
@@ -78,7 +92,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
      */
     public static function createFromGlobals(): Request
     {
-        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
         $uri = (new UriFactory())->createFromGlobals($_SERVER);
 
         $headers = Headers::createFromGlobals();
@@ -92,7 +106,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
         $uploadedFiles = UploadedFile::createFromGlobals($_SERVER);
 
         $request = new Request($method, $uri, $headers, $cookies, $_SERVER, $body, $uploadedFiles);
-        $contentTypes = $request->getHeader('Content-Type');
+        $contentTypes = $request->getHeader('Content-Type') ?? [];
 
         $parsedContentType = '';
         foreach ($contentTypes as $contentType) {

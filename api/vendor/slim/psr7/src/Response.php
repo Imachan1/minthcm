@@ -24,11 +24,20 @@ use function method_exists;
 
 class Response extends Message implements ResponseInterface
 {
-    protected int $status = StatusCodeInterface::STATUS_OK;
+    /**
+     * @var int
+     */
+    protected $status = StatusCodeInterface::STATUS_OK;
 
-    protected string $reasonPhrase = '';
+    /**
+     * @var string
+     */
+    protected $reasonPhrase = '';
 
-    protected static array $messages = [
+    /**
+     * @var array
+     */
+    protected static $messages = [
         // Informational 1xx
         StatusCodeInterface::STATUS_CONTINUE => 'Continue',
         StatusCodeInterface::STATUS_SWITCHING_PROTOCOLS => 'Switching Protocols',
@@ -115,8 +124,8 @@ class Response extends Message implements ResponseInterface
         ?StreamInterface $body = null
     ) {
         $this->status = $this->filterStatus($status);
-        $this->headers = $headers ?: new Headers([], []);
-        $this->body = $body ?: (new StreamFactory())->createStream();
+        $this->headers = $headers ? $headers : new Headers([], []);
+        $this->body = $body ? $body : (new StreamFactory())->createStream();
     }
 
     /**
@@ -138,9 +147,8 @@ class Response extends Message implements ResponseInterface
 
     /**
      * {@inheritdoc}
-     * @return static
      */
-    public function withStatus($code, $reasonPhrase = ''): ResponseInterface
+    public function withStatus($code, $reasonPhrase = '')
     {
         $code = $this->filterStatus($code);
         $reasonPhrase = $this->filterReasonPhrase($reasonPhrase);
@@ -205,7 +213,7 @@ class Response extends Message implements ResponseInterface
             throw new InvalidArgumentException('Response reason phrase must be a string.');
         }
 
-        if (strpos($reasonPhrase, "\r") !== false || strpos($reasonPhrase, "\n") !== false) {
+        if (strpos($reasonPhrase, "\r") || strpos($reasonPhrase, "\n")) {
             throw new InvalidArgumentException(
                 'Reason phrase contains one of the following prohibited characters: \r \n'
             );

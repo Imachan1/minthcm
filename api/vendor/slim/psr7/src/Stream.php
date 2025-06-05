@@ -48,29 +48,53 @@ class Stream implements StreamInterface
      */
     protected $stream;
 
-    protected ?array $meta;
-
-    protected ?bool $readable = null;
-
-    protected ?bool $writable = null;
-
-    protected ?bool $seekable = null;
-
-    protected ?int $size = null;
-
-    protected ?bool $isPipe = null;
-
-    protected bool $finished = false;
-
-    protected ?StreamInterface $cache;
+    /**
+     * @var array|null
+     */
+    protected $meta;
 
     /**
-     * @param  resource         $stream A PHP resource handle.
-     * @param  ?StreamInterface $cache  A stream to cache $stream (useful for non-seekable streams)
+     * @var bool|null
+     */
+    protected $readable;
+
+    /**
+     * @var bool|null
+     */
+    protected $writable;
+
+    /**
+     * @var bool|null
+     */
+    protected $seekable;
+
+    /**
+     * @var null|int
+     */
+    protected $size;
+
+    /**
+     * @var bool|null
+     */
+    protected $isPipe;
+
+    /**
+     * @var bool
+     */
+    protected $finished = false;
+
+    /**
+     * @var StreamInterface | null
+     */
+    protected $cache;
+
+    /**
+     * @param  resource $stream  A PHP resource handle.
+     * @param  StreamInterface $cache A stream to cache $stream (useful for non-seekable streams)
      *
      * @throws InvalidArgumentException If argument is not a resource.
      */
-    public function __construct($stream, ?StreamInterface $cache = null)
+    public function __construct($stream, StreamInterface $cache = null)
     {
         $this->attach($stream);
 
@@ -82,7 +106,6 @@ class Stream implements StreamInterface
 
     /**
      * {@inheritdoc}
-     * @return array|mixed
      */
     public function getMetadata($key = null)
     {
@@ -96,7 +119,7 @@ class Stream implements StreamInterface
             return $this->meta;
         }
 
-        return $this->meta[$key] ?? null;
+        return isset($this->meta[$key]) ? $this->meta[$key] : null;
     }
 
     /**
@@ -186,7 +209,7 @@ class Stream implements StreamInterface
             $stats = fstat($this->stream);
 
             if ($stats) {
-                $this->size = !$this->isPipe() ? $stats['size'] : null;
+                $this->size = isset($stats['size']) && !$this->isPipe() ? $stats['size'] : null;
             }
         }
 
@@ -216,7 +239,7 @@ class Stream implements StreamInterface
      */
     public function eof(): bool
     {
-        return !$this->stream || feof($this->stream);
+        return $this->stream ? feof($this->stream) : true;
     }
 
     /**
@@ -224,17 +247,19 @@ class Stream implements StreamInterface
      */
     public function isReadable(): bool
     {
-        if ($this->readable !== null) {
-            return $this->readable;
-        }
-
-        $this->readable = false;
-
-        if ($this->stream) {
-            $mode = $this->getMetadata('mode');
-
-            if (is_string($mode) && (strstr($mode, 'r') !== false || strstr($mode, '+') !== false)) {
+        if ($this->readable === null) {
+            if ($this->isPipe()) {
                 $this->readable = true;
+            } else {
+                $this->readable = false;
+
+                if ($this->stream) {
+                    $mode = $this->getMetadata('mode');
+
+                    if (strstr($mode, 'r') !== false || strstr($mode, '+') !== false) {
+                        $this->readable = true;
+                    }
+                }
             }
         }
 
@@ -252,7 +277,7 @@ class Stream implements StreamInterface
             if ($this->stream) {
                 $mode = $this->getMetadata('mode');
 
-                if (is_string($mode) && (strstr($mode, 'w') !== false || strstr($mode, '+') !== false)) {
+                if (strstr($mode, 'w') !== false || strstr($mode, '+') !== false) {
                     $this->writable = true;
                 }
             }
@@ -304,7 +329,7 @@ class Stream implements StreamInterface
     {
         $data = false;
 
-        if ($this->isReadable() && $this->stream && $length > 0) {
+        if ($this->isReadable() && $this->stream) {
             $data = fread($this->stream, $length);
         }
 
@@ -323,9 +348,8 @@ class Stream implements StreamInterface
 
     /**
      * {@inheritdoc}
-     * @return int
      */
-    public function write($string): int
+    public function write($string)
     {
         $written = false;
 
@@ -386,7 +410,7 @@ class Stream implements StreamInterface
                 $stats = fstat($this->stream);
 
                 if (is_array($stats)) {
-                    $this->isPipe = ($stats['mode'] & self::FSTAT_MODE_S_IFIFO) !== 0;
+                    $this->isPipe = isset($stats['mode']) && ($stats['mode'] & self::FSTAT_MODE_S_IFIFO) !== 0;
                 }
             }
         }
