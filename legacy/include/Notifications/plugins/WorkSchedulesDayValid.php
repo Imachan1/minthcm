@@ -51,6 +51,7 @@ class WorkSchedulesDayValid extends NotificationPlugin {
     public function __construct()
     {
         $this->setType('WorkSchedulesDayValid');
+        $this->setLabel('LBL_WORKSCHEDULES_DAY_VALID');
     }
 
    public function run() {

@@ -52,6 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once 'include/SugarObjects/templates/person/Person.php';
 require_once __DIR__ . '/../../include/EmailInterface.php';
 require_once __DIR__ . '/../Emails/EmailUI.php';
+require_once 'include/Notifications/NotificationManager.php';
 
 // User is used to store customer information.
 class User extends Person implements EmailInterface
