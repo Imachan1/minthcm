@@ -162,10 +162,10 @@ final class CompleteCommand extends Command
                 throw $e;
             }
 
-            return 2;
+            return self::FAILURE;
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function createCompletionInput(InputInterface $input): CompletionInput
