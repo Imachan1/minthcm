@@ -21,6 +21,10 @@ use RuntimeException;
  * that doesn't exist on an element or cannot otherwise be evaluated in the
  * current context.
  */
+<<<<<<<< HEAD:api/vendor/ramsey/collection/src/Exception/InvalidPropertyOrMethod.php
 class InvalidPropertyOrMethod extends RuntimeException implements CollectionException
+========
+class ValueExtractionException extends RuntimeException
+>>>>>>>> feature/146470:api/vendor/ramsey/collection/src/Exception/ValueExtractionException.php
 {
 }

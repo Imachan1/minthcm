@@ -44,9 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-global $list_config;
-
-$list_config = array(
+return array(
     "config" => array(
         "actions" => ["edit", "view", "delete"],
         "itemsPerPageOptions" => [5, 10, 20, 50, 100, 200, 500, 1000],
@@ -155,12 +153,3 @@ $list_config = array(
         'parent_name' => 'parent.name.keyword',
     ),
 );
-
-$files = scandir(__DIR__);
-if (is_array($files)) {
-    $files = array_diff($files, array('.', '..', 'config.php'));
-    foreach ($files as $file) {
-        include __DIR__ . '/' . $file;
-    }
-}
-unset($files);

@@ -51,6 +51,7 @@ use Slim\Exception\HttpForbiddenException;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
+use MintHCM\Utils\ConstantsLoader;
 
 #[\AllowDynamicProperties]
 class ListInitController
@@ -119,7 +120,8 @@ class ListInitController
 
     function prepareConfig()
     {
-        global $list_config, $sugar_config;
+        global $sugar_config;
+        $list_config = ConstantsLoader::getConstants('list_constants');
         $variables = $list_config['variables'];
         $theme = $list_config['theme'];
 

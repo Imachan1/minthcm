@@ -54,6 +54,8 @@ use MintHCM\Utils\LegacyConnector;
 use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 use Symfony\Component\Yaml\Parser as YamlParser;
 
+use MintHCM\Utils\ConstantsLoader;
+
 class ElasticQuery extends SearchQuery
 {
     const DEFAULT_SORT_FIELD = "_score";
@@ -87,8 +89,7 @@ class ElasticQuery extends SearchQuery
 
     protected function setSort()
     {
-        global $list_config;
-
+        $list_config = ConstantsLoader::getConstants('list_constants');
         $field = !empty($this->params["sort_by"]) ? $this->params['sort_by']: static::DEFAULT_SORT_FIELD;
         if (isset($list_config['sort_mappings'][$field])) {
             $field = $list_config['sort_mappings'][$field];
