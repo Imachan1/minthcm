@@ -4,8 +4,8 @@ import SetupWizardCookies from './SetupWizardSteps/SetupWizardCookies.vue'
 import SetupWizardUserProfile from './SetupWizardSteps/SetupWizardUserProfile.vue'
 import SetupWizardLocaleSettings from './SetupWizardSteps/SetupWizardLocaleSettings.vue'
 import { useAuthStore } from '@/store/auth'
-import axios from 'axios'
 import { useBackendStore } from '@/store/backend'
+import { mintApi } from '@/api/api'
 
 export const useSetupWizardStore = defineStore('setup-wizard', () => {
     const auth = useAuthStore()
@@ -71,7 +71,7 @@ export const useSetupWizardStore = defineStore('setup-wizard', () => {
     async function finish() {
         isLoading.value = true
         try {
-            const response = await axios.post('api/confirm_login_wizard', setupData.value)
+            const response = await mintApi.post('api/confirm_login_wizard', setupData.value)
             if (response.status === 200) {
                 if (auth.user) {
                     auth.user.show_login_wizard = false

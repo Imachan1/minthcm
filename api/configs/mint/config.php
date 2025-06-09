@@ -70,6 +70,7 @@ $mint_config = array(
         'password' => '',
         'charset' => 'utf8mb4',
     ),
+    'oauth2_encryption_key' => 'MintHCM-DEFKEY',
 );
 
 $files = scandir(__DIR__);

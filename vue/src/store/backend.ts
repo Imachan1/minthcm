@@ -6,10 +6,11 @@ import { useAlertsStore } from './alerts'
 import { useFavoritesStore } from './favorites'
 import { useRecentsStore } from './recents'
 import { useLanguagesStore, Languages } from './languages'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import { useModulesStore, ModulesDefs } from './modules'
 import { usePreferencesStore } from './preferences'
 import { Settings } from 'luxon'
+import { mintApi } from '@/api/api'
 
 interface QuickCreate {
     module: string
@@ -72,11 +73,11 @@ export const useBackendStore = defineStore('backend', () => {
             if(mintRebuildID === false){
                 mintRebuildID = '';
             }
-            const initResponse = await axios.post<InitResponse>('api/init', {
+            const initResponse = await mintApi.post<InitResponse>('api/init', {
                 mintRebuildID: mintRebuildID,
                 current_language: current_language,
                 user_id: cachedConfig.value?.user?.id ?? ''
-            })
+            }, { rawError: true })
             auth.user = initResponse.data?.user ?? {}
             if(initResponse.data.responseType === 'minified'){
                 cachedConfig.value.user = initResponse.data.user
@@ -132,10 +133,11 @@ export const useBackendStore = defineStore('backend', () => {
         } catch (err) {
             if ((err as AxiosError).response?.status === 401) {
                 const loginData = (
-                    await axios.get('api/login', {
+                    await mintApi.get('api/login', {
                         params: {
                             lang: localStorage.getItem('currentLang') ?? 'en_us',
                         },
+                        rawError: true,
                     })
                 ).data
                 languages.languages = {

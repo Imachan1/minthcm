@@ -117,7 +117,7 @@ import { useLanguagesStore } from '@/store/languages'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 import Field from '@/components/Fields/Field.vue'
-import axios from 'axios'
+import { mintApi } from '@/api/api'
 
 interface Props {
     data: {
@@ -178,7 +178,7 @@ const appraisalName = ref<string>('')
 const appraisalSnackBar = ref<boolean>(false)
 const createAppraisal = async () => {
     appraisalDialog.value = false
-    const response = await axios.get(
+    const response = await mintApi.get(
         `legacy/index.php?entryPoint=scheduleAppraisalAndAppraisalItems&module=${route.params.module}&appraisal_name=${appraisalName.value}&record_id=${route.params.id}`,
     )
     appraisalName.value = ''

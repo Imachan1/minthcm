@@ -92,7 +92,6 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useListViewStore } from './ListViewStore'
@@ -100,6 +99,7 @@ import { useLanguagesStore } from '@/store/languages'
 import { useUrlStore } from '@/store/url'
 import { usePopupsStore } from '@/store/popups'
 import NumberUtils from '@/utils/numbers'
+import { mintApi } from '@/api/api'
 
 const router = useRouter()
 const store = useListViewStore()
@@ -126,7 +126,7 @@ const coreActions = {
         onClick: async (item) => {
             const confirmMessage = `${languages.label('LBL_ESLIST_DELETE_RECORD_CONFIRM_BODY')} ${item.name}?`
             if (await popups.confirm(confirmMessage)) {
-                await axios.delete(`api/${url.module}/${item.id}`)
+                await mintApi.delete(`api/${url.module}/${item.id}`)
                 store.getData()
             }
         },

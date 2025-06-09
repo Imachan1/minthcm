@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import { mintApi } from '@/api/api'
 
 interface Favorite {
     id: string
@@ -14,7 +14,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
     const favorites = ref<Favorite[]>([])
 
     async function fetch() {
-        const response = await axios.get('api/Favorites')
+        const response = await mintApi.get('api/Favorites')
         favorites.value = response.data
     }
 

@@ -50,6 +50,7 @@ chdir('../legacy/');
 require_once 'include/entryPoint.php';
 chdir('../api/');
 
+$BASE_DIR = __DIR__;
 require __DIR__ . '/vendor/autoload.php';
 
 use MintHCM\Api\ApiManager;
@@ -57,17 +58,19 @@ use MintHCM\Api\Config\AppConfig;
 use MintHCM\Api\Containers\Doctrine\DoctrineContainerBuilder;
 use MintHCM\Utils\CustomLoader;
 use Slim\Factory\AppFactory;
+use Slim\App;
 
-global $app;
-
-$config = CustomLoader::getObject(AppConfig::class);
+/** @var App */
+global $mint_app;
 
 $doctrineContainerBuilder = new DoctrineContainerBuilder();
 $doctrineContainer = $doctrineContainerBuilder->build();
-$app = AppFactory::createFromContainer($doctrineContainer);
-$app->setBasePath($config::getBasePath());
+$mint_app = AppFactory::createFromContainer($doctrineContainer);
+
+$config = CustomLoader::getObject(AppConfig::class);
+$mint_app->setBasePath($config::getBasePath());
 
 $manager = ApiManager::getInstance();
 $manager->execute();
 
-$app->run();
+$mint_app->run();

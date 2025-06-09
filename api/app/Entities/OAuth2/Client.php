@@ -44,20 +44,22 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-namespace MintHCM\Api\Entities\OAuth;
+namespace MintHCM\Api\Entities\OAuth2;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 /**
- * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\KudosRepository")
- * @ORM\Table(name="kudos")
+ * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\OAuth2\ClientRepository")
+ * @ORM\Table(name="oauth2clients")
  */
-class Kudos
+class Client implements ClientEntityInterface
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\Column(type="string", unique=true, length=36)
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
@@ -69,14 +71,9 @@ class Kudos
     public $name;
     
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=true)
      */
     public $assigned_user_id;
-       
-    /**
-     * @ORM\Column(type="string", nullable=false)
-     */
-    public $employee_id;
     
     /**
      * @ORM\Column(type="string", length=36)
@@ -87,6 +84,11 @@ class Kudos
      * @ORM\Column(type="datetime")
      */
     public $date_entered;
+    
+    /**
+     * @ORM\Column(type="string", length=36)
+     */
+    public $modified_user_id;
 
     /**
      * @ORM\Column(type="datetime")
@@ -94,27 +96,74 @@ class Kudos
     public $date_modified;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    public $date_indexed;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     public $description;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="string", length=4000)
      */
-    public $announced;
+    public $secret;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    public $redirect_url;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    public $private;
+    public $is_confidential;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    public $allowed_grant_type;
+
+    /**
+     * @ORM\Column(type="integer", length=11)
+     */
+    public $duration_value;
+
+    /**
+     * @ORM\Column(type="integer", length=11)
+     */
+    public $duration_amount;
+
+    /**
+     * @ORM\Column(type="integer", length=11)
+     */
+    public $duration_unit;
 
     /**
      * @ORM\Column(type="boolean")
      */
     public $deleted = false;
 
-    public function __construct()
+
+    public function getIdentifier()
     {
-        $this->date_entered = new \DateTime();
+        return $this->id;
     }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getRedirectUri()
+    {
+        return $this->redirect_url ?? '';
+    }
+
+    public function isConfidential()
+    {
+        return $this->is_confidential ?? false;
+    }
+
 }

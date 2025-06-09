@@ -2,7 +2,6 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRoute } from 'vue-router'
 import { useModulesStore } from '@/store/modules'
-import axios from 'axios'
 import { useLanguagesStore } from '@/store/languages'
 import { useBean } from '@/composables/useBean'
 import { useACL } from '@/composables/useACL'
@@ -82,8 +81,8 @@ export const useRecordViewStore = defineStore('recordview', () => {
         return panels
     })
 
-    //DEV: defs - (await axios.get('api/init')).data.modules.Candidates.metadata.Subpanels
-    //DEV: data - (await axios.get('api/Candidates/subpanel/meetings/5ad6d7fd-e141-0a2c-4944-6449a8e50ad3')).data
+    //DEV: defs - (await mintApi.get('api/init')).data.modules.Candidates.metadata.Subpanels
+    //DEV: data - (await mintApi.get('api/Candidates/subpanel/meetings/5ad6d7fd-e141-0a2c-4944-6449a8e50ad3')).data
     const subpanels = computed(() => {
         const languages = useLanguagesStore()
         const module = modulesStore.currentModule

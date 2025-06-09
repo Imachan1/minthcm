@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from 'axios'
+import { mintApi } from '@/api/api'
+import { AxiosResponse } from 'axios'
 
 export abstract class MassAction {
     protected module = ''
@@ -13,7 +14,7 @@ export abstract class MassAction {
 
     protected async sendRequest(): Promise<AxiosResponse> {
         const className = this.constructor.name
-        return await axios.post(`api/${this.module}/MassActions/${className}`, {
+        return await mintApi.post(`api/${this.module}/MassActions/${className}`, {
             ids: this.ids,
         })
     }

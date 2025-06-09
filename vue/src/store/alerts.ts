@@ -1,7 +1,7 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
 import Favico from 'favico.js'
+import { mintApi } from '@/api/api'
 
 export interface Alert {
     id: string
@@ -36,14 +36,14 @@ export const useAlertsStore = defineStore('alerts', () => {
             return
         }
         isFetching.value = true
-        const response = await axios.get('api/Alerts')
+        const response = await mintApi.get('api/Alerts')
         alerts.value = response.data?.alerts ?? []
         moreResults.value = response.data?.moreResults ?? false
         isFetching.value = false
     }
 
-    async function markRead(id: string, fetch = false) {
-        const response = await axios.patch(`api/Alerts/${id}`, {
+    async function markRead(id: string) {
+        const response = await mintApi.patch(`api/Alerts/${id}`, {
             is_read: true,
             fetch,
         })
@@ -53,8 +53,8 @@ export const useAlertsStore = defineStore('alerts', () => {
         return response.status
     }
 
-    async function close(id: string, fetch = false) {
-        const response = await axios.patch(`api/Alerts/${id}`, {
+    async function close(id: string) {
+        const response = await mintApi.patch(`api/Alerts/${id}`, {
             is_closed: true,
             fetch,
         })
@@ -89,7 +89,7 @@ export const useAlertsStore = defineStore('alerts', () => {
     async function markAllAsRead() {
         const records = alerts.value.flatMap((alert) => (!alert.is_read ? alert.id : []))
         alerts.value = alerts.value.map((alert) => ({ ...alert, is_read: true }))
-        const response = await axios.patch('api/Alerts/update/ReadAlerts', { records })
+        const response = await mintApi.patch('api/Alerts/update/ReadAlerts', { records })
         alerts.value = response.data ?? []
     }
 
@@ -102,7 +102,7 @@ export const useAlertsStore = defineStore('alerts', () => {
         closeAllTimeout = setTimeout(async () => {
             alerts.value = []
             try {
-                const response = await axios.patch('api/Alerts/update/CloseAlerts', { records })
+                const response = await mintApi.patch('api/Alerts/update/CloseAlerts', { records })
                 alerts.value = response.data ?? []
                 isClosingAll.value = false
             } catch {

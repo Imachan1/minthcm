@@ -1,10 +1,10 @@
 import { ref, watch, computed } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth'
 import { useAlertsStore } from '@/store/alerts'
 import { MintKudos, MintKudosUser, Form, NavOption, Views, InitialResponse } from './types'
+import { mintApi } from '@/api/api'
 
 export const useMintKudosStore = defineStore('mint-kudos', () => {
     const isLoading = ref(false)
@@ -34,7 +34,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     async function fetchInitialData() {
         kudos.value = []
         isLoading.value = true
-        const response = await axios.get<InitialResponse>(`api/kudos/init`)
+        const response = await mintApi.get<InitialResponse>(`api/kudos/init`)
         kudos.value = response.data.kudos
         users.value = response.data.users
         isLoading.value = false
@@ -51,7 +51,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
                 page.value++
             }
             isLoading.value = true
-            const response = await axios.get<InitialResponse>(
+            const response = await mintApi.get<InitialResponse>(
                 `api/kudos?listType=${activeTab.value}&page=${page.value}`,
             )
             if (response.data.kudos.length === 0) {
@@ -65,7 +65,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     async function addKudos(gifted_user_id: string, message: string, isPrivate: boolean, id: string) {
         try {
             isLoading.value = true
-            const response = await axios.post(`api/kudos/add`, {
+            const response = await mintApi.post(`api/kudos/add`, {
                 id,
                 gifted_user_id,
                 message: message,
@@ -88,7 +88,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     async function deleteKudos(id: string) {
         try {
             isRemovingLoading.value = true
-            const response = await axios.delete(`api/kudos/${id}`)
+            const response = await mintApi.delete(`api/kudos/${id}`)
             if (response.status === 200) {
                 isRemovingLoading.value = false
                 await fetchKudos(true)
@@ -123,7 +123,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
                 },
             })
         }
-        await axios.post(`api/reactions/Kudos/${id}`, {
+        await mintApi.post(`api/reactions/Kudos/${id}`, {
             reaction_type: reactionType,
         })
     }
@@ -134,7 +134,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
             return
         }
         kudosItem.reactions = kudosItem.reactions.filter((reaction) => reaction.user.id !== auth.user?.id)
-        await axios.delete(`api/reactions/Kudos/${id}`)
+        await mintApi.delete(`api/reactions/Kudos/${id}`)
     }
 
     watch(activeTab, async () => {

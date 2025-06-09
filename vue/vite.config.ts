@@ -19,7 +19,9 @@ export default defineConfig({
         }),
     ],
     define: {
-        'process.env': {},
+        'process.env': {
+            CLIENT_SECRET: process.env.CLIENT_SECRET ?? '',
+        },
     },
     resolve: {
         alias: {

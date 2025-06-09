@@ -47,15 +47,37 @@
 namespace MintHCM\Utils;
 
 #[\AllowDynamicProperties]
+
 class CustomLoader
 {
-    public static function getObject($class, ...$args)
+    public static function getObject($class)
     {
         $classReflection = new \ReflectionClass($class);
         $custom_class = str_replace('MintHCM', 'MintHCM\Custom', $classReflection->getName());
         if (class_exists($custom_class) && is_subclass_of($custom_class, $class)) {
-            return new $custom_class(...$args);
+            $class = $custom_class;
         }
-        return new $class(...$args);
+        
+        $arguments = static::prepareConstructorArguments($class);
+        return new $class(...$arguments);
+    }
+
+    protected static function prepareConstructorArguments(string $class): array
+    {
+        global $mint_app;
+
+        $container = $mint_app->getContainer();
+
+        $reflectionClass = new \ReflectionClass($class);
+        $constructor = $reflectionClass->getConstructor();
+        if (empty($constructor)) {
+            return [];
+        }
+
+        $parameters = $constructor->getParameters();
+        return array_map(function ($parameter) use ($container) {
+            $dependencyType = $parameter->getType()->getName();
+            return $container->get($dependencyType);
+        }, $parameters);
     }
 }

@@ -47,6 +47,7 @@
 namespace MintHCM\Api;
 
 use MintHCM\Api\ExceptionHandlers\Doctrine\DoctrineConnectionExceptionHandler;
+use MintHCM\Api\ExceptionHandlers\MintExceptionHandler;
 use MintHCM\Api\Middlewares\Auth\AuthMiddleware;
 use MintHCM\Api\Middlewares\Params\ParamsMiddleware;
 use MintHCM\Api\Middlewares\Parsers\JsonBodyParserMiddleware;
@@ -58,13 +59,14 @@ class ApiManager
 {
     protected static $_instance;
 
+    /** @var \Slim\App */
     protected $app;
     protected $routeManager;
 
     public function __construct()
     {
-        global $app;
-        $this->app = $app;
+        global $mint_app;
+        $this->app = $mint_app;
         $this->routeManager = RouteManager::getInstance();
     }
 
@@ -95,6 +97,7 @@ class ApiManager
     protected function setErrorMiddleware()
     {
         $errorMiddleware = $this->app->addErrorMiddleware(true, false, false);
+        $errorMiddleware->setDefaultErrorHandler(MintExceptionHandler::class);
         $errorMiddleware->setErrorHandler(
             \Doctrine\DBAL\Exception\ConnectionException::class,
             DoctrineConnectionExceptionHandler::class
