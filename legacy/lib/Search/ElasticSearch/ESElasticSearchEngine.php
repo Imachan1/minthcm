@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2024 MintHCM
+ * Copyright (C) 2018-2025 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,6 +42,7 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+// namespace SuiteCRM\Search\ElasticSearch;
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
@@ -151,7 +152,7 @@ class ESElasticSearchEngine extends ElasticSearchEngine
         $options = $query->getOptions();
         if ($options['filter_by_module']) {
             $params = [
-                'index' => $GLOBALS['sugar_config']['unique_key'] . '_' . strtolower($options['module']),
+                'index' => static::getIndexPrefix() . '_' . strtolower($options['module']),
                 'body' => [
                     'query' => [
                         'bool' => [
@@ -175,7 +176,7 @@ class ESElasticSearchEngine extends ElasticSearchEngine
             $searchStr = $query->getSearchString();
             $searchModules = SearchWrapper::getModules();
             $searchModules = array_map('strtolower', $searchModules);
-            $searchModules = substr_replace($searchModules, $GLOBALS['sugar_config']['unique_key'] . '_', 0, 0);
+            $searchModules = substr_replace($searchModules, static::getIndexPrefix() . '_', 0, 0);
 
             $indexes = implode(',', $searchModules);
 
@@ -269,4 +270,8 @@ class ESElasticSearchEngine extends ElasticSearchEngine
         return $params;
     }
 
+    public static function getIndexPrefix():string
+    {
+        return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
+    }
 }

@@ -7,7 +7,7 @@
  * Copyright (C) 2011 - 2021 SalesAgility Ltd.
 *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2024 MintHCM
+ * Copyright (C) 2018-2025 MintHCM
  *
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -51,6 +51,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 use SuiteCRM\Search\BasicSearch\BasicSearchEngine;
 use SuiteCRM\Search\Exceptions\SearchEngineNotFoundException;
+require_once 'lib/Search/ElasticSearch/ESElasticSearchEngine.php';
 
 /**
  * Class SearchWrapper performs a unified search using one of the available search engines.
@@ -68,6 +69,11 @@ class SearchWrapper
             'name' => 'BasicSearchEngine',
             'FQN' => BasicSearchEngine::class,
             'filepath' => 'lib/Search/BasicSearch/BasicSearchEngine.php'
+        ],
+        'ESElasticSearchEngine' => [
+            'name' => 'ESElasticSearchEngine',
+            'FQN' => \ESElasticSearchEngine::class,
+            'filepath' => 'lib/Search/ElasticSearch/ESElasticSearchEngine.php'
         ],
     ];
 
