@@ -8,6 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 
 require_once 'lib/Search/ElasticSearch/ElasticSearchVardefsReader.php';
 
+#[\AllowDynamicProperties]
 class MappingsGenerator
 {
     protected $metadata_file = 'eslistviewdefs.php';
@@ -30,6 +31,12 @@ class MappingsGenerator
         'primary_address_street' => 'address.primary.street',
         'primary_address_country' => 'address.primary.country',
         'phone_mobile' => 'phone.mobile',
+        'employee_id' => 'employee_id',
+        'employee_name' => 'employee_name',
+        'offboarding_id' => 'offboarding_id',
+        'offboarding_name' => 'offboarding_name',
+        'parent_id' => 'parent.id',
+        'parent_name' => 'parent.name',
     ];
 
     // From vardefs to elastic
@@ -104,7 +111,13 @@ class MappingsGenerator
             $key = !empty($data['es_module']) ? $data['es_module'] : $module['module'];
 
             foreach ($fields_to_map as $field) {
-                if ($defs[$field]['source'] != "non-db") {
+                if (
+                    $defs[$field]['source'] != "non-db" 
+                    || (
+                        ( $defs[$field]['type'] == 'relate' || $defs[$field]['type'] == 'parent' )
+                        && !empty($this->not_standard_fields[$field])
+                    )
+                ) {
                     $es_type_name = $this->type_mapping[$defs[$field]['type']] ?? 'text';
                     $es_type = $this->types[$es_type_name];
 
@@ -193,7 +206,7 @@ class MappingsGenerator
     protected function handleNotStandardField($es_field, $mappings, $key, $es_type)
     {
         $es_field_parts = explode('.', $es_field);
-        $count = count($es_field_parts);
+        $count = is_countable($es_field_parts) ? count($es_field_parts) : 0;
         $sub_mappings = &$mappings['mappings'][$key];
         foreach ($es_field_parts as $es_field_part) {
             $index_mapping = $key . '__' . $es_field_part;

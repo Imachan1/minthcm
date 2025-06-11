@@ -7,7 +7,7 @@
  * Copyright (C) 2011 - 2021 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -68,6 +68,7 @@ require_once 'lib/Search/ElasticSearch/ElasticSearchVardefsReader.php';
 /**
  * Class ElasticSearchIndexer takes care of creating a search index for the database.
  */
+#[\AllowDynamicProperties]
 class ElasticSearchIndexer extends AbstractIndexer
 {
     use IndexingStatisticsTrait;
@@ -104,7 +105,7 @@ class ElasticSearchIndexer extends AbstractIndexer
     /**
      * Returns whether the Elasticsearch is enabled by user configuration or not.
      *
-     * @return bool
+     * @return bool|null
      */
     public static function isEnabled(): ?bool
     {
@@ -254,7 +255,7 @@ class ElasticSearchIndexer extends AbstractIndexer
         $indexedRecordsCount = $this->indexedRecordsCount - $oldIndexedRecordsCount;
         $type = $totalRecordsCount === $indexedRecordsCount ? Logger::DEBUG : Logger::WARNING;
         $this->logger->log($type, sprintf('Indexed %d/%d %s', $indexedRecordsCount, $totalRecordsCount, $module));
-        
+
         $this->putMeta($module, [
             'module_name' => $module,
         ]);
@@ -711,5 +712,5 @@ class ElasticSearchIndexer extends AbstractIndexer
     public static function getIndexPrefix() : string
     {
         return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
-    }
+}
 }
