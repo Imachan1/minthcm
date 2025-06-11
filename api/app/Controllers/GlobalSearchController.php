@@ -82,7 +82,7 @@ class GlobalSearchController
 
             $search_manager->setQuery(array(
                 "search" => 'global',
-                "fields" => array("name.*^5", "*"),
+                "fields" => array("*name.*^5", "*"),
                 "items" => 5,
                 "query" => $request->getAttribute('query'),
                 "sort_order" => "desc",

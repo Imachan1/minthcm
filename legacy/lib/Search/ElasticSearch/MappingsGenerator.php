@@ -112,7 +112,8 @@ class MappingsGenerator
                         $mappings = $this->handleNotStandardField($this->not_standard_fields[$field], $mappings, $key, $es_type);
                     } else if (!empty($defs[$field])) {
                         // else if because script does not work well for fields: search_name, recr_contact_agree oraz current_user_only
-                        $mappings['mappings'][$key]['properties'][$field] = $this->getPropertyMappingConfig($defs[$field]);
+                        $index_mapping = $key . '__' . $field;
+                        $mappings['mappings'][$key]['properties'][$index_mapping] = $this->getPropertyMappingConfig($defs[$field]);
                     }
                 }
             }
@@ -195,10 +196,12 @@ class MappingsGenerator
         $count = count($es_field_parts);
         $sub_mappings = &$mappings['mappings'][$key];
         foreach ($es_field_parts as $es_field_part) {
-            if (!isset($sub_mappings['properties'][$es_field_part])) {
-                $sub_mappings['properties'][$es_field_part] = [];
+            $index_mapping = $key . '__' . $es_field_part;
+
+            if (!isset($sub_mappings['properties'][$index_mapping])) {
+                $sub_mappings['properties'][$index_mapping] = [];
             }
-            $sub_mappings = &$sub_mappings['properties'][$es_field_part];
+            $sub_mappings = &$sub_mappings['properties'][$index_mapping];
             $count--;
             if ($count == 0) {
                 $sub_mappings = $es_type;

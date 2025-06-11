@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -47,11 +46,13 @@
 namespace MintHCM\Lib\Search\ElasticSearch;
 
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
+use MintHCM\Data\BeanFactory;
 use MintHCM\Lib\Search\Base\SearchQuery;
 use MintHCM\Lib\Search\ElasticSearch\ElasticQueryOperatorsManager;
 use MintHCM\Utils\CustomLoader;
 use MintHCM\Utils\LegacyConnector;
-use MintHCM\Data\BeanFactory;
+use Symfony\Component\Yaml\Parser as YamlParser;
+
 use MintHCM\Utils\ConstantsLoader;
 
 class ElasticQuery extends SearchQuery
@@ -69,6 +70,7 @@ class ElasticQuery extends SearchQuery
 
     protected $add_acl_filters  = false;
     protected $indice_module_map;
+    protected $parsed = [];
 
     protected function setQuery()
     {
@@ -101,12 +103,11 @@ class ElasticQuery extends SearchQuery
         );
     }
 
-
     private function getIndex()
     {
         $prefix = static::getIndexPrefix();
         if (isset($prefix)) {
-            if(isset($this->params['search']) && $this->params['search'] == 'list' && !empty($this->params['type'])){
+            if (isset($this->params['search']) && 'list' == $this->params['search'] && !empty($this->params['type'])) {
                 $search_modules = [$this->params['type']];
             }else{
                 $search_modules = $this->getGlobalSearchModuleList();
@@ -154,8 +155,7 @@ class ElasticQuery extends SearchQuery
             $main_acl["bool"]["filter"]["bool"]["should"] = [];
             $search_modules = $this->getGlobalSearchModuleList();
             
-            foreach($search_modules as $module_to_search)
-            {
+            foreach ($search_modules as $module_to_search) {
                 $bean = BeanFactory::newBean($module_to_search);
                 $acl_controller = new LegacyConnector('ACLController');
                 if($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list')){
@@ -163,8 +163,7 @@ class ElasticQuery extends SearchQuery
                 }
                 if( $bean->bean_implements('ACL') &&  ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list')) ) { 
                   $module_filters = $this->getACLForModule($module_to_search);
-                }
-                else {
+                } else {
                     $module_filters['bool']['must']['term']['_index'] = $uniq.'_'.strtolower($module_to_search);
                 }
                 
@@ -186,7 +185,8 @@ class ElasticQuery extends SearchQuery
         
     }
 
-    private function noAclGlobalQuery(){
+    private function noAclGlobalQuery()
+    {
         $fields = !empty($this->params['fields']) ? $this->params['fields'] : array(static::ALL_FIELDS);
         return array(
             'query_string' => array(
@@ -204,7 +204,8 @@ class ElasticQuery extends SearchQuery
         return (CustomLoader::getObject(ElasticQueryOperatorsManager::class, $this->params['filters'] ?? []))->getQuery();
     }
 
-    protected function getExcludeModules(){
+    protected function getExcludeModules()
+    {
         $uniq = static::getIndexPrefix();
         $excluded_queries = [];
         foreach($this->exclude_modules as $module){
@@ -244,11 +245,13 @@ class ElasticQuery extends SearchQuery
             }
         }
     }
-    public function getIndiceToModuleMapping(){
+    public function getIndiceToModuleMapping()
+    {
         return $this->indice_module_map;
     }
 
-    protected function getGlobalSearchModuleList(){
+    protected function getGlobalSearchModuleList()
+    {
         if(!empty($this->search_modules)){
             return $this->search_modules;
         }
@@ -258,13 +261,13 @@ class ElasticQuery extends SearchQuery
         $exclude_hardcode = ["Connectors","Currencies","OAuthTokens","OAuthKeys","ACLRoles","ACLActions","EmailMan","Schedulers","SchedulersJobs","CampaignLog","EmailMarketing","AOW_WorkFlow"];
         global $beanList;
         if(!empty($unified_search_modules_display)){
-            $search_modules = array_filter(array_map(function($row){ return $row['visible'] === true;},$unified_search_modules_display));    
+            $search_modules = array_filter(array_map(function ($row) {return true === $row['visible'];}, $unified_search_modules_display));
             foreach(array_keys($search_modules) as $module_name){
                 if(!isset($beanList[$module_name])){
                     unset($search_modules[$module_name]);
                 }
             }
-            $exclude = array_filter(array_map(function($row){ return $row['visible'] === false;},$unified_search_modules_display));      
+            $exclude = array_filter(array_map(function ($row) {return false === $row['visible'];}, $unified_search_modules_display));
             $this->exclude_modules = array_merge($exclude_hardcode,array_keys($exclude));
             return array_diff(array_keys($search_modules),$this->exclude_modules);
         }
@@ -276,4 +279,58 @@ class ElasticQuery extends SearchQuery
     {
         return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
     }
+
+    protected function setIndicesBoost()
+    {
+        if (empty($this->search_modules)) {
+            $search_modules = $this->getGlobalSearchModuleList();
+        } else {
+            $search_modules = $this->search_modules;
+        }
+
+        $boost_array = $this->query['body']['query']['query_string']['fields'];
+
+        foreach ($search_modules as $module_name) {
+            $module_bean = BeanFactory::getBean($module_name);
+
+            $mappings = $this->getDefaultMapParams($module_name);
+
+            if (isset($module_bean->search_boost)) {
+                $boost_array[] = $module_name . '*^' . $module_bean->search_boost;
+            }
+
+            foreach ($module_bean->field_defs as $field_key => $value) {
+                if (isset($value['search_boost'])) {
+                    $field_name = getSimilarIndiceKey($field_key, $mappings['mappings']['properties']);
+
+                    if (is_array($mappings['mappings']['properties'][$field_name]['properties'])) {
+                        $boost_array[] = $field_name . '.*^' . $value['search_boost'];
+                    } else {
+                        $boost_array[] = $field_name . '^' . $value['search_boost'];
+                    }
+                }
+            }
+
+        }
+        $this->query['body']['query']['query_string']['fields'] = $boost_array;
+    }
+
+    /**
+     * Retrieves the default params to set up an optimised default index for Elasticsearch.
+     *
+     * @return array
+     */
+    protected function getDefaultMapParams($module)
+    {
+        if (empty($this->parsed)) {
+            $file = realpath(__DIR__ . '/../../../../legacy/lib/Search/ElasticSearch/defaultParams.yml');
+
+            $parse = new YamlParser();
+            $this->parsed = $parse->parseFile($file);
+        }
+
+        return ['mappings' => $this->parsed['mappings'][$module]];
+
+    }
+
 }
