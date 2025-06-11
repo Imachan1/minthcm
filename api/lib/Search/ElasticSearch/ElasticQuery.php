@@ -96,7 +96,7 @@ class ElasticQuery extends SearchQuery
         } else if (static::DEFAULT_SORT_FIELD !== $field) {
             $field .= self::SORT_KEYWORD;
         }
-        $modifier = new ModulePrefixer($this->params['type'] ?? null);
+        $modifier = new ModulePrefixer($this->params['type'] ?? '');
         $field = $modifier->modify($field);
         $this->sort = array(
             $field => array(
@@ -322,3 +322,15 @@ class ElasticQuery extends SearchQuery
     }
 
         }
+    protected function getDefaultMapParams($module)
+    {
+        if (empty($this->map_config)) {
+            $file = realpath(__DIR__ . '/../../../../legacy/lib/Search/ElasticSearch/defaultParams.yml');
+
+            $parse = new YamlParser();
+            $this->map_config = $parse->parseFile($file);
+        }
+
+        return ['mappings' => $this->map_config['mappings'][$module]];
+    }
+}

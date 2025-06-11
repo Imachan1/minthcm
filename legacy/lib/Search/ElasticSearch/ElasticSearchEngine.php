@@ -147,6 +147,9 @@ class ElasticSearchEngine extends SearchEngine
                      'filter' => [
                         //
                      ],
+                            'must' => [
+                                //
+                            ],
                      'must_not' => [
                         //
                      ]
@@ -154,7 +157,7 @@ class ElasticSearchEngine extends SearchEngine
                ]
             ]
          ];
-          $params= $this->addBasicSearch($params, $options['searchPhrase']);
+            $params = $this->addBasicSearch($params, $options['searchPhrase']);
           $params = $this->addPagination($params, $query->getFrom(), $query->getSize());
           $params = $this->addSorting($params, $query->getOptions()['sorting']);
           $params = $this->addFilters($params, $query->getOptions()['filters']);
@@ -178,8 +181,10 @@ class ElasticSearchEngine extends SearchEngine
             }
 
             // Add wildcard at the beginning of the search string
-            if (isset($GLOBALS['sugar_config']['search_wildcard_infront']) &&
-                $GLOBALS['sugar_config']['search_wildcard_infront'] === true && $searchStr[0] !== $wildcardBe) {
+            if (
+                isset($GLOBALS['sugar_config']['search_wildcard_infront']) &&
+                $GLOBALS['sugar_config']['search_wildcard_infront'] === true && $searchStr[0] !== $wildcardBe
+            ) {
                 $searchStr = $wildcardBe . $searchStr;
             }
 
@@ -195,9 +200,14 @@ class ElasticSearchEngine extends SearchEngine
                     'from' => $query->getFrom(),
                     'size' => $query->getSize(),
                     'query' => [
-                        'query_string' => [
+                        'simple_query_string' => [
                             'query' => $searchStr,
-                            'fields' => ['name.*^5', '*'],
+                            'fields' => [
+                                "*__last^5",
+                                "*__first^4",
+                                "*__name.*^3",
+                                "*"
+                            ],
                             'analyzer' => 'standard',
                             'default_operator' => 'OR',
                             'minimum_should_match' => '66%',
@@ -217,7 +227,12 @@ class ElasticSearchEngine extends SearchEngine
          $params['body']['query']['bool']['must'] = [
             'simple_query_string' =>[
             "query" => $query_string.'*',
-            "fields" => [ "*" ]
+                    "fields" => [
+                        "*__last^5",
+                        "*__first^4",
+                        "*__name.*^3",
+                        "*"
+                    ]
             ],  
          ];
       }
@@ -240,10 +255,10 @@ class ElasticSearchEngine extends SearchEngine
    {
       if (isset($data)) {
          $column = $data['column'];
-         $direction = $data['direction'];
+            $direction = $column ? $data['direction'] : 'desc';
          $parsedData = [
             $column ? $column : '_score' => [
-               'order' => $direction ? $direction : 'asc'
+                    'order' => $direction
             ]
       ];
          $params['body']['sort'] = $parsedData;
@@ -254,8 +269,12 @@ class ElasticSearchEngine extends SearchEngine
 
    protected function addFilters($params, $data)
    {
+        if (!isset($data['must'])) {
+            $data['must'] = [];
+        }
          if (isset($data)) {
          $params['body']['query']['bool']['filter'] = is_array($params['body']['query']['bool']['filter'])? array_merge($params['body']['query']['bool']['filter'],$data['filter']):$data['filter'];
+            $params['body']['query']['bool']['must'] = is_array($params['body']['query']['bool']['must']) ? array_merge($params['body']['query']['bool']['must'], $data['must']) : $data['must'];
          $params['body']['query']['bool']['must_not'] = is_array($params['body']['query']['bool']['must_not'])? array_merge($params['body']['query']['bool']['must_not'],$data['must_not']):$data['must_not'];
       }
 

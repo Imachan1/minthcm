@@ -208,7 +208,7 @@ class ESElasticSearchEngine extends ElasticSearchEngine
                     'from' => $query->getFrom(),
                     'size' => $query->getSize(),
                     'query' => [
-                        'query_string' => [
+                        'simple_query_string' => [
                             'query' => $searchStr,
                             'fields' => ['name.*^5', '*'],
                             'analyzer' => 'standard',
