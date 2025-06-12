@@ -54,7 +54,7 @@ use MintHCM\Api\Middlewares\Params\ParamTypes\ArrayType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
 
 $routes = array(
-    "detail" => array(
+    "detail" => array( //CR probably to delete
         "method" => "GET",
         "path" => "/Detail/{id}",
         "class" => ModuleController::class,
@@ -283,15 +283,20 @@ $routes = array(
                     "filters": [
                         {
                             "field": "city",
-                            "operator": "equals",
+                            "type": "equals",
                             "value": "Paris",
                             "not": false/true => default false
                         },
                         {
                             "field": "country",
-                            "operator": "match",
+                            "type": "match",
                             "value": "USA"
                         },
+                        {
+                            "type": "wildcard",
+                            "field": "name",
+                            "value": "*starter*"
+                    }
                     ]
                 ',
             ),

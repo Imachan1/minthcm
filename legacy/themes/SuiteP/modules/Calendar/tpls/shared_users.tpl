@@ -162,12 +162,12 @@
 											{foreach from=$shared_ids_groups key=arrayKey  item=group_name}
 												{foreach from=$group_name key=name item=ids}
 													{if $name eq $shared_ids_last_group}
-													<li class="list-group-item d-flex justify-content-between align-items-center users-group-select" value="{$name}" style="color: white; background-color: rgb(0, 153, 118);">
+													<li class="list-group-item d-flex justify-content-between align-items-center users-group-select" value="{$name}" style="color: white; background-color: rgb(0, 153, 118); cursor:pointer;">
 													{$name}
 														<a href="javascript:void(0)" class="delete-users-group" style="float: right; margin-left: 10px; color: white;" value="{$name}"><span class="suitepicon suitepicon-action-delete"></span></a>
 														<a href="javascript:void(0)" class="update-users-group" style="float: right; margin-left: 10px; color: white;" value="{$name}">{$APP.LBL_UPDATE}</a>
 													{else}
-													<li class="list-group-item d-flex justify-content-between align-items-center users-group-select" value="{$name}">
+													<li class="list-group-item d-flex justify-content-between align-items-center users-group-select" value="{$name}" style="cursor: pointer;">
 													{$name}
 														<a href="javascript:void(0)" class="delete-users-group" style="float: right; margin-left: 10px" value="{$name}"><span class="suitepicon suitepicon-action-delete"></span></a>
 														<a href="javascript:void(0)" class="update-users-group" style="float: right; margin-left: 10px" value="{$name}">{$APP.LBL_UPDATE}</a>
@@ -205,7 +205,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button id="sharedCalUsersSelectBtn" data-dismiss="modal" class="btn btn-default" type="button">{$MOD.LBL_CANCEL_BUTTON}</button>
+				<button id="sharedCalUsersCancelBtn" data-dismiss="modal" class="btn btn-default" type="button">{$MOD.LBL_CANCEL_BUTTON}</button>
 				<button id="sharedCalUsersSelectBtn" onclick="showLoadingScreen('{$MOD.LBL_MODULE_NAME}', viewTools.language.get('app_strings', 'LBL_LOADING')); $('#shared_cal').submit();" class="btn btn-danger" type="button">{$MOD.LBL_APPLY_BUTTON}</button>
 			</div>
 		</div><!-- /.modal-content -->

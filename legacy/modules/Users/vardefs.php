@@ -1016,6 +1016,17 @@ $dictionary['User'] = array(
             'options' => 'date_range_search_dom',
             'enable_range_search' => '1',
         ),
+        'workschedule_type' => array(
+            'name' => 'workschedule_type',
+            'vname' => 'LBL_WORKSCHEDULE_TYPE',
+            'label' => 'LBL_WORKSCHEDULE_TYPE',
+            'type' => 'varchar',
+            'source' => 'non-db',
+            'audited' => false,
+            'mass_update' => false,
+            'reportable' => false,
+            'importable' => false,
+        )
     ),
     'indices' => array(
         array(
