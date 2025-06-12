@@ -570,7 +570,7 @@
         <table class="edit view" border="0" cellpadding="0" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th width="60%" style="text-align:center">{$MOD.LBL_ENABLE_NOTIFICATION_TYPE}</th>
+                    <th width="60%" style="text-align:left">{$MOD.LBL_ENABLE_NOTIFICATION_TYPE}</th>
                     <th width="40%" style="text-align:center">{$MOD.LBL_ENABLE_NOTIFICATION}</th>
                 </tr>
             </thead>
