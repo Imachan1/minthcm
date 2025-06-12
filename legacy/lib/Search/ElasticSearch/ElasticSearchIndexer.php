@@ -543,7 +543,7 @@ class ElasticSearchIndexer extends AbstractIndexer
                 $this->removeErrorProneFields($module, $body);
                 $params['body'][] = ['index' => $head];
                 $params['body'][] = $body;
-                $this->fixUpIndicesParams($params['body'][$bean_params_index], $this->getDefaultMapParams($module));
+                $this->fixUpIndicesParams($body, $this->getDefaultMapParams($module));
                 $bean_params_index += 2;
                 $this->indexedRecordsCount++;
                 $this->indexedFieldsCount += count($body);
