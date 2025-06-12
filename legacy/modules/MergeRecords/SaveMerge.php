@@ -145,7 +145,7 @@ if (is_array($_POST['merged_ids'])) {
             ) {
                 continue;
             }
-            if ($name == 'accounts' && $focus->merge_bean->module_dir == 'Opportunities') {
+            if ($name == 'accounts') {
                 continue;
             }
 
