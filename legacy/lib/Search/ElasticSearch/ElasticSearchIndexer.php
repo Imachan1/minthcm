@@ -82,6 +82,8 @@ class ElasticSearchIndexer extends AbstractIndexer
     private $batchSize = 1000;
     /** @var Carbon|false the timestamp of the last indexing. false if unknown */
 
+    private $mappings = [];
+
     // MintHCM #121632 START
     protected $acl_helper;
     // MintHCM #121632 END
@@ -145,7 +147,7 @@ class ElasticSearchIndexer extends AbstractIndexer
                     $index = $instance_id . '_' . $lowercaseModule;
                     $this->removeIndex($index);
                     // MintHCM #121632 START
-                    $this->createIndex($index, $this->getDefaultMapParams($module) ?? null);
+                    $this->createIndex($index, $this->getDefaultMapParams($module));
                     // MintHCM #121632 END
                 } catch (Exception $exception) {
                     $message = "Failed to create index $index! Exception details follow";
@@ -193,12 +195,12 @@ class ElasticSearchIndexer extends AbstractIndexer
      * @param string $index name of the index
      * @param array|null $body options of the index
      */
-    public function createIndex(string $index, array $body = null): void
+    public function createIndex(string $index, array $body = []): void
     {
         $params = ['index' => $index];
 
         if (!empty($body) && is_array($body)) {
-            $params['body'] = $body;
+            $params['body'] = ['mappings' => $body];
         }
 
         $this->client->indices()->create($params);
@@ -577,7 +579,7 @@ class ElasticSearchIndexer extends AbstractIndexer
                     $this->fixUpIndicesParams($params[$key], $mappings);
                 }
                 $prefix = '__';
-                $new_key = getSimilarIndiceKey($prefix . $key, $mappings['mappings']['properties']);
+                $new_key = getSimilarIndiceKey($prefix . $key, $mappings['properties']);
                 if ($new_key != $prefix . $key) {
                     $params[$new_key] = $params[$key];
                     unset($params[$key]);
@@ -594,14 +596,21 @@ class ElasticSearchIndexer extends AbstractIndexer
      */
     private function getDefaultMapParams($module)
     {
+        if (!empty($this->mappings)) {
+            return $this->mappings[$module] ?? [];
+        }
         $file = __DIR__ . '/defaultParams.yml';
 
         $this->logger->debug("Loading mapping file $file");
 
         $parse = new YamlParser();
         $parsed = $parse->parseFile($file);
-
-        return ['mappings' => $parsed['mappings'][$module]];
+        $this->mappings = $parsed['mappings'] ?? [];
+        if(isset($this->mappings[$module])){
+            return $this->mappings[$module] ?? [];
+        } else {
+            return [];
+        }
     }
     // MintHCM #121632 END
     /**
