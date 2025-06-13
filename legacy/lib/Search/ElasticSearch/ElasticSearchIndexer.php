@@ -343,7 +343,7 @@ class ElasticSearchIndexer extends AbstractIndexer
         $this->fillAllNestedPropertyValues($bean, $args['body']);
 
         $this->removeErrorProneFields($bean->module_name, $args['body']);
-        $this->fixUpIndicesParams($args['body'][1], $this->getDefaultMapParams($bean->module_name));
+        $this->fixUpIndicesParams($args['body'], $this->getDefaultMapParams($bean->module_name), $bean->module_name);
         $this->client->index($args);
         $this->setBeanInstantIndexingDate($bean);
     }
@@ -534,7 +534,7 @@ class ElasticSearchIndexer extends AbstractIndexer
                 $this->fillAllNestedPropertyValues($bean, $body);
 
                 $this->removeErrorProneFields($module, $body);
-                $this->fixUpIndicesParams($body, $this->getDefaultMapParams($module));
+                $this->fixUpIndicesParams($body, $this->getDefaultMapParams($module), $module);
                 $params['body'][] = ['index' => $head];
                 $params['body'][] = $body;
                 $this->indexedRecordsCount++;
@@ -561,16 +561,16 @@ class ElasticSearchIndexer extends AbstractIndexer
      * @param array $params
      * @param array $mappings
      */
-    private function fixUpIndicesParams(array &$params, array $mappings)
+    private function fixUpIndicesParams(array &$params, array $mappings, string $module_name = ''): void
     {
         if (is_array($params)) {
             foreach ($params as $key => $value) {
                 if (is_array($params[$key])) {
-                    $this->fixUpIndicesParams($params[$key], $mappings);
+                    $this->fixUpIndicesParams($params[$key], $mappings, $module_name);
                 }
                 $prefix = '__';
-                $new_key = getSimilarIndiceKey($prefix . $key, $mappings['properties']);
-                if ($new_key != $prefix . $key) {
+                $new_key = $module_name . $prefix . $key;
+                if (isset($new_key, $mappings['properties']) && $new_key != $prefix . $key) {
                     $params[$new_key] = $params[$key];
                     unset($params[$key]);
                 }

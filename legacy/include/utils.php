@@ -6538,24 +6538,3 @@ function getArrayKeys(array $array)
 
     return $keys;
 }
-
-/**
- * Returns the key from the array that contains the given key.
- *
- * @param string $key
- * @param array $array
- */
-function getSimilarIndiceKey(string $key, array $array)
-{
-    $evaluated_keys = [];
-    $array_keys = getArrayKeys($array);
-
-    foreach ($array_keys as $array_key) {
-        if (preg_match("/$key$/", $array_key)) {
-            similar_text($key, $array_key, $percent);
-            $evaluated_keys[$array_key] = $percent;
-        }
-    }
-
-    return empty($evaluated_keys) ? $key : array_keys($evaluated_keys, max($evaluated_keys))[0];
-}
