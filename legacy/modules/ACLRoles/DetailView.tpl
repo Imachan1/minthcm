@@ -61,7 +61,10 @@
 			<input type='hidden' name='return_module' value='{$RETURN.module}'>
 			<input type="hidden" name="action">
 
-		{sugar_action_menu id="userEditActions" class="clickMenu fancymenu SugarActionMenu" buttons=$buttons flat=true}
+{append var='buttons' value="<input title='{$APP.LBL_EDIT_BUTTON_TITLE}' accessKey='{$APP.LBL_EDIT_BUTTON_KEY}' class='button primary' onclick=\"var _form = $('#form')[0]; _form.action.value='EditView'; _form.submit();\" type='submit' name='button' value='{$APP.LBL_EDIT_BUTTON}' />"}
+{append var='buttons' value="<input title='{$APP.LBL_DUPLICATE_BUTTON_TITLE}' accessKey='{$APP.LBL_DUPLICATE_BUTTON_KEY}' class='button' onclick=\"this.form.isDuplicate.value='1'; this.form.action.value='EditView'\" type='submit' name='button' value=' {$APP.LBL_DUPLICATE_BUTTON} ' />"}
+{append var='buttons' value="<input title='{$APP.LBL_DELETE_BUTTON_TITLE}' accessKey='{$APP.LBL_DELETE_BUTTON_KEY}' class='button' onclick=\"this.form.return_module.value='ACLRoles'; this.form.return_action.value='index'; this.form.action.value='Delete'; return confirm('{$APP.NTC_DELETE_CONFIRMATION}')\" type='submit' name='button' value=' {$APP.LBL_DELETE_BUTTON} ' />"}
+{sugar_action_menu id="userEditActions" class="clickMenu fancymenu SugarActionMenu" buttons=$buttons flat=true}
 		</form>
 		</p>
 </div>
