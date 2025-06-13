@@ -523,36 +523,26 @@ class ElasticSearchIndexer extends AbstractIndexer
 
         $lowercaseModule = strtolower($module);
         $this->index = static::getIndexPrefix() . '_' . $lowercaseModule;
-        $bean_params_index = 1;
         foreach ($beans as $key => $bean) {
-            // MintHCM #122342 START
-            //$head = ['_index' => strtolower($module), '_id' => $bean->id];
-
             $head = ['_index' => $this->index, '_id' => $bean->id];
-            // MintHCM #122342 END
             if ($bean->deleted) {
                 $params['body'][] = ['delete' => $head];
                 $this->removedRecordsCount++;
             } else {
                 $body = $this->makeIndexParamsBodyFromBean($bean);
-
                 // TODO: optimize with single load from db before foreach
                 $this->fillAllNestedPropertyValues($bean, $body);
-                //$body['meta']['module_name'] = $bean->module_dir;
 
                 $this->removeErrorProneFields($module, $body);
+                $this->fixUpIndicesParams($body, $this->getDefaultMapParams($module));
                 $params['body'][] = ['index' => $head];
                 $params['body'][] = $body;
-                $this->fixUpIndicesParams($body, $this->getDefaultMapParams($module));
-                $bean_params_index += 2;
                 $this->indexedRecordsCount++;
                 $this->indexedFieldsCount += count($body);
             }
 
             // Send a batch of $this->batchSize elements to the server
-            // MintHCM START
             if ($key % $this->batchSize == $this->batchSize - 1) {
-                // MintHCM END
                 $this->sendBatch($params);
             }
         }
