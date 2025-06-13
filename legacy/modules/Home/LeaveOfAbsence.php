@@ -44,7 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-function buildWhere() {
+function buildIncludingWhere() {
    $types_of_absence = [
       'sick',
       'holiday',
@@ -87,6 +87,49 @@ function buildWhere() {
       }
    }
 
+   if(!empty($where)) {
+      $where = '(' . $where . ')';
+   }
+
+   return $where;
+}
+
+function buildExcludingWhere() {
+$types_of_absence = [
+      'sick',
+      'holiday',
+      'sick_care',
+      'delegation',
+      'occasional_leave',
+      'leave_at_request',
+      'home',
+      'overtime',
+      'excused_absence',
+   ];
+   $where = "";
+   $where_array = [];
+
+   foreach($types_of_absence as $type) {
+      if(empty($_GET[$type]) || $_GET[$type] != '1') {
+         $where_array[] = "A.type != '{$type}'";
+      }
+   }
+
+   $where = implode(' AND ', $where_array);
+
+   if(!empty($where)) {
+      $where = '(' . $where . ')';
+   }
+
+   return $where;
+}
+
+function buildWhere() {
+   $where = buildIncludingWhere();
+   if ( !empty($where) ) {
+      $where .= ' AND ';
+   }
+   $where .= buildExcludingWhere();
    return $where;
 }
 
@@ -111,12 +154,12 @@ $sql = "SELECT
 FROM 
    workschedules A 
    INNER JOIN users  B ON A.assigned_user_id = B.id
-WHERE (
-         ".buildWhere()."
-      )
+WHERE 
+      ". buildWhere() ."
       AND A.deleted = 0
       AND B.deleted = 0
-   AND A.date_start > DATE(SUBDATE(NOW(), INTERVAL 30 DAY))
+      AND A.date_start > DATE(SUBDATE(NOW(), INTERVAL 30 DAY))
+      AND A.type != 'office'
    ORDER BY
          B.id,
          start_date asc
