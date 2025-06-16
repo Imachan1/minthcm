@@ -164,14 +164,6 @@ class CampaignLog extends SugarBean
                 return $full_name = $locale->getLocaleFormattedName($row['first_name'], $row['last_name']);
             }
         }
-        if ($related_type == 'Leads') {
-            $query="SELECT first_name, last_name from leads where id='$related_id'";
-            $result=$db->query($query);
-            $row=$db->fetchByAssoc($result);
-            if ($row != null) {
-                return $full_name = $locale->getLocaleFormattedName($row['first_name'], $row['last_name']);
-            }
-        }
         if ($related_type == 'Prospects') {
             $query="SELECT first_name, last_name from prospects where id='$related_id'";
             $result=$db->query($query);

@@ -100,7 +100,6 @@ class Meeting extends SugarBean {
    public $table_name = "meetings";
    public $rel_users_table = "meetings_users";
    public $rel_contacts_table = "meetings_contacts";
-   public $rel_leads_table = "meetings_leads";
    // MintHCM #54195 Start
    public $rel_candidates_table = "meetings_candidates";
    // MintHCM #54195 End
@@ -669,11 +668,6 @@ class Meeting extends SugarBean {
       if ( is_object($meeting->current_notify_user) && strtolower(get_class($meeting->current_notify_user)) == 'contact' ) {
          $xtpl->assign("ACCEPT_URL", $sugar_config['site_url'] .
             '/index.php?entryPoint=acceptDecline&module=Meetings&contact_id=' .
-            $meetingCurrentNotifyUserId . '&record=' .
-            $meetingId);
-      } elseif ( is_object($meeting->current_notify_user) && strtolower(get_class($meeting->current_notify_user)) == 'lead' ) {
-         $xtpl->assign("ACCEPT_URL", $sugar_config['site_url'] .
-            '/index.php?entryPoint=acceptDecline&module=Meetings&lead_id=' .
             $meetingCurrentNotifyUserId . '&record=' .
             $meetingId);
       }

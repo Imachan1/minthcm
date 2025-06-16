@@ -262,15 +262,6 @@ $dictionary['Account'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_PROJECTS',
         ),
-        'leads' => array(
-            'name' => 'leads',
-            'type' => 'link',
-            'relationship' => 'account_leads',
-            'module' => 'Leads',
-            'bean_name' => 'Lead',
-            'source' => 'non-db',
-            'vname' => 'LBL_LEADS',
-        ),
         'campaigns' => array(
             'name' => 'campaigns',
             'type' => 'link',
@@ -473,15 +464,6 @@ $dictionary['Account'] = array(
             'relationship_type' => 'one-to-many',
             'relationship_role_column' => 'parent_type',
             'relationship_role_column_value' => 'Accounts'
-        ),
-        'account_leads' => array(
-            'lhs_module' => 'Accounts',
-            'lhs_table' => 'accounts',
-            'lhs_key' => 'id',
-            'rhs_module' => 'Leads',
-            'rhs_table' => 'leads',
-            'rhs_key' => 'account_id',
-            'relationship_type' => 'one-to-many'
         ),
 
         'accounts_assigned_user' => array(

@@ -37,10 +37,6 @@ class LastNextContacts extends LastNextContactsDeadCode
                 $bean->contacts_arr = $bean->contacts->get();
             }
             $this->addRelatedBeans($bean->contacts_arr, 'Contacts');
-            if (property_exists($bean, 'leads_arr') && empty($bean->leads_arr) && $bean->load_relationship('leads')) {
-                $bean->leads_arr = $bean->leads->get();
-            }
-            $this->addRelatedBeans($bean->leads_arr, 'Leads');
 
         } else if ('Emails' == $bean->module_name) {
             $this->tmp_beans = $this->getLNCEmail()->getEmailRelatedBeans($bean, $this->tmp_beans);

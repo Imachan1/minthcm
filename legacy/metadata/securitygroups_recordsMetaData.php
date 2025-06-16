@@ -72,12 +72,6 @@ $dictionary['securitygroups_records'] = array(
             'relationship_type'=>'many-to-many',
             'join_table'=> 'securitygroups_records', 'join_key_lhs'=>'securitygroup_id', 'join_key_rhs'=>'record_id',
             'relationship_role_column'=>'module','relationship_role_column_value'=>'EmailTemplates'),
-        'securitygroups_leads' => array(
-            'lhs_module'=> 'SecurityGroups', 'lhs_table'=> 'securitygroups', 'lhs_key' => 'id',
-            'rhs_module'=> 'Leads', 'rhs_table'=> 'leads', 'rhs_key' => 'id',
-            'relationship_type'=>'many-to-many',
-            'join_table'=> 'securitygroups_records', 'join_key_lhs'=>'securitygroup_id', 'join_key_rhs'=>'record_id',
-            'relationship_role_column'=>'module','relationship_role_column_value'=>'Leads'),
         'securitygroups_meetings' => array(
             'lhs_module'=> 'SecurityGroups', 'lhs_table'=> 'securitygroups', 'lhs_key' => 'id',
             'rhs_module'=> 'Meetings', 'rhs_table'=> 'meetings', 'rhs_key' => 'id',

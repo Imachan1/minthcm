@@ -48,8 +48,6 @@ $mapping = array(
             'Accounts' =>
                 array(),
             'Contacts' =>
-                array(),
-            'Leads' =>
-                array(),
+                array()
         ),
 );

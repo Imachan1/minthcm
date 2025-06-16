@@ -347,7 +347,7 @@ class jjwg_MapsController extends SugarController
         }
 
         if (!empty($list) && $list_id == $list->id && !empty($selected_ids) && !empty($this->display_object) &&
-                in_array($this->display_object->module_name, array('Accounts', 'Contacts', 'Leads', 'Prospects', 'Users'))) {
+                in_array($this->display_object->module_name, array('Accounts', 'Contacts', 'Prospects', 'Users'))) {
             $object_name = $this->display_object->object_name;
             $result['object_name'] = $object_name;
 
@@ -360,11 +360,6 @@ class jjwg_MapsController extends SugarController
                 $list->load_relationship('contacts');
                 foreach ($selected_ids as $sel_id) {
                     $list->contacts->add($sel_id);
-                }
-            } elseif ($object_name == 'Lead') {
-                $list->load_relationship('leads');
-                foreach ($selected_ids as $sel_id) {
-                    $list->leads->add($sel_id);
                 }
             } elseif ($object_name == 'Prospect') {
                 $list->load_relationship('prospects');
@@ -826,7 +821,7 @@ class jjwg_MapsController extends SugarController
             }
 
             if (!empty($list_id)) {
-                $list_modules = array('Accounts', 'Contacts', 'Leads', 'Users', 'Prospects');
+                $list_modules = array('Accounts', 'Contacts', 'Users', 'Prospects');
                 $temp_marker_groups = array();
 
                 foreach ($list_modules as $display_module) {

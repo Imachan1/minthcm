@@ -79,7 +79,6 @@ class ProspectList extends SugarBean
     public $assigned_user_name;
     public $prospect_id;
     public $contact_id;
-    public $lead_id;
     public $automatic_update;
 
     // module name definitions and table relations
@@ -186,7 +185,6 @@ class ProspectList extends SugarBean
                     'Contacts' 	=> array('has_custom_fields' => false, 'fields' => array()),
                     'Users' 	=> array('has_custom_fields' => false, 'fields' => array()),
                     'Prospects' 	=> array('has_custom_fields' => false, 'fields' => array()),
-                    'Leads' 	=> array('has_custom_fields' => false, 'fields' => array())
                 );
 
         // query all custom fields in the fields_meta_data table for the modules which are being exported
@@ -227,21 +225,6 @@ class ProspectList extends SugarBean
                 }
             }
         }
-
-        $leads_query = "SELECT l.id AS id, 'Leads' AS related_type, '' AS \"name\", l.first_name AS first_name, l.last_name AS last_name, l.title AS title, l.salutation AS salutation,
-				l.primary_address_street AS primary_address_street,l.primary_address_city AS primary_address_city, l.primary_address_state AS primary_address_state, l.primary_address_postalcode AS primary_address_postalcode, l.primary_address_country AS primary_address_country,
-				l.account_name AS account_name,
-				ea.email_address AS primary_email_address, ea.invalid_email AS invalid_email, ea.opt_out AS opt_out, ea.deleted AS ea_deleted, ear.deleted AS ear_deleted, ear.primary_address AS primary_address,
-				l.do_not_call AS do_not_call, l.phone_fax AS phone_fax, l.phone_other AS phone_other, l.phone_home AS phone_home, l.phone_mobile AS phone_mobile, l.phone_work AS phone_work
-				".(count($members['Leads']['fields']) ? ', ' : '') . implode(', ', $members['Leads']['fields'])."
-				FROM prospect_lists_prospects plp
-				INNER JOIN leads l ON plp.related_id=l.id
-				".($members['Leads']['has_custom_fields'] ? 'LEFT join leads_cstm ON l.id = leads_cstm.id_c' : '')."
-				LEFT JOIN email_addr_bean_rel ear ON  ear.bean_id=l.id AND ear.deleted=0
-				LEFT JOIN email_addresses ea ON ear.email_address_id=ea.id
-				WHERE plp.prospect_list_id = $record_id AND plp.deleted=0
-				AND l.deleted=0
-				AND (ear.deleted=0 OR ear.deleted IS NULL)";
 
         $users_query = "SELECT u.id AS id, 'Users' AS related_type, '' AS \"name\", u.first_name AS first_name, u.last_name AS last_name,u.title AS title, '' AS salutation,
 				u.address_street AS primary_address_street,u.address_city AS primary_address_city, u.address_state AS primary_address_state,  u.address_postalcode AS primary_address_postalcode, u.address_country AS primary_address_country,
@@ -304,16 +287,13 @@ FROM prospect_lists_prospects plp
 				AND a.deleted=0
 				AND (ear.deleted=0 OR ear.deleted IS NULL)";
         $order_by = "ORDER BY related_type, id, primary_address DESC";
-        $query = "$leads_query UNION ALL $users_query UNION ALL $contacts_query UNION ALL $prospects_query UNION ALL $accounts_query $order_by";
+        $query = "$users_query UNION ALL $contacts_query UNION ALL $prospects_query UNION ALL $accounts_query $order_by";
         return $query;
     }
 
     public function save_relationship_changes($is_update, $exclude = array())
     {
         parent::save_relationship_changes($is_update, $exclude);
-        if ($this->lead_id != "") {
-            $this->set_prospect_relationship($this->id, $this->lead_id, "lead");
-        }
         if ($this->contact_id != "") {
             $this->set_prospect_relationship($this->id, $this->contact_id, "contact");
         }

@@ -48,7 +48,6 @@
 <form name="meetingsQuickCreate" id="meetingsQuickCreate" method="POST" action="index.php">
 <input type="hidden" name="module" value="Meetings">
 <input type="hidden" name="record" value="">
-<input type="hidden" name="lead_id" value="{$REQUEST.lead_id}">
 <input type="hidden" name="contact_id" value="{$REQUEST.contact_id}">
 <input type="hidden" name="contact_invitees" value="{$REQUEST.contact_id}">
 <input type="hidden" name="contact_name" value="{$REQUEST.contact_name}">

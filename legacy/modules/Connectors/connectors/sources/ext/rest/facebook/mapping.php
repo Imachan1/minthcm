@@ -49,7 +49,5 @@ $mapping = array(
                 array(),
             'Contacts' =>
                 array(),
-            'Leads' =>
-                array(),
         ),
 );

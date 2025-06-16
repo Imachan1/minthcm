@@ -212,24 +212,6 @@ $layout_defs['Accounts'] = array(
                 array('widget_class' => 'SubPanelTopButtonQuickCreate')
             ),
         ),
-        'leads' => array(
-            'order' => 80,
-            'module' => 'Leads',
-            'sort_order' => 'asc',
-            'sort_by' => 'last_name, first_name',
-            'subpanel_name' => 'default',
-            'get_subpanel_data' => 'leads',
-            'add_subpanel_data' => 'lead_id',
-            'title_key' => 'LBL_LEADS_SUBPANEL_TITLE',
-            'top_buttons' => array(
-                array('widget_class' => 'SubPanelTopCreateLeadNameButton'),
-                array('widget_class' => 'SubPanelTopSelectButton',
-                    'popup_module' => 'Opportunities',
-                    'mode' => 'MultiSelect',
-                ),
-            ),
-
-        ),
         'cases' => array(
             'order' => 100,
             'sort_order' => 'desc',

@@ -67,8 +67,8 @@ class ext_rest_facebook extends ext_rest
         $this->_enable_in_hover = false;
 
         $this->allowedModuleList = array('Accounts' => $app_list_strings['moduleList']['Accounts'],
-            'Contacts' => $app_list_strings['moduleList']['Contacts'],
-            'Leads' => $app_list_strings['moduleList']['Leads']);
+            'Contacts' => $app_list_strings['moduleList']['Contacts']
+        );
     }
 
     /**

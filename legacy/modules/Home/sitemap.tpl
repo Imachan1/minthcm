@@ -61,7 +61,6 @@
 			<td valign="top">
 			    <div>{$CONTACTS}</div>
 				<div>{$ACCOUNTS}</div>
-				<div>{$LEADS}</div>
 			</td>
 
 			<td valign="top">

@@ -78,7 +78,6 @@ class EmailTemplate extends SugarBean
     public $badFields = array(
         'account_description',
         'contact_id',
-        'lead_id',
         'campaign_id',
         // User objects
         'id',
@@ -127,14 +126,12 @@ class EmailTemplate extends SugarBean
 
         $contact = BeanFactory::newBean('Contacts');
         $account = BeanFactory::newBean('Accounts');
-        $lead = BeanFactory::newBean('Leads');
         $prospect = BeanFactory::newBean('Prospects');
 
 
         $loopControl = array(
             'Contacts' => array(
                 'Contacts' => $contact,
-                'Leads' => $lead,
                 'Prospects' => $prospect,
             ),
             'Accounts' => array(
@@ -199,7 +196,6 @@ class EmailTemplate extends SugarBean
 
         $contact = BeanFactory::newBean('Contacts');
         $account = BeanFactory::newBean('Accounts');
-        $lead = BeanFactory::newBean('Leads');
         $prospect = BeanFactory::newBean('Prospects');
         $event = BeanFactory::newBean('FP_events');
 
@@ -207,7 +203,6 @@ class EmailTemplate extends SugarBean
         $loopControl = array(
             'Contacts' => array(
                 'Contacts' => $contact,
-                'Leads' => $lead,
                 'Prospects' => $prospect,
             ),
             'Accounts' => array(
@@ -553,18 +548,8 @@ class EmailTemplate extends SugarBean
         // cn: bug 9277 - create a replace array with empty strings to blank-out invalid vars
         $acct = BeanFactory::newBean('Accounts');
         $contact = BeanFactory::newBean('Contacts');
-        $lead = BeanFactory::newBean('Leads');
         $prospect = BeanFactory::newBean('Prospects');
 
-        foreach ($lead->field_defs as $field_def) {
-            if (($field_def['type'] == 'relate' && empty($field_def['custom_type'])) || $field_def['type'] == 'assigned_user_name') {
-                continue;
-            }
-            $repl_arr = EmailTemplate::add_replacement($repl_arr, $field_def, array(
-                'contact_' . $field_def['name'] => '',
-                'contact_account_' . $field_def['name'] => '',
-            ));
-        }
         foreach ($prospect->field_defs as $field_def) {
             if (($field_def['type'] == 'relate' && empty($field_def['custom_type'])) || $field_def['type'] == 'assigned_user_name') {
                 continue;
@@ -641,7 +626,7 @@ class EmailTemplate extends SugarBean
             }
         } elseif ($bean_name == 'Users') {
             /**
-             * This section of code will on do work when a blank Contact, Lead,
+             * This section of code will on do work when a blank Contact 
              * etc. is passed in to parse the contact_* vars.  At this point,
              * $current_user will be used to fill in the blanks.
              */
@@ -797,7 +782,7 @@ class EmailTemplate extends SugarBean
                 $focus = BeanFactory::getBean($bean_name, $bean_id);
             }
 
-            if ($bean_name == 'Leads' || $bean_name == 'Prospects') {
+            if ($bean_name == 'Prospects') {
                 $bean_name = 'Contacts';
             }
 

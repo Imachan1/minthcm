@@ -312,15 +312,6 @@ $dictionary['Note'] = array(
             'source' => 'non-db',
         ],
 
-        'lead_id' =>
-        [
-            'name' => 'lead_id',
-            'vname' => 'LBL_LEAD_ID',
-            'type' => 'id',
-            'reportable' => false,
-            'source' => 'non-db',
-        ],
-
         'created_by_link' =>
         [
             'name' => 'created_by_link',
@@ -360,15 +351,6 @@ $dictionary['Note'] = array(
             'relationship' => 'account_notes',
             'source' => 'non-db',
             'vname' => 'LBL_ACCOUNTS',
-        ],
-
-        'leads' =>
-        [
-            'name' => 'leads',
-            'type' => 'link',
-            'relationship' => 'lead_notes',
-            'source' => 'non-db',
-            'vname' => 'LBL_LEADS',
         ],
 
         'bugs' =>

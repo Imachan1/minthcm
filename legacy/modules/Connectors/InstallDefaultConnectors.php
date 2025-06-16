@@ -55,10 +55,6 @@ $default_modules_sources = array(
   array(
      'ext_rest_insideview' => 'ext_rest_insideview',
   ),
-  'Leads' =>
-  array(
-     'ext_rest_insideview' => 'ext_rest_insideview',
-  ),
   'Prospects' =>
   array(
 

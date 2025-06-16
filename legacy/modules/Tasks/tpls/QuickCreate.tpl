@@ -48,7 +48,6 @@
 <form name="tasksQuickCreate" id="tasksQuickCreate" method="POST" action="index.php">
 <input type="hidden" name="module" value="Tasks">
 <input type="hidden" name="record" value="">
-<input type="hidden" name="lead_id" value="{$REQUEST.lead_id}">
 <input type="hidden" name="contact_id" value="{$REQUEST.contact_id}">
 <input type="hidden" name="contact_name" value="{$REQUEST.contact_name}">
 <input type="hidden" name="email_id" value="{$REQUEST.email_id}">

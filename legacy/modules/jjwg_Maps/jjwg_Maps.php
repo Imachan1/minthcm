@@ -63,14 +63,14 @@ class jjwg_Maps extends jjwg_Maps_sugar
          * @var array
          */
         'valid_geocode_modules' => array(
-            'Accounts', 'Contacts', 'Leads', 'Cases', 'Project', 'Meetings', 'Prospects'
+            'Accounts', 'Contacts', 'Cases', 'Project', 'Meetings', 'Prospects'
         ),
         /**
          * 'valid_geocode_tables' defines the valid table names used with geocoding.
          * @var array
          */
         'valid_geocode_tables' => array(
-            'accounts', 'contacts', 'leads', 'cases', 'project', 'meetings', 'prospects'
+            'accounts', 'contacts', 'cases', 'project', 'meetings', 'prospects'
         ),
         /**
          * 'geocode_modules_to_address_type' defines the modules address types to be used with geocoding.
@@ -80,7 +80,6 @@ class jjwg_Maps extends jjwg_Maps_sugar
         'geocode_modules_to_address_type' => array(
             'Accounts' => 'billing',
             'Contacts' => 'primary',
-            'Leads' => 'primary',
             'Cases' => 'billing',
             'Project' => 'billing',
             'Meetings' => 'flex_relate',
@@ -147,7 +146,6 @@ class jjwg_Maps extends jjwg_Maps_sugar
         'map_markers_grouping_field' => array(
             'Accounts' => 'industry',
             'Contacts' => 'assigned_user_name',
-            'Leads' => 'status',
             'Cases' => 'priority',
             'Project' => 'assigned_user_name',
             'Meetings' => 'assigned_user_name',
@@ -591,7 +589,7 @@ class jjwg_Maps extends jjwg_Maps_sugar
      *
      * This is done typically after the $bean is already saved.
      * See after_save logic hooks
-     * Meetings related to: accounts, cases, contacts, leads
+     * Meetings related to: accounts, cases, contacts
      *      opportunities, projects and prospects (targets)
      *
      * This method updates the meeting's address info based on
@@ -1002,7 +1000,6 @@ class jjwg_Maps extends jjwg_Maps_sugar
      * Address Relationship Notes:
      * Account(address)
      * Contact(address)
-     * Lead(address)
      * Taget/Prospect(address)
      * Opportunity to Account(address)
      * Case 'account_id' to Account(address)
@@ -1033,8 +1030,6 @@ class jjwg_Maps extends jjwg_Maps_sugar
             $address = $this->defineMapsFormattedAddress($display, $this->settings['geocode_modules_to_address_type']['Accounts']);
         } elseif ($object_name == 'Contact') {
             $address = $this->defineMapsFormattedAddress($display, $this->settings['geocode_modules_to_address_type']['Contacts']);
-        } elseif ($object_name == 'Lead') {
-            $address = $this->defineMapsFormattedAddress($display, $this->settings['geocode_modules_to_address_type']['Leads']);
         } elseif ($object_name == 'Prospect') {
             $address = $this->defineMapsFormattedAddress($display, $this->settings['geocode_modules_to_address_type']['Prospects']);
         } elseif ($object_name == 'User') {

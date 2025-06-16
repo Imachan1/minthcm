@@ -101,23 +101,6 @@ class InsideViewLogicHook
         
         return $url;
     }
-
-    protected function getLeadFrameUrl($bean, $extraUrl)
-    {
-        $url = self::URL_BASE.'analyseAccount.do?crm_context=lead&';
-        $fieldMap = array('crm_lead_id'=>'id',
-                          'crm_lead_firstname'=>'first_name',
-                          'crm_lead_lastname'=>'last_name',
-                          'crm_lead_title'=>'title',
-                          'crm_account_id'=>'id',
-                          'crm_account_name'=>'account_name',
-                          'crm_account_website'=>'website',
-        );
-        
-        $url .= $this->handleFieldMap($bean, $fieldMap).'&'.$extraUrl;
-        
-        return $url;
-    }
     protected function getContactFrameUrl($bean, $extraUrl)
     {
         $url = self::URL_BASE.'analyseExecutive.do?crm_context=contact&';
@@ -172,11 +155,7 @@ class InsideViewLogicHook
             if (is_a($bean, 'Contact')) {
                 $url = $this->getContactFrameUrl($bean, $extraUrl);
             } else {
-                if (is_a($bean, 'Lead')) {
-                    $url = $this->getLeadFrameUrl($bean, $extraUrl);
-                } else {
-                    $url = '';
-                }
+                $url = '';
             }
         }
 

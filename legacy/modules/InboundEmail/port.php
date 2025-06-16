@@ -4405,24 +4405,6 @@ class InboundEmail extends SugarBean
         {
             $relationShipAddress = $relationShipAddress . "," . $email->to_addrs;
         }
-        if ($leadIds = $this->getRelatedId($relationShipAddress, 'leads'))
-        {
-            $GLOBALS['log']->debug('I-E linking email to Lead');
-            $email->load_relationship('leads');
-            $email
-                ->leads
-                ->add($leadIds);
-
-            foreach ($leadIds as $leadId)
-            {
-                $lead = BeanFactory::newBean('Leads');
-                $lead->retrieve($leadId);
-                $lead->load_relationship('emails');
-                $lead
-                    ->emails
-                    ->add($email->id);
-            }
-        }
 
         if ($contactIds = $this->getRelatedId($relationShipAddress, 'contacts'))
         {

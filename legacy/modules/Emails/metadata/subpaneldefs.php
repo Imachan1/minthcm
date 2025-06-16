@@ -87,20 +87,6 @@ $layout_defs['Emails'] = array(
                 array('widget_class' => 'SubPanelTopSelectButton', 'mode' => 'MultiSelect')
             ),
         ),
-        'leads' => array(
-            'order' => 30,
-            'module' => 'Leads',
-            'sort_order' => 'asc',
-            'sort_by' => 'last_name, first_name',
-            'subpanel_name' => 'ForEmails',
-            'get_subpanel_data' => 'leads',
-            'add_subpanel_data' => 'lead_id',
-            'title_key' => 'LBL_LEADS_SUBPANEL_TITLE',
-            'top_buttons' => array(
-                array('widget_class' => 'SubPanelTopButtonQuickCreate'),
-                array('widget_class' => 'SubPanelTopSelectButton', 'mode' => 'MultiSelect')
-            ),
-        ),
         'cases' => array(
             'order' => 40,
             'module' => 'Cases',

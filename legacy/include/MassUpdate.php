@@ -640,7 +640,6 @@ eoq;
 
         if ($this->sugarbean->object_name == 'Contact' ||
             $this->sugarbean->object_name == 'Account' ||
-            $this->sugarbean->object_name == 'Lead' ||
             $this->sugarbean->object_name == 'Prospect'
         ) {
             $optOutPrimaryEmail =

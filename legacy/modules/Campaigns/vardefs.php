@@ -249,15 +249,6 @@ $dictionary['Campaign'] = array('audited' => true,
             'options' => 'newsletter_frequency_dom',
             'len' => 100,
         ),
-        'leads' => array(
-            'name' => 'leads',
-            'type' => 'link',
-            'relationship' => 'campaign_leads',
-            'source' => 'non-db',
-            'vname' => 'LBL_LEADS',
-            'link_class' => 'ProspectLink',
-            'link_file' => 'modules/Campaigns/ProspectLink.php'
-        ),
         'contacts' => array(
             'name' => 'contacts',
             'type' => 'link',
@@ -350,10 +341,6 @@ $dictionary['Campaign'] = array('audited' => true,
 
         'campaign_contacts' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
             'rhs_module' => 'Contacts', 'rhs_table' => 'contacts', 'rhs_key' => 'campaign_id',
-            'relationship_type' => 'one-to-many'),
-
-        'campaign_leads' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
-            'rhs_module' => 'Leads', 'rhs_table' => 'leads', 'rhs_key' => 'campaign_id',
             'relationship_type' => 'one-to-many'),
 
         'campaign_prospects' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',

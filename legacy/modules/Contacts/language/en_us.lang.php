@@ -103,7 +103,6 @@ $mod_strings = array(
     'LBL_INVALID_EMAIL' => 'Invalid Email:',
     'LBL_INVITEE' => 'Direct Reports',
     'LBL_LAST_NAME' => 'Last Name:',
-    'LBL_LEAD_SOURCE' => 'Lead Source:',
     'LBL_LIST_ACCEPT_STATUS' => 'Accept Status',
     'LBL_LIST_ACCOUNT_NAME' => 'Account Name',
     'LBL_LIST_CONTACT_NAME' => 'Contact Name',
@@ -167,7 +166,6 @@ $mod_strings = array(
     'NTC_DELETE_CONFIRMATION' => 'Are you sure you want to delete this record?',
     'NTC_REMOVE_CONFIRMATION' => 'Are you sure you want to remove this contact from the case?',
 
-    'LBL_LEADS_SUBPANEL_TITLE' => 'Leads',
     'LBL_DOCUMENTS_SUBPANEL_TITLE' => 'Documents',
     'LBL_COPY_ADDRESS_CHECKED_PRIMARY' => 'Copy to Primary Address',
     'LBL_COPY_ADDRESS_CHECKED_ALT' => 'Copy to Other Address',

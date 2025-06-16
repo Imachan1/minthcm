@@ -34,7 +34,6 @@ return [
             EmailTemplate::class => 'EmailTemplates',
             Employee::class => 'Employees',
             UsersLastImport::class => 'Import',
-            Lead::class => 'Leads',
             Meeting::class => 'Meetings',
             MergeRecord::class => 'MergeRecords',
             Note::class => 'Notes',

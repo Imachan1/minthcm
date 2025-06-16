@@ -101,7 +101,6 @@ $mod_strings = array(
     'LBL_INDUSTRY' => 'Industry:',
     'LBL_INVALID_EMAIL' => 'Invalid Email:',
     'LBL_INVITEE' => 'Contacts',
-    'LBL_LEADS_SUBPANEL_TITLE' => 'Leads',
     'LBL_LIST_ACCOUNT_NAME' => 'Name',
     'LBL_LIST_CITY' => 'City',
     'LBL_LIST_CONTACT_NAME' => 'Contact Name',

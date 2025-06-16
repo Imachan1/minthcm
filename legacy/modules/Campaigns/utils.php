@@ -1100,10 +1100,6 @@ function filterFieldsFromBeans($beans)
     $formattedBeans = array();
     foreach ($beans as $b) {
         $formattedFields = array();
-        //bug: 47574 - make sure, that webtolead_email1 field has same required attribute as email1 field
-        if (isset($b->field_defs['webtolead_email1']) && isset($b->field_defs['email1']) && isset($b->field_defs['email1']['required'])) {
-            $b->field_defs['webtolead_email1']['required'] = $b->field_defs['email1']['required'];
-        }
 
         foreach ($b->field_defs as $field_def) {
             $email_fields = false;

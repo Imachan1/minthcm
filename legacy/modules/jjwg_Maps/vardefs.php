@@ -188,16 +188,6 @@ $dictionary['jjwg_Maps'] = array(
                 'source' => 'non-db',
                 'vname' => 'LBL_CONTACTS',
             ),
-        'leads' =>
-            array(
-                'name' => 'leads',
-                'type' => 'link',
-                'relationship' => 'jjwg_Maps_leads',
-                'module' => 'Leads',
-                'bean_name' => 'Lead',
-                'source' => 'non-db',
-                'vname' => 'LBL_LEADS',
-            ),
         'cases' =>
             array(
                 'name' => 'cases',
@@ -289,18 +279,6 @@ $dictionary['jjwg_Maps'] = array(
                 'relationship_type' => 'one-to-many',
                 'relationship_role_column' => 'parent_type',
                 'relationship_role_column_value' => 'Contacts',
-            ),
-        'jjwg_Maps_leads' =>
-            array(
-                'lhs_module' => 'jjwg_Maps',
-                'lhs_table' => 'jjwg_Maps',
-                'lhs_key' => 'parent_id',
-                'rhs_module' => 'Leads',
-                'rhs_table' => 'leads',
-                'rhs_key' => 'id',
-                'relationship_type' => 'one-to-many',
-                'relationship_role_column' => 'parent_type',
-                'relationship_role_column_value' => 'Leads',
             ),
         'jjwg_Maps_cases' =>
             array(

@@ -1725,16 +1725,6 @@ function search_by_module($user_name, $password, $search_string, $modules, $offs
             ),
             'fields' => "cases.id, cases.name, cases.case_number"
         ),
-        'Leads' => array(
-            'where' => array(
-                'Leads' => array(
-                    0 => "leads.first_name like '{0}%'",
-                    1 => "leads.last_name like '{0}%'"
-                ),
-                'EmailAddresses' => array(0 => "ea.email_address like '{0}%'")
-            ),
-            'fields' => "leads.id, leads.first_name, leads.last_name, leads.status"
-        ),
         'Project' => array(
             'where' => array('Project' => array(0 => "project.name like '{0}%'")),
             'fields' => "project.id, project.name"

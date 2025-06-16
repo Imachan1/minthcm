@@ -70,7 +70,6 @@ $moduleList[] = 'Calls';
 $moduleList[] = 'Meetings';
 $moduleList[] = 'Tasks';
 $moduleList[] = 'Notes';
-// $moduleList[] = 'Leads';
 // $moduleList[] = 'Contacts';
 // $moduleList[] = 'Accounts';
 
@@ -97,7 +96,6 @@ $beanList = [];
 $beanList['ACLRoles'] = 'ACLRole';
 $beanList['ACLActions'] = 'ACLAction';
 //END ACL OBJECTS
-// $beanList['Leads'] = 'Lead';
 // $beanList['Cases'] = 'aCase';
 // $beanList['Bugs'] = 'Bug';
 $beanList['ProspectLists'] = 'ProspectList';
@@ -165,7 +163,6 @@ $beanFiles['ACLAction'] = 'modules/ACLActions/ACLAction.php';
 $beanFiles['ACLRole'] = 'modules/ACLRoles/ACLRole.php';
 $beanFiles['Relationship'] = 'modules/Relationships/Relationship.php';
 
-// $beanFiles['Lead'] = 'modules/Leads/Lead.php';
 // $beanFiles['aCase'] = 'modules/Cases/Case.php';
 // $beanFiles['Bug'] = 'modules/Bugs/Bug.php';
 $beanFiles['Group'] = 'modules/Groups/Group.php';

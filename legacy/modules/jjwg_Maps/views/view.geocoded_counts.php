@@ -85,8 +85,6 @@ class Jjwg_MapsViewGeocoded_Counts extends SugarView
         echo '<br /><br />';
         echo '<a target="_blank" href="'.htmlspecialchars($export_url).$GLOBALS['app_strings']['LBL_CONTACTS'].'">'.$GLOBALS['app_strings']['LBL_EXPORT'].' '.$GLOBALS['app_strings']['LBL_CONTACTS'].'</a>';
         echo '<br /><br />';
-        echo '<a target="_blank" href="'.htmlspecialchars($export_url).$GLOBALS['app_strings']['LBL_LEADS'].'">'.$GLOBALS['app_strings']['LBL_EXPORT'].' '.$GLOBALS['app_strings']['LBL_LEADS'].'</a>';
-        echo '<br /><br />';
         echo '<a target="_blank" href="'.htmlspecialchars($export_url).$GLOBALS['app_strings']['LBL_PROSPECTS'].'">'.$GLOBALS['app_strings']['LBL_EXPORT'].' '.$GLOBALS['app_strings']['LBL_PROSPECTS'].'</a>';
         echo '<br /><br />';
 

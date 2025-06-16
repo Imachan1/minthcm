@@ -175,7 +175,7 @@ class TemplateHandler
         );
         $contents = $this->ss->fetch($tpl);
         // Insert validation and quick search stuff here
-        if ($view === 'EditView' || $ajaxSave || $view === 'ConvertLead' || $view === 'ComposeView' || strpos($view, 'QuickCreate')) {
+        if ($view === 'EditView' || $ajaxSave || $view === 'ComposeView' || strpos($view, 'QuickCreate')) {
             global $dictionary, $beanList, $app_strings, $mod_strings;
             $mod = $beanList[$module];
 
@@ -242,9 +242,6 @@ class TemplateHandler
             $javascript->setFormName($view);
 
             $javascript->setSugarBean($sugarBean);
-            if ($view !== "ConvertLead") {
-                $javascript->addAllFields('', null, true);
-            }
 
             $validatedFields = array();
             $javascript->addToValidateBinaryDependency(
@@ -539,25 +536,6 @@ class TemplateHandler
                 }
 
                 $field = $defs[$f['name']];
-                if ($view === 'ConvertLead') {
-                    $field['name'] = $module . $field['name'];
-                    if (isset($field['module']) &&
-                        isset($field['id_name']) &&
-                        substr($field['id_name'], -4) === '_ida'
-                    ) {
-                        $lc_module = strtolower($field['module']);
-                        $ida_suffix = '_' . $lc_module . $lc_module . '_ida';
-                        if (preg_match('/' . $ida_suffix . '$/', $field['id_name']) > 0) {
-                            $field['id_name'] = $module . $field['id_name'];
-                        } else {
-                            $field['id_name'] = $field['name'] . '_' . $field['id_name'];
-                        }
-                    } else {
-                        if (!empty($field['id_name'])) {
-                            $field['id_name'] = $module . $field['id_name'];
-                        }
-                    }
-                }
                 $name = $qsd->form_name . '_' . $field['name'];
 
 

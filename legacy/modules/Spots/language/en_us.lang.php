@@ -91,21 +91,9 @@ $mod_strings = array(
     'LBL_AN_ACCOUNTS_ACCOUNT_INDUSTRY' => 'Industry',
     'LBL_AN_ACCOUNTS_ACCOUNT_BILLING_COUNTRY' => 'Billing Country',
 
-    //Analytics labels for leads pivot
-    'LBL_AN_LEADS_ASSIGNED_USER' => 'Assigned User',
-    'LBL_AN_LEADS_STATUS' => 'Status',
-    'LBL_AN_LEADS_LEAD_SOURCE' => 'Lead Source',
-    'LBL_AN_LEADS_CAMPAIGN_NAME' => 'Campaign Name',
-    'LBL_AN_LEADS_YEAR' => 'Year',
-    'LBL_AN_LEADS_QUARTER' => 'Quarter',
-    'LBL_AN_LEADS_MONTH' => 'Month',
-    'LBL_AN_LEADS_WEEK' => 'Week',
-    'LBL_AN_LEADS_DAY' => 'Day',
-
     //Analytics labels for sales pivot
     'LBL_AN_SALES_ACCOUNT_NAME' => 'Account Name',
     'LBL_AN_SALES_ASSIGNED_USER' => 'Assigned User',
-    'LBL_AN_SALES_LEAD_SOURCE' => 'Lead Source',
     'LBL_AN_SALES_AMOUNT' => 'Amount',
     'LBL_AN_SALES_STAGE' => 'Sales Stage',
     'LBL_AN_SALES_PROBABILITY' => 'Probability',

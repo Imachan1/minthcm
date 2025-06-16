@@ -146,7 +146,7 @@ $dictionary['Bug'] = array(
             'type' => 'enum',
             'options' => 'product_category_dom',
             'len' => 255,
-            'comment' => 'Where the bug was discovered (ex: Accounts, Contacts, Leads)'
+            'comment' => 'Where the bug was discovered (ex: Accounts, Contacts)'
         ),
 
         'tasks' => array(

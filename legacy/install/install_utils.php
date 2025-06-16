@@ -1317,7 +1317,6 @@ function insert_default_settings() {
 
    $hidden_subpanels = array (
     'contacts' => 'contacts',
-    'leads' => 'leads',
     'prospects' => 'prospects',
     'cases' => 'cases',
     'jjwg_areas' => 'jjwg_areas',

@@ -394,10 +394,6 @@ function portal_get_entry_list_limited($session, $module_name, $where, $order_by
         $error->set_error('invalid_session');
         return array('result_count'=>-1, 'entry_list'=>array(), 'error'=>$error->get_soap_array());
     }
-    if ($_SESSION['type'] == 'lead') {
-        $error->set_error('no_access');
-        return array('result_count'=>-1, 'entry_list'=>array(), 'error'=>$error->get_soap_array());
-    }
     if (empty($beanList[$module_name])) {
         $error->set_error('no_module');
         return array('result_count'=>-1, 'entry_list'=>array(), 'error'=>$error->get_soap_array());
@@ -479,4 +475,4 @@ function portal_get_entry_list_limited($session, $module_name, $where, $order_by
 }
 
 $invalid_contact_fields = array('portal_password'=>1, 'portal_active'=>1);
-$valid_modules_for_contact = array('Contacts'=>1, 'Cases'=>1, 'Notes'=>1, 'Bugs'=>1, 'Accounts'=>1, 'Leads'=>1, 'KBDocuments'=>1);
+$valid_modules_for_contact = array('Contacts'=>1, 'Cases'=>1, 'Notes'=>1, 'Bugs'=>1, 'Accounts'=>1, 'KBDocuments'=>1);

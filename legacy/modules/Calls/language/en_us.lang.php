@@ -105,7 +105,6 @@ $mod_strings = array(
     'LBL_DEFAULT_SUBPANEL_TITLE' => 'Calls',
     'LNK_SELECT_ACCOUNT' => 'Select Account',
     'LNK_NEW_ACCOUNT' => 'New Account',
-    'LBL_LEADS_SUBPANEL_TITLE' => 'Leads',
     'LBL_CONTACTS_SUBPANEL_TITLE' => 'Contacts',
     'LBL_USERS_SUBPANEL_TITLE' => 'Users',
     'LBL_OUTLOOK_ID' => 'Outlook ID',
@@ -123,7 +122,6 @@ $mod_strings = array(
     // create invitee functionality
     'LBL_CREATE_INVITEE' => 'Create an invitee',
     'LBL_CREATE_CONTACT' => 'As Contact',
-    'LBL_CREATE_LEAD' => 'As Lead',
     'LBL_CREATE_AND_ADD' => 'Create & Add',
     'LBL_CANCEL_CREATE_INVITEE' => 'Cancel',
     'LBL_EMPTY_SEARCH_RESULT' => 'Sorry, no results were found. Please create an invitee below.',

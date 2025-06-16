@@ -246,7 +246,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  
  EOQ;
  
-         $form .= $sugarEmailAddress->getEmailAddressWidgetEditView($contact->id, $_REQUEST['action']=='ConvertLead'?'Leads':'Contacts', false, 'include/SugarEmailAddress/templates/forWideFormBodyView.tpl');
+         $form .= $sugarEmailAddress->getEmailAddressWidgetEditView($contact->id, 'Contacts', false, 'include/SugarEmailAddress/templates/forWideFormBodyView.tpl');
  
          require_once('include/SugarFields/Fields/Text/SugarFieldText.php');
          $sugarfield = new SugarFieldText('Text');
@@ -466,17 +466,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
          if (!$focus->ACLAccess('Save')) {
              ACLController::displayNoAccess(true);
              sugar_cleanup(true);
-         }
-         if ($_REQUEST['action'] != 'ConvertLead' && $_REQUEST['action'] != 'ConvertProspect') {
-             if (!empty($_POST[$prefix.'sync_contact']) || !empty($focus->sync_contact)) {
-                 $focus->contacts_users_id = $current_user->id;
-             } else {
-                 if (!isset($focus->users)) {
-                     $focus->load_relationship('user_sync');
-                 }
-                 $focus->contacts_users_id = null;
-                 $focus->user_sync->delete($focus->id, $current_user->id);
-             }
          }
  
          if (isset($GLOBALS['check_notify'])) {
