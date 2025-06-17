@@ -6262,7 +6262,6 @@ if (!function_exists('getMintDisabledModulesList')) {
     function getMintDisabledModulesList()
     {
         return [
-            'Accounts',
             'Contacts',
             'Prospects',
             'ProspectLists',

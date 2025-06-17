@@ -277,8 +277,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
      {
          $query = "update contacts set campaign_id = null where campaign_id = '{$id}' ";
          $this->db->query($query);
-         $query = "update accounts set campaign_id = null where campaign_id = '{$id}' ";
-         $this->db->query($query);
          // bug49632 - delete campaign logs for the campaign as well
          $query = "update campaign_log set deleted = 1 where campaign_id = '{$id}' ";
          $this->db->query($query);

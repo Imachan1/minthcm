@@ -107,26 +107,6 @@ class Jjwg_MapsViewConfig extends SugarView
         </td>
     </tr>
     <tr>
-        <td width="20%" nowrap="nowrap">
-            <strong><?php echo $GLOBALS['mod_strings']['LBL_CONFIG_ADDRESS_TYPE_FOR_ACCOUNTS']; ?> </strong>
-        </td>
-        <td>
-            <select id="address_type_Accounts" tabindex="111"
-                name="address_type_Accounts" title="">
-                <?php foreach ($address_types_billing_or_shipping as $key=>$value) {
-                    ?>
-                    <option value="<?php echo htmlspecialchars($key); ?>" <?php
-                    if ($key == $GLOBALS['jjwg_config']['geocode_modules_to_address_type']['Accounts']) {
-                        echo 'selected="selected"';
-                    } ?>><?php echo htmlspecialchars($value); ?></option>
-                <?php
-                } ?>
-            </select>
-            &nbsp; <?php echo $GLOBALS['mod_strings']['LBL_CONFIG_DEFAULT']; ?>
-                <?php echo htmlspecialchars($address_types_billing_or_shipping[$GLOBALS['jjwg_config_defaults']['geocode_modules_to_address_type']['Accounts']]); ?>
-        </td>
-    </tr>
-    <tr>
         <td>
             <strong><?php echo $GLOBALS['mod_strings']['LBL_CONFIG_ADDRESS_TYPE_FOR_CONTACTS']; ?> </strong>
         </td>
@@ -164,7 +144,6 @@ class Jjwg_MapsViewConfig extends SugarView
             </select>
             &nbsp; <?php echo $GLOBALS['mod_strings']['LBL_CONFIG_DEFAULT']; ?>
                 <?php echo htmlspecialchars($address_types_billing_or_shipping[$GLOBALS['jjwg_config_defaults']['geocode_modules_to_address_type']['Cases']]); ?>
-                <?php echo $GLOBALS['mod_strings']['LBL_CONFIG_OF_RELATED_ACCOUNT']; ?>
         </td>
     </tr>
     <tr>
@@ -260,16 +239,6 @@ class Jjwg_MapsViewConfig extends SugarView
     <tr>
         <td colspan="2">
             <?php echo $GLOBALS['mod_strings']['LBL_CONFIG_MARKER_GROUP_FIELD_SETTINGS_TITLE']; ?>
-        </td>
-    </tr>
-    <tr>
-        <td><strong><?php echo $GLOBALS['mod_strings']['LBL_CONFIG_GROUP_FIELD_FOR_ACCOUNTS']; ?> </strong></td>
-        <td><input type="text" name="grouping_field_Accounts" id="grouping_field_Accounts"
-            value="<?php echo (isset($GLOBALS['jjwg_config']['map_markers_grouping_field']['Accounts'])) ?
-                htmlspecialchars($GLOBALS['jjwg_config']['map_markers_grouping_field']['Accounts']) :
-                htmlspecialchars($GLOBALS['jjwg_config_defaults']['map_markers_grouping_field']['Accounts']); ?>"
-            title='' tabindex='121' size="25" maxlength="75">
-            &nbsp; <?php echo $GLOBALS['mod_strings']['LBL_CONFIG_DEFAULT']; ?> <?php echo htmlspecialchars($GLOBALS['jjwg_config_defaults']['map_markers_grouping_field']['Accounts']); ?>
         </td>
     </tr>
     <tr>

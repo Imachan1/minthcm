@@ -55,7 +55,6 @@ class SpotsController extends SugarController {
    protected $action_remap = array( 'DetailView' => 'editview', 'index' => 'listview' );
    //These are the file paths for the cached results of the spot data sets
    protected $spotFilePath = 'cache/modules/Spots/';
-   protected $accountsFileName = 'accounts.json';
    protected $servicesFileName = 'service.json';
    protected $salesFileName = 'sales.json';
    protected $marketingsFileName = 'marketing.json';
@@ -120,64 +119,6 @@ class SpotsController extends SugarController {
     }
 
    /**
-    * Returns the cached account file, will create it first if it is out of date / does not exist.
-    *
-    * @return string returns a string representation of the accounts file
-    */
-   public function action_getAccountsSpotsData() {
-      $userId = $_SESSION['authenticated_user_id'];
-      $fileLocation = $this->spotFilePath . $userId . '_' . $this->accountsFileName;
-      if ( file_exists($fileLocation) && (time() - filemtime($fileLocation) < $this->spotsStaleTime) ) {
-         echo file_get_contents($fileLocation);
-      } else {
-         $this->action_createAccountsSpotsData($fileLocation);
-         echo file_get_contents($fileLocation);
-      }
-   }
-
-   /**
-    * This creates the cached file for accounts.
-    *
-    * @param string $filepath the filepath to save the cached file
-    */
-   public function action_createAccountsSpotsData($filepath) {
-      global $mod_strings;
-      $returnArray = array();
-      $db = DBManagerFactory::getInstance();
-
-      $query = <<<EOF
-        SELECT
-            COALESCE(name,'$this->nullSqlPlaceholder') as accountName,
-            COALESCE(account_type,'$this->nullSqlPlaceholder') as account_type,
-            COALESCE(industry,'$this->nullSqlPlaceholder') as industry,
-            COALESCE(billing_address_country,'$this->nullSqlPlaceholder') as billing_address_country
-        FROM accounts
-        WHERE accounts.deleted = 0
-EOF;
-
-      $accounts = BeanFactory::getBean('Accounts');
-      $aclWhere = $this->buildSpotsAccessQuery($accounts, $accounts->table_name);
-
-      $queryString = $query . $aclWhere;
-
-      $result = $db->query($queryString);
-
-      while ( $row = $db->fetchByAssoc($result) ) {
-         $x = new stdClass();
-         $x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_NAME']} = $row['accountName'];
-         // View Tools start
-         //$x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_TYPE']} = $row['account_type'];
-         //$x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_INDUSTRY']} = $row['industry'];
-         $x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_TYPE']} = $this->translateAppString('account_type_dom', $row['account_type']);
-         $x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_INDUSTRY']} = $this->translateAppString('industry_dom', $row['industry']);
-         // View Tools end
-         $x->{$mod_strings['LBL_AN_ACCOUNTS_ACCOUNT_BILLING_COUNTRY']} = $row['billing_address_country'];
-         $returnArray[] = $x;
-      }
-      file_put_contents($filepath, json_encode($returnArray));
-   }
-
-   /**
     * Returns the cached service file, will create it first if it is out of date / does not exist.
     *
     * @return string returns a string representation of the service file
@@ -205,7 +146,6 @@ EOF;
 
       $mysqlSelect = <<<EOF
         SELECT
-            accounts.name,
             cases.state,
             cases.status,
             cases.priority,
@@ -219,7 +159,6 @@ EOF;
 EOF;
       $mssqlSelect = <<<EOF
         SELECT
-            accounts.name,
             cases.state,
             cases.status,
             cases.priority,
@@ -236,8 +175,6 @@ EOF;
         FROM cases
         INNER JOIN users
             ON cases.assigned_user_id = users.id
-        INNER JOIN accounts
-            ON cases.account_id = accounts.id
         LEFT JOIN users u2
             ON cases.contact_created_by_id = u2.id
             AND u2.deleted = 0
@@ -245,7 +182,6 @@ EOF;
       $whereClause = <<<EOF
         WHERE cases.deleted = 0
         AND users.deleted = 0
-        AND accounts.deleted = 0
 EOF;
 
       $query = '';
@@ -260,18 +196,15 @@ EOF;
       }
 
       $cases = BeanFactory::getBean('Cases');
-      $accounts = BeanFactory::getBean('Accounts');
       $users = BeanFactory::getBean('Users');
       $aclWhereCases = $this->buildSpotsAccessQuery($cases, $cases->table_name);
-      $aclWhereAccounts = $this->buildSpotsAccessQuery($accounts, $accounts->table_name);
       $aclWhereUsers = $this->buildSpotsAccessQuery($users, $users->table_name);
 
-      $queryString = $query . $aclWhereCases . $aclWhereAccounts . $aclWhereUsers;
+      $queryString = $query . $aclWhereCases . $aclWhereUsers;
       $result = $db->query($queryString);
 
       while ( $row = $db->fetchByAssoc($result) ) {
          $x = new stdClass();
-         $x->{$mod_strings['LBL_AN_SERVICE_ACCOUNT_NAME']} = $row['name'];
          // View Tools start
          //$x->{$mod_strings['LBL_AN_SERVICE_STATE']} = $row['state'];
          //$x->{$mod_strings['LBL_AN_SERVICE_STATUS']} = $row['status'];

@@ -258,15 +258,6 @@ $dictionary['Campaign'] = array('audited' => true,
             'link_class' => 'ProspectLink',
             'link_file' => 'modules/Campaigns/ProspectLink.php'
         ),
-        'accounts' => array(
-            'name' => 'accounts',
-            'type' => 'link',
-            'relationship' => 'campaign_accounts',
-            'source' => 'non-db',
-            'vname' => 'LBL_ACCOUNTS',
-            'link_class' => 'ProspectLink',
-            'link_file' => 'modules/Campaigns/ProspectLink.php'
-        ),
         'notes' =>
             array(
                 'name' => 'notes',
@@ -335,10 +326,6 @@ $dictionary['Campaign'] = array('audited' => true,
     ),
 
     'relationships' => array(
-        'campaign_accounts' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
-            'rhs_module' => 'Accounts', 'rhs_table' => 'accounts', 'rhs_key' => 'campaign_id',
-            'relationship_type' => 'one-to-many'),
-
         'campaign_contacts' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
             'rhs_module' => 'Contacts', 'rhs_table' => 'contacts', 'rhs_key' => 'campaign_id',
             'relationship_type' => 'one-to-many'),

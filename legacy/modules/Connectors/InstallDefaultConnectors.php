@@ -47,10 +47,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 $default_modules_sources = array(
-  'Accounts' =>
-  array(
-     'ext_rest_insideview' => 'ext_rest_insideview',
-  ),
   'Contacts' =>
   array(
      'ext_rest_insideview' => 'ext_rest_insideview',

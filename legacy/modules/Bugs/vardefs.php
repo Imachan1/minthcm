@@ -198,13 +198,6 @@ $dictionary['Bug'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_CONTACTS'
         ),
-        'accounts' => array(
-            'name' => 'accounts',
-            'type' => 'link',
-            'relationship' => 'accounts_bugs',
-            'source' => 'non-db',
-            'vname' => 'LBL_ACCOUNTS'
-        ),
         'cases' => array(
             'name' => 'cases',
             'type' => 'link',

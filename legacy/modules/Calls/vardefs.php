@@ -298,16 +298,6 @@ $dictionary['Call'] = array(
          'link_type' => 'one',
          'vname' => 'LBL_CASE',
       ),
-      'accounts' =>
-      array(
-         'name' => 'accounts',
-         'type' => 'link',
-         'relationship' => 'account_calls',
-         'module' => 'Accounts',
-         'bean_name' => 'Account',
-         'source' => 'non-db',
-         'vname' => 'LBL_ACCOUNT',
-      ),
       'aos_contracts' =>
       array(
          'name' => 'aos_contracts',

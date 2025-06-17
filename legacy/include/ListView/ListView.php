@@ -1502,7 +1502,7 @@ class ListView
                 }
                 $export_link = "&nbsp;";
                 $merge_link = "&nbsp;";
-            } elseif ($_REQUEST['module'] != "Accounts" && $_REQUEST['module'] != "Cases" && $_REQUEST['module'] != "Contacts") {
+            } elseif ($_REQUEST['module'] != "Cases" && $_REQUEST['module'] != "Contacts") {
                 $merge_link = "&nbsp;";
             }
 

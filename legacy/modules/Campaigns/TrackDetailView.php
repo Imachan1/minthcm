@@ -71,9 +71,6 @@ if (isset($_REQUEST['offset']) or isset($_REQUEST['record'])) {
         sugar_die($app_strings['ERROR_NO_RECORD']);
     }
     $focus=$result;
-} else {
-    $header_URL = "Location: index.php?module=Accounts&action=index";
-    SugarApplication::headerRedirect($header_URL);
 }
 
 // if campaign type is set to newsletter, then include newsletter detail view..

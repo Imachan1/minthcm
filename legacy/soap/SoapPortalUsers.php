@@ -237,8 +237,6 @@ function portal_get_entry_list_filter($session, $module_name, $order_by, $select
         $sugar = BeanFactory::newBean('Cases');
     } elseif ($module_name == 'Contacts') {
         $sugar = BeanFactory::newBean('Contacts');
-    } elseif ($module_name == 'Accounts') {
-        $sugar = BeanFactory::newBean('Accounts');
     } elseif ($module_name == 'Bugs') {
         $sugar = BeanFactory::newBean('Bugs');
     } elseif ($module_name == 'KBDocuments' || $module_name == 'FAQ') {
@@ -403,9 +401,6 @@ function portal_set_entry($session, $module_name, $name_value_list)
         if (isset($_SESSION['assigned_user_id']) && (!array_key_exists('assigned_user_id', $values_set) || empty($values_set['assigned_user_id']))) {
             $seed->assigned_user_id = $_SESSION['assigned_user_id'];
         }
-        if (isset($_SESSION['account_id']) && (!array_key_exists('account_id', $values_set) || empty($values_set['account_id']))) {
-            $seed->account_id = $_SESSION['account_id'];
-        }
         $seed->portal_flag = 1;
         $seed->portal_viewable = true;
     }
@@ -414,20 +409,12 @@ function portal_set_entry($session, $module_name, $name_value_list)
     if ($_SESSION['type'] == 'contact' && $module_name != 'Contacts' && !$is_update) {
         if ($module_name == 'Notes') {
             $seed->contact_id = $_SESSION['user_id'];
-            if (isset($_SESSION['account_id'])) {
-                $seed->parent_type = 'Accounts';
-                $seed->parent_id = $_SESSION['account_id'];
-            }
             $id = $seed->save();
         } else {
             $contact = BeanFactory::newBean('Contacts');
             $contact->disable_row_level_security = true;
             $contact->retrieve($_SESSION['user_id']);
             $seed->contact_id = $contact;
-
-            if (isset($_SESSION['account_id'])) {
-                $seed->account_id = $_SESSION['account_id'];
-            }
             $seed->save_relationship_changes(false);
         }
     }

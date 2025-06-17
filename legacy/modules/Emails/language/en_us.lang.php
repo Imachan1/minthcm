@@ -67,8 +67,7 @@ $mod_strings = array(
 
     'ERR_ARCHIVE_EMAIL' => 'Error: Select emails to archive.',
     'ERR_DELETE_RECORD' => 'Error: You must specify a record number to delete the account.',
-    'LBL_ACCOUNTS_SUBPANEL_TITLE' => 'Accounts',
-   'LBL_ADD_DASHLETS' => 'Add MintHCM Dashlets',
+    'LBL_ADD_DASHLETS' => 'Add MintHCM Dashlets',
     'LBL_ADD_DOCUMENT' => 'Add Documents',
     'LBL_ADD_ENTRIES' => 'Add Entries',
     'LBL_ADD_FILE' => 'Add Files',
@@ -94,7 +93,6 @@ $mod_strings = array(
     'LBL_EMAIL_SELECTOR_SELECT' => 'Select',
     'LBL_EMAIL_SELECTOR_CLEAR' => 'Clear',
     'LBL_EMAIL' => 'Email Address:',
-    'LBL_EMAILS_ACCOUNTS_REL' => 'Emails:Accounts',
     'LBL_EMAILS_BUGS_REL' => 'Emails:Bugs',
     'LBL_EMAILS_CASES_REL' => 'Emails:Cases',
     'LBL_EMAILS_CONTACTS_REL' => 'Emails:Contacts',
@@ -242,7 +240,6 @@ $mod_strings = array(
     'LNK_QUICK_REPLY' => 'Reply',
     'LBL_EMAILS_NO_PRIMARY_TEAM_SPECIFIED' => 'No Primary Team specified',
     'LBL_INSERT_CONTACT_EMAIL' => 'Insert Email Address from a Contact',
-    'LBL_INSERT_ACCOUNT_EMAIL' => 'Insert Email Address from an Account',
     'LBL_INSERT_TARGET_EMAIL' => 'Insert Email Address from a Target',
     'LBL_INSERT_USER_EMAIL' => 'Insert Email Address from an User',
 

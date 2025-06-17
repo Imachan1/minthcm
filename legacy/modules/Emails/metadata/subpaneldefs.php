@@ -59,20 +59,6 @@ $layout_defs['Emails'] = array(
             'module' => 'Notes',
             'top_buttons' => array(),
         ),
-        'accounts' => array(
-            'order' => 10,
-            'module' => 'Accounts',
-            'sort_order' => 'asc',
-            'sort_by' => 'name',
-            'subpanel_name' => 'ForEmails',
-            'get_subpanel_data' => 'accounts',
-            'add_subpanel_data' => 'account_id',
-            'title_key' => 'LBL_ACCOUNTS_SUBPANEL_TITLE',
-            'top_buttons' => array(
-                array('widget_class' => 'SubPanelTopButtonQuickCreate'),
-                array('widget_class' => 'SubPanelTopSelectButton', 'mode' => 'MultiSelect')
-            ),
-        ),
         'contacts' => array(
             'order' => 20,
             'module' => 'Contacts',

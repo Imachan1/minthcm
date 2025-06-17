@@ -243,16 +243,6 @@ $layout_defs['Campaigns'] = array(
             'sort_order' => 'desc',
             'sort_by' => 'campaign_log.id'
         ),
-        'accounts' => array(
-            'order' => 190,
-            'sort_order' => 'desc',
-            'sort_by' => 'name',
-            'module' => 'Accounts',
-            'get_subpanel_data' => 'accounts',
-            'subpanel_name' => 'default',
-            'title_key' => 'LBL_CAMPAIGN_ACCOUNTS_SUBPANEL_TITLE',
-            'top_buttons' => array(),
-        ),
         'surveyresponses_campaigns' => array(
           'order' => 100,
           'module' => 'SurveyResponses',

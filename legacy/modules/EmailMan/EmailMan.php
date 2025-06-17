@@ -205,7 +205,6 @@ class EmailMan extends SugarBean
             . 'WHEN \'Contacts\' THEN '
             . $this->db->concat('contacts', array('first_name', 'last_name'), '&nbsp;')
             . ' '
-            . 'WHEN \'Accounts\' THEN accounts.name '
             . 'WHEN \'Users\' THEN '
             . $this->db->concat('users', array('first_name', 'last_name'), '&nbsp;') . ' '
             . "WHEN 'Prospects' THEN "
@@ -224,8 +223,6 @@ class EmailMan extends SugarBean
                 . $this->table_name .'.related_id '
                 . 'and '
                 . $this->table_name .'.related_type =\'Contacts\' '
-            . 'LEFT JOIN accounts ON accounts.id = '
-            . $this->table_name  . '.related_id and '.$this->table_name.'.related_type =\'Accounts\' '
             . 'LEFT JOIN prospects ON prospects.id = '.$this->table_name.'.related_id and '.$this->table_name.'.related_type =\'Prospects\' '
             . 'LEFT JOIN prospect_lists ON prospect_lists.id = '.$this->table_name.'.list_id '
             . 'LEFT JOIN email_addr_bean_rel ON email_addr_bean_rel.bean_id = '.$this->table_name.'.related_id and '.$this->table_name.'.related_type = email_addr_bean_rel.bean_module and email_addr_bean_rel.primary_address = 1 and email_addr_bean_rel.deleted=0 '
@@ -297,7 +294,7 @@ class EmailMan extends SugarBean
 
         $query =
             "SELECT $this->table_name.* , campaigns.name as campaign_name, email_marketing.name as message_name, (CASE related_type WHEN 'Contacts' THEN "
-            . $this->db->concat('contacts', array('first_name', 'last_name'), '&nbsp;') . " WHEN 'Accounts' THEN accounts.name WHEN 'Users' THEN "
+            . $this->db->concat('contacts', array('first_name', 'last_name'), '&nbsp;')
             . $this->db->concat('users', array('first_name', 'last_name'), '&nbsp;') . " WHEN 'Prospects' THEN "
             . $this->db->concat('prospects', array('first_name', 'last_name'), '&nbsp;') . ' '
             . "END) recipient_name";
@@ -306,9 +303,7 @@ class EmailMan extends SugarBean
             ' FROM '. $this->table_name
             . ' '
             . 'LEFT JOIN users ON users.id = '. $this->table_name .'.related_id and '. $this->table_name .'.related_type =\'Users\' '
-            . 'LEFT JOIN contacts ON contacts.id = '. $this->table_name .'.related_id and '. $this->table_name .'.related_type =\'Contacts\' '
-            . 'LEFT JOIN accounts ON accounts.id = '. $this->table_name .'.related_id and '. $this->table_name .'.related_type =\'Accounts\' '
-            . 'LEFT JOIN prospects ON prospects.id = '. $this->table_name .'.related_id and '. $this->table_name .'.related_type =\'Prospects\' '
+            . 'LEFT JOIN contacts ON contacts.id = '. $this->table_name .'.related_id and '. $this->table_name .'.related_type =\'Contacts\' '            . 'LEFT JOIN prospects ON prospects.id = '. $this->table_name .'.related_id and '. $this->table_name .'.related_type =\'Prospects\' '
             . 'LEFT JOIN prospect_lists ON prospect_lists.id = '. $this->table_name .'.list_id '
             . 'LEFT JOIN email_addr_bean_rel ON email_addr_bean_rel.bean_id = '. $this->table_name .'.related_id and '
             . $this->table_name
@@ -349,7 +344,6 @@ class EmailMan extends SugarBean
         $query =
             "SELECT $this->table_name.* ,campaigns.name as campaign_name,email_marketing.name as message_name,(CASE related_type WHEN 'Contacts' THEN "
             . $this->db->concat('contacts', array('first_name', 'last_name'), '&nbsp;')
-            . "WHEN 'Accounts' THEN accounts.name WHEN 'Users' THEN "
             . $this->db->concat('users', array('first_name', 'last_name'), '&nbsp;')
             . "WHEN 'Prospects' THEN "
             . $this->db->concat('prospects', array('first_name', 'last_name'), '&nbsp;')
@@ -357,7 +351,6 @@ class EmailMan extends SugarBean
         $query .= '    FROM '.$this->table_name.' '
             . 'LEFT JOIN users ON users.id = '.$this->table_name.'.related_id and '.$this->table_name.'.related_type =\'Users\' '
             . 'LEFT JOIN contacts ON contacts.id = '.$this->table_name.'.related_id and '.$this->table_name.'.related_type =\'Contacts\' '
-            . 'LEFT JOIN accounts ON accounts.id = '.$this->table_name.'.related_id and '.$this->table_name.'.related_type =\'Accounts\' '
             . 'LEFT JOIN prospects ON prospects.id = '.$this->table_name.'.related_id and '.$this->table_name.'.related_type =\'Prospects\' '
             . 'LEFT JOIN prospect_lists ON prospect_lists.id = '.$this->table_name.'.list_id '
             . 'LEFT JOIN email_addr_bean_rel ON email_addr_bean_rel.bean_id = '
@@ -638,7 +631,6 @@ class EmailMan extends SugarBean
             $this->ref_email->load_relationship('users');
             $this->ref_email->load_relationship('prospects');
             $this->ref_email->load_relationship('contacts');
-            $this->ref_email->load_relationship('accounts');
             $this->ref_email->load_relationship('candidates');
             $this->ref_email->load_relationship('employees');
         }
@@ -659,9 +651,6 @@ class EmailMan extends SugarBean
                     $rel_name = "contacts";
                     break;
 
-                case 'Accounts':
-                    $rel_name = "accounts";
-                    break;
                 case 'Candidates':
                     $rel_name = "candidates";
                     break;
@@ -757,9 +746,7 @@ class EmailMan extends SugarBean
                     $rel_name = "contacts";
                     break;
 
-                case 'Accounts':
-                    $rel_name = "accounts";
-                    break;
+
             }
 
             if (!empty($rel_name)) {
@@ -1483,7 +1470,7 @@ class EmailMan extends SugarBean
 
     /**
      * @global array|Configurator $sugar_config ;
-     * @param \Contact|\Account|\Prospect|\SugarBean $bean
+     * @param \Contact|\Prospect|\SugarBean $bean
      * @return bool true === block email from being sent
      */
     protected function shouldBlockEmail(SugarBean $bean)

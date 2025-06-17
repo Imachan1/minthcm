@@ -83,7 +83,6 @@ class Meeting extends SugarBean {
    public $required;
    public $accept_status;
    public $parent_name;
-   public $account_id;
    public $case_id;
    public $assigned_user_name;
    public $outlook_id;

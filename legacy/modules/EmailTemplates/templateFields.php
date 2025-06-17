@@ -10,7 +10,6 @@ function generateFieldDefsJS2()
 
 
     $badFields = array(
-        'account_description',
         'contact_id',
         'lead_id',
         'campaign_id',

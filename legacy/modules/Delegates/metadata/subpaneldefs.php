@@ -45,18 +45,6 @@ $layout_defs['Delegates'] = array(
 					    'width' => '23%',
 					    'default' => true,
 					  ),
-					  'account_name' => 
-					  array (
-					    'name' => 'account_name',
-					    'module' => 'Accounts',
-					    'target_record_key' => 'account_id',
-					    'target_module' => 'Accounts',
-					    'widget_class' => 'SubPanelDetailViewLink',
-					    'vname' => 'LBL_LIST_ACCOUNT_NAME',
-					    'width' => '22%',
-					    'sortable' => false,
-					    'default' => true,
-					  ),
 					'phone_work' => 
 					  array (
 					    'name' => 'phone_work',
@@ -102,18 +90,6 @@ $layout_defs['Delegates'] = array(
 					    'widget_class' => 'SubPanelDetailViewLink',
 					    'module' => 'Contacts',
 					    'width' => '23%',
-					    'default' => true,
-					  ),
-					  'account_name' => 
-					  array (
-					    'name' => 'account_name',
-					    'module' => 'Accounts',
-					    'target_record_key' => 'account_id',
-					    'target_module' => 'Accounts',
-					    'widget_class' => 'SubPanelDetailViewLink',
-					    'vname' => 'LBL_LIST_ACCOUNT_NAME',
-					    'width' => '22%',
-					    'sortable' => false,
 					    'default' => true,
 					  ),
 					'phone_work' => 

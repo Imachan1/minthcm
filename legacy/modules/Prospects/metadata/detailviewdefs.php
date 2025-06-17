@@ -141,11 +141,7 @@ array(
         ),
         3 =>
         array(
-          0 =>
-          array(
-            'name' => 'account_name',
-          ),
-          1 => 'phone_fax',
+          0 => 'phone_fax',
         ),
         4 =>
         array(

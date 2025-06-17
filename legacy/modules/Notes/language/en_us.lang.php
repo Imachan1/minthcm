@@ -47,8 +47,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 $mod_strings = array(
-    'ERR_DELETE_RECORD' => 'You must specify a record number to delete the account.',
-    'LBL_ACCOUNT_ID' => 'Account ID:',
     'LBL_CASE_ID' => 'Case ID:',
     'LBL_CLOSE' => 'Close:',
     'LBL_CONTACT_ID' => 'Contact ID:',

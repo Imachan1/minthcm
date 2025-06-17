@@ -437,9 +437,6 @@ class AbstractRelationship
             }
         } else {
             switch (strtolower($sourceModule)) {
-                case 'prospects':
-                    $vardef [ 'rname' ] = 'account_name' ;
-                    break ;
                 case 'documents':
                     $vardef [ 'rname' ] = 'document_name' ;
                     break ;

@@ -271,9 +271,6 @@ class Spots extends Basic
         global $mod_strings;
         $labelPrefix = '';
         switch ($type) {
-            case 'getAccountsSpotsData':
-                $labelPrefix = 'LBL_AN_ACCOUNTS_';
-                break;
             case 'getServiceSpotsData':
                 $labelPrefix = 'LBL_AN_SERVICE_';
                 break;

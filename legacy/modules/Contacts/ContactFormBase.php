@@ -617,7 +617,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  
          if ($redirect && isset($_POST['popup']) && $_POST['popup'] == 'true') {
              $urlData = array("query" => true, "first_name" => $focus->first_name, "last_name" => $focus->last_name,
-            "module" => 'Accounts', 'action' => 'Popup');
+            "module" => '', 'action' => 'Popup');
              if (!empty($_POST['return_module'])) {
                  $urlData['module'] = $_POST['return_module'];
              }

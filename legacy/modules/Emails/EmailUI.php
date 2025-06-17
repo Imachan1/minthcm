@@ -755,7 +755,6 @@ HTML;
          "users",
          "contacts",
          "prospects",
-         "accounts"
       );
       $filterPeopleTables = array();
       global $app_list_strings, $app_strings;
@@ -2414,7 +2413,6 @@ eoq;
                 "users",
                 "contacts",
                 "prospects",
-                "accounts"
             );
         } else {
             $peopleTables = array($person);
@@ -2486,8 +2484,7 @@ eoq;
          $searchBeans = array(
             "users",
             "contacts",
-            "prospects",
-            "accounts"
+            "prospects"
          );
       }
 

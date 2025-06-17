@@ -44,9 +44,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-include "metadata/accounts_bugsMetaData.php";
-include "metadata/accounts_casesMetaData.php";
-include "metadata/accounts_contactsMetaData.php";
 include "metadata/calls_contactsMetaData.php";
 include "metadata/calls_usersMetaData.php";
 include "metadata/cases_bugsMetaData.php";
@@ -78,7 +75,6 @@ include 'metadata/workschedules_spenttimeMetaData.php';
 include "metadata/project_bugsMetaData.php";
 include "metadata/project_casesMetaData.php";
 include "metadata/project_productsMetaData.php";
-include "metadata/projects_accountsMetaData.php";
 include "metadata/projects_contactsMetaData.php";
 
 //ACL RELATIONSHIPS
@@ -94,7 +90,6 @@ include "metadata/users_signaturesMetaData.php";
 include "metadata/linked_documentsMetaData.php";
 
 // Documents, so we can start replacing Notes as the primary way to attach something to something else.
-include "metadata/documents_accountsMetaData.php";
 include "metadata/documents_contactsMetaData.php";
 include "metadata/documents_casesMetaData.php";
 include "metadata/documents_bugsMetaData.php";

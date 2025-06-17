@@ -92,9 +92,6 @@ class ImportMapOutlook extends ImportMapOther
                 "E-mail 2 Address"=>"email2",
                 );
             break;
-        case 'Accounts':
-            return $return_array;
-            break;
         default:
             return $return_array;
         }

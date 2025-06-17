@@ -60,7 +60,7 @@ class ext_rest_twitter extends ext_rest
         //Used to enable hover for the formatter
         $this->_enable_in_hover = false;
 
-        $this->allowedModuleList = array('Accounts' => $app_list_strings['moduleList']['Accounts'],
+        $this->allowedModuleList = array(
             'Contacts' => $app_list_strings['moduleList']['Contacts']
         );
     }

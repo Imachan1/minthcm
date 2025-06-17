@@ -228,13 +228,6 @@ $dictionary['Document'] = array('table' => 'documents',
             'vname' => 'LBL_DELEGATIONS',
         ),
         // Links around the world
-        'accounts' => array(
-            'name' => 'accounts',
-            'type' => 'link',
-            'relationship' => 'documents_accounts',
-            'source' => 'non-db',
-            'vname' => 'LBL_ACCOUNTS_SUBPANEL_TITLE',
-        ),
         'contacts' => array(
             'name' => 'contacts',
             'type' => 'link',

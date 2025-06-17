@@ -979,7 +979,7 @@ class Email extends Basic
 
             if (isset($request['parent_type']) && !empty($request['parent_type']) &&
                 isset($request['parent_id']) && !empty($request['parent_id']) &&
-                in_array($request['parent_type'], ['Accounts', 'Cases', 'Contacts', 'Users', 'Prospects'])) {
+                in_array($request['parent_type'], ['Cases', 'Contacts', 'Users', 'Prospects'])) {
                     if (isset($beanList[$request['parent_type']]) && !empty($beanList[$request['parent_type']])) {
                     $className = $beanList[$request['parent_type']];
                     if (isset($beanFiles[$className]) && !empty($beanFiles[$className])) {
@@ -4199,37 +4199,6 @@ eoq;
 						value="  ' . $mod_strings['LBL_BUTTON_CHECK'] . '  "></div>';
 
         return $out;
-    }
-
-    /**
-     * Guesses Primary Parent id from From: email address.  Cascades guesses from Accounts to Contacts to Leads to
-     * Users.  This will not affect the many-to-many relationships already constructed as this is, at best,
-     * informational linking.
-     */
-    public function fillPrimaryParentFields()
-    {
-        if (empty($this->from_addr)) {
-            return;
-        }
-
-        $GLOBALS['log']->debug("*** Email trying to guess Primary Parent from address [ {$this->from_addr} ]");
-
-        $tables = array('accounts');
-        $ret = array();
-        // loop through types to get hits
-        foreach ($tables as $table) {
-            $q = "SELECT name, id FROM {$table} WHERE email1 = '{$this->from_addr}' OR email2 = '{$this->from_addr}' AND deleted = 0";
-            $r = $this->db->query($q);
-            while ($a = $this->db->fetchByAssoc($r)) {
-                if (!empty($a['name']) && !empty($a['id'])) {
-                    $this->parent_type = ucwords($table);
-                    $this->parent_id = $a['id'];
-                    $this->parent_name = $a['name'];
-
-                    return;
-                }
-            }
-        }
     }
 
     /**

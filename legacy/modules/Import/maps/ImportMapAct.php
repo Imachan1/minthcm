@@ -88,7 +88,6 @@ class ImportMapAct extends ImportMapOther
         case 'Contacts':
             return $return_array + array(
                 "Web Site"=>"website",
-                "Company"=>"account_name",
                 "Name Suffix"=>"salutation",
                 "Address 1"=>"primary_address_street",
                 "Address 2"=>"primary_address_street_2",
@@ -112,20 +111,6 @@ class ImportMapAct extends ImportMapOther
                 "Home Zip"=>"alt_address_postalcode",
                 "Home Country"=>"alt_address_country",
                 "Home Phone"=>"phone_home",
-                );
-            break;
-        case 'Accounts':
-            return $return_array + array(
-                "Revenue"=>"annual_revenue",
-                "Number of Employees"=>"employees",
-                "Address 1"=>"billing_address_street",
-                "City"=>"billing_address_city",
-                "State"=>"billing_address_state",
-                "Zip Code"=>"billing_address_postalcode",
-                "Country"=>"billing_address_country",
-                "Phone"=>"phone_office",
-                "Fax Phone"=>"phone_fax",
-                "Ticker Symbol"=>"ticker_symbol",
                 );
             break;
         default:

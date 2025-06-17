@@ -90,7 +90,6 @@ class Call extends SugarBean {
    public $contact_name;
    public $contact_phone;
    public $contact_email;
-   public $account_id;
    public $case_id;
    public $assigned_user_name;
    public $note_id;

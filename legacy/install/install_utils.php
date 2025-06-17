@@ -1324,7 +1324,6 @@ function insert_default_settings() {
     'bugs' => 'bugs',
     'aos_contracts' => 'aos_contracts',
     'jjwg_maps' => 'jjwg_maps',
-    'accounts' => 'accounts',
     'aos_quotes' => 'aos_quotes',
     'aos_product_categories' => 'aos_product_categories',
     'aos_products' => 'aos_products',

@@ -8,7 +8,6 @@ use Api\Core\Loader\CustomLoader;
 return [
     'beanAliases' => function () {
         return CustomLoader::mergeCustomArray([
-            Account::class => 'Accounts',
             ACLAction::class => 'ACLActions',
             ACLRole::class => 'ACLRoles',
             Alert::class => 'Alerts',

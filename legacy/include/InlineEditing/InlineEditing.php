@@ -394,12 +394,6 @@ function getDisplayValue($bean, $field, $method = "save")
 {
     global $log;
 
-    if (file_exists("custom/modules/Accounts/metadata/listviewdefs.php")) {
-        $metadata = require("custom/modules/Accounts/metadata/listviewdefs.php");
-    } else {
-        $metadata = require("modules/Accounts/metadata/listviewdefs.php");
-    }
-
     if (!$bean->ACLAccess('view')) {
         $log->security("getDisplayValue - trying to access unauthorized view/module");
         throw new BadMethodCallException('Unauthorized');

@@ -2,7 +2,6 @@
 
 $enabled_tabs = array();
 $enabled_tabs[] = 'Home';
-$enabled_tabs[] = 'Accounts';
 $enabled_tabs[] = 'Contacts';
 $enabled_tabs[] = 'AOS_Quotes';
 $enabled_tabs[] = 'Calendar';

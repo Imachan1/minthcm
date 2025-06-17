@@ -85,14 +85,8 @@ $mod_strings = array(
 
     'LBL_AN_UNSUPPORTED_DB' => 'Sorry, Suite Spots are currently configured for MySQL and MS SQL only',
 
-    //Analytics labels for accounts pivot
-    'LBL_AN_ACCOUNTS_ACCOUNT_NAME' => 'Name',
-    'LBL_AN_ACCOUNTS_ACCOUNT_TYPE' => 'Account Type',
-    'LBL_AN_ACCOUNTS_ACCOUNT_INDUSTRY' => 'Industry',
-    'LBL_AN_ACCOUNTS_ACCOUNT_BILLING_COUNTRY' => 'Billing Country',
 
     //Analytics labels for sales pivot
-    'LBL_AN_SALES_ACCOUNT_NAME' => 'Account Name',
     'LBL_AN_SALES_ASSIGNED_USER' => 'Assigned User',
     'LBL_AN_SALES_AMOUNT' => 'Amount',
     'LBL_AN_SALES_STAGE' => 'Sales Stage',
@@ -106,7 +100,6 @@ $mod_strings = array(
     'LBL_AN_SALES_CAMPAIGN' => 'Campaign',
 
     //Analytics labels for service pivot
-    'LBL_AN_SERVICE_ACCOUNT_NAME' => 'Account Name',
     'LBL_AN_SERVICE_STATE' => 'State',
     'LBL_AN_SERVICE_STATUS' => 'Status',
     'LBL_AN_SERVICE_PRIORITY' => 'Priority',
@@ -130,7 +123,6 @@ $mod_strings = array(
     'LBL_AN_MARKETING_BUDGET' => 'Budget',
     'LBL_AN_MARKETING_EXPECTED_COST' => 'Expected Cost',
     'LBL_AN_MARKETING_EXPECTED_REVENUE' => 'Expected Revenue',
-    'LBL_AN_MARKETING_ACCOUNT_NAME' => 'Account Name',
 
     //Analytics labels for the marketing activities pivot
     'LBL_AN_MARKETINGACTIVITY_CAMPAIGN_NAME' => 'Campaign Name',
@@ -140,7 +132,6 @@ $mod_strings = array(
     'LBL_AN_MARKETINGACTIVITY_RELATED_ID' => 'Related ID',
 
     //Analytics labels for the quotes pivot
-    'LBL_AN_QUOTES_ACCOUNT_NAME' => 'Account Name',
     'LBL_AN_QUOTES_CONTACT_NAME' => 'Contact Name',
     'LBL_AN_QUOTES_ITEM_NAME' => 'Item Name',
     'LBL_AN_QUOTES_ITEM_TYPE' => 'Item Type',

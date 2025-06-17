@@ -175,13 +175,6 @@ $dictionary['Task'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_USER',
         ),
-        'accounts' => array(
-            'name' => 'accounts',
-            'type' => 'link',
-            'relationship' => 'account_tasks',
-            'source' => 'non-db',
-            'vname' => 'LBL_ACCOUNT',
-        ),
         'cases' => array(
             'name' => 'cases',
             'type' => 'link',

@@ -727,7 +727,6 @@ if ($has_campaign) {
 //$xtpl->assign("CAMPAIGN_POPUP_JS", '<script type="text/javascript" src="include/javascript/sugar_3.js"></script>');
 } else {
     $ss->assign("DROPDOWN", genDropDownJS2());
-    $ss->assign("DEFAULT_MODULE", 'Accounts');
 }
 
 $ss->assign("INSERT_VARIABLE_ONCLICK", "insert_variable(document.wizform.variable_text.value, \"email_template_editor\")");

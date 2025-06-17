@@ -65,7 +65,7 @@ class ext_rest_insideview extends ext_rest
     public function __construct()
     {
         global $app_list_strings;
-        $this->allowedModuleList = array('Accounts' => $app_list_strings['moduleList']['Accounts'],
+        $this->allowedModuleList = array(
                                          'Contacts' => $app_list_strings['moduleList']['Contacts']
                                         );
 

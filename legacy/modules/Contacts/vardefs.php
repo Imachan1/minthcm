@@ -69,41 +69,6 @@ $dictionary['Contact'] = array('table' => 'contacts', 'audited' => true,
                     'len' => '255',
                     'comment' => 'How did the contact come about',
                 ),
-
-            'account_name' =>
-                array(
-                    'name' => 'account_name',
-                    'rname' => 'name',
-                    'id_name' => 'account_id',
-                    'vname' => 'LBL_ACCOUNT_NAME',
-                    'join_name' => 'accounts',
-                    'type' => 'relate',
-                    'link' => 'accounts',
-                    'table' => 'accounts',
-                    'isnull' => 'true',
-                    'module' => 'Accounts',
-                    'dbType' => 'varchar',
-                    'len' => '255',
-                    'source' => 'non-db',
-                    'unified_search' => true,
-                ),
-            'account_id' =>
-                array(
-                    'name' => 'account_id',
-                    'rname' => 'id',
-                    'id_name' => 'account_id',
-                    'vname' => 'LBL_ACCOUNT_ID',
-                    'type' => 'relate',
-                    'table' => 'accounts',
-                    'isnull' => 'true',
-                    'module' => 'Accounts',
-                    'dbType' => 'id',
-                    'reportable' => false,
-                    'source' => 'non-db',
-                    'massupdate' => false,
-                    'duplicate_merge' => 'disabled',
-                    'hideacl' => true,
-                ),
             'reports_to_id' =>
                 array(
                     'name' => 'reports_to_id',
@@ -136,16 +101,6 @@ $dictionary['Contact'] = array('table' => 'contacts', 'audited' => true,
                     'massupdate' => false,
                     'type' => 'date',
                     'comment' => 'The birthdate of the contact'
-                ),
-            'accounts' =>
-                array(
-                    'name' => 'accounts',
-                    'type' => 'link',
-                    'relationship' => 'accounts_contacts',
-                    'link_type' => 'one',
-                    'source' => 'non-db',
-                    'vname' => 'LBL_ACCOUNT',
-                    'duplicate_merge' => 'disabled',
                 ),
             'reports_to_link' =>
                 array(
