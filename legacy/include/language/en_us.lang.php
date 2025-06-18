@@ -2227,6 +2227,7 @@ $app_strings = array(
     'LBL_ESLIST_CONTAIN_WORD' => 'Contains word',
     'LBL_ESLIST_NOT_CONTAIN_WORD' => 'Doesn\'t contain word',
     'LBL_ESLIST_NO_DATA_AVAILABLE' => 'No data available',
+    'LBL_ESLIST_FETCHING_DATA_ERROR' => 'An error occurred while fetching data',
     'LBL_ESLIST_LESS_OR_EQUAL' => 'Less than/Equal',
     'LBL_ESLIST_GREATER_THAN' => 'Greater than',
     'LBL_ESLIST_LESS_THAN' => 'Less than',
