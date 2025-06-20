@@ -7,7 +7,7 @@
                 :key="subpanel.key"
                 bg-color="transparent"
                 :value="subpanel.key"
-                :class="['mint-subpanel', !subpanel.records?.length && 'mint-subpanel-disabled']"
+                :class="['mint-subpanel', subpanel.total <= 0 && 'mint-subpanel-disabled']"
             >
                 <v-expansion-panel-title class="mint-subpanel-title" hide-actions>
                     <div>
@@ -16,9 +16,9 @@
                         />
                         <span>{{ languages.label(subpanel.label, $route.params.module) }}</span>
                         <span
-                            v-if="subpanel.records?.length"
+                            v-if="subpanel.total > 0"
                             class="mint-subpanel-records-count"
-                            v-text="subpanel.records.length"
+                            v-text="subpanel.total"
                         />
                     </div>
                     <MintButton
@@ -58,7 +58,19 @@
                     />
                 </v-expansion-panel-title>
                 <v-expansion-panel-text class="mint-subpanel-content">
-                    <MintDataTable :columns="subpanel.columns" :records="subpanel.records ?? []" />
+                    <MintDataTable
+                        :columns="subpanel.columns"
+                        :records="subpanel.records"
+                        :key="`${subpanel.key}-${subpanel.page}`"
+                    />
+                    <MintDataTablePagination
+                        :records="subpanel.records"
+                        :tableName="subpanel.key"
+                        :page="subpanel.page"
+                        @page-changed="changePage"
+                        :paginateBy="paginateBy"
+                        :total="subpanel.total"
+                    />
                 </v-expansion-panel-text>
             </v-expansion-panel>
         </v-expansion-panels>
@@ -66,17 +78,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useLanguagesStore } from '@/store/languages'
+import { useBackendStore } from '@/store/backend'
 import MintDataTable from '@/components/MintDataTable/MintDataTable.vue'
 import MintButton from '@/components/MintButtons/MintButton.vue'
-import { useBackendStore } from '@/store/backend'
+import MintDataTablePagination from '@/components/MintDataTablePagination/MintDataTablePagination.vue'
 import { useACL } from '@/composables/useACL'
 
 onMounted(() => {
     store.fetchLanguagesForSubpanels()
-    store.fetchSubpanelsData()
+    store.fetchSubpanelsData(paginateBy)
 })
 
 const store = useRecordViewStore()
@@ -84,7 +97,12 @@ const languages = useLanguagesStore()
 const backend = useBackendStore()
 const acl = useACL()
 
+const paginateBy = backend.initData.global.list_max_entries_per_subpanel ? parseInt(backend.initData.global.list_max_entries_per_subpanel, 10) : 10
 const expandedSubpanels = ref<string[]>([])
+
+const changePage = (page: number, tableName: string) => {
+    store.fetchSubpanelRecords(tableName, paginateBy, page)
+}
 </script>
 
 <style scoped lang="scss">
@@ -141,7 +159,7 @@ const expandedSubpanels = ref<string[]>([])
     .mint-subpanel-content {
         :deep(.v-expansion-panel-text__wrapper) {
             padding: 0px;
-            margin-bottom: 48px;
+            margin-bottom: 16px;
         }
     }
 }

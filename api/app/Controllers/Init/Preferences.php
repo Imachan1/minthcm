@@ -105,6 +105,7 @@ class Preferences
                 'onespecial' => $sugar_config['passwordsetting']['onespecial'] ?? false,
             ],
             'name_formats' => (new \Localization())->getUsableLocaleNameOptions($sugar_config['name_formats']),
+            'list_max_entries_per_subpanel' => $sugar_config['list_max_entries_per_subpanel'],
         ];
         if(!$minified || in_array('reload_currency', $rebuild_array) || empty($global_settings['currencies'])){
             $global_settings['currencies'] = $this->getCurrenciesList();

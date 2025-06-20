@@ -1078,7 +1078,7 @@ class ListView
 
 
 
-    public function processUnionBeans($sugarbean, $subpanel_def, $html_var = 'CELL', $countOnly = false)
+    public function processUnionBeans($sugarbean, $subpanel_def, $html_var = 'CELL', $countOnly = false, $page = 1, $records_per_page = null)
     {
         $last_detailview_record = $this->getSessionVariable("detailview", "record");
         if (!empty($last_detailview_record) && $last_detailview_record != $sugarbean->id) {
@@ -1092,7 +1092,14 @@ class ListView
         }
         $this->setSessionVariable("detailview", "record", $sugarbean->id);
 
-        $current_offset = $this->getOffset($html_var);
+        $current_offset = 0;
+        if ($records_per_page) {
+            $rpp = $records_per_page ?? $this->records_per_page;
+            $current_offset = $page * $rpp;
+        } else {
+            $current_offset = $this->getOffset($html_var);
+        }
+        
         $module = isset($_REQUEST['module']) ? $_REQUEST['module'] : '';
         $response = array();
 
@@ -1151,8 +1158,8 @@ class ListView
                     $this->sort_order,
                     $this->query_where,
                     $current_offset,
-                    -1,
-                    $this->records_per_page,
+                    $records_per_page,
+                    $records_per_page,
                     $this->query_limit,
                     $subpanel_def
                 );

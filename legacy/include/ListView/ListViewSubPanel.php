@@ -133,7 +133,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
         }
 
 
-        public function process_dynamic_listview($source_module, $sugarbean, $subpanel_def, $countOnly = false)
+        public function process_dynamic_listview($source_module, $sugarbean, $subpanel_def, $countOnly = false, $subpanel_page = 1, $records_per_page = -1)
         {
             $this->source_module = $source_module;
             $this->subpanel_module = $subpanel_def->name;
@@ -143,7 +143,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
             $html_var = $this->subpanel_module . "_CELL";
 
-            $list_data = $this->processUnionBeans($sugarbean, $subpanel_def, $html_var, $countOnly);
+            $list_data = $this->processUnionBeans($sugarbean, $subpanel_def, $html_var, $countOnly, $subpanel_page, $records_per_page);
             
             if ($countOnly) {
                 return $list_data;
