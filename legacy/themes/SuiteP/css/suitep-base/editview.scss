@@ -4412,6 +4412,14 @@ tr:hover img.info {
   background-color: #fff;
 }
 
+#EditView div.action_buttons .button.primary {
+    background-color: #145D7B;
+}
+  
+#EditView div.action_buttons .button.primary:hover {
+    background-color: rgb(13, 60, 79);
+}
+
 #save_and_continue.button {
   background-color: $danger-btn-bg;
 }
