@@ -8013,6 +8013,7 @@ body::-webkit-scrollbar {
 
 .aor-tab-content {
   background-color: #ffffff;
+  margin-top: 0px !important;
 }
 
 #report-editview-footer {
@@ -15191,11 +15192,11 @@ table.subpanel-table .pagination li.sugar_action_button > form > a {
 }
 .import-vcard #vcard_file {
   margin-top: 10px;
-  margin-buttom: 10px;
+  margin-bottom: 10px;
 }
 .import-vcard .button {
   margin-top: 10px;
-  margin-buttom: 10px;
+  margin-bottom: 10px;
 }
 
 div#searchResults {
@@ -17490,7 +17491,7 @@ table.view {
   text-align: center;
   z-index: 1;
   zoom: 1;
-  background-opacity: 0.6;
+  opacity: 0.6;
 }
 
 #overlay {
@@ -18823,7 +18824,7 @@ select#sales_stage_advanced {
     width: 100%;
   }
   .col-sm-12 .col-sm-8.edit-view-field textarea {
-    width: 45%;
+    width: 120%;
   }
   [field=bool].col-sm-8.edit-view-field {
     height: 32px;
@@ -18901,7 +18902,7 @@ select#sales_stage_advanced {
     width: 100%;
   }
   .col-sm-12 .col-sm-8.edit-view-field textarea {
-    width: 45%;
+    width: 120%;
   }
   [field=bool].col-sm-8.edit-view-field {
     height: 32px;
@@ -19372,6 +19373,14 @@ tr:hover img.info {
 
 #EditView div.action_buttons .button {
   background-color: #fff;
+}
+
+#EditView div.action_buttons .button.primary {
+  background-color: #145D7B;
+}
+
+#EditView div.action_buttons .button.primary:hover {
+  background-color: rgb(13, 60, 79);
 }
 
 #save_and_continue.button {
