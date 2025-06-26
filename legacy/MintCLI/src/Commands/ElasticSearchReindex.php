@@ -15,7 +15,7 @@ include_once 'include/utils.php';
 require_once 'include/entryPoint.php';
 chdir('../');
 
-error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
 
 use SuiteCRM\Search\ElasticSearch\ElasticSearchIndexer;
 use Symfony\Component\Console\Command\Command;
@@ -46,7 +46,7 @@ class ElasticSearchReindex extends Command
             $indexer = new ElasticSearchIndexer();
             $indexer->index();
             chdir('../');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $io->error("There was an error during execution: " . $e . "\n");
             chdir('../');
             return Command::FAILURE;

@@ -157,6 +157,9 @@ class ElasticQuery extends SearchQuery
             {
                 $bean = BeanFactory::newBean($module_to_search);
                 $acl_controller = new LegacyConnector('ACLController');
+                if($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list')){
+                    continue;
+                }
                 if( $bean->bean_implements('ACL') &&  ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list')) ) { 
                   $module_filters = $this->getACLForModule($module_to_search);
                 }

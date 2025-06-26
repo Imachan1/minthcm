@@ -40,6 +40,13 @@ echo "aktualizacja vendor\n"
 cp -r ${tmp_dir}/legacy/vendor/* /var/www/${instance_dir}/legacy/vendor/
 echo "aktualizacja lib\n"
 cp -r ${tmp_dir}/legacy/lib/* /var/www/${instance_dir}/legacy/lib/
+echo "aktualizacja install\n"
+cp -r ${tmp_dir}/legacy/install/* /var/www/${instance_dir}/legacy/install/
+echo "aktualizacja MintCLI\n"
+cp -r ${tmp_dir}/legacy/MintCLI/* /var/www/${instance_dir}/legacy/MintCLI/
+cp ${tmp_dir}/MintCLI /var/www/${instance_dir}/MintCLI
+echo "aktualizacja minthcm_version\n"
+cp -r ${tmp_dir}/legacy/minthcm_version.php /var/www/${instance_dir}/legacy/minthcm_version.php
 echo "aktualizacja frontend\n"
 cp -r ${tmp_dir}/vue/dist/* /var/www/${instance_dir}/
 echo "aktualizacja api\n"
@@ -47,5 +54,7 @@ rsync -ra ${tmp_dir}/api/ /var/www/${instance_dir}/api/ --exclude configs
 
 echo "uprawnienia"
 chown -R www-data:www-data /var/www/${instance_dir}
+chmod 755 MintCLI
+chown root:root MintCLI
 
 rm -rf ${tmp_dir}
