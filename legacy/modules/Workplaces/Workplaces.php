@@ -67,6 +67,7 @@ class Workplaces extends Basic
     public $assigned_user_name;
     public $assigned_user_link;
     public $mode;
+    public $availability;
 
     public function bean_implements($interface)
     {

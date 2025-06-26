@@ -12,18 +12,18 @@ return [
                     'work_start' => false,
                     'training_date' => false,
                     'reason_for_rejection' => false,
-                ]
+                ],
             ],
         ],
         'hired' => [
             'hooks' => [Hook::ALL, Hook::CHANGE],
             'triggerFields' => ['status'],
-            'trigger' => Formula::inArray('$status', ['Acceptance','Hired']),
+            'trigger' => Formula::inArray('$status', ['Acceptance', 'Hired']),
             'logic' => [
                 'visible' => [
                     'work_start' => true,
                     'training_date' => true,
-                ]
+                ],
             ],
         ],
         'rejection' => [
@@ -33,7 +33,7 @@ return [
             'logic' => [
                 'visible' => [
                     'reason_for_rejection' => true,
-                ]
+                ],
             ],
         ],
     ],

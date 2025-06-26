@@ -70,6 +70,7 @@ $dictionary['Note'] = array(
             'comment' => 'Date record created',
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
+            'readonly' => true,
         ],
 
         'date_modified' =>
@@ -80,6 +81,7 @@ $dictionary['Note'] = array(
             'comment' => 'Date record last modified',
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
+            'readonly' => true,
         ],
         'date_indexed' => [
             'name' => 'date_indexed',
@@ -89,6 +91,7 @@ $dictionary['Note'] = array(
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
             'inline_edit' => false,
+            'readonly' => true,
         ],
         'modified_user_id' =>
         [
@@ -103,6 +106,7 @@ $dictionary['Note'] = array(
             'dbType' => 'id',
             'reportable' => true,
             'comment' => 'User who last modified record',
+            'readonly' => true,
         ],
 
         'modified_by_name' =>
@@ -118,6 +122,7 @@ $dictionary['Note'] = array(
             'module' => 'Users',
             'link' => 'modified_user_link',
             'duplicate_merge' => 'disabled',
+            'readonly' => true,
         ],
 
         'created_by' =>
@@ -131,6 +136,7 @@ $dictionary['Note'] = array(
             'isnull' => 'false',
             'dbType' => 'id',
             'comment' => 'User who created record',
+            'readonly' => true,
         ],
 
         'created_by_name' =>
@@ -147,6 +153,7 @@ $dictionary['Note'] = array(
             'module' => 'Users',
             'duplicate_merge' => 'disabled',
             'importable' => 'false',
+            'readonly' => true,
         ],
 
         'name' =>

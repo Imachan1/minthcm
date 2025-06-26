@@ -84,10 +84,20 @@ class MintLogic
                 ],
             ]);
         }
+        $readonlyFields = $this->getReadonlyFieldsFromVardefs();
+        if (!empty($readonlyFields)) {
+            array_unshift($rules, [
+                'hooks' => [Hook::ALL],
+                'trigger' => true,
+                'logic' => [
+                    'readonly' => array_fill_keys($readonlyFields, true),
+                ],
+            ]);
+        }
         return $rules;
     }
 
-    private function getRequiredFieldsFromVardefs()
+    private function getRequiredFieldsFromVardefs(): array
     {
         $requiredFields = [];
         foreach ($this->bean->field_defs as $field => $vardef) {
@@ -96,6 +106,17 @@ class MintLogic
             }
         }
         return $requiredFields;
+    }
+
+    private function getReadonlyFieldsFromVardefs(): array
+    {
+        $readonlyFields = [];
+        foreach ($this->bean->field_defs as $field => $vardef) {
+            if (isset($vardef['readonly']) && $vardef['readonly'] === true) {
+                $readonlyFields[] = $field;
+            }
+        }
+        return $readonlyFields;
     }
 
     private function calculateLogic($rule)

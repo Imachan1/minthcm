@@ -14,26 +14,18 @@ $viewdefs['Candidatures'] = [
                     ], 
                 ],
                 'actions' => [
+                    'Audit',
+                    'Delete'
                     // [
                     //     'title' => 'LBL_DUPLICATE_BUTTON',
                     //     'icon' => 'mdi-content-copy',
                     //     'url' => ''
                     // ],
-                    [
-                        'title' => 'LBL_DELETE_BUTTON',
-                        'icon' => 'mdi-trash-can-outline',
-                        'click' => 'deleteBean',
-                    ],
                     // [
                     //     'title' => 'LBL_DUP_MERGE',
                     //     'icon' => 'mdi-magnify',
                     //     'url' => ''
                     // ],
-                    [
-                        'title' => 'LNK_VIEW_CHANGE_LOG',
-                        'icon' => 'mdi-history',
-                        'click' => 'showBeanChangeLog',
-                    ],
                 ],
             ],
         ],
@@ -63,7 +55,13 @@ $viewdefs['Candidatures'] = [
                         'entry_interview',
                     ],
                     [
-                        'source',
+                        [
+                            'name' => 'source',
+                            'type' => 'enum',
+                            'component' => 'enum.edit.vue',
+                        ],
+
+                       
                         'task_grade',
                         'scoring',
                     ],
