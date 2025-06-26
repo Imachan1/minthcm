@@ -25,6 +25,11 @@ export interface Bean {
     dirtyFields: Set<string>
 }
 
+interface RouteParams {
+    module: string
+    id: string
+}
+
 export const useRecordViewStore = defineStore('recordview', () => {
     const route = useRoute()
 
@@ -177,6 +182,18 @@ export const useRecordViewStore = defineStore('recordview', () => {
         }, {} as SubpanelsData)
     }
 
+    async function fetchSubpanelData(routeParams: RouteParams, subpanelKey: string) {
+        const result = await axios.get(`api/${routeParams.module}/subpanel/${subpanelKey}/${routeParams.id}`, {
+            validateStatus: () => true,
+        })
+        if (result.data) {
+            subpanelsData.value = {
+                ...subpanelsData.value,
+                [subpanelKey]: result.data,
+            }
+        }
+    }
+
     interface SubpanelsData {
         [key: string]: {
             [id: string]: {
@@ -216,6 +233,7 @@ export const useRecordViewStore = defineStore('recordview', () => {
         panels,
         subpanels,
         fetchSubpanelsData,
+        fetchSubpanelData,
         fetchLanguagesForSubpanels,
         columns,
         updateField,
