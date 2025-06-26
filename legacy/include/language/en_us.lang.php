@@ -4610,6 +4610,7 @@ $app_strings['LBL_MINT4_COMMENTS_ACTION_UNPIN'] = 'Unpin';
 $app_strings['LBL_MINT4_COMMENTS_USERS_HINT_NOT_FOUND'] = 'No users found';
 $app_strings['LBL_MINT4_COMMENTS_NO_COMMENTS'] = 'There are no comments';
 
+$app_strings['LBL_MINT4_BEAN_DELETE_CONFIRM'] = 'Are you sure you want to delete this record?';
 $app_strings['LBL_MINT4_MASS_DELETE_CONFIRM'] = 'Are you sure you want to delete selected items?';
 $app_strings['LBL_MINT4_MASS_DELETE_ERROR'] = 'Failed to delete selected items';
 
