@@ -58,11 +58,11 @@ class Range extends ElasticOperator
     public function __construct(array $data)
     {
         parent::__construct($data);
-        $this->format = $data['format'] ?? false;
+        $this->format = $this->data['format'] ?? false;
         $this->operators = array();
         foreach ($this::SIGNS as $sign) {
-            if (!empty($data[$sign])) {
-                $this->operators[$sign] = $data[$sign];
+            if (!empty($this->data[$sign])) {
+                $this->operators[$sign] = $this->data[$sign];
             }
         }
     }

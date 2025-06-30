@@ -72,4 +72,28 @@ abstract class ApiTest extends TestCase
         }
         return $data;
     }
+
+    public function assertArrayIsSortedAscending($array = [], $msg = "Array is not sorted in ascending order.")
+    {
+        if (empty($array)) {
+            $this->markTestSkipped("Array is empty, cannot test sorting.");
+        }
+
+        $sorted = $array;
+        sort($sorted);
+
+        $this->assertSame($sorted, $array, $msg);
+    }
+
+    public function assertArrayIsSortedDescending($array = [], $msg = "Array is not sorted in descending order.")
+    {
+        if (empty($array)) {
+            $this->markTestSkipped("Array is empty, cannot test sorting.");
+        }
+
+        $sorted = $array;
+        rsort($sorted);
+
+        $this->assertSame($sorted, $array, $msg);
+    }
 }

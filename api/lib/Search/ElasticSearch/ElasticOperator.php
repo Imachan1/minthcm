@@ -54,18 +54,19 @@ use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 #[\AllowDynamicProperties]
 abstract class ElasticOperator
 {
-    protected $field, $value, $not, $boost;
+    protected $field, $value, $not, $boost, $data;
 
     public function __construct(array $data)
     {
         $list_config = ConstantsLoader::getConstants('list_constants');
-        $this->field = $data['field'] ?? null;
+        $field_name = array_key_first($data);
+        $this->field = $field_name ?? null;
+        $this->data = $data[$field_name] ?? null;
         if (isset($list_config['fields_mappigs'][$this->field])) {
             $this->field = $list_config['fields_mappigs'][$this->field];
         }
-        $this->value = $data['value'] ?? null;
-        $this->not = $data['not'] ?? false;
-        $this->boost = $data['boost'] ?? 1.0;
+        $this->not = $this->data['not'] ?? false;
+        $this->boost = $this->data['boost'] ?? 1.0;
     }
 
     public function getData(ModulePrefixer $prefixer)

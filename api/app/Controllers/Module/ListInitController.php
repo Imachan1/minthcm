@@ -52,6 +52,7 @@ use Slim\Exception\HttpNotFoundException;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
 use MintHCM\Utils\ConstantsLoader;
+use MintHCM\Data\MassActions\Actions as MassActions;
 
 class ListInitController
 {
@@ -59,7 +60,11 @@ class ListInitController
         '../legacy/custom/modules/{module}/metadata/eslistviewdefs.php',
         '../legacy/modules/{module}/metadata/eslistviewdefs.php',
     );
-
+    const DEFAULT_MASS_ACTIONS = [
+        MassActions\Delete::class,
+        MassActions\Export::class,
+        MassActions\Merge::class,
+    ];
     private $request;
     private $module, $metadata, $bean;
 
@@ -112,7 +117,10 @@ class ListInitController
     {
         global $current_user;
         chdir('../legacy/');
-        $preferences = (new \UserPreference($current_user))->getPreference($this->bean->module_name, 'eslist');
+        $preferences = (new \UserPreference($current_user))->getPreference($this->module, 'eslist');
+        if(!$preferences) {
+            $preferences = [];
+        }
         chdir('../api/');
         return $preferences;
     }
@@ -129,8 +137,22 @@ class ListInitController
                 $theme[$property][$object] = $variables[$property][$value];
             }
         }
-
         $config = $list_config['config'];
+        if (isset($this->metadata['actions'])) {
+            $config['actions'] = $this->metadata['actions'];
+        }
+        $mass_actions = [];
+        if (isset($this->metadata['massActions'])) {
+            $mass_actions = $this->metadata['massActions'];
+        } else {
+            $mass_actions = self::DEFAULT_MASS_ACTIONS;
+        }
+        foreach ($mass_actions as $action) {
+            $mass_action = new $action($this->module, []);
+            if ($mass_action->hasAccess()) {
+                $config['massActions'][] = $mass_action->getFrontendData();
+            }
+        }
         $config['defaultMaxItemsPerPage'] = $sugar_config['list_max_entries_per_page'] ?? $list_config['config']['defaultMaxItemsPerPage'];
         foreach ($config['itemsPerPageOptions'] as $key => $amount) {
             if ($amount > $config['defaultMaxItemsPerPage']) {
@@ -148,8 +170,52 @@ class ListInitController
     {
         return [
             'columns' => $this->prepareDefsType("columns"),
-            'search' => $this->prepareDefsType("search"),
+            'search' => $this->prepareSearchDefs(),
         ];
+    }
+
+    protected function prepareSearchDefs(){
+        
+        global $mod_strings, $app_strings, $current_language;
+        $mod_strings = return_module_language($current_language, $this->module);
+        $search = $this->metadata["search"];
+        if (empty($search)) {
+            return false;
+        }
+        $search = array_change_key_case($search, CASE_LOWER);
+        foreach ($search as $field => $defs) {
+            if (empty($this->bean->field_name_map[$field])) {
+                $GLOBALS['log']->fatal('[ESListView] prepareSearchDefs: brak definicji pola ' . $field);
+                unset($search[$field]);
+                continue;
+            }
+            $field_defs = $this->bean->field_name_map[$field];
+            if (
+                !empty($field_defs['has_access']['function'])
+                && function_exists($field_defs['has_access']['function'])
+                && !$field_defs['has_access']['function']()
+            ) {
+                unset($search[$field]);
+                continue;
+            }
+            $search[$field] = array_merge($field_defs, $search[$field]);
+            $search[$field]['name'] = $defs['name'] ?? $field;
+            $search_field_name = $field_defs['id_name'] ?? $field;
+            $search[$field]['key'] = $defs['key'] ?? $this->eslistmap[$search_field_name] ?? $search_field_name;
+            $search[$field]['type'] = $defs['type'] ?? $field_defs['type'];
+            if (!empty($search[$field]['type'])) {
+                if (in_array($search[$field]['type'], ['multienum', 'enum', 'ColoredEnum'])) {
+                    $search[$field]['key'] .= '.keyword';
+                } else if ('relate' === $search[$field]['type']) {
+                    $field_id = $field_defs['id_name'];
+                    $search[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field_id] ?? $field_id;
+                }
+            }
+            $search[$field]['options'] = $this->getParsedOptions($field_defs);
+            $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
+            $search[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
+        }
+        return $search;
     }
 
     function prepareDefsType($type)
@@ -191,5 +257,20 @@ class ListInitController
         }
         return $label;
     }
+    protected function getParsedOptions($field_defs)
+    {
+        if (isset($field_defs['options']) && is_string($field_defs['options'])) {
+            return $field_defs['options'];
+        }
+        if (empty($field_defs['function'])) {
+            return null;
+        }
+        if (!empty($field_defs['function']['include']) && file_exists($field_defs['function']['include'])) {
+            require_once $field_defs['function']['include'];
+        }
+        $function = $field_defs['function']['name'] ?? $field_defs['function'];
+        $additional_params = $field_defs['function']['additional_params'] ?? null;
 
+        return call_user_func($function, null, null, null, 'eslist', $additional_params);
+    }
 }

@@ -48,6 +48,7 @@ namespace MintHCM\Lib\Search\Base;
 
 use Doctrine\DBAL\Connection;
 use MintHCM\Data\BeanFactory;
+use MintHCM\Data\MintBean;
 use MintHCM\Utils\LegacyConnector;
 
 #[\AllowDynamicProperties]
@@ -55,7 +56,7 @@ abstract class SearchResult
 {
     protected $result, $grouped_ids, $beans, $hits;
 
-    protected $handle_acl,$indice_module_map;
+    protected $handle_acl,$indice_module_map, $add_acl_info = true;
 
     protected $size, $current_offset, $total;
 
@@ -106,14 +107,11 @@ abstract class SearchResult
             $columns = $bean->column_fields;
             $row = [];
             foreach ($columns as $column) {
-                if ($bean->$column instanceof Link2) {
-                    $id_key = strtolower($bean->$column->getSide()) . "_key";
-                    $id_name = $bean->$column->relationship->def[$id_key];
-                    $id = $bean->{$id_name};
-                    if (!empty($id) && 'id' !== $id_name) {
-                        $row[$column] = "/" . $bean->$column->getRelatedModuleName() . "/DetailView/" . $id;
-                        continue;
-                    }
+                if ($bean->field_defs[$column]['type'] == 'relate' && isset($bean->field_defs[$column]['link']) && isset($bean->field_defs[$column]['id_name']) && $bean->field_defs[$column]['id_name']) {
+                    $relId = $this->getRelatedId($bean, $bean->field_defs[$column]['id_name'], $bean->field_defs[$column]['link']);
+                    $row[$bean->field_defs[$column]['name'] . "_link"] = $this->getHrefLink($bean->field_defs[$column]['module'], $relId, 'DetailView');
+                } elseif($column == 'name'){
+                    $row[$column . "_link"] = $this->getHrefLink($bean->module_name, $bean->id, 'DetailView');
                 }
                 $row[$column] = $bean->$column;
             }
@@ -242,5 +240,36 @@ abstract class SearchResult
         }
 
         $this->grouped_ids = $new_grouped;
+    }
+
+    protected function getHrefLink($module, $id, $action)
+    {
+        $link = "index.php?module=" . $module . "&action=".$action."&record=" . $id;
+        return $link;
+    }
+
+    protected function getRelatedId(MintBean $obj, string $idName, string $link): ?string
+    {
+        $relField = $idName;
+        if (isset($obj->$link)) {
+            $relId = $obj->$link->getFocus()->$relField;
+            if (is_object($relId)) {
+                if (method_exists($relId, "getFocus")) {
+                    $relId = $relId->getFocus()->id;
+                } else {
+                    $relId = null;
+                }
+            }
+        } elseif (isset($obj->$relField)) {
+            $relId = $obj->$relField;
+        } else {
+            $relId = null;
+            \LoggerManager::getLogger()->warn('Unresolved related ID for field: ' . $relField);
+        }
+
+        if (!$relId) {
+            $relId = '';
+        }
+        return (is_object($relId))?$obj->id:$relId; //MintHCM team #60792
     }
 }

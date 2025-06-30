@@ -343,7 +343,7 @@ class ElasticSearchIndexer extends AbstractIndexer
         $this->fillAllNestedPropertyValues($bean, $args['body']);
 
         $this->removeErrorProneFields($bean->module_name, $args['body']);
-        $this->fixUpIndicesParams($args['body'][1], $this->getDefaultMapParams($bean->module_name));
+        $this->fixUpIndicesParams($args['body'], $this->getDefaultMapParams($bean->module_name));
         $this->client->index($args);
         $this->setBeanInstantIndexingDate($bean);
     }

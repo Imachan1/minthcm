@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,41 +44,32 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-/*
- * Created on May 14, 2007
- *
- * To change the template for this generated file go to
- * Window - Preferences - PHPeclipse - PHP - Code Templates
- */
- //format '<action_name>' => '<view_name>'
-$action_view_map['multieditview']= 'multiedit';
-$action_view_map['detailview']= 'detail';
-$action_view_map['editview']= 'edit';
-$action_view_map['listview']= 'list';
-$action_view_map['popup']= 'popup';
-$action_view_map['vcard']= 'vcard';
-$action_view_map['importvcard']= 'importvcard';
-$action_view_map['importvcardsave']= 'importvcardsave';
-$action_view_map['modulelistmenu']= 'modulelistmenu';
-$action_view_map['favorites']= 'favorites';
-$action_view_map['ajaxui']= 'ajaxui';
-$action_view_map['noaccess']= 'noaccess';
+namespace MintHCM\Lib\Search\ElasticSearch\Operators;
 
-// SugarPDF
-$action_view_map['sugarpdf']= 'sugarpdf';
-$action_view_map['dc'] = 'dc';
-$action_view_map['dcajax'] = 'dcajax';
-$action_view_map['quick'] = 'quick';
-$action_view_map['quickcreate'] = 'quickcreate';
-$action_view_map['spot'] = 'spot';
-$action_view_map['gs'] = 'gs';
-$action_view_map['inlinefield'] = 'inlinefield';
-$action_view_map['inlinefieldsave'] = 'inlinefieldsave';
-$action_view_map['pluginlist'] = 'plugins';
-$action_view_map['downloadplugin'] = 'downloadplugin';
-$action_view_map['metadata'] = 'metadata';
+use MintHCM\Lib\Search\ElasticSearch\ElasticOperator;
+use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 
-$action_view_map['cubes'] = 'cubes';
-$action_view_map['debug'] = 'debug';
+class QueryString extends ElasticOperator
+{
 
-$action_view_map['kanban']= 'kanban';
+    public function __construct(array $data)
+    {
+        parent::__construct($data);
+        $this->value = $this->data ?? '';
+    }
+
+    protected function getDataArray(ModulePrefixer $prefixer): array
+    {
+        return array(
+            'query_string' => array(
+                    "query" => $this->value.'*',
+                    "fields" => array("*__last^5", "*__first^4", "*__name.*^3", "*"),
+            ),
+        );
+    }
+
+    protected function validateData(): bool
+    {
+        return !empty($this->value);
+    }
+}
