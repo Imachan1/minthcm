@@ -1,5 +1,5 @@
 <?php
-
+// TODO CR: tego pliku już nie ma na developie i branchu release. A więc będzie do usunięcia
 use SuiteCRM\Search\SearchQuery;
 use SuiteCRM\Search\SearchWrapper;
 
@@ -128,6 +128,9 @@ class ESListViewGetRecords {
         $columns = $this->getReturnedColumnNames();
 
         $row = [];
+        if(empty($columns['name']) && !empty($item->name_link)) {
+            $columns[] = 'name';
+        }
         foreach ($columns as $column) {
             $row[$column] = $item->$column;
             if (isset($item->{$column . "_link"})) {
