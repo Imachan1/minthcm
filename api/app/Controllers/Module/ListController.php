@@ -54,12 +54,13 @@ use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpInternalServerErrorException;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
+use UserPreference;
 
 class ListController
 {
     private $request, $params, $search_result, $list_response;
 
-    public function __invoke(Request $request, Response $response, array $args): Response
+    public function getListData(Request $request, Response $response, array $args): Response
     {
         $this->request = $request;
         $response = $response->withHeader('Content-type', 'application/json');
@@ -72,12 +73,34 @@ class ListController
         return $response;
     }
 
+    public function savePreferences(Request $request, Response $response, array $args): Response
+    {
+        $this->request = $request;
+        $response = $response->withHeader('Content-type', 'application/json');
+
+        global $current_user;
+        $routeContext = RouteContext::fromRequest($request);
+        $route = $routeContext->getRoute();
+        preg_match('/(?<=\/)([^\/]+)/m', $route->getPattern(), $matches);
+        $module = $matches[0];
+        $preferences = $request->getAttribute('preferences');
+        global $beanList;
+        if (!isset($beanList[$module]) || empty($beanList[$module])) {
+            throw new HttpBadRequestException($request, "Module not found");
+        }
+        if (!empty($preferences) && is_array($preferences) && !empty($module)) {
+            (new UserPreference($current_user))->setPreference($module, $preferences, 'eslist');
+        }
+        $response->getBody()->write(json_encode(true));
+        return $response;
+    }
+
     private function getData()
     {
         return array(
             'total' => $this->search_result->getTotal(),
-            'next_page_exists' => $this->search_result->getNextPageExists(),
-            'offset' => $this->search_result->getNextOffset(),
+            'module' => $this->params['type'],
+            'offset' => $this->search_result->getCurrentOffset(),
             'results' => $this->search_result->getBeansAsJsonArray(),
         );
     }
@@ -85,34 +108,55 @@ class ListController
     private function setParams(Request $request)
     {
         global $mint_config;
-
-        $size = $request->getAttribute('items') ?? ($mint_config['search']['default_page_size'] ?? 25);
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
 
         $params = array();
+        $params['filters'] = ["bool" => []];
         $params['search'] = 'list';
-        $params['items'] = $size;
-        $params['from'] = $request->getAttribute('offset') ?? -1;
+        $params['items'] = $request->getAttribute('items') ?? ($mint_config['search']['default_page_size'] ?? 25);
+        $params['from'] = $request->getAttribute('page') && $request->getAttribute('page') > 0 ? ($request->getAttribute('page') - 1) * $params['items'] : -1;
         $params['sort_by'] = $request->getAttribute('sortBy') ?? null;
         $params['sort_order'] = $request->getAttribute('sortOrder') ?? 'asc';
-        $params['filters'] = $request->getAttribute('filters') ?? array();
         $params['type'] = str_replace('/', '', $route->getPattern());
+        $params['filters'] = $this->getParsedFilters($request);
+        $params["fields"] = array("*__last^5", "*__first^4", "*__name.*^3", "*");
         $this->params = $params;
     }
+    protected function getParsedFilters(Request $request)
+    {
+        $filters = ['filter' => [], 'must_not' => []];
+        $searchPhrase = $request->getAttribute('searchPhrase');
+        if (strlen($searchPhrase)) {
+            $searchPhrase = strtolower(str_replace('+', '', $searchPhrase));
+            $filters['filter'][] = [
+                'query_string' => [
+                    'value' => $searchPhrase
+                ]
+            ];
+        }
+        $filters_attribute = $request->getAttribute('filters') ?? [];
+        if (!empty($filters_attribute)) {
+            $filters['filter'] = array_merge($filters['filter'], $filters_attribute['filter'] ?? []);
+            $filters['must_not'] = array_merge($filters['must_not'], $filters_attribute['must_not'] ?? []);
+        }
 
+        if ($request->getAttribute('myObjects') === true) {
+            global $current_user;
+            $filters['filter'][] = ['term' => ['meta.assigned.user_id.keyword' => $current_user->id]];
+        }
+        return $filters;
+    }
     private function runElasticSearch()
     {
         try {
             $search_manager = Search::getManager();
             $search_manager->setQuery($this->params);
             $this->search_result = $search_manager->search(true);
-
-        } catch (BadRequest400Exception) {
-            throw new HttpBadRequestException($this->request);
-        } catch (InvalidArgumentException) {
-            throw new HttpInternalServerErrorException($this->request);
+        } catch (BadRequest400Exception $e) {
+            throw new HttpBadRequestException($this->request, $e->getMessage());
+        } catch (InvalidArgumentException $e) {
+            throw new HttpInternalServerErrorException($this->request, $e->getMessage());
         }
     }
-
 }

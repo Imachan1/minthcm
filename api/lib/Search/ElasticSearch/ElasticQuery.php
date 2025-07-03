@@ -60,7 +60,7 @@ class ElasticQuery extends SearchQuery
 {
     const DEFAULT_SORT_FIELD = "_score";
     const DEFAULT_SORT_ORDER = "asc";
-    const SORT_KEYWORD = "_keyword";
+    const SORT_KEYWORD = ".keyword";
 
     const DEFAULT_TYPE = null;
 
