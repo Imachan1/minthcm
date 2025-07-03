@@ -1,8 +1,6 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
 import { useUrlStore } from '@/store/url'
-import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
 import { FilterRow } from './ListViewFilterRow.vue'
 import { getAllTypesMatchingTo } from './operators'
@@ -10,6 +8,7 @@ import { useRouter } from 'vue-router'
 import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import MassActions from '@/business/MassActions'
+import { modulesApi } from '@/api/modules.api'
 
 interface Preferences {
     columns: string[]
@@ -65,12 +64,9 @@ export const useListViewStore = defineStore('listview', () => {
     async function init() {
         requestCount = 0
         initialLoading.value = true
-        const result = await axios.post(getListActionUrl(), {
-            module: module.value,
-            function_name: 'getInitialData',
-        })
+        const result = await modulesApi.getListInit(getModule())
         if(module.value === result.data.module){
-            activeFilter.value = result.data?.preferences?.activeFilter
+            activeFilter.value = result.data?.preferences?.activeFilter ?? []
             initialLoading.value = false
             config.value = result.data?.config
             defs.value = result.data?.defs
@@ -91,22 +87,18 @@ export const useListViewStore = defineStore('listview', () => {
     async function getData() {
         requestCount++
         isLoading.value = requestCount > 0
-        const result = await axios.post(getListActionUrl(), {
-            module: module.value,
-            function_name: 'getResults',
-            page: options.value.page,
-            itemsPerPage: options.value.itemsPerPage === -1 ? 100 : options.value.itemsPerPage,
-            myObjects: myObjects.value,
-            searchPhrase: searchPhrase.value,
-            filters: filters.value,
-            offset: pageOffsetMap.value[options.value.page - 1],
-            sortBy: defs.value?.columns[options.value.sortBy[0]?.key]?.key,
-            sortOrder: options.value.sortBy[0]?.order ?? 'asc',
-            activeFilter: activeFilter.value,
-            filterRows: preferences.value?.filterRows ?? [],
-            isInit: isInit.value,
-        })
-        requestCount--;
+
+        const result = await modulesApi.getListData(
+            getModule(),
+            options,
+            myObjects,
+            searchPhrase,
+            filters,
+            defs,
+            activeFilter,
+            pageOffsetMap,
+        )
+        requestCount--
         if(module.value === result.data.module && requestCount <= 0){
             requestCount = 0;
             isLoading.value = false;
@@ -120,11 +112,7 @@ export const useListViewStore = defineStore('listview', () => {
     }
 
     async function savePreferences() {
-        const response = await axios.post(getListActionUrl(), {
-            module: module.value,
-            preferences: preferences.value,
-            function_name: 'savePreferences',
-        })
+        await modulesApi.saveListPreferences(getModule(), preferences.value)
     }
 
     function getListActionUrl(){
@@ -362,6 +350,10 @@ export const useListViewStore = defineStore('listview', () => {
                 relatePopup.value.data.popupMode !== 'single')
         )
     })
+
+    function getModule(){
+        return Array.isArray(module.value) ? module.value[0] : module.value
+    }
 
     return {
         mode,

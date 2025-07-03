@@ -57,10 +57,11 @@ class MatchOperator extends ElasticOperator
     public function __construct(array $data)
     {
         parent::__construct($data);
-        $this->operator = $data['operator'] ?? 'and';
+        $this->operator = $this->data['operator'] ?? 'and';
         if (empty($this->field)) {
             $this->field = "*";
         }
+        $this->value = $this->data['query'];
     }
 
     protected function getDataArray(ModulePrefixer $prefixer): array
