@@ -6510,26 +6510,6 @@ function getArrayKeys(array $array)
     return $keys;
 }
 
-/**
- * Returns the key from the array that contains the given key.
- *
- * @param string $key
- * @param array $array
- */
-function getSimilarIndiceKey(string $key, array $array)
-{
-    $evaluated_keys = [];
-    $array_keys = getArrayKeys($array);
-
-    foreach ($array_keys as $array_key) {
-        if (preg_match("/$key$/", $array_key)) {
-            similar_text($key, $array_key, $percent);
-            $evaluated_keys[$array_key] = $percent;
-        }
-    }
-
-    return empty($evaluated_keys) ? $key : array_keys($evaluated_keys, max($evaluated_keys))[0];
-}
 
 /**
  * Get currency ID directly from the record, if property is empty -> use default currency ID
@@ -6571,53 +6551,6 @@ function updateMintRebuildFile($extra_data = null, $return_value = false)
     if($return_value){
         return $rebuild_id;
     }
-}
-
-function fixupView($view)
-{
-    $view = strtolower($view);
-    switch ($view) {
-        case 'list':
-        case 'index':
-        case 'listview':
-            return "list";
-        case 'edit':
-        case 'save':
-        case 'popupeditview':
-        case 'editview':
-            return "edit";
-        case 'view':
-        case 'detail':
-        case 'detailview':
-            return "view";
-        case 'delete':
-            return "delete";
-        case 'export':
-            return "export";
-        case 'import':
-            return "import";
-    }
-    return $view;
-}
-
-/**
- * Returns all keys in given array
- *
- * @param array $array
- */
-function getArrayKeys(array $array)
-{
-    $keys = array();
-
-    foreach ($array as $key => $value) {
-        $keys[] = $key;
-
-        if (is_array($value)) {
-            $keys = array_unique(array_merge($keys, getArrayKeys($value)));
-        }
-    }
-
-    return $keys;
 }
 
 /**
