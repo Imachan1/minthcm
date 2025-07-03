@@ -60,7 +60,7 @@ class ElasticQuery extends SearchQuery
 {
     const DEFAULT_SORT_FIELD = "_score";
     const DEFAULT_SORT_ORDER = "asc";
-    const SORT_KEYWORD = "_keyword";
+    const SORT_KEYWORD = ".keyword";
 
     const DEFAULT_TYPE = null;
 
@@ -96,7 +96,7 @@ class ElasticQuery extends SearchQuery
         } else if (static::DEFAULT_SORT_FIELD !== $field) {
             $field .= self::SORT_KEYWORD;
         }
-        $modifier = new ModulePrefixer($this->params['type'] ?? null);
+        $modifier = new ModulePrefixer($this->params['type'] ?? '');
         $field = $modifier->modify($field);
         $this->sort = array(
             $field => array(
@@ -319,5 +319,16 @@ class ElasticQuery extends SearchQuery
     public static function getIndexPrefix():string
     {
         return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
+    }
+    protected function getDefaultMapParams($module)
+    {
+        if (empty($this->map_config)) {
+            $file = realpath(__DIR__ . '/../../../../legacy/lib/Search/ElasticSearch/defaultParams.yml');
+
+            $parse = new YamlParser();
+            $this->map_config = $parse->parseFile($file);
+}
+
+        return ['mappings' => $this->map_config['mappings'][$module]];
     }
 }

@@ -79,7 +79,6 @@ abstract class SearchQuery
         global $mint_config;
 
         $this->size = $this->params['items'] ?? ($mint_config['search']['default_page_size'] ?? 25);
-        $this->size += 1; //Add one more to check exists next page
     }
 
     protected function setFrom()

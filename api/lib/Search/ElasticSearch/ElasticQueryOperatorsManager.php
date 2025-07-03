@@ -52,18 +52,31 @@ use MintHCM\Lib\Search\ElasticSearch\Operators\Exists;
 use MintHCM\Lib\Search\ElasticSearch\Operators\MatchOperator;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Range;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Wildcard;
+use MintHCM\Lib\Search\ElasticSearch\Operators\QueryString;
+use MintHCM\Lib\Search\ElasticSearch\Operators\Terms;
+use MintHCM\Lib\Search\ElasticSearch\Operators\Term;
 use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 
 #[\AllowDynamicProperties]
 class ElasticQueryOperatorsManager
 {
-    const OPERATORS_MAPPER = array(
+    const BOOLEAN_CLAUSES = [
+        'filter',
+        'must_not',
+        'should',
+        'must',
+    ];
+
+    const OPERATORS_MAPPER = [
         'equals' => Equals::class,
         'exists' => Exists::class,
         'match' => MatchOperator::class,
         'range' => Range::class,
         'wildcard' => Wildcard::class,
-    );
+        'query_string' => QueryString::class,
+        'terms' => Terms::class,
+        'term' => Term::class,
+    ];
 
     protected $query, $filters, $module;
 
@@ -81,21 +94,31 @@ class ElasticQueryOperatorsManager
 
     protected function setQuery()
     {
-        $this->query = array(
-            'bool' => array(
-                'filter' => array(),
-                'must_not' => array(),
-            ),
-        );
+        $query = [];
+        foreach (self::BOOLEAN_CLAUSES as $clause) {
+            if (isset($this->filters[$clause]) && is_array($this->filters[$clause])) {
+                foreach ($this->filters[$clause] as $filter) {
+                    foreach ($filter as $filter_type => $filter_data) {
 
-        foreach ($this->filters as $filter) {
-            if (empty($filter['type']) || !in_array($filter['type'], array_keys($this::OPERATORS_MAPPER))) {
+                        if (empty($filter_type) || !in_array($filter_type, array_keys($this::OPERATORS_MAPPER))) {
                 throw new BadRequest400Exception();
             }
-            $class = $this::OPERATORS_MAPPER[$filter['type']];
-            $operator = new $class($filter);
-            $data = $operator->getData(new ModulePrefixer($this->module));
-            $this->query['bool'][$operator->getArrayKey()][] = $data;
+                        $class = $this::OPERATORS_MAPPER[$filter_type];
+                        $operator = new $class($filter_data);
+                        $data = $operator->getData(new ModulePrefixer($this->module));
+                        $query[$clause][] = $data;
+        }
+    }
+}
+        }
+        if (empty($query)) {
+            $this->query = [
+                'bool' => [ 'must' => [] ],
+            ];
+        } else {
+            $this->query = [
+                'bool' => $query,
+            ];
         }
     }
 }

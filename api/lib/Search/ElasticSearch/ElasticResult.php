@@ -69,6 +69,10 @@ class ElasticResult extends SearchResult
     {
         return $this->next_offset;
     }
+    public function getCurrentOffset()
+    {
+        return $this->current_offset;
+    }
 
     public function getNextPageExists()
     {
