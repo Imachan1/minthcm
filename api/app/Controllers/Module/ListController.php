@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -46,6 +45,7 @@
 
 namespace MintHCM\Api\Controllers\Module;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
 use MintHCM\Lib\Search\Search;
@@ -60,7 +60,20 @@ use UserPreference;
 class ListController
 {
     private $request, $params, $search_result, $list_response;
+    protected $entityManager;
 
+    const DEFAULT_SORT_BY = '_score';
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+
+        // Workaround for api/lib/Search/Base/SearchResult.php
+        // Passing EntityManager by constructor could make a mess with class structure
+        // It should be replaced with a normal solution
+        global $entityManager;
+        $entityManager = $this->entityManager;
+    }
     public function getListData(Request $request, Response $response, array $args): Response
     {
         $this->request = $request;
@@ -117,8 +130,8 @@ class ListController
         $params['search'] = 'list';
         $params['items'] = $request->getAttribute('items') ?? ($mint_config['search']['default_page_size'] ?? 25);
         $params['from'] = $request->getAttribute('page') && $request->getAttribute('page') > 0 ? ($request->getAttribute('page') - 1) * $params['items'] : -1;
-        $params['sort_by'] = $request->getAttribute('sortBy') ?? null;
-        $params['sort_order'] = $request->getAttribute('sortOrder') ?? 'asc';
+        $params['sort_by'] = $request->getAttribute('sortBy') ?? static::DEFAULT_SORT_BY;
+        $params['sort_order'] = $params['sort_by'] == static::DEFAULT_SORT_BY ? 'desc' : $request->getAttribute('sortOrder') ?? 'asc';
         $params['type'] = str_replace('/', '', $route->getPattern());
         $params['filters'] = $this->getParsedFilters($request);
         $params["fields"] = array("*__last^5", "*__first^4", "*__name.*^3", "*");
@@ -126,20 +139,21 @@ class ListController
     }
     protected function getParsedFilters(Request $request)
     {
-        $filters = ['filter' => [], 'must_not' => []];
+        $filters = ['filter' => [], 'must_not' => [], 'must' => []];
         $searchPhrase = $request->getAttribute('searchPhrase');
         if (strlen($searchPhrase)) {
             $searchPhrase = strtolower(str_replace('+', '', $searchPhrase));
-            $filters['filter'][] = [
+            $filters['must'][] = [
                 'query_string' => [
-                    'value' => $searchPhrase
-                ]
+                    'value' => $searchPhrase,
+                ],
             ];
         }
         $filters_attribute = $request->getAttribute('filters') ?? [];
         if (!empty($filters_attribute)) {
             $filters['filter'] = array_merge($filters['filter'], $filters_attribute['filter'] ?? []);
             $filters['must_not'] = array_merge($filters['must_not'], $filters_attribute['must_not'] ?? []);
+            $filters['must'] = array_merge($filters['must'], $filters_attribute['must'] ?? []);
         }
 
         if ($request->getAttribute('myObjects') === true) {
