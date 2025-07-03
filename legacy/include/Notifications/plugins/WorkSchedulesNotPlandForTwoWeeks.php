@@ -53,6 +53,7 @@ class WorkSchedulesNotPlandForTwoWeeks extends NotificationPlugin
     public function __construct()
     {
         $this->setType('WorkSchedulesNotPlandForTwoWeeks');
+        $this->setLabel('LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS');
     }
 
     public function run()

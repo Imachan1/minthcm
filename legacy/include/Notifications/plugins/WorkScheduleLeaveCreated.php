@@ -52,6 +52,7 @@ class WorkScheduleLeaveCreated extends NotificationPlugin
     {
         $this->work_schedule = $work_schedule;
         $this->setType('WorkScheduleLeaveCreated');
+        $this->setLabel('LBL_WORKSCHEDULE_LEAVE_CREATED');
     }
 
     public function run()

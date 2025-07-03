@@ -48,6 +48,7 @@ abstract class NotificationPlugin
 {
 
     protected $type;
+    protected $label;
 
     public function getNewNotification()
     {
@@ -80,6 +81,21 @@ abstract class NotificationPlugin
     public function getType()
     {
         return $this->type;
+    }
+
+    public function canBeManagedByUser()
+    {
+        return true;
+    }
+
+    public function setLabel($label) 
+    {
+        $this->label = $label;
+    }
+
+    public function getLabel()
+    {
+        return $this->label;
     }
 
 }
