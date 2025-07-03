@@ -76,16 +76,20 @@ class GlobalSearchController
         try {
             global $current_user;
             $query = $request->getAttribute('query');
+            $itemsPerPage = $request->getAttribute('itemsPerPage') ?? 5;
+            $page = $request->getAttribute('page') ?? 1;
+            $is_unified_search = $itemsPerPage != 5;
 
             $search_manager = Search::getManager();
             $search_manager->setElasticACL(!is_admin($current_user));
-
+            
             $search_manager->setQuery(array(
                 "search" => 'global',
                 "fields" => array("*__last^5", "*__first^4", "*__name.*^3", "*"),
-                "items" => 5,
+                "items" => $itemsPerPage,
                 "query" => $request->getAttribute('query'),
                 "sort_order" => "desc",
+                "from" => $itemsPerPage * ($page - 1),
             ));
             $search_result = $search_manager->search(false);
 
@@ -99,26 +103,41 @@ class GlobalSearchController
         $data = array(
             'query' => $query,
             'next_page_exists' => $search_result->getNextPageExists(),
-            'results' => $this->getBeans($search_result->getBeans()),
+            'results' => $this->getBeans($search_result->getBeans(), $is_unified_search),
+            'total' => $search_result->getTotal() ?? 0,
         );
 
         $response->getBody()->write(json_encode($data));
         return $response;
     }
 
-    protected function getBeans($beans)
+    protected function getBeans($beans, $is_unified_search = false)
     {
         $response = array();
         foreach ($beans as $bean) {
+            if(!$is_unified_search) {
+                $response[] = array(
+                    "id" => $bean->id,
+                    "module" => $bean->module_name,
+                    "name" => $bean->name,
+                    "meta" => $this->getAdditionalMetaData($bean),
+                );
+                continue;
+            }
+
             $response[] = array(
-                "id" => $bean->id,
-                "module" => $bean->module_name,
-                "name" => $bean->name,
-                "meta" => $this->getAdditionalMetaData($bean),
+                "id" => $bean->id ?? '',
+                "module" => $bean->module_name ?? '',
+                "name" => $bean->name ?? $bean->document_name ?? '',
+                "date_entered" => $bean->date_entered ?? '',
+                "date_modified" => $bean->date_modified ?? '',
+                "meta_array" => $this->getAdditionalMetaDataForUnifiedSearch($bean) ?? '',
             );
         }
+
         return $response;
     }
+
     protected function getAdditionalMetaData($bean)
     {
         $meta_field_name = $GLOBALS['dictionary'][$bean->object_name]['full_text_search_meta_field'] ?? null;
@@ -130,6 +149,15 @@ class GlobalSearchController
         return [
             "def" => $field,
             "value" => $bean->{$field['name']},
+        ];
+    }
+
+    protected function getAdditionalMetaDataForUnifiedSearch($bean)
+    {
+        $meta = $this->getAdditionalMetaData($bean);
+        return [
+            'value' => $meta['value'],
+            'label' => $meta['def']['vname'] ?? $meta['def']['label'] ?? '',
         ];
     }
 }

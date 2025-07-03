@@ -193,6 +193,15 @@ const coreRoutes: Array<RouteRecordRaw> = [
             auth: true,
         },
     },
+    {
+        path: '/UnifiedSearch',
+        alias: ['/modules/Home/UnifiedSearch', '/UnifiedSearch'],
+        name: 'unified-search',
+        component: () => import('@/views/UnifiedSearchView/UnifiedSearchView.vue'),
+        meta: {
+            auth: true,
+        }
+    }
 ]
 
 const routes: Array<RouteRecordRaw> = [...coreRoutes, ...customRoutes]

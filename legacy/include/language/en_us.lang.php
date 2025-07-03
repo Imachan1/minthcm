@@ -4856,3 +4856,9 @@ $app_strings['LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS'] = 'Get notified if W
 $app_strings['LBL_WORKSCHEDULESACCEPTANCE'] = 'Get notified if the work schedule is approved by the supervisor';
 $app_strings['LBL_CLEAR_BUTTON_KANBAN_LABEL'] = 'Clear Filters';
 $app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';
+
+$app_strings['LBL_UNIFIED_SEARCH_COLUMN_NAME'] = 'Name';
+$app_strings['LBL_UNIFIED_SEARCH_COLUMN_MODULE'] = 'Module';
+$app_strings['LBL_UNIFIED_SEARCH_COLUMN_DATE_ENTERED'] = 'Date Entered';
+$app_strings['LBL_UNIFIED_SEARCH_COLUMN_DATE_MODIFIED'] = 'Date Modified';
+$app_strings['LBL_UNIFIED_SEARCH_COLUMN_DESCRIPTION'] = 'Description';

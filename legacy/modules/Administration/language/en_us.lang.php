@@ -879,7 +879,6 @@ $mod_strings = array(
    'LBL_ELASTIC_SEARCH_INDEX_SCHEDULE_FULL_SUCCESS' => 'A full indexing has been scheduled and will start in the next 60 seconds. Search results might be inconsistent until the process is complete.',
    'LBL_ELASTIC_SEARCH_INDEX_SCHEDULE_FULL_FAIL' => 'Failed to start full index.',
    // SearchWrapper Settings
-   'LBL_SEARCH_INTERFACE' => 'Search Interface',
    'LBL_SEARCH_ENGINE' => 'Search Engine',
    'LBL_SEARCH_ENGINE_HELP' => 'Configure the default search engine used by the search.',
    'LBL_SEARCH_ENGINE_TOOLTIP' => 'Select a search engine for the Global Search.',

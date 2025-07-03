@@ -1,4 +1,6 @@
-{*
+<?php
+
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,27 +44,37 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-*}
-<h1>{sugar_translate label="LBL_SEARCH_HEADER"}</h1>
+use MintHCM\Api\Controllers\GlobalSearchController;
+use MintHCM\Api\Middlewares\Params\ParamTypes\BoolType;
+use MintHCM\Api\Middlewares\Params\ParamTypes\IntType;
+use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
 
-<form id="SearchSettings"
-      name="ConfigureSettings"
-      class="detail-view"
-      enctype='multipart/form-data'
-      method="POST"
-      action="index.php?module=Administration&action=SearchSettings&do=Save"
-      onsubmit="SUGAR.saveGlobalSearchSettings();">
-
-    <input type="hidden" name="module" value="Administration">
-    <input type='hidden' name='enabled_modules' value=''>
-
-
-    {include file='modules/Administration/Search/GlobalSearchSettings.tpl'}
-
-    {$JAVASCRIPT}
-
-    <div class="settings-buttons">
-        {$BUTTONS}
-    </div>
-</form>
-
+$routes = array(
+    "get" => array(
+        "method" => "GET",
+        "path" => "/UnifiedSearch",
+        "class" => GlobalSearchController::class,
+        "function" => "getData",
+        "desc" => "Search for records in all modules",
+        "options" => array(
+            "auth" => true,
+        ),
+        "pathParams" => array(
+        ),
+        "queryParams" => array(
+            "query" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Query for ElasticSearch query parameter",
+                "example" => "john*",
+            ),
+            "items_count" => array(
+                "type" => IntType::class,
+                "required" => false,
+                "desc" => "Maximum amount of records to be returned. Defaults to 5.",
+                "example" => "20",
+            ),
+        ),
+        "bodyParams" => array(),
+    ),
+);
