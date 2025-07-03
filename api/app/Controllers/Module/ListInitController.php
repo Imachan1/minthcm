@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,8 +8,8 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -37,23 +36,24 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 namespace MintHCM\Api\Controllers\Module;
 
+use MintHCM\Data\MassActions\Actions as MassActions;
+use MintHCM\Utils\ConstantsLoader;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpForbiddenException;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
-use MintHCM\Utils\ConstantsLoader;
-use MintHCM\Data\MassActions\Actions as MassActions;
 
+#[\AllowDynamicProperties]
 class ListInitController
 {
     const METADATA_FILES = array(
@@ -67,6 +67,14 @@ class ListInitController
     ];
     private $request;
     private $module, $metadata, $bean;
+
+    public function __construct()
+    {
+        global $app_list_strings, $current_language;
+        if (!$app_list_strings) {
+            $app_list_strings = return_app_list_strings_language($current_language);
+        }
+    }
 
     function __invoke(Request $request, Response $response, array $args): Response
     {
@@ -118,7 +126,7 @@ class ListInitController
         global $current_user;
         chdir('../legacy/');
         $preferences = (new \UserPreference($current_user))->getPreference($this->module, 'eslist');
-        if(!$preferences) {
+        if (!$preferences) {
             $preferences = [];
         }
         chdir('../api/');
@@ -174,8 +182,8 @@ class ListInitController
         ];
     }
 
-    protected function prepareSearchDefs(){
-        
+    protected function prepareSearchDefs()
+    {
         global $mod_strings, $app_strings, $current_language;
         $mod_strings = return_module_language($current_language, $this->module);
         $search = $this->metadata["search"];
@@ -220,35 +228,59 @@ class ListInitController
 
     function prepareDefsType($type)
     {
-        $data = $this->metadata[$type];
-        if (empty($data)) {
+        $columns = $this->metadata[$type];
+
+        global $mod_strings, $app_strings, $current_language;
+        $mod_strings = return_module_language($current_language, $this->module);
+        if (empty($columns)) {
+            \LoggerManager::getLogger()->fatal('Columns for ESList View are not defined');
             throw new HttpNotFoundException($this->request);
         }
-        $data = array_change_key_case($data, CASE_LOWER);
-        foreach ($data as $field => $defs) {
-            $field_defs = $this->bean->field_name_map[$field];
-
-            if (empty($field_defs)) {
-                unset($data[$field]);
+        $columns = array_change_key_case($columns, CASE_LOWER);
+        foreach ($columns as $field => $defs) {
+            if (empty($this->bean->field_name_map[$field])) {
+                $GLOBALS['log']->fatal('[ESListView] prepareColumnsDefs: brak definicji pola ' . $field);
+                unset($columns[$field]);
                 continue;
             }
+            $field_defs = $this->bean->field_name_map[$field];
             if (
                 !empty($field_defs['has_access']['function'])
                 && function_exists($field_defs['has_access']['function'])
                 && !$field_defs['has_access']['function']()
             ) {
-                unset($data[$field]);
+                unset($columns[$field]);
                 continue;
             }
-            $data[$field]['name'] = $defs['name'] ?? $field;
-            $data[$field]['type'] = $defs['type'] ?? $field_defs['type'];
-            $data[$field]['options'] = $field_defs['options'];
+            $columns[$field] = array_merge($field_defs, $columns[$field]);
+            $columns[$field]['name'] = $defs['name'] ?? $field;
+            $columns[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field] ?? $field;
+            $fieldProps = $this->getMappedFieldProps($columns[$field]['key']);
+            if (!empty($fieldProps) && 'text' === $fieldProps['type']) {
+                $columns[$field]['key'] .= '.keyword';
+            }
+            $columns[$field]['type'] = $defs['type'] ?? $field_defs['type'];
+            $columns[$field]['options'] = $this->getParsedOptions($field_defs);
             $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
-            $data[$field]['label'] = $label;
+            $columns[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
         }
-        return $data;
+        return $columns;
     }
-
+    protected function getMappedFieldProps($key)
+    {
+        if (empty($this->mappings) || empty($key)) {
+            return null;
+        }
+        $nestedProps = explode('.', $key);
+        $fieldProps = $this->mappings;
+        foreach ($nestedProps as $prop) {
+            if (empty($fieldProps['properties'][$prop])) {
+                return null;
+            }
+            $fieldProps = $fieldProps['properties'][$prop];
+        }
+        return $fieldProps;
+    }
     function prepareLabel($label)
     {
         $label = trim($label);
@@ -265,8 +297,12 @@ class ListInitController
         if (empty($field_defs['function'])) {
             return null;
         }
-        if (!empty($field_defs['function']['include']) && file_exists($field_defs['function']['include'])) {
-            require_once $field_defs['function']['include'];
+        if (!empty($field_defs['function']['include'])) {
+            if (file_exists($field_defs['function']['include'])) {
+                require_once $field_defs['function']['include'];
+            } else if (file_exists('../legacy/' . $field_defs['function']['include'])) {
+                require_once '../legacy/' . $field_defs['function']['include'];
+            }
         }
         $function = $field_defs['function']['name'] ?? $field_defs['function'];
         $additional_params = $field_defs['function']['additional_params'] ?? null;
