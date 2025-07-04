@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -125,12 +125,7 @@ $types_of_absence = [
 }
 
 function buildWhere() {
-   $where = buildIncludingWhere();
-   if ( !empty($where) ) {
-      $where .= ' AND ';
-   }
-   $where .= buildExcludingWhere();
-   return $where;
+   return implode(' AND ', array_filter([buildIncludingWhere(), buildExcludingWhere()]));
 }
 
 global $db, $current_user;
@@ -158,7 +153,7 @@ WHERE
       ". buildWhere() ."
       AND A.deleted = 0
       AND B.deleted = 0
-      AND A.date_start > DATE(SUBDATE(NOW(), INTERVAL 30 DAY))
+   AND A.date_start > DATE(SUBDATE(NOW(), INTERVAL 30 DAY))
       AND A.type != 'office'
    ORDER BY
          B.id,
@@ -175,6 +170,7 @@ $typeToColor = array(
    'overtime' => '#adebad', // '#2c97de',
    'leave_at_request' => '#ffb128',
    'excused_absence' => '#adff2f',
+   'child_care' => '#e66ec4',
 );
 $result = array();
 global $app_list_strings;
