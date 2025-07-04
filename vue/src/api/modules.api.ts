@@ -5,16 +5,26 @@ class ModulesApi extends MintApi {
         return await this.instance.get(module_name)
     }
 
-    public async getListData(module_name: string, options: any, myObjects: any, searchPhrase: any, filters: any, defs: any, activeFilter: any, pageOffsetMap: any) {
+    public async getListData(
+        module_name: string,
+        searchPhrase = '',
+        filters = {},
+        page = 0,
+        itemsPerPage = 100,
+        myObjects = false,
+        sortBy: string | null = null,
+        sortOrder = 'asc',
+        activeFilter = null,
+    ) {
         return await this.instance.post(module_name, {
-            page: options.value.page,
-            items: options.value.itemsPerPage === -1 ? 100 : options.value.itemsPerPage,
-            myObjects: myObjects.value,
-            searchPhrase: searchPhrase.value,
-            filters: filters.value,
-            sortBy: defs.value?.columns[options.value.sortBy[0]?.key]?.key,
-            sortOrder: options.value.sortBy[0]?.order ?? 'asc',
-            activeFilter: activeFilter.value,
+            page: page,
+            items: itemsPerPage,
+            myObjects: myObjects,
+            searchPhrase: searchPhrase,
+            filters: filters,
+            sortBy: sortBy,
+            sortOrder: sortOrder,
+            activeFilter: activeFilter,
         })
     }
 

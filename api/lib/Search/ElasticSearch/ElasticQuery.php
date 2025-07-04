@@ -189,7 +189,7 @@ class ElasticQuery extends SearchQuery
     {
         $fields = !empty($this->params['fields']) ? $this->params['fields'] : array(static::ALL_FIELDS);
         return array(
-            'query_string' => array(
+            'simple_query_string' => array(
                 'query' => $this->params['query'],
                 'fields' => $fields,
                 'analyzer' => 'standard',
