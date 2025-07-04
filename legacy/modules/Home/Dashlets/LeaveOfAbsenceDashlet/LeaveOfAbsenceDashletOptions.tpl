@@ -88,31 +88,31 @@
                 <td valign='top' nowrap class='dataLabel'>{$DASHLET_STRINGS.LBL_SHOW_TYPE_OF_ABSENCE}</td>
                 <td valign='top' class='dataField'>
                     <input type="checkbox" id="show_home" name="show_home" value="true" {if $show_type_of_absence.home == true}checked{/if}>
-                    <label for="show_home">{$DASHLET_STRINGS.LBL_HOME}</label>
+                    <label for="show_home">{$types_of_absence.home}</label>
                     <br/>
                     <input type="checkbox" id="show_sick" name="show_sick" value="true" {if $show_type_of_absence.sick == true}checked{/if}>
-                    <label for="show_sick">{$DASHLET_STRINGS.LBL_SICK}</label>
+                    <label for="show_sick">{$types_of_absence.sick}</label>
                     <br/>
                     <input type="checkbox" id="show_holiday" name="show_holiday" value="true" {if $show_type_of_absence.holiday == true}checked{/if}>
-                    <label for="show_holiday">{$DASHLET_STRINGS.LBL_HOLIDAY}</label>
+                    <label for="show_holiday">{$types_of_absence.holiday}</label>
                     <br/>
                     <input type="checkbox" id="show_sick_care" name="show_sick_care" value="true" {if $show_type_of_absence.sick_care == true}checked{/if}>
-                    <label for="show_holiday">{$DASHLET_STRINGS.LBL_SICK_CARE}</label>
+                    <label for="show_holiday">{$types_of_absence.sick_care}</label>
                     <br/>
                     <input type="checkbox" id="show_delegation" name="show_delegation" value="true" {if $show_type_of_absence.delegation == true}checked{/if}>
-                    <label for="show_holiday">{$DASHLET_STRINGS.LBL_DELEGATION}</label>
+                    <label for="show_holiday">{$types_of_absence.delegation}</label>
                     <br/>
                     <input type="checkbox" id="show_occasional_leave" name="show_occasional_leave" value="true" {if $show_type_of_absence.occasional_leave == true}checked{/if}>
-                    <label for="show_holiday">{$DASHLET_STRINGS.LBL_OCCASIONAL_LEAVE}</label>
+                    <label for="show_holiday">{$types_of_absence.occasional_leave}</label>
                     <br/>
                     <input type="checkbox" id="show_leave_at_request" name="show_leave_at_request" value="true" {if $show_type_of_absence.leave_at_request == true}checked{/if}>
-                    <label for="show_holiday">{$DASHLET_STRINGS.LBL_LEAVE_AT_REQUEST}</label>
+                    <label for="show_holiday">{$types_of_absence.leave_at_request}</label>
                     <br/>
                     <input type="checkbox" id="show_overtime" name="show_overtime" value="true" {if $show_type_of_absence.overtime == true}checked{/if}>
-                    <label for="show_holiday">{$DASHLET_STRINGS.LBL_OVERTIME}</label>
+                    <label for="show_holiday">{$types_of_absence.overtime}</label>
                     <br/>
                     <input type="checkbox" id="show_excused_absence" name="show_excused_absence" value="true" {if $show_type_of_absence.excused_absence == true}checked{/if}>
-                    <label for="show_holiday">{$DASHLET_STRINGS.LBL_EXCUSED_ABSENCE}</label>
+                    <label for="show_holiday">{$types_of_absence.excused_absence}</label>
                     <br/>
                 </td>
             </tr>
