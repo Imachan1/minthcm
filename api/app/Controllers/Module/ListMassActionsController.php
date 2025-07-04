@@ -2,6 +2,7 @@
 
 namespace MintHCM\Api\Controllers\Module;
 
+use MintHCM\Data\MassActions\MassActionLoader;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpForbiddenException;
 use Slim\Exception\HttpNotFoundException;
@@ -24,12 +25,7 @@ class ListMassActionsController
             throw new HttpBadRequestException($request);
         }
 
-        $mass_action_class = 'MintHCM\\Data\\MassActions\\Actions\\' . $action;
-        if (!class_exists($mass_action_class)) {
-            throw new HttpNotFoundException($request);
-        }
-
-        $mass_action = new $mass_action_class($module, $ids);
+        $mass_action = MassActionLoader::getAction($action, $module, $ids);
 
         if (!$mass_action->hasAccess()) {
             throw new HttpForbiddenException($request);
