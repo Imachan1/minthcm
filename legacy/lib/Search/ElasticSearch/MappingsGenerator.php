@@ -13,6 +13,7 @@ class MappingsGenerator
 {
     protected $metadata_file = 'eslistviewdefs.php';
     protected $output_file_path = 'lib/Search/ElasticSearch/defaultParams.yml';
+    protected $json_file_path = '../api/lib/Search/ElasticSearch/defaultParams.json';
     protected $not_standard_fields = [
         'name' => 'name.name',
         'first_name' => 'name.first',
@@ -166,6 +167,7 @@ class MappingsGenerator
         }
 
         $this->parseMappingsToYaml($mappings);
+        $this->parseMappingsToJson($mappings);
     }
 
     protected function includesAtMostPrimaryKey(array $fields): bool
@@ -201,6 +203,15 @@ class MappingsGenerator
     {
         $yaml = Yaml::dump($mappings, 10, 2);
         file_put_contents($this->output_file_path, $yaml);
+    }
+
+    protected function parseMappingsToJson($mappings)
+    {
+        $json = json_encode($mappings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        if ($json === false) {
+            throw new \RuntimeException('Failed to encode mappings to JSON: ' . json_last_error_msg());
+        }
+        file_put_contents($this->json_file_path, $json);
     }
 
     protected function handleNotStandardField($es_field, $mappings, $key, $es_type)
