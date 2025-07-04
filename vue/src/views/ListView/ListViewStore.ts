@@ -81,13 +81,14 @@ export const useListViewStore = defineStore('listview', () => {
 
         const result = await modulesApi.getListData(
             getModule(),
-            options,
-            myObjects,
-            searchPhrase,
-            filters,
-            defs,
-            activeFilter,
-            pageOffsetMap,
+            searchPhrase.value,
+            filters.value,
+            options.value.page ?? 0,
+            options.value.itemsPerPage === -1 ? 100 : options.value.itemsPerPage,
+            myObjects.value,
+            defs.value?.columns[options.value.sortBy[0]?.key]?.key,
+            options.value.sortBy[0]?.order ?? 'asc',
+            activeFilter.value
         )
         requestCount--
         if (module.value === result.data.module && requestCount <= 0) {
