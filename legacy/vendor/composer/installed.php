@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'salesagility/suitecrm',
-        'pretty_version' => 'dev-develop',
-        'version' => 'dev-develop',
-        'reference' => '227cdd376126773be7b49977400b7afd6ee697cb',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '7a6676445b85d0070ff41abb6eb3b6f965bf72fe',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -506,9 +506,9 @@
             'dev_requirement' => true,
         ),
         'monolog/monolog' => array(
-            'pretty_version' => '1.27.1',
-            'version' => '1.27.1.0',
-            'reference' => '904713c5929655dc9b97288b69cfeedad610c9a1',
+            'pretty_version' => '2.10.0',
+            'version' => '2.10.0.0',
+            'reference' => '5cf826f2991858b54d5c3809bee745560a1042a7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../monolog/monolog',
             'aliases' => array(),
@@ -800,9 +800,9 @@
             ),
         ),
         'psr/log' => array(
-            'pretty_version' => '1.1.4',
-            'version' => '1.1.4.0',
-            'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
+            'reference' => 'ef29f6d262798707a9edd554e2b82517ef3a9376',
             'type' => 'library',
             'install_path' => __DIR__ . '/../psr/log',
             'aliases' => array(),
@@ -811,8 +811,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0.0',
-                1 => '1.0|2.0',
+                0 => '1.0|2.0',
+                1 => '1.0.0 || 2.0.0 || 3.0.0',
             ),
         ),
         'ralouphie/getallheaders' => array(
@@ -843,9 +843,9 @@
             'dev_requirement' => false,
         ),
         'salesagility/suitecrm' => array(
-            'pretty_version' => 'dev-develop',
-            'version' => 'dev-develop',
-            'reference' => '227cdd376126773be7b49977400b7afd6ee697cb',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '7a6676445b85d0070ff41abb6eb3b6f965bf72fe',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
