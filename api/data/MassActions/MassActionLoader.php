@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2024 MintHCM
+ * Copyright (C) 2018-2025 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,26 +44,23 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
-}
+namespace MintHCM\Data\MassActions;
 
-$dashletStrings['LeaveOfAbsenceDashlet'] = array(
-   'LBL_TITLE' => 'Absences in Office',
-   'LBL_DESCRIPTION' => 'Absences in Office',
-   'LBL_SAVING' => 'Parsing ...',
-   'LBL_SAVED' => 'Complete',
-   'LBL_CONFIGURE_TITLE' => 'Title',
-   'LBL_DBLCLICK_HELP' => '',
-   'LBL_SAVE_BUTTON_LABEL' => 'Save',
-   'LBL_CONFIGURE_TITLE' => 'Dashlet Title',
-   'LBL_SHOW_DAYS_OF_WEEK' => 'Show Days of Week',
-   'LBL_SUNDAY' => 'Sunday',
-   'LBL_MONDAY' => 'Monday',
-   'LBL_TUESDAY' => 'Tuesday',
-   'LBL_WEDNESDAY' => 'Wednesday',
-   'LBL_THURSDAY' => 'Thursday',
-   'LBL_FRIDAY' => 'Friday',
-   'LBL_SATURDAY' => 'Saturday',
-   'LBL_SHOW_TYPE_OF_ABSENCE' => 'Show Type of Absence',
-);
+class MassActionLoader
+{
+    public static function getAction($class, ...$args)
+    {   
+        if (strpos($class, '\\') === false) {
+            $class = 'MintHCM\Data\MassActions\Actions\\' . $class;
+        }
+        if (!class_exists($class) || !is_subclass_of($class, 'MintHCM\Data\MassActions\MassAction')) {
+            throw new \InvalidArgumentException("Class $class does not exist or is not a subclass of MintHCM\Data\MassActions\MassAction");
+        }
+        $classReflection = new \ReflectionClass($class);
+        $custom_class = str_replace('MintHCM', 'MintHCM\Custom', $classReflection->getName());
+        if (class_exists($custom_class) && is_subclass_of($custom_class, $class)) {
+            return new $custom_class(...$args);
+        }
+        return new $class(...$args);
+    }
+}

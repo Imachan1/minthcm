@@ -39,7 +39,7 @@ onMounted(async () => {
     if (props.input?.value) {
         isLoading.value = true
         const response = await axios.post(`api/${props.fieldDefs.module}`, {
-            offset: 0,
+            // offset: 0,
             filters: [
                 {
                     field: '_id',
@@ -82,7 +82,7 @@ function fetchItems(query: string) {
         }
         isLoading.value = true
         const response = await axios.post(`api/${props.fieldDefs.module}`, {
-            offset: 0,
+            // offset: 0,
             sortBy: 'name',
             filters: [
                 {

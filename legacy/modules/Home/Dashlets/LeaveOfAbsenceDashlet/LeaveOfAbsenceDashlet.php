@@ -160,6 +160,9 @@ class LeaveOfAbsenceDashlet extends Dashlet
         $ss = new Sugar_Smarty();
         $ss->assign('id', $this->id);
         $ss->assign('DASHLET_STRINGS', $this->dashletStrings);
+        global $app_list_strings;
+        $work_schedule = BeanFactory::newBean('WorkSchedules');
+        $ss->assign('types_of_absence', $app_list_strings[$work_schedule->field_defs['type']['options']]);
         $ss->assign('title', $this->title);
         $ss->assign('show_days_of_week', $this->show_days_of_week);
         $ss->assign('show_type_of_absence', $this->show_type_of_absence);
