@@ -17,8 +17,6 @@ class MCPRequestHandler {
      * Handles the tool list request
      */
     public function handleToolsList($params = []) {
-        // $tools = $this->toolRegistry->getAllMCPTools();
-        // $result = new ListToolsResult($tools);
         $result = $this->toolRegistry->getParsedTools();
         return $result;
     }

@@ -15,8 +15,19 @@ class MCPToolRegistry {
      * Registers default tools
      */
     private function registerDefaultTools(): void {
-        $this->registerTool(new ListMeetingsTool());
-        $this->registerTool(new AddMeetingTool());
+        $this->registerTool(new ListMeetings());
+        $this->registerTool(new AddMeeting());
+        $this->registerTool(new Calendar());
+        $this->registerTool(new CheckAvailability());
+        $this->registerTool(new CountRecords());
+        $this->registerTool(new GetModuleNames());
+        $this->registerTool(new GetModuleFields());
+        $this->registerTool(new ListUsers());
+        $this->registerTool(new SumRecords());
+        $this->registerTool(new CreateRecord());
+        $this->registerTool(new SearchRecords());
+        $this->registerTool(new UpdateRecord());
+        $this->registerTool(new DeleteRecord());
         
         // Add new tools here:
         // $this->registerTool(new YourNewTool());
