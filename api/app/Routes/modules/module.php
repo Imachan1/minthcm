@@ -213,7 +213,7 @@ $routes = array(
             ),
             "page" => array(
                 "type" => IntType::class,
-                "required" => true,
+                "required" => false,
                 "desc" => "Page number to retrieve",
                 "example" => '1',
             ),
