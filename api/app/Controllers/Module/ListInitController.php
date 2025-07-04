@@ -47,6 +47,7 @@ namespace MintHCM\Api\Controllers\Module;
 
 use MintHCM\Data\MassActions\Actions as MassActions;
 use MintHCM\Utils\ConstantsLoader;
+use MintHCM\Data\MassActions\MassActionLoader;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpForbiddenException;
 use Slim\Exception\HttpNotFoundException;
@@ -156,7 +157,7 @@ class ListInitController
             $mass_actions = self::DEFAULT_MASS_ACTIONS;
         }
         foreach ($mass_actions as $action) {
-            $mass_action = new $action($this->module, []);
+            $mass_action = MassActionLoader::getAction($action, $this->module, []);
             if ($mass_action->hasAccess()) {
                 $config['massActions'][] = $mass_action->getFrontendData();
             }
