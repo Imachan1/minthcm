@@ -39,10 +39,16 @@ class ModulePrefixer
     protected function getDefaultMapParams($module)
     {
         if (empty($this->map_config)) {
-            $file = realpath(__DIR__ . '/../../../../legacy/lib/Search/ElasticSearch/defaultParams.yml');
-
-            $parse = new YamlParser();
-            $this->map_config = $parse->parseFile($file);
+            if (file_exists('lib/Search/ElasticSearch/defaultParams.json')) {
+                $this->map_config = json_decode(file_get_contents('lib/Search/ElasticSearch/defaultParams.json'), true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new \RuntimeException('Failed to decode JSON: ' . json_last_error_msg());
+                }
+            } else {
+                $file = realpath(__DIR__ . '/../../../../legacy/lib/Search/ElasticSearch/defaultParams.yml');
+                $parse = new YamlParser();
+                $this->map_config = $parse->parseFile($file);
+            }
         }
 
         return ['mappings' => $this->map_config['mappings'][$module]];
