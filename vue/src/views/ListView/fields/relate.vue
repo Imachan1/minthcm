@@ -39,13 +39,12 @@ const activeItem = computed(() => items.value.find((item) => item.id === value.v
 onMounted(async () => {
     if (props.input?.value) {
         isLoading.value = true
-        const response = await axios.post(`api/${props.fieldDefs.module}`, {
-            // offset: 0,
-            filters: [
+        const response = await modulesApi.getListData(props.fieldDefs.module, '', {
+            filter: [
                 {
-                    field: '_id',
-                    type: 'equals',
-                    value: props.input.value,
+                    equals: {
+                        _id: props.input.value,
+                    },
                 },
             ],
         })
