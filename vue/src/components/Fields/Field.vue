@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, computed } from 'vue'
+import { defineProps, defineAsyncComponent, computed } from 'vue'
 import { FieldVardef } from '@/store/modules'
 import { fieldConfig } from '../Fields/Field.config'
 
@@ -23,10 +23,9 @@ interface Props {
     data?: any
     modelValue?: any
     label?: string
+    disabled?: boolean
 }
-
 const props = defineProps<Props>()
-
 const resolvedFieldType = computed(() => {
     const type = props.defs?.type?.trim() ?? ''
     if (fieldConfig.allowedTypes[props.view].includes(type)) {
