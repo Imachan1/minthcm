@@ -2,42 +2,46 @@
 
 namespace MintMCP\Auth;
 
-use DBManagerFactory;
-
 class AuthManager
 {
+    private static ?AuthManager $instance = null;
     private string $jwt;
     private bool $authenticated = false;
 
-    public function __construct(string $jwt)
+    private function __construct(string $jwt)
     {
         $this->jwt = $jwt;
     }
 
-    /**
-     * Checks if the sha256 hash of the access token exists in the oauth2tokens table.
-     *
-     * @return bool
-     */
+    public static function getInstance(string $jwt): AuthManager
+    {
+        if (self::$instance === null) {
+            self::$instance = new self($jwt);
+        }
+        return self::$instance;
+    }
+
     public function validate(): bool
     {
-        $jti = $this->getJtiFromJwt();
-        chdir('../legacy/');
-        
-        $sql = "SELECT id FROM oauth2tokens WHERE access_token = '{$jti}' AND deleted = 0";
-
-        $db = DBManagerFactory::getInstance();
-        $result = $db->query($sql);
-
         $this->authenticated = false;
-        while ($row = $db->fetchByAssoc($result)) {
-            if (!empty($row['id'])) {
-                $this->authenticated = true;
-                break;
-            }
+        $jti = $this->getJtiFromJwt();
+
+        chdir('../legacy/');
+        $tokenBean = \BeanFactory::newBean('OAuth2Tokens');
+        $foundToken = $tokenBean->retrieve_by_string_fields(['access_token' => $jti]);
+        if (empty($foundToken) || empty($foundToken->id) || $foundToken->access_token !== $jti) {
+            return false;
         }
 
-        chdir('../api/');
+        $this->authenticated = true;
+        $this->setCurrentUser($foundToken->assigned_user_id);
+
+        chdir('../mcp/');
+
+        // TODO: Check if the token is expired
+
+
+
         return $this->authenticated;
     }
 
@@ -57,13 +61,18 @@ class AuthManager
         return $data['jti'] ?? null;
     }
 
-
-
-    /**
-     * Returns authentication status.
-     */
     public function isAuthenticated(): bool
     {
         return $this->authenticated;
+    }
+
+    protected function setCurrentUser(string $userId): void
+    {
+        $userBean = \BeanFactory::getBean('Users', $userId);
+        if (!empty($userBean->id)) {
+            $GLOBALS['current_user'] = $userBean;
+        } else {
+            throw new \Exception("User with ID {$userId} not found");
+        }
     }
 }

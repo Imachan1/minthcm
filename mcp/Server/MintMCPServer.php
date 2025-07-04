@@ -32,10 +32,8 @@ class MintMCPServer
         $this->requestHandler->registerTool($tool);
     }
 
-    public function handleHTTPRequest(string $rawInput): array
+    public function handleHTTPRequest(array $input): array
     {
-        // xdebug_break();
-        $input = json_decode($rawInput, true);
 
         if (!$input) {
             throw new \InvalidArgumentException("Invalid JSON input");
@@ -43,6 +41,7 @@ class MintMCPServer
 
         $method = $input['method'] ?? '';
         $params = $input['params'] ?? null;
+        $inputId = $input['id'] ?? null;
 
         try {
             switch ($method) {
@@ -50,7 +49,7 @@ class MintMCPServer
 
                     return [
                         'jsonrpc' => '2.0',
-                        'id' => $input['id'],
+                        'id' => $inputId,
                         'result' => [
                             'protocolVersion' => '2025-03-26',
                             'capabilities' => [
@@ -70,7 +69,12 @@ class MintMCPServer
                             'serverInfo' => [
                                 'name' => 'MintHCM MCP Server',
                                 'version' => '1.0.0'
-                            ]
+                            ],
+                            // 'authorization' => [
+                            //     'type' => 'oauth2',
+                            //     'scopes' => [],
+                            //     'url' => 'https://osmana82-8.int2.evolpe.net/MintHCM/legacy/Api/access_token'
+                            // ]
                         ]
                     ];
 
@@ -80,7 +84,7 @@ class MintMCPServer
 
                     return [
                         'jsonrpc' => '2.0',
-                        'id' => $input['id'],
+                        'id' => $inputId,
                         'result' => [
                             'tools' => $tools,
                         ]
@@ -90,21 +94,21 @@ class MintMCPServer
                     $result = $this->requestHandler->handleToolCall($params);
                     return [
                         'jsonrpc' => '2.0',
-                        'id' => $input['id'],
+                        'id' => $inputId,
                         'result' => ['content' => $result->content]
                     ];
 
                 default:
                     return [
                         'jsonrpc' => '2.0',
-                        'id' => $input['id'],
+                        'id' => $inputId,
                         'error' => ['code' => -32601, 'message' => 'Method not found']
                     ];
             }
         } catch (\Exception $e) {
             return [
                 'jsonrpc' => '2.0',
-                'id' => $input['id'],
+                'id' => $inputId,
                 'error' => ['code' => -32603, 'message' => $e->getMessage()]
             ];
         }
