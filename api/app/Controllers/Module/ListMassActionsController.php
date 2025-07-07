@@ -5,7 +5,6 @@ namespace MintHCM\Api\Controllers\Module;
 use MintHCM\Data\MassActions\MassActionLoader;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpForbiddenException;
-use Slim\Exception\HttpNotFoundException;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
 use Slim\Exception\HttpBadRequestException;
