@@ -29,12 +29,15 @@ export const useLanguagesStore = defineStore('languages', () => {
         return (lbl: string, module?: string | null, placeholders?: Placeholders) => {
             let label = ''
             if (module) {
+                if (!languages.value.modules?.[module]) {
+                    fetchModuleLanguage(module)
+                }
                 label = languages.value.modules?.[module]?.[lbl]
             }
             if (!label) {
                 label = languages.value.app_strings?.[lbl]
             }
-            if (placeholders) {
+            if (placeholders && label) {
                 for (const [key, value] of Object.entries(placeholders)) {
                     label = label.replaceAll(`{${key}}`, value)
                 }

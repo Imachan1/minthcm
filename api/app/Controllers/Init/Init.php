@@ -52,6 +52,7 @@ use MintHCM\Api\Controllers\Init\Preferences;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use User;
+use MintHCM\Utils\ConstantsLoader;
 
 class Init
 {
@@ -178,7 +179,7 @@ class Init
     private function getQuickCreate($modules_menu)
     {
         chdir('../api');
-        $modules = include "constants/quick_create.php";
+        $modules = ConstantsLoader::getConstants('quick_create');
         $response = array();
 
         if (!is_array($modules)) {
@@ -199,7 +200,7 @@ class Init
 
     private function getLegacyViews($modules_data)
     {
-        $legacy_views = include "constants/legacy_views.php";
+        $legacy_views = ConstantsLoader::getConstants('legacy_views');
         chdir('../legacy');
         foreach ($modules_data as $module => $data) {
             if (

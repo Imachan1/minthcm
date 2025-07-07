@@ -78,6 +78,7 @@ import { useLanguagesStore } from '@/store/languages'
 import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import MintButton from '@/components/MintButtons/MintButton.vue'
+import { modulesApi } from '@/api/modules.api'
 import he from 'he'
 import { FieldProps } from '../Field.model'
 
@@ -135,19 +136,18 @@ async function fetchRecordItems(e) {
         isLoading.value = true
         menuOpen.value = true
         const val = e?.target?.value ?? props.data.bean[props.defs.name] ?? ''
-        const filter = {
-            field: 'name',
-            type: 'wildcard',
-            value: val.toLowerCase() + '*',
-        }
         if (debounceTimeout) {
             clearTimeout(debounceTimeout)
         }
         debounceTimeout = window.setTimeout(async () => {
-            const response = await axios.post(`api/${props.data.bean.parent_type}`, {
-                offset: 0,
-                sortBy: 'name',
-                filters: [filter],
+            const response = await modulesApi.getListData(props.data.bean.parent_type, '', {
+                must: [
+                    {
+                        wildcard: {
+                            name: val + '*',
+                        },
+                    },
+                ],
             })
             if (response.data?.results?.length) {
                 items.value = response.data.results.sort((a, b) => a.name.localeCompare(b.name, 'pl'))

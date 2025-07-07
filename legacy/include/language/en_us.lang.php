@@ -4897,3 +4897,6 @@ $app_strings['LBL_ES_ELASTIC_SEARCH_ENGINE'] = 'Elastic Search Engine';
 $app_strings['LBL_REQUIRED'] = 'Required';
 $app_strings['ERR_FIELD_REQUIRED'] = 'This field is required';
 $app_strings['ERR_NOT_UNIQUE'] = 'Record is not unique';
+$app_strings['LBL_WORKSCHEDULE_LEAVE_CREATED'] = 'Get notified if Leave is created by your subordinate';
+$app_strings['LBL_WORKSCHEDULES_DAY_VALID'] = 'Get notified if not closed Work Schedule exists';
+$app_strings['LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS'] = 'Get notified if Work Schedule is not planned for two weeks';

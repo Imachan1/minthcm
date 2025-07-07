@@ -54,12 +54,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import axios from 'axios'
+import { defineProps, computed, ref, defineEmits } from 'vue'
 import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import { useLanguagesStore } from '@/store/languages'
 import MintButton from '@/components/MintButtons/MintButton.vue'
+import { modulesApi } from '@/api/modules.api'
 import he from 'he'
 import { FieldProps } from '../Field.model'
 
@@ -101,19 +101,18 @@ async function fetchItems(e) {
         isLoading.value = true
         menuOpen.value = true
         const val = e?.target?.value ?? props.data.bean[props.defs.name] ?? ''
-        const filter = {
-            field: 'name',
-            type: 'wildcard',
-            value: val.toLowerCase() + '*',
-        }
         if (debounceTimeout) {
             clearTimeout(debounceTimeout)
         }
         debounceTimeout = window.setTimeout(async () => {
-            const response = await axios.post(`api/${props.defs.module}`, {
-                offset: 0,
-                sortBy: 'name',
-                filters: [filter],
+            const response = await modulesApi.getListData(props.defs.module, '', {
+                must: [
+                    {
+                        wildcard: {
+                            name: val + '*',
+                        },
+                    },
+                ],
             })
             if (response.data?.results?.length) {
                 items.value = response.data.results.sort((a, b) => a.name.localeCompare(b.name, 'pl'))
