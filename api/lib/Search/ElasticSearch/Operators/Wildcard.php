@@ -58,6 +58,7 @@ class Wildcard extends ElasticOperator
         if (empty($this->field)) {
             $this->field = "*";
         }
+        $this->value = $this->data;
     }
 
     protected function getDataArray(ModulePrefixer $prefixer): array

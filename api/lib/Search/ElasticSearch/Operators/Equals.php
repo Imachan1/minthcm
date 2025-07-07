@@ -52,6 +52,12 @@ use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 class Equals extends ElasticOperator
 {
 
+    public function __construct(array $data)
+    {
+        parent::__construct($data);
+        $this->value = $this->data;
+    }
+
     protected function getDataArray(ModulePrefixer $prefixer): array
     {
         return array(
@@ -64,7 +70,6 @@ class Equals extends ElasticOperator
     protected function validateData(): bool
     {
         return !empty($this->field)
-        && !empty($this->value)
-        ;
+            && !empty($this->value);
     }
 }

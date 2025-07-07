@@ -429,6 +429,7 @@ if (!$focus->is_group && !$focus->portal_only) {
         $focus->setPreference('syncGCal', 0, 0, 'GoogleSync');
     }
 
+
     // Notifications settings save
     $notificationMenager = new NotificationManager();
     $notifications = $notificationMenager->getPluginsForManagement();
