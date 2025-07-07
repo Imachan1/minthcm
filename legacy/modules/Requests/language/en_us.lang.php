@@ -76,7 +76,6 @@ $mod_strings = array(
    'LBL_MODULE_NAME' => 'Requests',
    'LBL_MODULE_TITLE' => 'Requests',
    'LBL_HOMEPAGE_TITLE' => 'My Requests',
-   'LNK_NEW_RECORD' => 'Create Request',
    'LNK_LIST' => 'Requests',
    'LBL_SEARCH_FORM_TITLE' => 'Search Request',
    'LBL_TYPE' => 'Type',
