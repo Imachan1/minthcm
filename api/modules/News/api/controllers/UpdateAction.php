@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2024 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,47 +44,50 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-namespace MintHCM\Modules\Alerts\api\controllers;
+namespace MintHCM\Modules\News\api\controllers;
 
-use MintHCM\Modules\Alerts\api\helpers\DataHelper;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Slim\Exception\HttpBadRequestException;
+use MintHCM\Modules\Alerts\api\controllers\ListAction;
 
-#[\AllowDynamicProperties]
 class UpdateAction
 {
-
-    public function __invoke(Request $request, Response $response, array $args): Response
+    public function markAlertsAsRead(Request $request, Response $response, array $args): Response
     {
-        $response = $response->withHeader('Content-type', 'application/json');
-        if(!$this->saveBean($request)) {
+        $news_id = $request->getAttribute('news_id');
+
+        if (!$news_id) {
             throw new HttpBadRequestException($request);
         }
-        if($request->getAttribute('fetch')) {
-            $response->getBody()->write(json_encode((new ListAction)->getListData()));
+
+        global $current_user, $db;
+        $parent_ids = [$news_id];
+        $users_news_id = $this->getUsersNewsForUser($current_user->id, $news_id);
+
+        if (!empty($users_news_id)) {
+            array_push($parent_ids, $users_news_id);
         }
+
+        $sql = "UPDATE alerts SET is_read = 1 WHERE parent_id IN ({$db->implodeQuoted($parent_ids)}) AND deleted = 0 AND assigned_user_id = {$db->quoted($current_user->id)} AND parent_type = 'News'";
+        $result = $db->query($sql);
+
+        if (!$result) {
+            throw new HttpBadRequestException($request);
+        }
+
+        $response = $response->withHeader('Content-type', 'application/json');
+        $alerts_list_action = new ListAction();
+        $response->getBody()->write(json_encode($alerts_list_action->getListData()));
+
         return $response;
     }
 
-    public function saveBean(Request $request): bool
+    protected function getUsersNewsForUser($user_id, $news_id)
     {
-        $id = $request->getAttribute('id');
-        $is_read = $request->getAttribute('is_read') ?? null;
-        $is_closed = $request->getAttribute('is_closed') ?? null;
-
-        chdir('../legacy/');
-        $alert = \BeanFactory::getBean('Alerts', $id);
-        if (empty($alert->id) || !DataHelper::isAssignedUserCurrentUser($alert)) {
-            return false;
-        }
-
-        $alert->is_read = null === $is_read ? $alert->is_read : $is_read;
-        $alert->is_closed = null === $is_closed ? $alert->is_closed : $is_closed;
-        $response = $alert->save(false);
-        chdir('../api/');
-
-        return $response ? true : false;
+        global $db;
+        $sql = "SELECT id FROM usersnews WHERE news_id = {$db->quoted($news_id)} AND deleted = 0 AND assigned_user_id = {$db->quoted($user_id)}";
+        $result = $db->getOne($sql);
+        return ($result) ? $result : '';
     }
-
 }

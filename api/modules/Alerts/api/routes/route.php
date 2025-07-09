@@ -92,6 +92,12 @@ $routes = array(
                 "desc" => "Set alert as closed",
                 "example" => 'false or 0 or "0"',
             ),
+            "fetch" => array(
+                "type" => BoolType::class,
+                "required" => false,
+                "desc" => "Fetch alerts after update",
+                "example" => 'false or true',
+            ),
         ),
     ),
     "readAlerts" => [

@@ -12,10 +12,10 @@
         <MintReactionsActions
             :active-reaction-type="currentUserReactionType"
             @react="handleReactAction"
-            @delete-reaction="store.deleteKudosReaction(props.kudos.id)"
+            @delete-reaction="store.deleteNewsReaction(props.newsItem.id)"
         />
     </v-menu>
-    <MintReactions v-if="props.kudos.reactions?.length" :reactions="props.kudos.reactions" />
+    <MintReactions v-if="props.newsItem.reactions?.length" :reactions="props.newsItem.reactions" />
 </template>
 
 <script setup lang="ts">
@@ -23,31 +23,25 @@ import { computed } from 'vue'
 import MintReactions from '@/components/MintReactions/MintReactions.vue'
 import MintReactionsActions from '@/components/MintReactions/MintReactionsActions.vue'
 import MintButton from '../MintButtons/MintButton.vue'
-import { useMintKudosStore } from './MintKudosStore'
+import { useMintWallStore } from './MintWallStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useAuthStore } from '@/store/auth'
 import { MintReaction } from '../MintReactions/MintReactions'
 
-const props = defineProps(['kudos'])
+const props = defineProps(['newsItem'])
 const auth = useAuthStore()
 const languages = useLanguagesStore()
-const store = useMintKudosStore()
+const store = useMintWallStore()
 
 function handleReactAction(type: string) {
     if (type) {
-        store.reactToKudos(props.kudos.id, type)
+        store.reactToNews(props.newsItem.id, type)
     }
 }
 
 const currentUserReactionType = computed(() => {
-    return props.kudos.reactions?.find((reaction: MintReaction) => reaction.user.id === auth.user?.id)?.type
+    return props.newsItem.reactions?.find((reaction: MintReaction) => reaction.user.id === auth.user?.id)?.type
 })
 </script>
 
-<style scoped lang="scss">
-.mint-kudos-reactions {
-    display: flex;
-    flex-direction: row-reverse;
-    gap: 8px;
-}
-</style>
+<style scoped lang="scss"></style>

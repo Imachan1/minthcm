@@ -22,10 +22,10 @@
             <template v-slot:activator="{ props, isActive }">
                 <v-badge
                     v-bind="props"
-                    :content="alerts.unreadAlertsCountText"
+                    :content="alerts.unreadFilteredAlertsCountText"
                     color="error"
                     location="bottom end"
-                    :model-value="alerts.unreadAlertsCount > 0"
+                    :model-value="alerts.unreadFilteredAlertsCount > 0"
                 >
                     <MintButton icon="mdi-bell" variant="nav" :active="isActive" />
                 </v-badge>
