@@ -1,6 +1,6 @@
 <template>
     <div class="list-wrapper">
-        <li class="kudos-item">
+        <li class="kudos-item" ref="target">
             <MintKudosItemHeader :kudos="props.kudos" />
             <v-divider class="my-2" />
             <MintKudosItemMessage :kudos="props.kudos" />
@@ -14,20 +14,37 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import { DateTime } from 'luxon'
 import MintKudosItemHeader from '@/components/MintKudos/MintKudosItemHeader.vue'
 import MintKudosItemMessage from '@/components/MintKudos/MintKudosItemMessage.vue'
 import MintKudosItemFooter from '@/components/MintKudos/MintKudosItemFooter.vue'
 import MintKudosItemReactions from '@/components/MintKudos/MintKudosItemReactions.vue'
 import { useLanguagesStore } from '@/store/languages'
+import { useIntersectionObserver } from '@vueuse/core'
+import { useMintKudosStore } from './MintKudosStore'
 
 const props = defineProps(['kudos'])
 const languages = useLanguagesStore()
+const store = useMintKudosStore()
+
 const date = computed(() => {
     return props.kudos.announcement_date
         ? DateTime.fromSQL(props.kudos.announcement_date).toRelative()
         : languages.label('LBL_KUDOS_UNPUBLISHED')
+})
+
+const target = useTemplateRef<HTMLDivElement>('target')
+const targetIsVisible = ref(false)
+
+useIntersectionObserver(target, ([entry]) => {
+    targetIsVisible.value = entry?.isIntersecting || false
+})
+
+watch(targetIsVisible, (isVisible) => {
+    if (isVisible && props.kudos.is_read === '0') {
+        store.readKudosAlerts(props.kudos)
+    }
 })
 </script>
 

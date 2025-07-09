@@ -89,5 +89,4 @@ class NewsApi
         }
         return $return;
     }
-
 }

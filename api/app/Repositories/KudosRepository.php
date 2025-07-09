@@ -68,6 +68,7 @@ class KudosRepository extends EntityRepository
                     , kudos.announced
                     , kudos.announcement_date
                     , kudos.private
+                    , alerts.is_read
                     , JSON_OBJECT(
                         'id', assigned_user_data.id,
                         'first_name', assigned_user_data.first_name,
@@ -103,10 +104,18 @@ class KudosRepository extends EntityRepository
                 LEFT JOIN users reaction_user
                     ON reaction_user.id = reactions.assigned_user_id
                     AND reaction_user.deleted = 0
+                LEFT JOIN alerts
+                    ON alerts.parent_id = kudos.id
+                    AND alerts.parent_type = 'Kudos'
+                    AND alerts.assigned_user_id = '{$current_user->id}'
                 WHERE kudos.deleted = 0
                 $list_type_where
                 GROUP BY kudos.id
                 ORDER BY
+                    CASE
+                        WHEN alerts.is_read = 0 THEN 1
+                        ELSE 2 
+                    END,
                     CASE
                         WHEN kudos.announcement_date IS NULL THEN 1
                         ELSE 2
