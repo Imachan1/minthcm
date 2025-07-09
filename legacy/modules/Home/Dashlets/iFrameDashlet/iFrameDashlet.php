@@ -82,10 +82,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
              $this->url = $options['url'];
          }
 
-         if (isSelfRequest($this->url)) {
-            $this->url = '';
-        }
-
          if (empty($options['height']) || (int)$options['height'] < 1) {
              $this->height = 315;
          } else {
