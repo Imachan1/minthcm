@@ -1,0 +1,1 @@
+import{l as t,e as a,n,w as c,x as _,_ as l}from"./index.dbdc5b12.js";const d=t({__name:"bool.list",props:{defs:{},data:{}},setup(o){const e=o,s=a(()=>!!e.data.bean[e.defs.name]);return(p,r)=>(n(),c(_,{class:"mint-bool-field",icon:s.value?"mdi-check":"mdi-close"},null,8,["icon"]))}});const m=l(d,[["__scopeId","data-v-bb702661"]]);export{m as default};
