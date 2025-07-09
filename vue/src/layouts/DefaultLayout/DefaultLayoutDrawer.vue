@@ -35,7 +35,9 @@ const drawerContentRef = ref<any>(null)
 const activeDrawer = computed(() => bundle.drawers.find((drawer: any) => drawer.key === ux.drawer))
 
 function handleScroll() {
-    activeDrawer.value?.onScroll(drawerContentRef.value)
+    if (typeof activeDrawer.value?.onScroll === 'function') {
+        activeDrawer.value.onScroll(drawerContentRef.value)
+    }
 }
 </script>
 

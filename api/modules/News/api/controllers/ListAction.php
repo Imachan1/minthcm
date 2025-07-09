@@ -54,16 +54,23 @@ class ListAction
                 u.id author_id,
                 concat_ws(' ', u.first_name, u.last_name) author_name,
                 u.photo author_photo,
-                JSON_ARRAYAGG(JSON_OBJECT(
-					'type', r.reaction_type,
-                    'user_id', r.assigned_user_id,
-                    'id', r.id
-				)) reactions_json
+                IF(r.id IS NULL, NULL, JSON_ARRAYAGG(JSON_OBJECT(
+                    'type', r.reaction_type,
+                    'user', JSON_OBJECT(
+                        'id', r.assigned_user_id,
+                        'name', CONCAT_WS(' ', ru.first_name, ru.last_name)
+                    )
+                ))) reactions_json
             FROM news n
             LEFT JOIN users u
 				ON u.deleted = 0 AND u.id = n.created_by
-			LEFT JOIN reactions r
-				ON r.deleted = 0 AND r.parent_type = 'News' AND r.parent_id = n.id
+                LEFT JOIN reactions r
+                    ON r.parent_type = 'News'
+                    AND r.parent_id = n.id
+                    AND r.deleted = 0
+                LEFT JOIN users ru
+                    ON ru.id = r.assigned_user_id
+                    AND ru.deleted = 0
             WHERE
                 n.deleted = 0
                 AND n.id IN (SELECT news_id FROM usersnews WHERE assigned_user_id = '{$current_user->id}' AND deleted = 0)
