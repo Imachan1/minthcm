@@ -29,7 +29,7 @@
             </template>
         </div>
         <div class="fields-container">
-            <div v-for="(row, i) in props.data.fields" class="row" :key="i + store.view + store.inlineEditField">
+            <div v-for="(row, i) in fixedRows" class="row" :key="i + store.view + store.inlineEditField">
                 <div v-for="n in store.columns" :key="n - 1">
                     <Field
                         v-if="row[n - 1] && !(row[n - 1].readonly && store.view === 'edit')"
@@ -68,11 +68,27 @@ const props = defineProps<Props>()
 const store = useRecordViewStore()
 const languages = useLanguagesStore()
 const modules = useModulesStore()
-
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_DETAILS', modules.currentModule?.name)
 })
-
+const fixedRows = computed(() => {
+    const rows = props.data.fields || []
+    const fixedRows = []
+    rows.forEach((row) => {
+        const newRow = []
+        row.forEach((field) => {
+            if (field.type === 'fieldset' && field.properties?.fields && store.view === 'edit') {
+                newRow.push(...field.properties.fields)
+            } else {
+                newRow.push(field)
+            }
+        })
+        while (newRow.length) {
+            fixedRows.push(newRow.splice(0, store.columns))
+        }
+    })
+    return fixedRows
+})
 const saveStatus = ref<'' | 'saving' | 'saved' | 'error'>('')
 const saveButtonStates = {
     '': {
@@ -98,9 +114,11 @@ const inlineEditBtnClicked = (event: string) => {
 }
 
 const edit = () => {
+    store.bean.dirtyFields.clear()
     store.view = 'edit'
     store.inlineEditField = ''
     store.inlineEditFieldSaving = ''
+    saveStatus.value = ''
 }
 
 const cancel = () => {
@@ -113,6 +131,15 @@ const cancel = () => {
 }
 
 const save = async () => {
+    if (saveStatus.value === 'saving') {
+        return
+    }
+    if (store.bean.dirtyFields?.size === 0) {
+        store.view = 'detail'
+        store.inlineEditField = ''
+        store.inlineEditFieldSaving = ''
+        return
+    }
     const prevInlineEditField = store.inlineEditField
     if (prevInlineEditField) {
         store.inlineEditFieldSaving = prevInlineEditField
@@ -121,16 +148,14 @@ const save = async () => {
     saveStatus.value = 'saving'
     const response = await store.saveBean()
     saveStatus.value = [200, 201].includes(response.status) ? 'saved' : 'error'
-    setTimeout(() => {
-        if (saveStatus.value === 'saved') {
-            store.view = 'detail'
-            store.inlineEditField = ''
-            store.inlineEditFieldSaving = ''
-        } else {
-            store.inlineEditField = prevInlineEditField
-        }
-        saveStatus.value = ''
-    }, 2000)
+    if (saveStatus.value === 'saved') {
+        store.view = 'detail'
+        store.inlineEditField = ''
+        store.inlineEditFieldSaving = ''
+    } else {
+        store.inlineEditField = prevInlineEditField
+    }
+    saveStatus.value = ''
 }
 </script>
 

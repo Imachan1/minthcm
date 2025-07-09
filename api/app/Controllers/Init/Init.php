@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,7 +52,9 @@ use MintHCM\Api\Controllers\Init\Preferences;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use User;
+use MintHCM\Utils\ConstantsLoader;
 
+#[\AllowDynamicProperties]
 class Init
 {
     protected $preferences_controller, $languages_controller, $module_init_controller, $mintRebuildID, $request_language, $user_id;
@@ -106,11 +108,11 @@ class Init
             || $response_body['user']['id'] !== $this->user_id
             || false !== $response_body['user']['preferences']['reload_module_menu'] || $this->request_language !== $_SESSION["authenticated_user_language"]
         ) {
-            [$modules_menu, $modules_data] = $this->getModules();
-            $response_body['menu_modules'] = $modules_menu;
-            $response_body['modules'] = $modules_data;
+        [$modules_menu, $modules_data] = $this->getModules();
+        $response_body['menu_modules'] = $modules_menu;
+        $response_body['modules'] = $modules_data;
         $response_body['quick_create'] = $this->getQuickCreate($modules_menu);
-            $response_body['legacy_views'] = $this->getLegacyViews($modules_data);
+        $response_body['legacy_views'] = $this->getLegacyViews($modules_data);
         }
         if ($only_minimum_data) {
             $response_body['acls'] = $this->module_init_controller->getACLs();
@@ -178,7 +180,7 @@ class Init
     private function getQuickCreate($modules_menu)
     {
         chdir('../api');
-        $modules = include "constants/quick_create.php";
+        $modules = ConstantsLoader::getConstants('quick_create');
         $response = array();
 
         if (!is_array($modules)) {
@@ -199,31 +201,49 @@ class Init
 
     private function getLegacyViews($modules_data)
     {
-        $legacy_views = include "constants/legacy_views.php";
+        $legacy_views = ConstantsLoader::getConstants('legacy_views');
         chdir('../legacy');
         foreach ($modules_data as $module => $data) {
-            if (
-                (
-                    !array_key_exists($module, $legacy_views)
-                    || !isset($legacy_views[$module]['list'])
-                )
-                && (
-                    file_exists('modules/' . $module . '/metadata/eslistviewdefs.php')
-                    || file_exists('custom/modules/' . $module . '/metadata/eslistviewdefs.php')
-                )
-            ) {
-                $legacy_views[$module] = [
-                    'list' => false,
-                ];
-            }
+            $this->processESListViewConfig($module, $legacy_views);
+            $this->processRecordViewConfig($module, $legacy_views);
         }
         chdir('../api');
         return $legacy_views;
     }
 
+    private function processESListViewConfig(string $module, array &$legacy_views): void
+    {
+        if (!$this->isModuleConfigured($module, $legacy_views, 'list') && $this->checkMetadataFiles($module, 'eslist')) {
+            $legacy_views[$module]['list'] = false;
+        }
+    }
+
+    private function processRecordViewConfig(string $module, array &$legacy_views): void
+    {
+        if (!$this->checkMetadataFiles($module, 'record')) {
+            $legacy_views[$module]['record'] = true;
+        }
+    }
+
+    private function isModuleConfigured(string $module, array $config, string $view): bool
+    {
+        return (
+            array_key_exists($module, $config)
+            && isset($config[$module][$view])
+        );
+    }
+
+    private function checkMetadataFiles(string $module, string $view): bool
+    {
+        return (
+            file_exists('modules/' . $module . '/metadata/' . $view . 'viewdefs.php')
+            || file_exists('custom/modules/' . $module . '/metadata/' . $view . 'viewdefs.php')
+        );
+    }
+
     private function getMenuForAllModules($modules_data, $modules)
     {
-        global $beanList, $current_user;
+        global $beanList;
         foreach ($beanList as $key => $module) {
             if (!array_key_exists($key, $modules_data)) {
                 $modules_data[$key] = $this->module_init_controller->getModuleData($key);
@@ -236,7 +256,7 @@ class Init
     {
         if (isset($_SESSION['mintRebuildID']) && !empty($_SESSION['mintRebuildID'])) {
             return $_SESSION['mintRebuildID'];
-        }
+}
         chdir('../legacy');
         $mintRebuildFile = fopen("cache/mintRebuild", 'r');
         if (!$mintRebuildFile) {

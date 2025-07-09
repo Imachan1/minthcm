@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -93,8 +93,14 @@ $searchdefs[$module_name] = array(
                     'additional_params' => 'SpentTime-category',
                     'include' => 'include/utils/getDictionary.php'],
             ),
-            array
-            (
+            array(
+                'name' => 'organizational_unit',
+                'label' => 'LBL_SPENT_TIME_ORGANIZATIONAL_UNIT',
+                'type' => 'enum',
+                'function' => ['name' => 'getCompanies', 
+                'include' => 'include/utils/getCompanies.php'],
+            ),
+            array(
                 'name' => 'assigned_user_id',
                 'label' => 'LBL_ASSIGNED_TO',
                 'type' => 'enum',

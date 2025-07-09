@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -71,7 +71,7 @@ $mod_strings = array(
     'LBL_RELATIONSHIP_WORKPLACES_ID' => 'Workplace ID',
     'LBL_LINKED_USERS_TITLE' => 'Employees',
     'LNK_NEW_RECORD' => 'Create Allocation',
-    'LNK_LIST' => 'View Allocations',
+    'LNK_LIST' => 'Allocations',
     'LBL_ERR_WORKPLACE_PERIODS' => 'You can not select this workplace because it is occupied in the chosen period.',
     'LBL_ERR_WORKPLACE_STATUS' => 'Status or mode of selected workplace do not match with current allocation.',
 );

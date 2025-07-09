@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -54,7 +54,9 @@ use Slim\Exception\HttpBadRequestException;
 use MintHCM\Api\Controllers\Init\Preferences;
 use MintHCM\Api\Controllers\MetaController;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use MintHCM\Utils\ConstantsLoader;
 
+#[\AllowDynamicProperties]
 class Module
 {
     const VIEW_META = [
@@ -71,8 +73,8 @@ class Module
         $this->module_meta_controller = new MetaController();
         $this->preferences_controller = new Preferences($entityManager);
         $this->sugar_view = new \SugarView();
-        $this->modules_icons = include "constants/module_icons.php";
-        $this->action_icons = include "constants/menu_icons.php";
+        $this->modules_icons = ConstantsLoader::getConstants('module_icons');
+        $this->action_icons = ConstantsLoader::getConstants('menu_icons');
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response

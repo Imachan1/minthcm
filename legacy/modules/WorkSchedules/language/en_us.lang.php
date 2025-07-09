@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -89,7 +89,7 @@ $mod_strings = array(
     'LBL_REMOVE' => 'Remove',
     'LBL_REMOVE_ALL_RECURRENCES' => 'Delete all cycles',
     'LBL_REPEAT_COUNT' => 'Cycles Count',
-    'LBL_REPEAT_DOW' => 'in',
+    'LBL_REPEAT_DOW' => 'on',
     'LBL_REPEAT_END' => 'End',
     'LBL_REPEAT_END_AFTER' => 'after',
     'LBL_REPEAT_END_BY' => 'by',
@@ -142,4 +142,6 @@ $mod_strings = array(
     'LBL_DEPUTY_ID' => 'Deputy (ID)',
     'LBL_LEAVE_ALERT' => "%s added a/an %s on %s.",  
     'LBL_ACCEPT' => 'Accept',
+    'LBL_PERIODICITY_ERROR' => 'Please select days on which the Work Schedule should be repeated.',
+    'LBL_WORKSCHEDULE_ACCEPTED_NOTIFICATION' => 'Your Work Schedule %s has been accepted.',
 );

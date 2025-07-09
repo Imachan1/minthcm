@@ -8,8 +8,8 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,8 +46,8 @@
 require_once 'include/Notifications/Notification.php';
 require_once 'include/Notifications/NotificationPlugin.php';
 
-class NotificationManager
-{
+#[\AllowDynamicProperties]
+class NotificationManager {
 
     const PLUGINS_DIRECTORY = "include/Notifications/plugins";
 
@@ -79,7 +79,7 @@ class NotificationManager
                 continue;
             }
 
-            include $dir_path . '/' . $file;
+            include_once $dir_path . '/' . $file;
             $class_name = self::getClassFromFile($file);
             $plugin = new $class_name;
             if ($plugin instanceof NotificationPlugin) {
@@ -151,6 +151,39 @@ class NotificationManager
     {
         global $db;
         $db->query("DELETE FROM alerts WHERE type='webpush' AND is_read=1 AND DATE(date_entered) = DATE( DATE_SUB( NOW() , INTERVAL 30 DAY ) )");
+    }
+
+    public function getPluginsForManagement()
+    {
+        $plugins = [];
+        foreach($this->plugins_collection as $plugin_class) {
+            $plugin = new $plugin_class;
+            if ($plugin->canBeManagedByUser()) {
+                $plugins[$plugin->getType()] = translate($plugin->getLabel());
+            }
+        }
+
+        return $plugins;
+    }
+
+    public function getNotificationsPreferences($user): array
+    {
+        $preferences = [];
+        $notifications = $this->getPluginsForManagement();
+
+        foreach($notifications as $type => $name) {
+            $preference = $user->getPreference('notification_' . $type);
+            if($preference === null) {
+                $preference = '1';
+                $user->setPreference('notification_' . $type, '1', 0, 'global');
+            }
+            $preferences[$type] = [
+                'notification' => $preference,
+                'name' => $name
+            ];
+        }
+
+        return $preferences;
     }
 
 }

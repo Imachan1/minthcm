@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class NewsDisplayDateUpdater {
 
    const LIMIT = 4;
@@ -56,7 +57,7 @@ class NewsDisplayDateUpdater {
    protected function getNewsIds() {
       global $db;
       $results = array();
-      $sql = "SELECT id FROM news WHERE news_type = 'reminder' AND news_status = 'published' AND (display_date IS NULL OR display_date = '' OR display_date < CURDATE() - INTERVAL 30 DAY) AND deleted = 0 ORDER BY display_date ASC LIMIT " . self::LIMIT;
+      $sql = "SELECT id FROM news WHERE news_type = 'reminder' AND news_status = 'published' AND (display_date IS NULL OR display_date < CURDATE() - INTERVAL 30 DAY) AND deleted = 0 ORDER BY display_date ASC LIMIT " . self::LIMIT; // MintHCM #129887
       $result = $db->query($sql);
       while ( $row = $db->fetchByAssoc($result) ) {
          $results[] = $row['id'];

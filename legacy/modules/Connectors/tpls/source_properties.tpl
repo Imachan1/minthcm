@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -60,7 +60,14 @@
 {/if}
 </td>
 <td class="dataLabel" width="65%">
-<input type="text" id="{$source_id}_{$name}" name="{$source_id}_{$name}" size="75" value="{$value}"></td>
+{* MintHCM #133185 start *}
+{if 'private_key' == $name}
+    <textarea id="{$source_id}_{$name}" name="{$source_id}_{$name}" rows="10" cols="75">{$value}</textarea>
+{else}
+    <input type="text" id="{$source_id}_{$name}" name="{$source_id}_{$name}" size="75" value="{$value}">
+{/if}
+{* MintHCM #133185 end *}
+</td>
 </tr>
 {/foreach}
 {if $hasTestingEnabled}

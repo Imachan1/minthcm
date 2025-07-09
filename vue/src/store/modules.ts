@@ -61,6 +61,23 @@ export interface ModuleMetadata {
     RecordView: any
 }
 
+interface SubpanelColumn {
+    name: string
+    label: string
+    type: string
+    usage?: string
+}
+
+export interface ModuleMetadata {
+    Subpanels: {
+        [key: string]: {
+            properties: { [key: string]: string | number }
+            columns: null | { [key: string]: SubpanelColumn }
+        }
+    }
+    RecordView: any
+}
+
 export interface FieldVardef {
     name: string
     type: string
@@ -71,6 +88,12 @@ export interface FieldVardef {
     options_colors?: string
     default?: string
     readonly?: boolean
+    properties?: PropertiesObject
+}
+
+interface PropertiesObject {
+    separator: string
+    fields: FieldVardef[]
 }
 
 export const useModulesStore = defineStore('modules', () => {
@@ -106,7 +129,7 @@ export const useModulesStore = defineStore('modules', () => {
         return modules
     })
 
-    const currentModule = computed(() => {        
+    const currentModule = computed(() => {
         const url = useUrlStore()
         const moduleName = route.params.module ?? url.module
         if (moduleName && typeof moduleName === 'string') {

@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 /**
  *
@@ -8,9 +10,9 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,23 +55,29 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
-class OpportunitiesViewEdit extends ViewEdit {
+#[\AllowDynamicProperties]
+class OpportunitiesViewEdit extends ViewEdit
+{
+    public function __construct()
+    {
+        parent::__construct();
+        $this->useForSubpanel = true;
+    }
 
- 	function __construct(){
- 		parent::__construct();
- 		$this->useForSubpanel = true;
- 	}
 
- 	function display() {
-		global $app_list_strings;
-		$json = getJSONobj();
-		$prob_array = $json->encode($app_list_strings['sales_probability_dom']);
-		$prePopProb = '';
- 		if(empty($this->bean->id) && empty($_REQUEST['probability'])) {
-		   $prePopProb = 'document.getElementsByName(\'sales_stage\')[0].onchange();';
-		}
 
-$probability_script=<<<EOQ
+
+    public function display()
+    {
+        global $app_list_strings;
+        $json = getJSONobj();
+        $prob_array = $json->encode($app_list_strings['sales_probability_dom']);
+        $prePopProb = '';
+        if (empty($this->bean->id) && empty($_REQUEST['probability'])) {
+            $prePopProb = 'document.getElementsByName(\'sales_stage\')[0].onchange();';
+        }
+
+        $probability_script=<<<EOQ
 	<script>
 	prob_array = $prob_array;
 	document.getElementsByName('sales_stage')[0].onchange = function() {
@@ -85,7 +93,7 @@ $probability_script=<<<EOQ
 	</script>
 EOQ;
 
-	    $this->ss->assign('PROBABILITY_SCRIPT', $probability_script);
- 		parent::display();
- 	}
+        $this->ss->assign('PROBABILITY_SCRIPT', $probability_script);
+        parent::display();
+    }
 }

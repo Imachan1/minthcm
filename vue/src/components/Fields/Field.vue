@@ -6,6 +6,7 @@
             :defs="defs"
             :label="label"
             :modelValue="modelValue"
+            :hidePencil="hidePencil"
             :class="`${view}-field-container`"
             @update:modelValue="(v) => $emit('update:modelValue', v)"
             @inlineEditBtnClicked="(fieldName: string) => $emit('inlineEditBtnClicked', fieldName)"
@@ -16,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, computed } from 'vue'
+import { defineProps, defineAsyncComponent, computed } from 'vue'
 import { FieldVardef } from '@/store/modules'
 import { fieldConfig } from '../Fields/Field.config'
 
@@ -26,10 +27,10 @@ interface Props {
     data?: any
     modelValue?: any
     label?: string
+    hidePencil?: boolean
+    disabled?: boolean
 }
-
 const props = defineProps<Props>()
-
 const resolvedFieldType = computed(() => {
     const type = props.defs?.type?.trim() ?? ''
     if (fieldConfig.allowedTypes[props.view].includes(type)) {

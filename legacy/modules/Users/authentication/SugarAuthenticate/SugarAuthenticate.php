@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,6 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * based on the users validation
  *
  */
+#[\AllowDynamicProperties]
 class SugarAuthenticate
 {
     public $userAuthenticateClass = 'SugarAuthenticateUser';
@@ -381,7 +382,7 @@ class SugarAuthenticate
                 } else {
                     // match class C IP addresses
                     for ($i = 0; $i < 3; $i ++) {
-                        if ($session_parts[$i] == $client_parts[$i]) {
+                        if ($session_parts[$i] === $client_parts[$i]) {
                             $classCheck = 1;
                             continue;
                         } else {

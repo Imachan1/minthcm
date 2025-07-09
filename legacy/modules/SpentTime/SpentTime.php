@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,6 +47,7 @@ require_once 'include/DateFunctions/DateFormatter.php';
 include_once 'include/ViewTools/Expressions/VTFormulaParser.php';
 require_once 'modules/WorkSchedules/RelHooks.php';
 
+#[\AllowDynamicProperties]
 class SpentTime extends Basic
 {
 
@@ -241,7 +242,8 @@ class SpentTime extends Basic
             case 'delete':
                 if (!$current_user->is_admin && $this->load_relationship('workschedules')) {
                     $beans = $this->workschedules->getBeans();
-                    if (count($beans) && array_shift(array_values($beans))->status === 'closed') {
+                    $beans_value_arr = array_values($beans);
+                    if ((is_countable($beans) ? count($beans) : 0) && array_shift($beans_value_arr)->status === 'closed') {
                         $result = false;
                     }
                 }

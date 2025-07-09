@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -51,10 +51,12 @@ use DBManager;
 use DBManagerFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Api\Entities\UserPreferences;
+use MintHCM\Utils\LuxonMapper;
 use PDO;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 
+#[\AllowDynamicProperties]
 class Preferences
 {
     protected $entityManager;
@@ -138,8 +140,8 @@ class Preferences
     public function getUserPreferences()
     {
         return array(
-            'date_format' => $this->user_preferences['global']['datef'] ?? '',
-            'time_format' => $this->user_preferences['global']['timef'] ?? '',
+            'date_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['datef'] ?? ''),
+            'time_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['timef'] ?? ''),
             'name_format' => $this->user_preferences["global"]["default_locale_name_format"] ?? '',
         );
     }
@@ -171,4 +173,5 @@ class Preferences
             throw ($e);
         }
     }
+
 }

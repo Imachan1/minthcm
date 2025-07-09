@@ -41,6 +41,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+#[\AllowDynamicProperties]
 class OutboundEmailAccountsController extends SugarController
 {
     public function action_EditView() {
@@ -55,7 +56,7 @@ class OutboundEmailAccountsController extends SugarController
             return;
         }
 
-        if (!empty($this->bean) && $type === 'user' && $this->bean->checkPersonalAccountAccess()) {
+        if (!empty($this->bean) && $type === 'user' && $this->bean->hasAccessToPersonalAccount()) {
             $this->hasAccess = true;
         }
     }

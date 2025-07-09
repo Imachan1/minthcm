@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -51,6 +51,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
+#[\AllowDynamicProperties]
 class JsonBodyParserMiddleware implements MiddlewareInterface
 {
     public function process(Request $request, RequestHandler $handler): Response
@@ -63,7 +64,13 @@ class JsonBodyParserMiddleware implements MiddlewareInterface
                 $request = $request->withParsedBody($contents);
             }
         }
-
+        
+        if (strstr($contentType, 'application/json') && empty($contents)) {
+            $contents = json_decode((string)$request->getBody(), true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $request = $request->withParsedBody($contents);
+            }
+        }
         return $handler->handle($request);
     }
 }

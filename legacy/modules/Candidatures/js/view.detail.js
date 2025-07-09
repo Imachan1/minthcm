@@ -154,9 +154,9 @@ convertToEmployee = {
             async: false,
             success: function (id) {
                 if (convert_type == "createEmployee") {
-                    window.location.href = `index.php?module=Employees&return_module=Employees&action=DetailView&record=${id}`;
+                    window.open(`index.php?module=Employees&return_module=Employees&action=DetailView&record=${id}`, "_top");
                 } else if (convert_type == "createUser") {
-                    window.location.href = `index.php?module=Users&return_module=Users&action=DetailView&record=${id}`;
+                    window.open(`index.php?module=Users&return_module=Users&action=DetailView&record=${id}`, "_top");
                 }
             },
             error: function (jqXHR, exception) {

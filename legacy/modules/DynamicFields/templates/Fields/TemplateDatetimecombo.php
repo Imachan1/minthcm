@@ -9,9 +9,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,6 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('modules/DynamicFields/templates/Fields/TemplateRange.php');
 
+#[\AllowDynamicProperties]
 class TemplateDatetimecombo extends TemplateRange
 {
     public $type = 'datetimecombo';
@@ -149,9 +150,9 @@ class TemplateDatetimecombo extends TemplateRange
             $_REQUEST['default'] = $_REQUEST['defaultDate'].'&'.$_REQUEST['defaultTime'];
 
             $defaultTime = $_REQUEST['defaultTime'];
-            $hours = substr($defaultTime, 0, 2);
-            $minutes = substr($defaultTime, 3, 2);
-            $meridiem = substr($defaultTime, 5, 2);
+            $hours = substr((string) $defaultTime, 0, 2);
+            $minutes = substr((string) $defaultTime, 3, 2);
+            $meridiem = substr((string) $defaultTime, 5, 2);
             if (empty($meridiem)) {
                 if ($hours == '00') {
                     $hours = 12;

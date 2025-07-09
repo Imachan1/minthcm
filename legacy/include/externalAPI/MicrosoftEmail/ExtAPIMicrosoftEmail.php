@@ -21,6 +21,7 @@ use Microsoft\Graph\Model;
 /**
  * ExtAPIMicrosoft
  */
+#[\AllowDynamicProperties]
 class ExtAPIMicrosoftEmail extends ExternalAPIBase
 {
     public $supportedModules = array('OutboundEmail', 'InboundEmail');

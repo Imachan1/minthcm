@@ -3,6 +3,7 @@ require_once('include/ListView/ListViewSmarty.php');
 require_once('modules/AOS_PDF_Templates/formLetter.php');
 
 
+#[\AllowDynamicProperties]
 class AccountsListViewSmarty extends ListViewSmarty
 {
     public function __construct()

@@ -16,9 +16,15 @@
 <link rel="stylesheet" type="text/css" href="k/css/spicecrm-theme/resources/spicecrm-theme-all-debug.css" />
 <link rel="stylesheet" type="text/css" href="k/css/ext6_override.css">
 <!--script type="text/javascript" src="k/extjs6/resources/theme-gray/theme-gray-debug.js"></script-->
-<script type="text/javascript" src="modules/KReports/js/KReporterCommon.js?{php}rand(100, 900){/php}"></script>
-<script type="text/javascript" src="modules/KReports/js/KReporterDesigner.js?{php}rand(100, 900){/php}"></script>
-<div style="width: 100%;height:calc(100vh - 110px)" id="kreportdesigner"></div>
-
-
+<script type="text/javascript" src="modules/KReports/js/KReporterCommon.js?{$SCRIPT_ID}"></script>
+<script type="text/javascript" src="modules/KReports/js/KReporterDesigner.js?{$SCRIPT_ID}"></script>
+<!-- eVolpe Suite8 #116492 START -->
+<!--<div style="width: 100%;height:calc(100vh - 110px)" id="kreportdesigner"></div>-->
+{literal}
+<script>
+    $(".action-buttons").css("display","none");
+</script>
+{/literal}
+<div style="width: 100%;height:900px" id="kreportdesigner"></div>
+<!-- eVolpe Suite8 #116492 END -->
 

@@ -8,10 +8,12 @@ use Symfony\Component\Yaml\Yaml;
 
 require_once 'lib/Search/ElasticSearch/ElasticSearchVardefsReader.php';
 
+#[\AllowDynamicProperties]
 class MappingsGenerator
 {
     protected $metadata_file = 'eslistviewdefs.php';
     protected $output_file_path = 'lib/Search/ElasticSearch/defaultParams.yml';
+    protected $json_file_path = '../api/lib/Search/ElasticSearch/defaultParams.json';
     protected $not_standard_fields = [
         'name' => 'name.name',
         'first_name' => 'name.first',
@@ -30,6 +32,12 @@ class MappingsGenerator
         'primary_address_street' => 'address.primary.street',
         'primary_address_country' => 'address.primary.country',
         'phone_mobile' => 'phone.mobile',
+        'employee_id' => 'employee_id',
+        'employee_name' => 'employee_name',
+        'offboarding_id' => 'offboarding_id',
+        'offboarding_name' => 'offboarding_name',
+        'parent_id' => 'parent.id',
+        'parent_name' => 'parent.name',
     ];
 
     // From vardefs to elastic
@@ -104,7 +112,13 @@ class MappingsGenerator
             $key = !empty($data['es_module']) ? $data['es_module'] : $module['module'];
 
             foreach ($fields_to_map as $field) {
-                if ($defs[$field]['source'] != "non-db") {
+                if (
+                    $defs[$field]['source'] != "non-db" 
+                    || (
+                        ( $defs[$field]['type'] == 'relate' || $defs[$field]['type'] == 'parent' )
+                        && !empty($this->not_standard_fields[$field])
+                    )
+                ) {
                     $es_type_name = $this->type_mapping[$defs[$field]['type']] ?? 'text';
                     $es_type = $this->types[$es_type_name];
 
@@ -112,7 +126,8 @@ class MappingsGenerator
                         $mappings = $this->handleNotStandardField($this->not_standard_fields[$field], $mappings, $key, $es_type);
                     } else if (!empty($defs[$field])) {
                         // else if because script does not work well for fields: search_name, recr_contact_agree oraz current_user_only
-                        $mappings['mappings'][$key]['properties'][$field] = $this->getPropertyMappingConfig($defs[$field]);
+                        $index_mapping = $key . '__' . $field;
+                        $mappings['mappings'][$key]['properties'][$index_mapping] = $this->getPropertyMappingConfig($defs[$field]);
                     }
                 }
             }
@@ -152,6 +167,7 @@ class MappingsGenerator
         }
 
         $this->parseMappingsToYaml($mappings);
+        $this->parseMappingsToJson($mappings);
     }
 
     protected function includesAtMostPrimaryKey(array $fields): bool
@@ -189,16 +205,27 @@ class MappingsGenerator
         file_put_contents($this->output_file_path, $yaml);
     }
 
+    protected function parseMappingsToJson($mappings)
+    {
+        $json = json_encode($mappings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        if ($json === false) {
+            throw new \RuntimeException('Failed to encode mappings to JSON: ' . json_last_error_msg());
+        }
+        file_put_contents($this->json_file_path, $json);
+    }
+
     protected function handleNotStandardField($es_field, $mappings, $key, $es_type)
     {
         $es_field_parts = explode('.', $es_field);
-        $count = count($es_field_parts);
+        $count = is_countable($es_field_parts) ? count($es_field_parts) : 0;
         $sub_mappings = &$mappings['mappings'][$key];
         foreach ($es_field_parts as $es_field_part) {
-            if (!isset($sub_mappings['properties'][$es_field_part])) {
-                $sub_mappings['properties'][$es_field_part] = [];
+            $index_mapping = $key . '__' . $es_field_part;
+
+            if (!isset($sub_mappings['properties'][$index_mapping])) {
+                $sub_mappings['properties'][$index_mapping] = [];
             }
-            $sub_mappings = &$sub_mappings['properties'][$es_field_part];
+            $sub_mappings = &$sub_mappings['properties'][$index_mapping];
             $count--;
             if ($count == 0) {
                 $sub_mappings = $es_type;

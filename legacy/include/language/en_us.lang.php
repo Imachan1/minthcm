@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -209,7 +209,7 @@ $app_list_strings = array(
         'Candidates' => 'Candidate',
         'Candidatures' => 'Candidature',
         'Ideas' => 'Idea',
-        'Rooms' => 'Room',
+    	'Rooms' => 'Room',
         'Allocations' => 'Allocation',
         'Workplaces' => 'Workplace',
         'Positions' => 'Position',
@@ -778,6 +778,12 @@ $app_list_strings = array(
         'Active' => 'Active',
         'Inactive' => 'Inactive',
     ],
+
+    'dom_email_body_filtering_option' => [
+        'multi' => 'Multi Word Search',
+        'single' => 'Single Word Search',
+    ],
+
     'dom_email_types' => array(
         'out' => 'Sent',
         'archived' => 'Archived',
@@ -1177,8 +1183,8 @@ $app_strings = array(
     'LBL_NO_DATA' => 'No Data',
     'LBL_ROLE' => 'Role',
     'LBL_ROLES' => 'Roles',
-    'LBL_ROOM' => 'Room',
-    'LBL_ROOMS' => 'Rooms',
+    'LBL_ROOM' => 'Room', 
+    'LBL_ROOMS' => 'Rooms', 
     'LBL_ROUTING_FLAGGED' => 'flag set',
     'LBL_ROUTING_TO' => 'to',
     'LBL_ROUTING_TO_ADDRESS' => 'to address',
@@ -1194,6 +1200,8 @@ $app_strings = array(
     'LBL_EMAIL_ACCOUNTS_SMTPUSER' => 'SMTP Username',
     'LBL_EMAIL_ACCOUNTS_SMTPDEFAULT' => 'Default',
     'LBL_EMAIL_WARNING_MISSING_USER_CREDS' => 'Warning: Missing username and password for outgoing mail account.',
+    'LBL_OAUTH_CONNECTION_NOT_SET' => 'Please set an External OAuth Connection.',
+    'LBL_EMAIL_PASSWORD_NOT_SET' => 'Warning: A password has not been set.',
     'LBL_EMAIL_WARNING_MISSING_CREDS' => 'Warning: Missing credentials',
     'LBL_EMAIL_ACCOUNTS_SUBTITLE' => 'Set up Mail Accounts to view incoming emails from your email accounts.',
     'LBL_EMAIL_ACCOUNTS_OUTBOUND_SUBTITLE' => 'Provide SMTP mail server information to use for outgoing email in Mail Accounts.',
@@ -1287,7 +1295,7 @@ $app_strings = array(
         null,
         '.gif',
         ''
-    ) . 'Folders',
+        ) . 'Folders',
     'LBL_EMAIL_FOLDERS_SHORT' => SugarThemeRegistry::current()->getImage(
         'icon_email_folder',
         'align=absmiddle border=0',
@@ -1524,6 +1532,7 @@ $app_strings = array(
     'LBL_BROWSER_TITLE' => 'MintHCM - Open Source HCM system',
     'LBL_BY' => 'by',
     'LBL_CALL' => 'Call',
+    'LBL_CALL_1' => 'Call',
     'LBL_CALLS' => 'Calls',
     'LBL_CAMPAIGNS_SEND_QUEUED' => 'Send Queued Campaign Emails',
     'LBL_SUBMIT_BUTTON_LABEL' => 'Submit',
@@ -1659,7 +1668,7 @@ $app_strings = array(
     'LBL_NEW_BUTTON_LABEL' => 'Create',
     'LBL_NEW_BUTTON_TITLE' => 'Create',
     'LBL_NEXT_BUTTON_LABEL' => 'Next',
-    'LBL_NEWSLETTER' => 'Newsletter',
+    'LBL_NEWSLETTER' => 'Newsletter', 
     'LBL_NEWSLETTERS' => 'Newsletters',
     'LBL_NONE' => '--None--',
     'LBL_NOTE' => 'Note',
@@ -1897,7 +1906,7 @@ $app_strings = array(
     'LBL_TRAINING' => 'Support Forum',
     'LBL_TRAININGS' => 'Trainings',
     'LBL_TRANSPORTATION' => 'Transportation',
-    'LBL_TRANSPORTATIONS' => 'Transportations',
+    'LBL_TRANSPORTATIONS' => 'Transportations', 
     'ERR_MSSQL_DB_CONTEXT' => 'Changed database context to',
     'ERR_MSSQL_WARNING' => 'Warning:',
     //Meta-Data framework
@@ -2011,6 +2020,7 @@ $app_strings = array(
     'LBL_DURATION_HOURS' => 'hours',
     'LBL_DURATION_MINUTES' => 'minutes',
     'LBL_MINS' => 'Min.',
+    'LBL_HRS' => 'Hr.',
     //Calendar widget labels
     'LBL_CHOOSE_MONTH' => 'Choose Month',
     'LBL_ENTER_YEAR' => 'Enter Year',
@@ -2128,6 +2138,7 @@ $app_strings = array(
     'LBL_CONFIRM_OPT_IN_SENT_DATE' => 'Confirmed Opt In Sent Date',
     'LBL_CONFIRM_OPT_IN_FAIL_DATE' => 'Confirmed Opt In Fail Date',
     'LBL_CONFIRM_OPT_IN_TOKEN' => 'Confirm Opt In Token',
+    'LBL_CONFIRM_WORK_SCHEDULE' => 'Confirm Work Schedule',
     'ERR_OPT_IN_TPL_NOT_SET' => 'Opt In Email Template is not configured. Please set up in email settings.',
     'LBL_SECURITYGROUP_NONINHERITABLE' => 'Non-Inheritable Organizational Unit',
     'LBL_PRIMARY_GROUP' => "Primary Organizational Unit",
@@ -2154,7 +2165,7 @@ $app_strings = array(
     . 'of an record that already exists.',
     'LBL_FORM_WITH_ERRORS' => 'There were errors on the form.',
     'LBL_REMINDER' => 'Contract Renewal Reminder',
-    'LBL_KNOWLEDGE' => 'Knowledge',
+    'LBL_KNOWLEDGE' => 'Knowledge', 
     'LBL_RECRUITMENT' => 'Recruitment',
     'LBL_ACTIVITIES' => 'Activities',
     'LBL_NAV_RECRUITMENT_EB' => 'Recruitment',
@@ -4032,16 +4043,17 @@ $app_list_strings['appraisals_status_list'] = array(
 $app_list_strings['group_type_list'] = array(
     'standard' => 'Standard',
     'private' => 'Private',
+    'company' => 'Company',
     'business_unit' => 'Business Unit',
     'department' => 'Department',
     'team' => 'Team',
     'other' => 'Other',
 );
 $app_list_strings['workplace_room_status'] = array(
-    '' => '',
-    'active' => 'Active',
-    'inactive' => 'Inactive',
-    'planned' => 'Planned',
+        '' => '',
+        'active' => 'Active',
+        'inactive' => 'Inactive',
+        'planned' => 'Planned',
 );
 
 $app_list_strings['daily_working_time_list'] = array(
@@ -4357,7 +4369,7 @@ $app_strings['LBL_NAV_TIME_TRACKING'] = 'Time Management';
 $app_strings['LBL_NAV_RECRUITMENT_EB'] = 'HR';
 
 $app_strings['LBL_ABSENCES_IN_OFFICE_DASHLET'] = 'Absences in Office';
-$app_strings['LBL_WORKSCHEDULE'] = 'Work Schedule';
+$app_strings['LBL_WORKSCHEDULE'] = 'Work Schedule'; 
 $app_strings['LBL_MY_DAILY_WORK_SCHEDULE_DASHLET'] = 'My Daily Work Schedule';
 $app_strings['LBL_MY_COMPETENCIES_DASHLET'] = 'My Competencies';
 $app_strings['LBL_RECRUITMENTS_CANDIDATES_FOR_THE_SOURCE_AY_DASHLET'] = 'Recruitment - Candidates for source / aY';
@@ -4400,28 +4412,28 @@ $app_strings['LBL_CERTIFICATES'] = 'Certificates';
 $app_strings['LBL_CANNOT_CREATE_CALENDAR_EVENTS'] = 'You cannot create events for that calendar';
 
 $app_list_strings['record_type_display_comments'] = array(
-    'News' => 'News',
+   'News' => 'News',
 );
-
+ 
 $app_list_strings['parent_type_display_comments'] = array(
-    'News' => 'News',
+   'News' => 'News',
 );
-
+ 
 $app_strings['LBL_COMMENT'] = "Comment";
 $app_strings['LBL_COMMENTS'] = "Comments";
 $app_strings['LBL_PANEL_COMMENTS'] = "Comments";
 $app_strings['LBL_SEND_BUTTON_LABEL'] = "Send";
 
 $app_list_strings['parent_type_display_reactions'] = array(
-    'News' => 'News',
+   'News' => 'News',
 );
 
 $app_list_strings['reaction_type_list'] = array(
-    'like' => '👍',
-    'love' => '❤️',
-    'party' => '🥳',
-    'laugh' => '😆',
-    'wow' => '😲',
+   'like' => '👍',
+   'love' => '❤️',
+   'party' => '🥳',
+   'laugh' => '😆',
+   'wow' => '😲',
 );
 
 $app_list_strings['parent_type_display_for_candidatures'] = array(
@@ -4431,7 +4443,7 @@ $app_list_strings['parent_type_display_for_candidatures'] = array(
 
 $app_strings['LNK_KANBAN'] = 'Board';
 $app_strings['ERR_KANBAN_COL_ERROR'] = 'Column for Kanban is not defined. Property "column" is missing for kanbanviewdefs.';
-$app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed';
+$app_strings['LBL_KANBAN_SAVING_ERROR'] = 'Record saving failed'; 
 
 $app_list_strings['kanban_module_list'] = array(
     'Tasks' => 'Tasks',
@@ -4483,16 +4495,16 @@ $app_strings['LBL_WORKPLACES'] = 'Workplaces';
 $app_strings['LBL_SPENTTIME'] = 'Spent Time';
 $app_strings['LBL_SPENTTIMES'] = 'Spent Times';
 $app_strings['LBL_TRY_AGAIN'] = 'Try Again';
-$app_strings['LBL_APPRAISAL'] = 'Appraisal';
-$app_strings['LBL_APPRAISALS'] = 'Appraisals';
-$app_strings['LBL_AOR_REPORT'] = 'Report';
-$app_strings['LBL_AOR_REPORTS'] = 'Reports';
-$app_strings['LBL_EMPLOYEECERTIFICATE'] = 'Employee Certificate';
-$app_strings['LBL_EMPLOYEECERTIFICATES'] = 'Employee Certificates';
-$app_strings['LBL_EMPLOYEEROLE'] = 'Role';
-$app_strings['LBL_EMPLOYEEROLES'] = 'Roles';
-$app_strings['LBL_BENEFIT'] = 'Benefit';
-$app_strings['LBL_BENEFITS'] = 'Benefits';
+$app_strings['LBL_APPRAISAL'] = 'Appraisal'; 
+$app_strings['LBL_APPRAISALS'] = 'Appraisals'; 
+$app_strings['LBL_AOR_REPORT']  = 'Report';
+$app_strings['LBL_AOR_REPORTS']  = 'Reports';
+$app_strings['LBL_EMPLOYEECERTIFICATE']  = 'Employee Certificate';
+$app_strings['LBL_EMPLOYEECERTIFICATES']  = 'Employee Certificates';
+$app_strings['LBL_EMPLOYEEROLE']  = 'Role';
+$app_strings['LBL_EMPLOYEEROLES']  = 'Roles';
+$app_strings['LBL_BENEFIT']  = 'Benefit';
+$app_strings['LBL_BENEFITS']  = 'Benefits';
 $app_strings['LBL_WORKINGMONTH'] = 'Working Month';
 $app_strings['LBL_WORKINGMONTHS'] = 'Working Months';
 $app_strings['LBL_NEVER'] = 'Never';
@@ -4834,6 +4846,30 @@ $app_list_strings['dom_email_status_colored'] = array(
     'unread' => $yellow_status,
 );
 // ColoredEnum Lists END
+
+$app_list_strings['source_list'] = array(
+    '' => '',
+    'Base' => 'Database of Candidates',
+    'CareersLibrary' => 'Career\'s Office',
+    'CodersLab' => 'CodersLab',
+    'EmployeeCommendation' => 'Employee Recommendation',
+    'GrowthPoland' => 'Growth Poland',
+    'Indeed' => 'Indeed',
+    'Jooble' => 'Jooble',
+    'LoboHR' => 'Lobo HR',
+    'Milado' => 'Milado',
+    'Pracapl' => 'Praca.pl',
+    'Pracujpl' => 'Pracuj.pl',
+    'Website' => 'Website',
+    'facebook' => 'Facebook',
+    'goldenline' => 'GoldenLine',
+    'justjoin.it' => 'justjoin.it',
+    'linkedin' => 'LinkedIn',
+    'nofluffjobs' => 'No Fluff Jobs',
+    'not_applicable' => 'Not Applicable',
+    'other' => 'Other',
+ );
+ 
 $app_strings['LBL_YOU_RECEIVED_KUDOS'] = '<b>You received</b> kudos!';
 $app_strings['LBL_USER_RECEIVED_KUDOS'] = 'received kudos from <b>you</b>!';
 $app_strings['LBL_GIVE_KUDOS'] = 'GIVE KUDOS';
@@ -4874,6 +4910,11 @@ $app_list_strings['contract_type_list'] = array(
     'other' => 'Other',
 );
 
+
+$app_strings['LBL_DASHBOARD'] = 'Dashboard';$app_strings['LNK_ACCEPT'] = 'Accept';
+
+$app_strings['LBL_ACCEPT_INLINE'] = "Accept";
+
 $app_strings['LBL_DASHBOARD'] = 'Dashboard';
 
 $app_strings['LBL_RN_108842_SETOAUTH2MAILINGCONFIGURATION'] = 'Configure oauth2 mailing';
@@ -4889,6 +4930,16 @@ $app_list_strings['source_list'] = array(
     'not_applicable' => 'Not Applicable',
     'other' => 'Other',
 );
+
+$app_strings['LBL_ES_ELASTIC_SEARCH_ENGINE'] = 'Elastic Search Engine';
+
+
 $app_strings['LBL_ACCEPT_INLINE'] = "Accept";
 $app_strings['LBL_NOTIFICATIONS_NONE'] = 'None';
-$app_strings['LBL_ES_ELASTIC_SEARCH_ENGINE'] = 'Elastic Search Engine';
+
+$app_strings['twsdashlet_show'] = 'Show';
+$app_strings['twsdashlet_edit'] = 'Edit';
+$app_strings['twsdashlet_add_time'] = 'Add time';
+$app_strings['LBL_WORKSCHEDULE_LEAVE_CREATED'] = 'Get notified if Leave is created by your subordinate';
+$app_strings['LBL_WORKSCHEDULES_DAY_VALID'] = 'Get notified if not closed Work Schedule exists';
+$app_strings['LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS'] = 'Get notified if Work Schedule is not planned for two weeks';

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
 *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,6 +52,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('include/Dashlets/DashletGenericChart.php');
 
 
+#[\AllowDynamicProperties]
 class OutcomeByMonthDashlet extends DashletGenericChart
 {
     public $obm_ids = array();
@@ -226,7 +227,7 @@ class OutcomeByMonthDashlet extends DashletGenericChart
             id: '$canvasId',
             x: 10,
             y: 20,
-            text: 'Opportunity size in ${currency_symbol}1$thousands_symbol',
+            text: 'Opportunity size in {$currency_symbol}1$thousands_symbol',
             options: {
                 font: 'Arial',
                 bold: true,
@@ -265,6 +266,7 @@ EOD;
 
     protected function prepareChartData($data, $currency_symbol, $thousands_symbol)
     {
+        $chart = [];
         //Use the  lead_source to categorise the data for the charts
         $chart['labels'] = array();
         $chart['data'] = array();

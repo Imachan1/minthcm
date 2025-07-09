@@ -8,8 +8,8 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,10 +44,11 @@
  */
 require_once 'include/Notifications/Notification.php';
 
-abstract class NotificationPlugin
-{
+#[\AllowDynamicProperties]
+abstract class NotificationPlugin {
 
     protected $type;
+    protected $label;
 
     public function getNewNotification()
     {
@@ -80,6 +81,21 @@ abstract class NotificationPlugin
     public function getType()
     {
         return $this->type;
+    }
+
+    public function canBeManagedByUser()
+    {
+        return true;
+    }
+
+    public function setLabel($label) 
+    {
+        $this->label = $label;
+    }
+
+    public function getLabel()
+    {
+        return $this->label;
     }
 
 }

@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -483,7 +483,7 @@
                     <slot>{$MOD.LBL_GOOGLE_API_TOKEN}:</slot>&nbsp;{sugar_help text=$MOD.LBL_GOOGLE_API_TOKEN_HELP}
                 </td>
                     <td width="20%">
-                    <slot>Current API Token is: <span style="color:{$GOOGLE_API_TOKEN_COLOR}">{$GOOGLE_API_TOKEN}</span> &nbsp;&nbsp;<input style="display:{$GOOGLE_API_TOKEN_ENABLE_NEW}" class="btn btn-primary btn-sm" id="google_gettoken" type="button" value="{$GOOGLE_API_TOKEN_BTN}" onclick="window.open('{$GOOGLE_API_TOKEN_NEW_URL}', '_self')" /></slot>
+                    <slot>Current API Token is: <span style="color:{$GOOGLE_API_TOKEN_COLOR}">{$GOOGLE_API_TOKEN}</span> &nbsp;&nbsp;<input style="display:{$GOOGLE_API_TOKEN_ENABLE_NEW}" class="btn btn-primary btn-sm" id="google_gettoken" type="button" value="{$GOOGLE_API_TOKEN_BTN}" onclick="window.open('{$GOOGLE_API_TOKEN_NEW_URL}', '_blank')" /></slot>
                 </td>
                 <td width="63%">
                     <slot>&nbsp;</slot>
@@ -564,7 +564,29 @@
         </table>
     </div>
 </div>
+<div class="user-tab-content">
+    <div id="notifications_management" style="display:{$HIDE_FOR_GROUP_AND_PORTAL}">
+        <h4>{$MOD.LBL_ENABLE_NOTIFICATIONS}</h4>
+        <table class="edit view" border="0" cellpadding="0" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th width="60%" style="text-align:left">{$MOD.LBL_ENABLE_NOTIFICATION_TYPE}</th>
+                    <th width="40%" style="text-align:center">{$MOD.LBL_ENABLE_NOTIFICATION}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$notificationsPreferences key="notification_type" item="notification"}
+                    <tr>
+                        <td width="60%" align="left" style="padding-left:10px;">{$notification.name}</td>
+                        <td width="40%" align="center"><input type="checkbox" name="notification_{$notification_type}" value="1" {if $notification.notification}checked{/if}></td>
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    </div>
 </div>
+</div>
+
 
 <script type="text/javascript">
 

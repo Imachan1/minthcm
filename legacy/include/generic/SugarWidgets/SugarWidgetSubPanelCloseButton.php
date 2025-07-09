@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,6 +50,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 //TODO Rename this to close button field
+#[\AllowDynamicProperties]
 class SugarWidgetSubPanelCloseButton extends SugarWidgetField
 {
     public function displayList(&$layout_def)
@@ -78,6 +79,18 @@ class SugarWidgetSubPanelCloseButton extends SugarWidgetField
                 }
                 break;
             /* MintHCM #114934 END */
+            case 'Meetings':
+                $meeting = BeanFactory::getBean("Meetings", $record_id);
+                if(strtolower($meeting->status) === "held"){
+                    return '';
+                }
+                break;
+            case 'Calls':
+                $call = BeanFactory::getBean("Calls", $record_id);
+                if(strtolower($call->status) === "held"){
+                    return '';
+                }
+                break;
         }
         
         if ($layout_def['EditView']) {

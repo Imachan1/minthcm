@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,6 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/charts/Charts.php');
 
+#[\AllowDynamicProperties]
 class Chart_lead_source_by_outcome
 {
     public $modules = array('Opportunities');
@@ -56,9 +57,12 @@ class Chart_lead_source_by_outcome
     {
     }
 
+
+
+
     public function draw($extra_tools)
     {
-        global $app_list_strings, $current_language, $sugar_config, $currentModule, $action,$theme;
+        global $app_list_strings, $current_language, $sugar_config, $currentModule, $action,$theme, $mod_strings;
         $current_module_strings = return_module_language($current_language, 'Charts');
 
 
@@ -75,10 +79,10 @@ class Chart_lead_source_by_outcome
 
         global $current_user;
         $tempx = $current_user->getPreference('lsbo_lead_sources');
-        if (!empty($lsbo_lead_sources) && count($lsbo_lead_sources) > 0 && !isset($_REQUEST['lsbo_lead_sources'])) {
+        if (!empty($lsbo_lead_sources) && (is_countable($lsbo_lead_sources) ? count($lsbo_lead_sources) : 0) > 0 && !isset($_REQUEST['lsbo_lead_sources'])) {
             $GLOBALS['log']->fatal("user->getPreference('lsbo_lead_sources') is:");
             $GLOBALS['log']->fatal($tempx);
-        } elseif (isset($_REQUEST['lsbo_lead_sources']) && count($_REQUEST['lsbo_lead_sources']) > 0) {
+        } elseif (isset($_REQUEST['lsbo_lead_sources']) && (is_countable($_REQUEST['lsbo_lead_sources']) ? count($_REQUEST['lsbo_lead_sources']) : 0) > 0) {
             $tempx = $_REQUEST['lsbo_lead_sources'];
             $current_user->setPreference('lsbo_lead_sources', $_REQUEST['lsbo_lead_sources']);
             $GLOBALS['log']->fatal("_REQUEST['lsbo_lead_sources'] is:");
@@ -87,7 +91,7 @@ class Chart_lead_source_by_outcome
             $GLOBALS['log']->fatal($current_user->getPreference('lsbo_lead_sources'));
         }
         //set $datax using selected sales stage keys
-        if (!empty($tempx) && count($tempx) > 0) {
+        if (!empty($tempx) && (is_countable($tempx) ? count($tempx) : 0) > 0) {
             foreach ($tempx as $key) {
                 $datax[$key] = $app_list_strings['lead_source_dom'][$key];
                 array_push($selected_datax, $key);
@@ -99,10 +103,10 @@ class Chart_lead_source_by_outcome
 
         $ids =$current_user->getPreference('lsbo_ids');
         //get list of user ids for which to display data
-        if (!empty($ids) && count($ids) != 0 && !isset($_REQUEST['lsbo_ids'])) {
+        if (!empty($ids) && (is_countable($ids) ? count($ids) : 0) != 0 && !isset($_REQUEST['lsbo_ids'])) {
             $GLOBALS['log']->debug("_SESSION['lsbo_ids'] is:");
             $GLOBALS['log']->debug($ids);
-        } elseif (isset($_REQUEST['lsbo_ids']) && count($_REQUEST['lsbo_ids']) > 0) {
+        } elseif (isset($_REQUEST['lsbo_ids']) && (is_countable($_REQUEST['lsbo_ids']) ? count($_REQUEST['lsbo_ids']) : 0) > 0) {
             $ids = $_REQUEST['lsbo_ids'];
             $current_user->setPreference('lsbo_ids', $_REQUEST['lsbo_ids']);
             $GLOBALS['log']->debug("_REQUEST['lsbo_ids'] is:");
@@ -226,7 +230,7 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
             $opp = BeanFactory::newBean('Opportunities');
             $where="";
             //build the where clause for the query that matches $user
-            $count = count($user_id);
+            $count = is_countable($user_id) ? count($user_id) : 0;
             $id = array();
             if ($count>0) {
                 foreach ($user_id as $the_id) {
@@ -237,7 +241,7 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
             }
 
             //build the where clause for the query that matches $datay
-            $count = count($datay);
+            $count = is_countable($datay) ? count($datay) : 0;
             $datayArr = array();
             if ($count>0) {
                 foreach ($datay as $key=>$value) {
@@ -362,10 +366,10 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
         //get list of sales stage keys to display
 
         $tempx = $current_user->getPreference('lsbo_lead_sources');
-        if (!empty($lsbo_lead_sources) && count($lsbo_lead_sources) > 0 && !isset($_REQUEST['lsbo_lead_sources'])) {
+        if (!empty($lsbo_lead_sources) && (is_countable($lsbo_lead_sources) ? count($lsbo_lead_sources) : 0) > 0 && !isset($_REQUEST['lsbo_lead_sources'])) {
             $GLOBALS['log']->fatal("user->getPreference('lsbo_lead_sources') is:");
             $GLOBALS['log']->fatal($tempx);
-        } elseif (isset($_REQUEST['lsbo_lead_sources']) && count($_REQUEST['lsbo_lead_sources']) > 0) {
+        } elseif (isset($_REQUEST['lsbo_lead_sources']) && (is_countable($_REQUEST['lsbo_lead_sources']) ? count($_REQUEST['lsbo_lead_sources']) : 0) > 0) {
             $tempx = $_REQUEST['lsbo_lead_sources'];
             $current_user->setPreference('lsbo_lead_sources', $_REQUEST['lsbo_lead_sources']);
             $GLOBALS['log']->fatal("_REQUEST['lsbo_lead_sources'] is:");
@@ -374,7 +378,7 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
             $GLOBALS['log']->fatal($current_user->getPreference('lsbo_lead_sources'));
         }
         //set $datax using selected sales stage keys
-        if (!empty($tempx) && count($tempx) > 0) {
+        if (!empty($tempx) && (is_countable($tempx) ? count($tempx) : 0) > 0) {
             foreach ($tempx as $key) {
                 $datax[$key] = $app_list_strings['lead_source_dom'][$key];
                 array_push($selected_datax, $key);
@@ -388,10 +392,10 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
 
         $ids =$current_user->getPreference('lsbo_ids');
         //get list of user ids for which to display data
-        if (!empty($ids) && count($ids) != 0 && !isset($_REQUEST['lsbo_ids'])) {
+        if (!empty($ids) && (is_countable($ids) ? count($ids) : 0) != 0 && !isset($_REQUEST['lsbo_ids'])) {
             $GLOBALS['log']->debug("_SESSION['lsbo_ids'] is:");
             $GLOBALS['log']->debug($ids);
-        } elseif (isset($_REQUEST['lsbo_ids']) && count($_REQUEST['lsbo_ids']) > 0) {
+        } elseif (isset($_REQUEST['lsbo_ids']) && (is_countable($_REQUEST['lsbo_ids']) ? count($_REQUEST['lsbo_ids']) : 0) > 0) {
             $ids = $_REQUEST['lsbo_ids'];
             $current_user->setPreference('lsbo_ids', $_REQUEST['lsbo_ids']);
             $GLOBALS['log']->debug("_REQUEST['lsbo_ids'] is:");
@@ -408,7 +412,7 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
         $opp = BeanFactory::newBean('Opportunities');
         $where="";
         //build the where clause for the query that matches $user
-        $count = count($user_id);
+        $count = is_countable($user_id) ? count($user_id) : 0;
         $id = array();
         if ($count>0) {
             foreach ($user_id as $the_id) {
@@ -419,7 +423,7 @@ echo "<p align='center'>".$this->gen_xml($datax, $ids, $cache_file_name, $refres
         }
 
         //build the where clause for the query that matches $datay
-        $count = count($datay);
+        $count = is_countable($datay) ? count($datay) : 0;
         $datayArr = array();
         if ($count>0) {
             foreach ($datay as $key=>$value) {

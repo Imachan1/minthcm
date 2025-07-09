@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,6 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
+#[\AllowDynamicProperties]
 class TabController
 {
     public $required_modules = array('Home');
@@ -320,6 +321,16 @@ class TabController
         }
         /* MintHCM #125694 END */
         return array($display_tabs, $hide_tabs, $remove_tabs);
+    }
+
+    public function get_admin_tabs($user) {
+        if(!$user->isAdmin()) {
+            return $this->get_tabs($user);
+        }
+        global $modInvisList;
+        $tabs = $this->get_tabs($user);
+        $display_tabs = $tabs[0];
+        return [array_merge($display_tabs, self::get_key_array($modInvisList))];
     }
 
     public function restore_tabs($user)
