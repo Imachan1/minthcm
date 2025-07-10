@@ -1,6 +1,5 @@
 <?php
 
-
 namespace MintHCM\Lib\Search\ElasticSearch;
 
 use Symfony\Component\Yaml\Parser as YamlParser;
@@ -23,7 +22,7 @@ class ModulePrefixer
 
         if (isset($mappings['mappings']['properties'][$this->module . '__' . $field_parts[0]])) {
             foreach ($field_parts as $key => $part) {
-                if ($part == 'keyword') {
+                if ('keyword' == $part) {
                     continue;
                 }
                 $field_parts[$key] = $this->module . '__' . $part;
@@ -32,6 +31,8 @@ class ModulePrefixer
             $field_parts = implode('.', $field_parts);
 
             return $field_parts;
+        } else if (!str_begin($field_name, $this->module . '__')) {
+            $field_name = $this->module . '__' . $field_name;
         }
         return $field_name;
     }

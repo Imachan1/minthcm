@@ -49,12 +49,12 @@ use Elasticsearch\Common\Exceptions\InvalidArgumentException;
 use MintHCM\Data\BeanFactory;
 use MintHCM\Lib\Search\Base\SearchQuery;
 use MintHCM\Lib\Search\ElasticSearch\ElasticQueryOperatorsManager;
+use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
+use MintHCM\Utils\ConstantsLoader;
 use MintHCM\Utils\CustomLoader;
 use MintHCM\Utils\LegacyConnector;
-use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 use Symfony\Component\Yaml\Parser as YamlParser;
-
-use MintHCM\Utils\ConstantsLoader;
+use MintHCM\Lib\Search\ElasticSearch\ElasticMapperParser;
 
 class ElasticQuery extends SearchQuery
 {
@@ -89,20 +89,18 @@ class ElasticQuery extends SearchQuery
 
     protected function setSort()
     {
-        $list_config = ConstantsLoader::getConstants('list_constants');
         $field = !empty($this->params["sort_by"]) ? $this->params['sort_by']: static::DEFAULT_SORT_FIELD;
-        if (isset($list_config['sort_mappings'][$field])) {
-            $field = $list_config['sort_mappings'][$field];
-        } else if (static::DEFAULT_SORT_FIELD !== $field) {
-            $field .= self::SORT_KEYWORD;
+        if (static::DEFAULT_SORT_FIELD !== $field) {
+            $parser = ElasticMapperParser::getInstance();
+            $module_name = $this->params['type'] ?? '';
+            $field = $parser->getFieldAttributePath($module_name, $field);
         }
-        $modifier = new ModulePrefixer($this->params['type'] ?? '');
-        $field = $modifier->modify($field);
         $this->sort = array(
             $field => array(
                 "order" => !empty($this->params["sort_order"]) ? $this->params['sort_order'] : 'asc',
             ),
         );
+        return;
     }
 
     private function getIndex()
@@ -286,24 +284,26 @@ class ElasticQuery extends SearchQuery
             $search_modules = $this->search_modules;
         }
 
-        if(!isset($this->query['body']['query']['query_string']['fields'])) {
+        if (!isset($this->query['body']['query']['simple_query_string']['fields'])) {
             return;
         }
 
-        $boost_array = $this->query['body']['query']['query_string']['fields'];
+        $boost_array = $this->query['body']['query']['simple_query_string']['fields'];
 
         foreach ($search_modules as $module_name) {
             $module_bean = BeanFactory::getBean($module_name);
 
-            $mappings = $this->getDefaultMapParams($module_name);
+            $parser = ElasticMapperParser::getInstance();
+            $mappings = $parser->getDefaultMapParams($module_name);
 
             if (isset($module_bean->search_boost)) {
                 $boost_array[] = $module_name . '*^' . $module_bean->search_boost;
             }
 
             foreach ($module_bean->field_defs as $field_key => $value) {
+                $prefixer = new ModulePrefixer($module_name);
                 if (isset($value['search_boost'])) {
-                    $field_name = getSimilarIndiceKey($field_key, $mappings['mappings']['properties']);
+                    $field_name = $prefixer->modify($field_key);
 
                     if (is_array($mappings['mappings']['properties'][$field_name]['properties'])) {
                         $boost_array[] = $field_name . '.*^' . $value['search_boost'];
@@ -313,22 +313,12 @@ class ElasticQuery extends SearchQuery
                 }
             }
         }
-        $this->query['body']['query']['query_string']['fields'] = $boost_array;
+        $this->query['body']['query']['simple_query_string']['fields'] = $boost_array;
     }
 
     public static function getIndexPrefix():string
     {
         return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
     }
-    protected function getDefaultMapParams($module)
-    {
-        if (empty($this->map_config)) {
-            $file = realpath(__DIR__ . '/../../../../legacy/lib/Search/ElasticSearch/defaultParams.yml');
 
-            $parse = new YamlParser();
-            $this->map_config = $parse->parseFile($file);
-}
-
-        return ['mappings' => $this->map_config['mappings'][$module]];
-    }
 }

@@ -59,7 +59,7 @@ use UserPreference;
 #[\AllowDynamicProperties]
 class ListController
 {
-    private $request, $params, $search_result, $list_response;
+    private $request, $params, $search_result;
     protected $entityManager;
 
     const DEFAULT_SORT_BY = '_score';

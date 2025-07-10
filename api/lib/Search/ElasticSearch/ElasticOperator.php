@@ -62,8 +62,8 @@ abstract class ElasticOperator
         $field_name = array_key_first($data);
         $this->field = $field_name ?? null;
         $this->data = $data[$field_name] ?? null;
-        if (isset($list_config['fields_mappigs'][$this->field])) {
-            $this->field = $list_config['fields_mappigs'][$this->field];
+        if (isset($list_config['fields_mappings'][$this->field])) {
+            $this->field = $list_config['fields_mappings'][$this->field];
         }
         $this->not = $this->data['not'] ?? false;
         $this->boost = $this->data['boost'] ?? 1.0;

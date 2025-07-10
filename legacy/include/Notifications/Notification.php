@@ -125,6 +125,7 @@ class Notification  extends NotificationAbstractClass
 
             $webpush->setType($this->alert_bean->alert_type)->push();
         }
+        return $this;
     }
 
     public function simpleAlert($link = true,$override = array())

@@ -68,6 +68,8 @@ class ListInitController
     ];
     private $request;
     private $module, $metadata, $bean;
+    private $eslistmap = [];
+    private $mappings = [];
 
     public function __construct()
     {
@@ -194,7 +196,7 @@ class ListInitController
         $search = array_change_key_case($search, CASE_LOWER);
         foreach ($search as $field => $defs) {
             if (empty($this->bean->field_name_map[$field])) {
-                $GLOBALS['log']->fatal('[ESListView] prepareSearchDefs: brak definicji pola ' . $field);
+                $GLOBALS['log']->fatal('[ESListView] prepareSearchDefs: lack of field definition: ' . $field);
                 unset($search[$field]);
                 continue;
             }
@@ -240,7 +242,7 @@ class ListInitController
         $columns = array_change_key_case($columns, CASE_LOWER);
         foreach ($columns as $field => $defs) {
             if (empty($this->bean->field_name_map[$field])) {
-                $GLOBALS['log']->fatal('[ESListView] prepareColumnsDefs: brak definicji pola ' . $field);
+                $GLOBALS['log']->fatal('[ESListView] prepareDefsType: lack of field definition: ' . $field);
                 unset($columns[$field]);
                 continue;
             }
