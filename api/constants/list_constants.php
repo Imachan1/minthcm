@@ -102,6 +102,9 @@ return array(
             "scroll--fg" => "primary",
         ),
     ),
+    "fields_without_prefix" => array(
+        '_id'
+    ),
     "fields_mappigs" => array(
         'name' => 'name.name',
         'first_name' => 'name.first',

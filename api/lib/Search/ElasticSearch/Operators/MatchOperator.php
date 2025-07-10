@@ -68,7 +68,7 @@ class MatchOperator extends ElasticOperator
     {
         return array(
             'match' => array(
-                $prefixer->modify($this->field) => array(
+                $prefixer->modify($this->field, true) => array(
                     "query" => $this->value,
                     "operator" => $this->operator,
                 ),
