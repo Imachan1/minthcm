@@ -154,7 +154,7 @@ $viewdefs[$module_name] = array(
                 ),
                 array(
                     'facebook',
-                    'skype',
+                    'x_service',
                 ),
             ),
             'LBL_RECORDVIEW_PANEL2' => array(
