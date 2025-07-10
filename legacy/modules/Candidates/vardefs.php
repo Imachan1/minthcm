@@ -377,10 +377,10 @@ $dictionary['Candidates'] = array(
                 'enabled' => false,
             ),
         ),
-        'skype' => array(
-            'name' => 'skype',
-            'label' => 'LBL_SKYPE',
-            'vname' => 'LBL_SKYPE',
+        'x_service' => array(
+            'name' => 'x_service',
+            'label' => 'LBL_X_SERVICE',
+            'vname' => 'LBL_X_SERVICE',
             'comments' => '',
             'type' => 'varchar',
             'max_size' => '255',

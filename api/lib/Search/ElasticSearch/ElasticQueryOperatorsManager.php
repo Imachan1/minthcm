@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -47,15 +46,15 @@
 namespace MintHCM\Lib\Search\ElasticSearch;
 
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Equals;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Exists;
 use MintHCM\Lib\Search\ElasticSearch\Operators\MatchOperator;
-use MintHCM\Lib\Search\ElasticSearch\Operators\Range;
-use MintHCM\Lib\Search\ElasticSearch\Operators\Wildcard;
 use MintHCM\Lib\Search\ElasticSearch\Operators\QueryString;
-use MintHCM\Lib\Search\ElasticSearch\Operators\Terms;
+use MintHCM\Lib\Search\ElasticSearch\Operators\Range;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Term;
-use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
+use MintHCM\Lib\Search\ElasticSearch\Operators\Terms;
+use MintHCM\Lib\Search\ElasticSearch\Operators\Wildcard;
 
 #[\AllowDynamicProperties]
 class ElasticQueryOperatorsManager
@@ -97,19 +96,22 @@ class ElasticQueryOperatorsManager
         $query = [];
         foreach (self::BOOLEAN_CLAUSES as $clause) {
             if (isset($this->filters[$clause]) && is_array($this->filters[$clause])) {
+                if (is_array($this->filters[$clause])) {
                 foreach ($this->filters[$clause] as $filter) {
+                        if (is_array($filter)) {
                     foreach ($filter as $filter_type => $filter_data) {
-
                         if (empty($filter_type) || !in_array($filter_type, array_keys($this::OPERATORS_MAPPER))) {
-                throw new BadRequest400Exception();
-            }
+                                    throw new BadRequest400Exception();
+                                }
                         $class = $this::OPERATORS_MAPPER[$filter_type];
                         $operator = new $class($filter_data);
                         $data = $operator->getData(new ModulePrefixer($this->module));
                         $query[$clause][] = $data;
+                            }
+                        }
+                    }
         }
-    }
-}
+            }
         }
         if (empty($query)) {
             $this->query = [

@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
 import { defineProps, defineEmits, ref, onMounted, computed } from 'vue'
-import axios from 'axios'
 import { modulesApi } from '@/api/modules.api'
 
 const DEBOUNCE_DELAY_MS = 500

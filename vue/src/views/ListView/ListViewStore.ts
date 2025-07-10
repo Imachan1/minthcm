@@ -62,7 +62,6 @@ export const useListViewStore = defineStore('listview', () => {
     let requestCount = 0
 
     async function init() {
-        requestCount = 0
         initialLoading.value = true
         const result = await modulesApi.getListInit(getModule())
         if(module.value === result.data.module){
