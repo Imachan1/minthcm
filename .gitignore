@@ -8,6 +8,7 @@ legacy/custom/modules/*/logic_hooks.php
 legacy/custom/modules/*/Ext/Vardefs/vardefs.ext.php
 legacy/minthcm.log
 api/configs/mint/config_override.php
+api/lib/Search/ElasticSearch/defaultParams.json
 index.html
 install.log
 legacy/.htaccess
