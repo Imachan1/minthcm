@@ -90,10 +90,13 @@ class ElasticMapperParser
         $mappings = $this->getDefaultMapParams($module);
 
         $list_config = ConstantsLoader::getConstants('list_constants');
+        if (in_array($field, $list_config['fields_without_prefix'])) {
+            return $field;
+        }
+        $field = str_replace('.keyword', '', $field);
         if (isset($list_config['sort_mappings'][$field])) {
             $const_field = $list_config['sort_mappings'][$field];
         }
-
         $path_steps = $const_field ? explode('.', $const_field) : explode('.', $field);
         $path_steps = array_map(function ($n) use ($module) {
             return $module . '__' . $n;
@@ -114,7 +117,7 @@ class ElasticMapperParser
         }
         return '';
     }
-    
+
     private function findFieldPath($array, array | string $looking_for)
     {
         if (is_string($looking_for)) {

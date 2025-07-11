@@ -2,56 +2,25 @@
 
 namespace MintHCM\Lib\Search\ElasticSearch;
 
-use Symfony\Component\Yaml\Parser as YamlParser;
+use MintHCM\Lib\Search\ElasticSearch\ElasticMapperParser;
 
 class ModulePrefixer
 {
     protected $module;
-
-    private $map_config;
 
     public function __construct(string $module)
     {
         $this->module = $module;
     }
 
-    public function modify(string $field_name): string
+    public function modify(string $field_name, bool $without_keyword = false): string
     {
-        $mappings = $this->getDefaultMapParams($this->module);
-        $field_parts = explode('.', $field_name);
-
-        if (isset($mappings['mappings']['properties'][$this->module . '__' . $field_parts[0]])) {
-            foreach ($field_parts as $key => $part) {
-                if ('keyword' == $part) {
-                    continue;
-                }
-                $field_parts[$key] = $this->module . '__' . $part;
-            }
-
-            $field_parts = implode('.', $field_parts);
-
-            return $field_parts;
-        } else if (!str_begin($field_name, $this->module . '__')) {
-            $field_name = $this->module . '__' . $field_name;
+        $parser = ElasticMapperParser::getInstance();
+        $field_name = $parser->getFieldAttributePath($this->module, $field_name);
+        if($without_keyword){
+            return str_replace('.keyword', '', $field_name);
         }
         return $field_name;
     }
 
-    protected function getDefaultMapParams($module)
-    {
-        if (empty($this->map_config)) {
-            if (file_exists('lib/Search/ElasticSearch/defaultParams.json')) {
-                $this->map_config = json_decode(file_get_contents('lib/Search/ElasticSearch/defaultParams.json'), true);
-                if (json_last_error() !== JSON_ERROR_NONE) {
-                    throw new \RuntimeException('Failed to decode JSON: ' . json_last_error_msg());
-                }
-            } else {
-                $file = realpath(__DIR__ . '/../../../../legacy/lib/Search/ElasticSearch/defaultParams.yml');
-                $parse = new YamlParser();
-                $this->map_config = $parse->parseFile($file);
-            }
-        }
-
-        return ['mappings' => $this->map_config['mappings'][$module]];
-    }
 }
