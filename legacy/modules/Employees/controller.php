@@ -44,20 +44,14 @@
  */
 
 #[\AllowDynamicProperties]
-class EmployeesController extends SugarController {
+class EmployeesController extends SugarController
+{
 
-   public function action_editview() {
+    public function action_editview()
+    {
       global $current_user;
-      if (
-         is_admin($GLOBALS['current_user']) ||
-         // MintHCM #123323 Users|Employees ACLAccess START
-         //  $_REQUEST['record'] == $current_user->id ||
-         //  ACLAction::userHasAccess($current_user->id, $this->module, 'edit')
-         $_REQUEST['record'] == $current_user->id 
-         || empty($_REQUEST['record'])
-         || (!empty($this->bean->created_by) && $this->bean->created_by == $current_user->id)
-         // MintHCM #123323 Users|Employees ACLAccess END
-      ) {
+        $has_access = $this->bean->ACLAccess('edit', $this->bean->isOwner($current_user->id), 'not_set');
+        if ($has_access) {
          $this->view = 'edit';
       } else {
          sugar_die("Unauthorized access to employees.");
@@ -65,7 +59,8 @@ class EmployeesController extends SugarController {
       return true;
    }
 
-   protected function action_delete() {
+    protected function action_delete()
+    {
       if ( $_REQUEST['record'] != $GLOBALS['current_user']->id && $GLOBALS['current_user']->isAdminForModule('Users') ) {
          $u = new User();
          $u->retrieve($_REQUEST['record']);
@@ -85,5 +80,4 @@ class EmployeesController extends SugarController {
    {
        $this->view = "showduplicates";
    }
-
 }
