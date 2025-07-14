@@ -2213,6 +2213,7 @@ $app_strings = array(
     'LBL_ESLIST_NEXT_YEAR' => 'Next year',
     'LBL_ESLIST_ABOVE_N_MONTHS_AGO' => 'Above N months ago',
     'LBL_ESLIST_IN_THE_PAST' => 'In the past',
+    'LBL_ESLIST_IN_THE_FUTURE' => 'In the future',
     'LBL_ESLIST_N_MONTHS' => 'Months number',
     'LBL_ESLIST_AFTER' => 'After',
     'LBL_ESLIST_BEFORE' => 'Before',

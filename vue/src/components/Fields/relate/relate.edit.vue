@@ -54,13 +54,14 @@
 
 <script setup lang="ts">
 import { defineProps, computed, ref, defineEmits } from 'vue'
-import { FieldVardef } from '@/store/modules'
+import { FieldVardef, useModulesStore } from '@/store/modules'
 import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import { useLanguagesStore } from '@/store/languages'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import { modulesApi } from '@/api/modules.api'
 import he from 'he'
+import getFilters from '@/utils/qsOperators'
 
 interface Props {
     defs: FieldVardef
@@ -77,6 +78,7 @@ const DEBOUNCE_TIME = 500
 
 const languages = useLanguagesStore()
 const popupsStore = usePopupsStore()
+const modulesStore = useModulesStore()
 const menuOpen = ref(false)
 const items = ref(
     props.data.bean[props.defs.id_name]
@@ -108,20 +110,29 @@ async function fetchItems(e) {
         isLoading.value = true
         menuOpen.value = true
         const val = e?.target?.value ?? props.data.bean[props.defs.name] ?? ''
+        const predefinedFilters = getFilters(
+            modulesStore.modules[props.defs.module].vardefs,
+            Array.isArray(props.defs.filters) ? props.defs.filters : [],
+        )
+        const filters = {
+            ...predefinedFilters,
+            must: [
+                ...(predefinedFilters.must || []),
+                {
+                    wildcard: {
+                        name: val + '*',
+                    },
+                },
+            ],
+        }
+
+        debugger
         if (debounceTimeout) {
             clearTimeout(debounceTimeout)
         }
         debounceTimeout = window.setTimeout(async () => {
-            const response = await modulesApi.getListData(props.defs.module, '', {
-                must: [
-                    {
-                        wildcard: {
-                            name: val + '*',
-                        },
-                    },
-                ],
-            })
-            if (response.data?.results?.length) {
+            const response = await modulesApi.getListData(props.defs.module, '', filters)
+            if (response?.data?.results?.length) {
                 items.value = response.data.results.sort((a, b) => a.name.localeCompare(b.name, 'pl'))
             }
             isLoading.value = false
@@ -140,6 +151,7 @@ function openRelatePopup() {
             moduleName: props.defs.module,
             popupMode: 'single',
             fieldToNameArray: { id: props.defs.id_name, name: props.defs.name },
+            filterDefs: Array.isArray(props.defs.filters) ? props.defs.filters : [],
             onConfirm: (data: string | string[]) => {
                 model.value = {
                     id: data.nameToValueArray[props.defs.id_name],
