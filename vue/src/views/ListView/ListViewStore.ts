@@ -421,9 +421,7 @@ export const useListViewStore = defineStore('listview', () => {
         filterRows,
         (newFilterRows) => {
             newFilterRows.forEach((filterRow) => {
-                debugger
                 if (!filterRow.inputs && filterRow.value) {
-                    debugger
                     filterRow.inputs = buildFilterRowInputs(filterRow.field, filterRow.operator, filterRow.value)
                 }
             })

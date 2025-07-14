@@ -164,10 +164,17 @@ async function fetchRecordItems(e) {
             clearTimeout(debounceTimeout)
         }
         debounceTimeout = window.setTimeout(async () => {
-            const response = await modulesApi.getListData(props.data.bean.parent_type, '', filters)
-            if (response.data?.results?.length) {
-                items.value = response.data.results.sort((a, b) => a.name.localeCompare(b.name, 'pl'))
-            }
+            const response = await modulesApi.getListData(
+                props.data.bean.parent_type,
+                '',
+                filters,
+                0,
+                100,
+                false,
+                props.defs.rname ?? 'name',
+                'asc',
+            )
+            items.value = response.data.results
             isLoading.value = false
         }, DEBOUNCE_TIME)
     } else {
