@@ -73,13 +73,6 @@ $params[] = $role->get_summary_text();
 echo getClassicModuleTitle("ACLRoles", $params, true);
 $hide_hide_supanels = true;
 
-$buttons = [];
-$buttons[] = "<input title=\"{$app_strings['LBL_EDIT_BUTTON_TITLE']}\" accessKey=\"{$app_strings['LBL_EDIT_BUTTON_KEY']}\" class=\"btn btn-danger\" onclick=\"var _form = $('#form')[0]; _form.action.value='EditView'; _form.submit();\" type=\"submit\" name=\"button\" value=\"{$app_strings['LBL_EDIT_BUTTON']}\" />";
-$buttons[] = "<input title=\"{$app_strings['LBL_DUPLICATE_BUTTON_TITLE']}\" accessKey=\"{$app_strings['LBL_DUPLICATE_BUTTON_KEY']}\" class=\"btn btn-danger\" onclick=\"this.form.isDuplicate.value='1'; this.form.action.value='EditView'\" type=\"submit\" name=\"button\" value=\" {$app_strings['LBL_DUPLICATE_BUTTON']} \" />";
-$buttons[] = "<input title=\"{$app_strings['LBL_DELETE_BUTTON_TITLE']}\" accessKey=\"{$app_strings['LBL_DELETE_BUTTON_KEY']}\" class=\"btn btn-danger\" onclick=\"this.form.return_module.value='ACLRoles'; this.form.return_action.value='index'; this.form.action.value='Delete'; return confirm('{$app_strings['NTC_DELETE_CONFIRMATION']}')\" type=\"submit\" name=\"button\" value=\" {$app_strings['LBL_DELETE_BUTTON']} \" />";
-
-$sugar_smarty->assign('buttons', $buttons);
-
 echo $sugar_smarty->fetch('modules/ACLRoles/DetailView.tpl');
 // For subpanels the variable must be named focus;
 $focus =& $role;
