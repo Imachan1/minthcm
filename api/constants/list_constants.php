@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -102,6 +102,9 @@ return array(
             "scroll--fg" => "primary",
         ),
     ),
+    "fields_without_prefix" => array(
+        '_id'
+    ),
     "fields_mappigs" => array(
         'name' => 'name.name',
         'first_name' => 'name.first',
@@ -122,22 +125,22 @@ return array(
         'primary_address_country' => 'address.primary.country',
     ),
     "sort_mappings" => array(
-        "name" => "name.name.keyword",
-        "first_name" => "name.first.keyword",
-        "last_name" => "name.last.keyword",
+        "name" => "name.name",
+        "first_name" => "name.first",
+        "last_name" => "name.last",
         "date_entered" => "meta.created.date",
-        "created_by" => "meta.created.user_id.keyword",
+        "created_by" => "meta.created.user_id",
         "date_modified" => "meta.modified.date",
-        "modified_user_id" => "meta.modified.user_id.keyword",
-        "assigned_user_id" => "meta.assigned.user_id.keyword",
-        "modified_by_name" => "meta.modified.user_name.keyword",
-        "created_by_name" => "meta.created.user_name.keyword",
-        "assigned_user_name" => "meta.assigned.user_name.keyword",
-        "phone_mobile" => "phone.mobile.keyword",
-        "primary_address_city" => "address.primary.city.keyword",
-        "primary_address_state" => "address.primary.state.keyword",
-        "primary_address_postalcode" => "address.primary.postalcode.keyword",
-        "primary_address_street" => "address.primary.street.keyword",
-        "primary_address_country" => "address.primary.country.keyword",
+        "modified_user_id" => "meta.modified.user_id",
+        "assigned_user_id" => "meta.assigned.user_id",
+        "modified_by_name" => "meta.modified.user_name",
+        "created_by_name" => "meta.created.user_name",
+        "assigned_user_name" => "meta.assigned.user_name",
+        "phone_mobile" => "phone.mobile",
+        "primary_address_city" => "address.primary.city",
+        "primary_address_state" => "address.primary.state",
+        "primary_address_postalcode" => "address.primary.postalcode",
+        "primary_address_street" => "address.primary.street",
+        "primary_address_country" => "address.primary.country",
     ),
 );

@@ -1,5 +1,5 @@
 <template>
-    <div class="mint-date-field-detail" @keyup.enter="$emit('inlineEditSave')" @keyup.esc="$emit('inlineEditCancel')">
+    <div class="mint-date-field-detail">
         <v-text-field
             v-bind="props"
             :label="label"
@@ -26,6 +26,9 @@ import { DateTime } from 'luxon'
 import { FieldProps } from '../Field.model'
 
 const props = defineProps<FieldProps>()
+import { usePreferencesStore } from '@/store/preferences';
+
+const preferences = usePreferencesStore()
 const emit = defineEmits(['update:modelValue'])
 
 const datePickerMenu = ref(false)
@@ -35,7 +38,7 @@ const parsedValue = computed({
     get() {
         const dt = DateTime.fromSQL(model.value)
         if (dt.isValid) {
-            return dt.toFormat('dd.MM.yyyy') || ''
+            return dt.toFormat(preferences.user?.date_format || 'dd.MM.yyyy') || ''
         }
         return ''
     },
@@ -44,7 +47,7 @@ const parsedValue = computed({
         if (!newVal?.trim()) {
             model.value = ''
         }
-        const dt = DateTime.fromFormat(newVal, 'dd.MM.yyyy')
+        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'dd.MM.yyyy')
         if (dt.isValid) {
             model.value = dt.toSQLDate()
         }

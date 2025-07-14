@@ -59,7 +59,7 @@ export const useListViewStore = defineStore('listview', () => {
     const selected = ref([])
     const defaultAction = 'ESList'
     const defaultActionUrl = 'legacy/index.php?'
-    let requestCount = 0;
+    let requestCount = 0
 
     async function init() {
         initialLoading.value = true
@@ -273,7 +273,8 @@ export const useListViewStore = defineStore('listview', () => {
             const nameToValueArray: { [key: string]: string } = {}
             for (const key in relatePopup.value.data.fieldToNameArray) {
                 if (['full_name', 'name', 'last_name', 'first_name'].includes(key)) {
-                    nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] = item.full_name || item.name || item.last_name || item.first_name || ''
+                    nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] =
+                        item.full_name || item.name || item.last_name || item.first_name || ''
                 } else if (!nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] && key === 'subpanel_id') {
                     nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] = item.id
                 } else {
@@ -335,8 +336,10 @@ export const useListViewStore = defineStore('listview', () => {
 
     const itemsSelectable = computed(() => {
         return !!(
-            (mode.value === 'list' && massActions.value.length)
-            || (mode.value === 'relate' && relatePopup.value?.data?.popupMode && relatePopup.value.data.popupMode !== 'single')
+            (mode.value === 'list' && massActions.value.length) ||
+            (mode.value === 'relate' &&
+                relatePopup.value?.data?.popupMode &&
+                relatePopup.value.data.popupMode !== 'single')
         )
     })
 
