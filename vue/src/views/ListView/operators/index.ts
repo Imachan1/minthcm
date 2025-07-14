@@ -18,6 +18,7 @@ export const typeMap = {
     currency: 'numeric',
     ColoredActivityStatus: 'enum',
     ColoredEnum: 'enum',
+    name: 'text',
 }
 
 export function getAllTypesMatchingTo(baseType: string) {

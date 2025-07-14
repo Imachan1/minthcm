@@ -73,6 +73,10 @@ export default {
         label: 'LBL_ESLIST_IN_THE_PAST',
         filters: [{ op: 'range', value: { lt: 'now' } }],
     },
+    in_the_future: {
+        label: 'LBL_ESLIST_IN_THE_FUTURE',
+        filters: [{ op: 'range', value: { gt: 'now' } }],
+    },
     after: {
         label: 'LBL_ESLIST_AFTER',
         inputs: [{ type: 'date', label: 'LBL_ESLIST_DATE' }],

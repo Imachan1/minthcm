@@ -11,6 +11,7 @@
                 :error="!isValidDate"
                 hide-details
                 density="compact"
+                :disabled="disabled"
             />
         </template>
         <VueDatePicker
@@ -44,7 +45,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 const languages = useLanguagesStore();
 const emit = defineEmits(['update:modelValue'])
-const props = defineProps(['input'])
+const props = defineProps(['input', 'disabled'])
 const value = ref(props.input?.value)
 const menu = ref(false)
 const isValidDate = computed(() => {
