@@ -48,7 +48,7 @@
 class DelegationsLogicHooks {
 
    public function reformat_number(&$number) {
-      $number = number_format($number, 2, '.', ' ');
+      $number = number_format(intval($number), 2, '.', ' ');
    }
 
    public function delegations_before_pdf(&$bean, $event, $arguments) {
@@ -209,13 +209,14 @@ class DelegationsLogicHooks {
 
       $row = $bean->db->fetchByAssoc($bean->db->query($query));
       $bean->restaurant_bills_usd = (float) $row['c'];
-
       $date1 = getDateTimeObject($bean->start_date);
       $date2 = getDateTimeObject($bean->end_date);
-      $period = $date1->diff($date2);
-
-      $bean->regiments_eur = (($period->d + 1) - $bean->restaurant_bills_eur / 3) * $bean->regimen_value;
-      $bean->regiments_usd = (($period->d + 1) - $bean->restaurant_bills_usd / 3) * $bean->regimen_value;
+      if ($date1 && $date2) {
+          $period = $date1->diff($date2);
+    
+          $bean->regiments_eur = (($period->d + 1) - $bean->restaurant_bills_eur / 3) * $bean->regimen_value;
+          $bean->regiments_usd = (($period->d + 1) - $bean->restaurant_bills_usd / 3) * $bean->regimen_value;
+      }
 
       ///////////
       $bean->total_expenses = (float) $bean->other + (float) $bean->accommodation_lump_sum + (float) $bean->total_accommodation + (float) $bean->regiments + (float) $bean->transport_cost;
@@ -244,7 +245,7 @@ class DelegationsLogicHooks {
          'obtained_sum_eur',
       );
       foreach ( $values as $key => &$number ) {
-         $this->reformat_number($bean->$values[$key]);
+         $this->reformat_number($bean->$number);
       }
       $bean->end_date_plus_one = date($timedate->get_date_format($current_user), strtotime("+1 days", strtotime($bean->end_date)));
    }
