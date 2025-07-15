@@ -4,6 +4,7 @@ import { useBackendStore } from './backend'
 import { useUrlStore } from './url'
 import { useLanguagesStore } from './languages'
 import { useRoute } from 'vue-router'
+import { filterDef } from '@/utils/qsOperatorsTypes'
 
 /** backend defs */
 export interface ModulesDefs {
@@ -89,6 +90,7 @@ export interface FieldVardef {
     default?: string
     readonly?: boolean
     properties?: PropertiesObject
+    filters?: { [moduleName: string]: filterDef[] } | filterDef[]
 }
 
 interface PropertiesObject {
