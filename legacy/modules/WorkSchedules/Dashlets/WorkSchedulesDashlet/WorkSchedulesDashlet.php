@@ -41,12 +41,13 @@ require_once 'include/Dashlets/DashletGeneric.php';
 require_once 'modules/WorkSchedules/WorkSchedules.php';
 require_once 'modules/WorkSchedules/WorkSchedulesListViewSmarty.php';
 
-#[\AllowDynamicProperties]
 class WorkSchedulesDashlet extends DashletGeneric
 {
+    public $displayTpl = 'modules/WorkSchedules/tpls/WorkSchedulesDashlet.tpl';
     public function __construct($id, $def = null)
     {
-        require('modules/WorkSchedules/metadata/dashletviewdefs.php');
+        require 'modules/WorkSchedules/metadata/dashletviewdefs.php';
+
         parent::__construct($id, $def);
 
         if (empty($def['title'])) {
