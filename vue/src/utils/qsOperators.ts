@@ -1,4 +1,4 @@
-import * as operatorDefs from '../views/listview/operators'
+import * as operatorDefs from '../views/ListView/operators'
 
 import { BaseOperator, OperatorsConfig, Filter, filterDef } from './qsOperatorsTypes'
 
