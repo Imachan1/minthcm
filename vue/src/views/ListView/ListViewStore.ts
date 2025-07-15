@@ -66,7 +66,7 @@ export const useListViewStore = defineStore('listview', () => {
     async function init() {
         initialLoading.value = true
         const result = await modulesApi.getListInit(getModule())
-        if(module.value === result.data.module){
+        if (module.value === result.data.module) {
             activeFilter.value = result.data?.preferences?.activeFilter
             initialLoading.value = false
             config.value = result.data?.config
@@ -78,10 +78,14 @@ export const useListViewStore = defineStore('listview', () => {
                 "order": preferences.value?.sortOrder,
                 "key": preferences.value?.sortBy
             })
-        let saved_filters = preferences.value?.filters ?? {}
-        filters.value.filter = saved_filters?.filter ?? []
-        filters.value.must_not = saved_filters?.must_not ?? []
-        filterRows.value = JSON.parse(preferences.value?.filterRows ?? '[]') ?? []
+            let saved_filters = preferences.value?.filters ?? {}
+            filters.value.filter = saved_filters?.filter ?? []
+            filters.value.must_not = saved_filters?.must_not ?? []
+            if (typeof preferences.value?.filterRows === 'string') {
+                filterRows.value = JSON.parse(preferences.value?.filterRows ?? '[]') ?? []
+            } else {
+                filterRows.value = preferences.value?.filterRows ?? []
+            }
         }
     }
 
@@ -101,7 +105,7 @@ export const useListViewStore = defineStore('listview', () => {
             activeFilter.value
         )
         requestCount--
-        if(module.value === result.data.module && requestCount <= 0){
+        if (module.value === result.data.module && requestCount <= 0) {
             requestCount = 0;
             isLoading.value = false;
             results.value = result.data?.results
@@ -117,7 +121,7 @@ export const useListViewStore = defineStore('listview', () => {
         await modulesApi.saveListPreferences(getModule(), preferences.value)
     }
 
-    function getListActionUrl(){
+    function getListActionUrl() {
         return defaultActionUrl + 'action=' + defaultAction
     }
 
@@ -158,13 +162,13 @@ export const useListViewStore = defineStore('listview', () => {
             class: col.name == 'name' ? 'stickyColumn' : '',
         }))
         if (mode.value === 'list') {
-        headers.push({
-            value: 'actions',
-            key: 'actions',
-            title: languages.label('LBL_ESLIST_ACTIONS'),
-            sortable: false,
-            align: 'end',
-        })
+            headers.push({
+                value: 'actions',
+                key: 'actions',
+                title: languages.label('LBL_ESLIST_ACTIONS'),
+                sortable: false,
+                align: 'end',
+            })
         }
         return headers
     })
@@ -335,7 +339,7 @@ export const useListViewStore = defineStore('listview', () => {
 
     watch(options, () => {
         if (isInit.value) {
-        getData()
+            getData()
         }
     })
 
@@ -355,7 +359,7 @@ export const useListViewStore = defineStore('listview', () => {
         )
     })
 
-    function getModule(){
+    function getModule() {
         return Array.isArray(module.value) ? module.value[0] : module.value
     }
 
