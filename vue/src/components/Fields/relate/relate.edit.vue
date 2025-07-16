@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, ref, defineEmits } from 'vue'
+import { computed, ref } from 'vue'
 import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import { useLanguagesStore } from '@/store/languages'
@@ -73,17 +73,17 @@ const languages = useLanguagesStore()
 const popupsStore = usePopupsStore()
 const menuOpen = ref(false)
 const items = ref(
-    props.data.bean[props.defs.id_name]
+    props.data.bean.attributes[props.defs.id_name]
         ? [
               {
-                  id: props.data.bean[props.defs.id_name],
+                  id: props.data.bean.attributes[props.defs.id_name],
                   name: props.modelValue,
               },
           ]
         : [],
 )
 
-const currentItem = ref({ id: props.data.bean[props.defs.id_name], name: props.data.bean[props.defs.name] })
+const currentItem = ref({ id: props.data.bean.attributes[props.defs.id_name], name: props.data.bean.attributes[props.defs.name] })
 const isLoading = ref(false)
 const model = computed({
     get() {
@@ -100,7 +100,7 @@ async function fetchItems(e) {
         items.value = []
         isLoading.value = true
         menuOpen.value = true
-        const val = e?.target?.value ?? props.data.bean[props.defs.name] ?? ''
+        const val = e?.target?.value ?? props.data.bean.attributes[props.defs.name] ?? ''
         if (debounceTimeout) {
             clearTimeout(debounceTimeout)
         }

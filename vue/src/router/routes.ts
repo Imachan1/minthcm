@@ -83,6 +83,17 @@ const coreRoutes: Array<RouteRecordRaw> = [
         },
     },
     {
+        path: '/Configurator/EditView',
+        name: 'configurator',
+        component: LegacyView,
+        alias: ['/modules/Configurator/EditView'],
+        meta: {
+            isLegacy: true,
+            legacyUrl: 'legacy/index.php?module=Configurator&action=EditView',
+            auth: true,
+        },
+    },
+    {
         path: '/Calendar',
         name: 'calendar',
         component: LegacyView,

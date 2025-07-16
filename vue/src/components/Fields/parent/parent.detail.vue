@@ -4,7 +4,7 @@
             <label>{{ languages.label('LBL_ASSIGNED_TO_MODULE') }}</label>
         <div class="detail-field-row">
                 <router-link :to="urls.parent" class="relate-field">
-                    {{ props.data.bean.parent_type }}
+                    {{ props.data.bean.attributes.parent_type }}
                 </router-link>
                 <Pencil :defs="props.defs" />
             </div>
@@ -40,8 +40,8 @@ interface Props {
 const props = defineProps<Props>()
 const languages = useLanguagesStore()
 const urls = computed(() => {
-    const recordModule = props.data.bean.parent_type
-    const recordId = props.data.bean[props.defs.id_name]
+    const recordModule = props.data.bean.attributes.parent_type
+    const recordId = props.data.bean.attributes[props.defs.id_name]
     return { record: `/modules/${recordModule}/DetailView/${recordId}`, parent: `/modules/${recordModule}/ESListView` }
 })
 </script>

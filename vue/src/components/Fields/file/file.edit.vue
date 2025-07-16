@@ -1,55 +1,51 @@
 <template>
-  <div class="file-input-container">
     <v-file-input
-      class="file-input"
-      :label="props.label"
-      variant="outlined"
-      density="compact"
-      hide-details
-      show-size
-      prepend-icon=""
-      :error="props.state === 'error'"
-      @change="handleFileUpload"
-      @keyup.enter="emit('inlineEditSave')"
-      @keyup.esc="emit('inlineEditCancel')"
+        :label="props.label"
+        variant="outlined"
+        density="compact"
+        hide-details
+        :modelValue="file"
+        :error="props.state === 'error'"
+        @update:modelValue="(v) => updateModelValue(v)"
+        @click:clear="() => updateModelValue(null)"
+        :prepend-icon="isImage ? 'mdi-image' : 'mdi-paperclip'"
+        :accept="[isImage ? 'image/*' : '*']"
     />
-    <v-icon class="file-icon">mdi-paperclip</v-icon>
-  </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
+import { computed, onMounted, ref } from 'vue'
 import { FieldProps } from '../Field.model'
 
 const props = defineProps<FieldProps>()
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: any): void
-  (e: 'inlineEditSave'): void
-  (e: 'inlineEditCancel'): void
+    (e: 'update:modelValue', value: File): void
 }>()
 
-function handleFileUpload(event: Event) {
-  const input = event.target as HTMLInputElement
-  const file = input.files?.[0]
-  if (file) {
-    emit('update:modelValue', file.name)
-  }
+const file = ref<File>(getEmptyFile())
+
+onMounted(() => {
+    if (props.modelValue) {
+        file.value = new File([], props.modelValue)
+    }
+})
+
+async function updateModelValue(value: File | File[] | null) {
+    if (!value) {
+        file.value = getEmptyFile()
+    } else {
+        file.value = Array.isArray(value) ? value[0] : value
+    }
+    emit('update:modelValue', file.value)
+}
+
+const isImage = computed(() => {
+    return props.defs.type === 'image'
+})
+
+function getEmptyFile(): File {
+    return new File([], '')
 }
 </script>
 
-<style scoped lang="scss">
-.file-input-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  max-width: 100%;
-}
-
-.file-input {
-  flex-grow: 1;
-}
-
-.file-icon {
-  color: rgba(0, 0, 0, 0.54);
-  flex-shrink: 0;
-}
-</style>
+<style lang="scss" scoped></style>

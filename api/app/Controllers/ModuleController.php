@@ -119,6 +119,7 @@ class ModuleController
         $module = $this->getModuleFromRoute($request);
         chdir('../legacy/');
         $record_data = $request->getAttribute("record_data");
+        $files = $request->getAttribute("files") ?? [];;
         $record_id = $request->getAttribute("id");
         
         $current_time_zone = date_default_timezone_get();
@@ -153,6 +154,8 @@ class ModuleController
         BeanFactory::unregisterBean($bean->module_name, $bean->id);
         $bean = BeanFactory::getBean($bean->module_name, $bean->id);
         // $bean->retrieve();
+
+        $this->handleFiles($bean, $files);
 
         date_default_timezone_set($current_time_zone);
         $GLOBALS['disable_date_format'] = $disable_date_format;
@@ -314,5 +317,53 @@ class ModuleController
             ],
             'logic' => (new MintLogic($bean))->getInitial(),
         ];
+    }
+
+    protected function handleFiles($bean, $files = [])
+    {
+        global $sugar_config;
+        $current_dir = getcwd();
+        chdir('../legacy/');
+        include 'include/SugarObjects/templates/file/File.php';
+        $upload_dir = $sugar_config['upload_dir'] ?? 'upload/';
+        foreach ($files as $field_name => $base64) {
+            $field_type = $bean->field_defs[$field_name]['type'] ?? '';
+            if (empty($bean->id) || !in_array($field_type, ['file', 'image'])) {
+                continue;
+            }
+            $file_name = $bean->id;
+            if ($field_type === 'image') {
+                $file_name .= "_{$field_name}";
+            }
+            $file_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $file_name); // Sanitize file name
+            if (empty($base64)) {
+                unlink($upload_dir . $file_name);
+            } else {
+                $base64_prefix = '';
+                if (strpos($base64, 'data:') === 0) {
+                    $base64_prefix = substr($base64, 0, strpos($base64, ';base64,') + 8);
+                }
+                $base64_decoded = base64_decode(str_replace($base64_prefix, '', $base64), true);
+
+                $tmp_file = tmpfile();
+                fwrite($tmp_file, $base64_decoded);
+                $tmp_file_path = stream_get_meta_data($tmp_file)['uri'];
+
+                $_FILES[$field_name] = [
+                    'name' => $file_name,
+                    'type' => 'application/octet-stream',
+                    'tmp_name' => $tmp_file_path,
+                    'error' => 0,
+                    'size' => strlen($base64_decoded),
+                ];
+                $upload_file = new \UploadFile($field_name);
+                $upload_file->set_is_http_upload(false);
+                if ($upload_file->confirm_upload()) {
+                    $upload_file->final_move($file_name, $field_name);
+                }
+                fclose($tmp_file);
+            }
+        }
+        chdir($current_dir);
     }
 }

@@ -10,11 +10,7 @@ export interface Languages {
 }
 
 interface Placeholders {
-    [key: string]: string
-}
-
-interface Placeholders {
-    [key: string]: string
+    [key: string]: string | number
 }
 
 export const useLanguagesStore = defineStore('languages', () => {

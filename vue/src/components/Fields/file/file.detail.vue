@@ -1,42 +1,65 @@
 <template>
-  <div>
-    <label>{{ props.label }}</label>
-    <div class="detail-field-row">
-      <a v-if="props.modelValue" class="mint-file-detail-field" :href="`api/files/${props.modelValue}`" target="_blank" rel="noopener noreferrer">
-        <span>{{ props.modelValue }}</span>
-        <v-icon size="x-small">mdi-file</v-icon>
-      </a>
-      <span v-else>N/A</span>
-      <Pencil :defs="props.defs" @inlineEditBtnClicked="(fieldName: string) => $emit('inlineEditBtnClicked', fieldName)" />
+    <div>
+        <label>{{ props.label }}</label>
+        <div class="detail-field-row">
+            <template v-if="fileUrl">
+                <img v-if="isImage" :src="fileUrl" :alt="props.modelValue" />
+                <a v-else :href="fileUrl">
+                    {{ props.modelValue }}
+                </a>
+            </template>
+        </div>
     </div>
-  </div>
 </template>
 
-<script setup lang="ts">
-import Pencil from '../Pencil.vue'
+<script lang="ts" setup>
 import { FieldVardef } from '@/store/modules'
+import { computed } from 'vue'
 
 interface Props {
-  defs: FieldVardef
-  label: string
-  modelValue?: any
-  data?: any
+    defs: FieldVardef
+    label: string
+    modelValue?: any
+    data?: any
 }
 const props = defineProps<Props>()
+
+const serverFileName = computed(() => {
+    if (!props.data?.bean?.attributes?.id) {
+        return ''
+    }
+    let serverFileName = props.data.bean.attributes.id
+    if (isImage.value) {
+        serverFileName += `_${props.defs.name}`
+    }
+    return serverFileName
+})
+
+const fileUrl = computed(() => {
+    if (props.modelValue) {
+        return `legacy/index.php?entryPoint=download&type=${props.data.bean.module}&id=${serverFileName.value}&time=${new Date().toISOString()}`
+    }
+    return ''
+})
+
+const isImage = computed(() => {
+    return props.defs.type === 'image'
+})
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 label {
-  font-size: 12px;
-  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+    font-size: 12px;
+    color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
 }
-
-.mint-file-detail-field {
-  color: rgb(var(--v-theme-secondary));
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  overflow-wrap: break-word;
+img {
+    max-width: 100%;
+}
+a {
+    color: rgba(var(--v-theme-secondary), var(--v-high-emphasis-opacity));
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 </style>

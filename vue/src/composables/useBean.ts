@@ -3,9 +3,13 @@ import { computed, ref, watch } from 'vue'
 import { useLogic } from './useLogic'
 import { useDebounceFn, useThrottleFn } from '@vueuse/core'
 import { useRouter } from 'vue-router'
+import { fieldConfig } from '@/components/Fields/Field.config'
+import { useModulesStore } from '@/store/modules'
+import { useField } from '@/components/Fields/useField'
 
 export const useBean = (module: string, id: string) => {
     const router = useRouter()
+    const modulesStore = useModulesStore()
 
     const attributes = ref<{ [key: string]: any }>({})
     const syncAttributes = ref<{ [key: string]: any }>({})
@@ -14,6 +18,7 @@ export const useBean = (module: string, id: string) => {
 
     const logic = useLogic(module)
 
+    const filesToSave = ref<{ [key: string]: File }>({})
     const attributesToSave = computed(() => {
         const attributesToSave = {} as { [key: string]: any }
         Object.keys(attributes.value).forEach((fieldName) => {
@@ -38,10 +43,31 @@ export const useBean = (module: string, id: string) => {
                 return false
             }
         }
-        if (Object.keys(logic.errorMessages.value).length > 0) {
+        if (Object.keys(errorMessages.value).length > 0) {
             return false
         }
         return true
+    })
+
+    const errorMessages = computed(() => {
+        const formPanel = Object.values(modulesStore.modules[module]?.metadata.RecordView?.panels ?? {}).find(
+            (panel) => panel.component === 'MintPanelRecordDetails',
+        )
+        const formFields = formPanel?.data?.fields?.flat() ?? []
+        const errors: { [key: string]: string } = {}
+        formFields.forEach((field) => {
+            if (logic.hiddenFields.value.includes(field.name) || logic.readonlyFields.value.includes(field.name)) {
+                return
+            }
+            const value = filesToSave.value[field.name] ?? attributes.value[field.name]
+            const fieldValidationResult = useField(field, value).validate()
+            if (typeof fieldValidationResult === 'string') {
+                errors[field.name] = fieldValidationResult
+            } else if (logic.errorMessages.value[field.name]) {
+                errors[field.name] = logic.errorMessages.value[field.name]
+            }
+        })
+        return errors
     })
 
     const name = computed(() => {
@@ -64,6 +90,7 @@ export const useBean = (module: string, id: string) => {
 
     function restore() {
         attributes.value = { ...syncAttributes.value }
+        filesToSave.value = {}
         dirtyFields.value.clear()
         isDirty.value = false
         validationError.value = ''
@@ -75,6 +102,10 @@ export const useBean = (module: string, id: string) => {
 
     function updateFields(fields: { [fieldName: string]: any }) {
         Object.entries(fields || {}).forEach(([key, value]) => {
+            if (value instanceof File) {
+                filesToSave.value[key] = value
+                value = value?.name ?? ''
+            }
             attributes.value = {
                 ...attributes.value,
                 [key]: value,
@@ -117,13 +148,26 @@ export const useBean = (module: string, id: string) => {
     async function save() {
         isDirty.value = true
         if (!isValid.value) {
-            console.log('Invalid data')
             return false
         }
         isSaving.value = true
         try {
+            const files = {}
+            for (const fileField in filesToSave.value) {
+                files[fileField] = await new Promise((resolve, reject) => {
+                    if (filesToSave.value[fileField]?.size === 0) {
+                        resolve(null)
+                        return
+                    }
+                    const reader = new FileReader()
+                    reader.onload = () => resolve(reader.result)
+                    reader.onerror = reject
+                    reader.readAsDataURL(filesToSave.value[fileField])
+                })
+            }
             const response = await axios.patch(`api/${module}/Update${id ? `/${id}` : ''}`, {
                 record_data: attributesToSave.value,
+                files,
             })
             if (!id && response.data.id) {
                 router.push({
@@ -203,6 +247,7 @@ export const useBean = (module: string, id: string) => {
         isRetrieving,
         isSaving,
         isChanged,
+        errorMessages,
         init,
         updateFields,
         restore,
