@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/ESListACLHelper.php';
 
+#[\AllowDynamicProperties]
 class BaseListACL
 {
     protected $module;

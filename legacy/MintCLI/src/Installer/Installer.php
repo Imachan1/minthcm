@@ -7,6 +7,7 @@ use MintHCM\MintCLI\Services\HtaccessService;
 use MintHCM\MintCLI\Services\ServerService;
 use MintHCM\MintCLI\Services\ElasticsearchService;
 
+#[\AllowDynamicProperties]
 class Installer
 {
     const INSTANCE_DIR = './legacy';

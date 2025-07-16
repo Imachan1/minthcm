@@ -1,10 +1,11 @@
 <template>
     <div>
         <label>{{ props.label }}</label>
-        <div class="detail-field-row">
+        <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()">
             <div>{{ parsedDate }}</div>
             <Pencil
                 :defs="props.defs"
+                :hidePencil="hidePencil"
                 @inlineEditBtnClicked="(fieldName: string) => $emit('inlineEditBtnClicked', fieldName)"
             />
         </div>
@@ -27,6 +28,7 @@ interface Props {
 
 const preferences = usePreferencesStore()
 const props = defineProps<Props>()
+const emit = defineEmits(['inlineEditBtnClicked'])
 const parsedDate = computed(() => {
     const value = props.modelValue?.trim()
     if (!value) {
@@ -38,6 +40,11 @@ const parsedDate = computed(() => {
     }
     return dt.toFormat(preferences.user?.date_format || 'dd.MM.yyyy')
 })
+function startInlineEdit() {
+    if (props?.defs?.name && typeof props.defs.name === 'string' && props.defs.name.length > 0) {
+        emit('inlineEditBtnClicked', props.defs.name)
+    }
+}
 </script>
 
 <style scoped lang="scss">

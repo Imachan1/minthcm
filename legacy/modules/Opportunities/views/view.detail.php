@@ -10,7 +10,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,30 +53,31 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
+#[\AllowDynamicProperties]
+class OpportunitiesViewDetail extends ViewDetail
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-require_once('include/MVC/View/views/view.detail.php');
 
-class OpportunitiesViewDetail extends ViewDetail {
 
- 	function __construct(){
- 		parent::__construct();
- 	}
 
- 	function display() {
+    public function display()
+    {
+        $currency = BeanFactory::newBean('Currencies');
+        if (isset($this->bean->currency_id) && !empty($this->bean->currency_id)) {
+            $currency->retrieve($this->bean->currency_id);
+            if ($currency->deleted != 1) {
+                $this->ss->assign('CURRENCY', $currency->iso4217 .' '.$currency->symbol);
+            } else {
+                $this->ss->assign('CURRENCY', $currency->getDefaultISO4217() .' '.$currency->getDefaultCurrencySymbol());
+            }
+        } else {
+            $this->ss->assign('CURRENCY', $currency->getDefaultISO4217() .' '.$currency->getDefaultCurrencySymbol());
+        }
 
-	    $currency = new Currency();
-	    if(isset($this->bean->currency_id) && !empty($this->bean->currency_id))
-	    {
-	    	$currency->retrieve($this->bean->currency_id);
-	    	if( $currency->deleted != 1){
-	    		$this->ss->assign('CURRENCY', $currency->iso4217 .' '.$currency->symbol);
-	    	}else {
-	    	    $this->ss->assign('CURRENCY', $currency->getDefaultISO4217() .' '.$currency->getDefaultCurrencySymbol());
-	    	}
-	    }else{
-	    	$this->ss->assign('CURRENCY', $currency->getDefaultISO4217() .' '.$currency->getDefaultCurrencySymbol());
-	    }
-
- 		parent::display();
- 	}
+        parent::display();
+    }
 }

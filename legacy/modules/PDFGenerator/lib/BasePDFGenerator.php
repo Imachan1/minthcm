@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -56,6 +56,7 @@ if (file_exists('custom/include/tcpdf/tcpdf.php')) {
 require_once 'modules/PDFGenerator/lib/MintPDF.php';
 require_once 'modules/PDFGenerator/lib/simple_html_dom.php';
 
+#[\AllowDynamicProperties]
 class BasePDFGenerator
 {
 
@@ -119,7 +120,7 @@ class BasePDFGenerator
     protected function prepareFileName($bean, $regex)
     {
         $parts = explode('/', $regex);
-        $filename_index = count($parts) - 1;
+        $filename_index = is_countable($parts) ? count($parts) - 1 : 0;
         $filename = $parts[$filename_index];
         $file_name_tmp = !empty($filename) ? $filename : '$name';
         foreach ($bean->field_defs as $field_def) {
@@ -174,9 +175,9 @@ class BasePDFGenerator
                 $bean->fixUpFormatting();
                 $field_defs = $bean->field_defs;
                 usort($field_defs, 'BasePDFGenerator::sortByNameLength');
-                $tpl_str = $this->parseSmarty($field_defs, $tpl_str);
+                $currency = false;
                 foreach ($field_defs as &$field) {
-                    if ($field['type'] == 'currency') {
+                    if ('currency' == $field['type']) {
                         $currency = new Currency();
                         $currency->retrieve($bean->currency_id);
                     }
@@ -184,11 +185,12 @@ class BasePDFGenerator
                 }
                 $tpl_str = $this->replaceCountAndCurrency($tpl_str, $relationship, $counter, $currency);
             }
+            $tpl_str = $this->parseSmarty($field_defs, $tpl_str, $bean);
         }
         return $tpl_str;
     }
 
-    protected function parseSmarty($field_defs, $tpl_str)
+    protected function parseSmarty($field_defs, $tpl_str, $bean)
     {
 
         require_once 'include/Sugar_Smarty.php';
@@ -197,7 +199,7 @@ class BasePDFGenerator
         foreach ($field_defs as &$field) {
             $ss->assign($field['name'], $this->prepareFieldValue($field, $bean));
         }
-        $tpl_str = $ss->fetch($this->pdftemplate->getFilename());
+        $tpl_str = $ss->fetch('string:' . $tpl_str);
         return $tpl_str;
     }
 
@@ -348,10 +350,10 @@ class BasePDFGenerator
     protected function getFieldValue($name, $bean)
     {
         $r = explode('__', $name);
-        if (count($r) == 1) {
+        if (is_countable($r) ? count($r) == 1 : 0) {
             $value = $this->getFieldValueForOne($name, $bean, $r);
         }
-        if (count($r) > 1) {
+        if (is_countable($r) ? count($r) > 1 : 0) {
             $value = $this->getFieldValueForRelated($name, $bean, $r);
         }
         return $value;
@@ -394,12 +396,9 @@ class BasePDFGenerator
 
     public function prepareTplCode($pdftemplate)
     {
-        //Contrain #72254 START
-        require_once 'include/Sugar_Smarty.php';
-        $ss = new Sugar_Smarty();
-        $ss_html = $ss->fetch($pdftemplate->getFilename());
-        //Contrain #72254 END
-        $template = str_replace('&nbsp;', ' ', $ss_html);
+        $html = file_get_html($pdftemplate->getFilename());
+        $html = $html->__toString();
+        $template = str_replace('&nbsp;', ' ', $html);
 
         //$tpl2 = preg_replace(array('/<!--repeat[="_ A-Za-z0-9]+-->/e', '/<!--endrepeat-->/'), array('preg_replace(array("/<!--repeat/", "/-->/"), array("<repeat", ">"), "$0")', '</repeat>'), $template);
         $tpl2 = preg_replace_callback(array('/<!--repeat[="_ A-Za-z0-9]+-->/'), function ($matches) {
@@ -424,7 +423,7 @@ class BasePDFGenerator
     public function replaceCountAndCurrency($tpl_str, $relationship, $counter, $currency)
     {
         $tpl_str = str_replace($this->key . "COUNT_" . $relationship, $counter, $tpl_str);
-        if (isset($currency)) {
+        if (isset($currency) && $currency != false ) {
             $tpl_str = str_replace($this->key . "CURRENCY_ISO_" . $relationship, $currency->iso4217, $tpl_str);
             $tpl_str = str_replace($this->key . "CURRENCY_SYMBOL_" . $relationship, $currency->symbol, $tpl_str);
         }
@@ -488,7 +487,7 @@ class BasePDFGenerator
         if ($field['type'] == 'currency') {
             $curr = new Currency();
             $curr->retrieve($bean->currency_id);
-            $value = number_format((double) $bean->{$field['name']}, 2, $sugar_config['default_decimal_separator'], $sugar_config['default_number_grouping_seperator']);
+            $value = number_format((double) $bean->{$field['name']}, 2, isset($sugar_config['default_decimal_separator']) ? $sugar_config['default_decimal_separator'] : '.', $sugar_config['default_number_grouping_seperator']);
         } else if ($field['type'] == 'enum') {
             $value = $this->prepareEnumField($field, $bean);
         } else if ($field['type'] == 'date') {

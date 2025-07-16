@@ -15,7 +15,12 @@ if(!file_exists('.htaccess')) {
   RewriteRule ^favicon.ico$ favicon.ico [L]
   RewriteRule ^bg.jpg$ bg.jpg [L]
   
+  RewriteRule ^vcal_server.php$ legacy/vcal_server.php [L]
   RewriteRule ^ical_server.php$ legacy/ical_server.php [L]
+
+  # --- MCP endpoint ---
+  RewriteRule ^mcp/?$ mcp/index.php [L]
+  RewriteRule ^mcp/index.php$ mcp/index.php [L]
 </IfModule>";
   file_put_contents('.htaccess', $htaccess_body);
   

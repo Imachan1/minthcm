@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -101,7 +101,14 @@ class SugarFieldCurrency extends SugarFieldFloat
     {
         $value = str_replace($settings->currency_symbol,"",$value);
         
-        return $settings->float($value,$vardef,$focus);
+        $value = str_replace($settings->num_grp_sep, "", $value);       
+
+        if (isset($vardef['len'])) {
+            // check for field length
+            $value = sugar_substr($value, $vardef['len']);
+        }
+
+        return $value;
     }
 
     /**

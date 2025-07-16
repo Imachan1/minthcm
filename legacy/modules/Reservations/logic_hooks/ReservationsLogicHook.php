@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class ReservationsLogicHook {
 
    protected $supported_modules = [ 'Calls', 'Meetings' ];
@@ -67,7 +68,9 @@ class ReservationsLogicHook {
          $rel = $this->resources_rel;
          if ( $bean->load_relationship($rel) ) {
             $resources_ids = $bean->$rel->get();
-            $this->createReservations($bean, array_diff($bean->resources_arr, $resources_ids));
+            if(!empty($resources_ids)) {
+                $this->createReservations($bean, array_diff($bean->resources_arr, $resources_ids));
+            }
             if ( $bean->date_start != $bean->fetched_row['date_start'] ||
                     $bean->date_end != $bean->fetched_row['date_end'] ||
                     $bean->duration_hours != $bean->fetched_row['duration_hours'] ||

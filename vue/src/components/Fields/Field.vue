@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, computed, watch } from 'vue'
+import { defineProps, defineAsyncComponent, computed, watch } from 'vue'
 import { FieldVardef, useModulesStore } from '@/store/modules'
 import { fieldConfig } from '../Fields/Field.config'
 import { FieldState } from './Field.model'
@@ -33,7 +33,6 @@ interface Props {
     errorMessage?: string
     isDirty?: boolean
 }
-
 const props = defineProps<Props>()
 const languagesStore = useLanguagesStore()
 const modulesStore = useModulesStore()

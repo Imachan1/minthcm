@@ -108,12 +108,28 @@ class MetaController
                         unset($array[$panel][$arr_key][$k]['vname']);
                         continue;
                     }
+                    if(isset($v['type']) && $v['type'] === 'fieldset' && isset($v['properties']['fields']) && is_array($v['properties']['fields'])) {
+                        foreach ($v['properties']['fields'] as $fieldset_index => $fieldset_field) {
+                            $field_name = $fieldset_field['name'] ?? $fieldset_field;
+                            $field_data = $module_fields[$field_name];
+                            if(is_array($fieldset_field)) {
+                                $array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index] = array_merge($module_fields[$field_name], $fieldset_field);
+                                $array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index]['label'] = $array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index]['vname'];
+                                unset($array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index]['vname']);
+                            } else {
+                                $array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index] = $field_data;
+                                $array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index]['label'] = $array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index]['vname'];
+                                unset($array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index]['vname']);
+                            }
+                        }
+                        continue;
+                    }
                     if(!isset($v['name']) || empty($module_fields[$v['name']])){
                         continue;
                     }
                     if(empty($array[$panel][$arr_key][$k]['label'])){
                         $array[$panel][$arr_key][$k]['label'] = $module_fields[$v['name']]['vname'];
-                    } 
+                    }
                     unset($module_fields[$v['name']]['vname']);
                     $array[$panel][$arr_key][$k] += $module_fields[$v['name']];
                 }

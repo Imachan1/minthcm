@@ -1,7 +1,7 @@
 <template>
     <div>
         <label>{{ props.label }}</label>
-        <div class="detail-field-row">
+        <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()">
             <v-chip
                 v-if="props.defs?.options_colors"
                 class="enum-chip"
@@ -11,6 +11,7 @@
             <div v-else>{{ languages.translateListValue(props.modelValue, props.defs?.options) }}</div>
             <Pencil
                 :defs="props.defs"
+                :hidePencil="hidePencil"
                 @inlineEditBtnClicked="(fieldName: string) => $emit('inlineEditBtnClicked', fieldName)"
             />
         </div>
@@ -27,9 +28,16 @@ interface Props {
     label: string
     modelValue?: any
     data?: any
+    hidePencil?: boolean
 }
 const props = defineProps<Props>()
+const emit = defineEmits(['inlineEditBtnClicked'])
 const languages = useLanguagesStore()
+function startInlineEdit() {
+    if (props?.defs?.name && typeof props.defs.name === 'string' && props.defs.name.length > 0) {
+        emit('inlineEditBtnClicked', props.defs.name)
+    }
+}
 </script>
 
 <style scoped lang="scss">

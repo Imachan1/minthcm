@@ -21,6 +21,7 @@ import { useUrlStore } from '@/store/url'
 import { useLanguagesStore } from '@/store/languages'
 import { useACL } from '@/composables/useACL'
 import ListViewFilters from './ListViewFilters.vue'
+import { filterDef } from '@/utils/qsOperatorsTypes'
 
 const url = useUrlStore()
 const store = useListViewStore()
@@ -29,6 +30,7 @@ const languages = useLanguagesStore()
 interface Props {
     module?: string
     mode?: Mode
+    filters?: filterDef[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -47,6 +49,13 @@ onMounted(async () => {
     store.mode = props.mode
     store.module = module.value
     await store.init()
+    if (props.filters?.length) {
+        store.filterRows = props.filters
+        store.predefinedFilters = true
+        store.activeFilter = null
+    } else {
+        store.getData()
+    }
 })
 
 onUnmounted(() => {
@@ -58,6 +67,7 @@ watch(module, (newVal, oldVal) => {
         store.init()
     }
 })
+
 </script>
 
 <style scoped lang="scss">

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -55,6 +55,7 @@ require_once("include/SugarObjects/templates/company/Company.php");
 require_once __DIR__ . '/../../include/EmailInterface.php';
 
 // Account is used to store account information.
+#[\AllowDynamicProperties]
 class Account extends Company implements EmailInterface
 {
     public $field_name_map = array();
@@ -313,7 +314,7 @@ class Account extends Company implements EmailInterface
                         $joinAlias . '.' . $field_def['rname'],
                         $newWhereClause
                     );
-                    $where = str_replace($whereClause, $newWhereClause, $where);
+                    $where = str_replace($whereClause, $newWhereClause, (string) $where);
                 }
             }
         }

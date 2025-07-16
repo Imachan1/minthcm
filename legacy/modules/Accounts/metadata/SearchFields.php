@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -124,10 +124,7 @@ $searchFields['Accounts'] = array(
     'phone' =>
         array(
             'query_type' => 'default',
-            'db_field' =>
-                array(
-                    0 => 'phone_office',
-                ),
+            'db_field' => array('phone_alternate', 'phone_fax', 'phone_office'),
             'vname' => 'LBL_ANY_PHONE',
         ),
     'email' =>

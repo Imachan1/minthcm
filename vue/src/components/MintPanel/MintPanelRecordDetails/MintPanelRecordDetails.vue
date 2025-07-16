@@ -76,11 +76,27 @@ const props = defineProps<Props>()
 const store = useRecordViewStore()
 const languages = useLanguagesStore()
 const modules = useModulesStore()
-
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_DETAILS', modules.currentModule?.name)
 })
-
+const fixedRows = computed(() => {
+    const rows = props.data.fields || []
+    const fixedRows = []
+    rows.forEach((row) => {
+        const newRow = []
+        row.forEach((field) => {
+            if (field.type === 'fieldset' && field.properties?.fields && store.view === 'edit') {
+                newRow.push(...field.properties.fields)
+            } else {
+                newRow.push(field)
+            }
+        })
+        while (newRow.length) {
+            fixedRows.push(newRow.splice(0, store.columns))
+        }
+    })
+    return fixedRows
+})
 const rows = computed(() => {
     return props.data.fields.filter((row) => row.some((field) => !store.bean.logic.hiddenFields.includes(field.name)))
 })
@@ -90,9 +106,11 @@ const inlineEditBtnClicked = (event: string) => {
 }
 
 const edit = () => {
+    store.bean.dirtyFields.clear()
     store.view = 'edit'
     store.inlineEditField = ''
     store.inlineEditFieldSaving = ''
+    saveStatus.value = ''
 }
 
 const cancel = () => {
@@ -103,7 +121,13 @@ const cancel = () => {
 }
 
 const save = async () => {
-    if (store.bean.isSaving) {
+    if (saveStatus.value === 'saving') {
+        return
+    }
+    if (store.bean.dirtyFields?.size === 0) {
+        store.view = 'detail'
+        store.inlineEditField = ''
+        store.inlineEditFieldSaving = ''
         return
     }
     const prevInlineEditField = store.inlineEditField
@@ -111,14 +135,17 @@ const save = async () => {
         store.inlineEditFieldSaving = prevInlineEditField
     }
     store.inlineEditField = ''
-    const response = await store.bean.save()
-    if (response) {
+    saveStatus.value = 'saving'
+    const response = await store.saveBean()
+    saveStatus.value = [200, 201].includes(response.status) ? 'saved' : 'error'
+    if (saveStatus.value === 'saved') {
         store.view = 'detail'
         store.inlineEditField = ''
         store.inlineEditFieldSaving = ''
     } else {
         store.inlineEditField = prevInlineEditField
     }
+    saveStatus.value = ''
 }
 </script>
 

@@ -9,6 +9,7 @@ import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import MassActions from '@/business/MassActions'
 import { modulesApi } from '@/api/modules.api'
+import * as operatorDefs from './operators'
 
 interface Preferences {
     columns: string[]
@@ -54,24 +55,37 @@ export const useListViewStore = defineStore('listview', () => {
     const options = ref({
         page: 1,
         itemsPerPage: 10,
-        sortBy: [],
+        sortBy: new Array,
     })
     const selected = ref([])
     const defaultAction = 'ESList'
     const defaultActionUrl = 'legacy/index.php?'
     let requestCount = 0
+    const predefinedFilters = ref<boolean>(false)
 
     async function init() {
         initialLoading.value = true
         const result = await modulesApi.getListInit(getModule())
         if (module.value === result.data.module) {
-            activeFilter.value = result.data?.preferences?.activeFilter ?? []
+            activeFilter.value = result.data?.preferences?.activeFilter
             initialLoading.value = false
             config.value = result.data?.config
             defs.value = result.data?.defs
             preferences.value = result.data?.preferences
             module.value = result.data?.module
             isInit.value = true
+            options.value.sortBy.push({
+                "order": preferences.value?.sortOrder,
+                "key": preferences.value?.sortBy
+            })
+            let saved_filters = preferences.value?.filters ?? {}
+            filters.value.filter = saved_filters?.filter ?? []
+            filters.value.must_not = saved_filters?.must_not ?? []
+            if (typeof preferences.value?.filterRows === 'string') {
+                filterRows.value = JSON.parse(preferences.value?.filterRows ?? '[]') ?? []
+            } else {
+                filterRows.value = preferences.value?.filterRows ?? []
+            }
         }
     }
 
@@ -324,7 +338,9 @@ export const useListViewStore = defineStore('listview', () => {
     })
 
     watch(options, () => {
-        getData()
+        if (isInit.value) {
+            getData()
+        }
     })
 
     const relatePopup = computed(() => {
@@ -343,8 +359,110 @@ export const useListViewStore = defineStore('listview', () => {
         )
     })
 
-    function getModule(){
+    function getModule() {
         return Array.isArray(module.value) ? module.value[0] : module.value
+    }
+
+    function replacePlaceholders(placeholders, inputs) {
+        if (!inputs || !inputs.length) {
+            return placeholders
+        }
+        let value = JSON.stringify(placeholders)
+        inputs.forEach((input, i) => {
+            if (value.includes(`"{${i}}"`)) {
+                value = value.replaceAll(`"{${i}}"`, JSON.stringify(input.value))
+            } else {
+                value = value.replaceAll(`{${i}}`, input.value)
+            }
+        })
+        return JSON.parse(value)
+    }
+
+    function isInputValid(input: any) {
+        return (
+            input.value &&
+            (input.type !== 'date' || input.value.length === 10) && // todo: date format validation
+            (input.type !== 'multiselect' || input.value.length)
+        )
+    }
+
+    function getOperator(field: string, operator: string) {
+        const type = defs.value?.search[field].type
+        const fieldDefs =
+            operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
+        return fieldDefs[operator]
+    }
+
+    function isFilterRowValid(row: FilterRow) {
+        if (!row.field || !row.operator) {
+            return false
+        }
+        const operator = getOperator(row.field, row.operator)
+        if (!operator) {
+            return false
+        }
+        if (operator.inputs && row.inputs.some((input) => !isInputValid(input))) {
+            return false
+        }
+        return true
+    }
+
+    function setFilters(filterRows: FilterRow[]) {
+        const query = { filter: [], must_not: [] }
+        filterRows.filter(isFilterRowValid).forEach((row) => {
+            const operator = getOperator(row.field!, row.operator!)
+            const filterType = operator.not ? 'must_not' : 'filter'
+            const esKey = defs.value?.search[row.field].key
+            operator.filters.forEach((f) => {
+                const keyword_suffix = f.use_keyword_subfield ? '.keyword' : ''
+                query[filterType].push({
+                    [f.op]: {
+                        [esKey + keyword_suffix]: replacePlaceholders(f.value, row.inputs),
+                    },
+                })
+            })
+        })
+        const filtersChanged = JSON.stringify(query) !== JSON.stringify(filters.value)
+        filters.value = query
+        if (filtersChanged) {
+            getData()
+        }
+    }
+
+    watch(
+        filterRows,
+        (newFilterRows) => {
+            newFilterRows.forEach((filterRow) => {
+                if (!filterRow.inputs && filterRow.value) {
+                    filterRow.inputs = buildFilterRowInputs(filterRow.field, filterRow.operator, filterRow.value)
+                }
+            })
+            if (activeFilter.value) {
+                preferences.value.activeFilter = activeFilter.value
+            }
+            setFilters(newFilterRows)
+        },
+        { deep: true },
+    )
+
+    function buildFilterRowInputs(field: string, operator: string, value: any) {
+        const fieldDefs = defs.value?.search?.[field]
+        const type = fieldDefs.type
+        const operators = operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
+        return operators[operator].inputs.map((i, index) => ({
+            type: i.type,
+            value: filterValueMapper(value, index),
+            label: languages.label(i.label),
+            modifiers: i.modifiers ?? null,
+        }))
+    }
+
+    function filterValueMapper(value: string | { lte: string, gte: string } | Array<string>, index: number) {
+        if (typeof value === 'string' || Array.isArray(value)) {
+            return value
+        } else {
+            return value[Object.keys(value)[index]]
+        }
     }
 
     return {
@@ -381,5 +499,6 @@ export const useListViewStore = defineStore('listview', () => {
         handleSelectRelate,
         itemsSelectable,
         massActions,
+        predefinedFilters,
     }
 })

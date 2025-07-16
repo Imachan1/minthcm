@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,6 +46,7 @@
 
 require_once('modules/PDFGenerator/lib/BasePDFGenerator.php');
 
+#[\AllowDynamicProperties]
 class PDFPreView extends BasePDFGenerator {
     
     
@@ -76,7 +77,7 @@ class PDFPreView extends BasePDFGenerator {
 
         $this->Output(array('FAKE_ID'));
     }
-    protected function getBean($module, $id) {
+    protected function getBean($module, $id, $parent_bean = null) {
         return $this->prepareDemoData($module);
     }
     protected function getNewBlockForBlockLink($block, $parent_bean, $relation_field_name, $depth, $block_after) {
@@ -103,6 +104,7 @@ class PDFPreView extends BasePDFGenerator {
 
     protected function getValueByType($field_name, $rel_module_long) {
         global $timedate;
+        $return = '';
         switch ($field_name['type']) {
             case 'varchar':
                 $return = $this->prepareVarchar($field_name, $rel_module_long);
@@ -174,7 +176,7 @@ class PDFPreView extends BasePDFGenerator {
 
     protected function prepareNumber($field_name) {
         global $sugar_config;
-        if ($field_name['disable_format_number'] == '1') {
+        if (isset($field_name['disable_format_number']) && $field_name['disable_format_number'] == '1') {
             $return = rand(1, 100);
         } else {
             $p = (isset($field_name['precision'])) ? $field_name['precision'] : 2;
@@ -218,7 +220,7 @@ class PDFPreView extends BasePDFGenerator {
             $taxRates = $field_name['function']['name']();
             $return = key(array_slice($taxRates, rand(0, count($taxRates)), 1));
         } else if (isset($field_name['options']) && isset($app_list_strings[$field_name['options']])) {
-            $list_count = count($app_list_strings[$field_name['options']]);
+            $list_count = is_countable($app_list_strings[$field_name['options']]) ? count($app_list_strings[$field_name['options']]) : 0;
             $loop = 0;
             foreach ((array) $app_list_strings[$field_name['options']] as $list_key => $list_value) {
                 if ($list_count > 1 && $loop == 1) {

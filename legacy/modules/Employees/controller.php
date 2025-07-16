@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,20 +42,16 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-class EmployeesController extends SugarController {
 
-   public function action_editview() {
+#[\AllowDynamicProperties]
+class EmployeesController extends SugarController
+{
+
+    public function action_editview()
+    {
       global $current_user;
-      if (
-         is_admin($GLOBALS['current_user']) ||
-         // MintHCM #123323 Users|Employees ACLAccess START
-         //  $_REQUEST['record'] == $current_user->id ||
-         //  ACLAction::userHasAccess($current_user->id, $this->module, 'edit')
-         $_REQUEST['record'] == $current_user->id 
-         || empty($_REQUEST['record'])
-         || (!empty($this->bean->created_by) && $this->bean->created_by == $current_user->id)
-         // MintHCM #123323 Users|Employees ACLAccess END
-      ) {
+        $has_access = $this->bean->ACLAccess('edit', $this->bean->isOwner($current_user->id), 'not_set');
+        if ($has_access) {
          $this->view = 'edit';
       } else {
          sugar_die("Unauthorized access to employees.");
@@ -63,7 +59,8 @@ class EmployeesController extends SugarController {
       return true;
    }
 
-   protected function action_delete() {
+    protected function action_delete()
+    {
       if ( $_REQUEST['record'] != $GLOBALS['current_user']->id && $GLOBALS['current_user']->isAdminForModule('Users') ) {
          $u = new User();
          $u->retrieve($_REQUEST['record']);
@@ -83,5 +80,4 @@ class EmployeesController extends SugarController {
    {
        $this->view = "showduplicates";
    }
-
 }

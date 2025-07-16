@@ -33,6 +33,7 @@ interface InitResponse {
     mintRebuildID: string
     responseType: string
     systemName: string
+    upload_maxsize: string
 }
 export const useBackendStore = defineStore('backend', () => {
     const router = useRouter()
@@ -83,6 +84,7 @@ export const useBackendStore = defineStore('backend', () => {
                 cachedConfig.value.preferences = initResponse.data.preferences
                 cachedConfig.value.responseType = initResponse.data.responseType
                 cachedConfig.value.systemName = initResponse.data.system_name
+                cachedConfig.value.upload_maxsize = initResponse.data.upload_maxsize
                 if(initResponse.data.languages && current_language !== initResponse.data.languages?.current_language){
                     cachedConfig.value.languages = initResponse.data.languages
                 }

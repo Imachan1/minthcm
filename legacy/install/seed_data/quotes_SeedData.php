@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -86,7 +86,7 @@ if (!empty($sugar_demodata['quotes_seed_data']['quotes'])) {
         $result = DBManagerFactory::getInstance()->limitQuery($sql, 0, 10, true, "Error retrieving Accounts");
         while ($row = DBManagerFactory::getInstance()->fetchByAssoc($result)) {
             $focus->billing_account_id = $row['id'];
-            $focus->name = str_replace('[account name]', $row['name'], $focus->name);
+            $focus->name = str_replace('[account name]', $row['name'], (string) $focus->name);
             $focus->billing_address_street = $row['billing_address_street'];
             $focus->billing_address_city = $row['billing_address_city'];
             $focus->billing_address_state = $row['billing_address_state'];

@@ -113,7 +113,7 @@ class ElasticQuery extends SearchQuery
                 $search_modules = $this->getGlobalSearchModuleList();
             }
             $searchModules = array_map('strtolower', $search_modules);
-            $searchModules = substr_replace($searchModules, $prefix . '_', 0, 0);
+            $searchModules = substr_replace($searchModules, $prefix.'_', 0, 0);
             $indexes = implode(',', $searchModules);
             $this->indice_module_map = array_combine($searchModules, $search_modules);
 
@@ -158,7 +158,7 @@ class ElasticQuery extends SearchQuery
             foreach ($search_modules as $module_to_search) {
                 $bean = BeanFactory::newBean($module_to_search);
                 $acl_controller = new LegacyConnector('ACLController');
-                if ($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list')) {
+                if($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list')){
                     continue;
                 }
                 if ($bean->bean_implements('ACL') && ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list'))) {
@@ -316,9 +316,9 @@ class ElasticQuery extends SearchQuery
         $this->query['body']['query']['simple_query_string']['fields'] = $boost_array;
     }
 
-    public static function getIndexPrefix(): string
+    public static function getIndexPrefix():string
     {
         return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
     }
-    
+
 }

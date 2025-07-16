@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -184,4 +184,5 @@ $mod_strings = array(
    'LBL_CONFIRM_REMOVE_ALL_RECURRING' => 'Are you sure you want to remove all recurring records?',
    'LBL_REPEAT_END' => 'End',
    'LBL_PERIODICITY_ERROR' => 'Please select days on which the Meeting should be repeated.',
+   'LBL_RESERVATIONS_MEETINGS' => 'Reservations',
 );

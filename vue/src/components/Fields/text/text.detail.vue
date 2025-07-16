@@ -1,7 +1,7 @@
 <template>
     <div>
         <label>{{ props.label }}</label>
-        <div class="detail-field-row">
+        <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()">
             <div>
                 {{ value }}
                 <a v-if="props.modelValue?.length > lengthToCrop" @click="expanded = !expanded"
@@ -11,6 +11,7 @@
             </div>
             <Pencil
                 :defs="props.defs"
+                :hidePencil="hidePencil"
                 @inlineEditBtnClicked="(fieldName: string) => $emit('inlineEditBtnClicked', fieldName)"
             />
         </div>
@@ -28,9 +29,11 @@ interface Props {
     label: string
     modelValue?: any
     data?: any
+    hidePencil?: boolean
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits(['inlineEditBtnClicked'])
 const languages = useLanguagesStore()
 
 const lengthToCrop = 180
@@ -41,6 +44,11 @@ const value = computed(() =>
         ? props.modelValue.substring(0, lengthToCrop).trim() + '...'
         : props.modelValue,
 )
+function startInlineEdit() {
+    if (props?.defs?.name && typeof props.defs.name === 'string' && props.defs.name.length > 0) {
+        emit('inlineEditBtnClicked', props.defs.name)
+    }
+}
 </script>
 
 <style scoped lang="scss">

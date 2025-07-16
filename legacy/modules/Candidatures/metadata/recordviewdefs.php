@@ -1,7 +1,7 @@
 <?php
 
 $viewdefs['Candidatures'] = [
-    'order' => ['header', 'basicInfo', 'd1', 'd2', 'other', 'subpanels'],
+    'order' => ['header', 'basicInfo', 'd1', 'd2', 'other', 'files', 'subpanels'],
     'panels' => [
         'header' => [
             'component' => 'MintPanelRecordHeader',
@@ -137,6 +137,9 @@ $viewdefs['Candidatures'] = [
                     ],
                 ],
             ],
+        ],
+        'files' => [
+            'component' => 'MintPanelFiles',
         ],
         'subpanels' => [
             'component' => 'MintPanelSubpanels',

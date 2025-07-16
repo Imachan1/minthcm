@@ -300,7 +300,7 @@ function smarty_function_sugar_button($params, &$smarty)
    $formName = $params['form_id'] ?? '';
 
    $output = '';
-
+   
    if(!is_array($type)) {
    	  $module = $params['module'];
    	  $view = $params['view'];

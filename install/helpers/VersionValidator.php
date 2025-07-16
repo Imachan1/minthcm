@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../../legacy/php_version.php';
 
+#[\AllowDynamicProperties]
 class VersionValidator
 {   
     public function runValidations() {

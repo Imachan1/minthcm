@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,6 +50,7 @@ require_once('modules/Administration/QuickRepairAndRebuild.php');
 require_once('modules/PDFGenerator/config/config.php');
 require_once 'modules/PDFGenerator/ButtonParser.php';
 
+#[\AllowDynamicProperties]
 class PDFGeneratorController extends SugarController {
 
     public function action_repair() {
@@ -65,7 +66,7 @@ class PDFGeneratorController extends SugarController {
 
     public function action_Preview() {
         $parser = $this->getPDFController();
-        $parser->process('PDFPreView', array('tmp_tpl' => $_REQUEST['temp_template']));
+        $parser->process('PDFPreView', array('tmp_tpl' => isset($_REQUEST['temp_template']) ? $_REQUEST['temp_template'] : ''));
     }
     protected function getPDFController(){
         require_once 'modules/PDFGenerator/PDFController.php';
@@ -78,7 +79,7 @@ class PDFGeneratorController extends SugarController {
             $root_ids = explode('|', $_REQUEST['record']);
         }
         $mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : 'FILE';
-        $filename_regex = $_REQUEST['filename_regex'];
+        $filename_regex = isset($_REQUEST['filename_regex']) ? $_REQUEST['filename_regex'] : null;
 
         return new PDFController($template_id, $module_name, $root_ids, $mode, $filename_regex);
     }
