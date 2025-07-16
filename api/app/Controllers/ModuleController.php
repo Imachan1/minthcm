@@ -274,7 +274,7 @@ class ModuleController
             
             $target_module = $spd->layout_defs['subpanel_setup'][$related_name]['module'];
             $target_bean = BeanFactory::getBean($target_module);
-            if (!$target_bean->ACLAccess('list')) {
+            if (!$target_bean || !$target_bean->ACLAccess('list')) {
                 return $response->withStatus(403);
             }
 
