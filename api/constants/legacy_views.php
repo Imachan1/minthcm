@@ -49,10 +49,6 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'ProspectLists' => [
-        'list' => false,
-        'record' => false,
-    ],
     'Prospects' => [
         'list' => false,
         'record' => true,
@@ -81,10 +77,6 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'Notes' => [
-        'list' => false,
-        'record' => false,
-    ],
     'Emails' => [
         'list' => false,
         'record' => true,
@@ -92,10 +84,6 @@ return [
     'Users' => [
         'list' => false,
         'record' => true,
-    ],
-    'Documents' => [
-        'list' => false,
-        'record' => false,
     ],
     'DocumentRevisions' => [
         'list' => false,
@@ -317,18 +305,6 @@ return [
         'list' => false,
         'record' => false,
     ],
-    'Rooms' => [
-        'list' => false,
-        'record' => false,
-    ],
-    'Allocations' => [
-        'list' => false,
-        'record' => false,
-    ],
-    'Workplaces' => [
-        'list' => false,
-        'record' => false,
-    ],
     'EmployeeInteractionTracking' => [
         'list' => false,
         'record' => true,
@@ -398,10 +374,6 @@ return [
         'record' => false,
     ],
     'OffboardingTemplates' => [
-        'list' => false,
-        'record' => false,
-    ],
-    'ExitInterviews' => [
         'list' => false,
         'record' => false,
     ],
@@ -518,14 +490,6 @@ return [
         'record' => true,
     ],
     'Requests' => [
-        'list' => false,
-        'record' => true,
-    ],
-    'Candidates' => [
-        'list' => false,
-        'record' => false,
-    ],
-    'Candidatures' => [
         'list' => false,
         'record' => true,
     ],
