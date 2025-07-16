@@ -527,7 +527,7 @@ return [
     ],
     'Candidatures' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Tasks' => [
         'list' => false,
