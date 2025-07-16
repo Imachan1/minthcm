@@ -22,7 +22,7 @@
  * @author SalesAgility <info@salesagility.com>
  */
 
-require_once('include/MVC/Controller/SugarController.php');
+require_once 'include/MVC/Controller/SugarController.php';
 
 #[\AllowDynamicProperties]
 class AOS_QuotesController extends SugarController
@@ -59,7 +59,7 @@ class AOS_QuotesController extends SugarController
                 $_REQUEST['account_id'] = $row['contract_account_id'];
             }
 
-            }
+        }
 
         if (isset($_REQUEST['account_id'])) {
             $query = "SELECT * FROM accounts WHERE id = '?'";
@@ -90,5 +90,6 @@ class AOS_QuotesController extends SugarController
                 $this->bean->billing_contact = $row['first_name'] . ' ' . $row['last_name'];
             }
 
+        }
     }
 }
