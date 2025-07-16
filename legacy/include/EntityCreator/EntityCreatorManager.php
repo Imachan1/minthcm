@@ -1,5 +1,7 @@
 <?php
 
+require_once 'include/EntityCreator/EntityCreator.php';
+
 class EntityCreatorManager
 {
 
