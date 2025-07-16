@@ -45,8 +45,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-require_once("include/EditView/EditView2.php");
-require_once("include/upload_file.php");
+require_once "include/EditView/EditView2.php";
+require_once "include/upload_file.php";
 
 #[\AllowDynamicProperties]
 class ViewConvertLead extends SugarView
@@ -56,7 +56,7 @@ class ViewConvertLead extends SugarView
 
     public function __construct(
         $bean = null,
-        $view_object_map = array()
+        $view_object_map = []
         ) {
         parent::__construct($bean, $view_object_map);
         $this->medataDataFile = $this->fileName;
@@ -78,29 +78,18 @@ class ViewConvertLead extends SugarView
      */
     public function display()
     {
-        if (!empty($_REQUEST['handle']) && $_REQUEST['handle'] == 'save') {
+        if (! empty($_REQUEST['handle']) && 'save' == $_REQUEST['handle']) {
             return $this->handleSave();
         }
 
         global $beanList;
 
-        // get the EditView defs to check if opportunity_name exists, for a check below for populating data
-        $opportunityNameInLayout = false;
         $editviewFile = 'modules/Leads/metadata/editviewdefs.php';
         $this->medataDataFile = $editviewFile;
         if (file_exists("custom/{$editviewFile}")) {
             $this->medataDataFile = "custom/{$editviewFile}";
         }
-        include($this->medataDataFile);
-        foreach ($viewdefs['Leads']['EditView']['panels'] as $panel_index => $section) {
-            foreach ($section as $row_array) {
-                foreach ($row_array as $cell) {
-                    if (isset($cell['name']) && $cell['name'] == 'opportunity_name') {
-                        $opportunityNameInLayout = true;
-                    }
-                }
-            }
-        }
+        include $this->medataDataFile;
 
         $this->medataDataFile = $this->fileName;
         if (file_exists("custom/$this->fileName")) {
@@ -115,7 +104,7 @@ class ViewConvertLead extends SugarView
         $ev->view = "ConvertLead";
         echo $this->getModuleTitle();
 
-        require_once("include/QuickSearchDefaults.php");
+        require_once "include/QuickSearchDefaults.php";
         $qsd = QuickSearchDefaults::getQuickSearchDefaults();
         $qsd->setFormName("ConvertLead");
 
@@ -137,10 +126,10 @@ class ViewConvertLead extends SugarView
         $filter .= '&last_name_advanced=' . urlencode($this->focus->last_name);
         
         $smarty->assign('initialFilter', $filter);
-        $smarty->assign('displayParams', array('initial_filter' => '{$initialFilter}'));
+        $smarty->assign('displayParams', ['initial_filter' => '{$initialFilter}']);
         
         $relatedFields = $this->contact->get_related_fields();
-        $selectFields = array();
+        $selectFields = [];
         foreach ($this->defs as $moduleName => $mDefs) {
             if (!empty($mDefs[$ev->view]['select']) && !empty($relatedFields[$mDefs[$ev->view]['select']])) {
                 $selectFields[$moduleName] = $mDefs[$ev->view]['select'];
@@ -173,21 +162,18 @@ class ViewConvertLead extends SugarView
         $smarty->assign('lead_conv_activity_opt', $sugar_config['lead_conv_activity_opt']);
         
         //Switch up list depending on copy or move
-        if ($sugar_config['lead_conv_activity_opt'] == 'move') {
-            $smarty->assign('convertModuleListOptions', get_select_options_with_id(array('None'=>$app_strings['LBL_NONE'], 'Contacts' => $app_list_strings["moduleListSingular"]['Contacts']), ''));
+        if ('move' == $sugar_config['lead_conv_activity_opt']) {
+            $smarty->assign('convertModuleListOptions', get_select_options_with_id(['None' => $app_strings['LBL_NONE'], 'Contacts' => $app_list_strings["moduleListSingular"]['Contacts']], ''));
         } else {
-            if ($sugar_config['lead_conv_activity_opt'] == 'copy') {
-                $smarty->assign('convertModuleListOptions', get_select_options_with_id(array('Contacts' => $app_list_strings["moduleListSingular"]['Contacts']), ''));
+            if ('copy' == $sugar_config['lead_conv_activity_opt']) {
+                $smarty->assign('convertModuleListOptions', get_select_options_with_id(['Contacts' => $app_list_strings["moduleListSingular"]['Contacts']], ''));
             }
         }
         
-        
-
         foreach ($this->defs as $module => $vdef) {
             if (!isset($beanList[$module])) {
                 continue;
             }
-
 
             $bean = $beanList[$module];
             $focus = new $bean();
@@ -200,24 +186,16 @@ class ViewConvertLead extends SugarView
             $focus->fill_in_additional_detail_fields();
             foreach ($focus->field_defs as $field => $def) {
                 if (isset($vdef[$ev->view]['copyData']) && $vdef[$ev->view]['copyData']) {
-                    if ($module == "Accounts" && $field == 'name') {
+                    if ("Accounts" == $module && 'name' == $field) {
                         $focus->name = $this->focus->account_name;
                     } else {
-                        if ($module == "Opportunities" && $field == 'amount') {
-                            $focus->amount = unformat_number($this->focus->opportunity_amount);
-                        } else {
-                            if ($module == "Opportunities" && $field == 'name') {
-                                if ($opportunityNameInLayout && !empty($this->focus->opportunity_name)) {
-                                    $focus->name = $this->focus->opportunity_name;
-                                }
-                            } else {
-                                if ($field == "id") {
+                        if ("id" == $field) {
                                     //If it is not a contact, don't copy the ID from the lead
-                                    if ($module == "Contacts") {
+                            if ("Contacts" == $module) {
                                         $focus->$field = $this->focus->$field;
                                     }
                                 } else {
-                                    if (is_a($focus, "Company") && $field == 'phone_office') {
+                            if (is_a($focus, "Company") && 'phone_office' == $field) {
                                         //Special case where company and person have the same field with a different name
                                         $focus->phone_office = $this->focus->phone_work;
                                     } else {
@@ -244,11 +222,10 @@ class ViewConvertLead extends SugarView
                      }
                                     }
                                 }
+
                             }
                         }
                     }
-                }
-            }
 
             //Copy over email data
             $ev->setup($module, $focus, $this->medataDataFile, "modules/Leads/tpls/ConvertLead.tpl", false);
@@ -273,8 +250,8 @@ class ViewConvertLead extends SugarView
 
     protected function loadDefs()
     {
-        $viewdefs = array();
-        include($this->medataDataFile);
+        $viewdefs = [];
+        include $this->medataDataFile;
         $this->defs = $viewdefs;
     }
 
@@ -329,14 +306,14 @@ class ViewConvertLead extends SugarView
             };\n";
 
         if (isset($viewdef['required']) && $viewdef['required']) {
-            if (!empty($viewdef['select']) && (empty($viewdef['default_action']) || $viewdef['default_action'] != 'create')) {
+            if (! empty($viewdef['select']) && (empty($viewdef['default_action']) || 'create' != $viewdef['default_action'])) {
                 $jsOut .= "
             SUGAR.convert.{$module}Enabled = true;";
             }
             $jsOut .= "
             YAHOO.util.Event.onDOMReady(SUGAR.convert.toggle$module);";
         } else {
-            if (isset($viewdef['default_action'])  && $viewdef['default_action'] == "create") {
+            if (isset($viewdef['default_action']) && "create" == $viewdef['default_action']) {
                 $jsOut .= "\n            SUGAR.convert.{$module}Enabled = true;";
             }
         }
@@ -363,8 +340,8 @@ class ViewConvertLead extends SugarView
      */
     protected function handleSave()
     {
-        require_once('modules/Campaigns/utils.php');
-        require_once("include/formbase.php");
+        require_once 'modules/Campaigns/utils.php';
+        require_once "include/formbase.php";
         $lead = false;
         if (!empty($_REQUEST['record'])) {
             $lead = BeanFactory::newBean('Leads');
@@ -373,9 +350,9 @@ class ViewConvertLead extends SugarView
 
         global $beanList;
         $this->loadDefs();
-        $beans = array();
-        $selectedBeans = array();
-        $selects = array();
+        $beans = [];
+        $selectedBeans = [];
+        $selects = [];
         
         // Make sure the contact object is availible for relationships.
         $beans['Contacts'] = BeanFactory::newBean('Contacts');
@@ -388,8 +365,8 @@ class ViewConvertLead extends SugarView
                 unset($_REQUEST["convert_create_Contacts"]);
                 unset($_POST["convert_create_Contacts"]);
             }
-        } elseif (!empty($_REQUEST["convert_create_Contacts"]) && $_REQUEST["convert_create_Contacts"] != "false" && !isset($_POST['ContinueContact'])) {
-            require_once('modules/Contacts/ContactFormBase.php');
+        } elseif (! empty($_REQUEST["convert_create_Contacts"]) && "false" != $_REQUEST["convert_create_Contacts"] && ! isset($_POST['ContinueContact'])) {
+            require_once 'modules/Contacts/ContactFormBase.php';
             $contactForm = new ContactFormBase();
             $duplicateContacts = $contactForm->checkForDuplicates('Contacts');
 
@@ -406,8 +383,8 @@ class ViewConvertLead extends SugarView
             $_REQUEST['account_id'] = $_REQUEST['selectedAccount'];
             unset($_REQUEST["convert_create_Accounts"]);
             unset($_POST["convert_create_Accounts"]);
-        } elseif (!empty($_REQUEST["convert_create_Accounts"]) && $_REQUEST["convert_create_Accounts"] != "false" && empty($_POST['ContinueAccount'])) {
-            require_once('modules/Accounts/AccountFormBase.php');
+        } elseif (! empty($_REQUEST["convert_create_Accounts"]) && "false" != $_REQUEST["convert_create_Accounts"] && empty($_POST['ContinueAccount'])) {
+            require_once 'modules/Accounts/AccountFormBase.php';
             $accountForm = new AccountFormBase();
             $duplicateAccounts = $accountForm->checkForDuplicates('Accounts');
             if (isset($duplicateAccounts)) {
@@ -418,7 +395,7 @@ class ViewConvertLead extends SugarView
 
         foreach ($this->defs as $module => $vdef) {
             //Create a new record if "create" was selected
-            if (!empty($_REQUEST["convert_create_$module"]) && $_REQUEST["convert_create_$module"] != "false") {
+            if (! empty($_REQUEST["convert_create_$module"]) && "false" != $_REQUEST["convert_create_$module"]) {
                 //Save the new record
                 $bean = $beanList[$module];
                 if (empty($beans[$module])) {
@@ -428,7 +405,7 @@ class ViewConvertLead extends SugarView
                 $this->populateNewBean($module, $beans[$module], $beans['Contacts'], $lead);
                 // when creating a new contact, create the id for linking with other modules
                 // and do not populate it with lead's old account_id
-                if ($module == 'Contacts') {
+                if ('Contacts' == $module) {
                     $beans[$module]->id = create_guid();
                     $beans[$module]->new_with_id = true;
                     $beans[$module]->account_id = '';
@@ -452,7 +429,7 @@ class ViewConvertLead extends SugarView
                         $bean->retrieve($_REQUEST[$idName]);
                         $selectedBeans[$module] = $bean;
                         // If we selected the Contact, just overwrite the $beans['Contacts']
-                        if ($module == 'Contacts') {
+                        if ('Contacts' == $module) {
                             $beans[$module] = $bean;
                         }
                     }
@@ -477,8 +454,8 @@ class ViewConvertLead extends SugarView
         
         // Saving beans with priorities.
         // Contacts and Accounts should be saved before lead activities to create correct relations
-        $saveBeanPriority = array('Contacts', 'Accounts');
-        $tempBeans = array();
+        $saveBeanPriority = ['Contacts', 'Accounts'];
+        $tempBeans = [];
 
         foreach ($saveBeanPriority as $name) {
             if (isset($beans[$name])) {
@@ -499,7 +476,7 @@ class ViewConvertLead extends SugarView
                 if (!empty($leadsRel)) {
                     $bean->load_relationship($leadsRel);
                     $relObject = $bean->$leadsRel->getRelationshipObject();
-                    if ($relObject->relationship_type == "one-to-many" && $bean->$leadsRel->getSide() == REL_LHS) {
+                    if ("one-to-many" == $relObject->relationship_type && $bean->$leadsRel->getSide() == REL_LHS) {
                         $id_field = $relObject->rhs_key;
                         $lead->$id_field = $bean->id;
                     } else {
@@ -508,27 +485,15 @@ class ViewConvertLead extends SugarView
 
                     /* BEGIN - SECURITY GROUPS */
                     global $sugar_config;
-                    if(isset($sugar_config['securitysuite_inherit_parent']) && $sugar_config['securitysuite_inherit_parent'] == true)
-                    {
+                    if (isset($sugar_config['securitysuite_inherit_parent']) && true == $sugar_config['securitysuite_inherit_parent']) {
                         SecurityGroup::inherit_parentQuery($bean, $lead->module_dir, $lead->id, $bean->id, $bean->module_dir);
                     }
                     /* END - SECURITY GROUPS */
                 }
             }
-            //Special case code for opportunities->Accounts
-            if ($bean->object_name == "Opportunity" && empty($bean->account_id)) {
-                if (isset($beans['Accounts'])) {
-                    $bean->account_id = $beans['Accounts']->id;
-                    $bean->account_name = $beans['Accounts']->name;
-                } else {
-                    if (!empty($selects['Accounts'])) {
-                        $bean->account_id = $selects['Accounts'];
-                    }
-                }
-            }
 
             //create meetings-users relationship
-            if ($bean->object_name == "Meeting") {
+            if ("Meeting" == $bean->object_name) {
                 $bean = $this->setMeetingsUsersRelationship($bean);
             }
             $this->copyAddressFields($bean, $beans['Contacts']);
@@ -536,7 +501,7 @@ class ViewConvertLead extends SugarView
             $bean->save();
 
             //if campaign id exists then there should be an entry in campaign_log table for the newly created contact: bug 44522
-            if (isset($lead->campaign_id) && $lead->campaign_id != null && $bean->object_name == "Contact") {
+            if (isset($lead->campaign_id) && null != $lead->campaign_id && "Contact" == $bean->object_name) {
                 campaign_log_lead_or_contact_entry($lead->campaign_id, $lead, $beans['Contacts'], 'contact');
             }
         }
@@ -588,7 +553,7 @@ class ViewConvertLead extends SugarView
         echo "<div><ul>";
         foreach ($beans as $bean) {
             $beanName = $bean->object_name;
-            if ($beanName == 'Contact' && !$this->new_contact) {
+            if ('Contact' == $beanName && ! $this->new_contact) {
                 echo "<li>" . translate("LBL_EXISTING_CONTACT") . " -
                     <a href='index.php?module={$bean->module_dir}&action=DetailView&record={$bean->id}'>
                        {$bean->get_summary_text()}
@@ -625,7 +590,7 @@ class ViewConvertLead extends SugarView
         $activities = $this->getActivitiesFromLead($lead);
 
         //if account is being created, we will specify the account as the parent bean
-        $accountParentInfo = array();
+        $accountParentInfo = [];
 
         //determine the account id info ahead of time if it is being created as part of this conversion
         if (!empty($beans['Accounts'])) {
@@ -635,7 +600,7 @@ class ViewConvertLead extends SugarView
             } else {
                 $beans['Accounts']->id = $account_id;
             }
-            $accountParentInfo = array('id'=>$account_id,'type'=>'Accounts');
+            $accountParentInfo = ['id' => $account_id, 'type' => 'Accounts'];
         }
 
         foreach ($beans as $module => $bean) {
@@ -644,9 +609,9 @@ class ViewConvertLead extends SugarView
                     $bean->id = create_guid();
                     $bean->new_with_id = true;
                 }
-                if (isset($_POST['lead_conv_ac_op_sel']) && $_POST['lead_conv_ac_op_sel'] != 'None') {
+                if (isset($_POST['lead_conv_ac_op_sel']) && 'None' != $_POST['lead_conv_ac_op_sel']) {
                     foreach ($activities as $activity) {
-                        if (!isset($sugar_config['lead_conv_activity_opt']) || $sugar_config['lead_conv_activity_opt'] == 'copy') {
+                        if (! isset($sugar_config['lead_conv_activity_opt']) || 'copy' == $sugar_config['lead_conv_activity_opt']) {
                             if (isset($_POST['lead_conv_ac_op_sel'])) {
                                 //if the copy to module(s) are defined, copy only to those module(s)
                                 if (is_array($_POST['lead_conv_ac_op_sel'])) {
@@ -659,7 +624,7 @@ class ViewConvertLead extends SugarView
                                 }
                             }
                         } else {
-                            if ($sugar_config['lead_conv_activity_opt'] == 'move') {
+                            if ('move' == $sugar_config['lead_conv_activity_opt']) {
                                 // if to move activities, should be only one module selected
                                 if ($_POST['lead_conv_ac_op_sel'] == $module) {
                                     $this->moveActivity($activity, $bean);
@@ -701,7 +666,7 @@ class ViewConvertLead extends SugarView
             $activity->load_relationship($rel) ;
 
             $relObj = $activity->$rel->getRelationshipObject();
-            if ($relObj->relationship_type=='one-to-one' || $relObj->relationship_type == 'one-to-many') {
+            if ('one-to-one' == $relObj->relationship_type || 'one-to-many' == $relObj->relationship_type) {
                 $key = $relObj->rhs_key;
                 $activity->$key = $bean->id;
             }
@@ -730,8 +695,8 @@ class ViewConvertLead extends SugarView
         global $beanList;
         $db = DBManagerFactory::getInstance();
 
-        $activitesList = array("Calls", "Tasks", "Meetings", "Emails", "Notes");
-        $activities = array();
+        $activitesList = ["Calls", "Tasks", "Meetings", "Emails", "Notes"];
+        $activities = [];
 
         foreach ($activitesList as $module) {
             $beanName = $beanList[$module];
@@ -752,7 +717,7 @@ class ViewConvertLead extends SugarView
     protected function copyActivityAndRelateToBean(
         $activity,
         $bean,
-        $parentArr = array()
+        $parentArr = []
         ) {
         global $beanList;
 
@@ -774,7 +739,7 @@ class ViewConvertLead extends SugarView
         }
 
         //Special case to prevent duplicated tasks from appearing under Contacts multiple times
-        if ($newActivity->module_dir == "Tasks" && $bean->module_dir != "Contacts") {
+        if ("Tasks" == $newActivity->module_dir && "Contacts" != $bean->module_dir) {
             $newActivity->contact_id = $newActivity->contact_name = "";
         }
 
@@ -786,7 +751,7 @@ class ViewConvertLead extends SugarView
 
             $newActivity->load_relationship($rel) ;
             $relObj = $newActivity->$rel->getRelationshipObject();
-            if ($relObj->relationship_type=='one-to-one' || $relObj->relationship_type == 'one-to-many') {
+            if ('one-to-one' == $relObj->relationship_type || 'one-to-many' == $relObj->relationship_type) {
                 $key = $relObj->rhs_key;
                 $newActivity->$key = $bean->id;
             }
@@ -808,7 +773,7 @@ class ViewConvertLead extends SugarView
             $newActivity->update_date_modified = false; //bug 41747
             $newActivity->save();
             $newActivity->$rel->add($bean);
-            if ($newActivity->module_dir == "Notes" && $newActivity->filename) {
+            if ("Notes" == $newActivity->module_dir && $newActivity->filename) {
                 UploadFile::duplicate_file($activity->id, $newActivity->id, $newActivity->filename);
             }
         }
@@ -829,9 +794,9 @@ class ViewConvertLead extends SugarView
         $vdef = [];
         //Copy data from the contact to new bean
         foreach ($bean->field_defs as $field => $def) {
-            if (!isset($_REQUEST[$module . $field]) && isset($lead->$field) && $field != 'id') {
+            if (! isset($_REQUEST[$module . $field]) && isset($lead->$field) && 'id' != $field) {
                 $bean->$field = $lead->$field;
-                if ($field == 'date_entered') {
+                if ('date_entered' == $field) {
                     $bean->$field = gmdate($GLOBALS['timedate']->get_db_date_time_format());
                 } //bug 41030
             }
@@ -857,14 +822,14 @@ class ViewConvertLead extends SugarView
                 }
             }
         } else {
-            if ($module != "Contacts") {
+            if ("Contacts" != $module) {
                 $contactRel = $this->findRelationship($contact, $bean);
                 if (!empty($contactRel)) {
                     $bean->id = create_guid();
                     $bean->new_with_id = true;
                     $contact->load_relationship($contactRel) ;
                     $relObject = $contact->$contactRel->getRelationshipObject();
-                    if ($relObject->relationship_type == "one-to-many" && $contact->$contactRel->getSide() == REL_LHS) {
+                    if ("one-to-many" == $relObject->relationship_type && $contact->$contactRel->getSide() == REL_LHS) {
                         $id_field = $relObject->rhs_key;
                         $bean->$id_field = $contact->id;
                     } else {
@@ -931,15 +896,14 @@ class ViewConvertLead extends SugarView
         }
     }
 
-
     protected function findRelationship(
         $from,
         $to
         ) {
         global $dictionary;
-        require_once("modules/TableDictionary.php");
+        require_once "modules/TableDictionary.php";
         foreach ($from->field_defs as $field=>$def) {
-            if (isset($def['type']) && $def['type'] == "link" && isset($def['relationship'])) {
+            if (isset($def['type']) && "link" == $def['type'] && isset($def['relationship'])) {
                 $rel_name = $def['relationship'];
                 $rel_def = "";
                 if (isset($dictionary[$from->object_name]['relationships']) && isset($dictionary[$from->object_name]['relationships'][$rel_name])) {
@@ -971,7 +935,7 @@ class ViewConvertLead extends SugarView
     protected function findRelationshipByName($from, $rel_name)
     {
         global $dictionary;
-        require_once("modules/TableDictionary.php");
+        require_once "modules/TableDictionary.php";
         foreach ($from->field_defs as $field => $def) {
             if (isset($def['relationship']) && $def['relationship'] == $rel_name) {
                 return $field;
@@ -991,13 +955,12 @@ class ViewConvertLead extends SugarView
         return $params;
     }
 
-
     protected function checkForDuplicates(
         $lead
         ) {
-        if ($lead->status == "Converted") {
+        if ("Converted" == $lead->status) {
             echo("<span class='error'>" . translate('LBL_CONVERTLEAD_WARNING'));
-            $dupes = array();
+            $dupes = [];
             $q = "SELECT id, first_name, last_name FROM contacts WHERE first_name LIKE '{$lead->first_name}' AND last_name LIKE '{$lead->last_name}' AND deleted = 0";
             $result = $lead->db->query($q);
             while ($row = $lead->db->fetchByAssoc($result)) {
