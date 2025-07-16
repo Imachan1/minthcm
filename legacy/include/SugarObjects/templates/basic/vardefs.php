@@ -77,6 +77,7 @@ $vardefs = array(
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
             'inline_edit' => false,
+            'readonly' => true,
         ),
         'date_modified' => array(
             'name' => 'date_modified',
@@ -87,6 +88,7 @@ $vardefs = array(
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
             'inline_edit' => false,
+            'readonly' => true,
         ),
         'date_indexed' => array(
             'name' => 'date_indexed',
@@ -96,6 +98,7 @@ $vardefs = array(
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
             'inline_edit' => false,
+            'readonly' => true,
         ),
         'modified_user_id' => array(
             'name' => 'modified_user_id',
@@ -111,6 +114,7 @@ $vardefs = array(
             'comment' => 'User who last modified record',
             'massupdate' => false,
             'inline_edit' => false,
+            'readonly' => true,
         ),
         'modified_by_name' => array(
             'name' => 'modified_by_name',
@@ -126,6 +130,7 @@ $vardefs = array(
             'duplicate_merge' => 'disabled',
             'massupdate' => false,
             'inline_edit' => false,
+            'readonly' => true,
         ),
         'created_by' => array(
             'name' => 'created_by',
@@ -140,6 +145,7 @@ $vardefs = array(
             'comment' => 'User who created record',
             'massupdate' => false,
             'inline_edit' => false,
+            'readonly' => true,
         ),
         'created_by_name' => array(
             'name' => 'created_by_name',
@@ -156,6 +162,7 @@ $vardefs = array(
             'importable' => 'false',
             'massupdate' => false,
             'inline_edit' => false,
+            'readonly' => true,
         ),
         'description' => array(
             'name' => 'description',

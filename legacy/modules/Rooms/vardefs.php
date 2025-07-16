@@ -71,6 +71,7 @@ $dictionary['Rooms'] = array(
             'disable_num_format' => '',
             'min' => false,
             'max' => false,
+            'readonly' => true,
         ),
         'room_surface' => 
         array (

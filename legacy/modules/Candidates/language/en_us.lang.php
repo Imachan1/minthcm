@@ -144,6 +144,7 @@ $mod_strings = array(
     'LBL_NOTES_TITLE' => 'Notes',
     'LBL_TASKS_TITLE' => 'Tasks',
     'LBL_GITHUB' => 'Github',
+    'LBL_LINKEDIN_ACCOUNT' => 'Linkedin',
     'LBL_BIRTHDATE' => 'Birthdate',
     'LBL_X_SERVICE' => 'X Platform',
     'LBL_RECORDVIEW_PANEL2' => 'Other',

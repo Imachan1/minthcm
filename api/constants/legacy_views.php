@@ -51,7 +51,7 @@ return [
     ],
     'ProspectLists' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Prospects' => [
         'list' => false,
@@ -83,7 +83,7 @@ return [
     ],
     'Notes' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Emails' => [
         'list' => false,
@@ -95,7 +95,7 @@ return [
     ],
     'Documents' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'DocumentRevisions' => [
         'list' => false,
@@ -235,7 +235,7 @@ return [
     ],
     'SecurityGroups' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'OutboundEmailAccounts' => [
         'list' => false,
@@ -307,7 +307,7 @@ return [
     ],
     'Delegations' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'DelegationsLocale' => [
         'list' => false,
@@ -315,19 +315,19 @@ return [
     ],
     'Ideas' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Rooms' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Allocations' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Workplaces' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'EmployeeInteractionTracking' => [
         'list' => false,
@@ -339,11 +339,11 @@ return [
     ],
     'EmployeeRoles' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Benefits' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Responsibilities' => [
         'list' => false,
@@ -351,11 +351,11 @@ return [
     ],
     'SpentTime' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'WorkSchedules' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'WorkingMonths' => [
         'list' => false,
@@ -367,7 +367,7 @@ return [
     ],
     'Resources' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'PeriodsOfEmployment' => [
         'list' => false,
@@ -375,15 +375,15 @@ return [
     ],
     'Reservations' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Contracts' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'TermsOfEmployment' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Trainings' => [
         'list' => false,
@@ -395,15 +395,15 @@ return [
     ],
     'OnboardingTemplates' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'OffboardingTemplates' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'ExitInterviews' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Goals' => [
         'list' => false,
@@ -447,7 +447,7 @@ return [
     ],
     'Certificates' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Applications' => [
         'list' => false,
@@ -487,11 +487,11 @@ return [
     ],
     'SalaryRanges' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'EmployeeCertificates' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Dictionaries' => [
         'list' => false,
@@ -523,15 +523,15 @@ return [
     ],
     'Candidates' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Candidatures' => [
         'list' => false,
-        'record' => false,
+        'record' => true,
     ],
     'Tasks' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Kudos' => [
         'list' => false,
@@ -543,6 +543,6 @@ return [
     ],
     'Positions' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
 ];

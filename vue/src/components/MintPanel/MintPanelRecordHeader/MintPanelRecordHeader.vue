@@ -59,6 +59,8 @@ import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useFavoritesStore } from '@/store/favorites'
 import { FieldVardef, useModulesStore } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'
+import { usePopupsStore } from '@/store/popups'
+import DefaultLayout from '@/layouts/DefaultLayout/DefaultLayoutOnOffBoardingPopup.vue'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 import Field from '@/components/Fields/Field.vue'
@@ -81,9 +83,17 @@ const router = useRouter()
 const favorites = useFavoritesStore()
 const modules = useModulesStore()
 const languages = useLanguagesStore()
+const popups = usePopupsStore()
 
 const actions = computed<MenuListItem[]>(() => {
-    const actions: MenuListItem[] = []
+    const actions: MenuListItem[] = [
+        {
+            title: languages.label('LBL_GENERATE_BUTTON', store.bean.module),
+            icon: 'mdi-history',
+            onClick: showGenerateOnboardingOffboarding,
+        },
+    ]
+
     props.data.actions?.forEach((action) => {
         const actionName = typeof action === 'string' ? action : action.name
         const actionClass = BeanActions[actionName]
@@ -106,6 +116,14 @@ const goBack = () => {
     router.back()
 }
 const isFavorite = computed(() => favorites.isFavorite(store.bean.module, store.bean.id))
+
+function showGenerateOnboardingOffboarding() {
+    popups.showPopup({
+        title: languages.label('LBL_GENERATE_BUTTON',store.bean.module),
+        icon: 'mdi-history',
+        component: DefaultLayout
+    })
+}
 </script>
 
 <style scoped lang="scss">
