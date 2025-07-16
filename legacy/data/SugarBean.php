@@ -3673,7 +3673,6 @@ class SugarBean {
 
          //ignore fields that are a part of the collection and a field has been removed as a result of
          //layout customization.. this happens in subpanel customizations, use case, from the contacts subpanel
-         //in opportunities module remove the contact_role/opportunity_role field.
          if ( isset($data['relationship_fields']) && !empty($data['relationship_fields']) ) {
             $process_field = false;
             foreach ( $data['relationship_fields'] as $field_name ) {

@@ -59,10 +59,7 @@ class AOS_QuotesController extends SugarController
                 $_REQUEST['account_id'] = $row['contract_account_id'];
             }
 
-            if (isset($row['opportunity_id'])) {
-                $_REQUEST['opportunity_id'] = $row['opportunity_id'];
             }
-        }
 
         if (isset($_REQUEST['account_id'])) {
             $query = "SELECT * FROM accounts WHERE id = '?'";
@@ -93,16 +90,5 @@ class AOS_QuotesController extends SugarController
                 $this->bean->billing_contact = $row['first_name'] . ' ' . $row['last_name'];
             }
 
-        }
-
-        if (isset($_REQUEST['opportunity_id'])) {
-            $query = "SELECT id, name FROM opportunities WHERE id = '?'";
-            $result = $this->bean->db->pQuery($query, [$_REQUEST['opportunity_id']]);
-            $row = $this->bean->db->fetchByAssoc($result);
-            if ($row) {
-                $this->bean->opportunity_id = $row['id'];
-                $this->bean->opportunity = $row['name'];
-            }
-        }
     }
 }

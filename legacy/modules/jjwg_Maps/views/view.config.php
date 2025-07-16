@@ -172,27 +172,6 @@ class Jjwg_MapsViewConfig extends SugarView
     </tr>
     <tr>
         <td>
-            <strong><?php echo $GLOBALS['mod_strings']['LBL_CONFIG_ADDRESS_TYPE_FOR_OPPORTUNITIES']; ?> </strong>
-        </td>
-        <td>
-            <select id="address_type_Opportunities" tabindex="114"
-                name="address_type_Opportunities" title="">
-                <?php foreach ($address_types_billing_or_shipping as $key=>$value) {
-                    ?>
-                    <option value="<?php echo htmlspecialchars($key); ?>" <?php
-                    if ($key == $GLOBALS['jjwg_config']['geocode_modules_to_address_type']['Opportunities']) {
-                        echo 'selected="selected"';
-                    } ?>><?php echo htmlspecialchars((string) $value); ?></option>
-                <?php
-                } ?>
-            </select>
-            &nbsp; <?php echo $GLOBALS['mod_strings']['LBL_CONFIG_DEFAULT']; ?>
-                <?php echo htmlspecialchars((string) $address_types_billing_or_shipping[$GLOBALS['jjwg_config_defaults']['geocode_modules_to_address_type']['Opportunities']]); ?>
-                <?php echo $GLOBALS['mod_strings']['LBL_CONFIG_OF_RELATED_ACCOUNT']; ?>
-        </td>
-    </tr>
-    <tr>
-        <td>
             <strong><?php echo $GLOBALS['mod_strings']['LBL_CONFIG_ADDRESS_TYPE_FOR_CASES']; ?> </strong>
         </td>
         <td>
@@ -230,7 +209,6 @@ class Jjwg_MapsViewConfig extends SugarView
             </select>
             &nbsp; <?php echo $GLOBALS['mod_strings']['LBL_CONFIG_DEFAULT']; ?>
                 <?php echo htmlspecialchars((string) $address_types_billing_or_shipping[$GLOBALS['jjwg_config_defaults']['geocode_modules_to_address_type']['Project']]); ?>
-                <?php echo $GLOBALS['mod_strings']['LBL_CONFIG_OF_RELATED_ACCOUNT_OPPORTUNITY']; ?>
         </td>
     </tr>
     <tr>
@@ -336,16 +314,6 @@ class Jjwg_MapsViewConfig extends SugarView
                 htmlspecialchars((string) $GLOBALS['jjwg_config_defaults']['map_markers_grouping_field']['Leads']); ?>"
             title='' tabindex='123' size="25" maxlength="32">
             &nbsp; <?php echo $GLOBALS['mod_strings']['LBL_CONFIG_DEFAULT']; ?> <?php echo htmlspecialchars((string) $GLOBALS['jjwg_config_defaults']['map_markers_grouping_field']['Leads']); ?>
-        </td>
-    </tr>
-    <tr>
-        <td><strong><?php echo $GLOBALS['mod_strings']['LBL_CONFIG_GROUP_FIELD_FOR_OPPORTUNITIES']; ?> </strong></td>
-        <td><input type="text" name="grouping_field_Opportunities" id="grouping_field_Opportunities"
-            value="<?php echo (isset($GLOBALS['jjwg_config']['map_markers_grouping_field']['Opportunities'])) ?
-                htmlspecialchars((string) $GLOBALS['jjwg_config']['map_markers_grouping_field']['Opportunities']) :
-                htmlspecialchars((string) $GLOBALS['jjwg_config_defaults']['map_markers_grouping_field']['Opportunities']); ?>"
-            title='' tabindex='124' size="25" maxlength="32">
-            &nbsp; <?php echo $GLOBALS['mod_strings']['LBL_CONFIG_DEFAULT']; ?> <?php echo htmlspecialchars((string) $GLOBALS['jjwg_config_defaults']['map_markers_grouping_field']['Opportunities']); ?>
         </td>
     </tr>
     <tr>
