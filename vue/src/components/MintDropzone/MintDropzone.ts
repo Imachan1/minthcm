@@ -1,0 +1,170 @@
+import Dropzone from 'dropzone';
+import { useDropzoneStore } from './MintDropzoneStore';
+import { useLanguagesStore } from '@/store/languages';
+import { useBackendStore } from '@/store/backend';
+
+class MintDropzone {
+    module: string
+    record: string
+    customData: {}
+    dropzone: Dropzone
+    enableAutoProcess: boolean
+    validations: string[]
+    alreadyDisabled: boolean
+    fileTypesMap: {}
+    defaultThumbnail: string
+    isError: boolean
+    dropzoneStore: ReturnType<typeof useDropzoneStore>
+    languageStore: ReturnType<typeof useLanguagesStore>
+    backendStore: ReturnType<typeof useBackendStore>
+    isSave: boolean
+
+    constructor(record: string, module: string, customData = {}, enableAutoProcess = false, validations = []) {
+        this.record = record;
+        this.module = module;
+        this.customData = customData;
+        this.dropzone = null;
+        this.enableAutoProcess = enableAutoProcess;
+        this.validations = validations;
+        this.alreadyDisabled = false;
+        this.fileTypesMap = {
+            'doc': 'mdi-file-word',
+            'docx': 'mdi-file-word',
+            'xls': 'mdi-file-excel',
+            'xlsx': 'mdi-file-excel',
+            'pdf': 'mdi-file-pdf-box',
+            'jpg': 'preview',
+            'png': 'preview',
+            'jpeg': 'preview',
+            'gif': 'preview',
+        };
+        this.defaultThumbnail = 'mdi mdi-file';
+        this.dropzoneStore = useDropzoneStore();
+        this.languageStore = useLanguagesStore();
+        this.backendStore = useBackendStore();
+        this.languageStore.fetchModuleLanguage(this.module);
+        this.isSave = true;
+    }
+
+    init (form: string) {
+        this.isError = false;
+        if (!this.record) {
+            console.error('Provided empty record');
+            return;
+        }
+        Dropzone.autoDiscover = false;
+        this.dropzone = new Dropzone(form, {
+            autoProcessQueue: this.enableAutoProcess,
+            addRemoveLinks: true, 
+            acceptedFiles: this.getAcceptedFiles(),
+            maxFilesize: this.backendStore.initData?.upload_maxsize,
+            maxFiles: this.getMaxFiles(),
+            parallelUploads: this.getParallelUploads(),
+            createImageThumbnails: false,
+            ...this.languageStore.getList('dropzone_labels'),
+            url: `/api/files/save`,
+        });
+        this.loadFiles();
+        this.setEvents();
+    }
+
+    handleThumbnail(file) {
+        const [name, ext] = file.name.split(/\.(?=[^\.]+$)/);
+        const iconPath = this.fileTypesMap[ext] ?? this.defaultThumbnail;
+        file.previewElement.querySelector('.dz-success-mark').remove();
+        file.previewElement.querySelector('.dz-error-mark').remove();
+        if (iconPath !== 'preview') {
+            const icon = document.createElement('i');
+            icon.classList.add('mdi');
+            icon.classList.add(iconPath);
+            file.previewElement.classList.remove('dz-file-preview');
+            file.previewElement.querySelector('.dz-image img').remove();
+            file.previewElement.querySelector('.dz-image').appendChild(icon);
+        }
+        
+        if(this.isTextOverflowing(file.previewElement.querySelector('.dz-filename'))) {
+            this.addTooltip(file.previewElement.querySelector('.dz-filename'), file);
+        }
+
+    }
+
+    private isTextOverflowing(element) {
+        return element.scrollWidth > element.clientWidth;
+    }
+
+    private addTooltip(element, file) {
+        const tooltip = document.createElement('div');
+        tooltip.classList.add('dz-filename-tooltip');
+        tooltip.innerHTML = file.name;
+        element.after(tooltip);
+    }
+
+    setEvents () {
+        this.dropzone.on("addedfile", this.onAddedFile.bind(this));
+        this.dropzone.on("removedfile", this.onRemovedFile.bind(this));
+        this.dropzone.on("sending", this.beforeSend.bind(this));
+        this.dropzone.on("thumbnail", this.handleThumbnail.bind(this));
+    }
+
+    loadFiles () {
+        this.dropzoneStore.getFiles(this.module, this.record).then((files) => {
+            if (files.length) {
+                files.forEach(function (file) {
+                    this.isSave = false;
+                    this.dropzone.displayExistingFile(file, this.getFileUrl(file.id));
+                    file.previewElement.addEventListener("click", this.openPreview.bind(this, file.id));
+                    this.dropzone.files.push(file);
+                    this.isSave = true;
+                }.bind(this));
+            }
+        });
+    }
+
+    async onAddedFile (file) {
+        if(this.isSave) {
+            const file_id = await this.dropzoneStore.saveFile(this.module, this.record, file);
+            file.id = file_id;
+            file.previewElement.addEventListener("click", this.openPreview.bind(this, file_id));
+            if(file.type.includes('image')) {
+                file.previewElement.querySelector('.dz-image img').src = this.getFileUrl(file_id, true);
+                file.previewElement.querySelector('.dz-image img').alt = file.name;
+            }
+            this.handleThumbnail(file);
+        }
+        
+    }
+
+    onRemovedFile (file) {
+        this.dropzoneStore.deleteFile(file.id);
+    }
+
+    beforeSend (file, xhr, data) {
+        for (const property in this.customData) {
+            data.append(property, this.customData[property]);
+        }
+    }
+
+    openPreview (fileId) {
+        window.open(this.getFileUrl(fileId, true), '_blank');
+    }
+
+    getFileUrl (fileId, preview = false) {
+        return 'index.php?entryPoint=download&type=Files&id=' + fileId + '&time=' + Date.now()
+            + (preview ? '&preview=yes' : '');
+    }
+
+    getAcceptedFiles() {
+        return 'image/*,application/pdf,.doc,.docx,.pages,.odt,.rtf/*,.xls,.xlsx';
+    }
+
+    getMaxFiles() {
+        return 10;
+    }
+
+    getParallelUploads() {
+        return 10;
+    }
+ 
+}
+
+export default MintDropzone
