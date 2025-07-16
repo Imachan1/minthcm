@@ -76,6 +76,7 @@ const props = defineProps<Props>()
 const store = useRecordViewStore()
 const languages = useLanguagesStore()
 const modules = useModulesStore()
+
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_DETAILS', modules.currentModule?.name)
 })
@@ -106,11 +107,9 @@ const inlineEditBtnClicked = (event: string) => {
 }
 
 const edit = () => {
-    store.bean.dirtyFields.clear()
     store.view = 'edit'
     store.inlineEditField = ''
     store.inlineEditFieldSaving = ''
-    saveStatus.value = ''
 }
 
 const cancel = () => {
@@ -121,13 +120,7 @@ const cancel = () => {
 }
 
 const save = async () => {
-    if (saveStatus.value === 'saving') {
-        return
-    }
-    if (store.bean.dirtyFields?.size === 0) {
-        store.view = 'detail'
-        store.inlineEditField = ''
-        store.inlineEditFieldSaving = ''
+    if (store.bean.isSaving) {
         return
     }
     const prevInlineEditField = store.inlineEditField
@@ -135,17 +128,14 @@ const save = async () => {
         store.inlineEditFieldSaving = prevInlineEditField
     }
     store.inlineEditField = ''
-    saveStatus.value = 'saving'
-    const response = await store.saveBean()
-    saveStatus.value = [200, 201].includes(response.status) ? 'saved' : 'error'
-    if (saveStatus.value === 'saved') {
+    const response = await store.bean.save()
+    if (response) {
         store.view = 'detail'
         store.inlineEditField = ''
         store.inlineEditFieldSaving = ''
     } else {
         store.inlineEditField = prevInlineEditField
     }
-    saveStatus.value = ''
 }
 </script>
 
