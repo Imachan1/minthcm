@@ -89,7 +89,7 @@ class ElasticQuery extends SearchQuery
 
     protected function setSort()
     {
-        $field = !empty($this->params["sort_by"]) ? $this->params['sort_by']: static::DEFAULT_SORT_FIELD;
+        $field = !empty($this->params["sort_by"]) ? $this->params['sort_by'] : static::DEFAULT_SORT_FIELD;
         if (static::DEFAULT_SORT_FIELD !== $field) {
             $parser = ElasticMapperParser::getInstance();
             $module_name = $this->params['type'] ?? '';
@@ -139,7 +139,22 @@ class ElasticQuery extends SearchQuery
                 return $this->getGlobalQuery();
                 break;
             case "list":
-                return $this->getListQuery();
+                $body =  $this->getListQuery();
+                $module_to_search = $this->params['type'] ?? '';
+                if ($this->add_acl_filters && $module_to_search) {
+                    $bean = BeanFactory::newBean($module_to_search);
+                    $acl_controller = new LegacyConnector('ACLController');
+                    if ($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list', true)) {
+                        continue;
+                    }
+                    if ($bean->bean_implements('ACL') && ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list'))) {
+                        $module_filters = $this->getACLForSingleModule($module_to_search);
+                        if (is_array($module_filters)) {
+                            $body["bool"]["filter"]["bool"]["should"] = $module_filters;
+                        }
+                    }
+                }
+                return $body;
                 break;
             default:
                 throw new InvalidArgumentException();
@@ -158,7 +173,7 @@ class ElasticQuery extends SearchQuery
             foreach ($search_modules as $module_to_search) {
                 $bean = BeanFactory::newBean($module_to_search);
                 $acl_controller = new LegacyConnector('ACLController');
-                if ($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list')) {
+                if ($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list', true)) {
                     continue;
                 }
                 if ($bean->bean_implements('ACL') && ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list'))) {
@@ -226,18 +241,30 @@ class ElasticQuery extends SearchQuery
         return $single_module;
     }
 
+
+    protected function getACLForSingleModule($module)
+    {
+        global $current_user;
+        $acl = $this->getACLClassForModule($module);
+        $restriction_filter = $acl->getAccessRestrictionFilter($current_user->id);
+        if (!empty($restriction_filter[0]['bool']['should'])) {
+            return $restriction_filter[0]['bool']['should'];
+        }
+        return [];
+    }
+
     protected function getACLClassForModule(string $module)
     {
         $variants = [
-            ['className' => "Custom{$module}ListACL", 'path' => "custom/modules/{$module}/{$module}ListACL.php"],
-            ['className' => "{$module}ListACL", 'path' => "modules/{$module}/{$module}ListACL.php"],
-            ['className' => 'BaseListACL', 'path' => "include/ESListView/BaseListACL.php"],
+            ['className' => 'MintHCM\Modules\\' . $module . '\\' . $module . 'ListACL', 'path' => "modules/{$module}/{$module}ListACL.php"],
+            ['className' => 'MintHCM\Custom\Lib\Search\ElasticSearch\CustomBaseListACL', 'path' => "lib/Search/ElasticSearch/CustomBaseListACL.php"],
+            ['className' => 'MintHCM\Lib\Search\ElasticSearch\BaseListACL', 'path' => "lib/Search/ElasticSearch/BaseListACL.php"],
         ];
 
         foreach ($variants as $variant) {
-            if (file_exists('../legacy/' . $variant['path'])) {
+            if (file_exists($variant['path'])) {
                 require_once $variant['path'];
-                $acl_class = new LegacyConnector($variant['className'], $variant['path'], [$module]);
+                $acl_class = new $variant['className']($module);
                 return $acl_class;
             }
         }
@@ -283,10 +310,10 @@ class ElasticQuery extends SearchQuery
         } else {
             $search_modules = $this->search_modules;
         }
-        if(isset($this->query['body']['query']['simple_query_string']['fields'])){
-            $boost_array = & $this->query['body']['query']['simple_query_string']['fields'];
+        if (isset($this->query['body']['query']['simple_query_string']['fields'])) {
+            $boost_array = &$this->query['body']['query']['simple_query_string']['fields'];
         } else if (isset($this->query['body']['query']['bool']['must']['simple_query_string']['fields'])) {
-            $boost_array = & $this->query['body']['query']['bool']['must']['simple_query_string']['fields'];
+            $boost_array = &$this->query['body']['query']['bool']['must']['simple_query_string']['fields'];
         } else {
             return;
         }
@@ -320,5 +347,4 @@ class ElasticQuery extends SearchQuery
     {
         return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
     }
-    
 }

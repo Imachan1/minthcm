@@ -1,6 +1,10 @@
 <?php
 
-require_once 'include/ESListView/BaseListACL.php';
+namespace MintHCM\Modules\Employees;
+
+use MintHCM\Lib\Search\ElasticSearch\BaseListACL;
+use MintHCM\Data\BeanFactory;
+use MintHCM\Utils\LegacyConnector;
 
 class EmployeesListACL extends BaseListACL
 {
@@ -8,9 +12,10 @@ class EmployeesListACL extends BaseListACL
     {
         $filters = parent::getFiltersByOwner($user_id);
         $bean = BeanFactory::newBean($this->module);
+        $aclController = new LegacyConnector('ACLController');
         if (!$bean->bean_implements('ACL') || (
-            !ACLController::requireOwner($bean->module_dir, 'list')
-            && !ACLController::requireSecurityGroup($bean->module_dir, 'list')
+            !$aclController::requireOwner($bean->module_dir, 'list')
+            && !$aclController::requireSecurityGroup($bean->module_dir, 'list')
         )) {
             return [];
         }

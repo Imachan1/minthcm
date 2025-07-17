@@ -1,12 +1,16 @@
 <?php
 
+namespace MintHCM\Lib\Search\ElasticSearch;
+
+use MintHCM\Data\BeanFactory;
+
 class ESListACLHelper
 {
     protected $db;
 
     public function __construct()
     {
-        $this->db = DBManagerFactory::getInstance();
+        $this->db = \DBManagerFactory::getInstance();
     }
     
     public function doesModuleUseTemplate(string $module, string $template)
@@ -18,7 +22,7 @@ class ESListACLHelper
 
     public function doesModuleUseEmployeeRelationship(string $module)
     {
-        include 'modules/Employees/access_config.php';
+        include '../legacy/modules/Employees/access_config.php';
         $bean = BeanFactory::newBean($module);
         return $this->doesModuleUseTemplate($module, 'employee_related')
             && !in_array($bean->module_dir, $employee_related_exclude_modules);
