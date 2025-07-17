@@ -42,51 +42,40 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
 require_once 'include/Notifications/NotificationPlugin.php';
 
-class WorkScheduleLeaveCreated extends NotificationPlugin
+class WorkSchedulesAcceptance extends NotificationPlugin
 {
-    const TYPE = 'WorkScheduleLeaveCreated';
-    const LABEL = 'LBL_WORKSCHEDULE_LEAVE_CREATED';
+    const TYPE = 'WorkSchedulesAcceptance';
+    public $user_id;
 
-    public function run()
+    public function __construct(?SugarBean $bean = null) 
+    {
+        parent::__construct($bean);
+        if ($this->bean) {
+            $this->user_id = $this->bean->assigned_user_id;
+        }
+    }
+
+    public function run() 
     {
         if (!$this->bean) {
             return;
         }
-        if (empty($this->bean->assigned_user_id)) {
-            return;
-        }
-        global $app_list_strings;
-        $user = BeanFactory::getBean('Users', $this->bean->assigned_user_id);
-        $superior_id = $user->reports_to_id;
-        $message = vsprintf(
-            translate('LBL_LEAVE_ALERT', 'WorkSchedules'), 
-            [
-                $user->full_name,
-                $app_list_strings[$this->bean->field_defs['type']['options']][$this->bean->type],
-                $this->getWorkScheduleStartDate(), 
-                ]
-            );
-        if ($superior_id) {
-            $this->getNewNotification()
-                ->setDescription($message)
-                ->setAssignedUserId($superior_id)
-                ->setRelatedBean($this->bean->id, 'WorkSchedules')
-                ->setType($this->getType())
-                ->saveAsAlert()->WebPush();
-        }
-
+        
+        $this->getNewNotification()
+            ->setRelatedBeanFromBean($this->bean)
+            ->setAssignedUserId($this->user_id)
+            ->disableUniqueValidation()
+            ->setType($this->getType())
+            ->setDescription(sprintf(translate('LBL_WORKSCHEDULE_ACCEPTED_NOTIFICATION', 'WorkSchedules'), $this->bean->schedule_date))
+            ->saveAsAlert(true)
+            ->WebPush(false, true);
     }
+    
     public function isWebPushableNotification()
     {
         return true;
     }
-
-    protected function getWorkScheduleStartDate()
-    {
-        $datetime = explode(' ', NotificationManager::toDbDatetime($this->bean->date_start));
-        return $datetime[0];
-    }
-
 }

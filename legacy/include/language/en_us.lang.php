@@ -4912,3 +4912,4 @@ $app_strings['twsdashlet_add_time'] = 'Add time';
 $app_strings['LBL_WORKSCHEDULE_LEAVE_CREATED'] = 'Get notified if Leave is created by your subordinate';
 $app_strings['LBL_WORKSCHEDULES_DAY_VALID'] = 'Get notified if not closed Work Schedule exists';
 $app_strings['LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS'] = 'Get notified if Work Schedule is not planned for two weeks';
+$app_strings['LBL_WORKSCHEDULESACCEPTANCE'] = 'Get notified if the work schedule is approved by the supervisor';
