@@ -378,3 +378,4 @@ $dictionary["Employee"]["fields"]["SecurityGroups"] = array(
     'vname' => 'LBL_SECURITYGROUPS',
 );
 $dictionary["Employee"]['full_text_search_meta_field'] = 'position_name';
+$dictionary["Employee"]['search_boost'] = 1.5;

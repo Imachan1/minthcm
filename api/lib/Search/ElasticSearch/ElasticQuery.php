@@ -283,12 +283,13 @@ class ElasticQuery extends SearchQuery
         } else {
             $search_modules = $this->search_modules;
         }
-
-        if (!isset($this->query['body']['query']['simple_query_string']['fields'])) {
+        if(isset($this->query['body']['query']['simple_query_string']['fields'])){
+            $boost_array = & $this->query['body']['query']['simple_query_string']['fields'];
+        } else if (isset($this->query['body']['query']['bool']['must']['simple_query_string']['fields'])) {
+            $boost_array = & $this->query['body']['query']['bool']['must']['simple_query_string']['fields'];
+        } else {
             return;
         }
-
-        $boost_array = $this->query['body']['query']['simple_query_string']['fields'];
 
         foreach ($search_modules as $module_name) {
             $module_bean = BeanFactory::getBean($module_name);
@@ -313,7 +314,6 @@ class ElasticQuery extends SearchQuery
                 }
             }
         }
-        $this->query['body']['query']['simple_query_string']['fields'] = $boost_array;
     }
 
     public static function getIndexPrefix(): string
