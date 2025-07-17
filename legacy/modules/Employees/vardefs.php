@@ -377,3 +377,4 @@ $dictionary["Employee"]["fields"]["SecurityGroups"] = array(
     'bean_name' => 'SecurityGroup',
     'vname' => 'LBL_SECURITYGROUPS',
 );
+$dictionary["Employee"]['full_text_search_meta_field'] = 'position_name';
