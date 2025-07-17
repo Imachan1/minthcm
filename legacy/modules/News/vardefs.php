@@ -206,6 +206,28 @@ $dictionary['News'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_REACTIONS',
         ),
+        'prospectlists' => array(
+            'name' => 'prospectlists',
+            'vname' => 'LBL_PROSPECT_LISTS',
+            'type' => 'link',
+            'relationship' => 'prospect_list_news',
+            'source' => 'non-db',
+        ),
+        'photo' => array(
+            'name' => 'photo',
+            'vname' => 'LBL_PHOTO',
+            'type' => 'image',
+            'massupdate' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => true,
+            'reportable' => true,
+            'len' => 255,
+            'dbType' => 'varchar',
+            'width' => '250',
+            'height' => '250',
+            'studio' => 'visible',
+        ),
     ),
     'relationships' => array(
         'news_comments' => array(

@@ -270,7 +270,7 @@ foreach ($pages[$activePage]['columns'] as $colNum => $column) {
 $i = 0;
 while ($i < count($pages)) {
     if ($i == 0) {
-        $pageTabs[$i]['pageTitle'] = $GLOBALS['app_strings']['LBL_SUITE_DASHBOARD'];
+        $pageTabs[$i]['pageTitle'] = $pages[$i]['pageTitle'] ? $pages[$i]['pageTitle'] : $GLOBALS['app_strings']['LBL_SUITE_DASHBOARD'];
 //            $pageTabs[$i]['active'] = 'current';
     } else {
         $pageTabs[$i]['pageTitle'] = $pages[$i]['pageTitle'];
@@ -348,12 +348,3 @@ if (file_exists('custom/themes/' . $theme . '/tpls/MySugar.tpl')) {
 echo "<script>if(typeof(qe_init) != 'undefined'){qe_init();}</script>";
 echo "<script> $( '#pageNum_'+ 0 +'_anchor').addClass( 'current' );</script>";
 echo "<script> $( '#pageNum_'+ 0).addClass( 'active' );</script>";
-
-//MintHCM start #59127
-if (!isset($_SESSION['show_news_popup']) || $_SESSION['show_news_popup'] == false) {
-    $_SESSION['show_news_popup'] = true;
-    echo '<script src="' . getJSPath("modules/News/js/news.js") . '"></script>'
-    . '<script src="' . getJSPath("modules/News/js/mintNews.js") . '"></script>'
-        . '<script>mintNews.init()</script>';
-}
-//MintHCM end #59127

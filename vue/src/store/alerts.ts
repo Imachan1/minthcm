@@ -1,6 +1,7 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import Favico from 'favico.js'
 
 export interface Alert {
     id: string
@@ -21,6 +22,8 @@ export const useAlertsStore = defineStore('alerts', () => {
     const alerts = ref<Alert[]>([])
     const isFetching = ref(false)
     const isClosingAll = ref(false)
+    const favico = new Favico()
+    const moreResults = ref(false)
 
     function init() {
         fetchAlerts()
@@ -33,7 +36,8 @@ export const useAlertsStore = defineStore('alerts', () => {
         }
         isFetching.value = true
         const response = await axios.get('api/Alerts')
-        alerts.value = response.data ?? []
+        alerts.value = response.data?.alerts ?? []
+        moreResults.value = response.data?.moreResults ?? false
         isFetching.value = false
     }
 
@@ -41,18 +45,24 @@ export const useAlertsStore = defineStore('alerts', () => {
         const response = await axios.patch(`api/Alerts/${id}`, {
             is_read: true,
         })
-        alerts.value = response.data ?? []
+        alerts.value = response.data?.alerts ?? []
     }
 
     async function close(id: string) {
         const response = await axios.patch(`api/Alerts/${id}`, {
             is_closed: true,
         })
-        alerts.value = response.data ?? []
+        alerts.value = response.data?.alerts ?? []
     }
 
     const unreadAlertsCount = computed(() => {
         return alerts.value.filter((alert) => !alert.is_read).length
+    })
+
+    const unreadAlertsCountText = computed(() => {
+        return moreResults.value && unreadAlertsCount.value >= 50
+            ? unreadAlertsCount.value + '+'
+            : unreadAlertsCount.value
     })
 
     const sortedAlerts = computed(() => {
@@ -93,6 +103,14 @@ export const useAlertsStore = defineStore('alerts', () => {
         fetchAlerts()
     }
 
+    watch(unreadAlertsCount, (newCount) => {
+        if (newCount) {
+            favico.badge(newCount)
+        } else {
+            favico.reset()
+        }
+    })
+
     return {
         init,
         markRead,
@@ -104,5 +122,6 @@ export const useAlertsStore = defineStore('alerts', () => {
         closeAll,
         isClosingAll,
         cancelCloseAll,
+        unreadAlertsCountText,
     }
 })

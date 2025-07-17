@@ -406,6 +406,11 @@ class SugarBean {
      * @var array $sentAssignmentNotifications
      */
     public $sentAssignmentNotifications = array();
+
+    /**
+     * ElasticSearch search boost for whole module
+     */
+    public $search_boost;
    /**
     * SugarBean constructor.
     * Performs following tasks:
@@ -455,6 +460,10 @@ class SugarBean {
                $this->field_defs = $dictionary[$this->object_name]['fields'];
             }
 
+            if(isset($dictionary[$this->object_name]['search_boost'])) {
+                $this->search_boost = $dictionary[$this->object_name]['search_boost'];
+            }
+
             if ( !empty($dictionary[$this->object_name]['optimistic_locking']) ) {
                $this->optimistic_lock = true;
             }
@@ -464,12 +473,14 @@ class SugarBean {
          $loaded_definitions[$this->object_name]['required_fields'] = & $this->required_fields;
          $loaded_definitions[$this->object_name]['field_name_map'] = & $this->field_name_map;
          $loaded_definitions[$this->object_name]['field_defs'] = & $this->field_defs;
+         $loaded_definitions[$this->object_name]['search_boost'] = & $this->search_boost;
       } else {
          $this->column_fields = & $loaded_definitions[$this->object_name]['column_fields'];
          $this->list_fields = & $loaded_definitions[$this->object_name]['list_fields'];
          $this->required_fields = & $loaded_definitions[$this->object_name]['required_fields'];
          $this->field_name_map = & $loaded_definitions[$this->object_name]['field_name_map'];
          $this->field_defs = & $loaded_definitions[$this->object_name]['field_defs'];
+         $this->search_boost = & $loaded_definitions[$this->object_name]['search_boost'];
          $this->added_custom_field_defs = true;
 
          if ( !isset($this->custom_fields) &&
@@ -551,6 +562,8 @@ class SugarBean {
                   }
                   // no break
                default:
+                    $this->field_defs[$field]['field_module_name'] = $_REQUEST['module'] ?? '';
+                    $this->field_defs[$field]['field_record'] = $_REQUEST['record'] ?? '';
                   if ( isset($value['default']) && $value['default'] !== '' ) {
                      $this->$field = htmlentities($value['default'], ENT_QUOTES, 'UTF-8');
                   } else {
@@ -4996,16 +5009,20 @@ class SugarBean {
     * @param string $where where clause. defaults to ""
     * @param bool $check_dates . defaults to false
     * @param int $show_deleted show deleted records. defaults to 0
+    * @param int $limit
     * @return null|SugarBean[]
     */
-   public function get_full_list($order_by = "", $where = "", $check_dates = false, $show_deleted = 0) {
-      $GLOBALS['log']->debug("get_full_list:  order_by = '$order_by' and where = '$where'");
-      if ( isset($_SESSION['show_deleted']) ) {
-         $show_deleted = 1;
-      }
-      $query = $this->create_new_list_query($order_by, $where, array(), array(), $show_deleted);
-      return $this->process_full_list_query($query, $check_dates);
-   }
+    public function get_full_list($order_by = "", $where = "", $check_dates = false, $show_deleted = 0, $limit = -1) {
+        $GLOBALS['log']->debug("get_full_list:  order_by = '$order_by' and where = '$where'");
+        if ( isset($_SESSION['show_deleted']) ) {
+           $show_deleted = 1;
+        }
+        $query = $this->create_new_list_query($order_by, $where, array(), array(), $show_deleted);
+        if(!empty($limit) && $limit !== -1){
+          $query = $query . " LIMIT " . $limit;
+        }
+        return $this->process_full_list_query($query, $check_dates);
+     }
 
    /**
     * Processes fetched list view data

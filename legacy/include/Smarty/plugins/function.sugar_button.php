@@ -281,6 +281,9 @@ r22618 - 2007-05-09 15:36:06 -0700 (Wed, 09 May 2007) - clee - Added file.
  */
 function smarty_function_sugar_button($params, &$smarty)
 {
+    /* MintHCM #128807 START */
+    global $app_strings;
+    /* MintHCM #128807 END */
     if (empty($params['module'])) {
         $smarty->trigger_error("sugar_button: missing required param (module)");
     } elseif (empty($params['id'])) {
@@ -291,9 +294,13 @@ function smarty_function_sugar_button($params, &$smarty)
 
    $js_form = (empty($params['form_id'])) ? "var _form = (this.form) ? this.form : document.forms[0];" : "var _form = document.getElementById('{$params['form_id']}');";
 
-   $type = $params['id'];
+   $type = $params['id'] ?? '';
    $location = (empty($params['location'])) ? "" : "_".$params['location'];
-   $formName = $params['form_id'];
+
+   $formName = $params['form_id'] ?? '';
+
+   $output = '';
+
    if(!is_array($type)) {
    	  $module = $params['module'];
    	  $view = $params['view'];
@@ -304,7 +311,24 @@ function smarty_function_sugar_button($params, &$smarty)
 
 			case "CANCEL":
                 //If the return action is not empty and the return action is detail view and the id is not empty
-                $cancelButton  = '{if !empty($smarty.request.return_action) && ($smarty.request.return_action == "DetailView" && !empty($smarty.request.return_id))}';
+                /* MintHCM #128807 START */
+                $cancelButton = "
+                {literal}
+                    <script type='text/javascript'>
+                            var cancelHref = $('#CANCEL').attr('href');
+                            $('#CANCEL').removeAttr('href');
+                            $('#CANCEL').on('click', function(e) {
+                                window.onbeforeunload=null;
+                                e.preventDefault();
+                                if (window.confirm('" . $app_strings['WARN_UNSAVED_CHANGES'] . " ')) {
+                                    window.location.replace(cancelHref);
+                                }
+                            });
+                    </script>
+                {/literal}
+                ";
+                /* MintHCM #128807 END */
+                $cancelButton .= '{if !empty($smarty.request.return_action) && ($smarty.request.return_action == "DetailView" && !empty($smarty.request.return_id))}';
                 $cancelButton .= '<a href="index.php?action=DetailView&module={$smarty.request.return_module|escape:"url"}&record={$smarty.request.return_id|escape:"url"}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
 
                 //If the return action is not empty and the return action is detail view and the id (from fields) is not empty
@@ -313,7 +337,7 @@ function smarty_function_sugar_button($params, &$smarty)
 
                 //Bug 1057 If the return action is not empty and the return action is detail view and the id (from both locations) are empty, go to the modules listview
                 $cancelButton .= '{elseif !empty($smarty.request.return_action) && ($smarty.request.return_action == "DetailView" && empty($fields.id.value)) && empty($smarty.request.return_id)}';
-                $cancelButton .= '<a href="index.php?module={$smarty.request.return_module|escape:"url"}&action=ESlistView" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
+                $cancelButton .= '<a href="index.php?module={$smarty.request.return_module|escape:"url"}&action=ListView" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" name="button" id="'.$type.$location.'">{$APP.LBL_CANCEL_BUTTON_LABEL}</a> ';
 
 
                 //Bug 893 if the return action is not empty and the return module is not empty, go back to that page
@@ -333,7 +357,7 @@ function smarty_function_sugar_button($params, &$smarty)
 			break;
 
 			case "DELETE":
-                $output = '{if $bean->aclAccess("delete")}<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="button" onclick="'.$js_form.' _form.return_module.value=\'' . $module . '\'; _form.return_action.value=\'ESlistView\'; _form.action.value=\'Delete\'; if(confirm(\'{$APP.NTC_DELETE_CONFIRMATION}\')) SUGAR.ajaxUI.submitForm(_form); return false;" type="submit" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" id="delete_button">{/if} ';
+                $output = '{if $bean->aclAccess("delete")}<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="button" onclick="'.$js_form.' _form.return_module.value=\'' . $module . '\'; _form.return_action.value=\'ListView\'; _form.action.value=\'Delete\'; if(confirm(\'{$APP.NTC_DELETE_CONFIRMATION}\')) SUGAR.ajaxUI.submitForm(_form); return false;" type="submit" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" id="delete_button">{/if} ';
             break;
 
 			case "DUPLICATE":

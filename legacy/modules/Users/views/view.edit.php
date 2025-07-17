@@ -46,6 +46,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 require_once('modules/Users/UserViewHelper.php');
+require_once 'include/Notifications/NotificationManager.php';
 
 class UsersViewEdit extends ViewEdit 
 {
@@ -82,8 +83,11 @@ class UsersViewEdit extends ViewEdit
    }
 
    public function display() {
-      global $current_user, $app_list_strings, $mod_strings;
+      global $current_user, $app_list_strings, $mod_strings, $sugar_config;
 
+      if(isset($sugar_config['passwordsetting']['SystemGeneratedPasswordON'])){
+        $this->ss->assign('SYSTEM_GENERATED_PASSWORD_SETTING', $sugar_config['passwordsetting']['SystemGeneratedPasswordON']);
+      }
 
       //lets set the return values
       if ( isset($_REQUEST['return_module']) ) {
@@ -272,6 +276,9 @@ EOD
       $out = $efocus->et->displayEmailFrame('modules/Users/_baseEmail.tpl');
       echo $out;
       echo "<script>var composePackage = null;</script>";
+
+        $notificationManager = new NotificationManager();
+        $this->ss->assign('notificationsPreferences', $notificationManager->getNotificationsPreferences($this->bean));
 
       $this->ev->process($processSpecial, $processFormName);
 

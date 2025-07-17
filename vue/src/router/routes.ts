@@ -4,10 +4,12 @@ import AuthViewForget from '@/views/AuthView/AuthViewForget.vue'
 import LegacyView from '@/views/LegacyView/LegacyView.vue'
 import AuthViewLogin from '@/views/AuthView/AuthViewLogin.vue'
 import AuthViewReset from '@/views/AuthView/AuthViewReset.vue'
+import RecordView from '@/views/RecordView/RecordView.vue'
 import { Component } from 'vue'
 import GuestLayout from '@/layouts/GuestLayout/GuestLayout.vue'
 import { useAuthStore } from '@/store/auth'
 import ListView from '@/views/ListView/ListView.vue'
+import customRoutes from '@/custom/router'
 
 declare module 'vue-router' {
     interface RouteMeta {
@@ -16,10 +18,11 @@ declare module 'vue-router' {
         auth: boolean
         layout?: Component
         entryPoint?: boolean
+        legacyQueryToHash?: string[]
     }
 }
 
-const routes: Array<RouteRecordRaw> = [
+const coreRoutes: Array<RouteRecordRaw> = [
     {
         path: '/install',
         name: 'install',
@@ -88,6 +91,7 @@ const routes: Array<RouteRecordRaw> = [
             isLegacy: true,
             legacyUrl: 'legacy/index.php?module=Calendar',
             auth: true,
+            legacyQueryToHash: ['view', 'action'],
         },
     },
     {
@@ -155,6 +159,15 @@ const routes: Array<RouteRecordRaw> = [
         },
     },
     {
+        path: '/modules/:module/DetailView/:id',
+        alias: '/modules/:module/EditView/:id?',
+        name: 'record',
+        component: RecordView,
+        meta: {
+            auth: true,
+        },
+    },
+    {
         path: '/modules/:module/:action/:record?',
         name: 'module-view',
         component: LegacyView,
@@ -182,5 +195,7 @@ const routes: Array<RouteRecordRaw> = [
         },
     },
 ]
+
+const routes: Array<RouteRecordRaw> = [...coreRoutes, ...customRoutes]
 
 export default routes

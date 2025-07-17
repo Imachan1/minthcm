@@ -45,6 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once 'include/SugarFields/SugarFieldHandler.php';
 require_once 'modules/MySettings/TabController.php';
 require_once 'modules/DashboardManager/src/DashboardDeployer.php';
+require_once 'include/Notifications/NotificationManager.php';
 
 $display_tabs_def = isset($_REQUEST['display_tabs_def']) ? urldecode($_REQUEST['display_tabs_def']) : '';
 $hide_tabs_def = isset($_REQUEST['hide_tabs_def']) ? urldecode($_REQUEST['hide_tabs_def']) : '';
@@ -217,6 +218,12 @@ if (!$focus->is_group && !$focus->portal_only) {
         $focus->setPreference('subpanel_tabs', '', 0, 'global');
     }
 
+    if (isset($_POST['user_count_collapsed_subpanels'])) {
+        $focus->setPreference('count_collapsed_subpanels', $_POST['user_count_collapsed_subpanels'], 0, 'global');
+    } else {
+        $focus->setPreference('count_collapsed_subpanels', '', 0, 'global');
+    }
+
     if (isset($_POST['user_theme'])) {
         $focus->setPreference('user_theme', $_POST['user_theme'], 0, 'global');
         $_SESSION['authenticated_user_theme'] = $_POST['user_theme'];
@@ -251,18 +258,6 @@ if (!$focus->is_group && !$focus->portal_only) {
     } else {
         $focus->setPreference('no_opps', 'off', 0, 'global');
     }
-
-//        if(isset($_POST['reminder_checked']) && $_POST['reminder_checked'] == '1' && isset($_POST['reminder_checked'])){
-    //            $focus->setPreference('reminder_time', $_POST['reminder_time'], 0, 'global');
-    //        }else{
-    //            // cn: bug 5522, need to unset reminder time if unchecked.
-    //            $focus->setPreference('reminder_time', -1, 0, 'global');
-    //        }
-    //        if(isset($_POST['email_reminder_checked']) && $_POST['email_reminder_checked'] == '1' && isset($_POST['email_reminder_checked'])){
-    //            $focus->setPreference('email_reminder_time', $_POST['email_reminder_time'], 0, 'global');
-    //        }else{
-    //            $focus->setPreference('email_reminder_time', -1, 0, 'global');
-    //        }
 
     if (isset($_POST['reminder_time'])) {
         $focus->setPreference('reminder_time', $_POST['reminder_time'], 0, 'global');
@@ -427,6 +422,23 @@ if (!$focus->is_group && !$focus->portal_only) {
 
     if (isset($_POST['subtheme'])) {
         $focus->setPreference('subtheme', $_POST['subtheme'], 0, 'global');
+    }
+    if (isset($_POST['gsync_cal'])) {
+        $focus->setPreference('syncGCal', 1, 0, 'GoogleSync');
+    } else {
+        $focus->setPreference('syncGCal', 0, 0, 'GoogleSync');
+    }
+
+
+    // Notifications settings save
+    $notificationMenager = new NotificationManager();
+    $notifications = $notificationMenager->getPluginsForManagement();
+    foreach($notifications as $type => $name) {
+        if(isset($_POST['notification_'.$type])) {
+            $focus->setPreference('notification_'.$type, $_POST['notification_'.$type], 0, 'global');
+        } else {
+            $focus->setPreference('notification_'.$type, '0', 0, 'global');
+        }
     }
 }
 

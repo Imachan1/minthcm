@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,42 +43,60 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 require_once 'include/Notifications/NotificationPlugin.php';
+require_once 'include/Integrations/Firebase/autoload.php'; // MintHCM #122506
 
 class WorkSchedulesNotPlandForTwoWeeks extends NotificationPlugin
 {
 
     const PLAN_FOR_DAYS = 10;
 
+    public function __construct()
+    {
+        $this->setType('WorkSchedulesNotPlandForTwoWeeks');
+        $this->setLabel('LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS');
+    }
+
     public function run()
     {
         $work_schedules = $this->getNotPlannedWorkSchedules();
         foreach ($work_schedules as $work_schedule) {
-            if ($work_schedule == false) {
+            if (false == $work_schedule) {
                 continue;
             }
 
-            if(NotificationManager::notificationForRecordWithId('Users',$work_schedule['id'],'WorkSchedulesNotPlandForTwoWeeks')){
+            if (NotificationManager::notificationForRecordWithId('Users', $work_schedule['id'], $this->getType())) {
                 continue;
              }
 
             $options = ['url_redirect' => 'index.php?module=WorkSchedules' ];
             $this->getNewNotification()
                 ->setAssignedUserId($work_schedule['id'])->setRelatedBean($work_schedule['id'], 'Users')
-                ->setDescription(translate('LBL_TWO_WEEKS_ALERT', 'WorkSchedules'))->setType('WorkSchedulesNotPlandForTwoWeeks')
+                ->setDescription(translate('LBL_TWO_WEEKS_ALERT', 'WorkSchedules'))->setType($this->getType())
                 ->saveAsAlert(true,$options)->WebPush(true,true,$options);
+            // MintHCM #136592 start
+            (new MintHCM\Firebase\PushNotifications\GeneralNotificationToUser())->execute([
+                'user_id' => $work_schedule['id'],
+                'title' => translate('LBL_LIST_TITLE', 'WorkSchedules'),
+                'body' => translate('LBL_TWO_WEEKS_ALERT', 'WorkSchedules')
+            ]);
+            // MintHCM #136592 end
         }
     }
 
-    public function isWebPushableNotification(){
+    public function isWebPushableNotification()
+    {
         return true;
     }
-    public function getWebPushDescriptionConfig(){
+    public function getWebPushDescriptionConfig()
+    {
         return true;
     }
-    public function getWebPushLinkConfig(){
+    public function getWebPushLinkConfig()
+    {
         return true;
      }
-     public function getWebPushOverrideConfig(){
+    public function getWebPushOverrideConfig()
+    {
         return $options = ['url_redirect' => 'index.php?module=WorkSchedules' ];
      }
     protected function getNotPlannedWorkSchedules()

@@ -19,8 +19,7 @@ viewTools.form.prepareViewToolsValidation = function () {
    setTimeout( viewTools.form.startViewToolsValidation.call( this ), 20 );
 };
 viewTools.form.startViewToolsValidation = function () {
-    var mask = '<div class="mask" id="dlg_mask" style="z-index: 3; height: 100%; width: 100%; display: block; opacity: 0.5;">&nbsp;</div>';
-    $("#bootstrap-container").append(mask); 
+   viewTools.GUI.mask.show();
    if ( viewTools.form.validation_state != 1 ) {
       viewTools.form.throttle_save = false;
       return false;
@@ -106,12 +105,10 @@ viewTools.form.startViewToolsValidation = function () {
    }
 };
 viewTools.form.onValidationEnd = function () {
-   if ( viewTools.form.error_count > 0 ) {
-      viewTools.GUI.statusBox.showStatus( SUGAR.language.get( 'app_strings', 'LBL_FORM_WITH_ERRORS' ), 'error', 6000 );
-      $("#bootstrap-container .mask").remove()
-   } else {
-      viewTools.GUI.statusBox.showStatus( viewTools.language.get('app_strings', 'LBL_SAVING') + '...', 'info');
-   }
+    if ( viewTools.form.error_count > 0 ) {
+        viewTools.GUI.statusBox.showStatus( SUGAR.language.get( 'app_strings', 'LBL_FORM_WITH_ERRORS' ), 'error', 6000 );
+    }
+    viewTools.GUI.mask.hide();
    setTimeout( function () {
       viewTools.form.validation_state = 0;
       viewTools.form.enableSaveButton();
@@ -145,10 +142,7 @@ if ( window.disable_vt_tools === undefined || window.disable_vt_tools === false 
    $( document ).on( 'change', 'select.vt_formulaSelector', function () {
       viewTools.form.fieldChangeEvent( this );
    } );
-   /*
-    * Event inited on every creation of  vt_formulaSelector fields
-    */
-   $( document ).on( 'DOMNodeInserted', function ( ) {
+   new MutationObserver(() => {
       //Init save events
       if ( viewTools.cache.form_save !== undefined ) {
          var disabled_buttons = [ 'saved_search_submit' ];
@@ -192,7 +186,7 @@ if ( window.disable_vt_tools === undefined || window.disable_vt_tools === false 
             delete viewTools.cache.onAppear[key];
          }
       }
-   } );
+    }).observe(document, { childList: true, subtree: true });
    /*
     * Back to edit form
     */

@@ -78,11 +78,23 @@ $dictionary['ProspectList'] = array(
             'name' => 'date_entered',
             'vname' => 'LBL_DATE_ENTERED',
             'type' => 'datetime',
+            'readonly' => true,
         ),
         'date_modified' => array(
             'name' => 'date_modified',
             'vname' => 'LBL_DATE_MODIFIED',
             'type' => 'datetime',
+            'readonly' => true,
+        ),
+        'date_indexed' => array(
+            'name' => 'date_indexed',
+            'vname' => 'LBL_DATE_INDEXED',
+            'type' => 'datetime',
+            'comment' => 'Date record last indexed',
+            'enable_range_search' => true,
+            'options' => 'date_range_search_dom',
+            'inline_edit' => false,
+            'readonly' => true,
         ),
         'modified_user_id' => array(
             'name' => 'modified_user_id',
@@ -94,6 +106,7 @@ $dictionary['ProspectList'] = array(
             'isnull' => 'false',
             'dbType' => 'id',
             'reportable' => true,
+            'readonly' => true,
         ),
         'modified_by_name' => array(
             'name' => 'modified_by_name',
@@ -105,6 +118,7 @@ $dictionary['ProspectList'] = array(
             'id_name' => 'modified_user_id',
             'module' => 'Users',
             'duplicate_merge' => 'disabled',
+            'readonly' => true,
         ),
         'created_by' => array(
             'name' => 'created_by',
@@ -114,7 +128,8 @@ $dictionary['ProspectList'] = array(
             'type' => 'assigned_user_name',
             'table' => 'created_by_users',
             'isnull' => 'false',
-            'dbType' => 'id'
+            'dbType' => 'id',
+            'readonly' => true,
         ),
         'created_by_name' => array(
             'name' => 'created_by_name',
@@ -126,6 +141,7 @@ $dictionary['ProspectList'] = array(
             'id_name' => 'created_by',
             'module' => 'Users',
             'duplicate_merge' => 'disabled',
+            'readonly' => true,
         ),
         'deleted' => array(
             'name' => 'deleted',
@@ -151,6 +167,7 @@ $dictionary['ProspectList'] = array(
                 'type' => 'int',
                 'source' => 'non-db',
                 'vname' => 'LBL_LIST_ENTRIES',
+                'readonly' => true,
             ),
         'prospects' =>
             array(
@@ -234,6 +251,68 @@ $dictionary['ProspectList'] = array(
             'relationship' => 'prospect_list_employees',
             'source' => 'non-db',
         ),
+        'automatic_update' => array(
+            'name' => 'automatic_update',
+            'vname' => 'LBL_AUTOMATIC_UPDATE',
+            'label' => 'LBL_AUTOMATIC_UPDATE',
+            'type' => 'bool',
+            'reportable' => true,
+            'audited' => true,
+            'default' => 0,
+            'duplicate_merge' => 'enabled',
+            'size' => 30,
+        ),
+        'kreports' => array(
+            'name' => 'kreports',
+            'type' => 'link',
+            'relationship' => 'kreports_prospectlists',
+            'source' => 'non-db',
+            'module' => 'KReports',
+            'bean_name' => 'KReport',
+            'vname' => 'LBL_KREPORTS',
+            'label' => 'LBL_KREPORTS',
+            'id_link' => 'kreport_id',
+        ),
+        'kreport_id' => array(
+            'name' => 'kreport_id',
+            'relationship' => 'kreports_prospectlists',
+            'type' => 'id',
+            'vname' => 'LBL_KREPORT_ID',
+            'label' => 'LBL_KREPORT_ID',
+            'audited' => true,
+            'importable' => 'true',
+            'reportable' => true,
+            'rname' => 'id',
+            'isnull' => 'true',
+        ),
+        'kreport_name' => array(
+            'name' => 'kreport_name',
+            'type' => 'relate',
+            'source' => 'non-db',
+            'vname' => 'LBL_KREPORT_NAME',
+            'label' => 'LBL_KREPORT_NAME',
+            'id_name' => 'kreport_id',
+            'link' => 'kreports',
+            'join_name' => 'kreports',
+            'module' => 'KReports',
+            'table' => 'kreports',
+            'rname' => 'name',
+            'required' => false,
+            'importable' => true,
+            'reportable' => true,
+            'audited' => true,
+            'vt_dependency' => 'equals($automatic_update,true)',
+            'vt_required' => 'equals($automatic_update,true)',
+        ),
+        "news" => array(
+            'name' => 'news',
+            'type' => 'link',
+            'relationship' => 'prospect_list_news',
+            'source' => 'non-db',
+            'module' => 'News',
+            'bean_name' => 'News',
+            'vname' => 'LBL_NEWS',
+        ),
     ),
 
     'indices' => array(
@@ -252,7 +331,16 @@ $dictionary['ProspectList'] = array(
         'prospectlists_assigned_user' =>
             array('lhs_module' => 'Users', 'lhs_table' => 'users', 'lhs_key' => 'id',
                 'rhs_module' => 'ProspectLists', 'rhs_table' => 'prospect_lists', 'rhs_key' => 'assigned_user_id',
-                'relationship_type' => 'one-to-many')
+                'relationship_type' => 'one-to-many'),
+        'kreports_prospectlists' => array(
+            'lhs_module' => 'KReports',
+            'lhs_table' => 'kreports',
+            'lhs_key' => 'id',
+            'rhs_module' => 'prospectlists',
+            'rhs_table' => 'prospect_lists',
+            'rhs_key' => 'kreport_id',
+            'relationship_type' => 'one-to-many',
+        ),
     )
 );
 

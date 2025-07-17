@@ -134,6 +134,7 @@ include 'metadata/securitygroups_acl_rolesMetaData.php';
 include 'metadata/securitygroups_defaultsMetaData.php';
 include 'metadata/securitygroups_recordsMetaData.php';
 include 'metadata/securitygroups_usersMetaData.php';
+include "metadata/securitygroups_users_employeesMetaData.php";
 
 include 'metadata/surveyquestionoptions_surveyquestionresponsesMetaData.php';
 
@@ -180,6 +181,7 @@ include 'metadata/Attitudes_CompetenciesMetaData.php';
 //
 include 'metadata/Appraisals_EmployeesMetaData.php';
 include 'metadata/last_next_contacts_queueMetaData.php';
+include 'metadata/prospect_list_newsMetaData.php';
 if (file_exists('custom/application/Ext/TableDictionary/tabledictionary.ext.php')) {
     include 'custom/application/Ext/TableDictionary/tabledictionary.ext.php';
 }

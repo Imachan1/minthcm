@@ -49,10 +49,6 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'ProspectLists' => [
-        'list' => false,
-        'record' => true,
-    ],
     'Prospects' => [
         'list' => false,
         'record' => true,
@@ -81,10 +77,6 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'Notes' => [
-        'list' => false,
-        'record' => true,
-    ],
     'Emails' => [
         'list' => false,
         'record' => true,
@@ -93,7 +85,7 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'Documents' => [
+    'DocumentRevisions' => [
         'list' => false,
         'record' => true,
     ],
@@ -231,7 +223,7 @@ return [
     ],
     'SecurityGroups' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'OutboundEmailAccounts' => [
         'list' => false,
@@ -303,7 +295,7 @@ return [
     ],
     'Delegations' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'DelegationsLocale' => [
         'list' => false,
@@ -311,19 +303,7 @@ return [
     ],
     'Ideas' => [
         'list' => false,
-        'record' => true,
-    ],
-    'Rooms' => [
-        'list' => false,
-        'record' => true,
-    ],
-    'Allocations' => [
-        'list' => false,
-        'record' => true,
-    ],
-    'Workplaces' => [
-        'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'EmployeeInteractionTracking' => [
         'list' => false,
@@ -335,11 +315,11 @@ return [
     ],
     'EmployeeRoles' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Benefits' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Responsibilities' => [
         'list' => false,
@@ -347,11 +327,11 @@ return [
     ],
     'SpentTime' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'WorkSchedules' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'WorkingMonths' => [
         'list' => false,
@@ -363,7 +343,7 @@ return [
     ],
     'Resources' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'PeriodsOfEmployment' => [
         'list' => false,
@@ -371,15 +351,15 @@ return [
     ],
     'Reservations' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Contracts' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'TermsOfEmployment' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Trainings' => [
         'list' => false,
@@ -391,15 +371,11 @@ return [
     ],
     'OnboardingTemplates' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'OffboardingTemplates' => [
         'list' => false,
-        'record' => true,
-    ],
-    'ExitInterviews' => [
-        'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Goals' => [
         'list' => false,
@@ -443,7 +419,7 @@ return [
     ],
     'Certificates' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Applications' => [
         'list' => false,
@@ -483,11 +459,11 @@ return [
     ],
     'SalaryRanges' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'EmployeeCertificates' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Dictionaries' => [
         'list' => false,
@@ -516,5 +492,21 @@ return [
     'Requests' => [
         'list' => false,
         'record' => true,
+    ],
+    'Tasks' => [
+        'list' => false,
+        'record' => false,
+    ],
+    'Kudos' => [
+        'list' => false,
+        'record' => true,
+    ],
+    'Recruitments' => [
+        'list' => false,
+        'record' => true,
+    ],
+    'Positions' => [
+        'list' => false,
+        'record' => false,
     ],
 ];

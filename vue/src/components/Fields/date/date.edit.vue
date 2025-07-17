@@ -6,6 +6,7 @@
             variant="outlined"
             density="compact"
             hide-details
+            :error="props.state === 'error'"
             v-model="parsedValue"
         />
         <v-menu v-model="datePickerMenu" offset="16" :close-on-content-click="false">
@@ -22,16 +23,12 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { DateTime } from 'luxon'
-import { FieldVardef } from '@/store/modules'
+import { FieldProps } from '../Field.model'
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
+const props = defineProps<FieldProps>()
+import { usePreferencesStore } from '@/store/preferences';
 
-const props = defineProps<Props>()
+const preferences = usePreferencesStore()
 const emit = defineEmits(['update:modelValue'])
 
 const datePickerMenu = ref(false)
@@ -41,7 +38,7 @@ const parsedValue = computed({
     get() {
         const dt = DateTime.fromSQL(model.value)
         if (dt.isValid) {
-            return dt.toFormat('dd.MM.yyyy') || ''
+            return dt.toFormat(preferences.user?.date_format || 'dd.MM.yyyy') || ''
         }
         return ''
     },
@@ -50,7 +47,7 @@ const parsedValue = computed({
         if (!newVal?.trim()) {
             model.value = ''
         }
-        const dt = DateTime.fromFormat(newVal, 'dd.MM.yyyy')
+        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'dd.MM.yyyy')
         if (dt.isValid) {
             model.value = dt.toSQLDate()
         }
@@ -95,44 +92,6 @@ watch(model, (newVal) => {
         &:hover {
             color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
         }
-    }
-}
-.v-input {
-    :deep(.v-field__outline__start),
-    :deep(.v-field__outline__notch)::before,
-    :deep(.v-field__outline__notch)::after,
-    :deep(.v-field__outline__end) {
-        opacity: 1;
-    }
-
-    :deep(.v-field__outline__start),
-    :deep(.v-field__outline__notch)::before,
-    :deep(.v-field__outline__notch)::after,
-    :deep(.v-field__outline__end) {
-        border-color: #dbdbdb;
-    }
-
-    &:hover {
-        :deep(.v-field__outline__start),
-        :deep(.v-field__outline__notch)::before,
-        :deep(.v-field__outline__notch)::after,
-        :deep(.v-field__outline__end) {
-            border-color: rgb(var(--v-theme-primary));
-        }
-    }
-
-    :deep(.v-field--focused .v-field__outline__start),
-    :deep(.v-field--focused .v-field__outline__notch)::before,
-    :deep(.v-field--focused .v-field__outline__notch)::after,
-    :deep(.v-field--focused .v-field__outline__end) {
-        border-color: rgb(var(--v-theme-primary));
-    }
-
-    :deep(.v-field-label.v-field-label--floating) {
-        background: rgb(var(--v-theme-surface));
-        color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
-        opacity: 1;
-        padding: 0px 2px;
     }
 }
 </style>

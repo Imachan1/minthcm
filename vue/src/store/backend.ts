@@ -1,7 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
-import { useApi } from '@/composables/useApi'
+import { useRouter } from 'vue-router'
 import { useAuthStore, User } from './auth'
 import { useAlertsStore } from './alerts'
 import { useFavoritesStore } from './favorites'
@@ -10,6 +9,7 @@ import { useLanguagesStore, Languages } from './languages'
 import axios, { AxiosError } from 'axios'
 import { useModulesStore, ModulesDefs } from './modules'
 import { usePreferencesStore } from './preferences'
+import { Settings } from 'luxon'
 
 interface QuickCreate {
     module: string
@@ -30,9 +30,11 @@ interface InitResponse {
     quick_create: QuickCreate[]
     global: any
     legacy_views: { [module: string]: LegacyView }
+    mintRebuildID: string
+    responseType: string
+    systemName: string
 }
 export const useBackendStore = defineStore('backend', () => {
-    const route = useRoute()
     const router = useRouter()
     const alerts = useAlertsStore()
     const favorites = useFavoritesStore()
@@ -45,27 +47,94 @@ export const useBackendStore = defineStore('backend', () => {
     const isInit = ref(false)
     const initialLoading = ref(true)
     const isInstalled = ref(true)
+    const cachedConfig = ref()
 
     async function init() {
         const auth = useAuthStore()
-        const api = useApi()
         try {
-            const initResponse = await axios.get<InitResponse>('api/init')
-            initData.value = initResponse.data
-            auth.user = initResponse.data?.user ?? {}
-            languages.languages = {
-                app_strings: initResponse.data.languages?.app_strings ?? {},
-                app_list_strings: initResponse.data.languages?.app_list_strings ?? {},
-                modules: {},
+            if (typeof caches === "undefined") {
+                console.warn('Cache API not supported.')
+            } else {
+                await caches.match('api/init').then(function(response) {
+                    if (!response) {
+                        return;
+                    }
+                    return response.json()
+                }).then(function(response) {
+                    if(cachedConfig){
+                        cachedConfig.value = response;
+                    }
+                })
             }
-            languages.currentLanguage = initResponse.data.global?.default_language ?? 'en_us'
-            modules.modulesDefs = initResponse.data?.modules ?? {}
+            let mintRebuildID = cachedConfig.value?.mintRebuildID ?? '';
+            const current_language = cachedConfig.value?.languages?.current_language ?? '';
+            if(mintRebuildID === false){
+                mintRebuildID = '';
+            }
+            const initResponse = await axios.post<InitResponse>('api/init', {
+                mintRebuildID: mintRebuildID,
+                current_language: current_language,
+                user_id: cachedConfig.value?.user?.id ?? ''
+            })
+            auth.user = initResponse.data?.user ?? {}
+            if(initResponse.data.responseType === 'minified'){
+                cachedConfig.value.user = initResponse.data.user
+                cachedConfig.value.global = initResponse.data.global
+                cachedConfig.value.preferences = initResponse.data.preferences
+                cachedConfig.value.responseType = initResponse.data.responseType
+                cachedConfig.value.systemName = initResponse.data.system_name
+                if(initResponse.data.languages && current_language !== initResponse.data.languages?.current_language){
+                    cachedConfig.value.languages = initResponse.data.languages
+                }
+                if(initResponse.data.menu_modules){
+                    cachedConfig.value.menu_modules = initResponse.data.menu_modules
+                    cachedConfig.value.modules = initResponse.data.modules
+                    cachedConfig.value.quick_create = initResponse.data.quick_create
+                    cachedConfig.value.legacy_views = initResponse.data.legacy_views
+                }
+                if(initResponse.data?.acls){
+                    for(let module_name in initResponse.data.acls){
+                        cachedConfig.value.modules[module_name].acl = initResponse.data.acls[module_name]
+                    }
+                }
+                initData.value = cachedConfig.value
+            } else {
+                initData.value = initResponse.data
+            }
+            languages.languages = {
+                app_strings: initData.value.languages?.app_strings ?? {},
+                app_list_strings: initData.value.languages?.app_list_strings ?? {},
+                modules: {},
+                current_language: initData.value.languages?.current_language ?? 'en_us'
+            }
+            languages.currentLanguage =
+                localStorage.getItem('currentLang') ?? initData.value.global?.default_language ?? 'en_us'
+            modules.modulesDefs = initData.value?.modules ?? {}
+            preferences.user = initData.value.preferences
+            
+            if (typeof caches !== "undefined") {
+            Settings.defaultLocale = languages.currentLanguage.split('_')[0] ?? 'en'
+            if (initData.value.user.preferences.timezone) {
+                Settings.defaultZone = initData.value.user.preferences.timezone
+            }
+
+                caches.open('mint-rebuild').then(function(cache) {
+                    cache.put('api/init', new Response(JSON.stringify(initData.value)));
+                })
+            }
             alerts.init()
             favorites.fetch()
             recents.fetch()
+            
         } catch (err) {
             if ((err as AxiosError).response?.status === 401) {
-                const loginData = (await api.get('api/login')).data
+                const loginData = (
+                    await axios.get('api/login', {
+                        params: {
+                            lang: localStorage.getItem('currentLang') ?? 'en_us',
+                        },
+                    })
+                ).data
                 languages.languages = {
                     app_strings: loginData.languages?.app_strings ?? {},
                     app_list_strings: loginData.languages?.app_list_strings ?? {},
@@ -74,8 +143,17 @@ export const useBackendStore = defineStore('backend', () => {
                     },
                 }
                 preferences.global = loginData.global
-                languages.currentLanguage = loginData.global?.default_language ?? 'en_us'
-                if (router.currentRoute.value.meta?.auth !== false) {
+                languages.currentLanguage =
+                    localStorage.getItem('currentLang') ?? loginData.global?.default_language ?? 'en_us'
+                if(window.location.href.search('/auth/reset') !== -1){
+                    const token = window.location.hash.substring(1).split('?').reduce(function (previousValue, currentParam) {
+                            const parts = currentParam.split('=');
+                            previousValue[parts[0]] = parts[1];
+                            return previousValue;
+                        }, {} as any
+                    )?.token;
+                    router.push({ name: 'auth-reset', query: { token: token} })
+                } else if (router.currentRoute.value.meta?.auth !== false) {
                     router.push({ name: 'auth-login' })
                 }
             } else if ((err as AxiosError).response?.status === 307) {

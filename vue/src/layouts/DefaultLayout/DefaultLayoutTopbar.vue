@@ -22,7 +22,7 @@
             <template v-slot:activator="{ props, isActive }">
                 <v-badge
                     v-bind="props"
-                    :content="alerts.unreadAlertsCount"
+                    :content="alerts.unreadAlertsCountText"
                     color="error"
                     location="bottom end"
                     :model-value="alerts.unreadAlertsCount > 0"
@@ -33,6 +33,7 @@
             <DefaultLayoutAlerts @close="alertsMenu = false" />
         </v-menu>
         <DefaultLayoutUser />
+        <div />
     </nav>
 </template>
 
@@ -62,7 +63,17 @@ const quickCreateMenu = computed<MenuListItem[]>(() => {
     if (!backend.initData?.quick_create) {
         return []
     }
-    return backend.initData.quick_create.map((qc) => ({
+    var quick_create = []
+    for (let qc of backend.initData.quick_create) {
+        if (
+            backend.initData.modules[qc.module].acl.access == 89 &&
+            [75, 80, 90, 99].includes(backend.initData.modules[qc.module].acl.edit)
+        ) {
+            quick_create.push(qc)
+        }
+    }
+
+    return quick_create.map((qc) => ({
         title: qc.name,
         icon: modules.modules[qc.module]?.icon ?? 'mdi-pencil',
         url: `/modules/${qc.module}/EditView`,
@@ -89,7 +100,6 @@ function showModulesPopup() {
     gap: 16px;
     align-items: center;
     box-shadow: 0 0 1rem #0005;
-    padding-right: 16px;
 }
 .nav-btn {
     padding: 6px;

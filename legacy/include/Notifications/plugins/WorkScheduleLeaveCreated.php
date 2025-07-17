@@ -48,9 +48,11 @@ class WorkScheduleLeaveCreated extends NotificationPlugin
 {
     protected $work_schedule;
 
-    public function __construct(WorkSchedules $work_schedule)
+    public function __construct(WorkSchedules $work_schedule = null)
     {
         $this->work_schedule = $work_schedule;
+        $this->setType('WorkScheduleLeaveCreated');
+        $this->setLabel('LBL_WORKSCHEDULE_LEAVE_CREATED');
     }
 
     public function run()
@@ -77,7 +79,7 @@ class WorkScheduleLeaveCreated extends NotificationPlugin
                 ->setDescription($message)
                 ->setAssignedUserId($superior_id)
                 ->setRelatedBean($this->work_schedule->id, 'WorkSchedules')
-                ->setType('WorkScheduleLeaveCreated')
+                ->setType($this->getType())
                 ->saveAsAlert()->WebPush();
         }
 

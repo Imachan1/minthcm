@@ -2,7 +2,10 @@
     <div class="details-panel">
         <div class="tabs-container">
             <h1>{{ title }}</h1>
-            <template v-if="store.bean.acl_access?.edit === true">
+            <MintStatusBox v-if="store.view === 'edit' && store.bean.validationError" type="error">
+                {{ languages.label(store.bean.validationError, store.bean.module) }}
+            </MintStatusBox>
+            <div v-if="store.bean.aclAccess?.edit === true">
                 <MintButton
                     v-if="store.view === 'detail'"
                     class="ml-auto"
@@ -12,34 +15,40 @@
                 />
                 <div class="buttons" v-if="store.view === 'edit'">
                     <MintButton
-                        v-if="!saveStatus"
+                        v-if="!store.bean.isSaving && !store.bean.isNew"
                         icon="mdi-close"
                         :text="languages.label('LBL_CANCEL_BUTTON_LABEL')"
                         @click="cancel"
                     />
                     <MintButton
-                        :disabled="!!saveStatus || !store.isBeanChanged"
-                        :icon="saveButtonStates[saveStatus].icon"
-                        :loading="saveStatus === 'saving'"
+                        :disabled="!store.bean.isValid || store.bean.isSaving"
+                        :icon="!store.bean.isSaving ? 'mdi-check' : ''"
+                        :loading="store.bean.isSaving"
                         variant="primary"
-                        :text="languages.label(saveButtonStates[saveStatus].text)"
+                        :text="languages.label(store.bean.isSaving ? 'LBL_SAVING' : 'LBL_SAVE_BUTTON_LABEL')"
                         @click="save"
                     />
                 </div>
-            </template>
+            </div>
         </div>
         <div class="fields-container">
-            <div v-for="(row, i) in fixedRows" class="row" :key="i + store.view">
+            <div v-for="(row, i) in fixedRows" class="row" :key="row">
                 <div v-for="n in store.columns" :key="n - 1">
                     <Field
-                        v-if="row[n - 1]"
-                        :view="store.view"
-                        :disabled="row[n - 1].readonly && store.view === 'edit'"
+                        v-if="row[n - 1] && !store.bean.logic.hiddenFields.includes(row[n - 1].name)"
+                        :view="store.bean.logic.readonlyFields.includes(row[n - 1].name) ? 'detail' : store.view"
                         :defs="row[n - 1]"
                         :data="{ bean: store.bean.attributes }"
-                        :label="languages.label(row[n - 1].label ?? row[n - 1].vname, modules.currentModule?.name)"
-                        v-model="store.bean.attributes[row[n - 1].name]"
-                        @update:modelValue="(additionalFields) => store.updateField(row[n - 1].name, additionalFields)"
+                        :label="languages.label(row[n - 1].label, modules.currentModule?.name)"
+                        :required="store.bean.logic.requiredFields.includes(row[n - 1].name)"
+                        :errorMessage="store.bean.logic.errorMessages[row[n - 1].name]"
+                        :isDirty="store.bean.isDirty || store.bean.dirtyFields.has(row[n - 1].name)"
+                        :modelValue="
+                            store.bean[store.view === 'detail' ? 'syncAttributes' : 'attributes'][row[n - 1].name]
+                        "
+                        @update:modelValue="
+                            (value, additionalFields) => store.updateField(row[n - 1].name, value, additionalFields)
+                        "
                     />
                 </div>
             </div>
@@ -48,13 +57,14 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, computed } from 'vue'
+import { computed } from 'vue'
 import Field from '@/components/Fields/Field.vue'
 import { FieldVardef } from '@/store/modules'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useModulesStore } from '@/store/modules'
 import MintButton from '@/components/MintButtons/MintButton.vue'
+import MintStatusBox from '@/components/MintStatusBox.vue'
 
 interface Props {
     data: {
@@ -66,12 +76,14 @@ const props = defineProps<Props>()
 const store = useRecordViewStore()
 const languages = useLanguagesStore()
 const modules = useModulesStore()
+
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_DETAILS', modules.currentModule?.name)
 })
+
 const fixedRows = computed(() => {
-    const rows = props.data.fields || []
-    const fixedRows = []
+    const rows = props.data.fields.filter((row) => row.some((field) => !store.bean.logic.hiddenFields.includes(field.name))) || []
+    const fixedRows: FieldVardef[][] = []
     rows.forEach((row) => {
         const newRow = []
         row.forEach((field) => {
@@ -87,47 +99,43 @@ const fixedRows = computed(() => {
     })
     return fixedRows
 })
-const saveStatus = ref<'' | 'saving' | 'saved' | 'error'>('')
-const saveButtonStates = {
-    '': {
-        icon: 'mdi-check',
-        text: 'LBL_SAVE_BUTTON_LABEL',
-    },
-    saving: {
-        icon: '',
-        text: 'LBL_SAVING',
-    },
-    saved: {
-        icon: 'mdi-check',
-        text: 'LBL_SAVED',
-    },
-    error: {
-        icon: 'mdi-close',
-        text: 'LBL_MINT4_STATUS_BOX_ERROR',
-    },
+
+const inlineEditBtnClicked = (event: string) => {
+    store.inlineEditField = event
+    store.inlineEditField = ''
+    store.inlineEditFieldSaving = ''
 }
 
 const edit = () => {
     store.view = 'edit'
+    store.inlineEditField = ''
+    store.inlineEditFieldSaving = ''
 }
 
 const cancel = () => {
-    store.bean.dirtyFields.clear()
-    store.bean.attributes = { ...store.bean.syncAttributes }
+    store.bean.restore()
     store.view = 'detail'
-    saveStatus.value = ''
+    store.inlineEditField = ''
+    store.inlineEditFieldSaving = ''
 }
 
 const save = async () => {
-    saveStatus.value = 'saving'
-    const response = await store.saveBean()
-    saveStatus.value = [200, 201].includes(response.status) ? 'saved' : 'error'
-    setTimeout(() => {
-        if (saveStatus.value === 'saved') {
-            store.view = 'detail'
-        }
-        saveStatus.value = ''
-    }, 2000)
+    if (store.bean.isSaving) {
+        return
+    }
+    const prevInlineEditField = store.inlineEditField
+    if (prevInlineEditField) {
+        store.inlineEditFieldSaving = prevInlineEditField
+    }
+    store.inlineEditField = ''
+    const response = await store.bean.save()
+    if (response) {
+        store.view = 'detail'
+        store.inlineEditField = ''
+        store.inlineEditFieldSaving = ''
+    } else {
+        store.inlineEditField = prevInlineEditField
+    }
 }
 </script>
 
@@ -149,9 +157,13 @@ const save = async () => {
         border-bottom: 1px solid #dbdbdb;
 
         .buttons {
-            margin-left: auto;
             display: flex;
             gap: 16px;
+            justify-content: end;
+        }
+
+        > * {
+            flex: 1;
         }
     }
 
@@ -166,7 +178,7 @@ const save = async () => {
             gap: 24px;
 
             > * {
-                flex-basis: calc(100% / 3);
+                flex: 1;
             }
         }
     }

@@ -2,7 +2,6 @@
     <div class="auth-view">
         <div class="auth-view-container">
             <img src="../../assets/mint_logo.png" height="32" />
-
             <router-view v-slot="{ Component }" class="form-content">
                 <v-slide-x-transition hide-on-leave>
                     <component :is="Component" />
@@ -44,6 +43,7 @@ import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 import axios from 'axios'
 import { usePreferencesStore } from '@/store/preferences'
+import { onMounted } from 'vue'
 
 const languages = useLanguagesStore()
 const backend = useBackendStore()
@@ -51,32 +51,46 @@ const store = useAuthViewStore()
 const preferences = usePreferencesStore()
 
 const languagesList = computed<MenuListItem[]>(() => {
+    const getFlagCode = (code: string) => {
+        let [lang, country] = code.split('_')
+        if (['ar','fa','he','ur','yi'].includes(lang.toLowerCase())){
+            country = 'arab'
+        }
+        return `fi-${country.toLowerCase()}`
+    }
     return Object.entries(preferences.global?.languages ?? {}).map(([code, title]) => ({
         title: title?.toString() || '',
-        icon: `fi-${code.split('_')?.[1]?.toLowerCase()}`, // en_us => fi-us, pl_PL => fi-pl
+        icon: getFlagCode(code),
         onClick: () => {
             changeLanguage(code)
         },
     }))
 })
 
-async function changeLanguage(lang = 'pl_PL') {
-    backend.initialLoading = true
-    const response = await axios.get('api/languages', {
-        params: {
-            lang,
-        },
-    })
-    if (!response?.data) {
-        return
+onMounted(() => {
+    const currentLang = localStorage.getItem('currentLang')
+    if (!currentLang) {
+        let browserLang = navigator.language
+        const [languageCode, countryCode] = browserLang.split('-')
+        let formattedbrowserLang = countryCode ? `${languageCode}_${countryCode}` : `${languageCode}_${languageCode.toUpperCase()}`
+
+        const availableLanguages = Object.keys(preferences.global?.languages ?? {})
+
+        let defaultLang = availableLanguages.find(lang => lang.toLowerCase() === formattedbrowserLang.toLowerCase())
+        if (!defaultLang) {
+            defaultLang = availableLanguages.find(lang => lang.toLowerCase().startsWith(languageCode.toLowerCase()))
+        }
+
+        if (!defaultLang) {
+            defaultLang = "en_US"
+        }
+        changeLanguage(defaultLang)
     }
-    languages.languages = {
-        app_strings: response.data.app_strings,
-        app_list_strings: response.data.app_list_strings,
-        modules: {},
-    }
-    languages.currentLanguage = lang
-    backend.initialLoading = false
+})
+
+async function changeLanguage(lang = 'en_us') {
+    localStorage.setItem('currentLang', lang)
+    document.location.reload()
 }
 </script>
 

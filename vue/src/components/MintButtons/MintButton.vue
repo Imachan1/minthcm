@@ -20,14 +20,14 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, withDefaults, computed } from 'vue'
+import { computed } from 'vue'
 
 interface Props {
     icon?: string
     appendIcon?: string
     text?: string
     tooltip?: string
-    variant?: 'text' | 'regular' | 'primary' | 'nav'
+    variant?: 'text' | 'text-danger' | 'regular' | 'primary' | 'nav'
     size?: '24' | 'small' | 'medium' | 'large'
     disabled?: boolean
     active?: boolean
@@ -70,6 +70,18 @@ const isIcon = computed(() => (props.icon || props.appendIcon) && !props.text)
     background: transparent;
     &:hover {
         color: rgb(var(--v-theme-secondary-dark));
+        background: #e0ece9;
+    }
+    &.disabled {
+        cursor: default;
+        color: #8b8b8b;
+        background: transparent;
+    }
+}
+.mint-button-text-danger {
+    color: #ac0221;
+    background: transparent;
+    &:hover {
         background: #e0ece9;
     }
     &.disabled {

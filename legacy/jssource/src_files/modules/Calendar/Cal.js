@@ -274,6 +274,10 @@ CAL.repeat_type_selected = function () {
       }
    }
 }
+CAL.load_form_in_new_tab = function (module_name, record, edit_all_recurrences, cal_event) {
+    var url = "index.php?module=" + module_name + "&action=DetailView&record=" + record;
+    window.open(url, '_blank');
+}
 CAL.load_form = function (module_name, record, edit_all_recurrences, cal_event) {
    // Mint start
    var url = "index.php?module=" + module_name + "&action=DetailView&record=" + record;
@@ -610,7 +614,12 @@ CAL.dialog_create = function (date, end_date, user_id) {
    // Mint start
    var module_name = CAL.get("current_module").value;
    var return_module = (typeof (moduleName) != 'undefined') ? moduleName : 'Calendar';
-   var url = "index.php?module=" + module_name + "&action=EditView&redirected_from_calendar=1&return_module=" + return_module + "&date_start=" + date + "&date_end=" + end_date + "&assigned_user_id=" + user_id;
+   var month = date.split('/')[0];
+   var day = date.split('/')[1];
+   var year = String(date.split('/')[2]).split(' ')[0];
+   var url = "index.php?module=" + module_name + "&action=EditView&return_action=index&redirected_from_calendar=1&return_module=" + return_module 
+   + "&date_start=" + date + "&date_end=" + end_date + "&assigned_user_id=" 
+   + user_id + "&year=" + year + "&month=" + month + "&day=" + day;
    window.parent.postMessage(new URL(url, document.location).href); // Mint-Vue
    // window.location.assign(url);
    //   var e, user_id, user_name;
@@ -1141,6 +1150,11 @@ $($.fullCalendar).ready(function () {
                CAL.load_form(calEvent.module, calEvent.record, false, calEvent);
             }
          },
+         eventAuxclick: function (calEvent, jsEvent, view) {
+            if (global_edit == true) {
+               CAL.load_form_in_new_tab(calEvent.module, calEvent.record, false, calEvent);
+            }
+        },
          eventDrop: function (event, delta, revertFunc) {
             event_datetime = event.start.format(global_datetime_format);
             var data = {

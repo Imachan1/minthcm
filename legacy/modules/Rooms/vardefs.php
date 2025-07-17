@@ -71,6 +71,7 @@ $dictionary['Rooms'] = array(
             'disable_num_format' => '',
             'min' => false,
             'max' => false,
+            'readonly' => true,
         ),
         'room_surface' => 
         array (
@@ -151,7 +152,8 @@ $dictionary['Rooms'] = array(
             'required' => true,
             'name' => 'availability',
             'vname' => 'LBL_STATUS',
-            'type' => 'enum',
+            'type' => 'ColoredEnum',
+            'dbType' => 'varchar',
             'massupdate' => '0',
             'default' => '',
             'no_default' => false,
@@ -168,6 +170,7 @@ $dictionary['Rooms'] = array(
             'len' => 100,
             'size' => '20',
             'options' => 'workplace_room_status',
+            'options_colors' => 'workplace_room_status_colored',
             'studio' => 'visible',
         ),
         "securitygroups_rooms" => array(                  

@@ -781,7 +781,7 @@ function aorRunScheduledReports() {
    require_once 'include/SugarQueue/SugarJobQueue.php';
    $db = DBManagerFactory::getInstance();
    $date = new DateTime(); //Ensure we check all schedules at the same instant
-   foreach ( BeanFactory::getBean('AOR_Scheduled_Reports')->get_full_list() as $scheduledReport ) {
+   foreach ( (BeanFactory::getBean('AOR_Scheduled_Reports')->get_full_list() ?? []) as $scheduledReport ) {
       if ( $scheduledReport->status != 'active' ) {
          continue;
       }
@@ -895,7 +895,6 @@ function runElasticSearchIndexerScheduler($data) {
 
 require_once 'modules/Schedulers/schedulers/GenerateAppraisalAppraisalItemsJob.php';
 require_once 'modules/Schedulers/schedulers/GenerateOnboardingOffboardingJob.php';
-require_once 'modules/Schedulers/schedulers/GenerateUsersNewsJob.php';
 require_once 'modules/Schedulers/schedulers/MassConfirmationJob.php';
 require_once 'modules/Schedulers/schedulers/RepairPrivateGroupsJob.php';
 require_once 'modules/Schedulers/schedulers/UpdateNewsDisplayDate.php';
@@ -906,6 +905,8 @@ require_once 'modules/Schedulers/schedulers/clearVcalCron.php';
 require_once 'modules/Schedulers/schedulers/AutomaticCreateNotification.php';
 require_once 'modules/Schedulers/schedulers/LastNextContactsQueueJob.php';
 require_once 'modules/Schedulers/schedulers/indexMissingElasticsearchRecords.php';
+require_once 'modules/Schedulers/schedulers/sendKudos.php';
+require_once 'modules/Schedulers/schedulers/UpdateNewsByProspectLists.php';
 
 if ( file_exists('custom/modules/Schedulers/_AddJobsHere.php') ) {
    require('custom/modules/Schedulers/_AddJobsHere.php');

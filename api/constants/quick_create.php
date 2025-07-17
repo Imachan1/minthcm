@@ -46,6 +46,7 @@
 
 return array(
     "Ideas" => translate("LBL_LIST_TITLE", "Ideas"),
+    "Kudos" => translate("LBL_LIST_TITLE", "Kudos"),
     "Notes" => translate("LBL_LIST_TITLE", "Notes"),
     "Reservations" => translate("LBL_LIST_TITLE", "Reservations"),
     "WorkSchedules" => translate("LBL_LIST_TITLE", "WorkSchedules"),
@@ -53,4 +54,6 @@ return array(
     "Tasks" => translate("LBL_LIST_TITLE", "Tasks"),
     "Calls" => translate("LBL_LIST_TITLE", "Calls"),
     "Meetings" => translate("LBL_LIST_TITLE", "Meetings"),
+    "Candidates" => translate("LBL_LIST_TITLE", "Candidates"),
+    "Recruitments" => translate("LBL_LIST_TITLE", "Recruitments"),
 );

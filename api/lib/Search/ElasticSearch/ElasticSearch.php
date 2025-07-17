@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -69,14 +69,17 @@ class ElasticSearch extends SearchManager
         $this->elastic_acl = $elastic_acl;
     }
     
-    public function search($handle_acl = false): SearchResult
+    public function search($handle_acl = false, $return_raw_result = false): SearchResult | array
     {
         if (empty($this->query)) {
             throw new InvalidArgumentException();
         }
         $result = $this->client->search($this->query);
-        $this->setResultManager($result, $handle_acl);
-        return $this->result_manager;
+        if(!$return_raw_result){
+            $this->setResultManager($result, $handle_acl);
+            return $this->result_manager;
+        }
+        return $result;
     }
 
     public function setQuery(array $params): void

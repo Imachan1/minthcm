@@ -101,10 +101,10 @@ function toDecimal(original,precision){precision=(precision==null)?2:precision;n
 return temp+'.00';if((temp*10)%10==0)
 return temp+'0';return temp}
 function isInteger(s){if(typeof num_grp_sep!='undefined'&&typeof dec_sep!='undefined'){s=unformatNumberNoParse(s,num_grp_sep,dec_sep).toString();}
-return /^[+-]?[0-9]*$/.test(s);}
+return/^[+-]?[0-9]*$/.test(s);}
 function isDecimal(s){if(typeof s=="string"&&s=="")
 return true;if(typeof num_grp_sep!='undefined'&&typeof dec_sep!='undefined'){s=unformatNumberNoParse(s,num_grp_sep,dec_sep).toString();}
-return /^[+-]?[0-9]*\.?[0-9]*$/.test(s);}
+return/^[+-]?[0-9]*\.?[0-9]*$/.test(s);}
 function isNumeric(s){return isDecimal(s);}
 if(typeof date_reg_positions!="object")
 var date_reg_positions={'Y':1,'m':2,'d':3};if(typeof date_reg_format!="string")
@@ -141,7 +141,7 @@ return false
 return true}
 function isFloat(floatStr){if(floatStr.length==0){return true;}
 if(!(typeof(num_grp_sep)=='undefined'||typeof(dec_sep)=='undefined')){floatStr=unformatNumberNoParse(floatStr,num_grp_sep,dec_sep).toString();}
-return /^(-)?[0-9\.]+$/.test(floatStr);}
+return/^(-)?[0-9\.]+$/.test(floatStr);}
 function isDBName(str){if(str.length==0){return true;}
 if(!/^[a-zA-Z][a-zA-Z\_0-9]*$/.test(str))
 return false
@@ -629,7 +629,7 @@ t+=SUGAR.util.innerText(c);}
 return t;},callOnChangeListers:function(field){var listeners=YAHOO.util.Event.getListeners(field,'change');if(listeners!=null){for(var i=0;i<listeners.length;i++){var l=listeners[i];l.fn.call(l.scope?l.scope:this,l.obj);}}},closeActivityPanel:{show:function(module,id,new_status,viewType,parentContainerId,childElement=''){if(SUGAR.util.closeActivityPanel.panel)
 SUGAR.util.closeActivityPanel.panel.destroy();var singleModule=SUGAR.language.get("app_list_strings","moduleListSingular")[module];singleModule=(typeof(singleModule)!='undefined')?singleModule.toLowerCase():'';var closeText=SUGAR.language.get("app_strings","LBL_CLOSE_ACTIVITY_CONFIRM").replace("#module#",singleModule);SUGAR.util.closeActivityPanel.panel=new YAHOO.widget.SimpleDialog("closeActivityDialog",{width:"300px",fixedcenter:true,visible:false,draggable:false,close:true,text:closeText,constraintoviewport:true,buttons:[{text:SUGAR.language.get("app_strings","LBL_EMAIL_OK"),handler:function(){if(SUGAR.util.closeActivityPanel.panel)
 SUGAR.util.closeActivityPanel.panel.hide();ajaxStatus.showStatus(SUGAR.language.get('app_strings','LBL_SAVING'));var args="action=save&id="+id+"&record="+id+"&status="+new_status+"&module="+module;var callback={success:function(){var parent;if(childElement.length!=0){parent=$('div[id^="dashlet_entire_"]').has($("#"+childElement.id));}
-if(parent.length===0){window.location.reload(true)}else{SUGAR.mySugar.retrieveDashlet(parent.attr('id').replace("dashlet_entire_",""));}}}
+if(jQuery.isEmptyObject(parent)||parent.length===0){window.location.reload(true)}else{SUGAR.mySugar.retrieveDashlet(parent.attr('id').replace("dashlet_entire_",""));}}}
 YAHOO.util.Connect.asyncRequest('POST','index.php',callback,args);},isDefault:true},{text:SUGAR.language.get("app_strings","LBL_EMAIL_CANCEL"),handler:function(){SUGAR.util.closeActivityPanel.panel.hide();}}]});SUGAR.util.closeActivityPanel.panel.setHeader(SUGAR.language.get("app_strings","LBL_CLOSE_ACTIVITY_HEADER"));SUGAR.util.closeActivityPanel.panel.render(document.body);SUGAR.util.closeActivityPanel.panel.show();$("#closeActivityDialog .container-close").text(SUGAR.language.get("app_strings","LNK_CLOSE"));$("#closeActivityDialog .container-close").css("margin-right","10px");}},setEmailPasswordDisplay:function(id,exists,formName){link=document.getElementById(id+'_link');pwd=document.getElementById(id);if(!pwd||!link)
 return;if(exists){pwd.disabled=true;pwd.style.display='none';link.style.display='';if(typeof(formName)!='undefined')
 removeFromValidate(formName,id);}else{pwd.disabled=false;pwd.style.display='';link.style.display='none';}},setEmailPasswordEdit:function(id){link=document.getElementById(id+'_link');pwd=document.getElementById(id);if(!pwd||!link)

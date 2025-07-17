@@ -1,13 +1,15 @@
 <template>
     <v-data-table-server
         class="list-table"
+        :style="{
+            minHeight: store.mode === 'relate' ? 'calc(100vh - 300px)' : 0,
+        }"
         :headers="store.headers"
         :items="store.results"
         :items-length="store.itemsLength || 0"
         :loading="store.isLoading || store.initialLoading"
         fixed-header
         must-sort
-        :height="store.mode === 'relate' ? 'calc(100vh - 400px)' : null"
         :show-select="store.itemsSelectable"
         v-model="store.selected"
         @update:options="store.options = $event"
@@ -29,7 +31,9 @@
                 :target="store.mode === 'relate' ? '_blank' : null"
                 v-text="item[link.nameField]"
             />
-            <span v-else v-text="item[link.nameField]" />
+            <a v-else @click="store.handleNameClick(item)" class="list-table-name-link">
+                {{ item[link.nameField] }}
+            </a>
         </template>
         <template v-for="bool in store.customFields.booleans" v-slot:[`item.${bool}`]="{ item }" :key="bool">
             <v-icon
@@ -103,9 +107,8 @@ const languages = useLanguagesStore()
 const popups = usePopupsStore()
 
 const pageText = computed(() => {
-    const isOverflow = store.itemsLength > store.options.page * store.options.itemsPerPage
     const pageText = `{0} - {1} ${languages.label('LBL_ESLIST_PAGE_TEXT')} {2}`
-    return isOverflow ? `${pageText}+` : pageText
+    return pageText
 })
 
 const coreActions = {

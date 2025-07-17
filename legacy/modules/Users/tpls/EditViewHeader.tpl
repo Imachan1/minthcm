@@ -93,6 +93,7 @@ var ERR_REENTER_PASSWORDS = '{$MOD.ERR_REENTER_PASSWORDS}';
 	<input type="hidden" name="edit_self" id="edit_self" value='{$EDIT_SELF}' >
 	<input type="hidden" name="required_email_address" id="required_email_address" value='{$REQUIRED_EMAIL_ADDRESS}' >
     <input type="hidden" name="isDuplicate" id="isDuplicate" value="{$isDuplicate}">
+    <input type="hidden" name="systemGeneratedPasswordSetting" id="systemGeneratedPasswordSetting" value="{$SYSTEM_GENERATED_PASSWORD_SETTING}">
 	<div id="popup_window"></div>
 
 <script type="text/javascript">
@@ -158,6 +159,7 @@ EditView_tabs.on('contentReady', function(e){
         <li><a id="tab5" href="#tab5" style='display:{$HIDE_FOR_GROUP_AND_PORTAL};'><em>{$MOD.LBL_EAPM_SUBPANEL_TITLE}</em></a></li>
         {/if}
 		<li><a id="tab6" href="#tab6" style='display:{$HIDE_FOR_GROUP_AND_PORTAL};'><em>{$MOD.LBL_LAYOUT_OPTIONS}</em></a></li>
+		<li><a id="tab7" href="#tab7"><em>{$MOD.LBL_MANAGE_NOTIFICATIONS}</em></a></li>
     </ul>
     <div class="yui-content user-tab-content">
         <div>

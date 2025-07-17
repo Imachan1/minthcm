@@ -47,6 +47,7 @@
 namespace MintHCM\Api\Controllers;
 
 use BeanFactory;
+use MintHCM\Lib\MintLogic\MintLogic;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
@@ -69,19 +70,176 @@ class ModuleController
         return $response;
     }
 
+    public function create(Request $request, Response $response, array $args): Response
+    {
+        $response = $response->withHeader('Content-type', 'application/json');
+        $module = $this->getModuleFromRoute($request);
+        chdir('../legacy/');
+
+        $current_time_zone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+        $disable_date_format = $GLOBALS['disable_date_format'];
+        $GLOBALS['disable_date_format'] = true;
+
+        $bean = BeanFactory::newBean($module);
+        if (empty($bean)) {
+            return $response->withStatus(404);
+        }
+        if (!$bean->ACLAccess('edit')) {
+            return $response->withStatus(403);
+        }
+        $record_data = $request->getAttribute("record_data");
+        foreach ($record_data as $field_name => $value) {
+            if (isset($bean->field_defs[$field_name])) {
+                if ('id' === $field_name && !empty($value)) {
+                    $bean->new_with_id = true;
+                }
+                $bean->$field_name = $value;
+            }
+        }
+        $bean->save(false);
+        $bean->retrieve();
+
+        date_default_timezone_set($current_time_zone);
+        $GLOBALS['disable_date_format'] = $disable_date_format;
+
+        if (!empty($bean) && !empty($bean->id)) {
+            $record_data = $this->mergeRecordData($bean);
+        }
+
+        chdir('../api/');
+        $response = $response->withStatus(201);
+        $response->getBody()->write(json_encode($record_data));
+        return $response;
+    }
+
+    public function update(Request $request, Response $response, array $args): Response
+    {
+        $response = $response->withHeader('Content-type', 'application/json');
+        $module = $this->getModuleFromRoute($request);
+        chdir('../legacy/');
+        $record_data = $request->getAttribute("record_data");
+        $record_id = $request->getAttribute("id");
+        
+        $current_time_zone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+        $disable_date_format = $GLOBALS['disable_date_format'];
+        $GLOBALS['disable_date_format'] = true;
+
+        if (!empty($record_id)) {
+            $bean = BeanFactory::getBean($module, $record_id);
+        } else {
+            $bean = BeanFactory::newBean($module);
+        }
+
+        if (empty($bean) || $bean->id !== $record_id) {
+            return $response->withStatus(404);
+        }
+        if (!$bean->ACLAccess('edit')) {
+            return $response->withStatus(403);
+        }
+        foreach ($record_data as $field_name => $value) {
+            if (isset($bean->field_defs[$field_name]) && "id" !== $field_name) {
+                $bean->$field_name = $value;
+            }
+        }
+        $validationResult = (new MintLogic($bean))->validateBean();
+        if (!$validationResult['isValid']) {
+            $response = $response->withStatus(422);
+            $response->getBody()->write(json_encode($validationResult));
+            return $response;
+        }
+        $bean->save(false);
+        BeanFactory::unregisterBean($bean->module_name, $bean->id);
+        $bean = BeanFactory::getBean($bean->module_name, $bean->id);
+        // $bean->retrieve();
+
+        date_default_timezone_set($current_time_zone);
+        $GLOBALS['disable_date_format'] = $disable_date_format;
+
+        if (!empty($bean) && ($bean->id === $record_id || empty($record_id))) {
+            $record_data = $this->mergeRecordData($bean);
+        }
+
+        chdir('../api/');
+        $response = $response->withStatus(200);
+        $response->getBody()->write(json_encode($record_data));
+        return $response;
+    }
+
+    public function getRecord(Request $request, Response $response, array $args): Response
+    {
+        $response = $response->withHeader('Content-type', 'application/json');
+        $module = $this->getModuleFromRoute($request);
+        chdir('../legacy/');
+        $record_id = $request->getAttribute("id");
+
+        $current_time_zone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+        $disable_date_format = $GLOBALS['disable_date_format'];
+        $GLOBALS['disable_date_format'] = true;
+
+        if (!empty($record_id)) {
+            $bean = BeanFactory::getBean($module,$record_id);
+        } else {
+            $bean = BeanFactory::newBean($module);
+        }
+
+        date_default_timezone_set($current_time_zone);
+        $GLOBALS['disable_date_format'] = $disable_date_format;
+
+        if (empty($bean) || $bean->id !== $record_id) {
+            return $response->withStatus(404);
+        }
+        if (!$bean->ACLAccess('view')) {
+            return $response->withStatus(403);
+        }
+        if (!empty($bean) && $bean->id === $record_id) {
+            $record_data = $this->mergeRecordData($bean);
+        }
+        chdir('../api/');
+        $response->getBody()->write(json_encode($record_data));
+        return $response;
+    }
+
+    public function getRecordLogic(Request $request, Response $response, array $args): Response
+    {
+        $module = $this->getModuleFromRoute($request);
+        $record_id = $request->getAttribute("id");
+        $attributes = $request->getAttribute("attributes");
+        $triggerFields = $request->getAttribute("triggerFields");
+        chdir('../legacy/');
+        if (!empty($record_id)) {
+            $bean = BeanFactory::getBean($module, $record_id);
+            if (empty($bean->id)) {
+                $response = $response->withStatus(404);
+                return $response;
+            }
+        } else {
+            $bean = BeanFactory::newBean($module);
+        }
+
+        foreach ($attributes as $field => $value) {
+            $bean->{$field} = $value;
+        }
+        $result = (new MintLogic($bean))->getChanged($triggerFields);
+        chdir('../api/');
+        $response->getBody()->write(json_encode($result));
+        return $response;
+
+    }
+
     public function delete(Request $request, Response $response, array $args): Response
     {
-        $routeContext = RouteContext::fromRequest($request);
-        $route = $routeContext->getRoute();
-        $module = explode('/', $route->getPattern())[1] ?? null;
+        $module = $this->getModuleFromRoute($request);
         $id = $request->getAttribute('id');
         chdir('../legacy/');
         $f = BeanFactory::getBean($module, $id);
-        if (empty($f->id)  ) {
+        if (empty($f->id)) {
             $response = $response->withStatus(404);
             return $response;
         } else {
-            if(!$f->ACLAccess('delete')){
+            if (!$f->ACLAccess('delete')) {
                 $response = $response->withStatus(403);
                 return $response;
             }
@@ -90,5 +248,71 @@ class ModuleController
         chdir('../api/');
         $response = $response->withStatus(200);
         return $response;
+    }
+
+    protected function getModuleFromRoute(Request $request): ?string
+    {
+        $routeContext = RouteContext::fromRequest($request);
+        $route = $routeContext->getRoute();
+        return explode('/', $route->getPattern())[1] ?? null;
+    }
+
+    public function subpanelRecords(Request $request, Response $response, array $args): Response
+    {
+        $module = $this->getModuleFromRoute($request);
+        $id = $request->getAttribute('id');
+        chdir('../legacy/');
+        $focus = BeanFactory::getBean($module, $id);
+        if (empty($focus->id)) {
+            $response = $response->withStatus(404);
+            return $response;
+        }
+        $related_name = $request->getAttribute('relation_name');
+        require_once 'include/SubPanel/SubPanelDefinitions.php';
+        $spd = new \SubPanelDefinitions($focus, $module);
+        if (isset($spd->layout_defs['subpanel_setup'][$related_name])) {
+            
+            $target_module = $spd->layout_defs['subpanel_setup'][$related_name]['module'];
+            $target_bean = BeanFactory::getBean($target_module);
+            if (!$target_bean || !$target_bean->ACLAccess('list')) {
+                return $response->withStatus(403);
+            }
+
+            require_once 'include/ListView/ListViewSubPanel.php';
+            $list_view = new \ListViewSubPanel();
+            $subpanel_def = $spd->load_subpanel($related_name);
+            $data = $list_view->process_dynamic_listview($module, $focus, $subpanel_def, true);
+            $list = $data['list'];
+            chdir('../api/');
+            $response = $response->withStatus(200);
+            $return_list = [];
+            foreach ($list as $record_id => $record) {
+                $record->fill_in_additional_detail_fields();
+                foreach ($record->field_defs as $field_name => $field_def) {
+                    $return_list[$record_id][$field_name] = $record->$field_name;
+                }
+
+            }
+            $response->getBody()->write(json_encode($return_list));
+            return $response;
+        }
+        chdir('../api/');
+        $response = $response->withStatus(404);
+        return $response;
+    }
+
+    protected function mergeRecordData($bean)
+    {
+        return [
+            'id' => $bean->id,
+            'module' => $bean->module_name,
+            'attributes' => $bean->toArray(),
+            'acl_access' => [
+                'edit' => $bean->ACLAccess('edit'),
+                'delete' => $bean->ACLAccess('delete'),
+                'view' => $bean->ACLAccess('view'),
+            ],
+            'logic' => (new MintLogic($bean))->getInitial(),
+        ];
     }
 }

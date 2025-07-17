@@ -462,7 +462,7 @@ SUGAR.subpanelUtils = function () {
       for (var i = 0; i < saveButton.length; i++) {
         saveButton[i].disabled = true;
       }
-      ajaxStatus.showStatus(SUGAR.language.get('app_strings', 'LBL_SAVING'));
+      viewTools.GUI.statusBox.showStatus( viewTools.language.get('app_strings', 'LBL_SAVING') + '...', 'info');
       var success = function (data) {
         var module = get_module_name();
         var id = get_record_id();
@@ -499,8 +499,8 @@ SUGAR.subpanelUtils = function () {
           for (var i = 0; i < subPanels.length; i++) {
             showSubPanel(subPanels[i], null, true);
           }
-          ajaxStatus.showStatus(SUGAR.language.get('app_strings', 'LBL_SAVED'));
-          window.setTimeout('ajaxStatus.hideStatus()', 1000);
+        viewTools.GUI.statusBox.showStatus(viewTools.language.get('app_strings','LBL_SAVED'), 'success', 1000);
+        $("#bootstrap-container .mask").remove();
           for (var i = 0; i < saveButton.length; i++) {
             saveButton[i].disabled = false;
           }
@@ -903,3 +903,34 @@ $(function () {
         });
     });
 });
+
+function acceptWorkSchedule(work_schedule_id) {
+  viewTools.GUI.statusBox.showStatus(
+    SUGAR.language.get("app_strings", "LBL_SAVING"),
+    "info"
+  );
+  viewTools.api.callController({
+      module: "WorkSchedules",
+      action: "acceptWorkSchedule",
+      dataType: "json",
+      async: false,
+      dataPOST: {
+          work_schedule_id: work_schedule_id,
+      },
+      callback: function (call_constroller_data) {
+          if (
+              call_constroller_data == false ||
+              call_constroller_data == null
+          ) {
+              console.error(call_constroller_data);
+              viewTools.GUI.statusBox.showStatus(
+                  SUGAR.language.get("app_strings", "LBL_ERROR"),
+                  "error",
+                  3000
+              );
+          } else {
+              location.reload();
+          }
+      },
+  });
+}

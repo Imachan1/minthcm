@@ -44,7 +44,7 @@
 
 *}
 <!DOCTYPE html>
-<html {$langHeader}>
+<html {$langHeader} {$dirHeader} >
 <head>
     <link rel="SHORTCUT ICON" href="{$FAVICON_URL}">
     <meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
@@ -59,7 +59,8 @@
     <!-- MintHCM #100459 START -->
     <title>{$TITLE}</title>
     <!-- MintHCM #100459 END -->
-
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
     <!-- Mint-Vue Start -->
     {literal}
     <script type="text/javascript">

@@ -74,6 +74,7 @@ $dictionary['Email'] = array(
          'type' => 'varchar',
          'source' => 'non-db',
          'inline_edit' => false,
+         'vname' => 'LBL_FROM_ADDR_NAME',
       ),
       'reply_to_addr' => array(
          'name' => 'reply_to_addr',
@@ -170,9 +171,11 @@ $dictionary['Email'] = array(
       'status' => array(
          'name' => 'status',
          'vname' => 'LBL_STATUS',
-         'type' => 'enum',
+         'type' => 'ColoredEnum',
+         'dbType' => 'varchar',
          'len' => 100,
          'options' => 'dom_email_status',
+         'options_colors' => 'dom_email_status_colored',
          'inline_edit' => false,
       ),
       'flagged' => array(

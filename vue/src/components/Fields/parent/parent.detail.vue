@@ -1,12 +1,26 @@
 <template>
+    <div class="parent-container">
     <div>
-        <label>{{ props.label }}</label>
+            <label>{{ languages.label('LBL_ASSIGNED_TO_MODULE') }}</label>
         <div class="detail-field-row">
-            <router-link :to="recordUrl" class="relate-field">
+                <router-link :to="urls.parent" class="relate-field">
+                    {{ props.data.bean.parent_type }}
+                </router-link>
+                <Pencil :defs="props.defs" />
+            </div>
+        </div>
+        <div>
+            <label>{{ languages.label('LBL_ASSIGNED_TO_RECORD') }}</label>
+            <div class="detail-field-row">
+                <router-link :to="urls.record" class="relate-field">
                 {{ props.modelValue }}
             </router-link>
-            <Pencil :defs="props.defs" />
+            <Pencil
+                :defs="props.defs"
+                @inlineEditBtnClicked="(fieldName: string) => $emit('inlineEditBtnClicked', fieldName)"
+            />
         </div>
+    </div>
     </div>
 </template>
 
@@ -14,6 +28,7 @@
 import { computed } from 'vue'
 import { FieldVardef } from '@/store/modules'
 import Pencil from '../Pencil.vue'
+import { useLanguagesStore } from '@/store/languages'
 
 interface Props {
     defs: FieldVardef
@@ -23,11 +38,11 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
-const recordUrl = computed(() => {
-    const module = props.data.bean.parent_type
-    const id = props.data.bean[props.defs.id_name]
-    return `/modules/${module}/DetailView/${id}`
+const languages = useLanguagesStore()
+const urls = computed(() => {
+    const recordModule = props.data.bean.parent_type
+    const recordId = props.data.bean[props.defs.id_name]
+    return { record: `/modules/${recordModule}/DetailView/${recordId}`, parent: `/modules/${recordModule}/ESListView` }
 })
 </script>
 
@@ -47,5 +62,13 @@ div {
     cursor: pointer;
     display: block;
     width: fit-content;
+}
+.parent-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 24px;
+    padding-left: 16px;
+    border-left: 1px solid rgb(var(--v-theme-primary-light));
 }
 </style>

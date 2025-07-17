@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,14 +35,14 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
 }
 
 $mod_strings = array(
@@ -112,8 +111,8 @@ $mod_strings = array(
    'LBL_ERROR_LOADING' => 'Error while loading',
    'LBL_GOTO_DATE' => 'Go to Date',
    'NOTICE_DURATION_TIME' => 'Duration time must be greater than 0',
-   'LBL_STYLE_BASIC' => 'BASIC', //No need to be translated in all caps. Translation used just in menu action items when using the SuiteP template
-   'LBL_STYLE_ADVANCED' => 'ADVANCED', //No need to be translated in all caps. Translation used just in menu action items when using the SuiteP template
+   'LBL_STYLE_BASIC' => 'BASIC',
+   'LBL_STYLE_ADVANCED' => 'ADVANCED',
    'LBL_NO_USER' => 'No match for field: Assigned to',
    'LBL_SUBJECT' => 'Subject',
    'LBL_DURATION' => 'Duration',
@@ -164,67 +163,65 @@ $mod_strings = array(
    'LBL_WORKSCHEDULES_DATE_END_BEFORE_START' => 'Date end can\'t be before date start',
    'LBL_WORKSCHEDULES_DURATION_LESS_OR_EQUAL_ZERO' => 'Duration must be greater than zero',
    'LBL_CALENDAR_WEEK_NUMBER' => 'Week number',
+   'LBL_CREATE_USERS_GROUP_BUTTON' => 'CREATE GROUP',
+   'LBL_UPDATE_USERS_GROUP_BUTTON' => 'Update',
+   'LBL_DELETE_USERS_GROUP_BUTTON' => 'Delete',
+   'LBL_CREATE_GROUP_DESCRIPTION' => 'Create a group containing selected users',
+   'LBL_GROUP_CREATION' => 'Group creation',
+   'LBL_GROUP_NAME' => 'Group name',
+   'LBL_CREATE_BUTTON' => 'Create',
+   'LBL_EMPTY_GROUP_NAME' => 'Group name can\'t be empty',
+   'LBL_UPDATE_USERS_GROUP_CONFIRM' => 'Are you sure you want to update the group',
+   'LBL_DELETE_USERS_GROUP_CONFIRM' => 'Are you sure you want to delete the group',
 );
-
-
-
-
-
-
-
 
 $mod_list_strings = array(
-   'dom_cal_weekdays' =>
-   array(
-      '0' => "Sun",
-      '1' => "Mon",
-      '2' => "Tue",
-      '3' => "Wed",
-      '4' => "Thu",
-      '5' => "Fri",
-      '6' => "Sat",
-   ),
-   'dom_cal_weekdays_long' =>
-   array(
-      '0' => "Sunday",
-      '1' => "Monday",
-      '2' => "Tuesday",
-      '3' => "Wednesday",
-      '4' => "Thursday",
-      '5' => "Friday",
-      '6' => "Saturday",
-   ),
-   'dom_cal_month' =>
-   array(
-      '0' => "",
-      '1' => "Jan",
-      '2' => "Feb",
-      '3' => "Mar",
-      '4' => "Apr",
-      '5' => "May",
-      '6' => "Jun",
-      '7' => "Jul",
-      '8' => "Aug",
-      '9' => "Sep",
-      '10' => "Oct",
-      '11' => "Nov",
-      '12' => "Dec",
-   ),
-   'dom_cal_month_long' =>
-   array(
-      '0' => "",
-      '1' => "January",
-      '2' => "February",
-      '3' => "March",
-      '4' => "April",
-      '5' => "May",
-      '6' => "June",
-      '7' => "July",
-      '8' => "August",
-      '9' => "September",
-      '10' => "October",
-      '11' => "November",
-      '12' => "December",
-   ),
+    'dom_cal_weekdays' => array(
+        '0' => "Sun",
+        '1' => "Mon",
+        '2' => "Tue",
+        '3' => "Wed",
+        '4' => "Thu",
+        '5' => "Fri",
+        '6' => "Sat",
+    ),
+    'dom_cal_weekdays_long' => array(
+        '0' => "Sunday",
+        '1' => "Monday",
+        '2' => "Tuesday",
+        '3' => "Wednesday",
+        '4' => "Thursday",
+        '5' => "Friday",
+        '6' => "Saturday",
+    ),
+    'dom_cal_month' => array(
+        '0' => "",
+        '1' => "Jan",
+        '2' => "Feb",
+        '3' => "Mar",
+        '4' => "Apr",
+        '5' => "May",
+        '6' => "Jun",
+        '7' => "Jul",
+        '8' => "Aug",
+        '9' => "Sep",
+        '10' => "Oct",
+        '11' => "Nov",
+        '12' => "Dec",
+    ),
+    'dom_cal_month_long' => array(
+        '0' => "",
+        '1' => "January",
+        '2' => "February",
+        '3' => "March",
+        '4' => "April",
+        '5' => "May",
+        '6' => "June",
+        '7' => "July",
+        '8' => "August",
+        '9' => "September",
+        '10' => "October",
+        '11' => "November",
+        '12' => "December",
+    ),
 );
-

@@ -54,6 +54,23 @@ const languages = useLanguagesStore()
 const auth = useAuthStore()
 const preferences = usePreferencesStore()
 
+const checkCurrentLanguageExists = () => {
+    const existingLanguages = preferences.global?.languages || {}
+    if (Object.keys(existingLanguages).length > 0) {
+        let currentLanguageExists = false
+        Object.keys(existingLanguages).forEach((key) => {
+            if (key === languages.currentLanguage) {
+                currentLanguageExists = true
+            }
+        })
+        if (!currentLanguageExists) {
+            languages.currentLanguage = 'en_us'
+            localStorage.setItem('currentLang', languages.currentLanguage)
+            document.location.reload()
+        }
+    }
+}
+
 onMounted(() => {
     const showForgetLink = !preferences.global?.ldap_enabled
     if (showForgetLink) {
@@ -62,6 +79,7 @@ onMounted(() => {
             label: languages.label('LBL_MINT4_AUTH_FORGET_PASSWORD_QUESTION'),
         }
     }
+    checkCurrentLanguageExists()
 })
 
 const password = ref('')
@@ -79,7 +97,14 @@ async function handleSubmit() {
     const result = await auth.authenticate(authViewStore.username, password.value)
     if (result) {
         backend.initialLoading = true
-        router.go(0)
+        const redirect = router.currentRoute.value?.query?.redirect
+
+        if (redirect && typeof redirect === 'string') {
+            await backend.init()
+            await router.replace({ path: redirect })
+        } else {
+            router.go(0)
+        }
     } else {
         loginError.value = true
     }
