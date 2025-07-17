@@ -48,8 +48,10 @@ abstract class NotificationPlugin
 {
     protected $bean;
     protected $type;
+    protected $label;
 
     const TYPE = 'notification';
+    const LABEL = '';
 
     abstract public function run();
 
@@ -57,6 +59,7 @@ abstract class NotificationPlugin
     {
         $this->bean = $bean;
         $this->setType(static::TYPE);
+        $this->setLabel(!empty(static::LABEL) ? static::LABEL : 'LBL_'.strtoupper(static::TYPE));
     }
 
     public function getNewNotification()
@@ -87,6 +90,21 @@ abstract class NotificationPlugin
     public function getType()
     {
         return $this->type;
+    }
+
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    public function canBeManagedByUser()
+    {
+        return true;
+    }
+
+    protected function setLabel($label)
+    {
+        $this->label = $label;
     }
 
     protected function setType($type)

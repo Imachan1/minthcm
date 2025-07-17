@@ -47,6 +47,7 @@ require_once 'include/Notifications/NotificationPlugin.php';
 class WorkScheduleLeaveCreated extends NotificationPlugin
 {
     const TYPE = 'WorkScheduleLeaveCreated';
+    const LABEL = 'LBL_WORKSCHEDULE_LEAVE_CREATED';
 
     public function run()
     {

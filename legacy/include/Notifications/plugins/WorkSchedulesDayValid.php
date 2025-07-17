@@ -47,6 +47,7 @@ require_once 'include/Notifications/NotificationPlugin.php';
 
 class WorkSchedulesDayValid extends NotificationPlugin {
     const TYPE = 'WorkSchedulesDayValid';
+    const LABEL = 'LBL_WORKSCHEDULES_DAY_VALID';
 
    public function run() {
       global $app_strings;

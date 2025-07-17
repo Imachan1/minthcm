@@ -47,6 +47,7 @@ require_once 'include/Notifications/NotificationPlugin.php';
 class WorkSchedulesNotPlandForTwoWeeks extends NotificationPlugin
 {
     const TYPE = 'WorkSchedulesNotPlandForTwoWeeks';
+    const LABEL = 'LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS';
     const PLAN_FOR_DAYS = 10;
 
     public function run()
