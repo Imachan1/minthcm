@@ -48,13 +48,11 @@ namespace MintHCM\Lib\Search\ElasticSearch;
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
 use MintHCM\Data\BeanFactory;
 use MintHCM\Lib\Search\Base\SearchQuery;
+use MintHCM\Lib\Search\ElasticSearch\ElasticMapperParser;
 use MintHCM\Lib\Search\ElasticSearch\ElasticQueryOperatorsManager;
 use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
-use MintHCM\Utils\ConstantsLoader;
 use MintHCM\Utils\CustomLoader;
 use MintHCM\Utils\LegacyConnector;
-use Symfony\Component\Yaml\Parser as YamlParser;
-use MintHCM\Lib\Search\ElasticSearch\ElasticMapperParser;
 
 class ElasticQuery extends SearchQuery
 {
@@ -89,7 +87,7 @@ class ElasticQuery extends SearchQuery
 
     protected function setSort()
     {
-        $field = !empty($this->params["sort_by"]) ? $this->params['sort_by'] : static::DEFAULT_SORT_FIELD;
+        $field = !empty($this->params["sort_by"]) ? $this->params['sort_by']: static::DEFAULT_SORT_FIELD;
         if (static::DEFAULT_SORT_FIELD !== $field) {
             $parser = ElasticMapperParser::getInstance();
             $module_name = $this->params['type'] ?? '';
@@ -139,7 +137,7 @@ class ElasticQuery extends SearchQuery
                 return $this->getGlobalQuery();
                 break;
             case "list":
-                $body =  $this->getListQuery();
+                $body = $this->getListQuery();
                 $module_to_search = $this->params['type'] ?? '';
                 if ($this->add_acl_filters && $module_to_search) {
                     $bean = BeanFactory::newBean($module_to_search);
@@ -147,11 +145,9 @@ class ElasticQuery extends SearchQuery
                     if ($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list', true)) {
                         continue;
                     }
-                    if ($bean->bean_implements('ACL') && ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list'))) {
-                        $module_filters = $this->getACLForSingleModule($module_to_search);
-                        if (is_array($module_filters)) {
-                            $body["bool"]["filter"]["bool"]["should"] = $module_filters;
-                        }
+                    $module_filters = $this->getACLForSingleModule($module_to_search);
+                    if (is_array($module_filters)) {
+                        $body["bool"]["filter"]["bool"]["should"] = $module_filters;
                     }
                 }
                 return $body;
@@ -241,7 +237,6 @@ class ElasticQuery extends SearchQuery
         return $single_module;
     }
 
-
     protected function getACLForSingleModule($module)
     {
         global $current_user;
@@ -256,6 +251,7 @@ class ElasticQuery extends SearchQuery
     protected function getACLClassForModule(string $module)
     {
         $variants = [
+            ['className' => 'MintHCM\Custom\Modules\\' . $module . '\\' . $module . 'ListACL', 'path' => "custom/modules/{$module}/{$module}ListACL.php"],
             ['className' => 'MintHCM\Modules\\' . $module . '\\' . $module . 'ListACL', 'path' => "modules/{$module}/{$module}ListACL.php"],
             ['className' => 'MintHCM\Custom\Lib\Search\ElasticSearch\CustomBaseListACL', 'path' => "lib/Search/ElasticSearch/CustomBaseListACL.php"],
             ['className' => 'MintHCM\Lib\Search\ElasticSearch\BaseListACL', 'path' => "lib/Search/ElasticSearch/BaseListACL.php"],
