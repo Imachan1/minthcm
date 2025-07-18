@@ -110,6 +110,7 @@ class BaseListACL
     protected function getOwnerIds(string $user_id)
     {
         $controller_factory = new LegacyConnector('ControllerFactory');
+        /** @var \UsersController $controller */
         $controller = $controller_factory::getController('Users');
         $subordinates_ids = $controller::getIDOfSubordinates([$user_id]);
         return array_merge([$user_id], $subordinates_ids);

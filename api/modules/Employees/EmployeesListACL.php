@@ -12,10 +12,11 @@ class EmployeesListACL extends BaseListACL
     {
         $filters = parent::getFiltersByOwner($user_id);
         $bean = BeanFactory::newBean($this->module);
-        $aclController = new LegacyConnector('ACLController');
+        /** @var \ACLController $acl_controller */
+        $acl_controller = new LegacyConnector('ACLController');
         if (!$bean->bean_implements('ACL') || (
-            !$aclController::requireOwner($bean->module_dir, 'list')
-            && !$aclController::requireSecurityGroup($bean->module_dir, 'list')
+            !$acl_controller::requireOwner($bean->module_dir, 'list')
+            && !$acl_controller::requireSecurityGroup($bean->module_dir, 'list')
         )) {
             return [];
         }

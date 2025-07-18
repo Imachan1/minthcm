@@ -143,7 +143,7 @@ class ElasticQuery extends SearchQuery
                     $bean = BeanFactory::newBean($module_to_search);
                     $acl_controller = new LegacyConnector('ACLController');
                     if ($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list', true)) {
-                        continue;
+                        return [];
                     }
                     $module_filters = $this->getACLForSingleModule($module_to_search);
                     if (is_array($module_filters)) {
@@ -168,6 +168,7 @@ class ElasticQuery extends SearchQuery
 
             foreach ($search_modules as $module_to_search) {
                 $bean = BeanFactory::newBean($module_to_search);
+                /** @var \ACLController $acl_controller */
                 $acl_controller = new LegacyConnector('ACLController');
                 if ($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list', true)) {
                     continue;
@@ -260,10 +261,12 @@ class ElasticQuery extends SearchQuery
         foreach ($variants as $variant) {
             if (file_exists($variant['path'])) {
                 require_once $variant['path'];
-                $acl_class = new $variant['className']($module);
-                return $acl_class;
+                if (class_exists($variant['className'])) {
+                    return new $variant['className']($module);
+                }
             }
         }
+        throw new InvalidArgumentException("ACL class not found for module: {$module}");
     }
     public function getIndiceToModuleMapping()
     {
