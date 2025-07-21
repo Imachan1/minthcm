@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineAsyncComponent, computed, watch } from 'vue'
+import { defineAsyncComponent, computed, watch } from 'vue'
 import { FieldVardef, useModulesStore } from '@/store/modules'
 import { fieldConfig } from '../Fields/Field.config'
 import { FieldState } from './Field.model'
@@ -28,6 +28,7 @@ interface Props {
     data?: any
     modelValue?: any
     label?: string
+    disabled?: boolean
     hidePencil?: boolean
     required?: boolean
     errorMessage?: string

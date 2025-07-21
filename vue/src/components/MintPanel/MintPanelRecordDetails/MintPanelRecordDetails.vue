@@ -80,30 +80,14 @@ const modules = useModulesStore()
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_DETAILS', modules.currentModule?.name)
 })
-const fixedRows = computed(() => {
-    const rows = props.data.fields || []
-    const fixedRows = []
-    rows.forEach((row) => {
-        const newRow = []
-        row.forEach((field) => {
-            if (field.type === 'fieldset' && field.properties?.fields && store.view === 'edit') {
-                newRow.push(...field.properties.fields)
-            } else {
-                newRow.push(field)
-            }
-        })
-        while (newRow.length) {
-            fixedRows.push(newRow.splice(0, store.columns))
-        }
-    })
-    return fixedRows
-})
 const rows = computed(() => {
     return props.data.fields.filter((row) => row.some((field) => !store.bean.logic.hiddenFields.includes(field.name)))
 })
 
 const inlineEditBtnClicked = (event: string) => {
     store.inlineEditField = event
+    store.inlineEditField = ''
+    store.inlineEditFieldSaving = ''
 }
 
 const edit = () => {

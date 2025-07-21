@@ -21,11 +21,39 @@ $viewdefs['Candidates'] = [
             'data'      => [
                 'fields' => [
                     ['first_name', 'last_name', 'email1'],
-                    ['primary_address_street', 'alt_address_street', 'birthdate'],
-                    ['primary_address_city', 'alt_address_city', 'phone_mobile'],
-                    ['primary_address_state', 'alt_address_state', 'recr_contact_agree'],
-                    ['primary_address_postalcode', 'alt_address_postalcode', ''],
-                    ['primary_address_country', 'alt_address_country', ''],
+                    ['birthdate', 'phone_mobile', 'recr_contact_agree', ],
+                    [
+                        [
+                            'name' => 'primary_address',
+                            'type' => 'fieldset',
+                            'label' => 'LBL_PRIMARY_ADDRESS',
+                            'properties' => [
+                                'fields' => [
+                                    'primary_address_street',
+                                    'primary_address_city',
+                                    'primary_address_state',
+                                    'primary_address_postalcode',
+                                    'primary_address_country',
+                                ],
+                                'separator' => ',',
+                            ],
+                        ],
+                        [
+                            'name' => 'alt_address',
+                            'type' => 'fieldset',
+                            'label' => 'LBL_ALT_ADDRESS',
+                            'properties' => [
+                                'fields' => [
+                                    'alt_address_street',
+                                    'alt_address_city',
+                                    'alt_address_state',
+                                    'alt_address_postalcode',
+                                    'alt_address_country',
+                                ],
+                                'separator' => ',',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],
