@@ -6,9 +6,11 @@
             variant="outlined"
             density="compact"
             hide-details
+            :error="props.state === 'error'"
             v-model="parentModel"
-            item-value="value"
-            item-title="key"
+            v-bind="$attrs"
+            item-value="key"
+            item-title="value"
             @keyup.enter="$emit('inlineEditSave')"
             @keyup.esc="$emit('inlineEditCancel')"
         />
@@ -70,8 +72,8 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, ref, defineEmits } from 'vue'
-import { FieldVardef, useModulesStore } from '@/store/modules'
+import { computed, ref, defineEmits } from 'vue'
+import { useModulesStore } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'
 import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
@@ -79,15 +81,9 @@ import MintButton from '@/components/MintButtons/MintButton.vue'
 import { modulesApi } from '@/api/modules.api'
 import he from 'he'
 import getFilters from '@/utils/qsOperators'
+import { FieldProps } from '../Field.model'
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const emit = defineEmits(['update:modelValue'])
 
 const DEBOUNCE_TIME = 500
@@ -113,28 +109,28 @@ const recordModel = computed({
         return currentRecordItem.value
     },
     set(newVal) {
-        props.data.bean[props.defs.id_name] = newVal.id
         currentRecordItem.value = newVal
-        emit('update:modelValue', [props.defs.id_name])
+        updateValue()
     },
 })
 const currentTypeItem = ref('')
 const parentModel = computed({
     get() {
-        return languages.translateListValue(
-            props.data.bean.parent_type ?? props.defs?.default ?? '',
-            props.defs?.options,
-        )
+        return props.data.bean.parent_type ?? props.defs?.default ?? ''
     },
     set(newValue) {
-        let optionKeys = languages.languages.app_list_strings[props.defs?.options]
-        let selectedKey = Object.keys(optionKeys).find((key) => optionKeys[key] === newValue)
-        props.data.bean[props.defs.type_name] = selectedKey
-        currentTypeItem.value = selectedKey
+        props.data.bean[props.defs.type_name] = newValue
+        currentTypeItem.value = newValue
         recordModel.value = { id: '', name: '' }
-        emit('update:modelValue', [props.defs.type_name])
+        updateValue()
     },
 })
+function updateValue() {
+    emit('update:modelValue', recordModel.value.name, {
+        [props.defs.id_name]: recordModel.value.id,
+        [props.defs.type_name]: parentModel.value,
+    })
+}
 const isLoading = ref(false)
 async function fetchRecordItems(e) {
     if (recordModel.value.name.length >= 3) {

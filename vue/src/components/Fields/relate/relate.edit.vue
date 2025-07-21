@@ -6,8 +6,9 @@
                 variant="outlined"
                 density="compact"
                 hide-details
+                :error="props.state === 'error'"
                 v-model="model.name"
-                v-bind="val.props"
+                v-bind="{ ...$attrs, ...val.props }"
                 @input="(event) => fetchItems(event)"
                 @click="menuOpen = false"
             >
@@ -54,7 +55,7 @@
 
 <script setup lang="ts">
 import { defineProps, computed, ref, defineEmits } from 'vue'
-import { FieldVardef, useModulesStore } from '@/store/modules'
+import { useModulesStore } from '@/store/modules'
 import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import { useLanguagesStore } from '@/store/languages'
@@ -62,15 +63,9 @@ import MintButton from '@/components/MintButtons/MintButton.vue'
 import { modulesApi } from '@/api/modules.api'
 import he from 'he'
 import getFilters from '@/utils/qsOperators'
+import { FieldProps } from '../Field.model'
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const emit = defineEmits(['update:modelValue'])
 
 let debounceTimeout: number | null = null
@@ -98,14 +93,13 @@ const model = computed({
         return currentItem.value
     },
     set(newVal) {
-        props.data.bean[props.defs.id_name] = newVal.id
         currentItem.value = newVal
-        emit('update:modelValue', [props.defs.id_name])
+        emit('update:modelValue', newVal.name, { [props.defs.id_name]: newVal.id })
     },
 })
 
 async function fetchItems(e) {
-    if (model.value.name.length >= 3) {
+    if (model.value?.name.length >= 3) {
         items.value = []
         isLoading.value = true
         menuOpen.value = true

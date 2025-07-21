@@ -47,6 +47,7 @@
 namespace MintHCM\Api\Controllers;
 
 use BeanFactory;
+use MintHCM\Lib\MintLogic\MintLogic;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
@@ -125,7 +126,11 @@ class ModuleController
         $disable_date_format = $GLOBALS['disable_date_format'];
         $GLOBALS['disable_date_format'] = true;
 
-        $bean = BeanFactory::getBean($module, $record_id);
+        if (!empty($record_id)) {
+            $bean = BeanFactory::getBean($module, $record_id);
+        } else {
+            $bean = BeanFactory::newBean($module);
+        }
 
         if (empty($bean) || $bean->id !== $record_id) {
             return $response->withStatus(404);
@@ -138,6 +143,12 @@ class ModuleController
                 $bean->$field_name = $value;
             }
         }
+        $validationResult = (new MintLogic($bean))->validateBean();
+        if (!$validationResult['isValid']) {
+            $response = $response->withStatus(422);
+            $response->getBody()->write(json_encode($validationResult));
+            return $response;
+        }
         $bean->save(false);
         BeanFactory::unregisterBean($bean->module_name, $bean->id);
         $bean = BeanFactory::getBean($bean->module_name, $bean->id);
@@ -146,7 +157,7 @@ class ModuleController
         date_default_timezone_set($current_time_zone);
         $GLOBALS['disable_date_format'] = $disable_date_format;
 
-        if (!empty($bean) && $bean->id === $record_id) {
+        if (!empty($bean) && ($bean->id === $record_id || empty($record_id))) {
             $record_data = $this->mergeRecordData($bean);
         }
 
@@ -168,7 +179,11 @@ class ModuleController
         $disable_date_format = $GLOBALS['disable_date_format'];
         $GLOBALS['disable_date_format'] = true;
 
-        $bean = BeanFactory::getBean($module,$record_id);
+        if (!empty($record_id)) {
+            $bean = BeanFactory::getBean($module,$record_id);
+        } else {
+            $bean = BeanFactory::newBean($module);
+        }
 
         date_default_timezone_set($current_time_zone);
         $GLOBALS['disable_date_format'] = $disable_date_format;
@@ -185,6 +200,33 @@ class ModuleController
         chdir('../api/');
         $response->getBody()->write(json_encode($record_data));
         return $response;
+    }
+
+    public function getRecordLogic(Request $request, Response $response, array $args): Response
+    {
+        $module = $this->getModuleFromRoute($request);
+        $record_id = $request->getAttribute("id");
+        $attributes = $request->getAttribute("attributes");
+        $triggerFields = $request->getAttribute("triggerFields");
+        chdir('../legacy/');
+        if (!empty($record_id)) {
+            $bean = BeanFactory::getBean($module, $record_id);
+            if (empty($bean->id)) {
+                $response = $response->withStatus(404);
+                return $response;
+            }
+        } else {
+            $bean = BeanFactory::newBean($module);
+        }
+
+        foreach ($attributes as $field => $value) {
+            $bean->{$field} = $value;
+        }
+        $result = (new MintLogic($bean))->getChanged($triggerFields);
+        chdir('../api/');
+        $response->getBody()->write(json_encode($result));
+        return $response;
+
     }
 
     public function delete(Request $request, Response $response, array $args): Response
@@ -232,7 +274,7 @@ class ModuleController
             
             $target_module = $spd->layout_defs['subpanel_setup'][$related_name]['module'];
             $target_bean = BeanFactory::getBean($target_module);
-            if (!$target_bean->ACLAccess('list')) {
+            if (!$target_bean || !$target_bean->ACLAccess('list')) {
                 return $response->withStatus(403);
             }
 
@@ -261,17 +303,16 @@ class ModuleController
 
     protected function mergeRecordData($bean)
     {
-        return array_merge(
-            $bean->toArray(),
-            [
-                'module_name' => $bean->module_name,
-                'acl_access' => [
-                    'edit' => $bean->ACLAccess('edit'),
-                    'delete' => $bean->ACLAccess('delete'),
-                    'view' => $bean->ACLAccess('view'),
-                ],
-            ]
-        );
+        return [
+            'id' => $bean->id,
+            'module' => $bean->module_name,
+            'attributes' => $bean->toArray(),
+            'acl_access' => [
+                'edit' => $bean->ACLAccess('edit'),
+                'delete' => $bean->ACLAccess('delete'),
+                'view' => $bean->ACLAccess('view'),
+            ],
+            'logic' => (new MintLogic($bean))->getInitial(),
+        ];
     }
-    
 }

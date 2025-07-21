@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, defineEmits, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useLanguagesStore } from '@/store/languages'
 import { useListViewStore } from './ListViewStore'
 import * as operatorDefs from './operators'

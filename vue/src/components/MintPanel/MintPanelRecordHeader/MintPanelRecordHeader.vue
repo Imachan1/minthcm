@@ -1,28 +1,24 @@
 <template>
-    <div class="header-panel">
+    <div v-if="!store.bean.isNew" class="header-panel">
         <div class="flex-container">
             <MintButton icon="mdi-arrow-left" @click="goBack" />
             <div class="name-container">
                 <div class="module-name">{{ modules?.currentModule?.label }}</div>
                 <div class="bean-name">
-                    <div>{{ store.bean.syncAttributes.name }}</div>
+                    <div>{{ store.bean.name }}</div>
                     <MintButton
                         :icon="isFavorite ? 'mdi-heart-circle' : 'mdi-heart-outline'"
                         variant="text"
                         size="small"
                         @click="
                             isFavorite
-                                ? favorites.removeFromFavorites(store.bean.module_name, store.bean.id)
-                                : favorites.addToFavorites(
-                                      store.bean.module_name,
-                                      store.bean.id,
-                                      store.bean.syncAttributes.name,
-                                  )
+                                ? favorites.removeFromFavorites(store.bean.module, store.bean.id)
+                                : favorites.addToFavorites(store.bean.module, store.bean.id, store.bean.name)
                         "
                     />
                 </div>
             </div>
-            <v-menu offset="16">
+            <v-menu v-if="actions.length" offset="16">
                 <template v-slot:activator="{ props, isActive }">
                     <MintButton
                         class="ml-auto"
@@ -44,30 +40,39 @@
                         :defs="row[n - 1]"
                         :label="languages.label(row[n - 1].label, modules.currentModule?.name)"
                         :data="{ bean: store.bean.attributes }"
-                        v-model="store.bean.syncAttributes[row[n - 1].name]"
-                        @update:modelValue="(additionalFields) => store.updateField(row[n - 1].name, additionalFields)"
+                        :modelValue="store.bean.syncAttributes[row[n - 1].name]"
                     />
                 </div>
             </div>
         </div>
     </div>
+    <div v-else>
+        <h1>{{ modules?.currentModule?.label }}</h1>
+    </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useFavoritesStore } from '@/store/favorites'
 import { FieldVardef, useModulesStore } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'
+import { usePopupsStore } from '@/store/popups'
+import DefaultLayout from '@/layouts/DefaultLayout/DefaultLayoutOnOffBoardingPopup.vue'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 import Field from '@/components/Fields/Field.vue'
+import BeanActions from '@/business/BeanActions'
 
 interface Props {
     data: {
         fields: Array<Array<FieldVardef>>
-        actions?: MenuListItem[]
+        actions?: ({
+            name: string
+            title?: string
+            icon?: string
+        } | string)[]
     }
 }
 
@@ -77,31 +82,29 @@ const router = useRouter()
 const favorites = useFavoritesStore()
 const modules = useModulesStore()
 const languages = useLanguagesStore()
+const popups = usePopupsStore()
 
-// to change on actions from props (from recordviewdefs)
 const actions = computed<MenuListItem[]>(() => {
     const actions: MenuListItem[] = [
         {
-            title: languages.label('LNK_VIEW_CHANGE_LOG'),
+            title: languages.label('LBL_GENERATE_BUTTON', store.bean.module),
             icon: 'mdi-history',
-            onClick: () =>
-                window.open(
-                    `legacy/index.php?module=Audit&action=Popup&record=${store.bean.id}&module_name=${store.bean.module_name}`,
-                    `Audit_popup_window_record_${store.bean.id}_module_name_${store.bean.module_name}`,
-                    'width=800,height=800,resizable=1,scrollbars=1',
-                ),
+            onClick: showGenerateOnboardingOffboarding,
         },
     ]
-    if (store.bean.acl_access?.delete === true) {
-        actions.push({
-            title: languages.label('LBL_DELETE_BUTTON_LABEL'),
-            icon: 'mdi-trash-can-outline',
-            onClick: async () => {
-                await store.deleteBean()
-                router.push({ name: 'list', params: { module: modules.currentModule?.name } })
-            },
-        })
-    }
+
+    props.data.actions?.forEach((action) => {
+        const actionName = typeof action === 'string' ? action : action.name
+        const actionClass = BeanActions[actionName]
+        if (typeof actionClass !== 'function') {
+            console.warn(`Action ${actionName} not defined in BeanActions`)
+            return
+        }
+        const actionObject = new actionClass(store.bean)
+        if (actionObject.isAvailable()) {
+            actions.push(actionObject.toMenuListItem())
+        }
+    })
     return actions
 })
 
@@ -111,7 +114,15 @@ const goBack = () => {
     }
     router.back()
 }
-const isFavorite = computed(() => favorites.isFavorite(store.bean.module_name, store.bean.id))
+const isFavorite = computed(() => favorites.isFavorite(store.bean.module, store.bean.id))
+
+function showGenerateOnboardingOffboarding() {
+    popups.showPopup({
+        title: languages.label('LBL_GENERATE_BUTTON',store.bean.module),
+        icon: 'mdi-history',
+        component: DefaultLayout
+    })
+}
 </script>
 
 <style scoped lang="scss">

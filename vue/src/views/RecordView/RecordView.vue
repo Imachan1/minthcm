@@ -18,10 +18,12 @@ const languages = useLanguagesStore()
 const backend = useBackendStore()
 
 store.resetBean()
-store.$reset()
 
-onMounted(() => {
-    store.fetchBean()
+onMounted(async () => {
+    await store.bean.init()
+    if (store.bean.isNew) {
+        store.view = 'edit'
+    }
 })
 
 watch(

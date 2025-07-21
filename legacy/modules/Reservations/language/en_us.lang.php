@@ -91,4 +91,7 @@ $mod_strings = array(
    'LBL_PARENT_NAME' => 'Related to',
    'LBL_PARENT_ID' => 'Related to (ID)',
    'LBL_LIST_TITLE' => 'Reservation',
+   'LBL_RECORDVIEW_PANEL1' => 'Reservation Details', 
+   'LBL_OTHER' => 'Other',  
+   'ERR_RESERVATION_TIME_CONFLICT' => 'This reservation already exist.',
 );

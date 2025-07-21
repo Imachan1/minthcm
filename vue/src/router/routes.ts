@@ -18,6 +18,7 @@ declare module 'vue-router' {
         auth: boolean
         layout?: Component
         entryPoint?: boolean
+        legacyQueryToHash?: string[]
     }
 }
 
@@ -90,6 +91,7 @@ const coreRoutes: Array<RouteRecordRaw> = [
             isLegacy: true,
             legacyUrl: 'legacy/index.php?module=Calendar',
             auth: true,
+            legacyQueryToHash: ['view', 'action'],
         },
     },
     {
@@ -158,6 +160,7 @@ const coreRoutes: Array<RouteRecordRaw> = [
     },
     {
         path: '/modules/:module/DetailView/:id',
+        alias: '/modules/:module/EditView/:id?',
         name: 'record',
         component: RecordView,
         meta: {

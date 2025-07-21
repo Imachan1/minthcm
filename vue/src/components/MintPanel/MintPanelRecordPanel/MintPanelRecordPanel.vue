@@ -12,8 +12,8 @@
                         :defs="row[n - 1]"
                         :data="{ bean: store.bean.attributes }"
                         :label="languages.label(row[n - 1].label, modules.currentModule?.name)"
-                        v-model="store.bean.attributes[row[n - 1].name]"
-                        @update:modelValue="(additionalFields) => store.updateField(row[n - 1].name, additionalFields)"
+                        :modelValue="store.bean.attributes[row[n - 1].name]"
+                        @update:modelValue="(value, additionalFields) => store.updateField(row[n - 1].name, value, additionalFields)"
                     />
                 </div>
             </div>
@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 import Field from '@/components/Fields/Field.vue'
 import { FieldVardef } from '@/store/modules'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'

@@ -38,8 +38,8 @@
 
 <script setup lang="ts">
 import { DateTime } from 'luxon'
-import { defineProps, ref, computed, watch, defineEmits } from 'vue'
-import { useLanguagesStore } from '@/store/languages';
+import { ref, computed, watch } from 'vue'
+import { useLanguagesStore } from '@/store/languages'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 

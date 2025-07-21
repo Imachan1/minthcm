@@ -1,6 +1,13 @@
 <template>
     <div class="mint-date-field-detail" @keyup.enter="$emit('inlineEditSave')" @keyup.esc="$emit('inlineEditCancel')">
-        <v-text-field :label="label" variant="outlined" density="compact" hide-details v-model="dateValue">
+        <v-text-field
+            :label="label"
+            variant="outlined"
+            density="compact"
+            hide-details
+            v-model="dateValue"
+            :error="props.state === 'error'"
+        >
             <template #append-inner>
                 <v-menu v-model="datePickerMenu" offset="16" :close-on-content-click="false">
                     <template v-slot:activator="{ props, isActive }">
@@ -18,6 +25,7 @@
             density="compact"
             type="time"
             hide-details
+            :error="props.state === 'error'"
             v-model="timeValue"
         />
     </div>
@@ -26,26 +34,21 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { DateTime } from 'luxon'
-import { FieldVardef } from '@/store/modules'
+import { FieldProps } from '../Field.model'
+import { usePreferencesStore } from '@/store/preferences';
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const emit = defineEmits(['update:modelValue'])
 
 const datePickerMenu = ref(false)
 const model = ref(props.modelValue)
+const preferences = usePreferencesStore()
 
 const dateValue = computed({
     get() {
         const dt = DateTime.fromSQL(model.value)
         if (dt.isValid) {
-            return dt.toFormat('dd.MM.yyyy') || ''
+            return dt.toFormat(preferences.user?.date_format || 'yyyy-MM-dd') || ''
         }
         return ''
     },
@@ -54,7 +57,7 @@ const dateValue = computed({
         if (!newVal?.trim()) {
             model.value = ''
         }
-        const dt = DateTime.fromFormat(newVal, 'dd.MM.yyyy')
+        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
         if (dt.isValid) {
             model.value = dt.toSQLDate()
         }
@@ -125,44 +128,6 @@ watch(model, (newVal) => {
         &:hover {
             color: rgb(var(--v-theme-on-surface));
         }
-    }
-}
-.v-input {
-    :deep(.v-field__outline__start),
-    :deep(.v-field__outline__notch)::before,
-    :deep(.v-field__outline__notch)::after,
-    :deep(.v-field__outline__end) {
-        opacity: 1;
-    }
-
-    :deep(.v-field__outline__start),
-    :deep(.v-field__outline__notch)::before,
-    :deep(.v-field__outline__notch)::after,
-    :deep(.v-field__outline__end) {
-        border-color: #dbdbdb;
-    }
-
-    &:hover {
-        :deep(.v-field__outline__start),
-        :deep(.v-field__outline__notch)::before,
-        :deep(.v-field__outline__notch)::after,
-        :deep(.v-field__outline__end) {
-            border-color: rgb(var(--v-theme-primary));
-        }
-    }
-
-    :deep(.v-field--focused .v-field__outline__start),
-    :deep(.v-field--focused .v-field__outline__notch)::before,
-    :deep(.v-field--focused .v-field__outline__notch)::after,
-    :deep(.v-field--focused .v-field__outline__end) {
-        border-color: rgb(var(--v-theme-primary));
-    }
-
-    :deep(.v-field-label.v-field-label--floating) {
-        background: rgb(var(--v-theme-surface));
-        color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
-        opacity: 1;
-        padding: 0px 2px;
     }
 }
 </style>
