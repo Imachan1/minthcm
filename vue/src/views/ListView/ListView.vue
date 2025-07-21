@@ -50,9 +50,9 @@ onMounted(async () => {
     store.module = module.value
     await store.init()
     if (props.filters?.length) {
+        store.activeFilter = null
         store.filterRows = props.filters
         store.predefinedFilters = true
-        store.activeFilter = null
     } else {
         store.getData()
     }
