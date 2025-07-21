@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
 import { defineProps, computed, ref, defineEmits } from 'vue'
-import { FieldVardef, useModulesStore } from '@/store/modules'
+import { useModulesStore } from '@/store/modules'
 import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import { useLanguagesStore } from '@/store/languages'
