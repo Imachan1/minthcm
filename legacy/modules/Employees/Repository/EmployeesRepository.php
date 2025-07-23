@@ -32,7 +32,7 @@ class EmployeesRepository
     public static function retrieveEmployee($id)
     {
         $db = DBManagerFactory::getInstance();
-        $result = $db->query("SELECT id from users where id='{$id}' AND deleted=0 AND users.show_on_employees = 1 AND employee_status='Active'", false, "Error retrieving employee ID: ");
+        $result = $db->query("SELECT id from users where id='{$id}' AND deleted=0 AND users.show_on_employees = 1 AND employee_status IN ('Active', 'during_termination')", false, "Error retrieving employee ID: ");
         $row = $db->fetchByAssoc($result);
         return $row['id'];
     }

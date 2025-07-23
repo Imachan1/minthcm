@@ -464,6 +464,7 @@ $app_list_strings = array(
     ),
     'employee_status_dom' => array(
         'Active' => 'Active',
+        'during_termination' => 'During Termination',
         'Terminated' => 'Terminated',
         'Leave of Absence' => 'Leave of Absence',
     ),
