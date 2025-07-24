@@ -147,7 +147,12 @@ class ElasticQuery extends SearchQuery
                     }
                     $module_filters = $this->getACLForSingleModule($module_to_search);
                     if (is_array($module_filters)) {
-                        $body["bool"]["filter"]["bool"]["should"] = $module_filters;
+                        $add_filter = [
+                            "bool" => [
+                                "should" => $module_filters
+                            ],
+                        ];
+                        $body["bool"]["filter"][] = $add_filter;
                     }
                 }
                 return $body;
