@@ -64,7 +64,7 @@ function editKudos() {
     store.form.kudosId = props.kudos.id
 }
 
-const showDot = computed(() => props.kudos.is_read === '0')
+const showDot = computed(() => props.kudos.is_read == 0)
 </script>
 
 <style scoped lang="scss">
