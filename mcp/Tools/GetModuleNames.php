@@ -10,6 +10,8 @@ use MintMCP\Tools\Exceptions\ModuleNotAllowedException;
 class GetModuleNames extends AbstractMCPTool
 {
 
+    const ADDITIONAL_MODULES = ['Users', 'Employees'];
+
     public function getName(): string
     {
         return 'get_module_names';
@@ -41,6 +43,11 @@ class GetModuleNames extends AbstractMCPTool
         $allModules = $provider->getModuleList();
 
         chdir('../mcp');
+
+        // Add additional modules that are not in the module list
+        foreach (self::ADDITIONAL_MODULES as $module) {
+            $allModules[$module] ??= [];
+        }
 
         $filteredModules = [];
         foreach ($allModules as $moduleName => $moduleData) {

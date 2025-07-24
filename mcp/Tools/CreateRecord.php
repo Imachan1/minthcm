@@ -2,6 +2,8 @@
 
 namespace MintMCP\Tools;
 
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
+
 use Mcp\Types\ToolInputSchema;
 use Mcp\Types\CallToolResult;
 use MintMCP\Tools\Traits\ModuleQueryTrait;
@@ -47,6 +49,15 @@ class CreateRecord extends AbstractMCPTool
     public function execute(object $arguments): CallToolResult
     {
         try {
+
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->module_name, 'module_name')
+                    ->required()
+                    ->string(),
+                ToolValidationMiddleware::make($arguments->attributes ?? [], 'attributes')
+                    ->required()
+                    ->array(),
+            ]);
             $moduleName = $arguments->module_name;
             $attributes = (array)($arguments->attributes ?? []);
 
@@ -60,23 +71,42 @@ class CreateRecord extends AbstractMCPTool
             $this->checkPermissions($moduleName, 'edit');
             [$bean, $tableName, $fieldDefs] = $this->loadBeanAndDefs($moduleName);
 
-            // Validate required fields
-            $requiredFields = [];
+            $requiredValidators = [];
             foreach ($fieldDefs as $field => $def) {
-                if (!empty($def['required'] && $def['name'] !== 'id')) {
-                    $requiredFields[] = $field;
+                if (!empty($def['required']) && $field !== 'id') {
+                    $requiredValidators[] = ToolValidationMiddleware::make($attributes[$field] ?? null, $field)->required();
                 }
             }
-            $missingFields = array_diff($requiredFields, array_keys($attributes));
-            if (!empty($missingFields)) {
-                return $this->createResult([
-                    $this->createTextContent("Error: Missing required fields: " . implode(', ', $missingFields))
-                ]);
+            ToolValidationMiddleware::validateMany($requiredValidators);
+
+            $attributeValidators = [];
+            foreach ($attributes as $field => $value) {
+                $fieldModuleValidator = ToolValidationMiddleware::make($value, $field)->fieldModule($fieldDefs, $moduleName);
+                if (!$fieldModuleValidator->isValid()) {
+                    $attributeValidators[] = $fieldModuleValidator;
+                } else {
+                    $def = $fieldDefs[$field];
+                    $type = $def['type'] ?? ($def['dbType'] ?? 'unknown');
+                    $attributeValidators[] = ToolValidationMiddleware::validateByType($value, $field, $type);
+                }
+            }
+            ToolValidationMiddleware::validateMany($attributeValidators);
+           
+            foreach ($attributes as $field => $value) {
+                if (array_key_exists($field, $fieldDefs)) {
+                    $bean->$field = $value;
+                }
             }
 
-            // Set attributes on bean
+            $attributeValidators = [];
             foreach ($attributes as $field => $value) {
-                if (array_key_exists($field, $fieldDefs) && $this->validateFieldValue($field, $value, $fieldDefs)) {
+                if (array_key_exists($field, $fieldDefs)) {
+                    $attributeValidators[] = ToolValidationMiddleware::make($value, $field)->filterField($fieldDefs);
+                }
+            }
+            ToolValidationMiddleware::validateMany($attributeValidators);
+            foreach ($attributes as $field => $value) {
+                if (array_key_exists($field, $fieldDefs)) {
                     $bean->$field = $value;
                 }
             }
@@ -102,7 +132,7 @@ class CreateRecord extends AbstractMCPTool
             }
         } catch (\Exception $e) {
             return $this->createResult([
-                $this->createTextContent("Error while creating record: " . $e->getMessage())
+                $this->createTextContent($e instanceof \InvalidArgumentException ? $e->getMessage() : ("Error while creating record: " . $e->getMessage()))
             ]);
         }
     }

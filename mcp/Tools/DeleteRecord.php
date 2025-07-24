@@ -2,6 +2,8 @@
 
 namespace MintMCP\Tools;
 
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
+
 use Mcp\Types\ToolInputSchema;
 use Mcp\Types\CallToolResult;
 
@@ -45,6 +47,14 @@ class DeleteRecord extends AbstractMCPTool
     public function execute(object $arguments): CallToolResult
     {
         try {
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->module_name, 'module_name')
+                    ->required()
+                    ->string(),
+                ToolValidationMiddleware::make($arguments->id, 'id')
+                    ->required()
+                    ->string(),
+            ]);
             $moduleName = $arguments->module_name;
             $beanId = $arguments->id;
 
@@ -52,9 +62,17 @@ class DeleteRecord extends AbstractMCPTool
 
             chdir('../legacy');
             $bean = \BeanFactory::getBean($moduleName, $beanId);
-
-            if (!$bean || empty($bean->id)) {
-                throw new \Exception("Record with ID {$beanId} not found in module {$moduleName}.");
+            if (!$bean) {
+                chdir('../mcp');
+                return $this->createResult([
+                    $this->createTextContent("Module '{$moduleName}' does not exist.")
+                ]);
+            }
+            if (empty($bean->id)) {
+                chdir('../mcp');
+                return $this->createResult([
+                    $this->createTextContent("Record with ID {$beanId} not found in module {$moduleName}.")
+                ]);
             }
 
             $bean->mark_deleted($beanId);
@@ -65,7 +83,7 @@ class DeleteRecord extends AbstractMCPTool
             ]);
         } catch (\Exception $e) {
             return $this->createResult([
-                $this->createTextContent("Error while deleting record: " . $e->getMessage())
+                $this->createTextContent($e instanceof \InvalidArgumentException ? $e->getMessage() : ("Error while deleting record: " . $e->getMessage()))
             ]);
         }
     }

@@ -2,6 +2,8 @@
 
 namespace MintMCP\Tools;
 
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
+
 use Mcp\Types\ToolInputSchema;
 use Mcp\Types\CallToolResult;
 use MintMCP\Tools\Traits\ModuleQueryTrait;
@@ -51,6 +53,17 @@ class UpdateRecord extends AbstractMCPTool
     public function execute(object $arguments): CallToolResult
     {
         try {
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->module_name, 'module_name')
+                    ->required()
+                    ->string(),
+                ToolValidationMiddleware::make($arguments->id, 'id')
+                    ->required()
+                    ->string(),
+                ToolValidationMiddleware::make($arguments->attributes ?? [], 'attributes')
+                    ->required()
+                    ->array(),
+            ]);
             $moduleName = $arguments->module_name;
             $recordId = $arguments->id;
             $attributes = (array)($arguments->attributes ?? []);
@@ -64,11 +77,31 @@ class UpdateRecord extends AbstractMCPTool
                 throw new \Exception("Record with ID {$recordId} not found in module {$moduleName}.");
             }
 
-            // Update attributes
+            $attributeValidators = [];
+            $changed = false;
             foreach ($attributes as $field => $value) {
-                if (array_key_exists($field, $fieldDefs)) {
-                    $record->$field = $value;
+                $fieldModuleValidator = ToolValidationMiddleware::make($value, $field)->fieldModule($fieldDefs, $moduleName);
+                if (!$fieldModuleValidator->isValid()) {
+                    $attributeValidators[] = $fieldModuleValidator->required();
+                } else {
+                    $def = $fieldDefs[$field];
+                    $type = $def['type'] ?? ($def['dbType'] ?? 'unknown');
+                    $attributeValidators[] = ToolValidationMiddleware::validateByType($value, $field, $type);
                 }
+            }
+            ToolValidationMiddleware::validateMany($attributeValidators);
+          
+            foreach ($attributes as $field => $value) {
+                if (array_key_exists($field, $fieldDefs) && $record->$field !== $value) {
+                    $record->$field = $value;
+                    $changed = true;
+                }
+            }
+            if (!$changed) {
+                chdir('../mcp');
+                return $this->createResult([
+                    $this->createTextContent("No attributes were changed. Please provide valid attributes to update.")
+                ]);
             }
 
             $id = $record->save();
@@ -90,7 +123,7 @@ class UpdateRecord extends AbstractMCPTool
             ]);
         } catch (\Exception $e) {
             return $this->createResult([
-                $this->createTextContent("Error while updating record: " . $e->getMessage())
+                $this->createTextContent($e instanceof \InvalidArgumentException ? $e->getMessage() : ("Error while updating record: " . $e->getMessage()))
             ]);
         }
     }
