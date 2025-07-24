@@ -32,7 +32,6 @@ class MappingsGenerator
         'primary_address_street' => 'address.primary.street',
         'primary_address_country' => 'address.primary.country',
         'phone_mobile' => 'phone.mobile',
-        'employee_id' => 'employee_id',
         'employee_name' => 'employee_name',
         'offboarding_id' => 'offboarding_id',
         'offboarding_name' => 'offboarding_name',
@@ -73,6 +72,13 @@ class MappingsGenerator
         'integer' => [
             'type' => 'integer',
         ],
+    ];
+
+    protected $fields_must_be_added_to_mappings_because_of_security = [
+        'assigned_user_name' => 'assigned_user_id',
+        'created_by_name' => 'created_by',
+        'modified_by_name' => 'modified_user_id',
+        'employee_name' => 'employee_id'
     ];
 
     protected function getModulesWithElastic()
@@ -242,6 +248,12 @@ class MappingsGenerator
 
         $fields_to_map = array_unique(array_merge($columns, $search));
 
+        foreach ($this->fields_must_be_added_to_mappings_because_of_security as $name_field => $id_field) {
+            if (in_array($name_field, $fields_to_map) && !in_array($id_field, $fields_to_map)) {
+                $fields_to_map[] = $id_field;
+            }
+        }
+        
         return $fields_to_map;
     }
 }

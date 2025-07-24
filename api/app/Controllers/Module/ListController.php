@@ -166,6 +166,8 @@ class ListController
     {
         try {
             $search_manager = Search::getManager();
+            global $current_user;
+            $search_manager->setElasticACL(!is_admin($current_user));
             $search_manager->setQuery($this->params);
             $this->search_result = $search_manager->search(true);
         } catch (BadRequest400Exception $e) {
