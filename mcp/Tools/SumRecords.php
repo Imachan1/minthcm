@@ -2,9 +2,11 @@
 
 namespace MintMCP\Tools;
 
+
 use MintMCP\Tools\Traits\ModuleQueryTrait;
 use Mcp\Types\CallToolResult;
 use Mcp\Types\ToolInputSchema;
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
 
 class SumRecords extends AbstractMCPTool
 {
@@ -31,8 +33,27 @@ class SumRecords extends AbstractMCPTool
                 ],
                 'filters' => [
                     'type' => 'string',
-                    'description' => 'JSON with filters to apply to the query. Example: { "filters": { "date_start": { "operator": ">", "value": "2022-01-01" }, "assigned_user_id": { "operator": "=", "value": "1" } } }.
-                                        Important: Use get_module_fields to get available fields in the module. Also you cannot use fields of type "link" or "relate" in filters, instead use the ID of the related record.',
+                    'description' => 'Dict with filters to apply to the query. Optional dictionary to filter query results. Each filter has an operator and value.
+
+                        Structure: {"field_name": {"operator": "OPERATOR", "value": "VALUE"}}
+
+                        Available operators:
+                        - Equality: =, <>
+                        - Comparison: >, <, >=, <=
+                        - Text matching: LIKE, NOT LIKE
+                        - Multiple values: IN, NOT IN (use comma-separated string: "1,2,3")
+                        - Range: BETWEEN (use comma-separated string: "start,end")
+
+                        Date/datetime filtering:
+                        - For specific date searches, always use BETWEEN with the date and next day
+                        - Example for records on 2022-01-01: {"date_start": {"operator": "BETWEEN", "value": "2022-01-01,2022-01-02"}}
+
+                        Examples:
+                        {"assigned_user_id": {"operator": "=", "value": "1"}}
+                        {"status": {"operator": "IN", "value": "active,pending"}}
+                        {"created_date": {"operator": "BETWEEN", "value": "2022-01-01,2022-01-31"}}
+
+                        Important: Use get_module_fields to get available fields in the module. You cannot use fields of type "link" or "relate" in filters, instead use the ID of the related record.',
                 ],
                 'operator' => [
                     'type' => 'string',
@@ -58,22 +79,46 @@ class SumRecords extends AbstractMCPTool
     public function execute(object $arguments): CallToolResult
     {
         try {
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->module_name, 'module_name')->required()->string(),
+                ToolValidationMiddleware::make($arguments->sum_field, 'sum_field')->required()->string()
+            ]);
+
             $this->checkPermissions($arguments->module_name);
 
             [$bean, $tableName, $fieldDefs] = $this->loadBeanAndDefs($arguments->module_name);
 
             $sumField = $arguments->sum_field;
-            $this->validateFields([$sumField], $fieldDefs, $arguments->module_name);
+            ToolValidationMiddleware::validateOne(
+                ToolValidationMiddleware::make(null, $sumField)->fieldModule($fieldDefs, $arguments->module_name)
+            );
 
             // Acceptable numeric types
             $numericTypes = ['int', 'integer', 'float', 'double', 'decimal', 'currency'];
             $dbType = strtolower($fieldDefs[$sumField]['dbType'] ?? $fieldDefs[$sumField]['type'] ?? '');
+            $validator = ToolValidationMiddleware::make($dbType, $sumField);
             if (!in_array($dbType, $numericTypes, true)) {
-                throw new \InvalidArgumentException("Field '{$sumField}' is not a valid numeric field.");
+                $validator->enum($numericTypes);
+            }
+            if (!$validator->isValid()) {
+                return $this->createResult([
+                    $this->createTextContent("Field '{$sumField}' is not a valid numeric field.")
+                ]);
+            }
+
+            // Validate filters structure and operators
+            $filters = $arguments->filters ?? '';
+            if (!empty($filters) && is_array($filters)) {
+                foreach ($filters as $field => $filter) {
+                    ToolValidationMiddleware::validateMany([
+                        ToolValidationMiddleware::make(null, $field)->fieldModule($fieldDefs, $arguments->module_name),
+                        ToolValidationMiddleware::make($filter['operator'] ?? null, 'operator')->required()->enum(['=', '<>', '>', '<', '>=', '<=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN', 'BETWEEN']),
+                    ]);
+                }
             }
 
             $whereClause = $this->buildWhereClause(
-                $arguments->filters ?? '',
+                $filters,
                 $fieldDefs,
                 $tableName,
                 $arguments->operator ?? 'and'
@@ -99,7 +144,7 @@ class SumRecords extends AbstractMCPTool
             ]);
         } catch (\Exception $e) {
             return $this->createResult([
-                $this->createTextContent("Error while summing records: " . $e->getMessage())
+                $this->createTextContent($e instanceof \InvalidArgumentException ? $e->getMessage() : ("Error while summing records: " . $e->getMessage()))
             ]);
         }
     }

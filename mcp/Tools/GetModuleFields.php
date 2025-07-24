@@ -54,11 +54,17 @@ class GetModuleFields extends AbstractMCPTool
             [$allFields, $requiredFields] = $this->getFieldsData($moduleName, $excludeRequiredId);
             chdir('../mcp');
 
-            // Prepare fields as array with 'name' key included
+            // Prepare fields as array
             $fieldsArray = [];
             foreach ($allFields as $field => $info) {
-                $fieldData = $info;
-                $fieldData['name'] = $field;
+                $fieldData = [
+                    'name' => $field,
+                    'type' => $info['type'] ?? ($info['dbType'] ?? 'unknown'),
+                    'required' => $info['required'] ?? false
+                ];
+                if (!empty($info['enum_values'])) {
+                    $fieldData['enum_values'] = $info['enum_values'];
+                }
                 $fieldsArray[] = $fieldData;
             }
 
@@ -66,9 +72,9 @@ class GetModuleFields extends AbstractMCPTool
                 'module' => $moduleName,
                 'fields' => $fieldsArray,
                 'required_fields' => $requiredFields,
-                'total_fields' => count($allFields),
+                'total_fields' => count($fieldsArray),
                 'required_fields_count' => count($requiredFields),
-                'message' => count($allFields) > 0
+                'message' => count($fieldsArray) > 0
                     ? "Fields and required fields for module '{$moduleName}'."
                     : "No fields found for module '{$moduleName}'."
             ];
@@ -77,9 +83,10 @@ class GetModuleFields extends AbstractMCPTool
                 $this->createJsonContent($result)
             ]);
         } catch (\Exception $e) {
+            $msg = strpos($e->getMessage(), 'not found') !== false ? $e->getMessage() : "Error: " . $e->getMessage();
             return $this->createResult([
                 $this->createJsonContent([
-                    'message' => "Error: " . $e->getMessage(),
+                    'message' => $msg,
                     'fields' => [],
                     'required_fields' => [],
                     'total_fields' => 0,
