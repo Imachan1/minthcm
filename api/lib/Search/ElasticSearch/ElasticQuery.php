@@ -48,13 +48,11 @@ namespace MintHCM\Lib\Search\ElasticSearch;
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
 use MintHCM\Data\BeanFactory;
 use MintHCM\Lib\Search\Base\SearchQuery;
+use MintHCM\Lib\Search\ElasticSearch\ElasticMapperParser;
 use MintHCM\Lib\Search\ElasticSearch\ElasticQueryOperatorsManager;
 use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
-use MintHCM\Utils\ConstantsLoader;
 use MintHCM\Utils\CustomLoader;
 use MintHCM\Utils\LegacyConnector;
-use Symfony\Component\Yaml\Parser as YamlParser;
-use MintHCM\Lib\Search\ElasticSearch\ElasticMapperParser;
 
 class ElasticQuery extends SearchQuery
 {
@@ -139,7 +137,25 @@ class ElasticQuery extends SearchQuery
                 return $this->getGlobalQuery();
                 break;
             case "list":
-                return $this->getListQuery();
+                $body = $this->getListQuery();
+                $module_to_search = $this->params['type'] ?? '';
+                if ($this->add_acl_filters && $module_to_search) {
+                    $bean = BeanFactory::newBean($module_to_search);
+                    $acl_controller = new LegacyConnector('ACLController');
+                    if ($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list', true)) {
+                        return [];
+                    }
+                    $module_filters = $this->getACLForSingleModule($module_to_search);
+                    if (is_array($module_filters)) {
+                        $add_filter = [
+                            "bool" => [
+                                "should" => $module_filters
+                            ],
+                        ];
+                        $body["bool"]["filter"][] = $add_filter;
+                    }
+                }
+                return $body;
                 break;
             default:
                 throw new InvalidArgumentException();
@@ -157,8 +173,9 @@ class ElasticQuery extends SearchQuery
 
             foreach ($search_modules as $module_to_search) {
                 $bean = BeanFactory::newBean($module_to_search);
+                /** @var \ACLController $acl_controller */
                 $acl_controller = new LegacyConnector('ACLController');
-                if($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list')){
+                if ($bean->bean_implements('ACL') && !$acl_controller::checkAccess($bean->module_dir, 'list', true)) {
                     continue;
                 }
                 if ($bean->bean_implements('ACL') && ($acl_controller::requireOwner($bean->module_dir, 'list') || $acl_controller::requireSecurityGroup($bean->module_dir, 'list'))) {
@@ -226,21 +243,35 @@ class ElasticQuery extends SearchQuery
         return $single_module;
     }
 
+    protected function getACLForSingleModule($module)
+    {
+        global $current_user;
+        $acl = $this->getACLClassForModule($module);
+        $restriction_filter = $acl->getAccessRestrictionFilter($current_user->id);
+        if (!empty($restriction_filter[0]['bool']['should'])) {
+            return $restriction_filter[0]['bool']['should'];
+        }
+        return [];
+    }
+
     protected function getACLClassForModule(string $module)
     {
         $variants = [
-            ['className' => "Custom{$module}ListACL", 'path' => "custom/modules/{$module}/{$module}ListACL.php"],
-            ['className' => "{$module}ListACL", 'path' => "modules/{$module}/{$module}ListACL.php"],
-            ['className' => 'BaseListACL', 'path' => "include/ESListView/BaseListACL.php"],
+            ['className' => 'MintHCM\Custom\Modules\\' . $module . '\\' . $module . 'ListACL', 'path' => "custom/modules/{$module}/{$module}ListACL.php"],
+            ['className' => 'MintHCM\Modules\\' . $module . '\\' . $module . 'ListACL', 'path' => "modules/{$module}/{$module}ListACL.php"],
+            ['className' => 'MintHCM\Custom\Lib\Search\ElasticSearch\CustomBaseListACL', 'path' => "lib/Search/ElasticSearch/CustomBaseListACL.php"],
+            ['className' => 'MintHCM\Lib\Search\ElasticSearch\BaseListACL', 'path' => "lib/Search/ElasticSearch/BaseListACL.php"],
         ];
 
         foreach ($variants as $variant) {
-            if (file_exists('../legacy/' . $variant['path'])) {
+            if (file_exists($variant['path'])) {
                 require_once $variant['path'];
-                $acl_class = new LegacyConnector($variant['className'], $variant['path'], [$module]);
-                return $acl_class;
+                if (class_exists($variant['className'])) {
+                    return new $variant['className']($module);
             }
         }
+    }
+        throw new InvalidArgumentException("ACL class not found for module: {$module}");
     }
     public function getIndiceToModuleMapping()
     {
@@ -283,12 +314,13 @@ class ElasticQuery extends SearchQuery
         } else {
             $search_modules = $this->search_modules;
         }
-
-        if (!isset($this->query['body']['query']['simple_query_string']['fields'])) {
+        if (isset($this->query['body']['query']['simple_query_string']['fields'])) {
+            $boost_array = &$this->query['body']['query']['simple_query_string']['fields'];
+        } else if (isset($this->query['body']['query']['bool']['must']['simple_query_string']['fields'])) {
+            $boost_array = &$this->query['body']['query']['bool']['must']['simple_query_string']['fields'];
+        } else {
             return;
         }
-
-        $boost_array = $this->query['body']['query']['simple_query_string']['fields'];
 
         foreach ($search_modules as $module_name) {
             $module_bean = BeanFactory::getBean($module_name);
@@ -313,12 +345,10 @@ class ElasticQuery extends SearchQuery
                 }
             }
         }
-        $this->query['body']['query']['simple_query_string']['fields'] = $boost_array;
     }
 
     public static function getIndexPrefix():string
     {
         return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
     }
-
 }
