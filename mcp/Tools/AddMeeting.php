@@ -2,8 +2,10 @@
 
 namespace MintMCP\Tools;
 
+
 use Mcp\Types\CallToolResult;
 use Mcp\Types\ToolInputSchema;
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
 
 class AddMeeting extends AbstractMCPTool
 {
@@ -35,12 +37,12 @@ class AddMeeting extends AbstractMCPTool
                 'date_start' => [
                     'type' => 'string',
                     'description' => 'Start date and time (YYYY-MM-DD HH:MM:SS)',
-                    'format' => 'date-time'
+                    'format' => 'datetime'
                 ],
                 'date_end' => [
                     'type' => 'string',
                     'description' => 'End date and time (YYYY-MM-DD HH:MM:SS)',
-                    'format' => 'date-time'
+                    'format' => 'datetime'
                 ],
                 'location' => [
                     'type' => 'string',
@@ -116,11 +118,18 @@ class AddMeeting extends AbstractMCPTool
      */
     private function validateArguments($arguments): void
     {
-        if (empty($arguments->name)) {
-            throw new \InvalidArgumentException("Meeting name is required");
-        }
-        if (empty($arguments->date_start)) {
-            throw new \InvalidArgumentException("Start date is required");
+        ToolValidationMiddleware::validateMany([
+            ToolValidationMiddleware::make($arguments->name, 'name')->required()->string(),
+            ToolValidationMiddleware::make($arguments->date_start, 'date_start')->required()->string()->date(),
+            ToolValidationMiddleware::make($arguments->duration_hours ?? 1, 'duration_hours')->integer()->greaterThanOrEquals(0),
+            ToolValidationMiddleware::make($arguments->duration_minutes ?? 0, 'duration_minutes')->integer()->greaterThanOrEquals(0)->lessThan(60),
+        ]);
+
+        if (!empty($arguments->date_end)) {
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->date_end, 'date_end')->string()->date(),
+                ToolValidationMiddleware::make($arguments->date_end, 'date_end')->isAfter($arguments->date_start, 'date_start'),
+            ]);
         }
     }
 

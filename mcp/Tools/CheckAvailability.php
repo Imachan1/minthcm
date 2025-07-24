@@ -2,6 +2,8 @@
 
 namespace MintMCP\Tools;
 
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
+
 use Mcp\Types\CallToolResult;
 use Mcp\Types\ToolInputSchema;
 use TimeDate;
@@ -38,12 +40,12 @@ class CheckAvailability extends AbstractMCPTool
                 'start_date' => [
                     'type' => 'string',
                     'description' => 'Start of the period in YYYY-MM-DDTHH:MM:SS format (ISO 8601).',
-                    'format' => 'date-time',
+                    'format' => 'datetime',
                 ],
                 'end_date' => [
                     'type' => 'string',
                     'description' => 'End of the period in YYYY-MM-DDTHH:MM:SS format (ISO 8601).',
-                    'format' => 'date-time',
+                    'format' => 'datetime',
                 ],
                 'modules' => [
                     'type' => 'array',
@@ -70,12 +72,37 @@ class CheckAvailability extends AbstractMCPTool
             $this->checkPermissions('Meetings');
             $this->checkPermissions('Calls');
 
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->mint_user_id, 'mint_user_id')
+                    ->required()
+                    ->string(),
+                ToolValidationMiddleware::make($arguments->end_date, 'end_date')
+                    ->required()
+                    ->string()
+                    ->date(),
+                ToolValidationMiddleware::make($arguments->modules, 'modules')
+                    ->required()
+                    ->array(),
+            ]);
+            if (!empty($arguments->start_date)) {
+                ToolValidationMiddleware::validateOne(
+                    ToolValidationMiddleware::make($arguments->start_date, 'start_date')
+                        ->string()
+                        ->date()
+                        ->isBefore($arguments->end_date, 'end_date')
+                );
+            }
+
             $userId = $arguments->mint_user_id;
             $startDate = $arguments->start_date ?? null;
             $endDate = $arguments->end_date;
-            $modules = $arguments->modules ?? ['meetings'];
+            $modules = $arguments->modules;
 
             chdir('../legacy');
+            $userBean = \BeanFactory::getBean('Users', $userId);
+            if (!$userBean || empty($userBean->id)) {
+                throw new \InvalidArgumentException("User with id '{$userId}' does not exist.");
+            }
 
             $busySlots = [];
 
@@ -100,10 +127,7 @@ class CheckAvailability extends AbstractMCPTool
             ]);
         } catch (\Exception $e) {
             return $this->createResult([
-                $this->createJsonContent([
-                    'message' => "Error while checking availability: " . $e->getMessage(),
-                    'busy_periods' => []
-                ])
+                $this->createTextContent($e instanceof \InvalidArgumentException ? $e->getMessage() : ("Error while checking availability: " . $e->getMessage()))
             ]);
         }
     }
@@ -167,7 +191,7 @@ class CheckAvailability extends AbstractMCPTool
     private function getBusySlotsFromCalls($userId, $startDate, $endDate): array
     {
         if (!$startDate) {
-            $startDate = TimeDate::getInstance()->nowDb();
+            $startDate = \TimeDate::getInstance()->nowDb();
         }
         $callBean = \BeanFactory::getBean('Calls');
         $where = [
