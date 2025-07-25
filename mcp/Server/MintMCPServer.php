@@ -70,11 +70,6 @@ class MintMCPServer
                                 'name' => 'MintHCM MCP Server',
                                 'version' => '1.0.0'
                             ],
-                            // 'authorization' => [
-                            //     'type' => 'oauth2',
-                            //     'scopes' => [],
-                            //     'url' => 'https://osmana82-8.int2.evolpe.net/MintHCM/legacy/Api/access_token'
-                            // ]
                         ]
                     ];
 
