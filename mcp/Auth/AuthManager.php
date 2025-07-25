@@ -2,77 +2,132 @@
 
 namespace MintMCP\Auth;
 
+use MintMCP\Handlers\Logger;
+use BeanFactory;
+
+/**
+ * Authentication Manager for MintHCM MCP
+ * 
+ * Handles token validation and user authentication
+ */
 class AuthManager
 {
     private static ?AuthManager $instance = null;
-    private string $jwt;
-    private bool $authenticated = false;
+    private ?string $token;
+    private ?array $tokenData;
+    private ?string $userId;
 
-    private function __construct(string $jwt)
-    {
-        $this->jwt = $jwt;
-    }
-
-    public static function getInstance(string $jwt): AuthManager
+    /**
+     * Get singleton instance
+     * 
+     * @param string|null $token Authentication token
+     * @return self Instance of AuthManager
+     */
+    public static function getInstance(?string $token = null): self
     {
         if (self::$instance === null) {
-            self::$instance = new self($jwt);
+            self::$instance = new self($token);
         }
         return self::$instance;
     }
-
+    
+    /**
+     * Constructor
+     * 
+     * @param string|null $token Authentication token
+     */
+    public function __construct(?string $token = null)
+    {
+        $this->token = $token;
+        $this->tokenData = null;
+        $this->userId = null;
+    }
+    
+    /**
+     * Validate token and set current user
+     * 
+     * @return bool True if token is valid, false otherwise
+     */
     public function validate(): bool
     {
-        $this->authenticated = false;
-        $jti = $this->getJtiFromJwt();
-
-        chdir('../legacy/');
-        $tokenBean = \BeanFactory::newBean('OAuth2Tokens');
-        $foundToken = $tokenBean->retrieve_by_string_fields(['access_token' => $jti]);
-        if (empty($foundToken) || empty($foundToken->id) || $foundToken->access_token !== $jti) {
+        if (empty($this->token)) {
             return false;
         }
-
-        $this->authenticated = true;
-        $this->setCurrentUser($foundToken->assigned_user_id);
-
-        chdir('../mcp/');
-
-        // TODO: Check if the token is expired
-
-
-
-        return $this->authenticated;
-    }
-
-    protected function getJtiFromJwt()
-    {
-        $parts = explode('.', $this->jwt);
-        if (count($parts) !== 3) {
-            return null;
+        
+        // Use the OAuth2Server to validate the token
+        $oauth2Server = OAuth2Server::getInstance();
+        $this->tokenData = $oauth2Server->introspectToken($this->token);
+        
+        if (!$this->isTokenValid()) {
+            Logger::getLogger()->warning('Invalid token', [
+                'token' => $this->getObfuscatedToken()
+            ]);
+            return false;
         }
-        $payload = $parts[1];
-        $payload = strtr($payload, '-_', '+/'); // base64url → base64
-        $payload = base64_decode($payload);
-        if ($payload === false) {
-            return null;
+        
+        $this->userId = $this->tokenData['user_id'];
+        
+        // Set the global current_user
+        $this->setCurrentUser();
+        
+        return true;
+    }
+    
+    /**
+     * Check if token data is valid
+     */
+    private function isTokenValid(): bool
+    {
+        return $this->tokenData && 
+               isset($this->tokenData['active']) && 
+               $this->tokenData['active'];
+    }
+    
+    /**
+     * Get obfuscated token for logging
+     */
+    private function getObfuscatedToken(): string
+    {
+        return substr($this->token, 0, 10) . '...';
+    }
+    
+    /**
+     * Get user ID from token
+     * 
+     * @return string|null User ID or null if not authenticated
+     */
+    public function getUserId(): ?string
+    {
+        return $this->userId;
+    }
+    
+    /**
+     * Get token data
+     * 
+     * @return array|null Token data or null if not authenticated
+     */
+    public function getTokenData(): ?array
+    {
+        return $this->tokenData;
+    }
+    
+    /**
+     * Set current user in global scope
+     */
+    private function setCurrentUser(): void
+    {
+        global $current_user;
+
+        if (empty($this->userId)) {
+            return;
         }
-        $data = json_decode($payload, true);
-        return $data['jti'] ?? null;
-    }
-
-    public function isAuthenticated(): bool
-    {
-        return $this->authenticated;
-    }
-
-    protected function setCurrentUser(string $userId): void
-    {
-        $userBean = \BeanFactory::getBean('Users', $userId);
-        if (!empty($userBean->id)) {
-            $GLOBALS['current_user'] = $userBean;
-        } else {
-            throw new \Exception("User with ID {$userId} not found");
+        
+        chdir('../legacy');
+        $user = BeanFactory::getBean('Users', $this->userId);
+        chdir('../mcp');
+        
+        if ($user) {
+            $current_user = $user;
         }
     }
 }

@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2024 MintHCM
@@ -45,90 +45,16 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-
-/**
- * Class OAuth2Clients
- */
-#[\AllowDynamicProperties]
-class OAuth2Clients extends SugarBean
-{
-    /**
-     * @var string
-     */
-    public $secret;
-
-    /**
-     * @var string
-     */
-    public $redirect_uri;
-
-    /**
-     * @var string
-     */
-    public $allowed_grant_type;
-
-    /**
-     * @var string
-     */
-    public $table_name = 'oauth2clients';
-
-    /**
-     * @var string
-     */
-    public $object_name = 'OAuth2Clients';
-
-    /**
-     * @var string
-     */
-    public $module_dir = 'OAuth2Clients';
-
-    /**
-     * @var bool
-     */
-    public $disable_row_level_security = true;
-
-    /**
-     * @see SugarBean::get_summary_text()
-     */
-    public function get_summary_text()
-    {
-        return (string)$this->name;
-    }
-
-    /**
-     * @see SugarBean::save()
-     *
-     * @param bool $check_notify
-     * @return string ID
-     */
-    public function save($check_notify = false)
-    {
-        if (!empty($_REQUEST['new_secret'])) {
-            $this->secret = hash('sha256', (string) $_REQUEST['new_secret']);
-        }
-        if (empty($this->duration_value)) { // MintHCM #159328
-            $this->setDurationValue();
-        }
-        return parent::save();
-    }
-
-    private function setDurationValue()
-    {
-        if (empty($_REQUEST['duration_amount']) || empty($_REQUEST['duration_unit'])) {
-            $this->duration_value = 60;
-            $this->duration_amount = 1;
-            $this->duration_unit = 'minute';
-            return;
-        }
-        $amount = $_REQUEST['duration_amount'];
-        $value = 1;
-        switch ($_REQUEST['duration_unit']) {
-            case 'month': $value = $amount * 30 * 24 * 60 * 60; break;
-            case 'week': $value = $amount * 7 * 24 * 60 * 60; break;
-            case 'day': $value = $amount * 24 * 60 * 60; break;
-            case 'hour': $value = $amount * 60 * 60; break;
-            case 'minute': $value = $amount * 60; break;
-        }
-        $this->duration_value = $value;
-    }
-}
+$mod_strings = [
+    'LBL_MODULE_NAME' => 'OAuth2 Authorization Codes',
+    'LBL_MODULE_TITLE' => 'OAuth2 Authorization Codes',
+    'LBL_MODULE_ID' => 'OAuth2 Authorization Codes',
+    'LBL_CODE' => 'Authorization Code',
+    'LBL_CLIENT_ID' => 'Client ID',
+    'LBL_USER_ID' => 'User ID',
+    'LBL_SCOPE' => 'Scope',
+    'LBL_CODE_CHALLENGE' => 'Code Challenge',
+    'LBL_CODE_EXPIRES' => 'Code Expires',
+    'LBL_CODE_CHALLENGE_METHOD' => 'Code Challenge Method',
+    'LBL_USED' => 'Used',
+];
