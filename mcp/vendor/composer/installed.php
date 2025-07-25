@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => 'cc4039a50d1b2fac2344ff11b0f834d6536092fb',
+        'pretty_version' => 'dev-develop',
+        'version' => 'dev-develop',
+        'reference' => 'ecf473795e145c9ee19a01f96e00d0dec9d7d05e',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,18 +11,18 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => 'cc4039a50d1b2fac2344ff11b0f834d6536092fb',
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
+            'reference' => 'ecf473795e145c9ee19a01f96e00d0dec9d7d05e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'logiscape/mcp-sdk-php' => array(
-            'pretty_version' => 'v1.2.1',
-            'version' => '1.2.1.0',
-            'reference' => 'aaab1ecc0a1c1e0cecf4c09a916b2cea8c638b71',
+            'pretty_version' => 'v1.2.2',
+            'version' => '1.2.2.0',
+            'reference' => '75a5e8e166e4622b4ef8a66cc2bb112eb7291985',
             'type' => 'library',
             'install_path' => __DIR__ . '/../logiscape/mcp-sdk-php',
             'aliases' => array(),
