@@ -143,4 +143,5 @@ $mod_strings = array(
     'LBL_LEAVE_ALERT' => "%s added a/an %s on %s.",  
     'LBL_ACCEPT' => 'Accept',
     'LBL_PERIODICITY_ERROR' => 'Please select days on which the Work Schedule should be repeated.',
+    'LBL_WORKSCHEDULE_ACCEPTED_NOTIFICATION' => 'Your Work Schedule %s has been accepted.',
 );
