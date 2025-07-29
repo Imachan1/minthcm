@@ -67,7 +67,7 @@ class ReservationsLogicHook {
          $rel = $this->resources_rel;
          if ( $bean->load_relationship($rel) ) {
             $resources_ids = $bean->$rel->get();
-            if(!empty($resources_ids)) {
+            if(!empty($resources_ids) && !empty($bean->resources_arr)) {
                 $this->createReservations($bean, array_diff($bean->resources_arr, $resources_ids));
             }
             if ( $bean->date_start != $bean->fetched_row['date_start'] ||
