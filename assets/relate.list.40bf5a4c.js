@@ -1,1 +1,5 @@
+<<<<<<<< HEAD:assets/relate.list.40bf5a4c.js
 import{l as r,e as l,a5 as _,n as d,w as c,C as i,N as p,t as u,_ as m}from"./index.95739a3d.js";const f=r({__name:"relate.list",props:{defs:{},data:{}},setup(s){const e=s,o=l(()=>{const t=e.defs.module,a=e.data.bean[e.defs.id_name];return`/modules/${t}/DetailView/${a}`});return(t,a)=>{const n=_("router-link");return d(),c(n,{to:o.value,class:"relate-field"},{default:i(()=>[p(u(e.data.bean[t.defs.name]),1)]),_:1},8,["to"])}}});const x=m(f,[["__scopeId","data-v-880d1237"]]);export{x as default};
+========
+import{l as r,e as l,a7 as _,n as d,w as c,C as i,N as p,t as u,_ as m}from"./index.66753496.js";const f=r({__name:"relate.list",props:{defs:{},data:{}},setup(s){const e=s,o=l(()=>{const t=e.defs.module,a=e.data.bean[e.defs.id_name];return`/modules/${t}/DetailView/${a}`});return(t,a)=>{const n=_("router-link");return d(),c(n,{to:o.value,class:"relate-field"},{default:i(()=>[p(u(e.data.bean[t.defs.name]),1)]),_:1},8,["to"])}}});const x=m(f,[["__scopeId","data-v-880d1237"]]);export{x as default};
+>>>>>>>> master:assets/relate.list.9393d39f.js

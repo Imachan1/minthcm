@@ -47,12 +47,8 @@ require_once 'include/Notifications/NotificationPlugin.php';
 require_once 'include/Integrations/Firebase/autoload.php'; // MintHCM #122506
 
 class WorkSchedulesDayValid extends NotificationPlugin {
-
-    public function __construct()
-    {
-        $this->setType('WorkSchedulesDayValid');
-        $this->setLabel('LBL_WORKSCHEDULES_DAY_VALID');
-    }
+    const TYPE = 'WorkSchedulesDayValid';
+    const LABEL = 'LBL_WORKSCHEDULES_DAY_VALID';
 
    public function run() {
       global $app_strings;
