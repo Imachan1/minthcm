@@ -84,10 +84,6 @@ class ElasticSearchIndexer extends AbstractIndexer
 
     private $mappings = [];
 
-    // MintHCM #121632 START
-    protected $acl_helper;
-    // MintHCM #121632 END
-
     /**
      * ElasticSearchIndexer constructor.
      *
@@ -96,11 +92,6 @@ class ElasticSearchIndexer extends AbstractIndexer
     public function __construct(Client $client = null)
     {
         parent::__construct();
-        // MintHCM #121632 START
-        require_once 'include/ESListView/ESListACLHelper.php';
-        $this->acl_helper = new \ESListACLHelper;
-        // MintHCM #121632 END
-
         $this->client = !empty($client) ? $client : ElasticSearchClientBuilder::getClient();
     }
 

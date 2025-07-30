@@ -59,6 +59,16 @@ class NotificationManager {
         $this->scanDirectory('custom/' . self::PLUGINS_DIRECTORY);
     }
 
+    public function getPluginsCollection()
+    {
+        return $this->plugins_collection;
+    }
+    
+    protected function setPluginsCollection($plugins_collection)
+    {
+        $this->plugins_collection = $plugins_collection;
+    }
+
     public function run()
     {
         $this->clearOldWebPush();
@@ -83,7 +93,9 @@ class NotificationManager {
             $class_name = self::getClassFromFile($file);
             $plugin = new $class_name;
             if ($plugin instanceof NotificationPlugin) {
-                $this->plugins_collection[$plugin->getType()] = $class_name;
+                $plugins_collection = $this->getPluginsCollection();
+                $plugins_collection[$plugin->getType()] = $class_name;
+                $this->setPluginsCollection($plugins_collection);
             }
         }
     }

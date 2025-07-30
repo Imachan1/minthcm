@@ -47,14 +47,9 @@ require_once 'include/Integrations/Firebase/autoload.php'; // MintHCM #122506
 
 class WorkSchedulesNotPlandForTwoWeeks extends NotificationPlugin
 {
-
+    const TYPE = 'WorkSchedulesNotPlandForTwoWeeks';
+    const LABEL = 'LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS';
     const PLAN_FOR_DAYS = 10;
-
-    public function __construct()
-    {
-        $this->setType('WorkSchedulesNotPlandForTwoWeeks');
-        $this->setLabel('LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS');
-    }
 
     public function run()
     {
