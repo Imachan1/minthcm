@@ -1615,7 +1615,7 @@ class SugarBean {
     * @param string $user_id GUID
     * @return bool
     */
-   public function isOwner($user_id) {
+   public function isOwner(?string $user_id) {
       // MintHCM Begin #70311 - whole isOwner function redesigned
       $controller = ControllerFactory::getController('Users');
       $subordinates_ids = $controller::getIDOfSubordinates(array($user_id));
