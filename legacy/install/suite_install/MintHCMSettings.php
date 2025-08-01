@@ -82,7 +82,7 @@ function addFrontendTokenClient() {
         "INSERT INTO `oauth2clients` (`id`, `name`, `date_entered`, `date_modified`, `modified_user_id`, `created_by`, `description`, `deleted`, `secret`, `redirect_url`, `is_confidential`, `allowed_grant_type`, `duration_value`, `duration_amount`, `duration_unit`, `assigned_user_id`) VALUES
         ('frontend', 'Frontend Token Client',	NULL,	NULL,	NULL,	NULL,	NULL,	0, '{$hash}',	NULL,	1,	'frontend',	60,	1,	'minute',	NULL);"
     );
-
+//CR ale to musze dać do instrukcji upgrade by sobie dodać na istniejących instancjach?
     $env = '../vue/.env';
     $env_local = '../vue/.env.example';
     

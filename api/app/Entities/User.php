@@ -90,7 +90,7 @@ class User implements UserEntityInterface
      * Check that password matches existing hash
      * @param string $password Plaintext password
      */
-    public function checkPassword($password): bool
+    public function checkPassword($password): bool //CR mamy koilizje bo podczas przebudowy ten plik buduje się na nowo i wywali tą funkcję. Może przenieść to do repository?
     {
         if (empty($this->user_hash)) {
             return false;

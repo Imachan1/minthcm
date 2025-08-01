@@ -147,7 +147,8 @@ class Installer
                     ]
                 ],
             ],
-            'oauth2_encryption_key' => base64_encode(random_bytes(32)),
+            'oauth2_encryption_key' => base64_encode(random_bytes(32)), //CR musze dodać chyba do instrukcji aktualizacji by doidać ten wpis?
+            //widze ze nie musze ale zastanawia mnie czy do obsługi MintConfig nie powinna być jakaś klasa singleton z getterem. To na kiedyś
         ]);
     }
 }
