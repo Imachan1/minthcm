@@ -183,13 +183,6 @@ $dictionary['Task'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_ACCOUNT',
         ),
-        'opportunities' => array(
-            'name' => 'opportunities',
-            'type' => 'link',
-            'relationship' => 'opportunity_tasks',
-            'source' => 'non-db',
-            'vname' => 'LBL_OPPORTUNITY',
-        ),
         'cases' => array(
             'name' => 'cases',
             'type' => 'link',

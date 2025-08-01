@@ -302,14 +302,6 @@ $dictionary['Note'] = array(
             'source'=>'non-db',
         ],
 
-        'opportunity_id' =>
-        [
-            'name' => 'opportunity_id',
-            'vname' => 'LBL_OPPORTUNITY_ID',
-            'type' => 'id',
-            'reportable'=>false,
-            'source'=>'non-db',
-        ],
         'campaign_id' =>
         [
             'name' => 'campaign_id',
@@ -375,15 +367,6 @@ $dictionary['Note'] = array(
             'relationship' => 'account_notes',
             'source' => 'non-db',
             'vname' => 'LBL_ACCOUNTS',
-        ],
-
-        'opportunities' =>
-        [
-            'name' => 'opportunities',
-            'type' => 'link',
-            'relationship' => 'opportunity_notes',
-            'source' => 'non-db',
-            'vname' => 'LBL_OPPORTUNITIES',
         ],
 
         'leads' =>

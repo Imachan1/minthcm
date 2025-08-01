@@ -106,7 +106,9 @@ class OAuth2Clients extends SugarBean
         if (!empty($_REQUEST['new_secret'])) {
             $this->secret = hash('sha256', (string) $_REQUEST['new_secret']);
         }
-        $this->setDurationValue();
+        if (empty($this->duration_value)) { // MintHCM #159328
+            $this->setDurationValue();
+        }
         return parent::save();
     }
 

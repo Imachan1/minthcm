@@ -112,9 +112,6 @@ class Contact extends Person implements EmailInterface
     public $account_name;
     public $account_id;
     public $report_to_name;
-    public $opportunity_role;
-    public $opportunity_rel_id;
-    public $opportunity_id;
     public $case_role;
     public $case_rel_id;
     public $case_id;
@@ -129,7 +126,6 @@ class Contact extends Person implements EmailInterface
     public $accept_status_name;
     public $alt_address_street_2;
     public $alt_address_street_3;
-    public $opportunity_role_id;
     public $portal_password;
     public $primary_address_street_2;
     public $primary_address_street_3;
@@ -139,8 +135,6 @@ class Contact extends Person implements EmailInterface
     public $invalid_email;
     public $table_name = "contacts";
     public $rel_account_table = "accounts_contacts";
-    //This is needed for upgrade.  This table definition moved to Opportunity module.
-    public $rel_opportunity_table = "opportunities_contacts";
 
     public $object_name = "Contact";
     public $module_dir = 'Contacts';
@@ -153,7 +147,6 @@ class Contact extends Person implements EmailInterface
         'assigned_user_name',
         'account_name',
         'account_id',
-        'opportunity_id',
         'case_id',
         'task_id',
         'note_id',
@@ -171,7 +164,6 @@ class Contact extends Person implements EmailInterface
         'meeting_id' => 'meetings',
         'note_id' => 'notes',
         'task_id' => 'tasks',
-        'opportunity_id' => 'opportunities',
         'contacts_users_id' => 'user_sync'
     );
 

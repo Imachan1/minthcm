@@ -222,11 +222,6 @@ class SugarWidgetSubPanelTopButton extends SugarWidget
             }
         }
 
-        if ($defines['focus']->object_name=='Opportunity') {
-            $additionalFormFields['account_id'] = $defines['focus']->account_id;
-            $additionalFormFields['account_name'] = $defines['focus']->account_name;
-        }
-
         if (
             !empty($defines['child_module_name']) &&
             $defines['child_module_name']=='Contacts' &&

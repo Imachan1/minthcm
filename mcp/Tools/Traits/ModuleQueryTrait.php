@@ -23,88 +23,15 @@ trait ModuleQueryTrait
         $tableName = $bean->table_name ?? strtolower($moduleName);
         $fieldDefs = isset($bean->field_defs) ? $bean->field_defs : [];
         chdir('../mcp');
+
+        if (empty($bean) || empty($tableName) || empty($fieldDefs)) {
+            throw new \Exception("Module '{$moduleName}' not found or not accessible.");
+        }
+        
         return [$bean, $tableName, $fieldDefs];
     }
 
-    /**
-     * Validates that all requested fields exist in the module's field definitions.
-     *
-     * @param array $fields
-     * @param array $fieldDefs
-     * @param string $moduleName
-     * @throws \InvalidArgumentException
-     */
-    protected function validateFields(array $fields, array $fieldDefs, string $moduleName): bool
-    {
-        $availableFields = array_keys($fieldDefs);
-        foreach ($fields as $field) {
-            if (!in_array($field, $availableFields)) {
-                throw new \InvalidArgumentException(
-                    "Field {$field} is not available in the {$moduleName} module. " .
-                        "Use get_module_fields to get list of fields available in the module."
-                );
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Validates the value of a field based on its definition.
-     *
-     * @param string $field
-     * @param mixed $value
-     * @param array $fieldDefs
-     * @throws \InvalidArgumentException
-     */
-    protected function validateFieldValue(string $field, $value, array $fieldDefs): bool
-    {
-        if (empty($fieldDefs[$field])) {
-            throw new \InvalidArgumentException("Field {$field} is not defined in the module.");
-        }
-
-        $fieldType = $fieldDefs[$field]['type'] ?? '';
-        if (in_array($fieldType, self::NOT_ALLOWED_RELATE_TYPES, true)) {
-            throw new \InvalidArgumentException(
-                "Field {$field} of type '{$fieldType}' cannot be used in filters. " .
-                    "Use the field of type 'id' and ID of the related record instead."
-            );
-        }
-
-        if (preg_match('/enum/i', $fieldType)) {
-
-            $language = $GLOBALS['current_language'] ?? 'en_us';
-            $appListStrings = return_app_list_strings_language($language);
-            $optionsKey = $fieldDefs[$field]['options'] ?? null;
-
-            if ($optionsKey && !empty($appListStrings[$optionsKey])) {
-                $enumValues = array_keys($appListStrings[$optionsKey]);
-                $values = (array)$value;
-                foreach ($values as $v) {
-                    if (!in_array($v, $enumValues, true)) {
-                        throw new \InvalidArgumentException("Value '{$v}' is not valid for enum field '{$field}'.");
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Builds a SQL WHERE clause from a JSON string of filters.
-     *
-     * @param string $filtersJson JSON string with filters
-     * @param array $fieldDefs
-     * @param string $tableName
-     * @param string $operator 'and' or 'or'
-     * @return string SQL WHERE clause
-     * @throws \InvalidArgumentException
-     */
-    protected function buildWhereClause(
-        string $filtersJson,
-        array $fieldDefs,
-        string $tableName,
-        string $operator
-    ): string {
+    protected function buildWhereClause(string $filtersJson, array $fieldDefs, string $tableName, string $operator): string {
         $availableFields = array_keys($fieldDefs);
         $where = [];
 
@@ -155,7 +82,6 @@ trait ModuleQueryTrait
             $valueStr = "'" . implode("','", $valuesArr) . "'";
             return "$tableName.$field $op ($valueStr)";
         }
-
         // Handle BETWEEN operator
         if ($op === 'BETWEEN') {
             $vals = is_array($value) ? array_map('trim', $value) : array_map('trim', explode(',', $value));

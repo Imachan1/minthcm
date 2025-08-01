@@ -42,7 +42,7 @@ useIntersectionObserver(target, ([entry]) => {
 })
 
 watch(targetIsVisible, (isVisible) => {
-    if (isVisible && props.kudos.is_read === '0') {
+    if (isVisible && props.kudos.is_read == 0) {
         store.readKudosAlerts(props.kudos)
     }
 })

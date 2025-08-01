@@ -2,6 +2,8 @@
 
 namespace MintMCP\Tools;
 
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
+
 use DBManagerFactory;
 use Mcp\Types\CallToolResult;
 use Mcp\Types\ToolInputSchema;
@@ -32,8 +34,27 @@ class CountRecords extends AbstractMCPTool
                 ],
                 'filters' => [
                     'type' => 'string',
-                    'description' => 'JSON with filters to apply to the query. Example: { "filters": { "date_start": { "operator": ">", "value": "2022-01-01" }, "assigned_user_id": { "operator": "=", "value": "1" } } }.
-                                        Important: Use get_module_fields to get available fields in the module. Also you cannot use fields of type "link" or "relate" in filters, instead use the ID of the related record.',
+                    'description' => 'Dict with filters to apply to the query. Optional dictionary to filter query results. Each filter has an operator and value.
+
+                        Structure: {"field_name": {"operator": "OPERATOR", "value": "VALUE"}}
+
+                        Available operators:
+                        - Equality: =, <>
+                        - Comparison: >, <, >=, <=
+                        - Text matching: LIKE, NOT LIKE
+                        - Multiple values: IN, NOT IN (use comma-separated string: "1,2,3")
+                        - Range: BETWEEN (use comma-separated string: "start,end")
+
+                        Date/datetime filtering:
+                        - For specific date searches, always use BETWEEN with the date and next day
+                        - Example for records on 2022-01-01: {"date_start": {"operator": "BETWEEN", "value": "2022-01-01,2022-01-02"}}
+
+                        Examples:
+                        {"assigned_user_id": {"operator": "=", "value": "1"}}
+                        {"status": {"operator": "IN", "value": "active,pending"}}
+                        {"created_date": {"operator": "BETWEEN", "value": "2022-01-01,2022-01-31"}}
+
+Important: Use get_module_fields to get available fields in the module. You cannot use fields of type "link" or "relate" in filters, instead use the ID of the related record.',
                 ],
                 'operator' => [
                     'type' => 'string',
@@ -55,11 +76,30 @@ class CountRecords extends AbstractMCPTool
     public function execute(object $arguments): CallToolResult
     {
         try {
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->module_name, 'module_name')
+                    ->required()
+                    ->string(),
+                ToolValidationMiddleware::make($arguments->operator ?? 'and', 'operator')
+                    ->enum(['and', 'or'])
+            ]);
             $this->checkPermissions($arguments->module_name);
+            $operator = $arguments->operator ?? 'and';
 
             [$bean, $tableName, $fieldDefs] = $this->loadBeanAndDefs($arguments->module_name);
+
             $filters = $arguments->filters ?? '';
-            $operator = $arguments->operator ?? 'and';
+
+            // Validate filters structure and operators
+            if (!empty($filters) && is_array($filters)) {
+                foreach ($filters as $field => $filter) {
+                    ToolValidationMiddleware::validateMany([
+                        ToolValidationMiddleware::make(null, $field)->fieldModule($fieldDefs, $arguments->module_name),
+                        ToolValidationMiddleware::make($filter['operator'] ?? null, 'operator')->required()->enum(['=', '<>', '>', '<', '>=', '<=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN', 'BETWEEN']),
+                    ]);
+                }
+            }
+
             $where = $this->buildWhereClause($filters, $fieldDefs, $tableName, $operator);
 
             chdir('../legacy');
@@ -77,7 +117,7 @@ class CountRecords extends AbstractMCPTool
             ]);
         } catch (\Exception $e) {
             return $this->createResult([
-                $this->createTextContent("Error while counting records: " . $e->getMessage())
+                $this->createTextContent($e instanceof \InvalidArgumentException ? $e->getMessage() : ("Error while counting records: " . $e->getMessage()))
             ]);
         }
     }
