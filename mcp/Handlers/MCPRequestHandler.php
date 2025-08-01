@@ -2,7 +2,6 @@
 
 namespace MintMCP\Handlers;
 
-use Mcp\Types\ListToolsResult;
 use MintMCP\Tools\AbstractMCPTool;
 use MintMCP\Tools\MCPToolRegistry;
 

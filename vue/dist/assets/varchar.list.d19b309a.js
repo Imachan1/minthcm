@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:vue/dist/assets/varchar.list.d19b309a.js
-import{l as t,n as s,q as o,t as r}from"./index.937bfef2.js";const l=t({__name:"varchar.list",props:{defs:{},data:{}},setup(a){const e=a;return(n,p)=>(s(),o("span",null,r(e.data.bean[n.defs.name]),1))}});export{l as default};
-========
-import{l as t,n as s,q as o,t as r}from"./index.94e4d627.js";const l=t({__name:"varchar.list",props:{defs:{},data:{}},setup(a){const e=a;return(n,p)=>(s(),o("span",null,r(e.data.bean[n.defs.name]),1))}});export{l as default};
->>>>>>>> master:vue/dist/assets/varchar.list.a639fee2.js
