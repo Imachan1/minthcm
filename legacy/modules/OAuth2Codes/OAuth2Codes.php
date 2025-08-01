@@ -51,7 +51,6 @@ require_once 'data/SugarBean.php';
 /**
  * Class OAuth2Codes
  */
-#[\AllowDynamicProperties]
 class OAuth2Codes extends SugarBean
 {
     public $id;
