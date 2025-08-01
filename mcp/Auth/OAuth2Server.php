@@ -386,8 +386,10 @@ class OAuth2Server
         }
 
         // Revoke old token
+        chdir('../legacy');
         $tokenBean->token_is_revoked = true;
         $tokenBean->save();
+        chdir('../mcp');
 
         // Create new tokens
         $userId = $clientBean->assigned_user_id;
