@@ -131,7 +131,7 @@ class Notification  extends NotificationAbstractClass
     public function simpleAlert($link = true,$override = array())
     {
         if(empty($this->type)){
-            $GLOBALS['log']->fatal("Every notification has to have type defined, no type for ". $this->name);
+            $GLOBALS['log']->fatal("Every notification has to have type defined, no type for ". ($this->name ?? $this->description));
             return new NotificationNull;
         }
 
