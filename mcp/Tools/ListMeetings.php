@@ -58,9 +58,9 @@ class ListMeetings extends AbstractMCPTool
     public function execute($arguments): \Mcp\Types\CallToolResult
     {
         try {
-            chdir('../legacy');
             $this->checkPermissions('Meetings');
 
+            chdir('../legacy');
             $searchParams = $this->buildSearchParams($arguments);
             $meetings = $this->getMeetingsList($searchParams);
             $result = $this->formatMeetings($meetings['list'] ?? []);
