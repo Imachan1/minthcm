@@ -4582,6 +4582,7 @@ $app_strings['LBL_MINT4_COMMENTS_REACT_BTN'] = 'Like';
 $app_strings['LBL_MINT4_COMMENTS_QUOTE_SUFFIX'] = 'wrote';
 $app_strings['LBL_MINT4_COMMENTS_EDITED'] = 'Comment edited';
 $app_strings['LBL_MINT4_COMMENTS_EXPAND_BTN'] = 'Show replies';
+$app_strings['LBL_MINT4_COMMENTS_HIDE_BTN'] = 'Hide replies';
 $app_strings['LBL_MINT4_COMMENTS_REMOVED'] = 'Comment deleted';
 $app_strings['LBL_MINT4_COMMENTS_REMOVED_WITH_REPLIES_SINGULAR'] = 'Comment and 1 reply deleted';
 $app_strings['LBL_MINT4_COMMENTS_REMOVED_WITH_REPLIES_PLURAL'] = 'Comment and {x} replies deleted';
