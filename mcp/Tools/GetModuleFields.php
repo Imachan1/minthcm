@@ -108,7 +108,7 @@ class GetModuleFields extends AbstractMCPTool
     {
         $bean = \BeanFactory::getBean($moduleName);
         if (!$bean || !isset($bean->field_defs)) {
-            throw new \Exception("Module '{$moduleName}' not found or has no fields.");
+            throw new \Exception("Module '{$moduleName}' has no fields.");
         }
 
         $allowedVardefFields = [

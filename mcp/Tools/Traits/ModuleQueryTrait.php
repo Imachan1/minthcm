@@ -25,7 +25,7 @@ trait ModuleQueryTrait
         chdir('../mcp');
 
         if (empty($bean) || empty($tableName) || empty($fieldDefs)) {
-            throw new \Exception("Module '{$moduleName}' not found or not accessible.");
+            throw new \Exception("Module '{$moduleName}' not found.");
         }
         
         return [$bean, $tableName, $fieldDefs];

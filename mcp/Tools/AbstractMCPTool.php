@@ -93,7 +93,7 @@ abstract class AbstractMCPTool
         }
 
         // Load whitelist/blacklist settings from config
-        $useBlacklist = $this->config->get('use_blacklist', false); 
+        $useBlacklist = $this->config->get('use_blacklist', false);
         $useWhitelist = $this->config->get('use_whitelist', false);
 
         $whitelist = array_filter(array_map('trim', explode(',', $this->config->get('module_whitelist'))));
@@ -109,9 +109,21 @@ abstract class AbstractMCPTool
             throw new ModuleNotAllowedException("Access to module '{$module}' is blocked by blacklist.");
         }
 
-        if (!\ACLController::checkAccess($module, $acl_action)) {
+        chdir('../legacy');
+        $moduleBean = \BeanFactory::getBean($module);
+        if (!$moduleBean) {
+            chdir('../mcp');
+
+            throw new \Exception("Module '{$module}' not found.");
+        }
+
+        $hasAccess = \ACLController::checkAccess($module, $acl_action);
+        if (!$hasAccess) {
+            chdir('../mcp');
             throw new ModuleNotAllowedException("Insufficient permissions for module: {$module}");
         }
+        chdir('../mcp');
+
 
         return true;
     }
@@ -136,7 +148,7 @@ abstract class AbstractMCPTool
      */
     protected function createJsonContent(array $data): TextContent
     {
-        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        $json = json_encode($data, JSON_UNESCAPED_UNICODE);
         return $this->createTextContent($json);
     }
 

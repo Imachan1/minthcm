@@ -5,7 +5,7 @@ namespace MintMCP\Tools;
 
 use Mcp\Types\CallToolResult;
 use Mcp\Types\ToolInputSchema;
-use MintMCP\Tools\Middleware\ToolValidationMiddleware;
+use MintMCP\Tools\Utils\ToolValidation;
 
 class AddMeeting extends AbstractMCPTool
 {
@@ -92,11 +92,10 @@ class AddMeeting extends AbstractMCPTool
 
             chdir('../legacy');
             $meeting = $this->createMeeting($arguments);
-            $meetingId = $meeting->save();
             chdir('../mcp');
 
-            if ($meetingId) {
-                $resultText = $this->formatSuccessMessage($meeting, $meetingId);
+            if (!empty($meeting->id)) {
+                $resultText = $this->formatSuccessMessage($meeting);
                 return $this->createResult([
                     $this->createTextContent($resultText)
                 ]);
@@ -118,17 +117,17 @@ class AddMeeting extends AbstractMCPTool
      */
     private function validateArguments($arguments): void
     {
-        ToolValidationMiddleware::validateMany([
-            ToolValidationMiddleware::make($arguments->name, 'name')->required()->string(),
-            ToolValidationMiddleware::make($arguments->date_start, 'date_start')->required()->string()->date(),
-            ToolValidationMiddleware::make($arguments->duration_hours ?? 1, 'duration_hours')->integer()->greaterThanOrEquals(0),
-            ToolValidationMiddleware::make($arguments->duration_minutes ?? 0, 'duration_minutes')->integer()->greaterThanOrEquals(0)->lessThan(60),
+        ToolValidation::validateMany([
+            ToolValidation::make($arguments->name, 'name')->required()->string(),
+            ToolValidation::make($arguments->date_start, 'date_start')->required()->string()->date(),
+            ToolValidation::make($arguments->duration_hours ?? 1, 'duration_hours')->integer()->greaterThanOrEquals(0),
+            ToolValidation::make($arguments->duration_minutes ?? 0, 'duration_minutes')->integer()->greaterThanOrEquals(0)->lessThan(60),
         ]);
 
         if (!empty($arguments->date_end)) {
-            ToolValidationMiddleware::validateMany([
-                ToolValidationMiddleware::make($arguments->date_end, 'date_end')->string()->date(),
-                ToolValidationMiddleware::make($arguments->date_end, 'date_end')->isAfter($arguments->date_start, 'date_start'),
+            ToolValidation::validateMany([
+                ToolValidation::make($arguments->date_end, 'date_end')->string()->date(),
+                ToolValidation::make($arguments->date_end, 'date_end')->isAfter($arguments->date_start, 'date_start'),
             ]);
         }
     }
@@ -196,10 +195,10 @@ class AddMeeting extends AbstractMCPTool
      * @param string $meetingId The ID of the created meeting
      * @return string Markdown-formatted success message
      */
-    private function formatSuccessMessage($meeting, string $meetingId): string
+    private function formatSuccessMessage($meeting): string
     {
         $resultText = "**Meeting has been successfully created!**\n\n";
-        $resultText .= "ID: " . $meetingId . "\n";
+        $resultText .= "ID: " . $meeting->id . "\n";
         $resultText .= "Name: " . $meeting->name . "\n";
         $resultText .= "Description: " . $meeting->description . "\n";
         $resultText .= "Assigned User: " . ($meeting->assigned_user_name ?? '') . " (" . $meeting->assigned_user_id . ")\n";
@@ -211,7 +210,7 @@ class AddMeeting extends AbstractMCPTool
         $resultText .= "Join URL: " . ($meeting->join_url ?? '') . "\n";
         $resultText .= "Creator: " . ($meeting->creator ?? $GLOBALS['current_user']->user_name) . "\n";
         $resultText .= "Modified: " . $meeting->date_modified . "\n";
-        $resultText .= "MintHCM URL: " . $this->getRecordUrl('Meetings', $meetingId) . "\n";
+        $resultText .= "MintHCM URL: " . $this->getRecordUrl('Meetings', $meeting->id) . "\n";
 
         return $resultText;
     }

@@ -53,9 +53,7 @@ class GetModuleNames extends AbstractMCPTool
         foreach ($allModules as $moduleName => $moduleData) {
             try {
                 $this->checkPermissions($moduleName, 'list');
-                $filteredModules[$moduleName] = [
-                    'label' => $moduleData['label'] ?? null,
-                ];
+                $filteredModules[] = $moduleName;
             } catch (ModuleNotAllowedException $e) {
                 // Skip modules that are not allowed
                 continue;
@@ -64,17 +62,14 @@ class GetModuleNames extends AbstractMCPTool
 
         // Format result as a readable list
         if (empty($filteredModules)) {
-            $resultText = "No modules available for this user.";
+            $result['result'] = "No modules available for this user.";
         } else {
-            $resultText = "Available modules:\n";
-            foreach ($filteredModules as $name => $data) {
-                $label = $data['label'] ?? '';
-                $resultText .= "- {$name}" . ($label ? " ({$label})" : "") . "\n";
-            }
+            $result['result'] = "Available modules";
+            $result['data'] = $filteredModules;
         }
 
         return $this->createResult([
-            $this->createTextContent($resultText)
+            $this->createJsonContent($result)
         ]);
     }
 }

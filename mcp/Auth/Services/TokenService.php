@@ -30,6 +30,7 @@ class TokenService
      */
     public function introspectToken(string $token): ?array
     {
+        global $timedate;
         chdir('../legacy');
         $tokenBean = $this->getTokenBean($token);
         chdir('../mcp');
@@ -38,8 +39,9 @@ class TokenService
             return null;
         }
 
+        $now = $timedate->nowDb();
         // Check if token is active (not revoked and not expired)
-        if ($tokenBean->token_is_revoked || strtotime($tokenBean->access_token_expires) < time()) {
+        if ($tokenBean->token_is_revoked || strtotime($tokenBean->access_token_expires) < strtotime($now)) {
             return null;
         }
 
@@ -56,7 +58,7 @@ class TokenService
             'active' => true,
             'scope' => $tokenBean->scopes ?? 'mcp:read mcp:write',
             'client_id' => $tokenBean->client,
-            'user_id' => $clientBean->assigned_user_id,
+            'user_id' => $tokenBean->assigned_user_id,
             'exp' => strtotime($tokenBean->access_token_expires),
             'token_type' => $tokenBean->token_type
         ];

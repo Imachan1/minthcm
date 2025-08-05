@@ -1,8 +1,8 @@
 <?php
 
-namespace MintMCP\Tools\Middleware;
+namespace MintMCP\Tools\Utils;
 
-class ToolValidationMiddleware
+class ToolValidation
 {
 
 
@@ -177,8 +177,12 @@ class ToolValidationMiddleware
 
     public function date($format = 'Y-m-d H:i:s'): self
     {
-        if ($this->value !== null && strtotime($this->value) === false) {
-            $this->errors[] = "Field '{$this->field}' must be a valid date in format {$format}.";
+        if ($this->value !== null) {
+            $dateTime = \DateTime::createFromFormat($format, $this->value);
+
+            if (!$dateTime || $dateTime->format($format) !== $this->value) {
+                $this->errors[] = "Field '{$this->field}' must be a valid date in format '{$format}'. Received: '{$this->value}'.";
+            }
         }
         return $this;
     }
@@ -201,7 +205,7 @@ class ToolValidationMiddleware
 
     /**
      * Validate multiple fields and throw InvalidArgumentException if any errors.
-     * @param ToolValidationMiddleware[] $validators
+     * @param ToolValidation[] $validators
      * @throws \InvalidArgumentException
      */
     public static function validateMany(array $validators): void
@@ -219,7 +223,7 @@ class ToolValidationMiddleware
 
     /**
      * Validate a single field and throw InvalidArgumentException if any errors.
-     * @param ToolValidationMiddleware $validator
+     * @param ToolValidation $validator
      * @throws \InvalidArgumentException
      */
     public static function validateOne(self $validator): void
