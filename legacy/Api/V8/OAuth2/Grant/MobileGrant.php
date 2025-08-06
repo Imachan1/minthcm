@@ -2,11 +2,12 @@
 
 namespace Api\V8\OAuth2\Grant;
 
-use BeanFactory; // MintHCM #122506
-use League\OAuth2\Server\Entities\ClientEntityInterface; // MintHCM #122506
+use BeanFactory; // MintHCM #136592
+use League\OAuth2\Server\Entities\ClientEntityInterface; // MintHCM #136592
 use League\OAuth2\Server\Grant\PasswordGrant;
 use Psr\Http\Message\ServerRequestInterface;  // MintHCM #131001
 
+#[\AllowDynamicProperties]
 class MobileGrant extends PasswordGrant
 {
     public function getIdentifier()
@@ -26,7 +27,7 @@ class MobileGrant extends PasswordGrant
     }
     // MintHCM #131001 end
 
-    // MintHCM #122506 start
+    // MintHCM #136592 start
     protected function validateUser(ServerRequestInterface $request, ClientEntityInterface $client)
     {
         $user = parent::validateUser($request, $client);
@@ -44,5 +45,5 @@ class MobileGrant extends PasswordGrant
         }
         return $user;
     }
-    // MintHCM #122506 end
+    // MintHCM #136592 end
 }

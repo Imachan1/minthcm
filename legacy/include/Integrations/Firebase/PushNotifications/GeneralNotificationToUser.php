@@ -4,16 +4,19 @@ namespace MintHCM\Firebase\PushNotifications;
 
 class GeneralNotificationToUser extends \MintHCM\Firebase\PushNotification
 {
-    public function execute($data = [])
+    public function execute($data = []): bool
     {
+        if ($this->isFirebaseConfigured() === false) {
+            return false;
+        }
         $bean = \BeanFactory::getBean('Users', $data['user_id'] ?? ''); /** @var User $bean */
         $tokens = !empty($bean->id) ? $bean->getTokens() : null;
         if (empty($tokens)) {
-            return;
+            return false;
         }
-        $this->sendNotification(
+        return $this->sendNotification(
             $data['title'] ?? '',
-            $bean->getTokens(),
+            $tokens,
             $data['body'] ?? '',
             '',
             ''

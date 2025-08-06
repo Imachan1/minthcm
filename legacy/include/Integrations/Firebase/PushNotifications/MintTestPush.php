@@ -4,18 +4,24 @@ namespace MintHCM\Firebase\PushNotifications;
 
 class MintTestPush extends \MintHCM\Firebase\PushNotification
 {
-    public function execute($data = [])
+    public function execute($data = []): bool
     {
-        $bean = \BeanFactory::getBean('Users', 1); /** @var User $bean */
+        if ($this->isFirebaseConfigured() === false) {
+            echo "Firebase is not configured\n";
+            return false;
+        }
+        $user_id = '1';
+        $bean = \BeanFactory::getBean('Users', $user_id); /** @var \User $bean */
         $tokens = !empty($bean->id) ? $bean->getTokens() : null;
         if (empty($tokens)) {
-            return;
+            echo "No tokens found for user {$user_id}\n";
+            return false;
         }
-        $this->sendNotification(
+        return $this->sendNotification(
             'Title Test',
-            $bean->getTokens(),
+            $tokens,
             'Mint Test Push body',
-            '',
+            'https://firebase.google.com/static/images/brand-guidelines/logo-vertical.png',
             "minthcm://settingsScreen"
         );
     }
