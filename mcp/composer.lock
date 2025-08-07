@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4ce6c36b4ea221704dc4c71180ac0cf",
+    "content-hash": "532134c8cf6cc60d5d5b632f4b8e491e",
     "packages": [
         {
             "name": "logiscape/mcp-sdk-php",
