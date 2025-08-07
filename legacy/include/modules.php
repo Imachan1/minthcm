@@ -546,7 +546,9 @@ $beanList['OAuth2Clients'] = 'OAuth2Clients';
 $beanFiles['OAuth2Clients'] = 'modules/OAuth2Clients/OAuth2Clients.php';
 $modInvisList[] = 'OAuth2Clients';
 
-
+$beanList['OAuth2Codes'] = 'OAuth2Codes';
+$beanFiles['OAuth2Codes'] = 'modules/OAuth2Codes/OAuth2Codes.php';
+$modInvisList[] = 'OAuth2Codes';
 
 $beanList['SurveyResponses'] = 'SurveyResponses';
 $beanFiles['SurveyResponses'] = 'modules/SurveyResponses/SurveyResponses.php';
