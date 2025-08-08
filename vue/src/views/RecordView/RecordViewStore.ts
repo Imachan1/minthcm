@@ -5,6 +5,7 @@ import { useModulesStore } from '@/store/modules'
 import axios from 'axios'
 import { useLanguagesStore } from '@/store/languages'
 import { useBean } from '@/composables/useBean'
+import { useACL } from '@/composables/useACL'
 
 interface Panel {
     component: string
@@ -19,8 +20,8 @@ interface RecordViewDefs {
 
 export const useRecordViewStore = defineStore('recordview', () => {
     const modulesStore = useModulesStore()
-
     const route = useRoute()
+    const acl = useACL()
 
     const defs = computed<RecordViewDefs>(() => {
         if (!modulesStore.currentModule) {
@@ -87,27 +88,34 @@ export const useRecordViewStore = defineStore('recordview', () => {
         if (!subpanelDefs || typeof subpanelDefs !== 'object') {
             return []
         }
-        return Object.keys(subpanelDefs).map((key) => ({
-            properties: subpanelDefs[key].properties,
-            key,
-            module: subpanelDefs[key].properties?.module?.toString() || '',
-            label: subpanelDefs[key].properties?.title_key || '',
-            columns: Object.entries(subpanelDefs[key].columns ?? {})
-                .filter(([col, props]) => props.usage !== 'query_only')
-                .map(([col, props]) => ({
-                    ...(props || {}),
-                    name: col,
-                    label:
-                        languages.label(props.label || '', subpanelDefs[key].properties?.module?.toString() || '') ||
-                        '',
-                    type: props.type || '',
+        return Object.keys(subpanelDefs)
+            .filter((key) => {
+                const moduleType = subpanelDefs[key].properties?.module?.toString() || ''
+                return acl.hasAccess(moduleType, 'list')
+            })
+            .map((key) => ({
+                properties: subpanelDefs[key].properties,
+                key,
+                module: subpanelDefs[key].properties?.module?.toString() || '',
+                label: subpanelDefs[key].properties?.title_key || '',
+                columns: Object.entries(subpanelDefs[key].columns ?? {})
+                    .filter(([col, props]) => props.usage !== 'query_only')
+                    .map(([col, props]) => ({
+                        ...(props || {}),
+                        name: col,
+                        label:
+                            languages.label(
+                                props.label || '',
+                                subpanelDefs[key].properties?.module?.toString() || '',
+                            ) || '',
+                        type: props.type || '',
+                    })),
+                records: Object.keys(subpanelsData.value?.[key] ?? {}).map((id) => ({
+                    ...(subpanelsData.value?.[key][id] || {}),
+                    id,
+                    parent_module: subpanelDefs[key].properties?.module?.toString() || '',
                 })),
-            records: Object.keys(subpanelsData.value?.[key] ?? {}).map((id) => ({
-                ...(subpanelsData.value?.[key][id] || {}),
-                id,
-                parent_module: subpanelDefs[key].properties?.module?.toString() || '',
-            })),
-        }))
+            }))
     })
 
     async function fetchSubpanelsData() {
