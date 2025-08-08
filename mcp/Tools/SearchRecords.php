@@ -2,7 +2,7 @@
 
 namespace MintMCP\Tools;
 
-use MintMCP\Tools\Utils\ToolValidation;
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
 
 use MintMCP\Tools\Traits\ModuleQueryTrait;
 use Mcp\Types\ToolInputSchema;
@@ -79,15 +79,15 @@ Important: Use get_module_fields to get available fields in the module. You cann
     public function execute(object $arguments): CallToolResult
     {
         try {
-            // Validate module_name, fields, and operator using ToolValidation
-            ToolValidation::validateMany([
-                ToolValidation::make($arguments->module_name, 'module_name')
+            // Validate module_name, fields, and operator using ToolValidationMiddleware
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->module_name, 'module_name')
                     ->required()
                     ->string(),
-                ToolValidation::make($arguments->fields ?? [], 'fields')
+                ToolValidationMiddleware::make($arguments->fields ?? [], 'fields')
                     ->required()
                     ->array(),
-                ToolValidation::make($arguments->operator ?? 'and', 'operator')
+                ToolValidationMiddleware::make($arguments->operator ?? 'and', 'operator')
                     ->enum(['and', 'or'])
             ]);
             $this->checkPermissions($arguments->module_name);
@@ -99,9 +99,9 @@ Important: Use get_module_fields to get available fields in the module. You cann
             $fields = $arguments->fields ?? [];
             $fieldValidators = [];
             foreach ($fields as $field) {
-                $fieldValidators[] = ToolValidation::make(null, $field)->fieldModule($fieldDefs, $arguments->module_name);
+                $fieldValidators[] = ToolValidationMiddleware::make(null, $field)->fieldModule($fieldDefs, $arguments->module_name);
             }
-            ToolValidation::validateMany($fieldValidators);
+            ToolValidationMiddleware::validateMany($fieldValidators);
 
             // Validate filters structure and operators
             $filters = $arguments->filters ?? '';
@@ -109,10 +109,10 @@ Important: Use get_module_fields to get available fields in the module. You cann
             $filterValidators = [];
             if (!empty($filtersArr) && is_array($filtersArr)) {
                 foreach ($filtersArr as $field => $filter) {
-                    $filterValidators[] = ToolValidation::make(null, $field)->fieldModule($fieldDefs, $arguments->module_name);
-                    $filterValidators[] = ToolValidation::make($filter['operator'] ?? null, 'operator')->required()->enum(['=', '<>', '>', '<', '>=', '<=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN', 'BETWEEN']);
+                    $filterValidators[] = ToolValidationMiddleware::make(null, $field)->fieldModule($fieldDefs, $arguments->module_name);
+                    $filterValidators[] = ToolValidationMiddleware::make($filter['operator'] ?? null, 'operator')->required()->enum(['=', '<>', '>', '<', '>=', '<=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN', 'BETWEEN']);
                 }
-                ToolValidation::validateMany($filterValidators);
+                ToolValidationMiddleware::validateMany($filterValidators);
             }
 
             $whereClause = $this->buildWhereClause(

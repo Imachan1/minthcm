@@ -9,10 +9,10 @@ interface LoggerAwareInterface
 {
     /**
      * Sets a logger instance on the object.
-     *
-     * @param LoggerInterface $logger
-     *
-     * @return void
      */
+<<<<<<<< HEAD:legacy/vendor/rector/rector/vendor/psr/log/src/LoggerAwareInterface.php
     public function setLogger(LoggerInterface $logger) : void;
+========
+    public function setLogger(LoggerInterface $logger): void;
+>>>>>>>> master:api/vendor/psr/log/src/LoggerAwareInterface.php
 }

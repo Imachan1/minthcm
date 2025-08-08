@@ -2,7 +2,7 @@
 
 namespace MintMCP\Tools;
 
-use MintMCP\Tools\Utils\ToolValidation;
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
 
 use Mcp\Types\CallToolResult;
 use Mcp\Types\ToolInputSchema;
@@ -72,21 +72,21 @@ class CheckAvailability extends AbstractMCPTool
             $this->checkPermissions('Meetings');
             $this->checkPermissions('Calls');
 
-            ToolValidation::validateMany([
-                ToolValidation::make($arguments->mint_user_id, 'mint_user_id')
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->mint_user_id, 'mint_user_id')
                     ->required()
                     ->string(),
-                ToolValidation::make($arguments->end_date, 'end_date')
+                ToolValidationMiddleware::make($arguments->end_date, 'end_date')
                     ->required()
                     ->string()
                     ->date(),
-                ToolValidation::make($arguments->modules, 'modules')
+                ToolValidationMiddleware::make($arguments->modules, 'modules')
                     ->required()
                     ->array(),
             ]);
             if (!empty($arguments->start_date)) {
-                ToolValidation::validateOne(
-                    ToolValidation::make($arguments->start_date, 'start_date')
+                ToolValidationMiddleware::validateOne(
+                    ToolValidationMiddleware::make($arguments->start_date, 'start_date')
                         ->string()
                         ->date()
                         ->isBefore($arguments->end_date, 'end_date')

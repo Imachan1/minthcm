@@ -2,7 +2,7 @@
 
 namespace MintMCP\Tools;
 
-use MintMCP\Tools\Utils\ToolValidation;
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
 
 use Mcp\Types\ToolInputSchema;
 use Mcp\Types\CallToolResult;
@@ -53,14 +53,14 @@ class UpdateRecord extends AbstractMCPTool
     public function execute(object $arguments): CallToolResult
     {
         try {
-            ToolValidation::validateMany([
-                ToolValidation::make($arguments->module_name, 'module_name')
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->module_name, 'module_name')
                     ->required()
                     ->string(),
-                ToolValidation::make($arguments->id, 'id')
+                ToolValidationMiddleware::make($arguments->id, 'id')
                     ->required()
                     ->string(),
-                ToolValidation::make($arguments->attributes ?? [], 'attributes')
+                ToolValidationMiddleware::make($arguments->attributes ?? [], 'attributes')
                     ->required()
                     ->array(),
             ]);
@@ -80,16 +80,16 @@ class UpdateRecord extends AbstractMCPTool
             $attributeValidators = [];
             $changed = false;
             foreach ($attributes as $field => $value) {
-                $fieldModuleValidator = ToolValidation::make($value, $field)->fieldModule($fieldDefs, $moduleName);
+                $fieldModuleValidator = ToolValidationMiddleware::make($value, $field)->fieldModule($fieldDefs, $moduleName);
                 if (!$fieldModuleValidator->isValid()) {
                     $attributeValidators[] = $fieldModuleValidator->required();
                 } else {
                     $def = $fieldDefs[$field];
                     $type = $def['type'] ?? ($def['dbType'] ?? 'unknown');
-                    $attributeValidators[] = ToolValidation::validateByType($value, $field, $type);
+                    $attributeValidators[] = ToolValidationMiddleware::validateByType($value, $field, $type);
                 }
             }
-            ToolValidation::validateMany($attributeValidators);
+            ToolValidationMiddleware::validateMany($attributeValidators);
           
             foreach ($attributes as $field => $value) {
                 if (array_key_exists($field, $fieldDefs) && $record->$field !== $value) {

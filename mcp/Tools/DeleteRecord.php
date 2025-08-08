@@ -2,7 +2,7 @@
 
 namespace MintMCP\Tools;
 
-use MintMCP\Tools\Utils\ToolValidation;
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
 
 use Mcp\Types\ToolInputSchema;
 use Mcp\Types\CallToolResult;
@@ -47,11 +47,11 @@ class DeleteRecord extends AbstractMCPTool
     public function execute(object $arguments): CallToolResult
     {
         try {
-            ToolValidation::validateMany([
-                ToolValidation::make($arguments->module_name, 'module_name')
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->module_name, 'module_name')
                     ->required()
                     ->string(),
-                ToolValidation::make($arguments->id, 'id')
+                ToolValidationMiddleware::make($arguments->id, 'id')
                     ->required()
                     ->string(),
             ]);
@@ -62,7 +62,12 @@ class DeleteRecord extends AbstractMCPTool
 
             chdir('../legacy');
             $bean = \BeanFactory::getBean($moduleName, $beanId);
-            
+            if (!$bean) {
+                chdir('../mcp');
+                return $this->createResult([
+                    $this->createTextContent("Module '{$moduleName}' does not exist.")
+                ]);
+            }
             if (empty($bean->id)) {
                 chdir('../mcp');
                 return $this->createResult([

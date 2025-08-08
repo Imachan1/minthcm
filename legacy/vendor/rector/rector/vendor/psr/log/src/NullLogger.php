@@ -23,7 +23,11 @@ class NullLogger extends AbstractLogger
      *
      * @throws \Psr\Log\InvalidArgumentException
      */
+<<<<<<<< HEAD:legacy/vendor/rector/rector/vendor/psr/log/src/NullLogger.php
     public function log($level, $message, array $context = []) : void
+========
+    public function log($level, string|\Stringable $message, array $context = [])
+>>>>>>>> master:legacy/vendor/psr/log/src/NullLogger.php
     {
         // noop
     }

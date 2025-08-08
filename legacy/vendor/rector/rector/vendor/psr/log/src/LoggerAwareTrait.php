@@ -12,7 +12,12 @@ trait LoggerAwareTrait
      *
      * @var LoggerInterface|null
      */
+<<<<<<<< HEAD:legacy/vendor/rector/rector/vendor/psr/log/src/LoggerAwareTrait.php
     protected $logger;
+========
+    protected ?LoggerInterface $logger = null;
+
+>>>>>>>> master:legacy/vendor/psr/log/src/LoggerAwareTrait.php
     /**
      * Sets a logger.
      *

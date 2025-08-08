@@ -20,7 +20,11 @@ trait LoggerTrait
      *
      * @return void
      */
+<<<<<<<< HEAD:legacy/vendor/rector/rector/vendor/psr/log/src/LoggerTrait.php
     public function emergency($message, array $context = []) : void
+========
+    public function emergency(string|\Stringable $message, array $context = [])
+>>>>>>>> master:legacy/vendor/psr/log/src/LoggerTrait.php
     {
         $this->log(LogLevel::EMERGENCY, $message, $context);
     }
@@ -35,7 +39,11 @@ trait LoggerTrait
      *
      * @return void
      */
+<<<<<<<< HEAD:legacy/vendor/rector/rector/vendor/psr/log/src/LoggerTrait.php
     public function alert($message, array $context = []) : void
+========
+    public function alert(string|\Stringable $message, array $context = [])
+>>>>>>>> master:legacy/vendor/psr/log/src/LoggerTrait.php
     {
         $this->log(LogLevel::ALERT, $message, $context);
     }
@@ -49,7 +57,11 @@ trait LoggerTrait
      *
      * @return void
      */
+<<<<<<<< HEAD:legacy/vendor/rector/rector/vendor/psr/log/src/LoggerTrait.php
     public function critical($message, array $context = []) : void
+========
+    public function critical(string|\Stringable $message, array $context = [])
+>>>>>>>> master:legacy/vendor/psr/log/src/LoggerTrait.php
     {
         $this->log(LogLevel::CRITICAL, $message, $context);
     }
@@ -62,7 +74,11 @@ trait LoggerTrait
      *
      * @return void
      */
+<<<<<<<< HEAD:legacy/vendor/rector/rector/vendor/psr/log/src/LoggerTrait.php
     public function error($message, array $context = []) : void
+========
+    public function error(string|\Stringable $message, array $context = [])
+>>>>>>>> master:legacy/vendor/psr/log/src/LoggerTrait.php
     {
         $this->log(LogLevel::ERROR, $message, $context);
     }
@@ -77,7 +93,11 @@ trait LoggerTrait
      *
      * @return void
      */
+<<<<<<<< HEAD:legacy/vendor/rector/rector/vendor/psr/log/src/LoggerTrait.php
     public function warning($message, array $context = []) : void
+========
+    public function warning(string|\Stringable $message, array $context = [])
+>>>>>>>> master:legacy/vendor/psr/log/src/LoggerTrait.php
     {
         $this->log(LogLevel::WARNING, $message, $context);
     }
@@ -89,7 +109,11 @@ trait LoggerTrait
      *
      * @return void
      */
+<<<<<<<< HEAD:legacy/vendor/rector/rector/vendor/psr/log/src/LoggerTrait.php
     public function notice($message, array $context = []) : void
+========
+    public function notice(string|\Stringable $message, array $context = [])
+>>>>>>>> master:legacy/vendor/psr/log/src/LoggerTrait.php
     {
         $this->log(LogLevel::NOTICE, $message, $context);
     }
@@ -103,7 +127,11 @@ trait LoggerTrait
      *
      * @return void
      */
+<<<<<<<< HEAD:legacy/vendor/rector/rector/vendor/psr/log/src/LoggerTrait.php
     public function info($message, array $context = []) : void
+========
+    public function info(string|\Stringable $message, array $context = [])
+>>>>>>>> master:legacy/vendor/psr/log/src/LoggerTrait.php
     {
         $this->log(LogLevel::INFO, $message, $context);
     }
@@ -115,7 +143,11 @@ trait LoggerTrait
      *
      * @return void
      */
+<<<<<<<< HEAD:legacy/vendor/rector/rector/vendor/psr/log/src/LoggerTrait.php
     public function debug($message, array $context = []) : void
+========
+    public function debug(string|\Stringable $message, array $context = [])
+>>>>>>>> master:legacy/vendor/psr/log/src/LoggerTrait.php
     {
         $this->log(LogLevel::DEBUG, $message, $context);
     }
@@ -130,5 +162,9 @@ trait LoggerTrait
      *
      * @throws \Psr\Log\InvalidArgumentException
      */
+<<<<<<<< HEAD:legacy/vendor/rector/rector/vendor/psr/log/src/LoggerTrait.php
     public abstract function log($level, $message, array $context = []) : void;
+========
+    abstract public function log($level, string|\Stringable $message, array $context = []);
+>>>>>>>> master:legacy/vendor/psr/log/src/LoggerTrait.php
 }

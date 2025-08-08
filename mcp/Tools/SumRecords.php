@@ -6,7 +6,7 @@ namespace MintMCP\Tools;
 use MintMCP\Tools\Traits\ModuleQueryTrait;
 use Mcp\Types\CallToolResult;
 use Mcp\Types\ToolInputSchema;
-use MintMCP\Tools\Utils\ToolValidation;
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
 
 class SumRecords extends AbstractMCPTool
 {
@@ -79,9 +79,9 @@ class SumRecords extends AbstractMCPTool
     public function execute(object $arguments): CallToolResult
     {
         try {
-            ToolValidation::validateMany([
-                ToolValidation::make($arguments->module_name, 'module_name')->required()->string(),
-                ToolValidation::make($arguments->sum_field, 'sum_field')->required()->string()
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->module_name, 'module_name')->required()->string(),
+                ToolValidationMiddleware::make($arguments->sum_field, 'sum_field')->required()->string()
             ]);
 
             $this->checkPermissions($arguments->module_name);
@@ -89,14 +89,14 @@ class SumRecords extends AbstractMCPTool
             [$bean, $tableName, $fieldDefs] = $this->loadBeanAndDefs($arguments->module_name);
 
             $sumField = $arguments->sum_field;
-            ToolValidation::validateOne(
-                ToolValidation::make(null, $sumField)->fieldModule($fieldDefs, $arguments->module_name)
+            ToolValidationMiddleware::validateOne(
+                ToolValidationMiddleware::make(null, $sumField)->fieldModule($fieldDefs, $arguments->module_name)
             );
 
             // Acceptable numeric types
             $numericTypes = ['int', 'integer', 'float', 'double', 'decimal', 'currency'];
             $dbType = strtolower($fieldDefs[$sumField]['dbType'] ?? $fieldDefs[$sumField]['type'] ?? '');
-            $validator = ToolValidation::make($dbType, $sumField);
+            $validator = ToolValidationMiddleware::make($dbType, $sumField);
             if (!in_array($dbType, $numericTypes, true)) {
                 $validator->enum($numericTypes);
             }
@@ -110,9 +110,9 @@ class SumRecords extends AbstractMCPTool
             $filters = $arguments->filters ?? '';
             if (!empty($filters) && is_array($filters)) {
                 foreach ($filters as $field => $filter) {
-                    ToolValidation::validateMany([
-                        ToolValidation::make(null, $field)->fieldModule($fieldDefs, $arguments->module_name),
-                        ToolValidation::make($filter['operator'] ?? null, 'operator')->required()->enum(['=', '<>', '>', '<', '>=', '<=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN', 'BETWEEN']),
+                    ToolValidationMiddleware::validateMany([
+                        ToolValidationMiddleware::make(null, $field)->fieldModule($fieldDefs, $arguments->module_name),
+                        ToolValidationMiddleware::make($filter['operator'] ?? null, 'operator')->required()->enum(['=', '<>', '>', '<', '>=', '<=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN', 'BETWEEN']),
                     ]);
                 }
             }

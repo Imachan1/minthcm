@@ -2,7 +2,7 @@
 
 namespace MintMCP\Tools;
 
-use MintMCP\Tools\Utils\ToolValidation;
+use MintMCP\Tools\Middleware\ToolValidationMiddleware;
 
 use DBManagerFactory;
 use Mcp\Types\CallToolResult;
@@ -76,11 +76,11 @@ Important: Use get_module_fields to get available fields in the module. You cann
     public function execute(object $arguments): CallToolResult
     {
         try {
-            ToolValidation::validateMany([
-                ToolValidation::make($arguments->module_name, 'module_name')
+            ToolValidationMiddleware::validateMany([
+                ToolValidationMiddleware::make($arguments->module_name, 'module_name')
                     ->required()
                     ->string(),
-                ToolValidation::make($arguments->operator ?? 'and', 'operator')
+                ToolValidationMiddleware::make($arguments->operator ?? 'and', 'operator')
                     ->enum(['and', 'or'])
             ]);
             $this->checkPermissions($arguments->module_name);
@@ -93,9 +93,9 @@ Important: Use get_module_fields to get available fields in the module. You cann
             // Validate filters structure and operators
             if (!empty($filters) && is_array($filters)) {
                 foreach ($filters as $field => $filter) {
-                    ToolValidation::validateMany([
-                        ToolValidation::make(null, $field)->fieldModule($fieldDefs, $arguments->module_name),
-                        ToolValidation::make($filter['operator'] ?? null, 'operator')->required()->enum(['=', '<>', '>', '<', '>=', '<=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN', 'BETWEEN']),
+                    ToolValidationMiddleware::validateMany([
+                        ToolValidationMiddleware::make(null, $field)->fieldModule($fieldDefs, $arguments->module_name),
+                        ToolValidationMiddleware::make($filter['operator'] ?? null, 'operator')->required()->enum(['=', '<>', '>', '<', '>=', '<=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN', 'BETWEEN']),
                     ]);
                 }
             }
