@@ -160,6 +160,21 @@ class ListController
             global $current_user;
             $filters['filter'][] = ['term' => ['meta.assigned.user_id.keyword' => $current_user->id]];
         }
+
+        if ($request->getAttribute('onlyFavorites') === true) {
+            global $current_user;
+            $filters['filter'][] = [
+                'nested' => [
+                    'path' => 'users_favorite',
+                    'query' => [
+                        'term' => [
+                            'users_favorite.id.keyword' => $current_user->id,
+                        ],
+                    ],
+                    'ignore_unmapped' => true,
+                ]
+            ];
+        }
         return $filters;
     }
     private function runElasticSearch()

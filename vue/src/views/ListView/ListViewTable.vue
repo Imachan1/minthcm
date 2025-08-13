@@ -15,6 +15,13 @@
         @update:options="store.options = $event"
         :no-data-text="languages.label('LBL_ESLIST_NO_DATA_AVAILABLE')"
     >
+        <template v-slot:item.is_favorite="{ item }">
+            <v-icon
+                color="secondary"
+                :icon="item.is_favorite ? 'mdi-heart' : 'mdi-heart-outline'"
+                @click="store.toggleFavorite(item)"
+            />
+        </template>
         <template v-slot:item.name="{ item }">
             <a @click="store.handleNameClick(item)" class="list-table-name-link">
                 {{ item.name || item.full_name }}

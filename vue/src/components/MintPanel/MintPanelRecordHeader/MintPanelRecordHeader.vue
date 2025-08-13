@@ -7,8 +7,8 @@
                 <div class="bean-name">
                     <div>{{ store.bean.syncAttributes.name }}</div>
                     <MintButton
-                        :icon="isFavorite ? 'mdi-heart-circle' : 'mdi-heart-outline'"
-                        variant="text"
+                        :icon="isFavorite ? 'mdi-heart' : 'mdi-heart-outline'"
+                        variant="nav"
                         size="small"
                         @click="
                             isFavorite

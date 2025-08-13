@@ -15,6 +15,7 @@ class ModulesApi extends MintApi {
         sortBy: string | null = null,
         sortOrder = 'asc',
         activeFilter = null,
+        onlyFavorites = false,
     ) {
         return await this.instance.post(module_name, {
             page: page,
@@ -25,6 +26,7 @@ class ModulesApi extends MintApi {
             sortBy: sortBy,
             sortOrder: sortOrder,
             activeFilter: activeFilter,
+            onlyFavorites: onlyFavorites,
         })
     }
 

@@ -157,6 +157,7 @@ class ElasticResult extends SearchResult
         foreach ($this->grouped_ids as $module => $ids) {
             $focus = BeanFactory::newBean($module);
             $beans = $focus->get_full_list('', " {$focus->table_name}.id IN ('" . implode("','", $ids) . "')");
+            $favorite = BeanFactory::newBean('Favorites');
 
             foreach ($beans as $bean) {
                 $bean = new MintBean($bean);
@@ -170,6 +171,8 @@ class ElasticResult extends SearchResult
                     'view' => $bean->ACLAccess('view'),
                     'delete' => $bean->ACLAccess('delete'),
                 ];
+
+                $bean->is_favorite = !empty($favorite->getFavoriteID($bean->module_dir, $bean->id));
 
                 $beans_unsorted[] = $bean;
             }

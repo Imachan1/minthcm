@@ -354,28 +354,16 @@ class ElasticSearchIndexer extends AbstractIndexer
 
     protected function getNestedPropertyValues(SugarBean $bean, string $property_name, array $nested_config): array
     {
-        $link_field_name = $nested_config['link'] ?? $property_name;
-        if (!isset($bean->field_defs) || !is_array($bean->field_defs)) {
-            return [];
+        $nested_type = $nested_config['type'] ?? 'link';
+        switch($nested_type) {
+            case 'function':
+                return $this->getFunctionPropertyValues($bean, $property_name, $nested_config);
+                break;
+            case 'link':
+                return $this->getLinkPropertyValues($bean, $property_name, $nested_config);
+                break;
         }
-        if (is_array($link_field_name)) {
-            $link_field_name = $link_field_name[0];
-        }
-        if (!$bean->load_relationship($link_field_name)) {
-            return [];
-        }
-
-        $related_beans = $bean->$link_field_name->getBeans();
-        $nested_fields = $nested_config['fields'];
-        $nested_data = array_map(function ($related_bean) use ($nested_fields) {
-            $row = [];
-            foreach ($nested_fields as $nested_field) {
-                $row[$nested_field] = $related_bean->$nested_field;
-            }
-            return $row;
-        }, $related_beans);
-
-        return array_values($nested_data);
+        return [];
     }
 
     protected function setBeanInstantIndexingDate(SugarBean $bean)
@@ -711,5 +699,48 @@ class ElasticSearchIndexer extends AbstractIndexer
     public static function getIndexPrefix(): string
     {
         return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
+    }
+
+    protected function getFunctionPropertyValues(SugarBean $bean, string $property_name, array $nested_config): array
+    {
+        if (!empty($nested_config['function']) && !empty($nested_config['bean'])) {
+            $function = is_array($nested_config['function']) ? $nested_config['function'][0] : $nested_config['function'];
+            $nested_bean = is_array($nested_config['bean']) ? $nested_config['bean'][0] : $nested_config['bean'];
+            $nested_bean = \BeanFactory::getBean($nested_bean);
+            if (empty($nested_bean)) {
+                return [];
+            }
+            if (!method_exists($nested_bean, $function)) {
+                return [];
+            }
+            return $nested_bean->$function($bean);
+        }
+        return [];
+    }
+
+    protected function getLinkPropertyValues(SugarBean $bean, string $property_name, array $nested_config): array
+    {
+        $link_field_name = $nested_config['link'] ?? $property_name;
+        if (!isset($bean->field_defs) || !is_array($bean->field_defs)) {
+            return [];
+        }
+        if (is_array($link_field_name)) {
+            $link_field_name = $link_field_name[0];
+        }
+        if (!$bean->load_relationship($link_field_name)) {
+            return [];
+        }
+
+        $related_beans = $bean->$link_field_name->getBeans();
+        $nested_fields = $nested_config['fields'];
+        $nested_data = array_map(function ($related_bean) use ($nested_fields) {
+            $row = [];
+            foreach ($nested_fields as $nested_field) {
+                $row[$nested_field] = $related_bean->$nested_field;
+            }
+            return $row;
+        }, $related_beans);
+
+        return array_values($nested_data);
     }
 }

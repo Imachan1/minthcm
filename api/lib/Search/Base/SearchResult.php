@@ -116,6 +116,7 @@ abstract class SearchResult
                 $row[$column] = $bean->$column;
             }
             $row['module_name'] = $bean->module_name;
+            $row['is_favorite'] = $bean->is_favorite;
             if ($this->add_acl_info) {
                 $row['acl_access'] = $bean->acl_access;
             }

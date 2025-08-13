@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -42,59 +44,62 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-$vardefs = array(
-'fields'=> array(
-	'assigned_user_id' =>
-		array (
-			'name' => 'assigned_user_id',
-			'rname' => 'user_name',
-			'id_name' => 'assigned_user_id',
-			'vname' => 'LBL_ASSIGNED_TO_ID',
-			'group'=>'assigned_user_name',
-			'type' => 'relate',
-			'table' => 'users',
-			'module' => 'Users',
-			'reportable'=>true,
-			'isnull' => 'false',
-			'dbType' => 'id',
-			'audited'=>true,
-			'comment' => 'User ID assigned to record',
-            'duplicate_merge'=>'disabled'           
-		),
-	 'assigned_user_name' => 
-	 array (
-		    'name' => 'assigned_user_name',
-		    'link'=>'assigned_user_link' ,
-		    'vname' => 'LBL_ASSIGNED_TO_NAME',
-		    'rname' => 'user_name',
-		    'type' => 'relate',
-		    'reportable'=>false,
-		    'source'=>'non-db',
-		    'table' => 'users',
-		    'id_name' => 'assigned_user_id',
-		    'module'=>'Users',
-		    'duplicate_merge'=>'disabled' 
-	 ),
-		      'assigned_user_link' =>
-  array (
-        'name' => 'assigned_user_link',
-    'type' => 'link',
-    'relationship' => strtolower($module).'_assigned_user',
-    'vname' => 'LBL_ASSIGNED_TO_USER',
-    'link_type' => 'one',
-    'module'=>'Users',
-    'bean_name'=>'User',
-    'source'=>'non-db',
-    'duplicate_merge'=>'enabled',
-    'rname' => 'user_name',
-    'id_name' => 'assigned_user_id',
-    'table' => 'users',     
-  ),
-),
-'relationships'=>array(
-	  strtolower($module).'_assigned_user' =>
-   array('lhs_module'=> 'Users', 'lhs_table'=> 'users', 'lhs_key' => 'id',
-   'rhs_module'=> $module , 'rhs_table'=> $table_name, 'rhs_key' => 'assigned_user_id',
-   'relationship_type'=>'one-to-many')
-),
+use MintHCM\Api\Controllers\FavoritesController;
+use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
+
+
+$routes = array(
+    "add" => array(
+        "method" => "POST",
+        "path" => "/favorites/add",
+        "class" => FavoritesController::class,
+        "desc" => "Add a record to favorites",
+        "function" => 'add',
+        "options" => array(
+            'auth' => true,
+        ),
+        "pathParams" => array(
+        ),
+        "bodyParams" => array(
+            "id" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Id of record to add to favorites",
+                "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
+            ),
+            "module" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Module name",
+                "example" => 'Accounts',
+            ),
+        ),
+    ),
+
+    "remove" => array(
+        "method" => "POST",
+        "path" => "/favorites/remove",
+        "class" => FavoritesController::class,
+        "desc" => "Remove a record from favorites",
+        "function" => 'remove',
+        "options" => array(
+            'auth' => true,
+        ),
+        "pathParams" => array(
+        ),
+        "bodyParams" => array(
+            "id" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Id of record to add to favorites",
+                "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
+            ),
+            "module" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Module name",
+                "example" => 'Accounts',
+            ),
+        ),
+    ),
 );

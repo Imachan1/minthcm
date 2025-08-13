@@ -220,5 +220,15 @@ $vardefs = array(
             'relationship_type' => 'one-to-many'
         )
     ),
-
+    'elasticsearch' => [
+        'nested' => [
+            'users_favorite' => [
+                'bean' => 'Favorites',
+                'function' => 'getFavoriteUsersIDs',
+                'field_type' => ['type' => 'string'],
+                'fields' => ['id'],
+                'type' => 'function',
+            ],
+        ],
+    ],
 );

@@ -9,6 +9,7 @@ import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import MassActions from '@/business/MassActions'
 import { modulesApi } from '@/api/modules.api'
+import { useFavoritesStore } from '@/store/favorites'
 
 interface Preferences {
     columns: string[]
@@ -34,6 +35,7 @@ export const useListViewStore = defineStore('listview', () => {
     const languages = useLanguagesStore()
     const url = useUrlStore()
     const router = useRouter()
+    const favorites = useFavoritesStore()
     const isInit = ref(false)
     const config = ref({})
     const defs = ref<Defs | null>(null)
@@ -44,6 +46,7 @@ export const useListViewStore = defineStore('listview', () => {
     const initialLoading = ref(true)
     const isLoading = ref(true)
     const myObjects = ref(false)
+    const onlyFavorites = ref(false)
     const activeFilter = ref<string | null>(null)
     const filters = ref({
         filter: [],
@@ -88,12 +91,13 @@ export const useListViewStore = defineStore('listview', () => {
             myObjects.value,
             defs.value?.columns[options.value.sortBy[0]?.key]?.key,
             options.value.sortBy[0]?.order ?? 'asc',
-            activeFilter.value
+            activeFilter.value,
+            onlyFavorites.value,
         )
         requestCount--
         if (module.value === result.data.module && requestCount <= 0) {
-            requestCount = 0;
-            isLoading.value = false;
+            requestCount = 0
+            isLoading.value = false
             results.value = result.data?.results
             itemsLength.value = result.data?.total
             if (options.value.page === 1) {
@@ -148,6 +152,16 @@ export const useListViewStore = defineStore('listview', () => {
             class: col.name == 'name' ? 'stickyColumn' : '',
         }))
         if (mode.value === 'list') {
+            headers.unshift({
+                value: 'is_favorite',
+                key: 'is_favorite',
+                title: '',
+                sortable: false,
+                align: 'end',
+                width: '24px',
+                maxWidth: '24px',
+                minWidth: '24px',
+            })
             headers.push({
                 value: 'actions',
                 key: 'actions',
@@ -347,6 +361,15 @@ export const useListViewStore = defineStore('listview', () => {
         return Array.isArray(module.value) ? module.value[0] : module.value
     }
 
+    function toggleFavorite(item) {
+        if (!item.is_favorite) {
+            favorites.addToFavorites(getModule(), item.id, item.name)
+        } else {
+            favorites.removeFromFavorites(getModule(), item.id)
+        }
+        item.is_favorite = !item.is_favorite
+    }
+
     return {
         mode,
         init,
@@ -381,5 +404,7 @@ export const useListViewStore = defineStore('listview', () => {
         handleSelectRelate,
         itemsSelectable,
         massActions,
+        toggleFavorite,
+        onlyFavorites,
     }
 })

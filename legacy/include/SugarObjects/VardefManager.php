@@ -161,7 +161,13 @@ class VardefManager {
          }
          // MintHCM #122704 START
          if ( !empty($templates[$template]['elasticsearch']) ) {
-            $GLOBALS['dictionary'][$object]['elasticsearch'] = array_merge_recursive($templates[$template]['elasticsearch'], $GLOBALS['dictionary'][$object]['elasticsearch']);
+            foreach(array_keys($templates[$template]['elasticsearch']) as $key) {
+                if (!empty($GLOBALS['dictionary'][$object]['elasticsearch'][$key])) {
+                    $GLOBALS['dictionary'][$object]['elasticsearch'][$key] = array_merge($templates[$template]['elasticsearch'][$key], $GLOBALS['dictionary'][$object]['elasticsearch'][$key]);
+                } else {
+                    $GLOBALS['dictionary'][$object]['elasticsearch'][$key] = $templates[$template]['elasticsearch'][$key];
+                }
+            }
          }
          // MintHCM #122704 END
 
