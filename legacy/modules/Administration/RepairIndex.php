@@ -213,14 +213,13 @@ if ((count($drop_index) > 0 || count($add_index) > 0 || count($change_index) > 0
         echo ($_REQUEST['silent']) ? "" : "<a href='index.php?module=Administration&action=RepairIndex&mode=execute'>Execute Script</a>";
     }
 
-    $focus = BeanFactory::newBean('Accounts');
     if (count($drop_index) > 0) {
         if (isset($_REQUEST['mode']) && $_REQUEST['mode']=='execute') {
             echo ($_REQUEST['silent']) ? "" : $mod_strings['LBL_REPAIR_INDEX_DROPPING'];
             foreach ($drop_index as $statement) {
                 echo ($_REQUEST['silent']) ? "" : $mod_strings['LBL_REPAIR_INDEX_EXECUTING'].$statement;
                 (function_exists('logThis')) ? logThis("RepairIndex: {$statement}") : "";
-                $focus->db->query($statement);
+				$db->query($statement);
             }
         } else {
             echo ($_REQUEST['silent']) ? "" : $mod_strings['LBL_REPAIR_INDEX_DROP'];
@@ -236,7 +235,7 @@ if ((count($drop_index) > 0 || count($add_index) > 0 || count($change_index) > 0
             foreach ($add_index as $statement) {
                 echo ($_REQUEST['silent']) ? "" : $mod_strings['LBL_REPAIR_INDEX_EXECUTING'].$statement;
                 (function_exists('logThis')) ? logThis("RepairIndex: {$statement}") : "";
-                $focus->db->query($statement);
+				$db->query($statement);
             }
         } else {
             echo ($_REQUEST['silent']) ? "" : $mod_strings['LBL_REPAIR_INDEX_ADD'];
@@ -251,7 +250,7 @@ if ((count($drop_index) > 0 || count($add_index) > 0 || count($change_index) > 0
             foreach ($change_index as $statement) {
                 echo ($_REQUEST['silent']) ? "" : $mod_strings['LBL_REPAIR_INDEX_EXECUTING'].$statement;
                 (function_exists('logThis')) ? logThis("RepairIndex: {$statement}") : "";
-                $focus->db->query($statement);
+				$db->query($statement);
             }
         } else {
             echo ($_REQUEST['silent']) ? "" : $mod_strings['LBL_REPAIR_INDEX_ALTER'];

@@ -417,11 +417,9 @@ class CalendarUtils
         // of activity into non-existing table. Also take *_rel_arr = array(); out of if statement.
 
         $users_rel_arr = array();
-        $leads_rel_arr = array();
         $contacts_rel_arr = array();
         $users_filled = false;
         $contacts_filled = false;
-        $leads_filled = false;
 
         //Mint start
         $meetings_to_sync = array();
@@ -452,18 +450,6 @@ class CalendarUtils
             $qu_contacts = "
                                     INSERT INTO {$bean->rel_contacts_table}
                                     (id,contact_id,{$lower_name}_id,date_modified)
-                                    VALUES
-                    ";
-
-            $qu = "SELECT * FROM {$bean->rel_leads_table} WHERE deleted = 0 AND {$lower_name}_id = '{$id}'";
-            $re = $db->query($qu);
-
-            while ($ro = $db->fetchByAssoc($re)) {
-                $leads_rel_arr[] = $ro['lead_id'];
-            }
-            $qu_leads = "
-                                    INSERT INTO {$bean->rel_leads_table}
-                                    (id,lead_id,{$lower_name}_id,date_modified)
                                     VALUES
                     ";
         }
@@ -512,13 +498,6 @@ class CalendarUtils
                     $qu_contacts .= "('" . create_guid() . "','{$contact_id}','{$clone->id}','{$date_modified}')";
                     $contacts_filled = true;
                 }
-                foreach ($leads_rel_arr as $lead_id) {
-                    if ($leads_filled) {
-                        $qu_leads .= "," . PHP_EOL;
-                    }
-                    $qu_leads .= "('" . create_guid() . "','{$lead_id}','{$clone->id}','{$date_modified}')";
-                    $leads_filled = true;
-                }
                 if ($i < 44) {
                     $clone->date_start = $date_start;
                     $clone->date_end = $date_end;
@@ -533,9 +512,6 @@ class CalendarUtils
         }
         if ($contacts_filled) {
             $db->query($qu_contacts);
-        }
-        if ($leads_filled) {
-            $db->query($qu_leads);
         }
 
         //Mint start
@@ -593,7 +569,6 @@ class CalendarUtils
             $db->query("UPDATE {$bean->rel_users_table} SET deleted = 1, date_modified = '{$date_modified}' WHERE {$lower_name}_id = '{$id}'");
 
             $db->query("UPDATE {$bean->rel_contacts_table} SET deleted = 1, date_modified = '{$date_modified}' WHERE {$lower_name}_id = '{$id}'");
-            $db->query("UPDATE {$bean->rel_leads_table} SET deleted = 1, date_modified = '{$date_modified}' WHERE {$lower_name}_id = '{$id}'");
         }
         vCal::cache_sugar_vcal($GLOBALS['current_user']);
     }

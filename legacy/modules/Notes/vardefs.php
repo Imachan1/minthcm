@@ -293,14 +293,6 @@ $dictionary['Note'] = array(
             'reportable' => false,
             'mass_update' => false
         ],
-        'account_id' =>
-        [
-            'name' => 'account_id',
-            'vname' => 'LBL_ACCOUNT_ID',
-            'type' => 'id',
-            'reportable'=>false,
-            'source'=>'non-db',
-        ],
 
         'campaign_id' =>
         [
@@ -314,15 +306,6 @@ $dictionary['Note'] = array(
         [
             'name' => 'acase_id',
             'vname' => 'LBL_CASE_ID',
-            'type' => 'id',
-            'reportable' => false,
-            'source' => 'non-db',
-        ],
-
-        'lead_id' =>
-        [
-            'name' => 'lead_id',
-            'vname' => 'LBL_LEAD_ID',
             'type' => 'id',
             'reportable' => false,
             'source' => 'non-db',
@@ -358,24 +341,6 @@ $dictionary['Note'] = array(
             'relationship' => 'case_notes',
             'vname' => 'LBL_CASES',
             'source' => 'non-db',
-        ],
-
-        'accounts' =>
-        [
-            'name' => 'accounts',
-            'type' => 'link',
-            'relationship' => 'account_notes',
-            'source' => 'non-db',
-            'vname' => 'LBL_ACCOUNTS',
-        ],
-
-        'leads' =>
-        [
-            'name' => 'leads',
-            'type' => 'link',
-            'relationship' => 'lead_notes',
-            'source' => 'non-db',
-            'vname' => 'LBL_LEADS',
         ],
 
         'bugs' =>

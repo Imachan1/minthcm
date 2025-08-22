@@ -360,7 +360,7 @@ class AOW_WorkFlowController extends SugarController
                 echo getModuleField($rel_module, $fieldname, $aow_field, $view, $value, 'multienum');
                 break;
             case 'SecurityGroup':
-                $module = 'Accounts';
+                $module = 'Contacts';
                 $fieldname = 'SecurityGroups';
                 // no break
             case 'Value':
@@ -604,7 +604,7 @@ class AOW_WorkFlowController extends SugarController
                 }
                 break;
             case 'Specify User':
-                echo getModuleField('Accounts', 'assigned_user_name', $aow_field, $view, $value);
+                echo getModuleField('Contacts', 'assigned_user_name', $aow_field, $view, $value);
                 break;
             case 'Users':
                 echo getAssignField($aow_field, $view, $value);

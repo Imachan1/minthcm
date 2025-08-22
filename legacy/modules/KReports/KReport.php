@@ -1853,8 +1853,6 @@ class KReport extends SugarBean
         if (is_countable($results) ? count($results) > 0 : 0) {
 
             $mapService = new kReportBingMaps();
-            require_once 'modules/Accounts/Account.php';
-
             foreach ($results as $thisResult) {
                 if (('' == $thisResult[$mapDetails->latitude] || null == $thisResult[$mapDetails->latitude] || '0,00' == $thisResult[$mapDetails->latitude]) || ('' == $thisResult[$mapDetails->longitude] || null == $thisResult[$mapDetails->longitude] || '0,00' == $thisResult[$mapDetails->longitude])) {
 
