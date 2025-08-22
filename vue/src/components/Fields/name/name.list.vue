@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="`/modules/${props.data.bean.parent_module}/DetailView/${data.bean.id}`" class="name-field">
+    <router-link :to="`/modules/${props.data.bean.parent_module}/DetailView/${props.data.bean.id}`" class="name-field">
         {{ props.data.bean.name }}
     </router-link>
 </template>

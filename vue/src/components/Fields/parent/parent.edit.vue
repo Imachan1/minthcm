@@ -92,16 +92,16 @@ const languages = useLanguagesStore()
 const popupsStore = usePopupsStore()
 const menuOpen = ref(false)
 const items = ref(
-    props.data.bean[props.defs.id_name]
+    props.data.bean.attributes[props.defs.id_name]
         ? [
               {
-                  id: props.data.bean[props.defs.id_name],
+                  id: props.data.bean.attributes[props.defs.id_name],
                   name: props.modelValue,
               },
           ]
         : [],
 )
-const currentRecordItem = ref({ id: props.data.bean[props.defs.id_name], name: props.data.bean[props.defs.name] })
+const currentRecordItem = ref({ id: props.data.bean.attributes[props.defs.id_name], name: props.data.bean.attributes[props.defs.name] })
 const recordModel = computed({
     get() {
         return currentRecordItem.value
@@ -114,10 +114,10 @@ const recordModel = computed({
 const currentTypeItem = ref('')
 const parentModel = computed({
     get() {
-        return props.data.bean.parent_type ?? props.defs?.default ?? ''
+        return props.data.bean.attributes.parent_type ?? props.defs?.default ?? ''
     },
     set(newValue) {
-        props.data.bean[props.defs.type_name] = newValue
+        props.data.bean.attributes[props.defs.type_name] = newValue
         currentTypeItem.value = newValue
         recordModel.value = { id: '', name: '' }
         updateValue()
@@ -135,12 +135,12 @@ async function fetchRecordItems(e) {
         items.value = []
         isLoading.value = true
         menuOpen.value = true
-        const val = e?.target?.value ?? props.data.bean[props.defs.name] ?? ''
+        const val = e?.target?.value ?? props.data.bean.attributes[props.defs.name] ?? ''
         if (debounceTimeout) {
             clearTimeout(debounceTimeout)
         }
         debounceTimeout = window.setTimeout(async () => {
-            const response = await modulesApi.getListData(props.data.bean.parent_type, '', {
+            const response = await modulesApi.getListData(props.data.bean.attributes.parent_type, '', {
                 must: [
                     {
                         wildcard: {
@@ -162,10 +162,10 @@ async function fetchRecordItems(e) {
 function openRelatePopup() {
     popupsStore.showPopup({
         component: MintPopupRelate,
-        title: useLanguagesStore().translateListValue(props.data.bean.parent_type, 'moduleList'),
+        title: useLanguagesStore().translateListValue(props.data.bean.attributes.parent_type, 'moduleList'),
         icon: 'mdi-view-list',
         data: {
-            moduleName: props.data.bean.parent_type,
+            moduleName: props.data.bean.attributes.parent_type,
             popupMode: 'single',
             fieldToNameArray: { id: props.defs.id_name, name: props.defs.name },
             onConfirm: (data: string | string[]) => {

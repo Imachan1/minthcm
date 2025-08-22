@@ -6,7 +6,7 @@
         hide-details
         :error="props.state === 'error'"
         v-model="parsedValue"
-        :items="languages.getList(props.defs?.options)"
+        :items="items"
         item-title="value"
         item-value="key"
         @keyup.enter="$emit('inlineEditSave')"
@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useLanguagesStore } from '@/store/languages'
 import { FieldProps } from '../Field.model'
 
@@ -27,12 +27,37 @@ const model = ref('')
 
 const parsedValue = computed({
     get() {
-        return languages.translateListValue(props.modelValue ?? props.defs?.default ?? '', props.defs?.options)
+        return items.value.find((item) => item.key === props.modelValue)?.key || ''
     },
     set(newValue) {
         model.value = newValue
         emit('update:modelValue', model.value)
     },
+})
+
+const items = computed(() => {
+    const options = props.options ?? props.defs?.options
+    if (!options) {
+        return []
+    }
+    if (typeof options === 'string') {
+        return languages.getList(options)
+    }
+    if (!Array.isArray(options) && typeof options === 'object') {
+        return Object.entries(options).map(([key, value]) => ({
+            key,
+            value,
+        }))
+    }
+    return options
+})
+
+watch(items, () => {
+    if (!items.value.find((item) => item.key === model.value)) {
+        const newItem = items.value.find((item) => !item.key) || items.value[0]
+        model.value = newItem?.key || ''
+        emit('update:modelValue', model.value)
+    }
 })
 </script>
 
