@@ -45,7 +45,6 @@ function is_excluded_folder($path)
         'Bugs',
         'Cases',
         'Contacts',
-        'Leads',
         'Opportunities',
         'Prospects',
     ];
