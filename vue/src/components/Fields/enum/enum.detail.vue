@@ -36,8 +36,7 @@ const items = computed(() => {
     const options = props.options ?? props.defs?.options
     if (!options) {
         return []
-    hidePencil?: boolean
-}
+    }
     if (typeof options === 'string') {
         return languages.getList(options)
     }
