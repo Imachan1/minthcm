@@ -124,6 +124,7 @@ export const useBackendStore = defineStore('backend', () => {
                     cache.put('api/init', new Response(JSON.stringify(initData.value)));
                 })
             }
+            preferences.global = initData.value.global ?? null
             alerts.init()
             favorites.fetch()
             recents.fetch()

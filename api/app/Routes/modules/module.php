@@ -129,6 +129,17 @@ $routes = array(
                     },
                 ',
             ),
+            "files" => array(
+                "type" => ArrayType::class,
+                "required" => false,
+                "desc" => "Record files to upload",
+                "example" => '
+                    "files": {
+                        "photo": Base64 encoded file content,
+                        "document": Base64 encoded file content,
+                    },
+                ',
+            ),
         ),
     ),
     "get_record" => array(

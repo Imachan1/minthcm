@@ -94,16 +94,16 @@ const popupsStore = usePopupsStore()
 const modulesStore = useModulesStore()
 const menuOpen = ref(false)
 const items = ref(
-    props.data.bean[props.defs.id_name]
+    props.data.bean.attributes[props.defs.id_name]
         ? [
               {
-                  id: props.data.bean[props.defs.id_name],
+                  id: props.data.bean.attributes[props.defs.id_name],
                   name: props.modelValue,
               },
           ]
         : [],
 )
-const currentRecordItem = ref({ id: props.data.bean[props.defs.id_name], name: props.data.bean[props.defs.name] })
+const currentRecordItem = ref({ id: props.data.bean.attributes[props.defs.id_name], name: props.data.bean.attributes[props.defs.name] })
 const recordModel = computed({
     get() {
         return currentRecordItem.value
@@ -116,10 +116,10 @@ const recordModel = computed({
 const currentTypeItem = ref('')
 const parentModel = computed({
     get() {
-        return props.data.bean.parent_type ?? props.defs?.default ?? ''
+        return props.data.bean.attributes.parent_type ?? props.defs?.default ?? ''
     },
     set(newValue) {
-        props.data.bean[props.defs.type_name] = newValue
+        props.data.bean.attributes[props.defs.type_name] = newValue
         currentTypeItem.value = newValue
         recordModel.value = { id: '', name: '' }
         updateValue()
@@ -137,15 +137,12 @@ async function fetchRecordItems(e) {
         items.value = []
         isLoading.value = true
         menuOpen.value = true
-        const val = e?.target?.value ?? props.data.bean[props.defs.name] ?? ''
-        const predefinedFilters = getFilters(
-            modulesStore.modules[props.data.bean.parent_type].vardefs,
-            props.defs.filters && typeof props.defs.filters === 'object' && !Array.isArray(props.defs.filters)
-                ? props.defs.filters[props.data.bean.parent_type]
-                : [],
-        )
-        const filters = {
-            ...predefinedFilters,
+        const val = e?.target?.value ?? props.data.bean.attributes[props.defs.name] ?? ''
+        if (debounceTimeout) {
+            clearTimeout(debounceTimeout)
+        }
+        debounceTimeout = window.setTimeout(async () => {
+            const response = await modulesApi.getListData(props.data.bean.attributes.parent_type, '', {
                 must: [
                 ...(predefinedFilters.must || []),
                     {
@@ -180,10 +177,10 @@ async function fetchRecordItems(e) {
 function openRelatePopup() {
     popupsStore.showPopup({
         component: MintPopupRelate,
-        title: useLanguagesStore().translateListValue(props.data.bean.parent_type, 'moduleList'),
+        title: useLanguagesStore().translateListValue(props.data.bean.attributes.parent_type, 'moduleList'),
         icon: 'mdi-view-list',
         data: {
-            moduleName: props.data.bean.parent_type,
+            moduleName: props.data.bean.attributes.parent_type,
             popupMode: 'single',
             fieldToNameArray: { id: props.defs.id_name, name: props.defs.name },
             filterDefs: props.defs.filters && typeof props.defs.filters === 'object' && !Array.isArray(props.defs.filters)

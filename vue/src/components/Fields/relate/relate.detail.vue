@@ -32,7 +32,7 @@ const emit = defineEmits(['inlineEditBtnClicked'])
 
 const recordUrl = computed(() => {
     const module = props.defs.module
-    const id = props.data.bean[props.defs.id_name]
+    const id = props.data.bean.attributes[props.defs.id_name]
     return `/modules/${module}/DetailView/${id}`
 })
 function startInlineEdit() {

@@ -6,9 +6,10 @@
                 v-if="props.defs?.options_colors"
                 class="enum-chip"
                 :color="languages.translateListValue(props.modelValue, props.defs?.options_colors)"
-                >{{ languages.translateListValue(props.modelValue, props.defs?.options) }}</v-chip
             >
-            <div v-else>{{ languages.translateListValue(props.modelValue, props.defs?.options) }}</div>
+                {{ parsedValue }}
+            </v-chip>
+            <div v-else>{{ parsedValue }}</div>
             <Pencil
                 :defs="props.defs"
                 :hidePencil="hidePencil"
@@ -19,20 +20,35 @@
 </template>
 
 <script setup lang="ts">
-import { FieldVardef } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'
 import Pencil from '../Pencil.vue'
+import { computed } from 'vue'
+import { FieldProps } from '../Field.model'
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
+const props = defineProps<FieldProps>()
+const languages = useLanguagesStore()
+
+const parsedValue = computed(() => {
+    return items.value.find((item) => item.key === props.modelValue)?.value || ''
+})
+
+const items = computed(() => {
+    const options = props.options ?? props.defs?.options
+    if (!options) {
+        return []
     hidePencil?: boolean
 }
-const props = defineProps<Props>()
-const emit = defineEmits(['inlineEditBtnClicked'])
-const languages = useLanguagesStore()
+    if (typeof options === 'string') {
+        return languages.getList(options)
+    }
+    if (!Array.isArray(options) && typeof options === 'object') {
+        return Object.entries(options).map(([key, value]) => ({
+            key,
+            value,
+        }))
+    }
+    return options
+})
 function startInlineEdit() {
     if (props?.defs?.name && typeof props.defs.name === 'string' && props.defs.name.length > 0) {
         emit('inlineEditBtnClicked', props.defs.name)

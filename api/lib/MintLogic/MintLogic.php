@@ -75,26 +75,33 @@ class MintLogic
     private function getAllRules(): array
     {
         $rules = $this->defs['rules'] ?? [];
-        $requiredFields = $this->getRequiredFieldsFromVardefs();
-        if (!empty($requiredFields)) {
-            array_unshift($rules, [
-                'hooks' => [Hook::INIT],
-                'logic' => [
-                    'required' => array_fill_keys($requiredFields, true),
-                ],
-            ]);
-        }
-        $readonlyFields = $this->getReadonlyFieldsFromVardefs();
-        if (!empty($readonlyFields)) {
+        $initialLogic = $this->getInitialLogic();
+        if (!empty($initialLogic)) {
             array_unshift($rules, [
                 'hooks' => [Hook::ALL],
                 'trigger' => true,
-                'logic' => [
-                    'readonly' => array_fill_keys($readonlyFields, true),
-                ],
+                'logic' => $initialLogic,
             ]);
         }
         return $rules;
+    }
+
+    private function getInitialLogic()
+    {
+        $initialLogic = [];
+        $requiredFields = $this->getRequiredFieldsFromVardefs();
+        if (!empty($requiredFields)) {
+            $initialLogic['required'] = array_fill_keys($requiredFields, true);
+        }
+        $readonlyFields = $this->getReadonlyFieldsFromVardefs();
+        if (!empty($readonlyFields)) {
+            $initialLogic['readonly'] = array_fill_keys($readonlyFields, true);
+        }
+        $functionOptionsFields = $this->getFunctionOptionsFieldsFromVardefs();
+        if (!empty($functionOptionsFields)) {
+            $initialLogic['options'] = $functionOptionsFields;
+        }
+        return $initialLogic;
     }
 
     private function getRequiredFieldsFromVardefs(): array
@@ -119,6 +126,26 @@ class MintLogic
         return $readonlyFields;
     }
 
+    private function getFunctionOptionsFieldsFromVardefs(): array
+    {
+        $functionOptionsFields = [];
+        foreach ($this->bean->field_defs as $field => $vardef) {
+            if (isset($vardef['type']) && in_array($vardef['type'], ['enum', 'multienum']) && isset($vardef['function'])) {
+                if (!empty($vardef['function']['include'])) {
+                    require_once $vardef['function']['include'];
+                }
+                $function_name = $vardef['function']['name'] ?? '';
+                if (!empty($function_name)) {
+                    $result = call_user_func($function_name, $this->bean, $field, $this->bean->{$field} ?? '', '', $vardef['function']['additional_params']);
+                    if (!empty($result)) {
+                        $functionOptionsFields[$field] = $result;
+                    }
+                }
+            }
+        }
+        return $functionOptionsFields;
+    }
+
     private function calculateLogic($rule)
     {
         $logic = [
@@ -127,6 +154,7 @@ class MintLogic
             'readonly' => [],
             'required' => [],
             'update' => [],
+            'options' => [],
         ];
 
         // Visible
@@ -168,6 +196,12 @@ class MintLogic
         foreach ($update as $field => $value) {
             $this->bean->{$field} = $value;
             $logic['update'][$field] = $this->bean->{$field};
+        }
+
+        // Options
+        $options = self::calculateExpression($rule['logic']['options'], $this->bean) ?? [];
+        foreach ($options as $field => $option) {
+            $logic['options'][$field] = self::calculateExpression($option, $this->bean);
         }
 
         return $logic;

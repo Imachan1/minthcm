@@ -3,6 +3,7 @@
 .vscode/launch.json
 .htaccess
 legacy/.htaccess
+legacy/upload
 legacy/cache/**/*
 legacy/custom/modules/*/logic_hooks.php
 legacy/custom/modules/*/Ext/Vardefs/vardefs.ext.php

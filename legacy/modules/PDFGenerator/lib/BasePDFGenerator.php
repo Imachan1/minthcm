@@ -169,6 +169,7 @@ class BasePDFGenerator
         if ($tpl_str != '') {
             $field_defs = $bean->field_defs;
             usort($field_defs, 'BasePDFGenerator::sortByNameLength');
+            $tpl_str = $this->parseSmarty($field_defs, $tpl_str, $bean);
             $rel = $this->getRelationshipForParse($relationship);
             $tpl_str = $this->parseRepeatTags($tpl_str, $bean, $depth, $rel);
             if ($tpl_str != '') {
@@ -185,7 +186,6 @@ class BasePDFGenerator
                 }
                 $tpl_str = $this->replaceCountAndCurrency($tpl_str, $relationship, $counter, $currency);
             }
-            $tpl_str = $this->parseSmarty($field_defs, $tpl_str, $bean);
         }
         return $tpl_str;
     }

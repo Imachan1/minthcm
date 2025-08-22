@@ -24,6 +24,7 @@ return [
                 'required' => [], // Fields to be set as required or not required
                 'update' => [], // Fields to be updated with new values
                 'validation' => [], // Fields to be validated with validators
+                'options' => [], // Fields to have their options updated, e.g. a list for enum field
             ]
         ],
 
@@ -59,6 +60,15 @@ return [
                     'field11' => [
                         ExampleValidator::class, // field11 will be validated with ExampleValidator when the rule is triggered
                     ],
+                ],
+                'options' => [
+                    'enum1' => 'name_of_the_list', // enum1 will have its options updated to 'name_of_the_list' from app_list_strings when the rule is triggered
+                    'enum2' => function ($bean) {
+                        global $app_list_strings;
+                        $list = $app_list_strings['name_of_the_list'];
+                        unset($list['list_value']);
+                        return $list; // enum2 will have its options updated to the modified list from app_list_strings when the rule is triggered
+                    },
                 ],
             ],
         ],

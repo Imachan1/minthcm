@@ -1,17 +1,17 @@
 <template>
-    <keep-alive v-bind="$attrs">
         <component
+        v-bind="$attrs"
             :is="FieldComponent"
             :class="classList"
             :data="data"
             :defs="defs"
             :label="label"
+        :options="props.options"
             :state="fieldState"
             :hidePencil="true"
             :modelValue="modelValue"
         >
         </component>
-    </keep-alive>
     <div v-if="errorMessage" class="field-error-message">{{ errorMessage }}</div>
 </template>
 
@@ -29,6 +29,7 @@ interface Props {
     modelValue?: any
     label?: string
     disabled?: boolean
+    options?: any
     hidePencil?: boolean
     required?: boolean
     errorMessage?: string

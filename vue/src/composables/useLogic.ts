@@ -7,6 +7,7 @@ interface Logic {
     readonly: { [fieldName: string]: boolean }
     required: { [fieldName: string]: boolean }
     visible: { [fieldName: string]: boolean }
+    options: { [fieldName: string]: any }
 }
 
 interface Rule {
@@ -108,6 +109,18 @@ export const useLogic = (module: string) => {
         return errorMessages
     })
 
+    const fieldsOptions = computed(() => {
+        const options: { [fieldName: string]: any } = {}
+        activeRules.value.forEach((s) => {
+            Object.entries(s.logic.options ?? {}).forEach(([fieldName, value]) => {
+                if (value && formFields.value.includes(fieldName)) {
+                    options[fieldName] = value
+                }
+            })
+        })
+        return options
+    })
+
     function getUpdatedFields(rules: Rule[] | null = null) {
         rules = rules || activeRules.value
         const updatedFields = {} as { [fieldName: string]: any }
@@ -127,6 +140,7 @@ export const useLogic = (module: string) => {
         requiredFields,
         hiddenFields,
         errorMessages,
+        fieldsOptions,
         getUpdatedFields,
     }
 }
