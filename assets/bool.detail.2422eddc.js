@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:assets/bool.detail.2422eddc.js
-import{l,n as o,w as t,bj as s,_ as d}from"./index.95739a3d.js";const _=l({__name:"bool.detail",props:{defs:{},label:{},modelValue:{},data:{}},setup(a){const e=a;return(c,n)=>(o(),t(s,{label:e.label,"hide-details":"",density:"compact",color:"secondary",modelValue:!!Number(e.modelValue),readonly:"",disabled:""},null,8,["label","modelValue"]))}});const p=d(_,[["__scopeId","data-v-ea970caf"]]);export{p as default};
-========
-import{l,n as o,w as t,bh as s,_ as d}from"./index.66753496.js";const _=l({__name:"bool.detail",props:{defs:{},label:{},modelValue:{},data:{}},setup(a){const e=a;return(c,n)=>(o(),t(s,{label:e.label,"hide-details":"",density:"compact",color:"secondary",modelValue:!!Number(e.modelValue),readonly:"",disabled:""},null,8,["label","modelValue"]))}});const p=d(_,[["__scopeId","data-v-ea970caf"]]);export{p as default};
->>>>>>>> master:assets/bool.detail.31dbb472.js
