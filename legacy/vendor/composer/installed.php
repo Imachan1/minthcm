@@ -3,7 +3,7 @@
         'name' => 'salesagility/suitecrm',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '0c3c573b891ee4dae2e7674cb746386f5a4d3f81',
+        'reference' => '94a3f9d8100bc560ed5311baf5ccc8faf6c70b0c',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -811,8 +811,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0.0 || 2.0.0 || 3.0.0',
-                1 => '1.0|2.0',
+                0 => '1.0|2.0',
+                1 => '1.0.0 || 2.0.0 || 3.0.0',
             ),
         ),
         'ralouphie/getallheaders' => array(
@@ -845,7 +845,7 @@
         'salesagility/suitecrm' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '0c3c573b891ee4dae2e7674cb746386f5a4d3f81',
+            'reference' => '94a3f9d8100bc560ed5311baf5ccc8faf6c70b0c',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

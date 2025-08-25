@@ -22,17 +22,12 @@ interface LoggerInterface
     /**
      * System is unusable.
      *
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
      * @param string|\Stringable $message
-========
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
      * @param mixed[] $context
+     *
+     * @return void
      */
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
     public function emergency(string|\Stringable $message, array $context = []);
-========
-    public function emergency(string|\Stringable $message, array $context = []): void;
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
 
     /**
      * Action must be taken immediately.
@@ -40,50 +35,35 @@ interface LoggerInterface
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.
      *
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
      * @param string|\Stringable $message
-========
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
      * @param mixed[] $context
+     *
+     * @return void
      */
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
     public function alert(string|\Stringable $message, array $context = []);
-========
-    public function alert(string|\Stringable $message, array $context = []): void;
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
 
     /**
      * Critical conditions.
      *
      * Example: Application component unavailable, unexpected exception.
      *
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
      * @param string|\Stringable $message
-========
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
      * @param mixed[] $context
+     *
+     * @return void
      */
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
     public function critical(string|\Stringable $message, array $context = []);
-========
-    public function critical(string|\Stringable $message, array $context = []): void;
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
 
     /**
      * Runtime errors that do not require immediate action but should typically
      * be logged and monitored.
      *
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
      * @param string|\Stringable $message
-========
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
      * @param mixed[] $context
+     *
+     * @return void
      */
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
     public function error(string|\Stringable $message, array $context = []);
-========
-    public function error(string|\Stringable $message, array $context = []): void;
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
 
     /**
      * Exceptional occurrences that are not errors.
@@ -91,81 +71,55 @@ interface LoggerInterface
      * Example: Use of deprecated APIs, poor use of an API, undesirable things
      * that are not necessarily wrong.
      *
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
      * @param string|\Stringable $message
-========
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
      * @param mixed[] $context
+     *
+     * @return void
      */
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
     public function warning(string|\Stringable $message, array $context = []);
-========
-    public function warning(string|\Stringable $message, array $context = []): void;
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
 
     /**
      * Normal but significant events.
      *
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
      * @param string|\Stringable $message
-========
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
      * @param mixed[] $context
+     *
+     * @return void
      */
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
     public function notice(string|\Stringable $message, array $context = []);
-========
-    public function notice(string|\Stringable $message, array $context = []): void;
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
 
     /**
      * Interesting events.
      *
      * Example: User logs in, SQL logs.
      *
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
      * @param string|\Stringable $message
-========
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
      * @param mixed[] $context
+     *
+     * @return void
      */
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
     public function info(string|\Stringable $message, array $context = []);
-========
-    public function info(string|\Stringable $message, array $context = []): void;
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
 
     /**
      * Detailed debug information.
      *
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
      * @param string|\Stringable $message
-========
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
      * @param mixed[] $context
+     *
+     * @return void
      */
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
     public function debug(string|\Stringable $message, array $context = []);
-========
-    public function debug(string|\Stringable $message, array $context = []): void;
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
 
     /**
      * Logs with an arbitrary level.
      *
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
      * @param mixed   $level
      * @param string|\Stringable $message
-========
-     * @param mixed $level
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
      * @param mixed[] $context
+     *
+     * @return void
      *
      * @throws \Psr\Log\InvalidArgumentException
      */
-<<<<<<<< HEAD:legacy/vendor/psr/log/src/LoggerInterface.php
     public function log($level, string|\Stringable $message, array $context = []);
-========
-    public function log($level, string|\Stringable $message, array $context = []): void;
->>>>>>>> master:api/vendor/psr/log/src/LoggerInterface.php
 }
