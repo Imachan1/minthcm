@@ -93,10 +93,6 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'Employees' => [
-        'list' => false,
-        'record' => true,
-    ],
     'Spots' => [
         'list' => false,
         'record' => true,
