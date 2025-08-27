@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,8 +8,8 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -37,10 +36,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -63,7 +62,8 @@ class ModuleController
         return $response;
     }
 
-    function list(Request $request, Response $response, array $args): Response{
+    function list(Request $request, Response $response, array $args): Response
+    {
         $response = $response->withHeader('Content-type', 'application/json');
         $data = ['message' => 'list'];
         $response->getBody()->write(json_encode($data));
@@ -119,9 +119,9 @@ class ModuleController
         $module = $this->getModuleFromRoute($request);
         chdir('../legacy/');
         $record_data = $request->getAttribute("record_data");
-        $files = $request->getAttribute("files") ?? [];;
+        $files = $request->getAttribute("files") ?? [];
         $record_id = $request->getAttribute("id");
-        
+
         $current_time_zone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $disable_date_format = $GLOBALS['disable_date_format'];
@@ -150,12 +150,11 @@ class ModuleController
             $response->getBody()->write(json_encode($validationResult));
             return $response;
         }
+        $this->handleFiles($bean, $files);
         $bean->save(false);
         BeanFactory::unregisterBean($bean->module_name, $bean->id);
         $bean = BeanFactory::getBean($bean->module_name, $bean->id);
         // $bean->retrieve();
-
-        $this->handleFiles($bean, $files);
 
         date_default_timezone_set($current_time_zone);
         $GLOBALS['disable_date_format'] = $disable_date_format;
@@ -183,7 +182,7 @@ class ModuleController
         $GLOBALS['disable_date_format'] = true;
 
         if (!empty($record_id)) {
-            $bean = BeanFactory::getBean($module,$record_id);
+            $bean = BeanFactory::getBean($module, $record_id);
         } else {
             $bean = BeanFactory::newBean($module);
         }
@@ -274,7 +273,7 @@ class ModuleController
         require_once 'include/SubPanel/SubPanelDefinitions.php';
         $spd = new \SubPanelDefinitions($focus, $module);
         if (isset($spd->layout_defs['subpanel_setup'][$related_name])) {
-            
+
             $target_module = $spd->layout_defs['subpanel_setup'][$related_name]['module'];
             $target_bean = BeanFactory::getBean($target_module);
             if (!$target_bean || !$target_bean->ACLAccess('list')) {
@@ -321,49 +320,56 @@ class ModuleController
 
     protected function handleFiles($bean, $files = [])
     {
-        global $sugar_config;
-        $current_dir = getcwd();
-        chdir('../legacy/');
-        include 'include/SugarObjects/templates/file/File.php';
-        $upload_dir = $sugar_config['upload_dir'] ?? 'upload/';
-        foreach ($files as $field_name => $base64) {
-            $field_type = $bean->field_defs[$field_name]['type'] ?? '';
-            if (empty($bean->id) || !in_array($field_type, ['file', 'image'])) {
-                continue;
+        if (!empty($files) && is_array($files)) {
+            global $sugar_config;
+            if (empty($bean->id)) {
+                $bean->id = create_guid();
+                $bean->new_with_id = true;
             }
-            $file_name = $bean->id;
-            if ($field_type === 'image') {
-                $file_name .= "_{$field_name}";
-            }
-            $file_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $file_name); // Sanitize file name
-            if (empty($base64)) {
-                unlink($upload_dir . $file_name);
-            } else {
-                $base64_prefix = '';
-                if (strpos($base64, 'data:') === 0) {
-                    $base64_prefix = substr($base64, 0, strpos($base64, ';base64,') + 8);
+            $current_dir = getcwd();
+            chdir('../legacy/');
+            require_once 'include/SugarObjects/templates/file/File.php';
+            $upload_dir = $sugar_config['upload_dir'] ?? 'upload/';
+            foreach ($files as $field_name => $base64) {
+                $field_type = $bean->field_defs[$field_name]['type'] ?? '';
+                if (empty($bean->id) || !in_array($field_type, ['file', 'image'])) {
+                    continue;
                 }
-                $base64_decoded = base64_decode(str_replace($base64_prefix, '', $base64), true);
-
-                $tmp_file = tmpfile();
-                fwrite($tmp_file, $base64_decoded);
-                $tmp_file_path = stream_get_meta_data($tmp_file)['uri'];
-
-                $_FILES[$field_name] = [
-                    'name' => $file_name,
-                    'type' => 'application/octet-stream',
-                    'tmp_name' => $tmp_file_path,
-                    'error' => 0,
-                    'size' => strlen($base64_decoded),
-                ];
-                $upload_file = new \UploadFile($field_name);
-                $upload_file->set_is_http_upload(false);
-                if ($upload_file->confirm_upload()) {
-                    $upload_file->final_move($file_name, $field_name);
+                $file_name = $bean->id;
+                if ('image' === $field_type) {
+                    $file_name .= "_{$field_name}";
                 }
-                fclose($tmp_file);
+                $file_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $file_name); // Sanitize file name
+                if (empty($base64)) {
+                    unlink($upload_dir . $file_name);
+                } else {
+                    $base64_prefix = '';
+                    if (strpos($base64, 'data:') === 0) {
+                        $base64_prefix = substr($base64, 0, strpos($base64, ';base64,') + 8);
+                    }
+                    $base64_decoded = base64_decode(str_replace($base64_prefix, '', $base64), true);
+
+                    $tmp_file = tmpfile();
+                    fwrite($tmp_file, $base64_decoded);
+                    $tmp_file_path = stream_get_meta_data($tmp_file)['uri'];
+
+                    $_FILES[$field_name] = [
+                        'name' => $file_name,
+                        'type' => 'application/octet-stream',
+                        'tmp_name' => $tmp_file_path,
+                        'error' => 0,
+                        'size' => strlen($base64_decoded),
+                    ];
+                    $_FILES['filename_file'] = $file_name;
+                    $upload_file = new \UploadFile($field_name);
+                    $upload_file->set_is_http_upload(false);
+                    if ($upload_file->confirm_upload()) {
+                        $upload_file->final_move($file_name, $field_name);
+                    }
+                    fclose($tmp_file);
+                }
             }
+            chdir($current_dir);
         }
-        chdir($current_dir);
     }
 }
