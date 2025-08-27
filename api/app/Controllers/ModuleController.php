@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -64,7 +63,8 @@ class ModuleController
         return $response;
     }
 
-    function list(Request $request, Response $response, array $args): Response{
+    function list(Request $request, Response $response, array $args): Response
+    {
         $response = $response->withHeader('Content-type', 'application/json');
         $data = ['message' => 'list'];
         $response->getBody()->write(json_encode($data));
@@ -120,7 +120,7 @@ class ModuleController
         $module = $this->getModuleFromRoute($request);
         chdir('../legacy/');
         $record_data = $request->getAttribute("record_data");
-        $files = $request->getAttribute("files") ?? [];;
+        $files = $request->getAttribute("files") ?? [];
         $record_id = $request->getAttribute("id");
         
         $current_time_zone = date_default_timezone_get();
@@ -151,12 +151,11 @@ class ModuleController
             $response->getBody()->write(json_encode($validationResult));
             return $response;
         }
+        $this->handleFiles($bean, $files);
         $bean->save(false);
         BeanFactory::unregisterBean($bean->module_name, $bean->id);
         $bean = BeanFactory::getBean($bean->module_name, $bean->id);
         // $bean->retrieve();
-
-        $this->handleFiles($bean, $files);
 
         date_default_timezone_set($current_time_zone);
         $GLOBALS['disable_date_format'] = $disable_date_format;
@@ -360,10 +359,15 @@ class ModuleController
 
     protected function handleFiles($bean, $files = [])
     {
+        if (!empty($files) && is_array($files)) {
         global $sugar_config;
+            if (empty($bean->id)) {
+                $bean->id = create_guid();
+                $bean->new_with_id = true;
+            }
         $current_dir = getcwd();
         chdir('../legacy/');
-        include 'include/SugarObjects/templates/file/File.php';
+            require_once 'include/SugarObjects/templates/file/File.php';
         $upload_dir = $sugar_config['upload_dir'] ?? 'upload/';
         foreach ($files as $field_name => $base64) {
             $field_type = $bean->field_defs[$field_name]['type'] ?? '';
@@ -371,7 +375,7 @@ class ModuleController
                 continue;
             }
             $file_name = $bean->id;
-            if ($field_type === 'image') {
+                if ('image' === $field_type) {
                 $file_name .= "_{$field_name}";
             }
             $file_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $file_name); // Sanitize file name
@@ -395,6 +399,7 @@ class ModuleController
                     'error' => 0,
                     'size' => strlen($base64_decoded),
                 ];
+                    $_FILES['filename_file'] = $file_name;
                 $upload_file = new \UploadFile($field_name);
                 $upload_file->set_is_http_upload(false);
                 if ($upload_file->confirm_upload()) {
@@ -405,4 +410,5 @@ class ModuleController
         }
         chdir($current_dir);
     }
+}
 }
