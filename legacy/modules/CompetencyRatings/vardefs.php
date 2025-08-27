@@ -141,17 +141,6 @@ $dictionary['CompetencyRatings'] = array(
             'rhs_key' => 'competency_id',
             'relationship_type' => 'one-to-many',
         ),
-        'competencyratings_employee' => array(
-            'lhs_module' => 'Employees',
-            'lhs_table' => 'users',
-            'lhs_key' => 'id',
-            'rhs_module' => 'CompetencyRatings',
-            'rhs_table' => 'competencyratings',
-            'rhs_key' => 'parent_id',
-            'relationship_type' => 'one-to-many',
-            'relationship_role_column' => 'parent_type',
-            'relationship_role_column_value' => 'Employees',
-        ),
         'competencyratings_positions' => array(
             'lhs_module' => 'Positions',
             'lhs_table' => 'positions',
