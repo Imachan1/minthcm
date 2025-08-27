@@ -723,6 +723,7 @@
        } );
     },
     _rowItemVisibility: function ( handler, method ) {
+        let edit_elements = handler.closest( '.edit-view-row-item' );
        if ( method === 'hide' ) {
           edit_elements.hide();
           handler.closest( '.detail-view-row-item' ).hide();
