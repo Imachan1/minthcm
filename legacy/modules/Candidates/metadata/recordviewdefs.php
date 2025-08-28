@@ -42,7 +42,7 @@ $viewdefs['Candidates'] = [
                                     'primary_address_postalcode',
                                     'primary_address_country',
                                 ],
-                                'separator' => ',',
+                                'separator' => ', ',
                             ],
                         ],
                         [
@@ -57,7 +57,7 @@ $viewdefs['Candidates'] = [
                                     'alt_address_postalcode',
                                     'alt_address_country',
                                 ],
-                                'separator' => ',',
+                                'separator' => ', ',
                             ],
                         ],
                     ],

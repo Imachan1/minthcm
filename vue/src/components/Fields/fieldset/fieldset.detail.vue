@@ -22,7 +22,7 @@ const props = defineProps<Props>()
 const fieldContent = computed(() => {
     let text = ''
     props.defs.properties?.fields.forEach((field, index) => {
-        const fieldValue = props.data.bean[field.name]
+        const fieldValue = props.data.bean.attributes[field.name]
         if (fieldValue && fieldValue.trim() !== '') {
             if (text !== '') {
                 text += props.defs.properties?.separator
