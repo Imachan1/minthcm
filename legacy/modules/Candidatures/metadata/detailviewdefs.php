@@ -75,21 +75,6 @@ $viewdefs[$module_name]['DetailView'] = array(
                     ),
                 ),
             ),
-            array(
-                'customCode' => true,
-                'sugar_html' => array(
-                    'type' => 'button',
-                    'value' => '{$MOD.LBL_CONVERT}',
-                    'htmlOptions' => array(
-                        'class' => 'button',
-                        'name' => 'convert_button',
-                        'id' => 'convert_button',
-                        'title' => '{$MOD.LBL_CONVERT}',
-                        'onClick' => 'convertToEmployee.initialize()',
-                    ),
-                ),
-                'template' => '{if $fields.parent_type.value == "Candidates"}[CONTENT]{/if}'
-            ),
         ),
     ),
         'maxColumns' => '2',
@@ -119,9 +104,6 @@ $viewdefs[$module_name]['DetailView'] = array(
         'includes' => array(
             array(
                 'file' => 'include/GenerateAppraisalAppraisalItems/generate_appraisals.js',
-            ),
-            array(
-                'file' => 'modules/Candidatures/js/view.detail.js',
             ),
         ),
     ),
