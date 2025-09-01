@@ -85,6 +85,9 @@ $viewdefs['Candidates'] = [
                 ],
             ],
         ],
+        'files' => [
+            'component' => 'MintPanelFiles',
+        ],
         'subpanels' => [
             'component' => 'MintPanelSubpanels',
         ],
