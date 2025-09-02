@@ -107,8 +107,9 @@ viewTools.form.startViewToolsValidation = function () {
 viewTools.form.onValidationEnd = function () {
     if ( viewTools.form.error_count > 0 ) {
         viewTools.GUI.statusBox.showStatus( SUGAR.language.get( 'app_strings', 'LBL_FORM_WITH_ERRORS' ), 'error', 6000 );
+        viewTools.GUI.mask.hide();
     }
-    viewTools.GUI.mask.hide();
+    
    setTimeout( function () {
       viewTools.form.validation_state = 0;
       viewTools.form.enableSaveButton();
@@ -146,7 +147,7 @@ if ( window.disable_vt_tools === undefined || window.disable_vt_tools === false 
       //Init save events
       if ( viewTools.cache.form_save !== undefined ) {
          var disabled_buttons = [ 'saved_search_submit' ];
-         var disabled_buttons_id = [ 'wiz_submit_button','wiz_submit_button_perm' ];
+         var disabled_buttons_id = [ 'wiz_submit_button','wiz_submit_button_perm', 'savebtn' ];
          /*
           * Init form actions
           * - partly moved from formValidation
