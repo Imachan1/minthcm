@@ -144,8 +144,8 @@
             <td  scope="row" width='12%' nowrap>
                 {$MOD.CURRENT_LOGO}&nbsp;{sugar_help text=$MOD.CURRENT_LOGO_HELP}
             </td>
-            <td width='35%' >
-                <img id="company_logo_image" src='{$company_logo}' alt=$mod_strings.LBL_LOGO>
+            <td width='35%'>
+                <img height="200px" style="object-fit: contain" id="company_logo_image" src='{$company_logo}' alt=$mod_strings.LBL_LOGO>
             </td>
         </tr>
         <tr>
