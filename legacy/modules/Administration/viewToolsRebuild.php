@@ -507,6 +507,10 @@ $sql_formula=array(' . implode(",", $sqlformulas) . ');
         }
     }
 
+    fwrite($jscache,
+        ';
+window.viewTools.cache.initMappings = ' . json_encode($initArray) . ';');
+
     /*
      * Get all field requirements
      */
@@ -521,6 +525,10 @@ $sql_formula=array(' . implode(",", $sqlformulas) . ');
             }
         }
     }
+
+    fwrite($jscache,
+        '
+window.viewTools.cache.formulaRequirements = ' . json_encode($field_requirements) . ';');
 
     /*
      * Get duplicate fields from duplicate definitions
