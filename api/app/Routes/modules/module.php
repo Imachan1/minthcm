@@ -250,7 +250,20 @@ $routes = array(
                 "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
             ),
         ),
-        "queryParams" => array(),
+        "queryParams" => array(
+            "paginate_by" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Number of records per page",
+                "example" => '10',
+            ),
+            "page" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Page number, starts from 0",
+                "example" => '6',
+            ),
+        ),
         "bodyParams" => array(),
     ),
     "list_data" => array(

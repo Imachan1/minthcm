@@ -271,6 +271,8 @@ class ModuleController
             return $response;
         }
         $related_name = $request->getAttribute('relation_name');
+        $page = $request->getQueryParams()['page'] ?? 0;
+        $records_per_page = $request->getQueryParams()['paginate_by'] ?? -1;
         require_once 'include/SubPanel/SubPanelDefinitions.php';
         $spd = new \SubPanelDefinitions($focus, $module);
         if (isset($spd->layout_defs['subpanel_setup'][$related_name])) {
@@ -284,7 +286,7 @@ class ModuleController
             require_once 'include/ListView/ListViewSubPanel.php';
             $list_view = new \ListViewSubPanel();
             $subpanel_def = $spd->load_subpanel($related_name);
-            $data = $list_view->process_dynamic_listview($module, $focus, $subpanel_def, true);
+            $data = $list_view->process_dynamic_listview($module, $focus, $subpanel_def, true, $page, $records_per_page);
             $list = $data['list'];
             chdir('../api/');
             $response = $response->withStatus(200);
@@ -296,6 +298,8 @@ class ModuleController
                 }
 
             }
+            $return_list['total'] = $data['row_count'];
+            $return_list['page'] = (int) $page;
             $response->getBody()->write(json_encode($return_list));
             return $response;
         }
