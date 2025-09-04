@@ -67,7 +67,7 @@ export const useListViewStore = defineStore('listview', () => {
         initialLoading.value = true
         const result = await modulesApi.getListInit(getModule())
         if (module.value === result.data.module) {
-            activeFilter.value = result.data?.preferences?.activeFilter
+            activeFilter.value = result.data?.preferences?.activeFilter ?? null
             initialLoading.value = false
             config.value = result.data?.config
             defs.value = result.data?.defs
