@@ -753,7 +753,7 @@ LIMIT 1";
               . 'inner join securitygroups_users on securitygroups.id = securitygroups_users.securitygroup_id '
               . ' and securitygroups_users.deleted = 0 '
               . 'inner join users on securitygroups_users.user_id = users.id and users.deleted = 0 '
-              . " where securitygroups.deleted = 0 and users.employee_status = 'Active' "
+              . " where securitygroups.deleted = 0 and users.employee_status IN ('Active', 'during_termination') "
               . "  and securitygroups.id = '$this->id' "
               . ' order by users.user_name asc ';
       $GLOBALS['log']->debug("SecuritySuite: getMembers: $query");
