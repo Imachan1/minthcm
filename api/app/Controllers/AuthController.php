@@ -104,6 +104,7 @@ class AuthController
 
     public function logout(Request $request, Response $response, array $args): Response
     {
+        $_COOKIE['PHPSESSID'] = "";
         session_start();
         session_destroy();
         ob_clean();
