@@ -57,10 +57,10 @@
 <script setup lang="ts">
 import { useLanguagesStore } from '@/store/languages'
 import { useRouter } from 'vue-router'
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useModulesStore } from '@/store/modules'
-import { useListViewStore } from '@/views/ListView/ListViewStore'
 import { unifiedSearchApi } from '@/api/unifiedSearch.api'
+import { useBackendStore } from '@/store/backend'
 
 interface SearchResponse {
     query: string
@@ -84,13 +84,16 @@ interface SearchResult {
 const languages = useLanguagesStore()
 const router = useRouter()
 const modules = useModulesStore()
-const listViewStore = useListViewStore()
+const backend = useBackendStore()
 
 const initialQuery = new URLSearchParams(location.href).get('query_string')
 const searchQuery = ref<string | null>(initialQuery ?? '')
 const isSearching = ref(false)
 const isSearchBarFocused = ref(false)
-const itemsPerPageOptions = computed(() => listViewStore.config?.config?.itemsPerPageOptions)
+const itemsPerPageOptions = computed(() => {
+    let options = [5, 10, 20, 50, 100, 200, 500, 1000]
+    return options.filter((option) => option <= (backend.initData.global.list_max_entries_per_page ?? 20))
+})
 
 const pageText = computed(() => {
     const pageText = `{0} - {1} ${languages.label('LBL_ESLIST_PAGE_TEXT')} {2}`
@@ -116,12 +119,6 @@ const tableHeaders = [
         title: languages.label('LBL_UNIFIED_SEARCH_COLUMN_NAME'),
         sortable: false,
         class: 'stickyColumn',
-    },
-    {
-        value: 'description',
-        key: 'description',
-        title: languages.label('LBL_UNIFIED_SEARCH_COLUMN_DESCRIPTION'),
-        sortable: false,
     },
     {
         value: 'date_entered',

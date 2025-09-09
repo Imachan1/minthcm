@@ -49,11 +49,9 @@ namespace MintHCM\Api\Controllers;
 use Doctrine\ORM\EntityManagerInterface;
 use Slim\Psr7\Response;
 use MintHCM\Lib\Search\Search;
-use MintHCM\Utils\LegacyConnector;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use MintHCM\Utils\ConstantsLoader;
 
-use SuiteCRM\Search\SearchQuery;
-use SuiteCRM\Search\SearchWrapper;
 
 class GlobalSearchController
 {
