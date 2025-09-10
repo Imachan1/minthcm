@@ -242,7 +242,8 @@ class TemplateHandler
             $javascript->setFormName($view);
 
             $javascript->setSugarBean($sugarBean);
-
+            $javascript->addAllFields('', null, true);
+            
             $validatedFields = array();
             $javascript->addToValidateBinaryDependency(
                 'assigned_user_name',
