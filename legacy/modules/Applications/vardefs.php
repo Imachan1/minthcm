@@ -71,7 +71,12 @@ $dictionary['Applications'] = array(
          'len' => 100,
          'size' => '20',
          'options' => 'applications_status_list',
-         'options_colors' => 'applications_status_list_colored',
+         'options_colors' => [
+            'new' => 'blue',
+            'in_progress' => 'yellow',
+            'accepted' => 'green',
+            'rejected' => 'red',
+         ],
          'studio' => 'visible',
       ),
       'type' => array(

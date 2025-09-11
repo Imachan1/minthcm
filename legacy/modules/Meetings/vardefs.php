@@ -228,7 +228,11 @@ $dictionary['Meeting'] = array(
          'dbType' => 'varchar',
          'len' => 100,
          'options' => 'meeting_status_dom',
-         'options_colors' => 'meeting_status_dom_colored',
+         'options_colors' => [
+            'Planned' => 'blue',
+            'Held' => 'green',
+            'Not Held' => 'red',
+         ],
          'comment' => 'Meeting status (ex: Planned, Held, Not held)',
          'default' => 'Planned',
          'massupdate' => 1,

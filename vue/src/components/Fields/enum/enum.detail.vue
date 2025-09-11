@@ -5,7 +5,7 @@
             <v-chip
                 v-if="props.defs?.options_colors"
                 class="enum-chip"
-                :color="languages.translateListValue(props.modelValue, props.defs?.options_colors)"
+                :style="coloredEnumStyle"
             >
                 {{ parsedValue }}
             </v-chip>
@@ -23,12 +23,23 @@ import { useLanguagesStore } from '@/store/languages'
 import Pencil from '../Pencil.vue'
 import { computed } from 'vue'
 import { FieldProps } from '../Field.model'
+import { useBackendStore } from '@/store/backend'
+import { defineProps } from 'vue'
 
 const props = defineProps<FieldProps>()
 const languages = useLanguagesStore()
+const backend = useBackendStore()
 
 const parsedValue = computed(() => {
     return items.value.find((item) => item.key === props.modelValue)?.value || ''
+})
+
+const coloredEnumStyle = computed(() => {
+    const colors = backend.initData.field_variables?.ColoredEnum?.options_colors
+    if (colors && props.defs?.options_colors) {
+        return colors[props.defs.options_colors[props.modelValue]] || colors['-default-']
+    }
+    return ''
 })
 
 const items = computed(() => {
@@ -58,6 +69,18 @@ label {
 :deep(.v-chip.v-chip--size-default) {
     height: 28px;
     border-radius: 4px;
+    letter-spacing: 0.09px;
+}
+.enum-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    font-size: 13px;
+    padding: 4px 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
     letter-spacing: 0.09px;
 }
 </style>

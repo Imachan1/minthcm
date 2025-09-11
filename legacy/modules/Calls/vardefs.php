@@ -148,7 +148,11 @@ $dictionary['Call'] = array(
          'dbType' => 'varchar',
          'len' => 100,
          'options' => 'call_status_dom',
-         'options_colors' => 'call_status_dom_colored',
+         'options_colors' => [
+            'Planned' => 'blue',
+            'Held' => 'green',
+            'Not Held' => 'red',
+         ],
          'comment' => 'The status of the call (Held, Not Held, etc.)',
          'required' => true,
          'importable' => 'required',

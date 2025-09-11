@@ -78,7 +78,11 @@ $dictionary['Positions'] = array(
             'len' => 100,
             'size' => '20',
             'options' => 'position_status',
-            'options_colors' => 'position_status_colored',
+            'options_colors' => [
+                'planned' => 'blue',
+                'active' => 'green',
+                'inactive' => 'gray',
+            ],
             'default' => 'active',
         ),
         "recruitments" => array(

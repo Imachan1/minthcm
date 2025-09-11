@@ -117,7 +117,11 @@ $dictionary['ExitInterviews'] = array(
             'len' => 100,
             'size' => '20',
             'options' => 'exit_interview_status_list',
-            'options_colors' => 'exit_interview_status_list_colored',
+            'options_colors' => [
+                'planned' => 'blue',
+                'held' => 'green',
+                'not_held' => 'red',
+            ],
             'studio' => 'visible',
             'dependency' => false,
         ),

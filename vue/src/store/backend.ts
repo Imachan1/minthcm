@@ -33,6 +33,7 @@ interface InitResponse {
     mintRebuildID: string
     responseType: string
     systemName: string
+    field_variables: string[]
 }
 export const useBackendStore = defineStore('backend', () => {
     const router = useRouter()
@@ -83,6 +84,7 @@ export const useBackendStore = defineStore('backend', () => {
                 cachedConfig.value.preferences = initResponse.data.preferences
                 cachedConfig.value.responseType = initResponse.data.responseType
                 cachedConfig.value.systemName = initResponse.data.system_name
+                cachedConfig.value.field_variables = initResponse.data.field_variables
                 if(initResponse.data.languages && current_language !== initResponse.data.languages?.current_language){
                     cachedConfig.value.languages = initResponse.data.languages
                 }

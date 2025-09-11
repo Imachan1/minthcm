@@ -46,7 +46,7 @@
             <div
                 v-if="list.colors"
                 class="enum-chip"
-                :style="list.colors[item[list.field]]"
+                :style="getColoredEnumStyle(item[list.field], list.colors)"
                 v-text="list.options[item[list.field]]"
             />
             <span v-else v-text="list.options[item[list.field]]" />
@@ -100,12 +100,14 @@ import { useLanguagesStore } from '@/store/languages'
 import { useUrlStore } from '@/store/url'
 import { usePopupsStore } from '@/store/popups'
 import NumberUtils from '@/utils/numbers'
+import { useBackendStore } from '@/store/backend'
 
 const router = useRouter()
 const store = useListViewStore()
 const url = useUrlStore()
 const languages = useLanguagesStore()
 const popups = usePopupsStore()
+const backend = useBackendStore()
 
 const pageText = computed(() => {
     const pageText = `{0} - {1} ${languages.label('LBL_ESLIST_PAGE_TEXT')} {2}`
@@ -155,6 +157,12 @@ function formatMultienum(value, labels) {
         .map((label) => labels[label])
         .join(', ')
 }
+
+function getColoredEnumStyle(value, options_colors) {
+    const colors = backend.initData.field_variables?.ColoredEnum?.options_colors
+    return colors[options_colors[value]] || colors['-default-']
+}
+
 </script>
 
 <style scoped lang="scss">

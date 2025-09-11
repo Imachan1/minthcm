@@ -54,6 +54,14 @@ use Slim\Routing\RouteContext;
 class ModuleController
 {
 
+    public function __construct()
+    {
+        global $app_list_strings, $current_language;
+        if (!$app_list_strings) {
+            $app_list_strings = return_app_list_strings_language($current_language);
+        }
+    }
+
     public function detail(Request $request, Response $response, array $args): Response
     {
         $response = $response->withHeader('Content-type', 'application/json');
@@ -196,6 +204,7 @@ class ModuleController
         if (!$bean->ACLAccess('view')) {
             return $response->withStatus(403);
         }
+
         if (!empty($bean) && $bean->id === $record_id) {
             $record_data = $this->mergeRecordData($bean);
         }

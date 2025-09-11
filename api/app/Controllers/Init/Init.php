@@ -124,6 +124,7 @@ class Init
         }
         $response_body['mintRebuildID'] = $this->mintRebuildID;
         $response_body['system_name'] = $GLOBALS['system_config']->settings['system_name'];
+        $response_body['field_variables']['ColoredEnum']['options_colors'] = ConstantsLoader::getConstants('colored_enum');
         return $response_body;
     }
 
