@@ -9,6 +9,7 @@ class DemoDataService
     protected $schema_name;
 
     const CONFIG_FILE_PATH = 'install/DemoDataInstallation/Configs/demo_data.php';
+    const DEMO_DATA_TIMESTAMP_PATH = 'install/DemoDataInstallation/timestamp.php';
     const MINT_CONFIG_FILE_PATH = 'config.php';
     const SQL_FILES_PATH = 'install/demo_data';
 
@@ -34,7 +35,7 @@ class DemoDataService
         require static::CONFIG_FILE_PATH;
         $this->config = $config;
 
-        require static::CONFIG_FILE_PATH;
+        require static::MINT_CONFIG_FILE_PATH;
         $this->schema_name = $sugar_config['dbconfig']['db_name'];
     }
 
@@ -46,5 +47,10 @@ class DemoDataService
                 'file_path' => $file,
             ];
         }
+    }
+
+    public function getDateOfDump(){
+        require static::DEMO_DATA_TIMESTAMP_PATH;
+        return $demodata_timestamp;
     }
 }
