@@ -58,6 +58,11 @@ class DemoDataInstall
         $sql_file = file_get_contents($table['file_path']);
 
         if (!empty($sql_file)) {
+            if ("users" == $table['file_name']) {
+                $this->mysql_connection->query("DELETE FROM users where id != '1'");
+            } else {
+                $this->mysql_connection->query("TRUNCATE TABLE {$table['file_name']};");
+            }
             $sql_file = explode(";\n", $sql_file);
             foreach ($sql_file as $sql) {
                 if (!empty($sql)) {
