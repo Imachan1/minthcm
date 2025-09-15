@@ -45,6 +45,7 @@
 
 class OrganizationStructure
 {
+    public $id;
     protected function getQuery()
     {
         $siteURL = $GLOBALS['sugar_config']['site_url'];
@@ -87,7 +88,7 @@ class OrganizationStructure
             INNER JOIN users u
                 ON u.securitygroup_id = ou.id  and u.id !=ou.current_manager_id
             INNER JOIN positions p on u.position_id = p.id
-            WHERE u.employee_status='Active'  AND ou.group_type IN ('department', 'team')
+            WHERE u.employee_status IN ('Active', 'during_termination')  AND ou.group_type IN ('department', 'team')
 ";
     }
     protected function getDataBySQL()
