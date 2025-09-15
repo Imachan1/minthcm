@@ -26,9 +26,13 @@ $viewdefs['Rooms'] = [
                         'assigned_user_name',
                         [
                             'name' => 'security_group_name',
-                            'label' => 'LBL_RELATIONSHIP_SECURITY_GROUP_NAME',
-                            'displayParams' => [
-                                'initial_filter' => '&group_type=business_unit',
+                            'filters' => [
+                                [
+                                    'field' => 'group_type',
+                                    'operator' => 'equal',
+                                    'value' => 'business_unit',
+                                    'editable' => false,
+                                ],
                             ],
                         ],
                     ],

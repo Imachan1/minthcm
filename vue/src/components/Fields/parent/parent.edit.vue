@@ -72,14 +72,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import axios from 'axios'
+import { computed, ref, defineEmits } from 'vue'
+import { useModulesStore } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'
 import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import { modulesApi } from '@/api/modules.api'
 import he from 'he'
+import getFilters from '@/utils/qsOperators'
 import { FieldProps } from '../Field.model'
 
 const props = defineProps<FieldProps>()
@@ -90,6 +91,7 @@ let debounceTimeout: number | null = null
 
 const languages = useLanguagesStore()
 const popupsStore = usePopupsStore()
+const modulesStore = useModulesStore()
 const menuOpen = ref(false)
 const items = ref(
     props.data.bean.attributes[props.defs.id_name]
@@ -136,29 +138,45 @@ async function fetchRecordItems(e) {
         isLoading.value = true
         menuOpen.value = true
         const val = e?.target?.value ?? props.data.bean.attributes[props.defs.name] ?? ''
-        if (debounceTimeout) {
-            clearTimeout(debounceTimeout)
-        }
-        debounceTimeout = window.setTimeout(async () => {
-            const response = await modulesApi.getListData(props.data.bean.attributes.parent_type, '', {
+        const predefinedFilters = getFilters(
+            modulesStore.modules[props.data.bean.parent_type].vardefs,
+            props.defs.filters && typeof props.defs.filters === 'object' && !Array.isArray(props.defs.filters)
+                ? props.defs.filters[props.data.bean.parent_type]
+                : [],
+        )
+        const filters = {
+            ...predefinedFilters,
                 must: [
+                ...(predefinedFilters.must || []),
                     {
                         wildcard: {
                             name: val + '*',
                         },
                     },
                 ],
-            })
-            if (response.data?.results?.length) {
-                items.value = response.data.results.sort((a, b) => a.name.localeCompare(b.name, 'pl'))
             }
+
+        if (debounceTimeout) {
+            clearTimeout(debounceTimeout)
+        }
+        debounceTimeout = window.setTimeout(async () => {
+            const response = await modulesApi.getListData(
+                props.data.bean.parent_type,
+                '',
+                filters,
+                0,
+                100,
+                false,
+                props.defs.rname ?? 'name',
+                'asc',
+            )
+            items.value = response.data.results
             isLoading.value = false
         }, DEBOUNCE_TIME)
     } else {
         items.value = []
     }
 }
-
 function openRelatePopup() {
     popupsStore.showPopup({
         component: MintPopupRelate,
@@ -168,6 +186,9 @@ function openRelatePopup() {
             moduleName: props.data.bean.attributes.parent_type,
             popupMode: 'single',
             fieldToNameArray: { id: props.defs.id_name, name: props.defs.name },
+            filterDefs: props.defs.filters && typeof props.defs.filters === 'object' && !Array.isArray(props.defs.filters)
+                ? props.defs.filters[props.data.bean.parent_type] || []
+                : [],
             onConfirm: (data: string | string[]) => {
                 recordModel.value = {
                     id: data.nameToValueArray[props.defs.id_name],

@@ -31,9 +31,13 @@ $viewdefs['Workplaces'] = [
                         'availability',
                         [
                             'name' => 'room_name',
-                            'label' => 'LBL_RELATIONSHIP_ROOM_NAME',
-                            'displayParams' => [
-                                'initial_filter' => '&availability_advanced=active',
+                            'filters' => [
+                                [
+                                    'field' => 'availability',
+                                    'operator' => 'equal',
+                                    'value' => 'active',
+                                    'editable' => false,
+                                ],
                             ],
                         ],
                         'description',
