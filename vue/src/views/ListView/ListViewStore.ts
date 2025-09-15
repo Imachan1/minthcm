@@ -88,7 +88,7 @@ export const useListViewStore = defineStore('listview', () => {
             myObjects.value,
             defs.value?.columns[options.value.sortBy[0]?.key]?.key,
             options.value.sortBy[0]?.order ?? 'asc',
-            activeFilter.value
+            activeFilter.value,
         )
         requestCount--
         if (module.value === result.data.module && requestCount <= 0) {
