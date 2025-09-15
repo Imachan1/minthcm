@@ -16,8 +16,8 @@
 <link rel="stylesheet" type="text/css" href="k/css/spicecrm-theme/resources/spicecrm-theme-all-debug.css" />
 <link rel="stylesheet" type="text/css" href="k/css/ext6_override.css">
 <!-- script type="text/javascript" src="vendor/extjs6/resources/theme-gray/theme-gray.js"></script -->
-<script type="text/javascript" src="modules/KReports/js/KReporterCommon.js?{php}rand(100, 900){/php}"></script>
-<script type="text/javascript" src="modules/KReports/js/KReporterDListManager.js?{php}rand(100, 900){/php}"></script>
+<script type="text/javascript" src="modules/KReports/js/KReporterCommon.js?{$smarty.now}"></script>
+<script type="text/javascript" src="modules/KReports/js/KReporterDListManager.js?{$smarty.now}"></script>
 <div style="width: 100%;height:calc(100% - 50px)" id="kreportdlistmanager"></div>
 
 
