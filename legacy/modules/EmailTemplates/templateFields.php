@@ -10,15 +10,8 @@ function generateFieldDefsJS2()
 
 
     $badFields = array(
-        'account_description',
         'contact_id',
         'lead_id',
-        'opportunity_amount',
-        'opportunity_id',
-        'opportunity_name',
-        'opportunity_role_id',
-        'opportunity_role_fields',
-        'opportunity_role',
         'campaign_id',
         // User objects
         'id',
@@ -55,12 +48,10 @@ function generateFieldDefsJS2()
     }
 
     $contact = BeanFactory::newBean('Contacts');
-    $lead = BeanFactory::newBean('Leads');
     $prospect = BeanFactory::newBean('Prospects');
 
     $loopControl['Contacts'] = array(
         'Contacts' => $contact,
-        'Leads' => $lead,
         'Prospects' => $prospect,
     );
 
@@ -116,7 +107,6 @@ function genDropDownJS2()
 
     $lblContactAndOthers = implode('/', array(
         isset($app_list_strings['moduleListSingular']['Contacts']) ? $app_list_strings['moduleListSingular']['Contacts'] : 'Contact',
-        isset($app_list_strings['moduleListSingular']['Leads']) ? $app_list_strings['moduleListSingular']['Leads'] : 'Lead',
         isset($app_list_strings['moduleListSingular']['Prospects']) ? $app_list_strings['moduleListSingular']['Prospects'] : 'Target',
     ));
 

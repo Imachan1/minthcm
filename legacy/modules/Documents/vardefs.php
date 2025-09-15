@@ -227,35 +227,13 @@ $dictionary['Document'] = array('table' => 'documents',
             'source' => 'non-db',
             'vname' => 'LBL_DELEGATIONS',
         ),
-        //todo remove
-        'leads' => array(
-            'name' => 'leads',
-            'type' => 'link',
-            'relationship' => 'leads_documents',
-            'source' => 'non-db',
-            'vname' => 'LBL_LEADS',
-        ),
         // Links around the world
-        'accounts' => array(
-            'name' => 'accounts',
-            'type' => 'link',
-            'relationship' => 'documents_accounts',
-            'source' => 'non-db',
-            'vname' => 'LBL_ACCOUNTS_SUBPANEL_TITLE',
-        ),
         'contacts' => array(
             'name' => 'contacts',
             'type' => 'link',
             'relationship' => 'documents_contacts',
             'source' => 'non-db',
             'vname' => 'LBL_CONTACTS_SUBPANEL_TITLE',
-        ),
-        'opportunities' => array(
-            'name' => 'opportunities',
-            'type' => 'link',
-            'relationship' => 'documents_opportunities',
-            'source' => 'non-db',
-            'vname' => 'LBL_OPPORTUNITIES_SUBPANEL_TITLE',
         ),
         'cases' => array(
             'name' => 'cases',

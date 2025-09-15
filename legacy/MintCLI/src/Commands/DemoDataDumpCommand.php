@@ -47,6 +47,7 @@ class DemoDataDumpCommand extends Command
             $this->io->section('Dumping files...');
             $this->dumpFiles();
         }
+        $this->setTimeStamp();
 
         $this->io->success('Demo Data has been dumped successfuly');
         return Command::SUCCESS;
@@ -70,7 +71,7 @@ class DemoDataDumpCommand extends Command
         if (!file_exists(self::$demoDataDestinationFilesPath)) {
             mkdir(self::$demoDataDestinationFilesPath, 0777, true);
         }
-        foreach($config['files'] as $file_config){
+        foreach ($config['files'] as $file_config) {
             $sql = "SELECT CONCAT({$file_config['column']}, '{$file_config['postfix']}') AS file_name FROM {$file_config['table']} WHERE deleted=0";
             $result = $this->mysql_connection->query($sql);
             if (!$result) {
@@ -79,7 +80,7 @@ class DemoDataDumpCommand extends Command
             }
             while ($row = $result->fetch_assoc()) {
                 $sqls[] = $row['file_name'];
-                if(!copy("legacy/upload/{$row['file_name']}",self::$demoDataDestinationFilesPath."/{$row['file_name']}")){
+                if (!copy("legacy/upload/{$row['file_name']}", self::$demoDataDestinationFilesPath . "/{$row['file_name']}")) {
                     $this->io->error("Failed to copy file {$row['file_name']}");
                 }
             }
@@ -107,8 +108,7 @@ class DemoDataDumpCommand extends Command
             return;
         }
 
-        while($tabel = $result->fetch_array())
-        {
+        while ($tabel = $result->fetch_array()) {
             $all_tables[] = $tabel[0];
         }
 
@@ -126,7 +126,7 @@ class DemoDataDumpCommand extends Command
         } else {
             $sql = $this->getDataFromDatabaseByVardefs($table, $fields);
         }
-        if(!$sql){
+        if (!$sql) {
             return;
         }
         $result = $this->mysql_connection->query($sql);
@@ -146,8 +146,7 @@ class DemoDataDumpCommand extends Command
         if (!file_exists(self::$demoDataDestinationPath)) {
             mkdir(self::$demoDataDestinationPath, 0777, true);
         }
-        if(!empty($sqls))
-        {
+        if (!empty($sqls)) {
             $file = fopen(self::$demoDataDestinationPath . "/{$table}.sql", "w");
             foreach ($sqls as $sql) {
                 $sql = $this->repairQueryString($sql);
@@ -161,50 +160,44 @@ class DemoDataDumpCommand extends Command
     {
         $exploded_query = explode("VALUES", $query_string);
         $exploded_query[1] = $this->IgnoreJSONCommas($exploded_query[1]);
-        $exploded_query[1]  = explode(',', $exploded_query[1]);
-        foreach($exploded_query[1] as $key => &$query)
-        {
-            if($key == 0) {
+        $exploded_query[1] = explode(',', $exploded_query[1]);
+        foreach ($exploded_query[1] as $key => &$query) {
+            if (0 == $key) {
                 $query = substr($query, 2);
             }
 
-            if($key == count($exploded_query[1]))
-            {
+            if (count($exploded_query[1]) == $key) {
                 $query = substr($query, -2);
             }
 
-            if(substr($query, -1) == "'" && substr($query, 0, 1) == "'")
-            {
+            if (substr($query, -1) == "'" && substr($query, 0, 1) == "'") {
                 $query = substr($query, 1, -1);
                 $query = $this->mysql_connection->real_escape_string($query);
-                $query = "'".$query."'";
+                $query = "'" . $query . "'";
             }
 
-            if($key == 0) {
-                $query = " (".$query;
+            if (0 == $key) {
+                $query = " (" . $query;
             }
 
-            if($key == count($exploded_query[1]))
-            {
-                $query = $query.");";
+            if (count($exploded_query[1]) == $key) {
+                $query = $query . ");";
             }
-            
+
         }
         $exploded_query[1] = implode(',', $exploded_query[1]);
-        $exploded_query[1] = str_replace('*delimiter*', ',', $exploded_query[1]); 
+        $exploded_query[1] = str_replace('*delimiter*', ',', $exploded_query[1]);
         return implode("VALUES", $exploded_query);
     }
 
-    protected function IgnoreJSONCommas($string) 
+    protected function IgnoreJSONCommas($string)
     {
         $comma_pos = strpos($string, ',');
-        while($comma_pos !== false)
-        {
-            if($string[$comma_pos-1] !== "'" || $string[$comma_pos-1] !== "'")
-            {
-                $string = substr($string, 0, $comma_pos).'*delimiter*'.substr($string, $comma_pos+1);
+        while (false !== $comma_pos) {
+            if ("'" !== $string[$comma_pos - 1] || "'" !== $string[$comma_pos - 1]) {
+                $string = substr($string, 0, $comma_pos) . '*delimiter*' . substr($string, $comma_pos + 1);
             }
-            $comma_pos = strpos($string, ',', $comma_pos+1);
+            $comma_pos = strpos($string, ',', $comma_pos + 1);
         }
 
         return $string;
@@ -215,7 +208,7 @@ class DemoDataDumpCommand extends Command
         $fields_in_db = [];
         $sql = "DESCRIBE {$table}";
         $result = $this->mysql_connection->query($sql);
-        if(!$result){
+        if (!$result) {
             $this->io->warning("Table {$table} does not exist in the database.");
             return false;
         }
@@ -230,19 +223,19 @@ class DemoDataDumpCommand extends Command
     {
         $fields_in_db = [];
         foreach ($fields as $field) {
-            if (isset($field['source']) && in_array($field['source'],[ 'non-db', 'function', 'custom_fields'])) {
+            if (isset($field['source']) && in_array($field['source'], ['non-db', 'function', 'custom_fields'])) {
                 continue;
             }
             $fields_in_db[] = $field['name'];
         }
         $sql = "DESCRIBE {$table}";
         $result = $this->mysql_connection->query($sql);
-        if(!$result){
+        if (!$result) {
             $this->io->warning("Table {$table} does not exist in the database.");
             return false;
         }
         $sql = $this->getInsertStatement($table, $fields_in_db);
-        if($table == 'users'){
+        if ('users' == $table) {
             $sql .= " WHERE id != '1'";
         }
         return $sql;
@@ -270,5 +263,13 @@ class DemoDataDumpCommand extends Command
         include 'legacy/config_override.php';
         $DBService = new DatabaseService();
         return $DBService->getConnection($sugar_config['dbconfig']['db_host_name'], $sugar_config['dbconfig']['db_user_name'], $sugar_config['dbconfig']['db_password'], $sugar_config['dbconfig']['db_name'], $sugar_config['dbconfig']['db_port']);
+    }
+
+    protected function setTimeStamp()
+    {
+        $demodata_timestamp = date('Y-m-d H:i:s');
+        file_put_contents(DemoDataCommandService::DEMO_DATA_TIMESTAMP_PATH, '<?php
+$demodata_timestamp = \'' . $demodata_timestamp . '\';
+');
     }
 }

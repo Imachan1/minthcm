@@ -71,10 +71,7 @@ $moduleList[] = 'Calls';
 $moduleList[] = 'Meetings';
 $moduleList[] = 'Tasks';
 $moduleList[] = 'Notes';
-// $moduleList[] = 'Leads';
 // $moduleList[] = 'Contacts';
-// $moduleList[] = 'Accounts';
-// $moduleList[] = 'Opportunities';
 
 $moduleList[] = 'Emails';
 $moduleList[] = 'EmailTemplates';
@@ -99,7 +96,6 @@ $beanList = [];
 $beanList['ACLRoles'] = 'ACLRole';
 $beanList['ACLActions'] = 'ACLAction';
 //END ACL OBJECTS
-// $beanList['Leads'] = 'Lead';
 // $beanList['Cases'] = 'aCase';
 // $beanList['Bugs'] = 'Bug';
 $beanList['ProspectLists'] = 'ProspectList';
@@ -116,10 +112,8 @@ $beanList['EmailMan'] = 'EmailMan';
 $beanList['Schedulers'] = 'Scheduler';
 $beanList['SchedulersJobs'] = 'SchedulersJob';
 // $beanList['Contacts'] = 'Contact';
-// $beanList['Accounts'] = 'Account';
 $beanList['DynamicFields'] = 'DynamicField';
 $beanList['EditCustomFields'] = 'FieldsMetaData';
-// $beanList['Opportunities'] = 'Opportunity';
 $beanList['EmailTemplates'] = 'EmailTemplate';
 $beanList['Notes'] = 'Note';
 $beanList['Calls'] = 'Call';
@@ -168,7 +162,6 @@ $beanFiles['ACLAction'] = 'modules/ACLActions/ACLAction.php';
 $beanFiles['ACLRole'] = 'modules/ACLRoles/ACLRole.php';
 $beanFiles['Relationship'] = 'modules/Relationships/Relationship.php';
 
-// $beanFiles['Lead'] = 'modules/Leads/Lead.php';
 // $beanFiles['aCase'] = 'modules/Cases/Case.php';
 // $beanFiles['Bug'] = 'modules/Bugs/Bug.php';
 $beanFiles['Group'] = 'modules/Groups/Group.php';
@@ -187,8 +180,6 @@ $beanFiles['EmailMan'] = 'modules/EmailMan/EmailMan.php';
 $beanFiles['Scheduler'] = 'modules/Schedulers/Scheduler.php';
 $beanFiles['SchedulersJob'] = 'modules/SchedulersJobs/SchedulersJob.php';
 // $beanFiles['Contact'] = 'modules/Contacts/Contact.php';
-// $beanFiles['Account'] = 'modules/Accounts/Account.php';
-// $beanFiles['Opportunity'] = 'modules/Opportunities/Opportunity.php';
 $beanFiles['EmailTemplate'] = 'modules/EmailTemplates/EmailTemplate.php';
 $beanFiles['Note'] = 'modules/Notes/Note.php';
 $beanFiles['Call'] = 'modules/Calls/Call.php';
@@ -546,7 +537,9 @@ $beanList['OAuth2Clients'] = 'OAuth2Clients';
 $beanFiles['OAuth2Clients'] = 'modules/OAuth2Clients/OAuth2Clients.php';
 $modInvisList[] = 'OAuth2Clients';
 
-
+$beanList['OAuth2Codes'] = 'OAuth2Codes';
+$beanFiles['OAuth2Codes'] = 'modules/OAuth2Codes/OAuth2Codes.php';
+$modInvisList[] = 'OAuth2Codes';
 
 $beanList['SurveyResponses'] = 'SurveyResponses';
 $beanFiles['SurveyResponses'] = 'modules/SurveyResponses/SurveyResponses.php';

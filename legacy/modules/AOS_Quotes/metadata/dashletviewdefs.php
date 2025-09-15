@@ -38,10 +38,6 @@ array(
     array(
         'default' => ''
         ),
-'billing_account' =>
-    array(
-        'default' => ''
-        ),
 'assigned_user_id' =>
     array(
         'type' => 'assigned_user_name',
@@ -63,21 +59,10 @@ array(
         'link'    => true,
         'default' => true
         ),
-        
-'billing_account' =>
-    array(
-        'width' => '20',
-        'label'   => 'LBL_BILLING_ACCOUNT'
-        ),
 'billing_contact' =>
     array(
         'width' => '15',
         'label'   => 'LBL_BILLING_CONTACT'
-        ),
-'opportunity' =>
-    array(
-        'width' => '25',
-        'label'   => 'LBL_OPPORTUNITY'
         ),
 'stage' =>
     array(

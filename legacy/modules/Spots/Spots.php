@@ -221,7 +221,7 @@ class Spots extends Basic
     /**
      *This returns the keys for the provided labels (to allow for translation of the saved spots configurations).
      *
-     * @param string $type  the type spot, e.g. accounts / leads, etc.
+     * @param string $type  the type spot, e.g. accounts etc.
      * @param array  $items the labels that the key is requested for
      *
      * @return array $keys is the array of matching key values for the label items
@@ -250,7 +250,7 @@ class Spots extends Basic
     /**
      *This logs an error when there is <> 1 matching keys for a label.
      *
-     * @param string $type the type spot, e.g. accounts / leads, etc.
+     * @param string $type the type spot, e.g. accounts etc.
      */
     public function logSpotsErrorWithKeyMatching($type)
     {
@@ -261,7 +261,7 @@ class Spots extends Basic
     /**
      *This returns the key for the provided label (to allow for translation of the saved spots configurations).
      *
-     * @param string $type  the type spot, e.g. accounts / leads, etc.
+     * @param string $type  the type spot, e.g. accounts etc.
      * @param string $label the label that the key is requested for
      *
      * @return array $matches is the array of matching key values (if <> 1, then there is an issue matching this)
@@ -271,29 +271,14 @@ class Spots extends Basic
         global $mod_strings;
         $labelPrefix = '';
         switch ($type) {
-            case 'getAccountsSpotsData':
-                $labelPrefix = 'LBL_AN_ACCOUNTS_';
-                break;
-            case 'getLeadsSpotsData':
-                $labelPrefix = 'LBL_AN_LEADS_';
-                break;
-            case 'getSalesSpotsData':
-                $labelPrefix = 'LBL_AN_SALES_';
-                break;
             case 'getServiceSpotsData':
                 $labelPrefix = 'LBL_AN_SERVICE_';
                 break;
             case 'getActivitiesSpotsData':
                 $labelPrefix = 'LBL_AN_ACTIVITIES_';
                 break;
-            case 'getMarketingSpotsData':
-                $labelPrefix = 'LBL_AN_MARKETING_';
-                break;
             case 'getMarketingActivitySpotsData':
                 $labelPrefix = 'LBL_AN_MARKETINGACTIVITY';
-                break;
-            case 'getQuotesSpotsData':
-                $labelPrefix = 'LBL_AN_QUOTES_';
                 break;
         }
         $allMatchingLabels = array_keys($mod_strings, $label);

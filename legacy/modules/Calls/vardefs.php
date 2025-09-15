@@ -281,23 +281,6 @@ $dictionary['Call'] = array(
          'source' => 'non-db',
          'audited' => true,
       ),
-      'opportunities' =>
-      array(
-         'name' => 'opportunities',
-         'type' => 'link',
-         'relationship' => 'opportunity_calls',
-         'source' => 'non-db',
-         'link_type' => 'one',
-         'vname' => 'LBL_OPPORTUNITY',
-      ),
-      'leads' =>
-      array(
-         'name' => 'leads',
-         'type' => 'link',
-         'relationship' => 'calls_leads',
-         'source' => 'non-db',
-         'vname' => 'LBL_LEADS',
-      ),
       // Bug #42619 Missed back-relation from Project module
       'project' => array(
          'name' => 'project',
@@ -314,16 +297,6 @@ $dictionary['Call'] = array(
          'source' => 'non-db',
          'link_type' => 'one',
          'vname' => 'LBL_CASE',
-      ),
-      'accounts' =>
-      array(
-         'name' => 'accounts',
-         'type' => 'link',
-         'relationship' => 'account_calls',
-         'module' => 'Accounts',
-         'bean_name' => 'Account',
-         'source' => 'non-db',
-         'vname' => 'LBL_ACCOUNT',
       ),
       'aos_contracts' =>
       array(

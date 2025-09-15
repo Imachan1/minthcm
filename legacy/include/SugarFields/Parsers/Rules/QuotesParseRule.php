@@ -87,8 +87,6 @@ function preParse($panels, $view) {
 		   	  	 	   $panels[$name][$rowCount][$key] = $column;
 		   	  	 	} else if($this->matches($column, '/^date_quote_closed$/')) {
 		   	  	 	   $panels[$name][$rowCount][$key] = 'date_quote_expected_closed';
-		   	  	 	} else if($this->matches($column, '/^tag\.opportunity$/')) {
-                       $panels[$name][$rowCount][$key] = 'opportunity_name';
 		   	  	 	}
 				} //foreach
 		   	  } //foreach
@@ -118,8 +116,8 @@ function preParse($panels, $view) {
 					       	   	  continue;
 					       	   }
 
-					       	   if($this->matches($column, '/^(billing|shipping)_(account|contact)_name$/')) {
-					       	      $match = $this->getMatch($column, '/^(billing|shipping)_(account|contact)_name$/');
+					       	   if($this->matches($column, '/^(billing|shipping)_(contact)_name$/')) {
+					       	      $match = $this->getMatch($column, '/^(billing|shipping)_(contact)_name$/');
 					       	      $col[$match[0]] = $match[0];
 					       	   } else if(!$this->matches($column, '/^(shipping|billing)_address_(street|city|state|country|postalcode)$/si')) {
 					       	   	  $col[] = $column;

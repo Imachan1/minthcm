@@ -29,23 +29,6 @@ array(
           ),
           7 =>
           array(
-            'customCode' => '<input type="submit" class="button" onClick="this.form.action.value=\'createOpportunity\';" value="{$MOD.LBL_CREATE_OPPORTUNITY}">',
-            'sugar_html' =>
-            array(
-              'type' => 'submit',
-              'value' => '{$MOD.LBL_CREATE_OPPORTUNITY}',
-              'htmlOptions' =>
-              array(
-                'class' => 'button',
-                'id' => 'create_contract_button',
-                'title' => '{$MOD.LBL_CREATE_OPPORTUNITY}',
-                'onclick' => 'this.form.action.value=\'createOpportunity\';',
-                'name' => 'Create Opportunity',
-              ),
-            ),
-          ),
-          8 =>
-          array(
             'customCode' => '<input type="submit" class="button" onClick="this.form.action.value=\'createContract\';" value="{$MOD.LBL_CREATE_CONTRACT}">',
             'sugar_html' =>
             array(
@@ -61,7 +44,7 @@ array(
               ),
             ),
           ),
-          9 =>
+          8 =>
           array(
             'customCode' => '<input type="submit" class="button" onClick="this.form.action.value=\'converToInvoice\';" value="{$MOD.LBL_CONVERT_TO_INVOICE}">',
             'sugar_html' =>
@@ -130,11 +113,6 @@ array(
             'name' => 'name',
             'label' => 'LBL_NAME',
           ),
-          1 =>
-          array(
-            'name' => 'opportunity',
-            'label' => 'LBL_OPPORTUNITY',
-          ),
         ),
         1 =>
         array(
@@ -194,11 +172,6 @@ array(
         0 =>
         array(
           0 =>
-          array(
-            'name' => 'billing_account',
-            'label' => 'LBL_BILLING_ACCOUNT',
-          ),
-          1 =>
           array(
             'name' => 'billing_contact',
             'label' => 'LBL_BILLING_CONTACT',

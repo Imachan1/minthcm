@@ -184,9 +184,7 @@ setMintInstallStatus(12,"Installing default dashlets...");
 // Bug 28601 - Set the default list of tabs to show
 $enabled_tabs = array();
 $enabled_tabs[] = 'Home';
-$enabled_tabs[] = 'Accounts';
 $enabled_tabs[] = 'Notes';
-$enabled_tabs[] = 'Opportunities';
 $enabled_tabs[] = 'SecurityGroups';
 $enabled_tabs[] = 'Calendar';
 $enabled_tabs[] = 'ResourceCalendar';

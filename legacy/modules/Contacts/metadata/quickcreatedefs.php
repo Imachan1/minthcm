@@ -62,7 +62,6 @@ $viewdefs = array(
         array(
           'hidden' =>
           array(
-            '<input type="hidden" name="opportunity_id" value="{$smarty.request.opportunity_id}">',
             '<input type="hidden" name="case_id" value="{$smarty.request.case_id}">',
             '<input type="hidden" name="bug_id" value="{$smarty.request.bug_id}">',
             '<input type="hidden" name="email_id" value="{$smarty.request.email_id}">',
@@ -95,10 +94,6 @@ $viewdefs = array(
               'name' => 'first_name',
                 'customCode' => '{html_options name="salutation" id="salutation" options=$fields.salutation.options selected=$fields.salutation.value}'
                 . '&nbsp;<input name="first_name" id="first_name" size="25" maxlength="25" type="text" value="{$fields.first_name.value}">',
-            ),
-
-            array(
-              'name' => 'account_name',
             ),
           ),
 

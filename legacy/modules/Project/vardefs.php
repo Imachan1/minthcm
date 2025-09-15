@@ -235,16 +235,6 @@ $dictionary['Project'] = array(
                 'source' => 'non-db',
                 'vname' => 'LBL_LIST_TOTAL_ACTUAL_EFFORT',
             ),
-
-        'accounts' =>
-            array(
-                'name' => 'accounts',
-                'type' => 'link',
-                'relationship' => 'projects_accounts',
-                'source' => 'non-db',
-                'ignore_role' => true,
-                'vname' => 'LBL_ACCOUNTS',
-            ),
         'quotes' =>
             array(
                 'name' => 'quotes',
@@ -262,15 +252,6 @@ $dictionary['Project'] = array(
                 'source' => 'non-db',
                 'ignore_role' => true,
                 'vname' => 'LBL_CONTACTS',
-            ),
-        'opportunities' =>
-            array(
-                'name' => 'opportunities',
-                'type' => 'link',
-                'relationship' => 'projects_opportunities',
-                'source' => 'non-db',
-                'ignore_role' => true,
-                'vname' => 'LBL_OPPORTUNITIES',
             ),
         'notes' =>
             array(

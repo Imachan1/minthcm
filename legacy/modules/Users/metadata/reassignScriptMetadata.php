@@ -46,21 +46,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 $moduleFilters = array(
-	'Accounts' => array(
-		'display_default' => false,
-		'fields' => array(
-			'account_type' => array(
-				'display_name' => 'Account Type',
-				'name' => 'account_type',
-				'vname' => 'LBL_TYPE',
-				'dbname' => 'account_type',
-				'custom_table' => false,
-				'type' => 'multiselect',
-				'size' => '4',
-				'dropdown' => $app_list_strings['account_type_dom'],
-			),
-		),
-	),
 	'Bugs' => array(
 		'display_default' => false,
 		'fields' => array(
@@ -118,31 +103,6 @@ $moduleFilters = array(
 		),
 	),
 	
-	'Opportunities' => array(
-		'display_default' => false,
-		'fields' => array(
-			'sales_stage' => array(
-				'display_name' => 'Sales Stage',
-				'name' => 'sales_stage',
-				'vname' => 'LBL_SALES_STAGE',
-				'dbname' => 'sales_stage',
-				'custom_table' => false,
-				'type' => 'multiselect',
-				'size' => '4',
-				'dropdown' => $app_list_strings['sales_stage_dom'],
-			),
-			'opportunity_type' => array(
-				'display_name' => 'Opportunity Type',
-				'name' => 'opportunity_type',
-				'vname' => 'LBL_TYPE',
-				'dbname' => 'opportunity_type',
-				'custom_table' => false,
-				'type' => 'multiselect',
-				'size' => '4',
-				'dropdown' => $app_list_strings['opportunity_type_dom'],
-			),
-		),
-	),
 	'Tasks' => array(
 		'display_default' => false,
 		'fields' => array(

@@ -60,9 +60,6 @@
 
 			<td valign="top">
 			    <div>{$CONTACTS}</div>
-				<div>{$ACCOUNTS}</div>
-				<div>{$LEADS}</div>
-				<div>{$OPPORTUNITIES}</div>
 			</td>
 
 			<td valign="top">
