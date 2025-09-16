@@ -28,8 +28,8 @@ interface Props {
     data?: any
     modelValue?: any
     label?: string
-    disabled?: boolean
     options?: any
+    disabled?: boolean
     hidePencil?: boolean
     required?: boolean
     errorMessage?: string

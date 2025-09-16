@@ -86,13 +86,7 @@ const languages = useLanguagesStore()
 const popups = usePopupsStore()
 
 const actions = computed<MenuListItem[]>(() => {
-    const actions: MenuListItem[] = [
-        {
-            title: languages.label('LBL_GENERATE_BUTTON', store.bean.module),
-            icon: 'mdi-history',
-            onClick: showGenerateOnboardingOffboarding,
-        },
-    ]
+    const actions: MenuListItem[] = []
 
     props.data.actions?.forEach((action) => {
         const actionName = typeof action === 'string' ? action : action.name
@@ -117,13 +111,6 @@ const goBack = () => {
 }
 const isFavorite = computed(() => favorites.isFavorite(store.bean.module, store.bean.id))
 
-function showGenerateOnboardingOffboarding() {
-    popups.showPopup({
-        title: languages.label('LBL_GENERATE_BUTTON',store.bean.module),
-        icon: 'mdi-history',
-        component: DefaultLayout
-    })
-}
 </script>
 
 <style scoped lang="scss">

@@ -141,10 +141,11 @@ class Preferences
 
     public function getUserPreferences()
     {
+        global $sugar_config;
         return array(
-            'date_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['datef'] ?? ''),
-            'time_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['timef'] ?? ''),
-            'name_format' => $this->user_preferences["global"]["default_locale_name_format"] ?? '',
+            'date_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['datef'] ?? $sugar_config['default_date_format']),
+            'time_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['timef'] ?? $sugar_config['default_time_format']),
+            'name_format' => $this->user_preferences["global"]["default_locale_name_format"] ?? $sugar_config['default_locale_name_format'],
         );
     }
 
