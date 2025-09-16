@@ -69,7 +69,7 @@
                         <MintButton
                             v-else-if="isExpanded && replies.length"
                             variant="text"
-                            :text="languages.label('LBL_MINT4_COMMENTS_HIDE_BTN')"
+                            :text="languages.label('LBL_MINT4_COMMENTS_HI DE_BTN')"
                             size="small"
                             @click="isExpanded = false"
                         />
