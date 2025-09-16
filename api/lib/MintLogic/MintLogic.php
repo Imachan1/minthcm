@@ -1,6 +1,7 @@
 <?php
 
 namespace MintHCM\Lib\MintLogic;
+
 use MintHCM\Lib\MintLogic\Exceptions\ValidationException;
 
 class MintLogic
@@ -11,7 +12,7 @@ class MintLogic
     public function __construct(\SugarBean $bean)
     {
         $this->bean = clone $bean;
-        $this->defs = include(__DIR__ . "/Modules/{$bean->module_name}/logicdefs.php") ?? [];
+        $this->defs = include __DIR__ . "/Modules/{$bean->module_name}/logicdefs.php" ?? [];
     }
 
     public function getInitial()
@@ -52,7 +53,7 @@ class MintLogic
     {
         $rules = [];
         foreach ($this->getAllRules() as $key => $rule) {
-            if ($hook !== Hook::ALL && !in_array(Hook::ALL, $rule['hooks']) && !in_array($hook, $rule['hooks'])) {
+            if (Hook::ALL !== $hook && !in_array(Hook::ALL, $rule['hooks']) && !in_array($hook, $rule['hooks'])) {
                 continue;
             }
             if (!empty($triggerFields) && !empty($rule['triggerFields']) && !array_intersect($triggerFields, $rule['triggerFields'])) {
@@ -108,7 +109,7 @@ class MintLogic
     {
         $requiredFields = [];
         foreach ($this->bean->field_defs as $field => $vardef) {
-            if (isset($vardef['required']) && $vardef['required'] === true && $vardef['name'] !== 'id') {
+            if (isset($vardef['required']) && true === $vardef['required'] && 'id' !== $vardef['name']) {
                 $requiredFields[] = $field;
             }
         }
@@ -119,7 +120,7 @@ class MintLogic
     {
         $readonlyFields = [];
         foreach ($this->bean->field_defs as $field => $vardef) {
-            if (isset($vardef['readonly']) && $vardef['readonly'] === true) {
+            if (isset($vardef['readonly']) && true === $vardef['readonly']) {
                 $readonlyFields[] = $field;
             }
         }
@@ -215,7 +216,7 @@ class MintLogic
         if (is_array($expr) && array_is_list($expr)) {
             foreach ($expr as $item) {
                 $result = self::calculateExpression($item, $bean, $field);
-                if ($result === false) {
+                if (false === $result) {
                     return $result;
                 }
             }

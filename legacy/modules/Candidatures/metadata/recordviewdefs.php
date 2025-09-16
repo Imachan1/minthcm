@@ -55,13 +55,7 @@ $viewdefs['Candidatures'] = [
                         'entry_interview',
                     ],
                     [
-                        [
-                            'name' => 'source',
-                            'type' => 'enum',
-                            'component' => 'enum.edit.vue',
-                        ],
-
-                       
+                        'source',
                         'task_grade',
                         'scoring',
                     ],
