@@ -8,8 +8,8 @@ $viewdefs['ExitInterviews'] = [
             'data' => [
                 'fields' => [
                     [
-                        'employee_name',
                         'status',
+                        'employee_name',
                     ],
                 ],
                 'actions' => [
@@ -36,13 +36,14 @@ $viewdefs['ExitInterviews'] = [
                         'description',
                     ],
                     [
-                        'date_entered',
-                        'date_modified',
-                    ],
-                    [
+                        'assigned_user_name',
                         'created_by_name',
                         'modified_by_name',
-                        'assigned_user_name',
+                    ],
+                    [
+                        '',
+                        'date_entered',
+                        'date_modified',
                     ],
                 ],
             ],
