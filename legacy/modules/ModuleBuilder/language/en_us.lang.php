@@ -655,4 +655,10 @@ $mod_strings = array(
 
     'LBL_ALL_MODULES' => 'All Modules',
     'LBL_RELATED_FIELD_ID_NAME_LABEL' => '{0} (related {1} ID)',
+    'LBL_TYPE_BASIC' => 'Basic',
+    'LBL_TYPE_COMPANY' => 'Company',
+    'LBL_TYPE_PERSON' => 'Person',
+    'LBL_TYPE_ISSUE' => 'Issue',
+    'LBL_TYPE_FILE' => 'File',
+    'LBL_TYPE_SALE' => 'Sale', 
 );

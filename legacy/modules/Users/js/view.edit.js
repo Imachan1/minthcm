@@ -62,7 +62,7 @@ viewTools.form.afterSave(function(){
         $("#dlg_mask").remove();
         return false;    
     }
-    if (!!window["users_editview_units_popup"] === false && (employee_status != 'Active' || status != 'Active') && employee_id != '') {
+    if (!!window["users_editview_units_popup"] === false && (!['Active', 'during_termination'].includes(employee_status) || status != 'Active') && employee_id != '') {
         viewTools.api.callCustomApi({
             module: 'Employees',
             action: 'checkIfEmployeeIsSupervisor',

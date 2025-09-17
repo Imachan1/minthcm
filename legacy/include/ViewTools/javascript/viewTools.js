@@ -360,9 +360,9 @@
        return false;
     },
     setAsteriskForHandler: function ( handler ) {
-       var field = $( handler['selector'] );
-       if ( !field.closest( 'div.edit-view-field' ).siblings( '.label' ).hasClass( 'required' ) ) {
-          field.closest( 'div.edit-view-field' ).siblings( '.label' ).html( field.closest( 'div.edit-view-field' ).siblings( '.label' ).html() + '<span class="required">*</span>' );
+       const field = $( handler['selector'] )
+       if ( field.closest( 'div.edit-view-field' ).siblings( '.label' ).find( 'span.required' ).length < 1 ) {
+          field.closest( 'div.edit-view-field' ).siblings( '.label' ).html( field.closest( 'div.edit-view-field' ).siblings( '.label' ).html() + '<span class="required">*</span>' )
        }
     },
     setCacheFieldRequirement: function ( handler, required ) {
