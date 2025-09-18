@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,22 +36,19 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 namespace MintHCM\Api\Controllers\Init;
 
-use BeanFactory;
-use DBManager;
-use DBManagerFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use MintHCM\Api\Entities\Currency;
 use MintHCM\Api\Entities\UserPreferences;
 use MintHCM\Utils\LuxonMapper;
-use PDO;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 
@@ -108,7 +104,7 @@ class Preferences
             'name_formats' => (new \Localization())->getUsableLocaleNameOptions($sugar_config['name_formats']),
             'upload_maxsize' => $sugar_config['upload_maxsize'] ?? 0,
         ];
-        if(!$minified || in_array('reload_currency', $rebuild_array) || empty($global_settings['currencies'])){
+        if (!$minified || in_array('reload_currency', $rebuild_array) || empty($global_settings['currencies'])) {
             $global_settings['currencies'] = $this->getCurrenciesList();
         }
         return $global_settings;
@@ -116,25 +112,12 @@ class Preferences
 
     protected function getCurrenciesList()
     {
-        $return_list = [];
-        chdir('../legacy/');
-        $db = DBManagerFactory::getInstance();
-        $result = $db->query("SELECT * FROM currencies WHERE deleted = 0");
-        while ($row = $db->fetchByAssoc($result)) {
-            $return_list[$row['id']] = [
-                'id' => $row['id'],
-                'iso4217' => $row['iso4217'],
-                'name' => $row['name'],
-                'status' => $row['status'],
-                'conversion_rate' => $row['conversion_rate'],
-                'symbol' => $row['symbol'],
-                'hidden' => $row['hidden'],
-                'currency_on_right' => $row['currency_on_right'],
-            ];
+        $currencies = $this->entityManager->getRepository(Currency::class)->getAvailable();
+        $currency_list = [];
+        foreach ($currencies as $currency) {
+            $currency_list[$currency['id']] = $currency;
         }
-        $return_list[-99] = (BeanFactory::newBean('Currencies'))->retrieve('-99')->toArray(true);
-        chdir('../api/');
-        return $return_list;
+        return $currency_list;
     }
 
     public function getUserPreferences()
