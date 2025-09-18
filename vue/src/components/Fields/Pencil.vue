@@ -1,4 +1,5 @@
-<template>
+<template></template>
+<!-- <template>
     <v-progress-circular v-if="store.inlineEditFieldSaving === props.defs?.name" size="16" indeterminate />
     <v-icon
         v-else-if="!props.defs?.readonly"
@@ -7,7 +8,7 @@
         class="detail-view-edit-icon"
         @click="editBtnClicked"
     />
-</template>
+</template> -->
 
 <script setup lang="ts">
 import { FieldVardef } from '@/store/modules'
