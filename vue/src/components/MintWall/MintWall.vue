@@ -31,7 +31,10 @@
                     >
                         {{ newsItem.author.name }}
                     </div>
-                    <div class="mint-news-time">{{ toRelativeDate(newsItem.publication_date) }}</div>
+                    <div class="mint-news-time">
+                        {{ toRelativeDate(newsItem.publication_date) }}
+                    </div>
+                    <MintUnreadDot v-if="newsItem.is_read === false" />
                 </div>
             </div>
             <img
@@ -46,13 +49,7 @@
             </h5>
             <div class="mint-news-desc">{{ normalizeNewsContent(newsItem.content_of_announcement) }}</div>
             <div class="mint-news-footer">
-                <MintButton
-                    :variant="newsItem.liked ? 'regular' : 'text'"
-                    :text="newsItem.liked ? 'LIKED' : 'LIKE'"
-                    :active="newsItem.liked"
-                    icon="mdi-thumb-up"
-                    @click="wall.likeClicked(newsItem.id)"
-                />
+                <MintWallReactions :newsItem="newsItem"/>
                 <div class="mint-news-read-more" @click="navigateTo(`/modules/News/DetailView/${newsItem.id}`)">
                     {{ languages.label('LBL_MINT4_WALL_READ_MORE') }}
                 </div>
@@ -67,28 +64,40 @@ import { useRouter } from 'vue-router'
 import { useLanguagesStore } from '@/store/languages'
 import { useMintWallStore } from './MintWallStore'
 import { useUxStore } from '@/store/ux'
-import MintButton from '@/components/MintButtons/MintButton.vue'
+import MintUnreadDot from '../MintUnreadDot.vue'
+import MintWallReactions from './MintWallReactions.vue'
+import { computed, onMounted } from 'vue'
+
 const router = useRouter()
 const languages = useLanguagesStore()
 const wall = useMintWallStore()
 const ux = useUxStore()
-wall.loadNews()
-function toRelativeDate(date: string) {
+
+onMounted(() => {
+    wall.loadNews()
+})
+
+const toRelativeDate = computed(() => (date: string) => {
     const dt = DateTime.fromSQL(date, { zone: 'UTC' })
     if (dt.diffNow('days').days >= -5) {
         return dt.toRelative()
     }
     return dt.toFormat('dd.MM.yyyy')
-}
-function normalizeNewsContent(html: string) {
+})
+
+const normalizeNewsContent = computed(() => (html: string) => {
     let newsContent = html.replace(/<\/?[^>]+(>|$)/g, '')
     if (newsContent.length > 250) {
         newsContent = newsContent.substring(0, 247) + '...'
     }
     return newsContent
-}
-function navigateTo(url: string) {
-    router.push(url)
+})
+async function navigateTo(url: string) {
+    if (router.currentRoute.value.path === url && router.currentRoute.value.params.module === 'News') {
+        await wall.readNewsAlerts(router.currentRoute.value.params.record as string)
+    } else {
+        router.push(url)
+    }
     ux.drawer = null
 }
 </script>
@@ -143,11 +152,11 @@ function navigateTo(url: string) {
                 }
                 .mint-news-time {
                     letter-spacing: 0.4px;
-                    color: rgb(var(--v-theme-primary));
-                    font-weight: 600; // SemiBold
+                    font-weight: normal;
                     font-size: 12px;
                     text-align: right;
-                    margin-right: 28px;
+                    margin-left: auto;
+                    margin-right: 16px;
                 }
             }
         }
@@ -188,6 +197,7 @@ function navigateTo(url: string) {
             .mint-news-read-more {
                 text-decoration: underline;
                 cursor: pointer;
+                margin-left: auto;
             }
         }
     }
