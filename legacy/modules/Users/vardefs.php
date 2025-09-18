@@ -323,28 +323,6 @@ $dictionary['User'] = array(
             'inline_edit' => false,
             'readonly' => true,
         ),
-        // 'created_by_link' =>
-        // array (
-        //   'name' => 'created_by_link',
-        //   'type' => 'link',
-        //   'relationship' => 'applications_created_by',
-        //   'vname' => 'LBL_CREATED_USER',
-        //   'link_type' => 'one',
-        //   'module' => 'Users',
-        //   'bean_name' => 'User',
-        //   'source' => 'non-db',
-        // ),
-        // 'modified_user_link' =>
-        // array (
-        //   'name' => 'modified_user_link',
-        //   'type' => 'link',
-        //   'relationship' => 'applications_modified_user',
-        //   'vname' => 'LBL_MODIFIED_USER',
-        //   'link_type' => 'one',
-        //   'module' => 'Users',
-        //   'bean_name' => 'User',
-        //   'source' => 'non-db',
-        // ),
         'title' => array(
             'name' => 'title',
             'vname' => 'LBL_TITLE',
