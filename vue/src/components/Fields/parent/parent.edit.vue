@@ -76,6 +76,7 @@ import { defineProps, computed, ref, defineEmits } from 'vue'
 import { FieldVardef, useModulesStore } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'
 import { usePopupsStore } from '@/store/popups'
+import { usePreferencesStore } from '@/store/preferences'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import { modulesApi } from '@/api/modules.api'
@@ -98,6 +99,7 @@ let debounceTimeout: number | null = null
 const languages = useLanguagesStore()
 const popupsStore = usePopupsStore()
 const modulesStore = useModulesStore()
+const preferencesStore = usePreferencesStore()
 const menuOpen = ref(false)
 const items = ref(
     props.data.bean[props.defs.id_name]
@@ -166,6 +168,7 @@ async function fetchRecordItems(e) {
             clearTimeout(debounceTimeout)
         }
         debounceTimeout = window.setTimeout(async () => {
+            const columnOrder = getOrderColumn()
             const response = await modulesApi.getListData(
                 props.data.bean.parent_type,
                 '',
@@ -173,7 +176,7 @@ async function fetchRecordItems(e) {
                 0,
                 100,
                 false,
-                props.defs.rname ?? 'name',
+                columnOrder,
                 'asc',
             )
             items.value = response.data.results
@@ -182,6 +185,12 @@ async function fetchRecordItems(e) {
     } else {
         items.value = []
     }
+}
+function getOrderColumn() {
+    if (['full_name'].includes(props.defs.rname)) {
+        return preferencesStore.getFirstNameFieldByPreference()
+    }
+    return props.defs.rname ?? 'name'
 }
 function openRelatePopup() {
     popupsStore.showPopup({

@@ -57,6 +57,7 @@
 import { computed, ref } from 'vue'
 import { useModulesStore } from '@/store/modules'
 import { usePopupsStore } from '@/store/popups'
+import { usePreferencesStore } from '@/store/preferences'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import { useLanguagesStore } from '@/store/languages'
 import MintButton from '@/components/MintButtons/MintButton.vue'
@@ -74,6 +75,7 @@ const DEBOUNCE_TIME = 500
 const languages = useLanguagesStore()
 const popupsStore = usePopupsStore()
 const modulesStore = useModulesStore()
+const preferencesStore = usePreferencesStore()
 const menuOpen = ref(false)
 const items = ref(
     props.data.bean.attributes[props.defs.id_name]
@@ -86,7 +88,10 @@ const items = ref(
         : [],
 )
 
-const currentItem = ref({ id: props.data.bean.attributes[props.defs.id_name], name: props.data.bean.attributes[props.defs.name] })
+const currentItem = ref({
+    id: props.data.bean.attributes[props.defs.id_name],
+    name: props.data.bean.attributes[props.defs.name],
+})
 const isLoading = ref(false)
 const model = computed({
     get() {
@@ -123,6 +128,7 @@ async function fetchItems(e) {
             clearTimeout(debounceTimeout)
         }
         debounceTimeout = window.setTimeout(async () => {
+            const columnOrder = getOrderColumn()
             const response = await modulesApi.getListData(
                 props.defs.module,
                 '',
@@ -130,7 +136,7 @@ async function fetchItems(e) {
                 0,
                 100,
                 false,
-                props.defs.rname ?? 'name',
+                columnOrder,
                 'asc',
             )
             items.value = response.data.results
@@ -139,6 +145,13 @@ async function fetchItems(e) {
     } else {
         items.value = []
     }
+}
+
+function getOrderColumn() {
+    if (['full_name'].includes(props.defs.rname)) {
+        return preferencesStore.getFirstNameFieldByPreference()
+    }
+    return props.defs.rname ?? 'name'
 }
 
 function openRelatePopup() {
