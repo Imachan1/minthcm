@@ -88,6 +88,8 @@ const rows = computed(() => {
 
 const inlineEditBtnClicked = (event: string) => {
     store.inlineEditField = event
+    store.inlineEditField = ''
+    store.inlineEditFieldSaving = ''
 }
 
 const edit = () => {

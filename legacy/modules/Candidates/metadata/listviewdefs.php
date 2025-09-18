@@ -126,8 +126,8 @@ $listViewDefs[$module_name] = array(
         'id' => 'EMPLOYEE_ID',
         'default' => true,
     ),
-    'SKYPE' => array(
-        'label' => 'LBL_SKYPE',
+    'X_SERVICE' => array(
+        'label' => 'LBL_X_SERVICE',
         'type' => 'varchar',
         'width' => '10%',
         'default' => false,

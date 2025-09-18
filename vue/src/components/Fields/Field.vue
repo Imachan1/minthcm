@@ -29,12 +29,12 @@ interface Props {
     modelValue?: any
     label?: string
     options?: any
+    disabled?: boolean
     hidePencil?: boolean
     required?: boolean
     errorMessage?: string
     isDirty?: boolean
 }
-
 const props = defineProps<Props>()
 const languagesStore = useLanguagesStore()
 const modulesStore = useModulesStore()
