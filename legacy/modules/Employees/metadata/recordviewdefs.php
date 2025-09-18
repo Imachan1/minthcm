@@ -86,10 +86,8 @@ $viewdefs['Employees'] = [
                         ],
                         'description',
                     ],
-                    [
-                        ['created_by_name', 'modified_by_name'],
-                        ['date_entered', 'date_modified'],
-                    ],
+                    ['created_by_name', 'modified_by_name'],
+                    ['date_entered', 'date_modified'],
                 ],
             ],
         ],
