@@ -139,10 +139,11 @@ class Preferences
 
     public function getUserPreferences()
     {
+        global $sugar_config;
         return array(
             'date_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['datef'] ?? ''),
             'time_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['timef'] ?? ''),
-            'name_format' => $this->user_preferences["global"]["default_locale_name_format"] ?? '',
+            'name_format' => $this->user_preferences["global"]["default_locale_name_format"] ?? $sugar_config["default_locale_name_format"],
         );
     }
 
@@ -168,6 +169,7 @@ class Preferences
             }
 
             $this->user_preferences = $preferences;
+            $this->user_preferences['global']['default_locale_name_format'] = $current_user->getPreference('default_locale_name_format');
         } catch (\Exception $e) {
             // TODO: log 'Failed to load user preferences'
             throw ($e);
