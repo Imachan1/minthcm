@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,30 +46,34 @@
 
 SugarAutoLoader::requireWithCustom('modules/SchedulersJobs/SchedulersJob.php');
 SugarAutoLoader::requireWithCustom('include/SugarQueue/SugarJobQueue.php');
-SugarAutoLoader::requireWithCustom('include/Notifications/Notification.php');
+SugarAutoLoader::requireWithCustom('include/Notifications/NotificationFactory.php');
 
-class MassConfirmation {
+class MassConfirmation
+{
 
-   protected $user_id = '';
-   protected $ids = [];
-   protected $errors = [];
-   protected $success = [];
+    protected $user_id = '';
+    protected $ids = [];
+    protected $errors = [];
+    protected $success = [];
 
-   public function setIDs(Array $ids) {
-      $this->ids = $ids;
-   }
+    public function setIDs(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
-   public function setUserId($id) {
-      $this->user_id = $id;
-   }
+    public function setUserId($id)
+    {
+        $this->user_id = $id;
+    }
 
-    public function confirm() {
+    public function confirm()
+    {
         $this->success = [];
         $this->errors = [];
-        foreach ( $this->ids as $id ) {
-        $work_schedule = BeanFactory::getBean('WorkSchedules', $id);
+        foreach ($this->ids as $id) {
+            $work_schedule = BeanFactory::getBean('WorkSchedules', $id);
             if ($work_schedule->canBeConfirmed() == 1) {
-                if ( $work_schedule->confirm() ) {
+                if ($work_schedule->confirm()) {
                     $this->success[] = $work_schedule;
                 } else {
                     $this->errors[] = $work_schedule;
@@ -81,39 +85,39 @@ class MassConfirmation {
         $this->createAlert();
     }
 
-   public function createAlert() {
-      $notification = new Notification();
-      $notification->setAssignedUserId($this->user_id);
+    public function createAlert()
+    {
+        $notification = NotificationFactory::getNotification('MassConfirmationNotification');
+        $notification->setUserId($this->user_id);
+        $notification->setDescription($this->getAlertDescription());
+        $notification->run();
+    }
 
-      $notification->setDescription($this->getAlertDescription());
-      $notification->disableUniqueValidation();
-      $notification->saveAsAlert();
-   }
+    protected function getAlertDescription()
+    {
+        $success_count = is_countable($this->success) ? count($this->success) : 0;
+        $total_count = $success_count + count($this->errors);
+        $ret = $GLOBALS['app_strings']['LBL_WSMASSCONFIRMATION_ALERT'];
+        $ret .= ' (' . $success_count . '/' . $total_count . ')';
+        return $ret;
+    }
 
-   protected function getAlertDescription() {
-      $success_count = count($this->success);
-      $total_count = $success_count + count($this->errors);
-      $ret = $GLOBALS['app_strings']['LBL_WSMASSCONFIRMATION_ALERT'];
-      $ret .= ' (' . $success_count . '/' . $total_count . ')';
-      return $ret;
-   }
-
-   public static function schedule($ids, $encoded_query, $entire_list) {
-      global $current_user;
-      $data = base64_encode(json_encode(
+    public static function schedule($ids, $encoded_query, $entire_list)
+    {
+        global $current_user;
+        $data = base64_encode(json_encode(
             array(
-               'ids' => $ids,
-               'encoded_query' => $encoded_query,
-               'entire_list' => $entire_list,
+                'ids' => $ids,
+                'encoded_query' => $encoded_query,
+                'entire_list' => $entire_list,
             )
-      ));
-      $job = new SchedulersJob();
-      $job->name = "Mass Confirmation";
-      $job->target = "class::MassConfirmationJob";
-      $job->assigned_user_id = $current_user->id;
-      $job->data = $data;
-      $jq = new SugarJobQueue();
-      $jq->submitJob($job);
-   }
-
+        ));
+        $job = new SchedulersJob();
+        $job->name = "Mass Confirmation";
+        $job->target = "class::MassConfirmationJob";
+        $job->assigned_user_id = $current_user->id;
+        $job->data = $data;
+        $jq = new SugarJobQueue();
+        $jq->submitJob($job);
+    }
 }
