@@ -137,26 +137,23 @@ $mod_strings = array(
     'LBL_ENTER_APPRAISAL_NAME' => 'Enter Appraisal name',
     'LBL_SUCCESS_ADDING_APPRAISAL_JOB' => 'Appraisal Job added to Queue',
     'LBL_FAILED_ADDING_APPRAISAL_JOB' => 'There was an error adding Appraisal Job to Queue',
-    'LBL_CONVERT' => 'Convert to Employee',
     'LBL_CANCEL_BUTTON' => 'Cancel',
     'LBL_OK_BUTTON' => 'Ok',
-    'LBL_FAILED_CONVERTING_CANDIDATURE' => 'There was an error converting Candidature',
     'LBL_DOCUMENTS' => 'Documents',
-
-    'LBL_ALERT_TITLE' => 'Convert To User',
-    'LBL_ALERT_LOGIN' => 'Login',
-    'LBL_ALERT_NOTE' => 'If you will choose Create User system creates active user. If you will choose Create Employee, the user is inactive.',
-    'LBL_ALERT_CREATE_USER' => 'Please note that in case of this option a system user will be created',
-    'LBL_ALERT_CREATE_Employee' => 'Please note that in case of this option an employee without access to the system will be created.',
-    'LBL_CREATE_USER' => 'Create User',
-    'LBL_CREATE_EMPLOYEE' => 'Create Employee',
-    'LBL_ERROR_LOGIN' => 'You must enter a login',
-    'LBL_ERROR_LOGIN_DUPLICATE' => 'You must enter unique login',
-    'LBL_ERROR_INPUT_RADIO' => 'You must select one of the fields',
-    'LBL_INFO' => 'Select one of the following options:',
     'LBL_FILES' => 'Files',
     'LBL_LIST_TITLE' => 'Candidature',
     'LBL_PARENT_ID' => 'Parent (ID)',
     'LBL_CURRENCY_NAME' => 'Currency Name',
     'LBL_CURRENCY_SYMBOL' => 'Currency Symbol',
+    'LBL_CONVERT_TO_EMPLOYEE' => 'Convert to Employee',
+    'LBL_CONVERT_TO_EMPLOYEE_DESCRIPTION' => 'Below you can decide whether you want to create an Employee or a User.<br>
+If you create a User, you will need to provide a login, which will be used to sign in to the MintHCM system.<br>
+If you create an Employee, it will not be possible to log in to this account.<br>
+<br>
+Please note that every User is also an Employee.',
+'LBL_CONVERT_TO_EMPLOYEE_UNIQUE_LOGIN' => 'Please provide a unique login',
+    'LBL_CONVERT_TO_EMPLOYEE_CREATE_USER' => 'Create User',
+    'LBL_CONVERT_TO_EMPLOYEE_CREATE_EMPLOYEE' => 'Create Employee',
+    'LBL_CONVERT_TO_EMPLOYEE_USER_LOGIN' => 'User Login',
+    'ERR_CONVERT_TO_EMPLOYEE_USER_LOGIN' => 'The user name you provided is already taken',
 );

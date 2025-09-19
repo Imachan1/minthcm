@@ -8,24 +8,15 @@ $viewdefs['Candidatures'] = [
             'data' => [
                 'fields' => [
                     [
-                        'name',
                         'status',
                         'scoring',
+                        'task_grade',
                     ], 
                 ],
                 'actions' => [
                     'Audit',
-                    'Delete'
-                    // [
-                    //     'title' => 'LBL_DUPLICATE_BUTTON',
-                    //     'icon' => 'mdi-content-copy',
-                    //     'url' => ''
-                    // ],
-                    // [
-                    //     'title' => 'LBL_DUP_MERGE',
-                    //     'icon' => 'mdi-magnify',
-                    //     'url' => ''
-                    // ],
+                    'Delete',
+                    'ConvertToEmployee',
                 ],
             ],
         ],
@@ -73,7 +64,7 @@ $viewdefs['Candidatures'] = [
                     [
                         'employment_form',
                         'dg_amount',
-                        'currency_id',
+                        'currency_name',
                     ],
                     [
                         'net_amount',
