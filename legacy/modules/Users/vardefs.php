@@ -73,7 +73,7 @@ $dictionary['User'] = array(
                 'advanced_search' => false,
             ),
             'api-visible' => false,
-            'vt_validation' => 'AEM(isUnique(\'user_name\',$user_name),\'ERR_USER_NAME_EXISTS_3\')'
+            'vt_validation' => 'AEM(isUnique(\'user_name\',$user_name),\'ERR_USER_NAME_EXISTS_3\')',
         ),
         'user_hash' => array(
             'name' => 'user_hash',
@@ -239,6 +239,7 @@ $dictionary['User'] = array(
                 'editview' => false,
                 'quickcreate' => false,
             ),
+            'readonly' => true,
         ),
         'date_modified' => array(
             'name' => 'date_modified',
@@ -249,6 +250,7 @@ $dictionary['User'] = array(
                 'editview' => false,
                 'quickcreate' => false,
             ),
+            'readonly' => true,
         ),
         'date_indexed' => array(
             'name' => 'date_indexed',
@@ -258,6 +260,7 @@ $dictionary['User'] = array(
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
             'inline_edit' => false,
+            'readonly' => true,
         ),
         'modified_user_id' => array(
             'name' => 'modified_user_id',
@@ -289,10 +292,36 @@ $dictionary['User'] = array(
         ),
         'created_by_name' => array(
             'name' => 'created_by_name',
-            'vname' => 'LBL_CREATED_BY_NAME', //bug 48978
-            'type' => 'varchar',
+            'vname' => 'LBL_CREATED',
+            'type' => 'relate',
+            'reportable' => false,
+            'link' => 'created_by_link',
+            'rname' => 'user_name',
             'source' => 'non-db',
+            'table' => 'users',
+            'id_name' => 'created_by',
+            'module' => 'Users',
+            'duplicate_merge' => 'disabled',
             'importable' => 'false',
+            'massupdate' => false,
+            'inline_edit' => false,
+            'readonly' => true,
+        ),
+        'modified_by_name' => array(
+            'name' => 'modified_by_name',
+            'vname' => 'LBL_MODIFIED_NAME',
+            'type' => 'relate',
+            'reportable' => false,
+            'source' => 'non-db',
+            'rname' => 'user_name',
+            'table' => 'users',
+            'id_name' => 'modified_user_id',
+            'module' => 'Users',
+            'link' => 'modified_user_link',
+            'duplicate_merge' => 'disabled',
+            'massupdate' => false,
+            'inline_edit' => false,
+            'readonly' => true,
         ),
         'title' => array(
             'name' => 'title',
@@ -1043,7 +1072,7 @@ $dictionary['User'] = array(
             'mass_update' => false,
             'reportable' => false,
             'importable' => false,
-        )
+        ),
     ),
     'indices' => array(
         array(
@@ -1092,7 +1121,7 @@ $dictionary['User'] = array(
             'lhs_key' => 'id',
             'rhs_table' => 'users_signatures',
             'rhs_key' => 'user_id',
-            'relationship_type' => 'one-to-many'
+            'relationship_type' => 'one-to-many',
         ],
         'users_email_addresses' => [
             'lhs_module' => "Users", 'lhs_table' => 'users', 'lhs_key' => 'id',

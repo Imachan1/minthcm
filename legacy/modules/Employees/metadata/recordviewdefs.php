@@ -53,7 +53,11 @@ $viewdefs['Employees'] = [
                             'name' => 'birthdate',
                             'type' => 'age',
                         ],
-                    ], 
+                        [
+                            'name' => 'photo',
+                            'type' => 'file',
+                        ],
+                    ],
                     [
                         'position_name',
                         'securitygroup_name',
@@ -63,46 +67,27 @@ $viewdefs['Employees'] = [
                         'messenger_type',
                         'messenger_id',
                     ],
-                    [
-                        'primary_address_street',
-                        'primary_address_city',
-                        'primary_address_state',
-                    ],
-                    [
-                        'primary_address_postalcode',
-                        'primary_address_country',
-                    ],
-                    [
-                        'leave_days_in_a_year',
-                        'remaining_leave_days',
-                    ],
+
                     [
                         [
-                            'name' => 'summary_points',
-                            'readonly' => true,
+                            'name' => 'primary_address',
+                            'type' => 'fieldset',
+                            'label' => 'LBL_PRIMARY_ADDRESS',
+                            'properties' => [
+                                'fields' => [
+                                    'primary_address_street',
+                                    'primary_address_city',
+                                    'primary_address_state',
+                                    'primary_address_postalcode',
+                                    'primary_address_country',
+                                ],
+                                'separator' => ', ',
+                            ],
                         ],
-                        [
-                            'name' => 'current_points',
-                            'readonly' => true,
-                        ],
-                        [
-                            'name' => 'spent_points',
-                            'readonly' => true,
-                        ],
-                    ],
-                    [
                         'description',
                     ],
-                    [
-                        [
-                            'name' => 'date_entered',
-                            'readonly' => true,
-                        ],
-                        [
-                            'name' => 'date_modified',
-                            'readonly' => true,
-                        ],
-                    ]
+                    ['created_by_name', 'modified_by_name'],
+                    ['date_entered', 'date_modified'],
                 ],
             ],
         ],
