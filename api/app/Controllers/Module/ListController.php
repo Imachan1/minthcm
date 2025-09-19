@@ -137,6 +137,7 @@ class ListController
         $params["fields"] = array("*__last^5", "*__first^4", "*__name.*^3", "*");
         $this->params = $params;
     }
+
     protected function getParsedFilters(Request $request)
     {
         $filters = ['filter' => [], 'must_not' => [], 'must' => []];

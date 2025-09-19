@@ -49,7 +49,7 @@ use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\ArrayType;
 
 $routes = array(
-    "get_initial_data" => array(
+    "init_comments" => array(
         "method" => "GET",
         "path" => "/comments/{parent_type}/{parent_id}/init",
         "class" => CommentsController::class,
@@ -75,7 +75,7 @@ $routes = array(
         "queryParams" => array(),
         "bodyParams" => array(),
     ),
-    "get" => array(
+    "get_comment" => array(
         "method" => "GET",
         "path" => "/comments/{parent_type}/{parent_id}",
         "class" => CommentsController::class,

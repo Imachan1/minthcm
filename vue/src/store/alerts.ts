@@ -49,7 +49,7 @@ export const useAlertsStore = defineStore('alerts', () => {
         })
         if (fetch) {
             alerts.value = response.data?.alerts ?? []
-        }
+    }
         return response.status
     }
 
@@ -60,7 +60,7 @@ export const useAlertsStore = defineStore('alerts', () => {
         })
         if (fetch) {
             alerts.value = response.data?.alerts ?? []
-        }
+    }
         return response.status
     }
 

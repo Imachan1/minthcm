@@ -48,8 +48,6 @@ namespace MintHCM\Api\Routes;
 
 use MintHCM\Utils\CustomLoader;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Psr7\Response;
 
 #[\AllowDynamicProperties]
 class RouteManager
@@ -236,6 +234,8 @@ class RouteManager
 
             $files = array_diff($files, array('.', '..'));
 
+            $location_route_keys = array();
+
             foreach ($files as $file) {
                 if (!str_contains($file, ".php")) {
                     continue;
@@ -245,6 +245,14 @@ class RouteManager
                 if (empty($routes)) {
                     continue;
                 }
+
+                foreach ($routes as $key => $route) {
+                    if (isset($location_route_keys[$key])) {
+                        throw new \Exception("Duplicate route key '$key' found in location '$location' in file '$file'.");
+                    }
+                    $location_route_keys[$key] = true;
+                }
+
                 $response = array_merge($response, $routes);
             }
         }
@@ -252,4 +260,3 @@ class RouteManager
     }
 
 }
-
