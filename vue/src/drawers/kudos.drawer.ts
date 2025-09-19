@@ -22,6 +22,6 @@ export default {
     },
     badge: () => {
         const store = useMintKudosStore()
-        return store.badge()
+        return store.badge
     },
 }

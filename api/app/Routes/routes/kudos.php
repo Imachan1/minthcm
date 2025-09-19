@@ -50,7 +50,7 @@ use MintHCM\Api\Middlewares\Params\ParamTypes\IntType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
 
 $routes = array(
-    "getInitialData" => array(
+    "init_kudos" => array(
         "method" => "GET",
         "path" => "/kudos/init",
         "class" => KudosController::class,
@@ -63,7 +63,7 @@ $routes = array(
         "queryParams" => array(),
         "bodyParams" => array(),
     ),
-    "get" => array(
+    "get_kudos" => array(
         "method" => "GET",
         "path" => "/kudos",
         "class" => KudosController::class,
@@ -90,7 +90,7 @@ $routes = array(
         ),
         "bodyParams" => array(),
     ),
-    "post" => array(
+    "post_kudos" => array(
         "method" => "POST",
         "path" => "/kudos/add",
         "class" => KudosController::class,

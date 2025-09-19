@@ -31,7 +31,12 @@
         </div>
         <MintButton v-if="canEdit" @click="editKudos" icon="mdi-pencil" size="small" variant="nav" class="ml-auto" />
     </div>
-    <p v-else v-html="`${languages.label('LBL_YOU_RECEIVED_KUDOS')} 🎉`" class="ml-1" />
+    <div class="d-flex justify-space-between" v-else>
+        <p v-html="`${languages.label('LBL_YOU_RECEIVED_KUDOS')} 🎉`" class="ml-1" />
+        <v-fade-transition>
+            <MintUnreadDot v-show="showDot" />
+        </v-fade-transition>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -39,6 +44,7 @@ import MintButton from '../MintButtons/MintButton.vue'
 import { useMintKudosStore } from '@/components/MintKudos/MintKudosStore'
 import { useLanguagesStore } from '@/store/languages'
 import { computed } from 'vue'
+import MintUnreadDot from '../MintUnreadDot.vue'
 
 const store = useMintKudosStore()
 const languages = useLanguagesStore()
@@ -57,6 +63,8 @@ function editKudos() {
     store.form.user = props.kudos.employee
     store.form.kudosId = props.kudos.id
 }
+
+const showDot = computed(() => props.kudos.is_read == 0)
 </script>
 
 <style scoped lang="scss">

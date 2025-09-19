@@ -145,14 +145,28 @@
   */
  window.viewTools.form = {
     afterSave: function ( callback ) {
-       viewTools.cache.form_afterSave.push( callback );
+        this._pushFunctionToCollection(viewTools.cache.form_afterSave, callback)
     },
     beforeSave: function ( callback, enforced ) {
        if ( enforced === undefined || enforced === true ) {
-          viewTools.cache.form_beforeSave_enforced.push( callback );
+          this._pushFunctionToCollection(viewTools.cache.form_beforeSave_enforced, callback)
        } else if ( enforced !== undefined || enforced === false ) {
-          viewTools.cache.form_beforeSave.push( callback );
+          this._pushFunctionToCollection(viewTools.cache.form_beforeSave, callback)
        }
+    },
+    _pushFunctionToCollection: function(collection, added_function){
+        if(typeof added_function !== "function"){
+            throw new Error("Invalid function")
+        }
+        let exists = false
+        if(added_function.name){
+            exists = collection.some(fn => fn.name === added_function.name)
+        } else {
+            console.warn('ViewTools: Avoid using anonymous functions as validation tasks.')
+        }
+        if(!exists){
+            collection.push(added_function)
+        }
     },
     blur: function ( handler, enforced_calculated ) {
        if ( enforced_calculated === undefined || enforced_calculated !== true ) {

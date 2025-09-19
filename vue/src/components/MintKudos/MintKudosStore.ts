@@ -1,7 +1,7 @@
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth'
 import { useAlertsStore } from '@/store/alerts'
 import { MintKudos, MintKudosUser, Form, NavOption, Views, InitialResponse } from './types'
@@ -12,6 +12,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     const kudos = ref<MintKudos[]>([])
     const users = ref<MintKudosUser[]>([])
     const auth = useAuthStore()
+    const alerts = useAlertsStore()
     const showUserList = ref(false)
     const form = ref<Form>({
         kudosId: '',
@@ -28,6 +29,8 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     const navOptions = ['all', 'received', 'given'] as const
     const activeView = ref<Views>('kudos-list')
     const showSuccessMessage = ref<boolean>(false)
+    const KUDOS_READ_DELAY_MS = 5000
+
     async function fetchInitialData() {
         kudos.value = []
         isLoading.value = true
@@ -36,6 +39,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
         users.value = response.data.users
         isLoading.value = false
     }
+
     async function fetchKudos(clear = false) {
         if (clear) {
             kudos.value = []
@@ -174,12 +178,29 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
         formReset()
     }
 
-    function badge() {
-        const alerts = useAlertsStore()
-        const not_readed_alerts = alerts.alerts.filter(
+    const badge = computed(() => {
+        const not_readed_alerts = alerts.alerts?.filter(
             (alert) => alert.parent_type === 'Kudos' && alert.is_read === false,
         )
         return not_readed_alerts.length ?? null
+    })
+
+    async function readKudosAlerts(targetKudos: MintKudos) {
+        const alert = alerts.alerts.find((alert) => alert.parent_id === targetKudos.id)
+        if (!alert?.id) {
+            return
+        }
+        setTimeout(async () => {
+            const currentKudos = kudos.value.find((item) => item.id === targetKudos.id)
+            if (currentKudos) {
+                currentKudos.is_read = true
+                alert.is_read = true
+            }
+            const result = await alerts.markRead(alert.id)
+            if (!result) {
+                return console.error('Failed to mark alert as read')
+            }
+        }, KUDOS_READ_DELAY_MS)
     }
 
     return {
@@ -207,5 +228,6 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
         formReset,
         closeSuccessMessage,
         badge,
+        readKudosAlerts,
     }
 })

@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "moment": "^2.29.1",
+    "moment": "^2.30.1",
     "vue": "^2.6.11",
     "vuedraggable": "^2.24.1",
-    "vuetify": "^2.2.11"
+    "vuetify": "^2.6.13"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

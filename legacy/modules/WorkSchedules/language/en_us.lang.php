@@ -139,9 +139,11 @@ $mod_strings = array(
     'LBL_ERR_DELEGATION_DURATION_NOT_VALID' => 'Delegation Duration (h) can\'t be a negative number',
     'LBL_DEPUTY' => 'Deputy',
     'LBL_DEPUTY_NAME' => 'Deputy',
-    'LBL_DEPUTY_ID' => 'Deputy (ID)',
     'LBL_LEAVE_ALERT' => "%s added a/an %s on %s.",  
     'LBL_ACCEPT' => 'Accept',
     'LBL_PERIODICITY_ERROR' => 'Please select days on which the Work Schedule should be repeated.',
     'LBL_WORKSCHEDULE_ACCEPTED_NOTIFICATION' => 'Your Work Schedule %s has been accepted.',
+
+    'LBL_MASSCONFIRMATION_POPUP_TEXT' => 'Mass confirmation has been arranged and will be completed shortly',
+    'LBL_MASSCONFIRMATION_POPUP_ERROR' => 'Mass confirmation could not be completed',
 );

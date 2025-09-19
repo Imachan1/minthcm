@@ -1,20 +1,16 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { useAuthStore } from '@/store/auth'
+import { useAlertsStore } from '@/store/alerts'
+import { MintReaction } from '../MintReactions/MintReactions'
+import { useRoute } from 'vue-router'
 
 interface NewsAutor {
     id: string
     name: string
     photo?: string //url
 }
-
-interface Reaction {
-    id: string
-    type: string
-    user_id: string
-}
-
 interface NewsItem {
     id: string
     name: string
@@ -22,14 +18,17 @@ interface NewsItem {
     photo?: string //url
     author: NewsAutor
     content_of_announcement: string
-    reactions: Array<Reaction>
+    reactions: MintReaction[]
     liked: boolean
+    is_read: boolean | undefined
 }
 
 export const useMintWallStore = (key = 'mint') =>
     defineStore(`wall-${key}`, () => {
         const wallLoading = ref(true)
         const auth = useAuthStore()
+        const alertsStore = useAlertsStore()
+        const route = useRoute()
 
         const newsList = ref<NewsItem[]>([])
 
@@ -39,63 +38,83 @@ export const useMintWallStore = (key = 'mint') =>
             const apiResponse = await axios.get('api/News/drawer/list')
             if (apiResponse.data) {
                 for (const newsItem of apiResponse.data) {
-                    newsItem.liked = getReactionIndex(newsItem, 'like') !== -1
+                    newsItem.is_read = isRead(newsItem.id)
                     newsList.value.push(newsItem)
                 }
             }
             wallLoading.value = false
         }
 
-        function getReactionIndex(newsItem: NewsItem, reactionType: string) {
-            return newsItem?.reactions?.findIndex((x) => x?.type === reactionType && x?.user_id === auth?.user?.id)
+        function isRead(newsItemId: string) {
+            return alertsStore.alerts.find((alert) => alert.parent_id === newsItemId)?.is_read
         }
 
-        function addReaction(newsItem: NewsItem, reactionType: string) {
-            axios
-                .post('api/Reactions/Create', {
-                    record_data: {
-                        parent_type: 'News',
-                        parent_id: newsItem.id,
-                        assigned_user_id: auth?.user?.id,
-                        reaction_type: reactionType,
+        const badge = computed(() => {
+            const unreadAlerts = alertsStore.alerts.filter(
+                (alert) => alert.parent_type === 'News' && alert.is_read === false,
+            )
+            return unreadAlerts.length ?? null
+        })
+
+        async function reactToNews(id: string, reactionType: string) {
+            const newsItem = newsList.value.find((newsItem) => newsItem.id === id)
+            if (!newsItem) {
+                return
+            }
+            if (!newsItem.reactions) {
+                newsItem.reactions = []
+            }
+            const userReaction = newsItem.reactions.find((reaction) => reaction.user.id === auth.user?.id)
+            if (userReaction) {
+                userReaction.type = reactionType
+            } else if (auth.user) {
+                newsItem.reactions.push({
+                    type: reactionType,
+                    user: {
+                        id: auth.user.id,
+                        name: auth.user.full_name,
                     },
                 })
-                .then((response) => {
-                    if (response?.data?.id) {
-                        newsItem.reactions.push({
-                            id: response.data.id,
-                            type: response.data.reaction_type,
-                            user_id: response.data.assigned_user_id,
-                        })
-                    }
-                })
+            }
+            await axios.post(`api/reactions/News/${id}`, {
+                reaction_type: reactionType,
+            })
         }
 
-        function deleteReaction(newsItem: NewsItem, reactionType: string) {
-            const reactionIndex = getReactionIndex(newsItem, reactionType)
-            if (reactionIndex !== -1) {
-                axios
-                    .delete('api/Reactions/' + newsItem.reactions[reactionIndex].id)
-                    .then(() => newsItem?.reactions?.splice(reactionIndex, 1))
+        async function deleteNewsReaction(id: string) {
+            const newsItem = newsList.value.find((newsItem) => newsItem.id === id)
+            if (!newsItem?.reactions) {
+                return
             }
+            newsItem.reactions = newsItem.reactions.filter((reaction) => reaction.user.id !== auth.user?.id)
+            await axios.delete(`api/reactions/News/${id}`)
         }
 
-        function likeClicked(newsId: string) {
-            const news = newsList.value.find((n) => n.id === newsId)
-            if (news) {
-                if (news.liked) {
-                    deleteReaction(news, 'like')
-                } else {
-                    addReaction(news, 'like')
-                }
-                news.liked = !news.liked
+        async function readNewsAlertsFromLegacy() {
+            if (route.params?.module !== 'News' && route.params?.action !== 'DetailView' && !route.params?.record) {
+                return
             }
+            const newsId = route.params.record
+            await readNewsAlerts(newsId as string)
+        }
+
+        async function readNewsAlerts(newsId: string) {
+            if (!newsId) {
+                return
+            }
+            const result = await axios.patch('api/News/update/readAlerts', { news_id: newsId })
+            alertsStore.alerts = result.data?.alerts ?? []
+            alertsStore.moreResults = result.data?.moreResults ?? false
         }
 
         return {
             wallLoading,
             newsList,
             loadNews,
-            likeClicked,
+            badge,
+            reactToNews,
+            deleteNewsReaction,
+            readNewsAlertsFromLegacy,
+            readNewsAlerts,
         }
     })()

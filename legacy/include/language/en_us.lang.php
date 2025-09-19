@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2025 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -2013,6 +2013,7 @@ $app_strings = array(
     'LBL_ALT_MOVE_COLUMN_UP' => 'Move selected entry up in the displayed list order',
     'LBL_ALT_MOVE_COLUMN_DOWN' => 'Move selected entry down in the displayed list order',
     'LBL_ALT_INFO' => 'Information',
+    'LBL_ERROR' => 'Unknown Error',
     'MSG_DUPLICATE' => 'The {0} record you are about to create might be a duplicate of an {0} record that already exists. {1} records containing similar names are listed below.<br>Click Create {1} to continue creating this new {0}, or select an existing {0} listed below.',
     'MSG_SHOW_DUPLICATES' => 'The {0} record you are about to create might be a duplicate of a {0} record that already exists. {1} records containing similar names are listed below. Click Save to continue creating this new {0}, or click Cancel to return to the module without creating the {0}.',
     'LBL_EMAIL_TITLE' => 'email address',
@@ -4552,6 +4553,7 @@ $app_strings['LBL_MINT4_COMMENTS_REACT_BTN'] = 'Like';
 $app_strings['LBL_MINT4_COMMENTS_QUOTE_SUFFIX'] = 'wrote';
 $app_strings['LBL_MINT4_COMMENTS_EDITED'] = 'Comment edited';
 $app_strings['LBL_MINT4_COMMENTS_EXPAND_BTN'] = 'Show replies';
+$app_strings['LBL_MINT4_COMMENTS_HIDE_BTN'] = 'Hide replies';
 $app_strings['LBL_MINT4_COMMENTS_REMOVED'] = 'Comment deleted';
 $app_strings['LBL_MINT4_COMMENTS_REMOVED_WITH_REPLIES_SINGULAR'] = 'Comment and 1 reply deleted';
 $app_strings['LBL_MINT4_COMMENTS_REMOVED_WITH_REPLIES_PLURAL'] = 'Comment and {x} replies deleted';
@@ -4852,4 +4854,6 @@ $app_strings['ERR_NOT_UNIQUE'] = 'Record is not unique';
 $app_strings['LBL_WORKSCHEDULE_LEAVE_CREATED'] = 'Get notified if Leave is created by your subordinate';
 $app_strings['LBL_WORKSCHEDULES_DAY_VALID'] = 'Get notified if not closed Work Schedule exists';
 $app_strings['LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS'] = 'Get notified if Work Schedule is not planned for two weeks';
-$app_strings['LBL_WORKSCHEDULESACCEPTANCE'] = 'Get notified if the work schedule is approved by the supervisor';$app_strings['LBL_UPLOAD_MAXSIZE_EXCEEDED'] = 'The file size exceeds the maximum allowed size of {size_mb} MB';
+$app_strings['LBL_WORKSCHEDULESACCEPTANCE'] = 'Get notified if the work schedule is approved by the supervisor';
+$app_strings['LBL_CLEAR_BUTTON_KANBAN_LABEL'] = 'Clear Filters';
+$app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';
