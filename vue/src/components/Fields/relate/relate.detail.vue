@@ -29,7 +29,8 @@ const props = defineProps<Props>()
 
 const recordUrl = computed(() => {
     const module = props.defs.module
-    const id = props.data.bean.attributes[props.defs.id_name]
+    const id = props.data?.bean?.attributes?.[props.defs?.id_name]
+    if (!module || !id) return ''
     return `/modules/${module}/DetailView/${id}`
 })
 </script>

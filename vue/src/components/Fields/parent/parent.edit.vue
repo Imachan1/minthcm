@@ -76,6 +76,7 @@ import { computed, ref, defineEmits } from 'vue'
 import { useModulesStore } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'
 import { usePopupsStore } from '@/store/popups'
+import { usePreferencesStore } from '@/store/preferences'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import { modulesApi } from '@/api/modules.api'
@@ -83,7 +84,14 @@ import he from 'he'
 import getFilters from '@/utils/qsOperators'
 import { FieldProps } from '../Field.model'
 
-const props = defineProps<FieldProps>()
+interface Props {
+    defs: FieldVardef
+    label: string
+    modelValue?: any
+    data?: any
+}
+
+const props = defineProps<Props>()
 const emit = defineEmits(['update:modelValue'])
 
 const DEBOUNCE_TIME = 500
@@ -92,45 +100,46 @@ let debounceTimeout: number | null = null
 const languages = useLanguagesStore()
 const popupsStore = usePopupsStore()
 const modulesStore = useModulesStore()
+const preferencesStore = usePreferencesStore()
 const menuOpen = ref(false)
 const items = ref(
-    props.data.bean.attributes[props.defs.id_name]
+    props.data.bean[props.defs.id_name]
         ? [
               {
-                  id: props.data.bean.attributes[props.defs.id_name],
+                  id: props.data.bean[props.defs.id_name],
                   name: props.modelValue,
               },
           ]
         : [],
 )
-const currentRecordItem = ref({ id: props.data.bean.attributes[props.defs.id_name], name: props.data.bean.attributes[props.defs.name] })
+const currentRecordItem = ref({ id: props.data.bean[props.defs.id_name], name: props.data.bean[props.defs.name] })
 const recordModel = computed({
     get() {
         return currentRecordItem.value
     },
     set(newVal) {
+        props.data.bean[props.defs.id_name] = newVal.id
         currentRecordItem.value = newVal
-        updateValue()
+        emit('update:modelValue', [props.defs.id_name])
     },
 })
 const currentTypeItem = ref('')
 const parentModel = computed({
     get() {
-        return props.data.bean.attributes.parent_type ?? props.defs?.default ?? ''
+        return languages.translateListValue(
+            props.data.bean.parent_type ?? props.defs?.default ?? '',
+            props.defs?.options,
+        )
     },
     set(newValue) {
-        props.data.bean.attributes[props.defs.type_name] = newValue
-        currentTypeItem.value = newValue
+        let optionKeys = languages.languages.app_list_strings[props.defs?.options]
+        let selectedKey = Object.keys(optionKeys).find((key) => optionKeys[key] === newValue)
+        props.data.bean[props.defs.type_name] = selectedKey
+        currentTypeItem.value = selectedKey
         recordModel.value = { id: '', name: '' }
-        updateValue()
+        emit('update:modelValue', [props.defs.type_name])
     },
 })
-function updateValue() {
-    emit('update:modelValue', recordModel.value.name, {
-        [props.defs.id_name]: recordModel.value.id,
-        [props.defs.type_name]: parentModel.value,
-    })
-}
 const isLoading = ref(false)
 async function fetchRecordItems(e) {
     if (recordModel.value.name.length >= 3) {
@@ -160,6 +169,7 @@ async function fetchRecordItems(e) {
             clearTimeout(debounceTimeout)
         }
         debounceTimeout = window.setTimeout(async () => {
+            const columnOrder = getOrderColumn()
             const response = await modulesApi.getListData(
                 props.data.bean.parent_type,
                 '',
@@ -167,7 +177,7 @@ async function fetchRecordItems(e) {
                 0,
                 100,
                 false,
-                props.defs.rname ?? 'name',
+                columnOrder,
                 'asc',
             )
             items.value = response.data.results
@@ -177,13 +187,19 @@ async function fetchRecordItems(e) {
         items.value = []
     }
 }
+function getOrderColumn() {
+    if (['full_name'].includes(props.defs.rname)) {
+        return preferencesStore.getFirstNameFieldByPreference()
+    }
+    return props.defs.rname ?? 'name'
+}
 function openRelatePopup() {
     popupsStore.showPopup({
         component: MintPopupRelate,
-        title: useLanguagesStore().translateListValue(props.data.bean.attributes.parent_type, 'moduleList'),
+        title: useLanguagesStore().translateListValue(props.data.bean.parent_type, 'moduleList'),
         icon: 'mdi-view-list',
         data: {
-            moduleName: props.data.bean.attributes.parent_type,
+            moduleName: props.data.bean.parent_type,
             popupMode: 'single',
             fieldToNameArray: { id: props.defs.id_name, name: props.defs.name },
             filterDefs: props.defs.filters && typeof props.defs.filters === 'object' && !Array.isArray(props.defs.filters)

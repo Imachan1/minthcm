@@ -152,6 +152,7 @@ class Preferences
             }
 
             $this->user_preferences = $preferences;
+            $this->user_preferences['global']['default_locale_name_format'] = $current_user->getPreference('default_locale_name_format');
         } catch (\Exception $e) {
             // TODO: log 'Failed to load user preferences'
             throw ($e);
