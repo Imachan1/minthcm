@@ -38,10 +38,10 @@ export default {
   },
   methods: {
     loadItemComponent (module = 'Base') {
-      let componentName = `${module}-Item`
+      let componentName = module + '-Item'
       if (!(componentName in Vue.options.components)) {
         try {
-          const componentConfig = require(`@/modules/${module}/Item`)
+          const componentConfig = require('@/modules/' + module + '/Item')
           Vue.component(componentName, componentConfig.default || componentConfig)
         } catch (e) {
           componentName = false

@@ -30,12 +30,8 @@ class KanbanViewController
         $assigned_user_ids = [];
         $items = $this->getEmptyColumnsArray();
         $order_by = $this->getOrderBy();
-        $where = $this->getWhere();
+        $where = $this->getWhereWithTable();
         $records = $this->bean->get_full_list($order_by, $where);
-        if ($records == null) {
-            $where = $this->getWhereWithTable();
-            $records = $this->bean->get_full_list($order_by, $where);
-        }
         foreach ($records as $bean) {
             $items[$bean->{$this->defs['columns_field']}][] = $this->beanToArray($bean);
             if ($bean->assigned_user_id && !in_array($bean->assigned_user_id, $assigned_user_ids)) {
@@ -51,6 +47,17 @@ class KanbanViewController
                     }
                 }
             }
+        }
+        if (file_exists('custom/modules/' . $this->bean->module_name . '/Custom' . $this->bean->module_name . 'KanbanData.php')) {
+            require_once 'custom/modules/' . $this->bean->module_name . '/Custom' . $this->bean->module_name . 'KanbanData.php';
+            $class_name = 'Custom' . $this->bean->module_name . 'KanbanData';
+        } elseif (file_exists('modules/' . $this->bean->module_name . '/' . $this->bean->module_name . 'KanbanData.php')) {
+            require_once 'modules/' . $this->bean->module_name . '/' . $this->bean->module_name . 'KanbanData.php';
+            $class_name = $this->bean->module_name . 'KanbanData';
+        }
+        if (!empty($class_name) && class_exists($class_name)) {
+            $module_kanban_controller = new $class_name();
+            $items = $module_kanban_controller->getAdditionalKanbanData($items);
         }
         echo json_encode($items);
     }
@@ -182,5 +189,4 @@ class KanbanViewController
     {
         $this->bean->{$this->defs['order_field']} = '';
     }
-
 }

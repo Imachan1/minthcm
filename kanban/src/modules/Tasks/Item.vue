@@ -52,7 +52,7 @@ export default {
   components: {
     VCard,
     VIcon,
-    FullscreenButton,
+    FullscreenButton
   },
   computed: {
     expired () {

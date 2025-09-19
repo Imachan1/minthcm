@@ -17,18 +17,18 @@
 </template>
 
 <script>
-import { VCard } from "vuetify/lib";
+import { VCard } from 'vuetify/lib'
 import FullscreenButton from '../../components/FullscreenButton.vue'
 
 export default {
-  name: "Base-Item",
+  name: 'Base-Item',
   props: {
     item: Object,
-    classesFromParent: Object,
+    classesFromParent: Object
   },
   components: {
     VCard,
-    FullscreenButton,
-  },
-};
+    FullscreenButton
+  }
+}
 </script>
