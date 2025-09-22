@@ -269,6 +269,7 @@ class ModuleController
                     'edit' => $bean->ACLAccess('edit'),
                     'delete' => $bean->ACLAccess('delete'),
                     'view' => $bean->ACLAccess('view'),
+                'admin' => $bean->ACLAccess('admin'),
                 ],
             ]
         );

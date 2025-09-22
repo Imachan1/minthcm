@@ -86,7 +86,12 @@ $GLOBALS['ACLActions'] = array(
                                     'label'=>'LBL_ACTION_ACCESS',
                                     'default'=>ACL_ALLOW_ENABLED,
                                 ),
-                            
+                        'admin'=>
+                                array(
+                                    'aclaccess'=>array(ACL_ALLOW_DEFAULT,ACL_ALLOW_NORMAL,ACL_ALLOW_ADMIN),
+                                    'label'=>'LBL_ACTION_ADMIN',
+                                    'default'=>ACL_ALLOW_ADMIN,
+                                ),
                         'view'=>
                                 array(
                                     'aclaccess'=>array(ACL_ALLOW_ALL,ACL_ALLOW_OWNER,ACL_ALLOW_DEFAULT, ACL_ALLOW_NONE),
