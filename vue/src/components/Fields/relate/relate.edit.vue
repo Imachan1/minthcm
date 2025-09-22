@@ -65,7 +65,6 @@ import { modulesApi } from '@/api/modules.api'
 import he from 'he'
 import getFilters from '@/utils/qsOperators'
 import { FieldProps } from '../Field.model'
-import getFilters from '@/utils/qsOperators'
 
 const props = defineProps<FieldProps>()
 const emit = defineEmits(['update:modelValue'])
@@ -116,15 +115,15 @@ async function fetchItems(e) {
         )
         const filters = {
             ...predefinedFilters,
-                must: [
+            must: [
                 ...(predefinedFilters.must || []),
-                    {
-                        wildcard: {
-                            name: val + '*',
-                        },
+                {
+                    wildcard: {
+                        name: val + '*',
                     },
-                ],
-            }
+                },
+            ],
+        }
         if (debounceTimeout) {
             clearTimeout(debounceTimeout)
         }
