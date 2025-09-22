@@ -15,7 +15,7 @@ class SalaryRangesListACL extends BaseListACL
         $positions_ids = $this->getRelatedPositionIds($current_user->position_id, true);
         chdir('../api/');
         $filters[] = [
-            'terms' => [$this->prefixer->modify('position_id.keyword') => $positions_ids],
+            'terms' => [$this->prefixer->modify('position_id') . ".keyword" => $positions_ids],
         ];
         return $filters;
     }
