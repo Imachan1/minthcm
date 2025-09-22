@@ -115,15 +115,15 @@ async function fetchItems(e) {
         )
         const filters = {
             ...predefinedFilters,
-                must: [
+            must: [
                 ...(predefinedFilters.must || []),
-                    {
-                        wildcard: {
-                            name: val + '*',
-                        },
+                {
+                    wildcard: {
+                        name: val + '*',
                     },
-                ],
-            }
+                },
+            ],
+        }
         if (debounceTimeout) {
             clearTimeout(debounceTimeout)
         }
