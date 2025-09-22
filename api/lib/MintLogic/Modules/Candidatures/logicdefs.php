@@ -6,13 +6,8 @@ use MintHCM\Lib\MintLogic\Hook;
 return [
     'rules' => [
         'init' => [
-            'hooks' => [Hook::ALL],
+            'hooks' => [Hook::INIT],
             'logic' => [
-                'visible' => [
-                    'work_start' => false,
-                    'training_date' => false,
-                    'reason_for_rejection' => false,
-                ],
                 'update' => function ($bean) {
                     global $current_user; /** @var User $current_user */
                     if (empty($bean->assigned_user_id)) {
@@ -37,12 +32,12 @@ return [
             ],
         ],
         'rejection' => [
-            'hooks' => [Hook::ALL, Hook::CHANGE],
+            'hooks' => [Hook::INIT, Hook::CHANGE],
             'triggerFields' => ['status'],
-            'trigger' => Formula::inArray('$status', ['Rejected']),
+            'trigger' => Formula::notInArray('$status', ['Rejected']),
             'logic' => [
                 'visible' => [
-                    'reason_for_rejection' => true,
+                    'reason_for_rejection' => false,
                 ],
             ],
         ],
