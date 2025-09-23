@@ -50,16 +50,6 @@ $viewdefs['OffboardingTemplates'] = [
                         ],
 
                     ],
-                    [
-                        [
-                            'name' => 'modified_by_name',
-                            'readonly' => true,
-                        ],
-                        [
-                            'name' => 'created_by_name',
-                            'readonly' => true,
-                        ],
-                    ],
                 ],
             ],
         ],
