@@ -49,10 +49,6 @@ $viewdefs['Rooms'] = [
                         'date_entered',
                         'date_modified',
                     ],
-                    [
-                        'created_by_name',
-                        'modified_by_name',
-                    ],
                 ],
             ],
         ],
