@@ -89,7 +89,7 @@ class UsersRepository extends EntityRepository implements UserRepositoryInterfac
      * Check that password matches existing hash
      * @param string $password Plaintext password
      */
-    private function checkPassword(Users $user, $password): bool //CR mamy koilizje bo podczas przebudowy ten plik buduje się na nowo i wywali tą funkcję. Może przenieść to do repository?
+    private function checkPassword(Users $user, $password): bool
     {
         if (empty($user->user_hash)) {
             return false;
