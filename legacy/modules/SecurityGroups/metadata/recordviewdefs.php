@@ -7,14 +7,15 @@ $viewdefs['SecurityGroups'] = [
         'subpanels',
     ],
     'panels' => [
-
         'header' => [
             'component' => 'MintPanelRecordHeader',
             'data' => [
                 'fields' => [
-                    ['name'],
-                    ['parent_name'],
-                    ['position_leader_name'],
+                    [
+                        'name',
+                        'parent_name',
+                        'position_leader_name',
+                    ],
                 ],
                 'actions' => [
                     'Audit',
@@ -22,7 +23,6 @@ $viewdefs['SecurityGroups'] = [
                 ],
             ],
         ],
-
         'mainPanel' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
@@ -90,7 +90,6 @@ $viewdefs['SecurityGroups'] = [
                 ],
             ],
         ],
-
         'subpanels' => [
             'component' => 'MintPanelSubpanels',
         ],

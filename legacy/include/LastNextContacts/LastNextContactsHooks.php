@@ -39,7 +39,7 @@ class LastNextContactsHooks extends LastNextContactsBase
     {
         foreach (LastNextContactsConfig::get('last_next_modules') as $module) {
             $module_lowercase = strtolower($module);
-            if (is_object($bean->$module_lowercase)) {
+            if (isset($bean->$module_lowercase) && is_object($bean->$module_lowercase)) {
                 $beans = $this->getAllRelatedBeans($bean->$module_lowercase->rows, $module);
                 if (is_countable($beans) ? count($beans) > 0 : false) {
                     $this->setSessionValue($module_lowercase, $beans);

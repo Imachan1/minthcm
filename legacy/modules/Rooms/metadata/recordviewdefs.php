@@ -9,6 +9,8 @@ $viewdefs['Rooms'] = [
                 'fields' => [
                     [
                         'availability',
+                        'number_of_seats',
+                        'room_surface',
                     ],
                 ],
                 'actions' => [
