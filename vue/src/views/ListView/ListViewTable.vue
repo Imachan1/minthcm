@@ -13,7 +13,7 @@
         :show-select="store.itemsSelectable"
         v-model="store.selected"
         @update:options="store.options = $event"
-        :no-data-text="languages.label('LBL_ESLIST_NO_DATA_AVAILABLE')"
+        :no-data-text="store.error ? languages.label('LBL_ESLIST_FETCHING_DATA_ERROR') : languages.label('LBL_ESLIST_NO_DATA_AVAILABLE')"
         hover
     >
         <template v-slot:item.name="{ item }">

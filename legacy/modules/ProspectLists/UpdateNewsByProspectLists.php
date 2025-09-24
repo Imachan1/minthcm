@@ -146,7 +146,7 @@ class UpdateNewsByProspectLists
         $report_results = $assigned_advanced_report->getSelectionResults($reportParams);
         $report_employee_ids = [];
         foreach ($report_results as $report_result) {
-            if ('Employees' == $report_result['sugarRecordModule']) {
+            if (in_array($report_result['sugarRecordModule'], ['Employees', 'Users'])) {
                 $report_employee_ids[] = $report_result['sugarRecordId'];
             }
         }

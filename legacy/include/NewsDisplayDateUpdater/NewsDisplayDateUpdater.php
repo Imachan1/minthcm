@@ -56,7 +56,7 @@ class NewsDisplayDateUpdater {
    protected function getNewsIds() {
       global $db;
       $results = array();
-      $sql = "SELECT id FROM news WHERE news_type = 'reminder' AND news_status = 'published' AND (display_date IS NULL OR display_date = '' OR display_date < CURDATE() - INTERVAL 30 DAY) AND deleted = 0 ORDER BY display_date ASC LIMIT " . self::LIMIT;
+      $sql = "SELECT id FROM news WHERE news_type = 'reminder' AND news_status = 'published' AND (display_date IS NULL OR display_date < CURDATE() - INTERVAL 30 DAY) AND deleted = 0 ORDER BY display_date ASC LIMIT " . self::LIMIT;
       $result = $db->query($sql);
       while ( $row = $db->fetchByAssoc($result) ) {
          $results[] = $row['id'];
