@@ -102,7 +102,7 @@ $viewdefs['Candidatures'] = [
         ],
         'other' => [
             'component' => 'MintPanelRecordPanel',
-            'title' => 'LBL_OTHER',
+            'title' => 'LBL_PANEL_ASSIGNMENT',
             'data' => [
                 'fields' => [
                     [
