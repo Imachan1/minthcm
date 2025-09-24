@@ -21,40 +21,10 @@
                             v-text="subpanel.records.length"
                         />
                     </div>
-                    <MintButton
-                        v-if="
-                            acl.hasAccess(subpanel.module, 'edit', true) &&
-                            subpanel.properties.top_buttons?.find(
-                                (btn) => btn.widget_class === 'SubPanelTopButtonQuickCreate',
-                            )
-                        "
-                        class="mint-subpanel-create-btn"
-                        :variant="expandedSubpanels.includes(subpanel.key) ? 'primary' : 'regular'"
-                        :text="languages.label('LBL_CREATE_BUTTON_LABEL')"
-                        icon="mdi-plus"
-                        @click.stop="
-                            () =>
-                                $router.push({
-                                    name: 'module-view',
-                                    params: { module: subpanel.module, action: 'EditView' },
-                                    query: {
-                                        return_action: 'DetailView',
-                                        parent_id: store.bean.id,
-                                        return_id: store.bean.id,
-                                        return_module: store.bean.module,
-                                        parent_type: store.bean.module,
-                                        parent_name: store.bean.attributes.name,
-                                        candidate_id: store.bean.module === 'Candidates' ? store.bean.id : null,
-                                        candidate_name:
-                                            store.bean.module === 'Candidates' ? store.bean.attributes.name : null,
-                                        employee_id: store.bean.module === 'Employees' ? store.bean.id : null,
-                                        employee_name:
-                                            store.bean.module === 'Employees' ? store.bean.attributes.name : null,
-                                        employees_name:
-                                            store.bean.module === 'Employees' ? store.bean.attributes.name : null,
-                                    },
-                                })
-                        "
+                    <MintPanelSubpanelsButtons
+                        :module="$route.params.module"
+                        :subpanel="subpanel"
+                        :isExpanded="expandedSubpanels.includes(subpanel.key)"
                     />
                 </v-expansion-panel-title>
                 <v-expansion-panel-text class="mint-subpanel-content">
@@ -70,9 +40,7 @@ import { ref, onMounted } from 'vue'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import MintDataTable from '@/components/MintDataTable/MintDataTable.vue'
-import MintButton from '@/components/MintButtons/MintButton.vue'
-import { useBackendStore } from '@/store/backend'
-import { useACL } from '@/composables/useACL'
+import MintPanelSubpanelsButtons from './MintPanelSubpanelsButtons.vue'
 
 onMounted(() => {
     store.fetchLanguagesForSubpanels()
@@ -81,9 +49,6 @@ onMounted(() => {
 
 const store = useRecordViewStore()
 const languages = useLanguagesStore()
-const backend = useBackendStore()
-const acl = useACL()
-
 const expandedSubpanels = ref<string[]>([])
 </script>
 

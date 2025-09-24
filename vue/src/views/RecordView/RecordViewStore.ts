@@ -18,6 +18,20 @@ interface RecordViewDefs {
     panels: { [key: string]: Panel }
 }
 
+export interface Bean {
+    id: string
+    module_name: string
+    acl_access: { [key: string]: boolean }
+    attributes: { [key: string]: any }
+    syncAttributes: { [key: string]: any }
+    dirtyFields: Set<string>
+}
+
+interface RouteParams {
+    module: string
+    id: string
+}
+
 export const useRecordViewStore = defineStore('recordview', () => {
     const modulesStore = useModulesStore()
     const route = useRoute()
@@ -136,6 +150,18 @@ export const useRecordViewStore = defineStore('recordview', () => {
         }, {} as SubpanelsData)
     }
 
+    async function fetchSubpanelData(routeParams: RouteParams, subpanelKey: string) {
+        const result = await axios.get(`api/${routeParams.module}/subpanel/${subpanelKey}/${routeParams.id}`, {
+            validateStatus: () => true,
+        })
+        if (result.data) {
+            subpanelsData.value = {
+                ...subpanelsData.value,
+                [subpanelKey]: result.data,
+            }
+        }
+    }
+
     interface SubpanelsData {
         [key: string]: {
             [id: string]: {
@@ -169,6 +195,7 @@ export const useRecordViewStore = defineStore('recordview', () => {
         panels,
         subpanels,
         fetchSubpanelsData,
+        fetchSubpanelData,
         fetchLanguagesForSubpanels,
         columns,
         updateField,

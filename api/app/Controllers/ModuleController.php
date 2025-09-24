@@ -303,6 +303,44 @@ class ModuleController
         return $response;
     }
 
+    public function link(Request $request, Response $response, array $args): Response
+    {
+        $module = $this->getModuleFromRoute($request);
+        $id = $request->getAttribute('id');
+        $link_name = $request->getAttribute('link_name');
+
+        chdir('../legacy/');
+        $focus = BeanFactory::getBean($module, $id);
+        if (empty($focus->id)) {
+            $response = $response->withStatus(404);
+            return $response;
+        }
+        $ids = $request->getAttribute('ids');
+
+        if (!$focus->load_relationship($link_name) || empty($ids)) {
+            $response = $response->withStatus(400);
+            return $response;
+        }
+        $errors = [];
+        foreach ($ids as $related_id) {
+            $result = $focus->$link_name->add($related_id);
+            if (!$result) {
+                $errors[] = 'Failed to link ' . $related_id . ' to ' . $focus->id . ' via ' . $link_name;
+            }
+        }
+
+        chdir('../api/');
+
+        if(!empty($errors)) {
+            $response = $response->withStatus(400);
+            $response->getBody()->write(json_encode(['errors' => $errors]));
+            return $response;
+        }
+
+        $response = $response->withStatus(200);
+        return $response; 
+    }
+
     protected function mergeRecordData($bean)
     {
         return [
