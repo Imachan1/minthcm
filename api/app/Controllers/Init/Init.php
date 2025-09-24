@@ -105,7 +105,8 @@ class Init
             in_array('reload_module_menu', $rebuild_array)
             || (!$only_minimum_data && empty($rebuild_array))
             || $response_body['user']['id'] !== $this->user_id
-            || false !== $response_body['user']['preferences']['reload_module_menu'] || $this->request_language !== $_SESSION["authenticated_user_language"]
+            || false !== $response_body['user']['preferences']['reload_module_menu'] 
+            || $this->request_language !== $_SESSION["authenticated_user_language"]
         ) {
             [$modules_menu, $modules_data] = $this->getModules();
             $response_body['menu_modules'] = $modules_menu;
