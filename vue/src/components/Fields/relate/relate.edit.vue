@@ -65,7 +65,6 @@ import { modulesApi } from '@/api/modules.api'
 import he from 'he'
 import getFilters from '@/utils/qsOperators'
 import { FieldProps } from '../Field.model'
-import getFilters from '@/utils/qsOperators'
 
 const props = defineProps<FieldProps>()
 const emit = defineEmits(['update:modelValue'])

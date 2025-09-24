@@ -3,9 +3,9 @@ import { computed, ref, watch } from 'vue'
 import { useLogic } from './useLogic'
 import { useDebounceFn, useThrottleFn } from '@vueuse/core'
 import { useRouter } from 'vue-router'
-import { fieldConfig } from '@/components/Fields/Field.config'
 import { useModulesStore } from '@/store/modules'
 import { useField } from '@/components/Fields/useField'
+import { useLink } from './useLink'
 
 export const useBean = (module: string, id: string) => {
     const router = useRouter()
@@ -15,6 +15,7 @@ export const useBean = (module: string, id: string) => {
     const syncAttributes = ref<{ [key: string]: any }>({})
     const aclAccess = ref<{ [key: string]: boolean }>({})
     const dirtyFields = ref(new Set<string>())
+    const links = ref<Map<string, ReturnType<typeof useLink>>>(new Map())
 
     const logic = useLogic(module)
 
@@ -70,6 +71,10 @@ export const useBean = (module: string, id: string) => {
         return errors
     })
 
+    const fieldDefs = computed<{ [key: string]: any }>(() => {
+        return modulesStore.modules[module]?.vardefs ?? {}
+    })
+
     const name = computed(() => {
         if (syncAttributes.value.name) {
             return syncAttributes.value.name
@@ -114,6 +119,20 @@ export const useBean = (module: string, id: string) => {
         })
     }
 
+    function setAttributesFromQuery(query: { [key: string]: string | (string | null)[] | null | undefined }) {
+        const fieldsToUpdate: { [fieldName: string]: any } = {}
+        Object.entries(query)
+            .filter(([key]) => fieldDefs.value[key])
+            .map(([key, value]) => {
+                fieldsToUpdate[key] = value
+            })
+        if (query?.return_relationship && query?.return_id) {
+            const link = loadRelationship(query.return_relationship as string)
+            if (link && !link.relateFieldName) link.add(query.return_id as string)
+        }
+        updateFields(fieldsToUpdate)
+    }
+
     async function retrieve() {
         isRetrieving.value = true
         const response = await axios.get(`api/${module}/Get${id ? `/${id}` : ''}`)
@@ -145,6 +164,19 @@ export const useBean = (module: string, id: string) => {
         }
     }
 
+    function loadRelationship(name: string): ReturnType<typeof useLink> | null {
+        if (!name) return null
+        if (!Object.keys(fieldDefs.value?.[name] || {}).length) {
+            const relatedLinkField = Object.keys(fieldDefs.value)
+                .find(fieldName => fieldDefs.value?.[fieldName]?.type === 'link'
+                    && fieldDefs.value?.[fieldName]?.relationship === name)
+            if (!relatedLinkField) return null
+            name = relatedLinkField
+        } else if (fieldDefs.value[name]?.type !== 'link' || !fieldDefs.value[name]?.relationship) return null
+        if (!links.value.has(name)) links.value.set(name, useLink(name, fieldDefs.value[name].relationship, { module, id, fieldDefs }))
+        return links.value.get(name)
+    }
+
     async function save() {
         isDirty.value = true
         if (!isValid.value) {
@@ -168,6 +200,7 @@ export const useBean = (module: string, id: string) => {
             const response = await axios.patch(`api/${module}/Update${id ? `/${id}` : ''}`, {
                 record_data: attributesToSave.value,
                 files,
+                links: Object.fromEntries([...links.value].map(([name, link]) => [name, link.getChanges()]))
             })
             if (!id && response.data.id) {
                 router.push({
@@ -254,5 +287,8 @@ export const useBean = (module: string, id: string) => {
         retrieve,
         save,
         markDeleted,
+        fieldDefs,
+        setAttributesFromQuery,
+        loadRelationship,
     }
 }

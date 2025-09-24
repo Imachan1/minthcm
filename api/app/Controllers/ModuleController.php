@@ -50,6 +50,7 @@ use MintHCM\Lib\MintLogic\MintLogic;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
+use SugarBean;
 
 class ModuleController
 {
@@ -75,6 +76,7 @@ class ModuleController
         $response = $response->withHeader('Content-type', 'application/json');
         $module = $this->getModuleFromRoute($request);
         chdir('../legacy/');
+        $links = $request->getAttribute("links") ?? [];
 
         $current_time_zone = date_default_timezone_get();
         date_default_timezone_set('UTC');
@@ -98,6 +100,7 @@ class ModuleController
             }
         }
         $bean->save(false);
+        $this->handleLinks($bean, $links);
         $bean->retrieve();
 
         date_default_timezone_set($current_time_zone);
@@ -120,6 +123,7 @@ class ModuleController
         chdir('../legacy/');
         $record_data = $request->getAttribute("record_data");
         $files = $request->getAttribute("files") ?? [];
+        $links = $request->getAttribute("links") ?? [];
         $record_id = $request->getAttribute("id");
 
         $current_time_zone = date_default_timezone_get();
@@ -152,6 +156,7 @@ class ModuleController
         }
         $this->handleFiles($bean, $files);
         $bean->save(false);
+        $this->handleLinks($bean, $links);
         BeanFactory::unregisterBean($bean->module_name, $bean->id);
         $bean = BeanFactory::getBean($bean->module_name, $bean->id);
         // $bean->retrieve();
@@ -228,7 +233,6 @@ class ModuleController
         chdir('../api/');
         $response->getBody()->write(json_encode($result));
         return $response;
-
     }
 
     public function delete(Request $request, Response $response, array $args): Response
@@ -293,7 +297,6 @@ class ModuleController
                 foreach ($record->field_defs as $field_name => $field_def) {
                     $return_list[$record_id][$field_name] = $record->$field_name;
                 }
-
             }
             $response->getBody()->write(json_encode($return_list));
             return $response;
@@ -331,14 +334,14 @@ class ModuleController
 
         chdir('../api/');
 
-        if(!empty($errors)) {
+        if (!empty($errors)) {
             $response = $response->withStatus(400);
             $response->getBody()->write(json_encode(['errors' => $errors]));
             return $response;
         }
 
         $response = $response->withStatus(200);
-        return $response; 
+        return $response;
     }
 
     protected function mergeRecordData($bean)
@@ -405,6 +408,35 @@ class ModuleController
                         $upload_file->final_move($file_name, $field_name);
                     }
                     fclose($tmp_file);
+                }
+            }
+            chdir($current_dir);
+        }
+    }
+
+    protected function handleLinks(SugarBean $bean, array $links = [])
+    {
+        if (!empty($links)) {
+            $current_dir = getcwd();
+            chdir('../legacy/');
+            foreach ($links as $link_name => $link_data) {
+                if (empty($link_data)) {
+                    continue;
+                }
+                if (!$bean->load_relationship($link_name)) {
+                    $GLOBALS['log']->error("Failed to load relationship {$link_name} for module {$bean->module_name} and record {$bean->id}");
+                    continue;
+                }
+                if (!empty($link_data['beansToAdd']) && is_array($link_data['beansToAdd'])) {
+                    foreach ($link_data['beansToAdd'] as $related_id => $related_bean) {
+                        $additionalValues = $related_bean['additionalValues'] ?? [];
+                        $bean->$link_name->add($related_id, $additionalValues);
+                    }
+                }
+                if (!empty($link_data['beansToRemove']) && is_array($link_data['beansToRemove'])) {
+                    foreach ($link_data['beansToRemove'] as $related_id) {
+                        $bean->$link_name->delete($bean->id, $related_id);
+                    }
                 }
             }
             chdir($current_dir);

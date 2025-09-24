@@ -29,7 +29,6 @@ export abstract class SubpanelAction {
         const self = this.constructor as typeof SubpanelAction
         const requiredACL = this.options.acl || self.ACL
         const aclHelper = useACL()
-        debugger
         return requiredACL.every((acl) => aclHelper.hasAccess(this.subpanel.module, acl, true))
     }
 

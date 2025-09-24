@@ -97,6 +97,22 @@ $routes = array(
                     },
                 ',
             ),
+            "links" => array(
+                "type" => ArrayType::class,
+                "required" => false,
+                "desc" => "Related records to link/unlink",
+                "example" => '
+                    "accounts": {
+                        "beansToAdd": {
+                            "223dee27-b9e7-432a-8da9-c84cc0770035": {
+                                "id": "223dee27-b9e7-432a-8da9-c84cc0770035",
+                                "additionalValues": {}
+                            }
+                        },
+                        "beansToRemove": ["223dee27-b9e7-432a-8da9-c84cc0770035"],
+                    },
+                ',
+            ),
         ),
     ),
     "update" => array(
@@ -137,6 +153,22 @@ $routes = array(
                     "files": {
                         "photo": Base64 encoded file content,
                         "document": Base64 encoded file content,
+                    },
+                ',
+            ),
+            "links" => array(
+                "type" => ArrayType::class,
+                "required" => false,
+                "desc" => "Related records to link/unlink",
+                "example" => '
+                    "accounts": {
+                        "beansToAdd": {
+                            "223dee27-b9e7-432a-8da9-c84cc0770035": {
+                                "id": "223dee27-b9e7-432a-8da9-c84cc0770035",
+                                "additionalValues": {}
+                            }
+                        },
+                        "beansToRemove": ["223dee27-b9e7-432a-8da9-c84cc0770035"],
                     },
                 ',
             ),

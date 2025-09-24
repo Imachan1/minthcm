@@ -42,6 +42,10 @@ class ModulesApi extends MintApi {
             preferences: preferences,
         })
     }
+
+    public async fetchRelatedRecords(module: string, link: string, id: string) {
+        return await this.instance.get(`${module}/subpanel/${link}/${id}`)
+    }
 }
 
 export const modulesApi = new ModulesApi()

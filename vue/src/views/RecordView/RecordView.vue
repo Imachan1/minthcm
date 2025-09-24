@@ -12,10 +12,12 @@ import MintPanel from '@/components/MintPanel/MintPanel.vue'
 import { useRecordViewStore } from './RecordViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useBackendStore } from '@/store/backend'
+import { useRoute } from 'vue-router'
 
 const store = useRecordViewStore()
 const languages = useLanguagesStore()
 const backend = useBackendStore()
+const route = useRoute()
 
 store.resetBean()
 
@@ -23,6 +25,9 @@ onMounted(async () => {
     await store.bean.init()
     if (store.bean.isNew) {
         store.view = 'edit'
+        if (Object.keys(route.query).length) {
+            store.bean.setAttributesFromQuery(route.query)
+        }
     }
 })
 
