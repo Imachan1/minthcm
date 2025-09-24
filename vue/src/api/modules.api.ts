@@ -2,7 +2,7 @@ import { mintApi } from './api'
 
 class ModulesApi {
     public async getListInit(module_name: string) {
-        return await mintApi.get(module_name)
+        return await mintApi.get(`${module_name}`)
     }
 
     public async getListData(
@@ -29,7 +29,7 @@ class ModulesApi {
     }
 
     public async forgetPassword(username: string, email: string) {
-        return await mintApi.post('api/forget_password', {
+        return await mintApi.post('forget_password', {
             data: {
                 username,
                 email,

@@ -46,11 +46,13 @@
 
 namespace MintHCM\Utils;
 
+use Exception;
+
 #[\AllowDynamicProperties]
 
 class CustomLoader
 {
-    public static function getObject($class)
+    public static function getObject($class, ...$args)
     {
         $classReflection = new \ReflectionClass($class);
         $custom_class = str_replace('MintHCM', 'MintHCM\Custom', $classReflection->getName());
@@ -58,11 +60,11 @@ class CustomLoader
             $class = $custom_class;
         }
         
-        $arguments = static::prepareConstructorArguments($class);
+        $arguments = static::prepareConstructorArguments($class, $args);
         return new $class(...$arguments);
     }
 
-    protected static function prepareConstructorArguments(string $class): array
+    protected static function prepareConstructorArguments(string $class, array $args): array
     {
         global $mint_app;
 
@@ -75,9 +77,13 @@ class CustomLoader
         }
 
         $parameters = $constructor->getParameters();
-        return array_map(function ($parameter) use ($container) {
+        return array_map(function ($parameter) use ($container, &$args) {
             $dependencyType = $parameter->getType()->getName();
-            return $container->get($dependencyType);
+            try {
+                return $container->get($dependencyType);
+            } catch (Exception $e) {
+                return array_shift($args);
+            }
         }, $parameters);
     }
 }

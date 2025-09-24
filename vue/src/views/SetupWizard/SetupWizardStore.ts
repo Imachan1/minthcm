@@ -71,7 +71,7 @@ export const useSetupWizardStore = defineStore('setup-wizard', () => {
     async function finish() {
         isLoading.value = true
         try {
-            const response = await mintApi.post('api/confirm_login_wizard', setupData.value)
+            const response = await mintApi.post('confirm_login_wizard', setupData.value)
             if (response.status === 200) {
                 if (auth.user) {
                     auth.user.show_login_wizard = false

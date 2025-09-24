@@ -167,7 +167,7 @@ async function submitResetPassword() {
     if (!isPasswordValid.value) {
         return
     }
-    const response = await mintApi.post('api/reset_forget_password', {
+    const response = await mintApi.post('reset_forget_password', {
         username: username.value,
         new_password: password.value,
         token: token.value,

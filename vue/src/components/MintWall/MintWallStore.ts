@@ -35,7 +35,7 @@ export const useMintWallStore = (key = 'mint') =>
         async function loadNews() {
             wallLoading.value = true
             newsList.value = []
-            const apiResponse = await mintApi.get('api/News/drawer/list')
+            const apiResponse = await mintApi.get('News/drawer/list')
             if (apiResponse.data) {
                 for (const newsItem of apiResponse.data) {
                     newsItem.is_read = isRead(newsItem.id)
@@ -76,7 +76,7 @@ export const useMintWallStore = (key = 'mint') =>
                     },
                 })
             }
-            await mintApi.post(`api/reactions/News/${id}`, {
+            await mintApi.post(`reactions/News/${id}`, {
                 reaction_type: reactionType,
             })
         }
@@ -87,7 +87,7 @@ export const useMintWallStore = (key = 'mint') =>
                 return
             }
             newsItem.reactions = newsItem.reactions.filter((reaction) => reaction.user.id !== auth.user?.id)
-            await mintApi.delete(`api/Reactions/${id}`)
+            await mintApi.delete(`Reactions/${id}`)
         }
 
         async function readNewsAlertsFromLegacy() {
@@ -102,7 +102,7 @@ export const useMintWallStore = (key = 'mint') =>
             if (!newsId) {
                 return
             }
-            const result = await mintApi.patch('api/News/update/readAlerts', { news_id: newsId })
+            const result = await mintApi.patch('News/update/readAlerts', { news_id: newsId })
             alertsStore.alerts = result.data?.alerts ?? []
             alertsStore.moreResults = result.data?.moreResults ?? false
         }

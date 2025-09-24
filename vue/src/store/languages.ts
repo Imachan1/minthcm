@@ -51,7 +51,7 @@ export const useLanguagesStore = defineStore('languages', () => {
             return null
         }
         fetchedLanguages.value[module] = true
-        const response = await mintApi.get('api/languages', {
+        const response = await mintApi.get('languages', {
             params: {
                 modules: module,
             },

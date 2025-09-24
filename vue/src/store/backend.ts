@@ -57,7 +57,7 @@ export const useBackendStore = defineStore('backend', () => {
             if (typeof caches === "undefined") {
                 console.warn('Cache API not supported.')
             } else {
-                await caches.match('api/init').then(function(response) {
+                await caches.match('init').then(function(response) {
                     if (!response) {
                         return;
                     }
@@ -73,7 +73,7 @@ export const useBackendStore = defineStore('backend', () => {
             if(mintRebuildID === false){
                 mintRebuildID = '';
             }
-            const initResponse = await mintApi.post<InitResponse>('api/init', {
+            const initResponse = await mintApi.post<InitResponse>('init', {
                 mintRebuildID: mintRebuildID,
                 current_language: current_language,
                 user_id: cachedConfig.value?.user?.id ?? ''
@@ -122,7 +122,7 @@ export const useBackendStore = defineStore('backend', () => {
             }
 
                 caches.open('mint-rebuild').then(function(cache) {
-                    cache.put('api/init', new Response(JSON.stringify(initData.value)));
+                    cache.put('init', new Response(JSON.stringify(initData.value)));
                 })
             }
             preferences.global = initData.value.global ?? null
@@ -133,7 +133,7 @@ export const useBackendStore = defineStore('backend', () => {
         } catch (err) {
             if ((err as AxiosError).response?.status === 401) {
                 const loginData = (
-                    await mintApi.get('api/login', {
+                    await mintApi.get('login', {
                         params: {
                             lang: localStorage.getItem('currentLang') ?? 'en_us',
                         },

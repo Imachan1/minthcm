@@ -160,7 +160,7 @@ async function search() {
     if (standardizedQuery.value?.length >= 4) {
         isSearching.value = true
         try {
-            const response = await mintApi.get('api/global_search', {
+            const response = await mintApi.get('global_search', {
                 params: {
                     query: standardizedQuery.value,
                 },

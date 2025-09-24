@@ -47,6 +47,7 @@
 namespace {$entityNamespace};
 
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
 {if !empty($additionalUseStatements)}
 {foreach from=$additionalUseStatements item=useStatement}
 {$useStatement};
@@ -70,7 +71,9 @@ class {$className}
 {foreach from=$fields item=field}
     /**
     {if $field.isId}
-    * @ORM\Id
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
     {/if}
     {if $field.columnAttributes}
     * @ORM\Column({$field.columnAttributes})

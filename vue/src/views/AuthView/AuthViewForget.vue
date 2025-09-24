@@ -62,7 +62,7 @@ onMounted(() => {
 async function handleForgetBtnClick() {
     forgetError.value = ''
     try {
-        await mintApi.post('api/forget_password', {
+        await mintApi.post('forget_password', {
             username: authViewStore.username,
             email: email.value,
         }, { rawError: true })

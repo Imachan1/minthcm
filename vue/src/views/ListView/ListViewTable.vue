@@ -126,7 +126,7 @@ const coreActions = {
         onClick: async (item) => {
             const confirmMessage = `${languages.label('LBL_ESLIST_DELETE_RECORD_CONFIRM_BODY')} ${item.name}?`
             if (await popups.confirm(confirmMessage)) {
-                await mintApi.delete(`api/${url.module}/${item.id}`)
+                await mintApi.delete(`${url.module}/${item.id}`)
                 store.getData()
             }
         },

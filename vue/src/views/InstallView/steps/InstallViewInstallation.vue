@@ -62,7 +62,7 @@ onUnmounted(() => {
 
 async function fetchStatus() {
     try {
-        const response = await mintApi.get('api/install/status', {rawError: true})
+        const response = await mintApi.get('install/status', {rawError: true})
         if (Object.keys(response.data || {}).length !== Object.keys(status.value).length) {
             status.value = response.data || {}
         }

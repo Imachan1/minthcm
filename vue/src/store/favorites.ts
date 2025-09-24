@@ -14,7 +14,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
     const favorites = ref<Favorite[]>([])
 
     async function fetch() {
-        const response = await mintApi.get('api/Favorites')
+        const response = await mintApi.get('Favorites')
         favorites.value = response.data
     }
 

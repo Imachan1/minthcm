@@ -63,7 +63,7 @@ export const useMintCommentsStore = defineStore('mint-comments', () => {
 
     async function fetchInitialData() {
         const response = await mintApi.get<InitialResponse>(
-            `api/comments/${route.params.module}/${route.params.record}/init`,
+            `comments/${route.params.module}/${route.params.record}/init`,
         )
         auth.user = response.data.user
         languages.languages = {
@@ -78,13 +78,13 @@ export const useMintCommentsStore = defineStore('mint-comments', () => {
     }
 
     async function fetchComments() {
-        const response = await mintApi.get(`api/comments/${route.params.module}/${route.params.record}`)
+        const response = await mintApi.get(`comments/${route.params.module}/${route.params.record}`)
         comments.value = response.data ?? []
     }
 
     async function addComment(description: string, replyTo?: string) {
         isLoading.value = true
-        await mintApi.post(`api/comments/${route.params.module}/${route.params.record}`, {
+        await mintApi.post(`comments/${route.params.module}/${route.params.record}`, {
             description,
             reply_to_id: replyTo,
         })
@@ -93,7 +93,7 @@ export const useMintCommentsStore = defineStore('mint-comments', () => {
 
     async function updateComment(id: string, attributes: { [field: string]: unknown }) {
         isLoading.value = true
-        await mintApi.patch(`api/comments/${route.params.module}/${route.params.record}/${id}`, {
+        await mintApi.patch(`comments/${route.params.module}/${route.params.record}/${id}`, {
             attributes,
         })
         isLoading.value = false
@@ -161,7 +161,7 @@ export const useMintCommentsStore = defineStore('mint-comments', () => {
                 },
             })
         }
-        await mintApi.post(`api/reactions/Comments/${id}`, {
+        await mintApi.post(`reactions/Comments/${id}`, {
             reaction_type: reactionType,
         })
     }
@@ -172,7 +172,7 @@ export const useMintCommentsStore = defineStore('mint-comments', () => {
             return
         }
         comment.reactions = comment.reactions.filter((reaction) => reaction.user.id !== auth.user?.id)
-        await mintApi.delete(`api/reactions/Comments/${id}`)
+        await mintApi.delete(`reactions/Comments/${id}`)
     }
 
     return {

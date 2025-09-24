@@ -49,9 +49,9 @@ namespace MintHCM\Api\Repositories;
 use Doctrine\ORM\EntityRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
-use MintHCM\Api\Entities\User;
+use MintHCM\Api\Entities\Users;
 
-class UserRepository extends EntityRepository implements UserRepositoryInterface
+class UsersRepository extends EntityRepository implements UserRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -72,7 +72,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         }
         chdir('../api/');
         
-        /** @var User */
+        /** @var Users */
         $user = $this->findOneBy(['user_name' => $username, 'deleted' => false]);
         if (!$user) {
             throw new \InvalidArgumentException('No user found with this username: ' . $username);
@@ -89,7 +89,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
      * Check that password matches existing hash
      * @param string $password Plaintext password
      */
-    private function checkPassword(User $user, $password): bool //CR mamy koilizje bo podczas przebudowy ten plik buduje się na nowo i wywali tą funkcję. Może przenieść to do repository?
+    private function checkPassword(Users $user, $password): bool //CR mamy koilizje bo podczas przebudowy ten plik buduje się na nowo i wywali tą funkcję. Może przenieść to do repository?
     {
         if (empty($user->user_hash)) {
             return false;

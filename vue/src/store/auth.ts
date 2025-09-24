@@ -25,7 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
 
         const languages = useLanguagesStore()
         try {
-            const response = await mintApi.post('api/login', {
+            const response = await mintApi.post('login', {
                 client_secret: process.env.CLIENT_SECRET ?? '',
                 username,
                 password,
@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     async function logout() {
-        const response = await mintApi.post('api/logout')
+        const response = await mintApi.post('logout')
         location.href = ''
     }
 

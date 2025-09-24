@@ -102,8 +102,8 @@ class ComposerStaticInit7e06883b42b234786d0786e036dc6809
             'Doctrine\\Common\\Cache\\' => 22,
             'Doctrine\\Common\\Annotations\\' => 28,
             'Doctrine\\Common\\' => 16,
-            'DeepCopy\\' => 9,
             'Defuse\\Crypto\\' => 14,
+            'DeepCopy\\' => 9,
             'DI\\' => 3,
         ),
         'B' => 
@@ -329,13 +329,13 @@ class ComposerStaticInit7e06883b42b234786d0786e036dc6809
             0 => __DIR__ . '/..' . '/doctrine/common/src',
             1 => __DIR__ . '/..' . '/doctrine/event-manager/src',
         ),
-        'DeepCopy\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
-        ),
         'Defuse\\Crypto\\' => 
         array (
             0 => __DIR__ . '/..' . '/defuse/php-encryption/src',
+        ),
+        'DeepCopy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
         'DI\\' => 
         array (

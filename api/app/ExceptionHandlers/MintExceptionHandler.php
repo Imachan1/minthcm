@@ -61,10 +61,10 @@ class MintExceptionHandler
     {
         $code = $exception->getCode();
 
-        $response = (new Response)->withStatus($code ?? 500);
+        $response = (new Response)->withStatus($code ?: 500);
         $response->getBody()->write(json_encode([
             'message' => $exception->getMessage(),
-            'code' => $code ?? 500,
+            'code' => $code ?: 500,
         ], JSON_PRETTY_PRINT));
         return $response;
     }

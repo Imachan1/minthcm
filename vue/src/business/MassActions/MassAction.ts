@@ -14,7 +14,7 @@ export abstract class MassAction {
 
     protected async sendRequest(): Promise<AxiosResponse> {
         const className = this.constructor.name
-        return await mintApi.post(`api/${this.module}/MassActions/${className}`, {
+        return await mintApi.post(`${this.module}/MassActions/${className}`, {
             ids: this.ids,
         })
     }

@@ -403,9 +403,14 @@ class EntityCreator
     protected function createEntity()
     {
         $smarty = new Smarty();
-        $smarty->setTemplateDir(dirname(__FILE__) . self::TPL_DIR_PATH);
+        $smarty_dir_path = dirname(__FILE__) . self::TPL_DIR_PATH;
+        $smarty->setTemplateDir($smarty_dir_path);
         $smarty->assign($this->data);
-        $classCode = $smarty->fetch(self::ENTITY_TEMPLATE);
+        if (file_exists($smarty_dir_path . '/' . $this->moduleName . '.tpl')) {
+            $classCode = $smarty->fetch($this->moduleName . '.tpl');
+        } else {
+            $classCode = $smarty->fetch(self::ENTITY_TEMPLATE);
+        }
 
         chdir('../api');
         $filePath = self::ENTITY_FOLDER_PATH . $this->moduleName . '.php';

@@ -12,7 +12,7 @@ export const useRecentsStore = defineStore('recents', () => {
     const recents = ref<Recent[]>([])
 
     async function fetch() {
-        const response = await mintApi.get('api/Trackers')
+        const response = await mintApi.get('Trackers')
         recents.value = response.data
     }
 

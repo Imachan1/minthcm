@@ -34,7 +34,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     async function fetchInitialData() {
         kudos.value = []
         isLoading.value = true
-        const response = await mintApi.get<InitialResponse>(`api/kudos/init`)
+        const response = await mintApi.get<InitialResponse>(`kudos/init`)
         kudos.value = response.data.kudos
         users.value = response.data.users
         isLoading.value = false
@@ -52,7 +52,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
             }
             isLoading.value = true
             const response = await mintApi.get<InitialResponse>(
-                `api/kudos?listType=${activeTab.value}&page=${page.value}`,
+                `kudos?listType=${activeTab.value}&page=${page.value}`,
             )
             if (response.data.kudos.length === 0) {
                 fetchedAllKudos.value = true
@@ -65,7 +65,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     async function addKudos(gifted_user_id: string, message: string, isPrivate: boolean, id: string) {
         try {
             isLoading.value = true
-            const response = await mintApi.post(`api/kudos/add`, {
+            const response = await mintApi.post(`kudos/add`, {
                 id,
                 gifted_user_id,
                 message: message,
@@ -88,7 +88,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     async function deleteKudos(id: string) {
         try {
             isRemovingLoading.value = true
-            const response = await mintApi.delete(`api/kudos/${id}`)
+            const response = await mintApi.delete(`kudos/${id}`)
             if (response.status === 200) {
                 isRemovingLoading.value = false
                 await fetchKudos(true)
@@ -123,7 +123,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
                 },
             })
         }
-        await mintApi.post(`api/reactions/Kudos/${id}`, {
+        await mintApi.post(`reactions/Kudos/${id}`, {
             reaction_type: reactionType,
         })
     }
@@ -134,7 +134,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
             return
         }
         kudosItem.reactions = kudosItem.reactions.filter((reaction) => reaction.user.id !== auth.user?.id)
-        await mintApi.delete(`api/reactions/Kudos/${id}`)
+        await mintApi.delete(`reactions/Kudos/${id}`)
     }
 
     watch(activeTab, async () => {

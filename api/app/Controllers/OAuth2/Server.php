@@ -58,10 +58,10 @@ use League\OAuth2\Server\ResourceServer;
 use MintHCM\Api\Controllers\OAuth2\Grants\FrontendGrant;
 use MintHCM\Api\Controllers\OAuth2\Grants\MobileGrant;
 use MintHCM\Api\Entities\OAuth2\Client;
-use MintHCM\Api\Entities\User;
+use MintHCM\Api\Entities\Users;
 use MintHCM\Api\Repositories\OAuth2\AccessTokenRepository;
 use MintHCM\Api\Repositories\OAuth2\RefreshTokenRepository;
-use MintHCM\Api\Repositories\UserRepository;
+use MintHCM\Api\Repositories\UsersRepository;
 
 class Server
 {
@@ -101,8 +101,8 @@ class Server
             new \DateInterval(self::GRANT_INTERVAL)
         );
 
-        /** @var UserRepository */
-        $user_repository = $entityManager->getRepository(User::class);
+        /** @var UsersRepository */
+        $user_repository = $entityManager->getRepository(Users::class);
         // Password credentials grant
         $server->enableGrantType(
             new PasswordGrant(
