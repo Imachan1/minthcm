@@ -18,6 +18,7 @@ export abstract class MintApi {
                 if (error.response.status === 401) {
                     this.redirectToLogin()
                 }
+                return Promise.reject(error)
             },
         )
     }
