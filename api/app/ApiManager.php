@@ -51,6 +51,7 @@ use MintHCM\Api\ExceptionHandlers\MintExceptionHandler;
 use MintHCM\Api\Middlewares\Auth\AuthMiddleware;
 use MintHCM\Api\Middlewares\Params\ParamsMiddleware;
 use MintHCM\Api\Middlewares\Parsers\JsonBodyParserMiddleware;
+use MintHCM\Api\Middlewares\Routes\RouteAccessMiddleware;
 use MintHCM\Api\Routes\RouteManager;
 use MintHCM\Utils\CustomLoader;
 
@@ -89,8 +90,9 @@ class ApiManager
     protected function addBeforeRouteMiddlewares()
     {
         $this->app->addBodyParsingMiddleware();
-        $this->app->add(CustomLoader::getObject(AuthMiddleware::class));
         $this->app->add(CustomLoader::getObject(ParamsMiddleware::class));
+        $this->app->add(CustomLoader::getObject(RouteAccessMiddleware::class));
+        $this->app->add(CustomLoader::getObject(AuthMiddleware::class));
         $this->app->add(CustomLoader::getObject(JsonBodyParserMiddleware::class));
     }
 

@@ -86,7 +86,7 @@ class AuthMiddleware extends Middleware
                 if ($token_result instanceof Response) {
                     return $token_result;
                 }
-                $this->setCurrentUserGlobal($request);
+                $this->setCurrentUserGlobal($token_result);
             } else {
                 $validate_legacy = $this->runLegacyAuthorization($request);
                 if (!$validate_legacy && !$optionalAuth) {
@@ -144,6 +144,8 @@ class AuthMiddleware extends Middleware
         $authenticated = $sugar_auth->sessionAuthenticate();
         chdir('../api/');
         if ($authenticated) {
+            global $api_client;
+            $api_client = 'frontend';
             return true;
         }
 
@@ -182,7 +184,8 @@ class AuthMiddleware extends Middleware
         $mint_token = $mint_token_repository->findOneBy(['access_token' => $request->getAttribute('oauth_access_token_id')]);
         $user_id = $mint_token->assigned_user_id ?? '';
 
-        global $current_user;
+        global $current_user, $api_client;
+        $api_client = $mint_token->client;
         chdir('../legacy/');
         $user = new \User();
         $user->retrieve($user_id);

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -43,37 +42,62 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if (!defined('sugarEntry')) {
-    define('sugarEntry', true);
+
+namespace MintHCM\Api\Middlewares\Routes;
+
+use MintHCM\Api\Middlewares\Middleware;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Exception\HttpNotFoundException;
+
+class RouteAccessMiddleware extends Middleware
+{
+    const ALL_ACCESS = 'all';
+    const FRONTEND_ACCESS = 'frontend';
+    const MOBILE_ACCESS = 'mobile';
+    CONST EXTERNAL_ACCESS = 'external';
+
+    public function __invoke(Request $request, RequestHandler $handler): Response
+    {
+        if (!$this->hasAccessToRoute($request)) {
+            throw new HttpNotFoundException($request);
+        }
+
+        return $handler->handle($request);
+    }
+
+    private function hasAccessToRoute(Request $request): bool
+    {
+        $route_data = $this->getRouteData($request);
+        $route_access = $route_data['options']['access'] ?: self::ALL_ACCESS;
+        if ($route_access === self::ALL_ACCESS) {
+            return true;
+        }
+
+        $client_access = $this->getCLientAccess();
+        
+        if (is_string($route_access)) {
+            return $route_access === $client_access;
+        }
+
+        if (is_array($route_access)) {
+            return in_array($client_access, $route_access);
+        } 
+
+        return false;
+    }
+
+    private function getCLientAccess(): string
+    {
+        global $api_client;
+        switch ($api_client) {
+            case self::FRONTEND_ACCESS:
+                return self::FRONTEND_ACCESS;
+            case self::MOBILE_ACCESS:
+                return self::MOBILE_ACCESS;
+            default:
+                return self::EXTERNAL_ACCESS;
+        }
+    }
 }
-chdir('../legacy/');
-require_once 'include/entryPoint.php';
-chdir('../api/');
-
-$BASE_DIR = __DIR__;
-require __DIR__ . '/vendor/autoload.php';
-
-use MintHCM\Api\ApiManager;
-use MintHCM\Api\Config\AppConfig;
-use MintHCM\Api\Containers\Doctrine\DoctrineContainerBuilder;
-use MintHCM\Utils\CustomLoader;
-use Slim\Factory\AppFactory;
-use Slim\App;
-
-/** @var App */
-global $mint_app;
-
-/** @var string */
-global $api_client;
-
-$doctrineContainerBuilder = new DoctrineContainerBuilder();
-$doctrineContainer = $doctrineContainerBuilder->build();
-$mint_app = AppFactory::createFromContainer($doctrineContainer);
-
-$config = CustomLoader::getObject(AppConfig::class);
-$mint_app->setBasePath($config::getBasePath());
-
-$manager = ApiManager::getInstance();
-$manager->execute();
-
-$mint_app->run();
