@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import { responseHandler } from './interceptors/response-handler'
 import { responseErrorHandler } from './interceptors/response-error-handler'
-//musisz dociągnąć developo bo beda konflikty z tymi api. Np w polach bo tam sie troche pozmieniało
 declare module 'axios' {
     export interface AxiosRequestConfig {
         rawError?: boolean

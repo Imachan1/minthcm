@@ -85,24 +85,4 @@ class User implements UserEntityInterface
         return $this->id;
     }
 
-
-    /**
-     * Check that password matches existing hash
-     * @param string $password Plaintext password
-     */
-    public function checkPassword($password): bool //CR mamy koilizje bo podczas przebudowy ten plik buduje się na nowo i wywali tą funkcję. Może przenieść to do repository?
-    {
-        if (empty($this->user_hash)) {
-            return false;
-        }
-
-        $passwordMd5 = md5($password);
-        if ($this->user_hash[0] !== '$' && strlen($this->user_hash) === 32) {
-            // Legacy md5 password
-            return strtolower($passwordMd5) === $this->user_hash;
-        }
-
-        return password_verify(strtolower($passwordMd5), $this->user_hash);
-    }
-    
 }

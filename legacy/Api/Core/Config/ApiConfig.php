@@ -17,7 +17,7 @@ class ApiConfig
         'Api/V8/Config/routes.php',
     ];
 
-    const OAUTH2_PRIVATE_KEY = '../api/configs/private.key'; //CR o ile dobrze rozumiem, ta zmiana oznacza, że klucze są w inyym miejscu więc by skorzyatć z V8 i tak trzeba wyegenrowac klucze, ale teraz tu wiec trzeba zmienić dokumentacje?
+    const OAUTH2_PRIVATE_KEY = '../api/configs/private.key';
     const OAUTH2_PUBLIC_KEY = '../api/configs/public.key';
     
     /**
