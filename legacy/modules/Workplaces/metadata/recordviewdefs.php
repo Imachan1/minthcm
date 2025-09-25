@@ -10,6 +10,7 @@ $viewdefs['Workplaces'] = [
                     [
                         'availability',
                         'room_name',
+                        'mode',
                     ],
                 ],
                 'actions' => [
