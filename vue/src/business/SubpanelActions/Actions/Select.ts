@@ -1,10 +1,10 @@
 import { usePopupsStore } from '@/store/popups'
 import { SubpanelAction } from '../SubpanelAction'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
-import axios from 'axios'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useACL } from '@/composables/useACL'
 import { useLanguagesStore } from '@/store/languages'
+import { mintApi } from '@/api/api'
 
 interface SelectionList {
     [key: string]: {
@@ -34,7 +34,7 @@ export class Select extends SubpanelAction {
                         return
                     }
                     try {
-                        await axios.post(`api/${this.bean.module_name}/Link/${this.bean.id}`, {
+                        await mintApi.post(`${this.bean.module_name}/Link/${this.bean.id}`, {
                             link_name: this.subpanel.key,
                             ids,
                         })

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { computed, ref, watch } from 'vue'
 import { useLogic } from './useLogic'
 import { useDebounceFn, useThrottleFn } from '@vueuse/core'
@@ -6,6 +5,7 @@ import { useRouter } from 'vue-router'
 import { fieldConfig } from '@/components/Fields/Field.config'
 import { useModulesStore } from '@/store/modules'
 import { useField } from '@/components/Fields/useField'
+import { mintApi } from '@/api/api'
 
 export const useBean = (module: string, id: string) => {
     const router = useRouter()
@@ -116,7 +116,7 @@ export const useBean = (module: string, id: string) => {
 
     async function retrieve() {
         isRetrieving.value = true
-        const response = await axios.get(`api/${module}/Get${id ? `/${id}` : ''}`)
+        const response = await mintApi.get(`${module}/Get${id ? `/${id}` : ''}`)
         if (response.status === 200 && response.data) {
             aclAccess.value = response.data.acl_access
             attributes.value = response.data.attributes
@@ -129,7 +129,7 @@ export const useBean = (module: string, id: string) => {
     }
 
     async function fetchLogic(triggerFields: string[] = []) {
-        const response = await axios.post(`api/${module}/Logic${id ? `/${id}` : ''}`, {
+        const response = await mintApi.post(`${module}/Logic${id ? `/${id}` : ''}`, {
             attributes: attributesToSave.value,
             triggerFields,
         })
@@ -165,7 +165,7 @@ export const useBean = (module: string, id: string) => {
                     reader.readAsDataURL(filesToSave.value[fileField])
                 })
             }
-            const response = await axios.patch(`api/${module}/Update${id ? `/${id}` : ''}`, {
+            const response = await mintApi.patch(`${module}/Update${id ? `/${id}` : ''}`, {
                 record_data: attributesToSave.value,
                 files,
             })
@@ -192,7 +192,7 @@ export const useBean = (module: string, id: string) => {
     }
 
     async function markDeleted() {
-        return await axios.delete(`api/${module}/${id}`)
+        return await mintApi.delete(`${module}/${id}`)
     }
 
     const prevAttributes = ref<{ [key: string]: any }>({})

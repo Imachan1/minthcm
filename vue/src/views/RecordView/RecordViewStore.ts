@@ -6,6 +6,7 @@ import { useLanguagesStore } from '@/store/languages'
 import { useBean } from '@/composables/useBean'
 import { useACL } from '@/composables/useACL'
 import { subpanelsApi } from '@/api/subpanels.api'
+import { mintApi } from '@/api/api'
 
 interface Panel {
     component: string
@@ -144,7 +145,7 @@ export const useRecordViewStore = defineStore('recordview', () => {
     }
 
     async function fetchSubpanelData(routeParams: RouteParams, subpanelKey: string) {
-        const result = await axios.get(`api/${routeParams.module}/subpanel/${subpanelKey}/${routeParams.id}`, {
+        const result = await mintApi.get(`${routeParams.module}/subpanel/${subpanelKey}/${routeParams.id}`, {
             validateStatus: () => true,
         })
         if (result.data) {
