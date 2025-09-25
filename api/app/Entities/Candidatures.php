@@ -290,12 +290,6 @@ class Candidatures
     public $candidate;
 
     /**
-        * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="candidatures")
-        */
-    public $employee;
-
-    /**
         * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="candidatures")
         */
     public Collection $calls;

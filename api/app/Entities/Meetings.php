@@ -268,7 +268,12 @@ class Meetings
     public $jjwg_maps_address_c;
 
     /**
-            * @ORM\Column(type="float", length="10")
+            * @ORM\Column(type="float", length="11")
+            */
+    public $jjwg_maps_lng_c;
+
+    /**
+            * @ORM\Column(type="string", length="255")
             */
     public $jjwg_maps_lat_c;
 
@@ -276,11 +281,6 @@ class Meetings
             * @ORM\Column(type="string", length="255")
             */
     public $jjwg_maps_geocode_status_c;
-
-    /**
-            * @ORM\Column(type="float", length="11")
-            */
-    public $jjwg_maps_lng_c;
 
     /**
         * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")

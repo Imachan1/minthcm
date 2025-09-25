@@ -34,6 +34,7 @@ legacy/install.log
 legacy/install/status.json
 legacy/search_index.log
 legacy/suitecrm.log
+legacy/templates_c
 
 api/app/Config/AppConfig.php
 install/assets/status.json

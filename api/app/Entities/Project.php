@@ -139,7 +139,12 @@ class Project
     public $jjwg_maps_address_c;
 
     /**
-            * @ORM\Column(type="float", length="10")
+            * @ORM\Column(type="float", length="11")
+            */
+    public $jjwg_maps_lng_c;
+
+    /**
+            * @ORM\Column(type="string", length="255")
             */
     public $jjwg_maps_lat_c;
 
@@ -147,11 +152,6 @@ class Project
             * @ORM\Column(type="string", length="255")
             */
     public $jjwg_maps_geocode_status_c;
-
-    /**
-            * @ORM\Column(type="float", length="11")
-            */
-    public $jjwg_maps_lng_c;
 
     /**
         * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})

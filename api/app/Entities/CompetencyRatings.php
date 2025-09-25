@@ -153,7 +153,7 @@ class CompetencyRatings
     public Collection $SecurityGroups;
 
     /**
-        * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+        * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
         * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="competencyratings")
         */
     public $employee_link;

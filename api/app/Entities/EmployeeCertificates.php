@@ -190,12 +190,6 @@ class EmployeeCertificates
         */
     public $certificates;
 
-    /**
-        * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="employeecertificates")
-        */
-    public $employeecertificates_employees;
-
 
 public function __construct()
 {
