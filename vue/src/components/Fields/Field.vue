@@ -79,7 +79,9 @@ const classList = computed(() => {
 
 const resolvedFieldType = computed(() => {
     const type = props.defs?.type?.trim() ?? ''
-    if (fieldConfig.allowedTypes[props.view].includes(type)) {
+    if (['date_entered', 'date_modified'].includes(props.defs?.name) && props.view === 'detail') {
+        return 'datetimecombined'
+    } else if (fieldConfig.allowedTypes[props.view].includes(type)) {
         return type
     } else if (fieldConfig.allowedTypes[props.view].includes(fieldConfig.typeMap[type])) {
         return fieldConfig.typeMap[type]

@@ -69,16 +69,6 @@ $viewdefs['Ideas'] = [
                             'readonly' => true,
                         ],
                     ],
-                    [
-                        [
-                            'name' => 'created_by_name',
-                            'readonly' => true,
-                        ],
-                        [
-                            'name' => 'modified_by_name',
-                            'readonly' => true,
-                        ],
-                    ],
                 ],
             ],
         ],

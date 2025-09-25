@@ -89,8 +89,7 @@ $viewdefs['Candidates'] = [
             'title' => 'LBL_RECORDVIEW_PANEL2',
             'data' => [
                 'fields' => [
-                    ['assigned_user_name', 'created_by_name', 'modified_by_name'],
-                    ['', 'date_entered', 'date_modified'],
+                    ['assigned_user_name', 'date_entered', 'date_modified'],
                 ],
             ],
         ],
