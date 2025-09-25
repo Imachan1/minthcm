@@ -62,7 +62,6 @@ function installMintHCMSettings()
     write_array_to_file('sugar_config', $sugar_config, 'config.php');
 
     addMobileTokenClient();
-    addFrontendTokenClient();
 }
 
 function addMobileTokenClient() {
@@ -71,32 +70,5 @@ function addMobileTokenClient() {
     $db->query(
         "INSERT INTO `oauth2clients` (`id`, `name`, `date_entered`, `date_modified`, `modified_user_id`, `created_by`, `description`, `deleted`, `secret`, `redirect_url`, `is_confidential`, `allowed_grant_type`, `duration_value`, `duration_amount`, `duration_unit`, `assigned_user_id`) VALUES
         ('mobile',	'Mobile Token Client',	NULL,	NULL,	NULL,	NULL,	NULL,	0, '{$hash}',	NULL,	1,	'mobile',	60,	1,	'minute',	NULL);"
-    );
-}
-
-function addFrontendTokenClient() {
-    global $db;
-    $secret = bin2hex(openssl_random_pseudo_bytes(32));
-    $hash = hash('sha256', $secret);
-    $db->query(
-        "INSERT INTO `oauth2clients` (`id`, `name`, `date_entered`, `date_modified`, `modified_user_id`, `created_by`, `description`, `deleted`, `secret`, `redirect_url`, `is_confidential`, `allowed_grant_type`, `duration_value`, `duration_amount`, `duration_unit`, `assigned_user_id`) VALUES
-        ('frontend', 'Frontend Token Client',	NULL,	NULL,	NULL,	NULL,	NULL,	0, '{$hash}',	NULL,	1,	'frontend',	60,	1,	'minute',	NULL);"
-    );
-
-    $env = '../vue/.env';
-    $env_local = '../vue/.env.example';
-    
-    if (!file_exists($env)) {
-        if (file_exists($env_local)) {
-            copy($env_local, $env);
-        } else {
-            file_put_contents($env, '');
-        }
-    }
-    
-    file_put_contents(
-        $env,
-        "\nCLIENT_SECRET=" . $secret,
-        FILE_APPEND | LOCK_EX
     );
 }

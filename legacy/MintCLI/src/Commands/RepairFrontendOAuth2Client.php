@@ -30,8 +30,7 @@ class RepairFrontendOAuth2Client extends Command
     protected function configure()
     {
         $this
-            ->setHelp('This command add oauth2 client and create new client secrect for him.')
-        ;
+            ->setHelp('This command add oauth2 client and create new client secrect for him.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -57,6 +56,7 @@ class RepairFrontendOAuth2Client extends Command
             $secret = $this->getNewSecret();
             $this->createOrUpdateClient($secret);
             $this->updateFrontendEnv($secret);
+            $this->updateFrontedBuiltFiles($secret);
             $io->success('Createing or updating OAuth2 client was successful.');
             chdir('../');
         } catch (\Exception $e) {
@@ -108,7 +108,7 @@ class RepairFrontendOAuth2Client extends Command
 
         $content = file_get_contents($env);
         $content = preg_replace('/^CLIENT_SECRET=.*$/m', '', $content);
-        $content .= "CLIENT_SECRET=" . $secret ;
+        $content .= "\nCLIENT_SECRET=" . $secret;
 
         file_put_contents(
             $env,
@@ -117,4 +117,43 @@ class RepairFrontendOAuth2Client extends Command
         );
     }
 
+    private function updateFrontedBuiltFiles(string $secret): void
+    {
+        $files = [
+            $this->getFrontendIndexFile('../vue/dist/assets/'),
+            $this->getFrontendIndexFile('../assets/'),
+        ];
+
+        foreach ($files as $file) {
+            if ($file === null || !file_exists($file)) {
+                continue;
+            }
+
+            $content = file_get_contents($file);
+            $content = preg_replace('/client_secret:[\'"]([^\'"]*)[\'"]/m', 'client_secret:"' . $secret . '"', $content);
+            file_put_contents(
+                $file,
+                $content,
+                LOCK_EX
+            );
+        }
+    }
+
+    private function getFrontendIndexFile(string $dir): ?string
+    {
+        $file_starts_with = 'index';
+        $file_extension = '.js';
+        if (!is_dir($dir)) {
+            return null;
+        }
+
+        $files = scandir($dir);
+        foreach ($files as $file) {
+            if (str_starts_with($file, $file_starts_with) && str_ends_with($file, $file_extension)) {
+                return $dir . $file;
+            }
+        }
+
+        return null;
+    }
 }
