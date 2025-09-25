@@ -148,6 +148,18 @@ class Reactions
         */
     public $news;
 
+    /**
+        * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+        * @ORM\ManyToOne(targetEntity=Comments::class, inversedBy="reactions")
+        */
+    public $comments;
+
+    /**
+        * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+        * @ORM\ManyToOne(targetEntity=Kudos::class, inversedBy="reactions")
+        */
+    public $kudos;
+
 
 public function __construct()
 {

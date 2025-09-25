@@ -55,14 +55,11 @@ class UsersPasswordLinkRepository extends EntityRepository
 {
     public function markAllAsDeletedByUsername($username): int
     {
-        $query = 'UPDATE MintHCM\Api\Entities\UsersPasswordLink upl
-            SET upl.deleted = 1
-            WHERE upl.username = :username
-        ';
-
-        return $this->getEntityManager()
-            ->createQuery($query)
-            ->setParameter('username', $username)
-            ->execute();
+        $qb = $this->createQueryBuilder('upl');
+        $qb->update(UsersPasswordLink::class, 'upl')
+            ->set('upl.deleted', '1')
+            ->where('upl.username = :username')
+            ->setParameter('username', $username);
+        return $qb->getQuery()->execute();
     }
 }

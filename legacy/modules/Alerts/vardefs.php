@@ -150,6 +150,15 @@ $dictionary['Alert'] = array(
             'searchview' => false
          ),
       ),
+      'kudos' => array(
+         'name' => 'kudos',
+         'type' => 'link',
+         'relationship' => 'kudos_alerts',
+         'module' => 'Kudos',
+         'bean_name' => 'Kudo',
+         'source' => 'non-db',
+         'vname' => 'LBL_KUDOS',
+      ),
    ),
    'relationships' => array(),
    'indices' => [

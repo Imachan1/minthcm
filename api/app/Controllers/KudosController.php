@@ -46,8 +46,9 @@
 namespace MintHCM\Api\Controllers;
 
 use Doctrine\ORM\EntityManagerInterface;
+use MintHCM\Api\Entities\Employees;
 use MintHCM\Api\Entities\Kudos;
-use MintHCM\Api\Entities\User;
+use MintHCM\Api\Entities\Users;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 
@@ -64,9 +65,18 @@ class KudosController
     {
         global $current_user;
         $response = $response->withHeader('Content-type', 'application/json');
-        $users = $this->entityManager->getRepository(User::class)->getActiveUsers($current_user->id);
+        
+        /** @var Users[] */
+        $users = $this->entityManager->getRepository(Users::class)->getActiveUsers($current_user->id);
+        $users = array_map(fn(Users $user) => [
+            'id' => $user->id,
+            'user_name' => $user->user_name,
+            'full_name' => $user->getFullName(),
+            'status' => $user->status,
+            'photo' => $user->photo,
+        ], $users);
 
-        $kudos = $this->entityManager->getRepository(Kudos::class)->get(1, 'all');
+        $kudos = $this->getDrawerKudoses(1, 'all');
 
         $response->getBody()->write(json_encode([
             'kudos' => $kudos,
@@ -82,7 +92,7 @@ class KudosController
         $page = $request->getAttribute('page');
         $list_type = $request->getAttribute('listType');
 
-        $kudos = $this->entityManager->getRepository(Kudos::class)->get($page, $list_type);
+        $kudos = $this->getDrawerKudoses($page, $list_type);
 
         $response->getBody()->write(json_encode([
             'kudos' => $kudos
@@ -146,6 +156,74 @@ class KudosController
         }
         chdir('../api');
         return $response;
+    }
+
+    private function getDrawerKudoses(int $page, string $list_type): array
+    {
+        global $current_user;
+
+        /** @var Kudos[] */
+        $kudoses = $this->entityManager->getRepository(Kudos::class)->getDrawerKudoses($page, $list_type);
+
+        $parsed_kudoses = [];
+        foreach ($kudoses as $kudos) {
+            $parsed_kudos = [
+                'id' => $kudos->id,
+                'description' => $kudos->description,
+                'date_entered' => !empty($kudos->date_entered) ? $kudos->date_entered->format('Y-m-d H:i:s') : null,
+                'created_by' => $kudos->created_by,
+                'announced' => $kudos->announced,
+                'announcement_date' => !empty($kudos->announcement_date) ? $kudos->announcement_date->format('Y-m-d H:i:s') : null,
+                'private' => $kudos->private,
+                'is_read' => $kudos->alerts && count($kudos->alerts) > 0 ? $kudos->alerts[0]->is_read : null,
+            ];
+
+            if ($kudos->assigned_user_link instanceof Users) {
+                $parsed_kudos['assigned_user'] = [
+                    'id' => $kudos->assigned_user_link->id,
+                    'first_name' => $kudos->assigned_user_link->first_name,
+                    'full_name' => $kudos->assigned_user_link->getFullName(),
+                    'photo' => $kudos->assigned_user_link->photo,
+                ];
+                $parsed_kudos['current_user_is_author'] = $current_user->id === $kudos->assigned_user_link->id;
+            }
+
+            if ($kudos->employee_link instanceof Employees) {
+                $parsed_kudos['employee'] = [
+                    'id' => $kudos->employee_link->id,
+                    'first_name' => $kudos->employee_link->first_name,
+                    'full_name' => $kudos->employee_link->getFullName(),
+                    'photo' => $kudos->employee_link->photo,
+                ];
+                $parsed_kudos['current_user_is_gifted'] = $current_user->id === $kudos->employee_link->id;
+            }
+
+            foreach ($kudos->reactions as $reaction) {
+                if (!isset($parsed_kudos['reactions'])) {
+                    $parsed_kudos['reactions'] = [];
+                }
+                $parsed_reaction = [
+                    'type' => $reaction->reaction_type,
+                ];
+                if ($reaction->assigned_user_link instanceof Users) {
+                    $parsed_reaction['user'] = [
+                        'id' => $reaction->assigned_user_link->id,
+                        'name' => $reaction->assigned_user_link->getFullName(),
+                    ];
+                }
+                $parsed_kudos['reactions'][] = $parsed_reaction;
+            }
+            
+            $parsed_kudos['current_user_is_admin'] = $current_user->isAdmin();
+            $parsed_kudos['current_user_access'] = !empty($parsed_kudos['current_user_is_gifted']) || !empty($parsed_kudos['current_user_is_author']);
+            if ($parsed_kudos['private'] && !$parsed_kudos['current_user_access']) {
+                $parsed_kudos['description'] = '';
+            }
+
+            $parsed_kudoses[] = $parsed_kudos;
+        }
+
+        return $parsed_kudoses;
     }
 
 }

@@ -161,9 +161,21 @@ class Kudos
         */
     public $employee_link;
 
+    /**
+        * @ORM\OneToMany(targetEntity=Alerts::class, mappedBy="kudos")
+        */
+    public Collection $alerts;
+
+    /**
+        * @ORM\OneToMany(targetEntity=Reactions::class, mappedBy="kudos")
+        */
+    public Collection $reactions;
+
 
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
+        $this->alerts = new Collection();
+        $this->reactions = new Collection();
     }
 }

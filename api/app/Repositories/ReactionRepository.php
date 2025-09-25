@@ -47,41 +47,37 @@
 namespace MintHCM\Api\Repositories;
 
 use Doctrine\ORM\EntityRepository;
+use MintHCM\Api\Entities\Reactions;
 
 #[\AllowDynamicProperties]
 class ReactionRepository extends EntityRepository
 {
-    public function getUserReactionId($parent_type, $parent_id, $user_id)
+    /*
+        * Get a user's reaction to a specific parent entity
+    */
+    public function getUserReactionToParent(string $parent_type, string $parent_id, string $user_id): Reactions|null
     {
-        $sql = "SELECT r.id
-                FROM MintHCM\Api\Entities\Reactions r
-                WHERE r.deleted = 0
-                    AND r.parent_type = :parent_type
-                    AND r.parent_id = :parent_id
-                    AND r.assigned_user_id = :assigned_user_id";
-        $em = $this->getEntityManager();
-        $stmt = $em->getConnection()->prepare($sql);
-        $result = $stmt->executeQuery([
+        return $this->findOneBy([
             'parent_type' => $parent_type,
             'parent_id' => $parent_id,
             'assigned_user_id' => $user_id,
+            'deleted' => 0,
         ]);
-        return $result->fetchOne();
     }
 
     public function deleteUserReaction($parent_type, $parent_id, $user_id)
     {
-        $sql = "DELETE
-                FROM MintHCM\Api\Entities\Reactions r
-                WHERE r.parent_type = :parent_type
-                    AND r.parent_id = :parent_id
-                    AND r.assigned_user_id = :assigned_user_id";
-        $em = $this->getEntityManager();
-        $stmt = $em->getConnection()->prepare($sql);
-        $stmt->executeQuery([
-            'parent_type' => $parent_type,
-            'parent_id' => $parent_id,
-            'assigned_user_id' => $user_id,
-        ]);
+        $qb = $this->createQueryBuilder('r');
+        $qb->delete(Reactions::class, 'r')
+            ->where('r.parent_type = :parent_type')
+            ->andWhere('r.parent_id = :parent_id')
+            ->andWhere('r.assigned_user_id = :assigned_user_id')
+            ->setParameters([
+                'parent_type' => $parent_type,
+                'parent_id' => $parent_id,
+                'assigned_user_id' => $user_id,
+            ])
+        ;
+        $qb->getQuery()->execute();
     }
 }

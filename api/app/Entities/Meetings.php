@@ -63,7 +63,7 @@ use Doctrine\Common\Collections\Collection;
 class Meetings
 {
     /**
-        * @ORM\Id
+         * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
             * @ORM\Column(type="string", length="36")
@@ -271,14 +271,19 @@ class Meetings
     public $jjwg_maps_lat_c;
 
     /**
-            * @ORM\Column(type="float", length="11")
+            * @ORM\Column(type="string", length="255")
             */
-    public $jjwg_maps_lng_c;
+    public $jjwg_maps_address_c;
 
     /**
             * @ORM\Column(type="string", length="255")
             */
     public $jjwg_maps_geocode_status_c;
+
+    /**
+            * @ORM\Column(type="float", length="11")
+            */
+    public $jjwg_maps_lng_c;
 
     /**
         * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
