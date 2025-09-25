@@ -38,6 +38,7 @@
                         v-if="row[n - 1]"
                         :view="'detail'"
                         :defs="row[n - 1]"
+                        hidePencil
                         :label="languages.label(row[n - 1].label, modules.currentModule?.name)"
                         :data="{ bean: store.bean.attributes }"
                         :modelValue="store.bean.syncAttributes[row[n - 1].name]"

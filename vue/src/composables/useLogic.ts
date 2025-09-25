@@ -23,7 +23,7 @@ export const useLogic = (module: string) => {
 
     const rules = ref<Rule[]>([])
 
-    const formFields = computed(() => {
+    const formFields = computed(() => { // FIXME: refactor - moim zdaniem to nie jest miejsce na ta funkcje raczej ModuleStore
         const formPanel = Object.values(modulesStore.modules[module]?.metadata.RecordView?.panels ?? {}).find(
             (panel) => panel.component === 'MintPanelRecordDetails',
         )

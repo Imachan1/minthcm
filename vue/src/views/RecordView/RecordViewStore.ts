@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useLanguagesStore } from '@/store/languages'
 import { useBean } from '@/composables/useBean'
 import { useACL } from '@/composables/useACL'
+import { subpanelsApi } from '@/api/subpanels.api'
 
 interface Panel {
     component: string
@@ -16,6 +17,11 @@ interface Panel {
 interface RecordViewDefs {
     order: string[]
     panels: { [key: string]: Panel }
+}
+
+interface RouteParams {
+    module: string
+    id: string
 }
 
 export const useRecordViewStore = defineStore('recordview', () => {
@@ -115,26 +121,47 @@ export const useRecordViewStore = defineStore('recordview', () => {
                     id,
                     parent_module: subpanelDefs[key].properties?.module?.toString() || '',
                 })),
-            }))
+            records: Object.keys(subpanelsData.value?.[key] ?? {}).map((id) => ({
+                ...(subpanelsData.value?.[key][id] || {}),
+                id,
+                parent_module: subpanelDefs[key].properties?.module?.toString() || '',
+            })).filter((record) => record.id !== 'total' && record.id !== 'page'),
+            page: subpanelsData.value?.[key]?.page || 0,
+            total: subpanelsData.value?.[key]?.total || 0,
+        }))
     })
 
-    async function fetchSubpanelsData() {
-        if (bean.value.isNew) {
-            return
-        }
+    async function fetchSubpanelsData(paginateBy: number) {
         const route = useRoute()
         const data = await Promise.all(
-            subpanels.value.map((subpanel) =>
-                axios.get(`api/${route.params.module}/subpanel/${subpanel.key}/${route.params.id}`, {
-                    validateStatus: () => true,
-                }),
-            ),
+            subpanels.value.map((subpanel) => {
+                return subpanelsApi.fetchSubpanelsData(route.params.module, subpanel.key, route.params.id, paginateBy, 0)
+            }),
         )
         subpanelsData.value = subpanels.value.reduce((prev, curr, index) => {
             prev[curr.key] = data[index]?.data
             return prev
         }, {} as SubpanelsData)
     }
+
+    async function fetchSubpanelData(routeParams: RouteParams, subpanelKey: string) {
+        const result = await axios.get(`api/${routeParams.module}/subpanel/${subpanelKey}/${routeParams.id}`, {
+            validateStatus: () => true,
+        })
+        if (result.data) {
+            subpanelsData.value = {
+                ...subpanelsData.value,
+                [subpanelKey]: result.data,
+            }
+        }
+    }
+
+    async function fetchSubpanelRecords(subpanelKey: string, paginateBy: number, page: number) {
+        const data = await subpanelsApi.fetchSubpanelsData(route.params.module, subpanelKey, route.params.id, paginateBy, page)
+        if (!subpanelsData.value) subpanelsData.value = {}
+        subpanelsData.value[subpanelKey] = data?.data
+    }
+
 
     interface SubpanelsData {
         [key: string]: {
@@ -169,8 +196,10 @@ export const useRecordViewStore = defineStore('recordview', () => {
         panels,
         subpanels,
         fetchSubpanelsData,
+        fetchSubpanelData,
         fetchLanguagesForSubpanels,
         columns,
         updateField,
+        fetchSubpanelRecords,
     }
 })

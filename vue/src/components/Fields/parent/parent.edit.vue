@@ -22,7 +22,7 @@
                     v-model="recordModel.name"
                     v-bind="val.props"
                     @input="(event) => fetchRecordItems(event)"
-                    @click="menuOpen = false"
+                    @click="menuOpen = true"
                 >
                     <template #append-inner>
                         <v-fab-transition class="search-prepend-icon">
@@ -31,7 +31,7 @@
                                 icon="mdi-close"
                                 @click="recordModel = { id: '', name: '' }"
                             />
-                            <v-icon v-else icon="mdi-magnify" />
+                            <v-icon v-else icon="mdi-magnify" @click.stop="openRelatePopup" />
                         </v-fab-transition>
                     </template>
                 </v-text-field>
@@ -174,7 +174,6 @@ async function fetchRecordItems(e) {
         items.value = []
     }
 }
-
 function openRelatePopup() {
     popupsStore.showPopup({
         component: MintPopupRelate,

@@ -81,7 +81,6 @@ const modules = useModulesStore()
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_DETAILS', modules.currentModule?.name)
 })
-
 const rows = computed(() => {
     return props.data.fields.filter((row) => row.some((field) => !store.bean.logic.hiddenFields.includes(field.name)))
 })

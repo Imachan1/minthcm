@@ -1,17 +1,17 @@
 <template>
-    <component
+        <component
         v-bind="$attrs"
-        :is="FieldComponent"
-        :class="classList"
-        :data="data"
-        :defs="defs"
-        :label="label"
+            :is="FieldComponent"
+            :class="classList"
+            :data="data"
+            :defs="defs"
+            :label="label"
         :options="props.options"
-        :state="fieldState"
-        :hidePencil="true"
-        :modelValue="modelValue"
-    >
-    </component>
+            :state="fieldState"
+            :hidePencil="true"
+            :modelValue="modelValue"
+        >
+        </component>
     <div v-if="errorMessage" class="field-error-message">{{ errorMessage }}</div>
 </template>
 

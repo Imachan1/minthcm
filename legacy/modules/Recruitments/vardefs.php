@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -417,7 +417,6 @@ $dictionary['Recruitments'] = array(
          'vname' => 'LBL_SALARY_FROM',
          'type' => 'currency',
          'massupdate' => false,
-         'default' => 0,
          'no_default' => false,
          'importable' => false,
          'duplicate_merge' => 'enabled',
@@ -426,10 +425,8 @@ $dictionary['Recruitments'] = array(
          'reportable' => false,
          'unified_search' => false,
          'merge_filter' => 'disabled',
-         'len' => 26,
          'size' => '20',
          'enable_range_search' => false,
-         'precision' => 6,
          'related_fields' => array(
             'currency_id',
          ),
@@ -443,7 +440,6 @@ $dictionary['Recruitments'] = array(
          'vname' => 'LBL_SALARY_FROM_USDOLLAR',
          'type' => 'currency',
          'massupdate' => false,
-         'default' => 0,
          'no_default' => false,
          'importable' => false,
          'duplicate_merge' => 'disabled',
@@ -451,10 +447,8 @@ $dictionary['Recruitments'] = array(
          'reportable' => false,
          'unified_search' => false,
          'merge_filter' => 'disabled',
-         'len' => 26,
          'size' => '20',
          'enable_range_search' => false,
-         'precision' => 6,
          'related_fields' => array(
             'currency_id',
          ),
@@ -468,7 +462,6 @@ $dictionary['Recruitments'] = array(
          'vname' => 'LBL_SALARY_TO',
          'type' => 'currency',
          'massupdate' => false,
-         'default' => 0,
          'no_default' => false,
          'importable' => false,
          'duplicate_merge' => 'enabled',
@@ -477,10 +470,8 @@ $dictionary['Recruitments'] = array(
          'reportable' => false,
          'unified_search' => false,
          'merge_filter' => 'disabled',
-         'len' => 26,
          'size' => '20',
          'enable_range_search' => false,
-         'precision' => 6,
          'related_fields' => array(
             'currency_id',
          ),
@@ -494,7 +485,6 @@ $dictionary['Recruitments'] = array(
          'vname' => 'LBL_SALARY_TO_USDOLLAR',
          'type' => 'currency',
          'massupdate' => false,
-         'default' => 0,
          'no_default' => false,
          'importable' => false,
          'duplicate_merge' => 'disabled',
@@ -502,10 +492,8 @@ $dictionary['Recruitments'] = array(
          'reportable' => false,
          'unified_search' => false,
          'merge_filter' => 'disabled',
-         'len' => 26,
          'size' => '20',
          'enable_range_search' => false,
-         'precision' => 6,
          'related_fields' => array(
             'currency_id',
          ),

@@ -129,7 +129,7 @@ class ListInitController
         global $current_user;
         chdir('../legacy/');
         $preferences = (new \UserPreference($current_user))->getPreference($this->module, 'eslist');
-        if (!$preferences) {
+        if(!$preferences) {
             $preferences = [];
         }
         chdir('../api/');
@@ -304,10 +304,10 @@ class ListInitController
         }
         if (!empty($field_defs['function']['include'])) {
             if (file_exists($field_defs['function']['include'])) {
-                require_once $field_defs['function']['include'];
+            require_once $field_defs['function']['include'];
             } else if (file_exists('../legacy/' . $field_defs['function']['include'])) {
                 require_once '../legacy/' . $field_defs['function']['include'];
-            }
+        }
         }
         $function = $field_defs['function']['name'] ?? $field_defs['function'];
         $additional_params = $field_defs['function']['additional_params'] ?? null;

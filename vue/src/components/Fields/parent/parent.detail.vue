@@ -2,7 +2,7 @@
     <div class="parent-container">
     <div>
             <label>{{ languages.label('LBL_ASSIGNED_TO_MODULE') }}</label>
-        <div class="detail-field-row">
+        <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()">
                 <router-link :to="urls.parent" class="relate-field">
                     {{ props.data.bean.attributes.parent_type }}
                 </router-link>
@@ -17,6 +17,7 @@
             </router-link>
             <Pencil
                 :defs="props.defs"
+                :hidePencil="hidePencil"
                 @inlineEditBtnClicked="(fieldName: string) => $emit('inlineEditBtnClicked', fieldName)"
             />
         </div>
@@ -35,15 +36,22 @@ interface Props {
     label: string
     modelValue?: any
     data?: any
+    hidePencil?: boolean
 }
 
 const props = defineProps<Props>()
 const languages = useLanguagesStore()
+const emit = defineEmits(['inlineEditBtnClicked'])
 const urls = computed(() => {
     const recordModule = props.data.bean.attributes.parent_type
     const recordId = props.data.bean.attributes[props.defs.id_name]
     return { record: `/modules/${recordModule}/DetailView/${recordId}`, parent: `/modules/${recordModule}/ESListView` }
 })
+function startInlineEdit() {
+    if (props?.defs?.name && typeof props.defs.name === 'string' && props.defs.name.length > 0) {
+        emit('inlineEditBtnClicked', props.defs.name)
+    }
+}
 </script>
 
 <style scoped lang="scss">

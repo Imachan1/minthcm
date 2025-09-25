@@ -1,31 +1,22 @@
 <?php
 
 $viewdefs['Candidatures'] = [
-    'order' => ['header', 'basicInfo', 'd1', 'd2', 'other', 'subpanels'],
+    'order' => ['header', 'basicInfo', 'd1', 'd2', 'other', 'files', 'subpanels'],
     'panels' => [
         'header' => [
             'component' => 'MintPanelRecordHeader',
             'data' => [
                 'fields' => [
                     [
-                        'name',
                         'status',
                         'scoring',
+                        'task_grade',
                     ], 
                 ],
                 'actions' => [
                     'Audit',
-                    'Delete'
-                    // [
-                    //     'title' => 'LBL_DUPLICATE_BUTTON',
-                    //     'icon' => 'mdi-content-copy',
-                    //     'url' => ''
-                    // ],
-                    // [
-                    //     'title' => 'LBL_DUP_MERGE',
-                    //     'icon' => 'mdi-magnify',
-                    //     'url' => ''
-                    // ],
+                    'Delete',
+                    'ConvertToEmployee',
                 ],
             ],
         ],
@@ -73,7 +64,7 @@ $viewdefs['Candidatures'] = [
                     [
                         'employment_form',
                         'dg_amount',
-                        'currency_id',
+                        'currency_name',
                     ],
                     [
                         'net_amount',
@@ -129,6 +120,9 @@ $viewdefs['Candidatures'] = [
                     ],
                 ],
             ],
+        ],
+        'files' => [
+            'component' => 'MintPanelFiles',
         ],
         'subpanels' => [
             'component' => 'MintPanelSubpanels',

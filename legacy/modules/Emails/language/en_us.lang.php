@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -399,6 +399,6 @@ $mod_strings = array(
     'ERR_FIELD_FROM_ADDR_NAME_INVALID_EMAIL_PART_TO_FIELD_FROM_NAME' => 'From address and name pair does not match to from name.',
    'LBL_CANDIDATES_TITLE' => 'Activities:Candidates',
    'LBL_RECRUITMENTS_TITLE' => 'Activities:Recruitments',
-
-   'LBL_FROM_ADDR_NAME' => 'From Address'
+   'LBL_FROM_ADDR_NAME' => 'From Address',
+   'LBL_EMAILS_EMPLOYEES_REL' => 'Emails:Employees',
 );

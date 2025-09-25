@@ -44,6 +44,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
 
 require_once("modules/Calendar/CalendarUtils.php");
 
+#[\AllowDynamicProperties]
 class CalendarController extends SugarController {
 
    /**

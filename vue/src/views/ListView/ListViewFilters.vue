@@ -135,7 +135,7 @@ function deleteSavedFilter(filter: string) {
 
 watch(activeFilter, () => {
     store.preferences.activeFilter = activeFilter?.value
-    if (!activeFilter.value) {
+    if(!activeFilter.value){
         store.preferences.deleteActiveFilter = true
     }
     store.savePreferences()

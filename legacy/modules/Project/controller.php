@@ -23,6 +23,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+#[\AllowDynamicProperties]
 class ProjectController extends SugarController
 {
     //Loads the gantt view
@@ -40,15 +41,15 @@ class ProjectController extends SugarController
 
         $project = BeanFactory::newBean('Project');
         $project->retrieve($_POST["pid"]);
-        
+
         //Get project tasks
         $Task = BeanFactory::getBean('ProjectTask');
         $tasks = $Task->get_full_list("order_number", "project_task.project_id = '".$project->id."'");
-        
+
         //Get the start and end date of the project in database format
         $query = "SELECT min(date_start) FROM project_task WHERE project_id = '{$project->id}'";
         $start_date = $db->getOne($query);
-        
+
         $query = "SELECT max(date_finish) FROM project_task WHERE project_id = '{$project->id}'";
         $end_date = $db->getOne($query);
 
@@ -95,13 +96,14 @@ class ProjectController extends SugarController
         $task_name = $_POST['task_name'];
         $project_id = $_POST['project_id'];
         $override_business_hours = (int)$_POST['override_business_hours'];
-        $task_id = $_POST['task_id'];
+        $task_id = $_POST['task_id'] ?? '';
         $predecessor = $_POST['predecessor'];
         $rel_type = $_POST['rel_type'];
         $resource = $_POST['resource'];
         $percent = $_POST['percent'];
         $note = $_POST['note'];
         $actual_duration = $_POST['actual_duration'];
+        $milestone_flag = '';
 
         if ($_POST['milestone'] == 'Milestone') {
             $milestone_flag = '1';
@@ -256,7 +258,7 @@ class ProjectController extends SugarController
     {
 
        //convert quotes in json string back to normal
-        $jArray = htmlspecialchars_decode($_POST['orderArray']);
+        $jArray = htmlspecialchars_decode((string) $_POST['orderArray']);
 
         //create object/array from json data
         $orderArray = json_decode($jArray, true);
@@ -499,7 +501,7 @@ class ProjectController extends SugarController
         }
 
         $Task = BeanFactory::getBean('ProjectTask');
-        
+
         $tasks = $Task->get_full_list("date_start", "project_task.assigned_user_id = '".$resource_id."' AND ( ( project_task.date_start BETWEEN '".$start_date."'  AND '".$end_date."' ) OR ( project_task.date_finish BETWEEN '".$start_date."' AND '".$end_date."' ) OR ( '".$start_date."' BETWEEN project_task.date_start  AND project_task.date_finish ) OR ( '".$end_date."' BETWEEN project_task.date_start AND project_task.date_finish ) ) AND (project_id is not null AND project_id <> '') " . $project_where);
 
         echo '<table class="qtip_table">';

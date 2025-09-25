@@ -56,7 +56,7 @@ export const useListViewStore = defineStore('listview', () => {
     const options = ref({
         page: 1,
         itemsPerPage: 10,
-        sortBy: [],
+        sortBy: new Array,
     })
     const selected = ref([])
     const defaultAction = 'ESList'
@@ -75,6 +75,18 @@ export const useListViewStore = defineStore('listview', () => {
             preferences.value = result.data?.preferences
             module.value = result.data?.module
             isInit.value = true
+            options.value.sortBy.push({
+                "order": preferences.value?.sortOrder,
+                "key": preferences.value?.sortBy
+            })
+            let saved_filters = preferences.value?.filters ?? {}
+            filters.value.filter = saved_filters?.filter ?? []
+            filters.value.must_not = saved_filters?.must_not ?? []
+            if (typeof preferences.value?.filterRows === 'string') {
+                filterRows.value = JSON.parse(preferences.value?.filterRows ?? '[]') ?? []
+            } else {
+                filterRows.value = preferences.value?.filterRows ?? []
+            }
         }
     }
 
@@ -354,7 +366,7 @@ export const useListViewStore = defineStore('listview', () => {
         )
     })
 
-    function getModule(){
+    function getModule() {
         return Array.isArray(module.value) ? module.value[0] : module.value
     }
 

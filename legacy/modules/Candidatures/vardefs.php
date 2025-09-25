@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -92,7 +92,7 @@ $dictionary['Candidatures'] = array(
             'name' => 'currency_id',
             'type' => 'id',
             'group' => 'currency_id',
-            'vname' => 'LBL_CURRENCY',
+            'vname' => 'LBL_CURRENCY_ID',
             'function' => array('name' => 'getCurrencyDropDown', 'returns' => 'html'),
             'reportable' => false,
             'comment' => 'Currency used for display purposes',
@@ -101,7 +101,7 @@ $dictionary['Candidatures'] = array(
             'name' => 'currency_name',
             'rname' => 'name',
             'id_name' => 'currency_id',
-            'vname' => 'LBL_CURRENCY_NAME',
+            'vname' => 'LBL_CURRENCY',
             'type' => 'relate',
             'isnull' => 'true',
             'table' => 'currencies',
@@ -372,7 +372,7 @@ $dictionary['Candidatures'] = array(
         'scoring' => array(
             'required' => false,
             'name' => 'scoring',
-            'vname' => 'SCORING',
+            'vname' => 'LBL_SCORING',
             'type' => 'enum',
             'audited' => true,
             'default' => '',
@@ -678,16 +678,6 @@ $dictionary['Candidatures'] = array(
             'vname' => 'LBL_CANDIDATE',
             'label' => 'LBL_CANDIDATE',
         ),
-        'employee' => array(
-            'name' => 'employee',
-            'type' => 'link',
-            'relationship' => 'employee_candidatures',
-            'source' => 'non-db',
-            'module' => 'Employees',
-            'bean_name' => 'Employee',
-            'vname' => 'LBL_EMPLOYEE',
-            'label' => 'LBL_EMPLOYEE',
-        ),
         "recruitments" => array(
             'name' => 'recruitments',
             'type' => 'link',
@@ -840,17 +830,6 @@ $dictionary['Candidatures'] = array(
             'relationship_type' => 'one-to-many',
             'relationship_role_column' => 'parent_type',
             'relationship_role_column_value' => 'Candidates',
-        ),
-        'employee_candidatures' => array(
-            'lhs_module' => 'Employees',
-            'lhs_table' => 'users',
-            'lhs_key' => 'id',
-            'rhs_module' => 'Candidatures',
-            'rhs_table' => 'candidatures',
-            'rhs_key' => 'parent_id',
-            'relationship_type' => 'one-to-many',
-            'relationship_role_column' => 'parent_type',
-            'relationship_role_column_value' => 'Employees',
         ),
         'candidatures_calls' => array(
             'lhs_module' => 'Candidatures',

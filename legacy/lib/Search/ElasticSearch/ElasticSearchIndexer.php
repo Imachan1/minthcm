@@ -579,7 +579,7 @@ class ElasticSearchIndexer extends AbstractIndexer
             return $this->mappings[$module] ?? [];
         } else {
             return [];
-        }
+    }
     }
     // MintHCM #121632 END
     /**

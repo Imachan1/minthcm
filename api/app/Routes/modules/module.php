@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,13 +49,13 @@ use MintHCM\Api\Controllers\ModuleController;
 use MintHCM\Api\Controllers\Module\ListController;
 use MintHCM\Api\Controllers\Module\ListInitController;
 use MintHCM\Api\Controllers\Module\ListMassActionsController;
-use MintHCM\Api\Middlewares\Params\ParamTypes\IntType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\ArrayType;
+use MintHCM\Api\Middlewares\Params\ParamTypes\IntType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\BoolType;
 
 $routes = array(
-    "detail" => array( //CR probably to delete
+    "detail" => array(
         "method" => "GET",
         "path" => "/Detail/{id}",
         "class" => ModuleController::class,
@@ -250,7 +250,20 @@ $routes = array(
                 "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
             ),
         ),
-        "queryParams" => array(),
+        "queryParams" => array(
+            "paginate_by" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Number of records per page",
+                "example" => '10',
+            ),
+            "page" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Page number, starts from 0",
+                "example" => '6',
+            ),
+        ),
         "bodyParams" => array(),
     ),
     "list_data" => array(
@@ -311,20 +324,15 @@ $routes = array(
                     "filters": [
                         {
                             "field": "city",
-                            "type": "equals",
+                            "operator": "equals",
                             "value": "Paris",
                             "not": false/true => default false
                         },
                         {
                             "field": "country",
-                            "type": "match",
+                            "operator": "match",
                             "value": "USA"
                         },
-                        {
-                            "type": "wildcard",
-                            "field": "name",
-                            "value": "*starter*"
-                    }
                     ]
                 ',
             ),
@@ -386,6 +394,39 @@ $routes = array(
                 "required" => true,
                 "desc" => "Array of ids",
                 "example" => '["223dee27-b9e7-432a-8da9-c84cc0770035", "223dee27-b9e7-432a-8da9-c84cc0770035"]',
+            ),
+        ),
+    ),
+    "link" => array(
+        "method" => "POST",
+        "path" => "/Link/{id}",
+        "class" => ModuleController::class,
+        "function" => 'link',
+        "desc" => "Link records",
+        "options" => array(
+            'auth' => true,
+        ),
+        "pathParams" => array(
+            "id" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Module id",
+                "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
+            ),
+        ),
+        "queryParams" => array(),
+        "bodyParams" => array(
+            "ids" => array(
+                "type" => ArrayType::class,
+                "required" => true,
+                "desc" => "Record ids to link",
+                "example" => '["223dee27-b9e7-432a-8da9-c84cc0770035", "223dee27-b9e7-432a-8da9-c84cc0770035]',
+            ),
+            "link_name" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Link name",
+                "example" => 'contacts',
             ),
         ),
     ),

@@ -10,12 +10,12 @@
                 v-model="model.name"
                 v-bind="{ ...$attrs, ...val.props }"
                 @input="(event) => fetchItems(event)"
-                @click="menuOpen = false"
+                @click="menuOpen = true"
             >
                 <template #append-inner>
                     <v-fab-transition class="search-prepend-icon">
                         <v-icon v-if="model.name" icon="mdi-close" @click="model = { id: '', name: '' }" />
-                        <v-icon v-else icon="mdi-magnify" />
+                        <v-icon v-else icon="mdi-magnify" @click.stop="openRelatePopup" />
                     </v-fab-transition>
                 </template>
             </v-text-field>
@@ -63,8 +63,8 @@ import { useLanguagesStore } from '@/store/languages'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import { modulesApi } from '@/api/modules.api'
 import he from 'he'
-import getFilters from '@/utils/qsOperators'
 import { FieldProps } from '../Field.model'
+import getFilters from '@/utils/qsOperators'
 
 const props = defineProps<FieldProps>()
 const emit = defineEmits(['update:modelValue'])

@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -139,6 +139,7 @@ $mod_strings = array(
     'LBL_ERR_DELEGATION_DURATION_NOT_VALID' => 'Delegation Duration (h) can\'t be a negative number',
     'LBL_DEPUTY' => 'Deputy',
     'LBL_DEPUTY_NAME' => 'Deputy',
+    'LBL_DEPUTY_ID' => 'Deputy (ID)',
     'LBL_LEAVE_ALERT' => "%s added a/an %s on %s.",  
     'LBL_ACCEPT' => 'Accept',
     'LBL_PERIODICITY_ERROR' => 'Please select days on which the Work Schedule should be repeated.',

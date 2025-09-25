@@ -111,7 +111,7 @@ class ElasticQuery extends SearchQuery
                 $search_modules = $this->getGlobalSearchModuleList();
             }
             $searchModules = array_map('strtolower', $search_modules);
-            $searchModules = substr_replace($searchModules, $prefix . '_', 0, 0);
+            $searchModules = substr_replace($searchModules, $prefix.'_', 0, 0);
             $indexes = implode(',', $searchModules);
             $this->indice_module_map = array_combine($searchModules, $search_modules);
 
@@ -268,9 +268,9 @@ class ElasticQuery extends SearchQuery
                 require_once $variant['path'];
                 if (class_exists($variant['className'])) {
                     return new $variant['className']($module);
-                }
             }
         }
+    }
         throw new InvalidArgumentException("ACL class not found for module: {$module}");
     }
     public function getIndiceToModuleMapping()
@@ -347,7 +347,7 @@ class ElasticQuery extends SearchQuery
         }
     }
 
-    public static function getIndexPrefix(): string
+    public static function getIndexPrefix():string
     {
         return $GLOBALS['sugar_config']['elasticsearch_index_prefix'] ?? $GLOBALS['sugar_config']['unique_key'];
     }

@@ -50,7 +50,7 @@ export const useBean = (module: string, id: string) => {
     })
 
     const errorMessages = computed(() => {
-        const formPanel = Object.values(modulesStore.modules[module]?.metadata.RecordView?.panels ?? {}).find(
+        const formPanel = Object.values(modulesStore.modules[module]?.metadata.RecordView?.panels ?? {}).find( // FIXME: refactor - podobny kod w useLogic
             (panel) => panel.component === 'MintPanelRecordDetails',
         )
         const formFields = formPanel?.data?.fields?.flat() ?? []

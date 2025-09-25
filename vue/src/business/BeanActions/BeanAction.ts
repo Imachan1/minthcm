@@ -34,7 +34,7 @@ export abstract class BeanAction {
         const languagesStore = useLanguagesStore()
         const self = this.constructor as typeof BeanAction
         return {
-            title: languagesStore.label(this.options.title || self.TITLE),
+            title: languagesStore.label(this.options.title || self.TITLE, this.bean.module),
             icon: this.options.icon || self.ICON,
             onClick: () => this.execute(),
         }

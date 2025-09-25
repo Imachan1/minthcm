@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'salesagility/suitecrm',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => 'e9ccc9456bab80bf67703d492b6b6e986a33217c',
+        'pretty_version' => 'dev-develop',
+        'version' => 'dev-develop',
+        'reference' => '94a3f9d8100bc560ed5311baf5ccc8faf6c70b0c',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -811,8 +811,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0.0 || 2.0.0 || 3.0.0',
-                1 => '1.0|2.0',
+                0 => '1.0|2.0',
+                1 => '1.0.0 || 2.0.0 || 3.0.0',
             ),
         ),
         'ralouphie/getallheaders' => array(
@@ -843,9 +843,9 @@
             'dev_requirement' => false,
         ),
         'salesagility/suitecrm' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => 'e9ccc9456bab80bf67703d492b6b6e986a33217c',
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
+            'reference' => '94a3f9d8100bc560ed5311baf5ccc8faf6c70b0c',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -27,8 +27,13 @@ $viewdefs['Allocations'] = [
                         [
                             'name' => 'workplace_name',
                             'label' => 'LBL_RELATIONSHIP_WORKPLACES',
-                            'displayParams' => [
-                                'initial_filter' => '" + (this.form.{$fields.mode.name}.value == \"permanent\" ?  \"&mode_advanced[]=permanent\" : (\"&mode_advanced[]=hybrid&mode_advanced[]=rotational\") ) + \"&availability_advanced=active"',
+                            'filters' => [
+                                [
+                                    'field' => 'availability',
+                                    'operator' => 'equal',
+                                    'value' => 'active',
+                                    'editable' => false, 
+                                ],
                             ],
                         ],
                     ],

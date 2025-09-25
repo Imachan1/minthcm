@@ -10,8 +10,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -276,14 +276,14 @@ $dictionary['Note'] = array(
 
         'parent_name' =>
         [
-            'name' => 'parent_name',
-            'parent_type' => 'record_type_display',
-            'type_name' => 'parent_type',
-            'id_name' => 'parent_id',
-            'vname' => 'LBL_RELATED_TO',
-            'type' => 'parent',
-            'source' => 'non-db',
-            'options' => 'record_type_display_notes',
+            'name'=> 'parent_name',
+            'parent_type'=>'record_type_display' ,
+            'type_name'=>'parent_type',
+            'id_name'=>'parent_id',
+            'vname'=>'LBL_RELATED_TO',
+            'type'=>'parent',
+            'source'=>'non-db',
+            'options'=> 'record_type_display_notes',
         ],
         'show_preview' =>
         [
@@ -291,6 +291,7 @@ $dictionary['Note'] = array(
             'type' => 'bool',
             'source' => 'non-db',
             'reportable' => false,
+            'mass_update' => false
         ],
 
         'campaign_id' =>
@@ -301,7 +302,6 @@ $dictionary['Note'] = array(
             'reportable' => false,
             'source' => 'non-db',
         ],
-
         'acase_id' =>
         [
             'name' => 'acase_id',

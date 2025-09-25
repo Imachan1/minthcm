@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,7 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 if (!isset($install_script) || !$install_script) {
     die($mod_strings['ERR_NO_DIRECT_SCRIPT']);
 }
-
+#[\AllowDynamicProperties]
 class NonDBLocalization extends Localization
 {
 
@@ -89,7 +89,7 @@ class NonDBLocalization extends Localization
         return $newOpts;
     }
 }
-
+#[\AllowDynamicProperties]
 class InstallLayout
 {
 
@@ -1766,8 +1766,28 @@ EOQ;
      */
     public function show($data = null)
     {
+        global $mod_strings;
+        global $sugar_version;
+        global $js_custom_version;
+        global $app_list_strings;
+        global $db;
+        global $current_language;
+        global $errs;
+        global $sugarConfigDefaults ;
+        global $drivers;
+        global $checked;
+        global $errors;
+        global $supportedLanguages;
+        global $customSession;
+        global $customLog;
+        global $customId;
+        global $customSessionHidden;
+        global $customLogHidden;
+        global $customIdHidden;
+        global $next_step;
+        global $sugar_md;
         foreach ($data as $__key => $__val) {
-            $$__key = $__val;
+            ${$__key} = $__val;
         }
         $formId = 'installForm';
         $out = $this->getOutput(
@@ -1781,7 +1801,7 @@ EOQ;
         return $out;
     }
 }
-
+#[\AllowDynamicProperties]
 class DisplayErrors
 {
 
@@ -1823,7 +1843,7 @@ $setup_db_type = $_SESSION['setup_db_type'];
 
 $errs = '';
 if (isset($validation_errors)) {
-    if (count($validation_errors) > 0) {
+    if ((is_countable($validation_errors) ? count($validation_errors) : 0) > 0) {
         $errs = '<div id="errorMsgs">';
         $errs .= "<p>{$mod_strings['LBL_SYSOPTS_ERRS_TITLE']}</p>";
         $errs .= '<ul>';

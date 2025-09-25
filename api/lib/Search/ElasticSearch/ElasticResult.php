@@ -159,6 +159,7 @@ class ElasticResult extends SearchResult
             $beans = $focus->get_full_list('', " {$focus->table_name}.id IN ('" . implode("','", $ids) . "')");
 
             foreach ($beans as $bean) {
+                $bean->retrieve();
                 $bean = new MintBean($bean);
                 if (empty($bean->id)) {
                     continue;

@@ -16,6 +16,7 @@
 require_once 'modules/Candidatures/Candidatures_sugar.php';
 require_once 'modules/Candidatures/SugarFeeds/CandidaturesFeed.php';
 
+#[\AllowDynamicProperties]
 class Candidatures extends Candidatures_sugar
 {
 

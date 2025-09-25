@@ -8,8 +8,8 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,6 +52,7 @@ use MintHCM\Utils\LuxonMapper;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 
+#[\AllowDynamicProperties]
 class Preferences
 {
     protected $entityManager;
@@ -103,6 +104,7 @@ class Preferences
             ],
             'name_formats' => (new \Localization())->getUsableLocaleNameOptions($sugar_config['name_formats']),
             'upload_maxsize' => $sugar_config['upload_maxsize'] ?? 0,
+            'list_max_entries_per_subpanel' => $sugar_config['list_max_entries_per_subpanel'],
         ];
         if (!$minified || in_array('reload_currency', $rebuild_array) || empty($global_settings['currencies'])) {
             $global_settings['currencies'] = $this->getCurrenciesList();
