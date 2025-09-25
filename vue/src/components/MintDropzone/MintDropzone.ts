@@ -27,18 +27,20 @@ class MintDropzone {
         this.enableAutoProcess = enableAutoProcess;
         this.validations = validations;
         this.alreadyDisabled = false;
+        this.isError = false;
         this.fileTypesMap = {
             'doc': 'mdi-file-word',
             'docx': 'mdi-file-word',
             'xls': 'mdi-file-excel',
             'xlsx': 'mdi-file-excel',
             'pdf': 'mdi-file-pdf-box',
+            'csv': 'mdi-file-delimited',
             'jpg': 'preview',
             'png': 'preview',
             'jpeg': 'preview',
             'gif': 'preview',
         };
-        this.defaultThumbnail = 'mdi mdi-file';
+        this.defaultThumbnail = 'mdi-file';
         this.dropzoneStore = useDropzoneStore();
         this.languageStore = useLanguagesStore();
         this.backendStore = useBackendStore();
@@ -46,7 +48,7 @@ class MintDropzone {
         this.isSave = true;
     }
 
-    init (form: string) {
+    init(form: string) {
         this.isError = false;
         if (!this.record) {
             console.error('Provided empty record');
@@ -55,14 +57,14 @@ class MintDropzone {
         Dropzone.autoDiscover = false;
         this.dropzone = new Dropzone(form, {
             autoProcessQueue: this.enableAutoProcess,
-            addRemoveLinks: true, 
+            addRemoveLinks: true,
             acceptedFiles: this.getAcceptedFiles(),
             maxFilesize: this.backendStore.initData?.upload_maxsize,
-            maxFiles: this.getMaxFiles(),
             parallelUploads: this.getParallelUploads(),
             createImageThumbnails: false,
             ...this.languageStore.getList('dropzone_labels'),
             url: `/api/files/save`,
+            accept: this.onFileAccepted.bind(this),
         });
         this.loadFiles();
         this.setEvents();
@@ -81,8 +83,8 @@ class MintDropzone {
             file.previewElement.querySelector('.dz-image img').remove();
             file.previewElement.querySelector('.dz-image').appendChild(icon);
         }
-        
-        if(this.isTextOverflowing(file.previewElement.querySelector('.dz-filename'))) {
+
+        if (this.isTextOverflowing(file.previewElement.querySelector('.dz-filename'))) {
             this.addTooltip(file.previewElement.querySelector('.dz-filename'), file);
         }
 
@@ -99,62 +101,81 @@ class MintDropzone {
         element.after(tooltip);
     }
 
-    setEvents () {
+    setEvents() {
         this.dropzone.on("addedfile", this.onAddedFile.bind(this));
         this.dropzone.on("removedfile", this.onRemovedFile.bind(this));
         this.dropzone.on("sending", this.beforeSend.bind(this));
         this.dropzone.on("thumbnail", this.handleThumbnail.bind(this));
     }
 
-    loadFiles () {
+    loadFiles() {
         this.dropzoneStore.getFiles(this.module, this.record).then((files) => {
             if (files.length) {
                 files.forEach(function (file) {
-                    this.isSave = false;
-                    this.dropzone.displayExistingFile(file, this.getFileUrl(file.id));
-                    file.previewElement.addEventListener("click", this.openPreview.bind(this, file.id));
-                    this.dropzone.files.push(file);
-                    this.isSave = true;
-                }.bind(this));
+                        this.isSave = false;
+                        this.dropzone.displayExistingFile(file, this.getFileUrl(file.id));
+                        file.previewElement.addEventListener('click', this.openPreview.bind(this, file.id));
+                        this.dropzone.files.push(file);
+                        this.isSave = true;
+                    }.bind(this),
+                );
             }
+
+            this.updateDropzoneAppearance();
         });
     }
 
-    async onAddedFile (file) {
-        if(this.isSave) {
+    async onAddedFile(file) {
+        setTimeout(() => {
+            this.updateDropzoneAppearance();
+        }, 0);
+    }
+
+    async onFileAccepted(file, done) {
+        if (this.isSave) {
             const file_id = await this.dropzoneStore.saveFile(this.module, this.record, file);
             file.id = file_id;
-            file.previewElement.addEventListener("click", this.openPreview.bind(this, file_id));
-            if(file.type.includes('image')) {
+            file.previewElement.addEventListener('click', this.openPreview.bind(this, file_id))
+            if (file.type.includes('image')) {
                 file.previewElement.querySelector('.dz-image img').src = this.getFileUrl(file_id, true);
                 file.previewElement.querySelector('.dz-image img').alt = file.name;
             }
-            this.handleThumbnail(file);
+            this.handleThumbnail(file)
+            done();
+        } else {
+            done();
         }
-        
     }
 
-    onRemovedFile (file) {
+    onRemovedFile(file) {
         this.dropzoneStore.deleteFile(file.id);
+        setTimeout(() => {
+            this.updateDropzoneAppearance();
+        }, 0);
     }
 
-    beforeSend (file, xhr, data) {
+    beforeSend(file, xhr, data) {
         for (const property in this.customData) {
             data.append(property, this.customData[property]);
         }
     }
 
-    openPreview (fileId) {
+    openPreview(fileId) {
         window.open(this.getFileUrl(fileId, true), '_blank');
     }
 
-    getFileUrl (fileId, preview = false) {
-        return 'index.php?entryPoint=download&type=Files&id=' + fileId + '&time=' + Date.now()
-            + (preview ? '&preview=yes' : '');
+    getFileUrl(fileId, preview = false) {
+        return (
+            'index.php?entryPoint=download&type=Files&id=' +
+            fileId +
+            '&time=' +
+            Date.now() +
+            (preview ? '&preview=yes' : '')
+        );
     }
 
     getAcceptedFiles() {
-        return 'image/*,application/pdf,.doc,.docx,.pages,.odt,.rtf/*,.xls,.xlsx';
+        return 'image/*,application/pdf,.doc,.docx,.pages,.odt,.rtf/*,.xls,.xlsx,.csv,.ppt,.pptx,.odp,.key';
     }
 
     getMaxFiles() {
@@ -164,7 +185,20 @@ class MintDropzone {
     getParallelUploads() {
         return 10;
     }
- 
+
+    private updateDropzoneAppearance() {
+        const dzMessage = this.dropzone?.element?.querySelector('.dz-message');
+        if (dzMessage) {
+            const fileCount = this.dropzone.files ? this.dropzone.files.length : 0;
+            const hasFiles = fileCount > 0;
+            if (hasFiles && !dzMessage.classList.contains('smudge-effect')) {
+                dzMessage.classList.add('smudge-effect');
+            } else if (!hasFiles && dzMessage.classList.contains('smudge-effect')) {
+                dzMessage.classList.remove('smudge-effect');
+            }
+        }
+    }
+
 }
 
 export default MintDropzone
