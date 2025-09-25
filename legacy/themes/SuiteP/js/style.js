@@ -66,7 +66,7 @@ $(document).ready(function () {
 
   // #Mint-Vue Start
   window.addEventListener('click', (e) => {
-    if (e.ctrlKey || e.shiftKey || e.target?.getAttribute('target') === '_blank' || e.target?.closest('a')?.getAttribute('target') === '_blank') {
+    if (e.ctrlKey || e.shiftKey || e.metaKey || e.target?.getAttribute('target') === '_blank' || e.target?.closest('a')?.getAttribute('target') === '_blank') {
       return
     }
     const href = e.target?.href ?? e.target?.closest('a')?.href
