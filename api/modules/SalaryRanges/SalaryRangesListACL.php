@@ -2,8 +2,10 @@
 
 namespace MintHCM\Modules\SalaryRanges;
 
+use BeanFactory;
 use MintHCM\Lib\Search\ElasticSearch\BaseListACL;
 use DBManagerFactory;
+use MintHCM\Utils\LegacyConnector;
 
 class SalaryRangesListACL extends BaseListACL
 {
@@ -12,6 +14,14 @@ class SalaryRangesListACL extends BaseListACL
         global $current_user;
         $filters = parent::getFiltersByOwner($user_id);
         chdir('../legacy/');
+        $bean = BeanFactory::newBean($this->module);
+        $acl_controller = new LegacyConnector('ACLController');
+        if (!$bean->bean_implements('ACL') || (
+            !$acl_controller::requireOwner($bean->module_dir, 'list')
+            && !$acl_controller::requireSecurityGroup($bean->module_dir, 'list')
+        )) {
+            return [];
+        }
         $positions_ids = $this->getRelatedPositionIds($current_user->position_id, true);
         chdir('../api/');
         $filters[] = [

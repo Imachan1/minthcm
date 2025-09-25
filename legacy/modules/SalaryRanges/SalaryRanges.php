@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+ #[\AllowDynamicProperties]
 class SalaryRanges extends Basic
 {
     public $new_schema = true;
@@ -119,6 +120,19 @@ class SalaryRanges extends Basic
         $result = parent::isOwner($user_id);
         $is_for_my_position = in_array($this->position_id, $positions_ids);
         return $result || $is_for_my_position;
+    }
+
+    public function buildAccessWhere($view, $user = null)
+    {
+        global $current_user;
+        $where = parent::buildAccessWhere($view, $current_user);
+        if(empty($where) || $current_user->isAdmin()){
+            return $where;
+        }
+        $controller_career_path = ControllerFactory::getController('CareerPaths');
+        $positions_ids = $controller_career_path::getRelatedPositionIds($current_user->position_id, true);
+        $positions_ids_sql = "'" . implode("','", $positions_ids) . "'";
+        return "(" . $where . " || salaryranges.position_id IN ($positions_ids_sql) )";
     }
 
 }
