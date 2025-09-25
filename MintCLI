@@ -25,5 +25,6 @@ if (file_exists('legacy/config.php')) {
     $application->add(new MintHCM\MintCLI\Commands\ElasticSearchReindex());
     $application->add(new MintHCM\MintCLI\Commands\ElasticSearchReindexModule());
 }
+$application->add(new MintHCM\MintCLI\Commands\RepairFrontendOAuth2Client());
 
 $application->run();
