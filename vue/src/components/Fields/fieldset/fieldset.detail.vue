@@ -8,17 +8,10 @@
 
 <script setup lang="ts">
 import { defineProps, computed } from 'vue'
-import { FieldVardef } from '@/store/modules'
 import Pencil from '../Pencil.vue'
+import { FieldProps } from '../Field.model';
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const fieldContent = computed(() => {
     let text = ''
     props.defs.properties?.fields.forEach((field, index) => {

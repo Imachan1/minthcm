@@ -65,7 +65,7 @@ import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useModulesStore } from '@/store/modules'
 import MintButton from '@/components/MintButtons/MintButton.vue'
-import MintStatusBox from '@/components/MintStatusBox.vue'
+import MintStatusBox from '@/components/MintStatusBoxes/MintStatusBox.vue'
 
 interface Props {
     data: {

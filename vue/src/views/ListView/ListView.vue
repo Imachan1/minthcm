@@ -1,14 +1,11 @@
 <template>
-    <div v-if="access" :class="`list-view-mode-${store.mode}`">
+    <div :class="`list-view-mode-${store.mode}`">
         <h1 v-if="store.mode === 'list'" v-text="moduleName" />
         <div class="list-view-content">
             <ListViewFilters />
             <ListViewHeader />
             <ListViewTable />
         </div>
-    </div>
-    <div v-else>
-        <span v-text="languages.languages.app_strings?.LBL_MINT4_NO_ACCESS_TO_MODULE" />
     </div>
 </template>
 
@@ -39,10 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const module = computed(() => props.module ?? url.module)
 const moduleName = computed(() => languages.languages.app_list_strings?.moduleList?.[module.value])
-const access = ref(false)
 
 onMounted(async () => {
-    access.value = useACL().hasAccess(module.value, 'list', true)
     if (store.module !== module.value) {
         store.$reset()
     }
@@ -75,6 +70,7 @@ h1 {
     letter-spacing: 1px;
     font-weight: 600;
 }
+
 .list-view-mode-list {
     padding: 8px 32px !important;
 

@@ -80,9 +80,17 @@ class ListController
         $this->request = $request;
         $response = $response->withHeader('Content-type', 'application/json');
 
+        $current_time_zone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+        $disable_date_format = $GLOBALS['disable_date_format'];
+        $GLOBALS['disable_date_format'] = true;
+
         $this->setParams($this->request);
         $this->runElasticSearch();
         $data = $this->getData();
+
+        date_default_timezone_set($current_time_zone);
+        $GLOBALS['disable_date_format'] = $disable_date_format;
 
         $response->getBody()->write(json_encode($data));
         return $response;
@@ -164,6 +172,7 @@ class ListController
         }
         return $filters;
     }
+    
     private function runElasticSearch()
     {
         try {

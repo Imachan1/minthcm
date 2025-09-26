@@ -4627,7 +4627,8 @@ $app_strings['LBL_INBOUND_ACCOUNT'] = 'Inbound Account';
 $app_strings['LBL_SYSTEM_ACCOUNT'] = 'System Account';
 $app_strings['LBL_FROM_SYSTEM'] = 'Send From System';
 $app_strings['LBL_SIGNATURE'] = 'Signature';
-$app_strings['LBL_MINT4_NO_ACCESS_TO_MODULE'] = 'Warning: You do not have permission to access this module.';
+$app_strings['LBL_MINT4_NO_ACCESS_TO_MODULE'] = 'You do not have permission to access this module.';
+$app_strings['LBL_MINT4_NO_ACCESS_TO_RECORD'] = 'You do not have permission to access this record.';
 
 $app_list_strings['requests_status_list'] = array(
     'requested' => 'Requested',

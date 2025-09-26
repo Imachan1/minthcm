@@ -1,9 +1,11 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, RouteLocationNormalized } from 'vue-router'
 import { useBackendStore } from '@/store/backend'
 import { useAuthStore } from '@/store/auth'
 import { useLanguagesStore } from '@/store/languages'
 import routes from './routes'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
+import { useACL } from '@/composables/useACL'
+import { useStatusBoxesStore } from '@/store/statusBoxes'
 
 const router = createRouter({
     history: createWebHashHistory(window.location.pathname),
@@ -31,6 +33,7 @@ router.beforeEach(async (to, from) => {
     if (to.meta?.auth === false && auth.user?.id) {
         return { name: 'dashboard' }
     }
+    if (checkPermissions(to) === false) return false
     if (to.name === 'list') {
         const module = to.params.module?.toString()
         const legacy_list_params = {
@@ -43,7 +46,7 @@ router.beforeEach(async (to, from) => {
         if (backend.initData?.legacy_views?.[module]?.list) {
             return legacy_list_params;
         }
-        if(backend.initData?.legacy_views?.[module]?.list === undefined){
+        if (backend.initData?.legacy_views?.[module]?.list === undefined) {
             console.warn('Legacy views not defined for module: ' + module + ". Using legacy list view.");
             return legacy_list_params;
         }
@@ -61,6 +64,34 @@ router.beforeEach(async (to, from) => {
         }
     }
 })
+
+function checkPermissions(to: RouteLocationNormalized): boolean | void {
+    if (!to.params.module) return
+
+    const view = to.name === 'list' || (to.name === 'module-view' && to.params.action === 'index') ? 'list' :
+        (to.name === 'record' && !to.params.id) || (to.name === 'module-view' && to.params.action === 'EditView') ? 'edit' :
+            (to.name === 'record' && to.params.id) || (to.name === 'module-view' && to.params.action === 'DetailView') ? 'view' : '';
+
+    if (!view) return
+
+    const access = useACL().hasAccess(to.params.module, view, true, true)
+
+    if (!access) {
+        useStatusBoxesStore().showStatus(
+            view === 'list' ? 'module_access_error' : 'record_access_error',
+            {
+                type: 'error',
+                message: useLanguagesStore().label(
+                    view === 'list' ? 'LBL_MINT4_NO_ACCESS_TO_MODULE' : 'LBL_MINT4_NO_ACCESS_TO_RECORD'
+                ),
+                autoClose: true,
+            }
+        )
+        return false
+    }
+
+    return true
+}
 
 // router.beforeEach((to, from) => {
 //     const backend = useBackendStore()
@@ -119,9 +150,8 @@ router.afterEach(async (to, from) => {
         module === recordViewStore.bean?.module_name &&
         languages.languages.modules[module]
     ) {
-        document.title = `${recordViewStore.bean?.attributes.name} | ${languages.label('LBL_MODULE_NAME', module)} | ${
-            backend.initData?.systemName
-        }`
+        document.title = `${recordViewStore.bean?.attributes.name} | ${languages.label('LBL_MODULE_NAME', module)} | ${backend.initData?.systemName
+            }`
     } else if (languages.languages.modules[module]) {
         document.title = `${languages.label('LBL_MODULE_NAME', module)} | ${backend.initData?.systemName}`
     }

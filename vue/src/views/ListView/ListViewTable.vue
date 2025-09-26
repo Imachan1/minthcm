@@ -16,57 +16,20 @@
         :no-data-text="store.error ? languages.label('LBL_ESLIST_FETCHING_DATA_ERROR') : languages.label('LBL_ESLIST_NO_DATA_AVAILABLE')"
         hover
     >
-        <template v-slot:item.name="{ item }">
-            <a @click="store.handleNameClick(item)" class="list-table-name-link">
-                {{ item.name || item.full_name }}
-            </a>
-        </template>
-        <template
-            v-for="link in store.customFields.links"
-            v-slot:[`item.${link.nameField}`]="{ item }"
-            :key="link.nameField"
-        >
-            <router-link
-                v-if="item[link.urlField]"
-                :to="url.fromLegacyUrl(item[link.urlField])"
-                :target="store.mode === 'relate' ? '_blank' : null"
-                v-text="item[link.nameField]"
+        <template v-for="column in store.visibleColumns" v-slot:[`item.${column.name}`]="{ item }" :key="column.name">
+            <Field 
+                view="list"
+                :defs="column.name === 'name' 
+                    ? Object.assign(store.defs.columns[column.name], { type: 'name' })
+                    : store.defs.columns[column.name]"
+                :data="{ bean: item }"
+                :label="languages.label(store.defs.columns[column.name].label, store.module)"
+                :options="item.logic.fieldsOptions[column.name]"
+                :required="item.logic.requiredFields.includes(column.name)"
+                :errorMessage="item.errorMessages[column.name]"
+                :isDirty="item.isDirty || item.dirtyFields.has(column.name)"
+                :modelValue="item.attributes[column.name]"
             />
-            <a v-else @click="store.handleNameClick(item)" class="list-table-name-link">
-                {{ item[link.nameField] }}
-            </a>
-        </template>
-        <template v-for="bool in store.customFields.booleans" v-slot:[`item.${bool}`]="{ item }" :key="bool">
-            <v-icon
-                color="secondary"
-                :icon="item[bool] && item[bool] !== '0' ? 'mdi-checkbox-marked-circle' : 'mdi-close'"
-            />
-        </template>
-        <template v-for="list in store.customFields.lists" v-slot:[`item.${list.field}`]="{ item }" :key="list.field">
-            <div
-                v-if="list.colors"
-                class="enum-chip"
-                :style="list.colors[item[list.field]]"
-                v-text="list.options[item[list.field]]"
-            />
-            <span v-else v-text="list.options[item[list.field]]" />
-        </template>
-        <template
-            v-for="multienum in store.customFields.multienums"
-            v-slot:[`item.${multienum.field}`]="{ item }"
-            :key="multienum.field"
-        >
-            <span v-text="formatMultienum(item[multienum.field], multienum.options)" />
-        </template>
-        <template v-for="date in store.customFields.dates" v-slot:[`item.${date.field}`]="{ item }" :key="date.field">
-            <span v-text="item[date.field]" :style="date.style" />
-        </template>
-        <template
-            v-for="currency in store.customFields.currencies"
-            v-slot:[`item.${currency}`]="{ item }"
-            :key="currency"
-        >
-            <span v-text="NumberUtils.formatCurrency(item[currency], item.currency_id)" />
         </template>
         <template v-slot:item.actions="{ item }">
             <div class="d-flex justify-end" style="gap: 8px">
@@ -99,7 +62,7 @@ import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useUrlStore } from '@/store/url'
 import { usePopupsStore } from '@/store/popups'
-import NumberUtils from '@/utils/numbers'
+import Field from '@/components/Fields/Field.vue'
 
 const router = useRouter()
 const store = useListViewStore()
@@ -135,7 +98,7 @@ const coreActions = {
 
 function getItemActions(item: any) {
     return store.config.config.actions
-        .filter((action) => typeof action !== 'string' || item.acl_access[action])
+        .filter((action) => typeof action !== 'string' || item.aclAccess[action])
         .map((action) => {
             if (typeof action === 'string') {
                 return coreActions[action] ?? {}
@@ -145,15 +108,6 @@ function getItemActions(item: any) {
                 onClick: (item) => eval(action.onClick)(item),
             }
         })
-}
-
-function formatMultienum(value, labels) {
-    return value
-        .replaceAll('^', '')
-        .split(',')
-        .filter((label) => label in labels)
-        .map((label) => labels[label])
-        .join(', ')
 }
 </script>
 
@@ -178,9 +132,6 @@ function formatMultienum(value, labels) {
         text-transform: uppercase;
         border-radius: 5px;
         letter-spacing: 0.09px;
-    }
-    .list-table-name-link {
-        cursor: pointer;
     }
 }
 </style>

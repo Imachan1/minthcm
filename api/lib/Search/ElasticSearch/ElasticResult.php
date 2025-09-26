@@ -164,14 +164,7 @@ class ElasticResult extends SearchResult
                 if (empty($bean->id)) {
                     continue;
                 }
-
                 $bean->load_relationships();
-                $bean->acl_access = [
-                    'edit' => $bean->ACLAccess('edit'),
-                    'view' => $bean->ACLAccess('view'),
-                    'delete' => $bean->ACLAccess('delete'),
-                ];
-
                 $beans_unsorted[] = $bean;
             }
         }

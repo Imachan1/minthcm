@@ -19,19 +19,13 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
-import { FieldVardef, useModulesStore } from '@/store/modules'
+import { useModulesStore } from '@/store/modules'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import Field from '@/components/Fields/Field.vue'
+import { FieldProps } from '../Field.model'
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 
 const store = useRecordViewStore()
 const languages = useLanguagesStore()

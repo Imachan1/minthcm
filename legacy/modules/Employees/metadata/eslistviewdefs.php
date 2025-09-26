@@ -7,6 +7,7 @@ $ESListViewDefs['Employees'] = [
         'name' => [
             'link' => true,
             'default' => true,
+            'type' => 'name'
         ],
         'position_name' => [
             'link' => true,
@@ -45,6 +46,9 @@ $ESListViewDefs['Employees'] = [
         ],
         'birthdate' => [
         ],
+        'photo' => [
+            'type' => 'image'
+        ]
     ],
     'search' => [
         'first_name' => [

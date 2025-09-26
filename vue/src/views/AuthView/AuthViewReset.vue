@@ -98,11 +98,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
 import { useAuthViewStore } from './AuthViewStore'
 import MintButton from '@/components/MintButtons/MintButton.vue'
-import MintStatusBox from '@/components/MintStatusBox.vue'
+import MintStatusBox from '@/components/MintStatusBoxes/MintStatusBox.vue'
 import { usePreferencesStore } from '@/store/preferences'
 import axios from 'axios'
 

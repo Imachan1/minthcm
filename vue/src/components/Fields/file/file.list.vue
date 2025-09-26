@@ -1,29 +1,47 @@
 <template>
-  <div class="mint-file-list-field" v-if="fileName">
-    <v-icon size="x-small">mdi-file</v-icon>
-    <span>{{ fileName }}</span>
-  </div>
+  <template v-if="fileUrl">
+    <a :href="fileUrl">
+      {{ props.modelValue }}
+    </a>
+  </template>
 </template>
 
 <script setup lang="ts">
-import { FieldVardef } from '@/store/modules'
-// CR: to będzie do napisania prawie od zera - obecnie wyświetla nazwę pliku
+import { computed } from 'vue';
+import { FieldProps } from '../Field.model';
 
-interface Props {
-  defs: FieldVardef
-  data?: any
-}
+const props = defineProps<FieldProps>()
 
-const props = defineProps<Props>()
-const fileName = props.data?.bean?.[props.defs.name]
+const serverFileName = computed(() => {
+  if (!props.data?.bean?.attributes?.id) {
+    return ''
+  }
+  let serverFileName = props.data.bean.attributes.id
+  if (isImage.value) {
+    serverFileName += `_${props.defs.name}`
+  }
+  return serverFileName
+})
+
+const fileUrl = computed(() => {
+  if (props.modelValue) {
+    return `legacy/index.php?entryPoint=download&type=${props.data.bean.module}&id=${serverFileName.value}&time=${new Date().toISOString()}`
+  }
+  return ''
+})
+
+const isImage = computed(() => {
+  return props.defs.type === 'image'
+})
 </script>
 
 <style scoped lang="scss">
-.mint-file-list-field {
-  color: rgb(var(--v-theme-on-surface));
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  overflow-wrap: break-word;
+a {
+  color: rgba(var(--v-theme-secondary), var(--v-high-emphasis-opacity));
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 </style>

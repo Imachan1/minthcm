@@ -1,18 +1,54 @@
 <template>
-    <router-link :to="`/modules/${props.data.bean.parent_module}/DetailView/${props.data.bean.id}`" class="name-field">
-        {{ props.data.bean.name }}
+    <a v-if="store.mode === 'relate'" class="name-field" @click="choose">
+        {{ props.modelValue }}
+    </a>
+    <router-link v-else-if="hasViewAccess" :to="recordUrl" class="name-field">
+        {{ props.modelValue }}
     </router-link>
+    <span v-else>
+        {{ props.modelValue }}
+    </span>
 </template>
 
 <script setup lang="ts">
-import { FieldVardef } from '@/store/modules'
+import { useACL } from '@/composables/useACL'
+import { computed } from 'vue';
+import { FieldProps } from '../Field.model';
+import { useListViewStore } from '@/views/ListView/ListViewStore';
+import { usePopupsStore } from '@/store/popups';
 
-interface Props {
-    defs: FieldVardef
-    data?: any
+const props = defineProps<FieldProps>()
+const store = useListViewStore()
+
+const hasViewAccess = computed<boolean>(() => {
+    return useACL().hasAccess(props.data.bean.module, 'view', true, true)
+})
+
+const recordUrl = computed(() => {
+    const module = props.data?.bean?.module
+    const id = props.data?.bean?.id
+    if (!module || !id) return ''
+    return `/modules/${module}/DetailView/${id}`
+})
+
+function choose() {
+    if (!store.relatePopup) {
+        return
+    }
+    const nameToValueArray: { [key: string]: string } = {}
+    for (const key in store.relatePopup.data.fieldToNameArray) {
+        if (['full_name', 'name', 'last_name', 'first_name'].includes(key)) {
+            nameToValueArray[store.relatePopup.data.fieldToNameArray[key]] =
+                props.data?.bean?.attributes?.full_name || props.data?.bean?.attributes?.name || props.data?.bean?.attributes?.last_name || props.data?.bean?.attributes?.first_name || ''
+        } else if (!nameToValueArray[store.relatePopup.data.fieldToNameArray[key]] && key === 'subpanel_id') {
+            nameToValueArray[store.relatePopup.data.fieldToNameArray[key]] = props.data?.bean?.id
+        } else {
+            nameToValueArray[store.relatePopup.data.fieldToNameArray[key]] = props.data?.bean?.attributes?.[key] ?? ''
+        }
+    }
+    store.relatePopup.data?.onConfirm({ nameToValueArray })
+    usePopupsStore().closePopup(store.relatePopup)
 }
-
-const props = defineProps<Props>()
 </script>
 
 <style scoped lang="scss">

@@ -15,19 +15,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { DateTime } from 'luxon'
-import { FieldVardef } from '@/store/modules'
 import Pencil from '../Pencil.vue'
 import { usePreferencesStore } from '@/store/preferences';
-
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
+import { FieldProps } from '../Field.model';
 
 const preferences = usePreferencesStore()
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const emit = defineEmits(['inlineEditBtnClicked'])
 const parsedDate = computed(() => {
     const value = props.modelValue?.trim()

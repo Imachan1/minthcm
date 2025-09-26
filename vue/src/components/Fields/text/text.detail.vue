@@ -21,18 +21,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useLanguagesStore } from '@/store/languages'
-import { FieldVardef } from '@/store/modules'
 import Pencil from '../Pencil.vue'
+import { FieldProps } from '../Field.model';
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-    hidePencil?: boolean
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const emit = defineEmits(['inlineEditBtnClicked'])
 const languages = useLanguagesStore()
 

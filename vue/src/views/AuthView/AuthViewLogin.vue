@@ -46,7 +46,7 @@ import { useAuthStore } from '@/store/auth'
 import { usePreferencesStore } from '@/store/preferences'
 import { useRouter } from 'vue-router'
 import MintButton from '@/components/MintButtons/MintButton.vue'
-import MintStatusBox from '@/components/MintStatusBox.vue'
+import MintStatusBox from '@/components/MintStatusBoxes/MintStatusBox.vue'
 
 const authViewStore = useAuthViewStore()
 const backend = useBackendStore()

@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { FieldProps } from '../Field.model';
+import { FieldProps } from '../Field.model'
 
 const props = defineProps<FieldProps>()
 </script>

@@ -97,7 +97,7 @@ export const useBean = (module: string, id: string) => {
     }
 
     async function init() {
-        await retrieve()
+        return await retrieve()
     }
 
     function updateFields(fields: { [fieldName: string]: any }) {
@@ -116,16 +116,25 @@ export const useBean = (module: string, id: string) => {
 
     async function retrieve() {
         isRetrieving.value = true
-        const response = await axios.get(`api/${module}/Get${id ? `/${id}` : ''}`)
-        if (response.status === 200 && response.data) {
-            aclAccess.value = response.data.acl_access
-            attributes.value = response.data.attributes
-            syncAttributes.value = structuredClone(response.data.attributes)
-            logic.rules.value = response.data.logic?.rules ?? {}
-            updateFields(logic.getUpdatedFields())
-            dirtyFields.value = new Set()
-        }
-        isRetrieving.value = false
+        return await axios.get(`api/${module}/Get${id ? `/${id}` : ''}`)
+            .then((response) => {
+                if (response.status === 200 && response.data) {
+                    setData(response.data)
+                }
+                return response
+            })
+            .finally(() => {
+                isRetrieving.value = false
+            })
+    }
+
+    function setData(data: { [key: string]: any }) {
+        aclAccess.value = data.acl_access
+        attributes.value = data.attributes
+        syncAttributes.value = structuredClone(data.attributes)
+        logic.rules.value = data.logic?.rules ?? {}
+        updateFields(logic.getUpdatedFields())
+        dirtyFields.value = new Set()
     }
 
     async function fetchLogic(triggerFields: string[] = []) {
@@ -252,6 +261,7 @@ export const useBean = (module: string, id: string) => {
         updateFields,
         restore,
         retrieve,
+        setData,
         save,
         markDeleted,
     }

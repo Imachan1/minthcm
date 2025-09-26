@@ -48,7 +48,7 @@ namespace MintHCM\Lib\Search\Base;
 
 use Doctrine\DBAL\Connection;
 use MintHCM\Data\BeanFactory;
-use MintHCM\Data\MintBean;
+use MintHCM\Lib\MintLogic\MintLogic;
 use MintHCM\Utils\LegacyConnector;
 
 #[\AllowDynamicProperties]
@@ -56,11 +56,11 @@ abstract class SearchResult
 {
     protected $result, $grouped_ids, $beans, $hits;
 
-    protected $handle_acl,$indice_module_map, $add_acl_info = true;
+    protected $handle_acl, $indice_module_map;
 
     protected $size, $current_offset, $total;
 
-    public function __construct($result, $current_offset, $size, $handle_acl = false,$indice_module_map = [])
+    public function __construct($result, $current_offset, $size, $handle_acl = false, $indice_module_map = [])
     {
         $this->total = $result["hits"]["total"]['value'];
         $this->size = $size;
@@ -104,28 +104,31 @@ abstract class SearchResult
 
         $beans = array();
         foreach (array_slice($this->beans, 0, $this->size) as $bean) {
-            $columns = $bean->column_fields;
-            $row = [];
-            foreach ($columns as $column) {
-                if ($bean->field_defs[$column]['type'] == 'relate' && isset($bean->field_defs[$column]['link']) && isset($bean->field_defs[$column]['id_name']) && $bean->field_defs[$column]['id_name']) {
-                    $relId = $this->getRelatedId($bean, $bean->field_defs[$column]['id_name'], $bean->field_defs[$column]['link']);
-                    $row[$bean->field_defs[$column]['name'] . "_link"] = $this->getHrefLink($bean->field_defs[$column]['module'], $relId, 'DetailView');
-                } elseif($column == 'name'){
-                    $row[$column . "_link"] = $this->getHrefLink($bean->module_name, $bean->id, 'DetailView');
-                }
-                $row[$column] = $bean->$column;
-            }
-            $row['module_name'] = $bean->module_name;
-            if ($this->add_acl_info) {
-                $row['acl_access'] = $bean->acl_access;
-            }
-            if ($group_by_module) {
-                $beans[$bean->module_name][] = $row;
-            } else {
-                $beans[] = $row;
-            }
+            $data = $this->mergeRecordData($bean);
+            $group_by_module ? $beans[$bean->module_name][] = $data : $beans[] = $data;
         }
         return $beans;
+    }
+
+    protected function mergeRecordData($bean)
+    {
+        $favorite = BeanFactory::newBean('Favorites');
+        return [
+            'id' => $bean->id,
+            'module' => $bean->module_name,
+            'attributes' => array_merge(
+                $bean->toArray(),
+                [
+                    'is_favorite' => !empty($favorite->getFavoriteID($bean->module_dir, $bean->id))
+                ]
+            ),
+            'acl_access' => [
+                'edit' => $bean->ACLAccess('edit'),
+                'delete' => $bean->ACLAccess('delete'),
+                'view' => $bean->ACLAccess('view'),
+            ],
+            'logic' => (new MintLogic($bean))->getInitial(),
+        ];
     }
 
     protected function setData($result, $current_offset): void
@@ -240,36 +243,5 @@ abstract class SearchResult
         }
 
         $this->grouped_ids = $new_grouped;
-    }
-
-    protected function getHrefLink($module, $id, $action)
-    {
-        $link = "index.php?module=" . $module . "&action=".$action."&record=" . $id;
-        return $link;
-    }
-
-    protected function getRelatedId(MintBean $obj, string $idName, string $link): ?string
-    {
-        $relField = $idName;
-        if (isset($obj->$link)) {
-            $relId = $obj->$link->getFocus()->$relField;
-            if (is_object($relId)) {
-                if (method_exists($relId, "getFocus")) {
-                    $relId = $relId->getFocus()->id;
-                } else {
-                    $relId = null;
-                }
-            }
-        } elseif (isset($obj->$relField)) {
-            $relId = $obj->$relField;
-        } else {
-            $relId = null;
-            \LoggerManager::getLogger()->warn('Unresolved related ID for field: ' . $relField);
-        }
-
-        if (!$relId) {
-            $relId = '';
-        }
-        return (is_object($relId))?$obj->id:$relId; //MintHCM team #60792
     }
 }
