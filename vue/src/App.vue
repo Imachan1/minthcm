@@ -10,7 +10,7 @@
             <v-main
                 class="mint-content"
                 :style="{
-                    marginRight: ux.drawer && $vuetify.display.xlAndUp ? 'var(--v-drawer-width)' : '0px',
+                    marginRight: ux.drawer && $vuetify.display.xlAndUp ? 'var(--v-drawer-width)' : '48px',
                 }"
             >
                 <router-view :key="$route.fullPath" />

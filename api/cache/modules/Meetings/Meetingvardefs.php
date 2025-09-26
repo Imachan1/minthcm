@@ -1,11 +1,11 @@
 <?php 
- $GLOBALS["dictionary"]["Call"]=array (
-  'table' => 'calls',
-  'comment' => 'A Call is an activity representing a phone call',
+ $GLOBALS["dictionary"]["Meeting"]=array (
+  'table' => 'meetings',
   'audited' => true,
   'unified_search' => true,
   'full_text_search' => true,
   'unified_search_default_enabled' => true,
+  'comment' => 'Meeting activities',
   'full_text_search_meta_field' => 'date_start',
   'fields' => 
   array (
@@ -23,16 +23,16 @@
     array (
       'name' => 'name',
       'vname' => 'LBL_SUBJECT',
-      'dbType' => 'varchar',
+      'required' => true,
       'type' => 'name',
-      'len' => '50',
-      'comment' => 'Brief description of the call',
+      'dbType' => 'varchar',
       'unified_search' => true,
       'full_text_search' => 
       array (
         'boost' => 3,
       ),
-      'required' => true,
+      'len' => '255',
+      'comment' => 'Meeting name',
       'importable' => 'required',
       'audited' => true,
     ),
@@ -161,8 +161,8 @@
     array (
       'name' => 'created_by_link',
       'type' => 'link',
-      'relationship' => 'calls_created_by',
-      'vname' => 'LBL_CREATED_BY_USER',
+      'relationship' => 'meetings_created_by',
+      'vname' => 'LBL_CREATED_USER',
       'link_type' => 'one',
       'module' => 'Users',
       'bean_name' => 'User',
@@ -172,8 +172,8 @@
     array (
       'name' => 'modified_user_link',
       'type' => 'link',
-      'relationship' => 'calls_modified_user',
-      'vname' => 'LBL_MODIFIED_BY_USER',
+      'relationship' => 'meetings_modified_user',
+      'vname' => 'LBL_MODIFIED_USER',
       'link_type' => 'one',
       'module' => 'Users',
       'bean_name' => 'User',
@@ -192,7 +192,7 @@
       'reportable' => true,
       'isnull' => 'false',
       'dbType' => 'id',
-      'audited' => true,
+      'audited' => false,
       'comment' => 'User ID assigned to record',
       'duplicate_merge' => 'disabled',
     ),
@@ -209,36 +209,134 @@
       'id_name' => 'assigned_user_id',
       'module' => 'Users',
       'duplicate_merge' => 'disabled',
+      'audited' => true,
     ),
     'assigned_user_link' => 
     array (
       'name' => 'assigned_user_link',
       'type' => 'link',
-      'relationship' => 'calls_assigned_user',
+      'relationship' => 'meetings_assigned_user',
       'vname' => 'LBL_ASSIGNED_TO_USER',
       'link_type' => 'one',
       'module' => 'Users',
       'bean_name' => 'User',
       'source' => 'non-db',
+      'duplicate_merge' => 'enabled',
+      'rname' => 'user_name',
+      'id_name' => 'assigned_user_id',
+      'table' => 'users',
     ),
     'SecurityGroups' => 
     array (
       'name' => 'SecurityGroups',
       'type' => 'link',
-      'relationship' => 'securitygroups_calls',
+      'relationship' => 'securitygroups_meetings',
       'module' => 'SecurityGroups',
       'bean_name' => 'SecurityGroup',
       'source' => 'non-db',
       'vname' => 'LBL_SECURITYGROUPS',
+    ),
+    'accept_status' => 
+    array (
+      'name' => 'accept_status',
+      'vname' => 'LBL_ACCEPT_STATUS',
+      'type' => 'varchar',
+      'dbType' => 'varchar',
+      'len' => '20',
+      'source' => 'non-db',
+      'audited' => true,
+    ),
+    'set_accept_links' => 
+    array (
+      'name' => 'accept_status',
+      'vname' => 'LBL_ACCEPT_LINK',
+      'type' => 'varchar',
+      'dbType' => 'varchar',
+      'len' => '20',
+      'source' => 'non-db',
+      'audited' => true,
+    ),
+    'location' => 
+    array (
+      'name' => 'location',
+      'vname' => 'LBL_LOCATION',
+      'type' => 'varchar',
+      'len' => '50',
+      'comment' => 'Meeting location',
+      'audited' => true,
+    ),
+    'password' => 
+    array (
+      'name' => 'password',
+      'vname' => 'LBL_PASSWORD',
+      'type' => 'varchar',
+      'len' => '50',
+      'comment' => 'Meeting password',
+      'studio' => 'false',
+      'audited' => false,
+    ),
+    'join_url' => 
+    array (
+      'name' => 'join_url',
+      'vname' => 'LBL_URL',
+      'type' => 'varchar',
+      'len' => '200',
+      'comment' => 'Join URL',
+      'studio' => 'false',
+      'reportable' => false,
+    ),
+    'host_url' => 
+    array (
+      'name' => 'host_url',
+      'vname' => 'LBL_HOST_URL',
+      'type' => 'varchar',
+      'len' => '400',
+      'comment' => 'Host URL',
+      'studio' => 'false',
+      'reportable' => false,
+      'audited' => true,
+    ),
+    'displayed_url' => 
+    array (
+      'name' => 'displayed_url',
+      'vname' => 'LBL_DISPLAYED_URL',
+      'type' => 'url',
+      'len' => '400',
+      'comment' => 'Meeting URL',
+      'studio' => 'false',
+      'audited' => true,
+    ),
+    'creator' => 
+    array (
+      'name' => 'creator',
+      'vname' => 'LBL_CREATOR',
+      'type' => 'varchar',
+      'len' => '50',
+      'comment' => 'Meeting creator',
+      'studio' => 'false',
+      'audited' => true,
+    ),
+    'external_id' => 
+    array (
+      'name' => 'external_id',
+      'vname' => 'LBL_EXTERNALID',
+      'type' => 'varchar',
+      'len' => '50',
+      'comment' => 'Meeting ID for external app API',
+      'studio' => 'false',
+      'audited' => false,
     ),
     'duration_hours' => 
     array (
       'name' => 'duration_hours',
       'vname' => 'LBL_DURATION_HOURS',
       'type' => 'int',
-      'len' => '2',
-      'comment' => 'Call duration, hours portion',
+      'group' => 'duration',
+      'len' => '3',
+      'comment' => 'Duration (hours)',
+      'importable' => 'required',
       'required' => true,
+      'studio' => 'false',
       'audited' => true,
     ),
     'duration_minutes' => 
@@ -246,16 +344,10 @@
       'name' => 'duration_minutes',
       'vname' => 'LBL_DURATION_MINUTES',
       'type' => 'int',
-      'function' => 
-      array (
-        'name' => 'getDurationMinutesOptions',
-        'returns' => 'html',
-        'include' => 'modules/Calls/CallHelper.php',
-      ),
+      'group' => 'duration',
       'len' => '2',
-      'group' => 'duration_hours',
-      'importable' => 'required',
-      'comment' => 'Call duration, minutes portion',
+      'comment' => 'Duration (minutes)',
+      'studio' => 'false',
       'audited' => true,
     ),
     'date_start' => 
@@ -264,11 +356,17 @@
       'vname' => 'LBL_DATE',
       'type' => 'datetimecombo',
       'dbType' => 'datetime',
-      'comment' => 'Date in which call is schedule to (or did) start',
+      'comment' => 'Date of start of meeting',
       'importable' => 'required',
       'required' => true,
       'enable_range_search' => true,
       'options' => 'date_range_search_dom',
+      'validation' => 
+      array (
+        'type' => 'isbefore',
+        'compareto' => 'date_end',
+        'blank' => false,
+      ),
       'audited' => true,
     ),
     'date_end' => 
@@ -278,7 +376,7 @@
       'type' => 'datetimecombo',
       'dbType' => 'datetime',
       'massupdate' => false,
-      'comment' => 'Date is which call is scheduled to (or did) end',
+      'comment' => 'Date meeting ends',
       'enable_range_search' => true,
       'options' => 'date_range_search_dom',
       'audited' => true,
@@ -289,24 +387,14 @@
       'vname' => 'LBL_PARENT_TYPE',
       'type' => 'parent_type',
       'dbType' => 'varchar',
-      'required' => false,
       'group' => 'parent_name',
       'options' => 'parent_type_display',
-      'len' => 255,
-      'comment' => 'The Sugar object to which the call is related',
-      'audited' => true,
-    ),
-    'parent_name' => 
-    array (
-      'name' => 'parent_name',
-      'parent_type' => 'record_type_display',
-      'type_name' => 'parent_type',
-      'id_name' => 'parent_id',
-      'vname' => 'LBL_LIST_RELATED_TO',
-      'type' => 'parent',
-      'group' => 'parent_name',
-      'source' => 'non-db',
-      'options' => 'parent_type_display',
+      'len' => 100,
+      'comment' => 'Module meeting is associated with',
+      'studio' => 
+      array (
+        'searchview' => false,
+      ),
       'audited' => true,
     ),
     'status' => 
@@ -316,16 +404,11 @@
       'type' => 'ColoredEnum',
       'dbType' => 'varchar',
       'len' => 100,
-      'options' => 'call_status_dom',
-      'options_colors' => 'call_status_dom_colored',
-      'comment' => 'The status of the call (Held, Not Held, etc.)',
-      'required' => true,
-      'importable' => 'required',
+      'options' => 'meeting_status_dom',
+      'options_colors' => 'meeting_status_dom_colored',
+      'comment' => 'Meeting status (ex: Planned, Held, Not held)',
       'default' => 'Planned',
-      'studio' => 
-      array (
-        'detailview' => false,
-      ),
+      'massupdate' => 1,
       'audited' => true,
     ),
     'direction' => 
@@ -336,16 +419,25 @@
       'len' => 100,
       'options' => 'call_direction_dom',
       'comment' => 'Indicates whether call is inbound or outbound',
+      'source' => 'non-db',
+      'importable' => 'false',
+      'massupdate' => false,
+      'reportable' => false,
+      'studio' => 'false',
       'audited' => true,
     ),
     'parent_id' => 
     array (
       'name' => 'parent_id',
-      'vname' => 'LBL_LIST_RELATED_TO_ID',
+      'vname' => 'LBL_PARENT_ID',
       'type' => 'id',
       'group' => 'parent_name',
       'reportable' => false,
-      'comment' => 'The ID of the parent Sugar object identified by parent_type',
+      'comment' => 'ID of item indicated by parent_type',
+      'studio' => 
+      array (
+        'searchview' => false,
+      ),
     ),
     'reminder_checked' => 
     array (
@@ -412,7 +504,7 @@
     array (
       'required' => false,
       'name' => 'reminders',
-      'vname' => 'LBL_REMINDER',
+      'vname' => 'LBL_REMINDERS',
       'type' => 'function',
       'source' => 'non-db',
       'massupdate' => 0,
@@ -438,91 +530,83 @@
       'comment' => 'When the Sugar Plug-in for Microsoft Outlook syncs an Outlook appointment, this is the Outlook appointment item ID',
       'audited' => false,
     ),
-    'accept_status' => 
+    'sequence' => 
     array (
-      'name' => 'accept_status',
-      'vname' => 'LBL_ACCEPT_STATUS',
-      'dbType' => 'varchar',
-      'type' => 'varchar',
-      'len' => '20',
-      'source' => 'non-db',
+      'name' => 'sequence',
+      'vname' => 'LBL_SEQUENCE',
+      'type' => 'int',
+      'len' => '11',
+      'reportable' => false,
+      'default' => 0,
+      'comment' => 'Meeting update sequence for meetings as per iCalendar standards',
       'audited' => true,
     ),
-    'set_accept_links' => 
+    'parent_name' => 
     array (
-      'name' => 'accept_status',
-      'vname' => 'LBL_ACCEPT_LINK',
-      'dbType' => 'varchar',
-      'type' => 'varchar',
-      'len' => '20',
+      'name' => 'parent_name',
+      'parent_type' => 'record_type_display',
+      'type_name' => 'parent_type',
+      'id_name' => 'parent_id',
+      'vname' => 'LBL_LIST_RELATED_TO',
+      'type' => 'parent',
+      'group' => 'parent_name',
       'source' => 'non-db',
+      'options' => 'parent_type_display',
       'audited' => true,
-    ),
-    'opportunities' => 
-    array (
-      'name' => 'opportunities',
-      'type' => 'link',
-      'relationship' => 'opportunity_calls',
-      'source' => 'non-db',
-      'link_type' => 'one',
-      'vname' => 'LBL_OPPORTUNITY',
-    ),
-    'leads' => 
-    array (
-      'name' => 'leads',
-      'type' => 'link',
-      'relationship' => 'calls_leads',
-      'source' => 'non-db',
-      'vname' => 'LBL_LEADS',
-    ),
-    'project' => 
-    array (
-      'name' => 'project',
-      'type' => 'link',
-      'relationship' => 'projects_calls',
-      'source' => 'non-db',
-      'vname' => 'LBL_PROJECTS',
-    ),
-    'case' => 
-    array (
-      'name' => 'case',
-      'type' => 'link',
-      'relationship' => 'case_calls',
-      'source' => 'non-db',
-      'link_type' => 'one',
-      'vname' => 'LBL_CASE',
-    ),
-    'accounts' => 
-    array (
-      'name' => 'accounts',
-      'type' => 'link',
-      'relationship' => 'account_calls',
-      'module' => 'Accounts',
-      'bean_name' => 'Account',
-      'source' => 'non-db',
-      'vname' => 'LBL_ACCOUNT',
-    ),
-    'aos_contracts' => 
-    array (
-      'name' => 'aos_contracts',
-      'type' => 'link',
-      'relationship' => 'aos_contracts_calls',
-      'source' => 'non-db',
-      'vname' => 'LBL_CONTRACT',
     ),
     'users' => 
     array (
       'name' => 'users',
       'type' => 'link',
-      'relationship' => 'calls_users',
+      'relationship' => 'meetings_users',
       'source' => 'non-db',
       'vname' => 'LBL_USERS',
+    ),
+    'accounts' => 
+    array (
+      'name' => 'accounts',
+      'type' => 'link',
+      'relationship' => 'account_meetings',
+      'source' => 'non-db',
+      'vname' => 'LBL_ACCOUNT',
+    ),
+    'leads' => 
+    array (
+      'name' => 'leads',
+      'type' => 'link',
+      'relationship' => 'meetings_leads',
+      'source' => 'non-db',
+      'vname' => 'LBL_LEADS',
+    ),
+    'opportunity' => 
+    array (
+      'name' => 'opportunity',
+      'type' => 'link',
+      'relationship' => 'opportunity_meetings',
+      'source' => 'non-db',
+      'vname' => 'LBL_OPPORTUNITY',
+    ),
+    'case' => 
+    array (
+      'name' => 'case',
+      'type' => 'link',
+      'relationship' => 'case_meetings',
+      'source' => 'non-db',
+      'vname' => 'LBL_CASE',
+    ),
+    'aos_contracts' => 
+    array (
+      'name' => 'aos_contracts',
+      'type' => 'link',
+      'relationship' => 'aos_contracts_meetings',
+      'source' => 'non-db',
+      'vname' => 'LBL_CONTRACT',
     ),
     'notes' => 
     array (
       'name' => 'notes',
       'type' => 'link',
-      'relationship' => 'calls_notes',
+      'relationship' => 'meetings_notes',
       'module' => 'Notes',
       'bean_name' => 'Note',
       'source' => 'non-db',
@@ -612,97 +696,321 @@
       'vname' => 'LBL_RECURRING_SOURCE',
       'type' => 'varchar',
       'len' => 36,
-      'comment' => 'Source of recurring call',
+      'comment' => 'Source of recurring meeting',
       'importable' => false,
       'massupdate' => false,
       'reportable' => false,
       'studio' => false,
       'audited' => true,
     ),
-    'reschedule_history' => 
+    'duration' => 
     array (
-      'required' => false,
-      'name' => 'reschedule_history',
-      'vname' => 'LBL_RESCHEDULE_HISTORY',
-      'type' => 'varchar',
-      'source' => 'non-db',
-      'studio' => 'visible',
-      'massupdate' => 0,
-      'importable' => 'false',
-      'duplicate_merge' => 'disabled',
-      'duplicate_merge_dom_value' => 0,
-      'audited' => false,
+      'name' => 'duration',
+      'vname' => 'LBL_DURATION',
+      'type' => 'enum',
+      'options' => 'duration_dom',
+      'comment' => 'Duration handler dropdown',
+      'massupdate' => false,
       'reportable' => false,
+      'importable' => false,
+      'audited' => true,
+    ),
+    'gsync_id' => 
+    array (
+      'name' => 'gsync_id',
+      'vname' => 'LBL_GSYNC_ID',
+      'type' => 'varchar',
+      'len' => 1024,
+      'comment' => 'The internal Google ID of the event record',
+      'isnull' => 'true',
+      'massupdate' => false,
+      'reportable' => false,
+      'importable' => false,
+      'studio' => false,
+      'audited' => false,
+    ),
+    'gsync_lastsync' => 
+    array (
+      'name' => 'gsync_lastsync',
+      'vname' => 'LBL_GSYNC_LASTSYNC',
+      'type' => 'int',
+      'comment' => 'The last time this record was synced with Google Account as unix time',
+      'isnull' => 'true',
+      'massupdate' => false,
+      'reportable' => false,
+      'importable' => false,
+      'studio' => false,
+      'audited' => false,
+    ),
+    'type' => 
+    array (
+      'name' => 'type',
+      'vname' => 'LBL_TYPE',
+      'required' => false,
+      'type' => 'enum',
+      'len' => 255,
+      'comment' => 'Meeting type',
+      'massupdate' => false,
+      'audited' => true,
       'function' => 
       array (
-        'name' => 'reschedule_history',
-        'returns' => 'html',
-        'include' => 'modules/Calls/reschedule_history.php',
+        'name' => 'getDictionary',
+        'additional_params' => 'Meetings-type',
+        'include' => 'include/utils/getDictionary.php',
       ),
     ),
-    'reschedule_count' => 
+    'repeat_pane' => 
     array (
-      'required' => false,
-      'name' => 'reschedule_count',
-      'vname' => 'LBL_RESCHEDULE_COUNT',
+      'name' => 'repeat_pane',
+      'vname' => 'LBL_REPEAT_PANE',
       'type' => 'varchar',
       'source' => 'non-db',
-      'studio' => 'visible',
-      'massupdate' => 0,
+      'comment' => 'Repeat Pane',
       'importable' => 'false',
-      'duplicate_merge' => 'disabled',
-      'duplicate_merge_dom_value' => 0,
-      'audited' => false,
+      'massupdate' => false,
       'reportable' => false,
-      'function' => 
-      array (
-        'name' => 'reschedule_count',
-        'returns' => 'html',
-        'include' => 'modules/Calls/reschedule_history.php',
-      ),
+      'studio' => 'false',
+      'required' => false,
+      'duplicate_merge' => 'disabled',
+      'duplicate_merge_dom_value' => '0',
     ),
-    'calls_reschedule' => 
+    'trainings' => 
     array (
-      'name' => 'calls_reschedule',
-      'vname' => 'LBL_CALLS_RESCHEDULE',
+      'name' => 'trainings',
       'type' => 'link',
-      'relationship' => 'calls_reschedule',
-      'module' => 'Calls_Reschedule',
-      'bean_name' => 'Calls_Reschedule',
+      'relationship' => 'trainings_meetings',
       'source' => 'non-db',
+      'module' => 'Trainings',
+      'bean_name' => false,
+      'vname' => 'LBL_TRAININGS',
+    ),
+    'exitinterviews' => 
+    array (
+      'name' => 'exitinterviews',
+      'type' => 'link',
+      'relationship' => 'exitinterviews_meetings',
+      'source' => 'non-db',
+      'module' => 'ExitInterviews',
+      'bean_name' => false,
+      'vname' => 'LBL_EXITINTERVIEWS',
+    ),
+    'appraisals' => 
+    array (
+      'name' => 'appraisals',
+      'type' => 'link',
+      'relationship' => 'appraisals_meetings',
+      'source' => 'non-db',
+      'module' => 'ExitInterviews',
+      'bean_name' => false,
+      'vname' => 'LBL_APPRAISALS',
     ),
     'candidates' => 
     array (
       'name' => 'candidates',
       'type' => 'link',
-      'relationship' => 'calls_candidates',
+      'relationship' => 'meetings_candidates',
       'source' => 'non-db',
       'vname' => 'LBL_CANDIDATES',
+    ),
+    'conclusions' => 
+    array (
+      'name' => 'conclusions',
+      'type' => 'link',
+      'relationship' => 'conclusions_meetings',
+      'source' => 'non-db',
+      'module' => 'Conclusions',
+      'bean_name' => 'Conclusions',
+      'vname' => 'LBL_CONCLUSIONS',
+      'side' => 'right',
     ),
     'reservations' => 
     array (
       'name' => 'reservations',
       'type' => 'link',
-      'relationship' => 'reservations_calls',
+      'relationship' => 'reservations_meetings',
       'module' => 'Reservations',
       'bean_name' => 'Reservations',
       'source' => 'non-db',
-      'vname' => 'LBL_RESERVATIONS_CALLS',
+      'vname' => 'LBL_RESERVATIONS',
     ),
     'resources' => 
     array (
       'name' => 'resources',
       'type' => 'link',
-      'relationship' => 'calls_resources',
+      'relationship' => 'meetings_resources',
       'source' => 'non-db',
       'vname' => 'LBL_RESOURCES',
+    ),
+    'jjwg_maps_lat_c' => 
+    array (
+      'inline_edit' => 1,
+      'required' => false,
+      'source' => 'custom_fields',
+      'name' => 'jjwg_maps_lat_c',
+      'vname' => 'LBL_JJWG_MAPS_LAT',
+      'type' => 'float',
+      'massupdate' => '0',
+      'default' => '0.00000000',
+      'no_default' => false,
+      'comments' => '',
+      'help' => 'Latitude',
+      'importable' => 'true',
+      'duplicate_merge' => 'disabled',
+      'duplicate_merge_dom_value' => '0',
+      'audited' => false,
+      'reportable' => true,
+      'unified_search' => false,
+      'merge_filter' => 'disabled',
+      'len' => '10',
+      'size' => '20',
+      'enable_range_search' => false,
+      'precision' => '8',
+      'id' => 'Meetingsjjwg_maps_lat_c',
+      'custom_module' => 'Meetings',
+    ),
+    'jjwg_maps_lng_c' => 
+    array (
+      'inline_edit' => 1,
+      'required' => false,
+      'source' => 'custom_fields',
+      'name' => 'jjwg_maps_lng_c',
+      'vname' => 'LBL_JJWG_MAPS_LNG',
+      'type' => 'float',
+      'massupdate' => '0',
+      'default' => '0.00000000',
+      'no_default' => false,
+      'comments' => '',
+      'help' => 'Longitude',
+      'importable' => 'true',
+      'duplicate_merge' => 'disabled',
+      'duplicate_merge_dom_value' => '0',
+      'audited' => false,
+      'reportable' => true,
+      'unified_search' => false,
+      'merge_filter' => 'disabled',
+      'len' => '11',
+      'size' => '20',
+      'enable_range_search' => false,
+      'precision' => '8',
+      'id' => 'Meetingsjjwg_maps_lng_c',
+      'custom_module' => 'Meetings',
+    ),
+    'jjwg_maps_address_c' => 
+    array (
+      'inline_edit' => 1,
+      'required' => false,
+      'source' => 'custom_fields',
+      'name' => 'jjwg_maps_address_c',
+      'vname' => 'LBL_JJWG_MAPS_ADDRESS',
+      'type' => 'varchar',
+      'massupdate' => '0',
+      'default' => NULL,
+      'no_default' => false,
+      'comments' => 'Address',
+      'help' => 'Address',
+      'importable' => 'true',
+      'duplicate_merge' => 'disabled',
+      'duplicate_merge_dom_value' => '0',
+      'audited' => false,
+      'reportable' => true,
+      'unified_search' => false,
+      'merge_filter' => 'disabled',
+      'len' => '255',
+      'size' => '20',
+      'id' => 'Meetingsjjwg_maps_address_c',
+      'custom_module' => 'Meetings',
+    ),
+    'jjwg_maps_geocode_status_c' => 
+    array (
+      'inline_edit' => 1,
+      'required' => false,
+      'source' => 'custom_fields',
+      'name' => 'jjwg_maps_geocode_status_c',
+      'vname' => 'LBL_JJWG_MAPS_GEOCODE_STATUS',
+      'type' => 'varchar',
+      'massupdate' => '0',
+      'default' => NULL,
+      'no_default' => false,
+      'comments' => 'Geocode Status',
+      'help' => 'Geocode Status',
+      'importable' => 'true',
+      'duplicate_merge' => 'disabled',
+      'duplicate_merge_dom_value' => '0',
+      'audited' => false,
+      'reportable' => true,
+      'unified_search' => false,
+      'merge_filter' => 'disabled',
+      'len' => '255',
+      'size' => '20',
+      'id' => 'Meetingsjjwg_maps_geocode_status_c',
+      'custom_module' => 'Meetings',
+    ),
+  ),
+  'relationships' => 
+  array (
+    'meetings_modified_user' => 
+    array (
+      'lhs_module' => 'Users',
+      'lhs_table' => 'users',
+      'lhs_key' => 'id',
+      'rhs_module' => 'Meetings',
+      'rhs_table' => 'meetings',
+      'rhs_key' => 'modified_user_id',
+      'relationship_type' => 'one-to-many',
+    ),
+    'meetings_created_by' => 
+    array (
+      'lhs_module' => 'Users',
+      'lhs_table' => 'users',
+      'lhs_key' => 'id',
+      'rhs_module' => 'Meetings',
+      'rhs_table' => 'meetings',
+      'rhs_key' => 'created_by',
+      'relationship_type' => 'one-to-many',
+    ),
+    'meetings_assigned_user' => 
+    array (
+      'lhs_module' => 'Users',
+      'lhs_table' => 'users',
+      'lhs_key' => 'id',
+      'rhs_module' => 'Meetings',
+      'rhs_table' => 'meetings',
+      'rhs_key' => 'assigned_user_id',
+      'relationship_type' => 'one-to-many',
+    ),
+    'securitygroups_meetings' => 
+    array (
+      'lhs_module' => 'SecurityGroups',
+      'lhs_table' => 'securitygroups',
+      'lhs_key' => 'id',
+      'rhs_module' => 'Meetings',
+      'rhs_table' => 'meetings',
+      'rhs_key' => 'id',
+      'relationship_type' => 'many-to-many',
+      'join_table' => 'securitygroups_records',
+      'join_key_lhs' => 'securitygroup_id',
+      'join_key_rhs' => 'record_id',
+      'relationship_role_column' => 'module',
+      'relationship_role_column_value' => 'Meetings',
+    ),
+    'meetings_notes' => 
+    array (
+      'lhs_module' => 'Meetings',
+      'lhs_table' => 'meetings',
+      'lhs_key' => 'id',
+      'rhs_module' => 'Notes',
+      'rhs_table' => 'notes',
+      'rhs_key' => 'parent_id',
+      'relationship_type' => 'one-to-many',
+      'relationship_role_column' => 'parent_type',
+      'relationship_role_column_value' => 'Meetings',
     ),
   ),
   'indices' => 
   array (
     'id' => 
     array (
-      'name' => 'callspk',
+      'name' => 'meetingspk',
       'type' => 'primary',
       'fields' => 
       array (
@@ -711,7 +1019,7 @@
     ),
     0 => 
     array (
-      'name' => 'idx_call_name',
+      'name' => 'idx_mtg_name',
       'type' => 'index',
       'fields' => 
       array (
@@ -720,52 +1028,7 @@
     ),
     1 => 
     array (
-      'name' => 'idx_status',
-      'type' => 'index',
-      'fields' => 
-      array (
-        0 => 'status',
-      ),
-    ),
-    2 => 
-    array (
-      'name' => 'idx_calls_date_start',
-      'type' => 'index',
-      'fields' => 
-      array (
-        0 => 'date_start',
-      ),
-    ),
-    3 => 
-    array (
-      'name' => 'idx_calls_date_end',
-      'type' => 'index',
-      'fields' => 
-      array (
-        0 => 'date_end',
-      ),
-    ),
-    4 => 
-    array (
-      'name' => 'idx_calls_duration_minutes',
-      'type' => 'index',
-      'fields' => 
-      array (
-        0 => 'duration_minutes',
-      ),
-    ),
-    5 => 
-    array (
-      'name' => 'idx_calls_duration_hours',
-      'type' => 'index',
-      'fields' => 
-      array (
-        0 => 'duration_hours',
-      ),
-    ),
-    6 => 
-    array (
-      'name' => 'idx_calls_par_del',
+      'name' => 'idx_meet_par_del',
       'type' => 'index',
       'fields' => 
       array (
@@ -774,85 +1037,25 @@
         2 => 'deleted',
       ),
     ),
-    7 => 
+    2 => 
     array (
-      'name' => 'idx_calls_assigned_del',
+      'name' => 'idx_meet_stat_del',
       'type' => 'index',
       'fields' => 
       array (
-        0 => 'deleted',
-        1 => 'assigned_user_id',
+        0 => 'assigned_user_id',
+        1 => 'status',
+        2 => 'deleted',
       ),
     ),
-  ),
-  'relationships' => 
-  array (
-    'calls_modified_user' => 
+    3 => 
     array (
-      'lhs_module' => 'Users',
-      'lhs_table' => 'users',
-      'lhs_key' => 'id',
-      'rhs_module' => 'Calls',
-      'rhs_table' => 'calls',
-      'rhs_key' => 'modified_user_id',
-      'relationship_type' => 'one-to-many',
-    ),
-    'calls_created_by' => 
-    array (
-      'lhs_module' => 'Users',
-      'lhs_table' => 'users',
-      'lhs_key' => 'id',
-      'rhs_module' => 'Calls',
-      'rhs_table' => 'calls',
-      'rhs_key' => 'created_by',
-      'relationship_type' => 'one-to-many',
-    ),
-    'calls_assigned_user' => 
-    array (
-      'lhs_module' => 'Users',
-      'lhs_table' => 'users',
-      'lhs_key' => 'id',
-      'rhs_module' => 'Calls',
-      'rhs_table' => 'calls',
-      'rhs_key' => 'assigned_user_id',
-      'relationship_type' => 'one-to-many',
-    ),
-    'securitygroups_calls' => 
-    array (
-      'lhs_module' => 'SecurityGroups',
-      'lhs_table' => 'securitygroups',
-      'lhs_key' => 'id',
-      'rhs_module' => 'Calls',
-      'rhs_table' => 'calls',
-      'rhs_key' => 'id',
-      'relationship_type' => 'many-to-many',
-      'join_table' => 'securitygroups_records',
-      'join_key_lhs' => 'securitygroup_id',
-      'join_key_rhs' => 'record_id',
-      'relationship_role_column' => 'module',
-      'relationship_role_column_value' => 'Calls',
-    ),
-    'calls_notes' => 
-    array (
-      'lhs_module' => 'Calls',
-      'lhs_table' => 'calls',
-      'lhs_key' => 'id',
-      'rhs_module' => 'Notes',
-      'rhs_table' => 'notes',
-      'rhs_key' => 'parent_id',
-      'relationship_type' => 'one-to-many',
-      'relationship_role_column' => 'parent_type',
-      'relationship_role_column_value' => 'Calls',
-    ),
-    'calls_reschedule' => 
-    array (
-      'lhs_module' => 'Calls',
-      'lhs_table' => 'calls',
-      'lhs_key' => 'id',
-      'rhs_module' => 'Calls_Reschedule',
-      'rhs_table' => 'calls_reschedule',
-      'rhs_key' => 'call_id',
-      'relationship_type' => 'one-to-many',
+      'name' => 'idx_meet_date_start',
+      'type' => 'index',
+      'fields' => 
+      array (
+        0 => 'date_start',
+      ),
     ),
   ),
   'optimistic_locking' => true,
@@ -876,5 +1079,5 @@
     'assignable' => 'assignable',
     'basic' => 'basic',
   ),
-  'custom_fields' => false,
+  'custom_fields' => true,
 );

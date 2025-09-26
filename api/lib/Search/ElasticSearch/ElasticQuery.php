@@ -280,6 +280,9 @@ class ElasticQuery extends SearchQuery
 
     protected function getGlobalSearchModuleList()
     {
+        if (!empty($this->params['type'])) {
+            return $this->params['type'];
+        }
         if (!empty($this->search_modules)) {
             return $this->search_modules;
         }

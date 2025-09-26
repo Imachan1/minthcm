@@ -1,9 +1,12 @@
-import axios from "axios"
-import { HttpErrorData, HttpErrorType } from "../interfaces"
-import { errorHandlerRegistry } from "../error-manager/error-registry"
+import axios from 'axios'
+import { HttpErrorData, HttpErrorType } from '../interfaces'
+import { errorHandlerRegistry } from '../error-manager/error-registry'
 
 export async function responseErrorHandler(error: HttpErrorType) {
     if (error === null) throw new Error('Unrecoverrable error!! Error is null!')
+    if (error.name === 'CanceledError') {
+        throw error
+    }
 
     if (axios.isAxiosError(error)) {
         const response = error?.response
@@ -14,18 +17,13 @@ export async function responseErrorHandler(error: HttpErrorType) {
             throw error
         }
 
-        const seekers = [
-            String(data?.code),
-            error.code,
-            error?.name,
-            String(response?.status),
-        ]
+        const seekers = [String(data?.code), error.code, error?.name, String(response?.status)]
 
         const result = await errorHandlerRegistry.handleError(seekers, error)
         if (!result && data?.code && data?.message) {
-                return errorHandlerRegistry.handleErrorObject(error, {
-                    message: data?.message,
-                })
+            return errorHandlerRegistry.handleErrorObject(error, {
+                message: data.message,
+            })
         }
         return result
     }

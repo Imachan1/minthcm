@@ -42,7 +42,7 @@
 import { ref, computed, watch } from 'vue'
 import { DateTime } from 'luxon'
 import { FieldProps } from '../Field.model'
-import { usePreferencesStore } from '@/store/preferences';
+import { usePreferencesStore } from '@/store/preferences'
 import DateUtils from '@/utils/dates'
 
 const props = defineProps<FieldProps>()
@@ -59,13 +59,13 @@ const timeFormat = computed(() => {
 
 const dateValue = computed({
     get() {
-        const dt = DateTime.fromSQL(model.value)
+        const dt = DateTime.fromSQL(model.value, { zone: 'UTC' })
         if (dt.isValid) {
-            return dt.toFormat(preferences.user?.date_format || 'yyyy-MM-dd') || ''
+            return dt.setZone('Europe/Warsaw').toFormat(preferences.user?.date_format || 'yyyy-MM-dd') || ''
         }
         return ''
     },
-    async set(newVal) {
+    set(newVal) {
         datePickerMenu.value = false
         if (!newVal?.trim()) {
             model.value = ''
@@ -141,13 +141,17 @@ watch(model, (newVal) => {
     timePickerMenu.value = false
     const dt = DateTime.fromSQL(newVal?.toString())
     if (dt.isValid) {
-        console.log('new val', model.value)
         emit('update:modelValue', model.value)
     } else {
-        console.log('new val empty')
         emit('update:modelValue', '')
     }
 })
+watch(
+    () => props.modelValue,
+    () => {
+        model.value = props.modelValue
+    },
+)
 </script>
 
 <style scoped lang="scss">
