@@ -19,6 +19,15 @@ interface RecordViewDefs {
     panels: { [key: string]: Panel }
 }
 
+export interface Bean {
+    id: string
+    module_name: string
+    acl_access: { [key: string]: boolean }
+    attributes: { [key: string]: any }
+    syncAttributes: { [key: string]: any }
+    dirtyFields: Set<string>
+}
+
 interface RouteParams {
     module: string
     id: string

@@ -1,6 +1,8 @@
+import { useBean } from '@/composables/useBean'
 import { SubpanelAction } from '../SubpanelAction'
 import router from '@/router'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
+import { ref } from 'vue'
 
 export class Create extends SubpanelAction {
     public static readonly TITLE = 'LBL_CREATE_BUTTON_LABEL'
@@ -9,22 +11,33 @@ export class Create extends SubpanelAction {
 
     public async execute() {
         const store = useRecordViewStore()
+
+        const relateBean = ref<ReturnType<typeof useBean>>(useBean(this.subpanel.module, ''))
+        const relationshipName = store.bean.fieldDefs?.[this.subpanel.properties.get_subpanel_data]?.relationship
+        const link = relateBean.value.loadRelationship(relationshipName)
+
+        let query: { [key: string]: string } = {
+            return_action: 'DetailView',
+            return_id: store.bean.id,
+            return_module: store.bean.module,
+            return_relationship: relationshipName,
+            parent_type: store.bean.module,
+            parent_id: store.bean.id,
+            parent_name: store.bean.attributes.name,
+        }
+
+        if (link) {
+            if (link.relateFieldName && store.bean.attributes.name) {
+                query[link.relateFieldName] = store.bean.attributes.name
+            }
+            if (link.idFieldName) {
+                query[link.idFieldName] = store.bean.id
+            }
+        }
+
         router.push({
-            name: 'module-view',
-            params: { module: this.subpanel.module, action: 'EditView' },
-            query: {
-                return_action: 'DetailView',
-                parent_id: store.bean.id,
-                return_id: store.bean.id,
-                return_module: store.bean.module_name,
-                parent_type: store.bean.module_name,
-                parent_name: store.bean.attributes.name,
-                candidate_id: store.bean.module_name === 'Candidates' ? store.bean.id : null,
-                candidate_name: store.bean.module_name === 'Candidates' ? store.bean.attributes.name : null,
-                employee_id: store.bean.module_name === 'Employees' ? store.bean.id : null,
-                employee_name: store.bean.module_name === 'Employees' ? store.bean.attributes.name : null,
-                employees_name: store.bean.module_name === 'Employees' ? store.bean.attributes.name : null,
-            },
+            path: `/modules/${this.subpanel.module}/EditView`,
+            query: query
         })
         return true
     }
