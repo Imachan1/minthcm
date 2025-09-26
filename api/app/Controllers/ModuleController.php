@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,10 +36,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -126,7 +126,7 @@ class ModuleController
         $files = $request->getAttribute("files") ?? [];
         $links = $request->getAttribute("links") ?? [];
         $record_id = $request->getAttribute("id");
-        
+
         $current_time_zone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $disable_date_format = $GLOBALS['disable_date_format'];
@@ -188,7 +188,7 @@ class ModuleController
         $GLOBALS['disable_date_format'] = true;
 
         if (!empty($record_id)) {
-            $bean = BeanFactory::getBean($module,$record_id);
+            $bean = BeanFactory::getBean($module, $record_id);
         } else {
             $bean = BeanFactory::newBean($module);
         }
@@ -280,7 +280,7 @@ class ModuleController
         require_once 'include/SubPanel/SubPanelDefinitions.php';
         $spd = new \SubPanelDefinitions($focus, $module);
         if (isset($spd->layout_defs['subpanel_setup'][$related_name])) {
-            
+
             $target_module = $spd->layout_defs['subpanel_setup'][$related_name]['module'];
             $target_bean = BeanFactory::getBean($target_module);
             if (!$target_bean || !$target_bean->ACLAccess('list')) {
@@ -367,55 +367,56 @@ class ModuleController
     protected function handleFiles($bean, $files = [])
     {
         if (!empty($files) && is_array($files)) {
-        global $sugar_config;
+            global $sugar_config;
             if (empty($bean->id)) {
                 $bean->id = create_guid();
                 $bean->new_with_id = true;
             }
-        $current_dir = getcwd();
-        chdir('../legacy/');
+            $current_dir = getcwd();
+            chdir('../legacy/');
             require_once 'include/SugarObjects/templates/file/File.php';
-        $upload_dir = $sugar_config['upload_dir'] ?? 'upload/';
-        foreach ($files as $field_name => $base64) {
-            $field_type = $bean->field_defs[$field_name]['type'] ?? '';
-            if (empty($bean->id) || !in_array($field_type, ['file', 'image'])) {
-                continue;
-            }
-            $file_name = $bean->id;
+            $upload_dir = $sugar_config['upload_dir'] ?? 'upload/';
+            foreach ($files as $field_name => $base64) {
+                $field_type = $bean->field_defs[$field_name]['type'] ?? '';
+                if (empty($bean->id) || !in_array($field_type, ['file', 'image'])) {
+                    continue;
+                }
+                $file_name = $bean->id;
                 if ('image' === $field_type) {
-                $file_name .= "_{$field_name}";
-            }
-            $file_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $file_name); // Sanitize file name
-            if (empty($base64)) {
-                unlink($upload_dir . $file_name);
-            } else {
-                $base64_prefix = '';
-                if (strpos($base64, 'data:') === 0) {
-                    $base64_prefix = substr($base64, 0, strpos($base64, ';base64,') + 8);
+                    $file_name .= "_{$field_name}";
                 }
-                $base64_decoded = base64_decode(str_replace($base64_prefix, '', $base64), true);
+                $file_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $file_name); // Sanitize file name
+                if (empty($base64)) {
+                    unlink($upload_dir . $file_name);
+                } else {
+                    $base64_prefix = '';
+                    if (strpos($base64, 'data:') === 0) {
+                        $base64_prefix = substr($base64, 0, strpos($base64, ';base64,') + 8);
+                    }
+                    $base64_decoded = base64_decode(str_replace($base64_prefix, '', $base64), true);
 
-                $tmp_file = tmpfile();
-                fwrite($tmp_file, $base64_decoded);
-                $tmp_file_path = stream_get_meta_data($tmp_file)['uri'];
+                    $tmp_file = tmpfile();
+                    fwrite($tmp_file, $base64_decoded);
+                    $tmp_file_path = stream_get_meta_data($tmp_file)['uri'];
 
-                $_FILES[$field_name] = [
-                    'name' => $file_name,
-                    'type' => 'application/octet-stream',
-                    'tmp_name' => $tmp_file_path,
-                    'error' => 0,
-                    'size' => strlen($base64_decoded),
-                ];
+                    $_FILES[$field_name] = [
+                        'name' => $file_name,
+                        'type' => 'application/octet-stream',
+                        'tmp_name' => $tmp_file_path,
+                        'error' => 0,
+                        'size' => strlen($base64_decoded),
+                    ];
                     $_FILES['filename_file'] = $file_name;
-                $upload_file = new \UploadFile($field_name);
-                $upload_file->set_is_http_upload(false);
-                if ($upload_file->confirm_upload()) {
-                    $upload_file->final_move($file_name, $field_name);
+                    $upload_file = new \UploadFile($field_name);
+                    $upload_file->set_is_http_upload(false);
+                    if ($upload_file->confirm_upload()) {
+                        $upload_file->final_move($file_name, $field_name);
+                    }
+                    fclose($tmp_file);
                 }
-                fclose($tmp_file);
             }
+            chdir($current_dir);
         }
-        chdir($current_dir);
     }
 
     protected function handleLinks(SugarBean $bean, array $links = [])
@@ -446,5 +447,4 @@ class ModuleController
             chdir($current_dir);
         }
     }
-}
 }
