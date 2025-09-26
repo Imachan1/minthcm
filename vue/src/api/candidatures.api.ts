@@ -1,8 +1,8 @@
-import { MintApi } from './api'
+import { mintApi } from './api'
 
-class CandidaturesApi extends MintApi {
+class CandidaturesApi {
     public async convert(userType: string, candidatureId: string, userName: string | null) { // CR: camelCase userType/CandidatureId
-        return await this.instance.post('Candidatures/convert', {
+        return await mintApi.post('Candidatures/convert', {
             usertype: userType,
             candidature_id: candidatureId,
             username: userName,

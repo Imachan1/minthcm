@@ -1,8 +1,8 @@
-import { MintApi } from './api'
+import { mintApi } from './api'
 
-class SubpanelsApi extends MintApi {
+class SubpanelsApi {
     public async fetchSubpanelsData(module: string | string[], subpanelKey: string, recordId: string | string[], paginateBy: number = -1, page: number = 0) {
-        return await this.instance.get(`${module}/subpanel/${subpanelKey}/${recordId}`, {
+        return await mintApi.get(`${module}/subpanel/${subpanelKey}/${recordId}`, {
             validateStatus: () => true,
             params: {
                 paginate_by: paginateBy,

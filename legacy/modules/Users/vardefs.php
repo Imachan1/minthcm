@@ -49,6 +49,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 $dictionary['User'] = array(
     'table' => 'users',
+    'doctrineEntity' => array(
+        'repository' => 'UsersRepository',
+    ),
     'fields' => array(
         'id' => array(
             'name' => 'id',

@@ -1,8 +1,8 @@
-import { MintApi } from './api'
+import { mintApi } from './api'
 
-class ModulesApi extends MintApi {
+class ModulesApi {
     public async getListInit(module_name: string) {
-        return await this.instance.get(module_name)
+        return await mintApi.get(`${module_name}`)
     }
 
     public async getListData(
@@ -16,7 +16,7 @@ class ModulesApi extends MintApi {
         sortOrder = 'asc',
         activeFilter = null,
     ) {
-        return await this.instance.post(module_name, {
+        return await mintApi.post(module_name, {
             page: page,
             items: itemsPerPage,
             myObjects: myObjects,
@@ -29,7 +29,7 @@ class ModulesApi extends MintApi {
     }
 
     public async forgetPassword(username: string, email: string) {
-        return await this.instance.post('api/forget_password', {
+        return await mintApi.post('forget_password', {
             data: {
                 username,
                 email,
@@ -38,7 +38,7 @@ class ModulesApi extends MintApi {
     }
 
     public async saveListPreferences(module_name: string, preferences: any) {
-        return await this.instance.post(module_name + '/list/preferences', {
+        return await mintApi.post(module_name + '/list/preferences', {
             preferences: preferences,
         })
     }

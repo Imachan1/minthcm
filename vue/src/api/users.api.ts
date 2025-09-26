@@ -1,8 +1,8 @@
-import { MintApi } from './api'
+import { mintApi } from './api'
 
-class UsersApi extends MintApi {
+class UsersApi {
     public async isLoginUnique(username: string) {
-        return await this.instance.post('Users/unique', {
+        return await mintApi.post('Users/unique', {
             username: username,
         })
     }

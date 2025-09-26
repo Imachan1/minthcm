@@ -73,9 +73,9 @@ class RouteManager
 
     public function __construct()
     {
-        global $app;
+        global $mint_app;
 
-        $this->app = $app;
+        $this->app = $mint_app;
         $this->setRoutes();
     }
 

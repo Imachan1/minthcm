@@ -147,6 +147,7 @@ class Installer
                     ]
                 ],
             ],
+            'oauth2_encryption_key' => base64_encode(random_bytes(32)), 
         ]);
     }
 }

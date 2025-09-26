@@ -49,6 +49,6 @@ class ClientRepository implements ClientRepositoryInterface
         /** @var \OAuth2Clients $client */
         $client = $this->beanManager->getBeanSafe(\OAuth2Clients::class, $clientIdentifier);
 
-        return hash('sha256', $clientSecret) === $client->secret && $grantType === $client->allowed_grant_type;
+        return hash('sha256', $clientSecret) === $client->secret;
     }
 }

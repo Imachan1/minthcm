@@ -17,8 +17,8 @@ class ApiConfig
         'Api/V8/Config/routes.php',
     ];
 
-    public const OAUTH2_PRIVATE_KEY = 'Api/V8/OAuth2/private.key';
-    public const OAUTH2_PUBLIC_KEY = 'Api/V8/OAuth2/public.key';
+    const OAUTH2_PRIVATE_KEY = '../api/configs/private.key';
+    const OAUTH2_PUBLIC_KEY = '../api/configs/public.key';
     
     /**
      *
