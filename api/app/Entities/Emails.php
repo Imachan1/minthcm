@@ -240,7 +240,7 @@ class Emails
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->notes = new ArrayCollection();
+        $this->notes = new Collection();
         $this->employees = new ArrayCollection();
         $this->meetings = new ArrayCollection();
         $this->candidates = new ArrayCollection();

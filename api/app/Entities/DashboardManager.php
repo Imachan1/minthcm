@@ -177,10 +177,10 @@ class DashboardManager
 
 public function __construct()
 {
-        $this->users_forced_tabs_dashboards = new ArrayCollection();
-        $this->users_locked_dashboards = new ArrayCollection();
-        $this->users_one_time_default_dashboards = new ArrayCollection();
-        $this->dashboardbackups = new ArrayCollection();
-        $this->dashboardhistory = new ArrayCollection();
+        $this->users_forced_tabs_dashboards = new Collection();
+        $this->users_locked_dashboards = new Collection();
+        $this->users_one_time_default_dashboards = new Collection();
+        $this->dashboardbackups = new Collection();
+        $this->dashboardhistory = new Collection();
     }
 }

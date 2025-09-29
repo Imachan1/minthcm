@@ -187,6 +187,6 @@ class Requests
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->comments = new ArrayCollection();
+        $this->comments = new Collection();
     }
 }

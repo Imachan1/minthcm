@@ -203,13 +203,13 @@ class SecurityGroups
 
 public function __construct()
 {
-        $this->employees = new ArrayCollection();
-        $this->member_of = new ArrayCollection();
+        $this->employees = new Collection();
+        $this->member_of = new Collection();
         $this->users = new ArrayCollection();
         $this->aclroles = new ArrayCollection();
         $this->positions_leader = new ArrayCollection();
         $this->positions_membership = new ArrayCollection();
-        $this->onboardingoffboardingelements = new ArrayCollection();
-        $this->securitygroups_rooms = new ArrayCollection();
+        $this->onboardingoffboardingelements = new Collection();
+        $this->securitygroups_rooms = new Collection();
     }
 }

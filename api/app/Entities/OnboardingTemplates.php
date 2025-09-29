@@ -155,8 +155,8 @@ class OnboardingTemplates
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->positions = new ArrayCollection();
-        $this->onboardings = new ArrayCollection();
+        $this->positions = new Collection();
+        $this->onboardings = new Collection();
         $this->elements = new ArrayCollection();
     }
 }

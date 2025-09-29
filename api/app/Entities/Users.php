@@ -437,23 +437,23 @@ class Users implements UserEntityInterface
 
 public function __construct()
 {
-        $this->reports_to_link = new ArrayCollection();
+        $this->reports_to_link = new Collection();
         $this->email_addresses = new ArrayCollection();
         $this->email_addresses_primary = new ArrayCollection();
         $this->calls = new ArrayCollection();
         $this->meetings = new ArrayCollection();
-        $this->tasks = new ArrayCollection();
+        $this->tasks = new Collection();
         $this->aclroles = new ArrayCollection();
-        $this->eapm = new ArrayCollection();
-        $this->oauth_tokens = new ArrayCollection();
+        $this->eapm = new Collection();
+        $this->oauth_tokens = new Collection();
         $this->project_users_1 = new ArrayCollection();
         $this->am_projecttemplates_users_1 = new ArrayCollection();
         $this->SecurityGroups = new ArrayCollection();
-        $this->onboardingoffboardingelements = new ArrayCollection();
+        $this->onboardingoffboardingelements = new Collection();
         $this->candidates = new ArrayCollection();
-        $this->ideas = new ArrayCollection();
+        $this->ideas = new Collection();
         $this->schedulereports = new ArrayCollection();
-        $this->deputy = new ArrayCollection();
+        $this->deputy = new Collection();
     }
 
     

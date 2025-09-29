@@ -221,11 +221,11 @@ class Project
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->notes = new ArrayCollection();
-        $this->tasks = new ArrayCollection();
-        $this->meetings = new ArrayCollection();
-        $this->calls = new ArrayCollection();
-        $this->projecttask = new ArrayCollection();
+        $this->notes = new Collection();
+        $this->tasks = new Collection();
+        $this->meetings = new Collection();
+        $this->calls = new Collection();
+        $this->projecttask = new Collection();
         $this->project_users_1 = new ArrayCollection();
         $this->am_projecttemplates_project_1 = new ArrayCollection();
     }

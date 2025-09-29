@@ -170,7 +170,7 @@ class Ideas
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->notes = new ArrayCollection();
-        $this->files = new ArrayCollection();
+        $this->notes = new Collection();
+        $this->files = new Collection();
     }
 }

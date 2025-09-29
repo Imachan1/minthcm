@@ -181,6 +181,6 @@ class Transportations
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->costs = new ArrayCollection();
+        $this->costs = new Collection();
     }
 }

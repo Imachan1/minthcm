@@ -226,10 +226,10 @@ class Appraisals
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->notes = new ArrayCollection();
+        $this->notes = new Collection();
         $this->meetings = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->roles = new ArrayCollection();
-        $this->appraisalitems = new ArrayCollection();
+        $this->appraisalitems = new Collection();
     }
 }

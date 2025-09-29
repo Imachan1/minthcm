@@ -165,6 +165,6 @@ class PeriodsOfEmployment
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->contracts = new ArrayCollection();
+        $this->contracts = new Collection();
     }
 }

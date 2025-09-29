@@ -205,6 +205,6 @@ public function __construct()
         $this->SecurityGroups = new ArrayCollection();
         $this->onboardingtemplates = new ArrayCollection();
         $this->offboardingtemplates = new ArrayCollection();
-        $this->trainings = new ArrayCollection();
+        $this->trainings = new Collection();
     }
 }

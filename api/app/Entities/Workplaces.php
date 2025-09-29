@@ -176,8 +176,8 @@ class Workplaces
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->files = new ArrayCollection();
-        $this->workplaces_allocations = new ArrayCollection();
-        $this->workplaces_workschedules = new ArrayCollection();
+        $this->files = new Collection();
+        $this->workplaces_allocations = new Collection();
+        $this->workplaces_workschedules = new Collection();
     }
 }

@@ -170,6 +170,6 @@ class Goals
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->appraisalitems = new ArrayCollection();
+        $this->appraisalitems = new Collection();
     }
 }

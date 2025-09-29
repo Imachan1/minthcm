@@ -188,9 +188,9 @@ class Resources
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->reservations = new ArrayCollection();
+        $this->reservations = new Collection();
         $this->meetings = new ArrayCollection();
         $this->calls = new ArrayCollection();
-        $this->files = new ArrayCollection();
+        $this->files = new Collection();
     }
 }

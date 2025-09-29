@@ -190,9 +190,9 @@ class News
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-        $this->reactions = new ArrayCollection();
-        $this->usersnews = new ArrayCollection();
+        $this->comments = new Collection();
+        $this->reactions = new Collection();
+        $this->usersnews = new Collection();
         $this->prospectlists = new ArrayCollection();
     }
 }

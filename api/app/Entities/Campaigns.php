@@ -269,12 +269,12 @@ class Campaigns
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->notes = new ArrayCollection();
-        $this->emailmarketing = new ArrayCollection();
-        $this->queueitems = new ArrayCollection();
-        $this->log_entries = new ArrayCollection();
-        $this->surveyresponses_campaigns = new ArrayCollection();
+        $this->notes = new Collection();
+        $this->emailmarketing = new Collection();
+        $this->queueitems = new Collection();
+        $this->log_entries = new Collection();
+        $this->surveyresponses_campaigns = new Collection();
         $this->prospectlists = new ArrayCollection();
-        $this->tracked_urls = new ArrayCollection();
+        $this->tracked_urls = new Collection();
     }
 }

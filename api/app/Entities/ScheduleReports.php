@@ -180,7 +180,7 @@ class ScheduleReports
 
 public function __construct()
 {
-        $this->schedulereports_schedulereportslogs = new ArrayCollection();
+        $this->schedulereports_schedulereportslogs = new Collection();
         $this->users = new ArrayCollection();
     }
 }

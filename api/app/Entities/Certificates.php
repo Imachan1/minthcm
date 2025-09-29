@@ -173,6 +173,6 @@ public function __construct()
         $this->SecurityGroups = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->trainings = new ArrayCollection();
-        $this->employeecertificates = new ArrayCollection();
+        $this->employeecertificates = new Collection();
     }
 }

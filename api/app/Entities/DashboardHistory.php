@@ -153,6 +153,6 @@ class DashboardHistory
 
 public function __construct()
 {
-        $this->dashboardbackups = new ArrayCollection();
+        $this->dashboardbackups = new Collection();
     }
 }

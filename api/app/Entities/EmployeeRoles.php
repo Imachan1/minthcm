@@ -176,7 +176,7 @@ public function __construct()
         $this->employees = new ArrayCollection();
         $this->benefits = new ArrayCollection();
         $this->responsibilities = new ArrayCollection();
-        $this->competencyratings = new ArrayCollection();
+        $this->competencyratings = new Collection();
         $this->appraisals = new ArrayCollection();
     }
 }

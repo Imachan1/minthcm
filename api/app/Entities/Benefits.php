@@ -165,6 +165,6 @@ public function __construct()
         $this->employees = new ArrayCollection();
         $this->positions = new ArrayCollection();
         $this->roles = new ArrayCollection();
-        $this->requests = new ArrayCollection();
+        $this->requests = new Collection();
     }
 }

@@ -161,7 +161,7 @@ class Attitudes
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->appraisalitems = new ArrayCollection();
+        $this->appraisalitems = new Collection();
         $this->competencies = new ArrayCollection();
     }
 }

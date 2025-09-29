@@ -362,10 +362,10 @@ class Delegations
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->workschedules = new ArrayCollection();
+        $this->workschedules = new Collection();
         $this->documents = new ArrayCollection();
-        $this->costs = new ArrayCollection();
-        $this->transportations = new ArrayCollection();
-        $this->reservations = new ArrayCollection();
+        $this->costs = new Collection();
+        $this->transportations = new Collection();
+        $this->reservations = new Collection();
     }
 }

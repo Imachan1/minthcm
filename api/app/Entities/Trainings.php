@@ -211,7 +211,7 @@ public function __construct()
         $this->meetings = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->certificates = new ArrayCollection();
-        $this->files = new ArrayCollection();
-        $this->requests = new ArrayCollection();
+        $this->files = new Collection();
+        $this->requests = new Collection();
     }
 }
