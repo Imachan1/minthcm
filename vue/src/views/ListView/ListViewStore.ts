@@ -144,24 +144,25 @@ export const useListViewStore = defineStore('listview', () => {
         if (!isInit.value) {
             return []
         }
-        const headers = visibleColumns.value.map((col) => ({
-            value: col.name,
-            key: col.name,
-            title: languages.label(col.label, module.value),
-            sortable: !(col.sortable === false),
-            class: col.name == 'name' ? 'stickyColumn' : '',
-        }))
+        const headers = visibleColumns.value.map((col) => {
+            if (col.name === 'favorites') {
+                return {
+                    value: 'is_favorite',
+                    key: 'is_favorite',
+                    title: '',
+                    sortable: false,
+                    align: 'center',
+                }
+            }
+            return {
+                value: col.name,
+                key: col.name,
+                title: languages.label(col.label, module.value),
+                sortable: !(col.sortable === false),
+                class: col.name == 'name' ? 'stickyColumn' : '',
+            }
+        })
         if (mode.value === 'list') {
-            headers.unshift({
-                value: 'is_favorite',
-                key: 'is_favorite',
-                title: '',
-                sortable: false,
-                align: 'end',
-                width: '24px',
-                maxWidth: '24px',
-                minWidth: '24px',
-            })
             headers.push({
                 value: 'actions',
                 key: 'actions',

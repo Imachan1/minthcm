@@ -20,6 +20,9 @@
                 color="secondary"
                 :icon="item.is_favorite ? 'mdi-heart' : 'mdi-heart-outline'"
                 @click="store.toggleFavorite(item)"
+                size="small"
+                class="favorite-icon"
+                v-ripple
             />
         </template>
         <template v-slot:item.name="{ item }">
@@ -187,6 +190,26 @@ function formatMultienum(value, labels) {
     }
     .list-table-name-link {
         cursor: pointer;
+    }
+    .favorite-icon {
+        position: relative;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        min-width: 40px;
+        min-height: 40px;
+
+        &:hover {
+            background-color: rgba(var(--v-theme-on-surface), 0.04);
+        }
+        &:focus-visible {
+            background-color: rgba(var(--v-theme-on-surface), 0.12);
+            outline: 2px solid rgb(var(--v-theme-primary));
+            outline-offset: 2px;
+        }
+        &:active {
+            background-color: rgba(var(--v-theme-on-surface), 0.16);
+        }
     }
 }
 </style>

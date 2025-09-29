@@ -267,6 +267,13 @@ class ListInitController
             $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
             $columns[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
         }
+        $columns['favorites'] = [
+            'name' => 'favorites',
+            'key' => 'favorites',
+            'type' => 'bool',
+            'label' => $this->prepareLabel($app_strings['LBL_FAVORITES']),
+            'default' => false,
+        ];
         return $columns;
     }
     protected function getMappedFieldProps($key)
