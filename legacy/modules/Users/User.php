@@ -2318,7 +2318,12 @@ EOQ;
     // MintHCM #122506 start
     public function getTokens()
     {
-        return array_values(json_decode(html_entity_decode($this->app_tokens), 1) ?? []);
+        return array_filter(
+            array_map(
+                fn($device_data) => $device_data['token'] ?? (is_string($device_data) ? $device_data : ''),
+                json_decode(html_entity_decode($this->app_tokens), 1) ?? []
+            )
+        );
     }
     // MintHCM #122506 end
 
