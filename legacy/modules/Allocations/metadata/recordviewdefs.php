@@ -20,37 +20,42 @@ $viewdefs['Allocations'] = [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    [
-                        'assigned_user_name',
-                        'mode',
-                        [
-                            'name' => 'workplace_name',
-                            'label' => 'LBL_RELATIONSHIP_WORKPLACES',
-                            'filters' => [
+                'sections' => [
+                    'basic' => [
+                        'title' => 'LBL_BASIC',
+                        'fields' => [
+                            [
+                                'assigned_user_name',
+                                'mode',
                                 [
-                                    'field' => 'availability',
-                                    'operator' => 'equal',
-                                    'value' => 'active',
-                                    'editable' => false, 
+                                    'name' => 'workplace_name',
+                                    'label' => 'LBL_RELATIONSHIP_WORKPLACES',
+                                    'filters' => [
+                                        [
+                                            'field' => 'availability',
+                                            'operator' => 'equal',
+                                            'value' => 'active',
+                                            'editable' => false, 
+                                        ],
+                                    ],
                                 ],
                             ],
+                            [
+                                'date_from',
+                                'date_to',
+                                'description',
+                            ],
+                            [
+                                'date_entered',
+                                'date_modified',
+                            ],
+                            [
+                                'created_by_name',
+                                'modified_by_name',
+                            ],
                         ],
-                    ],
-                    [
-                        'date_from',
-                        'date_to',
-                        'description',
-                    ],
-                    [
-                        'date_entered',
-                        'date_modified',
-                    ],
-                    [
-                        'created_by_name',
-                        'modified_by_name',
-                    ],
-                ],
+                    ]
+                ]
             ],
         ],
         'subpanels' => [

@@ -93,4 +93,5 @@ $mod_strings = array(
     'LBL_EMPLOYEES_ID' => 'Employee ID',
     'LBL_ATTEMPTS_NUMBER' => 'Number of Attempts',
     'LBL_POINTS_SCORED' => 'Points Scored',
+    'LBL_USER_INFO' => 'User Info',
 );

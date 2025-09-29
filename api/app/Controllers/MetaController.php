@@ -66,7 +66,16 @@ class MetaController
 
         $data = [];
         $views = [];
-        foreach($viewdefs[$module]['panels'] as $panel=>$panel_defs){
+        foreach($viewdefs[$module]['panels'] as $panel => $panel_defs){
+            $data['recordview']['panels'][$panel]['component'] = $viewdefs[$module]['panels'][$panel]['component'];
+            if ($panel_defs['component'] === 'MintPanelRecordDetails') {
+                foreach($panel_defs['data']['sections'] as $section => $section_defs) {
+                    $views[$panel][$section]['fields'] = $section_defs['fields'] ?? [];
+                    $data['recordview']['panels'][$panel]['data']['sections'][$section] = $viewdefs[$module]['panels'][$panel]['data']['sections'][$section];
+                    $data['recordview']['panels'][$panel]['data']['sections'][$section]['fields'] = $this->mergeModuleFields($views[$panel][$section],$module_fields)['fields'];
+                }
+                continue;
+            }
             $views[$panel]['fields'] = $panel_defs['data']['fields'];
             $data['recordview']['panels'][$panel] = $viewdefs[$module]['panels'][$panel];
             $data['recordview']['panels'][$panel]['data']['title'] = $viewdefs[$module]['panels'][$panel]['title'];
