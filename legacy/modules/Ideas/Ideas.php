@@ -44,6 +44,7 @@
  */
 
 require_once 'modules/Ideas/SugarFeeds/IdeasFeed.php';
+SugarAutoLoader::requireWithCustom('include/Notifications/NotificationFactory.php');
 
 class Ideas extends Basic
 {
@@ -73,6 +74,8 @@ class Ideas extends Basic
     public $SecurityGroups;
     public $status;
     public $explanation;
+    public $notification_message;
+    public $notification_user_id;
 
     public function bean_implements($interface)
     {
@@ -81,6 +84,14 @@ class Ideas extends Basic
             $result = true;
         }
         return $result;
+    }
+
+    public function save($check_notify = false)
+    {
+        $this->setStatusToInProgress();
+        $id = parent::save($check_notify);
+        $this->postSave();
+        return $id;
     }
 
     protected function postSave()
@@ -111,13 +122,25 @@ class Ideas extends Basic
 
     protected function addDecisionMakerNotification($user_id, $description)
     {
-        SugarAutoLoader::requireWithCustom('include/Notifications/Notification.php');
-        $notification = new Notification();
-        $notification->setAssignedUserId($user_id)
-            ->setDescription($description)
-            ->setRelatedBean($this->id, 'Ideas')
-            ->saveAsAlert();
-        $notification->disableUniqueValidation();
+        $this->notification_user_id = $user_id;
+        $this->notification_message = $description;
+        $ideaAssignedToUserNotification = NotificationFactory::getNotification('IdeaAssignedToUserNotification', $this);
+        $ideaAssignedToUserNotification->run();
+    }
+
+    protected function setStatusToInProgress()
+    {
+        if ((empty($this->fetched_row) || $this->fetched_row['status'] == 'new') && $this->explanation != $this->fetched_row['explanation']) {
+            $this->status = 'in_progress';
+}
+        if(
+            !empty($this->fetched_row['explanation']) 
+            && $this->explanation != $this->fetched_row['explanation'] 
+            && empty($this->explanation)
+            && in_array($this->status, ['in_progress', 'new'])
+        ){
+            $this->status = 'new';
+        }
     }
 
 }
