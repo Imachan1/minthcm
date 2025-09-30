@@ -44,7 +44,7 @@ class ModulesApi {
     }
 
     public async fetchRelatedRecords(module: string, link: string, id: string) {
-        return await this.instance.get(`${module}/subpanel/${link}/${id}`)
+        return await mintApi.get(`${module}/subpanel/${link}/${id}`)
     }
 }
 

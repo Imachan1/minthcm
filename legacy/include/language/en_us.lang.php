@@ -4909,3 +4909,6 @@ $app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';
 $app_strings['LBL_LINK_RECORD_BUTTON'] = 'LINK RECORD';
 $app_strings['LBL_EXPAND'] = 'Expand';
 $app_strings['LBL_COLLAPSE'] = 'Collapse';
+$app_strings['LBL_USER_POSITION_PANEL'] = 'Position Card';
+$app_strings['LBL_COMPETENCIES'] = 'Competencies';
+$app_strings['LBL_RESPONSIBILITIES'] = 'Responsibilities';
