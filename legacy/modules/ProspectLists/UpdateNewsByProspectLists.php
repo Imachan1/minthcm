@@ -83,10 +83,10 @@ class UpdateNewsByProspectLists
         $security_groups_to_add = array_diff($target_security_groups, $current_security_groups);
         $security_groups_to_remove = array_diff($current_security_groups, $target_security_groups);
         foreach ($security_groups_to_add as $security_group_to_add) {
-            $news->SecurityGroups->add($security_group_to_add);
+            SecurityGroup::addGroupToRecord('News', $news->id, $security_group_to_add);
         }
         foreach ($security_groups_to_remove as $security_group_to_remove) {
-            $news->SecurityGroups->delete($security_group_to_remove);
+            SecurityGroup::removeGroupFromRecord('News', $news->id, $security_group_to_remove);
         }
     }
 
