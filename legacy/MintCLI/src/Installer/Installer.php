@@ -6,6 +6,7 @@ use MintHCM\MintCLI\Services\ConfigOverrideService;
 use MintHCM\MintCLI\Services\HtaccessService;
 use MintHCM\MintCLI\Services\ServerService;
 use MintHCM\MintCLI\Services\ElasticsearchService;
+use MintHCM\MintCLI\Services\OAuth2Service;
 
 #[\AllowDynamicProperties]
 class Installer
@@ -149,5 +150,12 @@ class Installer
             ],
             'oauth2_encryption_key' => base64_encode(random_bytes(32)), 
         ]);
+    }
+
+    public function setupOAuth2(): void
+    {
+        $oauth2Service = new OAuth2Service();
+        $oauth2Service->generateNewKeys();
+        $oauth2Service->repairFrontendToken();
     }
 }
