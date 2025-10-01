@@ -57,6 +57,9 @@ class MintLogic
     {
         $rules = [];
         foreach ($this->getAllRules() as $key => $rule) {
+            if (empty($rule)) {
+                continue;
+            }
             if (Hook::ALL !== $hook && !in_array(Hook::ALL, $rule['hooks']) && !in_array($hook, $rule['hooks'])) {
                 continue;
             }
@@ -79,76 +82,38 @@ class MintLogic
 
     private function getAllRules(): array
     {
-        $rules = $this->defs['rules'] ?? [];
-        $initialLogic = $this->getInitialLogic();
-        if (!empty($initialLogic)) {
-            array_unshift($rules, [
-                'hooks' => [Hook::ALL],
-                'trigger' => true,
-                'logic' => $initialLogic,
-            ]);
-        }
+        $rules = array_merge(
+            $this->getBasicSets(),
+            $this->defs['rules'] ?? []
+        );
         return $rules;
     }
 
-    private function getInitialLogic()
+    private function getBasicSets()
     {
-        $initialLogic = [];
-        $requiredFields = $this->getRequiredFieldsFromVardefs();
-        if (!empty($requiredFields)) {
-            $initialLogic['required'] = array_fill_keys($requiredFields, true);
-        }
-        $readonlyFields = $this->getReadonlyFieldsFromVardefs();
-        if (!empty($readonlyFields)) {
-            $initialLogic['readonly'] = array_fill_keys($readonlyFields, true);
-        }
-        $functionOptionsFields = $this->getFunctionOptionsFieldsFromVardefs();
-        if (!empty($functionOptionsFields)) {
-            $initialLogic['options'] = $functionOptionsFields;
-        }
-        return $initialLogic;
-    }
-
-    private function getRequiredFieldsFromVardefs(): array
-    {
-        $requiredFields = [];
-        foreach ($this->bean->field_defs as $field => $vardef) {
-            if (isset($vardef['required']) && true === $vardef['required'] && 'id' !== $vardef['name']) {
-                $requiredFields[] = $field;
-            }
-        }
-        return $requiredFields;
-    }
-
-    private function getReadonlyFieldsFromVardefs(): array
-    {
-        $readonlyFields = [];
-        foreach ($this->bean->field_defs as $field => $vardef) {
-            if (isset($vardef['readonly']) && true === $vardef['readonly']) {
-                $readonlyFields[] = $field;
-            }
-        }
-        return $readonlyFields;
-    }
-
-    private function getFunctionOptionsFieldsFromVardefs(): array
-    {
-        $functionOptionsFields = [];
-        foreach ($this->bean->field_defs as $field => $vardef) {
-            if (isset($vardef['type']) && in_array($vardef['type'], ['enum', 'multienum']) && isset($vardef['function'])) {
-                if (!empty($vardef['function']['include'])) {
-                    require_once $vardef['function']['include'];
+        $basicSets = [];
+        $basicSetsDir = __DIR__ . '/BasicSets';
+        if (is_dir($basicSetsDir)) {
+            $files = scandir($basicSetsDir);
+            foreach ($files as $file) {
+                if (in_array($file, ['.', '..']) || pathinfo($file, PATHINFO_EXTENSION) !== 'php') {
+                    continue;
                 }
-                $function_name = $vardef['function']['name'] ?? '';
-                if (!empty($function_name)) {
-                    $result = call_user_func($function_name, $this->bean, $field, $this->bean->{$field} ?? '', 'MintLogic', $vardef['function']['additional_params']);
-                    if (!empty($result)) {
-                        $functionOptionsFields[$field] = $result;
+                $defs = include $basicSetsDir . '/' . $file;
+                foreach ($defs['rules'] as $key => $rule) {
+                    $ruleName = is_string($key) ? $key : pathinfo($file, PATHINFO_FILENAME);
+                    if (isset($this->defs['rules'][$ruleName])) {
+                        continue;
+                    }
+                    if (is_int($key)) {
+                        $basicSets[] = $rule;
+                    } else {
+                        $basicSets[$key] = $rule;
                     }
                 }
             }
         }
-        return $functionOptionsFields;
+        return $basicSets;
     }
 
     private function calculateLogic($rule)
