@@ -25,9 +25,6 @@
                 :data="{ bean: item }"
                 :label="languages.label(store.defs.columns[column.name].label, store.module)"
                 :options="item.logic.fieldsOptions[column.name]"
-                :required="item.logic.requiredFields.includes(column.name)"
-                :errorMessage="item.errorMessages[column.name]"
-                :isDirty="item.isDirty || item.dirtyFields.has(column.name)"
                 :modelValue="item.attributes[column.name]"
             />
         </template>
@@ -120,18 +117,6 @@ function getItemActions(item: any) {
     :deep(.v-pagination__first),
     :deep(.v-pagination__last) {
         display: none;
-    }
-    .enum-chip {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: fit-content;
-        font-size: 13px;
-        padding: 4px 12px;
-        font-weight: bold;
-        text-transform: uppercase;
-        border-radius: 5px;
-        letter-spacing: 0.09px;
     }
 }
 </style>

@@ -112,6 +112,10 @@ abstract class SearchResult
 
     protected function mergeRecordData($bean)
     {
+        // CR: wydaje mi sie, ze to bedzie za wolne
+        // getFavoriteID strzela sql dla kazdego beana
+        // logic nie wiem, czy jest potrzebne na liscie
+        // acl_access - pytanie czy juz z elastica nie przychodzi bo to tez moze sporo zająć dla customowych ACLAccess
         $favorite = BeanFactory::newBean('Favorites');
         return [
             'id' => $bean->id,
