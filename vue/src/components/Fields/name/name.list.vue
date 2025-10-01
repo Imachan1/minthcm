@@ -21,7 +21,7 @@ const props = defineProps<FieldProps>()
 const store = useListViewStore()
 
 const hasViewAccess = computed<boolean>(() => {
-    return useACL().hasAccess(props.data.bean.module, 'view', true, true)
+    return props.data.bean.aclAccess?.view || false
 })
 
 const recordUrl = computed(() => {
