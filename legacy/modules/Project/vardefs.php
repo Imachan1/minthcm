@@ -211,7 +211,13 @@ $dictionary['Project'] = array(
                 'type' => 'ColoredEnum',
                 'dbType' => 'varchar',
                 'options' => 'project_status_dom',
-                'options_colors' => 'project_status_dom_colored',
+                'options_colors' => [
+                    'Draft' => 'gray',
+                    'In Review' => 'yellow',
+                    'Underway' => 'yellow',
+                    'On_Hold' => 'yellow',
+                    'Completed' => 'green',
+                ],
             ),
 
         'priority' =>

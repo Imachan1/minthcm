@@ -197,7 +197,11 @@ $dictionary['WorkSchedules'] = array(
          'len' => 100,
          'size' => '20',
          'options' => 'workschedules_status_dom',
-         'options_colors' => 'workschedules_status_dom_colored',
+         'options_colors' => [
+            'planned' => 'blue',
+            'worked' => 'yellow',
+            'closed' => 'green',
+         ],
          'studio' => 'visible',
          'dependency' => false,
          'vt_validation' => "AEM(callCustomApi('WorkSchedules','canChangeWorkScheduleStatus',{id:\$id,status:\$status}),'LBL_ERR_CANNOT_CHANGE_WORK_SCHEDULE_STATUS')",

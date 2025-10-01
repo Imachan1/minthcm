@@ -93,7 +93,12 @@ $dictionary['Appraisals'] = array(
             'len' => 100,
             'size' => '20',
             'options' => 'appraisals_status_list',
-            'options_colors' => 'appraisals_status_list_colored',
+            'options_colors' => [
+                'planned' => 'blue',
+                'in_progress' => 'yellow',
+                'held' => 'green',
+                'not_held' => 'red',
+            ],
             'studio' => 'visible',
             'dependency' => false,
         ),

@@ -120,7 +120,12 @@ $dictionary['Goals'] = array(
          'len' => 100,
          'size' => '20',
          'options' => 'goals_status_list',
-         'options_colors' => 'goals_status_list_colored',
+         'options_colors' => [
+            'planned' => 'blue',
+            'in_progress' => 'yellow',
+            'completed' => 'green',
+            'uncompleted' => 'gray',
+         ],
          'studio' => 'visible',
          'dependency' => false,
       ),

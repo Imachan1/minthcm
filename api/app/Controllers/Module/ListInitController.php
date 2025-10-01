@@ -233,7 +233,7 @@ class ListInitController
     {
         $columns = $this->metadata[$type];
 
-        global $mod_strings, $app_strings, $current_language;
+        global $mod_strings, $app_strings, $current_language, $app_list_strings;
         chdir('../legacy/');
         $mod_strings = return_module_language($current_language, $this->module);
         chdir('../api/');
@@ -257,6 +257,7 @@ class ListInitController
                 unset($columns[$field]);
                 continue;
             }
+
             $columns[$field] = array_merge($field_defs, $columns[$field]);
             $columns[$field]['name'] = $defs['name'] ?? $field;
             $columns[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field] ?? $field;

@@ -35,6 +35,7 @@ interface InitResponse {
     responseType: string
     systemName: string
     upload_maxsize: string
+    field_variables: string[]
 }
 export const useBackendStore = defineStore('backend', () => {
     const router = useRouter()
@@ -86,6 +87,7 @@ export const useBackendStore = defineStore('backend', () => {
                 cachedConfig.value.responseType = initResponse.data.responseType
                 cachedConfig.value.systemName = initResponse.data.system_name
                 cachedConfig.value.upload_maxsize = initResponse.data.upload_maxsize
+                cachedConfig.value.field_variables = initResponse.data.field_variables
                 if(initResponse.data.languages && current_language !== initResponse.data.languages?.current_language){
                     cachedConfig.value.languages = initResponse.data.languages
                 }
