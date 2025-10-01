@@ -70,7 +70,7 @@ abstract class NotificationAbstractClass
 
     protected function buildUniqueQueryCheckerWhere()
     {
-        return " WHERE `deleted` = 0 AND (type != 'webpush' OR type IS NULL)
+        return " WHERE `deleted` = 0 AND is_closed=0 AND (type != 'webpush' OR type IS NULL)
            AND `parent_type` = '{$this->related_bean_type}'
            AND `parent_id` = '{$this->related_bean_id}'
            AND `assigned_user_id` = '{$this->assigned_user_id}'
