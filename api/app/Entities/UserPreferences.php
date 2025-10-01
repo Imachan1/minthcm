@@ -46,57 +46,64 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\UserPreferencesRepository")
  * @ORM\Table(name="user_preferences", indexes={
- *   @ORM\Index(name="userpreferencespk", columns={"id"}), 
- *   @ORM\Index(name="idx_userprefnamecat", columns={"assigned_user_id", "category"})})
+ * @ORM\Index(name="userpreferencespk", columns={"id"}), 
+ * @ORM\Index(name="idx_userprefnamecat", columns={"assigned_user_id", "category"})})
  */
+// Auto-generated SectionRepository section end
 class UserPreferences
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="50")
-            */
+     * @ORM\Column(type="string", length="50")
+     */
     public $category;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $contents;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
     }
+// Auto-generated SectionMethods section end
 }

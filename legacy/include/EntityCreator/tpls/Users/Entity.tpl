@@ -46,89 +46,15 @@
 
 namespace {$entityNamespace};
 
-use Doctrine\ORM\Mapping as ORM;
-use League\OAuth2\Server\Entities\UserEntityInterface;
-use Ramsey\Uuid\Doctrine\UuidGenerator;
-{if !empty($additionalUseStatements)}
-{foreach from=$additionalUseStatements item=useStatement}
-{$useStatement};
-{/foreach}
-{/if}
+{include file="$sectionuse"}
 
-/**
-{if $repositorySet}
- * @ORM\Entity(repositoryClass="{$repositoryClassPath}")
-{else}
- * @ORM\Entity
-{/if}
- * @ORM\Table(name="{$table}"{if !empty($indexes)}, indexes={ldelim}
-{foreach from=$indexes item=index}
- *   @ORM\Index(name="{$index.name}", columns={ldelim}"{$index.columns}"{rdelim}){if !$index@last}, {"\n"}{/if}
-{/foreach}
-{rdelim}{/if})
- */
+{include file="$sectionrepository"}
+
 class {$className} implements UserEntityInterface
 {
-{foreach from=$fields item=field}
-    /**
-    {if $field.isId}
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-    {/if}
-    {if $field.columnAttributes}
-    * @ORM\Column({$field.columnAttributes})
-    {/if}
-    {if $field.attributes}
-    {foreach from=$field.attributes item=attribute}
-    * {$attribute}
-    {/foreach}
-    {/if}
-    */
-    public ${$field.name};
 
-{/foreach}
-{foreach from=$relationshipFields item=relationshipField}
-    /**
-    {foreach from=$relationshipField.attributes item=attribute}
-    * {$attribute}
-    {/foreach}
-    */
-    public {if $relationshipField.isCollection}Collection {/if}${$relationshipField.name};
+{include file="$sectionproperties"}
 
-{/foreach}
+{include file="$sectionmethods"}
 
-public function __construct()
-{ldelim}
-    {foreach from=$constructorFields item=constructedField}
-    {$constructedField}
-    {/foreach}
-{rdelim}
-
-    {literal}
-    public function getIdentifier(): string
-    {
-        return $this->id;
-    }
-    {/literal}
-
-    {literal}
-    /**
-    * Get the fullname 
-    *
-    * @return string
-    */
-    public function getFullName(): string
-    {
-        $names = [];
-        if (!empty($this->first_name)) {
-            $names[] = $this->first_name;
-        }
-        if (!empty($this->last_name)) {
-            $names[] = $this->last_name;
-        }
-
-        return !empty($names) ? implode(' ', $names) : '';
-    }
-    {/literal}
 }

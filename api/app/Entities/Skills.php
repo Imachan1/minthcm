@@ -46,122 +46,129 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="skills", indexes={
- *   @ORM\Index(name="skillspk", columns={"id"})})
+ * @ORM\Index(name="skillspk", columns={"id"})})
  */
+// Auto-generated SectionRepository section end
 class Skills
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $description;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $employee_id;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="skills")
-        */
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="skills")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="skills")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="skills")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="skills")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="skills")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     */
     public Collection $SecurityGroups;
 
     /**
-        * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="skills")
-        */
+     * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="skills")
+     */
     public $employee_link;
 
     /**
-        * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="skills")
-        */
+     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="skills")
+     */
     public Collection $appraisalitems;
 
     /**
-        * @ORM\JoinTable(name="skills_competencies")
-        * @ORM\ManyToMany(targetEntity=Competencies::class, mappedBy="skills")
-        */
+     * @ORM\JoinTable(name="skills_competencies")
+     * @ORM\ManyToMany(targetEntity=Competencies::class, mappedBy="skills")
+     */
     public Collection $competencies;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->SecurityGroups = new ArrayCollection();
-        $this->appraisalitems = new Collection();
+        $this->appraisalitems = new ArrayCollection();
         $this->competencies = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

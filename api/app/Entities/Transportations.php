@@ -46,141 +46,148 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="transportations", indexes={
- *   @ORM\Index(name="transportationspk", columns={"id"}), 
- *   @ORM\Index(name="idx_delegation_id", columns={"delegation_id"})})
+ * @ORM\Index(name="transportationspk", columns={"id"}), 
+ * @ORM\Index(name="idx_delegation_id", columns={"delegation_id"})})
  */
+// Auto-generated SectionRepository section end
 class Transportations
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $description;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $other_transportation;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $from_city;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $to_city;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $type;
 
     /**
-            * @ORM\Column(type="decimal", length="26")
-            */
+     * @ORM\Column(type="decimal", length="26")
+     */
     public $cost_total;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $trans_date;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="transportations")
-        */
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="transportations")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="transportations")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="transportations")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="transportations")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="transportations")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     */
     public Collection $SecurityGroups;
 
     /**
-        * @ORM\JoinColumn(name="delegation_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Delegations::class, inversedBy="transportations")
-        */
+     * @ORM\JoinColumn(name="delegation_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Delegations::class, inversedBy="transportations")
+     */
     public $delegations;
 
     /**
-        * @ORM\OneToMany(targetEntity=Costs::class, mappedBy="transportations")
-        */
+     * @ORM\OneToMany(targetEntity=Costs::class, mappedBy="transportations")
+     */
     public Collection $costs;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->SecurityGroups = new ArrayCollection();
-        $this->costs = new Collection();
+        $this->costs = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

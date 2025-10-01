@@ -1,50 +1,27 @@
 <?php
+
 require_once 'vendor/autoload.php';
+require_once 'include/EntityCreator/EntityCreatorDataGenerator.php';
 
 class EntityCreator
 {
-    protected const TPL_DIR_PATH           = '/tpls';
-    protected const ENTITY_TEMPLATE        = 'Entity.tpl';
-    protected const ENTITY_FOLDER_PATH     = './app/Entities/';
-    protected const REPOSITORY_FOLDER_PATH = "MintHCM\\Api\\Repositories\\";
-    protected const ENTITY_NAMESPACE       = 'MintHCM\\Api\\Entities';
+    public const ENTITY_NAMESPACE = 'MintHCM\\Api\\Entities';
+    private const ENTITY_FOLDER_PATH = '../api/app/Entities/';
 
-    protected const ORM_TYPE_MAP = [
-        'id' => 'string',
-        'varchar' => 'string',
-        'int' => 'integer',
-        'float' => 'float',
-        'bool' => 'boolean',
-        'date' => 'date',
-        'datetime' => 'datetime',
-        'text' => 'text',
-        'enum' => 'string',
-        'multienum' => 'string',
-        'phone' => 'string',
-        'url' => 'string',
-        'file' => 'string',
-        'fullname' => 'string',
-        'double' => 'decimal',
-        'relate' => 'string',
-        'parent_type' => 'string',
-        'parent_id' => 'string',
-        'currency' => 'decimal',
-        'datetimecombo' => 'datetime',
-        'longtext' => 'text',
-        'encrypt' => 'string',
-        'long' => 'bigint',
-        'mediumtext' => 'text',
+    public const REPOSITORY_FOLDER_PATH = "MintHCM\\Api\\Repositories\\";
+
+    private const TPL_DIR_PATH = '/tpls';
+
+    private const SECTIONS = [
+        'SectionUse',
+        'SectionRepository',
+        'SectionProperties',
+        'SectionMethods',
     ];
 
-    protected const SKIP_TYPES = [
-        'link',
-        'function',
-        'time',
-    ];
-
-    protected $vardefs;
-    protected $moduleName;
-    protected $data;
+    private $vardefs;
+    private $moduleName;
+    private $data;
 
     public function __construct(string $moduleName, array $vardefs)
     {
@@ -52,316 +29,37 @@ class EntityCreator
         $this->vardefs = $vardefs;
     }
 
-    public function run()
+    public function run(): void
     {
-        $this->buildData();
-        $this->buildFields();
-        $this->buildRelationshipFields();
-        $this->buildIndexes();
-        $this->buildAdditionalUseStatements();
-        $this->buildConstructorFields();
-        $this->createEntity();
-    }
-
-    protected function buildData()
-    {
-        $this->data = [
-            'table' => $this->vardefs['table'],
-            'className' => $this->moduleName,
-            'entityNamespace' => self::ENTITY_NAMESPACE,
-            'fields' => [],
-            'relationshipFields' => [],
-            'additionalUseStatements' => [],
-            'constructorFields' => [],
-        ];
-
-        $repositorySet = ! empty($this->vardefs['doctrineEntity']['repository']);
-        if ($repositorySet) {
-            $this->data['repositoryClassPath'] = self::REPOSITORY_FOLDER_PATH . $this->vardefs['doctrineEntity']['repository'];
-            $this->data['repositorySet'] = true;
-        }
-    }
-
-    protected function buildFields()
-    {
-        foreach ($this->vardefs['fields'] as $fieldName => $fieldDef) {
-            if ((! empty($fieldDef['source']) && 'non-db' === $fieldDef['source'])
-                || in_array($fieldDef['type'], self::SKIP_TYPES)) {
-                continue;
-            }
-
-            $field = [
-                'name' => $fieldName,
-                'columnAttributes' => '',
-                'isId' => false,
-            ];
-
-            $attributes = [];
-            if (! empty($fieldDef['type']) || ! empty($fieldDef['dbType'])) {
-                $type = $fieldDef['dbType'] ?? $fieldDef['type'];
-                $ORM_type = self::ORM_TYPE_MAP[$type] ?? null;
-
-                if (! $ORM_type) {
-                    throw new \Exception("Unsupported field type: $type for field: $fieldName");
-                }
-
-                $attributes[] = 'type="' . $ORM_type . '"';
-
-                if (! empty($fieldDef['len'])) {
-                    $attributes[] = 'length="' . $fieldDef['len'] . '"';
-                } else if ('id' == $type || 'relate' == $type) {
-                    $attributes[] = 'length="36"';
-                }
-
-                if ('id' == $type && 'id' == $fieldName) {
-                    $field['isId'] = true;
-                }
-            }
-
-            $field['columnAttributes'] = implode(', ', $attributes);
-            $this->data['fields'][$field['name']] = $field;
-        }
-    }
-
-    protected function buildRelationshipFields()
-    {
-        foreach ($this->vardefs['relationships'] as $relationshipName => $relationshipDef) {
-            if (empty($relationshipDef['lhs_module']) || empty($relationshipDef['rhs_module'])) {
-                continue;
-            }
-            $this->createRelationshipField($relationshipDef, $relationshipName);
-        }
-
-        foreach ($this->vardefs['fields'] as $fieldName => $fieldDef) {
-            if ('link' === $fieldDef['type'] && ! empty($fieldDef['relationship'])) {
-                if($this->dataHasRelationshipField($fieldName)) {
-                    continue;
-                }
-
-                $relationshipDef = $this->getRelationship($fieldName, $fieldDef);
-                if (empty($relationshipDef)) {
-                    continue;
-                }
-
-                $this->createRelationshipField(
-                    $relationshipDef,
-                    $fieldDef['relationship']
-                );
-            }
-        }
-    }
-
-    protected function getRelationship($fieldName, $fieldDef)
-    {
-        $dictionary = EntityCreatorManager::$dictionary;
-        if(!empty($dictionary[$fieldDef['relationship']]['relationships'][$fieldDef['relationship']])) {
-            return $dictionary[$fieldDef['relationship']]['relationships'][$fieldDef['relationship']];
-        }
-
-        $bean = BeanFactory::getBean($this->moduleName);
-        if($bean) {
-            $bean->load_relationship($fieldName);
-            return $bean->$fieldName->def || false;
-        }
-
-        return false;
-    }
-
-    protected function dataHasRelationshipField($relationshipName)
-    {
-        foreach ($this->data['relationshipFields'] as $relationshipField) {
-            if ($relationshipField['name'] === $relationshipName) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    protected function createRelationshipField($relationshipDef, $relationshipName)
-    {
-        global $entityCreator, $beanList;
-
-        $relationshipField = [
-            'name' => '',
-            'attributes' => [],
-            'isCollection' => false,
-            'relation_type' => '',
-        ];
-
-        foreach ($relationshipDef as $key => $value) {
-            if ($value == $this->moduleName
-                || ('Employees' == $this->moduleName && 'Users' == $value)
-                || ('Users' == $this->moduleName && 'Employees' == $value)) {
-                $relationshipSide = explode('_', $key)[0];
-                $targetSide = 'lhs' === $relationshipSide ? 'rhs' : 'lhs';
-                break;
-            }
-        }
-
-        foreach ($this->vardefs['fields'] as $fieldName => $fieldDef) {
-            if ('link' === $fieldDef['type'] && $fieldDef['relationship'] === $relationshipName) {
-                $relationshipField['name'] = $fieldName;
-                break;
-            }
-        }
-
-        if (empty($relationshipField['name']) || $this->dataHasRelationshipField($relationshipField['name'])) {
-            return;
-        }
-
-        $module = [
-            'module' => '',
-            'key' => '',
-            'table' => '',
-            'join_key' => '',
-        ];
-        $target = [
-            'module' => '',
-            'key' => '',
-            'table' => '',
-            'join_key' => '',
-        ];
-        foreach (['module', 'key', 'table'] as $attr) {
-            $target[$attr] = $relationshipDef[$targetSide . '_' . $attr] ?? '';
-            $module[$attr] = $relationshipDef[$relationshipSide . '_' . $attr] ?? '';
-        }
-
-        $dictionary = EntityCreatorManager::$dictionary;
-        if (empty($dictionary[$target['module']]) || empty($dictionary[$module['module']])) {
-            return;
-        }
-
-        $joinTable = $relationshipDef['join_table'] ?? null;
-        if ($joinTable) {
-            $target['join_key'] = $relationshipDef['join_key_' . $targetSide] ?? '';
-            $module['join_key'] = $relationshipDef['join_key_' . $relationshipSide] ?? '';
-        }
-        
-        $relationshipField['attributes'] = $this->buildRelationshipAttributes(
-            $relationshipDef['relationship_type'],
-            $module,
-            $target,
-            $relationshipSide,
-            $joinTable,
-            $relationshipField['name']
-        );
-        $relationshipField['isCollection'] = 'many-to-many' === $relationshipDef['relationship_type'] || ('one-to-many' === $relationshipDef['relationship_type'] && 'lhs' === $relationshipSide);
-        $relationshipField['relation_type'] = $relationshipDef['relationship_type'];
-        $this->data['relationshipFields'][] = $relationshipField;
-
-        if (! in_array($target['module'], $entityCreator['CreatingEntities']) && ! empty($dictionary[$target['module']])) {
-            $entityCreator['CreatingEntities'][] = $target['module'];
-            (new EntityCreator($target['module'], $dictionary[$target['module']]))->run();
-        }
-    }
-
-    protected function buildRelationshipAttributes($relationshipType, $module, $target, $relationshipSide, $joinTable = null, $currentFieldName = '')
-    {
-        $attributes = [
-            'relationshipType' => '',
-            'joinAttributes' => [],
-            'relationshipAttributes' => [],
-            'inverseJoinAttributes' => [],
-        ];
-
-        $directionType = 'SecurityGroups' == $target['module'] ? 'unidirectional' : 'bidirectional';
-        $selfReferencing = $module['module'] === $target['module'];
-        switch ($relationshipType) {
-            case 'one-to-many':
-                $attributes['relationshipAttributes'][] = 'targetEntity=' . $target['module'] . '::class';
-                if ('lhs' === $relationshipSide) {
-                    $attributes['relationshipType'] = 'OneToMany';
-                    if ($selfReferencing) {
-                        $key = 'id' !== $module['key'] ? $module['key'] : $target['key'];
-                        $attributes['relationshipAttributes'][] = 'mappedBy="' . $key . '"';
-                        $this->changeFieldToSelfReference($key, $attributes['relationshipType'], $currentFieldName);
-                    } else {
-                        $attributes['relationshipAttributes'][] = 'mappedBy="' . $module['table'] . '"';
-                    }
-                } else {
-                    $attributes['relationshipType'] = 'ManyToOne';
-                    $attributes['relationshipAttributes'][] = 'inversedBy="' . $module['table'] . '"';
-                    $attributes['joinAttributes'][] = 'name="' . $module['key'] . '"';
-                    $attributes['joinAttributes'][] = 'referencedColumnName="' . $target['key'] . '"';
-                }
-                break;
-            case 'one-to-one':
-                $attributes['relationshipAttributes'][] = 'targetEntity=' . $target['module'] . '::class';
-                $attributes['relationshipType'] = 'OneToOne';
-                if ('lhs' === $relationshipSide) {
-                    $attributes['relationshipAttributes'][] = 'mappedBy="' . $module['table'] . '"';
-                } else if(empty($joinTable)) {
-                    $attributes['relationshipAttributes'][] = 'inversedBy="' . $module['table'] . '"';
-                    $attributes['joinAttributes'][] = 'name="' . $module['key'] . '"';
-                    $attributes['joinAttributes'][] = 'referencedColumnName="' . $target['key'] . '"';
-                    $attributes['inverseJoinAttributes'][] = 'name="' . $target['key'] . '"';
-                    $attributes['inverseJoinAttributes'][] = 'referencedColumnName="' . $module['key'] . '"';
-                } else {
-                    $attributes['relationshipAttributes'][] = 'inversedBy="' . $module['table'] . '"';
-                    $attributes['inverseJoinAttributes'][] = 'name="' . $target['join_key'] . '"';
-                    $attributes['inverseJoinAttributes'][] = 'referencedColumnName="' . $module['key'] . '"';
-                    $attributes['joinAttributes'][] = 'name="' . $module['join_key'] . '"';
-                    $attributes['joinAttributes'][] = 'referencedColumnName="' . $target['key'] . '"';
-                }
-                break;
-            case 'many-to-many':
-                if (empty($joinTable)) {
-                    throw new \Exception("Join table is required for many-to-many relationships.");
-                }
-
-                $attributes['relationshipType'] = 'ManyToMany';
-                if ('unidirectional' === $directionType) {
-                    $attributes['relationshipAttributes'][] = 'targetEntity=' . $target['module'] . '::class';
-                    $attributes['relationshipAttributes'][] = 'inversedBy="' . $target['table'] . '"';
-                    $attributes['joinAttributes'][] = 'name="' . $module['join_key'] . '"';
-                    $attributes['joinAttributes'][] = 'referencedColumnName="' . $target['key'] . '"';
-                    $attributes['inverseJoinAttributes'][] = 'name="' . $target['join_key'] . '"';
-                    $attributes['inverseJoinAttributes'][] = 'referencedColumnName="' . $module['key'] . '"';
-                } else if ('lhs' === $relationshipSide) {
-                    $attributes['relationshipAttributes'][] = 'targetEntity=' . $target['module'] . '::class';
-                    $attributes['relationshipAttributes'][] = 'mappedBy="' . $module['table'] . '"';
-                } else {
-                    $attributes['relationshipAttributes'][] = 'targetEntity=' . $target['module'] . '::class';
-                    $attributes['relationshipAttributes'][] = 'inversedBy="' . $module['table'] . '"';
-                    $attributes['inverseJoinAttributes'][] = 'name="' . $target['join_key'] . '"';
-                    $attributes['inverseJoinAttributes'][] = 'referencedColumnName="' . $module['key'] . '"';
-                    $attributes['joinAttributes'][] = 'name="' . $module['join_key'] . '"';
-                    $attributes['joinAttributes'][] = 'referencedColumnName="' . $target['key'] . '"';
-                }
-                break;
-        }
-
-        $relationAttributes = [];
-        if ($joinTable && ! empty($attributes['joinAttributes'] && ! empty($attributes['inverseJoinAttributes']))) {
-            $relationAttributes[] = '@ORM\\JoinTable(name="' . $joinTable . '", joinColumns={@ORM\\JoinColumn(' . implode(', ', $attributes['joinAttributes']) . ')}, inverseJoinColumns={@ORM\\JoinColumn(' . implode(', ', $attributes['inverseJoinAttributes']) . ')})';
+        $this->data = (new EntityCreatorDataGenerator($this->moduleName, $this->vardefs))->getData();
+        if ($this->entityExists()) {
+            $this->editEntity();
         } else {
-            if (! empty($attributes['joinAttributes'])) {
-                $relationAttributes[] = '@ORM\\JoinColumn(' . implode(', ', $attributes['joinAttributes']) . ')';
-            }
-            if ($joinTable) {
-                $relationAttributes[] = '@ORM\\JoinTable(name="' . $joinTable . '")';
-            }
+            $this->createEntity();
         }
-
-        $relationAttributes[] = '@ORM\\' . $attributes['relationshipType'] . '(' . implode(', ', $attributes['relationshipAttributes']) . ')';
-
-        return $relationAttributes;
     }
 
-    protected function changeFieldToSelfReference($fieldName, $relationshipType, $linkName)
+    private function editEntity(): void
     {
-        $field = $this->data['fields'][$fieldName] ?? null;
-        if (empty($field) || empty($linkName)) {
-            return;
+        $file_path = self::ENTITY_FOLDER_PATH . $this->moduleName . '.php';
+        $class_code = file_get_contents($file_path);
+        if ($class_code === false || is_writable($file_path) === false) {
+            throw new Exception("Cannot read or write to file: {$file_path}");
         }
-        unset($field['columnAttributes']);
-        switch($relationshipType) {
-            case 'OneToMany':
-                $field['attributes'][] = '@ORM\\ManyToOne(targetEntity=' . $this->moduleName . '::class, inversedBy="' . $linkName . '")';
-                $field['attributes'][] = '@ORM\\JoinColumn(name="' . $fieldName . '", referencedColumnName="id")';
-                break;
+
+        foreach (self::SECTIONS as $section) {
+            $smarty = new Smarty();
+            $smarty->setTemplateDir(dirname(__FILE__) . self::TPL_DIR_PATH);
+            $smarty->assign($this->data);
+            $smarty->assign('start_' . strtolower($section), $this->getStartCommentForSection($section));
+            $smarty->assign('end_' . strtolower($section), $this->getEndCommentForSection($section));
+            
+            $new_section_code = $smarty->fetch($this->getTplPath($section));
+            $pattern = '/' . preg_quote($this->getStartCommentForSection($section), '/') . '.*?' . preg_quote($this->getEndCommentForSection($section), '/') . '/s';
+            $class_code = preg_replace($pattern, $new_section_code, $class_code);
         }
-        $this->data['fields'][$fieldName] = $field;
+
+        file_put_contents($file_path, $class_code);
     }
 
     protected function buildIndexes()
@@ -405,21 +103,44 @@ class EntityCreator
     protected function createEntity()
     {
         $smarty = new Smarty();
-        $smarty_dir_path = dirname(__FILE__) . self::TPL_DIR_PATH;
-        $smarty->setTemplateDir($smarty_dir_path);
+        $smarty->setTemplateDir(dirname(__FILE__) . self::TPL_DIR_PATH);
         $smarty->assign($this->data);
-        if (file_exists($smarty_dir_path . '/' . $this->moduleName . '.tpl')) {
-            $classCode = $smarty->fetch($this->moduleName . '.tpl');
-        } else {
-            $classCode = $smarty->fetch(self::ENTITY_TEMPLATE);
+        foreach (self::SECTIONS as $section) {
+            $smarty->assign('start_' . strtolower($section), $this->getStartCommentForSection($section));
+            $smarty->assign('end_' . strtolower($section), $this->getEndCommentForSection($section));
+            $smarty->assign(strtolower($section), $this->getTplPath($section));
         }
 
-        chdir('../api');
-        $filePath = self::ENTITY_FOLDER_PATH . $this->moduleName . '.php';
+        $class_code = $smarty->fetch($this->getTplPath('Entity'));
+
+        $file_path = self::ENTITY_FOLDER_PATH . $this->moduleName . '.php';
         if (! is_dir(self::ENTITY_FOLDER_PATH)) {
             mkdir(self::ENTITY_FOLDER_PATH, 0755, true);
         }
-        file_put_contents($filePath, $classCode);
-        chdir('../legacy');
+        file_put_contents($file_path, $class_code);
+    }
+
+    private function entityExists(): bool
+    {
+        return file_exists(self::ENTITY_FOLDER_PATH . $this->moduleName . '.php');
+    }
+
+    private function getTplPath(string $file_name = 'Entity'): string
+    {
+        $module_file = dirname(__FILE__) . self::TPL_DIR_PATH . '/' . $this->moduleName . '/' . $file_name . '.tpl';
+        if (file_exists($module_file)) {
+            return $module_file;
+        }
+        return dirname(__FILE__) . self::TPL_DIR_PATH . '/' . $file_name . '.tpl';
+    }
+
+    private function getStartCommentForSection(string $section): string
+    {
+        return "// Auto-generated {$section} section start";
+    }
+
+    private function getEndCommentForSection(string $section): string
+    {
+        return "// Auto-generated {$section} section end";
     }
 }

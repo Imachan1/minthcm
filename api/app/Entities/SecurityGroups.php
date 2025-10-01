@@ -46,170 +46,177 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="securitygroups", indexes={
- *   @ORM\Index(name="securitygroupspk", columns={"id"})})
+ * @ORM\Index(name="securitygroupspk", columns={"id"})})
  */
+// Auto-generated SectionRepository section end
 class SecurityGroups
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $description;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $noninheritable;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $group_type;
 
     /**
-                    * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="member_of")
-        * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-            */
+     * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="member_of")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
     public $parent_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $current_manager_id;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="securitygroups")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="securitygroups")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="securitygroups")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\JoinColumn(name="current_manager_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinColumn(name="current_manager_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="securitygroups")
+     */
     public $current_manager;
 
     /**
-        * @ORM\OneToMany(targetEntity=Employees::class, mappedBy="securitygroups")
-        */
+     * @ORM\OneToMany(targetEntity=Employees::class, mappedBy="securitygroups")
+     */
     public Collection $employees;
 
     /**
-        * @ORM\OneToMany(targetEntity=SecurityGroups::class, mappedBy="parent_id")
-        */
+     * @ORM\OneToMany(targetEntity=SecurityGroups::class, mappedBy="parent_id")
+     */
     public Collection $member_of;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_users")
-        * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_users")
+     * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="securitygroups")
+     */
     public Collection $users;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_acl_roles")
-        * @ORM\ManyToMany(targetEntity=ACLRoles::class, mappedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_acl_roles")
+     * @ORM\ManyToMany(targetEntity=ACLRoles::class, mappedBy="securitygroups")
+     */
     public Collection $aclroles;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_positions_leader")
-        * @ORM\ManyToMany(targetEntity=Positions::class, mappedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_positions_leader")
+     * @ORM\ManyToMany(targetEntity=Positions::class, mappedBy="securitygroups")
+     */
     public Collection $positions_leader;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_positions_membership")
-        * @ORM\ManyToMany(targetEntity=Positions::class, mappedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_positions_membership")
+     * @ORM\ManyToMany(targetEntity=Positions::class, mappedBy="securitygroups")
+     */
     public Collection $positions_membership;
 
     /**
-        * @ORM\OneToMany(targetEntity=OnboardingOffboardingElements::class, mappedBy="securitygroups")
-        */
+     * @ORM\OneToMany(targetEntity=OnboardingOffboardingElements::class, mappedBy="securitygroups")
+     */
     public Collection $onboardingoffboardingelements;
 
     /**
-        * @ORM\OneToMany(targetEntity=Rooms::class, mappedBy="securitygroups")
-        */
+     * @ORM\OneToMany(targetEntity=Rooms::class, mappedBy="securitygroups")
+     */
     public Collection $securitygroups_rooms;
 
-
-public function __construct()
-{
-        $this->employees = new Collection();
-        $this->member_of = new Collection();
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
+        $this->employees = new ArrayCollection();
+        $this->member_of = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->aclroles = new ArrayCollection();
         $this->positions_leader = new ArrayCollection();
         $this->positions_membership = new ArrayCollection();
-        $this->onboardingoffboardingelements = new Collection();
-        $this->securitygroups_rooms = new Collection();
+        $this->onboardingoffboardingelements = new ArrayCollection();
+        $this->securitygroups_rooms = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

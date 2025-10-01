@@ -46,139 +46,146 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="rooms", indexes={
- *   @ORM\Index(name="roomspk", columns={"id"})})
+ * @ORM\Index(name="roomspk", columns={"id"})})
  */
+// Auto-generated SectionRepository section end
 class Rooms
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $description;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="integer", length="255")
-            */
+     * @ORM\Column(type="integer", length="255")
+     */
     public $number_of_seats;
 
     /**
-            * @ORM\Column(type="float", length="16")
-            */
+     * @ORM\Column(type="float", length="16")
+     */
     public $room_surface;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $room_plan;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $reservation_type;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $availability;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $security_group_id;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="rooms")
-        */
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="rooms")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="rooms")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="rooms")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="rooms")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="rooms")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\JoinColumn(name="security_group_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="rooms")
-        */
+     * @ORM\JoinColumn(name="security_group_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="rooms")
+     */
     public $SecurityGroups;
 
     /**
-        * @ORM\JoinTable(name="rooms_resources")
-        * @ORM\OneToOne(targetEntity=Resources::class, mappedBy="rooms")
-        */
+     * @ORM\JoinTable(name="rooms_resources")
+     * @ORM\OneToOne(targetEntity=Resources::class, mappedBy="rooms")
+     */
     public $rooms_resources;
 
     /**
-        * @ORM\OneToMany(targetEntity=Workplaces::class, mappedBy="rooms")
-        */
+     * @ORM\OneToMany(targetEntity=Workplaces::class, mappedBy="rooms")
+     */
     public Collection $rooms_workplaces;
 
-
-public function __construct()
-{
-        $this->rooms_workplaces = new Collection();
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
+        $this->rooms_workplaces = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

@@ -46,82 +46,89 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="acl_actions", indexes={
- *   @ORM\Index(name="aclactionid", columns={"id"}), 
- *   @ORM\Index(name="idx_aclaction_id_del", columns={"id", "deleted"}), 
- *   @ORM\Index(name="idx_category_name", columns={"category", "name"})})
+ * @ORM\Index(name="aclactionid", columns={"id"}), 
+ * @ORM\Index(name="idx_aclaction_id_del", columns={"id", "deleted"}), 
+ * @ORM\Index(name="idx_category_name", columns={"category", "name"})})
  */
+// Auto-generated SectionRepository section end
 class ACLActions
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="string", length="150")
-            */
+     * @ORM\Column(type="string", length="150")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $category;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $acltype;
 
     /**
-            * @ORM\Column(type="integer", length="3")
-            */
+     * @ORM\Column(type="integer", length="3")
+     */
     public $aclaccess;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-        * @ORM\JoinTable(name="acl_roles_actions", joinColumns={@ORM\JoinColumn(name="action_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=ACLRoles::class, inversedBy="acl_actions")
-        */
+     * @ORM\JoinTable(name="acl_roles_actions", joinColumns={@ORM\JoinColumn(name="action_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=ACLRoles::class, inversedBy="acl_actions")
+     */
     public Collection $roles;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->roles = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

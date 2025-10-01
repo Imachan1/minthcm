@@ -46,82 +46,89 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\CurrenciesRepository")
  * @ORM\Table(name="currencies", indexes={
- *   @ORM\Index(name="currenciespk", columns={"id"}), 
- *   @ORM\Index(name="idx_currency_name", columns={"name", "deleted"})})
+ * @ORM\Index(name="currenciespk", columns={"id"}), 
+ * @ORM\Index(name="idx_currency_name", columns={"name", "deleted"})})
  */
+// Auto-generated SectionRepository section end
 class Currencies
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $symbol;
 
     /**
-            * @ORM\Column(type="string", length="3")
-            */
+     * @ORM\Column(type="string", length="3")
+     */
     public $iso4217;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $conversion_rate;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $status;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $currency_on_right;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $hidden;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
     }
+// Auto-generated SectionMethods section end
 }

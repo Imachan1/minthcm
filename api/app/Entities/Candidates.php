@@ -46,362 +46,369 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="candidates", indexes={
- *   @ORM\Index(name="candidatespk", columns={"id"})})
+ * @ORM\Index(name="candidatespk", columns={"id"})})
  */
+// Auto-generated SectionRepository section end
 class Candidates
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $description;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $salutation;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $first_name;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $last_name;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $title;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $photo;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $department;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $do_not_call;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $phone_home;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $phone_mobile;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $phone_work;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $phone_other;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $phone_fax;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $lawful_basis;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $date_reviewed;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $lawful_basis_source;
 
     /**
-            * @ORM\Column(type="string", length="150")
-            */
+     * @ORM\Column(type="string", length="150")
+     */
     public $primary_address_street;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $primary_address_city;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $primary_address_state;
 
     /**
-            * @ORM\Column(type="string", length="20")
-            */
+     * @ORM\Column(type="string", length="20")
+     */
     public $primary_address_postalcode;
 
     /**
-            * @ORM\Column(type="string")
-            */
+     * @ORM\Column(type="string")
+     */
     public $primary_address_country;
 
     /**
-            * @ORM\Column(type="string", length="150")
-            */
+     * @ORM\Column(type="string", length="150")
+     */
     public $alt_address_street;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $alt_address_city;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $alt_address_state;
 
     /**
-            * @ORM\Column(type="string", length="20")
-            */
+     * @ORM\Column(type="string", length="20")
+     */
     public $alt_address_postalcode;
 
     /**
-            * @ORM\Column(type="string")
-            */
+     * @ORM\Column(type="string")
+     */
     public $alt_address_country;
 
     /**
-            * @ORM\Column(type="string", length="75")
-            */
+     * @ORM\Column(type="string", length="75")
+     */
     public $assistant;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $assistant_phone;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $recr_contact_agree;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $collaboration;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $relocation;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $birthdate;
 
     /**
-            * @ORM\Column(type="string")
-            */
+     * @ORM\Column(type="string")
+     */
     public $github;
 
     /**
-            * @ORM\Column(type="string")
-            */
+     * @ORM\Column(type="string")
+     */
     public $linkedin;
 
     /**
-            * @ORM\Column(type="string")
-            */
+     * @ORM\Column(type="string")
+     */
     public $x_service;
 
     /**
-            * @ORM\Column(type="string")
-            */
+     * @ORM\Column(type="string")
+     */
     public $facebook;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $potential;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $last_time_contact;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_planned_contact;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidates")
-        */
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidates")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidates")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidates")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidates")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidates")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\JoinTable(name="email_addr_bean_rel")
-        * @ORM\ManyToMany(targetEntity=EmailAddresses::class, mappedBy="candidates")
-        */
+     * @ORM\JoinTable(name="email_addr_bean_rel")
+     * @ORM\ManyToMany(targetEntity=EmailAddresses::class, mappedBy="candidates")
+     */
     public Collection $email_addresses;
 
     /**
-        * @ORM\JoinTable(name="email_addr_bean_rel")
-        * @ORM\ManyToMany(targetEntity=EmailAddresses::class, mappedBy="candidates")
-        */
+     * @ORM\JoinTable(name="email_addr_bean_rel")
+     * @ORM\ManyToMany(targetEntity=EmailAddresses::class, mappedBy="candidates")
+     */
     public Collection $email_addresses_primary;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     */
     public Collection $SecurityGroups;
 
     /**
-        * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="candidates")
-        */
+     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="candidates")
+     */
     public Collection $candidatures;
 
     /**
-        * @ORM\JoinTable(name="emails_beans")
-        * @ORM\ManyToMany(targetEntity=Emails::class, mappedBy="candidates")
-        */
+     * @ORM\JoinTable(name="emails_beans")
+     * @ORM\ManyToMany(targetEntity=Emails::class, mappedBy="candidates")
+     */
     public Collection $emails;
 
     /**
-        * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="candidates")
-        */
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="candidates")
+     */
     public Collection $notes;
 
     /**
-        * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="candidates")
-        */
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="candidates")
+     */
     public Collection $tasks;
 
     /**
-        * @ORM\JoinTable(name="documents_candidates", joinColumns={@ORM\JoinColumn(name="candidate_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=Documents::class, inversedBy="candidates")
-        */
+     * @ORM\JoinTable(name="documents_candidates", joinColumns={@ORM\JoinColumn(name="candidate_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=Documents::class, inversedBy="candidates")
+     */
     public Collection $documents;
 
     /**
-        * @ORM\JoinTable(name="calls_candidates", joinColumns={@ORM\JoinColumn(name="candidate_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="call_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=Calls::class, inversedBy="candidates")
-        */
+     * @ORM\JoinTable(name="calls_candidates", joinColumns={@ORM\JoinColumn(name="candidate_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="call_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=Calls::class, inversedBy="candidates")
+     */
     public Collection $calls;
 
     /**
-        * @ORM\JoinTable(name="meetings_candidates", joinColumns={@ORM\JoinColumn(name="candidate_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="meeting_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=Meetings::class, inversedBy="candidates")
-        */
+     * @ORM\JoinTable(name="meetings_candidates", joinColumns={@ORM\JoinColumn(name="candidate_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="meeting_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=Meetings::class, inversedBy="candidates")
+     */
     public Collection $meetings;
 
     /**
-        * @ORM\OneToMany(targetEntity=EmployeeCertificates::class, mappedBy="candidates")
-        */
+     * @ORM\OneToMany(targetEntity=EmployeeCertificates::class, mappedBy="candidates")
+     */
     public Collection $employeecertificates;
 
     /**
-        * @ORM\JoinTable(name="candidates_employees")
-        * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="candidates")
-        */
+     * @ORM\JoinTable(name="candidates_employees")
+     * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="candidates")
+     */
     public Collection $employee;
 
     /**
-        * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidates")
-        */
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidates")
+     */
     public Collection $files;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->email_addresses = new ArrayCollection();
         $this->email_addresses_primary = new ArrayCollection();
         $this->SecurityGroups = new ArrayCollection();
-        $this->candidatures = new Collection();
+        $this->candidatures = new ArrayCollection();
         $this->emails = new ArrayCollection();
-        $this->notes = new Collection();
-        $this->tasks = new Collection();
+        $this->notes = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->calls = new ArrayCollection();
         $this->meetings = new ArrayCollection();
-        $this->employeecertificates = new Collection();
+        $this->employeecertificates = new ArrayCollection();
         $this->employee = new ArrayCollection();
-        $this->files = new Collection();
+        $this->files = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }
