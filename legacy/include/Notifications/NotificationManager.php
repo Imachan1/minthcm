@@ -154,7 +154,7 @@ class NotificationManager
     public static function NotificationExists($module, $record_id, $type)
     {
         global $db;
-        $sql = "SELECT id FROM alerts WHERE parent_type='{$module}' AND parent_id='{$record_id}' AND alert_type='{$type}' AND is_read=0 AND (type != 'webpush' OR type IS NULL)";
+        $sql = "SELECT id FROM alerts WHERE parent_type='{$module}' AND parent_id='{$record_id}' AND alert_type='{$type}' AND is_read=0 AND is_closed=0 AND (type != 'webpush' OR type IS NULL)";
         $sql_result = $db->getOne($sql);
         return !empty($sql_result);
     }
