@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,6 +44,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+ #[\AllowDynamicProperties]
 class SalaryRanges extends Basic
 {
     public $new_schema = true;
@@ -75,6 +78,7 @@ class SalaryRanges extends Basic
     public $commentlog_link;
     public $locked_fields;
     public $locked_fields_link;
+    public $position_id;
 
     public function bean_implements($interface)
     {
@@ -92,6 +96,43 @@ class SalaryRanges extends Basic
         
         $this->name = $this->position_name . ' - ' . $db_start_date . ' - ' . $db_end_date;
         parent::save();
+    }
+
+    public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set')
+    {
+        global $current_user; 
+        $view = fixupView($view);
+        if(in_array($view, ['list', 'view']) && isset($this->id) && !empty($this->id) && !$current_user->isAdmin()){
+            $controller_career_path = ControllerFactory::getController('CareerPaths');
+            $positions_ids = $controller_career_path::getRelatedPositionIds($current_user->position_id, true);
+            if(!in_array($this->position_id, $positions_ids)){
+                return false;
+            }
+        }
+        return parent::ACLAccess($view, $is_owner, $in_group);
+    }
+
+    public function isOwner($user_id)
+    {
+        $controller_career_path = ControllerFactory::getController('CareerPaths');
+        $user = BeanFactory::getBean('Users', $user_id);
+        $positions_ids = $controller_career_path::getRelatedPositionIds($user->position_id, true);
+        $result = parent::isOwner($user_id);
+        $is_for_my_position = in_array($this->position_id, $positions_ids);
+        return $result || $is_for_my_position;
+    }
+
+    public function buildAccessWhere($view, $user = null)
+    {
+        global $current_user;
+        $where = parent::buildAccessWhere($view, $current_user);
+        if(empty($where) || $current_user->isAdmin()){
+            return $where;
+        }
+        $controller_career_path = ControllerFactory::getController('CareerPaths');
+        $positions_ids = $controller_career_path::getRelatedPositionIds($current_user->position_id, true);
+        $positions_ids_sql = "'" . implode("','", $positions_ids) . "'";
+        return "(" . $where . " || salaryranges.position_id IN ($positions_ids_sql) )";
     }
 
 }
