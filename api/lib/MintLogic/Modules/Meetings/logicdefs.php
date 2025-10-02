@@ -14,10 +14,16 @@ return [
                         return [];
                     }
                     $now = new \DateTime();
-                    $now->setTime($now->format('H'), 0, 0);
+                    $minutes = (int)$now->format('i');
+                    $minutes = (int)(ceil($minutes / 15) * 15);
+                    if ($minutes == 60) {
+                        $now->modify('+1 hour');
+                        $minutes = 0;
+                    }
+                    $now->setTime($now->format('H'), $minutes, 0);
                     return [
-                        'date_start' => $now->modify('+1 hour')->format('Y-m-d H:i:s'),
-                        'date_end' => $now->modify('+1 hour')->format('Y-m-d H:i:s'),
+                        'date_start' => $now->format('Y-m-d H:i:s'),
+                        'date_end' => $now->modify('+15 minutes')->format('Y-m-d H:i:s'),
                     ];
                 }
             ]

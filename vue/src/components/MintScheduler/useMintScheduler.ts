@@ -6,6 +6,7 @@ import { Participant } from './MintScheduler.model'
 import { useDebounceFn } from '@vueuse/core'
 import { useAuthStore } from '@/store/auth'
 import { AxiosError } from 'axios'
+import { usePreferencesStore } from '@/store/preferences'
 
 const MAX_HOURS_COUNT = 10
 
@@ -15,6 +16,7 @@ export const useMintScheduler = (
     dateTo: Ref<string | null>,
 ) => {
     const auth = useAuthStore()
+    const preferences = usePreferencesStore()
 
     const activityDtFrom = computed(() => {
         const date = toValue(dateFrom)
@@ -70,7 +72,7 @@ export const useMintScheduler = (
             return []
         }
         const hours = []
-        const start = schedulerDtFrom.value.setZone('Europe/Warsaw')
+        const start = schedulerDtFrom.value.setZone(preferences.user?.timezone)
         for (let i = 0; i < MAX_HOURS_COUNT; i++) {
             const dt = start.plus({ hours: i })
             if (schedulerDtTo.value && dt > schedulerDtTo.value) {

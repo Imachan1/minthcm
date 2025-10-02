@@ -129,6 +129,7 @@ class Preferences
             'date_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['datef'] ?? $sugar_config['default_date_format']),
             'time_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['timef'] ?? $sugar_config['default_time_format']),
             'name_format' => $this->user_preferences["global"]["default_locale_name_format"] ?? $sugar_config['default_locale_name_format'],
+            'timezone' => $this->user_preferences['global']['timezone'],
         );
     }
 

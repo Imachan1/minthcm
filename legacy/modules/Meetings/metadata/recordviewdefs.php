@@ -20,7 +20,7 @@ $viewdefs['Meetings'] = [
             'data' => [
                 'fields' => [
                     ['name', 'status', 'type'],
-                    ['date_start', 'duration', 'date_end'],
+                    ['date_start', 'date_end'],
                     ['assigned_user_name', 'description']
                 ],
             ],

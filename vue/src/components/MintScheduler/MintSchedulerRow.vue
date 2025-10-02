@@ -1,6 +1,11 @@
 <template>
     <div class="scheduler-row">
-        <router-link :to="participantUrl" target="_blank" class="scheduler-participant">
+        <component
+            :is="hasAccess ? 'router-link' : 'div'"
+            :to="participantUrl"
+            target="_blank"
+            class="scheduler-participant"
+        >
             <MintAvatar
                 :photo="props.participant.meta?.photo ? `${props.participant.id}_photo` : null"
                 :fullName="props.participant.name"
@@ -9,7 +14,7 @@
                 <span>{{ props.participant.name }}</span>
                 <span v-if="description" class="scheduler-participant-description">{{ description }}</span>
             </div>
-        </router-link>
+        </component>
         <div class="scheduler-data">
             <MintSchedulerDataWorkschedule
                 v-for="workschedule in participant.workschedules"
@@ -38,6 +43,7 @@ import MintSchedulerDataWorkschedule from './MintSchedulerData/MintSchedulerData
 import { useMintScheduler } from './useMintScheduler'
 import { DataActivity, Participant } from './MintScheduler.model'
 import { useLanguagesStore } from '@/store/languages'
+import { useACL } from '@/composables/useACL'
 
 interface Props {
     participant: Participant
@@ -50,6 +56,10 @@ const languagesStore = useLanguagesStore()
 
 const participantUrl = computed(() => {
     return `/modules/${props.participant.module}/DetailView/${props.participant.id}`
+})
+
+const hasAccess = computed(() => {
+    return useACL().hasAccess(props.participant.module, 'view', true, true)
 })
 
 const activities = computed(() => {

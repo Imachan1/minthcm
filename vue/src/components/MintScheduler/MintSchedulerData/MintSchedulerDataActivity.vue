@@ -1,10 +1,17 @@
 <template>
     <v-tooltip location="top center">
         <template v-slot:activator="{ props: tooltipProps }">
-            <router-link v-bind="tooltipProps" :to="activityUrl" target="_blank" class="data-activity" :style="style">
+            <component
+                :is="hasAccess ? 'router-link' : 'div'"
+                v-bind="tooltipProps"
+                :to="activityUrl"
+                target="_blank"
+                class="data-activity"
+                :style="style"
+            >
                 <span>{{ activityTimeText }}</span>
                 <span class="data-activity-name">{{ props.activity.name }}</span>
-            </router-link>
+            </component>
         </template>
         <div class="activity-tooltip">
             <div class="activity-tooltip-row">
@@ -30,6 +37,8 @@ import { computed } from 'vue'
 import { useMintScheduler } from '../useMintScheduler'
 import { DataActivity } from '../MintScheduler.model'
 import { useLanguagesStore } from '@/store/languages'
+import { usePreferencesStore } from '@/store/preferences'
+import { useACL } from '@/composables/useACL'
 
 interface Props {
     activity: DataActivity
@@ -38,6 +47,11 @@ interface Props {
 const props = defineProps<Props>()
 
 const language = useLanguagesStore()
+const preferences = usePreferencesStore()
+
+const hasAccess = computed(() => {
+    return useACL().hasAccess(props.activity.module, 'view', true, true)
+})
 
 const dateFrom = computed(() => props.activity.date_start)
 const dateTo = computed(() => props.activity.date_end)
@@ -50,7 +64,7 @@ const dateFromText = computed(() => {
     if (!dt.isValid) {
         return ''
     }
-    return dt.setZone('Europe/Warsaw').toFormat('dd.MM.yyyy HH:mm')
+    return dt.setZone(preferences.user?.timezone).toFormat('dd.MM.yyyy HH:mm')
 })
 
 const dateToText = computed(() => {
@@ -61,7 +75,7 @@ const dateToText = computed(() => {
     if (!dt.isValid) {
         return ''
     }
-    return dt.setZone('Europe/Warsaw').toFormat('dd.MM.yyyy HH:mm')
+    return dt.setZone(preferences.user?.timezone).toFormat('dd.MM.yyyy HH:mm')
 })
 
 const position = useDataPosition(
@@ -79,10 +93,12 @@ const style = computed(() => {
 const activityTimeText = computed(() => {
     const text = []
     if (dateFrom.value) {
-        text.push(DateTime.fromSQL(dateFrom.value, { zone: 'UTC' }).setZone('Europe/Warsaw').toFormat('HH:mm'))
+        text.push(
+            DateTime.fromSQL(dateFrom.value, { zone: 'UTC' }).setZone(preferences.user?.timezone).toFormat('HH:mm'),
+        )
     }
     if (dateTo.value) {
-        text.push(DateTime.fromSQL(dateTo.value, { zone: 'UTC' }).setZone('Europe/Warsaw').toFormat('HH:mm'))
+        text.push(DateTime.fromSQL(dateTo.value, { zone: 'UTC' }).setZone(preferences.user?.timezone).toFormat('HH:mm'))
     }
     return text.join(' - ')
 })
@@ -108,7 +124,6 @@ const activityUrl = computed(() => {
     letter-spacing: 0.33px;
     font-size: 10px;
     bottom: 6px;
-    cursor: pointer;
     text-decoration: none;
     transition: all 150ms ease-in-out;
     margin: 0 4px;

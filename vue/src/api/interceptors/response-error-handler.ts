@@ -4,9 +4,7 @@ import { errorHandlerRegistry } from '../error-manager/error-registry'
 
 export async function responseErrorHandler(error: HttpErrorType) {
     if (error === null) throw new Error('Unrecoverrable error!! Error is null!')
-    if (error.name === 'CanceledError') {
-        throw error
-    }
+    if (error.name === 'CanceledError') throw error
 
     if (axios.isAxiosError(error)) {
         const response = error?.response

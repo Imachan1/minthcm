@@ -46,6 +46,7 @@
 
 namespace MintHCM\Api\Controllers;
 
+use MintHCM\Data\BeanFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Api\Repositories\SchedulerRepository;
 use Slim\Psr7\Response;
@@ -82,14 +83,12 @@ class SchedulerController
 
         $parent = null;
         if (!empty($parent_type) && !empty($parent_id)) {
-            chdir('../legacy');
-            $parent = \BeanFactory::getBean($parent_type, $parent_id);
+            $parent = BeanFactory::getBean($parent_type, $parent_id);
             if (empty($parent->id)) {
                 return $response->withStatus(404);
             } else if (!$parent->ACLAccess('view')) {
                 return $response->withStatus(403);
             }
-            chdir('../api');
         }
         if (!empty($search)) {
             $participants = array_merge($participants ?? [], $this->searchParticipants($search));
