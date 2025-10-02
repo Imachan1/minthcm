@@ -32,28 +32,43 @@ class EntityCreator
     public function run(): void
     {
         $this->data = (new EntityCreatorDataGenerator($this->moduleName, $this->vardefs))->getData();
+        $this->generateEntity();
+    }
+
+    private function generateEntity(): void
+    {
+        $file_path = self::ENTITY_FOLDER_PATH . $this->moduleName . '.php';
+        $smarty = $this->prepareSmartyTemplate();
+        
         if ($this->entityExists()) {
-            $this->editEntity();
+            $this->updateExistingEntity($file_path, $smarty);
         } else {
-            $this->createEntity();
+            $this->createNewEntity($file_path, $smarty);
         }
     }
 
-    private function editEntity(): void
+    private function prepareSmartyTemplate(): Smarty
     {
-        $file_path = self::ENTITY_FOLDER_PATH . $this->moduleName . '.php';
+        $smarty = new Smarty();
+        $smarty->setTemplateDir(dirname(__FILE__) . self::TPL_DIR_PATH);
+        $smarty->assign($this->data);
+        
+        foreach (self::SECTIONS as $section) {
+            $smarty->assign('start_' . strtolower($section), $this->getStartCommentForSection($section));
+            $smarty->assign('end_' . strtolower($section), $this->getEndCommentForSection($section));
+        }
+        
+        return $smarty;
+    }
+
+    private function updateExistingEntity(string $file_path, Smarty $smarty): void
+    {
         $class_code = file_get_contents($file_path);
-        if ($class_code === false || is_writable($file_path) === false) {
+        if ($class_code === false || !is_writable($file_path)) {
             throw new Exception("Cannot read or write to file: {$file_path}");
         }
 
         foreach (self::SECTIONS as $section) {
-            $smarty = new Smarty();
-            $smarty->setTemplateDir(dirname(__FILE__) . self::TPL_DIR_PATH);
-            $smarty->assign($this->data);
-            $smarty->assign('start_' . strtolower($section), $this->getStartCommentForSection($section));
-            $smarty->assign('end_' . strtolower($section), $this->getEndCommentForSection($section));
-            
             $new_section_code = $smarty->fetch($this->getTplPath($section));
             $pattern = '/' . preg_quote($this->getStartCommentForSection($section), '/') . '.*?' . preg_quote($this->getEndCommentForSection($section), '/') . '/s';
             $class_code = preg_replace($pattern, $new_section_code, $class_code);
@@ -100,21 +115,15 @@ class EntityCreator
         }
     }
 
-    protected function createEntity()
+    private function createNewEntity(string $file_path, Smarty $smarty): void
     {
-        $smarty = new Smarty();
-        $smarty->setTemplateDir(dirname(__FILE__) . self::TPL_DIR_PATH);
-        $smarty->assign($this->data);
         foreach (self::SECTIONS as $section) {
-            $smarty->assign('start_' . strtolower($section), $this->getStartCommentForSection($section));
-            $smarty->assign('end_' . strtolower($section), $this->getEndCommentForSection($section));
             $smarty->assign(strtolower($section), $this->getTplPath($section));
         }
 
         $class_code = $smarty->fetch($this->getTplPath('Entity'));
 
-        $file_path = self::ENTITY_FOLDER_PATH . $this->moduleName . '.php';
-        if (! is_dir(self::ENTITY_FOLDER_PATH)) {
+        if (!is_dir(self::ENTITY_FOLDER_PATH)) {
             mkdir(self::ENTITY_FOLDER_PATH, 0755, true);
         }
         file_put_contents($file_path, $class_code);
