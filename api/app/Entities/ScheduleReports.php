@@ -46,141 +46,148 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="schedulereports", indexes={
- *   @ORM\Index(name="schedulereportspk", columns={"id"}), 
- *   @ORM\Index(name="idx_schedule", columns={"kreport_id"})})
+ * @ORM\Index(name="schedulereportspk", columns={"id"}), 
+ * @ORM\Index(name="idx_schedule", columns={"kreport_id"})})
  */
+// Auto-generated SectionRepository section end
 class ScheduleReports
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $description;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $frequency_performance;
 
     /**
-            * @ORM\Column(type="boolean", length="255")
-            */
+     * @ORM\Column(type="boolean", length="255")
+     */
     public $active;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $template_id;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $email_template_id;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $date_send;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $kreport_id;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="schedulereports")
-        */
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="schedulereports")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="schedulereports")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="schedulereports")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="schedulereports")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="schedulereports")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\JoinColumn(name="kreport_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=KReports::class, inversedBy="schedulereports")
-        */
+     * @ORM\JoinColumn(name="kreport_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=KReports::class, inversedBy="schedulereports")
+     */
     public $schedulereports_kreports;
 
     /**
-        * @ORM\OneToMany(targetEntity=ScheduleReportsLogs::class, mappedBy="schedulereports")
-        */
+     * @ORM\OneToMany(targetEntity=ScheduleReportsLogs::class, mappedBy="schedulereports")
+     */
     public Collection $schedulereports_schedulereportslogs;
 
     /**
-        * @ORM\JoinTable(name="users_schedulereports", joinColumns={@ORM\JoinColumn(name="schedulereport_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=Users::class, inversedBy="schedulereports")
-        */
+     * @ORM\JoinTable(name="users_schedulereports", joinColumns={@ORM\JoinColumn(name="schedulereport_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=Users::class, inversedBy="schedulereports")
+     */
     public Collection $users;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->schedulereports_schedulereportslogs = new ArrayCollection();
         $this->users = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

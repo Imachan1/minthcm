@@ -55,15 +55,6 @@ class UserPreferencesRepository extends EntityRepository
 {
     public function findAllUndeletedByUserId($user_id): array
     {
-        $query = 'SELECT up.contents, up.category
-            FROM MintHCM\Api\Entities\UserPreferences up
-            WHERE up.assigned_user_id = :uid
-                AND up.deleted = 0
-        ';
-
-        return $this->getEntityManager()
-            ->createQuery($query)
-            ->setParameter('uid', $user_id)
-            ->getResult();
+        return $this->findBy(['assigned_user_id' => $user_id, 'deleted' => 0]);
     }
 }

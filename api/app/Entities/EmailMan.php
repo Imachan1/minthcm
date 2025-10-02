@@ -46,101 +46,108 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="emailman", indexes={
- *   @ORM\Index(name="emailmanpk", columns={"id"}), 
- *   @ORM\Index(name="idx_eman_list", columns={"list_id", "user_id", "deleted"}), 
- *   @ORM\Index(name="idx_eman_campaign_id", columns={"campaign_id"}), 
- *   @ORM\Index(name="idx_eman_relid_reltype_id", columns={"related_id", "related_type", "campaign_id"})})
+ * @ORM\Index(name="emailmanpk", columns={"id"}), 
+ * @ORM\Index(name="idx_eman_list", columns={"list_id", "user_id", "deleted"}), 
+ * @ORM\Index(name="idx_eman_campaign_id", columns={"campaign_id"}), 
+ * @ORM\Index(name="idx_eman_relid_reltype_id", columns={"related_id", "related_type", "campaign_id"})})
  */
+// Auto-generated SectionRepository section end
 class EmailMan
 {
+
+// Auto-generated SectionProperties section start
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $user_id;
 
     /**
-            * @ORM\Column(type="integer", length="11")
-            */
+     * @ORM\Column(type="integer", length="11")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $campaign_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $marketing_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $list_id;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $send_date_time;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $in_queue;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $in_queue_date;
 
     /**
-            * @ORM\Column(type="integer")
-            */
+     * @ORM\Column(type="integer")
+     */
     public $send_attempts;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $related_id;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $related_type;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $related_confirm_opt_in;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
     }
+// Auto-generated SectionMethods section end
 }

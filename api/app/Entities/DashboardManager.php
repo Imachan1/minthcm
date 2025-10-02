@@ -46,141 +46,148 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="dashboardmanager", indexes={
- *   @ORM\Index(name="dashboardmanagerpk", columns={"id"})})
+ * @ORM\Index(name="dashboardmanagerpk", columns={"id"})})
  */
+// Auto-generated SectionRepository section end
 class DashboardManager
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $description;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $encoded_pages;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $encoded_dashlets;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $is_loaded;
 
     /**
-            * @ORM\Column(type="string")
-            */
+     * @ORM\Column(type="string")
+     */
     public $business_role;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dashboardmanager")
-        */
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dashboardmanager")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dashboardmanager")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dashboardmanager")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dashboardmanager")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dashboardmanager")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\OneToMany(targetEntity=Users::class, mappedBy="dashboardmanager")
-        */
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="dashboardmanager")
+     */
     public Collection $users_forced_tabs_dashboards;
 
     /**
-        * @ORM\OneToMany(targetEntity=Users::class, mappedBy="dashboardmanager")
-        */
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="dashboardmanager")
+     */
     public Collection $users_locked_dashboards;
 
     /**
-        * @ORM\OneToMany(targetEntity=Users::class, mappedBy="dashboardmanager")
-        */
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="dashboardmanager")
+     */
     public Collection $users_one_time_default_dashboards;
 
     /**
-        * @ORM\OneToMany(targetEntity=DashboardBackups::class, mappedBy="dashboardmanager")
-        */
+     * @ORM\OneToMany(targetEntity=DashboardBackups::class, mappedBy="dashboardmanager")
+     */
     public Collection $dashboardbackups;
 
     /**
-        * @ORM\OneToMany(targetEntity=DashboardHistory::class, mappedBy="dashboardmanager")
-        */
+     * @ORM\OneToMany(targetEntity=DashboardHistory::class, mappedBy="dashboardmanager")
+     */
     public Collection $dashboardhistory;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->users_forced_tabs_dashboards = new ArrayCollection();
         $this->users_locked_dashboards = new ArrayCollection();
         $this->users_one_time_default_dashboards = new ArrayCollection();
         $this->dashboardbackups = new ArrayCollection();
         $this->dashboardhistory = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

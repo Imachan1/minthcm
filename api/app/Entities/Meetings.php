@@ -46,318 +46,329 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="meetings", indexes={
- *   @ORM\Index(name="meetingspk", columns={"id"}), 
- *   @ORM\Index(name="idx_mtg_name", columns={"name"}), 
- *   @ORM\Index(name="idx_meet_par_del", columns={"parent_id", "parent_type", "deleted"}), 
- *   @ORM\Index(name="idx_meet_stat_del", columns={"assigned_user_id", "status", "deleted"}), 
- *   @ORM\Index(name="idx_meet_date_start", columns={"date_start"})})
+ * @ORM\Index(name="meetingspk", columns={"id"}), 
+ * @ORM\Index(name="idx_mtg_name", columns={"name"}), 
+ * @ORM\Index(name="idx_meet_par_del", columns={"parent_id", "parent_type", "deleted"}), 
+ * @ORM\Index(name="idx_meet_stat_del", columns={"assigned_user_id", "status", "deleted"}), 
+ * @ORM\Index(name="idx_meet_date_start", columns={"date_start"})})
  */
+// Auto-generated SectionRepository section end
 class Meetings
 {
+
+// Auto-generated SectionProperties section start
     /**
-        * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $description;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="string", length="50")
-            */
+     * @ORM\Column(type="string", length="50")
+     */
     public $location;
 
     /**
-            * @ORM\Column(type="string", length="50")
-            */
+     * @ORM\Column(type="string", length="50")
+     */
     public $password;
 
     /**
-            * @ORM\Column(type="string", length="200")
-            */
+     * @ORM\Column(type="string", length="200")
+     */
     public $join_url;
 
     /**
-            * @ORM\Column(type="string", length="400")
-            */
+     * @ORM\Column(type="string", length="400")
+     */
     public $host_url;
 
     /**
-            * @ORM\Column(type="string", length="400")
-            */
+     * @ORM\Column(type="string", length="400")
+     */
     public $displayed_url;
 
     /**
-            * @ORM\Column(type="string", length="50")
-            */
+     * @ORM\Column(type="string", length="50")
+     */
     public $creator;
 
     /**
-            * @ORM\Column(type="string", length="50")
-            */
+     * @ORM\Column(type="string", length="50")
+     */
     public $external_id;
 
     /**
-            * @ORM\Column(type="integer", length="3")
-            */
+     * @ORM\Column(type="integer", length="3")
+     */
     public $duration_hours;
 
     /**
-            * @ORM\Column(type="integer", length="2")
-            */
+     * @ORM\Column(type="integer", length="2")
+     */
     public $duration_minutes;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_start;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_end;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $parent_type;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $status;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $parent_id;
 
     /**
-            * @ORM\Column(type="integer")
-            */
+     * @ORM\Column(type="integer")
+     */
     public $reminder_time;
 
     /**
-            * @ORM\Column(type="integer")
-            */
+     * @ORM\Column(type="integer")
+     */
     public $email_reminder_time;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $email_reminder_sent;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $outlook_id;
 
     /**
-            * @ORM\Column(type="integer", length="11")
-            */
+     * @ORM\Column(type="integer", length="11")
+     */
     public $sequence;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $repeat_type;
 
     /**
-            * @ORM\Column(type="integer", length="3")
-            */
+     * @ORM\Column(type="integer", length="3")
+     */
     public $repeat_interval;
 
     /**
-            * @ORM\Column(type="string", length="7")
-            */
+     * @ORM\Column(type="string", length="7")
+     */
     public $repeat_dow;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $repeat_until;
 
     /**
-            * @ORM\Column(type="integer", length="7")
-            */
+     * @ORM\Column(type="integer", length="7")
+     */
     public $repeat_count;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $repeat_parent_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $recurring_source;
 
     /**
-            * @ORM\Column(type="string")
-            */
+     * @ORM\Column(type="string")
+     */
     public $duration;
 
     /**
-            * @ORM\Column(type="string", length="1024")
-            */
+     * @ORM\Column(type="string", length="1024")
+     */
     public $gsync_id;
 
     /**
-            * @ORM\Column(type="integer")
-            */
+     * @ORM\Column(type="integer")
+     */
     public $gsync_lastsync;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $type;
 
     /**
-            * @ORM\Column(type="float", length="10")
-            */
+     * @ORM\Column(type="float", length="10")
+     */
     public $jjwg_maps_lat_c;
 
     /**
-            * @ORM\Column(type="float", length="11")
-            */
-    public $jjwg_maps_lng_c;
+     * @ORM\Column(type="string", length="255")
+     */
+    public $jjwg_maps_address_c;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $jjwg_maps_geocode_status_c;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="meetings")
-        */
+     * @ORM\Column(type="float", length="11")
+     */
+    public $jjwg_maps_lng_c;
+
+    /**
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="meetings")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="meetings")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="meetings")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="meetings")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="meetings")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     */
     public Collection $SecurityGroups;
 
     /**
-        * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="meetings")
-        */
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="meetings")
+     */
     public Collection $notes;
 
     /**
-        * @ORM\JoinTable(name="meetings_users")
-        * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="meetings")
-        */
+     * @ORM\JoinTable(name="meetings_users")
+     * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="meetings")
+     */
     public Collection $users;
 
     /**
-        * @ORM\JoinTable(name="trainings_meetings", joinColumns={@ORM\JoinColumn(name="meeting_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="training_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=Trainings::class, inversedBy="meetings")
-        */
+     * @ORM\JoinTable(name="trainings_meetings", joinColumns={@ORM\JoinColumn(name="meeting_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="training_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=Trainings::class, inversedBy="meetings")
+     */
     public Collection $trainings;
 
     /**
-        * @ORM\JoinTable(name="exitinterviews_meetings", joinColumns={@ORM\JoinColumn(name="meeting_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="exitinterview_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=ExitInterviews::class, inversedBy="meetings")
-        */
+     * @ORM\JoinTable(name="exitinterviews_meetings", joinColumns={@ORM\JoinColumn(name="meeting_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="exitinterview_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=ExitInterviews::class, inversedBy="meetings")
+     */
     public Collection $exitinterviews;
 
     /**
-        * @ORM\JoinTable(name="appraisals_meetings", joinColumns={@ORM\JoinColumn(name="meeting_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="appraisal_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=Appraisals::class, inversedBy="meetings")
-        */
+     * @ORM\JoinTable(name="appraisals_meetings", joinColumns={@ORM\JoinColumn(name="meeting_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="appraisal_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=Appraisals::class, inversedBy="meetings")
+     */
     public Collection $appraisals;
 
     /**
-        * @ORM\JoinTable(name="meetings_candidates")
-        * @ORM\ManyToMany(targetEntity=Candidates::class, mappedBy="meetings")
-        */
+     * @ORM\JoinTable(name="meetings_candidates")
+     * @ORM\ManyToMany(targetEntity=Candidates::class, mappedBy="meetings")
+     */
     public Collection $candidates;
 
     /**
-        * @ORM\OneToMany(targetEntity=Conclusions::class, mappedBy="meetings")
-        */
+     * @ORM\OneToMany(targetEntity=Conclusions::class, mappedBy="meetings")
+     */
     public Collection $conclusions;
 
     /**
-        * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="meetings")
-        */
+     * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="meetings")
+     */
     public Collection $reservations;
 
     /**
-        * @ORM\JoinTable(name="meetings_resources")
-        * @ORM\ManyToMany(targetEntity=Resources::class, mappedBy="meetings")
-        */
+     * @ORM\JoinTable(name="meetings_resources")
+     * @ORM\ManyToMany(targetEntity=Resources::class, mappedBy="meetings")
+     */
     public Collection $resources;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->SecurityGroups = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->users = new ArrayCollection();
@@ -369,4 +380,5 @@ public function __construct()
         $this->reservations = new ArrayCollection();
         $this->resources = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

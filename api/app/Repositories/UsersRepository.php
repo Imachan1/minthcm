@@ -78,30 +78,33 @@ class UsersRepository extends EntityRepository implements UserRepositoryInterfac
             throw new \InvalidArgumentException('No user found with this username: ' . $username);
         }
 
-        if (!$is_ldap_enabled && $this->checkPassword($user, $password) === false) {
+        if (!$is_ldap_enabled && $user->checkPassword($password) === false) {
             throw new \InvalidArgumentException('The password is invalid: ' . $password);
         }
 
         return $user;
     }
-
-    /**
-     * Check that password matches existing hash
-     * @param string $password Plaintext password
+    
+    /*
+     * Get active users list
+     *
+     * @param string|null $user_id User ID to exclude from the list
+     * @return Users[] List of active users
      */
-    private function checkPassword(Users $user, $password): bool
+    public function getActiveUsers($user_id = null): array
     {
-        if (empty($user->user_hash)) {
-            return false;
+        $where_user_id = !empty($user_id) ? 'AND u.id != :user_id' : '';
+        $qb = $this->createQueryBuilder('u');
+        $qb
+            ->where("u.deleted = 0 AND u.status = 'active' {$where_user_id}")
+            ->orderBy('u.first_name', 'ASC')
+            ->addOrderBy('u.last_name', 'ASC')
+        ;
+        if (!empty($user_id)) {
+            $qb->setParameter('user_id', $user_id);
         }
-
-        $passwordMd5 = md5($password);
-        if ($user->user_hash[0] !== '$' && strlen($user->user_hash) === 32) {
-            // Legacy md5 password
-            return strtolower($passwordMd5) === $user->user_hash;
-        }
-
-        return password_verify(strtolower($passwordMd5), $user->user_hash);
+        
+        return $qb->getQuery()->getResult();
     }
 
     private function IsLdapOn(): bool
