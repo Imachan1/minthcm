@@ -75,7 +75,7 @@ class OAuth2Service
         }
 
         $content = file_get_contents($env);
-        $content = preg_replace('/^CLIENT_SECRET=.*$/m', '', $content);
+        $content = preg_replace('/^\s?CLIENT_SECRET=.*$/m', '', $content);
         $content .= "\nCLIENT_SECRET=" . $secret;
 
         file_put_contents(
