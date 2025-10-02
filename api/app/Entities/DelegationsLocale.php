@@ -164,6 +164,6 @@ class DelegationsLocale
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->delegations = new ArrayCollection();
+        $this->delegations = new Collection();
     }
 }

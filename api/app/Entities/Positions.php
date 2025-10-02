@@ -252,20 +252,20 @@ class Positions
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->recruitments = new ArrayCollection();
-        $this->positions_supervision = new ArrayCollection();
+        $this->recruitments = new Collection();
+        $this->positions_supervision = new Collection();
         $this->securitygroups_leader = new ArrayCollection();
         $this->documents = new ArrayCollection();
-        $this->employees = new ArrayCollection();
+        $this->employees = new Collection();
         $this->benefits = new ArrayCollection();
         $this->responsibilities = new ArrayCollection();
-        $this->competencyratings = new ArrayCollection();
-        $this->appraisals = new ArrayCollection();
-        $this->careerpaths_from = new ArrayCollection();
-        $this->careerpaths_to = new ArrayCollection();
+        $this->competencyratings = new Collection();
+        $this->appraisals = new Collection();
+        $this->careerpaths_from = new Collection();
+        $this->careerpaths_to = new Collection();
         $this->securitygroups_membership = new ArrayCollection();
-        $this->salaryranges = new ArrayCollection();
-        $this->termsofemployment = new ArrayCollection();
-        $this->files = new ArrayCollection();
+        $this->salaryranges = new Collection();
+        $this->termsofemployment = new Collection();
+        $this->files = new Collection();
     }
 }

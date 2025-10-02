@@ -84,6 +84,28 @@ class UsersRepository extends EntityRepository implements UserRepositoryInterfac
 
         return $user;
     }
+    
+    /*
+     * Get active users list
+     *
+     * @param string|null $user_id User ID to exclude from the list
+     * @return Users[] List of active users
+     */
+    public function getActiveUsers($user_id = null): array
+    {
+        $where_user_id = !empty($user_id) ? 'AND u.id != :user_id' : '';
+        $qb = $this->createQueryBuilder('u');
+        $qb
+            ->where("u.deleted = 0 AND u.status = 'active' {$where_user_id}")
+            ->orderBy('u.first_name', 'ASC')
+            ->addOrderBy('u.last_name', 'ASC')
+        ;
+        if (!empty($user_id)) {
+            $qb->setParameter('user_id', $user_id);
+        }
+        
+        return $qb->getQuery()->getResult();
+    }
 
     /**
      * Check that password matches existing hash

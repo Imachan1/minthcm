@@ -181,8 +181,8 @@ class Offboardings
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->trainings = new ArrayCollection();
-        $this->tasks = new ArrayCollection();
-        $this->exitinterviews = new ArrayCollection();
+        $this->trainings = new Collection();
+        $this->tasks = new Collection();
+        $this->exitinterviews = new Collection();
     }
 }

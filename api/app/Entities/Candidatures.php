@@ -349,13 +349,13 @@ class Candidatures
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->calls = new ArrayCollection();
-        $this->meetings = new ArrayCollection();
-        $this->notes = new ArrayCollection();
-        $this->tasks = new ArrayCollection();
-        $this->emails = new ArrayCollection();
-        $this->appraisals = new ArrayCollection();
+        $this->calls = new Collection();
+        $this->meetings = new Collection();
+        $this->notes = new Collection();
+        $this->tasks = new Collection();
+        $this->emails = new Collection();
+        $this->appraisals = new Collection();
         $this->documents = new ArrayCollection();
-        $this->files = new ArrayCollection();
+        $this->files = new Collection();
     }
 }

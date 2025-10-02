@@ -544,43 +544,64 @@ class Employees
 
 public function __construct()
 {
-        $this->reports_to_link = new ArrayCollection();
+        $this->reports_to_link = new Collection();
         $this->email_addresses = new ArrayCollection();
         $this->email_addresses_primary = new ArrayCollection();
         $this->calls = new ArrayCollection();
         $this->meetings = new ArrayCollection();
-        $this->tasks = new ArrayCollection();
+        $this->tasks = new Collection();
         $this->aclroles = new ArrayCollection();
-        $this->eapm = new ArrayCollection();
-        $this->oauth_tokens = new ArrayCollection();
+        $this->eapm = new Collection();
+        $this->oauth_tokens = new Collection();
         $this->project_users_1 = new ArrayCollection();
         $this->am_projecttemplates_users_1 = new ArrayCollection();
         $this->SecurityGroups = new ArrayCollection();
-        $this->onboardingoffboardingelements = new ArrayCollection();
+        $this->onboardingoffboardingelements = new Collection();
         $this->candidates = new ArrayCollection();
-        $this->ideas = new ArrayCollection();
+        $this->ideas = new Collection();
         $this->schedulereports = new ArrayCollection();
-        $this->deputy = new ArrayCollection();
-        $this->employeecertificates = new ArrayCollection();
-        $this->spenttime = new ArrayCollection();
-        $this->contracts = new ArrayCollection();
-        $this->resources = new ArrayCollection();
-        $this->reservations = new ArrayCollection();
-        $this->periodsofemployment = new ArrayCollection();
-        $this->goals = new ArrayCollection();
-        $this->kudos = new ArrayCollection();
-        $this->appraisals = new ArrayCollection();
-        $this->evaluations = new ArrayCollection();
+        $this->deputy = new Collection();
+        $this->employeecertificates = new Collection();
+        $this->spenttime = new Collection();
+        $this->contracts = new Collection();
+        $this->resources = new Collection();
+        $this->reservations = new Collection();
+        $this->periodsofemployment = new Collection();
+        $this->goals = new Collection();
+        $this->kudos = new Collection();
+        $this->appraisals = new Collection();
+        $this->evaluations = new Collection();
         $this->roles = new ArrayCollection();
         $this->benefits = new ArrayCollection();
-        $this->onboardings = new ArrayCollection();
-        $this->offboardings = new ArrayCollection();
-        $this->competencyratings = new ArrayCollection();
-        $this->securitygroups_managers = new ArrayCollection();
-        $this->applications = new ArrayCollection();
+        $this->onboardings = new Collection();
+        $this->offboardings = new Collection();
+        $this->competencyratings = new Collection();
+        $this->securitygroups_managers = new Collection();
+        $this->applications = new Collection();
         $this->allocations_employees = new ArrayCollection();
-        $this->trainings = new ArrayCollection();
-        $this->candidatures = new ArrayCollection();
-        $this->files = new ArrayCollection();
+        $this->trainings = new Collection();
+        $this->candidatures = new Collection();
+        $this->files = new Collection();
     }
+
+
+
+    /**
+    * Get the fullname 
+    *
+    * @return string
+    */
+    public function getFullName(): string
+    {
+        $names = [];
+        if (!empty($this->first_name)) {
+            $names[] = $this->first_name;
+        }
+        if (!empty($this->last_name)) {
+            $names[] = $this->last_name;
+        }
+
+        return !empty($names) ? implode(' ', $names) : '';
+    }
+
 }

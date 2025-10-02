@@ -153,7 +153,7 @@ class EntityCreator
 
     protected function getRelationship($fieldName, $fieldDef)
     {
-        global $dictionary;
+        $dictionary = EntityCreatorManager::$dictionary;
         if(!empty($dictionary[$fieldDef['relationship']]['relationships'][$fieldDef['relationship']])) {
             return $dictionary[$fieldDef['relationship']]['relationships'][$fieldDef['relationship']];
         }
@@ -179,11 +179,13 @@ class EntityCreator
 
     protected function createRelationshipField($relationshipDef, $relationshipName)
     {
-        global $entityCreator, $dictionary, $beanList;
+        global $entityCreator, $beanList;
+
         $relationshipField = [
             'name' => '',
             'attributes' => [],
             'isCollection' => false,
+            'relation_type' => '',
         ];
 
         foreach ($relationshipDef as $key => $value) {
@@ -224,9 +226,8 @@ class EntityCreator
             $module[$attr] = $relationshipDef[$relationshipSide . '_' . $attr] ?? '';
         }
 
-        $targetBean = $beanList[$target['module']] ?? '';
-        $moduleBean = $beanList[$module['module']] ?? '';
-        if (empty($dictionary[$targetBean]) || empty($dictionary[$moduleBean])) {
+        $dictionary = EntityCreatorManager::$dictionary;
+        if (empty($dictionary[$target['module']]) || empty($dictionary[$module['module']])) {
             return;
         }
 
@@ -245,12 +246,12 @@ class EntityCreator
             $relationshipField['name']
         );
         $relationshipField['isCollection'] = 'many-to-many' === $relationshipDef['relationship_type'] || ('one-to-many' === $relationshipDef['relationship_type'] && 'lhs' === $relationshipSide);
+        $relationshipField['relation_type'] = $relationshipDef['relationship_type'];
         $this->data['relationshipFields'][] = $relationshipField;
 
-        $targetBeanName = $beanList[$target['module']];
-        if (! in_array($target['module'], $entityCreator['CreatingEntities']) && ! empty($dictionary[$targetBeanName])) {
+        if (! in_array($target['module'], $entityCreator['CreatingEntities']) && ! empty($dictionary[$target['module']])) {
             $entityCreator['CreatingEntities'][] = $target['module'];
-            (new EntityCreator($target['module'], $dictionary[$targetBeanName]))->run();
+            (new EntityCreator($target['module'], $dictionary[$target['module']]))->run();
         }
     }
 
@@ -395,7 +396,8 @@ class EntityCreator
     {
         foreach ($this->data['relationshipFields'] as $relationshipField) {
             if ($relationshipField['isCollection']) {
-                $this->data['constructorFields'][] = '$this->' . $relationshipField['name'] . ' = new ArrayCollection();';
+                $collection = $relationshipField['relation_type'] === 'one-to-many' ? 'Collection' : 'ArrayCollection';
+                $this->data['constructorFields'][] = '$this->' . $relationshipField['name'] . ' = new ' . $collection . '();';
             }
         }
     }

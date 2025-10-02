@@ -162,7 +162,7 @@ class Responsibilities
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->appraisalitems = new ArrayCollection();
+        $this->appraisalitems = new Collection();
         $this->positions = new ArrayCollection();
         $this->roles = new ArrayCollection();
         $this->activities = new ArrayCollection();

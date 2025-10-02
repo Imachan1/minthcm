@@ -165,7 +165,7 @@ class CampaignLog
 
 public function __construct()
 {
-        $this->targeted_user = new ArrayCollection();
-        $this->sent_email = new ArrayCollection();
+        $this->targeted_user = new Collection();
+        $this->sent_email = new Collection();
     }
 }

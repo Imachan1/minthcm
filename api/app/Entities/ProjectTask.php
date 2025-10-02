@@ -275,9 +275,9 @@ class ProjectTask
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->notes = new ArrayCollection();
-        $this->tasks = new ArrayCollection();
-        $this->meetings = new ArrayCollection();
-        $this->calls = new ArrayCollection();
+        $this->notes = new Collection();
+        $this->tasks = new Collection();
+        $this->meetings = new Collection();
+        $this->calls = new Collection();
     }
 }

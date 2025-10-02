@@ -46,7 +46,7 @@
 namespace MintHCM\Api\Controllers\Init;
 
 use Doctrine\ORM\EntityManagerInterface;
-use MintHCM\Api\Entities\Currency;
+use MintHCM\Api\Entities\Currencies;
 use MintHCM\Api\Entities\UserPreferences;
 use MintHCM\Utils\LuxonMapper;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -114,7 +114,7 @@ class Preferences
 
     protected function getCurrenciesList()
     {
-        $currencies = $this->entityManager->getRepository(Currency::class)->getAvailable();
+        $currencies = $this->entityManager->getRepository(Currencies::class)->getAvailable();
         $currency_list = [];
         foreach ($currencies as $currency) {
             $currency_list[$currency['id']] = $currency;
@@ -145,12 +145,13 @@ class Preferences
         }
 
         try {
-            $rows = $this->entityManager->getRepository(UserPreferences::class)
+            /** @var UserPreferences[] */
+            $user_preferences = $this->entityManager->getRepository(UserPreferences::class)
                 ->findAllUndeletedByUserId($current_user->id);
 
-            foreach ($rows as $row) {
-                $category = $row['category'];
-                $preferences[$category] = unserialize(base64_decode($row['contents']));
+            foreach ($user_preferences as $user_preference) {
+                $category = $user_preference->category;
+                $preferences[$category] = unserialize(base64_decode($user_preference->contents));
             }
 
             $this->user_preferences = $preferences;

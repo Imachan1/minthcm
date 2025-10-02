@@ -155,8 +155,8 @@ class OffboardingTemplates
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->positions = new ArrayCollection();
-        $this->offboardings = new ArrayCollection();
+        $this->positions = new Collection();
+        $this->offboardings = new Collection();
         $this->elements = new ArrayCollection();
     }
 }

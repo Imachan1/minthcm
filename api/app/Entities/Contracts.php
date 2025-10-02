@@ -202,7 +202,7 @@ class Contracts
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->termsofemployment = new ArrayCollection();
+        $this->termsofemployment = new Collection();
         $this->documents = new ArrayCollection();
     }
 }

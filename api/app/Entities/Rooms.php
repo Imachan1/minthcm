@@ -179,6 +179,6 @@ class Rooms
 
 public function __construct()
 {
-        $this->rooms_workplaces = new ArrayCollection();
+        $this->rooms_workplaces = new Collection();
     }
 }

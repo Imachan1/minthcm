@@ -59,7 +59,7 @@ use Doctrine\Common\Collections\Collection;
 class Project
 {
     /**
-        * @ORM\Id
+         * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
             * @ORM\Column(type="string", length="36")
@@ -142,14 +142,19 @@ class Project
     public $jjwg_maps_lat_c;
 
     /**
-            * @ORM\Column(type="float", length="11")
+            * @ORM\Column(type="string", length="255")
             */
-    public $jjwg_maps_lng_c;
+    public $jjwg_maps_address_c;
 
     /**
             * @ORM\Column(type="string", length="255")
             */
     public $jjwg_maps_geocode_status_c;
+
+    /**
+            * @ORM\Column(type="float", length="11")
+            */
+    public $jjwg_maps_lng_c;
 
     /**
         * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
@@ -216,11 +221,11 @@ class Project
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->notes = new ArrayCollection();
-        $this->tasks = new ArrayCollection();
-        $this->meetings = new ArrayCollection();
-        $this->calls = new ArrayCollection();
-        $this->projecttask = new ArrayCollection();
+        $this->notes = new Collection();
+        $this->tasks = new Collection();
+        $this->meetings = new Collection();
+        $this->calls = new Collection();
+        $this->projecttask = new Collection();
         $this->project_users_1 = new ArrayCollection();
         $this->am_projecttemplates_project_1 = new ArrayCollection();
     }

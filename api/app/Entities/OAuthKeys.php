@@ -148,6 +148,6 @@ class OAuthKeys
 
 public function __construct()
 {
-        $this->tokens = new ArrayCollection();
+        $this->tokens = new Collection();
     }
 }

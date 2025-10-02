@@ -260,12 +260,12 @@ class Recruitments
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->candidatures = new ArrayCollection();
-        $this->candidatures_end = new ArrayCollection();
-        $this->calls = new ArrayCollection();
-        $this->meetings = new ArrayCollection();
-        $this->notes = new ArrayCollection();
-        $this->tasks = new ArrayCollection();
-        $this->emails = new ArrayCollection();
+        $this->candidatures = new Collection();
+        $this->candidatures_end = new Collection();
+        $this->calls = new Collection();
+        $this->meetings = new Collection();
+        $this->notes = new Collection();
+        $this->tasks = new Collection();
+        $this->emails = new Collection();
     }
 }

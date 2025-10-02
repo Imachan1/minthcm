@@ -270,7 +270,7 @@ class Documents
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->revisions = new ArrayCollection();
+        $this->revisions = new Collection();
         $this->contracts = new ArrayCollection();
         $this->delegations = new ArrayCollection();
         $this->positions = new ArrayCollection();

@@ -393,15 +393,15 @@ public function __construct()
         $this->email_addresses = new ArrayCollection();
         $this->email_addresses_primary = new ArrayCollection();
         $this->SecurityGroups = new ArrayCollection();
-        $this->candidatures = new ArrayCollection();
+        $this->candidatures = new Collection();
         $this->emails = new ArrayCollection();
-        $this->notes = new ArrayCollection();
-        $this->tasks = new ArrayCollection();
+        $this->notes = new Collection();
+        $this->tasks = new Collection();
         $this->documents = new ArrayCollection();
         $this->calls = new ArrayCollection();
         $this->meetings = new ArrayCollection();
-        $this->employeecertificates = new ArrayCollection();
+        $this->employeecertificates = new Collection();
         $this->employee = new ArrayCollection();
-        $this->files = new ArrayCollection();
+        $this->files = new Collection();
     }
 }

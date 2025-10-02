@@ -187,6 +187,6 @@ class SurveyResponses
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->surveyresponses_surveyquestionresponses = new ArrayCollection();
+        $this->surveyresponses_surveyquestionresponses = new Collection();
     }
 }

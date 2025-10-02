@@ -281,11 +281,11 @@ class Calls
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->notes = new ArrayCollection();
-        $this->calls_reschedule = new ArrayCollection();
+        $this->notes = new Collection();
+        $this->calls_reschedule = new Collection();
         $this->users = new ArrayCollection();
         $this->candidates = new ArrayCollection();
-        $this->reservations = new ArrayCollection();
+        $this->reservations = new Collection();
         $this->resources = new ArrayCollection();
     }
 }

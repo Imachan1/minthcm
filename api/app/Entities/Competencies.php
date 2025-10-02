@@ -183,10 +183,10 @@ class Competencies
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->appraisalitems = new ArrayCollection();
+        $this->appraisalitems = new Collection();
         $this->knowledge = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->attitudes = new ArrayCollection();
-        $this->competencyratings = new ArrayCollection();
+        $this->competencyratings = new Collection();
     }
 }

@@ -176,7 +176,7 @@ class Onboardings
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->trainings = new ArrayCollection();
-        $this->tasks = new ArrayCollection();
+        $this->trainings = new Collection();
+        $this->tasks = new Collection();
     }
 }

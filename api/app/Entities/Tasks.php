@@ -201,6 +201,6 @@ class Tasks
 public function __construct()
 {
         $this->SecurityGroups = new ArrayCollection();
-        $this->notes = new ArrayCollection();
+        $this->notes = new Collection();
     }
 }

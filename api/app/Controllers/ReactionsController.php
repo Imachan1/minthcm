@@ -47,7 +47,7 @@
 namespace MintHCM\Api\Controllers;
 
 use Doctrine\ORM\EntityManagerInterface;
-use MintHCM\Api\Entities\Reaction;
+use MintHCM\Api\Entities\Reactions;
 use Slim\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -75,12 +75,11 @@ class ReactionsController
         }
 
         $reaction = null;
-        $user_reaction_id = $this->entityManager->getRepository(Reaction::class)
-            ->getUserReactionId($parent_type, $parent_id, $current_user->id);
+        $reaction_entity = $this->entityManager->getRepository(Reactions::class)->getUserReactionToParent($parent_type, $parent_id, $current_user->id);
 
         chdir('../legacy');
-        if (!empty($user_reaction_id)) {
-            $reaction = \BeanFactory::getBean('Reactions', $user_reaction_id);
+        if (!empty($reaction_entity)) {
+            $reaction = \BeanFactory::getBean('Reactions', $reaction_entity->id);
         }
         if (empty($reaction->id)) {
             $reaction = \BeanFactory::newBean('Reactions');
@@ -102,7 +101,7 @@ class ReactionsController
         $parent_id = $request->getAttribute('parent_id');
         $parent_type = $request->getAttribute('parent_type');
 
-        $this->entityManager->getRepository(Reaction::class)
+        $this->entityManager->getRepository(Reactions::class)
             ->deleteUserReaction($parent_type, $parent_id, $current_user->id);
 
         return $response;

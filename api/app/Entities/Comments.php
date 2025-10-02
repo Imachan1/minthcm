@@ -166,6 +166,11 @@ class Comments
     public Collection $reply_to;
 
     /**
+        * @ORM\OneToMany(targetEntity=Reactions::class, mappedBy="comments")
+        */
+    public Collection $reactions;
+
+    /**
         * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
         * @ORM\ManyToOne(targetEntity=News::class, inversedBy="comments")
         */
@@ -175,5 +180,6 @@ class Comments
 public function __construct()
 {
         $this->reply_to = new ArrayCollection();
+        $this->reactions = new Collection();
     }
 }
