@@ -9,19 +9,14 @@ class PositionsRepository extends EntityRepository
 {
     public function getCompetencies($positionId)
     {
-        $dql = "SELECT c.id, c.name, c.description
-                FROM MintHCM\Api\Entities\Competencies c
-                JOIN MintHCM\Api\Entities\CompetencyRatings cr 
-                    WITH cr.competency_id = c.id 
-                        AND cr.deleted = 0 
-                        AND cr.parent_id = :positionId 
-                        AND cr.parent_type = 'Positions'
-                WHERE c.deleted = 0";
+        $qb = $this->createQueryBuilder('p')
+            ->innerJoin('p.competencyratings', 'cr', 'WITH', 'cr.deleted = 0')
+            ->leftJoin('cr.competencies', 'c', 'WITH', 'c.deleted = 0')
+            ->where('p.id = :positionId')
+            ->setParameter('positionId', $positionId)
+            ->select('c.id, c.name, c.description');
 
-        $query = $this->getEntityManager()->createQuery($dql);
-        $query->setParameter('positionId', $positionId);
-        
-        return $query->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     public function getResponsibilities($positionId)

@@ -146,7 +146,7 @@ class OffboardingTemplates
     public Collection $positions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Offboardings::class, mappedBy="offboardingtemplates")
+     * @ORM\OneToMany(targetEntity=Offboardings::class, mappedBy="offboardingtemplate")
      */
     public Collection $offboardings;
 

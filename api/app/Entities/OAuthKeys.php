@@ -146,7 +146,7 @@ class OAuthKeys
     public $assigned_user_link;
 
     /**
-     * @ORM\OneToMany(targetEntity=OAuthTokens::class, mappedBy="oauth_consumer")
+     * @ORM\OneToMany(targetEntity=OAuthTokens::class, mappedBy="consumer_link")
      */
     public Collection $tokens;
 

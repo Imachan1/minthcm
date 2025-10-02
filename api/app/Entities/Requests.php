@@ -172,7 +172,7 @@ class Requests
     public $employee_link;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="requests")
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="comments")
      */
     public Collection $comments;
 

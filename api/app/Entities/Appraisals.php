@@ -195,12 +195,12 @@ class Appraisals
 
     /**
      * @ORM\JoinColumn(name="evaluator_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="appraisals")
+     * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="evaluations")
      */
     public $evaluators;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="appraisals")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="appraisal")
      */
     public Collection $notes;
 
@@ -223,7 +223,7 @@ class Appraisals
     public Collection $roles;
 
     /**
-     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="appraisals")
+     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="appraisal")
      */
     public Collection $appraisalitems;
 

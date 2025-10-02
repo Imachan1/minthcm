@@ -292,6 +292,11 @@ class Users implements UserEntityInterface
     /**
      * @ORM\Column(type="string", length="36")
      */
+    public $securitygroup_id;
+
+    /**
+     * @ORM\Column(type="string", length="36")
+     */
     public $forced_tabs_dashboard_id;
 
     /**
@@ -344,7 +349,7 @@ class Users implements UserEntityInterface
     public Collection $meetings;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="assigned_user_link")
      */
     public Collection $tasks;
 
@@ -355,36 +360,36 @@ class Users implements UserEntityInterface
     public Collection $aclroles;
 
     /**
-     * @ORM\OneToMany(targetEntity=EAPM::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=EAPM::class, mappedBy="assigned_user_link")
      */
     public Collection $eapm;
 
     /**
-     * @ORM\OneToMany(targetEntity=OAuthTokens::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=OAuthTokens::class, mappedBy="assigned_user_link")
      */
     public Collection $oauth_tokens;
 
     /**
      * @ORM\JoinTable(name="project_users_1_c", joinColumns={@ORM\JoinColumn(name="project_users_1users_idb", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="project_users_1project_ida", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=Project::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Project::class, inversedBy="project_users_1")
      */
     public Collection $project_users_1;
 
     /**
      * @ORM\JoinTable(name="am_projecttemplates_users_1_c", joinColumns={@ORM\JoinColumn(name="users_idb", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="am_projecttemplates_ida", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=AM_ProjectTemplates::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=AM_ProjectTemplates::class, inversedBy="am_projecttemplates_users_1")
      */
     public Collection $am_projecttemplates_users_1;
 
     /**
      * @ORM\JoinTable(name="securitygroups_users", joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="users")
      */
     public Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="employees")
      */
     public $position;
 
@@ -395,13 +400,13 @@ class Users implements UserEntityInterface
 
     /**
      * @ORM\JoinTable(name="candidates_employees", joinColumns={@ORM\JoinColumn(name="employee_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="candidate_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=Candidates::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Candidates::class, inversedBy="employee")
      */
     public Collection $candidates;
 
     /**
      * @ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="employees")
      */
     public $securitygroups_employees_link;
 
@@ -412,19 +417,19 @@ class Users implements UserEntityInterface
 
     /**
      * @ORM\JoinColumn(name="forced_tabs_dashboard_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users_forced_tabs_dashboards")
      */
     public $users_forced_tabs_dashboards;
 
     /**
      * @ORM\JoinColumn(name="locked_dashboard_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users_locked_dashboards")
      */
     public $users_locked_dashboards;
 
     /**
      * @ORM\JoinColumn(name="one_time_default_dashboard_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users_one_time_default_dashboards")
      */
     public $users_one_time_default_dashboards;
 
@@ -435,7 +440,7 @@ class Users implements UserEntityInterface
     public Collection $schedulereports;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkSchedules::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=WorkSchedules::class, mappedBy="deputy")
      */
     public Collection $deputy;
 

@@ -162,12 +162,12 @@ class Ideas
     public $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="ideas")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="notes")
      */
     public Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="ideas")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="idea")
      */
     public Collection $files;
 

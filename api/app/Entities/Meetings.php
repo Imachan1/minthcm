@@ -271,14 +271,14 @@ class Meetings
     public $type;
 
     /**
-     * @ORM\Column(type="float", length="10")
-     */
-    public $jjwg_maps_lat_c;
-
-    /**
      * @ORM\Column(type="string", length="255")
      */
     public $jjwg_maps_address_c;
+
+    /**
+     * @ORM\Column(type="float", length="10")
+     */
+    public $jjwg_maps_lat_c;
 
     /**
      * @ORM\Column(type="string", length="255")
@@ -355,7 +355,7 @@ class Meetings
     public Collection $conclusions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="meetings")
+     * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="reservations")
      */
     public Collection $reservations;
 

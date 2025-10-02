@@ -54,7 +54,7 @@ use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\EmployeeRolesRepository")
  * @ORM\Table(name="employeeroles", indexes={
  * @ORM\Index(name="employeerolespk", columns={"id"})})
  */
@@ -147,30 +147,30 @@ class EmployeeRoles
 
     /**
      * @ORM\JoinTable(name="roles_employees")
-     * @ORM\ManyToMany(targetEntity=Employees::class, mappedBy="employeeroles")
+     * @ORM\ManyToMany(targetEntity=Employees::class, mappedBy="roles")
      */
     public Collection $employees;
 
     /**
      * @ORM\JoinTable(name="benefits_roles", joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="benefit_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=Benefits::class, inversedBy="employeeroles")
+     * @ORM\ManyToMany(targetEntity=Benefits::class, inversedBy="roles")
      */
     public Collection $benefits;
 
     /**
      * @ORM\JoinTable(name="responsibilities_roles", joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="responsibility_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=Responsibilities::class, inversedBy="employeeroles")
+     * @ORM\ManyToMany(targetEntity=Responsibilities::class, inversedBy="roles")
      */
     public Collection $responsibilities;
 
     /**
-     * @ORM\OneToMany(targetEntity=CompetencyRatings::class, mappedBy="employeeroles")
+     * @ORM\OneToMany(targetEntity=CompetencyRatings::class, mappedBy="employee_roles")
      */
     public Collection $competencyratings;
 
     /**
      * @ORM\JoinTable(name="appraisals_roles", joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="appraisal_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=Appraisals::class, inversedBy="employeeroles")
+     * @ORM\ManyToMany(targetEntity=Appraisals::class, inversedBy="roles")
      */
     public Collection $appraisals;
 

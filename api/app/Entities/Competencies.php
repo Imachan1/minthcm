@@ -157,7 +157,7 @@ class Competencies
     public $employee_link;
 
     /**
-     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="competencies")
+     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="competency")
      */
     public Collection $appraisalitems;
 

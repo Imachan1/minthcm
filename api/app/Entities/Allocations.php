@@ -162,13 +162,13 @@ class Allocations
 
     /**
      * @ORM\JoinColumn(name="workplace_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Workplaces::class, inversedBy="allocations")
+     * @ORM\ManyToOne(targetEntity=Workplaces::class, inversedBy="workplaces_allocations")
      */
     public $workplaces_allocations;
 
     /**
      * @ORM\JoinTable(name="allocations_employees")
-     * @ORM\ManyToMany(targetEntity=Employees::class, mappedBy="allocations")
+     * @ORM\ManyToMany(targetEntity=Employees::class, mappedBy="allocations_employees")
      */
     public Collection $allocations_employees;
 

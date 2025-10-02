@@ -189,18 +189,18 @@ class OnboardingOffboardingElements
 
     /**
      * @ORM\JoinTable(name="onboardingoffboardingelements_onboardingtemplates")
-     * @ORM\ManyToMany(targetEntity=OnboardingTemplates::class, mappedBy="onboardingoffboardingelements")
+     * @ORM\ManyToMany(targetEntity=OnboardingTemplates::class, mappedBy="elements")
      */
     public Collection $onboardingtemplates;
 
     /**
      * @ORM\JoinTable(name="onboardingoffboardingelements_offboardingtemplates")
-     * @ORM\ManyToMany(targetEntity=OffboardingTemplates::class, mappedBy="onboardingoffboardingelements")
+     * @ORM\ManyToMany(targetEntity=OffboardingTemplates::class, mappedBy="elements")
      */
     public Collection $offboardingtemplates;
 
     /**
-     * @ORM\OneToMany(targetEntity=Trainings::class, mappedBy="onboardingoffboardingelements")
+     * @ORM\OneToMany(targetEntity=Trainings::class, mappedBy="elements")
      */
     public Collection $trainings;
 

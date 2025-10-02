@@ -166,18 +166,18 @@ class Rooms
 
     /**
      * @ORM\JoinColumn(name="security_group_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="rooms")
+     * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="securitygroups_rooms")
      */
     public $SecurityGroups;
 
     /**
      * @ORM\JoinTable(name="rooms_resources")
-     * @ORM\OneToOne(targetEntity=Resources::class, mappedBy="rooms")
+     * @ORM\OneToOne(targetEntity=Resources::class, mappedBy="rooms_resources")
      */
     public $rooms_resources;
 
     /**
-     * @ORM\OneToMany(targetEntity=Workplaces::class, mappedBy="rooms")
+     * @ORM\OneToMany(targetEntity=Workplaces::class, mappedBy="rooms_workplaces")
      */
     public Collection $rooms_workplaces;
 

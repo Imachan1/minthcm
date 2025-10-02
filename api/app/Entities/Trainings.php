@@ -200,12 +200,12 @@ class Trainings
     public Collection $certificates;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="trainings")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="training")
      */
     public Collection $files;
 
     /**
-     * @ORM\OneToMany(targetEntity=Requests::class, mappedBy="trainings")
+     * @ORM\OneToMany(targetEntity=Requests::class, mappedBy="training")
      */
     public Collection $requests;
 

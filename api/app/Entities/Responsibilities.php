@@ -141,7 +141,7 @@ class Responsibilities
     public Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="responsibilities")
+     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="appraisalitems")
      */
     public Collection $appraisalitems;
 

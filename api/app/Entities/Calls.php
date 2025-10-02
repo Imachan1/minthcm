@@ -249,7 +249,7 @@ class Calls
     public Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Calls_Reschedule::class, mappedBy="calls")
+     * @ORM\OneToMany(targetEntity=Calls_Reschedule::class, mappedBy="calls_reschedule")
      */
     public Collection $calls_reschedule;
 
@@ -272,7 +272,7 @@ class Calls
     public Collection $candidates;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="calls")
+     * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="reservations")
      */
     public Collection $reservations;
 

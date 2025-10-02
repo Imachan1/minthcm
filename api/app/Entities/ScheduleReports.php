@@ -172,7 +172,7 @@ class ScheduleReports
     public $schedulereports_kreports;
 
     /**
-     * @ORM\OneToMany(targetEntity=ScheduleReportsLogs::class, mappedBy="schedulereports")
+     * @ORM\OneToMany(targetEntity=ScheduleReportsLogs::class, mappedBy="schedulereports_schedulereportslogs")
      */
     public Collection $schedulereports_schedulereportslogs;
 

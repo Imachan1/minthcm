@@ -141,13 +141,13 @@ class ResponsibilityActivities
     public Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="responsibilityactivities")
+     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="responsibilityactivitie")
      */
     public Collection $appraisalitems;
 
     /**
      * @ORM\JoinTable(name="responsibilities_activities", joinColumns={@ORM\JoinColumn(name="activity_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="responsibility_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=Responsibilities::class, inversedBy="responsibilityactivities")
+     * @ORM\ManyToMany(targetEntity=Responsibilities::class, inversedBy="activities")
      */
     public Collection $responsibilities;
 

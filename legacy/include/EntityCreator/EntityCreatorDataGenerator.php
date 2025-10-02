@@ -79,7 +79,7 @@ class EntityCreatorDataGenerator
     {
         foreach ($this->vardefs['fields'] as $fieldName => $fieldDef) {
             if ((! empty($fieldDef['source']) && 'non-db' === $fieldDef['source'])
-                || in_array($fieldDef['type'], self::SKIP_TYPES)
+                || (in_array($fieldDef['type'], self::SKIP_TYPES) && (empty($fieldDef['dbType']) || $fieldDef['dbType'] !== 'id'))
             ) {
                 continue;
             }
@@ -173,7 +173,7 @@ class EntityCreatorDataGenerator
 
     protected function createRelationshipField($relationshipDef, $relationshipName)
     {
-        global $entityCreator, $beanList;
+        global $entityCreator;
         $dictionary = EntityCreatorManager::$dictionary;
         $relationshipField = [
             'name' => '',
@@ -193,12 +193,8 @@ class EntityCreatorDataGenerator
             }
         }
 
-        foreach ($this->vardefs['fields'] as $fieldName => $fieldDef) {
-            if ('link' === $fieldDef['type'] && $fieldDef['relationship'] === $relationshipName) {
-                $relationshipField['name'] = $fieldName;
-                break;
-            }
-        }
+        $targetFieldName = $this->findFieldName($relationshipDef, $targetSide, $relationshipName);
+        $relationshipField['name'] = $this->findFieldName($relationshipDef, $relationshipSide, $relationshipName);
 
         if (empty($relationshipField['name']) || $this->dataHasRelationshipField($relationshipField['name'])) {
             return;
@@ -237,7 +233,8 @@ class EntityCreatorDataGenerator
             $target,
             $relationshipSide,
             $joinTable,
-            $relationshipField['name']
+            $relationshipField['name'],
+            $targetFieldName
         );
         $relationshipField['isCollection'] = 'many-to-many' === $relationshipDef['relationship_type'] || ('one-to-many' === $relationshipDef['relationship_type'] && 'lhs' === $relationshipSide);
         $this->data['relationshipFields'][] = $relationshipField;
@@ -248,7 +245,35 @@ class EntityCreatorDataGenerator
         }
     }
 
-    protected function buildRelationshipAttributes($relationshipType, $module, $target, $relationshipSide, $joinTable = null, $currentFieldName = '')
+    protected function findFieldName($relationshipDef, $side, $relationshipName)
+    {
+        $dictionary = EntityCreatorManager::$dictionary;
+
+        $moduleName = $relationshipDef[$side . '_module'];
+        if (empty($moduleName)) {
+            return '';
+        }
+
+        if (empty($dictionary[$moduleName])) {
+            return '';
+        }
+        
+        $module = $dictionary[$moduleName];
+
+        foreach($module['fields'] as $fieldName => $fieldDef) {
+            if (
+                'link' === $fieldDef['type'] 
+                && ! empty($fieldDef['relationship']) 
+                && $fieldDef['relationship'] === $relationshipName
+            ) {
+                return $fieldName;
+            }
+        }
+
+        return '';
+    }
+
+    protected function buildRelationshipAttributes($relationshipType, $module, $target, $relationshipSide, $joinTable = null, $currentFieldName = null, $targetFieldName = null)
     {
         $attributes = [
             'relationshipType' => '',
@@ -269,11 +294,11 @@ class EntityCreatorDataGenerator
                         $attributes['relationshipAttributes'][] = 'mappedBy="' . $key . '"';
                         $this->changeFieldToSelfReference($key, $attributes['relationshipType'], $currentFieldName);
                     } else {
-                        $attributes['relationshipAttributes'][] = 'mappedBy="' . $module['table'] . '"';
+                        $attributes['relationshipAttributes'][] = 'mappedBy="' . ($targetFieldName ?: $target['table']) . '"';
                     }
                 } else {
                     $attributes['relationshipType'] = 'ManyToOne';
-                    $attributes['relationshipAttributes'][] = 'inversedBy="' . $module['table'] . '"';
+                    $attributes['relationshipAttributes'][] = 'inversedBy="' . ($targetFieldName ?: $module['table']) . '"';
                     $attributes['joinAttributes'][] = 'name="' . $module['key'] . '"';
                     $attributes['joinAttributes'][] = 'referencedColumnName="' . $target['key'] . '"';
                 }
@@ -282,15 +307,15 @@ class EntityCreatorDataGenerator
                 $attributes['relationshipAttributes'][] = 'targetEntity=' . $target['module'] . '::class';
                 $attributes['relationshipType'] = 'OneToOne';
                 if ('lhs' === $relationshipSide) {
-                    $attributes['relationshipAttributes'][] = 'mappedBy="' . $module['table'] . '"';
+                    $attributes['relationshipAttributes'][] = 'mappedBy="' . ($currentFieldName ?: $module['table']) . '"';
                 } else if (empty($joinTable)) {
-                    $attributes['relationshipAttributes'][] = 'inversedBy="' . $module['table'] . '"';
+                    $attributes['relationshipAttributes'][] = 'inversedBy="' . ($currentFieldName ?: $module['table']) . '"';
                     $attributes['joinAttributes'][] = 'name="' . $module['key'] . '"';
                     $attributes['joinAttributes'][] = 'referencedColumnName="' . $target['key'] . '"';
                     $attributes['inverseJoinAttributes'][] = 'name="' . $target['key'] . '"';
                     $attributes['inverseJoinAttributes'][] = 'referencedColumnName="' . $module['key'] . '"';
                 } else {
-                    $attributes['relationshipAttributes'][] = 'inversedBy="' . $module['table'] . '"';
+                    $attributes['relationshipAttributes'][] = 'inversedBy="' . ($currentFieldName ?: $module['table']) . '"';
                     $attributes['inverseJoinAttributes'][] = 'name="' . $target['join_key'] . '"';
                     $attributes['inverseJoinAttributes'][] = 'referencedColumnName="' . $module['key'] . '"';
                     $attributes['joinAttributes'][] = 'name="' . $module['join_key'] . '"';
@@ -305,17 +330,17 @@ class EntityCreatorDataGenerator
                 $attributes['relationshipType'] = 'ManyToMany';
                 if ('unidirectional' === $directionType) {
                     $attributes['relationshipAttributes'][] = 'targetEntity=' . $target['module'] . '::class';
-                    $attributes['relationshipAttributes'][] = 'inversedBy="' . $target['table'] . '"';
+                    $attributes['relationshipAttributes'][] = 'inversedBy="' . ($targetFieldName ?: $target['table']) . '"';
                     $attributes['joinAttributes'][] = 'name="' . $module['join_key'] . '"';
                     $attributes['joinAttributes'][] = 'referencedColumnName="' . $target['key'] . '"';
                     $attributes['inverseJoinAttributes'][] = 'name="' . $target['join_key'] . '"';
                     $attributes['inverseJoinAttributes'][] = 'referencedColumnName="' . $module['key'] . '"';
                 } else if ('lhs' === $relationshipSide) {
                     $attributes['relationshipAttributes'][] = 'targetEntity=' . $target['module'] . '::class';
-                    $attributes['relationshipAttributes'][] = 'mappedBy="' . $module['table'] . '"';
+                    $attributes['relationshipAttributes'][] = 'mappedBy="' . ($targetFieldName ?: $module['table']) . '"';
                 } else {
                     $attributes['relationshipAttributes'][] = 'targetEntity=' . $target['module'] . '::class';
-                    $attributes['relationshipAttributes'][] = 'inversedBy="' . $module['table'] . '"';
+                    $attributes['relationshipAttributes'][] = 'inversedBy="' . ($targetFieldName ?: $module['table']) . '"';
                     $attributes['inverseJoinAttributes'][] = 'name="' . $target['join_key'] . '"';
                     $attributes['inverseJoinAttributes'][] = 'referencedColumnName="' . $module['key'] . '"';
                     $attributes['joinAttributes'][] = 'name="' . $module['join_key'] . '"';

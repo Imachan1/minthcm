@@ -4070,7 +4070,7 @@ $app_list_strings['rating_list'] = array(
     '5' => '5',
 );
 $app_list_strings['competency_ratings_type_list'] = array(
-    'Employees' => 'Employee',
+    'EmployeeRoles' => 'EmployeeRole',
     'Positions' => 'Position',
     'EmployeeRoles' => 'Role',
 );

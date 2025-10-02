@@ -151,19 +151,19 @@ class ProspectLists
 
     /**
      * @ORM\JoinTable(name="prospect_list_campaigns")
-     * @ORM\ManyToMany(targetEntity=Campaigns::class, mappedBy="prospect_lists")
+     * @ORM\ManyToMany(targetEntity=Campaigns::class, mappedBy="prospectlists")
      */
     public Collection $campaigns;
 
     /**
      * @ORM\JoinTable(name="email_marketing_prospect_lists", joinColumns={@ORM\JoinColumn(name="prospect_list_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="email_marketing_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=EmailMarketing::class, inversedBy="prospect_lists")
+     * @ORM\ManyToMany(targetEntity=EmailMarketing::class, inversedBy="prospectlists")
      */
     public Collection $email_marketing;
 
     /**
      * @ORM\JoinTable(name="prospect_list_news", joinColumns={@ORM\JoinColumn(name="prospectlist_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="news_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=News::class, inversedBy="prospect_lists")
+     * @ORM\ManyToMany(targetEntity=News::class, inversedBy="prospectlists")
      */
     public Collection $news;
 

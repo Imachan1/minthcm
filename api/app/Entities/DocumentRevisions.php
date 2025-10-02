@@ -140,7 +140,7 @@ class DocumentRevisions
 
     /**
      * @ORM\JoinColumn(name="document_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Documents::class, inversedBy="document_revisions")
+     * @ORM\ManyToOne(targetEntity=Documents::class, inversedBy="revisions")
      */
     public $documents;
 

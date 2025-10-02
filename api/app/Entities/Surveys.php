@@ -166,12 +166,12 @@ class Surveys
     public Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=SurveyQuestions::class, mappedBy="surveys")
+     * @ORM\OneToMany(targetEntity=SurveyQuestions::class, mappedBy="survey")
      */
     public Collection $surveys_surveyquestions;
 
     /**
-     * @ORM\OneToMany(targetEntity=SurveyResponses::class, mappedBy="surveys")
+     * @ORM\OneToMany(targetEntity=SurveyResponses::class, mappedBy="survey")
      */
     public Collection $surveys_surveyresponses;
 
