@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
 import { useLanguagesStore } from '@/store/languages'
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { positionsApi } from '@/api/positions.api'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 
@@ -60,9 +60,15 @@ const responsibilities = ref([])
 const expandedPanels = ref<string[]>([])
 
 onMounted(async () => {
-    expandedPanels.value = ['competencies', 'responsibilities']
-    competencies.value = (await positionsApi.getCompetencies(store.bean.module, store.bean.id)).data
-    responsibilities.value = (await positionsApi.getResponsibilities(store.bean.module, store.bean.id)).data
+    competencies.value = (await positionsApi.getCompetencies(store.bean.module, store.bean.id))?.data ?? []
+    responsibilities.value = (await positionsApi.getResponsibilities(store.bean.module, store.bean.id))?.data ?? []
+
+    if (competencies.value.length > 0) {
+        expandedPanels.value.push('competencies')
+    }
+    if (responsibilities.value.length > 0) {
+        expandedPanels.value.push('responsibilities')
+    }
 })
 </script>
 
@@ -122,6 +128,29 @@ onMounted(async () => {
 
     .position-panel-title {
         color: #0004;
+    }
+}
+
+.position-panel-content {
+    padding: 32px;
+
+    .panel-element {
+        margin-bottom: 16px;
+
+        .element-name {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .element-description {
+            font-size: 14px;
+            padding: 8px;
+        }
+    }
+
+    &:last-child {
+        margin-bottom: 0;
     }
 }
 </style>
