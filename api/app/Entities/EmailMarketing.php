@@ -46,135 +46,142 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="email_marketing", indexes={
- *   @ORM\Index(name="emmkpk", columns={"id"}), 
- *   @ORM\Index(name="idx_emmkt_name", columns={"name"}), 
- *   @ORM\Index(name="idx_emmkit_del", columns={"deleted"})})
+ * @ORM\Index(name="emmkpk", columns={"id"}), 
+ * @ORM\Index(name="idx_emmkt_name", columns={"name"}), 
+ * @ORM\Index(name="idx_emmkit_del", columns={"deleted"})})
  */
+// Auto-generated SectionRepository section end
 class EmailMarketing
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $from_name;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $from_addr;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $reply_to_name;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $reply_to_addr;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $inbound_email_id;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_start;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $template_id;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $status;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $campaign_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $outbound_email_id;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $all_prospect_lists;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     */
     public Collection $SecurityGroups;
 
     /**
-        * @ORM\JoinColumn(name="template_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=EmailTemplates::class, inversedBy="email_marketing")
-        */
+     * @ORM\JoinColumn(name="template_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=EmailTemplates::class, inversedBy="email_marketing")
+     */
     public $emailtemplate;
 
     /**
-        * @ORM\JoinTable(name="email_marketing_prospect_lists")
-        * @ORM\ManyToMany(targetEntity=ProspectLists::class, mappedBy="email_marketing")
-        */
+     * @ORM\JoinTable(name="email_marketing_prospect_lists")
+     * @ORM\ManyToMany(targetEntity=ProspectLists::class, mappedBy="email_marketing")
+     */
     public Collection $prospectlists;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->SecurityGroups = new ArrayCollection();
         $this->prospectlists = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

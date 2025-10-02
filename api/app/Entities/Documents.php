@@ -46,231 +46,237 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="documents", indexes={
- *   @ORM\Index(name="documentspk", columns={"id"}), 
- *   @ORM\Index(name="idx_doc_cat", columns={"category_id", "subcategory_id"})})
+ * @ORM\Index(name="documentspk", columns={"id"}), 
+ * @ORM\Index(name="idx_doc_cat", columns={"category_id", "subcategory_id"})})
  */
+// Auto-generated SectionRepository section end
 class Documents
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $description;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $document_name;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $doc_id;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $doc_type;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $doc_url;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $active_date;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $exp_date;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $category_id;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $subcategory_id;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $status_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $document_revision_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $related_doc_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $related_doc_rev_id;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $is_template;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $template_type;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="documents")
-        */
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="documents")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="documents")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="documents")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="documents")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="documents")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     */
     public Collection $SecurityGroups;
 
     /**
-        * @ORM\OneToMany(targetEntity=DocumentRevisions::class, mappedBy="documents")
-        */
+     * @ORM\OneToMany(targetEntity=DocumentRevisions::class, mappedBy="documents")
+     */
     public Collection $revisions;
 
     /**
-        * @ORM\JoinTable(name="documents_contracts")
-        * @ORM\ManyToMany(targetEntity=Contracts::class, mappedBy="documents")
-        */
+     * @ORM\JoinTable(name="documents_contracts")
+     * @ORM\ManyToMany(targetEntity=Contracts::class, mappedBy="documents")
+     */
     public Collection $contracts;
 
     /**
-        * @ORM\JoinTable(name="documents_delegations")
-        * @ORM\ManyToMany(targetEntity=Delegations::class, mappedBy="documents")
-        */
+     * @ORM\JoinTable(name="documents_delegations")
+     * @ORM\ManyToMany(targetEntity=Delegations::class, mappedBy="documents")
+     */
     public Collection $delegations;
 
     /**
-        * @ORM\JoinTable(name="positions_documents", joinColumns={@ORM\JoinColumn(name="documents_rhs_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="positions_lhs_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=Positions::class, inversedBy="documents")
-        */
+     * @ORM\JoinTable(name="positions_documents", joinColumns={@ORM\JoinColumn(name="documents_rhs_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="positions_lhs_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=Positions::class, inversedBy="documents")
+     */
     public Collection $positions;
 
     /**
-        * @ORM\JoinTable(name="trainings_documents", joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="training_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=Trainings::class, inversedBy="documents")
-        */
+     * @ORM\JoinTable(name="trainings_documents", joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="training_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=Trainings::class, inversedBy="documents")
+     */
     public Collection $trainings;
 
     /**
-        * @ORM\JoinTable(name="exitinterviews_documents", joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="exitinterview_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=ExitInterviews::class, inversedBy="documents")
-        */
+     * @ORM\JoinTable(name="exitinterviews_documents", joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="exitinterview_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=ExitInterviews::class, inversedBy="documents")
+     */
     public Collection $exitinterviews;
 
     /**
-        * @ORM\JoinTable(name="appraisals_documents", joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="appraisal_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=Appraisals::class, inversedBy="documents")
-        */
+     * @ORM\JoinTable(name="appraisals_documents", joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="appraisal_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=Appraisals::class, inversedBy="documents")
+     */
     public Collection $appraisals;
 
     /**
-        * @ORM\JoinTable(name="documents_certificates")
-        * @ORM\ManyToMany(targetEntity=Certificates::class, mappedBy="documents")
-        */
+     * @ORM\JoinTable(name="documents_certificates")
+     * @ORM\ManyToMany(targetEntity=Certificates::class, mappedBy="documents")
+     */
     public Collection $certificates;
 
     /**
-        * @ORM\JoinTable(name="documents_candidates")
-        * @ORM\ManyToMany(targetEntity=Candidates::class, mappedBy="documents")
-        */
+     * @ORM\JoinTable(name="documents_candidates")
+     * @ORM\ManyToMany(targetEntity=Candidates::class, mappedBy="documents")
+     */
     public Collection $candidates;
 
     /**
-        * @ORM\JoinTable(name="documents_candidatures")
-        * @ORM\ManyToMany(targetEntity=Candidatures::class, mappedBy="documents")
-        */
+     * @ORM\JoinTable(name="documents_candidatures")
+     * @ORM\ManyToMany(targetEntity=Candidatures::class, mappedBy="documents")
+     */
     public Collection $candidatures;
 
     /**
-        * @ORM\JoinTable(name="documents_termsofemployment")
-        * @ORM\ManyToMany(targetEntity=TermsOfEmployment::class, mappedBy="documents")
-        */
+     * @ORM\JoinTable(name="documents_termsofemployment")
+     * @ORM\ManyToMany(targetEntity=TermsOfEmployment::class, mappedBy="documents")
+     */
     public Collection $termsofemployment;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->SecurityGroups = new ArrayCollection();
-        $this->revisions = new Collection();
+        $this->revisions = new ArrayCollection();
         $this->contracts = new ArrayCollection();
         $this->delegations = new ArrayCollection();
         $this->positions = new ArrayCollection();
@@ -282,4 +288,5 @@ public function __construct()
         $this->candidatures = new ArrayCollection();
         $this->termsofemployment = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

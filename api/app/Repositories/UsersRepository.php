@@ -78,7 +78,7 @@ class UsersRepository extends EntityRepository implements UserRepositoryInterfac
             throw new \InvalidArgumentException('No user found with this username: ' . $username);
         }
 
-        if (!$is_ldap_enabled && $this->checkPassword($user, $password) === false) {
+        if (!$is_ldap_enabled && $user->checkPassword($password) === false) {
             throw new \InvalidArgumentException('The password is invalid: ' . $password);
         }
 
@@ -105,25 +105,6 @@ class UsersRepository extends EntityRepository implements UserRepositoryInterfac
         }
         
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * Check that password matches existing hash
-     * @param string $password Plaintext password
-     */
-    private function checkPassword(Users $user, $password): bool
-    {
-        if (empty($user->user_hash)) {
-            return false;
-        }
-
-        $passwordMd5 = md5($password);
-        if ($user->user_hash[0] !== '$' && strlen($user->user_hash) === 32) {
-            // Legacy md5 password
-            return strtolower($passwordMd5) === $user->user_hash;
-        }
-
-        return password_verify(strtolower($passwordMd5), $user->user_hash);
     }
 
     private function IsLdapOn(): bool

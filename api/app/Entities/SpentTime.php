@@ -46,187 +46,194 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="spenttime", indexes={
- *   @ORM\Index(name="spenttimepk", columns={"id"}), 
- *   @ORM\Index(name="spenttime_employee_idx", columns={"employee_id"})})
+ * @ORM\Index(name="spenttimepk", columns={"id"}), 
+ * @ORM\Index(name="spenttime_employee_idx", columns={"employee_id"})})
  */
+// Auto-generated SectionRepository section end
 class SpentTime
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="text", length="255")
-            */
+     * @ORM\Column(type="text", length="255")
+     */
     public $description;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_start;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_end;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $status;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $work_date;
 
     /**
-            * @ORM\Column(type="float")
-            */
+     * @ORM\Column(type="float")
+     */
     public $spent_time;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $done_ratio;
 
     /**
-            * @ORM\Column(type="float")
-            */
+     * @ORM\Column(type="float")
+     */
     public $remaining_hours;
 
     /**
-            * @ORM\Column(type="integer", length="255")
-            */
+     * @ORM\Column(type="integer", length="255")
+     */
     public $current_done_ratio;
 
     /**
-            * @ORM\Column(type="float")
-            */
+     * @ORM\Column(type="float")
+     */
     public $current_remaining_hours;
 
     /**
-            * @ORM\Column(type="float")
-            */
+     * @ORM\Column(type="float")
+     */
     public $estimated_task_time;
 
     /**
-            * @ORM\Column(type="float")
-            */
+     * @ORM\Column(type="float")
+     */
     public $worked_task_time;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $employee_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $type;
 
     /**
-            * @ORM\Column(type="string")
-            */
+     * @ORM\Column(type="string")
+     */
     public $category;
 
     /**
-            * @ORM\Column(type="string")
-            */
+     * @ORM\Column(type="string")
+     */
     public $organizational_unit;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="spenttime")
-        */
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="spenttime")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="spenttime")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="spenttime")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="spenttime")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="spenttime")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     */
     public Collection $SecurityGroups;
 
     /**
-        * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="spenttime")
-        */
+     * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="spenttime")
+     */
     public $employees;
 
     /**
-        * @ORM\JoinTable(name="workschedules_spenttime", joinColumns={@ORM\JoinColumn(name="spenttime_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="workschedule_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=WorkSchedules::class, inversedBy="spenttime")
-        */
+     * @ORM\JoinTable(name="workschedules_spenttime", joinColumns={@ORM\JoinColumn(name="spenttime_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="workschedule_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=WorkSchedules::class, inversedBy="spenttime")
+     */
     public Collection $workschedules;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->SecurityGroups = new ArrayCollection();
         $this->workschedules = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }
