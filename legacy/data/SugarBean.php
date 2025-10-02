@@ -3970,11 +3970,11 @@ class SugarBean {
       }
       //Mint start SG optimization
       global $current_user;
-      $skipped_modules = [ 'ev_RedmineProjectTask' ]; //Mint #62980
+      $skipped_modules = [ 'ev_RedmineProjectTask']; //Mint #62980
       $group_where = SecurityGroup::getGroupWhere($this->table_name, $this->module_dir, $current_user->id);
 
       if (strpos($ret_array['where'], $group_where) !== false && !in_array($this->module_name, $skipped_modules) ) { //Mint #60146
-         $n = " LEFT JOIN securitygroups_records secr ON secr.deleted=0  AND secr.module='{$this->module_dir}' AND secr.record_id={$this->table_name}.id INNER JOIN securitygroups secg on secg.id=secr.securitygroup_id AND secg.deleted=0 INNER JOIN securitygroups_users secu ON secg.id=secu.securitygroup_id AND secu.deleted=0 AND secu.user_id='{$current_user->id}' ";
+         $n = " LEFT JOIN securitygroups_records secr ON secr.deleted=0  AND secr.module='{$this->module_dir}' AND secr.record_id={$this->table_name}.id LEFT JOIN securitygroups secg on secg.id=secr.securitygroup_id AND secg.deleted=0 LEFT JOIN securitygroups_users secu ON secg.id=secu.securitygroup_id AND secu.deleted=0 AND secu.user_id='{$current_user->id}' ";
          foreach ( array( 'from', 'from_min', 'secondary_from' ) as $eVSecGroupUpdKey ) {
             if ( isset($ret_array[$eVSecGroupUpdKey]) && strpos($ret_array[$eVSecGroupUpdKey], $n) === false ) {
                $ret_array[$eVSecGroupUpdKey] .= $n;

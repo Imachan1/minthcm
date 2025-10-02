@@ -4,6 +4,7 @@ namespace MintHCM\Modules\Kudos;
 
 use MintHCM\Lib\Search\ElasticSearch\BaseListACL;
 use MintHCM\Data\BeanFactory;
+use MintHCM\Utils\LegacyConnector;
 
 class KudosListACL extends BaseListACL
 {
@@ -13,11 +14,20 @@ class KudosListACL extends BaseListACL
         $bean = BeanFactory::newBean($this->module);
         global $current_user;
 
-        $filters = [];
-
         if ($current_user->isAdmin()) {
-            return $filters;
+            return [];
         }
+
+        chdir('../legacy/'); 
+        $acl_controller = new LegacyConnector('ACLController');
+        if (!$bean->bean_implements('ACL') || (
+            !$acl_controller::requireOwner($bean->module_dir, 'list')
+            && !$acl_controller::requireSecurityGroup($bean->module_dir, 'list')
+        )) {
+            return [];
+        }
+        chdir('../api/');
+        $filters = parent::getFiltersByOwner($user_id);
 
         if (isset($bean->field_defs['assigned_user_id'])) {
             $filters[] = [
