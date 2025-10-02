@@ -65,6 +65,7 @@ class EntityCreator
     {
         $class_code = file_get_contents($file_path);
         if ($class_code === false || !is_writable($file_path)) {
+            $GLOBALS['log']->fatal("Cannot read or write to file: {$file_path}");
             throw new Exception("Cannot read or write to file: {$file_path}");
         }
 
