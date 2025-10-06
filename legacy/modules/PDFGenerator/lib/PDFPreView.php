@@ -76,7 +76,7 @@ class PDFPreView extends BasePDFGenerator {
 
         $this->Output(array('FAKE_ID'));
     }
-    protected function getBean($module, $id) {
+    protected function getBean($module, $id, $parent_bean = null) {
         return $this->prepareDemoData($module);
     }
     protected function getNewBlockForBlockLink($block, $parent_bean, $relation_field_name, $depth, $block_after) {

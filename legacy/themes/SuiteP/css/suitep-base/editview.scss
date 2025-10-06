@@ -3762,7 +3762,7 @@ select#sales_stage_advanced {
   }
 
   .col-sm-12 .col-sm-8.edit-view-field textarea {
-    width: 45%;
+      width: 120%;
   }
 
   [field=bool].col-sm-8.edit-view-field {
@@ -3865,7 +3865,7 @@ select#sales_stage_advanced {
   }
 
   .col-sm-12 .col-sm-8.edit-view-field textarea {
-    width: 45%;
+      width: 120%;
   }
 
   [field=bool].col-sm-8.edit-view-field {
@@ -4405,16 +4405,24 @@ tr:hover img.info {
 }
 
 #EditView div.action_buttons .button {
-  background-color: $danger-btn-bg;
+    background-color: #fff;
 }
 
+  #EditView div.action_buttons .button.primary {
+      background-color: #145D7B;
+  }
+  
+  #EditView div.action_buttons .button.primary:hover {
+      background-color: rgb(13, 60, 79);
+  }
+  
 #save_and_continue.button {
   background-color: $danger-btn-bg;
 }
 
 #EditView div.action_buttons .button:hover,
 #save_and_continue.button:hover {
-  background-color: $danger-btn-bg-hover;
+    background-color: #fff;
 }
 
 .paginationWrapper {

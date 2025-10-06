@@ -677,7 +677,12 @@ function getModuleField(
         $ss->assign("record_id", $params['record_id']);
     }
 
-    return $ss->fetch($file);
+    return parseFieldTemplate($ss->fetch($file));
+}
+
+function parseFieldTemplate($html){
+    $pattern = '/<script\b[^>]*>(.*?)<\/script>/is';
+    return preg_replace($pattern, '', $html);
 }
 
 /**
