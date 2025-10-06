@@ -130,7 +130,10 @@ class InstallController
             $this->service->setMintInstallStatus(22, "Reindexing ElasticSearch");
             $installer->reindexElastic();
 
-            $this->service->setMintInstallStatus(23, "Setting up htacess...");
+            $this->service->setMintInstallStatus(23, "Creating OAuth2 keys and Frontend client...");
+            $installer->setupOAuth2();
+
+            $this->service->setMintInstallStatus(24, "Setting up htacess...");
             $installer->setupHtaccess();
 
             return ["status" => 1, "message" => "Installation finished successfully."];
