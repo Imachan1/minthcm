@@ -25,7 +25,6 @@ $viewdefs['Allocations'] = [
                         'title' => 'LBL_BASIC',
                         'fields' => [
                             [
-                                'assigned_user_name',
                                 'mode',
                                 [
                                     'name' => 'workplace_name',
@@ -44,14 +43,6 @@ $viewdefs['Allocations'] = [
                                 'date_from',
                                 'date_to',
                                 'description',
-                            ],
-                            [
-                                'date_entered',
-                                'date_modified',
-                            ],
-                            [
-                                'created_by_name',
-                                'modified_by_name',
                             ],
                         ],
                     ]

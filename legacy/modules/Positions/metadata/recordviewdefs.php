@@ -35,7 +35,6 @@ $viewdefs['Positions'] = [
                                     'type' => 'enum',
                                     'options' => 'position_status',
                                 ],
-                                'assigned_user_name',
                             ],
                             [
                                 'securitygroup_leader_name',
@@ -45,26 +44,6 @@ $viewdefs['Positions'] = [
                             [
                                 'offboardingtemplate_name',
                                 'onboardingtemplate_name',
-                            ],
-                            [
-                                [
-                                    'name' => 'date_entered',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'date_modified',
-                                    'readonly' => true,
-                                ],
-                            ],
-                            [
-                                [
-                                    'name' => 'created_by_name',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'modified_by_name',
-                                    'readonly' => true,
-                                ],
                             ],
                         ],
                     ],

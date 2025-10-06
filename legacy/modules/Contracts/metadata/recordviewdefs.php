@@ -24,7 +24,7 @@ $viewdefs['Contracts'] = [
                         'fields' => [
                             ['name', 'status', 'daily_working_time'],
                             ['contract_type', 'date_of_signing', 'employee_name'],
-                            ['assigned_user_name', 'description'],
+                            ['description'],
                         ],
                     ],
                 ],

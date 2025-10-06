@@ -39,12 +39,6 @@ $viewdefs['EmployeeCertificates'] = [
                             ['description'],
                         ],
                     ],
-                    'userInfo' => [
-                        'title' => 'LBL_USER_INFO',
-                        'fields' => [
-                            ['assigned_user_name'],
-                        ],
-                    ],
                 ],
             ],
         ],

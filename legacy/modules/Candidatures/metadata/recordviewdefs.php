@@ -104,14 +104,6 @@ $viewdefs['Candidatures'] = [
                             ],
                             [
                                 'assigned_user_name',
-                                [
-                                    'name' => 'created_by_name',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'modified_by_name',
-                                    'readonly' => true,
-                                ],
                             ],
                         ],
                     ],

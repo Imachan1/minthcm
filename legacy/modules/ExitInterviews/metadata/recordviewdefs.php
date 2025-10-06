@@ -38,16 +38,6 @@ $viewdefs['ExitInterviews'] = [
                             [
                                 'description',
                             ],
-                            [
-                                'assigned_user_name',
-                                'created_by_name',
-                                'modified_by_name',
-                            ],
-                            [
-                                '',
-                                'date_entered',
-                                'date_modified',
-                            ],
                         ],
                     ],
                 ],

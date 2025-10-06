@@ -14,6 +14,12 @@ use Exception;
  */
 class MetaController
 {
+    protected const FIELDS_IN_OTHER_SECTION = [
+        'assigned_user_name',
+        'date_entered',
+        'date_modified',
+    ];
+
     public function getEditViewMeta($module)
     {
         chdir('../legacy/');
@@ -74,6 +80,16 @@ class MetaController
                     $data['recordview']['panels'][$panel]['data']['sections'][$section] = $viewdefs[$module]['panels'][$panel]['data']['sections'][$section];
                     $data['recordview']['panels'][$panel]['data']['sections'][$section]['fields'] = $this->mergeModuleFields($views[$panel][$section],$module_fields)['fields'];
                 }
+
+                if (!in_array('other', array_keys($panel_defs['data']['sections']))) {
+                    $views[$panel]['other']['fields'] = [ self::FIELDS_IN_OTHER_SECTION ];
+                    $data['recordview']['panels'][$panel]['data']['sections']['other'] = [
+                        'title' => 'LBL_OTHER',
+                        'collapsed' => true,
+                    ];
+                    $data['recordview']['panels'][$panel]['data']['sections']['other']['fields'] = $this->mergeModuleFields($views[$panel]['other'],$module_fields)['fields'];
+                }
+
                 continue;
             }
             $views[$panel]['fields'] = $panel_defs['data']['fields'];

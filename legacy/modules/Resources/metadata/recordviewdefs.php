@@ -34,7 +34,6 @@ $viewdefs['Resources'] = [
                             [
                                 'unavailable',
                                 'description',
-                                'assigned_user_name',
                             ],
                         ],
                     ],
@@ -43,12 +42,9 @@ $viewdefs['Resources'] = [
                         'collapsed' => true,
                         'fields' => [
                             [
+                                'assigned_user_name',
                                 'date_entered',
                                 'date_modified',
-                            ],
-                            [
-                                'created_by_name',
-                                'modified_by_name',
                             ],
                         ],
                     ],

@@ -55,15 +55,6 @@ $viewdefs['Documents'] = [
                                 'related_doc_name',
                                 'related_doc_rev_number',
                             ],
-                            [
-                                'date_entered',
-                                'date_modified',
-                            ],
-                            [
-                                'created_by_name',
-                                'modified_by_name',
-                                'assigned_user_name',
-                            ],
                         ],
                     ],
                 ],

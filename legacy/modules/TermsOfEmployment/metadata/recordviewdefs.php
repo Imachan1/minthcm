@@ -34,17 +34,6 @@ $viewdefs['TermsOfEmployment'] = [
                             ],
                             [
                                 'employee_name',
-                                'assigned_user_name',
-                            ],
-                            [
-                                [
-                                    'name' => 'date_entered',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'date_modified',
-                                    'readonly' => true,
-                                ],
                             ],
                             [
                                 'description',

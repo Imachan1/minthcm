@@ -26,7 +26,6 @@ $viewdefs['Rooms'] = [
                         'fields' => [
                             [
                                 'name',
-                                'assigned_user_name',
                                 [
                                     'name' => 'security_group_name',
                                     'filters' => [
@@ -47,14 +46,6 @@ $viewdefs['Rooms'] = [
                             [
                                 'number_of_seats',
                                 'description',
-                            ],
-                            [
-                                'date_entered',
-                                'date_modified',
-                            ],
-                            [
-                                'created_by_name',
-                                'modified_by_name',
                             ],
                         ],
                     ],
