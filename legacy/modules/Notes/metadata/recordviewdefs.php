@@ -22,21 +22,28 @@ $viewdefs['Notes'] = [
             'component' => 'MintPanelRecordDetails',
             'title' => 'LBL_NOTE_INFORMATION',
             'data' => [
-                'fields' => [
-                    [
-                        'name',
-                        'filename',
-                    ],
-                    [
-                        'parent_name',
-                        'description',
-                    ],
-                    [
-                        'date_entered',
-                        'date_modified',
-                    ],
-                    [
-                        'assigned_user_name',
+                'sections' => [
+                    'basic' => [
+                        'title' => 'LBL_BASIC',
+                        'fields' => [
+                            [
+                                'name',
+                                'filename',
+                            ],
+                            [
+                                'parent_name',
+                                'description',
+                            ],
+                            [
+                                'date_entered',
+                                'date_modified',
+                            ],
+                            [
+                                'created_by_name',
+                                'modified_by_name',
+                                'assigned_user_name',
+                            ],
+                        ],
                     ],
                 ],
             ],

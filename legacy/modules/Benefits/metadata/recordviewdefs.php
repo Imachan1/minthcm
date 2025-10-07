@@ -1,7 +1,7 @@
 <?php
 
 $viewdefs['Benefits'] = [
-    'order' => ['header', 'basicInfo', 'relations', 'other', 'subpanels'],
+    'order' => ['header', 'basicInfo', 'subpanels'],
     'panels' => [
         'header' => [
             'component' => 'MintPanelRecordHeader',
@@ -18,25 +18,31 @@ $viewdefs['Benefits'] = [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    ['name', 'assigned_user_name'],
-                    ['description'],
-                ],
-            ],
-        ],
-        'other' => [
-            'component' => 'MintPanelRecordPanel',
-            'title' => 'LBL_OTHER',
-            'data' => [
-                'fields' => [
-                    [
-                        ['name' => 'date_entered', 'readonly' => true],
-                        ['name' => 'date_modified', 'readonly' => true],
+                'sections' => [
+                    'basic' => [
+                        'title' => 'LBL_BASIC',
+                        'fields' => [
+                            ['name', 'assigned_user_name'],
+                            ['description'],
+                        ],
                     ],
-                    [
-                        ['name' => 'assigned_user_name'],
+                    'other' => [
+                        'title' => 'LBL_OTHER',
+                        'collapsed' => true,
+                        'fields' => [
+                            [
+                                ['name' => 'date_entered', 'readonly' => true],
+                                ['name' => 'date_modified', 'readonly' => true],
+                            ],
+                            [
+                                ['name' => 'assigned_user_name'],
+                                ['name' => 'created_by_name', 'readonly' => true],
+                                ['name' => 'modified_by_name', 'readonly' => true],
+                            ],
+                        ],
                     ],
                 ],
+
             ],
         ],
         'subpanels' => [

@@ -54,19 +54,25 @@ export const useBean = (module: string, id: string) => {
         const formPanel = Object.values(modulesStore.modules[module]?.metadata.RecordView?.panels ?? {}).find( // FIXME: refactor - podobny kod w useLogic
             (panel) => panel.component === 'MintPanelRecordDetails',
         )
-        const formFields = formPanel?.data?.fields?.flat() ?? []
         const errors: { [key: string]: string } = {}
-        formFields.forEach((field) => {
-            if (logic.hiddenFields.value.includes(field.name) || logic.readonlyFields.value.includes(field.name)) {
-                return
-            }
-            const value = filesToSave.value[field.name] ?? attributes.value[field.name]
-            const fieldValidationResult = useField(field, value).validate()
-            if (typeof fieldValidationResult === 'string') {
-                errors[field.name] = fieldValidationResult
-            } else if (logic.errorMessages.value[field.name]) {
-                errors[field.name] = logic.errorMessages.value[field.name]
-            }
+        if (!formPanel) {
+            return errors
+        }
+        
+        Object.values(formPanel?.data?.sections).forEach((section) => {
+            const formFields = section?.fields?.flat() ?? []
+            formFields.forEach((field) => {
+                if (logic.hiddenFields.value.includes(field.name) || logic.readonlyFields.value.includes(field.name)) {
+                    return
+                }
+                const value = filesToSave.value[field.name] ?? attributes.value[field.name]
+                const fieldValidationResult = useField(field, value).validate()
+                if (typeof fieldValidationResult === 'string') {
+                    errors[field.name] = fieldValidationResult
+                } else if (logic.errorMessages.value[field.name]) {
+                    errors[field.name] = logic.errorMessages.value[field.name]
+                }
+            })
         })
         return errors
     })

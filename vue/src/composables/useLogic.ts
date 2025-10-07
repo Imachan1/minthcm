@@ -27,7 +27,14 @@ export const useLogic = (module: string) => {
         const formPanel = Object.values(modulesStore.modules[module]?.metadata.RecordView?.panels ?? {}).find(
             (panel) => panel.component === 'MintPanelRecordDetails',
         )
-        return (formPanel?.data?.fields?.flat() ?? []).map((field) => field.name)
+        const fields = [] as string[]
+        Object.values(formPanel?.data?.sections).forEach((section) => {
+            const sectionFields = section?.fields?.flat() ?? []
+            sectionFields.forEach((field) => {
+                fields.push(field.name)
+            })
+        })
+        return fields
     })
 
     const activeRules = computed(() => rules.value.filter((rule) => rule.trigger))

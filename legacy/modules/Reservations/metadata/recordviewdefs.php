@@ -1,7 +1,7 @@
 <?php
 
 $viewdefs['Reservations'] = [
-    'order' => ['header', 'basicInfo', 'd1', 'other', 'subpanels'],
+    'order' => ['header', 'basicInfo'],
     'panels' => [
         'header' => [
             'component' => 'MintPanelRecordHeader',
@@ -22,42 +22,41 @@ $viewdefs['Reservations'] = [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    [
-                        'name',
-                        'starting_date',
-                        'ending_date',
-                    ],
-                    [
-                        'resource_name',
-                        'delegation_name',
+                'sections' => [
+                    'basic' => [
+                        'title' => 'LBL_BASIC',
+                        'fields' => [
+                            [
+                                'name',
+                                'starting_date',
+                                'ending_date',
+                            ],
+                            [
+                                'resource_name',
+                                'delegation_name',
 
-                    ],
-                    [
-                        'employee_name',
-                        'assigned_user_name',
+                            ],
+                            [
+                                'employee_name',
+                                'assigned_user_name',
 
+                            ],
+                            [
+                                'description',
+                            ],
+                        ],
                     ],
-                    [
-                        'description',
+                    'd1' => [
+                        'title' => 'LBL_RECORDVIEW_PANEL1',
+                        'fields' => [
+                            [
+                                'parent_name',
+                                '',
+                            ],
+                        ],
                     ],
                 ],
             ],
-        ],
-        'd1' => [
-            'component' => 'MintPanelRecordPanel',
-            'title' => 'LBL_RECORDVIEW_PANEL1',
-            'data' => [
-                'fields' => [
-                    [
-                        'parent_name',
-                        '',
-                    ],
-                ],
-            ],
-        ],
-        'subpanels' => [
-            'component' => 'MintPanelSubpanels',
         ],
     ],
 ];
