@@ -42,15 +42,14 @@ $viewdefs['Certificates'] = [
                         'fields' => [
                             [
                                 'assigned_user_name',
-                                'label' => 'LBL_ASSIGNED_TO_NAME',
-                            ],
-                            [
-                                'name' => 'date_entered',
-                                'readonly' => true,
-                            ],
-                            [
-                                'name' => 'date_modified',
-                                'readonly' => true,
+                                [
+                                    'name' => 'date_entered',
+                                    'readonly' => true,
+                                ],
+                                [
+                                    'name' => 'date_modified',
+                                    'readonly' => true,
+                                ],
                             ],
                         ],
                     ],

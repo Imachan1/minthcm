@@ -82,6 +82,7 @@ $viewdefs['Candidates'] = [
                     ],
                     'assignment' => [
                         'title' => 'LBL_RECORDVIEW_PANEL2',
+                        'collapsed' => true,
                         'fields' => [
                             ['assigned_user_name', 'created_by_name', 'modified_by_name'],
                             ['', 'date_entered', 'date_modified'],
