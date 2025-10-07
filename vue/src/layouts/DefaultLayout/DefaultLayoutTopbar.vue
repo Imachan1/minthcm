@@ -1,8 +1,8 @@
 <template>
     <nav class="top-bar">
-        <router-link class="img-logo" to="/">
+        <div class="img-logo" @click="navigateToDashboard">
             <img src="../../assets/mint_logo_white.svg" />
-        </router-link>
+        </div>
         <DefaultLayoutSearch />
         <div class="flex-grow-1" />
         <v-menu offset="16">
@@ -50,12 +50,15 @@ import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import DefaultLayoutModulesPopup from './DefaultLayoutModulesPopup.vue'
 import DefaultLayoutSearch from './DefaultLayoutSearch.vue'
+import { useRoute } from 'vue-router'
+import router from '@/router'
 
 const backend = useBackendStore()
 const alerts = useAlertsStore()
 const popups = usePopupsStore()
 const modules = useModulesStore()
 const languages = useLanguagesStore()
+const route = useRoute();
 
 const alertsMenu = ref(false)
 
@@ -87,6 +90,13 @@ function showModulesPopup() {
         component: DefaultLayoutModulesPopup,
     })
 }
+function navigateToDashboard() {
+    if(route.name === 'dashboard') {
+        document.querySelector('iframe.legacy-view')?.contentWindow.document.querySelector('.nav-dashboard > li > a')?.click();
+    } else {
+        router.push({ name: 'dashboard' });
+    }
+}
 </script>
 
 <style scoped lang="scss">
@@ -117,6 +127,7 @@ function showModulesPopup() {
     height: var(--v-top-nav-height);
     width: 260px;
     z-index: 1000;
+    cursor: pointer;
     img {
         padding: 12px 24px;
         height: 58px;
