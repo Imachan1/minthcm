@@ -28,12 +28,14 @@ export const useLogic = (module: string) => {
             (panel) => panel.component === 'MintPanelRecordDetails',
         )
         const fields = [] as string[]
-        Object.values(formPanel?.data?.sections).forEach((section) => {
-            const sectionFields = section?.fields?.flat() ?? []
-            sectionFields.forEach((field) => {
-                fields.push(field.name)
+        if (formPanel) {
+            Object.values(formPanel?.data?.sections).forEach((section) => {
+                const sectionFields = section?.fields?.flat() ?? []
+                sectionFields.forEach((field) => {
+                    fields.push(field.name)
+                })
             })
-        })
+        }
         return fields
     })
 
