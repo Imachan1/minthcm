@@ -31,24 +31,28 @@ var MintHCMDynamicPopupView = {
     this.formname = formname ;
 
     this.save = function(){
-        viewTools.GUI.fieldErrorUnmark();
-        let validation_is_ok = true;
-        for (let key = 0; key < viewTools.cache.form_beforeSave_enforced.length; key++) {
-            var tmp_function = viewTools.cache.form_beforeSave_enforced[key];
-            if (tmp_function(this.formname) === false) {
-                validation_is_ok = false;
-                viewTools.form.error_count++;
+        this.showLoadingPanel();
+        setTimeout(() => {
+            viewTools.GUI.fieldErrorUnmark();
+            let validation_is_ok = true;
+            for (let key = 0; key < viewTools.cache.form_beforeSave_enforced.length; key++) {
+                var tmp_function = viewTools.cache.form_beforeSave_enforced[key];
+                if (tmp_function(this.formname) === false) {
+                    validation_is_ok = false;
+                    viewTools.form.error_count++;
+                }
             }
-        }
-        var _form = document.getElementById(this.formname);
-        _form.action.value = 'Save';
-        validation_is_ok = check_form(this.formname) && validation_is_ok;
-        if (validation_is_ok) {
-            MintHCMDynamicPopupView.submitForm(_form);
-        } else {
-            viewTools.form.focusOnFirstError();
-            viewTools.form.onValidationEnd();
-        }
+            var _form = document.getElementById(this.formname);
+            _form.action.value = 'Save';
+            validation_is_ok = check_form(this.formname) && validation_is_ok;
+            if (validation_is_ok) {
+                MintHCMDynamicPopupView.submitForm(_form);
+            } else {
+                viewTools.form.focusOnFirstError();
+                viewTools.form.onValidationEnd();
+                this.hideLoadingPanel();
+            }
+        }, 50);
     }
 
     this.close = function(){
