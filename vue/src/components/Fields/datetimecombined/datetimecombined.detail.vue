@@ -4,9 +4,12 @@
         <div class="detail-field-row">
             <div class="content-wrapper">
                 {{ parsedDate + ' ' + languages.label('LBL_BY') }}
-                <router-link :to="recordUrl" class="relate-field">
+                <router-link v-if="hasViewAccess" :to="recordUrl" class="relate-field">
                     {{ nameField }}
                 </router-link>
+                <span v-else>
+                    {{ nameField }}
+                </span>
             </div>
         </div>
     </div>
@@ -19,6 +22,7 @@ import { FieldVardef } from '@/store/modules'
 import Pencil from '../Pencil.vue'
 import { usePreferencesStore } from '@/store/preferences';
 import { useLanguagesStore } from '@/store/languages';
+import { useACL } from '@/composables/useACL';
 
 interface Props {
     defs: FieldVardef
@@ -30,6 +34,8 @@ interface Props {
 const props = defineProps<Props>()
 const preferences = usePreferencesStore()
 const languages = useLanguagesStore()
+
+const module = computed(() => props.defs?.module || 'Employees')
 
 const idField = computed(() => {
     let id_field = ''
@@ -57,10 +63,9 @@ const nameField = computed(() => {
 })
 
 const recordUrl = computed(() => {
-    const module = 'Users'
     const id = props.data?.bean?.attributes?.[idField.value]
-    if (!module || !id) return ''
-    return `/modules/${module}/DetailView/${id}`
+    if (!module.value || !id) return ''
+    return `/modules/${module.value}/DetailView/${id}`
 })
 
 const parsedDate = computed(() => {
@@ -74,6 +79,10 @@ const parsedDate = computed(() => {
     }
     return dt.toLocal().toFormat(`${preferences.user?.date_format} ${preferences.user?.time_format}`)
 })
+
+const hasViewAccess = computed<boolean>(() => {
+    return useACL().hasAccess(module.value, 'view', true, true)
+})
 </script>
 
 <style scoped lang="scss">
@@ -81,6 +90,7 @@ label {
     font-size: 12px;
     color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
 }
+
 .content-wrapper {
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -89,6 +99,7 @@ label {
     flex-wrap: nowrap;
     display: flex;
 }
+
 .relate-field {
     text-decoration: none;
     color: rgb(var(--v-theme-secondary));

@@ -16,18 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import { FieldVardef } from '@/store/modules'
 import Pencil from '../Pencil.vue'
+import { FieldProps } from '../Field.model'
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-    hidePencil?: boolean
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const emit = defineEmits(['inlineEditBtnClicked'])
 function startInlineEdit() {
     if (props?.defs?.name && typeof props.defs.name === 'string' && props.defs.name.length > 0) {

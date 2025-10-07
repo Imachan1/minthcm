@@ -1,8 +1,8 @@
-import { mintApi } from './api'
+import { mintApi } from './api' 
 
 class ModulesApi {
     public async getListInit(module_name: string) {
-        return await mintApi.get(`${module_name}`)
+        return await mintApi.get(`${module_name}`, { rawError: true })
     }
 
     public async getListData(
@@ -27,7 +27,7 @@ class ModulesApi {
             sortOrder: sortOrder,
             activeFilter: activeFilter,
             onlyFavorites: onlyFavorites,
-        })
+        }, { rawError: true })
     }
 
     public async forgetPassword(username: string, email: string) {

@@ -1,46 +1,32 @@
 <template>
     <div>
-        <v-chip
-            v-if="props.defs?.options_colors"
-            :style="coloredEnumStyle"
-            class="enum-chip"
-        >
-            {{ languages.translateListValue(props.data.bean[props.defs.name], props.defs?.options) }}
+        <v-chip v-if="props.defs?.options_colors" :style="coloredEnumStyle" class="enum-chip">
+            {{ languages.translateListValue(props.modelValue, props.defs?.options) }}
         </v-chip>
-        <div v-else>{{ languages.translateListValue(props.data.bean[props.defs.name], props.defs?.options) }}</div>
+        <div v-else>{{ languages.translateListValue(props.modelValue, props.defs?.options) }}</div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { FieldVardef } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'
-import { useBackendStore } from '@/store/backend'
-import { computed, defineProps } from 'vue'
+import { FieldProps } from '../Field.model';
+import { useBackendStore } from '@/store/backend';
+import { computed } from 'vue';
 
-interface Props {
-    defs: FieldVardef
-    data?: any
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const languages = useLanguagesStore()
 const backend = useBackendStore()
 
 const coloredEnumStyle = computed(() => {
     const colors = backend.initData.field_variables?.ColoredEnum?.options_colors
     if (colors && props.defs?.options_colors) {
-        return colors[props.defs.options_colors[props.data.bean[props.defs.name]]] || colors['-default-']
+        return colors[props.defs.options_colors[props.modelValue]] || colors['-default-']
     }
     return ''
 })
 </script>
 
 <style scoped lang="scss">
-:deep(.v-chip.v-chip--size-default) {
-    height: 28px;
-    border-radius: 4px;
-    letter-spacing: 0.09px;
-}
 .enum-chip {
     display: flex;
     align-items: center;

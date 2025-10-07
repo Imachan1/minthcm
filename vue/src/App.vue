@@ -3,6 +3,7 @@
     <v-app v-else>
         <MintOverlay />
         <MintPopups />
+        <MintStatusBoxes />
         <v-fade-transition>
             <LoadingScreen v-if="backend.initialLoading" />
         </v-fade-transition>
@@ -26,6 +27,7 @@ import MintPopups from '@/components/MintPopups/MintPopups.vue'
 import LoadingScreen from '@/components/LoadingScreen.vue'
 import MintOverlay from './components/MintOverlay.vue'
 import '/node_modules/flag-icons/css/flag-icons.min.css'
+import MintStatusBoxes from './components/MintStatusBoxes/MintStatusBoxes.vue'
 
 const backend = useBackendStore()
 const ux = useUxStore()

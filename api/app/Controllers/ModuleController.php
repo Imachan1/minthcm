@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,10 +36,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
- * If the display of the logos is not reasonably feasible for technical reasons, the
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -306,9 +306,16 @@ class ModuleController
             $return_list = [];
             foreach ($list as $record_id => $record) {
                 $record->fill_in_additional_detail_fields();
-                foreach ($record->field_defs as $field_name => $field_def) {
-                    $return_list[$record_id][$field_name] = $record->$field_name;
-                }
+                $return_list[$record_id] = [
+                    'id' => $record->id,
+                    'module' => $record->module_name,
+                    'attributes' => $record->toArray(),
+                    'acl_access' => [
+                        'edit' => $record->ACLAccess('edit'),
+                        'delete' => $record->ACLAccess('delete'),
+                        'view' => $record->ACLAccess('view'),
+                    ],
+                ];
             }
             $return_list['total'] = $data['row_count'];
             $return_list['page'] = (int) $page;

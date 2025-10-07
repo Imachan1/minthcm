@@ -1,15 +1,16 @@
 <template>
         <component
-        v-bind="$attrs"
+            v-bind="$attrs"
             :is="FieldComponent"
             :class="classList"
             :data="data"
             :defs="defs"
             :label="label"
-        :options="props.options"
+            :options="props.options"
             :state="fieldState"
             :hidePencil="true"
             :modelValue="modelValue"
+            :view="view"
         >
         </component>
     <div v-if="errorMessage" class="field-error-message">{{ errorMessage }}</div>
@@ -17,25 +18,12 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, computed, watch } from 'vue'
-import { FieldVardef, useModulesStore } from '@/store/modules'
+import { useModulesStore } from '@/store/modules'
 import { fieldConfig } from '../Fields/Field.config'
-import { FieldState } from './Field.model'
+import { FieldProps, FieldState } from './Field.model'
 import { useLanguagesStore } from '@/store/languages'
 
-interface Props {
-    defs: FieldVardef
-    view: 'edit' | 'detail' | 'list'
-    data?: any
-    modelValue?: any
-    label?: string
-    options?: any
-    disabled?: boolean
-    hidePencil?: boolean
-    required?: boolean
-    errorMessage?: string
-    isDirty?: boolean
-}
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const languagesStore = useLanguagesStore()
 const modulesStore = useModulesStore()
 

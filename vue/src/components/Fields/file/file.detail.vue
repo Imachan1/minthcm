@@ -13,16 +13,10 @@
 </template>
 
 <script lang="ts" setup>
-import { FieldVardef } from '@/store/modules'
 import { computed } from 'vue'
+import { FieldProps } from '../Field.model'
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 
 const serverFileName = computed(() => {
     if (!props.data?.bean?.attributes?.id) {

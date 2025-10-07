@@ -1,39 +1,27 @@
 <template>
-    <div class="mint-datetime-field">{{ parsedDateTime }}</div>
+    <span>{{ parsedDate }}</span>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { FieldVardef } from '@/store/modules'
 import { DateTime } from 'luxon'
 import { usePreferencesStore } from '@/store/preferences'
+import { FieldProps } from '../Field.model'
 
-interface Props {
-    defs: FieldVardef
-    data?: any
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const preferences = usePreferencesStore()
 
-const parsedDateTime = computed(() => {
-    const dateString = props.data.bean[props.defs.name].trim()
-    if (!dateString) {
+const parsedDate = computed(() => {
+    const value = props.modelValue?.trim()
+    if (!value) {
         return ''
     }
-    let dateTime = DateTime.fromFormat(dateString, `${preferences.user?.date_format} ${preferences.user?.time_format}`)
-    if (!dateTime.isValid) {
-        dateTime = DateTime.fromSQL(dateString, { zone: 'UTC' })
+    const dt = DateTime.fromSQL(value, { zone: 'UTC' })
+    if (!dt.isValid) {
+        return ''
     }
-    return dateTime.isValid
-        ? dateTime.toLocal().toFormat(`${preferences.user?.date_format} ${preferences.user?.time_format}`)
-        : dateString
+    return dt.toLocal().toFormat(`${preferences.user?.date_format} ${preferences.user?.time_format}`)
 })
 </script>
 
-<style scoped lang="scss">
-.mint-datetime-field {
-    width: min-content;
-    text-wrap: wrap;
-}
-</style>
+<style scoped lang="scss"></style>

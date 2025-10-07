@@ -2,6 +2,7 @@
 
 namespace MintHCM\Lib\MintLogic;
 
+use MintHCM\Data\MintBean;
 use MintHCM\Lib\MintLogic\Exceptions\ValidationException;
 
 class MintLogic
@@ -9,8 +10,11 @@ class MintLogic
     private $bean;
     private $defs;
 
-    public function __construct(\SugarBean $bean)
+    public function __construct($bean)
     {
+        if (!$bean instanceof \SugarBean && !$bean instanceof MintBean) {
+            throw new \InvalidArgumentException("Bean must be an instance of SugarBean or MintBean");
+        }
         $this->bean = clone $bean;
         $this->defs = include __DIR__ . "/Modules/{$bean->module_name}/logicdefs.php" ?? [];
     }

@@ -2,9 +2,12 @@
     <div>
         <label>{{ props.label }}</label>
         <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()" @keyup.enter="$emit('inlineEditSave')">
-            <router-link :to="recordUrl" class="relate-field">
+            <router-link v-if="hasViewAccess" :to="recordUrl" class="relate-field">
                 {{ props.modelValue }}
             </router-link>
+            <span v-else>
+                {{ props.modelValue }}
+            </span>
             <Pencil
                 :defs="props.defs"
                 :hidePencil="hidePencil"
@@ -16,18 +19,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { FieldVardef } from '@/store/modules'
 import Pencil from '../Pencil.vue'
+import { FieldProps } from '../Field.model';
+import { useACL } from '@/composables/useACL';
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-    hidePencil?: boolean
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const emit = defineEmits(['inlineEditBtnClicked'])
 
 const recordUrl = computed(() => {
@@ -41,6 +37,9 @@ function startInlineEdit() {
         emit('inlineEditBtnClicked', props.defs.name)
     }
 }
+const hasViewAccess = computed<boolean>(() => {
+    return useACL().hasAccess(props.defs.module, 'view', true, true)
+})
 </script>
 
 <style scoped lang="scss">

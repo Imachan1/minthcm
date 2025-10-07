@@ -54,9 +54,9 @@ class ElasticResult extends SearchResult
 {
     protected $next_offset, $next_page_exists;
 
-    public function __construct($result, $current_offset, $size, $handle_acl = false,$indice_module_map =[] )
+    public function __construct($result, $current_offset, $size, $handle_acl = false, $indice_module_map = [])
     {
-        parent::__construct($result, $current_offset, $size, $handle_acl,$indice_module_map);
+        parent::__construct($result, $current_offset, $size, $handle_acl, $indice_module_map);
         $this->setNextData();
     }
 
@@ -123,7 +123,7 @@ class ElasticResult extends SearchResult
         if (empty($this->result)) {
             return;
         }
-        
+
         foreach ($this->result["hits"]["hits"] as $hit) {
             $module = $this->indice_module_map[$hit["_index"]];
             $this->grouped_ids[$module][] = $hit['_id'];
@@ -157,7 +157,6 @@ class ElasticResult extends SearchResult
         foreach ($this->grouped_ids as $module => $ids) {
             $focus = BeanFactory::newBean($module);
             $beans = $focus->get_full_list('', " {$focus->table_name}.id IN ('" . implode("','", $ids) . "')");
-            $favorite = BeanFactory::newBean('Favorites');
 
             foreach ($beans as $bean) {
                 $bean->retrieve();
@@ -165,16 +164,7 @@ class ElasticResult extends SearchResult
                 if (empty($bean->id)) {
                     continue;
                 }
-
                 $bean->load_relationships();
-                $bean->acl_access = [
-                    'edit' => $bean->ACLAccess('edit'),
-                    'view' => $bean->ACLAccess('view'),
-                    'delete' => $bean->ACLAccess('delete'),
-                ];
-
-                $bean->is_favorite = !empty($favorite->getFavoriteID($bean->module_dir, $bean->id));
-
                 $beans_unsorted[] = $bean;
             }
         }
@@ -194,9 +184,14 @@ class ElasticResult extends SearchResult
                 continue;
             }
 
+            $bean->is_favorite = false;
+            if (!empty($hit['_source']['users_favorite'])) {
+                global $current_user;
+                $users_favorite = array_column($hit['_source']['users_favorite'], 'id') ?? [];
+                $bean->is_favorite = in_array($current_user->id, $users_favorite);
+            }
+
             $this->beans[] = $bean;
         }
-
     }
-
 }

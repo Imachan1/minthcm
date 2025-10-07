@@ -13,12 +13,13 @@ $ESListViewDefs[$module_name] = [
         ],
         'phone_mobile' => [
             'default' => true,
-            'type' => 'varchar',
+            'type' => 'phone',
         ],
         'potential' => [
             'default' => true,
         ],
         'birthdate' => [
+            'type' => 'age',
             'default' => true,
         ],
         'relocation' => [],
@@ -43,6 +44,9 @@ $ESListViewDefs[$module_name] = [
         'primary_address_state' => [],
         'primary_address_country' => [],
         'primary_address_postalcode' => [],
+        'email1' => [
+            'type' => 'email',
+        ],
     ],
     'search' => [
         'last_time_contact' => [],

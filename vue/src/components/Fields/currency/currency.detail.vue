@@ -10,28 +10,17 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { FieldVardef } from '@/store/modules'
 import Pencil from '../Pencil.vue'
-import { useAuthStore } from '@/store/auth'
 import NumberUtils from '@/utils/numbers'
+import { FieldProps } from '../Field.model'
 
-
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const value = computed(() => { 
     const value = props.modelValue?.trim()
     if (!value) {
         return ''
     }
-    const auth = useAuthStore()
-    const currency_id = props.data?.bean?.currency_id ?? '-99'
-    
+    const currency_id = props.data?.bean?.attributes?.currency_id ?? '-99'
     return NumberUtils.formatCurrency(value, currency_id)
 })
 </script>

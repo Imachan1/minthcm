@@ -57,7 +57,7 @@ const changePageNumber = (toPage: string, tableName: string) => {
             page = Number(props.page) - 1
             break
     }
-    emit('pageChanged', page, tableName)
+    emit('pageChanged', page, tableName, props.paginateBy)
 }
 
 const shouldDisable = (direction: string) => {
