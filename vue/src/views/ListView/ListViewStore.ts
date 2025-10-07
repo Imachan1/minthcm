@@ -10,6 +10,7 @@ import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import MassActions from '@/business/MassActions'
 import { modulesApi } from '@/api/modules.api'
 import * as operatorDefs from './operators'
+import { useFavoritesStore } from '@/store/favorites'
 
 interface Preferences {
     columns: string[]
@@ -35,6 +36,7 @@ export const useListViewStore = defineStore('listview', () => {
     const languages = useLanguagesStore()
     const url = useUrlStore()
     const router = useRouter()
+    const favorites = useFavoritesStore()
     const isInit = ref(false)
     const config = ref({})
     const defs = ref<Defs | null>(null)
@@ -45,6 +47,7 @@ export const useListViewStore = defineStore('listview', () => {
     const initialLoading = ref(true)
     const isLoading = ref(true)
     const myObjects = ref(false)
+    const onlyFavorites = ref(false)
     const activeFilter = ref<string | null>(null)
     const error = ref(false)
     const filters = ref({
@@ -105,6 +108,7 @@ export const useListViewStore = defineStore('listview', () => {
             defs.value?.columns[options.value.sortBy[0]?.key]?.key,
             options.value.sortBy[0]?.order ?? 'asc',
             activeFilter.value,
+            onlyFavorites.value,
         ).catch((requestError) => {
             console.error('Error fetching data:', requestError?.response?.data || requestError)
             isLoading.value = false
@@ -113,8 +117,8 @@ export const useListViewStore = defineStore('listview', () => {
         })
         requestCount--
         if (module.value === result?.data.module && requestCount <= 0) {
-            requestCount = 0;
-            isLoading.value = false;
+            requestCount = 0
+            isLoading.value = false
             results.value = result.data?.results
             itemsLength.value = result.data?.total
             if (options.value.page === 1) {
@@ -161,13 +165,24 @@ export const useListViewStore = defineStore('listview', () => {
         if (!isInit.value) {
             return []
         }
-        const headers = visibleColumns.value.map((col) => ({
+        const headers = visibleColumns.value.map((col) => {
+            if (col.name === 'favorites') {
+                return {
+                    value: 'is_favorite',
+                    key: 'is_favorite',
+                    title: '',
+                    sortable: false,
+                    align: 'center',
+                }
+            }
+            return {
             value: col.name,
             key: col.name,
             title: languages.label(col.label, module.value),
             sortable: !(col.sortable === false),
             class: col.name == 'name' ? 'stickyColumn' : '',
-        }))
+            }
+        })
         if (mode.value === 'list') {
             headers.push({
                 value: 'actions',
@@ -472,6 +487,15 @@ export const useListViewStore = defineStore('listview', () => {
         }
     }
 
+    function toggleFavorite(item) {
+        if (!item.is_favorite) {
+            favorites.addToFavorites(getModule(), item.id, item.name)
+        } else {
+            favorites.removeFromFavorites(getModule(), item.id)
+        }
+        item.is_favorite = !item.is_favorite
+    }
+
     return {
         mode,
         init,
@@ -508,5 +532,7 @@ export const useListViewStore = defineStore('listview', () => {
         massActions,
         predefinedFilters,
         error,
+        toggleFavorite,
+        onlyFavorites,
     }
 })

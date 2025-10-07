@@ -2221,6 +2221,8 @@ $app_strings = array(
     'LBL_ESLIST_SELECT_DATE' => 'Select',
     'LBL_ESLIST_OVERWRITE_FILTER_CONFIRM' => 'Filter with that name already exists. Do you want to overwrite it?',
     'LBL_ESLIST_REFRESH' => 'Refresh',
+    'LBL_ESLIST_IS_FAVORITE' => 'Favorite',
+    'LBL_ESLIST_MY_FAVORITES' => 'Only my favorites',
     //MOBILE START
     'LBL_ID_FF_SELECT' => 'Select',
     'LBL_INSTANCE_ADDRESS' => 'Server Address',

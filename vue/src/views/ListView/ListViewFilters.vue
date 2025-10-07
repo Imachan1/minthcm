@@ -23,6 +23,17 @@
                 <span v-text="languages.label('LBL_ESLIST_MY_OBJECTS')"></span>
             </template>
         </v-switch>
+        <v-switch
+            v-model="store.onlyFavorites"
+            class="flex-grow-0"
+            @change="store.getData"
+            color="secondary"
+            hide-details
+        >
+            <template #label>
+                <span v-text="languages.label('LBL_ESLIST_MY_FAVORITES')"></span>
+            </template>
+        </v-switch>
         <MintButton
             icon="mdi-content-save-outline"
             :disabled="!filterRows.length || store.predefinedFilters"

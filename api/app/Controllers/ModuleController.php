@@ -372,7 +372,6 @@ class ModuleController
             'logic' => (new MintLogic($bean))->getInitial(),
         ];
     }
-
     protected function handleFiles($bean, $files = [])
     {
         if (!empty($files) && is_array($files)) {

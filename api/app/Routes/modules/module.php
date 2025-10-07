@@ -368,6 +368,12 @@ $routes = array(
                     ]
                 ',
             ),
+            "onlyFavorites" => array(
+                "type" => BoolType::class,
+                "required" => false,
+                "desc" => "if enable, shows only favorite records",
+                "example" => '1',
+            ),
         ),
     ),
     "list_save_preferences" => array(
