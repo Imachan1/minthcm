@@ -1136,6 +1136,10 @@ fieldset {
       color: $primary-btn-color;
   }
   
+  #EditView input[type=submit].button.primary{
+      background-color: $lm-secondary-accent;
+  }
+  
   input[type=submit].button.primary:hover,
   input[type=button].button.primary:hover,
   input[type=reset].button.primary:hover,

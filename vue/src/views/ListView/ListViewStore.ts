@@ -159,7 +159,7 @@ export const useListViewStore = defineStore('listview', () => {
 
     function setDefaultColumns() {
         if (preferences.value?.columns) {
-            preferences.value.columns = null
+            preferences.value.columns = []
         }
     }
 
