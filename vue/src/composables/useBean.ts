@@ -39,9 +39,11 @@ export const useBean = (module: string, id: string) => {
 
     const validationError = ref('')
     const isValid = computed(() => {
-        for (const fieldName of logic.requiredFields.value) {
-            if ((isDirty.value || dirtyFields.value.has(fieldName)) && !attributes.value[fieldName]) {
-                return false
+        if (logic.requiredFields.value) {
+            for (const fieldName of logic.requiredFields.value) {
+                if ((isDirty.value || dirtyFields.value.has(fieldName)) && !attributes.value[fieldName]) {
+                    return false
+                }
             }
         }
         if (Object.keys(errorMessages.value).length > 0) {

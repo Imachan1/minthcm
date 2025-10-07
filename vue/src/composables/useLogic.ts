@@ -120,7 +120,7 @@ export const useLogic = (module: string) => {
         const options: { [fieldName: string]: any } = {}
         activeRules.value.forEach((s) => {
             Object.entries(s.logic.options ?? {}).forEach(([fieldName, value]) => {
-                if (value && formFields.value.includes(fieldName)) {
+                if (value && formFields.value && formFields.value.includes(fieldName)) {
                     options[fieldName] = value
                 }
             })
