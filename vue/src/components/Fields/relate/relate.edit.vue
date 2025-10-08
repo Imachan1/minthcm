@@ -63,6 +63,7 @@ import { useLanguagesStore } from '@/store/languages'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import { modulesApi } from '@/api/modules.api'
 import he from 'he'
+import getFilters from '@/utils/qsOperators'
 import { FieldProps } from '../Field.model'
 
 const props = defineProps<FieldProps>()
