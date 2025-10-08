@@ -20,14 +20,14 @@ return [
                 },
             ],
         ],
-        'hired' => [
+        'notHired' => [
             'hooks' => [Hook::ALL, Hook::CHANGE],
             'triggerFields' => ['status'],
-            'trigger' => Formula::inArray('$status', ['Acceptance', 'Hired']),
+            'trigger' => Formula::notInArray('$status', ['Acceptance', 'Hired']),
             'logic' => [
                 'visible' => [
-                    'work_start' => true,
-                    'training_date' => true,
+                    'work_start' => false,
+                    'training_date' => false,
                 ],
             ],
         ],
