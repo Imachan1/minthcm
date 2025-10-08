@@ -1,4 +1,5 @@
 <?php
+
 namespace MintHCM\Api\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -8,6 +9,7 @@ class FilesController
 {
     public function saveFile(Request $request, Response $response, array $args): Response
     {
+        global $current_user;
         try {
             $files = $request->getUploadedFiles();
             $attr = $request->getAttributes();
@@ -17,15 +19,19 @@ class FilesController
                 chdir('../legacy');
                 require_once('include/upload_file.php');
                 $fileManager = new \UploadFile('file');
-                if($fileManager->confirm_upload()) {
+                if ($fileManager->confirm_upload()) {
                     $file = \BeanFactory::newBean('Files');
-                    $file->name = $fileManager->get_stored_file_name();
+                    $file->document_name = $fileManager->get_stored_file_name();
                     $file->parent_type = $module;
                     $file->parent_id = $record_id;
                     $file->filename = $fileManager->get_stored_file_name();
                     $file->file_mime_type = $fileManager->get_mime_type();
-                    if($file->save(false) && $fileManager->final_move($file->id)) {
-                        $result = $file->id;
+                    $file->assigned_user_id = $current_user->id;
+                    if ($file->save(false) && $fileManager->final_move($file->id)) {
+                        $result = [
+                            'id' => $file->id,
+                            'canDelete' => $file->ACLAccess('delete'),
+                        ];
                     }
                 }
             }
@@ -61,17 +67,23 @@ class FilesController
             $bean = \BeanFactory::getBean($args['module_name'], $args['record_id'] ?? null);
             if ($bean && !empty($bean->id) && $bean->load_relationship('files')) {
                 foreach ($bean->files->getBeans() as $file) {
+                    if (!$file->ACLAccess('detail')) {
+                        continue;
+                    }
+
+                    $can_delete = $file->ACLAccess('delete');
+
                     $files[] = [
                         'id' => $file->id,
                         'name' => $file->filename,
                         'size' => filesize("upload://{$file->id}"),
                         'accepted' => true,
+                        'canDelete' => $can_delete,
                     ];
                 }
             }
             chdir('../api');
             return $this->successResponse($response, $files);
-            
         } catch (\Exception $e) {
             return $this->errorResponse($response, $e);
         }

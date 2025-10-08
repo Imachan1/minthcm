@@ -2,6 +2,7 @@ import Dropzone from 'dropzone';
 import { useDropzoneStore } from './MintDropzoneStore';
 import { useLanguagesStore } from '@/store/languages';
 import { useBackendStore } from '@/store/backend';
+import { useACL } from '@/composables/useACL';
 
 class MintDropzone {
     module: string
@@ -17,6 +18,7 @@ class MintDropzone {
     dropzoneStore: ReturnType<typeof useDropzoneStore>
     languageStore: ReturnType<typeof useLanguagesStore>
     backendStore: ReturnType<typeof useBackendStore>
+    acl: ReturnType<typeof useACL>
     isSave: boolean
 
     constructor(record: string, module: string, customData = {}, enableAutoProcess = false, validations = []) {
@@ -45,6 +47,7 @@ class MintDropzone {
         this.languageStore = useLanguagesStore();
         this.backendStore = useBackendStore();
         this.languageStore.fetchModuleLanguage(this.module);
+        this.acl = useACL();
         this.isSave = true;
     }
 
@@ -115,6 +118,9 @@ class MintDropzone {
                         this.isSave = false;
                         this.dropzone.displayExistingFile(file, this.getFileUrl(file.id));
                         file.previewElement.addEventListener('click', this.openPreview.bind(this, file.id));
+                        if (!file.canDelete) {
+                            file.previewElement.querySelector('.dz-remove').remove();
+                        }
                         this.dropzone.files.push(file);
                         this.isSave = true;
                     }.bind(this),
@@ -133,12 +139,16 @@ class MintDropzone {
 
     async onFileAccepted(file, done) {
         if (this.isSave) {
-            const file_id = await this.dropzoneStore.saveFile(this.module, this.record, file);
-            file.id = file_id;
-            file.previewElement.addEventListener('click', this.openPreview.bind(this, file_id))
+            const resultedFile = await this.dropzoneStore.saveFile(this.module, this.record, file);
+
+            file.id = resultedFile.id;
+            file.previewElement.addEventListener('click', this.openPreview.bind(this, file.id))
             if (file.type.includes('image')) {
-                file.previewElement.querySelector('.dz-image img').src = this.getFileUrl(file_id, true);
+                file.previewElement.querySelector('.dz-image img').src = this.getFileUrl(file.id, true);
                 file.previewElement.querySelector('.dz-image img').alt = file.name;
+            }
+            if (!resultedFile.canDelete) {
+                file.previewElement.querySelector('.dz-remove').remove();
             }
             this.handleThumbnail(file)
             done();

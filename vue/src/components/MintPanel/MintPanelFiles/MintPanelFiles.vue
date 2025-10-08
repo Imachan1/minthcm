@@ -1,5 +1,5 @@
 <template>
-    <div class="details-panel">
+    <div class="details-panel" v-if="acl.hasAccess('Files', 'list', true, true)">
         <div class="tabs-container">
             <h1>{{ title }}</h1>
         </div>
@@ -15,8 +15,8 @@ import { FieldVardef } from '@/store/modules'
 import { defineProps, ref, computed } from 'vue'
 import { useLanguagesStore } from '@/store/languages'
 import MintDropzone from '@/components/MintDropzone/MintDropzone.vue'
-import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useUrlStore } from '@/store/url'
+import { useACL } from '@/composables/useACL'
 
 interface Props {
     data: {
@@ -28,6 +28,7 @@ const props = defineProps<Props>()
 const modules = useModulesStore()
 const languages = useLanguagesStore()
 const url = useUrlStore()
+const acl = useACL()
 
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_FILES', modules.currentModule?.name)

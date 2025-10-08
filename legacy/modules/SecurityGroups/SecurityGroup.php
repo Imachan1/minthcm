@@ -610,6 +610,10 @@ LIMIT 1";
    public static function getSecurityModules() 
    {
       global $app_list_strings;
+      if (empty($app_list_strings)) {
+        global $current_language;
+        $app_list_strings = return_app_list_strings_language($current_language);
+      }
 
       $security_modules = array();
 
