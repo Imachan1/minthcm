@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,10 +36,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -48,9 +47,10 @@ namespace MintHCM\Api\Controllers;
 
 use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Api\Repositories\SchedulerRepository;
-use Slim\Psr7\Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use MintHCM\Lib\Search\ElasticSearch\NestedQueryFactory;
 use MintHCM\Lib\Search\Search;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Psr7\Response;
 
 class SchedulerController
 {
@@ -113,15 +113,41 @@ class SchedulerController
             $searchQuery .= '*';
         }
 
+        $participantModules = $this->repository->getParticipantModules();
+
         $search_manager->setQuery(array(
             "search" => 'global',
-            "type" => $this->repository->getParticipantModules(),
-            "fields" => array("*__last^5", "*__first^4", "*__name.*^3", "*"),
+            "type" => $participantModules,
+            "fields" => ["*__last^5", "*__first^4", "*__name.*^3", "*"],
             "items" => 25,
             "query" => $searchQuery,
+            "nestedQuery" => $this->processNestedSecurityGroupsQueries($participantModules, $searchQuery),
             "sort_order" => "desc",
         ));
         $search_result = $search_manager->search(false);
         return $search_result->getHits();
     }
+
+    private function processNestedSecurityGroupsQueries(array $participantModules, $searchQuery): array
+    {
+        $processed_queries = [];
+        $nested_queries = [];
+        foreach($participantModules as $module){
+            $module_nested_query_object = NestedQueryFactory::getModuleNestedQueryObject($module);
+            foreach($module_nested_query_object->getQueries() as $query){
+                if(in_array($query, $processed_queries)){
+                    continue;
+                }
+                if(method_exists($module_nested_query_object, $query)){
+                    $module_nested_query = $module_nested_query_object->getProcessedQuery($query, ['search' => $searchQuery]);
+                    if(!empty($module_nested_query)){
+                        $nested_queries[] = $module_nested_query;
+                        $processed_queries[] = $query;
+                    }
+                }
+            }
+        }
+        return $nested_queries;
+    }
+
 }

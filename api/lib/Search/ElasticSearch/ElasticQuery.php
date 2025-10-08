@@ -164,11 +164,11 @@ class ElasticQuery extends SearchQuery
 
     private function getGlobalQuery()
     {
-
+        $global_query = null;
         if ($this->add_acl_filters) {
             $uniq = static::getIndexPrefix();
-            $main_acl["bool"]["must"] = $this->noAclGlobalQuery();
-            $main_acl["bool"]["filter"]["bool"]["should"] = [];
+            $global_query["bool"]["must"] = $this->noAclGlobalQuery();
+            $global_query["bool"]["filter"]["bool"]["should"] = [];
             $search_modules = $this->getGlobalSearchModuleList();
 
             foreach ($search_modules as $module_to_search) {
@@ -185,33 +185,54 @@ class ElasticQuery extends SearchQuery
                 }
 
                 if (is_array($module_filters)) {
-                    $main_acl["bool"]["filter"]["bool"]["should"][] = $module_filters;
+                    $global_query["bool"]["filter"]["bool"]["should"][] = $module_filters;
                     $module_filters = [];
                 }
             }
 
             if (count($this->exclude_modules)) {
-                $main_acl["bool"]["filter"]["bool"]['must_not'] = $this->getExcludeModules();
+                $global_query["bool"]["filter"]["bool"]['must_not'] = $this->getExcludeModules();
             }
-
-            return $main_acl;
         } else {
-            return $this->noAclGlobalQuery();
+            $global_query = $this->noAclGlobalQuery();
         }
+        if(!empty($this->params['nestedQuery'])){
+            return $this->getGlobalQueryWithNestedQueries($global_query);
+        }
+
+        return $global_query;
+    }
+
+    protected function getGlobalQueryWithNestedQueries($global_query)
+    {
+        if(array_key_exists('bool', $global_query)){
+            $global_query['bool']['should'] = [
+                ...$global_query['bool']['should'],
+                ...$this->params['nestedQuery']
+            ];
+        } else {
+            $simple_query = $global_query;
+            $global_query = [];
+            $global_query['bool']['should'] = [
+                $simple_query,
+                ...$this->params['nestedQuery']
+            ];
+        }
+        return $global_query;
     }
 
     private function noAclGlobalQuery()
     {
         $fields = !empty($this->params['fields']) ? $this->params['fields'] : array(static::ALL_FIELDS);
-        return array(
-            'simple_query_string' => array(
-                'query' => $this->params['query'],
-                'fields' => $fields,
-                'analyzer' => 'standard',
-                'default_operator' => 'OR',
-                'minimum_should_match' => '66%',
-            ),
-        );
+        return [
+            'simple_query_string' => [
+                    'query' => $this->params['query'],
+                    'fields' => $fields,
+                    'analyzer' => 'standard',
+                    'default_operator' => 'OR',
+                    'minimum_should_match' => '66%',
+            ],
+        ];
     }
 
     private function getListQuery()
