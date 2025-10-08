@@ -114,6 +114,7 @@ abstract class SearchResult
     {
         return [
             'id' => $bean->id,
+            'name' => $bean->name,
             'module' => $bean->module_name,
             'attributes' => [
                 ...$bean->toArray(),
