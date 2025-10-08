@@ -34,7 +34,6 @@
                         :key="`${subpanel.key}-${subpanel.page}`"
                     />
                     <MintDataTablePagination
-                        :records="subpanel.records"
                         :tableName="subpanel.key"
                         :page="subpanel.page"
                         @page-changed="changePage"

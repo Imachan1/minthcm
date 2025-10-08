@@ -134,7 +134,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
         }
 
 
-        public function process_dynamic_listview($source_module, $sugarbean, $subpanel_def, $countOnly = false, $subpanel_page = 1, $records_per_page = -1)
+        public function process_dynamic_listview($source_module, $sugarbean, $subpanel_def, $countOnly = false, $subpanel_page = 1, $records_per_page = null)
         {
             $this->source_module = $source_module;
             $this->subpanel_module = $subpanel_def->name;
