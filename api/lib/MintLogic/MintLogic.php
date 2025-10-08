@@ -141,7 +141,7 @@ class MintLogic
                 }
                 $function_name = $vardef['function']['name'] ?? '';
                 if (!empty($function_name)) {
-                    $result = call_user_func($function_name, $this->bean, $field, $this->bean->{$field} ?? '', '', $vardef['function']['additional_params']);
+                    $result = call_user_func($function_name, $this->bean, $field, $this->bean->{$field} ?? '', 'MintLogic', $vardef['function']['additional_params']);
                     if (!empty($result)) {
                         $functionOptionsFields[$field] = $result;
                     }
