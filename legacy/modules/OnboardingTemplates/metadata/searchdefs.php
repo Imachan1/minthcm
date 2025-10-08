@@ -57,10 +57,6 @@ $searchdefs[$module_name] = array(
       'advanced_search' => array(
          'name',
          array(
-            'name' => 'position_name',
-            'label' => 'LBL_POSITION_NAME',
-         ),
-         array(
             'name' => 'assigned_user_id',
             'label' => 'LBL_ASSIGNED_TO',
             'type' => 'enum',

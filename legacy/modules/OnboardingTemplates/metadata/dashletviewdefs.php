@@ -51,9 +51,6 @@ $dashletData['OnboardingTemplatesDashlet']['searchFields'] = array(
    'date_modified' => array(
       'default' => '',
    ),
-   'position_name' => array(
-      'default' => '',
-   ),
    'assigned_user_name' => array(
       'default' => '',
    ),
@@ -65,12 +62,6 @@ $dashletData['OnboardingTemplatesDashlet']['columns'] = array(
       'link' => true,
       'default' => true,
       'name' => 'name',
-   ),
-   'position_name' => array(
-      'width' => '8%',
-      'label' => 'LBL_POSITION_NAME',
-      'name' => 'position_name',
-      'default' => true,
    ),
    'assigned_user_name' => array(
       'width' => '8%',
