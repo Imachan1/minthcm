@@ -158,7 +158,15 @@ class Kanban {
             action: 'kanbanView',
             dataPOST: { function_name: 'getItems' },
             callback: function (items) {
-                this.component.$data.items = JSON.parse(items);
+                let parsedItems = {};
+                if (items && typeof items === 'string' && items.trim() !== '') {
+                    try {
+                        parsedItems = JSON.parse(items);
+                    } catch (e) {
+                        parsedItems = {};
+                    }
+                }
+                this.component.$data.items = parsedItems;
             }.bind(this)
         });
     }
