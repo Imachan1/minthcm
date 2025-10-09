@@ -52,14 +52,6 @@ $listViewDefs [$module_name] = array(
       'default' => true,
       'link' => true,
    ),
-   'POSITION_NAME' => array(
-      'type' => 'relate',
-      'link' => true,
-      'label' => 'LBL_POSITION_NAME',
-      'id' => 'POSITION_ID',
-      'width' => '10%',
-      'default' => true,
-   ),
    'ASSIGNED_USER_NAME' => array(
       'width' => '9%',
       'label' => 'LBL_ASSIGNED_TO_NAME',

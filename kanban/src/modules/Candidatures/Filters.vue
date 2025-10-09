@@ -106,11 +106,13 @@ export default {
     getValuesRecruitmentsFromItems () {
       return function (key, value, additionalValues = {}) {
         const values = additionalValues
-        Object.values(this.items.recruitments).flat().forEach(function (item) {
-          if (item[key] && item[value] && !values[item[key]]) {
-            values[item[key]] = item[value]
-          }
-        })
+        if(this.items.recruitments){
+          Object.values(this.items.recruitments).flat().forEach(function (item) {
+            if (item[key] && item[value] && !values[item[key]]) {
+              values[item[key]] = item[value]
+            }
+          })
+        }
         return Object.entries(values).map(([id, name]) => ({ id: id, name: name }))
       }
     }

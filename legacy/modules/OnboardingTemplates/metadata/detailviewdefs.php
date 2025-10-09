@@ -98,7 +98,6 @@ $viewdefs [$module_name] = array(
          'default' => array(
             array(
                'name',
-               'position_name',
             ),
             array(
                'description',
