@@ -1,5 +1,15 @@
 <template>
-    <span>{{ value }}</span>
+    <div>
+        <label>{{ props.label }}</label>
+        <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()">
+            <div>{{ value }}</div>
+            <Pencil
+                :defs="props.defs"
+                :hidePencil="hidePencil"
+                @inlineEditBtnClicked="(fieldName: string) => $emit('inlineEditBtnClicked', fieldName)"
+            />
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -28,4 +38,14 @@ const value = computed(() => {
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+label {
+    font-size: 12px;
+    color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+}
+div {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+</style>
