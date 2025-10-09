@@ -23,6 +23,7 @@ $ESListViewDefs['Employees'] = [
         'email1' => [
             'link' => true,
             'default' => true,
+            'sortable' => false,
         ],
         'phone_work' => [
             'link' => true,
@@ -72,6 +73,8 @@ $ESListViewDefs['Employees'] = [
         'primary_address_country' => [
         ],
         'birthdate' => [
+        ],
+        'reports_to_name' => [
         ],
     ],
 ];

@@ -35,8 +35,6 @@ class MappingsGenerator
         'employee_name' => 'employee_name',
         'offboarding_id' => 'offboarding_id',
         'offboarding_name' => 'offboarding_name',
-        'parent_id' => 'parent.id',
-        'parent_name' => 'parent.name',
     ];
 
     // From vardefs to elastic
@@ -113,17 +111,15 @@ class MappingsGenerator
             include $module['path'];
             $bean = BeanFactory::newBean($module['module']);
             $data = $ESListViewDefs[$module['module']];
-            $fields_to_map = $this->setFieldsToMap($data);
+            $fields_to_map = $this->setFieldsToMap($data, $bean);
             $defs = $bean->field_defs;
             $key = !empty($data['es_module']) ? $data['es_module'] : $module['module'];
 
             foreach ($fields_to_map as $field) {
                 if (
                     $defs[$field]['source'] != "non-db" 
-                    || (
-                        ( $defs[$field]['type'] == 'relate' || $defs[$field]['type'] == 'parent' )
-                        && !empty($this->not_standard_fields[$field])
-                    )
+                    || $defs[$field]['type'] == 'relate' 
+                    || $defs[$field]['type'] == 'parent'
                 ) {
                     $es_type_name = $this->type_mapping[$defs[$field]['type']] ?? 'text';
                     $es_type = $this->types[$es_type_name];
@@ -240,7 +236,7 @@ class MappingsGenerator
         return $mappings;
     }
 
-    protected function setFieldsToMap($data)
+    protected function setFieldsToMap($data, $bean)
     {
         $fields_to_map = [];
         $columns = array_map('strtolower', array_keys($data['columns'] ? $data['columns'] : []));
@@ -253,7 +249,23 @@ class MappingsGenerator
                 $fields_to_map[] = $id_field;
             }
         }
+
+        $this->addIdFieldsToFieldsToMap($data, $fields_to_map, $bean);
         
         return $fields_to_map;
+    }
+
+    protected function addIdFieldsToFieldsToMap($data, array &$fields_to_map, $bean)
+    {
+        foreach ($data['columns'] as $field => $def) {
+            if (!empty($def['link']) && $def['link'] == true) {
+                if (!empty($bean->field_defs[$field]['id_name'])) {
+                    $id_field = $bean->field_defs[$field]['id_name'];
+                    if (!in_array($id_field, $fields_to_map)) {
+                        $fields_to_map[] = $id_field;
+                    }
+                }
+            }
+        }
     }
 }
