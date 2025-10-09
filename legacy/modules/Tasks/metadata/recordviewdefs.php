@@ -7,8 +7,10 @@ $viewdefs['Tasks'] = [
             'component' => 'MintPanelRecordHeader',
             'data' => [
                 'fields' => [
-                    ['name'],
-                    ['status'],
+                    [
+                        'name',
+                        'status'
+                    ],
                 ],
                 'actions' => [
                     'Audit',

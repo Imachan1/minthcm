@@ -72,6 +72,9 @@ $ESListViewDefs[$module_name] = [
             'default' => true,
         ],
         'date_modified' => [],
+        'location' => [
+            'default' => false
+        ]
     ],
     'search' => [
         'name' => [],
@@ -82,7 +85,8 @@ $ESListViewDefs[$module_name] = [
         'date_start' => [],
         'date_end' => [],
         'duration' => [],
-        'related_to' => [],
+        'parent_name' => [],
         'assigned_user_name' => [],
+        'location' => [],
     ],
 ];
