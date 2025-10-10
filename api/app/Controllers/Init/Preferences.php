@@ -156,6 +156,8 @@ class Preferences
 
             $this->user_preferences = $preferences;
             $this->user_preferences['global']['default_locale_name_format'] = $current_user->getPreference('default_locale_name_format');
+            $this->user_preferences['global']['datef'] = $current_user->getPreference('datef');
+            $this->user_preferences['global']['timef'] = $current_user->getPreference('timef');
         } catch (\Exception $e) {
             // TODO: log 'Failed to load user preferences'
             throw ($e);

@@ -8,13 +8,22 @@ $viewdefs['WorkSchedules'] = [
             'data' => [
                 'fields' => [
                     [
-                        ['name' => 'name'],
-                        ['name' => 'status'],
+                        'name',
+                        'status',
+                        'type',
+                    ],
+                    [
+                        'spent_time',
+                        'spent_time_settlement',
+                        'supervisor_acceptance',
                     ],
                 ],
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'CloseWorkSchedule',
+                    'AcceptWorkSchedule',
+                    'UndoAcceptWorkSchedule',
                 ],
             ],
         ],
@@ -26,12 +35,9 @@ $viewdefs['WorkSchedules'] = [
                         'title' => 'LBL_BASIC',
                         'fields' => [
                             [
-                                ['name' => 'name'],
-                                ['name' => 'status'],
-                            ],
-                            [
                                 ['name' => 'assigned_user_name'],
                                 ['name' => 'type'],
+                                ['name' => 'status'],
                             ],
                             [
                                 ['name' => 'date_start'],
@@ -43,6 +49,7 @@ $viewdefs['WorkSchedules'] = [
                             ],
                             [
                                 ['name' => 'workplace_name'],
+                                ['name' => 'delegation_name'],
                             ],
                             [
                                 ['name' => 'description'],
@@ -63,7 +70,6 @@ $viewdefs['WorkSchedules'] = [
                                 ['name' => 'date_modified', 'readonly' => true],
                             ],
                             [
-                                ['name' => 'assigned_user_name'],
                                 ['name' => 'created_by_name', 'readonly' => true],
                                 ['name' => 'modified_by_name', 'readonly' => true],
                             ],

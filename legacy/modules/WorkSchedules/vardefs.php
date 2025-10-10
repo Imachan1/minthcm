@@ -316,7 +316,7 @@ $dictionary['WorkSchedules'] = array(
          'max' => false,
       ),
       'duration_hours' => array(
-         'required' => true,
+         'required' => false,
          'name' => 'duration_hours',
          'vname' => 'LBL_DURATION_HOURS',
          'type' => 'int',

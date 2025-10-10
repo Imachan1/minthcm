@@ -148,6 +148,12 @@ watch(model, (newVal) => {
         emit('update:modelValue', '')
     }
 })
+watch(
+    () => props.modelValue,
+    () => {
+        model.value = props.modelValue
+    },
+)
 </script>
 
 <style scoped lang="scss">
