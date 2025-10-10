@@ -107,7 +107,7 @@ class EntityCreatorDataGenerator
                     $attributes[] = 'length="36"';
                 }
 
-                if ('id' == $type && 'id' == $fieldName) {
+                if (in_array($type, ['id', 'int']) && 'id' == $fieldName) {
                     $field['isId'] = true;
                 }
             }
