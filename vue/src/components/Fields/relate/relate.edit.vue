@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useModulesStore } from '@/store/modules'
 import { usePopupsStore } from '@/store/popups'
 import { usePreferencesStore } from '@/store/preferences'
@@ -77,21 +77,26 @@ const popupsStore = usePopupsStore()
 const modulesStore = useModulesStore()
 const preferencesStore = usePreferencesStore()
 const menuOpen = ref(false)
-const items = ref(
-    props.data.bean.attributes[props.defs.id_name]
-        ? [
-              {
-                  id: props.data.bean.attributes[props.defs.id_name],
-                  name: props.modelValue,
-              },
-          ]
-        : [],
+
+const items = ref(props.data.bean.attributes[props.defs.id_name] ? [getCurrentItem()] : [])
+const currentItem = ref(getCurrentItem())
+
+watch(
+    () => props.data.bean.attributes[props.defs.id_name],
+    () => {
+        const item = getCurrentItem()
+        items.value = item.id ? [item] : []
+        currentItem.value = item
+    },
 )
 
-const currentItem = ref({
-    id: props.data.bean.attributes[props.defs.id_name],
-    name: props.data.bean.attributes[props.defs.name],
-})
+function getCurrentItem() {
+    return {
+        id: props.data.bean.attributes[props.defs.id_name],
+        name: props.modelValue,
+    }
+}
+
 const isLoading = ref(false)
 const model = computed({
     get() {
