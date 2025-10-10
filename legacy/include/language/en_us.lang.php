@@ -1793,6 +1793,7 @@ $app_strings = array(
     'LBL_SAVED_LAYOUT' => 'Layout has been saved.',
     'LBL_SAVED' => 'Saved',
     'LBL_SAVING' => 'Saving',
+    'LBL_VALIDATION' => 'Validation in progress...',
     'LBL_DISPLAY_COLUMNS' => 'Display Columns',
     'LBL_HIDE_COLUMNS' => 'Hide Columns',
     'LBL_PROCESSING_REQUEST' => 'Processing...',
