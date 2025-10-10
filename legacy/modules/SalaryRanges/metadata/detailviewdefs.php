@@ -106,8 +106,14 @@ $viewdefs[$module_name] = array(
                     'employer_costs_from',
                     'employer_costs_to',
                 ),
+                array(
+                    'description',
+                ),
             ),
             'LBL_OTHER'=> array(
+                array(
+                    'assigned_user_name',
+                ),
                 array(
                     array(
                         'name' => 'date_entered',

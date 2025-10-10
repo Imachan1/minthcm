@@ -7,13 +7,17 @@ import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUrlStore } from '@/store/url'
 import LegacyEvents from './LegacyEventManager'
+import { useMintWallStore } from '@/components/MintWall/MintWallStore'
 
 const route = useRoute()
 const router = useRouter()
 const url = useUrlStore()
-onMounted(() => {
+const wall = useMintWallStore()
+
+onMounted(async () => {
     // messages from legacy iframe
     window.addEventListener('message', handleMessageEvent)
+    await wall.readNewsAlertsFromLegacy()
 })
 
 onBeforeUnmount(() => {

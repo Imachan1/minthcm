@@ -45,6 +45,7 @@ export const useListViewStore = defineStore('listview', () => {
     const isLoading = ref(true)
     const myObjects = ref(false)
     const activeFilter = ref<string | null>(null)
+    const error = ref(false)
     const filters = ref({
         filter: [],
         must_not: [],
@@ -78,6 +79,7 @@ export const useListViewStore = defineStore('listview', () => {
     async function getData() {
         requestCount++
         isLoading.value = requestCount > 0
+        error.value = false
 
         const result = await modulesApi.getListData(
             getModule(),
@@ -88,10 +90,15 @@ export const useListViewStore = defineStore('listview', () => {
             myObjects.value,
             defs.value?.columns[options.value.sortBy[0]?.key]?.key,
             options.value.sortBy[0]?.order ?? 'asc',
-            activeFilter.value
-        )
+            activeFilter.value,
+        ).catch((requestError) => {
+            console.error('Error fetching data:', requestError?.response?.data || requestError)
+            isLoading.value = false
+            error.value = true
+            results.value = []
+        })
         requestCount--
-        if (module.value === result.data.module && requestCount <= 0) {
+        if (module.value === result?.data.module && requestCount <= 0) {
             requestCount = 0;
             isLoading.value = false;
             results.value = result.data?.results
@@ -113,7 +120,7 @@ export const useListViewStore = defineStore('listview', () => {
 
     function setDefaultColumns() {
         if (preferences.value?.columns) {
-            preferences.value.columns = null
+            preferences.value.columns = []
         }
     }
 
@@ -381,5 +388,6 @@ export const useListViewStore = defineStore('listview', () => {
         handleSelectRelate,
         itemsSelectable,
         massActions,
+        error,
     }
 })

@@ -4,7 +4,9 @@ class Kanban {
             ...defs,
             user_date_format: viewTools.date.getDateFormat(),
             user_time_format: viewTools.date.getTimeFormat(),
-            current_user: window.current_user
+            current_user: window.current_user,
+            mod_strings: SUGAR.language.languages[module],
+            app_strings: SUGAR.language.languages['app_strings']
         };
         this.module = module;
         this.component = document.getElementsByTagName('kanban-view')[0].vueComponent;
@@ -14,6 +16,7 @@ class Kanban {
         this.setEvents();
         this.loadItems();
         this.component.$data.defs = this.defs;
+        this.component.$data.module = this.module;
     }
     prepareColumns () {
         if (this.defs.black_list) {
@@ -155,7 +158,15 @@ class Kanban {
             action: 'kanbanView',
             dataPOST: { function_name: 'getItems' },
             callback: function (items) {
-                this.component.$data.items = JSON.parse(items);
+                let parsedItems = {};
+                if (items && typeof items === 'string' && items.trim() !== '') {
+                    try {
+                        parsedItems = JSON.parse(items);
+                    } catch (e) {
+                        parsedItems = {};
+                    }
+                }
+                this.component.$data.items = parsedItems;
             }.bind(this)
         });
     }

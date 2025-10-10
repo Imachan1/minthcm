@@ -60,7 +60,9 @@ class UpdateAction
         if(!$this->saveBean($request)) {
             throw new HttpBadRequestException($request);
         }
-        $response->getBody()->write(json_encode((new ListAction)->getListData()));
+        if($request->getAttribute('fetch')) {
+            $response->getBody()->write(json_encode((new ListAction)->getListData()));
+        }
         return $response;
     }
 

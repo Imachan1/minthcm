@@ -7228,7 +7228,7 @@ var EventPointing = /** @class */ (function (_super) {
         }
     }
     EventPointing.prototype.handleClick = function (seg, ev) {
-        if(ev.ctrlKey) {
+        if(ev.ctrlKey || ev.metaKey) {
             var res = this.component.publiclyTrigger('eventAuxclick', {
                 context: seg.el[0],
                 args: [seg.footprint.getEventLegacy(), ev, this.view]

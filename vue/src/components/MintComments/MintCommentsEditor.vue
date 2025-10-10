@@ -26,7 +26,7 @@
                                 v-if="mode !== 'new'"
                                 variant="text"
                                 :text="languages.label('LBL_MINT4_COMMENTS_CANCEL_BTN')"
-                                @click="emit('close')"
+                                @click="emit('close', false)"
                             />
                         </div>
                         <div class="mint-comments-editor-buttons-group">
@@ -138,7 +138,7 @@ async function addNewComment() {
 
 async function saveEditedComment() {
     if (description.value && props.comment) {
-        emit('close')
+        emit('close', true)
         await store.editCommentDescription(props.comment.id, description.value)
         store.fetchComments()
     }
@@ -148,7 +148,7 @@ async function reply() {
     if (description.value && props.comment) {
         await store.addComment(description.value, props.comment.id)
         store.fetchComments()
-        emit('close')
+        emit('close', true)
     }
 }
 

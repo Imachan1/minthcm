@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2025 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -439,6 +439,7 @@ $app_list_strings = array(
     ),
     'employee_status_dom' => array(
         'Active' => 'Active',
+        'during_termination' => 'During Termination',
         'Terminated' => 'Terminated',
         'Leave of Absence' => 'Leave of Absence',
     ),
@@ -1489,6 +1490,7 @@ $app_strings = array(
     'LBL_BROWSER_TITLE' => 'MintHCM - Open Source HCM system',
     'LBL_BY' => 'by',
     'LBL_CALL' => 'Call',
+    'LBL_CALL_1' => 'Call',
     'LBL_CALLS' => 'Calls',
     'LBL_CAMPAIGNS_SEND_QUEUED' => 'Send Queued Campaign Emails',
     'LBL_SUBMIT_BUTTON_LABEL' => 'Submit',
@@ -1791,6 +1793,7 @@ $app_strings = array(
     'LBL_SAVED_LAYOUT' => 'Layout has been saved.',
     'LBL_SAVED' => 'Saved',
     'LBL_SAVING' => 'Saving',
+    'LBL_VALIDATION' => 'Validation in progress...',
     'LBL_DISPLAY_COLUMNS' => 'Display Columns',
     'LBL_HIDE_COLUMNS' => 'Hide Columns',
     'LBL_PROCESSING_REQUEST' => 'Processing...',
@@ -1971,6 +1974,7 @@ $app_strings = array(
     'LBL_DURATION_HOURS' => 'hours',
     'LBL_DURATION_MINUTES' => 'minutes',
     'LBL_MINS' => 'Min.',
+    'LBL_HRS' => 'Hr.',
     //Calendar widget labels
     'LBL_CHOOSE_MONTH' => 'Choose Month',
     'LBL_ENTER_YEAR' => 'Enter Year',
@@ -2012,6 +2016,7 @@ $app_strings = array(
     'LBL_ALT_MOVE_COLUMN_UP' => 'Move selected entry up in the displayed list order',
     'LBL_ALT_MOVE_COLUMN_DOWN' => 'Move selected entry down in the displayed list order',
     'LBL_ALT_INFO' => 'Information',
+    'LBL_ERROR' => 'Unknown Error',
     'MSG_DUPLICATE' => 'The {0} record you are about to create might be a duplicate of an {0} record that already exists. {1} records containing similar names are listed below.<br>Click Create {1} to continue creating this new {0}, or select an existing {0} listed below.',
     'MSG_SHOW_DUPLICATES' => 'The {0} record you are about to create might be a duplicate of a {0} record that already exists. {1} records containing similar names are listed below. Click Save to continue creating this new {0}, or click Cancel to return to the module without creating the {0}.',
     'LBL_EMAIL_TITLE' => 'email address',
@@ -2088,6 +2093,7 @@ $app_strings = array(
     'LBL_CONFIRM_OPT_IN_SENT_DATE' => 'Confirmed Opt In Sent Date',
     'LBL_CONFIRM_OPT_IN_FAIL_DATE' => 'Confirmed Opt In Fail Date',
     'LBL_CONFIRM_OPT_IN_TOKEN' => 'Confirm Opt In Token',
+    'LBL_CONFIRM_WORK_SCHEDULE' => 'Confirm Work Schedule',
     'ERR_OPT_IN_TPL_NOT_SET' => 'Opt In Email Template is not configured. Please set up in email settings.',
     'LBL_SECURITYGROUP_NONINHERITABLE' => 'Non-Inheritable Organizational Unit',
     'LBL_PRIMARY_GROUP' => "Primary Organizational Unit",
@@ -2187,6 +2193,7 @@ $app_strings = array(
     'LBL_ESLIST_CONTAIN_WORD' => 'Contains word',
     'LBL_ESLIST_NOT_CONTAIN_WORD' => 'Doesn\'t contain word',
     'LBL_ESLIST_NO_DATA_AVAILABLE' => 'No data available',
+    'LBL_ESLIST_FETCHING_DATA_ERROR' => 'An error occurred while fetching data',
     'LBL_ESLIST_LESS_OR_EQUAL' => 'Less than/Equal',
     'LBL_ESLIST_GREATER_THAN' => 'Greater than',
     'LBL_ESLIST_LESS_THAN' => 'Less than',
@@ -4550,6 +4557,7 @@ $app_strings['LBL_MINT4_COMMENTS_REACT_BTN'] = 'Like';
 $app_strings['LBL_MINT4_COMMENTS_QUOTE_SUFFIX'] = 'wrote';
 $app_strings['LBL_MINT4_COMMENTS_EDITED'] = 'Comment edited';
 $app_strings['LBL_MINT4_COMMENTS_EXPAND_BTN'] = 'Show replies';
+$app_strings['LBL_MINT4_COMMENTS_HIDE_BTN'] = 'Hide replies';
 $app_strings['LBL_MINT4_COMMENTS_REMOVED'] = 'Comment deleted';
 $app_strings['LBL_MINT4_COMMENTS_REMOVED_WITH_REPLIES_SINGULAR'] = 'Comment and 1 reply deleted';
 $app_strings['LBL_MINT4_COMMENTS_REMOVED_WITH_REPLIES_PLURAL'] = 'Comment and {x} replies deleted';
@@ -4846,3 +4854,5 @@ $app_strings['LBL_WORKSCHEDULE_LEAVE_CREATED'] = 'Get notified if Leave is creat
 $app_strings['LBL_WORKSCHEDULES_DAY_VALID'] = 'Get notified if not closed Work Schedule exists';
 $app_strings['LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS'] = 'Get notified if Work Schedule is not planned for two weeks';
 $app_strings['LBL_WORKSCHEDULESACCEPTANCE'] = 'Get notified if the work schedule is approved by the supervisor';
+$app_strings['LBL_CLEAR_BUTTON_KANBAN_LABEL'] = 'Clear Filters';
+$app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';

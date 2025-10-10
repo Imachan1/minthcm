@@ -961,7 +961,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
                     }
 
                     if ($beanName == "Employee") {
-                        $where = "($where) AND users.deleted = 0 AND users.is_group = 0 AND users.employee_status = 'Active'";
+                        $where = "($where) AND users.deleted = 0 AND users.is_group = 0 AND users.employee_status IN ('Active', 'during_termination')";
                     }
 
                     $ret_array = $seed->create_new_list_query(
@@ -997,7 +997,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
                         $main_query = "select users.id, ea.email_address, users.user_name, first_name, last_name from users ";
                         $main_query = $main_query . " LEFT JOIN email_addr_bean_rel eabl ON (users.id = eabl.bean_id and eabl.bean_module = '{$seed->module_dir}')
     LEFT JOIN email_addresses ea ON (ea.id = eabl.email_address_id) ";
-                        $main_query = $main_query . "where ((users.first_name like '{$search_string}') or (users.last_name like '{$search_string}') or (users.user_name like '{$search_string}') or (ea.email_address like '{$search_string}')) and users.deleted = 0 and users.is_group = 0 and users.employee_status = 'Active'";
+                        $main_query = $main_query . "where ((users.first_name like '{$search_string}') or (users.last_name like '{$search_string}') or (users.user_name like '{$search_string}') or (ea.email_address like '{$search_string}')) and users.deleted = 0 and users.is_group = 0 and users.employee_status IN ('Active', 'during_termination')";
                     } // if
                     if ($beanName == "ProjectTask") {
                         $filterFields = array('id', 'name', 'project_id', 'project_name');

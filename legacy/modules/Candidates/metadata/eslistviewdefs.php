@@ -29,7 +29,7 @@ $ESListViewDefs[$module_name] = [
             'link' => true,
             'default' => true,
         ],
-        'skype' => [],
+        'x_service' => [],
         'github' => [],
         'last_name' => [],
         'linkedin' => [],

@@ -79,148 +79,169 @@
  * "Powered by SugarCRM".
  * ****************************************************************************** */
 global $sugar_config;
-$dictionary['PDFTemplates'] = array(
-   'table' => 'pdftemplates',
-   'audited' => false,
-   'fields' => array(
-      'template' =>
-      array(
-         'required' => false,
-         'name' => 'template',
-         'vname' => 'LBL_TEMPLATE',
-         'type' => 'text',
-         'massupdate' => 0,
-         'comments' => '',
-         'help' => '',
-         'importable' => 'true',
-         'duplicate_merge' => 'disabled',
-         'duplicate_merge_dom_value' => '0',
-         'audited' => false,
-         'reportable' => false,
-         'size' => '20',
-         'studio' => 'visible',
-         'source' => 'non-db',
-         'rows' => '8',
-         'cols' => '30',
-      ),
-      'fields' =>
-      array(
-         'required' => false,
-         'name' => 'fields',
-         'vname' => 'LBL_FIELDS',
-         'type' => 'varchar',
-         'massupdate' => 0,
-         'comments' => 'placeholder for tree in editview',
-         'help' => '',
-         'importable' => 'true',
-         'duplicate_merge' => 'disabled',
-         'duplicate_merge_dom_value' => '0',
-         'audited' => false,
-         'reportable' => false,
-         'len' => '255',
-         'size' => '20',
-         'source' => 'non-db',
-      ),
-      'is_default' =>
-      array(
-         'name' => 'is_default',
-         'vname' => 'LBL_IS_DEFAULT',
-         'type' => 'bool',
-         'default' => 0,
-         'comments' => 'preselected template in detailview select for pdf templates',
-         'reportable' => false,
-      ),
-      'relatedmodule' =>
-      array(
-         'required' => true,
-         'name' => 'relatedmodule',
-         'vname' => 'LBL_RELATEDMODULE',
-         'type' => 'enum',
-         'massupdate' => 0,
-         'default' => 'selectmodule',
-         'comments' => 'indicates module this template is created for',
-         'help' => '',
-         'importable' => 'false',
-         'duplicate_merge' => 'disabled',
-         'duplicate_merge_dom_value' => '0',
-         'audited' => false,
-         'reportable' => false,
-         'len' => 100,
-         'size' => '20',
-         'options' => 'pdf_module_list',
-         'studio' => 'visible',
-         'dependency' => false,
-      ),
-        'type' =>
-      array(
-         'required' => true,
-         'name' => 'type',
-         'vname' => 'LBL_TYPE',
-         'type' => 'enum',
-         'massupdate' => 0,
-         'default' => 'standard',
-         'comments' => '',
-         'help' => '',
-         'importable' => 'false',
-         'duplicate_merge' => 'disabled',
-         'duplicate_merge_dom_value' => '0',
-         'audited' => false,
-         'reportable' => false,
-         'len' => 100,
-         'size' => '20',
-         'options' => 'pdf_tempate_type_list',
-         'studio' => 'visible',
-         'dependency' => false,
-      ),
-      'orientation' =>
-      array(
-         'required' => true,
-         'name' => 'orientation',
-         'vname' => 'LBL_ORIENTATION',
-         'type' => 'enum',
-         'massupdate' => 0,
-         'default' => 'P',
-         'comments' => 'default orientation of the page',
-         'help' => '',
-         'importable' => 'false',
-         'duplicate_merge' => 'disabled',
-         'duplicate_merge_dom_value' => '0',
-         'audited' => false,
-         'reportable' => false,
-         'len' => 5,
-         'size' => '5',
-         'options' => 'orientation_list',
-         'dependency' => false,
-      ),
-      'preview' =>
-      array(
-         'required' => false,
-         'name' => 'preview',
-         'vname' => 'LBL_PREVIEW',
-         'type' => 'iframe',
-         'massupdate' => '0',
-         'default' => $sugar_config['site_url'].'/modules/PDFTemplates/templates/template-{id}.html',
-         'comments' => NULL,
-         'help' => NULL,
-         'importable' => 'true',
-         'duplicate_merge' => 'disabled',
-         'duplicate_merge_dom_value' => '0',
-         'audited' => false,
-         'reportable' => false,
-         'unified_search' => false,
-         'len' => '255',
-         'size' => '20',
-         'dbType' => 'varchar',
-         'gen' => '1',
-         'link_target' => '200',
-         'height' => '600',
-      ),
-   ),
-   'relationships' => array(
-   ),
-   'optimistic_locking' => true,
-);
-if ( !class_exists('VardefManager') ) {
-   require_once('include/SugarObjects/VardefManager.php');
+
+if (!function_exists('transformWithLeadingSlash')) {
+    function transformWithLeadingSlash($url)
+    {
+        if (empty($url)) {
+            return '';
+        }
+        $parsed_url = parse_url($url);
+        if (!isset($parsed_url['path'])) {
+            $parsed_url['path'] = '/';
+        }
+        $url = $parsed_url['scheme'] . "://" . $parsed_url['host'] . $parsed_url['path'];
+        if (!empty($url['query'])) {
+            $url .= '?' . $parsed_url['query'];
+        }
+        if (!empty($url['fragment'])) {
+            $url .= '#' . $parsed_url['fragment'];
+        }
+        return $url;
+    }
 }
-VardefManager::createVardef('PDFTemplates', 'PDFTemplates', array( 'basic' ));
+
+$dictionary['PDFTemplates'] = array(
+    'table' => 'pdftemplates',
+    'audited' => false,
+    'fields' => array(
+        'template' =>
+        array(
+            'required' => false,
+            'name' => 'template',
+            'vname' => 'LBL_TEMPLATE',
+            'type' => 'text',
+            'massupdate' => 0,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'reportable' => false,
+            'size' => '20',
+            'studio' => 'visible',
+            'source' => 'non-db',
+            'rows' => '8',
+            'cols' => '30',
+        ),
+        'fields' =>
+        array(
+            'required' => false,
+            'name' => 'fields',
+            'vname' => 'LBL_FIELDS',
+            'type' => 'varchar',
+            'massupdate' => 0,
+            'comments' => 'placeholder for tree in editview',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'reportable' => false,
+            'len' => '255',
+            'size' => '20',
+            'source' => 'non-db',
+        ),
+        'is_default' =>
+        array(
+            'name' => 'is_default',
+            'vname' => 'LBL_IS_DEFAULT',
+            'type' => 'bool',
+            'default' => 0,
+            'comments' => 'preselected template in detailview select for pdf templates',
+            'reportable' => false,
+        ),
+        'relatedmodule' =>
+        array(
+            'required' => true,
+            'name' => 'relatedmodule',
+            'vname' => 'LBL_RELATEDMODULE',
+            'type' => 'enum',
+            'massupdate' => 0,
+            'default' => 'selectmodule',
+            'comments' => 'indicates module this template is created for',
+            'help' => '',
+            'importable' => 'false',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'reportable' => false,
+            'len' => 100,
+            'size' => '20',
+            'options' => 'pdf_module_list',
+            'studio' => 'visible',
+            'dependency' => false,
+        ),
+        'type' =>
+        array(
+            'required' => true,
+            'name' => 'type',
+            'vname' => 'LBL_TYPE',
+            'type' => 'enum',
+            'massupdate' => 0,
+            'default' => 'standard',
+            'comments' => '',
+            'help' => '',
+            'importable' => 'false',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'reportable' => false,
+            'len' => 100,
+            'size' => '20',
+            'options' => 'pdf_tempate_type_list',
+            'studio' => 'visible',
+            'dependency' => false,
+        ),
+        'orientation' =>
+        array(
+            'required' => true,
+            'name' => 'orientation',
+            'vname' => 'LBL_ORIENTATION',
+            'type' => 'enum',
+            'massupdate' => 0,
+            'default' => 'P',
+            'comments' => 'default orientation of the page',
+            'help' => '',
+            'importable' => 'false',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'reportable' => false,
+            'len' => 5,
+            'size' => '5',
+            'options' => 'orientation_list',
+            'dependency' => false,
+        ),
+        'preview' =>
+        array(
+            'required' => false,
+            'name' => 'preview',
+            'vname' => 'LBL_PREVIEW',
+            'type' => 'iframe',
+            'massupdate' => '0',
+            'default' => transformWithLeadingSlash($sugar_config['site_url']) . '/legacy/modules/PDFTemplates/templates/template-{id}.html',
+            'comments' => NULL,
+            'help' => NULL,
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'reportable' => false,
+            'unified_search' => false,
+            'len' => '255',
+            'size' => '20',
+            'dbType' => 'varchar',
+            'gen' => '1',
+            'link_target' => '200',
+            'height' => '600',
+        ),
+    ),
+    'relationships' => array(),
+    'optimistic_locking' => true,
+);
+if (!class_exists('VardefManager')) {
+    require_once('include/SugarObjects/VardefManager.php');
+}
+VardefManager::createVardef('PDFTemplates', 'PDFTemplates', array('basic'));

@@ -7,6 +7,16 @@ use Symfony\Component\Console\Application;
 
 $application = new Application();
 
+if (file_exists('legacy/config.php')) {
+    define('sugarEntry', true);
+    chdir('./legacy/');
+    require_once 'include/entryPoint.php';
+    global $current_user;
+    $current_user = new User();
+    $current_user->getSystemUser();
+    chdir('..');
+}
+
 $application->add(new MintHCM\MintCLI\Commands\Install());
 $application->add(new MintHCM\MintCLI\Commands\DemoDataDumpCommand());
 $application->add(new MintHCM\MintCLI\Commands\DemoDataInstallCommand());

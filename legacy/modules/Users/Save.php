@@ -208,8 +208,10 @@ if (!$focus->is_group && !$focus->portal_only) {
 
     if (isset($_POST['sort_modules_by_name'])) {
         $focus->setPreference('sort_modules_by_name', $_POST['sort_modules_by_name'], 0, 'global');
+        $focus->setPreference('reload_module_menu', time(), 0, 'global');
     } else {
         $focus->setPreference('sort_modules_by_name', '', 0, 'global');
+        $focus->setPreference('reload_module_menu', time(), 0, 'global');
     }
 
     if (isset($_POST['user_subpanel_tabs'])) {

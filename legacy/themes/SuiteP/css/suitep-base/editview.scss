@@ -8,12 +8,12 @@
 
   #vcard_file {
     margin-top: 10px;
-    margin-buttom: 10px;
+    margin-bottom: 10px;
   }
 
   .button {
     margin-top: 10px;
-    margin-buttom: 10px;
+    margin-bottom: 10px;
   }
 }
 
@@ -2348,7 +2348,7 @@ table.view {
   text-align: center;
   z-index: 1;
   zoom: 1;
-  background-opacity: 0.6;
+  opacity: 0.6;
 }
 
 #overlay {
@@ -3762,7 +3762,7 @@ select#sales_stage_advanced {
   }
 
   .col-sm-12 .col-sm-8.edit-view-field textarea {
-    width: 45%;
+      width: 120%;
   }
 
   [field=bool].col-sm-8.edit-view-field {
@@ -3865,7 +3865,7 @@ select#sales_stage_advanced {
   }
 
   .col-sm-12 .col-sm-8.edit-view-field textarea {
-    width: 45%;
+      width: 120%;
   }
 
   [field=bool].col-sm-8.edit-view-field {
@@ -4405,16 +4405,24 @@ tr:hover img.info {
 }
 
 #EditView div.action_buttons .button {
-  background-color: $danger-btn-bg;
+    background-color: #fff;
 }
 
+  #EditView div.action_buttons .button.primary {
+      background-color: #145D7B;
+  }
+  
+  #EditView div.action_buttons .button.primary:hover {
+      background-color: rgb(13, 60, 79);
+  }
+  
 #save_and_continue.button {
   background-color: $danger-btn-bg;
 }
 
 #EditView div.action_buttons .button:hover,
 #save_and_continue.button:hover {
-  background-color: $danger-btn-bg-hover;
+    background-color: #fff;
 }
 
 .paginationWrapper {
@@ -4820,7 +4828,7 @@ object {
 }
 
 #report-editview-footer .parenthesis-line strong {
-  font-size: 18px
+  font-size: 18px;
 }
 
 #report-editview-footer .drop-area.highlighted {

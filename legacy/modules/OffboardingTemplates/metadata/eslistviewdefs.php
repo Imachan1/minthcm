@@ -7,10 +7,6 @@ $ESListViewDefs['OffboardingTemplates'] = [
             'link' => true,
             'default' => true,
         ],
-        'position_name' => [
-            'link' => true,
-            'default' => true,
-        ],
         'assigned_user_name' => [
             'default' => true,
         ],
@@ -27,7 +23,6 @@ $ESListViewDefs['OffboardingTemplates'] = [
     ],
     'search' => [
         'name' => [],
-        'position_name' => [],
         'assigned_user_name' => [],
         'date_entered' => [],
         'date_modified' => [],

@@ -182,4 +182,5 @@ $mod_strings = array(
    'LBL_CONFIRM_REMOVE_ALL_RECURRING' => 'Are you sure you want to remove all recurring records?',
    'LBL_REPEAT_END' => 'End',
    'LBL_PERIODICITY_ERROR' => 'Please select days on which the Meeting should be repeated.',
+   'LBL_RESERVATIONS_MEETINGS' => 'Reservations',
 );

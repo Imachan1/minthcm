@@ -23,11 +23,11 @@ input[type=button][selected]:hover, .buttons .button[selected]:hover {
     color: #fff;
 }
 #EditView a.button {
-    padding: 0 10px;
     margin: 4px;
-    background-color: $color-32;
-    border: 1px solid $color-99;
-    color: $color-99;
+    padding: 15px 10px 0 10px;
+    background-color: #fff;
+    border: 1.5px solid $lm-secondary-accent;
+    color: $lm-secondary-accent;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
     height: 32px;
     display: inline-block;
@@ -116,7 +116,7 @@ table.subpanel-table li.sugar_action_button:hover{
 }
 
 // MintHCM #120479 START
-#EditView #CANCEL{
+#EditView #CANCEL, #CANCEL_HEADER, #CANCEL_FOOTER{
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
     font-size: $page-font-size;
     font-weight: 600;
@@ -131,6 +131,27 @@ table.subpanel-table li.sugar_action_button:hover{
     letter-spacing: 1px;
     height: $button-line-height;
     text-transform: uppercase;
+}
+
+#WizardView #CANCEL, #CANCEL_HEADER, #CANCEL_FOOTER{
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+    font-size: $page-font-size;
+    font-weight: 600;
+    line-height: 0;
+    background: #fff;
+    border: 1.5px solid $lm-secondary-accent;
+    color: $lm-secondary-accent;
+    cursor: pointer;
+    padding: 15px 10px 0 10px;
+    margin: 0 0 0 0;
+    border-radius: 3px;
+    letter-spacing: 1px;
+    height: $button-line-height;
+    text-transform: uppercase;
+}
+
+#WizardView #CANCEL{
+    padding: 8px 10px 8px 10px;
 }
 // MintHCM #120479 END
 .colored_status {

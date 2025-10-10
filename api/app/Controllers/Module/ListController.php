@@ -48,6 +48,7 @@ namespace MintHCM\Api\Controllers\Module;
 use Doctrine\ORM\EntityManagerInterface;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
 use MintHCM\Lib\Search\Search;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
@@ -137,6 +138,7 @@ class ListController
         $params["fields"] = array("*__last^5", "*__first^4", "*__name.*^3", "*");
         $this->params = $params;
     }
+
     protected function getParsedFilters(Request $request)
     {
         $filters = ['filter' => [], 'must_not' => [], 'must' => []];
@@ -172,7 +174,7 @@ class ListController
             $this->search_result = $search_manager->search(true);
         } catch (BadRequest400Exception $e) {
             throw new HttpBadRequestException($this->request, $e->getMessage());
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException | Missing404Exception $e) {
             throw new HttpInternalServerErrorException($this->request, $e->getMessage());
         }
     }

@@ -32,6 +32,7 @@ export interface MintKudos {
     current_user_access: boolean
     reactions: MintReaction[]
     users: MintKudosUser[]
+    is_read: boolean
 }
 
 export interface Form {

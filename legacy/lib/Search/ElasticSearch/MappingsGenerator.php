@@ -47,6 +47,8 @@ class MappingsGenerator
         'bool' => 'boolean',
         'text' => 'text',
         'int' => 'integer',
+        'currency' => 'float',
+        'float' => 'float',
     ];
 
     protected $types = [
@@ -72,6 +74,9 @@ class MappingsGenerator
         'integer' => [
             'type' => 'integer',
         ],
+        'float' => [
+            'type' => 'float',
+        ]
     ];
 
     protected $fields_must_be_added_to_mappings_because_of_security = [
@@ -194,15 +199,8 @@ class MappingsGenerator
 
     protected function getPropertyMappingConfig(array $field_def): array
     {
-        if (in_array($field_def['type'], ['date', 'datetime', 'datetimecombo'])) {
-            return $this->types['date'];
-        } else if ('bool' == $field_def['type']) {
-            return $this->types['boolean'];
-        } else if ('int' == $field_def['type']) {
-            return $this->types['integer'];
-        } else {
-            return $this->types['text'];
-        }
+        $type = $this->type_mapping[$field_def['type']] ?? 'text';
+        return $this->types[$type] ?? $this->types['text'];
     }
 
     protected function parseMappingsToYaml($mappings)

@@ -24,6 +24,7 @@ export const useAlertsStore = defineStore('alerts', () => {
     const isClosingAll = ref(false)
     const favico = new Favico()
     const moreResults = ref(false)
+    const excludedOverallAlerts = ['Kudos', 'News', 'UsersNews']
 
     function init() {
         fetchAlerts()
@@ -41,32 +42,48 @@ export const useAlertsStore = defineStore('alerts', () => {
         isFetching.value = false
     }
 
-    async function markRead(id: string) {
+    async function markRead(id: string, fetch = false) {
         const response = await axios.patch(`api/Alerts/${id}`, {
             is_read: true,
+            fetch,
         })
-        alerts.value = response.data?.alerts ?? []
+        if (fetch) {
+            alerts.value = response.data?.alerts ?? []
+    }
+        return response.status
     }
 
-    async function close(id: string) {
+    async function close(id: string, fetch = false) {
         const response = await axios.patch(`api/Alerts/${id}`, {
             is_closed: true,
+            fetch,
         })
-        alerts.value = response.data?.alerts ?? []
+        if (fetch) {
+            alerts.value = response.data?.alerts ?? []
     }
+        return response.status
+    }
+
+    const filteredAlerts = computed(() => {
+        return alerts.value.filter((alert) => !excludedOverallAlerts.includes(alert.parent_type))
+    })
 
     const unreadAlertsCount = computed(() => {
         return alerts.value.filter((alert) => !alert.is_read).length
     })
 
-    const unreadAlertsCountText = computed(() => {
-        return moreResults.value && unreadAlertsCount.value >= 50
-            ? unreadAlertsCount.value + '+'
-            : unreadAlertsCount.value
+    const unreadFilteredAlertsCount = computed(() => {
+        return filteredAlerts.value.filter((alert) => !alert.is_read).length
     })
 
-    const sortedAlerts = computed(() => {
-        return [...alerts.value].sort((a, b) => (a.date_entered < b.date_entered ? 1 : -1))
+    const unreadFilteredAlertsCountText = computed(() => {
+        return moreResults.value && unreadFilteredAlertsCount.value >= 50
+            ? unreadFilteredAlertsCount.value + '+'
+            : unreadFilteredAlertsCount.value
+    })
+
+    const sortedFilteredAlerts = computed(() => {
+        return [...filteredAlerts.value].sort((a, b) => (a.date_entered < b.date_entered ? 1 : -1))
     })
 
     async function markAllAsRead() {
@@ -116,12 +133,15 @@ export const useAlertsStore = defineStore('alerts', () => {
         markRead,
         close,
         alerts,
+        filteredAlerts,
         unreadAlertsCount,
-        sortedAlerts,
+        sortedFilteredAlerts,
         markAllAsRead,
         closeAll,
         isClosingAll,
         cancelCloseAll,
-        unreadAlertsCountText,
+        unreadFilteredAlertsCountText,
+        unreadFilteredAlertsCount,
+        moreResults,
     }
 })
