@@ -35,9 +35,10 @@ class EntityCreatorDataGenerator
         'time',
     ];
 
-    private string $moduleName;
-    private array $vardefs;
-    private array $data = [];
+    protected const CUSTOM_SUFFIX = '_cstm';
+    protected string $moduleName;
+    protected array $vardefs;
+    protected array $data = [];
 
     public function __construct(string $moduleName, array $vardefs)
     {
@@ -66,9 +67,10 @@ class EntityCreatorDataGenerator
             'relationshipFields' => [],
             'additionalUseStatements' => [],
             'constructorFields' => [],
+            'generate_custom_entity' => $this->hasCustomTable(),
         ];
 
-        $repositorySet = ! empty($this->vardefs['doctrineEntity']['repository']);
+        $repositorySet = !empty($this->vardefs['doctrineEntity']['repository']);
         if ($repositorySet) {
             $this->data['repositoryClassPath'] = EntityCreator::REPOSITORY_FOLDER_PATH . $this->vardefs['doctrineEntity']['repository'];
             $this->data['repositorySet'] = true;
@@ -78,8 +80,10 @@ class EntityCreatorDataGenerator
     protected function buildFields()
     {
         foreach ($this->vardefs['fields'] as $fieldName => $fieldDef) {
-            if ((! empty($fieldDef['source']) && 'non-db' === $fieldDef['source'])
+            if (
+                (! empty($fieldDef['source']) && 'non-db' === $fieldDef['source'])
                 || (in_array($fieldDef['type'], self::SKIP_TYPES) && (empty($fieldDef['dbType']) || $fieldDef['dbType'] !== 'id'))
+                || 'custom_fields' === $fieldDef['source']
             ) {
                 continue;
             }
@@ -91,23 +95,23 @@ class EntityCreatorDataGenerator
             ];
 
             $attributes = [];
-            if (! empty($fieldDef['type']) || ! empty($fieldDef['dbType'])) {
+            if (!empty($fieldDef['type']) || !empty($fieldDef['dbType'])) {
                 $type = $fieldDef['dbType'] ?? $fieldDef['type'];
                 $ORM_type = self::ORM_TYPE_MAP[$type] ?? null;
 
-                if (! $ORM_type) {
+                if (!$ORM_type) {
                     throw new \Exception("Unsupported field type: $type for field: $fieldName");
                 }
 
                 $attributes[] = 'type="' . $ORM_type . '"';
 
-                if (! empty($fieldDef['len'])) {
+                if (!empty($fieldDef['len'])) {
                     $attributes[] = 'length="' . $fieldDef['len'] . '"';
                 } else if ('id' == $type || 'relate' == $type) {
                     $attributes[] = 'length="36"';
                 }
 
-                if (in_array($type, ['id', 'int']) && 'id' == $fieldName) {
+                if ((in_array($type, ['id', 'int']) && 'id' == $fieldName)) {
                     $field['isId'] = true;
                 }
             }
@@ -127,7 +131,7 @@ class EntityCreatorDataGenerator
         }
 
         foreach ($this->vardefs['fields'] as $fieldName => $fieldDef) {
-            if ('link' === $fieldDef['type'] && ! empty($fieldDef['relationship'])) {
+            if ('link' === $fieldDef['type'] && !empty($fieldDef['relationship'])) {
                 if ($this->dataHasRelationshipField($fieldName)) {
                     continue;
                 }
@@ -239,9 +243,10 @@ class EntityCreatorDataGenerator
         $relationshipField['isCollection'] = 'many-to-many' === $relationshipDef['relationship_type'] || ('one-to-many' === $relationshipDef['relationship_type'] && 'lhs' === $relationshipSide);
         $this->data['relationshipFields'][] = $relationshipField;
 
-        if (! in_array($target['module'], $entityCreator['CreatingEntities']) && ! empty($dictionary[$target['module']])) {
+        if (!in_array($target['module'], $entityCreator['CreatingEntities']) && !empty($dictionary[$target['module']])) {
             $entityCreator['CreatingEntities'][] = $target['module'];
             (new EntityCreator($target['module'], $dictionary[$target['module']]))->run();
+            (new CustomEntityCreator($target['module'], $dictionary[$target['module']]))->run();
         }
     }
 
@@ -350,10 +355,10 @@ class EntityCreatorDataGenerator
         }
 
         $relationAttributes = [];
-        if ($joinTable && ! empty($attributes['joinAttributes'] && ! empty($attributes['inverseJoinAttributes']))) {
+        if ($joinTable && !empty($attributes['joinAttributes'] && !empty($attributes['inverseJoinAttributes']))) {
             $relationAttributes[] = '@ORM\\JoinTable(name="' . $joinTable . '", joinColumns={@ORM\\JoinColumn(' . implode(', ', $attributes['joinAttributes']) . ')}, inverseJoinColumns={@ORM\\JoinColumn(' . implode(', ', $attributes['inverseJoinAttributes']) . ')})';
         } else {
-            if (! empty($attributes['joinAttributes'])) {
+            if (!empty($attributes['joinAttributes'])) {
                 $relationAttributes[] = '@ORM\\JoinColumn(' . implode(', ', $attributes['joinAttributes']) . ')';
             }
             if ($joinTable) {
@@ -384,7 +389,7 @@ class EntityCreatorDataGenerator
 
     protected function buildIndexes()
     {
-        if (! empty($this->vardefs['indices'])) {
+        if (!empty($this->vardefs['indices'])) {
             $this->data['indexes'] = [];
             foreach ($this->vardefs['indices'] as $index) {
                 if (isset($index['fields']) && is_array($index['fields'])) {
@@ -418,4 +423,12 @@ class EntityCreatorDataGenerator
             }
         }
     }
+
+    protected function hasCustomTable(): bool
+    {
+        $db = DBManagerFactory::getInstance();
+        $tables = $db->getTablesArray();
+        return in_array(strtolower($this->vardefs["table"] . self::CUSTOM_SUFFIX), $tables);
+    }
+
 }

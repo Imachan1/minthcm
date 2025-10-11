@@ -1,4 +1,12 @@
 {$start_sectionproperties}
+
+{if $generate_custom_entity}
+    {if $isCustom}
+        {include file="$custom_entity_fields_tpl"}
+    {else}
+        {include file="$main_entity_fields_tpl"}
+    {/if}
+{/if}
 {foreach from=$fields item=field}
     /**
 {if $field.isId}
