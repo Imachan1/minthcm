@@ -175,7 +175,7 @@ class MintLogic
         $logic['readonly'] = self::calculateExpression($rule['logic']['readonly'], $this->bean) ?? [];
         foreach ($logic['readonly'] as $field => $isReadonly) {
             if ($isReadonly) {
-                $this->bean->{$field} = $this->bean->fetched_row[$field] ?? null;
+                $this->bean->{$field} = $this->bean->{$field} ?? $this->bean->fetched_row[$field] ?? null;
                 $logic['update'][$field] = $this->bean->{$field};
             }
         }

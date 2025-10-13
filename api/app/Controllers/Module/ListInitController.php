@@ -66,6 +66,13 @@ class ListInitController
         MassActions\Export::class,
         MassActions\Merge::class,
     ];
+
+    const DEFAULT_COLUMNS = [
+        'date_created',
+        'date_entered',
+        'created_by_name',
+        'modified_by_name',
+    ];
     private $request;
     private $module, $metadata, $bean;
     private $eslistmap = [];
@@ -189,6 +196,7 @@ class ListInitController
     {
         global $mod_strings, $app_strings, $current_language;
         $mod_strings = return_module_language($current_language, $this->module);
+        $this->addDefaultFields('search');
         $search = $this->metadata["search"];
         if (empty($search)) {
             return false;
@@ -231,6 +239,7 @@ class ListInitController
 
     function prepareDefsType($type)
     {
+        $this->addDefaultFields($type);
         $columns = $this->metadata[$type];
 
         global $mod_strings, $app_strings, $current_language, $app_list_strings;
@@ -321,5 +330,18 @@ class ListInitController
         $additional_params = $field_defs['function']['additional_params'] ?? null;
 
         return call_user_func($function, null, null, null, 'eslist', $additional_params);
+    }
+
+    protected function addDefaultFields($metadata_type)
+    {
+        foreach (static::DEFAULT_COLUMNS as $field) {
+            if (!isset($this->metadata[$metadata_type][$field]) && !empty($this->bean->field_name_map[$field])) {
+                if ($metadata_type == 'columns' && in_array($field, ['created_by_name', 'modified_by_name'])) {
+                    $this->metadata[$metadata_type][$field] = [ 'link' => true ];
+                    continue;
+                }
+                $this->metadata[$metadata_type][$field] = [];
+            }
+        }
     }
 }
