@@ -1,8 +1,8 @@
 <?php
 
-namespace MintMCP\Tools\Middleware;
+namespace MintMCP\Tools\Utils;
 
-class ToolValidationMiddleware
+class ToolValidation
 {
 
 
@@ -44,13 +44,19 @@ class ToolValidationMiddleware
     public function filterField(array $fieldDefs): self
     {
         if (empty($fieldDefs[$this->field])) {
-            $this->errors[] = "Field '{$this->field}' is not defined in the module.";
+            $this->errors[] = "Field '{$this->field}' is not defined in the module. Use get_module_fields to get list of fields available in the module.";
             return $this;
         }
 
         $fieldType = $fieldDefs[$this->field]['type'] ?? '';
         if (in_array($fieldType, ['link', 'relate'], true)) {
             $this->errors[] = "Field '{$this->field}' of type '{$fieldType}' cannot be used in filters. Use the field of type 'id' and ID of the related record instead.";
+            return $this;
+        }
+
+        $fieldSource = $fieldDefs[$this->field]['source'];
+        if ($fieldSource == 'non-db') {
+            $this->errors[] = "Field '{$this->field}' is of source 'non-db' and cannot be used in filters.";
             return $this;
         }
 
@@ -77,27 +83,26 @@ class ToolValidationMiddleware
      * @param string $type
      * @return self
      */
-    public static function validateByType($value, $field, $type): self
+    public function fieldType($type): self
     {
-        $validator = self::make($value, $field);
         switch (strtolower($type)) {
             case 'date':
             case 'datetime':
-                $validator->date();
+                $this->date();
                 break;
             case 'int':
             case 'integer':
-                $validator->integer();
+                $this->integer();
                 break;
             case 'string':
             case 'text':
             case 'varchar':
             case 'char':
             case 'url':
-                $validator->string();
+                $this->string();
                 break;
         }
-        return $validator;
+        return $this;
     }
     public function greaterThanOrEquals($min): self
     {
@@ -201,7 +206,7 @@ class ToolValidationMiddleware
 
     /**
      * Validate multiple fields and throw InvalidArgumentException if any errors.
-     * @param ToolValidationMiddleware[] $validators
+     * @param ToolValidation[] $validators
      * @throws \InvalidArgumentException
      */
     public static function validateMany(array $validators): void
@@ -213,19 +218,19 @@ class ToolValidationMiddleware
             }
         }
         if (!empty($errors)) {
-            throw new \InvalidArgumentException(implode("\n", $errors));
+            throw new \InvalidArgumentException(json_encode($errors, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         }
     }
 
     /**
      * Validate a single field and throw InvalidArgumentException if any errors.
-     * @param ToolValidationMiddleware $validator
+     * @param ToolValidation $validator
      * @throws \InvalidArgumentException
      */
     public static function validateOne(self $validator): void
     {
         if (!$validator->isValid()) {
-            throw new \InvalidArgumentException(implode("\n", $validator->getErrors()));
+            throw new \InvalidArgumentException(json_encode($validator->getErrors(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         }
     }
 

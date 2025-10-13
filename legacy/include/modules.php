@@ -764,6 +764,12 @@ $beanList['Requests'] = 'Requests';
 $beanFiles['Requests'] = 'modules/Requests/Requests.php';
 $moduleList[] = 'Requests';
 
+$beanList['MCPSettings'] = 'MCPSettings';
+$beanFiles['MCPSettings'] = 'modules/MCPSettings/MCPSettings.php';
+$modules_exempt_from_availability_check['MCPSettings'] = 'MCPSettings';
+$report_include_modules['MCPSettings'] = 'MCPSettings';
+$modInvisList[] = 'MCPSettings';
+
 $modInvisListApiExceptions = [
     'Employees',
 ];

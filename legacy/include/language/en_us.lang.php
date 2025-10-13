@@ -4856,3 +4856,8 @@ $app_strings['LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS'] = 'Get notified if W
 $app_strings['LBL_WORKSCHEDULESACCEPTANCE'] = 'Get notified if the work schedule is approved by the supervisor';
 $app_strings['LBL_CLEAR_BUTTON_KANBAN_LABEL'] = 'Clear Filters';
 $app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';
+
+# MCP Administration Start
+$app_list_strings['moduleList']['MCPSettings'] = 'MCP Settings';
+$app_list_strings['moduleListSingular']['MCPSettings'] = 'MCP Setting';
+# MCP Administration End

@@ -2,16 +2,13 @@
 
 namespace MintMCP\Tools;
 
-use Api\V8\Helper\ModuleListProvider;
 use Mcp\Types\ToolInputSchema;
 use Mcp\Types\CallToolResult;
+use MintHCM\Api\Controllers\Init\Module;
 use MintMCP\Tools\Exceptions\ModuleNotAllowedException;
 
 class GetModuleNames extends AbstractMCPTool
 {
-
-    const ADDITIONAL_MODULES = ['Users', 'Employees'];
-
     public function getName(): string
     {
         return 'get_module_names';
@@ -37,39 +34,33 @@ class GetModuleNames extends AbstractMCPTool
      */
     public function execute(object $arguments): CallToolResult
     {
-        chdir('../legacy');
+        /**
+         * @var Module
+         */
+        // $moduleController = ControllerFactory::getInstance()->createController(Module::class);
+        // $aclModules = $moduleController->getACLs();
 
-        $provider = new ModuleListProvider();
-        $allModules = $provider->getModuleList();
+        global $moduleList;
 
-        chdir('../mcp');
-
-        // Add additional modules that are not in the module list
-        foreach (self::ADDITIONAL_MODULES as $module) {
-            $allModules[$module] ??= [];
-        }
-
-        $filteredModules = [];
-        foreach ($allModules as $moduleName => $moduleData) {
+        $accessible_modules = array();
+        foreach($moduleList as $module) {
             try {
-                $this->checkPermissions($moduleName, 'list');
-                $filteredModules[$moduleName] = [
-                    'label' => $moduleData['label'] ?? null,
-                ];
+                $this->checkPermissions($module, 'list');
             } catch (ModuleNotAllowedException $e) {
-                // Skip modules that are not allowed
+                // Skip blocked modules
                 continue;
             }
+            $accessible_modules[] = $module;
         }
 
+
         // Format result as a readable list
-        if (empty($filteredModules)) {
+        if (empty($accessible_modules)) {
             $resultText = "No modules available for this user.";
         } else {
             $resultText = "Available modules:\n";
-            foreach ($filteredModules as $name => $data) {
-                $label = $data['label'] ?? '';
-                $resultText .= "- {$name}" . ($label ? " ({$label})" : "") . "\n";
+            foreach ($accessible_modules as $module) {
+                $resultText .= "- {$module}\n";
             }
         }
 
