@@ -65,7 +65,7 @@ class KudosRepository extends EntityRepository
             ->leftJoin('kudos.alerts', 'alerts', 'WITH', "alerts.assigned_user_id = '{$current_user->id}'")
             ->addSelect("
                 CASE
-                    WHEN alerts.is_read = 0 THEN 1
+                    WHEN (alerts.is_read = 0 OR alerts.id IS NULL) THEN 1
                     ELSE 2 
                 END AS HIDDEN alert_order,
                 CASE
