@@ -91,6 +91,7 @@ import { useLanguagesStore } from '@/store/languages'
 import { useModulesStore } from '@/store/modules'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintStatusBox from '@/components/MintStatusBoxes/MintStatusBox.vue'
+import { useLocalStorageStore } from '@/store/localStorage'
 
 interface Props {
     data: {
@@ -106,7 +107,33 @@ const props = defineProps<Props>()
 const store = useRecordViewStore()
 const languages = useLanguagesStore()
 const modules = useModulesStore()
-const expandedSections = ref<string[]>([])
+const storage = useLocalStorageStore()
+
+const storageInitialized = ref(false)
+const expandedSections = computed({
+    get: () => {
+        if (!Object.keys(storage.expandedPanels.modules).includes(store.bean.module)) {
+            storageInitialized.value = true
+            storage.expandedPanels.modules[store.bean.module] =  {
+                MintPanelRecordDetails: {
+                    sections: []
+                }
+            }
+        } else if (!Object.keys(storage.expandedPanels.modules[store.bean.module]).includes('MintPanelRecordDetails')) {
+            storage.expandedPanels.modules[store.bean.module].MintPanelRecordDetails = {
+                sections: []
+            }
+        }
+        const stored = storage.expandedPanels.modules[store.bean.module]?.MintPanelRecordDetails.sections ?? []
+        return stored 
+    },
+    set: (value) => {
+        storage.expandedPanels.modules[store.bean.module].MintPanelRecordDetails = {
+            sections: value
+        }
+    }
+})
+
 
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_DETAILS', modules.currentModule?.name)
@@ -149,6 +176,10 @@ const save = async () => {
 }
 
 onMounted(() => {
+    if (!storageInitialized.value) {
+        return
+    }
+
     let array = []
     const keys = Object.keys(props.data.sections)
     for (let i = 0; i < keys.length; i++) {
