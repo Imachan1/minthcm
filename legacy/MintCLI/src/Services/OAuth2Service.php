@@ -88,8 +88,8 @@ class OAuth2Service
     private function updateFrontedBuiltFiles(string $secret): void
     {
         $files = [
-            $this->getFrontendIndexFile('../vue/dist/assets/'),
-            $this->getFrontendIndexFile('../assets/'),
+            ...$this->getFrontendIndexFiles('../vue/dist/assets/'),
+            ...$this->getFrontendIndexFiles('../assets/'),
         ];
 
         foreach ($files as $file) {
@@ -107,21 +107,22 @@ class OAuth2Service
         }
     }
 
-    private function getFrontendIndexFile(string $dir): ?string
+    private function getFrontendIndexFiles(string $dir): array
     {
         $file_starts_with = 'index';
         $file_extension = '.js';
         if (!is_dir($dir)) {
-            return null;
+            return [];
         }
 
+        $reponse = [];
         $files = scandir($dir);
         foreach ($files as $file) {
             if (str_starts_with($file, $file_starts_with) && str_ends_with($file, $file_extension)) {
-                return $dir . $file;
+                $reponse[] = $dir . $file;
             }
         }
 
-        return null;
+        return $reponse;
     }
 }
