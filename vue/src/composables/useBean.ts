@@ -8,6 +8,7 @@ import { useLink } from './useLink'
 import { mintApi } from '@/api/api'
 
 export const useBean = (module: string, id: string) => {
+    const retrieveTimeoutTimeMs = 5000
     const router = useRouter()
     const modulesStore = useModulesStore()
 
@@ -48,6 +49,7 @@ export const useBean = (module: string, id: string) => {
     const isRetrieving = ref(false)
     const isSaving = ref(false)
     const isDirty = ref(false)
+    const loadingError = ref(false)
 
     const validationError = ref('')
     const isValid = computed(() => {
@@ -123,7 +125,7 @@ export const useBean = (module: string, id: string) => {
     }
 
     async function init() {
-        return await retrieve()
+        return retrieve()
     }
 
     function updateFields(fields: { [fieldName: string]: any }) {
@@ -178,7 +180,13 @@ export const useBean = (module: string, id: string) => {
 
     async function retrieve() {
         isRetrieving.value = true
-        return await mintApi.get(`${module}/Get${id ? `/${id}` : ''}`, { rawError: true })
+        loadingError.value = false
+        const timeout = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('timeout')), retrieveTimeoutTimeMs),
+        )
+
+        const apiCall = mintApi
+            .get(`${module}/Get${id ? `/${id}` : ''}`, { rawError: true })
             .then((response) => {
                 if (response.status === 200 && response.data) {
                     setData(response.data)
@@ -188,6 +196,18 @@ export const useBean = (module: string, id: string) => {
             .finally(() => {
                 isRetrieving.value = false
             })
+
+        try {
+            return await Promise.race([apiCall, timeout])
+        } catch (error) {
+            if (error?.message === 'timeout') {
+                loadingError.value = true
+                throw { response: { status: 408, data: { error: 'Request timed out' } } }
+            }
+            throw error
+        } finally {
+            isRetrieving.value = false
+        }
     }
 
     function setData(data: { [key: string]: any }) {

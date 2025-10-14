@@ -5,7 +5,8 @@
             <div class="name-container">
                 <div class="module-name">{{ modules?.currentModule?.label }}</div>
                 <div class="bean-name">
-                    <div>{{ store.bean.name }}</div>
+                    <v-skeleton-loader v-if="store.bean.isRetrieving" type="heading" :width="500" />
+                    <div v-if="!store.bean.isRetrieving">{{ store.bean.name }}</div>
                     <MintButton
                         :icon="isFavorite ? 'mdi-heart' : 'mdi-heart-outline'"
                         variant="nav"
@@ -34,8 +35,9 @@
         <div v-if="props.data?.fields?.length" class="fields-container">
             <div v-for="(row, i) in props.data.fields" class="row" :key="i">
                 <div v-for="n in store.columns" :key="n - 1">
+                    <v-skeleton-loader v-if="store.bean.isRetrieving" type="list-item-two-line" :width="150" />
                     <Field
-                        v-if="row[n - 1]"
+                        v-if="row[n - 1] && !store.bean.isRetrieving"
                         :view="'detail'"
                         :defs="row[n - 1]"
                         hidePencil

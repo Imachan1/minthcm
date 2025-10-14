@@ -4790,3 +4790,4 @@ $app_strings['LBL_UNIFIED_SEARCH_COLUMN_MODULE'] = 'Module';
 $app_strings['LBL_UNIFIED_SEARCH_COLUMN_DATE_ENTERED'] = 'Date Entered';
 $app_strings['LBL_UNIFIED_SEARCH_COLUMN_DATE_MODIFIED'] = 'Date Modified';
 $app_strings['LBL_UNIFIED_SEARCH_COLUMN_DESCRIPTION'] = 'Description';
+$app_strings['LBL_DETAIL_VIEW_LOADING_TIMEOUT'] = 'Record view loading timeout. Please try again later.';
