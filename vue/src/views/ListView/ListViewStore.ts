@@ -18,6 +18,8 @@ interface Preferences {
     columns: string[]
     items_per_page: number
     saved_filters: []
+    activeFilter: string | null
+    filterRows: FilterRow[]
 }
 
 interface Defs {
@@ -66,6 +68,8 @@ export const useListViewStore = defineStore('listview', () => {
     const selected = ref([])
     const defaultAction = 'ESList'
     const defaultActionUrl = 'legacy/index.php?'
+    const filterRows = ref<FilterRow[]>([])
+
     let requestCount = 0
     const predefinedFilters = ref<boolean>(false)
 
@@ -74,10 +78,15 @@ export const useListViewStore = defineStore('listview', () => {
         const result = await modulesApi.getListInit(getModule()).catch(moduleAccessError)
         if (module.value === result.data.module) {
             activeFilter.value = result.data?.preferences?.activeFilter ?? null
+            filterRows.value = result.data?.preferences?.filterRows ?? []
             initialLoading.value = false
             config.value = result.data?.config
             defs.value = result.data?.defs
-            preferences.value = result.data?.preferences
+            preferences.value = Array.isArray(result.data?.preferences) ? {} : result.data?.preferences
+            options.value.sortBy[0] = {
+                key: result.data?.preferences?.sortParams?.sortBy,
+                order: result.data?.preferences?.sortParams?.sortOrder,
+            }
             module.value = result.data?.module
             isInit.value = true
             options.value.sortBy.push({
@@ -220,8 +229,6 @@ export const useListViewStore = defineStore('listview', () => {
         return Object.values(defs.value?.search || {}).sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
     })
 
-    const filterRows = ref<FilterRow[]>([])
-
     function addFilterRow() {
         filterRows.value.push({
             field: null,
@@ -359,6 +366,8 @@ export const useListViewStore = defineStore('listview', () => {
         const filtersChanged = JSON.stringify(query) !== JSON.stringify(filters.value)
         filters.value = query
         if (filtersChanged) {
+            preferences.value.filterRows = filterRows
+            savePreferences()
             getData()
         }
     }
@@ -397,8 +406,7 @@ export const useListViewStore = defineStore('listview', () => {
         } else {
             return value[Object.keys(value)[index]]
         }
-    }
-
+}
     function toggleFavorite(item) {
         if (!item.attributes.is_favorite) {
             favorites.addToFavorites(getModule(), item.id, item.name)
@@ -407,7 +415,6 @@ export const useListViewStore = defineStore('listview', () => {
         }
         item.attributes.is_favorite = !item.attributes.is_favorite
     }
-
     return {
         mode,
         init,
