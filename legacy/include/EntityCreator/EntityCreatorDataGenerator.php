@@ -193,8 +193,8 @@ class EntityCreatorDataGenerator
             }
         }
 
-        $targetFieldName = $this->findFieldName($relationshipDef, $targetSide, $relationshipName);
-        $relationshipField['name'] = $this->findFieldName($relationshipDef, $relationshipSide, $relationshipName);
+        $targetFieldName = $this->getRelationshipLinkFieldName($relationshipDef, $targetSide, $relationshipName);
+        $relationshipField['name'] = $this->getRelationshipLinkFieldName($relationshipDef, $relationshipSide, $relationshipName);
 
         if (empty($relationshipField['name']) || $this->dataHasRelationshipField($relationshipField['name'])) {
             return;
@@ -245,7 +245,7 @@ class EntityCreatorDataGenerator
         }
     }
 
-    protected function findFieldName($relationshipDef, $side, $relationshipName)
+    protected function getRelationshipLinkFieldName($relationshipDef, $side, $relationshipName)
     {
         $dictionary = EntityCreatorManager::$dictionary;
 
