@@ -2,7 +2,7 @@
     <div v-if="access" :class="`list-view-mode-${store.mode}`">
         <h1 v-if="store.mode === 'list'" v-text="moduleName" />
         <div class="list-view-content">
-            <ListViewFilters />
+            <ListViewFilters v-if="store.isInit"/>
             <ListViewHeader />
             <ListViewTable />
         </div>
@@ -33,7 +33,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
     mode: 'list',
-})
+}) 
 
 const module = computed(() => props.module ?? url.module)
 const moduleName = computed(() => languages.languages.app_list_strings?.moduleList?.[module.value])

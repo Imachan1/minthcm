@@ -14,6 +14,8 @@ interface Preferences {
     columns: string[]
     items_per_page: number
     saved_filters: []
+    activeFilter: string | null
+    filterRows: FilterRow[]
 }
 
 interface Defs {
@@ -60,6 +62,8 @@ export const useListViewStore = defineStore('listview', () => {
     const selected = ref([])
     const defaultAction = 'ESList'
     const defaultActionUrl = 'legacy/index.php?'
+    const filterRows = ref<FilterRow[]>([])
+
     let requestCount = 0
 
     async function init() {
@@ -67,10 +71,15 @@ export const useListViewStore = defineStore('listview', () => {
         const result = await modulesApi.getListInit(getModule())
         if (module.value === result.data.module) {
             activeFilter.value = result.data?.preferences?.activeFilter ?? []
+            filterRows.value = result.data?.preferences?.filterRows ?? []
             initialLoading.value = false
             config.value = result.data?.config
             defs.value = result.data?.defs
-            preferences.value = result.data?.preferences
+            preferences.value = Array.isArray(result.data?.preferences) ? {} : result.data?.preferences
+            options.value.sortBy[0] = {
+                key: result.data?.preferences?.sortParams?.sortBy,
+                order: result.data?.preferences?.sortParams?.sortOrder,
+            }
             module.value = result.data?.module
             isInit.value = true
         }
@@ -249,8 +258,6 @@ export const useListViewStore = defineStore('listview', () => {
         return Object.values(defs.value?.search || {}).sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
     })
 
-    const filterRows = ref<FilterRow[]>([])
-
     function addFilterRow() {
         filterRows.value.push({
             field: null,
@@ -352,6 +359,110 @@ export const useListViewStore = defineStore('listview', () => {
 
     function getModule(){
         return Array.isArray(module.value) ? module.value[0] : module.value
+    }
+
+    function replacePlaceholders(placeholders, inputs) {
+        if (!inputs || !inputs.length) {
+            return placeholders
+        }
+        let value = JSON.stringify(placeholders)
+        inputs.forEach((input, i) => {
+            if (value.includes(`"{${i}}"`)) {
+                value = value.replaceAll(`"{${i}}"`, JSON.stringify(input.value))
+            } else {
+                value = value.replaceAll(`{${i}}`, input.value)
+            }
+        })
+        return JSON.parse(value)
+    }
+
+    function isInputValid(input: any) {
+        return (
+            input.value &&
+            (input.type !== 'date' || input.value.length === 10) && // todo: date format validation
+            (input.type !== 'multiselect' || input.value.length)
+        )
+    }
+
+    function getOperator(field: string, operator: string) {
+        const type = defs.value?.search[field].type
+        const fieldDefs =
+            operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
+        return fieldDefs[operator]
+    }
+
+    function isFilterRowValid(row: FilterRow) {
+        if (!row.field || !row.operator) {
+            return false
+        }
+        const operator = getOperator(row.field, row.operator)
+        if (!operator) {
+            return false
+        }
+        if (operator.inputs && row.inputs.some((input) => !isInputValid(input))) {
+            return false
+        }
+        return true
+    }
+
+    function setFilters(filterRows: FilterRow[]) {
+        const query = { filter: [], must_not: [] }
+        filterRows.filter(isFilterRowValid).forEach((row) => {
+            const operator = getOperator(row.field!, row.operator!)
+            const filterType = operator.not ? 'must_not' : 'filter'
+            const esKey = defs.value?.search[row.field].key
+            operator.filters.forEach((f) => {
+                const keyword_suffix = f.use_keyword_subfield ? '.keyword' : ''
+                query[filterType].push({
+                    [f.op]: {
+                        [esKey + keyword_suffix]: replacePlaceholders(f.value, row.inputs),
+                    },
+                })
+            })
+        })
+        const filtersChanged = JSON.stringify(query) !== JSON.stringify(filters.value)
+        filters.value = query
+        if (filtersChanged) {
+            preferences.value.filterRows = filterRows
+            savePreferences()
+            getData()
+        }
+    }
+
+    watch(
+        filterRows,
+        (newFilterRows) => {
+            newFilterRows.forEach((filterRow) => {
+                if (!filterRow.inputs && filterRow.value) {
+                    filterRow.inputs = buildFilterRowInputs(filterRow.field, filterRow.operator, filterRow.value)
+                }
+            })
+            if (activeFilter.value) {
+                preferences.value.activeFilter = activeFilter.value
+            }
+            setFilters(newFilterRows)
+        },
+        { deep: true },
+    )
+
+    function buildFilterRowInputs(field: string, operator: string, value: any) {
+        const fieldDefs = defs.value?.search?.[field]
+        const type = fieldDefs.type
+        const operators = operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
+        return operators[operator].inputs.map((i, index) => ({
+            type: i.type,
+            value: filterValueMapper(value, index),
+            label: languages.label(i.label),
+            modifiers: i.modifiers ?? null,
+        }))
+    }
+
+    function filterValueMapper(value: string | { lte: string, gte: string } | Array<string>, index: number) {
+        if (typeof value === 'string' || Array.isArray(value)) {
+            return value
+        } else {
+            return value[Object.keys(value)[index]]
+        }
     }
 
     return {

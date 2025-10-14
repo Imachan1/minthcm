@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import { useListViewStore } from './ListViewStore'
@@ -93,6 +93,12 @@ const languages = useLanguagesStore()
 const popups = usePopupsStore()
 
 const searchPhraseDebounceTimer = ref<number | null>(null)
+
+onMounted(async () => {
+    if(store.isInit && !store.activeFilter){
+        store.setFilters(store.preferences?.filterRows ?? [])
+    }
+})
 
 function updateOptionsDebounce() {
     if (searchPhraseDebounceTimer.value) {

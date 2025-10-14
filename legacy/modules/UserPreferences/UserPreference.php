@@ -190,27 +190,41 @@ if (!defined('sugarEntry') || !sugarEntry) {
                 isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]) 
                 && $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name] != $value
             )
-            || $category === 'eslist' 
-        ) {
+            || in_array($category, ['eslist'])
+        ){
              $GLOBALS['savePreferencesToDB'] = true;
              if (!isset($GLOBALS['savePreferencesToDBCats'])) {
                  $GLOBALS['savePreferencesToDBCats'] = array();
              }
              $GLOBALS['savePreferencesToDBCats'][$category] = true;
          }
+         $activeFilter = [];
          if($category === 'eslist' && isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'])){
             $activeFilter = $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'];
          }
+         if($category === 'eslist' && array_key_exists('sortParams', $value) && count($value) === 1){
+            $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['sortParams'] = $value['sortParams'];
+            return;
+         }
          $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name] = $value;
          if(
-            $category === 'eslist' 
+            $category === 'eslist'
             && (
-                !array_key_exists('activeFilter', $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name])
-                || empty($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'])
-            )
-            && !isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['deleteActiveFilter'])
+                (
+                    (
+                        !array_key_exists('activeFilter', $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name])
+                        || empty($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'])
+                    )
+                    && !isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['deleteActiveFilter'])
+                )
+                || (
+                    isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['filterRows'])
+                    || $value['filterRows']
+                )
+            ) 
         ){
-            $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'] = $activeFilter;
+            $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'] = (!empty($value['activeFilter']) || $value['deleteActiveFilter']) ? $value['activeFilter'] : $activeFilter;
+            $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['filterRows'] = $value['filterRows'] ?? [];
          }
      }
  
