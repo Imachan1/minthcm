@@ -291,7 +291,7 @@ return [
     ],
     'Delegations' => [
         'list' => false,
-        'record' => false,
+        'record' => true,
     ],
     'DelegationsLocale' => [
         'list' => false,
