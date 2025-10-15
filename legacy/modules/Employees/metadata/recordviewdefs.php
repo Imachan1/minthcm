@@ -17,16 +17,9 @@ $viewdefs['Employees'] = [
                     ],
                 ],
                 'actions' => [
-                    [
-                        'title' => 'LBL_DELETE_BUTTON_LABEL',
-                        'icon' => 'mdi-trash-can-outline',
-                        'click' => 'deleteBean',
-                    ],
-                    [
-                        'title' => 'LNK_VIEW_CHANGE_LOG',
-                        'icon' => 'mdi-history',
-                        'click' => 'showBeanChangeLog',
-                    ],
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

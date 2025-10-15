@@ -320,18 +320,6 @@ class="yui-navset detailview_tabs"
                             <span>{$MOD.LBL_EXPORT_CHARSET_DESC}</span>
                         </td>
                     </tr>
-                    <tr>
-                        <td scope="row" valign="top">
-                            <span>{$MOD.LBL_USE_REAL_NAMES|strip_semicolon}:</span>
-                        </td>
-                        <td>
-                            <span><input tabindex='3' name='use_real_names' disabled class="checkbox"
-                                         type="checkbox" {$USE_REAL_NAMES}></span>
-                        </td>
-                        <td>
-                            <span>{$MOD.LBL_USE_REAL_NAMES_DESC}</span>
-                        </td>
-                    </tr>
                     {if $DISPLAY_EXTERNAL_AUTH}
                         <tr>
                             <td scope="row" valign="top">

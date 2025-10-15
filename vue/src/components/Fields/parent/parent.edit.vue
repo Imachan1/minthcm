@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useModulesStore } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'
 import { usePopupsStore } from '@/store/popups'
@@ -225,6 +225,17 @@ function getHighlightedText(text: string, query: string) {
         return text
     }
 }
+
+watch(
+    () => props.data?.bean.attributes[props.defs.id_name],
+    (newVal) => {
+        currentRecordItem.value = {
+            id: newVal ?? '',
+            name: props.data?.bean.attributes[props.defs.name] ?? '',
+        }
+        currentTypeItem.value = props.data?.bean.attributes[props.defs.type_name]
+    }
+)
 </script>
 
 <style scoped lang="scss">

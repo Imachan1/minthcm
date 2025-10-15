@@ -15,6 +15,7 @@ $viewdefs['WorkSchedules'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

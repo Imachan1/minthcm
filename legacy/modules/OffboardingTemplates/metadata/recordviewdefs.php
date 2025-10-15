@@ -16,6 +16,7 @@ $viewdefs['OffboardingTemplates'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

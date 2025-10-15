@@ -125,10 +125,6 @@ advanced tab content goes here
         <div class="col-xs-12 col-sm-6 detail-view-row-item">
             <!-- [hide!!] -->
             <!-- DIV inside - colspan != 3 -->
-            <div class="col-xs-12 col-sm-4 label col-1-label">
-                <!-- LABEL -->
-                {$MOD.LBL_USE_REAL_NAMES|strip_semicolon}
-            </div>
             <!-- /DIV inside  -->
             <!-- phone (version 1) -->
             <div class="col-xs-12 col-sm-8 detail-view-field " type="name" field="name">

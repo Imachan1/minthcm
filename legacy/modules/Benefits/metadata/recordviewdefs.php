@@ -12,6 +12,7 @@ $viewdefs['Benefits'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

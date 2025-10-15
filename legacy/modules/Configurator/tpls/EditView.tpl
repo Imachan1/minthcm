@@ -100,16 +100,6 @@
             <td>
                 <input type='text' size='4' name='max_dashlets_homepage' value='{$config.max_dashlets_homepage}'>
             </td>
-            <td  scope="row" nowrap>{$MOD.LBL_USE_REAL_NAMES}: &nbsp;{sugar_help text=$MOD.LBL_USE_REAL_NAMES_DESC}</td>
-            {if !empty($config.use_real_names)}
-                {assign var='use_real_names' value='CHECKED'}
-            {else}
-                {assign var='use_real_names' value=''}
-            {/if}
-            <td >
-                <input type='hidden' name='use_real_names' value='false'>
-                <input name='use_real_names'  type="checkbox" value="true" {$use_real_names}>
-            </td>
         </tr>
         <tr>
             <td  scope="row">{$MOD.DISPLAY_RESPONSE_TIME}: </td>

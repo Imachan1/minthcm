@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
+import { onMounted, watch, defineEmits } from 'vue'
 import MintPanel from '@/components/MintPanel/MintPanel.vue'
 import { useRecordViewStore } from './RecordViewStore'
 import { useLanguagesStore } from '@/store/languages'
@@ -31,6 +31,10 @@ onMounted(async () => {
         store.view = 'edit'
         if (Object.keys(route.query).length) {
             store.bean.setAttributesFromQuery(route.query)
+        }
+
+        if (Object.keys(route.query).includes('copy_id')) {
+            await store.bean.setAttributesFromBeanId(route.query.copy_id as string)
         }
     }
 })

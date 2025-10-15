@@ -118,6 +118,7 @@ import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 import Field from '@/components/Fields/Field.vue'
 import { mintApi } from '@/api/api'
+import BeanActions from '@/business/BeanActions'
 
 interface Props {
     data: {
@@ -134,35 +135,21 @@ const favorites = useFavoritesStore()
 const modules = useModulesStore()
 const languages = useLanguagesStore()
 
-// to change on actions from props (from recordviewdefs)
 const actions = computed<MenuListItem[]>(() => {
-    const actions: MenuListItem[] = [
-        {
-            title: languages.label('LBL_CREATE_APPRAISAL', modules.currentModule?.name),
-            icon: 'mdi-plus',
-            onClick: () => (appraisalDialog.value = true),
-        },
-        {
-            title: languages.label('LNK_VIEW_CHANGE_LOG'),
-            icon: 'mdi-history',
-            onClick: () =>
-                window.open(
-                    `legacy/index.php?module=Audit&action=Popup&record=${store.bean.id}&module_name=${store.bean.module}`,
-                    `Audit_popup_window_record_${store.bean.id}_module_name_${store.bean.module}`,
-                    'width=800,height=800,resizable=1,scrollbars=1',
-                ),
-        },
-    ]
-    if (store.bean.aclAccess?.delete === true) {
-        actions.push({
-            title: languages.label('LBL_DELETE_BUTTON_LABEL'),
-            icon: 'mdi-trash-can-outline',
-            onClick: async () => {
-                await store.bean.markDeleted()
-                router.push({ name: 'list', params: { module: modules.currentModule?.name } })
-            },
-        })
-    }
+    const actions: MenuListItem[] = []
+
+    props.data.actions?.forEach((action) => {
+        const actionName = typeof action === 'string' ? action : action.name
+        const actionClass = BeanActions[actionName]
+        if (typeof actionClass !== 'function') {
+            console.warn(`Action ${actionName} not defined in BeanActions`)
+            return
+        }
+        const actionObject = new actionClass(store.bean)
+        if (actionObject.isAvailable()) {
+            actions.push(actionObject.toMenuListItem())
+        }
+    })
     return actions
 })
 

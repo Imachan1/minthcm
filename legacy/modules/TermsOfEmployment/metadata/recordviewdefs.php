@@ -12,6 +12,7 @@ $viewdefs['TermsOfEmployment'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

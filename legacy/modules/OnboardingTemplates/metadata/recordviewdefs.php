@@ -21,6 +21,7 @@ $viewdefs['OnboardingTemplates'] = [
                         'title' => 'LBL_GENERATE_BUTTON',
                         'icon' => 'mdi-history',
                     ],
+                    'Duplicate',
                 ],
             ],
         ],

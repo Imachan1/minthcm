@@ -16,6 +16,7 @@ $viewdefs['Delegations'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

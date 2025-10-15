@@ -15,6 +15,7 @@ $viewdefs['SalaryRanges'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],
