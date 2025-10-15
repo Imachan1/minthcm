@@ -122,4 +122,17 @@ class SalaryRanges extends Basic
         return $result || $is_for_my_position;
     }
 
+    public function buildAccessWhere($view, $user = null)
+    {
+        global $current_user;
+        $where = parent::buildAccessWhere($view, $current_user);
+        if(empty($where) || $current_user->isAdmin()){
+            return $where;
+        }
+        $controller_career_path = ControllerFactory::getController('CareerPaths');
+        $positions_ids = $controller_career_path::getRelatedPositionIds($current_user->position_id, true);
+        $positions_ids_sql = "'" . implode("','", $positions_ids) . "'";
+        return "(" . $where . " || salaryranges.position_id IN ($positions_ids_sql) )";
+    }
+
 }

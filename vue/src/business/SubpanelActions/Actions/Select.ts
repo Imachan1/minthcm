@@ -15,6 +15,7 @@ interface SelectionList {
 export class Select extends SubpanelAction {
     public static readonly TITLE = 'LBL_LINK_RECORD_BUTTON'
     public static readonly ICON = 'mdi-link'
+    public static readonly ACL = ['list']
 
     public async execute() {
         const popupsStore = usePopupsStore()
@@ -34,11 +35,11 @@ export class Select extends SubpanelAction {
                         return
                     }
                     try {
-                        await mintApi.post(`${this.bean.module_name}/Link/${this.bean.id}`, {
-                            link_name: this.subpanel.key,
+                        await mintApi.post(`${this.bean.module}/Link/${this.bean.id}`, {
+                            link_name: this.subpanel.properties.get_subpanel_data || this.subpanel.key,
                             ids,
                         })
-                        store.fetchSubpanelData(this.options.currentRoute, this.subpanel.key)
+                        store.fetchSubpanelRecords(this.subpanel.key, this.subpanel.paginateBy, 0)
                     } catch (error) {
                         console.error('Error linking records:', error.response.data?.errors)
                     }
@@ -50,7 +51,6 @@ export class Select extends SubpanelAction {
     }
 
     public isAvailable(): boolean {
-        const acl = useACL()
-        return acl.hasAccess(this.bean.module_name, 'edit', true) && acl.hasAccess(this.subpanel.module, 'list', true)
+        return useACL().hasAccess(this.bean.module, 'edit', true) && super.isAvailable()
     }
 }

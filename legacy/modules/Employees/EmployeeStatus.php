@@ -57,7 +57,7 @@ function getEmployeeStatusOptions($focus, $name = 'employee_status', $value = nu
     $app_list_strings = return_app_list_strings_language($GLOBALS['current_language']);
     $employee_status_options = $app_list_strings['employee_status_dom'];
     
-    if ($view === 'eslist'
+    if (in_array($view, ['eslist', 'MintLogic'] )
         || (is_admin($GLOBALS['current_user']) && in_array($view, ['EditView', 'MassUpdate']))
     ) {
         return $employee_status_options;

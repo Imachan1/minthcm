@@ -55,9 +55,6 @@ $viewdefs[$module_name]['EditView'] = array(
       'default' => array(
          array(
             'name',
-            'position_name',
-         ),
-         array(
             'assigned_user_name',
          ),
          array(

@@ -23,6 +23,7 @@ class VersionValidator
             'PCRE' => $this->PCRE(),
             'imap' => $this->imap(),
             'cURL' => $this->cURL(),
+            'mysqli' => $this->mysqli(),
             'uploadFileSize' => $this->uploadFileSize(),
             'spriteSupport' => $this->spriteSupport(),
             'phpini' => $this->phpini(),
@@ -185,6 +186,18 @@ class VersionValidator
         }
 
         return ['label' => 'Curl', 'status' => $status, 'message' => $message];
+    }
+        
+    public function mysqli() {
+        if (function_exists('mysqli_connect')) {
+            $status = 1;
+            $message = "";
+        } else {
+            $status = -1;
+            $message = "";
+        }
+
+        return ['label' => 'MySQLi', 'status' => $status, 'message' => $message];
     }
 
     public function uploadFileSize() {

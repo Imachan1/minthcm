@@ -291,7 +291,7 @@ return [
     ],
     'Delegations' => [
         'list' => false,
-        'record' => false,
+        'record' => true,
     ],
     'DelegationsLocale' => [
         'list' => false,
@@ -327,7 +327,7 @@ return [
     ],
     'WorkSchedules' => [
         'list' => false,
-        'record' => false,
+        'record' => true,
     ],
     'WorkingMonths' => [
         'list' => false,
@@ -355,7 +355,7 @@ return [
     ],
     'TermsOfEmployment' => [
         'list' => false,
-        'record' => false,
+        'record' => true,
     ],
     'Trainings' => [
         'list' => false,

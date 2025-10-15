@@ -21,7 +21,7 @@ interface MintCommentsAccess {
 
 interface MintCommentUser {
     id: string
-    name: string
+    full_name: string
     photo: string | null
     user_name: string
     status: string
@@ -157,7 +157,7 @@ export const useMintCommentsStore = defineStore('mint-comments', () => {
                 type: reactionType,
                 user: {
                     id: auth.user.id,
-                    name: auth.user.full_name,
+                    full_name: auth.user.full_name,
                 },
             })
         }

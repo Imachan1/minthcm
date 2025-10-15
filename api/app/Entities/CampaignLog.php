@@ -46,126 +46,133 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="campaign_log", indexes={
- *   @ORM\Index(name="campaign_log_pk", columns={"id"}), 
- *   @ORM\Index(name="idx_camp_tracker", columns={"target_tracker_key"}), 
- *   @ORM\Index(name="idx_camp_campaign_id", columns={"campaign_id"}), 
- *   @ORM\Index(name="idx_camp_more_info", columns={"more_information"}), 
- *   @ORM\Index(name="idx_target_id", columns={"target_id"}), 
- *   @ORM\Index(name="idx_target_id_deleted", columns={"target_id", "deleted"})})
+ * @ORM\Index(name="campaign_log_pk", columns={"id"}), 
+ * @ORM\Index(name="idx_camp_tracker", columns={"target_tracker_key"}), 
+ * @ORM\Index(name="idx_camp_campaign_id", columns={"campaign_id"}), 
+ * @ORM\Index(name="idx_camp_more_info", columns={"more_information"}), 
+ * @ORM\Index(name="idx_target_id", columns={"target_id"}), 
+ * @ORM\Index(name="idx_target_id_deleted", columns={"target_id", "deleted"})})
  */
+// Auto-generated SectionRepository section end
 class CampaignLog
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $campaign_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $target_tracker_key;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $target_id;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $target_type;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $activity_type;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $activity_date;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $related_id;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $related_type;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $archived;
 
     /**
-            * @ORM\Column(type="integer")
-            */
+     * @ORM\Column(type="integer")
+     */
     public $hits;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $list_id;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $more_information;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $marketing_id;
 
     /**
-        * @ORM\OneToMany(targetEntity=Users::class, mappedBy="campaign_log")
-        */
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="campaign_log")
+     */
     public Collection $targeted_user;
 
     /**
-        * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="campaign_log")
-        */
+     * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="campaign_log")
+     */
     public Collection $sent_email;
 
     /**
-        * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Campaigns::class, inversedBy="campaign_log")
-        */
+     * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Campaigns::class, inversedBy="campaign_log")
+     */
     public $campaign;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->targeted_user = new ArrayCollection();
         $this->sent_email = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

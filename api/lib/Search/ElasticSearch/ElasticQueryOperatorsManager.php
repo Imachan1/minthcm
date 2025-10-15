@@ -50,6 +50,7 @@ use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Equals;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Exists;
 use MintHCM\Lib\Search\ElasticSearch\Operators\MatchOperator;
+use MintHCM\Lib\Search\ElasticSearch\Operators\Nested;
 use MintHCM\Lib\Search\ElasticSearch\Operators\QueryString;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Range;
 use MintHCM\Lib\Search\ElasticSearch\Operators\Term;
@@ -75,6 +76,7 @@ class ElasticQueryOperatorsManager
         'query_string' => QueryString::class,
         'terms' => Terms::class,
         'term' => Term::class,
+        'nested' => Nested::class,
     ];
 
     protected $query, $filters, $module;

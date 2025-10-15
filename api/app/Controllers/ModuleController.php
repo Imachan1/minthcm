@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,10 +36,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
- * If the display of the logos is not reasonably feasible for technical reasons, the
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -55,6 +55,14 @@ use SugarBean;
 #[\AllowDynamicProperties]
 class ModuleController
 {
+
+    public function __construct()
+    {
+        global $app_list_strings, $current_language;
+        if (!$app_list_strings) {
+            $app_list_strings = return_app_list_strings_language($current_language);
+        }
+    }
 
     public function detail(Request $request, Response $response, array $args): Response
     {
@@ -97,6 +105,9 @@ class ModuleController
                 if ('id' === $field_name && !empty($value)) {
                     $bean->new_with_id = true;
                 }
+                if( 'multienum' === $bean->field_defs[$field_name]['type'] && is_array($value)) {
+                    $value = '^'.implode('^,^', $value).'^';
+                }
                 $bean->$field_name = $value;
             }
         }
@@ -126,14 +137,14 @@ class ModuleController
         $files = $request->getAttribute("files") ?? [];
         $links = $request->getAttribute("links") ?? [];
         $record_id = $request->getAttribute("id");
-
+        
         $current_time_zone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $disable_date_format = $GLOBALS['disable_date_format'];
         $GLOBALS['disable_date_format'] = true;
 
         if (!empty($record_id)) {
-            $bean = BeanFactory::getBean($module, $record_id);
+        $bean = BeanFactory::getBean($module, $record_id);
         } else {
             $bean = BeanFactory::newBean($module);
         }
@@ -146,6 +157,9 @@ class ModuleController
         }
         foreach ($record_data as $field_name => $value) {
             if (isset($bean->field_defs[$field_name]) && "id" !== $field_name) {
+                if( 'multienum' === $bean->field_defs[$field_name]['type'] && is_array($value)) {
+                    $value = '^'.implode('^,^', $value).'^';
+                }
                 $bean->$field_name = $value;
             }
         }
@@ -188,7 +202,7 @@ class ModuleController
         $GLOBALS['disable_date_format'] = true;
 
         if (!empty($record_id)) {
-            $bean = BeanFactory::getBean($module, $record_id);
+            $bean = BeanFactory::getBean($module,$record_id);
         } else {
             $bean = BeanFactory::newBean($module);
         }
@@ -202,6 +216,7 @@ class ModuleController
         if (!$bean->ACLAccess('view')) {
             return $response->withStatus(403);
         }
+
         if (!empty($bean) && $bean->id === $record_id) {
             $record_data = $this->mergeRecordData($bean);
         }
@@ -280,7 +295,7 @@ class ModuleController
         require_once 'include/SubPanel/SubPanelDefinitions.php';
         $spd = new \SubPanelDefinitions($focus, $module);
         if (isset($spd->layout_defs['subpanel_setup'][$related_name])) {
-
+            
             $target_module = $spd->layout_defs['subpanel_setup'][$related_name]['module'];
             $target_bean = BeanFactory::getBean($target_module);
             if (!$target_bean || !$target_bean->ACLAccess('list')) {
@@ -297,9 +312,16 @@ class ModuleController
             $return_list = [];
             foreach ($list as $record_id => $record) {
                 $record->fill_in_additional_detail_fields();
-                foreach ($record->field_defs as $field_name => $field_def) {
-                    $return_list[$record_id][$field_name] = $record->$field_name;
-                }
+                $return_list[$record_id] = [
+                    'id' => $record->id,
+                    'module' => $record->module_name,
+                    'attributes' => $record->toArray(),
+                    'acl_access' => [
+                        'edit' => $record->ACLAccess('edit'),
+                        'delete' => $record->ACLAccess('delete'),
+                        'view' => $record->ACLAccess('view'),
+                    ],
+                ];
             }
             $return_list['total'] = $data['row_count'];
             $return_list['page'] = (int) $page;
@@ -343,14 +365,14 @@ class ModuleController
 
         chdir('../api/');
 
-        if (!empty($errors)) {
+        if(!empty($errors)) {
             $response = $response->withStatus(400);
             $response->getBody()->write(json_encode(['errors' => $errors]));
             return $response;
         }
 
         $response = $response->withStatus(200);
-        return $response;
+        return $response; 
     }
 
     public function unlink(Request $request, Response $response, array $args): Response
@@ -401,15 +423,14 @@ class ModuleController
             'id' => $bean->id,
             'module' => $bean->module_name,
             'attributes' => $bean->toArray(),
-            'acl_access' => [
-                'edit' => $bean->ACLAccess('edit'),
-                'delete' => $bean->ACLAccess('delete'),
-                'view' => $bean->ACLAccess('view'),
-            ],
+                'acl_access' => [
+                    'edit' => $bean->ACLAccess('edit'),
+                    'delete' => $bean->ACLAccess('delete'),
+                    'view' => $bean->ACLAccess('view'),
+                ],
             'logic' => (new MintLogic($bean))->getInitial(),
         ];
     }
-
     protected function handleFiles($bean, $files = [])
     {
         if (!empty($files) && is_array($files)) {
@@ -473,7 +494,7 @@ class ModuleController
             foreach ($links as $link_name => $link_data) {
                 if (empty($link_data)) {
                     continue;
-                }
+}
                 if (!$bean->load_relationship($link_name)) {
                     $GLOBALS['log']->error("Failed to load relationship {$link_name} for module {$bean->module_name} and record {$bean->id}");
                     continue;

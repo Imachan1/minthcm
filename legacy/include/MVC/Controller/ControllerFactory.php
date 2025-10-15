@@ -56,6 +56,12 @@ class ControllerFactory
      */
     public static function getController($module)
     {
+        $currentDir = getcwd();
+        $change_dir = false;
+        if (strpos($currentDir, '/api') !== false) {
+            $change_dir = true;
+            chdir('../legacy');
+        }
         $class = ucfirst($module).'Controller';
         $customClass = 'Custom' . $class;
         if (file_exists('custom/modules/'.$module.'/controller.php')) {
@@ -89,6 +95,9 @@ class ControllerFactory
         }
         //setup the controller
         $controller->setup($module);
+        if ($change_dir) {
+            chdir('../api');
+        }
         return $controller;
     }
 }

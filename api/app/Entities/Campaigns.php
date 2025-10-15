@@ -46,228 +46,234 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="campaigns", indexes={
- *   @ORM\Index(name="campaignspk", columns={"id"}), 
- *   @ORM\Index(name="camp_auto_tracker_key", columns={"tracker_key"}), 
- *   @ORM\Index(name="idx_campaign_name", columns={"name"}), 
- *   @ORM\Index(name="idx_survey_id", columns={"survey_id"})})
+ * @ORM\Index(name="campaignspk", columns={"id"}), 
+ * @ORM\Index(name="camp_auto_tracker_key", columns={"tracker_key"}), 
+ * @ORM\Index(name="idx_campaign_name", columns={"name"}), 
+ * @ORM\Index(name="idx_survey_id", columns={"survey_id"})})
  */
+// Auto-generated SectionRepository section end
 class Campaigns
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="integer", length="11")
-            */
+     * @ORM\Column(type="integer", length="11")
+     */
     public $tracker_key;
 
     /**
-            * @ORM\Column(type="integer", length="11")
-            */
+     * @ORM\Column(type="integer", length="11")
+     */
     public $tracker_count;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $refer_url;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $tracker_text;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $start_date;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $end_date;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $status;
 
     /**
-            * @ORM\Column(type="integer")
-            */
+     * @ORM\Column(type="integer")
+     */
     public $impressions;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $currency_id;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $budget;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $expected_cost;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $actual_cost;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $expected_revenue;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $campaign_type;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $objective;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $content;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $frequency;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $survey_id;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="campaigns")
-        */
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="campaigns")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="campaigns")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="campaigns")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="campaigns")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="campaigns")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     */
     public Collection $SecurityGroups;
 
     /**
-        * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="campaigns")
-        */
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="campaigns")
+     */
     public Collection $notes;
 
     /**
-        * @ORM\OneToMany(targetEntity=EmailMarketing::class, mappedBy="campaigns")
-        */
+     * @ORM\OneToMany(targetEntity=EmailMarketing::class, mappedBy="campaigns")
+     */
     public Collection $emailmarketing;
 
     /**
-        * @ORM\OneToMany(targetEntity=EmailMan::class, mappedBy="campaigns")
-        */
+     * @ORM\OneToMany(targetEntity=EmailMan::class, mappedBy="campaigns")
+     */
     public Collection $queueitems;
 
     /**
-        * @ORM\OneToMany(targetEntity=CampaignLog::class, mappedBy="campaigns")
-        */
+     * @ORM\OneToMany(targetEntity=CampaignLog::class, mappedBy="campaigns")
+     */
     public Collection $log_entries;
 
     /**
-        * @ORM\OneToMany(targetEntity=SurveyResponses::class, mappedBy="campaigns")
-        */
+     * @ORM\OneToMany(targetEntity=SurveyResponses::class, mappedBy="campaigns")
+     */
     public Collection $surveyresponses_campaigns;
 
     /**
-        * @ORM\JoinTable(name="prospect_list_campaigns", joinColumns={@ORM\JoinColumn(name="campaign_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="prospect_list_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=ProspectLists::class, inversedBy="campaigns")
-        */
+     * @ORM\JoinTable(name="prospect_list_campaigns", joinColumns={@ORM\JoinColumn(name="campaign_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="prospect_list_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=ProspectLists::class, inversedBy="campaigns")
+     */
     public Collection $prospectlists;
 
     /**
-        * @ORM\OneToMany(targetEntity=CampaignTrackers::class, mappedBy="campaigns")
-        */
+     * @ORM\OneToMany(targetEntity=CampaignTrackers::class, mappedBy="campaigns")
+     */
     public Collection $tracked_urls;
 
     /**
-        * @ORM\JoinColumn(name="survey_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Surveys::class, inversedBy="campaigns")
-        */
+     * @ORM\JoinColumn(name="survey_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Surveys::class, inversedBy="campaigns")
+     */
     public $survey;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->SecurityGroups = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->emailmarketing = new ArrayCollection();
@@ -277,4 +283,5 @@ public function __construct()
         $this->prospectlists = new ArrayCollection();
         $this->tracked_urls = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

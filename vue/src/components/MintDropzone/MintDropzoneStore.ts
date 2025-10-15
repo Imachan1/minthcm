@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
 import { filesApi } from '@/api/files.api'
 
 export const useDropzoneStore = defineStore('dropzone', () => {

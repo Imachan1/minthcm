@@ -77,4 +77,5 @@ $mod_strings = array(
    'LBL_TYPE' => 'Type',
    'LBL_ALERT_TYPE' => 'Alert Type',
    'LBL_IS_CLOSED' => 'Is Closed',
+   'LBL_KUDOS' => 'Kudos',
 );

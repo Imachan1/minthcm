@@ -127,6 +127,9 @@ onMounted(() => {
             display: block;
         }
 
+        .dz-success-mark, .dz-error-mark {
+            display: none;
+        }
     }
 
     :deep(.dz-message) {
@@ -136,6 +139,10 @@ onMounted(() => {
         left: 50%;
         transform: translate(-50%, -50%);
         text-align: center;
+    }
+
+    :deep(.smudge-effect) {
+        filter: blur(1px);
     }
 }
 </style>

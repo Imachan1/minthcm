@@ -25,7 +25,6 @@ $ESListViewDefs['Employees'] = [
             'default' => true,
         ],
         'phone_work' => [
-            'link' => true,
             'default' => true,
         ],
         'employee_status' => [
@@ -39,12 +38,26 @@ $ESListViewDefs['Employees'] = [
         ],
         'primary_address_country' => [
         ],
+        'primary_address_postalcode' => [
+        ],
         'birthdate' => [
         ],
         'date_entered' => [
         ],
-        'birthdate' => [
+        'phone_other' => [
         ],
+        'phone_mobile' => [
+        ],
+        'phone_home' => [
+        ],
+        'phone_fax' => [
+        ],
+        'messenger_type' => [
+        ],
+        'messenger_id' => [
+        ],
+        'description' => [
+        ],   
     ],
     'search' => [
         'first_name' => [
@@ -57,7 +70,7 @@ $ESListViewDefs['Employees'] = [
         ],
         'securitygroup_name' => [
         ],
-        'email' => [
+        'email1' => [
         ],
         'birthdate' => [
         ],
@@ -71,7 +84,25 @@ $ESListViewDefs['Employees'] = [
         ],
         'primary_address_country' => [
         ],
-        'birthdate' => [
+        'phone_other' => [
+        ],
+        'phone_mobile' => [
+        ],
+        'phone_work' => [
+        ],
+        'phone_home' => [
+        ],
+        'phone_fax' => [
+        ],
+        'messenger_type' => [
+        ],
+        'messenger_id' => [
+        ],
+        'description' => [
+        ],  
+        'reports_to_name' => [
+        ],
+        'date_entered' => [
         ],
     ],
 ];

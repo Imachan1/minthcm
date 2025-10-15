@@ -21,7 +21,6 @@ import { defineProps, computed, defineEmits } from 'vue'
 import { useLanguagesStore } from '@/store/languages'
 
 interface Props {
-    records: any[]
     tableName: string
     total: number
     paginateBy: number
@@ -43,7 +42,7 @@ const pageText = computed(() => {
 
 const changePageNumber = (toPage: string, tableName: string) => {
     let page = 0
-    const lastPage = Math.ceil(props.records.length / props.paginateBy) - 1
+    const lastPage = Math.ceil(props.total / props.paginateBy) - 1
     switch (toPage) {
         case 'first':
             break
@@ -57,7 +56,7 @@ const changePageNumber = (toPage: string, tableName: string) => {
             page = Number(props.page) - 1
             break
     }
-    emit('pageChanged', page, tableName)
+    emit('pageChanged', page, tableName, props.paginateBy)
 }
 
 const shouldDisable = (direction: string) => {

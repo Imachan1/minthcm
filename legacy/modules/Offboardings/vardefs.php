@@ -70,7 +70,10 @@ $dictionary['Offboardings'] = array(
             'len' => 100,
             'size' => '20',
             'options' => 'onboarding_status_list',
-            'options_colors' => 'onboarding_status_list_colored',
+            'options_colors' => [
+                'in_progress' => 'yellow',
+                'held' => 'green',
+            ],
             'studio' => 'visible',
             'dependency' => false,
         ),

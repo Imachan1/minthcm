@@ -46,8 +46,8 @@
 namespace MintHCM\Api\Controllers\Module;
 
 use MintHCM\Data\MassActions\Actions as MassActions;
-use MintHCM\Data\MassActions\MassActionLoader;
 use MintHCM\Utils\ConstantsLoader;
+use MintHCM\Data\MassActions\MassActionLoader;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpForbiddenException;
 use Slim\Exception\HttpNotFoundException;
@@ -233,7 +233,7 @@ class ListInitController
     {
         $columns = $this->metadata[$type];
 
-        global $mod_strings, $app_strings, $current_language;
+        global $mod_strings, $app_strings, $current_language, $app_list_strings;
         chdir('../legacy/');
         $mod_strings = return_module_language($current_language, $this->module);
         chdir('../api/');
@@ -257,6 +257,7 @@ class ListInitController
                 unset($columns[$field]);
                 continue;
             }
+
             $columns[$field] = array_merge($field_defs, $columns[$field]);
             $columns[$field]['name'] = $defs['name'] ?? $field;
             $columns[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field] ?? $field;
@@ -269,6 +270,13 @@ class ListInitController
             $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
             $columns[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
         }
+        $columns['favorites'] = [
+            'name' => 'favorites',
+            'key' => 'favorites',
+            'type' => 'bool',
+            'label' => $this->prepareLabel($app_strings['LBL_FAVORITES']),
+            'default' => false,
+        ];
         return $columns;
     }
     protected function getMappedFieldProps($key)

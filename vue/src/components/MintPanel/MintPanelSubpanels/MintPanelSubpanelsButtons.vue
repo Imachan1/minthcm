@@ -49,6 +49,7 @@ const store = useRecordViewStore()
 const languages = useLanguagesStore()
 const actionMap = {
     SubPanelTopButtonQuickCreate: 'Create',
+    SubPanelTopCreateButton: 'Create',
     SubPanelTopSelectButton: 'Select',
 }
 

@@ -34,11 +34,10 @@
                         :key="`${subpanel.key}-${subpanel.page}`"
                     />
                     <MintDataTablePagination
-                        :records="subpanel.records"
                         :tableName="subpanel.key"
                         :page="subpanel.page"
                         @page-changed="changePage"
-                        :paginateBy="paginateBy"
+                        :paginateBy="subpanel.paginateBy"
                         :total="subpanel.total"
                     />
                 </v-expansion-panel-text>
@@ -60,7 +59,7 @@ import { useACL } from '@/composables/useACL'
 
 onMounted(() => {
     store.fetchLanguagesForSubpanels()
-    store.fetchSubpanelsData(paginateBy)
+    store.fetchSubpanelsData()
 })
 
 const store = useRecordViewStore()
@@ -68,10 +67,9 @@ const languages = useLanguagesStore()
 const backend = useBackendStore()
 const acl = useACL()
 
-const paginateBy = backend.initData.global.list_max_entries_per_subpanel ? parseInt(backend.initData.global.list_max_entries_per_subpanel, 10) : 10
 const expandedSubpanels = ref<string[]>([])
 
-const changePage = (page: number, tableName: string) => {
+const changePage = (page: number, tableName: string, paginateBy: number) => {
     store.fetchSubpanelRecords(tableName, paginateBy, page)
 }
 </script>

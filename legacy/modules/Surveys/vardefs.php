@@ -70,7 +70,11 @@ $dictionary['Surveys'] = array(
             'len'                       => 100,
             'size'                      => '20',
             'options'                   => 'survey_status_list',
-            'options_colors'            => 'survey_status_list_colored',
+            'options_colors'            => [
+                'Draft' => 'gray',
+                'Active' => 'green',
+                'Closed' => 'green',
+            ],
             'studio'                    => 'visible',
             'dependency'                => false,
         ),

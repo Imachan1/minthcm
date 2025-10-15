@@ -11,8 +11,7 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount } from 'vue'
 import MintButton from '@/components/MintButtons/MintButton.vue'
-import MintStatusBox from '@/components/MintStatusBox.vue'
-
+import MintStatusBox from '@/components/MintStatusBoxes/MintStatusBox.vue'
 onMounted(() => {
     window.addEventListener('keydown', handleKeyDown)
 })

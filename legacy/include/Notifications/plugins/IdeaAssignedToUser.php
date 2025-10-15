@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,8 +8,8 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2024 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
+ * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -37,80 +36,36 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+require_once 'include/Notifications/NotificationPlugin.php';
 
-namespace MintHCM\Api\Entities;
-
-use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidGenerator;
-
-/**
- * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\ReactionRepository")
- * @ORM\Table(name="reactions")
- */
-#[\AllowDynamicProperties]
-class Reaction
+class IdeaAssignedToUser extends NotificationPlugin
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    public $id;
+    const TYPE = 'IdeaAssignedToUserNotification';
+    const LABEL = 'LBL_IDEAASSIGNEDTOUSER';
 
     /**
-     * @ORM\Column(type="string", length=36)
+     * @var Ideas
      */
-    public $parent_id;
+    public $bean;
 
-    /**
-     * @ORM\Column(type="string", length=36)
-     */
-    public $created_by;
-
-    /**
-     * @ORM\Column(type="string", length=36)
-     */
-    public $assigned_user_id;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    public $date_entered;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    public $date_modified;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    public $description;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    public $parent_type;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    public $reaction_type;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    public $deleted = false;
-
-    public function __construct()
+    public function run()
     {
-        $this->date_entered = new \DateTime();
+        $this->getNewNotification()
+                ->setDescription($this->bean->notification_message)
+                ->setAssignedUserId($this->bean->notification_user_id)
+                ->setRelatedBean($this->bean->id, 'Ideas')
+                ->setType($this->getType())
+                ->saveAsAlert()->WebPush(true, true);
     }
+    public function isWebPushableNotification()
+    {
+        return true;
+    }
+
 }

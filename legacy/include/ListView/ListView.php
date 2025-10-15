@@ -1159,8 +1159,8 @@ class ListView
                     $this->sort_order,
                     $this->query_where,
                     $current_offset,
-                    $records_per_page,
-                    $records_per_page,
+                    $records_per_page ?: -1,
+                    $records_per_page ?: $this->records_per_page,
                     $this->query_limit,
                     $subpanel_def
                 );

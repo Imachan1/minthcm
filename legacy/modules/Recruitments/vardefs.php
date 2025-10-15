@@ -159,7 +159,12 @@ $dictionary['Recruitments'] = array(
          'len' => 100,
          'size' => '20',
          'options' => 'project_status_list',
-         'options_colors' => 'project_status_list_colored',
+         'options_colors' => [
+            'for_approval' => 'yellow',
+            'plan' => 'blue',
+            'open' => 'green',
+            'close' => 'red',
+         ],
          'studio' => 'visible',
          'dependency' => false,
       ),

@@ -128,6 +128,7 @@ class RepairAndClear
                 $this->repairDatabase();
                 updateMintRebuildFile();
                 $this->createEntities();
+                $this->clearNewApiCache();
                 break;
         }
         }
@@ -516,5 +517,10 @@ class RepairAndClear
     {
         require_once 'include/EntityCreator/EntityCreatorManager.php';
         EntityCreatorManager::createEntities();
+    }
+
+    private function clearNewApiCache() {
+        $cacheDir = '../api/cache';
+        exec('rm -rf ' . $cacheDir . '/*');
     }
 }

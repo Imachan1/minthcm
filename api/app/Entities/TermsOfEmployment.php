@@ -46,188 +46,195 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="", indexes={
- *   @ORM\Index(name="termsofemploymentpk", columns={"id"})})
+ * @ORM\Index(name="termsofemploymentpk", columns={"id"})})
  */
+// Auto-generated SectionRepository section end
 class TermsOfEmployment
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $description;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $employee_id;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $term_starting_date;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $term_ending_date;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $date_of_signing;
 
     /**
-            * @ORM\Column(type="decimal", length="26")
-            */
+     * @ORM\Column(type="decimal", length="26")
+     */
     public $gross;
 
     /**
-            * @ORM\Column(type="decimal", length="26")
-            */
+     * @ORM\Column(type="decimal", length="26")
+     */
     public $gross_usdollar;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $currency_id;
 
     /**
-            * @ORM\Column(type="decimal", length="26")
-            */
+     * @ORM\Column(type="decimal", length="26")
+     */
     public $net;
 
     /**
-            * @ORM\Column(type="decimal", length="26")
-            */
+     * @ORM\Column(type="decimal", length="26")
+     */
     public $net_usdollar;
 
     /**
-            * @ORM\Column(type="decimal", length="26")
-            */
+     * @ORM\Column(type="decimal", length="26")
+     */
     public $employer_cost;
 
     /**
-            * @ORM\Column(type="decimal", length="26")
-            */
+     * @ORM\Column(type="decimal", length="26")
+     */
     public $employer_cost_usdollar;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $contract_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $position_id;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="termsofemployment")
-        */
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="termsofemployment")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="termsofemployment")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="termsofemployment")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="termsofemployment")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="termsofemployment")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     */
     public Collection $SecurityGroups;
 
     /**
-        * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="termsofemployment")
-        */
+     * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="termsofemployment")
+     */
     public $employee_link;
 
     /**
-        * @ORM\JoinColumn(name="contract_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Contracts::class, inversedBy="termsofemployment")
-        */
+     * @ORM\JoinColumn(name="contract_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Contracts::class, inversedBy="termsofemployment")
+     */
     public $contracts;
 
     /**
-        * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="termsofemployment")
-        */
+     * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="termsofemployment")
+     */
     public $positions;
 
     /**
-        * @ORM\JoinTable(name="documents_termsofemployment", joinColumns={@ORM\JoinColumn(name="termsofemployment_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=Documents::class, inversedBy="termsofemployment")
-        */
+     * @ORM\JoinTable(name="documents_termsofemployment", joinColumns={@ORM\JoinColumn(name="termsofemployment_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=Documents::class, inversedBy="termsofemployment")
+     */
     public Collection $documents;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->SecurityGroups = new ArrayCollection();
         $this->documents = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

@@ -10,7 +10,6 @@ $viewdefs['Workplaces'] = [
                     [
                         'availability',
                         'room_name',
-                        'mode',
                     ],
                 ],
                 'actions' => [
@@ -22,30 +21,39 @@ $viewdefs['Workplaces'] = [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    [
-                        'name',
-                        'assigned_user_name',
-                        'mode',
-                    ],
-                    [
-                        'availability',
-                        [
-                            'name' => 'room_name',
-                            'filters' => [
+                'sections' => [
+                    'basic' => [
+                        'title' => 'LBL_BASIC',
+                        'fields' => [
+                            [
+                                'name',
+                                'assigned_user_name',
+                                'mode',
+                            ],
+                            [
+                                'availability',
                                 [
-                                    'field' => 'availability',
-                                    'operator' => 'equal',
-                                    'value' => 'active',
-                                    'editable' => false,
+                                    'name' => 'room_name',
+                                    'filters' => [
+                                        [
+                                            'field' => 'availability',
+                                            'operator' => 'equal',
+                                            'value' => 'active',
+                                            'editable' => false,
+                                        ],
+                                    ],
                                 ],
+                                'description',
+                            ],
+                            [
+                                'date_entered',
+                                'date_modified',
+                            ],
+                            [
+                                'created_by_name',
+                                'modified_by_name',
                             ],
                         ],
-                        'description',
-                    ],
-                    [
-                        'date_entered',
-                        'date_modified',
                     ],
                 ],
             ],

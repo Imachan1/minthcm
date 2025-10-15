@@ -1803,6 +1803,7 @@ $app_strings = array(
     'LBL_SAVED_LAYOUT' => 'Layout has been saved.',
     'LBL_SAVED' => 'Saved',
     'LBL_SAVING' => 'Saving',
+    'LBL_VALIDATION' => 'Validation in progress...',
     'LBL_DISPLAY_COLUMNS' => 'Display Columns',
     'LBL_HIDE_COLUMNS' => 'Hide Columns',
     'LBL_PROCESSING_REQUEST' => 'Processing...',
@@ -2222,6 +2223,8 @@ $app_strings = array(
     'LBL_ESLIST_SELECT_DATE' => 'Select',
     'LBL_ESLIST_OVERWRITE_FILTER_CONFIRM' => 'Filter with that name already exists. Do you want to overwrite it?',
     'LBL_ESLIST_REFRESH' => 'Refresh',
+    'LBL_ESLIST_IS_FAVORITE' => 'Favorite',
+    'LBL_ESLIST_MY_FAVORITES' => 'Only my favorites',
     //MOBILE START
     'LBL_ID_FF_SELECT' => 'Select',
     'LBL_INSTANCE_ADDRESS' => 'Server Address',
@@ -4628,7 +4631,8 @@ $app_strings['LBL_INBOUND_ACCOUNT'] = 'Inbound Account';
 $app_strings['LBL_SYSTEM_ACCOUNT'] = 'System Account';
 $app_strings['LBL_FROM_SYSTEM'] = 'Send From System';
 $app_strings['LBL_SIGNATURE'] = 'Signature';
-$app_strings['LBL_MINT4_NO_ACCESS_TO_MODULE'] = 'Warning: You do not have permission to access this module.';
+$app_strings['LBL_MINT4_NO_ACCESS_TO_MODULE'] = 'You do not have permission to access this module.';
+$app_strings['LBL_MINT4_NO_ACCESS_TO_RECORD'] = 'You do not have permission to access this record.';
 
 $app_list_strings['requests_status_list'] = array(
     'requested' => 'Requested',
@@ -4668,141 +4672,6 @@ $app_strings['LBL_KUDOS_SUCCESS_BUTTON'] = 'RETURN TO THE LIST';
 $app_strings['LBL_KUDOS_ERROR'] = 'An error occurred. Try again later.';
 $app_strings['LBL_KUDOS_CHARACTERS_WARNING'] = 'Maximum number of characters is 255';
 $app_strings['LBL_KUDOS_EMPTY_MESSAGE'] = 'Enter a message, please';
-// ColoredEnum Lists START
-
-$gray_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#616161; background-color:#dbdbdb; border:1px solid #616161;";
-$blue_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#316b95; background-color: #e0f1ff; border:1px solid #316b95;";
-$green_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#316b95; background-color: #e0f1ff; border:1px solid #316b95;";
-$yellow_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#5b5800; background-color: #f8f0aa; border:1px solid #5b5800;";
-$green_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#006222; background-color:#e1ffeb; border:1px solid #006222;";
-$red_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#b00020; background-color:#ffe0e8; border:1px solid #b00020;";
-
-$app_list_strings['workschedules_status_dom_colored'] = array(
-    'planned' => $blue_status,
-    'worked' => $yellow_status,
-    'closed' => $green_status,
-);
-$app_list_strings['position_status_colored'] = array(
-    'planned' => $blue_status,
-    'active' => $green_status,
-    'inactive' => $gray_status,
-);
-
-$app_list_strings['meeting_status_dom_colored'] = array(
-    'Planned' => $blue_status,
-    'Held' => $green_status,
-    'Not Held' => $red_status,
-);
-
-$app_list_strings['call_status_dom_colored'] = array(
-    'Planned' => $blue_status,
-    'Held' => $green_status,
-    'Not Held' => $red_status,
-);
-$app_list_strings['project_status_dom_colored'] = array(
-    'Draft' => $gray_status,
-    'In Review' => $yellow_status,
-    'Underway' => $yellow_status,
-    'On_Hold' => $yellow_status,
-    'Completed' => $green_status,
-);
-$app_list_strings['survey_status_list_colored'] = array(
-    'Draft' => $gray_status,
-    'Active' => $green_status,
-    'Closed' => $green_status,
-);
-$app_list_strings['exit_interview_status_list_colored'] = array(
-    'planned' => $blue_status,
-    'held' => $green_status,
-    'not_held' => $red_status,
-);
-$app_list_strings['goals_status_list_colored'] = array(
-    'planned' => $blue_status,
-    'in_progress' => $yellow_status,
-    'completed' => $green_status,
-    'uncompleted' => $gray_status,
-);
-$app_list_strings['onboarding_status_list_colored'] = array(
-    'in_progress' => $yellow_status,
-    'held' => $green_status,
-);
-$app_list_strings['task_status_dom_colored'] = array(
-    'Not Started' => $gray_status,
-    'In Progress' => $yellow_status,
-    'Completed' => $green_status,
-    'Pending Input' => $yellow_status,
-    'Deferred' => $gray_status,
-);
-$app_list_strings['project_status_list_colored'] = array(
-    'for_approval' => $yellow_status,
-    'plan' => $blue_status,
-    'open' => $green_status,
-    'close' => $red_status,
-);
-$app_list_strings['appraisals_status_list_colored'] = array(
-    'planned' => $blue_status,
-    'in_progress' => $yellow_status,
-    'held' => $green_status,
-    'not_held' => $red_status,
-);
-$app_list_strings['aok_status_list_colored'] = array(
-    'Draft' => $gray_status,
-    'Expired' => $red_status,
-    'In_Review' => $yellow_status,
-    'published_private' => $green_status,
-    'published_public' => $green_status,
-);
-$app_list_strings['workplace_room_status_colored'] = array(
-    '' => '',
-    'active' => $green_status,
-    'inactive' => $gray_status,
-    'planned' => $blue_status,
-);
-
-$app_list_strings['applications_status_list_colored'] = array(
-    'new' => $blue_status,
-    'in_progress' => $yellow_status,
-    'accepted' => $green_status,
-    'rejected' => $red_status,
-);
-
-$app_list_strings['status_list_colored'] = array(
-    'Acceptance' => $yellow_status,
-    'AfterEntryInterview' => $yellow_status,
-    'CandidateResignation' => $red_status,
-    'EntryInterview' => $yellow_status,
-    'Hired' => $green_status,
-    'InProgress' => $yellow_status,
-    'MeetingAdditional' => $yellow_status,
-    'MeetingPrimary' => $yellow_status,
-    'Negotation' => $yellow_status,
-    'New' => $blue_status,
-    'Offer' => $yellow_status,
-    'PracticalTask' => $yellow_status,
-    'Preselection' => $yellow_status,
-    'Rejected' => $red_status,
-    'Scored' => $yellow_status,
-    'Scored2' => $yellow_status,
-);
-
-$app_list_strings['campaign_status_dom_colored'] = array(
-    'Planning' => $blue_status,
-    'Active' => $yellow_status,
-    'Inactive' => $gray_status,
-    'Complete' => $green_status,
-);
-
-$app_list_strings['dom_email_status_colored'] = array(
-    'archived' => $yellow_status,
-    'closed' => $green_status,
-    'draft' => $gray_status,
-    'read' => $green_status,
-    'replied' => $blue_status,
-    'sent' => $green_status,
-    'send_error' => $red_status,
-    'unread' => $yellow_status,
-);
-// ColoredEnum Lists END
 
 $app_list_strings['source_list'] = array(
     '' => '',
@@ -4906,7 +4775,7 @@ $app_strings['LBL_WORKSCHEDULES_DAY_VALID'] = 'Get notified if not closed Work S
 $app_strings['LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS'] = 'Get notified if Work Schedule is not planned for two weeks';
 $app_strings['LBL_WORKSCHEDULESACCEPTANCE'] = 'Get notified if the work schedule is approved by the supervisor';
 $app_strings['LBL_CLEAR_BUTTON_KANBAN_LABEL'] = 'Clear Filters';
-$app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';
+$app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';$app_strings['LBL_LINK_RECORD_BUTTON'] = 'LINK RECORD';
 $app_strings['LBL_LINK_RECORD_BUTTON'] = 'LINK RECORD';
 $app_strings['LBL_EXPAND'] = 'Expand';
 $app_strings['LBL_COLLAPSE'] = 'Collapse';
@@ -4918,3 +4787,5 @@ $app_strings['LBL_SCHEDULER_INVALID'] = 'Invalid time range';
 $app_strings['LBL_SCHEDULER_NO_RESULTS'] = 'No results';
 $app_strings['LBL_SCHEDULER_DATE_START'] = 'Start Date';
 $app_strings['LBL_SCHEDULER_DATE_END'] = 'End Date';
+$app_strings['LBL_BASIC'] = 'Basic';
+$app_strings['LBL_OTHER'] = 'Other';

@@ -95,7 +95,12 @@ $dictionary['Workplaces'] = array(
             'len' => 100,
             'size' => '20',
             'options' => 'workplace_room_status',
-            'options_colors' => 'workplace_room_status_colored',
+            'options_colors' => [
+                '' => '',
+                'active' => 'green',
+                'inactive' => 'gray',
+                'planned' => 'blue',
+            ],
             'studio' => 'visible',
         ),
         "rooms_workplaces" => array(

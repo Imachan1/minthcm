@@ -46,308 +46,314 @@
 
 namespace MintHCM\Api\Entities;
 
+// Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+// Auto-generated SectionUse section end
+// Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
  * @ORM\Table(name="candidatures", indexes={
- *   @ORM\Index(name="candidaturespk", columns={"id"})})
+ * @ORM\Index(name="candidaturespk", columns={"id"})})
  */
+// Auto-generated SectionRepository section end
 class Candidatures
 {
+
+// Auto-generated SectionProperties section start
     /**
-         * @ORM\Id
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $id;
 
     /**
-            * @ORM\Column(type="string", length="255")
-            */
+     * @ORM\Column(type="string", length="255")
+     */
     public $name;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_entered;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_modified;
 
     /**
-            * @ORM\Column(type="datetime")
-            */
+     * @ORM\Column(type="datetime")
+     */
     public $date_indexed;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $modified_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $created_by;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $description;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $deleted;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $assigned_user_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $employee_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $currency_id;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $reason_for_rejection;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $dg_amount;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $dg_amount_usdollar;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $gross_amount;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $gross_amount_usdollar;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $net_amount;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $net_amount_usdollar;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $notice;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $notice_final_expectations;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $salary_net;
 
     /**
-            * @ORM\Column(type="decimal")
-            */
+     * @ORM\Column(type="decimal")
+     */
     public $salary_net_usdollar;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $scoring;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $source;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $start_date;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $work_start;
 
     /**
-            * @ORM\Column(type="date")
-            */
+     * @ORM\Column(type="date")
+     */
     public $training_date;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $status;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $status_information;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $task_grade;
 
     /**
-            * @ORM\Column(type="boolean")
-            */
+     * @ORM\Column(type="boolean")
+     */
     public $to_decision;
 
     /**
-            * @ORM\Column(type="string", length="100")
-            */
+     * @ORM\Column(type="string", length="100")
+     */
     public $final_employment_form;
 
     /**
-            * @ORM\Column(type="string")
-            */
+     * @ORM\Column(type="string")
+     */
     public $employment_form;
 
     /**
-            * @ORM\Column(type="text")
-            */
+     * @ORM\Column(type="text")
+     */
     public $entry_interview;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $parent_id;
 
     /**
-            * @ORM\Column(type="string")
-            */
+     * @ORM\Column(type="string")
+     */
     public $parent_type;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $recruitment_id;
 
     /**
-            * @ORM\Column(type="string", length="36")
-            */
+     * @ORM\Column(type="string", length="36")
+     */
     public $recruitment_end_id;
 
     /**
-        * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidatures")
-        */
+     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidatures")
+     */
     public $modified_user_link;
 
     /**
-        * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidatures")
-        */
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidatures")
+     */
     public $created_by_link;
 
     /**
-        * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidatures")
-        */
+     * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidatures")
+     */
     public $assigned_user_link;
 
     /**
-        * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
-        */
+     * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     */
     public Collection $SecurityGroups;
 
     /**
-        * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="candidatures")
-        */
+     * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="candidatures")
+     */
     public $employee_link;
 
     /**
-        * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Candidates::class, inversedBy="candidatures")
-        */
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Candidates::class, inversedBy="candidatures")
+     */
     public $candidate;
 
     /**
-        * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="candidatures")
-        */
+     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="candidatures")
+     */
     public Collection $calls;
 
     /**
-        * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="candidatures")
-        */
+     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="candidatures")
+     */
     public Collection $meetings;
 
     /**
-        * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="candidatures")
-        */
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="candidatures")
+     */
     public Collection $notes;
 
     /**
-        * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="candidatures")
-        */
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="candidatures")
+     */
     public Collection $tasks;
 
     /**
-        * @ORM\JoinColumn(name="recruitment_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Recruitments::class, inversedBy="candidatures")
-        */
+     * @ORM\JoinColumn(name="recruitment_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Recruitments::class, inversedBy="candidatures")
+     */
     public $recruitments;
 
     /**
-        * @ORM\JoinColumn(name="recruitment_end_id", referencedColumnName="id")
-        * @ORM\ManyToOne(targetEntity=Recruitments::class, inversedBy="candidatures")
-        */
+     * @ORM\JoinColumn(name="recruitment_end_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Recruitments::class, inversedBy="candidatures")
+     */
     public $recruitments_end;
 
     /**
-        * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="candidatures")
-        */
+     * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="candidatures")
+     */
     public Collection $emails;
 
     /**
-        * @ORM\OneToMany(targetEntity=Appraisals::class, mappedBy="candidatures")
-        */
+     * @ORM\OneToMany(targetEntity=Appraisals::class, mappedBy="candidatures")
+     */
     public Collection $appraisals;
 
     /**
-        * @ORM\JoinTable(name="documents_candidatures", joinColumns={@ORM\JoinColumn(name="candidature_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")})
-        * @ORM\ManyToMany(targetEntity=Documents::class, inversedBy="candidatures")
-        */
+     * @ORM\JoinTable(name="documents_candidatures", joinColumns={@ORM\JoinColumn(name="candidature_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=Documents::class, inversedBy="candidatures")
+     */
     public Collection $documents;
 
     /**
-        * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidatures")
-        */
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidatures")
+     */
     public Collection $files;
 
-
-public function __construct()
-{
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
+    public function __construct()
+    {
         $this->SecurityGroups = new ArrayCollection();
         $this->calls = new ArrayCollection();
         $this->meetings = new ArrayCollection();
@@ -358,4 +364,5 @@ public function __construct()
         $this->documents = new ArrayCollection();
         $this->files = new ArrayCollection();
     }
+// Auto-generated SectionMethods section end
 }

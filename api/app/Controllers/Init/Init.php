@@ -128,6 +128,7 @@ class Init
         $response_body['system_name'] = $GLOBALS['system_config']->settings['system_name'];
         global $sugar_config;
         $response_body['upload_maxsize'] = $sugar_config['upload_maxsize'] ?? '3000000';
+        $response_body['field_variables']['ColoredEnum']['options_colors'] = ConstantsLoader::getConstants('colored_enum');
         return $response_body;
     }
 

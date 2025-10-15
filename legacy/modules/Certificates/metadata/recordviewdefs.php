@@ -1,7 +1,7 @@
 <?php
 
 $viewdefs['Certificates'] = [
-    'order' => ['header', 'basicInfo', 'other', 'subpanels'],
+    'order' => ['header', 'basicInfo', 'subpanels'],
     'panels' => [
         'header' => [
             'component' => 'MintPanelRecordHeader',
@@ -18,38 +18,40 @@ $viewdefs['Certificates'] = [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    [
-                        [
-                            'name' => 'name',
-                            'required' => true,
+                'sections' => [
+                    'basic' => [
+                        'title' => 'LBL_BASIC',
+                        'fields' => [
+                            [
+                                [
+                                    'name' => 'name',
+                                    'required' => true,
+                                ],
+                                'attempts_number',
+                                'pass_rate',
+                            ],
+                            [
+                                'duration',
+                                'description',
+                            ],
                         ],
-                        'attempts_number',
-                        'pass_rate',
                     ],
-                    [
-                        'duration',
-                        'description',
-                    ],
-                ],
-            ],
-        ],
-        'other' => [
-            'component' => 'MintPanelRecordPanel',
-            'title' => 'LBL_RECORDVIEW_PANEL',
-            'data' => [
-                'fields' => [
-                    [
-                        'assigned_user_name',
-                        'label' => 'LBL_ASSIGNED_TO_NAME',
-                    ],
-                    [
-                        'name' => 'date_entered',
-                        'readonly' => true,
-                    ],
-                    [
-                        'name' => 'date_modified',
-                        'readonly' => true,
+                    'other' => [
+                        'title' => 'LBL_RECORDVIEW_PANEL',
+                        'collapsed' => true,
+                        'fields' => [
+                            [
+                                'assigned_user_name',
+                                [
+                                    'name' => 'date_entered',
+                                    'readonly' => true,
+                                ],
+                                [
+                                    'name' => 'date_modified',
+                                    'readonly' => true,
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],

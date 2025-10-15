@@ -163,8 +163,6 @@ array (
           1 => 
           array (
             'name' => 'status',
-            'label' => 'LBL_STATUS',
-            'type' => 'ColoredActivityStatus',
           ),
         ),
         1 => 

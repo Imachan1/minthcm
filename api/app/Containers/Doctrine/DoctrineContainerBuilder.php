@@ -84,8 +84,8 @@ class DoctrineContainerBuilder extends ContainerBuilder
             'settings' => [
                 'doctrine' => [
                     'dev_mode' => true,
-                    'cache_path' => __DIR__ . '/../../../var/cache/doctrine',
-                    'proxy_path' => __DIR__ . '/../../../var/cache/doctrine/orm/Proxies',
+                    'cache_path' => __DIR__ . '/../../../cache/doctrine',
+                    'proxy_path' => __DIR__ . '/../../../cache/doctrine/orm/Proxies',
                     'entity_paths' => [__DIR__ . '/../../Entities/'],
                     'connection' => $mint_config['database'],
                 ]

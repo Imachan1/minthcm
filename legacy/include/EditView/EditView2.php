@@ -580,8 +580,19 @@ class EditView {
                // the list's name, but the list itself (the developper comment show us that developper expected to
                // retrieve list's name and not the options array)
                $this->fieldDefs[$name]['options'] = $app_list_strings[$this->fieldDefs[$name]['options']];
-                if(isset($this->fieldDefs[$name]['options_colors'])){
-                    $this->fieldDefs[$name]['options_colors'] = $app_list_strings[$this->fieldDefs[$name]['options_colors']];
+                if (isset($this->fieldDefs[$name]['options_colors'])) {
+                     include 'include/ColoredEnum/ColoredEnumVariables.php';
+                     foreach ($this->fieldDefs[$name]['options'] as $key => $value) {
+                        if (empty($this->fieldDefs[$name]['options_colors'][$key])) {
+                           $this->fieldDefs[$name]['options_colors'][$key] = '-default-';
+                        }
+                     }
+
+                     foreach ($this->fieldDefs[$name]['options_colors'] as $key => $value) {
+                        if (! empty($colored_enum_variables[$value])) {
+                           $this->fieldDefs[$name]['options_colors'][$key] = $colored_enum_variables[$value];
+                        }
+                     }
                 }
 
             }

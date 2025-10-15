@@ -27,7 +27,16 @@ export const useLogic = (module: string) => {
         const formPanel = Object.values(modulesStore.modules[module]?.metadata.RecordView?.panels ?? {}).find(
             (panel) => panel.component === 'MintPanelRecordDetails',
         )
-        return (formPanel?.data?.fields?.flat() ?? []).map((field) => field.name)
+        const fields = [] as string[]
+        if (formPanel) {
+            Object.values(formPanel?.data?.sections).forEach((section) => {
+                const sectionFields = section?.fields?.flat() ?? []
+                sectionFields.forEach((field) => {
+                    fields.push(field.name)
+                })
+            })
+        }
+        return fields
     })
 
     const activeRules = computed(() => rules.value.filter((rule) => rule.trigger))
@@ -113,7 +122,7 @@ export const useLogic = (module: string) => {
         const options: { [fieldName: string]: any } = {}
         activeRules.value.forEach((s) => {
             Object.entries(s.logic.options ?? {}).forEach(([fieldName, value]) => {
-                if (value && formFields.value.includes(fieldName)) {
+                if (value && formFields.value && formFields.value.includes(fieldName)) {
                     options[fieldName] = value
                 }
             })
