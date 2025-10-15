@@ -20,8 +20,9 @@
                 :key="action.action+modules.currentModule"
                 class="nav-item module-action"
                 :value="action.action"
-                :to="action.url ? url.fromLegacyUrl(action.url) : ''"
+                v-bind="action.url && action.url !== '/' ? { to: action.url ? url.fromLegacyUrl(action.url) : '' } : {}"
                 :active="false"
+                @click="getClickHandler(action)"
             >
                 <div class="nav-title">
                     <v-icon :icon="`mdi-${action.icon}`" />
@@ -160,12 +161,15 @@ import { useRecentsStore } from '@/store/recents'
 import { useModulesStore, ModuleAction } from '@/store/modules'
 import MintMenuList from '@/components/MintMenuList.vue'
 import { useLanguagesStore } from '@/store/languages'
+import { popupComponents } from '@/custom/components/MintPopups/CustomMintPopupsMap'
+import { usePopupsStore } from '@/store/popups'
 
 const modules = useModulesStore()
 const url = useUrlStore()
 const favorites = useFavoritesStore()
 const recents = useRecentsStore()
 const languages = useLanguagesStore()
+const popups = usePopupsStore()
 
 const filterModulesQuery = ref('')
 const filteredModules = computed(() => {
@@ -181,12 +185,25 @@ function parseModuleActions(actions: ModuleAction[]) {
         title: action.name,
         url: url.fromLegacyUrl(action.url),
         icon: action.icon,
+        onClickActionData: action?.onClickActionData ?? '',
     }))
 }
 
 function clearInput() {
     filterModulesQuery.value = ''
 }
+
+function getClickHandler(action: ModuleAction) {
+    if (!action.url || action.url === '/') {
+        if (action?.onClickActionData?.type === 'popup' && action?.onClickActionData?.componentName) {
+            popups.showPopup({
+                title: action.name,
+                component: popupComponents[action.onClickActionData.componentName]
+            })
+        }
+    }
+}
+
 </script>
 <style lang="scss">
 .sidebar-nav {
