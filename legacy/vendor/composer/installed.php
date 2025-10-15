@@ -3,7 +3,7 @@
         'name' => 'salesagility/suitecrm',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '94a3f9d8100bc560ed5311baf5ccc8faf6c70b0c',
+        'reference' => '3b087f9e5568bf22dcdfe1b61b99b3b4fea4db56',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -811,8 +811,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0',
-                1 => '1.0.0 || 2.0.0 || 3.0.0',
+                0 => '1.0.0 || 2.0.0 || 3.0.0',
+                1 => '1.0|2.0',
             ),
         ),
         'ralouphie/getallheaders' => array(
@@ -845,7 +845,7 @@
         'salesagility/suitecrm' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '94a3f9d8100bc560ed5311baf5ccc8faf6c70b0c',
+            'reference' => '3b087f9e5568bf22dcdfe1b61b99b3b4fea4db56',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1150,7 +1150,7 @@
             'version' => '1.20.0.0',
             'reference' => '5f03a781d984aae42cebd18e7912fa80f02ee644',
             'type' => 'metapackage',
-            'install_path' => NULL,
+            'install_path' => null,
             'aliases' => array(),
             'dev_requirement' => true,
         ),
@@ -1159,7 +1159,7 @@
             'version' => '1.31.0.0',
             'reference' => 'fa2ae56c44f03bed91a39bfc9822e31e7c5c38ce',
             'type' => 'metapackage',
-            'install_path' => NULL,
+            'install_path' => null,
             'aliases' => array(),
             'dev_requirement' => false,
         ),
