@@ -147,7 +147,8 @@ function isInputValid(input) {
     return (
         input.value &&
         (input.type !== 'date' || input.value.length === 10) && // todo: date format validation
-        (input.type !== 'multiselect' || input.value.length)
+        (input.type !== 'multiselect' || input.value.length) &&
+        (input.type !== 'multirelate' || input.value.length)
     )
 }
 
