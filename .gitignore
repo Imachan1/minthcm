@@ -56,6 +56,7 @@ legacy/include/ViewTools/javascript/viewTools.cache.js
 legacy/include/SugarEmailAddress/SugarEmailAddress.js
 
 api/cache
+api/minthcm.log
 legacy/custom/include/language/en_us.lang.php
 legacy/custom/modules/Connectors/connectors/sources/ext/*/*/config.php
 legacy/custom/modules/Connectors/connectors/sources/ext/*/*/mapping.php
