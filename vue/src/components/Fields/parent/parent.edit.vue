@@ -1,8 +1,10 @@
 <template>
     <div class="parent-container">
         <v-autocomplete
+            class="flex-grow-1"
             :items="languages.getList(props.defs?.options)"
             :label="languages.label('LBL_ASSIGNED_TO_MODULE')"
+            :title="parentModel"
             variant="outlined"
             density="compact"
             hide-details
@@ -11,59 +13,69 @@
             v-bind="$attrs"
             item-value="key"
             item-title="value"
-        />
+        /> 
         <v-menu v-model="menuOpen" :location="'bottom'">
             <template v-slot:activator="val">
-                <v-text-field
-                    :label="languages.label('LBL_ASSIGNED_TO_RECORD')"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                    v-model="recordModel.name"
-                    v-bind="val.props"
-                    @input="(event) => fetchRecordItems(event)"
-                    @click="menuOpen = true"
-                >
-                    <template #append-inner>
-                        <v-fab-transition class="search-prepend-icon">
-                            <v-icon
-                                v-if="recordModel.name"
-                                icon="mdi-close"
-                                @click="recordModel = { id: '', name: '' }"
-                            />
-                            <v-icon v-else icon="mdi-magnify" @click.stop="openRelatePopup" />
-                        </v-fab-transition>
-                    </template>
-                </v-text-field>
-            </template>
-            <v-list>
-                <v-list-item v-if="isLoading">
-                    <v-progress-circular color="primary" indeterminate></v-progress-circular>
-                </v-list-item>
-                <v-list-item
-                    v-if="!isLoading && !items.length"
-                    class="text-caption"
-                    v-text="
-                        !items || recordModel.name.length < 3
-                            ? languages.label('LBL_MINT4_GS_HELP_TIP')
-                            : languages.label('LBL_MINT4_GS_NO_RECORDS_FOUND')
-                    "
-                />
-                <div v-if="!isLoading">
-                    <v-list-item @click="clickOnMenuItem(item)" v-for="(item, index) in items" :key="index">
-                        <span v-html="getHighlightedText(item.name, recordModel.name)"></span>
-                    </v-list-item>
-                </div>
-                <v-divider />
-                <v-list-item>
-                    <MintButton
-                        variant="text"
-                        :text="languages.label('LBL_ADVANCED_SEARCH_BUTTON')"
-                        @click="openRelatePopup"
-                        icon="mdi-text-search"
-                        color="primary"
+            <v-text-field
+                class="flex-grow-1"
+                :label="languages.label('LBL_ASSIGNED_TO_RECORD')"
+                variant="outlined"
+                density="compact"
+                hide-details
+                :title="recordModel.name"
+                v-model="recordModel.name"
+                v-bind="val.props"
+                @input="(event) => fetchRecordItems(event)"
+                @click="menuOpen = true"
+            >
+                <template #append-inner>
+                <v-fab-transition class="search-prepend-icon">
+                    <v-icon
+                    v-if="recordModel.name"
+                    icon="mdi-close"
+                    @click="recordModel = { id: '', name: '' }"
                     />
+                    <v-icon v-else icon="mdi-magnify" @click.stop="openRelatePopup" />
+                </v-fab-transition>
+                </template>
+            </v-text-field>
+            </template>
+
+            <v-list>
+            <v-list-item v-if="isLoading">
+                <v-progress-circular color="primary" indeterminate></v-progress-circular>
+            </v-list-item>
+
+            <v-list-item
+                v-if="!isLoading && !items.length"
+                class="text-caption"
+                v-text="
+                !items || recordModel.name.length < 3
+                    ? languages.label('LBL_MINT4_GS_HELP_TIP')
+                    : languages.label('LBL_MINT4_GS_NO_RECORDS_FOUND')
+                "
+            />
+
+            <div v-if="!isLoading">
+                <v-list-item
+                @click="clickOnMenuItem(item)"
+                v-for="(item, index) in items"
+                :key="index"
+                >
+                <span v-html="getHighlightedText(item.name, recordModel.name)"></span>
                 </v-list-item>
+            </div>
+
+            <v-divider />
+            <v-list-item>
+                <MintButton
+                variant="text"
+                :text="languages.label('LBL_ADVANCED_SEARCH_BUTTON')"
+                @click="openRelatePopup"
+                icon="mdi-text-search"
+                color="primary"
+                />
+            </v-list-item>
             </v-list>
         </v-menu>
     </div>
@@ -237,10 +249,16 @@ function getHighlightedText(text: string, query: string) {
 }
 .parent-container {
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 24px;
-    padding-left: 16px;
-    border-left: 1px solid rgb(var(--v-theme-primary-light));
+    align-items: center;
+    gap: 12px;
+    .v-input {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+    .v-field__input, .v-select__selection-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 </style>
