@@ -62,7 +62,7 @@ export const useLogic = (module: string) => {
     const readonlyFields = computed(() => {
         const readonlyFields = [] as string[]
         activeRules.value.forEach((s) => {
-            Object.entries(s.logic.readonly).forEach(([fieldName, value]) => {
+            Object.entries(s.logic.readonly ?? {}).forEach(([fieldName, value]) => {
                 if (value) {
                     readonlyFields.push(fieldName)
                 } else if (readonlyFields.includes(fieldName)) {
@@ -76,7 +76,7 @@ export const useLogic = (module: string) => {
     const requiredFields = computed(() => {
         const requiredFields = [] as string[]
         activeRules.value.forEach((s) => {
-            Object.entries(s.logic.required).forEach(([fieldName, value]) => {
+            Object.entries(s.logic.required ?? {}).forEach(([fieldName, value]) => {
                 if (
                     value &&
                     formFields.value.includes(fieldName) &&
@@ -95,7 +95,7 @@ export const useLogic = (module: string) => {
     const hiddenFields = computed(() => {
         const hiddenFields = [] as string[]
         activeRules.value.forEach((s) => {
-            Object.entries(s.logic.visible).forEach(([fieldName, value]) => {
+            Object.entries(s.logic.visible ?? {}).forEach(([fieldName, value]) => {
                 if (!formFields.value.includes(fieldName) || !value) {
                     hiddenFields.push(fieldName)
                 } else if (hiddenFields.includes(fieldName)) {
@@ -109,7 +109,7 @@ export const useLogic = (module: string) => {
     const errorMessages = computed(() => {
         const errorMessages = {} as { [fieldName: string]: string }
         activeRules.value.forEach((s) => {
-            Object.entries(s.logic.errors).forEach(([fieldName, value]) => {
+            Object.entries(s.logic.errors ?? {}).forEach(([fieldName, value]) => {
                 if (value) {
                     errorMessages[fieldName] = value
                 }

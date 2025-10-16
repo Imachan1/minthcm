@@ -26,9 +26,10 @@ export const useBean = (module: string, id: string) => {
             if (logic.hiddenFields.value.includes(fieldName)) {
                 return
             }
-            attributesToSave[fieldName] = logic.readonlyFields.value.includes(fieldName)
-                ? syncAttributes.value[fieldName]
-                : attributes.value[fieldName]
+            // attributesToSave[fieldName] = logic.readonlyFields.value.includes(fieldName)
+            //     ? syncAttributes.value[fieldName]
+            //     : attributes.value[fieldName]
+            attributesToSave[fieldName] = attributes.value[fieldName]
         })
         return attributesToSave
     })
@@ -60,7 +61,7 @@ export const useBean = (module: string, id: string) => {
         if (!formPanel) {
             return errors
         }
-        
+
         Object.values(formPanel?.data?.sections).forEach((section) => {
             const formFields = section?.fields?.flat() ?? []
             formFields.forEach((field) => {
@@ -139,11 +140,15 @@ export const useBean = (module: string, id: string) => {
             if (link && !link.relateFieldName) link.add(query.return_id as string)
         }
         updateFields(fieldsToUpdate)
+        const triggerFields = logic.triggerFields.value.filter((f) => Object.hasOwn(fieldsToUpdate, f))
+        if (triggerFields.length > 0) {
+            fetchLogic(triggerFields)
+        }
     }
 
     async function retrieve() {
         isRetrieving.value = true
-        return await mintApi.get(`${module}/Get${id ? `/${id}` : ''}` , { rawError: true })
+        return await mintApi.get(`${module}/Get${id ? `/${id}` : ''}`, { rawError: true })
             .then((response) => {
                 if (response.status === 200 && response.data) {
                     setData(response.data)

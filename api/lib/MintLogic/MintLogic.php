@@ -162,6 +162,13 @@ class MintLogic
             'options' => [],
         ];
 
+        // Update
+        $update = self::calculateExpression($rule['logic']['update'], $this->bean) ?? [];
+        foreach ($update as $field => $value) {
+            $this->bean->{$field} = $value;
+            $logic['update'][$field] = $this->bean->{$field};
+        }
+
         // Visible
         $logic['visible'] = self::calculateExpression($rule['logic']['visible'], $this->bean) ?? [];
         foreach ($logic['visible'] as $field => $isVisible) {
@@ -194,13 +201,6 @@ class MintLogic
             } catch (ValidationException $e) {
                 $logic['errors'][$field] = $e->getMessage();
             }
-        }
-
-        // Update
-        $update = self::calculateExpression($rule['logic']['update'], $this->bean) ?? [];
-        foreach ($update as $field => $value) {
-            $this->bean->{$field} = $value;
-            $logic['update'][$field] = $this->bean->{$field};
         }
 
         // Options

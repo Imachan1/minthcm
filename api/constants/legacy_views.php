@@ -287,11 +287,11 @@ return [
     ],
     'Costs' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Delegations' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'DelegationsLocale' => [
         'list' => false,

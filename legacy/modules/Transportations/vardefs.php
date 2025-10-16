@@ -267,7 +267,7 @@ $dictionary['Transportations'] = array(
       ),
       "delegation_id" => array(
          'name' => 'delegation_id',
-         'type' => 'link',
+         'type' => 'id',
          'relationship' => 'transportations_delegations',
          'reportable' => false,
          'vname' => 'LBL_DELEGATION_ID',

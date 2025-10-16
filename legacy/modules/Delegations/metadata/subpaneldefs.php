@@ -54,7 +54,7 @@ $layout_defs["Delegations"]["subpanel_setup"] = array(
         'get_subpanel_data' => 'costs',
         'top_buttons' => array(
             array(
-                'widget_class' => 'SubPanelTopButtonQuickCreate',
+                'widget_class' => 'SubPanelTopButtonCreateCosts',
             ),
         ),
     ),
