@@ -68,7 +68,7 @@ class ListInitController
     ];
 
     const DEFAULT_COLUMNS = [
-        'date_created',
+        'date_modified',
         'date_entered',
         'created_by_name',
         'modified_by_name',
