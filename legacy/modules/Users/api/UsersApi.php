@@ -30,4 +30,13 @@ class UsersApi
         return false;
     }
 
+    public function passwordValidationCheck($args)
+    {
+        $userBean = BeanFactory::getBean('Users');
+        if (empty($args['password'])) {
+            return false;
+        }
+        return [ 'message' => $userBean->passwordValidationCheck($args['password']) ];
+    }
+
 }
