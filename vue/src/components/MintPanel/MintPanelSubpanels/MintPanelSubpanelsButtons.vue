@@ -52,6 +52,7 @@ const actionMap = {
     SubPanelTopCreateButton: 'Create',
     SubPanelTopSelectButton: 'Select',
     SubPanelTopButtonCreateCosts: 'CreateCosts',
+    SubPanelTopSelectButton_Delegations: 'SelectWorkScheduleForDelegation',
 }
 
 const buttons = computed<MenuListItem[]>(() => {

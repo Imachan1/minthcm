@@ -376,7 +376,7 @@ export const useListViewStore = defineStore('listview', () => {
         filterRows,
         (newFilterRows) => {
             newFilterRows.forEach((filterRow) => {
-                if (!filterRow.inputs && filterRow.value) {
+                if ((!filterRow.inputs || filterRow.inputs.length === 0) && filterRow.value) {
                     filterRow.inputs = buildFilterRowInputs(filterRow.field, filterRow.operator, filterRow.value)
                 }
             })
@@ -390,6 +390,9 @@ export const useListViewStore = defineStore('listview', () => {
 
     function buildFilterRowInputs(field: string, operator: string, value: any) {
         const fieldDefs = defs.value?.search?.[field]
+        if (!fieldDefs) {
+            console.error('Field defs not found for field', field)
+        }
         const type = fieldDefs.type
         const operators = operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
         return operators[operator].inputs.map((i, index) => ({
