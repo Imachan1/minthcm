@@ -1149,6 +1149,7 @@ $dictionary['Delegations'] = array(
          'module' => 'DelegationsLocale',
          'rname' => 'name',
          'audited' => true,
+         'required' => true,
       ),
       "delegation_locale_id" => array(
          'name' => 'delegation_locale_id',
