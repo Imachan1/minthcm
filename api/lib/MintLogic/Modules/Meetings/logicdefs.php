@@ -13,7 +13,7 @@ return [
                     if (!empty($bean->date_start) || !empty($bean->date_end)) {
                         return [];
                     }
-                    $now = new \DateTime();
+                    $now = new DateTime('now', new DateTimeZone('UTC'));
                     $minutes = (int)$now->format('i');
                     $minutes = (int)(ceil($minutes / 15) * 15);
                     if ($minutes == 60) {

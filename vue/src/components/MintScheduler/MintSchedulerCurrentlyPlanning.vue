@@ -15,7 +15,11 @@
             <div v-show="props.scheduler.isEditable.value" class="currently-planning-edge right" />
             <div class="currently-planning-header-content">
                 <div class="currently-planning-header-time">{{ currentlyPlanningTimeText }}</div>
-                <div class="currently-planning-header-title">{{ props.scheduler.bean.attributes.name }} ({{ language.label('LBL_SCHEDULER_CURRENTLY_PLANNING') }})</div>
+                <div class="currently-planning-header-title">
+                    {{ props.scheduler.bean.attributes.name }} ({{
+                        language.label('LBL_SCHEDULER_CURRENTLY_PLANNING')
+                    }})
+                </div>
             </div>
             <v-fade-transition>
                 <v-progress-circular
@@ -39,6 +43,7 @@ import { DateTime } from 'luxon'
 import { useMove } from '@/composables/useMove'
 import { useLanguagesStore } from '@/store/languages'
 import { usePreferencesStore } from '@/store/preferences'
+import { useStatusBoxesStore } from '@/store/statusBoxes'
 
 interface Props {
     scheduler: ReturnType<typeof useMintScheduler>
@@ -128,7 +133,14 @@ const move = useMove({
         }
         props.scheduler.bean.updateFields(updatedFields.value)
         if (props.scheduler.bean.id) {
-            props.scheduler.bean.save()
+            props.scheduler.bean.save().then(() => {
+                useStatusBoxesStore().showStatus('scheduler-save-success', {
+                    type: 'success',
+                    autoClose: true,
+                    autoCloseDelay: 3000,
+                    message: language.label('LBL_SAVED'),
+                })
+            })
         }
     },
 })
