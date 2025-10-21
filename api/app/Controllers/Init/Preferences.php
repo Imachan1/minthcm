@@ -124,11 +124,14 @@ class Preferences
 
     public function getUserPreferences()
     {
-        global $sugar_config;
+        global $sugar_config, $locale, $current_user;
         return array(
             'date_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['datef'] ?? $sugar_config['default_date_format']),
             'time_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['timef'] ?? $sugar_config['default_time_format']),
             'name_format' => $this->user_preferences["global"]["default_locale_name_format"] ?? $sugar_config['default_locale_name_format'],
+            'dec_sep' => $this->user_preferences['global']['dec_sep'] ?? $sugar_config['default_decimal_seperator'],
+            'num_grp_sep' => $this->user_preferences['global']['num_grp_sep'] ?? $sugar_config['default_number_grouping_seperator'],
+            'default_currency_significant_digits' => $locale->getPrecedentPreference('default_currency_significant_digits', $current_user),
         );
     }
 
@@ -156,6 +159,8 @@ class Preferences
 
             $this->user_preferences = $preferences;
             $this->user_preferences['global']['default_locale_name_format'] = $current_user->getPreference('default_locale_name_format');
+            $this->user_preferences['global']['dec_sep'] = $current_user->getPreference('dec_sep');
+            $this->user_preferences['global']['num_grp_sep'] = $current_user->getPreference('num_grp_sep');
         } catch (\Exception $e) {
             // TODO: log 'Failed to load user preferences'
             throw ($e);
