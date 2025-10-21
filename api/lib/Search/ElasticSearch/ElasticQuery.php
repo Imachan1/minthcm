@@ -206,6 +206,9 @@ class ElasticQuery extends SearchQuery
     protected function getGlobalQueryWithNestedQueries($global_query)
     {
         if(array_key_exists('bool', $global_query)){
+            if (empty($global_query['bool']['should'])) {
+                $global_query['bool']['should'] = [];
+            }
             $global_query['bool']['should'] = [
                 ...$global_query['bool']['should'],
                 ...$this->params['nestedQuery']
