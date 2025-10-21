@@ -66,7 +66,16 @@ class MetaController
 
         $data = [];
         $views = [];
-        foreach($viewdefs[$module]['panels'] as $panel=>$panel_defs){
+        foreach($viewdefs[$module]['panels'] as $panel => $panel_defs){
+            $data['recordview']['panels'][$panel]['component'] = $viewdefs[$module]['panels'][$panel]['component'];
+            if ($panel_defs['component'] === 'MintPanelRecordDetails') {
+                foreach($panel_defs['data']['sections'] as $section => $section_defs) {
+                    $views[$panel][$section]['fields'] = $section_defs['fields'] ?? [];
+                    $data['recordview']['panels'][$panel]['data']['sections'][$section] = $viewdefs[$module]['panels'][$panel]['data']['sections'][$section];
+                    $data['recordview']['panels'][$panel]['data']['sections'][$section]['fields'] = $this->mergeModuleFields($views[$panel][$section],$module_fields)['fields'];
+                }
+                continue;
+            }
             $views[$panel]['fields'] = $panel_defs['data']['fields'];
             $data['recordview']['panels'][$panel] = $viewdefs[$module]['panels'][$panel];
             $data['recordview']['panels'][$panel]['data']['title'] = $viewdefs[$module]['panels'][$panel]['title'];
@@ -108,12 +117,28 @@ class MetaController
                         unset($array[$panel][$arr_key][$k]['vname']);
                         continue;
                     }
+                    if(isset($v['type']) && $v['type'] === 'fieldset' && isset($v['properties']['fields']) && is_array($v['properties']['fields'])) {
+                        foreach ($v['properties']['fields'] as $fieldset_index => $fieldset_field) {
+                            $field_name = $fieldset_field['name'] ?? $fieldset_field;
+                            $field_data = $module_fields[$field_name];
+                            if(is_array($fieldset_field)) {
+                                $array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index] = array_merge($module_fields[$field_name], $fieldset_field);
+                                $array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index]['label'] = $array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index]['vname'];
+                                unset($array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index]['vname']);
+                            } else {
+                                $array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index] = $field_data;
+                                $array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index]['label'] = $array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index]['vname'];
+                                unset($array[$panel][$arr_key][$k]['properties']['fields'][$fieldset_index]['vname']);
+                            }
+                        }
+                        continue;
+                    }
                     if(!isset($v['name']) || empty($module_fields[$v['name']])){
                         continue;
                     }
                     if(empty($array[$panel][$arr_key][$k]['label'])){
                         $array[$panel][$arr_key][$k]['label'] = $module_fields[$v['name']]['vname'];
-                    } 
+                    }
                     unset($module_fields[$v['name']]['vname']);
                     $array[$panel][$arr_key][$k] += $module_fields[$v['name']];
                 }

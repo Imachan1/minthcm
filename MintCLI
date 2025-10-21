@@ -7,6 +7,16 @@ use Symfony\Component\Console\Application;
 
 $application = new Application();
 
+if (file_exists('legacy/config.php')) {
+    define('sugarEntry', true);
+    chdir('./legacy/');
+    require_once 'include/entryPoint.php';
+    global $current_user;
+    $current_user = new User();
+    $current_user->getSystemUser();
+    chdir('..');
+}
+
 $application->add(new MintHCM\MintCLI\Commands\Install());
 $application->add(new MintHCM\MintCLI\Commands\DemoDataDumpCommand());
 $application->add(new MintHCM\MintCLI\Commands\DemoDataInstallCommand());
@@ -14,6 +24,8 @@ $application->add(new MintHCM\MintCLI\Commands\DemoDataInstallCommand());
 if (file_exists('legacy/config.php')) {
     $application->add(new MintHCM\MintCLI\Commands\ElasticSearchReindex());
     $application->add(new MintHCM\MintCLI\Commands\ElasticSearchReindexModule());
+    $application->add(new MintHCM\MintCLI\Commands\RepairFrontendOAuth2Client());
+    $application->add(new MintHCM\MintCLI\Commands\CreateOAuth2Keys());
 }
 
 $application->run();

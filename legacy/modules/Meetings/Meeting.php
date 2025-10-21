@@ -43,6 +43,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  * ****************************************************************************** */
 
+ #[\AllowDynamicProperties]
 class Meeting extends SugarBean {
 
    // MintHCM #44718 START
@@ -288,7 +289,7 @@ class Meeting extends SugarBean {
         self::$remindersInSaving = true;
         $this->saving_reminders_data = true;
          $reminderData = json_encode(
-            $this->removeUnInvitedFromReminders(json_decode(html_entity_decode($_REQUEST['reminders_data']), true))
+            $this->removeUnInvitedFromReminders(json_decode(html_entity_decode((string) $_REQUEST['reminders_data']), true))
          );
          Reminder::saveRemindersDataJson('Meetings', $return_id, $reminderData);
          self::$remindersInSaving = false;
@@ -450,14 +451,14 @@ class Meeting extends SugarBean {
       $this->modified_by_name = get_assigned_user_name($this->modified_user_id);
       $this->fill_in_additional_parent_fields();
 
-      if ( !isset($this->time_hour_start) ) {
-        $this->time_start_hour = (int)substr($this->time_start, 0, 2);
-      } //if-else
+      if (!isset($this->time_hour_start)) {
+         $this->time_start_hour = (int)substr((string) $this->time_start, 0, 2);
+     } //if-else
 
       if ( isset($this->time_minute_start) ) {
          $time_start_minutes = $this->time_minute_start;
       } else {
-         $time_start_minutes = substr($this->time_start, 3, 5);
+         $time_start_minutes = substr((string) $this->time_start, 3, 5);
          if ( $time_start_minutes > 0 && $time_start_minutes < 15 ) {
             $time_start_minutes = "15";
          } else if ( $time_start_minutes > 15 && $time_start_minutes < 30 ) {
@@ -471,11 +472,11 @@ class Meeting extends SugarBean {
       } //if-else
 
 
-      if ( isset($this->time_hour_start) ) {
+      if (isset($this->time_hour_start)) {
          $time_start_hour = $this->time_hour_start;
-      } else {
-        $time_start_hour = (int)substr($this->time_start, 0, 2);
-      }
+     } else {
+         $time_start_hour = (int)substr((string) $this->time_start, 0, 2);
+     }
 
       global $timedate;
       $this->time_meridiem = $timedate->AMPMMenu('', $this->time_start, 'onchange="SugarWidgetScheduler.update_time();"');
@@ -631,6 +632,8 @@ class Meeting extends SugarBean {
       global $app_list_strings;
       global $current_user;
       global $timedate;
+      
+      $typestring = '';
 
       if ( !isset($meeting->current_notify_user->object_name) ) {
          LoggerManager::getLogger()->warn('Meeting set_notification_body: Trying to get property of non-object ($meetingCurrentNotifyUserObjectName)');
@@ -843,6 +846,12 @@ class Meeting extends SugarBean {
 
       foreach ( $this->candidates_arr as $candidate_id ) {
          $notify_user = BeanFactory::getBean('Candidates', $candidate_id);
+         // MintHCM #129887 Start
+         if (empty($notify_user->id)) {
+            $GLOBALS['log']->fatal("Missing candidate {$candidate_id} in Meeting::get_notification_recipients");
+            continue;
+         }
+         // MintHCM #129887 End
          $notify_user->new_assigned_user_name = $notify_user->full_name;
          $GLOBALS['log']->info("Notifications: recipient is $notify_user->new_assigned_user_name");
          $list[$notify_user->id] = $notify_user;
@@ -852,6 +861,12 @@ class Meeting extends SugarBean {
       foreach ( $this->users_arr as $user_id ) {
         $notify_user = BeanFactory::newBean('Users');
          $notify_user->retrieve($user_id);
+         // MintHCM #129887 Start
+         if (empty($notify_user->id)) {
+            $GLOBALS['log']->fatal("Missing user {$user_id} in Meeting::get_notification_recipients");
+            continue;
+         }
+         // MintHCM #129887 End
          $notify_user->new_assigned_user_name = $notify_user->full_name;
          $GLOBALS['log']->info("Notifications: recipient is $notify_user->new_assigned_user_name");
          $list[$notify_user->id] = $notify_user;

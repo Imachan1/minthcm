@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
 import { useLanguagesStore } from './languages'
+import { mintApi } from '@/api/api'
 
 export interface User {
     id: string
@@ -19,13 +19,18 @@ export const useAuthStore = defineStore('auth', () => {
     const user = ref<User | null>(null)
 
     async function authenticate(username: string, password: string) {
+        if (!username || !password) {
+            return false
+        }
+
         const languages = useLanguagesStore()
         try {
-            const response = await axios.post('api/login', {
+            const response = await mintApi.post('login', {
+                client_secret: process.env.CLIENT_SECRET ?? '',
                 username,
                 password,
                 login_language: languages.currentLanguage ?? 'pl_PL',
-            })
+            }, { rawError: true })
             if (response.status !== 200) {
                 return false
             }
@@ -36,9 +41,10 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     async function logout() {
-        const response = await axios.post('api/logout')
+        const response = await mintApi.post('logout')
         location.href = ''
     }
+
 
     return {
         user,

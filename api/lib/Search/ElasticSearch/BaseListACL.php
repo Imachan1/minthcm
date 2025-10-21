@@ -7,6 +7,7 @@ use MintHCM\Lib\Search\ElasticSearch\ESListACLHelper;
 use MintHCM\Data\BeanFactory;
 use MintHCM\Utils\LegacyConnector;
 
+#[\AllowDynamicProperties]
 class BaseListACL
 {
     protected $module;

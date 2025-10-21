@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,6 +46,7 @@
 SugarAutoLoader::requireWithCustom('include/ScheduleGenerateUsersNews/ScheduleGenerateUsersNews.php');
 SugarAutoLoader::requireWithCustom('include/SugarQueue/SugarJobQueue.php');
 
+#[\AllowDynamicProperties]
 class NewsApi
 {
 
@@ -53,7 +54,7 @@ class NewsApi
     {
         if (isset($args['status']) && isset($args['news_id'])) {
             $news = BeanFactory::getBean('News', $args['news_id']);
-            if ((!$news && empty($news->id)) || ($news->news_type == 'announcement' && !$this->scheduleGenerateUsersNews($news))) {
+            if (!$news && empty($news->id)) {
                 return false;
             }
             $news->news_status = $args['status'];
@@ -61,17 +62,6 @@ class NewsApi
             return true;
         }
         return false;
-    }
-
-    protected function scheduleGenerateUsersNews(&$news)
-    {
-        try {
-            $SGUN = new ScheduleGenerateUsersNews($news);
-            return $SGUN->schedule();
-        } catch (Exception $ex) {
-            $GLOBALS['log']->fatal($ex->getTraceAsString());
-            return false;
-        }
     }
 
     public function hasNewsTarget($args)
@@ -82,11 +72,9 @@ class NewsApi
             $id = $db->quote($args['news_id']);
             $sql = "SELECT count(*) AS num FROM prospect_list_news pln
                     JOIN prospect_lists pl ON pl.id=pln.prospectlist_id AND pl.deleted=0
-                    JOIN prospect_lists_prospects plp ON plp.deleted=0 AND plp.prospect_list_id=pl.id
                     WHERE pln.deleted=0 AND pln.news_id='{$id}'";
             $return = $db->getOne($sql) ? true : false;
         }
         return $return;
     }
-
 }

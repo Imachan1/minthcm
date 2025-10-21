@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,6 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class AlertsController extends SugarController
 {
     public function action_get()
@@ -58,7 +59,7 @@ class AlertsController extends SugarController
         if ('' == $this->view_object_map['Results']) {
             $this->view_object_map['Flash'] = $app_strings['LBL_NOTIFICATIONS_NONE'];
         }
-        if(is_array($this->view_object_map['Results']) && count($this->view_object_map['Results']) > 50){
+        if (is_array($this->view_object_map['Results']) && count($this->view_object_map['Results']) > 50) {
             array_pop($this->view_object_map['Results']);
             $this->view_object_map['More_Results'] = true;
         }

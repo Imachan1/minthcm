@@ -1,5 +1,5 @@
 <template>
-    <v-menu location="top" offset="8">
+    <v-menu location="top" offset="8" open-on-hover :open-delay="50" :close-delay="300">
         <template v-slot:activator="{ props, isActive }">
             <MintButton
                 size="small"
@@ -7,7 +7,6 @@
                 variant="text"
                 :text="languages.label('LBL_MINT4_COMMENTS_REACT_BTN')"
                 :active="isActive"
-                class="mr-auto"
             />
         </template>
         <MintReactionsActions
@@ -16,7 +15,7 @@
             @delete-reaction="store.deleteKudosReaction(props.kudos.id)"
         />
     </v-menu>
-    <MintReactions v-if="props.kudos.reactions?.length" :reactions="props.kudos.reactions" class="ml-auto" />
+    <MintReactions v-if="props.kudos.reactions?.length" :reactions="props.kudos.reactions" />
 </template>
 
 <script setup lang="ts">

@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,10 +36,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
- * If the display of the logos is not reasonably feasible for technical reasons, the
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
+ * If the display of the logos is not reasonably feasible for technical reasons, the 
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -79,9 +79,17 @@ class ListController
         $this->request = $request;
         $response = $response->withHeader('Content-type', 'application/json');
 
+        $current_time_zone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+        $disable_date_format = $GLOBALS['disable_date_format'];
+        $GLOBALS['disable_date_format'] = true;
+
         $this->setParams($this->request);
         $this->runElasticSearch();
         $data = $this->getData();
+
+        date_default_timezone_set($current_time_zone);
+        $GLOBALS['disable_date_format'] = $disable_date_format;
 
         $response->getBody()->write(json_encode($data));
         return $response;
@@ -121,10 +129,11 @@ class ListController
 
     private function setParams(Request $request)
     {
-        global $mint_config;
+        global $mint_config, $current_user;
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
-
+        preg_match('/(?<=\/)([^\/]+)/m', $route->getPattern(), $matches);
+        $module = $matches[0];
         $params = array();
         $params['filters'] = ["bool" => []];
         $params['search'] = 'list';
@@ -135,6 +144,13 @@ class ListController
         $params['type'] = str_replace('/', '', $route->getPattern());
         $params['filters'] = $this->getParsedFilters($request);
         $params["fields"] = array("*__last^5", "*__first^4", "*__name.*^3", "*");
+        $sortParams = (new UserPreference($current_user))->getPreference($module, 'eslist')['sortParams'] ?? null;
+        if(empty($sortParams) || $params['sort_by'] !== '_score'){
+            (new UserPreference($current_user))->setPreference($module, [ 'sortParams' => [
+                'sortBy' => $params['sort_by'],
+                'sortOrder' => $params['sort_order'],
+            ]], 'eslist');
+        }
         $this->params = $params;
     }
     protected function getParsedFilters(Request $request)
@@ -160,8 +176,24 @@ class ListController
             global $current_user;
             $filters['filter'][] = ['term' => ['meta.assigned.user_id.keyword' => $current_user->id]];
         }
+
+        if ($request->getAttribute('onlyFavorites') === true) {
+            global $current_user;
+            $filters['filter'][] = [
+                'nested' => [
+                    'path' => 'users_favorite',
+                    'query' => [
+                        'term' => [
+                            'users_favorite.id.keyword' => $current_user->id,
+                        ],
+                    ],
+                    'ignore_unmapped' => true,
+                ]
+            ];
+        }
         return $filters;
     }
+    
     private function runElasticSearch()
     {
         try {

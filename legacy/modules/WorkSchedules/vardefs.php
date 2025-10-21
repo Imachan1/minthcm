@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -197,7 +197,11 @@ $dictionary['WorkSchedules'] = array(
          'len' => 100,
          'size' => '20',
          'options' => 'workschedules_status_dom',
-         'options_colors' => 'workschedules_status_dom_colored',
+         'options_colors' => [
+            'planned' => 'blue',
+            'worked' => 'yellow',
+            'closed' => 'green',
+         ],
          'studio' => 'visible',
          'dependency' => false,
          'vt_validation' => "AEM(callCustomApi('WorkSchedules','canChangeWorkScheduleStatus',{id:\$id,status:\$status}),'LBL_ERR_CANNOT_CHANGE_WORK_SCHEDULE_STATUS')",
@@ -340,7 +344,6 @@ $dictionary['WorkSchedules'] = array(
          'vname' => 'LBL_SPENT_TIME',
          'type' => 'float',
          'massupdate' => 0,
-         'default' => '0',
          'comments' => '',
          'help' => '',
          'importable' => 'true',
@@ -350,11 +353,9 @@ $dictionary['WorkSchedules'] = array(
          'reportable' => true,
          'unified_search' => false,
          'merge_filter' => 'disabled',
-         'len' => '18',
          'size' => '20',
          'enable_range_search' => true,
          'options' => 'numeric_range_search_dom',
-         'precision' => '2',
       ),
       'spent_time_settlement' => array(
          'required' => false,
@@ -362,7 +363,6 @@ $dictionary['WorkSchedules'] = array(
          'vname' => 'LBL_SPENT_TIME_SETTLEMENT',
          'type' => 'float',
          'massupdate' => false,
-         'default' => '0',
          'comments' => '',
          'help' => '',
          'importable' => 'true',
@@ -372,10 +372,8 @@ $dictionary['WorkSchedules'] = array(
          'reportable' => true,
          'unified_search' => false,
          'merge_filter' => 'disabled',
-         'len' => '18',
          'size' => '20',
          'enable_range_search' => false,
-         'precision' => '2',
       ),
       'delegation_duration' => array(
          'required' => true,
@@ -383,7 +381,6 @@ $dictionary['WorkSchedules'] = array(
          'vname' => 'LBL_DELEGATION_DURATION',
          'type' => 'float',
          'massupdate' => false,
-         'default' => '0',
          'comments' => '',
          'help' => '',
          'importable' => 'true',
@@ -393,11 +390,9 @@ $dictionary['WorkSchedules'] = array(
          'reportable' => true,
          'unified_search' => false,
          'merge_filter' => 'disabled',
-         'len' => '18',
          'size' => '20',
          'enable_range_search' => true,
          'options' => 'numeric_range_search_dom',
-         'precision' => '2',
          'vt_dependency' => "equals(\$type,'delegation')",
          // MintHCM #66889, #89498 START
          'vt_validation' => "AEM(ifElse(equals(\$type,'delegation'),callCustomApi('WorkSchedules','validateDelegationDurationValue',\$delegation_duration),true),'LBL_ERR_DELEGATION_DURATION_NOT_VALID')",

@@ -98,13 +98,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useBackendStore } from '@/store/backend'
 import { useLanguagesStore } from '@/store/languages'
 import { useAuthViewStore } from './AuthViewStore'
 import MintButton from '@/components/MintButtons/MintButton.vue'
-import MintStatusBox from '@/components/MintStatusBox.vue'
+import MintStatusBox from '@/components/MintStatusBoxes/MintStatusBox.vue'
 import { usePreferencesStore } from '@/store/preferences'
-import axios from 'axios'
+import { mintApi } from '@/api/api'
 
 const route = useRoute()
 const router = useRouter()
@@ -119,7 +118,7 @@ onMounted(async () => {
         handleTokenError()
     }
     try {
-        const validTokenResponse = await axios.get(`api/validation_token?token=${token.value}`)
+        const validTokenResponse = await mintApi.get(`api/validation_token?token=${token.value}`, { rawError: true})
         if (validTokenResponse.data?.username) {
             username.value = validTokenResponse.data.username
         } else {
@@ -167,7 +166,7 @@ async function submitResetPassword() {
     if (!isPasswordValid.value) {
         return
     }
-    const response = await axios.post('api/reset_forget_password', {
+    const response = await mintApi.post('reset_forget_password', {
         username: username.value,
         new_password: password.value,
         token: token.value,

@@ -11,6 +11,7 @@
                 :error="!isValidDate"
                 hide-details
                 density="compact"
+                :disabled="disabled"
             />
         </template>
         <VueDatePicker
@@ -37,14 +38,14 @@
 
 <script setup lang="ts">
 import { DateTime } from 'luxon'
-import { defineProps, ref, computed, watch, defineEmits } from 'vue'
-import { useLanguagesStore } from '@/store/languages';
+import { ref, computed, watch } from 'vue'
+import { useLanguagesStore } from '@/store/languages'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const languages = useLanguagesStore();
 const emit = defineEmits(['update:modelValue'])
-const props = defineProps(['input'])
+const props = defineProps(['input', 'disabled'])
 const value = ref(props.input?.value)
 const menu = ref(false)
 const isValidDate = computed(() => {

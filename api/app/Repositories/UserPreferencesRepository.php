@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,19 +50,11 @@ use MintHCM\Api\Entities\UserPreferences;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+#[\AllowDynamicProperties]
 class UserPreferencesRepository extends EntityRepository
 {
     public function findAllUndeletedByUserId($user_id): array
     {
-        $query = 'SELECT up.contents, up.category
-            FROM MintHCM\Api\Entities\UserPreferences up
-            WHERE up.assigned_user_id = :uid
-                AND up.deleted = 0
-        ';
-
-        return $this->getEntityManager()
-            ->createQuery($query)
-            ->setParameter('uid', $user_id)
-            ->getResult();
+        return $this->findBy(['assigned_user_id' => $user_id, 'deleted' => 0]);
     }
 }

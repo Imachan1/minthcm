@@ -6,15 +6,16 @@
                 variant="outlined"
                 density="compact"
                 hide-details
+                :error="props.state === 'error'"
                 v-model="model.name"
-                v-bind="val.props"
+                v-bind="{ ...$attrs, ...val.props }"
                 @input="(event) => fetchItems(event)"
-                @click="menuOpen = false"
+                @click="menuOpen = true"
             >
                 <template #append-inner>
                     <v-fab-transition class="search-prepend-icon">
                         <v-icon v-if="model.name" icon="mdi-close" @click="model = { id: '', name: '' }" />
-                        <v-icon v-else icon="mdi-magnify" />
+                        <v-icon v-else icon="mdi-magnify" @click.stop="openRelatePopup" />
                     </v-fab-transition>
                 </template>
             </v-text-field>
@@ -53,23 +54,19 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, ref, defineEmits } from 'vue'
-import { FieldVardef } from '@/store/modules'
+import { computed, ref, watch } from 'vue'
+import { useModulesStore } from '@/store/modules'
 import { usePopupsStore } from '@/store/popups'
+import { usePreferencesStore } from '@/store/preferences'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import { useLanguagesStore } from '@/store/languages'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import { modulesApi } from '@/api/modules.api'
 import he from 'he'
+import getFilters from '@/utils/qsOperators'
+import { FieldProps } from '../Field.model'
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const emit = defineEmits(['update:modelValue'])
 
 let debounceTimeout: number | null = null
@@ -77,58 +74,89 @@ const DEBOUNCE_TIME = 500
 
 const languages = useLanguagesStore()
 const popupsStore = usePopupsStore()
+const modulesStore = useModulesStore()
+const preferencesStore = usePreferencesStore()
 const menuOpen = ref(false)
-const items = ref(
-    props.data.bean[props.defs.id_name]
-        ? [
-              {
-                  id: props.data.bean[props.defs.id_name],
-                  name: props.modelValue,
-              },
-          ]
-        : [],
+
+const items = ref(props.data.bean.attributes[props.defs.id_name] ? [getCurrentItem()] : [])
+const currentItem = ref(getCurrentItem())
+
+watch(
+    () => props.data.bean.attributes[props.defs.id_name],
+    () => {
+        const item = getCurrentItem()
+        items.value = item.id ? [item] : []
+        currentItem.value = item
+    },
 )
 
-const currentItem = ref({ id: props.data.bean[props.defs.id_name], name: props.data.bean[props.defs.name] })
+function getCurrentItem() {
+    return {
+        id: props.data.bean.attributes[props.defs.id_name],
+        name: props.modelValue,
+    }
+}
+
 const isLoading = ref(false)
 const model = computed({
     get() {
         return currentItem.value
     },
     set(newVal) {
-        props.data.bean[props.defs.id_name] = newVal.id
         currentItem.value = newVal
-        emit('update:modelValue', [props.defs.id_name])
+        emit('update:modelValue', newVal.name, { [props.defs.id_name]: newVal.id })
     },
 })
 
 async function fetchItems(e) {
-    if (model.value.name.length >= 3) {
+    if (model.value?.name.length >= 3) {
         items.value = []
         isLoading.value = true
         menuOpen.value = true
-        const val = e?.target?.value ?? props.data.bean[props.defs.name] ?? ''
+        const val = e?.target?.value ?? props.data.bean.attributes[props.defs.name] ?? ''
+        const predefinedFilters = getFilters(
+            modulesStore.modules[props.defs.module].vardefs,
+            Array.isArray(props.defs.filters) ? props.defs.filters : [],
+        )
+        const filters = {
+            ...predefinedFilters,
+            must: [
+                ...(predefinedFilters.must || []),
+                {
+                    wildcard: {
+                        name: val + '*',
+                    },
+                },
+            ],
+        }
         if (debounceTimeout) {
             clearTimeout(debounceTimeout)
         }
         debounceTimeout = window.setTimeout(async () => {
-            const response = await modulesApi.getListData(props.defs.module, '', {
-                must: [
-                    {
-                        wildcard: {
-                            name: val + '*',
-                        },
-                    },
-                ],
-            })
-            if (response.data?.results?.length) {
-                items.value = response.data.results.sort((a, b) => a.name.localeCompare(b.name, 'pl'))
-            }
+            const columnOrder = getOrderColumn()
+            const response = await modulesApi.getListData(
+                props.defs.module,
+                '',
+                filters,
+                0,
+                100,
+                false,
+                columnOrder,
+                'asc',
+            )
+            items.value = response.data.results
             isLoading.value = false
         }, DEBOUNCE_TIME)
     } else {
         items.value = []
     }
+}
+
+function getOrderColumn() {
+    if (['full_name'].includes(props.defs.rname)) {
+        return preferencesStore.getFirstNameFieldByPreference()
+    }
+    return props.defs.rname ?? 'name'
 }
 
 function openRelatePopup() {
@@ -140,6 +168,7 @@ function openRelatePopup() {
             moduleName: props.defs.module,
             popupMode: 'single',
             fieldToNameArray: { id: props.defs.id_name, name: props.defs.name },
+            filterDefs: Array.isArray(props.defs.filters) ? props.defs.filters : [],
             onConfirm: (data: string | string[]) => {
                 model.value = {
                     id: data.nameToValueArray[props.defs.id_name],

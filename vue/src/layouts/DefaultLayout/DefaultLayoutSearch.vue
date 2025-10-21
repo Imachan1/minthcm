@@ -76,10 +76,10 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useModulesStore } from '@/store/modules'
 import he from 'he'
-import axios from 'axios'
 import { watch } from 'vue'
 import { useLanguagesStore } from '@/store/languages'
 import { DateTime } from 'luxon'
+import { mintApi } from '@/api/api'
 
 const modules = useModulesStore()
 const languages = useLanguagesStore()
@@ -102,14 +102,7 @@ const standardizedQuery = computed(() => {
 
 function showRecord(module: string, id: string) {
     if (module && id) {
-        router.push({
-            name: 'module-view',
-            params: {
-                module,
-                action: 'DetailView',
-                record: id,
-            },
-        })
+        router.push(`/modules/${module}/DetailView/${id}`)
         searchQuery.value = ''
     }
 }
@@ -160,7 +153,7 @@ async function search() {
     if (standardizedQuery.value?.length >= 4) {
         isSearching.value = true
         try {
-            const response = await axios.get('api/global_search', {
+            const response = await mintApi.get('global_search', {
                 params: {
                     query: standardizedQuery.value,
                 },

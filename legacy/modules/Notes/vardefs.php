@@ -10,8 +10,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -70,6 +70,7 @@ $dictionary['Note'] = array(
             'comment' => 'Date record created',
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
+            'readonly' => true,
         ],
 
         'date_modified' =>
@@ -80,6 +81,7 @@ $dictionary['Note'] = array(
             'comment' => 'Date record last modified',
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
+            'readonly' => true,
         ],
         'date_indexed' => [
             'name' => 'date_indexed',
@@ -89,6 +91,7 @@ $dictionary['Note'] = array(
             'enable_range_search' => true,
             'options' => 'date_range_search_dom',
             'inline_edit' => false,
+            'readonly' => true,
         ],
         'modified_user_id' =>
         [
@@ -103,6 +106,7 @@ $dictionary['Note'] = array(
             'dbType' => 'id',
             'reportable' => true,
             'comment' => 'User who last modified record',
+            'readonly' => true,
         ],
 
         'modified_by_name' =>
@@ -118,6 +122,7 @@ $dictionary['Note'] = array(
             'module' => 'Users',
             'link' => 'modified_user_link',
             'duplicate_merge' => 'disabled',
+            'readonly' => true,
         ],
 
         'created_by' =>
@@ -131,6 +136,7 @@ $dictionary['Note'] = array(
             'isnull' => 'false',
             'dbType' => 'id',
             'comment' => 'User who created record',
+            'readonly' => true,
         ],
 
         'created_by_name' =>
@@ -147,6 +153,7 @@ $dictionary['Note'] = array(
             'module' => 'Users',
             'duplicate_merge' => 'disabled',
             'importable' => 'false',
+            'readonly' => true,
         ],
 
         'name' =>
@@ -269,14 +276,14 @@ $dictionary['Note'] = array(
 
         'parent_name' =>
         [
-            'name' => 'parent_name',
-            'parent_type' => 'record_type_display',
-            'type_name' => 'parent_type',
-            'id_name' => 'parent_id',
-            'vname' => 'LBL_RELATED_TO',
-            'type' => 'parent',
-            'source' => 'non-db',
-            'options' => 'record_type_display_notes',
+            'name'=> 'parent_name',
+            'parent_type'=>'record_type_display' ,
+            'type_name'=>'parent_type',
+            'id_name'=>'parent_id',
+            'vname'=>'LBL_RELATED_TO',
+            'type'=>'parent',
+            'source'=>'non-db',
+            'options'=> 'record_type_display_notes',
         ],
         'show_preview' =>
         [
@@ -284,6 +291,7 @@ $dictionary['Note'] = array(
             'type' => 'bool',
             'source' => 'non-db',
             'reportable' => false,
+            'mass_update' => false
         ],
 
         'campaign_id' =>
@@ -294,7 +302,6 @@ $dictionary['Note'] = array(
             'reportable' => false,
             'source' => 'non-db',
         ],
-
         'acase_id' =>
         [
             'name' => 'acase_id',

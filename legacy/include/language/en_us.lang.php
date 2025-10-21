@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2025 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -439,6 +439,7 @@ $app_list_strings = array(
     ),
     'employee_status_dom' => array(
         'Active' => 'Active',
+        'during_termination' => 'During Termination',
         'Terminated' => 'Terminated',
         'Leave of Absence' => 'Leave of Absence',
     ),
@@ -750,6 +751,12 @@ $app_list_strings = array(
         'Active' => 'Active',
         'Inactive' => 'Inactive',
     ],
+
+    'dom_email_body_filtering_option' => [
+        'multi' => 'Multi Word Search',
+        'single' => 'Single Word Search',
+    ],
+
     'dom_email_types' => array(
         'out' => 'Sent',
         'archived' => 'Archived',
@@ -1163,6 +1170,8 @@ $app_strings = array(
     'LBL_EMAIL_ACCOUNTS_SMTPUSER' => 'SMTP Username',
     'LBL_EMAIL_ACCOUNTS_SMTPDEFAULT' => 'Default',
     'LBL_EMAIL_WARNING_MISSING_USER_CREDS' => 'Warning: Missing username and password for outgoing mail account.',
+    'LBL_OAUTH_CONNECTION_NOT_SET' => 'Please set an External OAuth Connection.',
+    'LBL_EMAIL_PASSWORD_NOT_SET' => 'Warning: A password has not been set.',
     'LBL_EMAIL_WARNING_MISSING_CREDS' => 'Warning: Missing credentials',
     'LBL_EMAIL_ACCOUNTS_SUBTITLE' => 'Set up Mail Accounts to view incoming emails from your email accounts.',
     'LBL_EMAIL_ACCOUNTS_OUTBOUND_SUBTITLE' => 'Provide SMTP mail server information to use for outgoing email in Mail Accounts.',
@@ -1489,6 +1498,7 @@ $app_strings = array(
     'LBL_BROWSER_TITLE' => 'MintHCM - Open Source HCM system',
     'LBL_BY' => 'by',
     'LBL_CALL' => 'Call',
+    'LBL_CALL_1' => 'Call',
     'LBL_CALLS' => 'Calls',
     'LBL_CAMPAIGNS_SEND_QUEUED' => 'Send Queued Campaign Emails',
     'LBL_SUBMIT_BUTTON_LABEL' => 'Submit',
@@ -1524,7 +1534,8 @@ $app_strings = array(
     'LBL_CREATED_USER' => 'Created by User',
     'LBL_CREATED' => 'Created by',
     'LBL_CURRENT_USER_FILTER' => 'My Items:',
-    'LBL_CURRENCY' => 'Currency:',
+    'LBL_CURRENCY' => 'Currency',
+    'LBL_CURRENCY_ID' => 'Currency Symbol',
     'LBL_CURRENCIES' => 'Currencies:',
     'LBL_DOCUMENT' => 'Document',
     'LBL_DOCUMENTS' => 'Documents',
@@ -1629,9 +1640,9 @@ $app_strings = array(
     'LBL_NOTE' => 'Note',
     'LBL_NOTES' => 'Notes',
     'LBL_OR' => 'OR',
-    'LBL_PANEL_OVERVIEW' => 'OVERVIEW',
-    'LBL_PANEL_ASSIGNMENT' => 'OTHER',
-    'LBL_PANEL_ADVANCED' => 'MORE INFORMATION',
+    'LBL_PANEL_OVERVIEW' => 'Overview',
+    'LBL_PANEL_ASSIGNMENT' => 'Other',
+    'LBL_PANEL_ADVANCED' => 'More Information',
     'LBL_PARENT_TYPE' => 'Parent Type',
     'LBL_PERCENTAGE_SYMBOL' => '%',
     'LBL_POSITION' => 'Position',
@@ -1791,6 +1802,7 @@ $app_strings = array(
     'LBL_SAVED_LAYOUT' => 'Layout has been saved.',
     'LBL_SAVED' => 'Saved',
     'LBL_SAVING' => 'Saving',
+    'LBL_VALIDATION' => 'Validation in progress...',
     'LBL_DISPLAY_COLUMNS' => 'Display Columns',
     'LBL_HIDE_COLUMNS' => 'Hide Columns',
     'LBL_PROCESSING_REQUEST' => 'Processing...',
@@ -1971,6 +1983,7 @@ $app_strings = array(
     'LBL_DURATION_HOURS' => 'hours',
     'LBL_DURATION_MINUTES' => 'minutes',
     'LBL_MINS' => 'Min.',
+    'LBL_HRS' => 'Hr.',
     //Calendar widget labels
     'LBL_CHOOSE_MONTH' => 'Choose Month',
     'LBL_ENTER_YEAR' => 'Enter Year',
@@ -2012,6 +2025,7 @@ $app_strings = array(
     'LBL_ALT_MOVE_COLUMN_UP' => 'Move selected entry up in the displayed list order',
     'LBL_ALT_MOVE_COLUMN_DOWN' => 'Move selected entry down in the displayed list order',
     'LBL_ALT_INFO' => 'Information',
+    'LBL_ERROR' => 'Unknown Error',
     'MSG_DUPLICATE' => 'The {0} record you are about to create might be a duplicate of an {0} record that already exists. {1} records containing similar names are listed below.<br>Click Create {1} to continue creating this new {0}, or select an existing {0} listed below.',
     'MSG_SHOW_DUPLICATES' => 'The {0} record you are about to create might be a duplicate of a {0} record that already exists. {1} records containing similar names are listed below. Click Save to continue creating this new {0}, or click Cancel to return to the module without creating the {0}.',
     'LBL_EMAIL_TITLE' => 'email address',
@@ -2088,6 +2102,7 @@ $app_strings = array(
     'LBL_CONFIRM_OPT_IN_SENT_DATE' => 'Confirmed Opt In Sent Date',
     'LBL_CONFIRM_OPT_IN_FAIL_DATE' => 'Confirmed Opt In Fail Date',
     'LBL_CONFIRM_OPT_IN_TOKEN' => 'Confirm Opt In Token',
+    'LBL_CONFIRM_WORK_SCHEDULE' => 'Confirm Work Schedule',
     'ERR_OPT_IN_TPL_NOT_SET' => 'Opt In Email Template is not configured. Please set up in email settings.',
     'LBL_SECURITYGROUP_NONINHERITABLE' => 'Non-Inheritable Organizational Unit',
     'LBL_PRIMARY_GROUP' => "Primary Organizational Unit",
@@ -2173,6 +2188,7 @@ $app_strings = array(
     'LBL_ESLIST_NEXT_YEAR' => 'Next year',
     'LBL_ESLIST_ABOVE_N_MONTHS_AGO' => 'Above N months ago',
     'LBL_ESLIST_IN_THE_PAST' => 'In the past',
+    'LBL_ESLIST_IN_THE_FUTURE' => 'In the future',
     'LBL_ESLIST_N_MONTHS' => 'Months number',
     'LBL_ESLIST_AFTER' => 'After',
     'LBL_ESLIST_BEFORE' => 'Before',
@@ -2187,6 +2203,7 @@ $app_strings = array(
     'LBL_ESLIST_CONTAIN_WORD' => 'Contains word',
     'LBL_ESLIST_NOT_CONTAIN_WORD' => 'Doesn\'t contain word',
     'LBL_ESLIST_NO_DATA_AVAILABLE' => 'No data available',
+    'LBL_ESLIST_FETCHING_DATA_ERROR' => 'An error occurred while fetching data',
     'LBL_ESLIST_LESS_OR_EQUAL' => 'Less than/Equal',
     'LBL_ESLIST_GREATER_THAN' => 'Greater than',
     'LBL_ESLIST_LESS_THAN' => 'Less than',
@@ -2205,6 +2222,8 @@ $app_strings = array(
     'LBL_ESLIST_SELECT_DATE' => 'Select',
     'LBL_ESLIST_OVERWRITE_FILTER_CONFIRM' => 'Filter with that name already exists. Do you want to overwrite it?',
     'LBL_ESLIST_REFRESH' => 'Refresh',
+    'LBL_ESLIST_IS_FAVORITE' => 'Favorite',
+    'LBL_ESLIST_MY_FAVORITES' => 'Only my favorites',
     //MOBILE START
     'LBL_ID_FF_SELECT' => 'Select',
     'LBL_INSTANCE_ADDRESS' => 'Server Address',
@@ -4550,6 +4569,7 @@ $app_strings['LBL_MINT4_COMMENTS_REACT_BTN'] = 'Like';
 $app_strings['LBL_MINT4_COMMENTS_QUOTE_SUFFIX'] = 'wrote';
 $app_strings['LBL_MINT4_COMMENTS_EDITED'] = 'Comment edited';
 $app_strings['LBL_MINT4_COMMENTS_EXPAND_BTN'] = 'Show replies';
+$app_strings['LBL_MINT4_COMMENTS_HIDE_BTN'] = 'Hide replies';
 $app_strings['LBL_MINT4_COMMENTS_REMOVED'] = 'Comment deleted';
 $app_strings['LBL_MINT4_COMMENTS_REMOVED_WITH_REPLIES_SINGULAR'] = 'Comment and 1 reply deleted';
 $app_strings['LBL_MINT4_COMMENTS_REMOVED_WITH_REPLIES_PLURAL'] = 'Comment and {x} replies deleted';
@@ -4560,6 +4580,7 @@ $app_strings['LBL_MINT4_COMMENTS_ACTION_UNPIN'] = 'Unpin';
 $app_strings['LBL_MINT4_COMMENTS_USERS_HINT_NOT_FOUND'] = 'No users found';
 $app_strings['LBL_MINT4_COMMENTS_NO_COMMENTS'] = 'There are no comments';
 
+$app_strings['LBL_MINT4_BEAN_DELETE_CONFIRM'] = 'Are you sure you want to delete this record?';
 $app_strings['LBL_MINT4_MASS_DELETE_CONFIRM'] = 'Are you sure you want to delete selected items?';
 $app_strings['LBL_MINT4_MASS_DELETE_ERROR'] = 'Failed to delete selected items';
 
@@ -4609,7 +4630,8 @@ $app_strings['LBL_INBOUND_ACCOUNT'] = 'Inbound Account';
 $app_strings['LBL_SYSTEM_ACCOUNT'] = 'System Account';
 $app_strings['LBL_FROM_SYSTEM'] = 'Send From System';
 $app_strings['LBL_SIGNATURE'] = 'Signature';
-$app_strings['LBL_MINT4_NO_ACCESS_TO_MODULE'] = 'Warning: You do not have permission to access this module.';
+$app_strings['LBL_MINT4_NO_ACCESS_TO_MODULE'] = 'You do not have permission to access this module.';
+$app_strings['LBL_MINT4_NO_ACCESS_TO_RECORD'] = 'You do not have permission to access this record.';
 
 $app_list_strings['requests_status_list'] = array(
     'requested' => 'Requested',
@@ -4649,141 +4671,30 @@ $app_strings['LBL_KUDOS_SUCCESS_BUTTON'] = 'RETURN TO THE LIST';
 $app_strings['LBL_KUDOS_ERROR'] = 'An error occurred. Try again later.';
 $app_strings['LBL_KUDOS_CHARACTERS_WARNING'] = 'Maximum number of characters is 255';
 $app_strings['LBL_KUDOS_EMPTY_MESSAGE'] = 'Enter a message, please';
-// ColoredEnum Lists START
 
-$gray_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#616161; background-color:#dbdbdb; border:1px solid #616161;";
-$blue_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#316b95; background-color: #e0f1ff; border:1px solid #316b95;";
-$green_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#316b95; background-color: #e0f1ff; border:1px solid #316b95;";
-$yellow_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#5b5800; background-color: #f8f0aa; border:1px solid #5b5800;";
-$green_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#006222; background-color:#e1ffeb; border:1px solid #006222;";
-$red_status = "font-weight: bold; padding: 7px 12px 6px 12px; border-radius: 5px; text-transform: uppercase; color:#b00020; background-color:#ffe0e8; border:1px solid #b00020;";
-
-$app_list_strings['workschedules_status_dom_colored'] = array(
-    'planned' => $blue_status,
-    'worked' => $yellow_status,
-    'closed' => $green_status,
-);
-$app_list_strings['position_status_colored'] = array(
-    'planned' => $blue_status,
-    'active' => $green_status,
-    'inactive' => $gray_status,
-);
-
-$app_list_strings['meeting_status_dom_colored'] = array(
-    'Planned' => $blue_status,
-    'Held' => $green_status,
-    'Not Held' => $red_status,
-);
-
-$app_list_strings['call_status_dom_colored'] = array(
-    'Planned' => $blue_status,
-    'Held' => $green_status,
-    'Not Held' => $red_status,
-);
-$app_list_strings['project_status_dom_colored'] = array(
-    'Draft' => $gray_status,
-    'In Review' => $yellow_status,
-    'Underway' => $yellow_status,
-    'On_Hold' => $yellow_status,
-    'Completed' => $green_status,
-);
-$app_list_strings['survey_status_list_colored'] = array(
-    'Draft' => $gray_status,
-    'Active' => $green_status,
-    'Closed' => $green_status,
-);
-$app_list_strings['exit_interview_status_list_colored'] = array(
-    'planned' => $blue_status,
-    'held' => $green_status,
-    'not_held' => $red_status,
-);
-$app_list_strings['goals_status_list_colored'] = array(
-    'planned' => $blue_status,
-    'in_progress' => $yellow_status,
-    'completed' => $green_status,
-    'uncompleted' => $gray_status,
-);
-$app_list_strings['onboarding_status_list_colored'] = array(
-    'in_progress' => $yellow_status,
-    'held' => $green_status,
-);
-$app_list_strings['task_status_dom_colored'] = array(
-    'Not Started' => $gray_status,
-    'In Progress' => $yellow_status,
-    'Completed' => $green_status,
-    'Pending Input' => $yellow_status,
-    'Deferred' => $gray_status,
-);
-$app_list_strings['project_status_list_colored'] = array(
-    'for_approval' => $yellow_status,
-    'plan' => $blue_status,
-    'open' => $green_status,
-    'close' => $red_status,
-);
-$app_list_strings['appraisals_status_list_colored'] = array(
-    'planned' => $blue_status,
-    'in_progress' => $yellow_status,
-    'held' => $green_status,
-    'not_held' => $red_status,
-);
-$app_list_strings['aok_status_list_colored'] = array(
-    'Draft' => $gray_status,
-    'Expired' => $red_status,
-    'In_Review' => $yellow_status,
-    'published_private' => $green_status,
-    'published_public' => $green_status,
-);
-$app_list_strings['workplace_room_status_colored'] = array(
+$app_list_strings['source_list'] = array(
     '' => '',
-    'active' => $green_status,
-    'inactive' => $gray_status,
-    'planned' => $blue_status,
-);
-
-$app_list_strings['applications_status_list_colored'] = array(
-    'new' => $blue_status,
-    'in_progress' => $yellow_status,
-    'accepted' => $green_status,
-    'rejected' => $red_status,
-);
-
-$app_list_strings['status_list_colored'] = array(
-    'Acceptance' => $yellow_status,
-    'AfterEntryInterview' => $yellow_status,
-    'CandidateResignation' => $red_status,
-    'EntryInterview' => $yellow_status,
-    'Hired' => $green_status,
-    'InProgress' => $yellow_status,
-    'MeetingAdditional' => $yellow_status,
-    'MeetingPrimary' => $yellow_status,
-    'Negotation' => $yellow_status,
-    'New' => $blue_status,
-    'Offer' => $yellow_status,
-    'PracticalTask' => $yellow_status,
-    'Preselection' => $yellow_status,
-    'Rejected' => $red_status,
-    'Scored' => $yellow_status,
-    'Scored2' => $yellow_status,
-);
-
-$app_list_strings['campaign_status_dom_colored'] = array(
-    'Planning' => $blue_status,
-    'Active' => $yellow_status,
-    'Inactive' => $gray_status,
-    'Complete' => $green_status,
-);
-
-$app_list_strings['dom_email_status_colored'] = array(
-    'archived' => $yellow_status,
-    'closed' => $green_status,
-    'draft' => $gray_status,
-    'read' => $green_status,
-    'replied' => $blue_status,
-    'sent' => $green_status,
-    'send_error' => $red_status,
-    'unread' => $yellow_status,
-);
-// ColoredEnum Lists END
+    'Base' => 'Database of Candidates',
+    'CareersLibrary' => 'Career\'s Office',
+    'CodersLab' => 'CodersLab',
+    'EmployeeCommendation' => 'Employee Recommendation',
+    'GrowthPoland' => 'Growth Poland',
+    'Indeed' => 'Indeed',
+    'Jooble' => 'Jooble',
+    'LoboHR' => 'Lobo HR',
+    'Milado' => 'Milado',
+    'Pracapl' => 'Praca.pl',
+    'Pracujpl' => 'Pracuj.pl',
+    'Website' => 'Website',
+    'facebook' => 'Facebook',
+    'goldenline' => 'GoldenLine',
+    'justjoin.it' => 'justjoin.it',
+    'linkedin' => 'LinkedIn',
+    'nofluffjobs' => 'No Fluff Jobs',
+    'not_applicable' => 'Not Applicable',
+    'other' => 'Other',
+ );
+ 
 $app_strings['LBL_YOU_RECEIVED_KUDOS'] = '<b>You received</b> kudos!';
 $app_strings['LBL_USER_RECEIVED_KUDOS'] = 'received kudos from <b>you</b>!';
 $app_strings['LBL_GIVE_KUDOS'] = 'GIVE KUDOS';
@@ -4824,6 +4735,11 @@ $app_list_strings['contract_type_list'] = array(
     'other' => 'Other',
 );
 
+
+$app_strings['LBL_DASHBOARD'] = 'Dashboard';$app_strings['LNK_ACCEPT'] = 'Accept';
+
+$app_strings['LBL_ACCEPT_INLINE'] = "Accept";
+
 $app_strings['LBL_DASHBOARD'] = 'Dashboard';
 
 $app_strings['LBL_RN_108842_SETOAUTH2MAILINGCONFIGURATION'] = 'Configure oauth2 mailing';
@@ -4839,10 +4755,28 @@ $app_list_strings['source_list'] = array(
     'not_applicable' => 'Not Applicable',
     'other' => 'Other',
 );
+
+$app_strings['LBL_ES_ELASTIC_SEARCH_ENGINE'] = 'Elastic Search Engine';
+
+
 $app_strings['LBL_ACCEPT_INLINE'] = "Accept";
 $app_strings['LBL_NOTIFICATIONS_NONE'] = 'None';
-$app_strings['LBL_ES_ELASTIC_SEARCH_ENGINE'] = 'Elastic Search Engine';
+
+$app_strings['twsdashlet_show'] = 'Show';
+$app_strings['twsdashlet_edit'] = 'Edit';
+$app_strings['twsdashlet_add_time'] = 'Add time';
+
+$app_strings['LBL_REQUIRED'] = 'Required';
+$app_strings['ERR_FIELD_REQUIRED'] = 'This field is required';
+$app_strings['ERR_NOT_UNIQUE'] = 'Record is not unique';
 $app_strings['LBL_WORKSCHEDULE_LEAVE_CREATED'] = 'Get notified if Leave is created by your subordinate';
 $app_strings['LBL_WORKSCHEDULES_DAY_VALID'] = 'Get notified if not closed Work Schedule exists';
 $app_strings['LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS'] = 'Get notified if Work Schedule is not planned for two weeks';
 $app_strings['LBL_WORKSCHEDULESACCEPTANCE'] = 'Get notified if the work schedule is approved by the supervisor';
+$app_strings['LBL_CLEAR_BUTTON_KANBAN_LABEL'] = 'Clear Filters';
+$app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';$app_strings['LBL_LINK_RECORD_BUTTON'] = 'LINK RECORD';
+$app_strings['LBL_LINK_RECORD_BUTTON'] = 'LINK RECORD';
+$app_strings['LBL_EXPAND'] = 'Expand';
+$app_strings['LBL_COLLAPSE'] = 'Collapse';
+$app_strings['LBL_BASIC'] = 'Basic';
+$app_strings['LBL_OTHER'] = 'Other';

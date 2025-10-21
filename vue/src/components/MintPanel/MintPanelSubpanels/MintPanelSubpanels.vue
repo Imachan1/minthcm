@@ -1,5 +1,5 @@
 <template>
-    <div class="subpanels-panel">
+    <div v-if="!store.bean.isNew" class="subpanels-panel">
         <h1>{{ languages.label('LBL_RELATED_RECORDS') }}</h1>
         <v-expansion-panels v-model="expandedSubpanels" class="subpanels-accordion" multiple variant="accordion">
             <v-expansion-panel
@@ -7,7 +7,7 @@
                 :key="subpanel.key"
                 bg-color="transparent"
                 :value="subpanel.key"
-                :class="['mint-subpanel', !subpanel.records?.length && 'mint-subpanel-disabled']"
+                :class="['mint-subpanel', subpanel.total <= 0 && 'mint-subpanel-disabled']"
             >
                 <v-expansion-panel-title class="mint-subpanel-title" hide-actions>
                     <div>
@@ -16,49 +16,30 @@
                         />
                         <span>{{ languages.label(subpanel.label, $route.params.module) }}</span>
                         <span
-                            v-if="subpanel.records?.length"
+                            v-if="subpanel.total > 0"
                             class="mint-subpanel-records-count"
-                            v-text="subpanel.records.length"
+                            v-text="subpanel.total"
                         />
                     </div>
-                    <MintButton
-                        v-if="
-                            acl.hasAccess(subpanel.module, 'edit', true) &&
-                            subpanel.properties.top_buttons?.find(
-                                (btn) => btn.widget_class === 'SubPanelTopButtonQuickCreate',
-                            )
-                        "
-                        class="mint-subpanel-create-btn"
-                        :variant="expandedSubpanels.includes(subpanel.key) ? 'primary' : 'regular'"
-                        :text="languages.label('LBL_CREATE_BUTTON_LABEL')"
-                        icon="mdi-plus"
-                        @click.stop="
-                            () =>
-                                $router.push({
-                                    name: 'module-view',
-                                    params: { module: subpanel.module, action: 'EditView' },
-                                    query: {
-                                        return_action: 'DetailView',
-                                        parent_id: store.bean.id,
-                                        return_id: store.bean.id,
-                                        return_module: store.bean.module_name,
-                                        parent_type: store.bean.module_name,
-                                        parent_name: store.bean.attributes.name,
-                                        candidate_id: store.bean.module_name === 'Candidates' ? store.bean.id : null,
-                                        candidate_name:
-                                            store.bean.module_name === 'Candidates' ? store.bean.attributes.name : null,
-                                        employee_id: store.bean.module_name === 'Employees' ? store.bean.id : null,
-                                        employee_name:
-                                            store.bean.module_name === 'Employees' ? store.bean.attributes.name : null,
-                                        employees_name:
-                                            store.bean.module_name === 'Employees' ? store.bean.attributes.name : null,
-                                    },
-                                })
-                        "
+                    <MintPanelSubpanelsButtons
+                        :module="$route.params.module"
+                        :subpanel="subpanel"
+                        :isExpanded="expandedSubpanels.includes(subpanel.key)"
                     />
                 </v-expansion-panel-title>
                 <v-expansion-panel-text class="mint-subpanel-content">
-                    <MintDataTable :columns="subpanel.columns" :records="subpanel.records ?? []" />
+                    <MintDataTable
+                        :columns="subpanel.columns"
+                        :records="subpanel.records"
+                        :key="`${subpanel.key}-${subpanel.page}`"
+                    />
+                    <MintDataTablePagination
+                        :tableName="subpanel.key"
+                        :page="subpanel.page"
+                        @page-changed="changePage"
+                        :paginateBy="subpanel.paginateBy"
+                        :total="subpanel.total"
+                    />
                 </v-expansion-panel-text>
             </v-expansion-panel>
         </v-expansion-panels>
@@ -66,12 +47,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useLanguagesStore } from '@/store/languages'
-import MintDataTable from '@/components/MintDataTable/MintDataTable.vue'
-import MintButton from '@/components/MintButtons/MintButton.vue'
 import { useBackendStore } from '@/store/backend'
+import MintDataTable from '@/components/MintDataTable/MintDataTable.vue'
+import MintPanelSubpanelsButtons from './MintPanelSubpanelsButtons.vue'
+import MintButton from '@/components/MintButtons/MintButton.vue'
+import MintDataTablePagination from '@/components/MintDataTablePagination/MintDataTablePagination.vue'
 import { useACL } from '@/composables/useACL'
 
 onMounted(() => {
@@ -85,6 +68,10 @@ const backend = useBackendStore()
 const acl = useACL()
 
 const expandedSubpanels = ref<string[]>([])
+
+const changePage = (page: number, tableName: string, paginateBy: number) => {
+    store.fetchSubpanelRecords(tableName, paginateBy, page)
+}
 </script>
 
 <style scoped lang="scss">
@@ -141,7 +128,7 @@ const expandedSubpanels = ref<string[]>([])
     .mint-subpanel-content {
         :deep(.v-expansion-panel-text__wrapper) {
             padding: 0px;
-            margin-bottom: 48px;
+            margin-bottom: 16px;
         }
     }
 }

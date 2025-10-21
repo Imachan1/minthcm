@@ -19,12 +19,17 @@ export default defineConfig({
         }),
     ],
     define: {
-        'process.env': {},
+        'process.env': {
+            CLIENT_SECRET: process.env.CLIENT_SECRET ?? '',
+        },
     },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
         },
+    },
+    build: {
+        target: 'esnext',
     },
     server: {
         base: '/',

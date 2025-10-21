@@ -11,6 +11,7 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use OAuth2Tokens;
 use User;
 
+#[\AllowDynamicProperties]
 class AccessTokenRepository implements AccessTokenRepositoryInterface
 {
     /**

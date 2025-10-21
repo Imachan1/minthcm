@@ -6,10 +6,11 @@ import { useAlertsStore } from './alerts'
 import { useFavoritesStore } from './favorites'
 import { useRecentsStore } from './recents'
 import { useLanguagesStore, Languages } from './languages'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import { useModulesStore, ModulesDefs } from './modules'
 import { usePreferencesStore } from './preferences'
 import { Settings } from 'luxon'
+import { mintApi } from '@/api/api'
 
 interface QuickCreate {
     module: string
@@ -33,6 +34,8 @@ interface InitResponse {
     mintRebuildID: string
     responseType: string
     systemName: string
+    upload_maxsize: string
+    field_variables: string[]
 }
 export const useBackendStore = defineStore('backend', () => {
     const router = useRouter()
@@ -55,7 +58,7 @@ export const useBackendStore = defineStore('backend', () => {
             if (typeof caches === "undefined") {
                 console.warn('Cache API not supported.')
             } else {
-                await caches.match('api/init').then(function(response) {
+                await caches.match('init').then(function(response) {
                     if (!response) {
                         return;
                     }
@@ -71,11 +74,11 @@ export const useBackendStore = defineStore('backend', () => {
             if(mintRebuildID === false){
                 mintRebuildID = '';
             }
-            const initResponse = await axios.post<InitResponse>('api/init', {
+            const initResponse = await mintApi.post<InitResponse>('init', {
                 mintRebuildID: mintRebuildID,
                 current_language: current_language,
                 user_id: cachedConfig.value?.user?.id ?? ''
-            })
+            }, { rawError: true })
             auth.user = initResponse.data?.user ?? {}
             if(initResponse.data.responseType === 'minified'){
                 cachedConfig.value.user = initResponse.data.user
@@ -83,6 +86,8 @@ export const useBackendStore = defineStore('backend', () => {
                 cachedConfig.value.preferences = initResponse.data.preferences
                 cachedConfig.value.responseType = initResponse.data.responseType
                 cachedConfig.value.systemName = initResponse.data.system_name
+                cachedConfig.value.upload_maxsize = initResponse.data.upload_maxsize
+                cachedConfig.value.field_variables = initResponse.data.field_variables
                 if(initResponse.data.languages && current_language !== initResponse.data.languages?.current_language){
                     cachedConfig.value.languages = initResponse.data.languages
                 }
@@ -119,9 +124,10 @@ export const useBackendStore = defineStore('backend', () => {
             }
 
                 caches.open('mint-rebuild').then(function(cache) {
-                    cache.put('api/init', new Response(JSON.stringify(initData.value)));
+                    cache.put('init', new Response(JSON.stringify(initData.value)));
                 })
             }
+            preferences.global = initData.value.global ?? null
             alerts.init()
             favorites.fetch()
             recents.fetch()
@@ -129,10 +135,11 @@ export const useBackendStore = defineStore('backend', () => {
         } catch (err) {
             if ((err as AxiosError).response?.status === 401) {
                 const loginData = (
-                    await axios.get('api/login', {
+                    await mintApi.get('login', {
                         params: {
                             lang: localStorage.getItem('currentLang') ?? 'en_us',
                         },
+                        rawError: true,
                     })
                 ).data
                 languages.languages = {

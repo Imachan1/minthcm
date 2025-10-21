@@ -19,6 +19,7 @@ use Google\Service\Gmail;
 /**
  * ExtAPIGoogleEmail
  */
+#[\AllowDynamicProperties]
 class ExtAPIGoogleEmail extends ExternalAPIBase
 {
     public $supportedModules = array('OutboundEmail', 'InboundEmail');

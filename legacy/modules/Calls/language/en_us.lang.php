@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -61,19 +61,19 @@ $mod_strings = array(
     'LBL_LIST_RELATED_TO_ID' => 'Related to ID',
     'LBL_LIST_DATE' => 'Start Date',
     'LBL_LIST_DIRECTION' => 'Direction',
-    'LBL_SUBJECT' => 'Subject:',
-    'LBL_REMINDER' => 'Reminder:',
-    'LBL_CONTACT_NAME' => 'Contact:',
-    'LBL_DESCRIPTION' => 'Description:',
-    'LBL_STATUS' => 'Status:',
-    'LBL_DIRECTION' => 'Direction:',
-    'LBL_DATE' => 'Start Date:',
-    'LBL_DURATION' => 'Duration:',
-    'LBL_DURATION_HOURS' => 'Duration Hours:',
-    'LBL_DURATION_MINUTES' => 'Duration Minutes:',
+    'LBL_SUBJECT' => 'Subject',
+    'LBL_REMINDER' => 'Reminder',
+    'LBL_CONTACT_NAME' => 'Contact',
+    'LBL_DESCRIPTION' => 'Description',
+    'LBL_STATUS' => 'Status',
+    'LBL_DIRECTION' => 'Direction',
+    'LBL_DATE' => 'Start Date',
+    'LBL_DURATION' => 'Duration',
+    'LBL_DURATION_HOURS' => 'Duration Hours',
+    'LBL_DURATION_MINUTES' => 'Duration Minutes',
     'LBL_HOURS_MINUTES' => '(hours/minutes)',
-    'LBL_DATE_TIME' => 'Start Date & Time:',
-    'LBL_TIME' => 'Start Time:',
+    'LBL_DATE_TIME' => 'Start Date & Time',
+    'LBL_TIME' => 'Start Time',
     'LBL_HOURS_ABBREV' => 'h',
     'LBL_MINSS_ABBREV' => 'm',
     'LNK_NEW_CALL' => 'Log Call',
@@ -81,7 +81,7 @@ $mod_strings = array(
     'LNK_CALL_LIST' => 'View Calls',
     'LNK_IMPORT_CALLS' => 'Import Calls',
     'LBL_INVITEE' => 'Invitees',
-    'LBL_RELATED_TO' => 'Related To:',
+    'LBL_RELATED_TO' => 'Related To',
     'LNK_NEW_APPOINTMENT' => 'Create Appointment',
     'LBL_SCHEDULING_FORM_TITLE' => 'Scheduling',
     'LBL_ADD_INVITEE' => 'Add Invitees',

@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,6 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/SearchForm/SearchForm2.php');
 
+#[\AllowDynamicProperties]
 class EmployeesSearchForm extends SearchForm {
     /**
      * This builds an EmployeesSearchForm from a classic search form.
@@ -81,7 +82,7 @@ class EmployeesSearchForm extends SearchForm {
         $where_clauses = parent::generateSearchWhere($add_custom_fields, $module);
         
         if ( $onlyActive ) {
-            $where_clauses[] = "users.employee_status = 'Active'";
+            $where_clauses[] = "users.employee_status IN ('Active', 'during_termination')";
         }
         
         // Add in code to remove portal/group/hidden users

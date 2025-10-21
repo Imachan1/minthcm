@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,13 +49,13 @@ use MintHCM\Api\Controllers\ModuleController;
 use MintHCM\Api\Controllers\Module\ListController;
 use MintHCM\Api\Controllers\Module\ListInitController;
 use MintHCM\Api\Controllers\Module\ListMassActionsController;
-use MintHCM\Api\Middlewares\Params\ParamTypes\IntType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\ArrayType;
+use MintHCM\Api\Middlewares\Params\ParamTypes\IntType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\BoolType;
 
 $routes = array(
-    "detail" => array( //CR probably to delete
+    "detail" => array(
         "method" => "GET",
         "path" => "/Detail/{id}",
         "class" => ModuleController::class,
@@ -97,11 +97,27 @@ $routes = array(
                     },
                 ',
             ),
+            "links" => array(
+                "type" => ArrayType::class,
+                "required" => false,
+                "desc" => "Related records to link/unlink",
+                "example" => '
+                    "accounts": {
+                        "beansToAdd": {
+                            "223dee27-b9e7-432a-8da9-c84cc0770035": {
+                                "id": "223dee27-b9e7-432a-8da9-c84cc0770035",
+                                "additionalValues": {}
+                            }
+                        },
+                        "beansToRemove": ["223dee27-b9e7-432a-8da9-c84cc0770035"],
+                    },
+                ',
+            ),
         ),
     ),
     "update" => array(
         "method" => "PATCH",
-        "path" => "/Update/{id}",
+        "path" => "/Update[/{id}]",
         "class" => ModuleController::class,
         "function" => 'update',
         "desc" => "Update records",
@@ -111,7 +127,7 @@ $routes = array(
         "pathParams" => array(
             "id" => array(
                 "type" => StringType::class,
-                "required" => true,
+                "required" => false,
                 "desc" => "Module id",
                 "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
             ),
@@ -129,11 +145,38 @@ $routes = array(
                     },
                 ',
             ),
+            "files" => array(
+                "type" => ArrayType::class,
+                "required" => false,
+                "desc" => "Record files to upload",
+                "example" => '
+                    "files": {
+                        "photo": Base64 encoded file content,
+                        "document": Base64 encoded file content,
+                    },
+                ',
+            ),
+            "links" => array(
+                "type" => ArrayType::class,
+                "required" => false,
+                "desc" => "Related records to link/unlink",
+                "example" => '
+                    "accounts": {
+                        "beansToAdd": {
+                            "223dee27-b9e7-432a-8da9-c84cc0770035": {
+                                "id": "223dee27-b9e7-432a-8da9-c84cc0770035",
+                                "additionalValues": {}
+                            }
+                        },
+                        "beansToRemove": ["223dee27-b9e7-432a-8da9-c84cc0770035"],
+                    },
+                ',
+            ),
         ),
     ),
     "get_record" => array(
         "method" => "GET",
-        "path" => "/Get/{id}",
+        "path" => "/Get[/{id}]",
         "class" => ModuleController::class,
         "function" => 'getRecord',
         "desc" => "Get record fields",
@@ -143,13 +186,58 @@ $routes = array(
         "pathParams" => array(
             "id" => array(
                 "type" => StringType::class,
-                "required" => true,
+                "required" => false,
                 "desc" => "Module id",
                 "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
             ),
         ),
         "queryParams" => array(),
         "bodyParams" => array(),
+    ),
+    "get_record_logic" => array(
+        "method" => "POST",
+        "path" => "/Logic[/{id}]",
+        "class" => ModuleController::class,
+        "function" => 'getRecordLogic',
+        "desc" => "Get record logic",
+        "options" => array(
+            'auth' => true,
+        ),
+        "pathParams" => array(
+            "id" => array(
+                "type" => StringType::class,
+                "required" => false,
+                "desc" => "Module id",
+                "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
+            ),
+        ),
+        "queryParams" => array(),
+        "bodyParams" => array(
+            "attributes" => array(
+                "type" => ArrayType::class,
+                "required" => true,
+                "desc" => "Attributes",
+                "example" => '
+                    "attributes": {
+                        "first_name": "Example",
+                        "last_name": "record",
+                        "birthdate": "2023-07-23",
+                    },
+                ',
+            ),
+            "triggerFields" => array(
+                "type" => ArrayType::class,
+                "required" => true,
+                "desc" => "Trigger Fields",
+                "example" => '
+                    [
+                        "first_name",
+                        "last_name",
+                        "birthdate",
+                    ],
+                ',
+            ),
+        ),
     ),
     "delete" => array(
         "method" => "DELETE",
@@ -194,7 +282,20 @@ $routes = array(
                 "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
             ),
         ),
-        "queryParams" => array(),
+        "queryParams" => array(
+            "paginate_by" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Number of records per page",
+                "example" => '10',
+            ),
+            "page" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Page number, starts from 0",
+                "example" => '6',
+            ),
+        ),
         "bodyParams" => array(),
     ),
     "list_data" => array(
@@ -255,22 +356,23 @@ $routes = array(
                     "filters": [
                         {
                             "field": "city",
-                            "type": "equals",
+                            "operator": "equals",
                             "value": "Paris",
                             "not": false/true => default false
                         },
                         {
                             "field": "country",
-                            "type": "match",
+                            "operator": "match",
                             "value": "USA"
                         },
-                        {
-                            "type": "wildcard",
-                            "field": "name",
-                            "value": "*starter*"
-                    }
                     ]
                 ',
+            ),
+            "onlyFavorites" => array(
+                "type" => BoolType::class,
+                "required" => false,
+                "desc" => "if enable, shows only favorite records",
+                "example" => '1',
             ),
         ),
     ),
@@ -330,6 +432,39 @@ $routes = array(
                 "required" => true,
                 "desc" => "Array of ids",
                 "example" => '["223dee27-b9e7-432a-8da9-c84cc0770035", "223dee27-b9e7-432a-8da9-c84cc0770035"]',
+            ),
+        ),
+    ),
+    "link" => array(
+        "method" => "POST",
+        "path" => "/Link/{id}",
+        "class" => ModuleController::class,
+        "function" => 'link',
+        "desc" => "Link records",
+        "options" => array(
+            'auth' => true,
+        ),
+        "pathParams" => array(
+            "id" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Module id",
+                "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
+            ),
+        ),
+        "queryParams" => array(),
+        "bodyParams" => array(
+            "ids" => array(
+                "type" => ArrayType::class,
+                "required" => true,
+                "desc" => "Record ids to link",
+                "example" => '["223dee27-b9e7-432a-8da9-c84cc0770035", "223dee27-b9e7-432a-8da9-c84cc0770035]',
+            ),
+            "link_name" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Link name",
+                "example" => 'contacts',
             ),
         ),
     ),

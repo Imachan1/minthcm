@@ -22,12 +22,14 @@ class AcceptWorkPlanButton extends Button {
     acceptWorkPlan(workschedule_id, dashlet_id = null, page_url = null) {
         viewTools.GUI.statusBox.showStatus(SUGAR.language.get('app_strings', 'LBL_SAVING'), 'info');
         const callbackFunction = function (call_constroller_data) {
-            viewTools.GUI.statusBox.hideStatus();
             if (call_constroller_data == false || call_constroller_data == null) {
                 console.error(call_constroller_data);
+                viewTools.GUI.statusBox.hideStatus();
             } else {
                 if (dashlet_id) {
-                    SUGAR.mySugar.retrieveDashlet(dashlet_id, page_url);
+                    SUGAR.mySugar.retrieveDashlet(dashlet_id, page_url, function () {
+                        viewTools.GUI.statusBox.hideStatus()
+                    });
                 } else {
                     location.reload();
                 }

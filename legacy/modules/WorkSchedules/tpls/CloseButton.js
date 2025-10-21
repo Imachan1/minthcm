@@ -38,7 +38,10 @@ class CloseButton extends Button {
                 var planType = $('#type').val() || (this.getTimePanel().taskman._currentPlans.filter(function (i) {
                     return i.id == record_id
                 }))[0].type;
-                var dontCheck = ['holiday', 'sick', 'occasional_leave', 'overtime', 'excused_absence', 'leave_at_request'].indexOf(planType) >= 0;
+                // MintHCM #111673 START
+                //var dontCheck = [ 'holiday', 'sick', 'occasional_leave', 'overtime', 'excused_absence', 'leave_at_request'].indexOf( planType ) >= 0;
+                var dontCheck = ['holiday', 'sick', 'occasional_leave', 'overtime', 'excused_absence', 'leave_at_request', 'child_care'].indexOf(planType) >= 0;
+                // MintHCM #111673 END
                 if (dontCheck || this.checkIfCanBeClosed()) {
                     this.closePlan();
                 }
@@ -90,6 +93,7 @@ class CloseButton extends Button {
                 else if (call_constroller_data == "4") {
                     this.dialogHandler.html('<p>' + viewTools.language.get('WorkSchedules', 'ERR_WORKPLACE_IS_NOT_ACTIVE').replace('{name}', schedule_name) + '</p>').dialog({ buttons: dialog_buttons }).dialog('open').show();
                 }
+
                 result = false;
             }
         }.bind(this)
@@ -112,9 +116,12 @@ class CloseButton extends Button {
         const callbackFunction = function (call_constroller_data) {
             if (call_constroller_data == false || call_constroller_data == null) {
                 console.error(call_constroller_data);
+                viewTools.GUI.statusBox.hideStatus()
             } else {
                 if (this.isButtonInDashlet()) {
-                    SUGAR.mySugar.retrieveDashlet(this.getDashletID(), '');
+                    SUGAR.mySugar.retrieveDashlet(this.getDashletID(), '', function () {
+                        viewTools.GUI.statusBox.hideStatus()
+                    });
                 } else {
                     location.reload();
                 }

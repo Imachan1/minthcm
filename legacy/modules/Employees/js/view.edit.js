@@ -13,7 +13,7 @@ $(document).ready(function () {
 
 function getSupervisedUnitsIfEmployeeIsSupervisor() {
     let employee_status = $('select[name="employee_status"] option:selected').val();
-    if (employee_status != 'Active') {
+    if (!['Active', 'during_termination'].includes(employee_status)) {
         let employee_id = $('#record').val();
         viewTools.api.callCustomApi({
             module: 'Employees',

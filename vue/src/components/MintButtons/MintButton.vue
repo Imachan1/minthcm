@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, withDefaults, computed } from 'vue'
+import { computed } from 'vue'
 
 interface Props {
     icon?: string

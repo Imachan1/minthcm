@@ -8,7 +8,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -68,7 +68,13 @@ $dictionary['Task'] = array(
             'name' => 'status',
             'vname' => 'LBL_STATUS',
             'options' => 'task_status_dom',
-            'options_colors' => 'task_status_dom_colored',
+            'options_colors' => [
+                'Not Started' => 'gray',
+                'In Progress' => 'yellow',
+                'Completed' => 'green',
+                'Pending Input' => 'yellow',
+                'Deferred' => 'gray',
+            ],
             'type' => 'ColoredEnum',
             'dbType' => 'varchar',
             'len' => 100,
@@ -104,6 +110,7 @@ $dictionary['Task'] = array(
             'importable' => 'false',
             'massupdate' => false,
             'audited' => true,
+            'inline_edit' => false,
         ),
         'date_start_flag' => array(
             'name' => 'date_start_flag',

@@ -9,11 +9,17 @@ import { usePopupsStore } from '@/store/popups'
 import MintPopupRelate from '@/components/MintPopups/MintPopupRelate.vue'
 import MassActions from '@/business/MassActions'
 import { modulesApi } from '@/api/modules.api'
+import * as operatorDefs from './operators'
+import { useFavoritesStore } from '@/store/favorites'
+import { useBean } from '@/composables/useBean'
+import { useStatusBoxesStore } from '@/store/statusBoxes'
 
 interface Preferences {
     columns: string[]
     items_per_page: number
     saved_filters: []
+    activeFilter: string | null
+    filterRows: FilterRow[]
 }
 
 interface Defs {
@@ -34,17 +40,20 @@ export const useListViewStore = defineStore('listview', () => {
     const languages = useLanguagesStore()
     const url = useUrlStore()
     const router = useRouter()
+    const favorites = useFavoritesStore()
     const isInit = ref(false)
     const config = ref({})
     const defs = ref<Defs | null>(null)
     const preferences = ref<Preferences | null>(null)
     const module = ref(url.module)
-    const results = ref([]) //todo: decode
+    const results = ref<ReturnType<typeof useBean>[]>([])
     const itemsLength = ref(0)
     const initialLoading = ref(true)
     const isLoading = ref(true)
     const myObjects = ref(false)
+    const onlyFavorites = ref(false)
     const activeFilter = ref<string | null>(null)
+    const error = ref(false)
     const filters = ref({
         filter: [],
         must_not: [],
@@ -54,30 +63,51 @@ export const useListViewStore = defineStore('listview', () => {
     const options = ref({
         page: 1,
         itemsPerPage: 10,
-        sortBy: [],
+        sortBy: new Array,
     })
     const selected = ref([])
     const defaultAction = 'ESList'
     const defaultActionUrl = 'legacy/index.php?'
+    const filterRows = ref<FilterRow[]>([])
+
     let requestCount = 0
+    const predefinedFilters = ref<boolean>(false)
 
     async function init() {
         initialLoading.value = true
-        const result = await modulesApi.getListInit(getModule())
+        const result = await modulesApi.getListInit(getModule()).catch(moduleAccessError)
         if (module.value === result.data.module) {
-            activeFilter.value = result.data?.preferences?.activeFilter ?? []
+            activeFilter.value = result.data?.preferences?.activeFilter ?? null
+            filterRows.value = result.data?.preferences?.filterRows ?? []
             initialLoading.value = false
             config.value = result.data?.config
             defs.value = result.data?.defs
-            preferences.value = result.data?.preferences
+            preferences.value = Array.isArray(result.data?.preferences) ? {} : result.data?.preferences
+            options.value.sortBy[0] = {
+                key: result.data?.preferences?.sortParams?.sortBy,
+                order: result.data?.preferences?.sortParams?.sortOrder,
+            }
             module.value = result.data?.module
             isInit.value = true
+            options.value.sortBy.push({
+                "order": preferences.value?.sortOrder,
+                "key": preferences.value?.sortBy
+            })
+            let saved_filters = preferences.value?.filters ?? {}
+            filters.value.filter = saved_filters?.filter ?? []
+            filters.value.must_not = saved_filters?.must_not ?? []
+            if (typeof preferences.value?.filterRows === 'string') {
+                filterRows.value = JSON.parse(preferences.value?.filterRows ?? '[]') ?? []
+            } else {
+                filterRows.value = preferences.value?.filterRows ?? []
+            }
         }
     }
 
     async function getData() {
         requestCount++
         isLoading.value = requestCount > 0
+        error.value = false
 
         const result = await modulesApi.getListData(
             getModule(),
@@ -88,13 +118,25 @@ export const useListViewStore = defineStore('listview', () => {
             myObjects.value,
             defs.value?.columns[options.value.sortBy[0]?.key]?.key,
             options.value.sortBy[0]?.order ?? 'asc',
-            activeFilter.value
+            activeFilter.value,
+            onlyFavorites.value,
         )
+            .catch(moduleAccessError)
+            .catch((requestError) => {
+                console.error('Error fetching data:', requestError?.response?.data || requestError)
+                isLoading.value = false
+                error.value = true
+                results.value = []
+            })
         requestCount--
-        if (module.value === result.data.module && requestCount <= 0) {
+        if (module.value === result?.data.module && requestCount <= 0) {
             requestCount = 0;
             isLoading.value = false;
-            results.value = result.data?.results
+            results.value = result.data?.results.map((item) => {
+                const bean = useBean(item.module, item.id)
+                bean.setData(item)
+                return bean
+            }) || []
             itemsLength.value = result.data?.total
             if (options.value.page === 1) {
                 pageOffsetMap.value = {}
@@ -107,13 +149,26 @@ export const useListViewStore = defineStore('listview', () => {
         await modulesApi.saveListPreferences(getModule(), preferences.value)
     }
 
+    function moduleAccessError(error: any): Promise<any> {
+        if (error.response.status === 403) {
+            useStatusBoxesStore().showStatus('module_access_error', {
+                type: 'error',
+                message: useLanguagesStore().label('LBL_MINT4_NO_ACCESS_TO_MODULE'),
+                autoClose: true,
+            })
+            router.push({ name: 'dashboard' })
+        }
+        return Promise.reject(error)
+    }
+
+
     function getListActionUrl() {
         return defaultActionUrl + 'action=' + defaultAction
     }
 
     function setDefaultColumns() {
         if (preferences.value?.columns) {
-            preferences.value.columns = null
+            preferences.value.columns = []
         }
     }
 
@@ -140,13 +195,24 @@ export const useListViewStore = defineStore('listview', () => {
         if (!isInit.value) {
             return []
         }
-        const headers = visibleColumns.value.map((col) => ({
-            value: col.name,
-            key: col.name,
-            title: languages.label(col.label, module.value),
-            sortable: !(col.sortable === false),
-            class: col.name == 'name' ? 'stickyColumn' : '',
-        }))
+        const headers = visibleColumns.value.map((col) => {
+            if (col.name === 'favorites') {
+                return {
+                    value: 'attributes.is_favorite',
+                    key: 'is_favorite',
+                    title: '',
+                    sortable: false,
+                    align: 'center',
+                }
+            }
+            return {
+                value: `attributes.${col.name}`,
+                key: col.name,
+                title: languages.label(col.label, module.value),
+                sortable: !(col.sortable === false),
+                class: col.name == 'name' ? 'stickyColumn' : '',
+            }
+        })
         if (mode.value === 'list') {
             headers.push({
                 value: 'actions',
@@ -159,90 +225,9 @@ export const useListViewStore = defineStore('listview', () => {
         return headers
     })
 
-    const links = computed(() => {
-        if (!isInit.value) {
-            return {}
-        }
-        return Object.values(defs.value?.columns || {})
-            .filter((col) => col.link && (!['name', 'full_name'].includes(col.name) || mode.value === 'list'))
-            .map((col) => ({
-                nameField: col.name,
-                urlField: `${col.name}_link`,
-            }))
-    })
-    const booleans = computed(() => {
-        if (!isInit.value) {
-            return {}
-        }
-        return Object.values(defs.value?.columns || {})
-            .filter((col) => ['bool', 'boolean'].includes(col.type))
-            .map((col) => col.name)
-    })
-    const lists = computed(() => {
-        if (!isInit.value) {
-            return {}
-        }
-
-        return Object.values(defs.value?.columns || {})
-            .filter((col) => getAllTypesMatchingTo('enum').includes(col.type) && col.options)
-            .map((col) => ({
-                field: col.name,
-                colors: languages.languages.app_list_strings[col.options + '_colored'],
-                options:
-                    typeof col.options === 'string' ? languages.languages.app_list_strings[col.options] : col.options,
-            }))
-    })
-    const multienums = computed(() => {
-        if (!isInit.value) {
-            return {}
-        }
-        return Object.values(defs.value?.columns || {})
-            .filter((col) => col.type === 'multienum' && col.options)
-            .map((col) => ({
-                field: col.name,
-                options:
-                    typeof col.options === 'string' ? languages.languages.app_list_strings[col.options] : col.options,
-            }))
-    })
-    const dates = computed(() => {
-        if (!isInit.value) {
-            return {}
-        }
-        return Object.values(defs.value?.columns || {})
-            .filter((col) => ['date', 'datetime', 'datetimecombo'].includes(col.type))
-            .map((col) => ({
-                field: col.name,
-                style: col.custom_field_style?.list,
-            }))
-    })
-    const currencies = computed(() => {
-        if (!isInit.value) {
-            return {}
-        }
-        return Object.values(defs.value?.columns || {})
-            .filter((col) => ['currency'].includes(col.type))
-            .map((col) => col.name)
-    })
-    const customFields = computed(() => {
-        if (!isInit.value) {
-            return {}
-        }
-
-        return {
-            links: links.value,
-            booleans: booleans.value,
-            lists: lists.value,
-            multienums: multienums.value,
-            dates: dates.value,
-            currencies: currencies.value,
-        }
-    })
-
     const filterableFields = computed(() => {
         return Object.values(defs.value?.search || {}).sort((a, b) => a.label?.localeCompare(b.label, 'pl'))
     })
-
-    const filterRows = ref<FilterRow[]>([])
 
     function addFilterRow() {
         filterRows.value.push({
@@ -254,36 +239,6 @@ export const useListViewStore = defineStore('listview', () => {
 
     function deleteFilterRow(index: number) {
         filterRows.value = filterRows.value.filter((filterRow, filterIndex) => index !== filterIndex)
-    }
-
-    function handleNameClick(item: any) {
-        if (!item?.id) {
-            return
-        }
-        if (mode.value === 'list') {
-            const link = item.name_link ?? item.full_name_link
-            if (!link) {
-                return
-            }
-            router.push(url.fromLegacyUrl(link))
-        } else if (mode.value === 'relate') {
-            if (!relatePopup.value) {
-                return
-            }
-            const nameToValueArray: { [key: string]: string } = {}
-            for (const key in relatePopup.value.data.fieldToNameArray) {
-                if (['full_name', 'name', 'last_name', 'first_name'].includes(key)) {
-                    nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] =
-                        item.full_name || item.name || item.last_name || item.first_name || ''
-                } else if (!nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] && key === 'subpanel_id') {
-                    nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] = item.id
-                } else {
-                    nameToValueArray[relatePopup.value.data.fieldToNameArray[key]] = item[key] ?? ''
-                }
-            }
-            relatePopup.value.data?.onConfirm({ nameToValueArray })
-            usePopupsStore().closePopup(relatePopup.value)
-        }
     }
 
     function handleSelectRelate() {
@@ -324,7 +279,9 @@ export const useListViewStore = defineStore('listview', () => {
     })
 
     watch(options, () => {
-        getData()
+        if (isInit.value) {
+            getData()
+        }
     })
 
     const relatePopup = computed(() => {
@@ -343,10 +300,124 @@ export const useListViewStore = defineStore('listview', () => {
         )
     })
 
-    function getModule(){
+    function getModule() {
         return Array.isArray(module.value) ? module.value[0] : module.value
     }
 
+    function replacePlaceholders(placeholders, inputs) {
+        if (!inputs || !inputs.length) {
+            return placeholders
+        }
+        let value = JSON.stringify(placeholders)
+        inputs.forEach((input, i) => {
+            if (value.includes(`"{${i}}"`)) {
+                value = value.replaceAll(`"{${i}}"`, JSON.stringify(input.value))
+            } else {
+                value = value.replaceAll(`{${i}}`, input.value)
+            }
+        })
+        return JSON.parse(value)
+    }
+
+    function isInputValid(input: any) {
+        return (
+            input.value &&
+            (input.type !== 'date' || input.value.length === 10) && // todo: date format validation
+            (input.type !== 'multiselect' || input.value.length)
+        )
+    }
+
+    function getOperator(field: string, operator: string) {
+        const type = defs.value?.search[field].type
+        const fieldDefs =
+            operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
+        return fieldDefs[operator]
+    }
+
+    function isFilterRowValid(row: FilterRow) {
+        if (!row.field || !row.operator) {
+            return false
+        }
+        const operator = getOperator(row.field, row.operator)
+        if (!operator) {
+            return false
+        }
+        if (operator.inputs && row.inputs.some((input) => !isInputValid(input))) {
+            return false
+        }
+        return true
+    }
+
+    function setFilters(filterRows: FilterRow[]) {
+        const query = { filter: [], must_not: [] }
+        filterRows.filter(isFilterRowValid).forEach((row) => {
+            const operator = getOperator(row.field!, row.operator!)
+            const filterType = operator.not ? 'must_not' : 'filter'
+            const esKey = defs.value?.search[row.field].key
+            operator.filters.forEach((f) => {
+                const keyword_suffix = f.use_keyword_subfield ? '.keyword' : ''
+                query[filterType].push({
+                    [f.op]: {
+                        [esKey + keyword_suffix]: replacePlaceholders(f.value, row.inputs),
+                    },
+                })
+            })
+        })
+        const filtersChanged = JSON.stringify(query) !== JSON.stringify(filters.value)
+        filters.value = query
+        if (filtersChanged) {
+            preferences.value.filterRows = filterRows
+            savePreferences()
+            getData()
+        }
+    }
+
+    watch(
+        filterRows,
+        (newFilterRows) => {
+            newFilterRows.forEach((filterRow) => {
+                if ((!filterRow.inputs || filterRow.inputs.length === 0) && filterRow.value) {
+                    filterRow.inputs = buildFilterRowInputs(filterRow.field, filterRow.operator, filterRow.value)
+                }
+            })
+            if (activeFilter.value) {
+                preferences.value.activeFilter = activeFilter.value
+            }
+            setFilters(newFilterRows)
+        },
+        { deep: true },
+    )
+
+    function buildFilterRowInputs(field: string, operator: string, value: any) {
+        const fieldDefs = defs.value?.search?.[field]
+        if (!fieldDefs) {
+            console.error('Field defs not found for field', field)
+        }
+        const type = fieldDefs.type
+        const operators = operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
+        return operators[operator].inputs.map((i, index) => ({
+            type: i.type,
+            value: filterValueMapper(value, index),
+            label: languages.label(i.label),
+            modifiers: i.modifiers ?? null,
+        }))
+    }
+
+    function filterValueMapper(value: string | { lte: string, gte: string } | Array<string>, index: number) {
+        if (typeof value === 'string' || Array.isArray(value)) {
+            return value
+        } else {
+            return value[Object.keys(value)[index]]
+        }
+}
+    function toggleFavorite(item) {
+        if (!item.attributes.is_favorite) {
+            favorites.addToFavorites(getModule(), item.id, item.name)
+        } else {
+            favorites.removeFromFavorites(getModule(), item.id)
+        }
+        item.attributes.is_favorite = !item.attributes.is_favorite
+    }
     return {
         mode,
         init,
@@ -359,7 +430,6 @@ export const useListViewStore = defineStore('listview', () => {
         headers,
         filters,
         results,
-        customFields,
         initialLoading,
         isLoading,
         options,
@@ -377,9 +447,13 @@ export const useListViewStore = defineStore('listview', () => {
         filterRows,
         addFilterRow,
         deleteFilterRow,
-        handleNameClick,
+        relatePopup,
         handleSelectRelate,
         itemsSelectable,
         massActions,
+        predefinedFilters,
+        error,
+        toggleFavorite,
+        onlyFavorites,
     }
 })

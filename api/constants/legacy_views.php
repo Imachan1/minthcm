@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -49,10 +49,6 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'ProspectLists' => [
-        'list' => false,
-        'record' => true,
-    ],
     'Prospects' => [
         'list' => false,
         'record' => true,
@@ -81,10 +77,6 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'Notes' => [
-        'list' => false,
-        'record' => true,
-    ],
     'Emails' => [
         'list' => false,
         'record' => true,
@@ -93,19 +85,11 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'Documents' => [
-        'list' => false,
-        'record' => true,
-    ],
     'DocumentRevisions' => [
         'list' => false,
         'record' => true,
     ],
     'Roles' => [
-        'list' => false,
-        'record' => true,
-    ],
-    'Employees' => [
         'list' => false,
         'record' => true,
     ],
@@ -235,7 +219,7 @@ return [
     ],
     'SecurityGroups' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'OutboundEmailAccounts' => [
         'list' => false,
@@ -303,11 +287,11 @@ return [
     ],
     'Costs' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Delegations' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'DelegationsLocale' => [
         'list' => false,
@@ -315,19 +299,7 @@ return [
     ],
     'Ideas' => [
         'list' => false,
-        'record' => true,
-    ],
-    'Rooms' => [
-        'list' => false,
-        'record' => true,
-    ],
-    'Allocations' => [
-        'list' => false,
-        'record' => true,
-    ],
-    'Workplaces' => [
-        'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'EmployeeInteractionTracking' => [
         'list' => false,
@@ -339,11 +311,11 @@ return [
     ],
     'EmployeeRoles' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Benefits' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Responsibilities' => [
         'list' => false,
@@ -351,7 +323,7 @@ return [
     ],
     'SpentTime' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'WorkSchedules' => [
         'list' => false,
@@ -367,7 +339,7 @@ return [
     ],
     'Resources' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'PeriodsOfEmployment' => [
         'list' => false,
@@ -375,11 +347,11 @@ return [
     ],
     'Reservations' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Contracts' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'TermsOfEmployment' => [
         'list' => false,
@@ -395,15 +367,11 @@ return [
     ],
     'OnboardingTemplates' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'OffboardingTemplates' => [
         'list' => false,
-        'record' => true,
-    ],
-    'ExitInterviews' => [
-        'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Goals' => [
         'list' => false,
@@ -447,7 +415,7 @@ return [
     ],
     'Certificates' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Applications' => [
         'list' => false,
@@ -487,11 +455,11 @@ return [
     ],
     'SalaryRanges' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'EmployeeCertificates' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Dictionaries' => [
         'list' => false,
@@ -521,17 +489,9 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'Candidates' => [
-        'list' => false,
-        'record' => true,
-    ],
-    'Candidatures' => [
-        'list' => false,
-        'record' => true,
-    ],
     'Tasks' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Kudos' => [
         'list' => false,
@@ -543,6 +503,6 @@ return [
     ],
     'Positions' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
 ];

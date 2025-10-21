@@ -14,6 +14,7 @@
                     variant="outlined"
                     hide-details
                     density="compact"
+                    :disabled="!isFilterEditable"
                 />
             </v-col>
             <v-col cols="3" v-if="field" class="px-2">
@@ -28,6 +29,7 @@
                     variant="outlined"
                     hide-details
                     density="compact"
+                    :disabled="!isFilterEditable"
                 />
             </v-col>
             <v-col cols="3" v-for="input in inputs" :key="input" class="px-2">
@@ -37,6 +39,7 @@
                     :input="input"
                     @update:modelValue="(newValue) => (input.value = input.modifiers ? runModifiers(input.modifiers, newValue) : newValue)"
                     density="compact"
+                    :disabled="!isFilterEditable"
                 />
             </v-col>
         </v-row>
@@ -45,13 +48,14 @@
             variant="text"
             density="comfortable"
             icon="mdi-close"
+            :disabled="!isFilterEditable"
             @click="store.deleteFilterRow(props.index)"
         />
     </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, defineEmits, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useLanguagesStore } from '@/store/languages'
 import { useListViewStore } from './ListViewStore'
 import * as operatorDefs from './operators'
@@ -61,6 +65,8 @@ export interface FilterRow {
     field: string | null
     operator: string | null
     inputs: []
+    editable?: boolean
+    value?: any
 }
 
 interface Props {
@@ -84,7 +90,7 @@ const operatorList = computed(() => {
         return {}
     }
     const type = fieldDefs.value.type
-    return operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
+    return operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator] 
 })
 const operatorItems = computed(() => {
     return Object.entries(operatorList.value).map(([key, op]) => ({
@@ -128,6 +134,14 @@ function handleOperatorChange() {
     emit('update:operator', operator.value)
     emit('update:inputs', inputs.value)
 }
+
+const isFilterEditable = computed(() => {
+    if (typeof props.row.editable === 'boolean') {
+        return props.row.editable
+    } else {
+        return true
+    }
+})
 </script>
 
 <style scoped lang="scss">

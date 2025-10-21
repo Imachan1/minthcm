@@ -54,6 +54,7 @@ use Slim\Psr7\Response;
 use User;
 use MintHCM\Utils\ConstantsLoader;
 
+#[\AllowDynamicProperties]
 class Init
 {
     protected $preferences_controller, $languages_controller, $module_init_controller, $mintRebuildID, $request_language, $user_id;
@@ -105,13 +106,14 @@ class Init
             in_array('reload_module_menu', $rebuild_array)
             || (!$only_minimum_data && empty($rebuild_array))
             || $response_body['user']['id'] !== $this->user_id
-            || false !== $response_body['user']['preferences']['reload_module_menu'] || $this->request_language !== $_SESSION["authenticated_user_language"]
+            || false !== $response_body['user']['preferences']['reload_module_menu'] 
+            || $this->request_language !== $_SESSION["authenticated_user_language"]
         ) {
-            [$modules_menu, $modules_data] = $this->getModules();
-            $response_body['menu_modules'] = $modules_menu;
-            $response_body['modules'] = $modules_data;
+        [$modules_menu, $modules_data] = $this->getModules();
+        $response_body['menu_modules'] = $modules_menu;
+        $response_body['modules'] = $modules_data;
         $response_body['quick_create'] = $this->getQuickCreate($modules_menu);
-            $response_body['legacy_views'] = $this->getLegacyViews($modules_data);
+        $response_body['legacy_views'] = $this->getLegacyViews($modules_data);
         }
         if ($only_minimum_data) {
             $response_body['acls'] = $this->module_init_controller->getACLs();
@@ -124,6 +126,9 @@ class Init
         }
         $response_body['mintRebuildID'] = $this->mintRebuildID;
         $response_body['system_name'] = $GLOBALS['system_config']->settings['system_name'];
+        global $sugar_config;
+        $response_body['upload_maxsize'] = $sugar_config['upload_maxsize'] ?? '3000000';
+        $response_body['field_variables']['ColoredEnum']['options_colors'] = ConstantsLoader::getConstants('colored_enum');
         return $response_body;
     }
 
@@ -205,7 +210,7 @@ class Init
         foreach ($modules_data as $module => $data) {
             $this->processESListViewConfig($module, $legacy_views);
             $this->processRecordViewConfig($module, $legacy_views);
-            }
+        }
         chdir('../api');
         return $legacy_views;
     }
@@ -255,7 +260,7 @@ class Init
     {
         if (isset($_SESSION['mintRebuildID']) && !empty($_SESSION['mintRebuildID'])) {
             return $_SESSION['mintRebuildID'];
-        }
+}
         chdir('../legacy');
         $mintRebuildFile = fopen("cache/mintRebuild", 'r');
         if (!$mintRebuildFile) {

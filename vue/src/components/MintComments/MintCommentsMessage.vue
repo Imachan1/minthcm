@@ -19,7 +19,7 @@
                         <div class="mint-comments-message-header-info">
                             <span
                                 class="mint-comments-message-user"
-                                v-text="comment.assigned_user.name"
+                                v-text="comment.assigned_user.full_name"
                                 @click="openEmployeeDetailView(comment.assigned_user.id)"
                             />
                             <span
@@ -67,7 +67,14 @@
                             @click="isExpanded = true"
                         />
                         <MintButton
-                            v-else-if="store.access.add"
+                            v-else-if="isExpanded && replies.length"
+                            variant="text"
+                            :text="languages.label('LBL_MINT4_COMMENTS_HIDE_BTN')"
+                            size="small"
+                            @click="isExpanded = false"
+                        />
+                        <MintButton
+                            v-if="store.access.add"
                             variant="text"
                             :text="languages.label('LBL_MINT4_COMMENTS_REPLY_BTN')"
                             icon="mdi-reply"
@@ -93,15 +100,15 @@
         </div>
         <v-slide-y-transition>
             <div
-                v-if="isExpanded && !props.comment.removed && (replies.length || isReplyMode)"
+                v-if="(isExpanded && !props.comment.removed && replies.length) || (isReplyMode && !props.comment.removed)"
                 class="mint-comments-message-replies"
             >
-                <MintCommentsMessage v-for="reply in replies" :key="reply.id" :comment="reply" compact />
+                <MintCommentsMessage v-if="isExpanded" v-for="reply in replies" :key="reply.id" :comment="reply" compact />
                 <MintCommentsEditor
-                    v-if="isReplyMode && !props.comment.removed"
+                    v-if="isReplyMode"
                     mode="reply"
                     :comment="props.comment"
-                    @close="isReplyMode = false"
+                    @close="handleReplyEditorClose"
                 />
             </div>
         </v-slide-y-transition>
@@ -135,7 +142,7 @@ const store = useMintCommentsStore()
 const auth = useAuthStore()
 const languages = useLanguagesStore()
 
-const isExpanded = ref(!props.pinned)
+const isExpanded = ref(false)
 const isEditMode = ref(false)
 
 const isReplyMode = ref(false)
@@ -185,7 +192,7 @@ const contentHtml = computed(() => {
         if (user.id === auth.user?.id) {
             className += ' mint-comments-message-content-user-highlight-owner'
         }
-        content = content.replace(regex, `<span class="${className}" data-user-id="${user.id}">${user.name}</span>`)
+        content = content.replace(regex, `<span class="${className}" data-user-id="${user.id}">${user.full_name}</span>`)
     })
     return content
 })
@@ -261,6 +268,7 @@ const dateEdited = computed(() => {
     return dt.toLocal().toFormat('dd.MM.yyyy HH:mm')
 })
 
+
 function openEmployeeDetailView(userId: string) {
     const userUrl = router.resolve({
         name: 'module-view',
@@ -272,6 +280,14 @@ function openEmployeeDetailView(userId: string) {
     })
     window.open(userUrl.href, '_blank')
 }
+
+function handleReplyEditorClose(success = false) {
+    isReplyMode.value = false;
+    if (success) {
+        isExpanded.value = true;
+    }
+}
+
 </script>
 <style lang="scss">
 .mint-comments-message-content {

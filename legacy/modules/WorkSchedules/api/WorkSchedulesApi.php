@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -43,6 +43,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+#[\AllowDynamicProperties]
 class WorkSchedulesApi
 {
 
@@ -186,11 +187,11 @@ class WorkSchedulesApi
         return $employee->getActiveWorkplaces(null, $date_start, $date_end);
     }
 
-    public function getCurrentUserTimezoneOffset()
+    public function getCurrentUserTimezoneOffset($args)
     {
         global $timedate;
         $user_timezone = new DateTimeZone($timedate->userTimezone());
-        $user_offset = $user_timezone->getOffset(new DateTime());
+        $user_offset = $user_timezone->getOffset(new DateTime($args['date']));
         if($user_offset == 0) {
             return $user_offset;
         }

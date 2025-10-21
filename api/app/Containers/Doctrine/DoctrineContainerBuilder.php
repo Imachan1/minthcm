@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -59,6 +59,7 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
+#[\AllowDynamicProperties]
 class DoctrineContainerBuilder extends ContainerBuilder
 {
     public function __construct()
@@ -83,8 +84,8 @@ class DoctrineContainerBuilder extends ContainerBuilder
             'settings' => [
                 'doctrine' => [
                     'dev_mode' => true,
-                    'cache_path' => __DIR__ . '/../../../var/cache/doctrine',
-                    'proxy_path' => __DIR__ . '/../../../var/cache/doctrine/orm/Proxies',
+                    'cache_path' => __DIR__ . '/../../../cache/doctrine',
+                    'proxy_path' => __DIR__ . '/../../../cache/doctrine/orm/Proxies',
                     'entity_paths' => [__DIR__ . '/../../Entities/'],
                     'connection' => $mint_config['database'],
                 ]

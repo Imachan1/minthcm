@@ -9,9 +9,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,6 +46,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
+#[\AllowDynamicProperties]
 class Project extends SugarBean
 {
     // database table columns
@@ -68,6 +69,7 @@ class Project extends SugarBean
     public $contact_id;
     public $email_id;
     public $estimated_start_date;
+    public $team_id;
 
     // calculated information
     public $total_estimated_effort;
@@ -101,6 +103,9 @@ class Project extends SugarBean
     {
         parent::__construct();
     }
+
+
+
 
     /**
      * overriding the base class function to do a join with users table
@@ -264,7 +269,7 @@ class Project extends SugarBean
 
         if (!empty($order_by)) {
             //check to see if order by variable already has table name by looking for dot "."
-            $table_defined_already = strpos($order_by, ".");
+            $table_defined_already = strpos((string) $order_by, ".");
 
             if ($table_defined_already === false) {
                 //table not defined yet, define accounts to avoid "ambigous column" SQL error
@@ -595,6 +600,7 @@ class Project extends SugarBean
 
                 //----------------------------------
 
+                $enddate_array = [];
 
                 if ($count == '1') {
                     $project_task->date_start = $start;

@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -140,17 +140,6 @@ $dictionary['CompetencyRatings'] = array(
             'rhs_table' => 'competencyratings',
             'rhs_key' => 'competency_id',
             'relationship_type' => 'one-to-many',
-        ),
-        'competencyratings_employee' => array(
-            'lhs_module' => 'Employees',
-            'lhs_table' => 'users',
-            'lhs_key' => 'id',
-            'rhs_module' => 'CompetencyRatings',
-            'rhs_table' => 'competencyratings',
-            'rhs_key' => 'parent_id',
-            'relationship_type' => 'one-to-many',
-            'relationship_role_column' => 'parent_type',
-            'relationship_role_column_value' => 'Employees',
         ),
         'competencyratings_positions' => array(
             'lhs_module' => 'Positions',

@@ -4,14 +4,14 @@ require_once 'include/EntityCreator/EntityCreator.php';
 
 class EntityCreatorManager
 {
+    static $dictionary = [];
 
     public static function createEntities(): void
     {
-        global $dictionary;
         $GLOBALS['entityCreator'] = [];
         
         self::loadDictionary();
-        foreach($dictionary as $key => $module_vardefs) {
+        foreach(self::$dictionary as $key => $module_vardefs) {
             if(isset($module_vardefs['doctrineEntity'])) {
                 $GLOBALS['entityCreator']['CreatingEntities'][] = $key;
                 $entityCreator = new EntityCreator($key, $module_vardefs);
@@ -23,11 +23,19 @@ class EntityCreatorManager
     protected static function loadDictionary(): void
     {
         global $beanList, $dictionary;
+        
+        self::$dictionary = $dictionary;
+        
         foreach($beanList as $module => $bean) {
-            if(!empty($dictionary[$bean]) && !empty($dictionary[$bean]['relationships'])) {
-                foreach($dictionary[$bean]['relationships'] as $rel_name => $rel_def) {
-                    if(empty($dictionary[$rel_name]['relationships'][$rel_name])) {
-                        $dictionary[$rel_name]['relationships'][$rel_name] = $rel_def;
+            if ($module !== $bean) {
+                self::$dictionary[$module] = $dictionary[$bean];
+                unset(self::$dictionary[$bean]);
+            }
+
+            if(!empty(self::$dictionary[$module]) && !empty(self::$dictionary[$module]['relationships'])) {
+                foreach(self::$dictionary[$module]['relationships'] as $rel_name => $rel_def) {
+                    if(empty(self::$dictionary[$rel_name]['relationships'][$rel_name])) {
+                        self::$dictionary[$rel_name]['relationships'][$rel_name] = $rel_def;
                     }
                 }
             }

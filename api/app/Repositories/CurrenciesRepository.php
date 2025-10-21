@@ -1,0 +1,30 @@
+<?php
+
+namespace MintHCM\Api\Repositories;
+
+use Doctrine\ORM\EntityRepository;
+
+class CurrenciesRepository extends EntityRepository
+{
+    public function getAvailable()
+    {
+        global $sugar_config;
+        $currencies = [];
+        $currencies[] = array(
+            'id' => '-99',
+            'name' => $sugar_config['default_currency_name'],
+            'symbol' => $sugar_config['default_currency_symbol'],
+            'status' => 'Active',
+            'currency_on_right' => $sugar_config['currency_on_right'],
+            'conversion_rate' => 1,
+        );
+        return array_merge($currencies, $this->createQueryBuilder('c')
+                ->where('c.status = :status')
+                ->andWhere('c.deleted = :deleted')
+                ->setParameter('status', 'Active')
+                ->setParameter('deleted', 0)
+                ->orderBy('c.name', 'ASC')
+                ->getQuery()
+                ->getArrayResult());
+    }
+}

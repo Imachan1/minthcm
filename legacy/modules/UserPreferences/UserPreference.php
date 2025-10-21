@@ -11,7 +11,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -53,6 +53,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
+ #[\AllowDynamicProperties]
  class UserPreference extends SugarBean
  {
      public $db;
@@ -190,28 +191,53 @@ if (!defined('sugarEntry') || !sugarEntry) {
                 isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]) 
                 && $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name] != $value
             )
-            || $category === 'eslist' 
-        ) {
+            || in_array($category, ['eslist'])
+        ){
              $GLOBALS['savePreferencesToDB'] = true;
              if (!isset($GLOBALS['savePreferencesToDBCats'])) {
                  $GLOBALS['savePreferencesToDBCats'] = array();
              }
              $GLOBALS['savePreferencesToDBCats'][$category] = true;
          }
+         $activeFilter = [];
          if($category === 'eslist' && isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'])){
             $activeFilter = $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'];
          }
+         if($category === 'eslist' && array_key_exists('sortParams', $value) && count($value) === 1){
+            $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['sortParams'] = $value['sortParams'];
+            return;
+         }
          $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name] = $value;
          if(
-            $category === 'eslist' 
+            $category === 'eslist'
             && (
-                !array_key_exists('activeFilter', $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name])
-                || empty($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'])
-            )
-            && !isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['deleteActiveFilter'])
+                (
+                    (
+                        !array_key_exists('activeFilter', $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name])
+                        || empty($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'])
+                    )
+                    && !isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['deleteActiveFilter'])
+                )
+                || (
+                    isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['filterRows'])
+                    || $value['filterRows']
+                )
+            ) 
         ){
-            $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'] = $activeFilter;
+            $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['activeFilter'] = (!empty($value['activeFilter']) || $value['deleteActiveFilter']) ? $value['activeFilter'] : $activeFilter;
+            $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['filterRows'] = $value['filterRows'] ?? [];
          }
+        if(
+            isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['deleteActiveFilter'])
+            && $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['deleteActiveFilter']
+            && $activeFilter
+        ){
+            unset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['filterRows']);
+            $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name]['filters'] = [
+                'filter' => [],
+                'must_not' => [],
+            ];
+        }
      }
  
      /**

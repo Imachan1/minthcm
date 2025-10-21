@@ -1,10 +1,10 @@
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth'
 import { useAlertsStore } from '@/store/alerts'
 import { MintKudos, MintKudosUser, Form, NavOption, Views, InitialResponse } from './types'
+import { mintApi } from '@/api/api'
 
 export const useMintKudosStore = defineStore('mint-kudos', () => {
     const isLoading = ref(false)
@@ -12,6 +12,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     const kudos = ref<MintKudos[]>([])
     const users = ref<MintKudosUser[]>([])
     const auth = useAuthStore()
+    const alerts = useAlertsStore()
     const showUserList = ref(false)
     const form = ref<Form>({
         kudosId: '',
@@ -28,14 +29,17 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     const navOptions = ['all', 'received', 'given'] as const
     const activeView = ref<Views>('kudos-list')
     const showSuccessMessage = ref<boolean>(false)
+    const KUDOS_READ_DELAY_MS = 5000
+
     async function fetchInitialData() {
         kudos.value = []
         isLoading.value = true
-        const response = await axios.get<InitialResponse>(`api/kudos/init`)
+        const response = await mintApi.get<InitialResponse>(`kudos/init`)
         kudos.value = response.data.kudos
         users.value = response.data.users
         isLoading.value = false
     }
+
     async function fetchKudos(clear = false) {
         if (clear) {
             kudos.value = []
@@ -47,8 +51,8 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
                 page.value++
             }
             isLoading.value = true
-            const response = await axios.get<InitialResponse>(
-                `api/kudos?listType=${activeTab.value}&page=${page.value}`,
+            const response = await mintApi.get<InitialResponse>(
+                `kudos?listType=${activeTab.value}&page=${page.value}`,
             )
             if (response.data.kudos.length === 0) {
                 fetchedAllKudos.value = true
@@ -61,7 +65,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     async function addKudos(gifted_user_id: string, message: string, isPrivate: boolean, id: string) {
         try {
             isLoading.value = true
-            const response = await axios.post(`api/kudos/add`, {
+            const response = await mintApi.post(`kudos/add`, {
                 id,
                 gifted_user_id,
                 message: message,
@@ -84,7 +88,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     async function deleteKudos(id: string) {
         try {
             isRemovingLoading.value = true
-            const response = await axios.delete(`api/kudos/${id}`)
+            const response = await mintApi.delete(`kudos/${id}`)
             if (response.status === 200) {
                 isRemovingLoading.value = false
                 await fetchKudos(true)
@@ -119,7 +123,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
                 },
             })
         }
-        await axios.post(`api/reactions/Kudos/${id}`, {
+        await mintApi.post(`reactions/Kudos/${id}`, {
             reaction_type: reactionType,
         })
     }
@@ -130,7 +134,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
             return
         }
         kudosItem.reactions = kudosItem.reactions.filter((reaction) => reaction.user.id !== auth.user?.id)
-        await axios.delete(`api/reactions/Kudos/${id}`)
+        await mintApi.delete(`reactions/Kudos/${id}`)
     }
 
     watch(activeTab, async () => {
@@ -174,12 +178,29 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
         formReset()
     }
 
-    function badge() {
-        const alerts = useAlertsStore()
-        const not_readed_alerts = alerts.alerts.filter(
+    const badge = computed(() => {
+        const not_readed_alerts = alerts.alerts?.filter(
             (alert) => alert.parent_type === 'Kudos' && alert.is_read === false,
         )
         return not_readed_alerts.length ?? null
+    })
+
+    async function readKudosAlerts(targetKudos: MintKudos) {
+        const alert = alerts.alerts.find((alert) => alert.parent_id === targetKudos.id)
+        if (!alert?.id) {
+            return
+        }
+        setTimeout(async () => {
+            const currentKudos = kudos.value.find((item) => item.id === targetKudos.id)
+            if (currentKudos) {
+                currentKudos.is_read = true
+                alert.is_read = true
+            }
+            const result = await alerts.markRead(alert.id)
+            if (!result) {
+                return console.error('Failed to mark alert as read')
+            }
+        }, KUDOS_READ_DELAY_MS)
     }
 
     return {
@@ -207,5 +228,6 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
         formReset,
         closeSuccessMessage,
         badge,
+        readKudosAlerts,
     }
 })

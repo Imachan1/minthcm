@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,11 +47,13 @@
 namespace MintHCM\Api\Controllers;
 
 use Doctrine\ORM\EntityManagerInterface;
+use MintHCM\Api\Controllers\OAuth2\Controller;
 use MintHCM\Api\Entities\UsersPasswordLink;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Psr7\Response;
 
+#[\AllowDynamicProperties]
 class AuthController
 {
     protected $entityManager;
@@ -66,6 +68,17 @@ class AuthController
         $username = trim($request->getAttribute('username'));
         $password = trim($request->getAttribute('password'));
         $login_language = $request->getAttribute('login_language');
+
+        $request_body = $request->getParsedBody();
+        $request_body['grant_type'] = 'frontend';
+        $request_body['client_id'] = 'frontend';
+        $request = $request->withParsedBody($request_body);
+        $oauth_controller = new Controller($this->entityManager);
+        $token_response = $oauth_controller->accessToken($request, $response, $args);
+
+        if ($token_response->getStatusCode() !== 200) {
+            throw new HttpUnauthorizedException($request);
+        } 
 
         chdir('../legacy/');
         require_once 'include/MVC/SugarApplication.php';
@@ -90,6 +103,13 @@ class AuthController
         if (!empty($login_language)) {
             $_SESSION['authenticated_user_language'] = $login_language;
         }
+
+        $token_body = $token_response->getBody();
+        $token_data = json_decode($token_body, true);
+        $_SESSION['oauth_access_token'] = $token_data['access_token'];
+        $_SESSION['oauth_refresh_token'] = $token_data['refresh_token'];
+        $_SESSION['oauth_secrect'] = $request_body['client_secret'];
+
         $response = $response->withHeader('Content-type', 'application/json');
         $data = json_encode(['message' => 'Login success']);
         $response->getBody()->write($data);
@@ -104,6 +124,7 @@ class AuthController
 
     public function logout(Request $request, Response $response, array $args): Response
     {
+        $_COOKIE['PHPSESSID'] = "";
         session_start();
         session_destroy();
         ob_clean();

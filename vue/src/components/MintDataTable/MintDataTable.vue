@@ -10,7 +10,15 @@
         <tbody>
             <tr v-for="record in props.records" :key="record.id">
                 <td v-for="column in columns" :key="column.name">
-                    <Field view="list" :data="{ bean: record }" :defs="column" />
+                    <Field 
+                        view="list" 
+                        :data="{ bean: { ...record, aclAccess: record.acl_access } }" 
+                        :defs="column.name === 'name' 
+                            ? Object.assign(column, { type: 'name' })
+                            : column"
+                        :label="languages.label(column.label, record.module)"
+                        :modelValue="record.attributes[column.name]"
+                    />
                 </td>
             </tr>
         </tbody>
@@ -18,8 +26,10 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import Field from '@/components/Fields/Field.vue'
+import { useLanguagesStore } from '@/store/languages';
+
+const languages = useLanguagesStore()
 
 interface Props {
     columns: []

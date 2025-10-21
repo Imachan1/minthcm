@@ -5,6 +5,7 @@ $viewdefs ['Meetings'] = array(
       'templateMeta' => array(
          'includes' => array(
             array('file' => 'modules/Reminders/Reminders.js'),
+            array('file' => 'modules/Meetings/js/view.edit.js'),
          ),
          'maxColumns' => '2',
          'form' => array(
@@ -119,7 +120,7 @@ function formSubmitCheck(){ldelim}if(check_form(\'EditView\')){ldelim}document.E
    {literal}
    SUGAR.util.doWhen(function(){return typeof DurationDependency != "undefined" && typeof document.getElementById("duration") != "undefined"}, function(){
       var duration_dependency = new DurationDependency("date_start","date_end","duration",date_time_format);
-      initEditView(YAHOO.util.Selector.query(\'select#duration\')[0].form);
+      initEditView(YAHOO.util.Selector.query(\'#duration\')[0].form);
    });
    {/literal}
 </script>            

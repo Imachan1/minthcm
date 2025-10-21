@@ -47,6 +47,8 @@ class MappingsGenerator
         'bool' => 'boolean',
         'text' => 'text',
         'int' => 'integer',
+        'currency' => 'float',
+        'float' => 'float',
     ];
 
     protected $types = [
@@ -72,6 +74,9 @@ class MappingsGenerator
         'integer' => [
             'type' => 'integer',
         ],
+        'float' => [
+            'type' => 'float',
+        ]
     ];
 
     protected $fields_must_be_added_to_mappings_because_of_security = [
@@ -140,32 +145,14 @@ class MappingsGenerator
             $tracked_links = [];
             $nested_properties = $esv_reader->getModuleNestedProperties($bean->object_name);
             foreach ($nested_properties as $property_name => $nested_config) {
-                $link_field_name = $esv_reader->getLinkFieldName($property_name, $nested_config);
-                if (!$bean->load_relationship($link_field_name)) {
-                    continue;
-                }
-
-                $related_module_name = $esv_reader->getRelatedModuleName($bean, $link_field_name);
-                $related_bean = BeanFactory::newBean($related_module_name);
-
-                $properties = [];
-                foreach ($nested_config['fields'] as $field_name) {
-                    if (!empty($related_bean->field_defs[$field_name])) {
-                        $properties[$field_name] = $this->getPropertyMappingConfig($related_bean->field_defs[$field_name]);
-                    }
-                }
-
-                $mappings['mappings'][$key]['properties'][$property_name] = [
-                    'type' => 'nested',
-                    'properties' => $properties,
-                ];
-
-
-                // If more than the primary key is indexed in the document.
-                // We will have to take care to index related records even when writing a record from another module 
-                // - the relationship does not have to change
-                if (!$this->includesAtMostPrimaryKey($nested_config['fields'])) {
-                    $tracked_links[] = $link_field_name;
+                $nested_type = $nested_config['type'] ?? 'link';
+                switch ($nested_type) {
+                    case 'function':
+                        $this->generateFunctionMappings($property_name, $nested_config, $key, $esv_reader, $mappings);
+                        break;
+                    case 'link':
+                        $this->generateLinkMappings($bean, $nested_config, $esv_reader, $mappings, $key, $tracked_links, $property_name);
+                        break;
                 }
             }
 
@@ -194,15 +181,8 @@ class MappingsGenerator
 
     protected function getPropertyMappingConfig(array $field_def): array
     {
-        if (in_array($field_def['type'], ['date', 'datetime', 'datetimecombo'])) {
-            return $this->types['date'];
-        } else if ('bool' == $field_def['type']) {
-            return $this->types['boolean'];
-        } else if ('int' == $field_def['type']) {
-            return $this->types['integer'];
-        } else {
-            return $this->types['text'];
-        }
+        $type = $this->type_mapping[$field_def['type']] ?? 'text';
+        return $this->types[$type] ?? $this->types['text'];
     }
 
     protected function parseMappingsToYaml($mappings)
@@ -255,5 +235,53 @@ class MappingsGenerator
         }
         
         return $fields_to_map;
+    }
+
+    protected function generateFunctionMappings($property_name, array $nested_config, $key, $esv_reader, array &$mappings): void
+    {
+        $are_fields_set = $esv_reader->areBeanAndFunctionSet($nested_config);
+        if ($are_fields_set) {
+            $properties = []; 
+            $related_bean = BeanFactory::newBean($nested_config['bean']);
+            foreach ($nested_config['fields'] as $field_name) {
+                $properties[$field_name] = $this->getPropertyMappingConfig($related_bean->field_defs[$field_name]);
+            }
+            $mappings['mappings'][$key]['properties'][$property_name] = [
+                'type' => 'nested',
+                'properties' => $properties,
+            ];
+        }
+    }
+
+    protected function generateLinkMappings($bean, array $nested_config, \ElasticSearchVardefsReader $esv_reader, array &$mappings, string $key, array &$tracked_links, string $property_name): void
+    {
+        $link_field_name = $esv_reader->getLinkFieldName($property_name, $nested_config);
+        if (!$bean->load_relationship($link_field_name)) {
+            return;
+        }
+
+        $link_field_name = $esv_reader->getLinkFieldName($property_name, $nested_config);
+        $related_module_name = $esv_reader->getRelatedModuleName($bean, $link_field_name);
+        $related_bean = BeanFactory::newBean($related_module_name);
+
+        $properties = [];
+        foreach ($nested_config['fields'] as $field_name) {
+            if (!empty($related_bean->field_defs[$field_name])) {
+                $properties[$field_name] = $this->getPropertyMappingConfig($related_bean->field_defs[$field_name]);
+            }
+        }
+
+        $mappings['mappings'][$key]['properties'][$property_name] = [
+            'type' => 'nested',
+            'properties' => $properties,
+        ];
+
+
+        // If more than the primary key is indexed in the document.
+        // We will have to take care to index related records even when writing a record from another module 
+        // - the relationship does not have to change
+        if (!$this->includesAtMostPrimaryKey($nested_config['fields'])) {
+            $tracked_links[] = $link_field_name;
+        }
     }
 }

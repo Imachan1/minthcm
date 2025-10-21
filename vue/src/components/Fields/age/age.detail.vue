@@ -12,21 +12,14 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
+import { computed } from 'vue'
 import { DateTime } from 'luxon'
-import { FieldVardef } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'
 import Pencil from '../Pencil.vue'
 import { usePreferencesStore } from '@/store/preferences'
+import { FieldProps } from '../Field.model'
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
-
-const props = defineProps<Props>()
+const props = defineProps<FieldProps>()
 const languages = useLanguagesStore()
 const preferences = usePreferencesStore()
 

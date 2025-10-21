@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -10,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -47,12 +46,23 @@
 namespace MintHCM\Api\Controllers;
 
 use BeanFactory;
+use MintHCM\Lib\MintLogic\MintLogic;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
+use SugarBean;
 
+#[\AllowDynamicProperties]
 class ModuleController
 {
+
+    public function __construct()
+    {
+        global $app_list_strings, $current_language;
+        if (!$app_list_strings) {
+            $app_list_strings = return_app_list_strings_language($current_language);
+        }
+    }
 
     public function detail(Request $request, Response $response, array $args): Response
     {
@@ -62,7 +72,8 @@ class ModuleController
         return $response;
     }
 
-    function list(Request $request, Response $response, array $args): Response{
+    function list(Request $request, Response $response, array $args): Response
+    {
         $response = $response->withHeader('Content-type', 'application/json');
         $data = ['message' => 'list'];
         $response->getBody()->write(json_encode($data));
@@ -74,6 +85,7 @@ class ModuleController
         $response = $response->withHeader('Content-type', 'application/json');
         $module = $this->getModuleFromRoute($request);
         chdir('../legacy/');
+        $links = $request->getAttribute("links") ?? [];
 
         $current_time_zone = date_default_timezone_get();
         date_default_timezone_set('UTC');
@@ -93,10 +105,14 @@ class ModuleController
                 if ('id' === $field_name && !empty($value)) {
                     $bean->new_with_id = true;
                 }
+                if( 'multienum' === $bean->field_defs[$field_name]['type'] && is_array($value)) {
+                    $value = '^'.implode('^,^', $value).'^';
+                }
                 $bean->$field_name = $value;
             }
         }
         $bean->save(false);
+        $this->handleLinks($bean, $links);
         $bean->retrieve();
 
         date_default_timezone_set($current_time_zone);
@@ -118,6 +134,8 @@ class ModuleController
         $module = $this->getModuleFromRoute($request);
         chdir('../legacy/');
         $record_data = $request->getAttribute("record_data");
+        $files = $request->getAttribute("files") ?? [];
+        $links = $request->getAttribute("links") ?? [];
         $record_id = $request->getAttribute("id");
         
         $current_time_zone = date_default_timezone_get();
@@ -125,7 +143,11 @@ class ModuleController
         $disable_date_format = $GLOBALS['disable_date_format'];
         $GLOBALS['disable_date_format'] = true;
 
+        if (!empty($record_id)) {
         $bean = BeanFactory::getBean($module, $record_id);
+        } else {
+            $bean = BeanFactory::newBean($module);
+        }
 
         if (empty($bean) || $bean->id !== $record_id) {
             return $response->withStatus(404);
@@ -135,10 +157,21 @@ class ModuleController
         }
         foreach ($record_data as $field_name => $value) {
             if (isset($bean->field_defs[$field_name]) && "id" !== $field_name) {
+                if( 'multienum' === $bean->field_defs[$field_name]['type'] && is_array($value)) {
+                    $value = '^'.implode('^,^', $value).'^';
+                }
                 $bean->$field_name = $value;
             }
         }
+        $validationResult = (new MintLogic($bean))->validateBean();
+        if (!$validationResult['isValid']) {
+            $response = $response->withStatus(422);
+            $response->getBody()->write(json_encode($validationResult));
+            return $response;
+        }
+        $this->handleFiles($bean, $files);
         $bean->save(false);
+        $this->handleLinks($bean, $links);
         BeanFactory::unregisterBean($bean->module_name, $bean->id);
         $bean = BeanFactory::getBean($bean->module_name, $bean->id);
         // $bean->retrieve();
@@ -146,7 +179,7 @@ class ModuleController
         date_default_timezone_set($current_time_zone);
         $GLOBALS['disable_date_format'] = $disable_date_format;
 
-        if (!empty($bean) && $bean->id === $record_id) {
+        if (!empty($bean) && ($bean->id === $record_id || empty($record_id))) {
             $record_data = $this->mergeRecordData($bean);
         }
 
@@ -168,7 +201,11 @@ class ModuleController
         $disable_date_format = $GLOBALS['disable_date_format'];
         $GLOBALS['disable_date_format'] = true;
 
-        $bean = BeanFactory::getBean($module,$record_id);
+        if (!empty($record_id)) {
+            $bean = BeanFactory::getBean($module,$record_id);
+        } else {
+            $bean = BeanFactory::newBean($module);
+        }
 
         date_default_timezone_set($current_time_zone);
         $GLOBALS['disable_date_format'] = $disable_date_format;
@@ -179,11 +216,38 @@ class ModuleController
         if (!$bean->ACLAccess('view')) {
             return $response->withStatus(403);
         }
+
         if (!empty($bean) && $bean->id === $record_id) {
             $record_data = $this->mergeRecordData($bean);
         }
         chdir('../api/');
         $response->getBody()->write(json_encode($record_data));
+        return $response;
+    }
+
+    public function getRecordLogic(Request $request, Response $response, array $args): Response
+    {
+        $module = $this->getModuleFromRoute($request);
+        $record_id = $request->getAttribute("id");
+        $attributes = $request->getAttribute("attributes");
+        $triggerFields = $request->getAttribute("triggerFields");
+        chdir('../legacy/');
+        if (!empty($record_id)) {
+            $bean = BeanFactory::getBean($module, $record_id);
+            if (empty($bean->id)) {
+                $response = $response->withStatus(404);
+                return $response;
+            }
+        } else {
+            $bean = BeanFactory::newBean($module);
+        }
+
+        foreach ($attributes as $field => $value) {
+            $bean->{$field} = $value;
+        }
+        $result = (new MintLogic($bean))->getChanged($triggerFields);
+        chdir('../api/');
+        $response->getBody()->write(json_encode($result));
         return $response;
     }
 
@@ -226,31 +290,41 @@ class ModuleController
             return $response;
         }
         $related_name = $request->getAttribute('relation_name');
+        $page = $request->getQueryParams()['page'] ?? 0;
+        $records_per_page = $request->getQueryParams()['paginate_by'] ?? -1;
         require_once 'include/SubPanel/SubPanelDefinitions.php';
         $spd = new \SubPanelDefinitions($focus, $module);
         if (isset($spd->layout_defs['subpanel_setup'][$related_name])) {
             
             $target_module = $spd->layout_defs['subpanel_setup'][$related_name]['module'];
             $target_bean = BeanFactory::getBean($target_module);
-            if (!$target_bean->ACLAccess('list')) {
+            if (!$target_bean || !$target_bean->ACLAccess('list')) {
                 return $response->withStatus(403);
             }
 
             require_once 'include/ListView/ListViewSubPanel.php';
             $list_view = new \ListViewSubPanel();
             $subpanel_def = $spd->load_subpanel($related_name);
-            $data = $list_view->process_dynamic_listview($module, $focus, $subpanel_def, true);
+            $data = $list_view->process_dynamic_listview($module, $focus, $subpanel_def, true, $page, $records_per_page);
             $list = $data['list'];
             chdir('../api/');
             $response = $response->withStatus(200);
             $return_list = [];
             foreach ($list as $record_id => $record) {
                 $record->fill_in_additional_detail_fields();
-                foreach ($record->field_defs as $field_name => $field_def) {
-                    $return_list[$record_id][$field_name] = $record->$field_name;
-                }
-
+                $return_list[$record_id] = [
+                    'id' => $record->id,
+                    'module' => $record->module_name,
+                    'attributes' => $record->toArray(),
+                    'acl_access' => [
+                        'edit' => $record->ACLAccess('edit'),
+                        'delete' => $record->ACLAccess('delete'),
+                        'view' => $record->ACLAccess('view'),
+                    ],
+                ];
             }
+            $return_list['total'] = $data['row_count'];
+            $return_list['page'] = (int) $page;
             $response->getBody()->write(json_encode($return_list));
             return $response;
         }
@@ -259,19 +333,139 @@ class ModuleController
         return $response;
     }
 
+    public function link(Request $request, Response $response, array $args): Response
+    {
+        $module = $this->getModuleFromRoute($request);
+        $id = $request->getAttribute('id');
+        $link_name = $request->getAttribute('link_name');
+
+        chdir('../legacy/');
+        $focus = BeanFactory::getBean($module, $id);
+        if (empty($focus->id)) {
+            $response = $response->withStatus(404);
+            return $response;
+        }
+        $ids = $request->getAttribute('ids');
+
+        if (!$focus->load_relationship($link_name) || empty($ids)) {
+            $response = $response->withStatus(400);
+            return $response;
+        }
+        $errors = [];
+        foreach ($ids as $related_id) {
+            $result = $focus->$link_name->add($related_id);
+            if (!$result) {
+                $errors[] = 'Failed to link ' . $related_id . ' to ' . $focus->id . ' via ' . $link_name;
+            }
+        }
+
+        chdir('../api/');
+
+        if(!empty($errors)) {
+            $response = $response->withStatus(400);
+            $response->getBody()->write(json_encode(['errors' => $errors]));
+            return $response;
+        }
+
+        $response = $response->withStatus(200);
+        return $response; 
+    }
+
     protected function mergeRecordData($bean)
     {
-        return array_merge(
-            $bean->toArray(),
-            [
-                'module_name' => $bean->module_name,
+        return [
+            'id' => $bean->id,
+            'module' => $bean->module_name,
+            'attributes' => $bean->toArray(),
                 'acl_access' => [
                     'edit' => $bean->ACLAccess('edit'),
                     'delete' => $bean->ACLAccess('delete'),
                     'view' => $bean->ACLAccess('view'),
                 ],
-            ]
-        );
+            'logic' => (new MintLogic($bean))->getInitial(),
+        ];
     }
-    
+    protected function handleFiles($bean, $files = [])
+    {
+        if (!empty($files) && is_array($files)) {
+            global $sugar_config;
+            if (empty($bean->id)) {
+                $bean->id = create_guid();
+                $bean->new_with_id = true;
+            }
+            $current_dir = getcwd();
+            chdir('../legacy/');
+            require_once 'include/SugarObjects/templates/file/File.php';
+            $upload_dir = $sugar_config['upload_dir'] ?? 'upload/';
+            foreach ($files as $field_name => $base64) {
+                $field_type = $bean->field_defs[$field_name]['type'] ?? '';
+                if (empty($bean->id) || !in_array($field_type, ['file', 'image'])) {
+                    continue;
+                }
+                $file_name = $bean->id;
+                if ('image' === $field_type) {
+                    $file_name .= "_{$field_name}";
+                }
+                $file_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $file_name); // Sanitize file name
+                if (empty($base64)) {
+                    unlink($upload_dir . $file_name);
+                } else {
+                    $base64_prefix = '';
+                    if (strpos($base64, 'data:') === 0) {
+                        $base64_prefix = substr($base64, 0, strpos($base64, ';base64,') + 8);
+                    }
+                    $base64_decoded = base64_decode(str_replace($base64_prefix, '', $base64), true);
+
+                    $tmp_file = tmpfile();
+                    fwrite($tmp_file, $base64_decoded);
+                    $tmp_file_path = stream_get_meta_data($tmp_file)['uri'];
+
+                    $_FILES[$field_name] = [
+                        'name' => $file_name,
+                        'type' => 'application/octet-stream',
+                        'tmp_name' => $tmp_file_path,
+                        'error' => 0,
+                        'size' => strlen($base64_decoded),
+                    ];
+                    $_FILES['filename_file'] = $file_name;
+                    $upload_file = new \UploadFile($field_name);
+                    $upload_file->set_is_http_upload(false);
+                    if ($upload_file->confirm_upload()) {
+                        $upload_file->final_move($file_name, $field_name);
+                    }
+                    fclose($tmp_file);
+                }
+            }
+            chdir($current_dir);
+        }
+    }
+
+    protected function handleLinks(SugarBean $bean, array $links = [])
+    {
+        if (!empty($links)) {
+            $current_dir = getcwd();
+            chdir('../legacy/');
+            foreach ($links as $link_name => $link_data) {
+                if (empty($link_data)) {
+                    continue;
+}
+                if (!$bean->load_relationship($link_name)) {
+                    $GLOBALS['log']->error("Failed to load relationship {$link_name} for module {$bean->module_name} and record {$bean->id}");
+                    continue;
+                }
+                if (!empty($link_data['beansToAdd']) && is_array($link_data['beansToAdd'])) {
+                    foreach ($link_data['beansToAdd'] as $related_id => $related_bean) {
+                        $additionalValues = $related_bean['additionalValues'] ?? [];
+                        $bean->$link_name->add($related_id, $additionalValues);
+                    }
+                }
+                if (!empty($link_data['beansToRemove']) && is_array($link_data['beansToRemove'])) {
+                    foreach ($link_data['beansToRemove'] as $related_id) {
+                        $bean->$link_name->delete($bean->id, $related_id);
+                    }
+                }
+            }
+            chdir($current_dir);
+        }
+    }
 }

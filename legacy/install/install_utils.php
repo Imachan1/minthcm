@@ -9,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -88,19 +88,20 @@ function installerHook($function_name, $options = array()) {
  * returns lowercase lang encoding
  * @return string   encoding or blank on false
  */
-function parseAcceptLanguage() {
-   $lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-   if ( strpos($lang, ';') ) {
-      $exLang = explode(';', $lang);
-      return strtolower(str_replace('-', '_', $exLang[0]));
-   } else {
-      $match = array();
-      if ( preg_match("#\w{2}\-?\_?\w{2}#", $lang, $match) ) {
-         return strtolower(str_replace('-', '_', $match[0]));
-      }
-   }
+function parseAcceptLanguage()
+{
+    $lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+    if (strpos((string) $lang, ';')) {
+        $exLang = explode(';', $lang);
+        return strtolower(str_replace('-', '_', $exLang[0]));
+    } else {
+        $match = array();
+        if (preg_match("#\w{2}\-?\_?\w{2}#", (string) $lang, $match)) {
+            return strtolower(str_replace('-', '_', $match[0]));
+        }
+    }
 
-   return '';
+    return '';
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -112,10 +113,15 @@ function parseAcceptLanguage() {
  * @return array sugar_config
  */
 function commitLanguagePack($uninstall = false) {
+
+   $new_lang_name = "";
+   global $install_file;
    global $sugar_config;
    global $mod_strings;
    global $base_upgrade_dir;
    global $base_tmp_upgrade_dir;
+
+   $install_file = $install_file ?? '';
 
    $errors = array();
    $manifest = urldecode($_REQUEST['manifest']);
@@ -194,7 +200,7 @@ function commitLanguagePack($uninstall = false) {
       // unlink all pack files
       foreach ( $filesFrom as $fileFrom ) {
          //echo "deleting: ".getcwd().substr($fileFrom, strlen($unzip_dir), strlen($fileFrom))."<br>";
-         @unlink(getcwd() . substr($fileFrom, strlen($unzip_dir), strlen($fileFrom)));
+         @unlink(getcwd().substr((string) $fileFrom, strlen((string) $unzip_dir), strlen((string) $fileFrom)));
       }
 
       // remove session entry
@@ -221,7 +227,7 @@ function commitLanguagePack($uninstall = false) {
    } else {
       // copy filesFrom to filesTo
       foreach ( $filesFrom as $fileFrom ) {
-         @copy($fileFrom, getcwd() . substr($fileFrom, strlen($unzip_dir), strlen($fileFrom)));
+        @copy($fileFrom, getcwd().substr((string) $fileFrom, strlen((string) $unzip_dir), strlen((string) $fileFrom)));
       }
 
       $_SESSION['INSTALLED_LANG_PACKS'][$new_lang_name] = $zipFile;
@@ -261,9 +267,9 @@ function commitPatch($unlink = false, $type = 'patch') {
       $mod_strings = return_module_language('en', "Administration");
 
       foreach ( $files as $file ) {
-         if ( !preg_match('#.*\.zip\$#', $file) ) {
+        if (!preg_match('#.*\.zip\$#', (string) $file)) {
             continue;
-         }
+        }
          // handle manifest.php
          $target_manifest = remove_file_extension($file) . '-manifest.php';
 
@@ -330,10 +336,10 @@ function commitModules($unlink = false, $type = 'module') {
       $mod_strings = return_module_language('en', "Administration");
 
       foreach ( $files as $file ) {
-         if ( !preg_match('#.*\.zip\$', $file) ) {
+        if (!preg_match('#.*\.zip\$', (string) $file)) {
             continue;
-         }
-         $lic_name = 'accept_lic_' . str_replace('.', '_', urlencode(basename($file)));
+        }
+        $lic_name = 'accept_lic_'.str_replace('.', '_', urlencode(basename((string) $file)));
 
          $can_install = true;
          if ( isset($_REQUEST[$lic_name]) ) {
@@ -386,7 +392,7 @@ function commitModules($unlink = false, $type = 'module') {
  * @param mode string Install or Uninstall
  */
 function updateUpgradeHistory() {
-   if ( isset($_SESSION['INSTALLED_LANG_PACKS']) && count($_SESSION['INSTALLED_LANG_PACKS']) > 0 ) {
+    if (isset($_SESSION['INSTALLED_LANG_PACKS']) && (is_countable($_SESSION['INSTALLED_LANG_PACKS']) ? count($_SESSION['INSTALLED_LANG_PACKS']) : 0) > 0) {
       foreach ( $_SESSION['INSTALLED_LANG_PACKS'] as $k => $zipFile ) {
          $new_upgrade = new UpgradeHistory();
          $new_upgrade->filename = $zipFile;
@@ -430,7 +436,7 @@ function removeLanguagePack() {
          $errors[] = $mod_strings['ERR_LANG_MISSING_FILE'] . $zipFile;
       }
    }
-   if ( count($errors > 0) ) {
+   if (is_countable($errors > 0) ? count($errors > 0) : 0) {
       echo "<p class='error'>";
       foreach ( $errors as $error ) {
          echo "{$error}<br>";
@@ -482,6 +488,7 @@ function uninstallLangPack() {
 if ( !function_exists('getLanguagePackName') ) {
 
    function getLanguagePackName($the_file) {
+      $app_list_strings = [];
       require_once( "$the_file" );
       if ( isset($app_list_strings["language_pack_name"]) ) {
          return( $app_list_strings["language_pack_name"] );
@@ -510,7 +517,7 @@ function getInstalledLangPacks($showButtons = true) {
    $files = findAllFiles(sugar_cached("upload/upgrades"), $files);
 
    if ( isset($_SESSION['INSTALLED_LANG_PACKS']) && !empty($_SESSION['INSTALLED_LANG_PACKS']) ) {
-      if ( count($_SESSION['INSTALLED_LANG_PACKS'] > 0) ) {
+        if (is_countable($_SESSION['INSTALLED_LANG_PACKS'] > 0) ? count($_SESSION['INSTALLED_LANG_PACKS'] > 0) : 0) {
          foreach ( $_SESSION['INSTALLED_LANG_PACKS'] as $file ) {
             // handle manifest.php
             $target_manifest = remove_file_extension($file) . '-manifest.php';
@@ -550,7 +557,11 @@ function uninstallLanguagePack() {
 }
 
 function getSugarConfigLanguageArray($langZip) {
-   global $sugar_config;
+    global $installdefs;
+    global $manifest;
+    global $sugar_config;
+    $installdefs = $installdefs ?? [];
+    $manifest = $manifest ?? [];
 
    include(remove_file_extension($langZip) . "-manifest.php");
    $ret = '';
@@ -861,6 +872,7 @@ function handleSugarConfig($lock = false) {
       }
    }
    if ( file_exists('install/lang.config.php') ) {
+      $config = [];
       include('install/lang.config.php');
       if ( !empty($config['languages']) ) {
          foreach ( $config['languages'] as $lang => $label ) {
@@ -953,7 +965,7 @@ function handleHtaccess() {
    $ignoreCase = (substr_count(strtolower($_SERVER['SERVER_SOFTWARE']), 'apache/2') > 0) ? '(?i)' : '';
    $htaccess_file = ".htaccess";
    $contents = '';
-   $basePath = parse_url($sugar_config['site_url'], PHP_URL_PATH);
+   $basePath = parse_url((string) $sugar_config['site_url'], PHP_URL_PATH);
    if ( empty($basePath) )
       $basePath = '/';
    $restrict_str = <<<EOQ
@@ -1084,7 +1096,7 @@ function handleWebConfig() {
 
 
    $config_array = array(
-      array( '1' => $prefix . str_replace('.', '\\.', $setup_site_log_file) . '\\.*', '2' => 'log_file_restricted.html' ),
+      array( '1' => $prefix . str_replace('.', '\\.', (string) $setup_site_log_file) . '\\.*', '2' => 'log_file_restricted.html' ),
       array( '1' => $prefix . 'install.log', '2' => 'log_file_restricted.html' ),
       array( '1' => $prefix . 'upgradeWizard.log', '2' => 'log_file_restricted.html' ),
       array( '1' => $prefix . 'emailman.log', '2' => 'log_file_restricted.html' ),
@@ -1114,7 +1126,8 @@ function handleWebConfig() {
    $xmldoc->startElement('system.webServer');
    $xmldoc->startElement('rewrite');
    $xmldoc->startElement('rules');
-   for ( $i = 0; $i < count($config_array); $i++ ) {
+   $config_arrayCount = count($config_array);
+   for ($i = 0; $i < $config_arrayCount; $i++) {
       $xmldoc->startElement('rule');
       $xmldoc->writeAttribute('name', "redirect$i");
       $xmldoc->writeAttribute('stopProcessing', 'true');
@@ -1507,14 +1520,14 @@ function recursive_make_writable($start_file) {
          }
       }
    }
-   if ( !$ret_val ) {
-      $unwriteable_directory = is_dir($start_file) ? $start_file : dirname($start_file);
-      if ( $unwriteable_directory[0] == '.' ) {
-         $unwriteable_directory = substr($unwriteable_directory, 1);
-      }
-      $_SESSION['unwriteable_module_files'][$unwriteable_directory] = $unwriteable_directory;
-      $_SESSION['unwriteable_module_files']['failed'] = true;
-   }
+    if (!$ret_val) {
+        $unwriteable_directory = is_dir($start_file) ? $start_file : dirname((string) $start_file);
+        if ($unwriteable_directory[0] == '.') {
+            $unwriteable_directory = substr((string) $unwriteable_directory, 1);
+        }
+        $_SESSION['unwriteable_module_files'][$unwriteable_directory] = $unwriteable_directory;
+        $_SESSION['unwriteable_module_files']['failed'] = true;
+    }
 
    return $ret_val;
 }
@@ -1574,9 +1587,9 @@ function print_debug_array($name, $debug_array) {
    print( "(\n");
 
    foreach ( $debug_array as $key => $value ) {
-      if ( stristr($key, "password") ) {
-         $value = "WAS SET";
-      }
+        if (stristr((string) $key, "password")) {
+            $value = "WAS SET";
+        }
       print( "    [$key] => $value\n");
    }
 
@@ -1854,9 +1867,9 @@ function getLangPacks($display_commit = true, $types = array( 'langpack' ), $not
    unset($_SESSION['hidden_input']);
 
    foreach ( $files as $file ) {
-      if ( !preg_match("#.*\.zip\$#", $file) ) {
-         continue;
-      }
+        if (!preg_match("#.*\.zip\$#", (string) $file)) {
+            continue;
+        }
 
       // skip installed lang packs
       if ( isset($_SESSION['INSTALLED_LANG_PACKS']) && in_array($file, $_SESSION['INSTALLED_LANG_PACKS']) ) {
@@ -1877,12 +1890,12 @@ function getLangPacks($display_commit = true, $types = array( 'langpack' ), $not
       if ( $manifest['type'] == 'module' ) {
          $uh = new UpgradeHistory();
          $upgrade_content = clean_path($file);
-         $the_base = basename($upgrade_content);
+         $the_base = basename((string) $upgrade_content);
          $the_md5 = md5_file($upgrade_content);
          $md5_matches = $uh->findByMd5($the_md5);
       }
 
-      if ( $manifest['type'] != 'module' || 0 == sizeof($md5_matches) ) {
+      if ($manifest['type']!= 'module' || 0 == (is_countable($md5_matches) ? count($md5_matches) : 0)) {
          $name = empty($manifest['name']) ? $file : $manifest['name'];
          $version = empty($manifest['version']) ? '' : $manifest['version'];
          $published_date = empty($manifest['published_date']) ? '' : $manifest['published_date'];
@@ -1906,7 +1919,7 @@ function getLangPacks($display_commit = true, $types = array( 'langpack' ), $not
          $ret .= "<td width='7%'>{$deletePackage}</td>";
          $ret .= "</td></tr>";
 
-         $clean_field_name = "accept_lic_" . str_replace('.', '_', urlencode(basename($file)));
+         $clean_field_name = "accept_lic_".str_replace('.', '_', urlencode(basename((string) $file)));
 
          if ( is_file($license_file) ) {
             //rrs
@@ -1921,7 +1934,7 @@ function getLangPacks($display_commit = true, $types = array( 'langpack' ), $not
    }//rof
    $_SESSION['hidden_input'] = $hidden_input;
 
-   if ( count($files) > 0 ) {
+   if ((is_countable($files) ? count($files) : 0) > 0) {
       $ret .= "</tr><td colspan=7>";
       $ret .= "<form name='commit' action='install.php' method='POST'>
                     <input type='hidden' name='current_step' value='{$next_step}'>
@@ -1965,7 +1978,7 @@ if ( !function_exists('unlinkTempFiles') ) {
          @unlink($manifest);
       if ( !empty($zipFile) ) {
          //@unlink($zipFile);
-         $tmpZipFile = substr($zipFile, strpos($zipFile, 'langpack/') + 9, strlen($zipFile));
+         $tmpZipFile = substr((string) $zipFile, strpos((string) $zipFile, 'langpack/') + 9, strlen((string) $zipFile));
          @unlink($sugar_config['upload_dir'] . $tmpZipFile);
       }
 
@@ -1976,6 +1989,7 @@ if ( !function_exists('unlinkTempFiles') ) {
 }
 
 function langPackUnpack($unpack_type, $full_file) {
+    $license_file = null;
    global $sugar_config;
    global $base_upgrade_dir;
    global $base_tmp_upgrade_dir;
@@ -2007,7 +2021,7 @@ function langPackUnpack($unpack_type, $full_file) {
 
       if ( isset($manifest['icon']) && $manifest['icon'] != "" ) {
          $icon_location = extractFile($full_file, $manifest['icon'], $base_tmp_upgrade_dir);
-         $path_parts = pathinfo($icon_location);
+         $path_parts = pathinfo((string) $icon_location);
          copy($icon_location, $target_path . "-icon." . $path_parts['extension']);
       }
 
@@ -2055,7 +2069,7 @@ if ( !function_exists('getInstallType') ) {
       // detect file type
       $subdirs = array( 'full', 'langpack', 'module', 'patch', 'theme', 'temp' );
       foreach ( $subdirs as $subdir ) {
-         if ( preg_match("#/$subdir/#", $type_string) ) {
+        if (preg_match("#/$subdir/#", (string) $type_string)) {
             return( $subdir );
          }
       }
@@ -2068,7 +2082,7 @@ if ( !function_exists('getInstallType') ) {
 //mysqli connector has a separate parameter for port.. We need to separate it out from the host name
 function getHostPortFromString($hostname = '') {
 
-   $pos = strpos($hostname, ':');
+    $pos=strpos((string) $hostname, ':');
    if ( $pos === false ) {
       //no need to process as string is empty or does not contain ':' delimiter
       return '';
@@ -2121,6 +2135,7 @@ function createWebAddress() {
  * @return string
  */
 function createEmailAddress() {
+    $part = [];
    global $seed;
    global $tlds;
 
@@ -2291,7 +2306,7 @@ function post_install_modules() {
       foreach ( $modules_to_install as $module_to_install ) {
          if ( is_file($module_to_install) ) {
             $pm->performSetup($module_to_install, 'module', false);
-            $file_to_install = sugar_cached('upload/upgrades/module/') . basename($module_to_install);
+            $file_to_install = sugar_cached('upload/upgrades/module/').basename((string) $module_to_install);
             $_REQUEST['install_file'] = $file_to_install;
             $pm->performInstall($file_to_install);
          }
@@ -2374,6 +2389,7 @@ function create_writable_dir($dirname) {
  * Enable the InsideView connector for the four default modules.
  */
 function enableInsideViewConnector() {
+    $mapping = [];
    // Load up the existing mapping and hand it to the InsideView connector to have it setup the correct logic hooks
    $mapFile = 'modules/Connectors/connectors/sources/ext/rest/insideview/mapping.php';
    if ( file_exists('custom/' . $mapFile) ) {

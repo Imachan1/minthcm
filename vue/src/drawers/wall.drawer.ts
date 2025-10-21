@@ -8,4 +8,8 @@ export default {
     isAvaliable: () => {
         return useACL().hasAccess('News', 'list', true)
     },
+    badge: () => {
+        const store = useMintWallStore()
+        return store.badge
+    },
 }

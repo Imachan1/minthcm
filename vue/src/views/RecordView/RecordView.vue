@@ -12,17 +12,42 @@ import MintPanel from '@/components/MintPanel/MintPanel.vue'
 import { useRecordViewStore } from './RecordViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useBackendStore } from '@/store/backend'
+import { useRoute } from 'vue-router'
+import { useStatusBoxesStore } from '@/store/statusBoxes'
+import { useRouter } from 'vue-router'
+import { useACL } from '@/composables/useACL'
 
 const store = useRecordViewStore()
 const languages = useLanguagesStore()
 const backend = useBackendStore()
+const route = useRoute()
+const router = useRouter()
 
 store.resetBean()
-store.$reset()
 
-onMounted(() => {
-    store.fetchBean()
+onMounted(async () => {
+    await store.bean.init().catch(recordAccessError)
+    if (store.bean.isNew) {
+        store.view = 'edit'
+        if (Object.keys(route.query).length) {
+            store.bean.setAttributesFromQuery(route.query)
+        }
+    }
 })
+
+function recordAccessError(error: any): Promise<any> {
+    if ([403, 404].includes(error.response.status)) {
+        useStatusBoxesStore().showStatus('record_access_error', {
+            type: 'error',
+            message: useLanguagesStore().label('ERROR_NO_RECORD'),
+            autoClose: true,
+        })
+        useACL().hasAccess(store.bean.module, 'list', true, true) ?
+            router.push({ name: 'list', params: { module: store.bean.module } }) :
+            router.push({ name: 'dashboard' })
+    }
+    return Promise.reject(error)
+}
 
 watch(
     () => store.bean.syncAttributes,

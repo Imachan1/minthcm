@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,10 +36,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -129,7 +129,7 @@ class ListInitController
         global $current_user;
         chdir('../legacy/');
         $preferences = (new \UserPreference($current_user))->getPreference($this->module, 'eslist');
-        if (!$preferences) {
+        if(!$preferences) {
             $preferences = [];
         }
         chdir('../api/');
@@ -233,8 +233,10 @@ class ListInitController
     {
         $columns = $this->metadata[$type];
 
-        global $mod_strings, $app_strings, $current_language;
+        global $mod_strings, $app_strings, $current_language, $app_list_strings;
+        chdir('../legacy/');
         $mod_strings = return_module_language($current_language, $this->module);
+        chdir('../api/');
         if (empty($columns)) {
             \LoggerManager::getLogger()->fatal('Columns for ESList View are not defined');
             throw new HttpNotFoundException($this->request);
@@ -255,6 +257,7 @@ class ListInitController
                 unset($columns[$field]);
                 continue;
             }
+
             $columns[$field] = array_merge($field_defs, $columns[$field]);
             $columns[$field]['name'] = $defs['name'] ?? $field;
             $columns[$field]['key'] = $defs['key'] ?? $this->eslistmap[$field] ?? $field;
@@ -267,6 +270,13 @@ class ListInitController
             $label = $defs['label'] ?? $field_defs['label'] ?? $field_defs['vname'];
             $columns[$field]['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
         }
+        $columns['favorites'] = [
+            'name' => 'favorites',
+            'key' => 'favorites',
+            'type' => 'bool',
+            'label' => $this->prepareLabel($app_strings['LBL_FAVORITES']),
+            'default' => false,
+        ];
         return $columns;
     }
     protected function getMappedFieldProps($key)
@@ -302,10 +312,10 @@ class ListInitController
         }
         if (!empty($field_defs['function']['include'])) {
             if (file_exists($field_defs['function']['include'])) {
-                require_once $field_defs['function']['include'];
+            require_once $field_defs['function']['include'];
             } else if (file_exists('../legacy/' . $field_defs['function']['include'])) {
                 require_once '../legacy/' . $field_defs['function']['include'];
-            }
+        }
         }
         $function = $field_defs['function']['name'] ?? $field_defs['function'];
         $additional_params = $field_defs['function']['additional_params'] ?? null;

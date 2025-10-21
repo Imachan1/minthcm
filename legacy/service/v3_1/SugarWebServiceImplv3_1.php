@@ -6,9 +6,9 @@
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
+*
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -834,6 +834,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
             $sugar_config['list_max_entries_per_page'] = $max_results;
         }
 
+        $unified_search_modules = [];
         require_once('modules/Home/UnifiedSearchAdvanced.php');
         require_once 'include/utils.php';
         $usa = new UnifiedSearchAdvanced();
@@ -920,7 +921,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
                     $emailQuery = false;
 
                     $where = '';
-                    if (count($where_clauses) > 0) {
+                    if ((is_countable($where_clauses) ? count($where_clauses) : 0) > 0) {
                         $where = '(' . implode(' ) OR ( ', $where_clauses) . ')';
                     }
 
@@ -961,7 +962,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
                     }
 
                     if ($beanName == "Employee") {
-                        $where = "($where) AND users.deleted = 0 AND users.is_group = 0 AND users.employee_status = 'Active'";
+                        $where = "($where) AND users.deleted = 0 AND users.is_group = 0 AND users.employee_status IN ('Active', 'during_termination')";
                     }
 
                     $ret_array = $seed->create_new_list_query(
@@ -975,7 +976,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
                         $seed,
                         true
                     );
-                    if (empty($params) or !is_array($params)) {
+                    if (empty($params) || !is_array($params)) {
                         $params = array();
                     }
                     if (!isset($params['custom_select'])) {
@@ -997,7 +998,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
                         $main_query = "select users.id, ea.email_address, users.user_name, first_name, last_name from users ";
                         $main_query = $main_query . " LEFT JOIN email_addr_bean_rel eabl ON (users.id = eabl.bean_id and eabl.bean_module = '{$seed->module_dir}')
     LEFT JOIN email_addresses ea ON (ea.id = eabl.email_address_id) ";
-                        $main_query = $main_query . "where ((users.first_name like '{$search_string}') or (users.last_name like '{$search_string}') or (users.user_name like '{$search_string}') or (ea.email_address like '{$search_string}')) and users.deleted = 0 and users.is_group = 0 and users.employee_status = 'Active'";
+                        $main_query = $main_query . "where ((users.first_name like '{$search_string}') or (users.last_name like '{$search_string}') or (users.user_name like '{$search_string}') or (ea.email_address like '{$search_string}')) and users.deleted = 0 and users.is_group = 0 and users.employee_status IN ('Active', 'during_termination')";
                     } // if
                     if ($beanName == "ProjectTask") {
                         $filterFields = array('id', 'name', 'project_id', 'project_name');

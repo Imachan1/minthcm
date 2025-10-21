@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -48,9 +48,8 @@ namespace MintHCM\Api\Routes;
 
 use MintHCM\Utils\CustomLoader;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Psr7\Response;
 
+#[\AllowDynamicProperties]
 class RouteManager
 {
     protected static $_instance;
@@ -74,9 +73,9 @@ class RouteManager
 
     public function __construct()
     {
-        global $app;
+        global $mint_app;
 
-        $this->app = $app;
+        $this->app = $mint_app;
         $this->setRoutes();
     }
 
@@ -235,6 +234,8 @@ class RouteManager
 
             $files = array_diff($files, array('.', '..'));
 
+            $location_route_keys = array();
+
             foreach ($files as $file) {
                 if (!str_contains($file, ".php")) {
                     continue;
@@ -244,6 +245,14 @@ class RouteManager
                 if (empty($routes)) {
                     continue;
                 }
+
+                foreach ($routes as $key => $route) {
+                    if (isset($location_route_keys[$key])) {
+                        throw new \Exception("Duplicate route key '$key' found in location '$location' in file '$file'.");
+                    }
+                    $location_route_keys[$key] = true;
+                }
+
                 $response = array_merge($response, $routes);
             }
         }
@@ -251,4 +260,3 @@ class RouteManager
     }
 
 }
-

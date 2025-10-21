@@ -6,8 +6,8 @@
                 'alerts-list-disabled': alerts.isClosingAll,
             }"
         >
-            <template v-if="alerts.sortedAlerts?.length">
-                <div v-for="alert in alerts.sortedAlerts" :key="alert.id">
+            <template v-if="alerts.sortedFilteredAlerts.length">
+                <div v-for="alert in alerts.sortedFilteredAlerts" :key="alert.id">
                     <div
                         class="alert"
                         v-ripple="{ class: 'text-primary' }"
@@ -25,7 +25,7 @@
                                 variant="text"
                                 density="comfortable"
                                 color="secondary"
-                                @click.stop="alerts.close(alert.id)"
+                                @click.stop="alerts.close(alert.id, true)"
                             />
                             <v-btn
                                 v-if="!alert.is_read"
@@ -35,7 +35,7 @@
                                 size="small"
                                 density="compact"
                                 color="error"
-                                @click.stop="alerts.markRead(alert.id)"
+                                @click.stop="alerts.markRead(alert.id, true)"
                             />
                         </div>
                     </div>
@@ -43,13 +43,13 @@
             </template>
             <span v-else v-text="languages.label('LBL_MINT4_NO_ALERTS')" class="px-4" />
         </div>
-        <div v-if="alerts.sortedAlerts.length" class="alerts-footer">
+        <div v-if="alerts.sortedFilteredAlerts.length" class="alerts-footer">
             <v-tooltip :text="languages.label('LBL_MINT4_ALERTS_MARK_ALL_READ')" location="top left">
                 <template v-slot:activator="{ props }">
                     <MintButton
                         v-bind="props"
                         @click="alerts.markAllAsRead"
-                        variant="text"
+                        variant="nav"
                         icon="mdi-email-open"
                         size="small"
                     />
@@ -64,7 +64,7 @@
                     <MintButton
                         v-bind="props"
                         @click="alerts.cancelCloseAll"
-                        variant="text"
+                        variant="nav"
                         icon="mdi-window-close"
                         size="small"
                     />
@@ -75,7 +75,7 @@
                     <MintButton
                         v-bind="props"
                         @click="alerts.closeAll"
-                        variant="text"
+                        variant="nav"
                         icon="mdi-delete-sweep"
                         size="small"
                     />
@@ -111,7 +111,7 @@ function toRelativeDate(date: string) {
 
 function redirectToAlert(alert: Alert) {
     if (!alert.is_read) {
-        alerts.markRead(alert.id)
+        alerts.markRead(alert.id, true)
     }
     if (alert.url_redirect) {
         router.push(url.fromLegacyUrl(alert.url_redirect))
