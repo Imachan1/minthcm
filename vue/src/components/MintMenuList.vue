@@ -5,7 +5,7 @@
                 <span style="font-size: 11px"><v-icon :icon="getIcon(item.icon)" /></span>
             </template>
             <v-list-item-title>
-                {{ item.title }}
+                {{ languages.label(item.title) }}
             </v-list-item-title>
         </v-list-item>
     </v-list>
@@ -13,43 +13,45 @@
 
 <script setup lang="ts">
 import { usePopupsStore } from '@/store/popups'
-import { computed } from 'vue'
-import { popupComponents } from '../custom/components/MintPopups/CustomMintPopupsMap'
+import { computed, defineProps } from 'vue'
+import { useLanguagesStore } from '@/store/languages'
+import ComponentLoader from '@/utils/componentLoader'
 
 export interface MenuListOnClickActionData {
     type?: string
-    componentName?: string
+    componentPath?: string
 }
 
 export interface MenuListItem {
     title: string
     icon?: string
     url?: string
-    onClick?: () => void
+    onClick?: (() => Promise<void>) | (() => void)
     onClickActionData?: MenuListOnClickActionData
 }
 
 interface Props {
     items: MenuListItem[]
 }
+const languages = useLanguagesStore()
+
 const props = defineProps<Props>()
 const popups = usePopupsStore()
 
 const processedItems = computed(() =>
   props.items.map((item) => {
     if (!item.url || item.url === '' || item.url === '/') {
-      if (item?.onClickActionData?.type === 'popup' && item?.onClickActionData?.componentName) {
-        item.onClick = () => {
+      if (item?.onClickActionData?.type === 'popup' && item?.onClickActionData?.componentPath) {
+        item.onClick = async () => {
           popups.showPopup(
             {
                 title: item.title,
-                component: popupComponents[item?.onClickActionData?.componentName ?? '']
+                component: await ComponentLoader.loadComponent(item?.onClickActionData?.componentPath ?? '')
             }
           )
         }
       }
     }
-
     return { ...item }
   })
 )

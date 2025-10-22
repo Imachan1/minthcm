@@ -10,7 +10,7 @@
         rail-width="76"
     >
         <v-list
-            v-if="modules.currentModule?.actions"
+                        v-if="modules.currentModule?.name !== 'Home' && modules.currentModule?.actions"
             nav
             bg-color="primary"
             class="nav-list flex-shrink-0 py-4"
@@ -163,6 +163,7 @@ import MintMenuList from '@/components/MintMenuList.vue'
 import { useLanguagesStore } from '@/store/languages'
 import { popupComponents } from '@/custom/components/MintPopups/CustomMintPopupsMap'
 import { usePopupsStore } from '@/store/popups'
+import ComponentLoader from '@/utils/componentLoader'
 
 const modules = useModulesStore()
 const url = useUrlStore()
@@ -193,12 +194,12 @@ function clearInput() {
     filterModulesQuery.value = ''
 }
 
-function getClickHandler(action: ModuleAction) {
+async function getClickHandler(action: ModuleAction) {
     if (!action.url || action.url === '/') {
-        if (action?.onClickActionData?.type === 'popup' && action?.onClickActionData?.componentName) {
+        if (action?.onClickActionData?.type === 'popup' && action?.onClickActionData?.componentPath) {
             popups.showPopup({
                 title: action.name,
-                component: popupComponents[action.onClickActionData.componentName]
+                component: await ComponentLoader.loadComponent(action?.onClickActionData?.componentPath ?? '')
             })
         }
     }
