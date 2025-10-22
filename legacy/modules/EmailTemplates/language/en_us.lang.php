@@ -105,4 +105,5 @@ $mod_strings = array(
     'LBL_WIDTH' => 'Width Default',
     'LNK_IMPORT_CAMPAIGNS' => 'Import Campaign',
     'LNK_NEW_RECORD' => 'Create Email Template',
+    'LBL_MODIFIED_BY' => 'Modified By',
 );
