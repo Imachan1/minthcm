@@ -58,7 +58,7 @@ import MintDataTablePagination from '@/components/MintDataTablePagination/MintDa
 import { useACL } from '@/composables/useACL'
 
 onMounted(() => {
-    if (store.view == 'detail' && store.bean.id) {
+    if (store.view == 'detail' && store.bean.id) { //FIXME CR - czy to powinno tak być w tym zagadnieniu? 
         store.fetchLanguagesForSubpanels()
         store.fetchSubpanelsData()
     }

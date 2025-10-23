@@ -1,5 +1,5 @@
 <?php
-
+//FIXME CR - jeśli nie wylatują to przywróć też labelki LBL_USE_REAL_NAMES i LBL_USE_REAL_NAMES_DESC
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
