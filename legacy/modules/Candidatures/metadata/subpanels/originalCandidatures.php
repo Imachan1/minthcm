@@ -68,10 +68,10 @@ $subpanel_layout['list_fields'] = array(
         'studio' => 'visible',
         'vname' => 'LBL_STATUS',
     ),
-    'to_decision' => array(
-        'type' => 'bool',
+    'route_of_acquisition' => array(
+        'type' => 'enum',
         'default' => true,
-        'vname' => 'LBL_TO_DECISION',
+        'vname' => 'LBL_ROUTE_OF_ACQUISITION',
     ),
     'scoring' => array(
         'type' => 'enum',

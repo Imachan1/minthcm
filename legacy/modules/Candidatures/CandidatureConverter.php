@@ -131,7 +131,7 @@ class CandidatureConverter
     {
         global $db;
 
-        $recruitement_id = (empty($this->converted_candidature_bean->recruitment_end_id) ? $this->converted_candidature_bean->recruitment_id : $this->converted_candidature_bean->recruitment_end_id);
+        $recruitement_id = $this->converted_candidature_bean->recruitment_id;
         $sql = "SELECT position_id FROM recruitments WHERE id='{$recruitement_id}' AND deleted=0";
         $result_position_id = $db->getOne($sql);
         return BeanFactory::getBean(self::POSITIONS_MODULE_NAME, $result_position_id);

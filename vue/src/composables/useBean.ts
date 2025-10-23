@@ -142,7 +142,7 @@ export const useBean = (module: string, id: string) => {
         updateFields(fieldsToUpdate)
         const triggerFields = logic.triggerFields.value.filter((f) => Object.hasOwn(fieldsToUpdate, f))
         if (triggerFields.length > 0) {
-            fetchLogic(triggerFields)
+            fetchLogic(triggerFields, true)
         }
     }
 
@@ -169,10 +169,11 @@ export const useBean = (module: string, id: string) => {
         dirtyFields.value = new Set()
     }
 
-    async function fetchLogic(triggerFields: string[] = []) {
+    async function fetchLogic(triggerFields: string[] = [], fromQuery = false) {
         const response = await mintApi.post(`${module}/Logic${id ? `/${id}` : ''}`, {
             attributes: attributesToSave.value,
             triggerFields,
+            fromQuery,
         })
         if (response.data.rules?.length) {
             response.data.rules.forEach((r: any) => {

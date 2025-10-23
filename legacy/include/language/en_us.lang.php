@@ -4780,3 +4780,9 @@ $app_strings['LBL_EXPAND'] = 'Expand';
 $app_strings['LBL_COLLAPSE'] = 'Collapse';
 $app_strings['LBL_BASIC'] = 'Basic';
 $app_strings['LBL_OTHER'] = 'Other';
+$app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';
+
+$app_list_strings['candidatures_route_of_acquisition_list'] = array(
+    'original_candidature' => 'Original candidature',
+    'created_from_other_candidature' => 'Created from other candidature',
+);

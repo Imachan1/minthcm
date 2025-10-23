@@ -17,6 +17,7 @@ $viewdefs['Candidatures'] = [
                     'Audit',
                     'Delete',
                     'ConvertToEmployee',
+                    'RejectAndMoveToAnotherRecruitment',
                 ],
             ],
         ],
@@ -42,11 +43,12 @@ $viewdefs['Candidatures'] = [
                             [
                                 'to_decision',
                                 'recruitment_name',
-                                'recruitment_end_name',
+                                'original_candidature_name',
                             ],
                             [
                                 'parent_name',
                                 'entry_interview',
+                                'route_of_acquisition',
                             ],
                             [
                                 'source',

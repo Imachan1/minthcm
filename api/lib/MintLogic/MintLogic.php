@@ -9,13 +9,15 @@ class MintLogic
 {
     private $bean;
     private $defs;
+    private $fromQuery;
 
-    public function __construct($bean)
+    public function __construct($bean, $fromQuery = false)
     {
         if (!$bean instanceof \SugarBean && !$bean instanceof MintBean) {
             throw new \InvalidArgumentException("Bean must be an instance of SugarBean or MintBean");
         }
         $this->bean = clone $bean;
+        $this->fromQuery = $fromQuery;
         $this->defs = include __DIR__ . "/Modules/{$bean->module_name}/logicdefs.php" ?? [];
     }
 
@@ -181,7 +183,7 @@ class MintLogic
         // Readonly
         $logic['readonly'] = self::calculateExpression($rule['logic']['readonly'], $this->bean) ?? [];
         foreach ($logic['readonly'] as $field => $isReadonly) {
-            if ($isReadonly) {
+            if ($isReadonly && !$this->fromQuery) {
                 $this->bean->{$field} = $this->bean->fetched_row[$field] ?? null;
                 $logic['update'][$field] = $this->bean->{$field};
             }

@@ -59,9 +59,9 @@ class Recruitments extends Recruitments_sugar {
       }
 
       if ( !$this->counted ) {
-         $this->load_relationship('candidatures_end');
+         $this->load_relationship('candidatures');
          $employees_number = 0;
-         $candidatures = $this->candidatures_end->getBeans();
+         $candidatures = $this->candidatures->getBeans();
          foreach ( $candidatures as $candidature ) {
             if ( $candidature->status == 'Hired' ) {
                $employees_number++;

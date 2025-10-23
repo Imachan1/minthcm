@@ -41,20 +41,14 @@ return [
                 ],
             ],
         ],
-        'recruitments' => [
+        'originalCandidature' => [
             'hooks' => [Hook::INIT, Hook::CHANGE],
-            'triggerFields' => ['recruitment_name'],
-            'trigger' => Formula::notEmpty('$recruitment_name'),
+            'triggerFields' => ['route_of_acquisition'],
+            'trigger' => Formula::inArray('$route_of_acquisition', ['', 'original_candidature']),
             'logic' => [
-                'update' => function ($bean) {
-                    if (empty($bean->recruitment_end_name) && !empty($bean->recruitment_name)) {
-                        return [
-                            'recruitment_end_id' => $bean->recruitment_id,
-                            'recruitment_end_name' => $bean->recruitment_name,
-                        ];
-                    }
-                    return [];
-                },
+                'visible' => [
+                    'original_candidature_name' => false,
+                ],
             ],
         ],
     ],
