@@ -55,6 +55,14 @@ $subpanel_layout = array(
             'widget_class' => 'SubPanelDetailViewLink',
             'width' => '70%',
         ),
+        'status' => array(
+            'vname' => 'LBL_STATUS',
+            'width' => '10%',
+        ),
+        'priority' => array(
+            'vname' => 'LBL_PRIORITY',
+            'width' => '10%',
+        ),
         'date_start' => array(
             'vname' => 'LBL_DATE_START',
             'width' => '15%',
