@@ -1127,7 +1127,6 @@ function getUserArrayFromFullName($args, $hide_portal_users = false)
  */
 function showFullName()
 {
-    //FIXME CR - To powinno raczej zostać, widzę wywołania do tej funkcji. Jeśli ma wylecieć to musisz usunąć wszystkie wystąpienia funkcji
     return true;
 }
 

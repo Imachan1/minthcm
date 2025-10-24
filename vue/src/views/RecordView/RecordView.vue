@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, defineEmits } from 'vue' //FIXME CR - czy defineEmits jest potrzebne?
+import { onMounted, watch } from 'vue'
 import MintPanel from '@/components/MintPanel/MintPanel.vue'
 import { useRecordViewStore } from './RecordViewStore'
 import { useLanguagesStore } from '@/store/languages'

@@ -148,13 +148,6 @@ watch(model, (newVal) => {
         emit('update:modelValue', '')
     }
 })
-
-watch( //FIXME CR - to chyba już było dodawane, może zostać, ale upewnij się że zmiany w polach file i parent też czasem nie są już wgrane lub podobnie zrobione na dev
-    () => props.modelValue,
-    (newVal) => {
-        model.value = newVal
-    },
-)
 </script>
 
 <style scoped lang="scss">
