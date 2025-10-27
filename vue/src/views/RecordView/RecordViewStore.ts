@@ -127,16 +127,13 @@ export const useRecordViewStore = defineStore('recordview', () => {
                             ) || '',
                         type: props.type || '',
                     })),
-                records: Object.keys(subpanelsData.value?.[key] ?? {}).map((id) => ({
-                    ...(subpanelsData.value?.[key][id] || {}),
-                    id,
-                    parent_module: subpanelDefs[key].properties?.module?.toString() || '',
-                })),
-            records: Object.keys(subpanelsData.value?.[key] ?? {}).map((id) => ({
-                ...(subpanelsData.value?.[key][id] || {}),
-                id,
-                parent_module: subpanelDefs[key].properties?.module?.toString() || '',
-            })).filter((record) => record.id !== 'total' && record.id !== 'page'),
+                records: Object.keys(subpanelsData.value?.[key] ?? {})
+                    .map((id) => ({
+                        ...(subpanelsData.value?.[key][id] || {}),
+                        id,
+                        parent_module: subpanelDefs[key].properties?.module?.toString() || '',
+                    }))
+                    .filter((record) => record.id !== 'total' && record.id !== 'page'),
             page: subpanelsData.value?.[key]?.page || 0,
             total: subpanelsData.value?.[key]?.total || 0,
             paginateBy: backendStore.initData.global.list_max_entries_per_subpanel ? parseInt(backendStore.initData.global.list_max_entries_per_subpanel, 10) : 10
