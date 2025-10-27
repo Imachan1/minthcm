@@ -4780,3 +4780,5 @@ $app_strings['LBL_EXPAND'] = 'Expand';
 $app_strings['LBL_COLLAPSE'] = 'Collapse';
 $app_strings['LBL_BASIC'] = 'Basic';
 $app_strings['LBL_OTHER'] = 'Other';
+$app_strings['LBL_REPEAT_FIELD'] = 'Repeat';
+$app_strings['LBL_EVERY'] = 'every';

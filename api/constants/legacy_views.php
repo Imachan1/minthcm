@@ -473,10 +473,6 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'Meetings' => [
-        'list' => false,
-        'record' => true,
-    ],
     'Calls' => [
         'list' => false,
         'record' => true,

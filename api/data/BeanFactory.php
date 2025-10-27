@@ -69,7 +69,7 @@ class BeanFactory
     public static function __callStatic($name, $arguments)
     {
         chdir('../legacy/');
-        $response = LegacyFactory::$name($arguments);
+        $response = LegacyFactory::$name(...$arguments);
         chdir('../api/');
 
         return $response;
