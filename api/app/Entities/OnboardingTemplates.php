@@ -146,7 +146,7 @@ class OnboardingTemplates
     public Collection $positions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Onboardings::class, mappedBy="onboardingtemplates")
+     * @ORM\OneToMany(targetEntity=Onboardings::class, mappedBy="onboardingtemplate")
      */
     public Collection $onboardings;
 

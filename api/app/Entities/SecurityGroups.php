@@ -157,12 +157,12 @@ class SecurityGroups
 
     /**
      * @ORM\JoinColumn(name="current_manager_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="securitygroups")
+     * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="securitygroups_managers")
      */
     public $current_manager;
 
     /**
-     * @ORM\OneToMany(targetEntity=Employees::class, mappedBy="securitygroups")
+     * @ORM\OneToMany(targetEntity=Employees::class, mappedBy="securitygroups_employees_link")
      */
     public Collection $employees;
 
@@ -173,35 +173,35 @@ class SecurityGroups
 
     /**
      * @ORM\JoinTable(name="securitygroups_users")
-     * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="securitygroups")
+     * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="SecurityGroups")
      */
     public Collection $users;
 
     /**
      * @ORM\JoinTable(name="securitygroups_acl_roles")
-     * @ORM\ManyToMany(targetEntity=ACLRoles::class, mappedBy="securitygroups")
+     * @ORM\ManyToMany(targetEntity=ACLRoles::class, mappedBy="SecurityGroups")
      */
     public Collection $aclroles;
 
     /**
      * @ORM\JoinTable(name="securitygroups_positions_leader")
-     * @ORM\ManyToMany(targetEntity=Positions::class, mappedBy="securitygroups")
+     * @ORM\ManyToMany(targetEntity=Positions::class, mappedBy="securitygroups_leader")
      */
     public Collection $positions_leader;
 
     /**
      * @ORM\JoinTable(name="securitygroups_positions_membership")
-     * @ORM\ManyToMany(targetEntity=Positions::class, mappedBy="securitygroups")
+     * @ORM\ManyToMany(targetEntity=Positions::class, mappedBy="securitygroups_membership")
      */
     public Collection $positions_membership;
 
     /**
-     * @ORM\OneToMany(targetEntity=OnboardingOffboardingElements::class, mappedBy="securitygroups")
+     * @ORM\OneToMany(targetEntity=OnboardingOffboardingElements::class, mappedBy="securitygroups_unit")
      */
     public Collection $onboardingoffboardingelements;
 
     /**
-     * @ORM\OneToMany(targetEntity=Rooms::class, mappedBy="securitygroups")
+     * @ORM\OneToMany(targetEntity=Rooms::class, mappedBy="SecurityGroups")
      */
     public Collection $securitygroups_rooms;
 

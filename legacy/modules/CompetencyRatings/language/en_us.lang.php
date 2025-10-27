@@ -84,4 +84,6 @@ $mod_strings = array(
    'LBL_PARENT_TYPE' => 'Related to (Type)',
    'LBL_PARENT_NAME' => 'Related to',
    'LBL_PARENT_ID' => 'Related to (ID)',
+   'LBL_EMPLOYEE_ROLES' => 'Employee Roles',
+   'LBL_POSITIONS' => 'Positions',
 );

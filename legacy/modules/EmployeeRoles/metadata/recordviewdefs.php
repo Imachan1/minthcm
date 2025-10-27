@@ -5,6 +5,7 @@ $viewdefs['EmployeeRoles'] = [
     'order' => [
         'header',
         'mainPanel',
+        'positionCard',
         'subpanels',
     ],
     'panels' => [
@@ -82,6 +83,10 @@ $viewdefs['EmployeeRoles'] = [
                     ],
                 ],
             ],
+        ],
+        
+        'positionCard' => [
+            'component' => 'MintPanelPositionCard',
         ],
 
         'subpanels' => [

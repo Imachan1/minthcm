@@ -159,7 +159,7 @@ class Benefits
     public Collection $roles;
 
     /**
-     * @ORM\OneToMany(targetEntity=Requests::class, mappedBy="benefits")
+     * @ORM\OneToMany(targetEntity=Requests::class, mappedBy="benefit")
      */
     public Collection $requests;
 

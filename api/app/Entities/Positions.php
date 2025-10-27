@@ -54,7 +54,7 @@ use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\PositionsRepository")
  * @ORM\Table(name="positions", indexes={
  * @ORM\Index(name="positionspk", columns={"id"})})
  */
@@ -185,7 +185,7 @@ class Positions
 
     /**
      * @ORM\JoinTable(name="securitygroups_positions_leader", joinColumns={@ORM\JoinColumn(name="position_leader_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_leader_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="positions_leader")
      */
     public Collection $securitygroups_leader;
 
@@ -196,7 +196,7 @@ class Positions
     public Collection $documents;
 
     /**
-     * @ORM\OneToMany(targetEntity=Employees::class, mappedBy="positions")
+     * @ORM\OneToMany(targetEntity=Employees::class, mappedBy="position")
      */
     public Collection $employees;
 
@@ -223,18 +223,18 @@ class Positions
     public Collection $appraisals;
 
     /**
-     * @ORM\OneToMany(targetEntity=CareerPaths::class, mappedBy="positions")
+     * @ORM\OneToMany(targetEntity=CareerPaths::class, mappedBy="positions_from")
      */
     public Collection $careerpaths_from;
 
     /**
-     * @ORM\OneToMany(targetEntity=CareerPaths::class, mappedBy="positions")
+     * @ORM\OneToMany(targetEntity=CareerPaths::class, mappedBy="positions_to")
      */
     public Collection $careerpaths_to;
 
     /**
      * @ORM\JoinTable(name="securitygroups_positions_membership", joinColumns={@ORM\JoinColumn(name="position_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="positions_membership")
      */
     public Collection $securitygroups_membership;
 
@@ -249,7 +249,7 @@ class Positions
     public Collection $termsofemployment;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="positions")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="position")
      */
     public Collection $files;
 

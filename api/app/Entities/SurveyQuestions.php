@@ -161,18 +161,18 @@ class SurveyQuestions
     public Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=SurveyQuestionOptions::class, mappedBy="surveyquestions")
+     * @ORM\OneToMany(targetEntity=SurveyQuestionOptions::class, mappedBy="survey_question")
      */
     public Collection $surveyquestions_surveyquestionoptions;
 
     /**
-     * @ORM\OneToMany(targetEntity=SurveyQuestionResponses::class, mappedBy="surveyquestions")
+     * @ORM\OneToMany(targetEntity=SurveyQuestionResponses::class, mappedBy="surveyquestion")
      */
     public Collection $surveyquestions_surveyquestionresponses;
 
     /**
      * @ORM\JoinColumn(name="survey_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Surveys::class, inversedBy="surveyquestions")
+     * @ORM\ManyToOne(targetEntity=Surveys::class, inversedBy="surveys_surveyquestions")
      */
     public $survey;
 

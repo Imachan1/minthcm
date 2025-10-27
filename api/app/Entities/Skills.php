@@ -152,7 +152,7 @@ class Skills
     public $employee_link;
 
     /**
-     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="skills")
+     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="skill")
      */
     public Collection $appraisalitems;
 

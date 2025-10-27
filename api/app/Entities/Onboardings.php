@@ -132,6 +132,11 @@ class Onboardings
     public $date_start;
 
     /**
+     * @ORM\Column(type="string", length="36")
+     */
+    public $onboardingtemplate_id;
+
+    /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="onboardings")
      */
@@ -168,12 +173,12 @@ class Onboardings
     public $onboardingtemplate;
 
     /**
-     * @ORM\OneToMany(targetEntity=Trainings::class, mappedBy="onboardings")
+     * @ORM\OneToMany(targetEntity=Trainings::class, mappedBy="trainings")
      */
     public Collection $trainings;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="onboardings")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="tasks")
      */
     public Collection $tasks;
 

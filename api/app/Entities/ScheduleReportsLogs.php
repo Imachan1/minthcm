@@ -139,7 +139,7 @@ class ScheduleReportsLogs
 
     /**
      * @ORM\JoinColumn(name="schedule_report_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=ScheduleReports::class, inversedBy="schedulereportslogs")
+     * @ORM\ManyToOne(targetEntity=ScheduleReports::class, inversedBy="schedulereports_schedulereportslogs")
      */
     public $schedulereports_schedulereportslogs;
 

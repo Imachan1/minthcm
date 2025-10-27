@@ -158,22 +158,22 @@ class Workplaces
 
     /**
      * @ORM\JoinColumn(name="room_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Rooms::class, inversedBy="workplaces")
+     * @ORM\ManyToOne(targetEntity=Rooms::class, inversedBy="rooms_workplaces")
      */
     public $rooms_workplaces;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="workplaces")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="workplace")
      */
     public Collection $files;
 
     /**
-     * @ORM\OneToMany(targetEntity=Allocations::class, mappedBy="workplaces")
+     * @ORM\OneToMany(targetEntity=Allocations::class, mappedBy="workplaces_allocations")
      */
     public Collection $workplaces_allocations;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkSchedules::class, mappedBy="workplaces")
+     * @ORM\OneToMany(targetEntity=WorkSchedules::class, mappedBy="workplaces_workschedules")
      */
     public Collection $workplaces_workschedules;
 

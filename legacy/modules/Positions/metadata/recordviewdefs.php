@@ -1,7 +1,7 @@
 <?php
 
 $viewdefs['Positions'] = [
-    'order' => ['header', 'mainPanel', 'subpanels'],
+    'order' => ['header', 'mainPanel', 'positionCard', 'subpanels'],
     'panels' => [
         'header' => [
             'component' => 'MintPanelRecordHeader',
@@ -70,6 +70,9 @@ $viewdefs['Positions'] = [
                     ],
                 ],
             ],
+        ],
+        'positionCard' => [
+            'component' => 'MintPanelPositionCard',
         ],
         'subpanels' => [
             'component' => 'MintPanelSubpanels',

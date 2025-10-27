@@ -114,19 +114,19 @@ class ACLRoles
 
     /**
      * @ORM\JoinTable(name="acl_roles_users")
-     * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="acl_roles")
+     * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="aclroles")
      */
     public Collection $users;
 
     /**
      * @ORM\JoinTable(name="acl_roles_actions")
-     * @ORM\ManyToMany(targetEntity=ACLActions::class, mappedBy="acl_roles")
+     * @ORM\ManyToMany(targetEntity=ACLActions::class, mappedBy="roles")
      */
     public Collection $actions;
 
     /**
      * @ORM\JoinTable(name="securitygroups_acl_roles", joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="aclroles")
      */
     public Collection $SecurityGroups;
 

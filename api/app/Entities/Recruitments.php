@@ -226,27 +226,27 @@ class Recruitments
     public Collection $candidatures;
 
     /**
-     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="recruitments")
+     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="recruitments_end")
      */
     public Collection $candidatures_end;
 
     /**
-     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="recruitments")
+     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="calls")
      */
     public Collection $calls;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="recruitments")
+     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="meetings")
      */
     public Collection $meetings;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="recruitments")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="notes")
      */
     public Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="recruitments")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="tasks")
      */
     public Collection $tasks;
 

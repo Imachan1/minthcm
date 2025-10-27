@@ -113,7 +113,7 @@ class OAuthTokens
 
     /**
      * @ORM\JoinColumn(name="consumer", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=OAuthKeys::class, inversedBy="oauth_tokens")
+     * @ORM\ManyToOne(targetEntity=OAuthKeys::class, inversedBy="tokens")
      */
     public $consumer_link;
 

@@ -298,22 +298,22 @@ class Candidatures
     public $candidate;
 
     /**
-     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="candidatures")
+     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="calls")
      */
     public Collection $calls;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="candidatures")
+     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="meetings")
      */
     public Collection $meetings;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="candidatures")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="notes")
      */
     public Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="candidatures")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="tasks")
      */
     public Collection $tasks;
 
@@ -325,12 +325,12 @@ class Candidatures
 
     /**
      * @ORM\JoinColumn(name="recruitment_end_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Recruitments::class, inversedBy="candidatures")
+     * @ORM\ManyToOne(targetEntity=Recruitments::class, inversedBy="candidatures_end")
      */
     public $recruitments_end;
 
     /**
-     * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="candidatures")
+     * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="emails")
      */
     public Collection $emails;
 
@@ -346,7 +346,7 @@ class Candidatures
     public Collection $documents;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidatures")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidature")
      */
     public Collection $files;
 

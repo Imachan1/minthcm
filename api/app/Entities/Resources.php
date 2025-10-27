@@ -180,12 +180,12 @@ class Resources
 
     /**
      * @ORM\JoinTable(name="rooms_resources", joinColumns={@ORM\JoinColumn(name="resource_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="room_id", referencedColumnName="id")})
-     * @ORM\OneToOne(targetEntity=Rooms::class, inversedBy="resources")
+     * @ORM\OneToOne(targetEntity=Rooms::class, inversedBy="rooms_resources")
      */
     public $rooms_resources;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="resources")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="resource")
      */
     public Collection $files;
 

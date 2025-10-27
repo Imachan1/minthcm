@@ -127,6 +127,11 @@ class CompetencyRatings
     public $rating;
 
     /**
+     * @ORM\Column(type="string", length="36")
+     */
+    public $competency_id;
+
+    /**
      * @ORM\Column(type="string", length="255")
      */
     public $parent_type;
@@ -171,6 +176,18 @@ class CompetencyRatings
      * @ORM\ManyToOne(targetEntity=Competencies::class, inversedBy="competencyratings")
      */
     public $competencies;
+
+    /**
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="competencyratings")
+     */
+    public $positions;
+
+    /**
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=EmployeeRoles::class, inversedBy="competencyratings")
+     */
+    public $employee_roles;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

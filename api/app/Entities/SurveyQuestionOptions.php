@@ -152,13 +152,13 @@ class SurveyQuestionOptions
 
     /**
      * @ORM\JoinTable(name="surveyquestionoptions_surveyquestionresponses")
-     * @ORM\ManyToMany(targetEntity=SurveyQuestionResponses::class, mappedBy="surveyquestionoptions")
+     * @ORM\ManyToMany(targetEntity=SurveyQuestionResponses::class, mappedBy="surveyquestionoptions_surveyquestionresponses")
      */
     public Collection $surveyquestionoptions_surveyquestionresponses;
 
     /**
      * @ORM\JoinColumn(name="survey_question_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=SurveyQuestions::class, inversedBy="surveyquestionoptions")
+     * @ORM\ManyToOne(targetEntity=SurveyQuestions::class, inversedBy="surveyquestions_surveyquestionoptions")
      */
     public $survey_question;
 

@@ -167,7 +167,7 @@ class Goals
     public Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="goals")
+     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="goal")
      */
     public Collection $appraisalitems;
 

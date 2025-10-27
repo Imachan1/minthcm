@@ -172,19 +172,19 @@ class SurveyResponses
     public $employee_link;
 
     /**
-     * @ORM\OneToMany(targetEntity=SurveyQuestionResponses::class, mappedBy="surveyresponses")
+     * @ORM\OneToMany(targetEntity=SurveyQuestionResponses::class, mappedBy="surveyresponse")
      */
     public Collection $surveyresponses_surveyquestionresponses;
 
     /**
      * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Campaigns::class, inversedBy="surveyresponses")
+     * @ORM\ManyToOne(targetEntity=Campaigns::class, inversedBy="surveyresponses_campaigns")
      */
     public $campaign;
 
     /**
      * @ORM\JoinColumn(name="survey_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Surveys::class, inversedBy="surveyresponses")
+     * @ORM\ManyToOne(targetEntity=Surveys::class, inversedBy="surveys_surveyresponses")
      */
     public $survey;
 

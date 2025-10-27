@@ -234,22 +234,22 @@ class Campaigns
     public Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=EmailMarketing::class, mappedBy="campaigns")
+     * @ORM\OneToMany(targetEntity=EmailMarketing::class, mappedBy="email_marketing")
      */
     public Collection $emailmarketing;
 
     /**
-     * @ORM\OneToMany(targetEntity=EmailMan::class, mappedBy="campaigns")
+     * @ORM\OneToMany(targetEntity=EmailMan::class, mappedBy="emailman")
      */
     public Collection $queueitems;
 
     /**
-     * @ORM\OneToMany(targetEntity=CampaignLog::class, mappedBy="campaigns")
+     * @ORM\OneToMany(targetEntity=CampaignLog::class, mappedBy="campaign")
      */
     public Collection $log_entries;
 
     /**
-     * @ORM\OneToMany(targetEntity=SurveyResponses::class, mappedBy="campaigns")
+     * @ORM\OneToMany(targetEntity=SurveyResponses::class, mappedBy="campaign")
      */
     public Collection $surveyresponses_campaigns;
 
@@ -260,7 +260,7 @@ class Campaigns
     public Collection $prospectlists;
 
     /**
-     * @ORM\OneToMany(targetEntity=CampaignTrackers::class, mappedBy="campaigns")
+     * @ORM\OneToMany(targetEntity=CampaignTrackers::class, mappedBy="campaign")
      */
     public Collection $tracked_urls;
 

@@ -233,22 +233,22 @@ class ProjectTask
     public Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="project_task")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="project_tasks")
      */
     public Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="project_task")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="project_tasks")
      */
     public Collection $tasks;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="project_task")
+     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="meetings")
      */
     public Collection $meetings;
 
     /**
-     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="project_task")
+     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="calls")
      */
     public Collection $calls;
 
@@ -272,7 +272,7 @@ class ProjectTask
 
     /**
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="project_task")
+     * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="projecttask")
      */
     public $projects;
 

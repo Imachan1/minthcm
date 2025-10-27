@@ -56,6 +56,9 @@
 
 $dictionary['Positions'] = array(
     'table' => 'positions',
+    'doctrineEntity' => array(
+        'repository' => 'PositionsRepository',
+    ),
     'audited' => true,
     'activity_enabled' => false,
     'duplicate_merge' => true,

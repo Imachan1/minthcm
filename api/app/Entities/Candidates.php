@@ -338,7 +338,7 @@ class Candidates
     public Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="candidates")
+     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="candidatures")
      */
     public Collection $candidatures;
 
@@ -349,12 +349,12 @@ class Candidates
     public Collection $emails;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="candidates")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="notes")
      */
     public Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="candidates")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="tasks")
      */
     public Collection $tasks;
 
@@ -377,7 +377,7 @@ class Candidates
     public Collection $meetings;
 
     /**
-     * @ORM\OneToMany(targetEntity=EmployeeCertificates::class, mappedBy="candidates")
+     * @ORM\OneToMany(targetEntity=EmployeeCertificates::class, mappedBy="candidate")
      */
     public Collection $employeecertificates;
 
@@ -388,7 +388,7 @@ class Candidates
     public Collection $employee;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidates")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidate")
      */
     public Collection $files;
 

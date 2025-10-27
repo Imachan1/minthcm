@@ -155,17 +155,17 @@ class DashboardManager
     public $assigned_user_link;
 
     /**
-     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="dashboardmanager")
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="users_forced_tabs_dashboards")
      */
     public Collection $users_forced_tabs_dashboards;
 
     /**
-     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="dashboardmanager")
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="users_locked_dashboards")
      */
     public Collection $users_locked_dashboards;
 
     /**
-     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="dashboardmanager")
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="users_one_time_default_dashboards")
      */
     public Collection $users_one_time_default_dashboards;
 
