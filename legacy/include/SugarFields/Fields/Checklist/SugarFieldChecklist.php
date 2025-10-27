@@ -1,4 +1,7 @@
 <?php
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,7 +11,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -41,63 +44,37 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-$module_name             = 'OnboardingOffboardingElements';
-$viewdefs [$module_name] = array(
-    'EditView' =>
-    array(
-        'templateMeta' =>
-        array(
-            'maxColumns' => '2',
-            'widths' =>
-            array(
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-            ),
-            'includes' => array(
-                array('file' => 'modules/OnboardingOffboardingElements/js/view.edit.js'),
-            ),
-        ),
-        'panels' =>
-        array(
-            'default' =>
-            array(
-                array(
-                    'name',
-                    'kind_of_element',
-                ),
-                array(
-                    'type',
-                    '',
-                ),
-                array(
-                    'days_from_start',
-                    array(
-                        'name' => 'task_duration_hours',
-                        'label' => 'LBL_TASK_DURATION',
-                        'customCode' => '<input id="task_duration_hours" name="task_duration_hours" size="2" maxlength="2" type="text" value="{$fields.task_duration_hours.value}"/>{$fields.task_duration_minutes.value}&nbsp;<span class="dateFormat">{$MOD.LBL_HOURS_MINUTES}</span>',
-                    ),
-                ),
-                array(
-                    'securitygroup_unit_name',
-                    'user_name',
-                ),
-                array(
-                    'checklist',
-                    '',
-                ),
-                array(
-                    'assigned_user_name',
-                ),
-                array(
-                    'description',
-                ),
-            ),
-        ),
-    ),
-);
+
+require_once 'include/SugarFields/Fields/Base/SugarFieldBase.php';
+class SugarFieldChecklist extends SugarFieldBase
+{
+
+    public function getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
+    {
+        $this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);
+        $this->ss->assign('vardef', $vardef);
+        $this->ss->assign('field_name', $vardef['name']);
+        return $this->fetch($this->findTemplate('DetailView'));
+    }
+
+    public function getEditViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
+    {
+        $this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);
+        $this->ss->assign('vardef', $vardef);
+        $this->ss->assign('field_name', $vardef['name']);
+        return parent::getEditViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex);
+    }
+    public function save(&$bean, $inputData, $field, $def, $prefix = '')
+    {
+        foreach ($inputData[$field] as $key => $task) {
+            if (empty($task['task'])) {
+                unset($inputData[$field][$key]);
+            }
+            if (!array_key_exists('complete', $task)) {
+                $inputData[$field][$key]['complete'] = 0;
+            }
+        }
+
+        $bean->$field = json_encode($inputData[$field]);
+    }
+}

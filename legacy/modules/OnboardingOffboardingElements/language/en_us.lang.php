@@ -95,4 +95,5 @@ $mod_strings = array(
     'LBL_SECURITYGROUP_UNIT_NAME' => 'Organizational Unit',
     'LBL_SECURITYGROUP_UNIT_ID' => 'Organizational Unit (ID)',
     'LBL_RELATIONSHIP_TRAININGS_NAME' => 'Trainings',
+    'LBL_CHECKLIST' => 'Checklist',
 );

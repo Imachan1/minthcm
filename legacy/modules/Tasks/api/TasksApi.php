@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -8,7 +9,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
- * Copyright (C) 2018-2023 MintHCM
+ * Copyright (C) 2018-2019 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -41,63 +42,47 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-$module_name             = 'OnboardingOffboardingElements';
-$viewdefs [$module_name] = array(
-    'EditView' =>
-    array(
-        'templateMeta' =>
-        array(
-            'maxColumns' => '2',
-            'widths' =>
-            array(
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-                array(
-                    'label' => '10',
-                    'field' => '30',
-                ),
-            ),
-            'includes' => array(
-                array('file' => 'modules/OnboardingOffboardingElements/js/view.edit.js'),
-            ),
-        ),
-        'panels' =>
-        array(
-            'default' =>
-            array(
-                array(
-                    'name',
-                    'kind_of_element',
-                ),
-                array(
-                    'type',
-                    '',
-                ),
-                array(
-                    'days_from_start',
-                    array(
-                        'name' => 'task_duration_hours',
-                        'label' => 'LBL_TASK_DURATION',
-                        'customCode' => '<input id="task_duration_hours" name="task_duration_hours" size="2" maxlength="2" type="text" value="{$fields.task_duration_hours.value}"/>{$fields.task_duration_minutes.value}&nbsp;<span class="dateFormat">{$MOD.LBL_HOURS_MINUTES}</span>',
-                    ),
-                ),
-                array(
-                    'securitygroup_unit_name',
-                    'user_name',
-                ),
-                array(
-                    'checklist',
-                    '',
-                ),
-                array(
-                    'assigned_user_name',
-                ),
-                array(
-                    'description',
-                ),
-            ),
-        ),
-    ),
-);
+
+class TasksApi
+{
+
+    public function updateCheckList($args)
+    {
+
+        if (
+            empty($args["value"])
+            || empty($args["complete"])
+            || empty($args["id"])
+        ) {
+            return false;
+        }
+        $task = BeanFactory::getBean('Tasks', $args["id"]);
+        if (empty($task) || $task->id != $args["id"]) {
+            return false;
+        }
+        $task->checklist = html_entity_decode($args["value"]);
+        $tasks_array = json_decode(html_entity_decode($args["value"]), true);
+        $status = 'Not Started';
+        $has_complete = true;
+        foreach ($tasks_array as $key => $task_item) {
+            if (!empty($task_item["complete"])) {
+                $status = 'In Progress';
+            }
+            if (empty($task_item["complete"])) {
+                $has_complete = false;
+            }
+        }
+        if ($has_complete) {
+            $status = 'Completed';
+        }
+        $task->status = $status;
+        $task->save(false);
+        $app_strings = return_app_list_strings_language($GLOBALS['current_language']);
+        $span = "<span style='{$app_strings['task_status_dom_colored'][$task->status]}'>"
+            . "<input type='hidden' class='sugar_field' id='status' value='{$task->status}'>"
+            . $app_strings['task_status_dom'][$task->status] .
+            "</span>";
+        return $span;
+    }
+
+}
