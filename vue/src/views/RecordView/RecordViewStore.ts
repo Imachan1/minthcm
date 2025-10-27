@@ -108,7 +108,7 @@ export const useRecordViewStore = defineStore('recordview', () => {
         return Object.keys(subpanelDefs)
             .filter((key) => {
                 const moduleType = subpanelDefs[key].properties?.module?.toString() || ''
-                return acl.hasAccess(moduleType, 'list')
+                return acl.hasAccess(moduleType, 'list', true, true)
             })
             .map((key) => ({
                 properties: subpanelDefs[key].properties,
