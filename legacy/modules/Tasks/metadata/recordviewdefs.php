@@ -1,14 +1,17 @@
 <?php
 
 $viewdefs['Tasks'] = [
-    'order' => ['header', 'overview', 'subpanels'],
+    'order' => ['header', 'overview', 'checklist', 'subpanels'],
     'panels' => [
         'header' => [
             'component' => 'MintPanelRecordHeader',
             'data' => [
                 'fields' => [
-                    ['name'],
-                    ['status'],
+                    [
+                        'status',
+                        'date_start',
+                        'date_due',
+                    ],
                 ],
                 'actions' => [
                     'Audit',
@@ -24,14 +27,25 @@ $viewdefs['Tasks'] = [
                         'title' => 'LBL_BASIC',
                         'fields' => [
                             ['name', 'status', 'priority'],
-                            [['name' => 'date_start', 'readonly' => true], ['name' => 'date_due', 'readonly' => true], 'assigned_user_name'],
-                            [['name' => 'date_entered', 'readonly' => true], ['name' => 'date_modified', 'readonly' => true], 'created_by_name'],
-                            ['', '', 'modified_by_name'],
-                            ['parent_name', 'description', ''],
+                            [
+                                'date_start',
+                                'date_due',
+                                'parent_name',
+                            ],
+                            ['assigned_user_name', 'description'],
+                            [
+
+                                'date_entered',
+                                'date_modified',
+                            ],
                         ],
                     ],
                 ],
             ],
+        ],
+        'checklist' => [
+            'component' => 'MintPanelChecklist',
+            'title' => 'LBL_CHECKLIST',
         ],
         'subpanels' => [
             'component' => 'MintPanelSubpanels',

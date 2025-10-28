@@ -367,11 +367,11 @@ return [
     ],
     'OnboardingTemplates' => [
         'list' => false,
-        'record' => false,
+        'record' => true,
     ],
     'OffboardingTemplates' => [
         'list' => false,
-        'record' => false,
+        'record' => true,
     ],
     'Goals' => [
         'list' => false,

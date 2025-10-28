@@ -468,4 +468,22 @@ $routes = array(
             ),
         ),
     ),
+    "checklist" => array(
+        "method" => "GET",
+        "path" => "/checklist/{id}",
+        "class" => ModuleController::class,
+        "function" => 'getChecklistItems',
+        "desc" => "Returns checklist items for a record if supported.",
+        "options" => array(
+            'auth' => true,
+        ),
+        "pathParams" => array(
+            "id" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Module id",
+                "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
+            ),
+        ),
+    ),
 );

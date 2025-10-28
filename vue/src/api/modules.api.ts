@@ -48,6 +48,10 @@ class ModulesApi {
     public async fetchRelatedRecords(module: string, link: string, id: string) {
         return await mintApi.get(`${module}/subpanel/${link}/${id}`)
     }
+
+    public async getChecklistItems(module: string, recordId: string) {
+        return await mintApi.get(`${module}/checklist/${recordId}`)
+    }
 }
 
 export const modulesApi = new ModulesApi()

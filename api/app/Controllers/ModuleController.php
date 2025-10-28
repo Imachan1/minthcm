@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,16 +36,17 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 namespace MintHCM\Api\Controllers;
 
 use BeanFactory;
+use MintHCM\Data\BeanFactory as MintBeanFactory;
 use MintHCM\Lib\MintLogic\MintLogic;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
@@ -105,8 +106,8 @@ class ModuleController
                 if ('id' === $field_name && !empty($value)) {
                     $bean->new_with_id = true;
                 }
-                if( 'multienum' === $bean->field_defs[$field_name]['type'] && is_array($value)) {
-                    $value = '^'.implode('^,^', $value).'^';
+                if ('multienum' === $bean->field_defs[$field_name]['type'] && is_array($value)) {
+                    $value = '^' . implode('^,^', $value) . '^';
                 }
                 $bean->$field_name = $value;
             }
@@ -137,14 +138,14 @@ class ModuleController
         $files = $request->getAttribute("files") ?? [];
         $links = $request->getAttribute("links") ?? [];
         $record_id = $request->getAttribute("id");
-        
+
         $current_time_zone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $disable_date_format = $GLOBALS['disable_date_format'];
         $GLOBALS['disable_date_format'] = true;
 
         if (!empty($record_id)) {
-        $bean = BeanFactory::getBean($module, $record_id);
+            $bean = BeanFactory::getBean($module, $record_id);
         } else {
             $bean = BeanFactory::newBean($module);
         }
@@ -157,8 +158,8 @@ class ModuleController
         }
         foreach ($record_data as $field_name => $value) {
             if (isset($bean->field_defs[$field_name]) && "id" !== $field_name) {
-                if( 'multienum' === $bean->field_defs[$field_name]['type'] && is_array($value)) {
-                    $value = '^'.implode('^,^', $value).'^';
+                if ('multienum' === $bean->field_defs[$field_name]['type'] && is_array($value)) {
+                    $value = '^' . implode('^,^', $value) . '^';
                 }
                 $bean->$field_name = $value;
             }
@@ -202,7 +203,7 @@ class ModuleController
         $GLOBALS['disable_date_format'] = true;
 
         if (!empty($record_id)) {
-            $bean = BeanFactory::getBean($module,$record_id);
+            $bean = BeanFactory::getBean($module, $record_id);
         } else {
             $bean = BeanFactory::newBean($module);
         }
@@ -295,7 +296,7 @@ class ModuleController
         require_once 'include/SubPanel/SubPanelDefinitions.php';
         $spd = new \SubPanelDefinitions($focus, $module);
         if (isset($spd->layout_defs['subpanel_setup'][$related_name])) {
-            
+
             $target_module = $spd->layout_defs['subpanel_setup'][$related_name]['module'];
             $target_bean = BeanFactory::getBean($target_module);
             if (!$target_bean || !$target_bean->ACLAccess('list')) {
@@ -361,14 +362,14 @@ class ModuleController
 
         chdir('../api/');
 
-        if(!empty($errors)) {
+        if (!empty($errors)) {
             $response = $response->withStatus(400);
             $response->getBody()->write(json_encode(['errors' => $errors]));
             return $response;
         }
 
         $response = $response->withStatus(200);
-        return $response; 
+        return $response;
     }
 
     protected function mergeRecordData($bean)
@@ -377,11 +378,11 @@ class ModuleController
             'id' => $bean->id,
             'module' => $bean->module_name,
             'attributes' => $bean->toArray(),
-                'acl_access' => [
-                    'edit' => $bean->ACLAccess('edit'),
-                    'delete' => $bean->ACLAccess('delete'),
-                    'view' => $bean->ACLAccess('view'),
-                ],
+            'acl_access' => [
+                'edit' => $bean->ACLAccess('edit'),
+                'delete' => $bean->ACLAccess('delete'),
+                'view' => $bean->ACLAccess('view'),
+            ],
             'logic' => (new MintLogic($bean))->getInitial(),
         ];
     }
@@ -448,7 +449,7 @@ class ModuleController
             foreach ($links as $link_name => $link_data) {
                 if (empty($link_data)) {
                     continue;
-}
+                }
                 if (!$bean->load_relationship($link_name)) {
                     $GLOBALS['log']->error("Failed to load relationship {$link_name} for module {$bean->module_name} and record {$bean->id}");
                     continue;
@@ -467,5 +468,31 @@ class ModuleController
             }
             chdir($current_dir);
         }
+    }
+
+    public function getChecklistItems(Request $request, Response $response, array $args): Response
+    {
+        $module = $this->getModuleFromRoute($request);
+        $id = $request->getAttribute('id');
+        $focus = MintBeanFactory::getBean($module, $id);
+        if (empty($focus->id)) {
+            $response = $response->withStatus(404);
+            return $response;
+        }
+        $response = $response->withHeader('Content-type', 'application/json');
+        if (isset($focus->checklist) && !empty($focus->checklist)) {
+            if (!array($focus->checklist)) {
+                $checklistRaw = html_entity_decode($focus->checklist, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                $data = json_decode($checklistRaw, true);
+            } else {
+                $data = $focus->checklist;
+            }
+            $response->getBody()->write($data);
+            return $response;
+        }
+        $data = [
+        ];
+        $response->getBody()->write(json_encode($data));
+        return $response;
     }
 }
