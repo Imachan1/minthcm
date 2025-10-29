@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
 /**
@@ -59,7 +60,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
  * @ORM\Index(name="constoken_key", columns={"consumer"})})
  */
 // Auto-generated SectionRepository section end
-class OAuthTokens
+class OAuthTokens extends MintEntity
 {
 
 // Auto-generated SectionProperties section start

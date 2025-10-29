@@ -50,7 +50,7 @@ namespace {$entityNamespace};
 
 {include file="$sectionrepository"}
 
-class {$className}
+class {$className} extends MintEntity
 {
 
 {include file="$sectionproperties"}

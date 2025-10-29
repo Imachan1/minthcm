@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
 /**
@@ -58,7 +59,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
  * @ORM\Index(name="idx_schedulelogs", columns={"schedule_report_id"})})
  */
 // Auto-generated SectionRepository section end
-class ScheduleReportsLogs
+class ScheduleReportsLogs extends MintEntity
 {
 
 // Auto-generated SectionProperties section start

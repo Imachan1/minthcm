@@ -46,12 +46,12 @@
 
 namespace MintHCM\Api\Repositories;
 
-use Doctrine\ORM\EntityRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use MintHCM\Api\Entities\Users;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
 
-class UsersRepository extends EntityRepository implements UserRepositoryInterface
+class UsersRepository extends MintEntityRepository implements UserRepositoryInterface
 {
     /**
      * @inheritdoc

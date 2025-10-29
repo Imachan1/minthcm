@@ -46,9 +46,9 @@
 
 namespace MintHCM\Api\Repositories;
 
-use Doctrine\ORM\EntityRepository;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
 
-class KudosRepository extends EntityRepository
+class KudosRepository extends MintEntityRepository
 {
     public function getDrawerKudoses($page, $list_type)
     {
@@ -82,8 +82,7 @@ class KudosRepository extends EntityRepository
             ->addOrderBy('date_order', 'DESC')
             ->addOrderBy('employee.last_name', 'ASC')
             ->setFirstResult($page == 1 ? 0 : 20 * ($page - 1))
-            ->setMaxResults(20)
-        ;
+            ->setMaxResults(20);
 
         switch ($list_type) {
             case 'received':

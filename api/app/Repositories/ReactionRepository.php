@@ -46,11 +46,11 @@
 
 namespace MintHCM\Api\Repositories;
 
-use Doctrine\ORM\EntityRepository;
 use MintHCM\Api\Entities\Reactions;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
 
 #[\AllowDynamicProperties]
-class ReactionRepository extends EntityRepository
+class ReactionRepository extends MintEntityRepository
 {
     /*
         * Get a user's reaction to a specific parent entity
