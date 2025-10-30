@@ -46,20 +46,22 @@ ML
 
 <div id="{$field_name}" class="vt_formulaSelector" {{include file='include/SugarFields/include/formulaInclude.tpl'}}>
 <script src='{sugar_getjspath file="include/SugarFields/Fields/Checklist/SugarFieldChecklist.js"}'></script>
-{assign var="checklist" value=$fields.checklist.value|@html_entity_decode|json_decode:1}
-
-<button type="button" class="btn btn-danger email-address-add-button" id="widget_add" onclick="window.SugarFieldChecklist.addTask('{$field_name}',{{$displayParams.size|default:30}}{{if !empty($vardef.len)}},{{$vardef.len}}{{/if}}{{if !empty($tabindex)}},{{$tabindex}}{{/if}})">
-<span class="suitepicon suitepicon-action-plus"></span><span></span>
+{assign var="checklist" value=$fields.checklist.value|json_decode:1}
+<div class="col-xs-12">
+<button type="button" class="btn btn-danger email-address-add-button" id="widget_add" onclick="window.SugarFieldChecklist.addTask('{$field_name}',{{$displayParams.size|default:30}}{{if !empty($vardef.len)}},{{$vardef.len}}{{/if}}{{if !empty($tabindex)}},{{$tabindex}}{{/if}})" style="width: 38px;height: 32px;padding-right: 5px;padding-top: 10px;padding-left: 5px;padding-bottom: 5px;">
+<span class="suitepicon suitepicon-action-plus" style="width: 14px;height: 17px;"></span><span></span>
 </button>
-
-{if empty($checklist)}
-    <div id="{$field_name}_container_0" class="col-xs-12">
+</div>
+{if empty($checklist) && empty($checklist_qc)}
+    <div id="{$field_name}_container_0" class="col-xs-12" style="display: flex;align-items: center;width: 90%;gap: 5px;">
     <input class="checklist" type="text"
             name="{$field_name}[0][task]"
             id="{$field_name}_task_0" 
             size="{{$displayParams.size|default:30}}"
             {{if !empty($vardef.len)}}maxlength='{{$vardef.len}}'{{/if}}
-            value='{$task.task}' {{if !empty($tabindex)}} tabindex="{{$tabindex}}" {{/if}}
+            value='{$task.task|@html_entity_decode}' {{if !empty($tabindex)}} tabindex="{{$tabindex}}" {{/if}}
+            onchange="window.SugarFieldChecklist.updateHiddenField('{$field_name}');"
+            style="margin-right: 4px;"
         >
         <input type="checkbox" 
             id="{{$field_name}}_complete_0" 
@@ -68,16 +70,19 @@ ML
             {if !empty($task.complete) && $task.complete == 1}
                 checked
             {/if}
-            
+            onchange="window.SugarFieldChecklist.updateHiddenField('{$field_name}');"
         >
-        <button type="button" id="removeButton_0" class="btn btn-danger email-address-remove-button" onclick="window.SugarFieldChecklist.removeTask('container_task_0')">
+        <button type="button" id="removeButton_0" class="btn btn-danger email-address-remove-button" onclick="window.SugarFieldChecklist.removeTask('checklist_container_0')" style="margin-right: 0px;">
         <span class="suitepicon suitepicon-action-minus"></span>
         </button>
     </div>
 {/if}
-
+{if empty($checklist) && !empty($checklist_qc)}
+    {assign var="checklist" value=$checklist_qc|json_decode:1}
+{/if}
+{$checklist_qc}
 {foreach from=$checklist item=task key=key}
-        <div id="{$field_name}_container_{$key}">
+        <div id="{$field_name}_container_{$key}" style="display: flex;align-items: center;width: 90%;gap: 5px;" >
             <input class="checklist" type="text"  
                 name="{$field_name}[{$key}][task]"
                 id="{$field_name}_task_{$key}" 
@@ -94,9 +99,11 @@ ML
                 {/if}
                 
             >
-            <button type="button" id="removeButton_{$key}" class="btn btn-danger email-address-remove-button" onclick="window.SugarFieldChecklist.removeTask('container_task_{$key}')">
+            <button type="button" id="removeButton_{$key}" class="btn btn-danger email-address-remove-button" onclick="window.SugarFieldChecklist.removeTask('checklist_container_{$key}')" >
             <span class="suitepicon suitepicon-action-minus"></span>
             </button>
         </div>
 {/foreach}
+
 </div>
+<input type="hidden" name="{$field_name}" id="{$field_name}" value='{$fields.checklist.value}'>

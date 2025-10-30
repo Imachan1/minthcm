@@ -48,135 +48,196 @@ if (typeof SugarFieldChecklist !== 'function') {
             this.nextId = 0;
         }
 
-        setNextId(name){
-            if(this.nextId == 0){
-               this.nextId= $("div#"+name).children('div').length;
+        setNextId(name) {
+            if (this.nextId == 0) {
+                this.nextId = $('div#' + name).children('div').length;
+                return;
             }
-            this.nextId = this.nextId++;
+            this.nextId = ++this.nextId;
         }
-        removeTask(task_id){
-            let task = $("#"+task_id);
-            if(task.length == 0){
+        removeTask(task_id) {
+            let task = $('#' + task_id);
+            if (task.length == 0) {
                 return;
             }
             task.remove();
         }
-        addTask(name,size = 0,length=0,tabindex='',){
+        addTask(name, size = 0, length = 0, tabindex = '') {
             this.setNextId(name);
-            let container = $("div#"+name);
+            let container = $('div#' + name);
             let div = document.createElement('div');
-            div.id = name+'_container_'+this.nextId;
-            div.className = "vt_formulaSelector";
-            let input = this.createInput(size,length,tabindex,name);
+            div.id = name + '_container_' + this.nextId;
+            div.className = 'vt_formulaSelector col-xs-12';
+            div.style.width = '90%';
+            div.style.display = 'flex';
+            div.style.alignItems = 'center';
+            div.style.gap = '5px';
+            let input = this.createInput(size, length, tabindex, name);
 
             let span = document.createElement('span');
             span.className = 'suitepicon suitepicon-action-minus';
-            let button = this.createButton();
+            let button = this.createButton(name);
             let checkbox = this.createCheckbox(name);
             div.appendChild(input);
             div.appendChild(checkbox);
             div.appendChild(button);
             button.appendChild(span);
             container.append(div);
-            
         }
 
-        createButton(){
+        createButton(name) {
             let button = document.createElement('button');
-            button.id = 'removeButton_'+this.nextId;
-            button.className = 'btn btn-danger email-address-remove-button checklistAdded';
-            button.type="button";
+            button.id = 'removeButton_' + this.nextId;
+            button.className =
+                'btn btn-danger email-address-remove-button checklistAdded';
+            button.type = 'button';
+            button.style.marginRight = '0px';
             let id = this.nextId;
-            button.addEventListener('click', function (event) {
-                window.SugarFieldChecklist.removeTask(name+'_container_'+id);
-             }.bind(this));
-             return button;
+            button.addEventListener(
+                'click',
+                function (event) {
+                    window.SugarFieldChecklist.removeTask(
+                        name + '_container_' + id
+                    );
+                }.bind(this)
+            );
+            return button;
         }
 
-        createCheckbox(name){
-            let checkbox = document.createElement('input')
-            checkbox.type = "checkbox";
-            checkbox.name = name+"["+this.nextId+"][complete]";
-            checkbox.id = name+"_complete_"+this.nextId;
+        createCheckbox(name) {
+            let checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.name = name + '[' + this.nextId + '][complete]';
+            checkbox.id = name + '_complete_' + this.nextId;
             checkbox.className = 'checklistAdded';
-            checkbox.value='1';
-            checkbox.style.marginLeft = "2px";
-            checkbox.style.marginRight = "2px";
-            if($("form#formDetailView").length >0){
-                checkbox.addEventListener('change', function () {
-                    window.SugarFieldChecklist.updateCheckList(name);
-                }.bind(this));
+            checkbox.value = '1';
+            checkbox.style.marginLeft = '2px';
+            checkbox.style.marginRight = '2px';
+            if (
+                $('form#formDetailView').length > 0 &&
+                module_sugar_grp1 == 'Tasks'
+            ) {
+                checkbox.addEventListener(
+                    'change',
+                    function () {
+                        window.SugarFieldChecklist.updateCheckList(name);
+                    }.bind(this)
+                );
+            }
+            if (
+                $('form#formEditView').length > 0 ||
+                $("form[id^='form_SubpanelQuickCreate_']").length > 0
+            ) {
+                checkbox.addEventListener(
+                    'change',
+                    function () {
+                        window.SugarFieldChecklist.updateHiddenField(name);
+                    }.bind(this)
+                );
             }
             return checkbox;
         }
 
-        createInput(size,length,tabindex,name){
+        createInput(size, length, tabindex, name) {
             let input = document.createElement('input');
-            input.className = "checklist";
-            input.type = "text";
-            input.name = name+"["+this.nextId+"][task]";
-            input.id = name+"_task_"+this.nextId;
-            if(size != 0){
-                input.size=size;
+            input.className = 'checklist';
+            input.type = 'text';
+            input.name = name + '[' + this.nextId + '][task]';
+            input.id = name + '_task_' + this.nextId;
+            if (size != 0) {
+                input.size = size;
             }
-            if(length != 0){
-                input.length=length;
+            if (length != 0) {
+                input.length = length;
             }
-            if(tabindex != ''){
-                input.tabindex=tabindex;
+            if (tabindex != '') {
+                input.tabindex = tabindex;
             }
+            input.addEventListener(
+                'change',
+                function () {
+                    window.SugarFieldChecklist.updateHiddenField(name);
+                }.bind(this)
+            );
             return input;
         }
 
-        
-        updateCheckList(field_name){
+        updateCheckList(field_name) {
             let tasks_array = {};
-            let tasks = $("div[field='"+field_name+"']").children('div');
+            let tasks = $("div[field='" + field_name + "']").children('div');
             let complete = true;
             let meter = 0;
-            tasks.each(function(index,value){
+            tasks.each(function (index, value) {
                 let task_array = {};
-                
-                let task = $("#"+value.id).children();
+
+                let task = $('#' + value.id).children();
                 let checkbox = task.children();
                 var textArea = document.createElement('textarea');
                 textArea.innerHTML = task.text();
 
-                task_array['task']=textArea.value.trim();
-                if(checkbox.is(':checked')){
-                    task_array['complete']=1;
-                }else{
-                    task_array['complete']=0
+                task_array['task'] = textArea.value.trim();
+                if (checkbox.is(':checked')) {
+                    task_array['complete'] = 1;
+                } else {
+                    task_array['complete'] = 0;
                     complete = false;
                 }
-                tasks_array[meter]=task_array;
+                tasks_array[meter] = task_array;
                 ++meter;
             });
 
             viewTools.api.callCustomApi({
                 module: 'Tasks',
                 action: 'updateCheckList',
-                async:true,
+                async: true,
                 dataPOST: {
                     value: JSON.stringify(tasks_array),
                     complete: complete,
                     id: $("input[name='record']").val(),
                 },
                 callback: function (data) {
-                    if(data == false){
-                        viewTools.GUI.statusBox.showStatus( SUGAR.language.get( 'app_strings', 'LBL_CHECKLIST_ERROR' ), 'error', 6000 );
+                    if (data == false) {
+                        viewTools.GUI.statusBox.showStatus(
+                            SUGAR.language.get(
+                                'app_strings',
+                                'LBL_CHECKLIST_ERROR'
+                            ),
+                            'error',
+                            6000
+                        );
                     }
-                    let status_input = $("#status");
-                    if(status_input.length ==1){
+                    let status_input = $('#status');
+                    if (status_input.length == 1) {
                         status_input.val(data);
                     }
                     let status_div = $("div[field='status']");
-                    if(status_div.length ==1){
-                        status_div.html(data)
+                    if (status_div.length == 1) {
+                        status_div.html(data);
                     }
-                }
-    
+                },
             });
+        }
+        updateHiddenField(field_name) {
+            let tasks_array = {};
+            let tasks = $("input[id^='" + field_name + "_task_']");
+            let meter = 0;
+            tasks.each(function (index, value) {
+                let task_array = {};
+                task_array['task'] = value.value.trim();
+                let checkbox = $(
+                    '#' + field_name + '_complete_' + value.id.slice(-1)
+                );
+                if (checkbox.is(':checked')) {
+                    task_array['complete'] = 1;
+                } else {
+                    task_array['complete'] = 0;
+                }
+                tasks_array[meter] = task_array;
+                ++meter;
+            });
+            $("input[name='" + field_name + "']").val(
+                JSON.stringify(tasks_array)
+            );
         }
     }
     if (typeof window.SugarFieldChecklist == 'undefined') {
@@ -187,7 +248,6 @@ $(document).ready(function () {
     SugarFieldChecklistTimer = setInterval(function () {
         if (typeof moment == 'function' && typeof viewTools == 'object') {
             clearInterval(SugarFieldChecklistTimer);
-
         }
     }, 100);
 });
