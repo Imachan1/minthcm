@@ -15,7 +15,6 @@ export const useLocalStorageStore = defineStore('localStorage', () => {
     const expandedPanels = useStorage<ExpandedPanels>('app.panels.expanded', { modules: {} });
 
     function getPanelSections(module: string, panel: string): Array<number | string> {
-        debugger
         if (!expandedPanels.value.modules[module]) {
             expandedPanels.value.modules[module] = {};
         }
@@ -26,7 +25,6 @@ export const useLocalStorageStore = defineStore('localStorage', () => {
     }
 
     function setPanelSections(module: string, panel: string, sections: Array<number | string>) {
-        debugger
         if (!expandedPanels.value.modules[module]) {
             expandedPanels.value.modules[module] = {};
         }

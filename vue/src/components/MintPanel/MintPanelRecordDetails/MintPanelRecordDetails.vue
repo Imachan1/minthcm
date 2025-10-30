@@ -160,7 +160,6 @@ const save = async () => {
 }
 
 onMounted(() => {
-    debugger
     if (storageInitialized.value) {
         return
     }
