@@ -19,6 +19,7 @@ $viewdefs['SecurityGroups'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

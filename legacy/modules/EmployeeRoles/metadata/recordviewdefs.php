@@ -22,6 +22,7 @@ $viewdefs['EmployeeRoles'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

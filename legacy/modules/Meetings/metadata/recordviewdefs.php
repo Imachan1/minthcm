@@ -1,7 +1,7 @@
 <?php
 
-$viewdefs['Contracts'] = [
-    'order' => ['header', 'basicInfo', 'subpanels'],
+$viewdefs['Meetings'] = [
+    'order' => ['header', 'basicInfo', 'scheduler', 'subpanels'],
     'panels' => [
         'header' => [
             'component' => 'MintPanelRecordHeader',
@@ -23,13 +23,16 @@ $viewdefs['Contracts'] = [
                     'basic' => [
                         'title' => 'LBL_BASIC',
                         'fields' => [
-                            ['name', 'status', 'daily_working_time'],
-                            ['contract_type', 'date_of_signing', 'employee_name'],
-                            ['assigned_user_name', 'description'],
+                            ['name', 'status', 'type'],
+                            ['date_start', 'date_end'],
+                            ['assigned_user_name', 'description']
                         ],
                     ],
                 ],
             ],
+        ],
+        'scheduler' => [
+            'component' => 'MintPanelScheduler',
         ],
         'subpanels' => [
             'component' => 'MintPanelSubpanels',

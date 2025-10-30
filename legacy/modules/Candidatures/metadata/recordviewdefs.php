@@ -17,6 +17,7 @@ $viewdefs['Candidatures'] = [
                     'Audit',
                     'Delete',
                     'ConvertToEmployee',
+                    'Duplicate',
                 ],
             ],
         ],

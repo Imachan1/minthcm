@@ -15,6 +15,7 @@ $viewdefs['Notes'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

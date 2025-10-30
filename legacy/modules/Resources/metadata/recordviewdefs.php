@@ -16,6 +16,7 @@ $viewdefs['Resources'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

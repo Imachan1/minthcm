@@ -14,6 +14,7 @@ $viewdefs['Allocations'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

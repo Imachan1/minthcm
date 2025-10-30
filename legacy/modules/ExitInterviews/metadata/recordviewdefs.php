@@ -15,6 +15,7 @@ $viewdefs['ExitInterviews'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

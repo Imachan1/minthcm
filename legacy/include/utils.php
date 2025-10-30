@@ -1127,23 +1127,7 @@ function getUserArrayFromFullName($args, $hide_portal_users = false)
  */
 function showFullName()
 {
-    global $sugar_config;
-    global $current_user;
-    static $showFullName = null;
-
-    if (is_null($showFullName)) {
-        $sysPref = !empty($sugar_config['use_real_names']);
-        $userPref = (is_object($current_user)) ? $current_user->getPreference('use_real_names')
-        : null;
-
-        if (null != $userPref) {
-            $showFullName = ('on' == $userPref);
-        } else {
-            $showFullName = $sysPref;
-        }
-    }
-
-    return $showFullName;
+    return true;
 }
 
 function clean($string, $maxLength)

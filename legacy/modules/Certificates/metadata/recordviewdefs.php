@@ -12,6 +12,7 @@ $viewdefs['Certificates'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],
