@@ -4783,3 +4783,4 @@ $app_strings['LBL_OTHER'] = 'Other';
 $app_strings['LBL_USER_POSITION_PANEL'] = 'Position Card';
 $app_strings['LBL_COMPETENCIES'] = 'Competencies';
 $app_strings['LBL_RESPONSIBILITIES'] = 'Responsibilities';
+$app_strings['LBL_RELATED_TO'] = 'Related To';
