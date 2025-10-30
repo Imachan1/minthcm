@@ -18,7 +18,11 @@
                 <v-expansion-panel-text class="position-panel-content">
                     <div class="panel-element" v-for="competency in competencies" :key="competency.id">
                         <h2 class="element-name">{{ competency.name }}</h2>
-                        <div class="element-description">{{ competency.description }}</div>
+                        <div 
+                            class="element-description"
+                            v-for="line in (competency.description || '').split('\n')"
+                            :key="line"
+                        >{{ line }}</div>
                     </div>
                 </v-expansion-panel-text>
             </v-expansion-panel>
@@ -39,7 +43,11 @@
                 <v-expansion-panel-text class="position-panel-content">
                     <div class="panel-element" v-for="responsibility in responsibilities" :key="responsibility.id">
                         <h2 class="element-name">{{ responsibility.name }}</h2>
-                        <div class="element-description">{{ responsibility.description }}</div>
+                        <div 
+                            class="element-description"
+                            v-for="line in (responsibility.description || '').split('\n')"
+                            :key="line"
+                        >{{ line }}</div>
                     </div>
                 </v-expansion-panel-text>
             </v-expansion-panel>
@@ -145,7 +153,11 @@ onMounted(async () => {
 
         .element-description {
             font-size: 14px;
-            padding: 8px;
+            padding: 2px 0px 0px 8px;
+        }
+
+        .element-description:first-child {
+            padding: 8px 0px 0px 8px;
         }
     }
 
