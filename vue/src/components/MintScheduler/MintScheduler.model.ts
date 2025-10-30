@@ -22,6 +22,7 @@ export interface DataActivity extends DataPeriod {
     id: string
     name: string
     module: string
+    overflowIndex?: number
 }
 
 export interface DataPeriod {

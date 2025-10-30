@@ -1,5 +1,5 @@
 <template>
-    <div class="scheduler-row">
+    <div class="scheduler-row" :style="{height: `${56 + (overflowValue * 30)}px`}">
         <component
             :is="hasAccess ? 'router-link' : 'div'"
             :to="participantUrl"
@@ -61,29 +61,60 @@ const participantUrl = computed(() => {
 const hasAccess = computed(() => {
     return useACL().hasAccess(props.participant.module, 'view', true, true)
 })
-
 const activities = computed(() => {
     const activities = [] as DataActivity[]
-    let prevActivity: DataActivity | null = null
     props.participant.activities
         ?.toSorted((a, b) => (a.date_start < b.date_start ? -1 : a.date_start > b.date_start ? 1 : 0))
         .forEach((activity: any) => {
             if (activity.id === props.scheduler.bean?.id) {
                 return
             }
-            const overflowsWithPrevious =
-                prevActivity &&
-                prevActivity.date_start < activity.date_end &&
-                prevActivity.date_end > activity.date_start &&
-                !prevActivity.overflowsWithPrevious
+            const overflowIndex = getOverflowIndex(activity.id)
             activity = {
                 ...activity,
-                overflowsWithPrevious,
+                overflowIndex,
             }
             activities.push(activity)
-            prevActivity = activity
         })
     return activities
+})
+
+const overflowGroups = computed(() => {
+    const groups = [] as DataActivity[][]
+    let prevActivity: DataActivity | null = null
+    props.participant.activities
+    ?.toSorted((a, b) => (a.date_start < b.date_start ? -1 : a.date_start > b.date_start ? 1 : 0))
+    .forEach((activity: any) => {
+        if (activity.id === props.scheduler.bean?.id) {
+            return
+        }
+        const overflowsWithPrevious =
+            prevActivity &&
+            prevActivity.date_start < activity.date_end &&
+            prevActivity.date_end > activity.date_start
+        if (overflowsWithPrevious) {
+            groups[groups.length - 1].push(activity)
+        } else {
+            groups.push([activity])
+        }
+        prevActivity = activity
+    })
+    return groups
+})
+
+const overflowValue = computed(() => {
+    if (overflowGroups.value.length === 0) return 0
+    return Math.max(...overflowGroups.value.map(group => group.length)) - 1
+})
+
+const getOverflowIndex = ((activity_id) => {
+    for (let group of overflowGroups.value) {
+        const activityIndex = group.findIndex((activity) => activity.id === activity_id)
+        if (activityIndex !== -1) {
+            return activityIndex
+        }
+    }
+    return 0
 })
 
 const description = computed(() => {
@@ -99,7 +130,7 @@ const description = computed(() => {
     display: flex;
     align-items: center;
     width: 100%;
-    height: 56px;
+    min-height: 56px;
     position: relative;
 }
 
@@ -149,12 +180,13 @@ const description = computed(() => {
     color: rgb(var(--v-theme-secondary));
     height: 100%;
     display: flex;
-    align-items: center;
+    align-items: start;
     gap: 16px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     text-decoration: none;
+    padding-top: 8px;
 }
 
 .scheduler-data {

@@ -53,6 +53,7 @@ const style = computed(() => {
     padding: 4px 8px;
     font-size: 10px;
     border-left: 2px solid #888;
+    border-right: 2px solid #888;
     letter-spacing: 0.33px;
     height: calc(100% - 8px);
     margin: 0 4px;

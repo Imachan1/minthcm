@@ -86,7 +86,7 @@ const position = useDataPosition(
 const style = computed(() => {
     return {
         ...position.style.value,
-        [props.activity.overflowsWithPrevious ? 'top' : 'bottom']: '6px',
+        'bottom': `${6 + (props.activity.overflowIndex * 30)}px`,
     }
 })
 
