@@ -657,9 +657,15 @@ function getCurrencyDropDown($focus, $field = 'currency_id', $value = '', $view 
          $html .= $currency->getJavascript();
       }
       return $html;
-   } 
-      $currency = BeanFactory::newBean('Currencies');
+   }
+   if($view === 'Eslist'){
+      chdir('../legacy');
+   }
+   $currency = BeanFactory::newBean('Currencies');
    $currency->retrieve($value);
+   if($view === 'Eslist'){
+      chdir('../api');
+   }
    return $currency->name;
 }
 

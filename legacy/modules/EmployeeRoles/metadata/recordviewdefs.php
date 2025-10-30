@@ -14,8 +14,10 @@ $viewdefs['EmployeeRoles'] = [
             'component' => 'MintPanelRecordHeader',
             'data' => [
                 'fields' => [
-                    ['name'],
-                    ['status'],
+                    [
+                        'name',
+                        'status'
+                    ],
                 ],
                 'actions' => [
                     'Audit',
