@@ -111,7 +111,10 @@ const storage = useLocalStorageStore()
 
 const storageInitialized = ref(false)
 const expandedSections = computed({
-    get: () => storage.getPanelSections(store.bean.module, 'MintPanelRecordDetails'),
+    get: () => {
+        storageInitialized.value = true
+        return storage.getPanelSections(store.bean.module, 'MintPanelRecordDetails')
+    },
     set: (value: string[]) => storage.setPanelSections(store.bean.module, 'MintPanelRecordDetails', value)
 })
 
@@ -157,7 +160,8 @@ const save = async () => {
 }
 
 onMounted(() => {
-    if (!storageInitialized.value) {
+    debugger
+    if (storageInitialized.value) {
         return
     }
 
