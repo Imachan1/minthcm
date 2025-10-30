@@ -1215,9 +1215,13 @@ function return_app_list_strings_language($language)
 
     $app_list_strings_array = array();
 
+    $current_dir = end(explode('/', getcwd()));
+
     foreach ($langs as $lang) {
         $app_list_strings = array();
-        chdir('../legacy');
+        if ($current_dir != 'legacy') {
+            chdir('../legacy');
+        }
         if (file_exists("include/language/$lang.lang.php")) {
             include "include/language/$lang.lang.php";
             $GLOBALS['log']->info("Found language file: $lang.lang.php");
@@ -1255,6 +1259,9 @@ function return_app_list_strings_language($language)
     if (!isset($app_list_strings)) {
         $GLOBALS['log']->fatal("Unable to load the application language file for the selected language ($language) or the default language ($default_language) or the en_us language");
 
+        if ($current_dir != 'legacy') {
+            chdir('../' . $current_dir);
+        }
         return;
     }
 
@@ -1263,6 +1270,10 @@ function return_app_list_strings_language($language)
 
     sugar_cache_put($cache_key, $return_value);
 
+    if ($current_dir != 'legacy') {
+        chdir('../' . $current_dir);
+    }
+    
     return $return_value;
 }
 
