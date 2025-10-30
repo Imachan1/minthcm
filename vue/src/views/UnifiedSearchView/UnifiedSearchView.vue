@@ -182,6 +182,7 @@ async function search() {
             query: standardizedQuery.value,
             itemsPerPage: options.value.itemsPerPage,
             page: options.value.page,
+            isUnifiedSearch: true,
         })
         searchResponse.value = response.data
         searchResponse.value.results.forEach((item) => {

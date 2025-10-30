@@ -99,6 +99,12 @@ $routes = array(
                 "desc" => "Page number for pagination. Defaults to 1.",
                 "example" => '1',
             ),
+            "isUnifiedSearch" => array(
+                "type" => StringType::class,
+                "required" => false,
+                "desc" => "Flag to indicate unified search view",
+                "example" => 'true',
+            ),
         ),
         "bodyParams" => array(),
     ),

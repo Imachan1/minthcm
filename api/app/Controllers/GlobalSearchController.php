@@ -76,7 +76,7 @@ class GlobalSearchController
             $query = $request->getAttribute('query');
             $itemsPerPage = $request->getAttribute('itemsPerPage') ?? 5;
             $page = $request->getAttribute('page') ?? 1;
-            $is_unified_search = $itemsPerPage != 5;
+            $is_unified_search = $request->getAttribute('isUnifiedSearch') ?? false;
 
             $search_manager = Search::getManager();
             $search_manager->setElasticACL(!is_admin($current_user));
