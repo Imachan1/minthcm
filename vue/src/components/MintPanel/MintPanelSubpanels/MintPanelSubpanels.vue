@@ -73,28 +73,9 @@ const acl = useACL()
 const storage = useLocalStorageStore()
 
 const expandedSubpanels = computed({
-    get: () => {
-        if (!Object.keys(storage.expandedPanels.modules).includes(store.bean.module)) {
-            storage.expandedPanels.modules[store.bean.module] =  {
-                MintPanelSubpanels: {
-                    sections: []
-                }
-            }
-        } else if (!Object.keys(storage.expandedPanels.modules[store.bean.module]).includes('MintPanelSubpanels')) {
-            storage.expandedPanels.modules[store.bean.module].MintPanelSubpanels = {
-                sections: []
-            }
-        }
-
-        const stored = storage.expandedPanels.modules[store.bean.module]?.MintPanelSubpanels.sections ?? []
-        return stored 
-    },
-    set: (value) => {
-        storage.expandedPanels.modules[store.bean.module].MintPanelSubpanels = {
-            sections: value
-        }
-    }
-})
+    get: () => storage.getPanelSections(store.bean.module, 'MintPanelSubpanels'),
+    set: (value: string[]) => storage.setPanelSections(store.bean.module, 'MintPanelSubpanels', value)
+});
 
 const changePage = (page: number, tableName: string, paginateBy: number) => {
     store.fetchSubpanelRecords(tableName, paginateBy, page)

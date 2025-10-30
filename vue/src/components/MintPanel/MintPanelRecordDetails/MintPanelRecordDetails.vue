@@ -111,27 +111,8 @@ const storage = useLocalStorageStore()
 
 const storageInitialized = ref(false)
 const expandedSections = computed({
-    get: () => {
-        if (!Object.keys(storage.expandedPanels.modules).includes(store.bean.module)) {
-            storageInitialized.value = true
-            storage.expandedPanels.modules[store.bean.module] =  {
-                MintPanelRecordDetails: {
-                    sections: []
-                }
-            }
-        } else if (!Object.keys(storage.expandedPanels.modules[store.bean.module]).includes('MintPanelRecordDetails')) {
-            storage.expandedPanels.modules[store.bean.module].MintPanelRecordDetails = {
-                sections: []
-            }
-        }
-        const stored = storage.expandedPanels.modules[store.bean.module]?.MintPanelRecordDetails.sections ?? []
-        return stored 
-    },
-    set: (value) => {
-        storage.expandedPanels.modules[store.bean.module].MintPanelRecordDetails = {
-            sections: value
-        }
-    }
+    get: () => storage.getPanelSections(store.bean.module, 'MintPanelRecordDetails'),
+    set: (value: string[]) => storage.setPanelSections(store.bean.module, 'MintPanelRecordDetails', value)
 })
 
 

@@ -12,9 +12,27 @@ interface ExpandedPanels {
 }
 
 export const useLocalStorageStore = defineStore('localStorage', () => {
-    const expandedPanels = useStorage<ExpandedPanels>('app.panels.expanded', { modules: {}});
+    const expandedPanels = useStorage<ExpandedPanels>('app.panels.expanded', { modules: {} });
 
-    return { 
-        expandedPanels,
+    function getPanelSections(module: string, panel: string): Array<number | string> {
+        if (!expandedPanels.value.modules[module]) {
+            expandedPanels.value.modules[module] = {};
+        }
+        if (!expandedPanels.value.modules[module][panel]) {
+            expandedPanels.value.modules[module][panel] = { sections: [] };
+        }
+        return expandedPanels.value.modules[module][panel].sections;
+    }
+
+    function setPanelSections(module: string, panel: string, sections: Array<number | string>) {
+        if (!expandedPanels.value.modules[module]) {
+            expandedPanels.value.modules[module] = {};
+        }
+        expandedPanels.value.modules[module][panel] = { sections };
+    }
+
+    return {
+        getPanelSections,
+        setPanelSections,
     }
 });
