@@ -194,7 +194,7 @@ const save = async () => {
     }
     store.inlineEditField = ''
     const response = await store.bean.save()
-    if (response) {
+    if (response.status) {
         store.view = 'detail'
         store.inlineEditField = ''
         store.inlineEditFieldSaving = ''

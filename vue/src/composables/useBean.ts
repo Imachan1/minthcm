@@ -68,6 +68,7 @@ export const useBean = (module: string, id: string) => {
         const formPanel = Object.values(modulesStore.modules[module]?.metadata.RecordView?.panels ?? {}).find( // FIXME: refactor - podobny kod w useLogic
             (panel) => panel.component === 'MintPanelRecordDetails',
         )
+        
         const errors: { [key: string]: string } = {}
         if (!formPanel) {
             return errors
@@ -231,7 +232,12 @@ export const useBean = (module: string, id: string) => {
     async function save() {
         isDirty.value = true
         if (!isValid.value) {
-            return false
+            return {
+                status: false,
+                error: 'validation_failed',
+                errorMessages: errorMessages.value,
+                validationError: validationError.value,
+            }
         }
         isSaving.value = true
         try {
@@ -269,7 +275,12 @@ export const useBean = (module: string, id: string) => {
             if (error?.response?.data?.isValid === false && error.response.data.error) {
                 validationError.value = error.response.data.error
             }
-            return false
+            return {
+                status: false,
+                error: 'save_request_failed',
+                errorMessages: errorMessages.value,
+                validationError: validationError.value,
+            }
         } finally {
             isSaving.value = false
         }

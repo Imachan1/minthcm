@@ -18,6 +18,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useLanguagesStore } from '@/store/languages'
 import { modulesApi } from '@/api/modules.api'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
+import { useStatusBoxesStore } from '@/store/statusBoxes'
 
 interface Props {
     data: {
@@ -82,7 +83,14 @@ async function toggleItem(item: ChecklistItem) {
     store.bean.updateFields({
         checklist: checklistJson,
     })
-    store.bean.save()
+    let successfulSave = await store.bean.save()
+    if (!successfulSave.status) {
+        useStatusBoxesStore().showStatus(successfulSave.error, {
+            type: 'error',
+            message: useLanguagesStore().label('LBL_VALIDATION_ERROR', store.bean.module),
+            autoClose: true,
+        })
+    }
 }
 
 onMounted(() => {
