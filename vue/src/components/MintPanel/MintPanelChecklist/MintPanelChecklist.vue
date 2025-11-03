@@ -38,7 +38,6 @@ interface ChecklistItem {
 const checklist = ref<ChecklistItem[]>([])
 
 const title = computed(() => {
-    debugger
     return languages.label(props.data?.title ?? 'LBL_DETAILS', store.bean.module)
 })
 
