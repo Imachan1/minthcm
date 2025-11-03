@@ -72,7 +72,7 @@ ML
             {/if}
             onchange="window.SugarFieldChecklist.updateHiddenField('{$field_name}');"
         >
-        <button type="button" id="removeButton_0" class="btn btn-danger email-address-remove-button" onclick="window.SugarFieldChecklist.removeTask('checklist_container_0')" style="margin-right: 0px;">
+        <button type="button" id="removeButton_0" class="btn btn-danger email-address-remove-button" onclick="window.SugarFieldChecklist.removeTask('checklist_container_0','{$field_name}')" style="margin-right: 0px;">
         <span class="suitepicon suitepicon-action-minus"></span>
         </button>
     </div>
@@ -89,17 +89,19 @@ ML
                 size="{{$displayParams.size|default:30}}"
                 {{if !empty($vardef.len)}}maxlength='{{$vardef.len}}'{{/if}}
                 value='{$task.task}' {{if !empty($tabindex)}} tabindex="{{$tabindex}}" {{/if}}
+                onchange="window.SugarFieldChecklist.updateHiddenField('{$field_name}');"
             >
             <input  type="checkbox" 
                 id="{{$field_name}}_complete_{$key}" 
                 name="{$field_name}[{$key}][complete]"
                 value="1"
+                onchange="window.SugarFieldChecklist.updateHiddenField('{$field_name}');"
                 {if $task.complete == 1}
                     checked
                 {/if}
                 
             >
-            <button type="button" id="removeButton_{$key}" class="btn btn-danger email-address-remove-button" onclick="window.SugarFieldChecklist.removeTask('checklist_container_{$key}')" >
+            <button type="button" id="removeButton_{$key}" class="btn btn-danger email-address-remove-button" onclick="window.SugarFieldChecklist.removeTask('checklist_container_{$key}','{$field_name}')" >
             <span class="suitepicon suitepicon-action-minus"></span>
             </button>
         </div>
