@@ -182,11 +182,7 @@ class MintLogic
         $logic['readonly'] = self::calculateExpression($rule['logic']['readonly'], $this->bean) ?? [];
         foreach ($logic['readonly'] as $field => $isReadonly) {
             if ($isReadonly) {
-                if ($this->isNewRecord()) {
-                    $this->bean->{$field} = $this->bean->{$field} ?? null;
-                } else {
-                    $this->bean->{$field} = $this->bean->fetched_row[$field] ?? null;
-                }
+                $this->bean->{$field} = $this->bean->{$field} ?? $this->bean->fetched_row[$field] ?? null;
                 $logic['update'][$field] = $this->bean->{$field};
             }
         }
@@ -241,8 +237,4 @@ class MintLogic
         return $expr;
     }
 
-    private function isNewRecord()
-    {
-        return empty($this->bean->id) || $this->bean->new_with_id;
-    }
 }
