@@ -1,31 +1,16 @@
 <?php
 
 $viewdefs['Employees'] = [
-    'order' => ['header', 'basicInfo', 'subpanels'],
+    'order' => ['basicInfo', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelEmployeeRecordHeader',
+        'basicInfo' => [
+            'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    [
-                        'position_name',
-                        'phone_work',
-                        [
-                            'name' => 'email1',
-                            'type' => 'email',
-                        ],
-                    ],
-                ],
                 'actions' => [
                     'Audit',
                     'Delete',
                     'Duplicate',
                 ],
-            ],
-        ],
-        'basicInfo' => [
-            'component' => 'MintPanelRecordDetails',
-            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -33,13 +18,15 @@ $viewdefs['Employees'] = [
                             [
                                 'first_name',
                                 'last_name',
+                            ],
+                            [
                                 [
                                     'name' => 'email1',
                                     'type' => 'email',
                                 ],
+                                'phone_mobile',
                             ],
                             [
-                                'phone_mobile',
                                 'phone_work',
                                 'phone_other',
                             ],
@@ -49,13 +36,15 @@ $viewdefs['Employees'] = [
                                     'name' => 'birthdate',
                                     'type' => 'age',
                                 ],
+                            ],
+                            [
+                                'position_name',
                                 [
                                     'name' => 'photo',
                                     'type' => 'file',
                                 ],
                             ],
                             [
-                                'position_name',
                                 'securitygroup_name',
                                 'reports_to_name',
                             ],
@@ -80,6 +69,9 @@ $viewdefs['Employees'] = [
                                         'separator' => ', ',
                                     ],
                                 ],
+                                '',
+                            ],
+                            [
                                 'description',
                             ],
                             ['created_by_name', 'modified_by_name'],

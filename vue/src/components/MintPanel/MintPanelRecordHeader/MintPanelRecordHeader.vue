@@ -69,11 +69,14 @@ import BeanActions from '@/business/BeanActions'
 interface Props {
     data: {
         fields: Array<Array<FieldVardef>>
-        actions?: ({
-            name: string
-            title?: string
-            icon?: string
-        } | string)[]
+        actions?: (
+            | {
+                  name: string
+                  title?: string
+                  icon?: string
+              }
+            | string
+        )[]
     }
 }
 
@@ -110,7 +113,6 @@ const goBack = () => {
     router.back()
 }
 const isFavorite = computed(() => favorites.isFavorite(store.bean.module, store.bean.id))
-
 </script>
 
 <style scoped lang="scss">

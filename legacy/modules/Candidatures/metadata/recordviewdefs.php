@@ -1,29 +1,17 @@
 <?php
 
 $viewdefs['Candidatures'] = [
-    'order' => ['header', 'basicInfo', 'files', 'subpanels'],
+    'order' => ['basicInfo', 'files', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
+        'basicInfo' => [
+            'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    [
-                        'status',
-                        'scoring',
-                        'task_grade',
-                    ],
-                ],
                 'actions' => [
                     'Audit',
                     'Delete',
                     'ConvertToEmployee',
                     'Duplicate',
                 ],
-            ],
-        ],
-        'basicInfo' => [
-            'component' => 'MintPanelRecordDetails',
-            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
