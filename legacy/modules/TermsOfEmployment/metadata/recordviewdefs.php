@@ -1,24 +1,16 @@
 <?php
 
 $viewdefs['TermsOfEmployment'] = [
-    'order' => ['header', 'contract', 'subpanels'],
+    'order' => ['contract', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
+        'contract' => [
+            'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    ['name'],
-                ],
                 'actions' => [
                     'Audit',
                     'Delete',
                     'Duplicate',
                 ],
-            ],
-        ],
-        'contract' => [
-            'component' => 'MintPanelRecordDetails',
-            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -26,26 +18,18 @@ $viewdefs['TermsOfEmployment'] = [
                             [
                                 'name',
                                 'contract_name',
+                            ],
+                            [
                                 'date_of_signing',
+                                'position_name',
                             ],
                             [
                                 'term_starting_date',
                                 'term_ending_date',
-                                'position_name',
                             ],
                             [
                                 'employee_name',
                                 'assigned_user_name',
-                            ],
-                            [
-                                [
-                                    'name' => 'date_entered',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'date_modified',
-                                    'readonly' => true,
-                                ],
                             ],
                             [
                                 'description',

@@ -1,27 +1,16 @@
 <?php
 
 $viewdefs['Positions'] = [
-    'order' => ['header', 'mainPanel', 'positionCard', 'subpanels'],
+    'order' => ['mainPanel', 'positionCard', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
+        'mainPanel' => [
+            'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    [
-                        'name',
-                        'status'
-                    ],
-                ],
                 'actions' => [
                     'Audit',
                     'Delete',
                     'Duplicate',
                 ],
-            ],
-        ],
-        'mainPanel' => [
-            'component' => 'MintPanelRecordDetails',
-            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -38,36 +27,17 @@ $viewdefs['Positions'] = [
                                     'type' => 'enum',
                                     'options' => 'position_status',
                                 ],
-                                'assigned_user_name',
                             ],
                             [
                                 'securitygroup_leader_name',
                                 'positions_supervision_name',
-                                'description',
                             ],
                             [
                                 'offboardingtemplate_name',
                                 'onboardingtemplate_name',
                             ],
                             [
-                                [
-                                    'name' => 'date_entered',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'date_modified',
-                                    'readonly' => true,
-                                ],
-                            ],
-                            [
-                                [
-                                    'name' => 'created_by_name',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'modified_by_name',
-                                    'readonly' => true,
-                                ],
+                                'description',
                             ],
                         ],
                     ],

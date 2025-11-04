@@ -134,17 +134,25 @@ export const useRecordViewStore = defineStore('recordview', () => {
                         parent_module: subpanelDefs[key].properties?.module?.toString() || '',
                     }))
                     .filter((record) => record.id !== 'total' && record.id !== 'page'),
-            page: subpanelsData.value?.[key]?.page || 0,
-            total: subpanelsData.value?.[key]?.total || 0,
-            paginateBy: backendStore.initData.global.list_max_entries_per_subpanel ? parseInt(backendStore.initData.global.list_max_entries_per_subpanel, 10) : 10
-        }))
+                page: subpanelsData.value?.[key]?.page || 0,
+                total: subpanelsData.value?.[key]?.total || 0,
+                paginateBy: backendStore.initData.global.list_max_entries_per_subpanel
+                    ? parseInt(backendStore.initData.global.list_max_entries_per_subpanel, 10)
+                    : 10,
+            }))
     })
 
     async function fetchSubpanelsData() {
         const route = useRoute()
         const data = await Promise.all(
             subpanels.value.map((subpanel) => {
-                return subpanelsApi.fetchSubpanelsData(route.params.module, subpanel.key, route.params.id, subpanel.paginateBy, 0)
+                return subpanelsApi.fetchSubpanelsData(
+                    route.params.module,
+                    subpanel.key,
+                    route.params.id,
+                    subpanel.paginateBy,
+                    0,
+                )
             }),
         )
         subpanelsData.value = subpanels.value.reduce((prev, curr, index) => {
@@ -154,11 +162,16 @@ export const useRecordViewStore = defineStore('recordview', () => {
     }
 
     async function fetchSubpanelRecords(subpanelKey: string, paginateBy: number, page: number) {
-        const data = await subpanelsApi.fetchSubpanelsData(route.params.module, subpanelKey, route.params.id, paginateBy, page)
+        const data = await subpanelsApi.fetchSubpanelsData(
+            route.params.module,
+            subpanelKey,
+            route.params.id,
+            paginateBy,
+            page,
+        )
         if (!subpanelsData.value) subpanelsData.value = {}
         subpanelsData.value[subpanelKey] = data?.data
     }
-
 
     interface SubpanelsData {
         [key: string]: {
@@ -169,7 +182,6 @@ export const useRecordViewStore = defineStore('recordview', () => {
     }
 
     const subpanelsData = ref<SubpanelsData | null>(null)
-    const columns = ref<number>(3)
 
     async function fetchLanguagesForSubpanels() {
         const languages = useLanguagesStore()
@@ -194,7 +206,6 @@ export const useRecordViewStore = defineStore('recordview', () => {
         subpanels,
         fetchSubpanelsData,
         fetchLanguagesForSubpanels,
-        columns,
         updateField,
         fetchSubpanelRecords,
     }

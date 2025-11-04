@@ -1,31 +1,24 @@
 <?php
 
 $viewdefs['Meetings'] = [
-    'order' => ['header', 'basicInfo', 'scheduler', 'subpanels'],
+    'order' => ['basicInfo', 'scheduler', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    ['name', 'status'],
-                ],
+        'basicInfo' => [
+            'component' => 'MintPanelRecordDetails',
                 'actions' => [
                     'Audit',
                     'Delete',
                     'Duplicate',
                 ],
-            ],
-        ],
-        'basicInfo' => [
-            'component' => 'MintPanelRecordDetails',
             'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
                         'fields' => [
-                            ['name', 'status', 'type'],
+                            ['name', 'status'],
+                            ['type', 'assigned_user_name'],
                             ['date_start', 'date_end'],
-                            ['assigned_user_name', 'description']
+                            ['description']
                         ],
                     ],
                 ],

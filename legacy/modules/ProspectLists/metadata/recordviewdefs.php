@@ -1,24 +1,16 @@
 <?php
 
 $viewdefs['ProspectLists'] = [
-    'order' => ['header', 'basicInfo', 'subpanels'],
+    'order' => ['basicInfo', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
+        'basicInfo' => [
+            'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    ['list_type', 'entry_count'],
-                ],
                 'actions' => [
                     'Audit',
                     'Delete',
                     'Duplicate',
                 ],
-            ],
-        ],
-        'basicInfo' => [
-            'component' => 'MintPanelRecordDetails',
-            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -26,21 +18,14 @@ $viewdefs['ProspectLists'] = [
                             [
                                 'name',
                                 'list_type',
-                                'domain_name',
                             ],
                             [
                                 'automatic_update',
                                 'kreport_name',
+                            ],
+                            [
+                                'domain_name',
                                 'description',
-                            ],
-                            [
-                                'date_entered',
-                                'date_modified',
-                            ],
-                            [
-                                'created_by_name',
-                                'modified_by_name',
-                                'assigned_user_name',
                             ],
                         ],
                     ],
