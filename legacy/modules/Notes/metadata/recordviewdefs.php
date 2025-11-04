@@ -1,28 +1,17 @@
 <?php
 
 $viewdefs['Notes'] = [
-    'order' => ['header', 'overview', 'subpanels'],
+    'order' => ['overview', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
+        'overview' => [
+            'component' => 'MintPanelRecordDetails',
+            'title' => 'LBL_NOTE_INFORMATION',
             'data' => [
-                'fields' => [
-                    [
-                        'filename',
-                        'assigned_user_name',
-                    ],
-                ],
                 'actions' => [
                     'Audit',
                     'Delete',
                     'Duplicate',
                 ],
-            ],
-        ],
-        'overview' => [
-            'component' => 'MintPanelRecordDetails',
-            'title' => 'LBL_NOTE_INFORMATION',
-            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -34,15 +23,6 @@ $viewdefs['Notes'] = [
                             [
                                 'parent_name',
                                 'description',
-                            ],
-                            [
-                                'date_entered',
-                                'date_modified',
-                            ],
-                            [
-                                'created_by_name',
-                                'modified_by_name',
-                                'assigned_user_name',
                             ],
                         ],
                     ],

@@ -1,24 +1,16 @@
 <?php
 
 $viewdefs['Certificates'] = [
-    'order' => ['header', 'basicInfo', 'subpanels'],
+    'order' => ['basicInfo', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
+        'basicInfo' => [
+            'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    ['name'],
-                ],
                 'actions' => [
                     'Audit',
                     'Delete',
                     'Duplicate',
                 ],
-            ],
-        ],
-        'basicInfo' => [
-            'component' => 'MintPanelRecordDetails',
-            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -29,28 +21,13 @@ $viewdefs['Certificates'] = [
                                     'required' => true,
                                 ],
                                 'attempts_number',
+                            ],
+                            [
                                 'pass_rate',
-                            ],
-                            [
                                 'duration',
-                                'description',
                             ],
-                        ],
-                    ],
-                    'other' => [
-                        'title' => 'LBL_RECORDVIEW_PANEL',
-                        'collapsed' => true,
-                        'fields' => [
                             [
-                                'assigned_user_name',
-                                [
-                                    'name' => 'date_entered',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'date_modified',
-                                    'readonly' => true,
-                                ],
+                                'description',
                             ],
                         ],
                     ],
