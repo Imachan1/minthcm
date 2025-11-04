@@ -1,13 +1,14 @@
 <template>
   <VContainer fluid>
-    <VRow no-gutters>
+    <VRow no-gutters >
       <VCol
         v-for="(name, key) in defs.columns"
         :key="key"
         :class="{
           'column-name': true,
-          'px-2': true,
+          'pa-2': true,
           'pt-1': true,
+          'pb-0': true,
           'd-flex': true,
           'justify-center': true,
           'align-center': true,
@@ -17,7 +18,7 @@
         <p class="ma-0 font-weight-bold text-center">{{ name }}</p>
       </VCol>
     </VRow>
-    <VRow no-gutters>
+    <VRow no-gutters >
       <VCol
         v-for="(name, key) in defs.columns"
         :key="key"
