@@ -231,7 +231,6 @@ class ModuleController
         $record_id = $request->getAttribute("id");
         $attributes = $request->getAttribute("attributes");
         $triggerFields = $request->getAttribute("triggerFields");
-        $fromQuery = $request->getAttribute("fromQuery") ?? false;
         chdir('../legacy/');
         if (!empty($record_id)) {
             $bean = BeanFactory::getBean($module, $record_id);
@@ -246,7 +245,7 @@ class ModuleController
         foreach ($attributes as $field => $value) {
             $bean->{$field} = $value;
         }
-        $result = (new MintLogic($bean, $fromQuery))->getChanged($triggerFields);
+        $result = (new MintLogic($bean))->getChanged($triggerFields);
         chdir('../api/');
         $response->getBody()->write(json_encode($result));
         return $response;

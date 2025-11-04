@@ -237,12 +237,6 @@ $routes = array(
                     ],
                 ',
             ),
-            "fromQuery" => array(
-                "type" => BoolType::class,
-                "required" => false,
-                "desc" => "If true, the logic is triggered from a query param change",
-                "example" => 'true',
-            ),
         ),
     ),
     "delete" => array(

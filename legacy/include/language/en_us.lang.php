@@ -4774,13 +4774,12 @@ $app_strings['LBL_WORKSCHEDULES_DAY_VALID'] = 'Get notified if not closed Work S
 $app_strings['LBL_WORKSCHEDULES_NOT_PLANNED_FOR_TWO_WEEKS'] = 'Get notified if Work Schedule is not planned for two weeks';
 $app_strings['LBL_WORKSCHEDULESACCEPTANCE'] = 'Get notified if the work schedule is approved by the supervisor';
 $app_strings['LBL_CLEAR_BUTTON_KANBAN_LABEL'] = 'Clear Filters';
-$app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';$app_strings['LBL_LINK_RECORD_BUTTON'] = 'LINK RECORD';
+$app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';
 $app_strings['LBL_LINK_RECORD_BUTTON'] = 'LINK RECORD';
 $app_strings['LBL_EXPAND'] = 'Expand';
 $app_strings['LBL_COLLAPSE'] = 'Collapse';
 $app_strings['LBL_BASIC'] = 'Basic';
 $app_strings['LBL_OTHER'] = 'Other';
-$app_strings['LBL_KANBAN_UNASSIGNED'] = 'Unassigned';
 
 $app_list_strings['candidatures_route_of_acquisition_list'] = array(
     'original_candidature' => 'Original candidature',
