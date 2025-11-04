@@ -19,9 +19,9 @@ $viewdefs['Candidatures'] = [
                             [
                                 'status',
                                 'status_information',
-                                'start_date',
                             ],
                             [
+                                'start_date',
                                 'reason_for_rejection',
                             ],
                             [
@@ -30,6 +30,8 @@ $viewdefs['Candidatures'] = [
                             ],
                             [
                                 'to_decision',
+                            ],
+                            [
                                 'recruitment_name',
                                 'recruitment_end_name',
                             ],
@@ -40,9 +42,9 @@ $viewdefs['Candidatures'] = [
                             [
                                 'source',
                                 'task_grade',
-                                'scoring',
                             ],
                             [
+                                'scoring',
                                 'description',
                             ],
                         ],
@@ -52,7 +54,6 @@ $viewdefs['Candidatures'] = [
                         'fields' => [
                             [
                                 'employment_form',
-                                'dg_amount',
                                 'currency_name',
                             ],
                             [
@@ -60,6 +61,7 @@ $viewdefs['Candidatures'] = [
                                 'gross_amount',
                             ],
                             [
+                                'dg_amount',
                                 'notice',
                             ],
                         ],
@@ -81,24 +83,16 @@ $viewdefs['Candidatures'] = [
                         'collapsed' => true,
                         'fields' => [
                             [
+                                'assigned_user_name',
                                 'employee_name',
+                            ],
+                            [
                                 [
                                     'name' => 'date_entered',
                                     'readonly' => true,
                                 ],
                                 [
                                     'name' => 'date_modified',
-                                    'readonly' => true,
-                                ],
-                            ],
-                            [
-                                'assigned_user_name',
-                                [
-                                    'name' => 'created_by_name',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'modified_by_name',
                                     'readonly' => true,
                                 ],
                             ],
