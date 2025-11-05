@@ -6,7 +6,12 @@
         <div class="fields-container">
             <v-list>
                 <v-list-item v-for="item in checklist" :key="item.id">
-                    <v-checkbox :label="item.task" :model-value="item.complete" @change="toggleItem(item)" />
+                    <v-checkbox 
+                        :label="item.task" 
+                        :model-value="item.complete" 
+                        :disabled="!isEditable" 
+                        @change="toggleItem(item)" 
+                    />
                 </v-list-item>
             </v-list>
         </div>
@@ -40,6 +45,10 @@ const checklist = ref<ChecklistItem[]>([])
 
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_DETAILS', store.bean.module)
+})
+
+const isEditable = computed(() => {
+    return store.bean.aclAccess.edit
 })
 
 async function fetchChecklist() {
@@ -84,8 +93,8 @@ async function toggleItem(item: ChecklistItem) {
         checklist: checklistJson,
     })
     let successfulSave = await store.bean.save()
-    if (!successfulSave.status) {
-        useStatusBoxesStore().showStatus(successfulSave.error, {
+    if (typeof successfulSave === 'object' && !successfulSave.status) {
+        useStatusBoxesStore().showStatus(successfulSave.error || 'Unknown error', {
             type: 'error',
             message: useLanguagesStore().label('LBL_VALIDATION_ERROR', store.bean.module),
             autoClose: true,

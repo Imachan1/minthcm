@@ -7,7 +7,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -35,10 +35,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -325,7 +325,7 @@ abstract class DBManager
         }
 
         $dberror = $this->lastDbError();
-        if ($dberror === false) {
+        if (false === $dberror) {
             $this->last_error = false;
 
             return false;
@@ -449,7 +449,7 @@ abstract class DBManager
                     continue;
                 }
                 $orderBy = strtolower($orderBy);
-                if ($orderBy == 'asc' || $orderBy == 'desc') {
+                if ('asc' == $orderBy || 'desc' == $orderBy) {
                     continue;
                 }
 
@@ -540,7 +540,7 @@ abstract class DBManager
             $GLOBALS['log']->fatal('$filed_defs should be an array');
         } else {
             foreach ((array) $field_defs as $field => $fieldDef) {
-                if (isset($fieldDef['source']) && $fieldDef['source'] != 'db') {
+                if (isset($fieldDef['source']) && 'db' != $fieldDef['source']) {
                     continue;
                 } //custom fields handle there save seperatley
                 if (!empty($field_map) && !empty($field_map[$field]['custom_type'])) {
@@ -564,7 +564,7 @@ abstract class DBManager
                     if (!empty($auto)) {
                         $values[$field] = $auto;
                     }
-                } elseif (isset($fieldDef['name']) && $fieldDef['name'] == 'deleted') {
+                } elseif (isset($fieldDef['name']) && 'deleted' == $fieldDef['name']) {
                     $values['deleted'] = (int) $val;
                 } else {
                     // need to do some thing about types of values
@@ -755,7 +755,7 @@ abstract class DBManager
         }
         //jc: added this for beans that do not actually have a table, namely
         //ForecastOpportunities
-        if ($tablename == 'does_not_exist' || $tablename == '') {
+        if ('does_not_exist' == $tablename || '' == $tablename) {
             return '';
         }
 
@@ -776,15 +776,15 @@ abstract class DBManager
      */
     protected function isNullable($vardef)
     {
-        if (isset($vardef['isnull']) && (strtolower($vardef['isnull']) == 'false' || $vardef['isnull'] === false)
+        if (isset($vardef['isnull']) && (strtolower($vardef['isnull']) == 'false' || false === $vardef['isnull'])
             && !empty($vardef['required'])
         ) {
             /* required + is_null=false => not null */
             return false;
         }
-        if (empty($vardef['auto_increment']) && (empty($vardef['type']) || $vardef['type'] != 'id')
-            && (empty($vardef['dbType']) || $vardef['dbType'] != 'id')
-            && (empty($vardef['name']) || ($vardef['name'] != 'id' && $vardef['name'] != 'deleted'))
+        if (empty($vardef['auto_increment']) && (empty($vardef['type']) || 'id' != $vardef['type'])
+            && (empty($vardef['dbType']) || 'id' != $vardef['dbType'])
+            && (empty($vardef['name']) || ('id' != $vardef['name'] && 'deleted' != $vardef['name']))
         ) {
             return true;
         }
@@ -807,7 +807,7 @@ abstract class DBManager
     {
         //jc: had a bug when running the repair if the tablename is blank the repair will
         //fail when it tries to create a repair table
-        if ($tablename == '' || empty($fielddefs)) {
+        if ('' == $tablename || empty($fielddefs)) {
             return '';
         }
 
@@ -833,16 +833,16 @@ abstract class DBManager
         // do column comparisons
         $sql .= "/*COLUMNS*/\n";
         foreach ($fielddefs as $name => $value) {
-            if (isset($value['source']) && $value['source'] != 'db') {
+            if (isset($value['source']) && 'db' != $value['source']) {
                 continue;
             }
 
             // Bug #42406. Skipping breaked vardef without type or name
-            if (isset($value['name']) == false || $value['name'] == false) {
+            if (isset($value['name']) == false || false == $value['name']) {
                 $sql .= "/* NAME IS MISSING IN VARDEF $tablename::$name */\n";
                 continue;
             }
-            if (isset($value['type']) == false || $value['type'] == false) {
+            if (isset($value['type']) == false || false == $value['type']) {
                 $sql .= "/* TYPE IS MISSING IN VARDEF $tablename::$name */\n";
                 continue;
             }
@@ -862,7 +862,7 @@ abstract class DBManager
 
             //come into this function as 'type' = 'char', 'dbType' = 'id' without required set in $value. Assume they are correct and leave them alone.
             else {
-                if (($name == 'id' || $value['type'] == 'id' || (isset($value['dbType']) && $value['dbType'] == 'id'))
+                if (('id' == $name || 'id' == $value['type'] || (isset($value['dbType']) && 'id' == $value['dbType']))
                     && (!isset($value['required']) && isset($compareFieldDefs[$name]['required']))
                 ) {
                     $value['required'] = $compareFieldDefs[$name]['required'];
@@ -900,8 +900,8 @@ abstract class DBManager
                 }
 
                 //dwheeler: Once a column has been defined as null, we cannot try to force it back to !null
-                if ((isset($value['required']) && ($value['required'] === true || $value['required'] == 'true' || $value['required'] === 1))
-                    && (empty($compareFieldDefs[$name]['required']) || $compareFieldDefs[$name]['required'] != 'true')
+                if ((isset($value['required']) && (true === $value['required'] || 'true' == $value['required'] || 1 === $value['required']))
+                    && (empty($compareFieldDefs[$name]['required']) || 'true' != $compareFieldDefs[$name]['required'])
                 ) {
                     $ignorerequired = true;
                 }
@@ -932,7 +932,7 @@ abstract class DBManager
         unset($compareIndices_case_insensitive);
 
         foreach ($indices as $value) {
-            if (isset($value['source']) && $value['source'] != 'db') {
+            if (isset($value['source']) && 'db' != $value['source']) {
                 continue;
             }
 
@@ -948,12 +948,12 @@ abstract class DBManager
             }
 
             //don't bother checking primary nothing we can do about them
-            if (isset($value['type']) && $value['type'] == 'primary') {
+            if (isset($value['type']) && 'primary' == $value['type']) {
                 continue;
             }
 
             //database helpers do not know how to handle full text indices
-            if ($value['type'] == 'fulltext') {
+            if ('fulltext' == $value['type']) {
                 continue;
             }
 
@@ -991,7 +991,7 @@ abstract class DBManager
                 $sql .= "/*INDEX MISMATCH WITH DATABASE - $name -  ROW ";
                 foreach ($compareIndices[$name] as $n1 => $t1) {
                     $sql .= "<$n1>";
-                    if ($n1 == 'fields') {
+                    if ('fields' == $n1) {
                         foreach ($t1 as $rKey => $rValue) {
                             $sql .= "[$rKey] => '$rValue'  ";
                         }
@@ -1003,7 +1003,7 @@ abstract class DBManager
                 $sql .= "/* VARDEF - $name -  ROW";
                 foreach ($value as $n1 => $t1) {
                     $sql .= "<$n1>";
-                    if ($n1 == 'fields') {
+                    if ('fields' == $n1) {
                         foreach ($t1 as $rKey => $rValue) {
                             $sql .= "[$rKey] => '$rValue'  ";
                         }
@@ -1018,7 +1018,7 @@ abstract class DBManager
             }
         }
 
-        return ($take_action === true) ? $sql : '';
+        return (true === $take_action) ? $sql : '';
     }
 
     /**
@@ -1032,7 +1032,7 @@ abstract class DBManager
     public function compareVarDefs($fielddef1, $fielddef2, $ignoreName = false)
     {
         foreach ($fielddef1 as $key => $value) {
-            if ($key == 'name' && $ignoreName) {
+            if ('name' == $key && $ignoreName) {
                 continue;
             }
             if (isset($fielddef2[$key])) {
@@ -1049,23 +1049,17 @@ abstract class DBManager
                 }
             }
             //Ignore len if its not set in the vardef
-            if ($key == 'len' && empty($fielddef2[$key])) {
+            if ('len' == $key && empty($fielddef2[$key])) {
                 continue;
             }
             // if the length in db is greather than the vardef, ignore it
-            if ($key == 'len' && ($fielddef1[$key] >= $fielddef2[$key])) {
+            if ('len' == $key && ($fielddef1[$key] >= $fielddef2[$key])) {
                 continue;
             }
             /* ViewTools #113751 #98641 START */
-            if (
-                $key == 'len'
-                && !empty($fielddef1['type'])
-                && $fielddef1['type'] == 'int'
-                && $fielddef1[$key] == ''
-                && !empty($fielddef2['type'])
-                && $fielddef2['type'] == 'int'
-                && $fielddef2[$key] != ''
-            ) {
+            if ('len' == $key && !empty($fielddef1['type'])
+                && 'int' == $fielddef1['type'] && '' == $fielddef1[$key] && !empty($fielddef2['type'])
+                && 'int' == $fielddef2['type'] && '' != $fielddef2[$key]) {
                 continue;
             }
             /* ViewTools #113751 #98641 END */
@@ -1155,7 +1149,7 @@ abstract class DBManager
             if (!empty($index['db']) && $index['db'] != $this->dbType) {
                 continue;
             }
-            if (isset($index['source']) && $index['source'] != 'db') {
+            if (isset($index['source']) && 'db' != $index['source']) {
                 continue;
             }
 
@@ -1369,7 +1363,7 @@ abstract class DBManager
                 $rows_found = $assoc['c'];
             }
         }
-        if ($count == -1) {
+        if (-1 == $count) {
             $count = $sugar_config['list_max_entries_per_page'];
         }
         $next_offset = $start + $count;
@@ -1385,7 +1379,7 @@ abstract class DBManager
 
         if ($bean->hasCustomFields()) {
             foreach ($fields as $fieldDef) {
-                if ($fieldDef['source'] == 'custom_fields') {
+                if ('custom_fields' == $fieldDef['source']) {
                     $custom_fields[$fieldDef['name']] = $fieldDef['name'];
                 }
             }
@@ -1407,13 +1401,13 @@ abstract class DBManager
             $cstm_values = array();
             if (!$is_related_query) {
                 foreach ($fields as $fieldDef) {
-                    if (isset($fieldDef['source']) && $fieldDef['source'] != 'db' && $fieldDef['source'] != 'custom_fields') {
+                    if (isset($fieldDef['source']) && 'db' != $fieldDef['source'] && 'custom_fields' != $fieldDef['source']) {
                         continue;
                     }
                     $val = $row[$fieldDef['name']];
 
                     //handle auto increment values here only need to do this on insert not create
-                    if ($fieldDef['name'] == 'deleted') {
+                    if ('deleted' == $fieldDef['name']) {
                         $values['deleted'] = $val;
                         if (!$built_columns) {
                             $columns[] = 'deleted';
@@ -1424,14 +1418,14 @@ abstract class DBManager
                             $type = $fieldDef['custom_type'];
                         }
                         // need to do some thing about types of values
-                        if ($this->dbType == 'mysql' && $val == '' && ($type == 'datetime' || $type == 'date' || $type == 'int' || $type == 'currency' || $type == 'decimal')) {
+                        if ('mysql' == $this->dbType && '' == $val && ('datetime' == $type || 'date' == $type || 'int' == $type || 'currency' == $type || 'decimal' == $type)) {
                             if (!empty($custom_fields[$fieldDef['name']])) {
                                 $cstm_values[$fieldDef['name']] = 'null';
                             } else {
                                 $values[$fieldDef['name']] = 'null';
                             }
                         } else {
-                            if (isset($type) && $type == 'int') {
+                            if (isset($type) && 'int' == $type) {
                                 if (!empty($custom_fields[$fieldDef['name']])) {
                                     $cstm_values[$fieldDef['name']] = DBManagerFactory::getInstance()->quote(from_html($val));
                                 } else {
@@ -1456,7 +1450,7 @@ abstract class DBManager
                 }
             } else {
                 foreach ($row as $key => $val) {
-                    if ($key != 'orc_row') {
+                    if ('orc_row' != $key) {
                         $values[$key] = "'$val'";
                         if (!$built_columns) {
                             $columns[] = $key;
@@ -1551,10 +1545,10 @@ abstract class DBManager
      */
     public function countQuery()
     {
-        if (self::$queryLimit != 0 && ++self::$queryCount > self::$queryLimit
+        if (0 != self::$queryLimit && ++self::$queryCount > self::$queryLimit
             && (empty($GLOBALS['current_user']) || !is_admin($GLOBALS['current_user']))
         ) {
-            require_once('include/resource/ResourceManager.php');
+            require_once 'include/resource/ResourceManager.php';
             $resourceManager = ResourceManager::getInstance();
             $resourceManager->notifyObservers('ERR_QUERY_LIMIT');
         }
@@ -1604,13 +1598,13 @@ abstract class DBManager
      */
     public function quoteType($type, $value)
     {
-        if ($type == 'date') {
+        if ('date' == $type) {
             return $this->convert($this->quoted($value), "date");
         }
-        if ($type == 'time') {
+        if ('time' == $type) {
             return $this->convert($this->quoted($value), "time");
         }
-        if (isset($this->type_class[$type]) && $this->type_class[$type] == "date") {
+        if (isset($this->type_class[$type]) && "date" == $this->type_class[$type]) {
             return $this->convert($this->quoted($value), "datetime");
         }
         if ($this->isNumericType($type)) {
@@ -2008,7 +2002,7 @@ abstract class DBManager
 
         $query = $this->createPreparedQuery($stmt, $data);
 
-        if ($query === false) {
+        if (false === $query) {
             return false;
         } else {
             return $this->query($query);
@@ -2070,7 +2064,7 @@ abstract class DBManager
         } else {
             foreach ((array) $fields as $field => $fieldDef) {
                 $val = '';
-                if (isset($fieldDef['source']) && $fieldDef['source'] != 'db') {
+                if (isset($fieldDef['source']) && 'db' != $fieldDef['source']) {
                     continue;
                 } // Do not write out the id field on the update statement.
                 // We are not allowed to change ids.
@@ -2090,7 +2084,7 @@ abstract class DBManager
                 }
 
                 // no need to clear deleted since we only update not deleted records anyway
-                if ($fieldDef['name'] == 'deleted' && empty($bean->deleted)) {
+                if ('deleted' == $fieldDef['name'] && empty($bean->deleted)) {
                     continue;
                 }
 
@@ -2100,7 +2094,7 @@ abstract class DBManager
                     continue;
                 }
 
-                if (!empty($fieldDef['type']) && $fieldDef['type'] == 'bool') {
+                if (!empty($fieldDef['type']) && 'bool' == $fieldDef['type']) {
                     $val = $bean->getFieldValue($field);
                 }
 
@@ -2161,7 +2155,7 @@ abstract class DBManager
             $primaryColumn = $fieldDef['name'];
 
             $val = $bean->getFieldValue($fieldDef['name']);
-            if ($val != false) {
+            if (false != $val) {
                 $where[$primaryColumn] = $val;
             }
         }
@@ -2235,7 +2229,7 @@ abstract class DBManager
             switch ($this->type_class[$type]) {
                 case 'bool':
                 case 'int':
-                    if (!empty($fieldDef['required']) && $val == '') {
+                    if (!empty($fieldDef['required']) && '' == $val) {
                         if (isset($fieldDef['default'])) {
                             return $fieldDef['default'];
                         }
@@ -2244,7 +2238,7 @@ abstract class DBManager
                     }
 
                     // MintHCM #119576 START
-                    if ($val === '') {
+                    if ('' === $val) {
                         return "NULL";
                     }
                     // MintHCM #119576 END
@@ -2254,7 +2248,7 @@ abstract class DBManager
                     // $val = (float) $val;
                     // if (!empty($fieldDef['required']) && $val == false) {
                     $float_val = (float) $val;
-                    if (!empty($fieldDef['required']) && $float_val == false) {
+                    if (!empty($fieldDef['required']) && false == $float_val) {
                         // ViewTools #69225 END
                         if (isset($fieldDef['default'])) {
                             return $fieldDef['default'];
@@ -2264,13 +2258,13 @@ abstract class DBManager
                     }
 
                     // MintHCM #119576 START
-                    if ($val === '') {
+                    if ('' === $val) {
                         return "NULL";
                     }
                     // MintHCM #119576 END
                     return $val;
                 case 'float':
-                    if (!empty($fieldDef['required']) && $val == '') {
+                    if (!empty($fieldDef['required']) && '' == $val) {
                         if (isset($fieldDef['default'])) {
                             return $fieldDef['default'];
                         }
@@ -2279,12 +2273,12 @@ abstract class DBManager
                     }
                     // MintHCM #129887 START
                     //return $val === '' ? 'NULL' : (float)$val; // Fix #9440 - Forcing default null value for numeric fields.
-                    return $val === '' ? 'NULL' : (float) unformat_number($val); // Fix #9440 - Forcing default null value for numeric fields.
-                    // MintHCM #129887 END
+                    return '' === $val ? 'NULL' : (float) unformat_number($val); // Fix #9440 - Forcing default null value for numeric fields.
+                // MintHCM #129887 END
                 case 'time':
                 case 'date':
                     // empty date can't be '', so convert it to either NULL or empty date value
-                    if ($val == '') {
+                    if ('' == $val) {
                         if (!empty($fieldDef['required'])) {
                             if (isset($fieldDef['default'])) {
                                 return $fieldDef['default'];
@@ -2305,7 +2299,7 @@ abstract class DBManager
 
         if (is_null($val)) {
             if (!empty($fieldDef['required'])) {
-                if (isset($fieldDef['default']) && $fieldDef['default'] != '') {
+                if (isset($fieldDef['default']) && '' != $fieldDef['default']) {
                     return $fieldDef['default'];
                 }
 
@@ -2313,7 +2307,7 @@ abstract class DBManager
             }
             return "NULL";
         }
-        if ($type == "datetimecombo") {
+        if ("datetimecombo" == $type) {
             $type = "datetime";
         }
 
@@ -2349,7 +2343,7 @@ abstract class DBManager
         if (!empty($fieldDef['precision']) && is_numeric($fieldDef['precision']) && !strstr((string) $fieldDef['len'], ',')) {
             $fieldDef['len'] .= ",{$fieldDef['precision']}";
         }
-        if (!empty($fieldDef['required']) || ($fieldDef['name'] == 'id' && !isset($fieldDef['required']))) {
+        if (!empty($fieldDef['required']) || ('id' == $fieldDef['name'] && !isset($fieldDef['required']))) {
             $fieldDef['required'] = 'true';
         }
     }
@@ -2374,16 +2368,16 @@ abstract class DBManager
         for ($i = 0; $i < $strLen; $i++) {
             $char = $selectStatement[$i];
 
-            if ($char == "," && $level == 0) {
+            if ("," == $char && 0 == $level) {
                 $field = $this->getFieldNameFromSelect(trim($selectField));
                 $fields[$field] = $selectField;
                 $selectField = "";
             } else {
-                if ($char == "(") {
+                if ("(" == $char) {
                     $level++;
                     $selectField .= $char;
                 } else {
-                    if ($char == ")") {
+                    if (")" == $char) {
                         $level--;
                         $selectField .= $char;
                     } else {
@@ -2493,7 +2487,7 @@ abstract class DBManager
 
             $indices = $bean->getIndices();
             foreach ($indices as $index) {
-                if ($index['type'] == 'foreign') {
+                if ('foreign' == $index['type']) {
                     $relationship[$table][] = array(
                         'foreignTable' => $index['foreignTable']
                         ,
@@ -2672,7 +2666,7 @@ abstract class DBManager
                 'text',
             ))) {
                 $colType = "$colBaseType({$fieldDef['len']})";
-            } elseif (($colBaseType == 'decimal' || $colBaseType == 'float')) {
+            } elseif (('decimal' == $colBaseType || 'float' == $colBaseType)) {
                 if (!empty($fieldDef['precision']) && is_numeric($fieldDef['precision'])) {
                     if (strpos((string) $fieldDef['len'], ',') === false) {
                         $colType = $colBaseType . "(" . $fieldDef['len'] . "," . $fieldDef['precision'] . ")";
@@ -2696,7 +2690,7 @@ abstract class DBManager
             // nothing to do
         } elseif (isset($fieldDef['default']) && strlen((string) $fieldDef['default']) > 0) {
             $default = " DEFAULT " . $this->quoted($fieldDef['default']);
-        } elseif (!isset($default) && $type == 'bool') {
+        } elseif (!isset($default) && 'bool' == $type) {
             $default = " DEFAULT 0 ";
         }
 
@@ -2708,13 +2702,13 @@ abstract class DBManager
         $required = 'NULL'; // MySQL defaults to NULL, SQL Server defaults to NOT NULL -- must specify
         //Starting in 6.0, only ID and auto_increment fields will be NOT NULL in the DB.
         if ((empty($fieldDef['isnull']) || strtolower($fieldDef['isnull']) == 'false') &&
-            (!empty($auto_increment) || $name == 'id' || ($fieldDef['type'] == 'id' && !empty($fieldDef['required'])))
+            (!empty($auto_increment) || 'id' == $name || ('id' == $fieldDef['type'] && !empty($fieldDef['required'])))
         ) {
             $required = "NOT NULL";
         }
         // If the field is marked both required & isnull=>false - alwqys make it not null
         // Use this to ensure primary key fields never defined as null
-        if (isset($fieldDef['isnull']) && (strtolower($fieldDef['isnull']) == 'false' || $fieldDef['isnull'] === false)
+        if (isset($fieldDef['isnull']) && (strtolower($fieldDef['isnull']) == 'false' || false === $fieldDef['isnull'])
             && !empty($fieldDef['required'])
         ) {
             $required = "NOT NULL";
@@ -2756,7 +2750,7 @@ abstract class DBManager
 
         if ($this->isFieldArray($fieldDefs)) {
             foreach ($fieldDefs as $fieldDef) {
-                if (!isset($fieldDef['source']) || $fieldDef['source'] == 'db') {
+                if (!isset($fieldDef['source']) || 'db' == $fieldDef['source']) {
                     $columns[] = $this->oneColumnSQLRep($fieldDef, false, $tablename);
                 }
             }
@@ -3023,7 +3017,7 @@ abstract class DBManager
         $sql = "INSERT INTO " . $bean->get_audit_table_name();
         //get field defs for the audit table.
         $dictionary = [];
-        require('metadata/audit_templateMetaData.php');
+        require 'metadata/audit_templateMetaData.php';
         $fieldDefs = $dictionary['audit']['fields'];
 
         $values = array();
@@ -3031,7 +3025,7 @@ abstract class DBManager
         $values['parent_id'] = $this->massageValue($bean->id, $fieldDefs['parent_id']);
         $values['field_name'] = $this->massageValue($changes['field_name'], $fieldDefs['field_name']);
         $values['data_type'] = $this->massageValue($changes['data_type'], $fieldDefs['data_type']);
-        if ($changes['data_type'] == 'text' || $changes['data_type'] == 'multienum') {
+        if ('text' == $changes['data_type'] || 'multienum' == $changes['data_type']) {
             $values['before_value_text'] = $this->massageValue($changes['before'], $fieldDefs['before_value_text']);
             $values['after_value_text'] = $this->massageValue($changes['after'], $fieldDefs['after_value_text']);
         } else {
@@ -3097,7 +3091,7 @@ abstract class DBManager
                 $after_value = $bean->$field;
                 //dirty fix to avoid error when array is in new value of relate field (e.g position_name)
                 // #132411 start
-                if(is_array($after_value)) {
+                if (is_array($after_value)) {
                     continue;
                 }
                 // #132411 end
@@ -3117,7 +3111,7 @@ abstract class DBManager
 
                 //Because of bug #25078(sqlserver haven't 'date' type, trim extra "00:00:00" when insert into *_cstm table).
                 // so when we read the audit datetime field from sqlserver, we have to replace the extra "00:00:00" again.
-                if (!empty($field_type) && $field_type == 'date') {
+                if (!empty($field_type) && 'date' == $field_type) {
                     $before_value = $this->fromConvert($before_value, $field_type) ?? '';
                 }
                 //if the type and values match, do nothing.
@@ -3127,9 +3121,54 @@ abstract class DBManager
                 ))
                 ) {
                     $change = false;
-                    if (trim((string)$before_value) !== trim((string)$after_value)) {
+                    if (trim((string) $before_value) !== trim((string) $after_value)) {
+                        //MintHCM start
+                        if ('checklist' == $field_type) {
+                            $before = getArrayFromJSONString($before_value);
+                            $after = getArrayFromJSONString($after_value);
+
+                            $beforeById = [];
+                            $afterById = [];
+
+                            if (is_array($before)) {
+                                foreach ($before as $item) {
+                                    if (isset($item['id'])) {
+                                        $beforeById[$item['id']] = $item;
+                                    }
+                                }
+                            }
+
+                            if (is_array($after)) {
+                                foreach ($after as $item) {
+                                    if (isset($item['id'])) {
+                                        $afterById[$item['id']] = $item;
+                                    }
+                                }
+                            }
+
+                            foreach ($afterById as $id => $afterItem) {
+                                if (isset($beforeById[$id])) {
+                                    $beforeCompleted = $beforeById[$id]['complete'] ?? false;
+                                    $afterCompleted = $afterItem['complete'] ?? false;
+
+                                    $beforeCompleted = $this->_getBooleanValue($beforeCompleted);
+                                    $afterCompleted = $this->_getBooleanValue($afterCompleted);
+
+                                    if ($beforeCompleted !== $afterCompleted) {
+                                        $changed_values[$field] = array(
+                                            'field_name' => $field." - ".$afterItem['task'],
+                                            'data_type' => $field_type,
+                                            'before' => $beforeCompleted,
+                                            'after' => $afterCompleted,
+                                        );
+                                        break;
+                                    }
+                                }
+                            }
+                        } else
+                        //MintHCM end
                         // decode value for field type of 'text' or 'varchar' to check before audit if the value contain trip tags or special character
-                        if ($field_type == 'varchar' || $field_type == 'name' || $field_type == 'text') {
+                        if ('varchar' == $field_type || 'name' == $field_type || 'text' == $field_type) {
                             $decode_before_value = strip_tags(html_entity_decode((string) $before_value));
                             $decode_after_value = strip_tags(html_entity_decode((string) $after_value));
                             if ($decode_before_value === $decode_after_value) {
@@ -3141,11 +3180,11 @@ abstract class DBManager
                         // Manual merge of fix 95727f2eed44852f1b6bce9a9eccbe065fe6249f from DBHelper
                         // This fix also fixes Bug #44624 in a more generic way and therefore eliminates the need for fix 0a55125b281c4bee87eb347709af462715f33d2d in DBHelper
                         elseif ($this->isNumericType($field_type)) {
-                            $numerator = abs(2 * ((trim((float)$before_value) + 0) - (trim((float)$after_value) + 0)));
-                            $denominator = abs(((trim((float)$before_value) + 0) + (trim((float)$after_value) + 0)));
+                            $numerator = abs(2 * ((trim((float) $before_value) + 0) - (trim((float) $after_value) + 0)));
+                            $denominator = abs(((trim((float) $before_value) + 0) + (trim((float) $after_value) + 0)));
                             // detect whether to use absolute or relative error. use absolute if denominator is zero to avoid division by zero
-                            $error = ($denominator == 0) ? $numerator : $numerator / $denominator;
-                            if ($error >= 0.0000000001) {    // Smaller than 10E-10
+                            $error = (0 == $denominator) ? $numerator : $numerator / $denominator;
+                            if ($error >= 0.0000000001) { // Smaller than 10E-10
                                 $change = true;
                             }
                         } else {
@@ -3259,7 +3298,7 @@ abstract class DBManager
     protected function _getBooleanValue($val)
     {
         //need to put the === sign here otherwise true == 'non empty string'
-        if (empty($val) || $val === 'off') {
+        if (empty($val) || 'off' === $val) {
             return false;
         }
 
@@ -3273,7 +3312,7 @@ abstract class DBManager
      */
     public function isNumericType($type)
     {
-        if (isset($this->type_class[$type]) && ($this->type_class[$type] == 'int' || $this->type_class[$type] == 'float')) {
+        if (isset($this->type_class[$type]) && ('int' == $this->type_class[$type] || 'float' == $this->type_class[$type])) {
             return true;
         }
 
@@ -3305,12 +3344,12 @@ abstract class DBManager
             case 'ulong':
             case 'long':
             case 'short':
-                return ($val == 0);
+                return (0 == $val);
             case 'date':
-                if ($val == '0000-00-00') {
+                if ('0000-00-00' == $val) {
                     return true;
                 }
-                if ($val == 'NULL') {
+                if ('NULL' == $val) {
                     return true;
                 }
 
@@ -3354,7 +3393,7 @@ abstract class DBManager
         $i = 0;
         $order_by_arr = array();
         foreach ($values as $key => $value) {
-            if ($key == '') {
+            if ('' == $key) {
                 $order_by_arr[] = "WHEN ($order_by='' OR $order_by IS NULL) THEN $i";
             } else {
                 $order_by_arr[] = "WHEN $order_by=" . $this->quoted($key) . " THEN $i";
@@ -3373,7 +3412,7 @@ abstract class DBManager
      */
     public function emptyValue($type)
     {
-        if (isset($this->type_class[$type]) && ($this->type_class[$type] == 'bool' || $this->type_class[$type] == 'int' || $this->type_class[$type] == 'float')) {
+        if (isset($this->type_class[$type]) && ('bool' == $this->type_class[$type] || 'int' == $this->type_class[$type] || 'float' == $this->type_class[$type])) {
             return 0;
         }
 
@@ -3499,7 +3538,7 @@ abstract class DBManager
         $select_check = strpos(strtolower($query), strtolower("SELECT"));
         //Checks to see if there is union select which is valid
         $select_check2 = strpos(strtolower($query), strtolower("(SELECT"));
-        if ($select_check == 0 || $select_check2 == 0) {
+        if (0 == $select_check || 0 == $select_check2) {
             //Returning false means query is ok!
             return true;
         }
@@ -3531,16 +3570,16 @@ abstract class DBManager
         }
         $terms = $must_terms = $not_terms = array();
         foreach ($qterms as $item) {
-            if ($item[0] == '"') {
+            if ('"' == $item[0]) {
                 $item = trim($item, '"');
             }
-            if ($item[0] == '+') {
+            if ('+' == $item[0]) {
                 if (strlen((string) $item) > 1) {
                     $must_terms[] = substr((string) $item, 1);
                 }
                 continue;
             }
-            if ($item[0] == '-') {
+            if ('-' == $item[0]) {
                 if (strlen((string) $item) > 1) {
                     $not_terms[] = substr((string) $item, 1);
                 }
@@ -4171,7 +4210,7 @@ abstract class DBManager
     {
         return trim(str_replace(array("\r", "\n"), " ", $sql));
     }
-    
+
     /**
      * @param $fields
      * @return string|string[]|null

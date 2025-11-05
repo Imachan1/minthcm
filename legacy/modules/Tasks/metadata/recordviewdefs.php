@@ -35,7 +35,8 @@ $viewdefs['Tasks'] = [
         'checklist' => [
             'component' => 'MintPanelChecklist',
             'title' => 'LBL_CHECKLIST',
-        ],        'subpanels' => [
+        ],
+        'subpanels' => [
             'component' => 'MintPanelSubpanels',
         ],
     ],
