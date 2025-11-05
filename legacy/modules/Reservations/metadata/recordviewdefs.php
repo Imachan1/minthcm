@@ -1,28 +1,16 @@
 <?php
 
 $viewdefs['Reservations'] = [
-    'order' => ['header', 'basicInfo'],
+    'order' => ['basicInfo'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
+        'basicInfo' => [
+            'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    [
-                        'name',
-                        'status',
-                        'resource_name',
-                    ],
-                ],
                 'actions' => [
                     'Audit',
                     'Delete',
                     'Duplicate',
                 ],
-            ],
-        ],
-        'basicInfo' => [
-            'component' => 'MintPanelRecordDetails',
-            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
