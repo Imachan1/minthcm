@@ -49,6 +49,7 @@
 {foreach from=$checklist item=task key=key}
     <div id="container_task_{$key}">
             <span class="sugar_field" name="task_{$key}" id="task_{$key}">
+            {if $module == 'Tasks'}
                 <input type="checkbox" 
                     id="{{$field_name}}_complete_{$key}" 
                     name="{$field_name}[{$key}][complete]"
@@ -58,6 +59,7 @@
                     {/if}
                     onchange="window.SugarFieldChecklist.updateCheckList('{{$field_name}}')"
                 >
+            {/if}
                 {$task.task}
             </span>
     </div>

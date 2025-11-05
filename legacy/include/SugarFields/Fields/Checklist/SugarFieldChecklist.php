@@ -67,6 +67,10 @@ class SugarFieldChecklist extends SugarFieldBase
     }
     public function save(&$bean, $inputData, $field, $def, $prefix = '')
     {
+        if (empty($inputData[$field])) {
+            $bean->$field = '';
+            return;
+        }
         if (!empty($inputData[$field]) && is_string($inputData[$field])) {
             $inputData[$field] = json_decode(html_entity_decode($inputData[$field]), true);
         }
