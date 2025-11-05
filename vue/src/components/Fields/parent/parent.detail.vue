@@ -1,6 +1,6 @@
 <template>
-    <div class="parent-container">
-        <div>
+    <div class="d-flex align-center ga-3">
+        <div class="detail-field-assigned-module">
             <label>{{ languages.label('LBL_ASSIGNED_TO_MODULE') }}</label>
             <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()">
                 <router-link v-if="hasListAccess" :to="urls.parent" class="relate-field">
@@ -12,7 +12,7 @@
                 <Pencil :defs="props.defs" />
             </div>
         </div>
-        <div>
+        <div class="detail-field-assigned-record">
             <label>{{ languages.label('LBL_ASSIGNED_TO_RECORD') }}</label>
             <div class="detail-field-row">
                 <router-link v-if="hasViewAccess" :to="urls.record" class="relate-field">
@@ -75,13 +75,10 @@ div {
     display: block;
     width: fit-content;
 }
-
-.parent-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 24px;
-    padding-left: 16px;
-    border-left: 1px solid rgb(var(--v-theme-primary-light));
+.detail-field-assigned-module, .detail-field-assigned-record{
+    width: 40%;
+}
+.detail-label-related-to{
+    width: 20%;
 }
 </style>

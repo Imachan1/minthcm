@@ -1,43 +1,32 @@
 <?php
 
 $viewdefs['Tasks'] = [
-    'order' => ['header', 'overview', 'checklist', 'subpanels'],
+    'order' => ['overview', 'checklist', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    [
-                        'status',
-                        'date_start',
-                        'date_due',
-                    ],
-                ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                ],
-            ],
-        ],
         'overview' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
                         'fields' => [
-                            ['name', 'status', 'priority'],
                             [
-                                'date_start',
-                                'date_due',
+                                'name',
+                                'status',
+                            ],
+                            [
+                                'priority',
                                 'parent_name',
                             ],
-                            ['assigned_user_name', 'description'],
                             [
-
-                                'date_entered',
-                                'date_modified',
+                                'date_start', 'date_due',
                             ],
+                            ['description'],
                         ],
                     ],
                 ],
@@ -46,8 +35,7 @@ $viewdefs['Tasks'] = [
         'checklist' => [
             'component' => 'MintPanelChecklist',
             'title' => 'LBL_CHECKLIST',
-        ],
-        'subpanels' => [
+        ],        'subpanels' => [
             'component' => 'MintPanelSubpanels',
         ],
     ],

@@ -32,6 +32,10 @@ onMounted(async () => {
         if (Object.keys(route.query).length) {
             store.bean.setAttributesFromQuery(route.query)
         }
+
+        if (Object.keys(route.query).includes('copy_id')) {
+            await store.bean.setAttributesFromBeanId(route.query.copy_id as string)
+        }
     }
 })
 

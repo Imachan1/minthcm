@@ -91,7 +91,7 @@ class ElasticQuery extends SearchQuery
         if (static::DEFAULT_SORT_FIELD !== $field) {
             $parser = ElasticMapperParser::getInstance();
             $module_name = $this->params['type'] ?? '';
-            $field = $parser->getFieldAttributePath($module_name, $field);
+            $field = $parser->getFieldAttributePath($module_name, $field, true);
         }
         $this->sort = array(
             $field => array(

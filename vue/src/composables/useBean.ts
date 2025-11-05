@@ -19,6 +19,17 @@ export const useBean = (module: string, id: string) => {
 
     const logic = useLogic(module)
 
+    const duplicateSkipFields = [
+        'id',
+        'date_entered',
+        'date_modified',
+        'modified_user_id',
+        'modified_by_name',
+        'created_by',
+        'created_by_name',
+        'date_indexed',
+    ]
+
     const filesToSave = ref<{ [key: string]: File }>({})
     const attributesToSave = computed(() => {
         const attributesToSave = {} as { [key: string]: any }
@@ -144,6 +155,24 @@ export const useBean = (module: string, id: string) => {
         if (triggerFields.length > 0) {
             fetchLogic(triggerFields)
         }
+    }
+
+    async function setAttributesFromBeanId(copy_id: string) {
+        const fieldsToUpdate: { [fieldName: string]: any } = {}
+        const copyBean = await useBean(module, copy_id).init()
+        Object.entries(copyBean.data.attributes || {}).forEach(([fieldName, fieldDef]) => {
+            if (
+                duplicateSkipFields.includes(fieldName) 
+                || ['file', 'image'].includes(fieldDefs.value[fieldName].type)
+            ) return
+            if (copyBean.data.attributes[fieldName] !== undefined 
+                && copyBean.data.attributes[fieldName] !== null
+                && copyBean.data.attributes[fieldName] !== ''
+            ) {
+                fieldsToUpdate[fieldName] = copyBean.data.attributes[fieldName]
+            }
+        })
+        updateFields(fieldsToUpdate)
     }
 
     async function retrieve() {
@@ -313,5 +342,6 @@ export const useBean = (module: string, id: string) => {
         fieldDefs,
         setAttributesFromQuery,
         loadRelationship,
+        setAttributesFromBeanId,
     }
 }

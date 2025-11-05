@@ -49,6 +49,8 @@ $mod_strings = array(
    'LBL_TEAMS' => 'Teams',
    'LBL_ASSIGNED_TO_ID' => 'Decision Maker ID',
    'LBL_ASSIGNED_TO_NAME' => 'Decision Maker ',
+   'LBL_EMPLOYEE_ID' => 'Applicant ID',
+   'LBL_EMPLOYEE_NAME' => 'Applicant',
    'LBL_EMPLOYEE' => 'Applicant',
    'LBL_ID' => 'ID',
    'LBL_DATE_ENTERED' => 'Date Created',
@@ -78,8 +80,6 @@ $mod_strings = array(
    'LBL_MODULE_NAME' => 'Applications',
    'LBL_MODULE_TITLE' => 'Applications',
    'LBL_HOMEPAGE_TITLE' => 'My Applications',
-   'LNK_NEW_RECORD' => 'Create Application',
-   'LNK_LIST' => 'Applications',
    'LBL_SEARCH_FORM_TITLE' => 'Search Application',
    'LBL_TYPE' => 'Type',
 );

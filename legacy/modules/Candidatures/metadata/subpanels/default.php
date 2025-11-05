@@ -70,6 +70,21 @@ $subpanel_layout = array(
          'vname' => 'LBL_NAME',
          'widget_class' => 'SubPanelDetailViewLink',
       ),
+      'status' => array(
+         'vname' => 'LBL_STATUS',
+      ),
+      'work_start' => array(
+         'vname' => 'LBL_WORK_START',
+      ),
+      'scoring' => array(
+         'vname' => 'LBL_SCORING',
+      ),
+      'task_grade' => array(
+         'vname' => 'LBL_TASK_GRADE',
+      ),
+      'source' => array(
+         'vname' => 'LBL_SOURCE',
+      ),
       'date_modified' => array(
          'vname' => 'LBL_DATE_MODIFIED',
       ),

@@ -74,6 +74,7 @@ class MetaController
                     $data['recordview']['panels'][$panel]['data']['sections'][$section] = $viewdefs[$module]['panels'][$panel]['data']['sections'][$section];
                     $data['recordview']['panels'][$panel]['data']['sections'][$section]['fields'] = $this->mergeModuleFields($views[$panel][$section],$module_fields)['fields'];
                 }
+                $data['recordview']['panels'][$panel]['data']['actions'] = $viewdefs[$module]['panels'][$panel]['data']['actions'];
                 continue;
             }
             $views[$panel]['fields'] = $panel_defs['data']['fields'];

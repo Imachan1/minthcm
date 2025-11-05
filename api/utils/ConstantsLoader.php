@@ -27,6 +27,7 @@ class ConstantsLoader
         } else {
             return false;
         }
+
         return $include_content;
     }
 }

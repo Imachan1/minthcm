@@ -175,6 +175,15 @@ $ESListViewDefs[$module_name] = [
             'enabled' => true,
             'default' => false,
         ],
+        'work_start' => [
+            'default' => false,
+        ],
+        'training_date' => [
+            'default' => false,
+        ],
+        'currency_id' => [
+            'default' => false,
+        ],
     ],
     'search' => [
         'name' => [],
@@ -200,5 +209,8 @@ $ESListViewDefs[$module_name] = [
         'date_modified' => [],
         'created_by_name' => [],
         'modified_by_name' => [],
+        'work_start' => [],
+        'training_date' => [],
+        'currency_id' => [],
     ],
 ];

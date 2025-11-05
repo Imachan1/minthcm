@@ -2,30 +2,19 @@
 
 $viewdefs['SecurityGroups'] = [
     'order' => [
-        'header',
         'mainPanel',
         'subpanels',
     ],
     'panels' => [
 
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    ['name'],
-                    ['parent_name'],
-                    ['position_leader_name'],
-                ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                ],
-            ],
-        ],
-
         'mainPanel' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -38,20 +27,22 @@ $viewdefs['SecurityGroups'] = [
                                     'required' => true,
                                 ],
                                 'group_type',
+                            ],
+                            [
                                 [
                                     'name' => 'parent_name',
                                     'label' => 'LBL_MEMBER_OF',
                                     'type' => 'relate',
                                     'module' => 'SecurityGroups',
                                 ],
-                            ],
-                            [
                                 [
                                     'name' => 'current_manager_name',
                                     'label' => 'LBL_CURRENT_MANAGER_NAME',
                                     'type' => 'relate',
                                     'module' => 'Users',
                                 ],
+                            ],
+                            [
                                 [
                                     'name' => 'position_leader_name',
                                     'label' => 'LBL_POSITION_LEADER_NAME',
@@ -69,26 +60,6 @@ $viewdefs['SecurityGroups'] = [
                             [
                                 'noninheritable',
                                 'description',
-                            ],
-                            [
-                                [
-                                    'name' => 'date_entered',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'date_modified',
-                                    'readonly' => true,
-                                ],
-                            ],
-                            [
-                                [
-                                    'name' => 'created_by_name',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'modified_by_name',
-                                    'readonly' => true,
-                                ],
                             ],
                         ],
                     ],

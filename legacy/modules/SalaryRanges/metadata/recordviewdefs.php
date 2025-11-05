@@ -1,26 +1,16 @@
 <?php
 
 $viewdefs['SalaryRanges'] = [
-    'order' => ['header', 'basicInfo', 'subpanels'],
+    'order' => ['basicInfo', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    [
-                        ['name' => 'name'],
-                        ['name' => 'position_name'],
-                    ],
-                ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                ],
-            ],
-        ],
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -48,21 +38,6 @@ $viewdefs['SalaryRanges'] = [
                             [
                                 ['name' => 'employer_costs_from'],
                                 ['name' => 'employer_costs_to'],
-                            ],
-                        ],
-                    ],
-                    'other' => [
-                        'title' => 'LBL_OTHER',
-                        'collapsed' => true,
-                        'fields' => [
-                            [
-                                ['name' => 'date_entered', 'readonly' => true],
-                                ['name' => 'date_modified', 'readonly' => true],
-                            ],
-                            [
-                                ['name' => 'assigned_user_name'],
-                                ['name' => 'created_by_name', 'readonly' => true],
-                                ['name' => 'modified_by_name', 'readonly' => true],
                             ],
                         ],
                     ],

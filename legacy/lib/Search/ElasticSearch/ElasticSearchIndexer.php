@@ -500,6 +500,7 @@ class ElasticSearchIndexer extends AbstractIndexer
 
                 $this->removeErrorProneFields($module, $body);
                 $this->fixUpIndicesParams($body, $this->getDefaultMapParams($module), $module);
+                $this->restructureParams($body, $this->getDefaultMapParams($module));
                 $params['body'][] = ['index' => $head];
                 $params['body'][] = $body;
                 $this->indexedRecordsCount++;
@@ -539,6 +540,36 @@ class ElasticSearchIndexer extends AbstractIndexer
                     if (isset($new_key, $mappings['properties']) && $new_key != $prefix . $key) {
                         $params[$new_key] = $params[$key];
                         unset($params[$key]);
+                    }
+                }
+            }
+        }
+    }
+
+    private function restructureParams(array &$params, array $mappings): void
+    {
+        if (is_array($mappings)) {
+            foreach($mappings as $key => $value) {
+                if ($key === 'properties' && is_array($value)) {
+                    $this->restructureParams($params, $value);
+                } else if (empty($params[$key])) {
+                    foreach ($params as $pkey => $pvalue) {
+                        if (is_array($pvalue) && $pkey != $key) {
+                            $keys = array_keys($pvalue);
+                            $keys_concatenated = [];
+
+                            foreach($keys as $k) {
+                               $name = explode('__', $k)[1];
+                               $keys_concatenated[$k] = $pkey . '_' . $name;
+                            }
+
+                            foreach ($keys_concatenated as $old_key => $new_key) {
+                                if ($key == $new_key) {
+                                    $params[$key] = $params[$pkey][$old_key];
+                                    unset($params[$pkey][$old_key]);
+                                }
+                            }
+                        }
                     }
                 }
             }

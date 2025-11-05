@@ -1,33 +1,16 @@
 <?php
 
 $viewdefs['Documents'] = [
-    'order' => ['header', 'documentInfo', 'subpanels'],
+    'order' => ['documentInfo', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    [
-                        [
-                            'name' => 'filename',
-                            'type' => 'file',
-                            'displayParams' => [
-                                'onchangeSetFileNameTo' => 'document_name',
-                            ],
-                        ],
-                        'status_id',
-                        'revision',
-                    ],
-                ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                ],
-            ],
-        ],
         'documentInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -35,10 +18,12 @@ $viewdefs['Documents'] = [
                             [
                                 'document_name',
                                 'filename',
-                                'status_id',
                             ],
                             [
+                                'status_id',
                                 'active_date',
+                            ],
+                            [
                                 'exp_date',
                                 'revision',
                             ],
@@ -49,20 +34,13 @@ $viewdefs['Documents'] = [
                             [
                                 'category_id',
                                 'subcategory_id',
+                            ],
+                            [
                                 'description',
                             ],
                             [
                                 'related_doc_name',
                                 'related_doc_rev_number',
-                            ],
-                            [
-                                'date_entered',
-                                'date_modified',
-                            ],
-                            [
-                                'created_by_name',
-                                'modified_by_name',
-                                'assigned_user_name',
                             ],
                         ],
                     ],

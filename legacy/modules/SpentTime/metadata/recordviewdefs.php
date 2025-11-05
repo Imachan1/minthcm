@@ -13,6 +13,7 @@ $viewdefs['SpentTime'] = [
                 'actions' => [
                     'Audit',
                     'Delete',
+                    'Duplicate',
                 ],
             ],
         ],

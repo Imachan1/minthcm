@@ -2,26 +2,18 @@
 
 $viewdefs['OffboardingTemplates'] = [
     'order' => [
-        'header',
         'mainPanel',
         'subpanels',
     ],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    ['name'],
-                ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                ],
-            ],
-        ],
         'mainPanel' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -40,27 +32,6 @@ $viewdefs['OffboardingTemplates'] = [
                                 [
                                     'name' => 'description',
                                     'label' => 'LBL_DESCRIPTION',
-                                ],
-                            ],
-                            [
-                                [
-                                    'name' => 'date_entered',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'date_modified',
-                                    'readonly' => true,
-                                ],
-
-                            ],
-                            [
-                                [
-                                    'name' => 'modified_by_name',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'created_by_name',
-                                    'readonly' => true,
                                 ],
                             ],
                         ],

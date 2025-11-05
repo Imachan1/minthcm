@@ -96,6 +96,10 @@ $subpanel_layout = array(
          'name' => 'phone_work',
          'vname' => 'LBL_LIST_PHONE',
       ),
+      'potential' => array(
+         'vname' => 'LBL_POTENTIAL',
+         'width' => '10%',
+      ),
       'edit_button' => array(
          'vname' => 'LBL_EDIT_BUTTON',
          'widget_class' => 'SubPanelEditButton',
