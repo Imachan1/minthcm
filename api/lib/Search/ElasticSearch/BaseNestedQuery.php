@@ -23,6 +23,9 @@ class BaseNestedQuery
                     "simple_query_string" => [
                         "query" => $params['search'] ?? '',
                         "fields" => ["security_groups.name"],
+                        'analyzer' => 'standard',
+                        'default_operator' => 'AND',
+                        'minimum_should_match' => '66%',
                     ],
                 ],
             ],

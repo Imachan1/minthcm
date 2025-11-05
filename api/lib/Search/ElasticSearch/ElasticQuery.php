@@ -232,7 +232,7 @@ class ElasticQuery extends SearchQuery
                     'query' => $this->params['query'],
                     'fields' => $fields,
                     'analyzer' => 'standard',
-                    'default_operator' => 'OR',
+                    'default_operator' => 'AND',
                     'minimum_should_match' => '66%',
             ],
         ];
