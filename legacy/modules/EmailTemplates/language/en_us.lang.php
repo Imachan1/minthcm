@@ -106,4 +106,5 @@ $mod_strings = array(
     'LNK_IMPORT_CAMPAIGNS' => 'Import Campaign',
     'LNK_NEW_RECORD' => 'Create Email Template',
     'LBL_MODIFIED_BY' => 'Modified By',
+    'LBL_DATE_INDEXED' => 'Date Indexed',
 );

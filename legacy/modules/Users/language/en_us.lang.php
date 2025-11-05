@@ -669,4 +669,5 @@ $mod_strings = array(
     'LBL_ENABLE_NOTIFICATION_TYPE' => 'Notification Type',
     'LBL_ENABLE_NOTIFICATION' => 'Notification Enabled',
 
+    'LBL_DATE_INDEXED' => 'Date Indexed',
 ); // END STRINGS DEFS

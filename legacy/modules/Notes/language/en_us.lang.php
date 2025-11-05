@@ -109,4 +109,7 @@ $mod_strings = array(
     'LBL_ASCENDING' => 'Ascending',
     'LBL_DESCENDING' => 'Descending',
     'LBL_APPRAISAL' => 'Appraisal',
+    'LBL_DATE_INDEXED' => 'Date Indexed',
+    'LBL_BUGS' => 'Bugs',
+    'LBL_PROJECT_TASKS' => 'Project Tasks',
 );
