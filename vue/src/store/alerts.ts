@@ -42,25 +42,25 @@ export const useAlertsStore = defineStore('alerts', () => {
         isFetching.value = false
     }
 
-    async function markRead(id: string) {
+    async function markRead(id: string, shouldFetch: boolean = false) {
         const response = await mintApi.patch(`Alerts/${id}`, {
             is_read: true,
-            fetch,
+            fetch: shouldFetch,
         })
-        if (fetch) {
+        if (shouldFetch) {
             alerts.value = response.data?.alerts ?? []
     }
         return response.status
     }
 
-    async function close(id: string) {
+    async function close(id: string, shouldFetch: boolean = false) {
         const response = await mintApi.patch(`Alerts/${id}`, {
             is_closed: true,
-            fetch,
+            fetch: shouldFetch,
         })
-        if (fetch) {
+        if (shouldFetch) {
             alerts.value = response.data?.alerts ?? []
-    }
+        }
         return response.status
     }
 
