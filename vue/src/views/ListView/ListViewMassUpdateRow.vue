@@ -22,7 +22,7 @@
                     :fieldDefs="fieldDefs"
                     :input="input"
                     density="compact"
-                    @update:modelValue="(newValue) => (input.value = newValue)"
+                    @update:modelValue="(newValue) => (input.value = input.modifiers ? runModifiers(input.modifiers, newValue) : newValue)"
                 />
             </v-col>
         </v-row>
@@ -69,13 +69,15 @@ const fieldDefs = computed(() => {
 const inputsMap = computed(() => {
     if (!field.value) return {}
     const type = fieldDefs.value.type
+    console.error(inputDefs)
     return inputDefs[type] ?? inputDefs[inputDefs.typeMap[type]] ?? inputDefs[inputDefs.defaultInput]
 })
 
 function handleFieldChange() {
     inputs.value = [{
         type: inputsMap.value.type,
-        label: languages.label(inputsMap.value.label)
+        label: languages.label(inputsMap.value.label),
+        modifiers: inputsMap.value.modifiers ?? null,
     }]
     emit('update:field', field.value)
     emit('update:inputs', inputs.value)
@@ -83,6 +85,17 @@ function handleFieldChange() {
 
 function getInputComponent(type: string) {
     return fieldsDefs[type] ? fieldsDefs[type] : null
+}
+
+function runModifiers(modifier: any, value: any) {
+    if (!Array.isArray(modifier) && modifier instanceof Function) {
+        return modifier(value)
+    } else {
+        modifier.forEach((m) => {
+            value = runModifiers(m, value)
+        })
+    }
+    return value
 }
 
 </script>
