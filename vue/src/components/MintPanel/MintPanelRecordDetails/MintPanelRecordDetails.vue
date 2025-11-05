@@ -13,7 +13,7 @@
                 />
                 <div class="name-container">
                     <div class="module-name">{{ modules?.currentModule?.label }}</div>
-                    <div class="bean-name">
+                    <div v-if="!store.bean.isNew" class="bean-name">
                         <div>{{ store.bean.name }}</div>
                         <MintButton
                             :icon="isFavorite ? 'mdi-heart' : 'mdi-heart-outline'"
@@ -54,7 +54,7 @@
                         />
                     </div>
                 </div>
-                <v-menu v-if="actions.length" offset="16">
+                <v-menu v-if="!store.bean.isNew && actions.length" offset="16">
                     <template v-slot:activator="{ props, isActive }">
                         <MintButton
                             class="ml-auto"
