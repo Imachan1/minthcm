@@ -2,7 +2,7 @@
     <div class="parent-container">
         <v-autocomplete
             class="flex-grow-1"
-            :items="languages.getList(props.defs?.options)"
+            :items="parentTypeOptions"
             :label="languages.label('LBL_ASSIGNED_TO_MODULE')"
             :title="parentModel"
             variant="outlined"
@@ -103,6 +103,17 @@ const languages = useLanguagesStore()
 const popupsStore = usePopupsStore()
 const modulesStore = useModulesStore()
 const menuOpen = ref(false)
+
+const parentTypeOptions = computed(() => {
+    if (!Array.isArray(props.options) && typeof props.options === 'object') {
+        return Object.entries(props.options).map(([key, value]) => ({
+            key,
+            value,
+        }))
+    }
+    return props.options
+})
+
 const items = ref(
     props.data?.bean.attributes[props.defs.id_name]
         ? [
