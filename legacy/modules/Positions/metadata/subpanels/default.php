@@ -78,6 +78,10 @@ $subpanel_layout = array(
          'vname' => 'LBL_POSITIONS_SUPERVISION_NAME',
          'widget_class' => 'SubPanelDetailViewLink',
       ),
+      'securitygroup_leader_name' => array(
+         'vname' => 'LBL_SECURITYGROUPS_LEADER_NAME',
+         'widget_class' => 'SubPanelDetailViewLink',
+      ),
       'edit_button' => array(
          'vname' => 'LBL_EDIT_BUTTON',
          'widget_class' => 'SubPanelEditButton',
