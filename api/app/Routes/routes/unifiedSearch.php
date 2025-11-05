@@ -10,7 +10,7 @@
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
- * Copyright (C) 2018-2024 MintHCM
+ * Copyright (C) 2018-2023 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,66 +44,35 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-use MintHCM\Api\Controllers\Actions\LoginAction;
 use MintHCM\Api\Controllers\GlobalSearchController;
-use MintHCM\Api\Middlewares\Params\ParamTypes\ArrayType;
-use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
+use MintHCM\Api\Middlewares\Params\ParamTypes\BoolType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\IntType;
+use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
 
 $routes = array(
-    "get_login" => array(
+    "get" => array(
         "method" => "GET",
-        "path" => "/login",
-        "class" => LoginAction::class,
-        "desc" => "Initial data for first page load",
-        "options" => array(
-            'auth' => false,
-        ),
-        "pathParams" => array(),
-        "queryParams" => array(
-            'lang' => array(
-                "type" => StringType::class,
-                "required" => false,
-                "desc" => "Language",
-                "example" => 'en_us',
-            ),
-        ),
-        "bodyParams" => array(),
-    ),
-    "global_search" => array(
-        "method" => "GET",
-        "path" => "/global_search",
+        "path" => "/UnifiedSearch",
         "class" => GlobalSearchController::class,
         "function" => "getData",
-        "desc" => "Global search",
+        "desc" => "Search for records in all modules",
         "options" => array(
-            'auth' => true,
+            "auth" => true,
         ),
-        "pathParams" => array(),
+        "pathParams" => array(
+        ),
         "queryParams" => array(
             "query" => array(
                 "type" => StringType::class,
                 "required" => true,
-                "desc" => "Query for search",
-                "example" => 'Search Admin* OR Kowalski => ?query=Admin%2A%20OR%20Kowalski',
+                "desc" => "Query for ElasticSearch query parameter",
+                "example" => "john*",
             ),
-            "itemsPerPage" => array(
-                "type" => StringType::class,
+            "items_count" => array(
+                "type" => IntType::class,
                 "required" => false,
                 "desc" => "Maximum amount of records to be returned. Defaults to 5.",
                 "example" => "20",
-            ),
-            "page" => array(
-                "type" => IntType::class,
-                "required" => false,
-                "desc" => "Page number for pagination. Defaults to 1.",
-                "example" => '1',
-            ),
-            "isUnifiedSearch" => array(
-                "type" => StringType::class,
-                "required" => false,
-                "desc" => "Flag to indicate unified search view",
-                "example" => 'true',
             ),
         ),
         "bodyParams" => array(),

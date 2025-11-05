@@ -71,7 +71,7 @@
       */
      public function doSave(): void
      {
-         $searchEngine = filter_input(INPUT_POST, 'search-engine', FILTER_SANITIZE_STRING);
+         $searchEngine = 'ESElasticSearchEngine';
  
          SearchConfigurator::make()
              ->setEngine($searchEngine)

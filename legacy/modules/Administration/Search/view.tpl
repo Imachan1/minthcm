@@ -56,35 +56,6 @@
     <input type="hidden" name="module" value="Administration">
     <input type='hidden' name='enabled_modules' value=''>
 
-    <div class="row">
-        <div class="panel panel-primary">
-            <div class="panel-heading">{$MOD.LBL_SEARCH_INTERFACE}</div>
-            <div class="panel-body tab-content text-center">
-                <div class="col-md-6">
-                    <div class="form-check">
-                        <div class="td-container">
-                            <div>
-                                <label for="search-engine">{sugar_translate label="LBL_SEARCH_ENGINE"}</label>
-                                {sugar_help text=$MOD.LBL_SEARCH_ENGINE_TOOLTIP}
-                            </div>
-                            <div>
-                                <small class="form-text text-muted">{sugar_translate label="LBL_SEARCH_ENGINE_HELP"}</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    {html_options
-                    options=$engines
-                    selected=$selectedEngine
-                    id="search-engine"
-                    name="search-engine"
-                    class="form-control"
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
 
     {include file='modules/Administration/Search/GlobalSearchSettings.tpl'}
 
