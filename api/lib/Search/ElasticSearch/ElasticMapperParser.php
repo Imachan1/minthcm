@@ -153,9 +153,18 @@ class ElasticMapperParser
         foreach ($array as $key => $value) {
             if ('properties' === $key) {
                 $return = $this->findFieldType($value, $looking_for);
-            } else if ($key === $current_part && isset($value['type'])) {
-                $return = $value['type'];
-            } else if ($key === $current_part && isset($value['properties'])) {
+            } else if ($key === $current_part && (isset($value['type']) || $value['properties'])) {
+                if(empty($value['type']) && !empty($value['properties'])){
+                    foreach($value['properties'] as $prop_val){
+                        if(isset($prop_val['type'])){
+                            $return = $prop_val['type'];
+                            break;
+                        }
+                    }
+                } else {
+                    $return = $value['type'];
+                }
+            }else if ($key === $current_part && isset($value['properties'])) {
                 array_shift($looking_for);
                 $return = $this->findFieldType($value, $looking_for);
             }

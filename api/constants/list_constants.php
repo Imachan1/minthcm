@@ -152,7 +152,7 @@ return array(
         'employee_name' => 'employee_name.keyword',
         'offboarding_id' => 'offboarding_id.keyword',
         'offboarding_name' => 'offboarding_name.keyword',
-        'parent_id' => 'parent.id.keyword',
-        'parent_name' => 'parent.name.keyword',
+        'parent_id' => 'parent_id.keyword',
+        'parent_name' => 'parent_name.name.keyword',
     ),
 );
