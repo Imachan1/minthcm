@@ -1,14 +1,13 @@
-import { MintApi } from './api'
-
+import { mintApi } from './api'
 interface GlobalSearchParams {
     query: string
     itemsPerPage?: string
     page?: number
 }
 
-class UnifiedSearchApi extends MintApi {
+class UnifiedSearchApi {
     public async globalSearch(params: GlobalSearchParams) {
-        return await this.instance.get('/global_search', { params })
+        return await mintApi.get('/global_search', { params })
     }
 }
 
