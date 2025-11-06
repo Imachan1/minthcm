@@ -184,10 +184,15 @@ $ESListViewDefs[$module_name] = [
         'currency_id' => [
             'default' => false,
         ],
+        'parent_name' => [
+            'default' => false,
+            'link' => true,
+            'name' => 'parent_name',
+        ],
     ],
     'search' => [
         'name' => [],
-        'candidate_nae' => [],
+        'candidate_name' => [],
         'status' => [],
         'to_decision' => [],
         'net_amount' => [],
@@ -212,5 +217,6 @@ $ESListViewDefs[$module_name] = [
         'work_start' => [],
         'training_date' => [],
         'currency_id' => [],
+        'parent_name' => [],
     ],
 ];

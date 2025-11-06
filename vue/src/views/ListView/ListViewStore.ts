@@ -255,7 +255,7 @@ export const useListViewStore = defineStore('listview', () => {
                 return
             }
 
-            if (['datetime', 'datetimecombo', 'parent', 'parent_type'].includes(field.type)) {
+            if (['parent_type'].includes(field.type)) {
                 console.warn(`Mass update not supported for field type "${field.type}" (${field.name})`)
                 return
             }

@@ -4781,7 +4781,6 @@ class SugarBean {
       $this->parent_name = '';
 
       if ( !empty($this->parent_type) ) {
-         $this->last_parent_id = $this->parent_id;
          $this->getRelatedFields($this->parent_type, $this->parent_id, array(
             'name' => 'parent_name',
             'document_name' => 'parent_document_name',

@@ -682,7 +682,7 @@ $dictionary['Candidatures'] = array(
             'required' => true,
             'reportable' => true,
             'audited' => true,
-            'massupdate' => false,
+            'massupdate' => true,
             'sortable' => false,
         ),
         'candidate' => array(

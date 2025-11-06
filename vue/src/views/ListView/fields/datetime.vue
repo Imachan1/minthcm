@@ -1,12 +1,12 @@
 <template>
     <div class="mint-date-field-detail" @keyup.enter="$emit('inlineEditSave')" @keyup.esc="$emit('inlineEditCancel')">
         <v-text-field
-            :label="label"
+            :label="dateLabel"
             variant="outlined"
             density="compact"
             hide-details
             v-model="dateValue"
-            :error="props.state === 'error'"
+            :error="!isValidDateTime"
         >
             <template #append-inner>
                 <v-menu v-model="datePickerMenu" offset="16" :close-on-content-click="false">
@@ -19,16 +19,26 @@
                 </v-menu>
             </template>
         </v-text-field>
-        <v-text-field :disabled="!dateValue" variant="outlined" density="compact" hide-details v-model="timeValue">
+        <v-text-field
+            :disabled="!dateValue"
+            variant="outlined"
+            density="compact"
+            hide-details
+            v-model="timeValue"
+            :label="timeLabel"
+            :error="!isValidDateTime"
+        >
             <template #append-inner>
                 <v-menu v-model="timePickerMenu" offset="16" :close-on-content-click="false">
                     <template v-slot:activator="{ props }">
                         <v-icon class="mint-date-field-btn" v-bind="props">mdi-clock-time-eight-outline</v-icon>
                     </template>
                     <v-time-picker
-                        v-model="timePickerValue"
+                        v-model="timeValue"
                         :format="timeFormat"
                         :ampm-in-title="timeFormat === 'ampm'"
+                        :allowed-minutes="allowedMinutesStep"
+                        scrollable
                     >
                         <template #header></template>
                     </v-time-picker>
@@ -41,17 +51,22 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { DateTime } from 'luxon'
-import { FieldProps } from '../Field.model'
 import { usePreferencesStore } from '@/store/preferences';
 import DateUtils from '@/utils/dates'
 
-const props = defineProps<FieldProps>()
 const emit = defineEmits(['update:modelValue'])
-
+const props = defineProps(['input', 'disabled'])
+const value = ref(props.input?.value)
 const datePickerMenu = ref(false)
 const timePickerMenu = ref(false)
-const model = ref(props.modelValue)
 const preferences = usePreferencesStore()
+const dateLabel = ref(props.input.label[0])
+const timeLabel = ref(props.input.label[1])
+const isValidDateTime = computed(() => {
+    return !value.value || value.value.length === 19
+})
+
+const allowedMinutesStep = (m: number) => m % 5 === 0
 
 const timeFormat = computed(() => {
     return DateUtils.getTimeFormatGeneralized()
@@ -59,7 +74,7 @@ const timeFormat = computed(() => {
 
 const dateValue = computed({
     get() {
-        const dt = DateTime.fromSQL(model.value)
+        const dt = DateTime.fromSQL(value.value)
         if (dt.isValid) {
             return dt.toFormat(preferences.user?.date_format || 'yyyy-MM-dd') || ''
         }
@@ -67,81 +82,58 @@ const dateValue = computed({
     },
     async set(newVal) {
         datePickerMenu.value = false
-        if (!newVal?.trim()) {
-            model.value = ''
-        }
         const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
         if (dt.isValid) {
-            model.value = dt.toSQLDate()
+            value.value = dt.toSQLDate()
         }
     },
 })
 
 const timeValue = computed({
     get() {
-        const dt = DateTime.fromSQL(model.value, { zone: 'UTC' })
+        const dt = DateTime.fromSQL(value.value, { zone: 'UTC' })
         if (dt.isValid) {
-            return dt.toLocal().toFormat('HH:mm') || '00:00'
+            return dt.toFormat('HH:mm') || '00:00'
         }
         return '00:00'
     },
-    set(newVal) {
-        timePickerMenu.value = false
-        newVal = DateTime.fromSQL(newVal).setZone('UTC').toFormat('HH:mm')
-        const modelDt = DateTime.fromSQL(model.value, { zone: 'UTC' })
+    async set(newVal) {
+        const timeDt = DateTime.fromFormat(newVal, 'HH:mm')
+        if (!timeDt.isValid) {
+            return
+        }
+        const modelDt = DateTime.fromSQL(value.value, { zone: 'UTC' })
         if (modelDt.isValid) {
-            model.value = `${modelDt.toFormat('yyyy-MM-dd')} ${newVal}:00`
-        } else {
-            model.value = ''
+            value.value = `${modelDt.toFormat('yyyy-MM-dd')} ${timeDt.toFormat('HH:mm')}:00`
         }
     },
 })
 
 const datePickerValue = computed({
     get() {
-        if (!model.value?.trim()) {
+        if (!value.value?.trim()) {
             return new Date()
         }
-        return new Date(model.value)
+        return new Date(value.value)
     },
     set(newVal) {
         const dt = DateTime.fromJSDate(newVal)
         if (dt.isValid) {
-            const modelDt = DateTime.fromSQL(model.value)
+            const modelDt = DateTime.fromSQL(value.value)
             if (!modelDt.isValid) {
-                model.value = dt.toFormat('yyyy-MM-dd HH:mm:ss')
+                value.value = dt.toFormat('yyyy-MM-dd HH:mm:ss')
             } else {
-                model.value = `${dt.toFormat('yyyy-MM-dd')} ${modelDt.toFormat('HH:mm:ss')}`
+                value.value = `${dt.toFormat('yyyy-MM-dd')} ${modelDt.toFormat('HH:mm:ss')}`
             }
         }
     },
 })
 
-const timePickerValue = computed({
-    get() {
-        const dt = DateTime.fromSQL(model.value, { zone: 'UTC' })
-        if (dt.isValid) {
-            return dt.toLocal().toFormat('HH:mm') || '00:00'
-        }
-        return '00:00'
-    },
-    set(newVal) {
-        newVal = DateTime.fromFormat(newVal, 'HH:mm').setZone('UTC').toFormat('HH:mm')
-        const modelDt = DateTime.fromSQL(model.value, { zone: 'UTC' })
-        if (modelDt.isValid) {
-            model.value = `${modelDt.toFormat('yyyy-MM-dd')} ${newVal}:00`
-        } else {
-            model.value = ''
-        }
-    },
-})
-
-watch(model, (newVal) => {
+watch(value, (newVal) => {
     datePickerMenu.value = false
-    timePickerMenu.value = false
     const dt = DateTime.fromSQL(newVal?.toString())
     if (dt.isValid) {
-        emit('update:modelValue', model.value)
+        emit('update:modelValue', value.value)
     } else {
         emit('update:modelValue', '')
     }
