@@ -56,6 +56,18 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
  * @ORM\Entity
  * @ORM\Table(name="calls_reschedule", indexes={
  * @ORM\Index(name="calls_reschedulepk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $reason
+ * @property mixed $call_id
  */
 // Auto-generated SectionRepository section end
 class Calls_Reschedule extends MintEntity
@@ -66,82 +78,82 @@ class Calls_Reschedule extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $reason;
+    protected $reason;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $call_id;
+    protected $call_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="calls_reschedule")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="calls_reschedule")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="calls_reschedule")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

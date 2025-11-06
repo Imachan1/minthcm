@@ -58,6 +58,19 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="am_projecttemplates", indexes={
  * @ORM\Index(name="am_projecttemplatespk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $status
+ * @property mixed $priority
+ * @property mixed $override_business_hours
  */
 // Auto-generated SectionRepository section end
 class AM_ProjectTemplates extends MintEntity
@@ -68,105 +81,105 @@ class AM_ProjectTemplates extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    public $status;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $priority;
+    protected $status;
+
+    /**
+     * @ORM\Column(type="string", length="100")
+     */
+    protected $priority;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $override_business_hours;
+    protected $override_business_hours;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="am_projecttemplates")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="am_projecttemplates")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="am_projecttemplates")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="am_projecttemplates_project_1_c")
      * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="am_projecttemplates")
      */
-    public Collection $am_projecttemplates_project_1;
+    protected Collection $am_projecttemplates_project_1;
 
     /**
      * @ORM\JoinTable(name="am_tasktemplates_am_projecttemplates_c")
      * @ORM\ManyToMany(targetEntity=AM_TaskTemplates::class, mappedBy="am_projecttemplates")
      */
-    public Collection $am_tasktemplates_am_projecttemplates;
+    protected Collection $am_tasktemplates_am_projecttemplates;
 
     /**
      * @ORM\JoinTable(name="am_projecttemplates_users_1_c")
      * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="am_projecttemplates")
      */
-    public Collection $am_projecttemplates_users_1;
+    protected Collection $am_projecttemplates_users_1;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

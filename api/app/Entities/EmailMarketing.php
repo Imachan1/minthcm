@@ -60,6 +60,24 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Index(name="emmkpk", columns={"id"}), 
  * @ORM\Index(name="idx_emmkt_name", columns={"name"}), 
  * @ORM\Index(name="idx_emmkit_del", columns={"deleted"})})
+ * @property mixed $id
+ * @property mixed $deleted
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $name
+ * @property mixed $from_name
+ * @property mixed $from_addr
+ * @property mixed $reply_to_name
+ * @property mixed $reply_to_addr
+ * @property mixed $inbound_email_id
+ * @property mixed $date_start
+ * @property mixed $template_id
+ * @property mixed $status
+ * @property mixed $campaign_id
+ * @property mixed $outbound_email_id
+ * @property mixed $all_prospect_lists
  */
 // Auto-generated SectionRepository section end
 class EmailMarketing extends MintEntity
@@ -70,112 +88,112 @@ class EmailMarketing extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $from_name;
+    protected $from_name;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $from_addr;
+    protected $from_addr;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $reply_to_name;
+    protected $reply_to_name;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $reply_to_addr;
+    protected $reply_to_addr;
 
     /**
      * @ORM\Column(type="string", length="36")
      */
-    public $inbound_email_id;
+    protected $inbound_email_id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_start;
+    protected $date_start;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $template_id;
+    protected $template_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $status;
+    protected $status;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $campaign_id;
+    protected $campaign_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $outbound_email_id;
+    protected $outbound_email_id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $all_prospect_lists;
+    protected $all_prospect_lists;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=EmailTemplates::class, inversedBy="email_marketing")
      */
-    public $emailtemplate;
+    protected $emailtemplate;
 
     /**
      * @ORM\JoinTable(name="email_marketing_prospect_lists")
      * @ORM\ManyToMany(targetEntity=ProspectLists::class, mappedBy="email_marketing")
      */
-    public Collection $prospectlists;
+    protected Collection $prospectlists;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

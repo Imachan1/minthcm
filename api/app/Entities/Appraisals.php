@@ -58,6 +58,23 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="appraisals", indexes={
  * @ORM\Index(name="appraisalspk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $employee_id
+ * @property mixed $date
+ * @property mixed $status
+ * @property mixed $type
+ * @property mixed $candidature_id
+ * @property mixed $position_id
+ * @property mixed $evaluator_id
  */
 // Auto-generated SectionRepository section end
 class Appraisals extends MintEntity
@@ -68,165 +85,165 @@ class Appraisals extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $employee_id;
+    protected $employee_id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date;
+    protected $date;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $status;
+    protected $status;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $type;
+    protected $type;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $candidature_id;
+    protected $candidature_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $position_id;
+    protected $position_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $evaluator_id;
+    protected $evaluator_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="appraisals")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="appraisals")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="appraisals")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="appraisals")
      */
-    public $employee_link;
+    protected $employee_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="candidature_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Candidatures::class, inversedBy="appraisals")
      */
-    public $candidatures;
+    protected $candidatures;
 
     /**
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="appraisals")
      */
-    public $positions;
+    protected $positions;
 
     /**
      * @ORM\JoinColumn(name="evaluator_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="appraisals")
      */
-    public $evaluators;
+    protected $evaluators;
 
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="appraisals")
      */
-    public Collection $notes;
+    protected Collection $notes;
 
     /**
      * @ORM\JoinTable(name="appraisals_meetings")
      * @ORM\ManyToMany(targetEntity=Meetings::class, mappedBy="appraisals")
      */
-    public Collection $meetings;
+    protected Collection $meetings;
 
     /**
      * @ORM\JoinTable(name="appraisals_documents")
      * @ORM\ManyToMany(targetEntity=Documents::class, mappedBy="appraisals")
      */
-    public Collection $documents;
+    protected Collection $documents;
 
     /**
      * @ORM\JoinTable(name="appraisals_roles")
      * @ORM\ManyToMany(targetEntity=EmployeeRoles::class, mappedBy="appraisals")
      */
-    public Collection $roles;
+    protected Collection $roles;
 
     /**
      * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="appraisals")
      */
-    public Collection $appraisalitems;
+    protected Collection $appraisalitems;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

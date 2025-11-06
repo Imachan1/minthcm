@@ -6,6 +6,16 @@ class EntityCreatorManager
 {
     static $dictionary = [];
 
+    public static function getSkipingFieldTypes(): array
+    {
+        return EntityCreatorDataGenerator::SKIP_TYPES;
+    }
+
+    public static function getORMMappingTypes(): array
+    {
+        return EntityCreatorDataGenerator::ORM_TYPE_MAP;
+    }
+
     public static function createEntities(): void
     {
         $GLOBALS['entityCreator'] = [];

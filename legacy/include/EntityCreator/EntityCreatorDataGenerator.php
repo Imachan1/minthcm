@@ -2,8 +2,8 @@
 
 class EntityCreatorDataGenerator
 {
-    protected const ORM_TYPE_MAP = [
-        'id' => 'string',
+    public const ORM_TYPE_MAP = [
+        'id' => 'id',
         'varchar' => 'string',
         'int' => 'integer',
         'float' => 'float',
@@ -12,7 +12,7 @@ class EntityCreatorDataGenerator
         'datetime' => 'datetime',
         'text' => 'text',
         'enum' => 'string',
-        'multienum' => 'string',
+        'multienum' => 'multienum',
         'phone' => 'string',
         'url' => 'string',
         'file' => 'string',
@@ -29,7 +29,7 @@ class EntityCreatorDataGenerator
         'mediumtext' => 'text',
     ];
 
-    protected const SKIP_TYPES = [
+    public const SKIP_TYPES = [
         'link',
         'function',
         'time',

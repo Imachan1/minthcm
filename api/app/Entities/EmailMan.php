@@ -59,6 +59,22 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
  * @ORM\Index(name="idx_eman_list", columns={"list_id", "user_id", "deleted"}), 
  * @ORM\Index(name="idx_eman_campaign_id", columns={"campaign_id"}), 
  * @ORM\Index(name="idx_eman_relid_reltype_id", columns={"related_id", "related_type", "campaign_id"})})
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $user_id
+ * @property mixed $id
+ * @property mixed $campaign_id
+ * @property mixed $marketing_id
+ * @property mixed $list_id
+ * @property mixed $send_date_time
+ * @property mixed $modified_user_id
+ * @property mixed $in_queue
+ * @property mixed $in_queue_date
+ * @property mixed $send_attempts
+ * @property mixed $deleted
+ * @property mixed $related_id
+ * @property mixed $related_type
+ * @property mixed $related_confirm_opt_in
  */
 // Auto-generated SectionRepository section end
 class EmailMan extends MintEntity
@@ -68,17 +84,17 @@ class EmailMan extends MintEntity
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $user_id;
+    protected $user_id;
 
     /**
      * @ORM\Id
@@ -86,67 +102,67 @@ class EmailMan extends MintEntity
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      * @ORM\Column(type="integer", length="11")
      */
-    public $id;
+    protected $id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $campaign_id;
+    protected $campaign_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $marketing_id;
+    protected $marketing_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $list_id;
+    protected $list_id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $send_date_time;
+    protected $send_date_time;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $in_queue;
+    protected $in_queue;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $in_queue_date;
+    protected $in_queue_date;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $send_attempts;
+    protected $send_attempts;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $related_id;
+    protected $related_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $related_type;
+    protected $related_type;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $related_confirm_opt_in;
+    protected $related_confirm_opt_in;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

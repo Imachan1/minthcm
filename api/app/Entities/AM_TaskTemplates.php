@@ -58,6 +58,27 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="am_tasktemplates", indexes={
  * @ORM\Index(name="am_tasktemplatespk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $status
+ * @property mixed $priority
+ * @property mixed $percent_complete
+ * @property mixed $predecessors
+ * @property mixed $milestone_flag
+ * @property mixed $relationship_type
+ * @property mixed $task_number
+ * @property mixed $order_number
+ * @property mixed $estimated_effort
+ * @property mixed $utilization
+ * @property mixed $duration
  */
 // Auto-generated SectionRepository section end
 class AM_TaskTemplates extends MintEntity
@@ -68,133 +89,133 @@ class AM_TaskTemplates extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    public $status;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $priority;
+    protected $status;
+
+    /**
+     * @ORM\Column(type="string", length="100")
+     */
+    protected $priority;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $percent_complete;
+    protected $percent_complete;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $predecessors;
+    protected $predecessors;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $milestone_flag;
+    protected $milestone_flag;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $relationship_type;
+    protected $relationship_type;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $task_number;
+    protected $task_number;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $order_number;
+    protected $order_number;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $estimated_effort;
+    protected $estimated_effort;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $utilization;
+    protected $utilization;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $duration;
+    protected $duration;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="am_tasktemplates")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="am_tasktemplates")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="am_tasktemplates")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="am_tasktemplates_am_projecttemplates_c", joinColumns={@ORM\JoinColumn(name="am_tasktemplates_am_projecttemplatesam_tasktemplates_idb", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="am_tasktemplates_am_projecttemplatesam_projecttemplates_ida", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=AM_ProjectTemplates::class, inversedBy="am_tasktemplates")
      */
-    public Collection $am_tasktemplates_am_projecttemplates;
+    protected Collection $am_tasktemplates_am_projecttemplates;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

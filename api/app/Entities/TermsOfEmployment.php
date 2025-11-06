@@ -58,6 +58,29 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="", indexes={
  * @ORM\Index(name="termsofemploymentpk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $employee_id
+ * @property mixed $term_starting_date
+ * @property mixed $term_ending_date
+ * @property mixed $date_of_signing
+ * @property mixed $gross
+ * @property mixed $gross_usdollar
+ * @property mixed $currency_id
+ * @property mixed $net
+ * @property mixed $net_usdollar
+ * @property mixed $employer_cost
+ * @property mixed $employer_cost_usdollar
+ * @property mixed $contract_id
+ * @property mixed $position_id
  */
 // Auto-generated SectionRepository section end
 class TermsOfEmployment extends MintEntity
@@ -68,167 +91,167 @@ class TermsOfEmployment extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $employee_id;
-
-    /**
-     * @ORM\Column(type="date")
-     */
-    public $term_starting_date;
+    protected $employee_id;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $term_ending_date;
+    protected $term_starting_date;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $date_of_signing;
+    protected $term_ending_date;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    protected $date_of_signing;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $gross;
+    protected $gross;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $gross_usdollar;
+    protected $gross_usdollar;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $currency_id;
-
-    /**
-     * @ORM\Column(type="decimal", length="26")
-     */
-    public $net;
+    protected $currency_id;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $net_usdollar;
+    protected $net;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $employer_cost;
+    protected $net_usdollar;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $employer_cost_usdollar;
+    protected $employer_cost;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="decimal", length="26")
      */
-    public $contract_id;
+    protected $employer_cost_usdollar;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $position_id;
+    protected $contract_id;
+
+    /**
+     * @ORM\Column(type="id", length="36")
+     */
+    protected $position_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="termsofemployment")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="termsofemployment")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="termsofemployment")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="termsofemployment")
      */
-    public $employee_link;
+    protected $employee_link;
 
     /**
      * @ORM\JoinColumn(name="contract_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Contracts::class, inversedBy="termsofemployment")
      */
-    public $contracts;
+    protected $contracts;
 
     /**
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="termsofemployment")
      */
-    public $positions;
+    protected $positions;
 
     /**
      * @ORM\JoinTable(name="documents_termsofemployment", joinColumns={@ORM\JoinColumn(name="termsofemployment_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Documents::class, inversedBy="termsofemployment")
      */
-    public Collection $documents;
+    protected Collection $documents;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

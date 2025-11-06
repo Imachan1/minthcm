@@ -58,6 +58,27 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="appraisalitems", indexes={
  * @ORM\Index(name="appraisalitemspk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $value
+ * @property mixed $parent_type
+ * @property mixed $parent_id
+ * @property mixed $appraisal_id
+ * @property mixed $competency_id
+ * @property mixed $knowledge_id
+ * @property mixed $skill_id
+ * @property mixed $attitude_id
+ * @property mixed $responsibiliti_id
+ * @property mixed $goal_id
+ * @property mixed $responsibilityactivitie_id
  */
 // Auto-generated SectionRepository section end
 class AppraisalItems extends MintEntity
@@ -68,175 +89,175 @@ class AppraisalItems extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $value;
+    protected $value;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $parent_type;
+    protected $parent_type;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $parent_id;
+    protected $parent_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $appraisal_id;
+    protected $appraisal_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $competency_id;
+    protected $competency_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $knowledge_id;
+    protected $knowledge_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $skill_id;
+    protected $skill_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $attitude_id;
+    protected $attitude_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $responsibiliti_id;
+    protected $responsibiliti_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $goal_id;
+    protected $goal_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $responsibilityactivitie_id;
+    protected $responsibilityactivitie_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="appraisalitems")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="appraisalitems")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="appraisalitems")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="appraisal_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Appraisals::class, inversedBy="appraisalitems")
      */
-    public $appraisal;
+    protected $appraisal;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Competencies::class, inversedBy="appraisalitems")
      */
-    public $competency;
+    protected $competency;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Knowledge::class, inversedBy="appraisalitems")
      */
-    public $knowledge;
+    protected $knowledge;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Skills::class, inversedBy="appraisalitems")
      */
-    public $skill;
+    protected $skill;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Attitudes::class, inversedBy="appraisalitems")
      */
-    public $attitude;
+    protected $attitude;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Goals::class, inversedBy="appraisalitems")
      */
-    public $goal;
+    protected $goal;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=ResponsibilityActivities::class, inversedBy="appraisalitems")
      */
-    public $responsibilityactivitie;
+    protected $responsibilityactivitie;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

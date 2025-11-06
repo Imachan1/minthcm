@@ -63,6 +63,24 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Index(name="idx_task_assigned", columns={"assigned_user_id"}), 
  * @ORM\Index(name="idx_task_date_start", columns={"date_start"}), 
  * @ORM\Index(name="idx_task_status", columns={"status"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $status
+ * @property mixed $date_due_flag
+ * @property mixed $date_due
+ * @property mixed $date_start_flag
+ * @property mixed $date_start
+ * @property mixed $parent_type
+ * @property mixed $parent_id
+ * @property mixed $priority
  */
 // Auto-generated SectionRepository section end
 class Tasks extends MintEntity
@@ -73,135 +91,135 @@ class Tasks extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $status;
+    protected $status;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $date_due_flag;
+    protected $date_due_flag;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_due;
+    protected $date_due;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $date_start_flag;
+    protected $date_start_flag;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_start;
+    protected $date_start;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $parent_type;
+    protected $parent_type;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $parent_id;
+    protected $parent_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $priority;
+    protected $priority;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="tasks")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="tasks")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="tasks")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="tasks")
      */
-    public Collection $notes;
+    protected Collection $notes;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="tasks")
      */
-    public $projects;
+    protected $projects;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=ProjectTask::class, inversedBy="tasks")
      */
-    public $project_tasks;
+    protected $project_tasks;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

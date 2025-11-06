@@ -61,6 +61,22 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Index(name="idx_note_name", columns={"name"}), 
  * @ORM\Index(name="idx_notes_parent", columns={"parent_id", "parent_type"}), 
  * @ORM\Index(name="idx_notes_assigned_del", columns={"deleted", "assigned_user_id"})})
+ * @property mixed $assigned_user_id
+ * @property mixed $id
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $name
+ * @property mixed $file_mime_type
+ * @property mixed $filename
+ * @property mixed $parent_type
+ * @property mixed $parent_id
+ * @property mixed $portal_flag
+ * @property mixed $embed_flag
+ * @property mixed $description
+ * @property mixed $deleted
  */
 // Auto-generated SectionRepository section end
 class Notes extends MintEntity
@@ -68,159 +84,159 @@ class Notes extends MintEntity
 
 // Auto-generated SectionProperties section start
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $file_mime_type;
+    protected $file_mime_type;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $filename;
+    protected $filename;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $parent_type;
+    protected $parent_type;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $parent_id;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    public $portal_flag;
+    protected $parent_id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $embed_flag;
+    protected $portal_flag;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $embed_flag;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="notes")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="notes")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="notes")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Campaigns::class, inversedBy="notes")
      */
-    public $campaigns;
+    protected $campaigns;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Emails::class, inversedBy="notes")
      */
-    public $emails;
+    protected $emails;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="notes")
      */
-    public $projects;
+    protected $projects;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=ProjectTask::class, inversedBy="notes")
      */
-    public $project_tasks;
+    protected $project_tasks;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Meetings::class, inversedBy="notes")
      */
-    public $meetings;
+    protected $meetings;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Calls::class, inversedBy="notes")
      */
-    public $calls;
+    protected $calls;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Tasks::class, inversedBy="notes")
      */
-    public $tasks;
+    protected $tasks;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Appraisals::class, inversedBy="notes")
      */
-    public $appraisal;
+    protected $appraisal;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

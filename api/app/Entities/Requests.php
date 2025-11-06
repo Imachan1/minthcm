@@ -58,6 +58,21 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="requests", indexes={
  * @ORM\Index(name="requestspk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $employee_id
+ * @property mixed $status
+ * @property mixed $type
+ * @property mixed $training_id
+ * @property mixed $benefit_id
  */
 // Auto-generated SectionRepository section end
 class Requests extends MintEntity
@@ -68,126 +83,126 @@ class Requests extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $employee_id;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    public $status;
+    protected $employee_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $type;
+    protected $status;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="string", length="100")
      */
-    public $training_id;
+    protected $type;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $benefit_id;
+    protected $training_id;
+
+    /**
+     * @ORM\Column(type="id", length="36")
+     */
+    protected $benefit_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="requests")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="requests")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="requests")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="requests")
      */
-    public $employee_link;
+    protected $employee_link;
 
     /**
      * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="requests")
      */
-    public Collection $comments;
+    protected Collection $comments;
 
     /**
      * @ORM\JoinColumn(name="benefit_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Benefits::class, inversedBy="requests")
      */
-    public $benefit;
+    protected $benefit;
 
     /**
      * @ORM\JoinColumn(name="training_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Trainings::class, inversedBy="requests")
      */
-    public $training;
+    protected $training;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

@@ -59,6 +59,22 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="schedulereports", indexes={
  * @ORM\Index(name="schedulereportspk", columns={"id"}), 
  * @ORM\Index(name="idx_schedule", columns={"kreport_id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $frequency_performance
+ * @property mixed $active
+ * @property mixed $template_id
+ * @property mixed $email_template_id
+ * @property mixed $date_send
+ * @property mixed $kreport_id
  */
 // Auto-generated SectionRepository section end
 class ScheduleReports extends MintEntity
@@ -69,119 +85,119 @@ class ScheduleReports extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $frequency_performance;
+    protected $frequency_performance;
 
     /**
      * @ORM\Column(type="boolean", length="255")
      */
-    public $active;
+    protected $active;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $template_id;
+    protected $template_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $email_template_id;
+    protected $email_template_id;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $date_send;
+    protected $date_send;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $kreport_id;
+    protected $kreport_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="schedulereports")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="schedulereports")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="schedulereports")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinColumn(name="kreport_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=KReports::class, inversedBy="schedulereports")
      */
-    public $schedulereports_kreports;
+    protected $schedulereports_kreports;
 
     /**
      * @ORM\OneToMany(targetEntity=ScheduleReportsLogs::class, mappedBy="schedulereports")
      */
-    public Collection $schedulereports_schedulereportslogs;
+    protected Collection $schedulereports_schedulereportslogs;
 
     /**
      * @ORM\JoinTable(name="users_schedulereports", joinColumns={@ORM\JoinColumn(name="schedulereport_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Users::class, inversedBy="schedulereports")
      */
-    public Collection $users;
+    protected Collection $users;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

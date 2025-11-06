@@ -58,6 +58,45 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="candidatures", indexes={
  * @ORM\Index(name="candidaturespk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $employee_id
+ * @property mixed $currency_id
+ * @property mixed $reason_for_rejection
+ * @property mixed $dg_amount
+ * @property mixed $dg_amount_usdollar
+ * @property mixed $gross_amount
+ * @property mixed $gross_amount_usdollar
+ * @property mixed $net_amount
+ * @property mixed $net_amount_usdollar
+ * @property mixed $notice
+ * @property mixed $notice_final_expectations
+ * @property mixed $salary_net
+ * @property mixed $salary_net_usdollar
+ * @property mixed $scoring
+ * @property mixed $source
+ * @property mixed $start_date
+ * @property mixed $work_start
+ * @property mixed $training_date
+ * @property mixed $status
+ * @property mixed $status_information
+ * @property mixed $task_grade
+ * @property mixed $to_decision
+ * @property mixed $final_employment_form
+ * @property mixed $employment_form
+ * @property mixed $entry_interview
+ * @property mixed $parent_id
+ * @property mixed $parent_type
+ * @property mixed $recruitment_id
+ * @property mixed $recruitment_end_id
  */
 // Auto-generated SectionRepository section end
 class Candidatures extends MintEntity
@@ -68,288 +107,288 @@ class Candidatures extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $employee_id;
+    protected $employee_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $currency_id;
+    protected $currency_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $reason_for_rejection;
+    protected $reason_for_rejection;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $dg_amount;
+    protected $dg_amount;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $dg_amount_usdollar;
+    protected $dg_amount_usdollar;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $gross_amount;
+    protected $gross_amount;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $gross_amount_usdollar;
+    protected $gross_amount_usdollar;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $net_amount;
+    protected $net_amount;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $net_amount_usdollar;
+    protected $net_amount_usdollar;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $notice;
+    protected $notice;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $notice_final_expectations;
+    protected $notice_final_expectations;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $salary_net;
+    protected $salary_net;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $salary_net_usdollar;
+    protected $salary_net_usdollar;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $scoring;
+    protected $scoring;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $source;
+    protected $source;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $start_date;
+    protected $start_date;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $work_start;
+    protected $work_start;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $training_date;
+    protected $training_date;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $status;
+    protected $status;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $status_information;
+    protected $status_information;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $task_grade;
+    protected $task_grade;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $to_decision;
+    protected $to_decision;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $final_employment_form;
+    protected $final_employment_form;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="multienum")
      */
-    public $employment_form;
+    protected $employment_form;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $entry_interview;
+    protected $entry_interview;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $parent_id;
+    protected $parent_id;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $parent_type;
+    protected $parent_type;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $recruitment_id;
+    protected $recruitment_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $recruitment_end_id;
+    protected $recruitment_end_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidatures")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidatures")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidatures")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="candidatures")
      */
-    public $employee_link;
+    protected $employee_link;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Candidates::class, inversedBy="candidatures")
      */
-    public $candidate;
+    protected $candidate;
 
     /**
      * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="candidatures")
      */
-    public Collection $calls;
+    protected Collection $calls;
 
     /**
      * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="candidatures")
      */
-    public Collection $meetings;
+    protected Collection $meetings;
 
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="candidatures")
      */
-    public Collection $notes;
+    protected Collection $notes;
 
     /**
      * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="candidatures")
      */
-    public Collection $tasks;
+    protected Collection $tasks;
 
     /**
      * @ORM\JoinColumn(name="recruitment_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Recruitments::class, inversedBy="candidatures")
      */
-    public $recruitments;
+    protected $recruitments;
 
     /**
      * @ORM\JoinColumn(name="recruitment_end_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Recruitments::class, inversedBy="candidatures")
      */
-    public $recruitments_end;
+    protected $recruitments_end;
 
     /**
      * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="candidatures")
      */
-    public Collection $emails;
+    protected Collection $emails;
 
     /**
      * @ORM\OneToMany(targetEntity=Appraisals::class, mappedBy="candidatures")
      */
-    public Collection $appraisals;
+    protected Collection $appraisals;
 
     /**
      * @ORM\JoinTable(name="documents_candidatures", joinColumns={@ORM\JoinColumn(name="candidature_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Documents::class, inversedBy="candidatures")
      */
-    public Collection $documents;
+    protected Collection $documents;
 
     /**
      * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidatures")
      */
-    public Collection $files;
+    protected Collection $files;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

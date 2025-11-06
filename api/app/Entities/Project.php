@@ -58,6 +58,25 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="project", indexes={
  * @ORM\Index(name="projects_primary_key_index", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $assigned_user_id
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $name
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $estimated_start_date
+ * @property mixed $estimated_end_date
+ * @property mixed $status
+ * @property mixed $priority
+ * @property mixed $override_business_hours
+ * @property mixed $jjwg_maps_lat_c
+ * @property mixed $jjwg_maps_address_c
+ * @property mixed $jjwg_maps_geocode_status_c
+ * @property mixed $jjwg_maps_lng_c
  */
 // Auto-generated SectionRepository section end
 class Project extends MintEntity
@@ -68,160 +87,160 @@ class Project extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="string", length="50")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $estimated_start_date;
+    protected $estimated_start_date;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $estimated_end_date;
+    protected $estimated_end_date;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $status;
+    protected $status;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $priority;
+    protected $priority;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $override_business_hours;
+    protected $override_business_hours;
 
     /**
      * @ORM\Column(type="float", length="10")
      */
-    public $jjwg_maps_lat_c;
+    protected $jjwg_maps_lat_c;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $jjwg_maps_address_c;
+    protected $jjwg_maps_address_c;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $jjwg_maps_geocode_status_c;
+    protected $jjwg_maps_geocode_status_c;
 
     /**
      * @ORM\Column(type="float", length="11")
      */
-    public $jjwg_maps_lng_c;
+    protected $jjwg_maps_lng_c;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="project")
      */
-    public Collection $notes;
+    protected Collection $notes;
 
     /**
      * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="project")
      */
-    public Collection $tasks;
+    protected Collection $tasks;
 
     /**
      * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="project")
      */
-    public Collection $meetings;
+    protected Collection $meetings;
 
     /**
      * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="project")
      */
-    public Collection $calls;
+    protected Collection $calls;
 
     /**
      * @ORM\OneToMany(targetEntity=ProjectTask::class, mappedBy="project")
      */
-    public Collection $projecttask;
+    protected Collection $projecttask;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="project")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="project")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="project")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinTable(name="project_users_1_c")
      * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="project")
      */
-    public Collection $project_users_1;
+    protected Collection $project_users_1;
 
     /**
      * @ORM\JoinTable(name="am_projecttemplates_project_1_c", joinColumns={@ORM\JoinColumn(name="am_projecttemplates_project_1project_idb", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="am_projecttemplates_project_1am_projecttemplates_ida", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=AM_ProjectTemplates::class, inversedBy="project")
      */
-    public Collection $am_projecttemplates_project_1;
+    protected Collection $am_projecttemplates_project_1;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

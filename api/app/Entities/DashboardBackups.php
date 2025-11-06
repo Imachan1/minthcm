@@ -56,6 +56,20 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
  * @ORM\Entity
  * @ORM\Table(name="dashboardbackups", indexes={
  * @ORM\Index(name="dashboardbackupspk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $encoded_pages
+ * @property mixed $encoded_dashlets
+ * @property mixed $dashboardmanager_id
+ * @property mixed $dashboardhistory_id
  */
 // Auto-generated SectionRepository section end
 class DashboardBackups extends MintEntity
@@ -66,104 +80,104 @@ class DashboardBackups extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    public $encoded_pages;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $encoded_dashlets;
+    protected $encoded_pages;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="text")
      */
-    public $dashboardmanager_id;
+    protected $encoded_dashlets;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $dashboardhistory_id;
+    protected $dashboardmanager_id;
+
+    /**
+     * @ORM\Column(type="id", length="36")
+     */
+    protected $dashboardhistory_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dashboardbackups")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dashboardbackups")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dashboardbackups")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinColumn(name="dashboardmanager_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="dashboardbackups")
      */
-    public $dashboardmanager;
+    protected $dashboardmanager;
 
     /**
      * @ORM\JoinColumn(name="dashboardhistory_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=DashboardHistory::class, inversedBy="dashboardbackups")
      */
-    public $dashboardhistory;
+    protected $dashboardhistory;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

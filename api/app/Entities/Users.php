@@ -60,6 +60,55 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="users", indexes={
  * @ORM\Index(name="userspk", columns={"id"}), 
  * @ORM\Index(name="idx_user_name", columns={"user_name", "is_group", "status", "last_name", "first_name", "id"})})
+ * @property mixed $id
+ * @property mixed $user_name
+ * @property mixed $user_hash
+ * @property mixed $system_generated_password
+ * @property mixed $pwd_last_changed
+ * @property mixed $authenticate_id
+ * @property mixed $sugar_login
+ * @property mixed $first_name
+ * @property mixed $last_name
+ * @property mixed $date_indexed
+ * @property mixed $is_admin
+ * @property mixed $external_auth_only
+ * @property mixed $receive_notifications
+ * @property mixed $description
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $title
+ * @property mixed $photo
+ * @property mixed $department
+ * @property mixed $phone_home
+ * @property mixed $phone_mobile
+ * @property mixed $phone_work
+ * @property mixed $phone_other
+ * @property mixed $phone_fax
+ * @property mixed $status
+ * @property mixed $primary_address_street
+ * @property mixed $primary_address_city
+ * @property mixed $primary_address_state
+ * @property mixed $primary_address_country
+ * @property mixed $primary_address_postalcode
+ * @property mixed $deleted
+ * @property mixed $portal_only
+ * @property mixed $show_on_employees
+ * @property mixed $employee_status
+ * @property mixed $messenger_id
+ * @property mixed $messenger_type
+ * @property mixed $reports_to_id
+ * @property mixed $business_role
+ * @property mixed $is_group
+ * @property mixed $factor_auth
+ * @property mixed $factor_auth_interface
+ * @property mixed $position_id
+ * @property mixed $forced_tabs_dashboard_id
+ * @property mixed $locked_dashboard_id
+ * @property mixed $one_time_default_dashboard_id
+ * @property mixed $birthdate
+ * @property mixed $app_tokens
  */
 // Auto-generated SectionRepository section end
 class Users extends MintEntity implements UserEntityInterface
@@ -70,375 +119,375 @@ class Users extends MintEntity implements UserEntityInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="60")
      */
-    public $user_name;
+    protected $user_name;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $user_hash;
+    protected $user_hash;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $system_generated_password;
+    protected $system_generated_password;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $pwd_last_changed;
+    protected $pwd_last_changed;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $authenticate_id;
+    protected $authenticate_id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $sugar_login;
+    protected $sugar_login;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $first_name;
+    protected $first_name;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $last_name;
+    protected $last_name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $is_admin;
+    protected $is_admin;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $external_auth_only;
+    protected $external_auth_only;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $receive_notifications;
+    protected $receive_notifications;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="string", length="50")
      */
-    public $title;
+    protected $title;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $photo;
+    protected $photo;
 
     /**
      * @ORM\Column(type="string", length="50")
      */
-    public $department;
+    protected $department;
 
     /**
      * @ORM\Column(type="string", length="50")
      */
-    public $phone_home;
+    protected $phone_home;
 
     /**
      * @ORM\Column(type="string", length="50")
      */
-    public $phone_mobile;
+    protected $phone_mobile;
 
     /**
      * @ORM\Column(type="string", length="50")
      */
-    public $phone_work;
+    protected $phone_work;
 
     /**
      * @ORM\Column(type="string", length="50")
      */
-    public $phone_other;
+    protected $phone_other;
 
     /**
      * @ORM\Column(type="string", length="50")
      */
-    public $phone_fax;
+    protected $phone_fax;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $status;
+    protected $status;
 
     /**
      * @ORM\Column(type="string", length="150")
      */
-    public $primary_address_street;
+    protected $primary_address_street;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $primary_address_city;
+    protected $primary_address_city;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $primary_address_state;
+    protected $primary_address_state;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $primary_address_country;
+    protected $primary_address_country;
 
     /**
      * @ORM\Column(type="string", length="20")
      */
-    public $primary_address_postalcode;
+    protected $primary_address_postalcode;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $portal_only;
+    protected $portal_only;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $show_on_employees;
+    protected $show_on_employees;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $employee_status;
+    protected $employee_status;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $messenger_id;
+    protected $messenger_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $messenger_type;
+    protected $messenger_type;
 
     /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="reports_to_link")
      * @ORM\JoinColumn(name="reports_to_id", referencedColumnName="id")
      */
-    public $reports_to_id;
+    protected $reports_to_id;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $business_role;
+    protected $business_role;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $is_group;
+    protected $is_group;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $factor_auth;
+    protected $factor_auth;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $factor_auth_interface;
+    protected $factor_auth_interface;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $position_id;
+    protected $position_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $forced_tabs_dashboard_id;
+    protected $forced_tabs_dashboard_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $locked_dashboard_id;
+    protected $locked_dashboard_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $one_time_default_dashboard_id;
+    protected $one_time_default_dashboard_id;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $birthdate;
+    protected $birthdate;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $app_tokens;
+    protected $app_tokens;
 
     /**
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="reports_to_id")
      */
-    public Collection $reports_to_link;
+    protected Collection $reports_to_link;
 
     /**
      * @ORM\JoinTable(name="email_addr_bean_rel")
      * @ORM\ManyToMany(targetEntity=EmailAddresses::class, mappedBy="users")
      */
-    public Collection $email_addresses;
+    protected Collection $email_addresses;
 
     /**
      * @ORM\JoinTable(name="email_addr_bean_rel")
      * @ORM\ManyToMany(targetEntity=EmailAddresses::class, mappedBy="users")
      */
-    public Collection $email_addresses_primary;
+    protected Collection $email_addresses_primary;
 
     /**
      * @ORM\JoinTable(name="calls_users", joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="call_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Calls::class, inversedBy="users")
      */
-    public Collection $calls;
+    protected Collection $calls;
 
     /**
      * @ORM\JoinTable(name="meetings_users", joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="meeting_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Meetings::class, inversedBy="users")
      */
-    public Collection $meetings;
+    protected Collection $meetings;
 
     /**
      * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="users")
      */
-    public Collection $tasks;
+    protected Collection $tasks;
 
     /**
      * @ORM\JoinTable(name="acl_roles_users", joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=ACLRoles::class, inversedBy="users")
      */
-    public Collection $aclroles;
+    protected Collection $aclroles;
 
     /**
      * @ORM\OneToMany(targetEntity=EAPM::class, mappedBy="users")
      */
-    public Collection $eapm;
+    protected Collection $eapm;
 
     /**
      * @ORM\OneToMany(targetEntity=OAuthTokens::class, mappedBy="users")
      */
-    public Collection $oauth_tokens;
+    protected Collection $oauth_tokens;
 
     /**
      * @ORM\JoinTable(name="project_users_1_c", joinColumns={@ORM\JoinColumn(name="project_users_1users_idb", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="project_users_1project_ida", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Project::class, inversedBy="users")
      */
-    public Collection $project_users_1;
+    protected Collection $project_users_1;
 
     /**
      * @ORM\JoinTable(name="am_projecttemplates_users_1_c", joinColumns={@ORM\JoinColumn(name="users_idb", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="am_projecttemplates_ida", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=AM_ProjectTemplates::class, inversedBy="users")
      */
-    public Collection $am_projecttemplates_users_1;
+    protected Collection $am_projecttemplates_users_1;
 
     /**
      * @ORM\JoinTable(name="securitygroups_users", joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="users")
      */
-    public $position;
+    protected $position;
 
     /**
      * @ORM\OneToMany(targetEntity=OnboardingOffboardingElements::class, mappedBy="users")
      */
-    public Collection $onboardingoffboardingelements;
+    protected Collection $onboardingoffboardingelements;
 
     /**
      * @ORM\JoinTable(name="candidates_employees", joinColumns={@ORM\JoinColumn(name="employee_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="candidate_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Candidates::class, inversedBy="users")
      */
-    public Collection $candidates;
+    protected Collection $candidates;
 
     /**
      * @ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="users")
      */
-    public $securitygroups_employees_link;
+    protected $securitygroups_employees_link;
 
     /**
      * @ORM\OneToMany(targetEntity=Ideas::class, mappedBy="users")
      */
-    public Collection $ideas;
+    protected Collection $ideas;
 
     /**
      * @ORM\JoinColumn(name="forced_tabs_dashboard_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users")
      */
-    public $users_forced_tabs_dashboards;
+    protected $users_forced_tabs_dashboards;
 
     /**
      * @ORM\JoinColumn(name="locked_dashboard_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users")
      */
-    public $users_locked_dashboards;
+    protected $users_locked_dashboards;
 
     /**
      * @ORM\JoinColumn(name="one_time_default_dashboard_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users")
      */
-    public $users_one_time_default_dashboards;
+    protected $users_one_time_default_dashboards;
 
     /**
      * @ORM\JoinTable(name="users_schedulereports")
      * @ORM\ManyToMany(targetEntity=ScheduleReports::class, mappedBy="users")
      */
-    public Collection $schedulereports;
+    protected Collection $schedulereports;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkSchedules::class, mappedBy="users")
      */
-    public Collection $deputy;
+    protected Collection $deputy;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -485,6 +534,12 @@ class Users extends MintEntity implements UserEntityInterface
         }
 
         return !empty($names) ? implode(' ', $names) : '';
+    }
+
+
+    public function getName(): ?string
+    {
+        return $this->getFullName();
     }
 
 

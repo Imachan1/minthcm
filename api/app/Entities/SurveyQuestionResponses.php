@@ -58,6 +58,21 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="surveyquestionresponses", indexes={
  * @ORM\Index(name="surveyquestionresponsespk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $answer
+ * @property mixed $answer_bool
+ * @property mixed $answer_datetime
+ * @property mixed $surveyquestion_id
+ * @property mixed $surveyresponse_id
  */
 // Auto-generated SectionRepository section end
 class SurveyQuestionResponses extends MintEntity
@@ -68,121 +83,121 @@ class SurveyQuestionResponses extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $answer;
+    protected $answer;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $answer_bool;
+    protected $answer_bool;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $answer_datetime;
+    protected $answer_datetime;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $surveyquestion_id;
+    protected $surveyquestion_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $surveyresponse_id;
+    protected $surveyresponse_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="surveyquestionresponses")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="surveyquestionresponses")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="surveyquestionresponses")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinTable(name="surveyquestionoptions_surveyquestionresponses", joinColumns={@ORM\JoinColumn(name="surveyq10d4sponses_idb", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="surveyq72c7options_ida", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SurveyQuestionOptions::class, inversedBy="surveyquestionresponses")
      */
-    public Collection $surveyquestionoptions_surveyquestionresponses;
+    protected Collection $surveyquestionoptions_surveyquestionresponses;
 
     /**
      * @ORM\JoinColumn(name="surveyquestion_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=SurveyQuestions::class, inversedBy="surveyquestionresponses")
      */
-    public $surveyquestion;
+    protected $surveyquestion;
 
     /**
      * @ORM\JoinColumn(name="surveyresponse_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=SurveyResponses::class, inversedBy="surveyquestionresponses")
      */
-    public $surveyresponse;
+    protected $surveyresponse;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
