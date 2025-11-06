@@ -53,6 +53,7 @@ $viewdefs['WorkSchedules'] = [
                             ],
                             [
                                 ['name' => 'description'],
+                                ['name' => 'supervisor_acceptance'],
                             ],
                             [
                                 ['name' => 'delegation_duration'],

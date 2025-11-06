@@ -34,6 +34,8 @@ class CloseWorkSchedule
                 throw new Exception("WorkSchedules bean could not be found!");
             }
             $accept_workschedule_validator = new LegacyConnector('AcceptWorkScheduleValidator', 'modules/WorkSchedules/AcceptWorkScheduleValidator.php', [$workschedule]);
+            $employee = BeanFactory::getBean('Employees', $workschedule->assigned_user_id);
+            $accept_workschedule_validator->employee = $employee;
             $result = $accept_workschedule_validator->validate();
         } catch (Exception $e) {
             throw new HttpBadRequestException($request, 'Error while checking work schedule: ' . $e->getMessage());
