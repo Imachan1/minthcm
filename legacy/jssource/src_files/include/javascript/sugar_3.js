@@ -4276,7 +4276,8 @@ SUGAR.language = function () {
 
       get: function ( module, str ) {
          if ( typeof SUGAR.language.languages[module] == 'undefined' || typeof SUGAR.language.languages[module][str] == 'undefined' ) {
-            return 'undefined';
+            console.warn('SUGAR.language: Missing Label: ' + str + ' in module: ' + module);
+            return str;
          }
          return SUGAR.language.languages[module][str];
       },
