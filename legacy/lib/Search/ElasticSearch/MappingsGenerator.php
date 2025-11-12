@@ -129,9 +129,10 @@ class MappingsGenerator
 
             foreach ($fields_to_map as $field) {
                 if (
-                    $defs[$field]['source'] != "non-db" 
+                    $defs[$field]['source'] != "non-db"
                     || $defs[$field]['type'] == 'relate' 
                     || $defs[$field]['type'] == 'parent'
+                    || $defs[$field]['type'] == 'varchar'
                 ) {
                     $es_type_name = $this->type_mapping[$defs[$field]['type']] ?? 'text';
                     $es_type = $this->types[$es_type_name];
@@ -234,7 +235,7 @@ class MappingsGenerator
                 $default[] = $field;
             }
         }
-
+        
         $fields_to_map = array_unique(array_merge($columns, $search, $default));
 
         foreach ($this->fields_must_be_added_to_mappings_because_of_security as $name_field => $id_field) {
