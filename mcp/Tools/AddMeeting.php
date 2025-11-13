@@ -161,7 +161,7 @@ class AddMeeting extends AbstractMCPTool
 
         // Calculate date_end if not provided
         if (empty($arguments->date_end)) {
-            $startTime = strtotime($arguments->date_start);
+            $startTime = strtotime($meeting->date_start);
             $duration = ($meeting->duration_hours * 3600) + ($meeting->duration_minutes * 60);
             $meeting->date_end = date('Y-m-d H:i:s', $startTime + $duration);
         } else {

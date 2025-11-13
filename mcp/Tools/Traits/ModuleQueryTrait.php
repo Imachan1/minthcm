@@ -34,7 +34,7 @@ trait ModuleQueryTrait
 
     public function isDateField(string $fieldType): bool
     {
-        return in_array($fieldType, ['date', 'datetime']);
+        return in_array($fieldType, ['date', 'datetime', 'datetimecombo']);
     }
 
     private function buildWhereClause(string $filtersJson, array $fieldDefs, string $tableName, string $operator): string

@@ -184,14 +184,14 @@ class ListMeetings extends AbstractMCPTool
                 'assigned_user_id' => $meeting->assigned_user_id,
                 'assigned_user_name' => $meeting->assigned_user_name ?? '',
                 'location' => $meeting->location,
-                'date_start' => DateTimeConversion::toUserTZ($meeting->date_start),
-                'date_end' => DateTimeConversion::toUserTZ($meeting->date_end),
+                'date_start' => DateTimeConversion::formatDate($meeting->date_start),
+                'date_end' => DateTimeConversion::formatDate($meeting->date_end),
                 'duration_hours' => $meeting->duration_hours ?? 0,
                 'duration_minutes' => $meeting->duration_minutes ?? 0,
                 'status' => $meeting->status ?? '',
                 'join_url' => $meeting->join_url ?? '',
                 'creator' => $meeting->creator ?? '',
-                'date_modified' => DateTimeConversion::toUserTZ($meeting->date_modified),
+                'date_modified' => DateTimeConversion::formatDate($meeting->date_modified),
                 'participants' => $participants
             ];
         }

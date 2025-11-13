@@ -158,10 +158,12 @@ class CheckAvailability extends AbstractMCPTool
         }
 
         // Get all meetings matching the date/status criteria
-        $meetings = $meetingBean->get_full_list(
+        $meetingsData = $meetingBean->get_list(
             '',
             implode(' AND ', $where)
         );
+
+        $meetings = $meetingsData['list'] ?? [];
 
         $busy = [];
         if ($meetings) {
@@ -171,8 +173,8 @@ class CheckAvailability extends AbstractMCPTool
                 $userIds = $meeting->users->get();
                 if (in_array($userId, $userIds)) {
                     $busy[] = [
-                        'start' => DateTimeConversion::toUserTZ($meeting->date_start),
-                        'end' => DateTimeConversion::toUserTZ($meeting->date_end),
+                        'start' => DateTimeConversion::formatDate($meeting->date_start),
+                        'end' => DateTimeConversion::formatDate($meeting->date_end),
                         'type' => 'meeting',
                         'name' => $meeting->name,
                     ];
@@ -206,10 +208,11 @@ class CheckAvailability extends AbstractMCPTool
         }
 
         // Get all calls matching the date/status criteria
-        $calls = $callBean->get_full_list(
+        $callsData = $callBean->get_list(
             '',
             implode(' AND ', $where)
         );
+        $calls = $callsData['list'] ?? [];
 
         $busy = [];
         if ($calls) {
@@ -219,8 +222,8 @@ class CheckAvailability extends AbstractMCPTool
                 $userIds = $call->users->get();
                 if (in_array($userId, $userIds)) {
                     $busy[] = [
-                        'start' => DateTimeConversion::toUserTZ($call->date_start),
-                        'end' => DateTimeConversion::toUserTZ($call->date_end),
+                        'start' => DateTimeConversion::formatDate($call->date_start),
+                        'end' => DateTimeConversion::formatDate($call->date_end),
                         'type' => 'call',
                         'name' => $call->name,
                     ];

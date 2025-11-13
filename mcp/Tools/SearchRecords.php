@@ -158,7 +158,7 @@ Important: Use get_module_fields to get available fields in the module. You cann
                     if (!isset($fieldDefs[$field])) {
                         continue;
                     }
-                    $value = isset($fieldDefs[$field]['type']) && $this->isDateField($fieldDefs[$field]['type']) ? DateTimeConversion::toUserTZ($row->$field) : ($row->$field ?? null);
+                    $value = isset($fieldDefs[$field]['type']) && $this->isDateField($fieldDefs[$field]['type']) ? DateTimeConversion::formatDate($row->$field) : ($row->$field ?? null);
                     if ($field !== 'id') {
                         $record[$field] = $value;
                     }

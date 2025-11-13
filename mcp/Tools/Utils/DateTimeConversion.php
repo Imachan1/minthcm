@@ -16,11 +16,7 @@ class DateTimeConversion
     {
         global $timedate, $current_user;
 
-        [$dateTime, $outputFormat] = self::parseDateWithFormats(
-            $date,
-            $timedate,
-            new \DateTimeZone('GMT')
-        );
+        [$dateTime, $outputFormat] = self::parseDate($date, new \DateTimeZone('GMT'));
 
         return $timedate->tzUser($dateTime, $current_user)->format($outputFormat);
     }
@@ -35,24 +31,33 @@ class DateTimeConversion
         global $timedate, $current_user;
 
         $userTZ = $timedate::userTimezone($current_user);
-        [$dateTime, $outputFormat] = self::parseDateWithFormats(
-            $date,
-            $timedate,
-            new \DateTimeZone($userTZ)
-        );
+        [$dateTime, $outputFormat] = self::parseDate($date, new \DateTimeZone($userTZ));
 
         return $timedate->tzGMT($dateTime)->format($outputFormat);
     }
 
     /**
+     * Converts a date string to database format without changing timezone.
+     * @param string $date Date string in any supported format
+     * @return string Date string in database format (preserving timezone)
+     */
+    public static function formatDate(string $date): string
+    {
+        [$dateTime, $outputFormat] = self::parseDate($date);
+
+        return $dateTime->format($outputFormat);
+    }
+
+    /**
      * Parses a date string using multiple formats and returns the DateTime object and the format used.
      * @param string $date Date string to parse
-     * @param TimeDate $timedate TimeDate instance for format retrieval
-     * @param \DateTimeZone $timezone Timezone to use for parsing
+     * @param \DateTimeZone|null $timezone Timezone to use for parsing
      * @return array [\DateTime $dateTime, string $formatUsed]
      */
-    private static function parseDateWithFormats(string $date, $timedate, \DateTimeZone $timezone): array
+    private static function parseDate(string $date, ?\DateTimeZone $timezone = null): array
     {
+        global $timedate;
+
         $formats = [
             ['input' => $timedate->get_db_date_format(), 'output' => $timedate->get_db_date_format()],
             ['input' => $timedate->get_db_date_time_format(), 'output' => $timedate->get_db_date_time_format()],
@@ -61,7 +66,10 @@ class DateTimeConversion
         ];
 
         foreach ($formats as $format) {
-            $dateTime = \DateTime::createFromFormat($format['input'], $date, $timezone);
+            $dateTime = $timezone 
+                ? \DateTime::createFromFormat($format['input'], $date, $timezone)
+                : \DateTime::createFromFormat($format['input'], $date);
+            
             if ($dateTime !== false) {
                 return [$dateTime, $format['output']];
             }

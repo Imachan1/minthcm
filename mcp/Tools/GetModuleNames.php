@@ -40,19 +40,21 @@ class GetModuleNames extends AbstractMCPTool
         // $moduleController = ControllerFactory::getInstance()->createController(Module::class);
         // $aclModules = $moduleController->getACLs();
 
-        global $moduleList;
+        global $beanList;
 
         $accessible_modules = array();
-        foreach($moduleList as $module) {
+        foreach($beanList as $module_name => $bean_name) {
             try {
-                $this->checkPermissions($module, 'list');
+                $this->checkPermissions($module_name, 'list');
             } catch (ModuleNotAllowedException $e) {
                 // Skip blocked modules
                 continue;
             }
-            $accessible_modules[] = $module;
+            $accessible_modules[] = $module_name;
         }
 
+        // Sort modules naturally
+        usort($accessible_modules, 'strnatcmp');
 
         // Format result as a readable list
         if (empty($accessible_modules)) {

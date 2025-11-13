@@ -26,7 +26,7 @@ class Config
     public function get(string $key, $default = null)
     {
         $fullKey = self::SETTINGS_KEY . '_' . $key;
-        return $this->config[$fullKey] ?? $default;
+        return $this->config[$fullKey] ?: $default;
     }
 
     public function set(string $key, $value): void
