@@ -99,6 +99,8 @@ Important: Use get_module_fields to get available fields in the module. You cann
 
             $fields = $arguments->fields ?? [];
 
+            $this->validateFieldsExist($fields, $fieldDefs, $arguments->module_name);
+
             $filters = $arguments->filters ?? '';
             $whereClause = $this->buildWhereClause($filters, $fieldDefs, $tableName, $operator);
 
@@ -168,5 +170,23 @@ Important: Use get_module_fields to get available fields in the module. You cann
         }
 
         return $returnData;
+    }
+
+    /**
+     * Validates that the specified fields exist in the module's field definitions.
+     *
+     * @param array $fields
+     * @param array $fieldDefs
+     * @param string $moduleName
+     * @return void
+     * @throws \InvalidArgumentException if any field does not exist
+     */
+    protected function validateFieldsExist(array $fields, array $fieldDefs, string $moduleName): void
+    {
+        $validators = [];
+        foreach ($fields as $field) {
+            $validators[] = ToolValidation::make(null, $field)->fieldModule($fieldDefs, $moduleName);
+        }
+        ToolValidation::validateMany($validators);
     }
 }
