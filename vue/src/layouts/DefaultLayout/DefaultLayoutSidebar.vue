@@ -46,6 +46,7 @@
                 </template>
             </v-text-field>
             <v-list
+                ref="nav-list-ref"
                 nav
                 :class="{
                     'nav-list nav-list-blurred flex-grow-1': true,
@@ -148,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, nextTick, useTemplateRef } from 'vue'
 import { useUrlStore } from '@/store/url'
 import { useFavoritesStore } from '@/store/favorites'
 import { useRecentsStore } from '@/store/recents'
@@ -193,6 +194,23 @@ function navigateToModule(moduleName: string) {
     router.push({ name: 'list', params: { module: moduleName } })
 }
 
+const navListRef = useTemplateRef('nav-list-ref')
+function scrollToSelectedItem() {
+    nextTick(() => {
+        if (!selectedItem.value || !navListRef.value) return
+        
+        const navListElement = (navListRef.value as { $el: HTMLElement } | null)?.$el ?? null
+        const selectedElement = navListElement?.querySelector(`[data-cy="${selectedItem.value}"]`)
+        if (selectedElement) {
+            selectedElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'nearest'
+            })
+        }
+    })
+}
+
 function selectItem(event) {
     if (!filteredModules.value.length || filterModulesQuery.value == '') {
         selectedItem.value = ''
@@ -207,6 +225,7 @@ function selectItem(event) {
             } else {
                 selectedItem.value = itemsKeys.value[0]
             }
+            scrollToSelectedItem()
             break
         case 'ArrowUp':
             event.preventDefault()
@@ -215,6 +234,7 @@ function selectItem(event) {
             } else {
                 selectedItem.value = itemsKeys.value[itemsKeys.value.length - 1]
             }
+            scrollToSelectedItem()
             break
         case 'Enter':
             event.preventDefault()
