@@ -52,6 +52,10 @@ const isEditable = computed(() => {
 })
 
 async function fetchChecklist() {
+    if (store.bean.id == '') {
+        checklist.value = []
+        return
+    }
     const value = await modulesApi.getChecklistItems(store.bean.module, store.bean.id)
     let data = value.data
     let id = 0
