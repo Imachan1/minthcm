@@ -280,10 +280,6 @@ class Meetings
      */
     public $jjwg_maps_lat_c;
 
-    /**
-     * @ORM\Column(type="string", length="255")
-     */
-    public $jjwg_maps_address_c;
 
     /**
             * @ORM\Column(type="string", length="255")
