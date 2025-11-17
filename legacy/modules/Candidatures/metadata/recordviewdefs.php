@@ -56,7 +56,7 @@ $viewdefs['Candidatures'] = [
                         'fields' => [
                             [
                                 'employment_form',
-                                'currency_name',
+                                'currency_id',
                             ],
                             [
                                 'net_amount',
