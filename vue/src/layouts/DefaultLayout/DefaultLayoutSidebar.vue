@@ -45,7 +45,14 @@
                     </v-fab-transition>
                 </template>
             </v-text-field>
-            <v-list nav class="nav-list nav-list-blurred flex-grow-1" style="min-height: 80px">
+            <v-list
+                ref="nav-list-ref"
+                nav
+                :class="{
+                    'nav-list nav-list-blurred flex-grow-1': true,
+                }"
+                style="min-height: 80px"
+            >
                 <transition-group name="list" tag="ul">
                     <template v-if="filteredModules.length">
                         <v-list-item
@@ -54,21 +61,10 @@
                             :key="filteredModule.name"
                             :value="filteredModule.name"
                             :data-cy="filteredModule.name"
-                            :to="
-                                ![
-                                    'Calls',
-                                    'Candidates',
-                                    'Meetings',
-                                    'Tasks',
-                                    'Candidatures',
-                                    'Positions',
-                                    'Recruitments',
-                                ].includes(filteredModule.name)
-                                    ? `/modules/${filteredModule.name}`
-                                    : `/modules/${filteredModule.name}/ESListView`
-                            "
+                            :to="`/modules/${filteredModule.name}`"
                             :active="filteredModule.name === url.module"
                             color="secondary"
+                            :class="{ 'v-list-item--active keyboard-hovered': selectedItem === filteredModule.name }"
                         >
                             <div style="display: flex; align-items: center; justify-content: space-between">
                                 <div class="nav-title">
@@ -153,19 +149,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch, nextTick, useTemplateRef } from 'vue'
 import { useUrlStore } from '@/store/url'
 import { useFavoritesStore } from '@/store/favorites'
 import { useRecentsStore } from '@/store/recents'
 import { useModulesStore, ModuleAction } from '@/store/modules'
 import MintMenuList from '@/components/MintMenuList.vue'
 import { useLanguagesStore } from '@/store/languages'
+import { useRouter } from 'vue-router'
 
 const modules = useModulesStore()
 const url = useUrlStore()
 const favorites = useFavoritesStore()
 const recents = useRecentsStore()
 const languages = useLanguagesStore()
+const router = useRouter()
 
 const filterModulesQuery = ref('')
 const filteredModules = computed(() => {
@@ -175,6 +173,9 @@ const filteredModules = computed(() => {
     }
     return modules.visibleModules.filter((m) => m.label.toLowerCase().includes(query))
 })
+
+const selectedItem = ref('')
+const itemsKeys = computed(() => filteredModules.value.map((item) => item.name))
 
 function parseModuleActions(actions: ModuleAction[]) {
     return actions.map((action) => ({
@@ -186,7 +187,80 @@ function parseModuleActions(actions: ModuleAction[]) {
 
 function clearInput() {
     filterModulesQuery.value = ''
+    selectedItem.value = ''
 }
+
+function navigateToModule(moduleName: string) {
+    router.push({ name: 'list', params: { module: moduleName } })
+}
+
+const navListRef = useTemplateRef('nav-list-ref')
+function scrollToSelectedItem() {
+    nextTick(() => {
+        if (!selectedItem.value || !navListRef.value) return
+        
+        const navListElement = (navListRef.value as { $el: HTMLElement } | null)?.$el ?? null
+        const selectedElement = navListElement?.querySelector(`[data-cy="${selectedItem.value}"]`)
+        if (selectedElement) {
+            selectedElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'nearest'
+            })
+        }
+    })
+}
+
+function selectItem(event) {
+    if (!filteredModules.value.length || filterModulesQuery.value == '') {
+        selectedItem.value = ''
+        return
+    }
+    const currentIndex = itemsKeys.value.indexOf(selectedItem.value) ?? -1
+    switch (event.key) {
+        case 'ArrowDown':
+            event.preventDefault()
+            if (currentIndex < itemsKeys.value.length - 1) {
+                selectedItem.value = itemsKeys.value[currentIndex + 1]
+            } else {
+                selectedItem.value = itemsKeys.value[0]
+            }
+            scrollToSelectedItem()
+            break
+        case 'ArrowUp':
+            event.preventDefault()
+            if (currentIndex > 0) {
+                selectedItem.value = itemsKeys.value[currentIndex - 1]
+            } else {
+                selectedItem.value = itemsKeys.value[itemsKeys.value.length - 1]
+            }
+            scrollToSelectedItem()
+            break
+        case 'Enter':
+            event.preventDefault()
+            if (selectedItem.value) {
+                navigateToModule(selectedItem.value)
+            }
+            break
+        case 'Escape':
+            event.preventDefault()
+            selectedItem.value = ''
+            break
+    }
+}
+
+onMounted(() => {
+    document.addEventListener('keydown', (event) => selectItem(event))
+})
+
+watch(
+    () => filterModulesQuery.value,
+    (newValue) => {
+        if (newValue === '') {
+            selectedItem.value = ''
+        }
+    },
+)
 </script>
 <style lang="scss">
 .sidebar-nav {
@@ -274,9 +348,6 @@ function clearInput() {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    &:hover {
-        background: #0000001f;
-    }
     :deep(.v-list-item__content) {
         width: 100%;
     }
@@ -293,10 +364,6 @@ function clearInput() {
             overflow: hidden;
         }
     }
-    &:hover .nav-title {
-        transform: translateX(-8px);
-        color: rgb(var(--v-theme-secondary-dark));
-    }
     .menu-icon {
         margin: 0 8px;
         margin-left: auto;
@@ -306,8 +373,17 @@ function clearInput() {
     .menu-icon.menu-icon-active {
         opacity: 1 !important;
     }
-    &:hover .menu-icon {
-        opacity: 1 !important;
+
+    &:hover,
+    &.keyboard-hovered {
+        background: #0000001f;
+        .nav-title {
+            transform: translateX(-8px);
+            color: rgb(var(--v-theme-secondary-dark));
+        }
+        .menu-icon {
+            opacity: 1 !important;
+        }
     }
 }
 
