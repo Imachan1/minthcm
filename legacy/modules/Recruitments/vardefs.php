@@ -266,18 +266,6 @@ $dictionary['Recruitments'] = array(
          'link-type' => 'many',
          'side' => 'left',
       ),
-      "candidatures_end" => array(
-         'name' => 'candidatures_end',
-         'type' => 'link',
-         'relationship' => 'candidatures_recruitments_end',
-         'source' => 'non-db',
-         'module' => 'Candidatures',
-         'bean_name' => 'Candidatures',
-         'vname' => 'LBL_CANDIDATURES_RECRUITMENTS_END_FROM_RECRUITMENTS_TITLE',
-         'id_name' => 'recruitment_end_id',
-         'link-type' => 'many',
-         'side' => 'left',
-      ),
       "positions" => array(
          'name' => 'positions',
          'type' => 'link',
@@ -556,16 +544,6 @@ $dictionary['Recruitments'] = array(
          'rhs_module' => 'Candidatures',
          'rhs_table' => 'candidatures',
          'rhs_key' => 'recruitment_id',
-         'relationship_type' => 'one-to-many',
-      ),
-      'candidatures_recruitments_end' =>
-      array(
-         'lhs_module' => 'Recruitments',
-         'lhs_table' => 'recruitments',
-         'lhs_key' => 'id',
-         'rhs_module' => 'Candidatures',
-         'rhs_table' => 'candidatures',
-         'rhs_key' => 'recruitment_end_id',
          'relationship_type' => 'one-to-many',
       ),
       'recruitments_calls' =>

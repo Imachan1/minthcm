@@ -4799,3 +4799,8 @@ $app_strings['LBL_SCHEDULER_INVALID'] = 'Invalid time range';
 $app_strings['LBL_SCHEDULER_NO_RESULTS'] = 'No results';
 $app_strings['LBL_SCHEDULER_DATE_START'] = 'Start Date';
 $app_strings['LBL_SCHEDULER_DATE_END'] = 'End Date';
+
+$app_list_strings['candidatures_route_of_acquisition_list'] = array(
+    'original_candidature' => 'Original candidature',
+    'created_from_other_candidature' => 'Created from other candidature',
+);

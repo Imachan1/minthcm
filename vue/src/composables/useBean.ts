@@ -201,8 +201,8 @@ export const useBean = (module: string, id: string) => {
 
     async function fetchLogic(triggerFields: string[] = []) {
         const response = await mintApi.post(`${module}/Logic${id ? `/${id}` : ''}`, {
-            attributes: attributesToSave.value,
-            triggerFields,
+            attributes: attributes.value,
+            triggerFields
         })
         if (response.data.rules?.length) {
             response.data.rules.forEach((r: any) => {

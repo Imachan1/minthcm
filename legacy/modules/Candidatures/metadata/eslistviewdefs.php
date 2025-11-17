@@ -143,16 +143,6 @@ $ESListViewDefs[$module_name] = [
             'default' => false,
             'module' => 'Recruitments',
         ],
-        'RECRUITMENT_END_NAME' => [
-            'name' => 'recruitment_end_name',
-            'label' => 'LBL_CANDIDATURES_RECRUITMENTS_END_FROM_RECRUITMENTS_TITLE',
-            'enabled' => true,
-            'id' => 'RECRUITMENT_END_ID',
-            'link' => true,
-            'sortable' => false,
-            'default' => false,
-            'module' => 'Recruitments',
-        ],
         'SALARY_NET' => [
             'name' => 'salary_net',
             'label' => 'LBL_SALARY_NET',
@@ -178,16 +168,22 @@ $ESListViewDefs[$module_name] = [
         'work_start' => [
             'default' => false,
         ],
+        'route_of_acquisition' => [
+            'default' => false,
+        ],
         'training_date' => [
             'default' => false,
         ],
         'currency_id' => [
             'default' => false,
         ],
+        'original_candidature_name' => [
+            'default' => false,
+        ],
     ],
     'search' => [
         'name' => [],
-        'candidate_nae' => [],
+        'candidate_name' => [],
         'status' => [],
         'to_decision' => [],
         'net_amount' => [],
@@ -201,7 +197,8 @@ $ESListViewDefs[$module_name] = [
         'final_employment_form' => [],
         'employment_form' => [],
         'recruitment_name' => [],
-        'recruitment_end_name' => [],
+        'route_of_acquisition' => [],
+        'original_candidature_name' => [],
         'salary_net' => [],
         'task_grade' => [],
         'assigned_user_name' => [],

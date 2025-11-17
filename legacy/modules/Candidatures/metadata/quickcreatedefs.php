@@ -85,7 +85,6 @@ $viewdefs[$module_name]['QuickCreate'] = array(
             ),
             array(
                 'start_date',
-                'recruitment_end_name',
             ),
             array(
                 'status_information',

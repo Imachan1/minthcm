@@ -106,4 +106,10 @@ $searchFields['Candidatures'] = array(
       'enable_range_search' => true,
       'is_date_field' => true,
    ),
+   'route_of_acquisition' => array(
+      'query_type' => 'default',
+   ),
+   'original_candidature_name' => array(
+      'query_type' => 'default',
+   ),
 );

@@ -12,7 +12,7 @@ class MintLogic
 
     public function __construct($bean)
     {
-        if (!$bean instanceof \SugarBean && !$bean instanceof MintBean) {
+        if (!$bean instanceof \SugarBean  && !$bean instanceof MintBean) {
             throw new \InvalidArgumentException("Bean must be an instance of SugarBean or MintBean");
         }
         $this->bean = clone $bean;
@@ -201,4 +201,5 @@ class MintLogic
         }
         return $expr;
     }
+
 }

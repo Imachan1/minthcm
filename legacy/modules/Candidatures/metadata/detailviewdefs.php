@@ -111,6 +111,7 @@ $viewdefs[$module_name]['DetailView'] = array(
         'LBL_RECORDVIEW_PANEL3' => array(
             array(
                 'name',
+                'original_candidature_name',
             ),
             array(
                 'status',
@@ -129,7 +130,7 @@ $viewdefs[$module_name]['DetailView'] = array(
             ),
             array(
                 'start_date',
-                'recruitment_end_name',
+                'route_of_acquisition',
             ),
             array(
                 'status_information',

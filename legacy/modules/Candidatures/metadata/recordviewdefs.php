@@ -11,6 +11,7 @@ $viewdefs['Candidatures'] = [
                     'Delete',
                     'ConvertToEmployee',
                     'Duplicate',
+                    'RejectAndMoveToAnotherRecruitment',
                 ],
                 'sections' => [
                     'basic' => [
@@ -30,10 +31,11 @@ $viewdefs['Candidatures'] = [
                             ],
                             [
                                 'to_decision',
+                                'route_of_acquisition',
                             ],
                             [
                                 'recruitment_name',
-                                'recruitment_end_name',
+                                'original_candidature_name',
                             ],
                             [
                                 'parent_name',
@@ -82,6 +84,7 @@ $viewdefs['Candidatures'] = [
                         'title' => 'LBL_PANEL_ASSIGNMENT',
                         'collapsed' => true,
                         'fields' => [
+
                             [
                                 'assigned_user_name',
                                 'employee_name',
