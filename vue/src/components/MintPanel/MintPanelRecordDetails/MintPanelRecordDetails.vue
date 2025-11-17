@@ -14,7 +14,12 @@
                 <div class="name-container">
                     <div class="module-name">{{ modules?.currentModule?.label }}</div>
                     <div v-if="!store.bean.isNew" class="bean-name">
-                        <div>{{ store.bean.name }}</div>
+                        <v-skeleton-loader
+                            v-if="store.bean.isRetrieving"
+                            type="heading"
+                            :width="500"
+                        />
+                        <div v-if="!store.bean.isRetrieving">{{ store.bean.name }}</div>
                         <MintButton
                             :icon="isFavorite ? 'mdi-heart' : 'mdi-heart-outline'"
                             variant="nav"
@@ -98,8 +103,15 @@
                     <v-expansion-panel-text class="fields-container">
                         <div v-for="(row, i) in computeRows(section)" class="row" :key="row">
                             <div v-for="n in row.length >= 2 ? 2 : 1" :key="n - 1">
+                                <v-skeleton-loader
+                                    v-if="store.bean.isRetrieving"
+                                    type="list-item-two-line"
+                                    :width="150"
+                                />
                                 <Field
-                                    v-if="row[n - 1] && !store.bean.logic.hiddenFields.includes(row[n - 1].name)"
+                                    v-if="row[n - 1] 
+                                        && !store.bean.logic.hiddenFields.includes(row[n - 1].name)
+                                        && !store.bean.isRetrieving"
                                     :view="
                                         store.bean.logic.readonlyFields.includes(row[n - 1].name)
                                             ? 'detail'

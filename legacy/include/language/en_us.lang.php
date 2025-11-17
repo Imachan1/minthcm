@@ -4815,3 +4815,4 @@ $app_list_strings['spenttime_type_dom'] = array(
 );
 
 $app_strings['LBL_ERR_CANNOT_CHANGE_WORK_SCHEDULE_STATUS'] = 'You cannot change status to "Closed" because there are gaps between spent times or his time frames do not coincide with working times';
+$app_strings['LBL_DETAIL_VIEW_LOADING_TIMEOUT'] = 'Record view loading timeout. Please try again later.';
