@@ -77,7 +77,7 @@ $viewdefs['Candidates'] = [
                             ['facebook', 'x_service'],
                         ],
                     ],
-                    'assignment' => [
+                    'other' => [
                         'title' => 'LBL_RECORDVIEW_PANEL2',
                         'collapsed' => true,
                         'fields' => [

@@ -49,13 +49,6 @@ $viewdefs['SecurityGroups'] = [
                                     'type' => 'relate',
                                     'module' => 'Positions',
                                 ],
-                                [
-                                    'name' => 'assigned_user_name',
-                                    'label' => 'LBL_ASSIGNED_TO',
-                                    'type' => 'relate',
-                                    'module' => 'Users',
-                                    'id_name' => 'assigned_user_id',
-                                ],
                             ],
                             [
                                 'noninheritable',

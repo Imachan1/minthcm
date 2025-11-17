@@ -159,7 +159,7 @@ $listViewDefs [$module_name] = array(
    ),
    'OTHER_USDOLLAR' => array(
       'type' => 'currency',
-      'label' => 'LBL_OTHER',
+      'label' => 'LBL_OTHER_EXPENSES',
       'currency_format' => true,
       'width' => '10%',
       'default' => false,

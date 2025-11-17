@@ -20,7 +20,6 @@ $viewdefs['WorkSchedules'] = [
                                 ['name' => 'status'],
                             ],
                             [
-                                ['name' => 'assigned_user_name'],
                                 ['name' => 'type'],
                             ],
                             [

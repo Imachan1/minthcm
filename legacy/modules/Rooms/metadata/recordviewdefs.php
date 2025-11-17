@@ -17,7 +17,6 @@ $viewdefs['Rooms'] = [
                         'fields' => [
                             [
                                 'name',
-                                'assigned_user_name',
                             ],
                             [
                                 [

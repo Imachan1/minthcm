@@ -15,7 +15,7 @@ $viewdefs['Benefits'] = [
                     'basic' => [
                         'title' => 'LBL_BASIC',
                         'fields' => [
-                            ['name', 'assigned_user_name'],
+                            ['name'],
                             ['description'],
                         ],
                     ],

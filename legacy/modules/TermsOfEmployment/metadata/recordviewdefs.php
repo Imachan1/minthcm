@@ -29,7 +29,6 @@ $viewdefs['TermsOfEmployment'] = [
                             ],
                             [
                                 'employee_name',
-                                'assigned_user_name',
                             ],
                             [
                                 'description',

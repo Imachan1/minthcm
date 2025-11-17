@@ -23,10 +23,6 @@ $viewdefs['OffboardingTemplates'] = [
                                     'name' => 'name',
                                     'label' => 'LBL_NAME',
                                 ],
-                                [
-                                    'name' => 'assigned_user_name',
-                                    'label' => 'LBL_ASSIGNED_TO',
-                                ],
                             ],
                             [
                                 [

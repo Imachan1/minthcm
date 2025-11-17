@@ -16,7 +16,6 @@ $viewdefs['Allocations'] = [
                         'title' => 'LBL_BASIC',
                         'fields' => [
                             [
-                                'assigned_user_name',
                                 'mode',
                             ],
                             [
