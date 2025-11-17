@@ -75,6 +75,8 @@ $dictionary['Candidates'] = array(
             'vname' => 'LBL_FIRST_NAME',
             'type' => 'varchar',
             'len' => '100',
+            'required' => true,
+            'importable' => 'required',
             'unified_search' => true,
             'duplicate_on_record_copy' => 'always',
             'full_text_search' => array('enabled' => true, 'boost' => 3),
