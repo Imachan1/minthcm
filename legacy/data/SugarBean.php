@@ -5959,6 +5959,9 @@ class SugarBean {
             $view = "import";
             $is_owner = true;
             break;
+        case 'admin':
+            $view = "admin";
+            break;
          default:
             return true;
       }
