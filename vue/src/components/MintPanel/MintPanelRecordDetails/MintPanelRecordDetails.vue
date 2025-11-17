@@ -39,7 +39,7 @@
                     />
                     <div class="buttons" v-if="store.view === 'edit'">
                         <MintButton
-                            v-if="!store.bean.isSaving && !store.bean.isNew"
+                            v-if="!store.bean.isSaving"
                             icon="mdi-close"
                             :text="languages.label('LBL_CANCEL_BUTTON_LABEL')"
                             @click="cancel"
@@ -159,8 +159,9 @@ const props = defineProps<Props>()
 const store = useRecordViewStore()
 const languages = useLanguagesStore()
 const modules = useModulesStore()
-const expandedSections = ref<string[]>([])
 const router = useRouter()
+
+const expandedSections = ref<string[]>([])
 const favorites = useFavoritesStore()
 
 const title = computed(() => {
@@ -178,6 +179,9 @@ const edit = () => {
 }
 
 const cancel = () => {
+    if (store.bean.isNew) {
+        return goBack()
+    }
     store.bean.restore()
     store.view = 'detail'
     store.inlineEditField = ''
