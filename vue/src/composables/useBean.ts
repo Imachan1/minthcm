@@ -8,7 +8,7 @@ import { useLink } from './useLink'
 import { mintApi } from '@/api/api'
 
 export const useBean = (module: string, id: string) => {
-    const retrieveTimeoutTimeMs = 5000
+    const retrieveTimeoutTimeMs = 30000
     const router = useRouter()
     const modulesStore = useModulesStore()
 

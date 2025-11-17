@@ -55,7 +55,6 @@ function recordAccessError(error: any): Promise<any> {
             message: languages.label('LBL_DETAIL_VIEW_LOADING_TIMEOUT'),
             autoClose: true,
         })
-        redirect('list')
     }
     return Promise.reject(error)
 }
