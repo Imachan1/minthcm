@@ -109,15 +109,15 @@ const languages = useLanguagesStore()
 const modules = useModulesStore()
 const storage = useLocalStorageStore()
 
-const storageInitialized = ref(false)
 const expandedSections = computed({
     get: () => {
-        storageInitialized.value = true
+        if (!storage.hasPanelSections(store.bean.module, 'MintPanelRecordDetails')) {
+            return []
+        }
         return storage.getPanelSections(store.bean.module, 'MintPanelRecordDetails')
     },
-    set: (value: string[]) => storage.setPanelSections(store.bean.module, 'MintPanelRecordDetails', value)
+    set: (value: string[]) => storage.setPanelSections(store.bean.module, 'MintPanelRecordDetails', value),
 })
-
 
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_DETAILS', modules.currentModule?.name)
@@ -160,7 +160,7 @@ const save = async () => {
 }
 
 onMounted(() => {
-    if (storageInitialized.value) {
+    if (storage.hasPanelSections(store.bean.module, 'MintPanelRecordDetails')) {
         return
     }
 
@@ -175,20 +175,23 @@ onMounted(() => {
     expandedSections.value = array
 })
 
-watch(() => [store.bean.errorMessages, store.view], ([newError, newView]) => {
-    if (store.view === 'edit') {
-        const errorFields = Object.keys(newError)
-        const sectionsToExpand = [] as string[]
-        Object.keys(props.data.sections).forEach((key) => {
-            const section = props.data.sections[key]
-            const sectionFieldNames = section.fields.flat().map((field) => field.name)
-            if (sectionFieldNames.some((name) => errorFields.includes(name))) {
-                sectionsToExpand.push(key)
-            }
-        })
-        expandedSections.value = Array.from(new Set([...expandedSections.value, ...sectionsToExpand]))
-    }
-})
+watch(
+    () => [store.bean.errorMessages, store.view],
+    ([newError, newView]) => {
+        if (store.view === 'edit') {
+            const errorFields = Object.keys(newError)
+            const sectionsToExpand = [] as string[]
+            Object.keys(props.data.sections).forEach((key) => {
+                const section = props.data.sections[key]
+                const sectionFieldNames = section.fields.flat().map((field) => field.name)
+                if (sectionFieldNames.some((name) => errorFields.includes(name))) {
+                    sectionsToExpand.push(key)
+                }
+            })
+            expandedSections.value = Array.from(new Set([...expandedSections.value, ...sectionsToExpand]))
+        }
+    },
+)
 </script>
 
 <style scoped lang="scss">
