@@ -2226,6 +2226,8 @@ $app_strings = array(
     'LBL_ESLIST_REFRESH' => 'Refresh',
     'LBL_ESLIST_IS_FAVORITE' => 'Favorite',
     'LBL_ESLIST_MY_FAVORITES' => 'Only my favorites',
+    'LBL_ESLIST_ADD_MASSUPDATE_ROW' => 'Add mass update row',
+    'LBL_ESLIST_ERROR_MASSUPDATE' => 'There was an error performing the bulk update',
     //MOBILE START
     'LBL_ID_FF_SELECT' => 'Select',
     'LBL_INSTANCE_ADDRESS' => 'Server Address',

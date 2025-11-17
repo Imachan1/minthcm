@@ -12,10 +12,11 @@ export abstract class MassAction {
 
     public abstract execute(): Promise<boolean>
 
-    protected async sendRequest(): Promise<AxiosResponse> {
+    protected async sendRequest(additional_data = {}): Promise<AxiosResponse> {
         const className = this.constructor.name
         return await mintApi.post(`${this.module}/MassActions/${className}`, {
             ids: this.ids,
+            ...additional_data,
         })
     }
 }

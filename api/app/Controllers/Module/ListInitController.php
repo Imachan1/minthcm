@@ -65,6 +65,7 @@ class ListInitController
         MassActions\Delete::class,
         MassActions\Export::class,
         MassActions\Merge::class,
+        MassActions\Update::class,
     ];
 
     const DEFAULT_COLUMNS = [
@@ -189,7 +190,35 @@ class ListInitController
         return [
             'columns' => $this->prepareDefsType("columns"),
             'search' => $this->prepareSearchDefs(),
+            'massupdate' => $this->prepareMassUpdateDefs()
         ];
+    }
+
+    protected function prepareMassUpdateDefs()
+    {
+        global $mod_strings, $app_strings, $current_language;
+        $massupdate_fields = [];
+        foreach($this->bean->field_name_map as $field => $defs) {
+            if (empty($defs['massupdate']) || $defs['massupdate'] === false) {
+                continue;
+            }
+            if (
+                !empty($defs['has_access']['function'])
+                && function_exists($defs['has_access']['function'])
+                && !$defs['has_access']['function']()
+            ) {
+                continue;
+            }
+            $massupdate_field = $defs;
+            $massupdate_field['name'] = $field;
+            $massupdate_field['key'] = $this->eslistmap[$field] ?? $field;
+            $massupdate_field['options'] = $this->getParsedOptions($defs);
+            $mod_strings = return_module_language($current_language, $this->module);
+            $label = $defs['label'] ?? $defs['vname'];
+            $massupdate_field['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
+            $massupdate_fields[$massupdate_field['name']] = $massupdate_field;
+        }
+        return $massupdate_fields;
     }
 
     protected function prepareSearchDefs()

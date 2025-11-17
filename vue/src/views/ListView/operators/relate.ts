@@ -1,8 +1,10 @@
+import relateInput from '../inputs/relate'
+
 export default {
     search: {
         label: 'LBL_ESLIST_EQUAL',
         inputs: [
-            { type: 'relate', label: 'LBL_ESLIST_VALUE' }
+            relateInput,
         ],
         filters: [
             { op: 'match', value: { query: '{0}', operator: 'and' } }
@@ -12,7 +14,7 @@ export default {
         label: 'LBL_ESLIST_NOT_EQUAL',
         not: true,
         inputs: [
-            { type: 'relate', label: 'LBL_ESLIST_VALUE' }
+            relateInput,
         ],
         filters: [
             { op: 'match', value: { query: '{0}', operator: 'and' } }

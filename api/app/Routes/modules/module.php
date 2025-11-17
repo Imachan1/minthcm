@@ -433,6 +433,17 @@ $routes = array(
                 "desc" => "Array of ids",
                 "example" => '["223dee27-b9e7-432a-8da9-c84cc0770035", "223dee27-b9e7-432a-8da9-c84cc0770035"]',
             ),
+            "update_fields" => array(
+                "type" => ArrayType::class,
+                "required" => false,
+                "desc" => "Array of fields to update",
+                "example" => '
+                    "update_fields": {
+                        "status": "Active",
+                        "assigned_user_id": "1",
+                    },
+                ',
+            ),
         ),
     ),
     "link" => array(

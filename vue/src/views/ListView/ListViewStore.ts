@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { useUrlStore } from '@/store/url'
 import { useLanguagesStore } from '@/store/languages'
 import { FilterRow } from './ListViewFilterRow.vue'
+import { MassUpdateRow } from './ListViewMassUpdateRow.vue'
 import { getAllTypesMatchingTo } from './operators'
 import { useRouter } from 'vue-router'
 import { usePopupsStore } from '@/store/popups'
@@ -25,6 +26,7 @@ interface Preferences {
 interface Defs {
     columns: object
     search: object
+    massupdate: object
 }
 
 export type Mode = 'list' | 'relate'
@@ -72,6 +74,7 @@ export const useListViewStore = defineStore('listview', () => {
 
     let requestCount = 0
     const predefinedFilters = ref<boolean>(false)
+    const isMassUpdate = ref(false)
 
     async function init() {
         initialLoading.value = true
@@ -105,6 +108,7 @@ export const useListViewStore = defineStore('listview', () => {
     }
 
     async function getData() {
+        isMassUpdate.value = false
         requestCount++
         isLoading.value = requestCount > 0
         error.value = false
@@ -239,6 +243,40 @@ export const useListViewStore = defineStore('listview', () => {
 
     function deleteFilterRow(index: number) {
         filterRows.value = filterRows.value.filter((filterRow, filterIndex) => index !== filterIndex)
+    }
+
+    const massUpdatableFields = computed(() => {
+        let fields = []
+        Object.values(defs.value?.massupdate || {}).forEach((field) => {
+            if (
+                (field.massupdate == undefined || field.massupdate == false) 
+                || ['date_entered', 'date_modified', 'created_by', 'modified_by', 'favorites'].includes(field.name)
+            ) {
+                return
+            }
+
+            if (['datetime', 'datetimecombo', 'parent', 'parent_type'].includes(field.type)) {
+                console.warn(`Mass update not supported for field type "${field.type}" (${field.name})`)
+                return
+            }
+
+            if (field.massupdate) {
+                fields.push(field)
+            }
+        })
+        return fields
+    })
+
+    const massUpdateRows = ref<MassUpdateRow[]>([])
+    function addMassUpdateRow() {
+        massUpdateRows.value.push({
+            field: null,
+            inputs: []
+        })
+    }
+
+    function deleteMassUpdateRow(index: number) {
+        massUpdateRows.value = massUpdateRows.value.filter((filterRow, filterIndex) => index !== filterIndex)
     }
 
     function handleSelectRelate() {
@@ -418,6 +456,14 @@ export const useListViewStore = defineStore('listview', () => {
         }
         item.attributes.is_favorite = !item.attributes.is_favorite
     }
+
+    function setMassUpdate(value: boolean) {
+        isMassUpdate.value = value
+        if (!value) {
+            massUpdateRows.value = []
+        }
+    }
+
     return {
         mode,
         init,
@@ -455,5 +501,11 @@ export const useListViewStore = defineStore('listview', () => {
         error,
         toggleFavorite,
         onlyFavorites,
+        setMassUpdate,
+        isMassUpdate,
+        massUpdateRows,
+        addMassUpdateRow,
+        deleteMassUpdateRow,
+        massUpdatableFields,
     }
 })
