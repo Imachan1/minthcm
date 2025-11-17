@@ -5,28 +5,18 @@ $viewdefs['Ideas'] = [
         'modules/Ideas/js/edit.js',
     ],
     'order' => [
-        'header',
         'mainPanel',
         'subpanels',
     ],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
+        'mainPanel' => [
+            'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    ['name'],
-                ],
                 'actions' => [
                     'Audit',
                     'Delete',
                     'Duplicate',
                 ],
-            ],
-        ],
-
-        'mainPanel' => [
-            'component' => 'MintPanelRecordDetails',
-            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
