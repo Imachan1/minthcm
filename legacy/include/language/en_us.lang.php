@@ -4806,3 +4806,12 @@ $app_list_strings['candidatures_route_of_acquisition_list'] = array(
     'original_candidature' => 'Original candidature',
     'created_from_other_candidature' => 'Created from other candidature',
 );
+$app_strings['LBL_MY_SPENT_TIME_DASHLET'] = 'Spent Time';
+
+$app_list_strings['spenttime_type_dom'] = array(
+    'break' => 'Break',
+    'work' => 'Work',
+    'other' => 'Other',
+);
+
+$app_strings['LBL_ERR_CANNOT_CHANGE_WORK_SCHEDULE_STATUS'] = 'You cannot change status to "Closed" because there are gaps between spent times or his time frames do not coincide with working times';
