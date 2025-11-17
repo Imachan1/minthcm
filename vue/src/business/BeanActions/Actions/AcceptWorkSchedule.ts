@@ -28,8 +28,8 @@ export class AcceptWorkSchedule extends BeanAction {
                 message: useLanguagesStore().label('LBL_ACCEPTANCE_ACTION_ERROR', this.bean.module),
                 autoClose: true,
             })
-            console.error(this.bean.validationError.value)
-            return false
+            console.error(this.bean.validationError.value);
+            return false;
         }
         return true
     }

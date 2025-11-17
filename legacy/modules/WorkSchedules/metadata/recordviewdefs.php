@@ -20,6 +20,7 @@ $viewdefs['WorkSchedules'] = [
                                 ['name' => 'status'],
                             ],
                             [
+                                ['name' => 'assigned_user_name'],
                                 ['name' => 'type'],
                             ],
                             [
@@ -32,9 +33,11 @@ $viewdefs['WorkSchedules'] = [
                             ],
                             [
                                 ['name' => 'workplace_name'],
+                                ['name' => 'delegation_name'],
                             ],
                             [
                                 ['name' => 'description'],
+                                ['name' => 'supervisor_acceptance'],
                             ],
                             [
                                 ['name' => 'delegation_duration'],

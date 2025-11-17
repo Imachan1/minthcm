@@ -227,6 +227,7 @@ $dictionary['WorkSchedules'] = array(
          'size' => '20',
          'options' => 'supervisor_acceptance_dom',
          'studio' => 'visible',
+         'readonly' => true,
          'dependency' => false,
          'vt_dependency' => "inArray(\$type,'holiday','overtime','home')",
       ),
@@ -316,7 +317,7 @@ $dictionary['WorkSchedules'] = array(
          'max' => false,
       ),
       'duration_hours' => array(
-         'required' => true,
+         'required' => false,
          'name' => 'duration_hours',
          'vname' => 'LBL_DURATION_HOURS',
          'type' => 'int',

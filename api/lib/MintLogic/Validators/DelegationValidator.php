@@ -1,6 +1,5 @@
 <?php
 
-
 namespace MintHCM\Lib\MintLogic\Modules\Delegations\Validators;
 
 use MintHCM\Lib\MintLogic\Exceptions\ValidationException;

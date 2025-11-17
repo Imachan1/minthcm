@@ -3,9 +3,11 @@ import { useLogic } from './useLogic'
 import { useDebounceFn, useThrottleFn } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import { useModulesStore } from '@/store/modules'
+import { usePreferencesStore } from '@/store/preferences'
 import { useField } from '@/components/Fields/useField'
 import { useLink } from './useLink'
 import { mintApi } from '@/api/api'
+import { DateTime } from 'luxon'
 
 export const useBean = (module: string, id: string) => {
     const retrieveTimeoutTimeMs = 30000
@@ -144,10 +146,21 @@ export const useBean = (module: string, id: string) => {
 
     function setAttributesFromQuery(query: { [key: string]: string | (string | null)[] | null | undefined }) {
         const fieldsToUpdate: { [fieldName: string]: any } = {}
+        const preferences = usePreferencesStore()
         Object.entries(query)
             .filter(([key]) => fieldDefs.value[key])
             .map(([key, value]) => {
-                fieldsToUpdate[key] = value
+                let parsedValue = value;
+                if(['date', 'datetime', 'datetimecombo'].includes(fieldDefs.value[key].type)){
+                    const dateValueParts = (value as string).split(' ');
+                    const dateUserFormat = DateTime.fromFormat(dateValueParts[0], preferences.user?.date_format || 'yyyy-MM-dd');
+                    let timeUserFormat = '00:00';
+                    if(dateValueParts[1]){
+                        timeUserFormat = DateTime.fromFormat(dateValueParts[1], preferences.user?.time_format).setZone('UTC').toFormat('HH:mm');
+                    }
+                    parsedValue = `${dateUserFormat.toFormat('yyyy-MM-dd')}` + ` ${timeUserFormat}:00`
+                }
+                fieldsToUpdate[key] = parsedValue
             })
         if (query?.return_relationship && query?.return_id) {
             const link = loadRelationship(query.return_relationship as string)

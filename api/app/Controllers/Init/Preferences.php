@@ -162,6 +162,8 @@ class Preferences
             $this->user_preferences['global']['default_locale_name_format'] = $current_user->getPreference('default_locale_name_format');
             $this->user_preferences['global']['dec_sep'] = $current_user->getPreference('dec_sep');
             $this->user_preferences['global']['num_grp_sep'] = $current_user->getPreference('num_grp_sep');
+            $this->user_preferences['global']['datef'] = $current_user->getPreference('datef');
+            $this->user_preferences['global']['timef'] = $current_user->getPreference('timef');
         } catch (\Exception $e) {
             // TODO: log 'Failed to load user preferences'
             throw ($e);

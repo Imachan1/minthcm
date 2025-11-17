@@ -327,7 +327,7 @@ return [
     ],
     'WorkSchedules' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'WorkingMonths' => [
         'list' => false,
