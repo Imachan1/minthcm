@@ -20,6 +20,12 @@ class MetaController
         'date_modified',
     ];
 
+    protected const DEFAULT_ACTIONS = [
+        'Audit',
+        'Delete',
+        'Duplicate',
+    ];
+
     public function getEditViewMeta($module)
     {
         chdir('../legacy/');
@@ -88,6 +94,10 @@ class MetaController
                         'collapsed' => true,
                     ];
                     $data['recordview']['panels'][$panel]['data']['sections']['other']['fields'] = $this->mergeModuleFields($views[$panel]['other'],$module_fields)['fields'];
+                }
+                
+                if (!isset($panel_defs['data']['actions'])) {
+                    $data['recordview']['panels'][$panel]['data']['actions'] = self::DEFAULT_ACTIONS;
                 }
 
                 continue;
