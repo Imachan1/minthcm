@@ -82,7 +82,7 @@ abstract class SearchResult
 
     public function getHits($group_by_module = false): array
     {
-        $response = $group_by_module ? $this->getGroupedHits() : $this->beans;
+        $response = $group_by_module ? $this->getGroupedHits() : $this->hits;
         return array_slice($response, 0, $this->size);
     }
 

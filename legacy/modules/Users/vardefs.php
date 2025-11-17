@@ -1142,4 +1142,12 @@ $dictionary['User'] = array(
             'relationship_role_column_value' => '1',
         ],
     ],
+    'elasticsearch' => [
+        'nested' => [
+            'security_groups' => [
+                'link' => 'SecurityGroups',
+                'fields' => array('id', 'name'),
+            ],
+        ],
+    ],
 );

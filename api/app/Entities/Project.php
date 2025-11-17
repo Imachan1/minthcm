@@ -154,6 +154,11 @@ class Project
     /**
      * @ORM\Column(type="string", length="255")
      */
+    public $jjwg_maps_address_c;
+
+    /**
+            * @ORM\Column(type="string", length="255")
+            */
     public $jjwg_maps_geocode_status_c;
 
     /**

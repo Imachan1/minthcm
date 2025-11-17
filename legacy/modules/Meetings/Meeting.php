@@ -172,7 +172,7 @@ class Meeting extends SugarBean {
       global $current_user;
       global $disable_date_format;
 
-      if ( isset($this->date_start) ) {
+      if ( isset($this->date_start) && empty($this->date_end) ) {
          $td = $timedate->fromDb($this->date_start);
          if ( !$td ) {
             $this->date_start = $timedate->to_db($this->date_start);
@@ -518,7 +518,7 @@ class Meeting extends SugarBean {
       if ( empty($this->id) && !empty($_REQUEST['date_start']) ) {
          $this->date_start = $_REQUEST['date_start'];
       }
-      if ( !empty($this->date_start) ) {
+      if ( !empty($this->date_start) && empty($this->date_end) ) {
          $td = SugarDateTime::createFromFormat($GLOBALS['timedate']->get_date_time_format(), $this->date_start);
          if ( !empty($td) ) {
             if ( !empty($this->duration_hours) && $this->duration_hours != '' ) {

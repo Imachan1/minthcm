@@ -475,7 +475,7 @@ return [
     ],
     'Meetings' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Calls' => [
         'list' => false,
