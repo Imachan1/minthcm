@@ -4,7 +4,7 @@
             v-model="searchQuery"
             prepend-inner-icon="mdi-magnify"
             variant="outlined"
-            width="350"
+            :width="$vuetify.display.mdAndDown ? '95%' : '350px'"
             density="compact"
             :label="language.label('LBL_SEARCH')"
             clearable

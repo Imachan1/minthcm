@@ -1,5 +1,5 @@
 <template>
-    <div :class="`list-view-mode-${store.mode}`">
+    <div :class="{ [`list-view-mode-${store.mode}`]: true, 'list-view-railed': $vuetify.display.mdAndDown }">
         <h1 v-if="store.mode === 'list'" v-text="moduleName" />
         <div class="list-view-content">
             <ListViewFilters v-if="store.isInit"/>
@@ -68,6 +68,9 @@ h1 {
 
 .list-view-mode-list {
     padding: 8px 32px !important;
+    &.list-view-railed {
+        padding: 8px !important;
+    }
 
     .list-view-content {
         margin-top: 4px;

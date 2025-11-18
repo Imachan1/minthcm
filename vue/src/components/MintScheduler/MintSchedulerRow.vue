@@ -1,5 +1,5 @@
 <template>
-    <div class="scheduler-row" :style="{height: `${56 + (overflowValue * 30)}px`}">
+    <div class="scheduler-row" :style="{height: $vuetify.display.mdAndDown ? '56px' : `${56 + (overflowValue * 30)}px`}">
         <component
             :is="hasAccess ? 'router-link' : 'div'"
             :to="participantUrl"
@@ -15,7 +15,7 @@
                 <span v-if="description" class="scheduler-participant-description">{{ description }}</span>
             </div>
         </component>
-        <div class="scheduler-data">
+        <div class="scheduler-data" v-if="!$vuetify.display.mdAndDown">
             <MintSchedulerDataWorkschedule
                 v-for="workschedule in participant.workschedules"
                 :key="workschedule.id"

@@ -4,7 +4,7 @@
             v-if="buttons.length === 1"
             class="mint-subpanel-create-btn"
             variant="regular"
-            :text="buttons[0].title"
+            :text="$vuetify.display.mdAndDown ? '' : buttons[0].title"
             :icon="buttons[0].icon"
             @click.stop="buttons[0].onClick"
         />
@@ -16,7 +16,7 @@
                     :active="isActive"
                     variant="regular"
                     append-icon="mdi-menu-down"
-                    :text="languages.label('LBL_ESLIST_ACTIONS')"
+                    :text="$vuetify.display.mdAndDown ? '' : languages.label('LBL_ESLIST_ACTIONS')"
                 />
             </template>
             <MintMenuList :items="buttons" />

@@ -5,7 +5,14 @@
             closed: !ux.drawer,
         }"
     >
-        <div class="drawer-nav">
+        <div 
+            :class="{
+                'drawer-scrim': $vuetify.display.mdAndDown, 
+                'drawer-scrim-open': ux.drawer
+            }" 
+            @click="ux.drawer = null"
+        />
+        <div :class="{'drawer-nav': true, 'drawer-nav-railed': $vuetify.display.mdAndDown}">
             <template v-for="drawer in bundle.drawers" :key="drawer.key">
                 <v-badge
                     v-if="drawer.isAvaliable?.()"
@@ -21,7 +28,15 @@
             <MintButton v-if="ux.drawer" @click="ux.drawer = null" icon="mdi-close" variant="nav" />
         </div>
         <v-slide-x-transition hide-on-leave>
-            <div v-if="ux.drawer" class="drawer-content" ref="drawerContentRef" @scroll="handleScroll">
+            <div 
+                v-if="ux.drawer" 
+                :class="{
+                    'drawer-content': true,
+                    'drawer-content-railed': $vuetify.display.mdAndDown
+                }"
+                ref="drawerContentRef" 
+                @scroll="handleScroll"
+            >
                 <template v-for="drawer in bundle.drawers" :key="drawer.key">
                     <component v-if="ux.drawer === drawer.key" :is="drawer.component" />
                 </template>
@@ -55,13 +70,17 @@ function handleScroll() {
     top: var(--v-top-nav-height);
     right: 0px;
     height: calc(100vh - var(--v-top-nav-height));
-    box-shadow: 0px 1px 32px #0099761a;
+    box-shadow: 0px 1px 6px #00000029;
 
     .drawer-content {
         width: var(--v-drawer-width);
         background: rgb(var(--v-theme-surface));
         height: 100%;
         overflow: auto;
+
+        &.drawer-content-railed {
+            width: calc(100vw - 76px);
+        }
     }
 
     .drawer-nav {
@@ -115,6 +134,25 @@ function handleScroll() {
         outline: 2px solid #fff;
         margin-top: -8px;
         font-weight: 600;
+    }
+}
+
+.drawer-scrim {
+    background-color: rgba(0, 0, 0, 0);
+    position: fixed;
+    top: var(--v-top-nav-height);
+    left: 0;
+    right: 0;
+    height: calc(100vh - var(--v-top-nav-height));
+    z-index: -2;
+    transition: left 0.2s ease, background-color 0.2s ease;
+    pointer-events: none;
+
+    &.drawer-scrim-open {
+        right: var(--v-drawer-width);
+        width: 76px;
+        background-color: rgba(0, 0, 0, 0.3);
+        pointer-events: auto;
     }
 }
 </style>

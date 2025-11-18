@@ -1,57 +1,59 @@
 <template>
-    <div class="filter-row">
-        <v-row no-gutters>
-            <v-col cols="3" class="px-2">
-                <v-autocomplete
-                    class="col col-3"
-                    v-model="field"
-                    @update:model-value="handleFieldChange"
-                    :items="store.filterableFields"
-                    item-value="name"
-                    item-title="label"
-                    :label="languages.label('LBL_ESLIST_FIELD')"
-                    :no-data-text="languages.label('LBL_ESLIST_NO_DATA')"
-                    variant="outlined"
-                    hide-details
-                    density="compact"
-                    :disabled="!isFilterEditable"
-                />
-            </v-col>
-            <v-col cols="3" v-if="field" class="px-2">
-                <v-select
-                    class="col col-3"
-                    v-model="operator"
-                    @update:model-value="handleOperatorChange"
-                    :items="operatorItems"
-                    item-value="key"
-                    item-title="label"
-                    :label="languages.label('LBL_ESLIST_OPERATOR')"
-                    variant="outlined"
-                    hide-details
-                    density="compact"
-                    :disabled="!isFilterEditable"
-                />
-            </v-col>
-            <v-col cols="3" v-for="input in inputs" :key="input" class="px-2">
-                <component
-                    :is="getInputComponent(input.type)"
-                    :fieldDefs="fieldDefs"
-                    :input="input"
-                    @update:modelValue="(newValue) => (input.value = input.modifiers ? runModifiers(input.modifiers, newValue) : newValue)"
-                    density="compact"
-                    :disabled="!isFilterEditable"
-                    :inputs="inputs"
-                />
-            </v-col>
-        </v-row>
-        <v-btn
-            class="ms-auto"
-            variant="text"
-            density="comfortable"
-            icon="mdi-close"
-            :disabled="!isFilterEditable"
-            @click="store.deleteFilterRow(props.index)"
-        />
+    <div class="filter-container" :class="{ 'filter-container-railed': $vuetify.display.mdAndDown }">
+        <div class="filter-row" :class="{ 'filter-row-railed': $vuetify.display.mdAndDown }">
+            <v-row no-gutters>
+                <v-col cols="3" class="px-2">
+                    <v-autocomplete
+                        class="col col-3"
+                        v-model="field"
+                        @update:model-value="handleFieldChange"
+                        :items="store.filterableFields"
+                        item-value="name"
+                        item-title="label"
+                        :label="languages.label('LBL_ESLIST_FIELD')"
+                        :no-data-text="languages.label('LBL_ESLIST_NO_DATA')"
+                        variant="outlined"
+                        hide-details
+                        density="compact"
+                        :disabled="!isFilterEditable"
+                    />
+                </v-col>
+                <v-col cols="3" v-if="field" class="px-2">
+                    <v-select
+                        class="col col-3"
+                        v-model="operator"
+                        @update:model-value="handleOperatorChange"
+                        :items="operatorItems"
+                        item-value="key"
+                        item-title="label"
+                        :label="languages.label('LBL_ESLIST_OPERATOR')"
+                        variant="outlined"
+                        hide-details
+                        density="compact"
+                        :disabled="!isFilterEditable"
+                    />
+                </v-col>
+                <v-col cols="3" v-for="input in inputs" :key="input" class="px-2">
+                    <component
+                        :is="getInputComponent(input.type)"
+                        :fieldDefs="fieldDefs"
+                        :input="input"
+                        @update:modelValue="(newValue) => (input.value = input.modifiers ? runModifiers(input.modifiers, newValue) : newValue)"
+                        density="compact"
+                        :disabled="!isFilterEditable"
+                        :inputs="inputs"
+                    />
+                </v-col>
+            </v-row>
+            <v-btn
+                class="ms-auto"
+                variant="text"
+                density="comfortable"
+                icon="mdi-close"
+                :disabled="!isFilterEditable"
+                @click="store.deleteFilterRow(props.index)"
+            />
+        </div>
     </div>
 </template>
 
@@ -164,6 +166,18 @@ const isFilterEditable = computed(() => {
     align-items: center;
     gap: 16px;
     border-bottom: 1px solid #0000001f;
+    min-width: 1280px;
+
+    &.filter-row-railed {
+        flex-shrink: 0;
+    }
+}
+
+.filter-container {
+    &.filter-container-railed {
+        overflow-y: auto;
+        scrollbar-width: none;
+    }
 }
 
 .filter-row:first-child {

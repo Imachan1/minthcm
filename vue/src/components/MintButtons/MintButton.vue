@@ -109,7 +109,7 @@ const isIcon = computed(() => (props.icon || props.appendIcon) && !props.text)
 }
 
 .mint-button-primary {
-    color: #f5fbfa;
+    color: #f5fbfa !important;
     background: rgb(var(--v-theme-secondary));
     &:hover {
         background: rgb(var(--v-theme-secondary-dark));

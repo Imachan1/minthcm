@@ -1,14 +1,22 @@
 <template>
-    <div class="default-layout-sidebar">
+<div class="default-layout-sidebar">
+    <div 
+        class="navigation-scrim"
+        :class="{ 'navigation-scrim-open': ux.sideMenu && !mdAndUp}"
+        @click="ux.showHideSideMenu()"
+    />
     <v-navigation-drawer
         class="sidebar-nav"
-        expand-on-hover
-            :rail="$vuetify.display.mdAndDown || storage.sideMenuShrinked"
-        permanent
+        :expand-on-hover="mdAndUp"
+        :rail="!$vuetify.display.mdAndDown && storage.sideMenuShrinked"
+        :temporary="!mdAndUp"
+        :permanent="mdAndUp"
         width="260"
-            color="#00000010"
-            floating="true"
+        color="#00000010"
+        floating="true"
         rail-width="76"
+        v-model="ux.sideMenu"
+        :scrim="false"
     >
         <v-list
                         v-if="modules.currentModule?.name !== 'Home' && modules.currentModule?.actions"
@@ -21,7 +29,7 @@
                 :key="action.action + modules.currentModule + action.url"
                 class="nav-item module-action"
                 :value="action.action"
-                v-bind="action.url && action.url !== '/' ? { to: action.url ? url.fromLegacyUrl(action.url) : '' } : {}"
+                v-bind="getLinkBinding(action)"
                 :active="false"
                 @click="getClickHandler(action)"
             >
@@ -148,29 +156,31 @@
             </v-expansion-panels>
         </div>
     </v-navigation-drawer>
-        <div 
-            class="shrinker" 
-            :class="{ 'rail-mode': storage.sideMenuShrinked }"
-            v-if="!$vuetify.display.mdAndDown"
-        >
-            <div class="shrinker-background"></div>
-            <MintButton 
-                class="shrinker-button" 
-                variant="icon" 
-                size="x-large" 
-                :icon="storage.sideMenuShrinked || $vuetify.display.mdAndDown ? 'mdi-chevron-right' : 'mdi-chevron-left'" 
-                @click="shrink" 
-            />
-        </div>
+    <div 
+        class="shrinker" 
+        :class="{ 'rail-mode': storage.sideMenuShrinked }"
+        v-if="!$vuetify.display.mdAndDown"
+    >
+        <div class="shrinker-background"></div>
+        <MintButton 
+            class="shrinker-button" 
+            variant="icon" 
+            size="x-large" 
+            :icon="storage.sideMenuShrinked || $vuetify.display.mdAndDown ? 'mdi-chevron-right' : 'mdi-chevron-left'" 
+            @click="shrink" 
+        />
     </div>
+</div>
+
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, nextTick, useTemplateRef } from 'vue'
+import { ref, computed, onMounted, watch, nextTick, useTemplateRef, onUnmounted } from 'vue'
 import { useUrlStore } from '@/store/url'
 import { useFavoritesStore } from '@/store/favorites'
 import { useRecentsStore } from '@/store/recents'
 import { useModulesStore, ModuleAction } from '@/store/modules'
+import { useUxStore } from '@/store/ux'
 import MintMenuList from '@/components/MintMenuList.vue'
 import { useLanguagesStore } from '@/store/languages'
 import { useRouter } from 'vue-router'
@@ -179,20 +189,24 @@ import { usePopupsStore } from '@/store/popups'
 import ComponentLoader from '@/utils/componentLoader'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import { useLocalStorageStore } from '@/store/localStorage'
+import { useDisplay } from 'vuetify'
 
 const modules = useModulesStore()
 const url = useUrlStore()
 const favorites = useFavoritesStore()
 const recents = useRecentsStore()
 const languages = useLanguagesStore()
-const router = useRouter()
 const popups = usePopupsStore()
+const router = useRouter()
 const storage = useLocalStorageStore()
 
 
 const shrink = () => {
     storage.sideMenuShrinked = !storage.sideMenuShrinked
 }
+const ux = useUxStore()
+
+const { mdAndUp } = useDisplay()
 
 const filterModulesQuery = ref('')
 const filteredModules = computed(() => {
@@ -218,6 +232,24 @@ function parseModuleActions(actions: ModuleAction[]) {
 function clearInput() {
     filterModulesQuery.value = ''
     selectedItem.value = ''
+}
+
+function getLinkBinding(action: ModuleAction){
+    const targetUrl = action.url ? url.fromLegacyUrl(action.url) : ''
+
+    if (!targetUrl || targetUrl === '/') {
+        return {}
+    }
+
+    if (targetUrl.startsWith('http')) {
+        return {
+            href: targetUrl,
+            target: '_blank',
+        }
+    }
+    return {
+        to: targetUrl,
+    }
 }
 
 async function getClickHandler(action: ModuleAction) {
@@ -303,6 +335,11 @@ watch(
         }
     },
 )
+
+onUnmounted(() => {
+    document.removeEventListener('keydown', selectItem)
+})
+
 </script>
 <style lang="scss">
 .sidebar-nav {
@@ -512,4 +549,24 @@ watch(
         }
     }
 }
+
+.navigation-scrim {
+    background-color: rgba(0, 0, 0, 0);
+    position: fixed;
+    top: var(--v-top-nav-height);
+    left: 0;
+    right: 0;
+    height: calc(100vh - var(--v-top-nav-height));
+    z-index: 1004;
+    transition: left 0.2s ease, background-color 0.2s ease;
+    pointer-events: none;
+
+    &.navigation-scrim-open {
+        left: 260px;
+        width: auto;
+        background-color: rgba(0, 0, 0, 0.3);
+        pointer-events: auto;
+    }
+}
 </style>
+
