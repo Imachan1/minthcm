@@ -10,7 +10,7 @@
         rail-width="76"
     >
         <v-list
-            v-if="modules.currentModule?.actions"
+                        v-if="modules.currentModule?.name !== 'Home' && modules.currentModule?.actions"
             nav
             bg-color="primary"
             class="nav-list flex-shrink-0 py-4"
@@ -20,8 +20,9 @@
                 :key="action.action+modules.currentModule"
                 class="nav-item module-action"
                 :value="action.action"
-                :to="action.url ? url.fromLegacyUrl(action.url) : ''"
+                v-bind="action.url && action.url !== '/' ? { to: action.url ? url.fromLegacyUrl(action.url) : '' } : {}"
                 :active="false"
+                @click="getClickHandler(action)"
             >
                 <div class="nav-title">
                     <v-icon :icon="`mdi-${action.icon}`" />
@@ -157,6 +158,9 @@ import { useModulesStore, ModuleAction } from '@/store/modules'
 import MintMenuList from '@/components/MintMenuList.vue'
 import { useLanguagesStore } from '@/store/languages'
 import { useRouter } from 'vue-router'
+import { popupComponents } from '@/custom/components/MintPopups/CustomMintPopupsMap'
+import { usePopupsStore } from '@/store/popups'
+import ComponentLoader from '@/utils/componentLoader'
 
 const modules = useModulesStore()
 const url = useUrlStore()
@@ -164,6 +168,7 @@ const favorites = useFavoritesStore()
 const recents = useRecentsStore()
 const languages = useLanguagesStore()
 const router = useRouter()
+const popups = usePopupsStore()
 
 const filterModulesQuery = ref('')
 const filteredModules = computed(() => {
@@ -182,6 +187,7 @@ function parseModuleActions(actions: ModuleAction[]) {
         title: action.name,
         url: url.fromLegacyUrl(action.url),
         icon: action.icon,
+        onClickActionData: action?.onClickActionData ?? '',
     }))
 }
 
@@ -189,6 +195,18 @@ function clearInput() {
     filterModulesQuery.value = ''
     selectedItem.value = ''
 }
+
+async function getClickHandler(action: ModuleAction) {
+    if (!action.url || action.url === '/') {
+        if (action?.onClickActionData?.type === 'popup' && action?.onClickActionData?.componentPath) {
+            popups.showPopup({
+                title: action.name,
+                component: await ComponentLoader.loadComponent(action?.onClickActionData?.componentPath ?? '')
+            })
+        }
+    }
+}
+
 
 function navigateToModule(moduleName: string) {
     router.push({ name: 'list', params: { module: moduleName } })

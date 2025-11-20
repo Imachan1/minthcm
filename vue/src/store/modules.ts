@@ -5,6 +5,7 @@ import { useUrlStore } from './url'
 import { useLanguagesStore } from './languages'
 import { useRoute } from 'vue-router'
 import { filterDef } from '@/utils/qsOperatorsTypes'
+import { MenuListOnClickActionData } from '@/components/MintMenuList.vue'
 
 /** backend defs */
 export interface ModulesDefs {
@@ -38,7 +39,8 @@ export interface ModuleAction {
     action: string
     original_url: string
     icon: string
-    params: ModuleActionParams
+    params: ModuleActionParams,
+    onClickActionData: MenuListOnClickActionData,
 }
 
 export interface ModuleActionParams {
