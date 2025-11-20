@@ -156,7 +156,14 @@
             :class="{ 'rail-mode': shrinked }"
             v-if="!$vuetify.display.mdAndDown"
         >
-            <MintButton variant="nav" :icon="shrinked || $vuetify.display.mdAndDown ? 'mdi-chevron-right' : 'mdi-chevron-left'" @click="shrink" />
+            <div class="shrinker-background"></div>
+            <MintButton 
+                class="shrinker-button" 
+                variant="icon" 
+                size="x-large" 
+                :icon="shrinked || $vuetify.display.mdAndDown ? 'mdi-chevron-right' : 'mdi-chevron-left'" 
+                @click="shrink" 
+            />
         </div>
     </div>
 </template>
@@ -208,7 +215,7 @@ function clearInput() {
 .sidebar-nav {
     top: var(--v-top-nav-height) !important;
     max-height: calc(100vh - var(--v-top-nav-height));
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(24px);
     .v-navigation-drawer__content {
         overflow: hidden;
         display: flex;
@@ -361,56 +368,44 @@ function clearInput() {
 .shrinker {
     position: fixed;
     top: 50%;
-    left: calc(260px - 52px);
+    left: calc(260px - 17px);
     transform: translateY(-50%);
-    width: 52px;
-    height: 52px;
-    background: rgb(var(--v-theme-surface));;
-    border-radius: 0 50% 50% 0;
-    z-index: 1001;
+    width: 34px;
+    height: 34px;
     cursor: pointer;
-    transition: left 0.1s ease;
-    display: flex;
-    visibility: hidden;
-    
+    transition: left 0.3s ease;
+    z-index: 1005;
     
     &.rail-mode {
-        left: calc(76px - 52px);
+        left: calc(76px - 17px);
     }
+}
 
-    align-items: center;
-    justify-content: center;
+.shrinker-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 34px;
+    background: rgba(0, 0, 0, 0.039);
+    border-radius: 50%;
+    backdrop-filter: blur(24px);
+    clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+    z-index: 0;
+}
 
-    box-shadow: 0px 1px 6px #00000029;
-    &::before,
-    &::after {
-        content: '';
-        position: absolute;
-        width: 26px;
-        height: 26px;
-        background-color: rgb(var(--v-theme-surface));
-        left: 0px;
-        border-radius: inherit;
-        transition: width 0.3s ease;
-        mask: radial-gradient(circle at center, transparent 13px, black 0%);
-        -webkit-mask: radial-gradient(circle at center, transparent 13px, black 0%);
-    }
-    &::before {
-        top: -26px;
-        border-radius: 50% 50% 50% 0px;
-
-    }
-    &::after {
-        bottom: -26px;
-        border-radius: 0px 50% 50% 50%;
-    }
+.shrinker-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
 }
 
 .default-layout-sidebar {
     &:hover {
         .shrinker {
-            left: calc(260px);
-            visibility: visible;
+            left: calc(260px - 17px);
         }
     }
 
