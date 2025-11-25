@@ -5,4 +5,12 @@
         {$constructedField}
 {/foreach}
     {rdelim}
+
+{if $generate_custom_entity}
+    {if $isCustom}
+        {include file="$custom_entity_methods_tpl"}
+    {else}
+        {include file="$main_entity_methods_tpl"}
+    {/if}
+{/if}
 {$end_sectionmethods}

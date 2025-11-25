@@ -12,16 +12,23 @@ class EntityCreator
 
     private const TPL_DIR_PATH = '/tpls';
 
+    private const TPL_DIR_PATH_FOR_CUSTOM_ENTITY_FIELDS = self::TPL_DIR_PATH . '/Custom/CustomEntityFields.tpl';
+    private const TPL_DIR_PATH_FOR_CUSTOM_ENTITY_METHODS = self::TPL_DIR_PATH . '/Custom/CustomEntityMethods.tpl';
+    private const TPL_DIR_PATH_FOR_MAIN_ENTITY_FIELDS = self::TPL_DIR_PATH . '/Custom/MainEntityFields.tpl';
+    private const TPL_DIR_PATH_FOR_MAIN_ENTITY_METHODS = self::TPL_DIR_PATH . '/Custom/MainEntityMethods.tpl';
+
     private const SECTIONS = [
         'SectionUse',
         'SectionRepository',
         'SectionProperties',
         'SectionMethods',
     ];
+    protected const FILE_FORMAT_PHP = '.php';
 
-    private $vardefs;
-    private $moduleName;
-    private $data;
+    protected $vardefs;
+    protected $moduleName;
+    protected $data;
+    protected $isCustom = false;
 
     public function __construct(string $moduleName, array $vardefs)
     {
@@ -35,11 +42,11 @@ class EntityCreator
         $this->generateEntity();
     }
 
-    private function generateEntity(): void
+    protected function generateEntity(): void
     {
-        $file_path = self::ENTITY_FOLDER_PATH . $this->moduleName . '.php';
+        $file_path = self::ENTITY_FOLDER_PATH . $this->moduleName . self::FILE_FORMAT_PHP;
         $smarty = $this->prepareSmartyTemplate();
-        
+
         if ($this->entityExists()) {
             $this->updateExistingEntity($file_path, $smarty);
         } else {
@@ -52,19 +59,19 @@ class EntityCreator
         $smarty = new Smarty();
         $smarty->setTemplateDir(dirname(__FILE__) . self::TPL_DIR_PATH);
         $smarty->assign($this->data);
-        
+
         foreach (self::SECTIONS as $section) {
             $smarty->assign('start_' . strtolower($section), $this->getStartCommentForSection($section));
             $smarty->assign('end_' . strtolower($section), $this->getEndCommentForSection($section));
         }
-        
+        $this->setCustomTplVariables($smarty);
         return $smarty;
     }
 
     private function updateExistingEntity(string $file_path, Smarty $smarty): void
     {
         $class_code = file_get_contents($file_path);
-        if ($class_code === false || !is_writable($file_path)) {
+        if (false === $class_code || !is_writable($file_path)) {
             $GLOBALS['log']->fatal("Cannot read or write to file: {$file_path}");
             throw new Exception("Cannot read or write to file: {$file_path}");
         }
@@ -80,7 +87,7 @@ class EntityCreator
 
     protected function buildIndexes()
     {
-        if (! empty($this->vardefs['indices'])) {
+        if (!empty($this->vardefs['indices'])) {
             $this->data['indexes'] = [];
             foreach ($this->vardefs['indices'] as $index) {
                 if (isset($index['fields']) && is_array($index['fields'])) {
@@ -110,7 +117,7 @@ class EntityCreator
     {
         foreach ($this->data['relationshipFields'] as $relationshipField) {
             if ($relationshipField['isCollection']) {
-                $collection = $relationshipField['relation_type'] === 'one-to-many' ? 'Collection' : 'ArrayCollection';
+                $collection = 'one-to-many' === $relationshipField['relation_type'] ? 'Collection' : 'ArrayCollection';
                 $this->data['constructorFields'][] = '$this->' . $relationshipField['name'] . ' = new ' . $collection . '();';
             }
         }
@@ -132,7 +139,7 @@ class EntityCreator
 
     private function entityExists(): bool
     {
-        return file_exists(self::ENTITY_FOLDER_PATH . $this->moduleName . '.php');
+        return file_exists(self::ENTITY_FOLDER_PATH . $this->moduleName . self::FILE_FORMAT_PHP);
     }
 
     private function getTplPath(string $file_name = 'Entity'): string
@@ -152,5 +159,13 @@ class EntityCreator
     private function getEndCommentForSection(string $section): string
     {
         return "// Auto-generated {$section} section end";
+    }
+
+    protected function setCustomTplVariables(Smarty $smarty): void
+    {
+        $smarty->assign('custom_entity_fields_tpl', dirname(__FILE__) . self::TPL_DIR_PATH_FOR_CUSTOM_ENTITY_FIELDS);
+        $smarty->assign('custom_entity_methods_tpl', dirname(__FILE__) . self::TPL_DIR_PATH_FOR_CUSTOM_ENTITY_METHODS);
+        $smarty->assign('main_entity_fields_tpl', dirname(__FILE__) . self::TPL_DIR_PATH_FOR_MAIN_ENTITY_FIELDS);
+        $smarty->assign('main_entity_methods_tpl', dirname(__FILE__) . self::TPL_DIR_PATH_FOR_MAIN_ENTITY_METHODS);
     }
 }
