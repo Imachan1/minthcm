@@ -123,7 +123,7 @@ class OAuthTokens extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="consumer", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=OAuthKeys::class, inversedBy="oauth_tokens")
+     * @ORM\ManyToOne(targetEntity=OAuthKeys::class, inversedBy="tokens")
      */
     protected $consumer_link;
 

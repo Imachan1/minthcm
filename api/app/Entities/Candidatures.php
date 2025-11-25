@@ -338,22 +338,22 @@ class Candidatures extends MintEntity
     protected $candidate;
 
     /**
-     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="candidatures")
+     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="calls")
      */
     protected Collection $calls;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="candidatures")
+     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="meetings")
      */
     protected Collection $meetings;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="candidatures")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="notes")
      */
     protected Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="candidatures")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="tasks")
      */
     protected Collection $tasks;
 
@@ -365,12 +365,12 @@ class Candidatures extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="recruitment_end_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Recruitments::class, inversedBy="candidatures")
+     * @ORM\ManyToOne(targetEntity=Recruitments::class, inversedBy="candidatures_end")
      */
     protected $recruitments_end;
 
     /**
-     * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="candidatures")
+     * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="emails")
      */
     protected Collection $emails;
 
@@ -386,7 +386,7 @@ class Candidatures extends MintEntity
     protected Collection $documents;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidatures")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidature")
      */
     protected Collection $files;
 

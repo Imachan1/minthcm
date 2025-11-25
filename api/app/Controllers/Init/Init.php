@@ -184,7 +184,7 @@ class Init
     private function getQuickCreate($modules_menu)
     {
         chdir('../api');
-        $modules = ConstantsLoader::getConstants('quick_create');
+        $modules = ConstantsLoader::getConstants('quick_create', true);
         $response = array();
 
         if (!is_array($modules)) {

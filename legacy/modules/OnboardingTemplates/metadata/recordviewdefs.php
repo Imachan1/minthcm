@@ -2,18 +2,13 @@
 
 $viewdefs['OnboardingTemplates'] = [
     'order' => [
-        'header',
         'mainPanel',
         'subpanels',
     ],
     'panels' => [
-
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
+        'mainPanel' => [
+            'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    ['name'],
-                ],
                 'actions' => [
                     'Audit',
                     'Delete',
@@ -21,13 +16,8 @@ $viewdefs['OnboardingTemplates'] = [
                         'title' => 'LBL_GENERATE_BUTTON',
                         'icon' => 'mdi-history',
                     ],
+                    'Duplicate',
                 ],
-            ],
-        ],
-
-        'mainPanel' => [
-            'component' => 'MintPanelRecordDetails',
-            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -37,10 +27,6 @@ $viewdefs['OnboardingTemplates'] = [
                                     'name' => 'name',
                                     'label' => 'LBL_NAME',
                                 ],
-                                [
-                                    'name' => 'assigned_user_name',
-                                    'label' => 'LBL_ASSIGNED_TO',
-                                ],
                             ],
                             [
                                 [
@@ -48,28 +34,6 @@ $viewdefs['OnboardingTemplates'] = [
                                     'label' => 'LBL_DESCRIPTION',
                                 ],
                             ],
-                            [
-                                [
-                                    'name' => 'date_entered',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'date_modified',
-                                    'readonly' => true,
-                                ],
-
-                            ],
-                            [
-                                [
-                                    'name' => 'modified_by_name',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'created_by_name',
-                                    'readonly' => true,
-                                ],
-                            ],
-
                         ],
                     ],
                 ],

@@ -1,35 +1,82 @@
 <template>
-    <div class="details-panel">
+    <div class="details-panel" :style="{ marginTop: store.bean.syncAttributes.photo ? '50px' : null }">
         <div class="tabs-container">
-            <h1>{{ title }}</h1>
-            <MintStatusBox v-if="store.view === 'edit' && store.bean.validationError" type="error">
-                {{ languages.label(store.bean.validationError, store.bean.module) }}
-            </MintStatusBox>
-            <div v-if="store.bean.aclAccess?.edit === true">
-                <MintButton
-                    v-if="store.view === 'detail'"
-                    class="ml-auto"
-                    icon="mdi-pencil"
-                    :text="`${languages.label('LBL_EDIT_BUTTON_LABEL')} ${languages.label('LBL_DETAILS')}`"
-                    @click="edit"
+            <div class="header-container">
+                <MintButton icon="mdi-arrow-left" @click="goBack" />
+                <v-avatar
+                    v-if="store.bean.syncAttributes.photo"
+                    class="photo"
+                    size="120"
+                    :image="`legacy/index.php?entryPoint=download&id=${store.bean.id}_photo&type=Users`"
+                    variant="outlined"
+                    color="surface"
                 />
-                <div class="buttons" v-if="store.view === 'edit'">
-                    <MintButton
-                        v-if="!store.bean.isSaving && !store.bean.isNew"
-                        icon="mdi-close"
-                        :text="languages.label('LBL_CANCEL_BUTTON_LABEL')"
-                        @click="cancel"
-                    />
-                    <MintButton
-                        :disabled="!store.bean.isValid || store.bean.isSaving"
-                        :icon="!store.bean.isSaving ? 'mdi-check' : ''"
-                        :loading="store.bean.isSaving"
-                        variant="primary"
-                        :text="languages.label(store.bean.isSaving ? 'LBL_SAVING' : 'LBL_SAVE_BUTTON_LABEL')"
-                        @click="save"
-                    />
+                <div class="name-container">
+                    <div class="module-name">{{ modules?.currentModule?.label }}</div>
+                    <div v-if="!store.bean.isNew" class="bean-name">
+                        <v-skeleton-loader
+                            v-if="store.bean.isRetrieving"
+                            type="heading"
+                            :width="500"
+                        />
+                        <div v-if="!store.bean.isRetrieving">{{ store.bean.name }}</div>
+                        <MintButton
+                            :icon="isFavorite ? 'mdi-heart' : 'mdi-heart-outline'"
+                            variant="nav"
+                            size="small"
+                            @click="
+                                isFavorite
+                                    ? favorites.removeFromFavorites(store.bean.module, store.bean.id)
+                                    : favorites.addToFavorites(store.bean.module, store.bean.id, store.bean.name)
+                            "
+                        />
+                    </div>
                 </div>
             </div>
+            <div class="buttons">
+                <div v-if="store.bean.aclAccess?.edit === true">
+                    <MintButton
+                        v-if="store.view === 'detail'"
+                        class="ml-auto"
+                        icon="mdi-pencil"
+                        :text="`${languages.label('LBL_EDIT_BUTTON_LABEL')} ${languages.label('LBL_DETAILS')}`"
+                        @click="edit"
+                    />
+                    <div class="buttons" v-if="store.view === 'edit'">
+                        <MintButton
+                            v-if="!store.bean.isSaving"
+                            icon="mdi-close"
+                            :text="languages.label('LBL_CANCEL_BUTTON_LABEL')"
+                            @click="cancel"
+                        />
+                        <MintButton
+                            :disabled="!store.bean.isValid || store.bean.isSaving"
+                            :icon="!store.bean.isSaving ? 'mdi-check' : ''"
+                            :loading="store.bean.isSaving"
+                            variant="primary"
+                            :text="languages.label(store.bean.isSaving ? 'LBL_SAVING' : 'LBL_SAVE_BUTTON_LABEL')"
+                            @click="save"
+                        />
+                    </div>
+                </div>
+                <v-menu v-if="!store.bean.isNew && actions.length" offset="16">
+                    <template v-slot:activator="{ props, isActive }">
+                        <MintButton
+                            class="ml-auto"
+                            v-bind="props"
+                            :active="isActive"
+                            append-icon="mdi-menu-down"
+                            :text="languages.label('LBL_ESLIST_ACTIONS')"
+                        />
+                    </template>
+                    <MintMenuList :items="/*props.data.actions*/ actions || []" />
+                </v-menu>
+            </div>
+        </div>
+        <div v-if="store.view === 'edit' && store.bean.validationError">
+            <MintStatusBox type="error">
+                {{ languages.label(store.bean.validationError, store.bean.module) }}
+            </MintStatusBox>
         </div>
         <div>
             <v-expansion-panels multiple variant="accordion" class="details-accordion" v-model="expandedSections">
@@ -55,10 +102,21 @@
                     </v-expansion-panel-title>
                     <v-expansion-panel-text class="fields-container">
                         <div v-for="(row, i) in computeRows(section)" class="row" :key="row">
-                            <div v-for="n in store.columns" :key="n - 1">
+                            <div v-for="n in row.length >= 2 ? 2 : 1" :key="n - 1">
+                                <v-skeleton-loader
+                                    v-if="store.bean.isRetrieving"
+                                    type="list-item-two-line"
+                                    :width="150"
+                                />
                                 <Field
-                                    v-if="row[n - 1] && !store.bean.logic.hiddenFields.includes(row[n - 1].name)"
-                                    :view="store.bean.logic.readonlyFields.includes(row[n - 1].name) ? 'detail' : store.view"
+                                    v-if="row[n - 1] 
+                                        && !store.bean.logic.hiddenFields.includes(row[n - 1].name)
+                                        && !store.bean.isRetrieving"
+                                    :view="
+                                        store.bean.logic.readonlyFields.includes(row[n - 1].name)
+                                            ? 'detail'
+                                            : store.view
+                                    "
                                     :defs="row[n - 1]"
                                     :data="{ bean: store.bean }"
                                     :label="languages.label(row[n - 1].label, modules.currentModule?.name)"
@@ -67,10 +125,13 @@
                                     :errorMessage="store.bean.errorMessages[row[n - 1].name]"
                                     :isDirty="store.bean.isDirty || store.bean.dirtyFields.has(row[n - 1].name)"
                                     :modelValue="
-                                        store.bean[store.view === 'detail' ? 'syncAttributes' : 'attributes'][row[n - 1].name]
+                                        store.bean[store.view === 'detail' ? 'syncAttributes' : 'attributes'][
+                                            row[n - 1].name
+                                        ]
                                     "
                                     @update:modelValue="
-                                        (value, additionalFields) => store.updateField(row[n - 1].name, value, additionalFields)
+                                        (value, additionalFields) =>
+                                            store.updateField(row[n - 1].name, value, additionalFields)
                                     "
                                 />
                             </div>
@@ -85,12 +146,16 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from 'vue'
 import Field from '@/components/Fields/Field.vue'
+import { useRouter } from 'vue-router'
+import { useFavoritesStore } from '@/store/favorites'
 import { FieldVardef } from '@/store/modules'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useModulesStore } from '@/store/modules'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintStatusBox from '@/components/MintStatusBoxes/MintStatusBox.vue'
+import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
+import BeanActions from '@/business/BeanActions'
 
 interface Props {
     data: {
@@ -106,7 +171,10 @@ const props = defineProps<Props>()
 const store = useRecordViewStore()
 const languages = useLanguagesStore()
 const modules = useModulesStore()
+const router = useRouter()
+
 const expandedSections = ref<string[]>([])
+const favorites = useFavoritesStore()
 
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_DETAILS', modules.currentModule?.name)
@@ -123,6 +191,9 @@ const edit = () => {
 }
 
 const cancel = () => {
+    if (store.bean.isNew) {
+        return goBack()
+    }
     store.bean.restore()
     store.view = 'detail'
     store.inlineEditField = ''
@@ -139,7 +210,7 @@ const save = async () => {
     }
     store.inlineEditField = ''
     const response = await store.bean.save()
-    if (response) {
+    if (response.status) {
         store.view = 'detail'
         store.inlineEditField = ''
         store.inlineEditFieldSaving = ''
@@ -147,6 +218,33 @@ const save = async () => {
         store.inlineEditField = prevInlineEditField
     }
 }
+
+const actions = computed<MenuListItem[]>(() => {
+    const actions: MenuListItem[] = []
+
+    props.data.actions?.forEach((action) => {
+        const actionName = typeof action === 'string' ? action : action.name
+        const actionClass = BeanActions[actionName]
+        if (typeof actionClass !== 'function') {
+            console.warn(`Action ${actionName} not defined in BeanActions`)
+            return
+        }
+        const actionObject = new actionClass(store.bean)
+        if (actionObject.isAvailable()) {
+            actions.push(actionObject.toMenuListItem())
+        }
+    })
+    return actions
+})
+
+const goBack = () => {
+    if (!router.options.history.state.back) {
+        return router.push({ name: 'list', params: { module: modules.currentModule?.name } })
+    }
+    router.back()
+}
+
+const isFavorite = computed(() => favorites.isFavorite(store.bean.module, store.bean.id))
 
 onMounted(() => {
     let array = []
@@ -160,20 +258,23 @@ onMounted(() => {
     expandedSections.value = array
 })
 
-watch(() => [store.bean.errorMessages, store.view], ([newError, newView]) => {
-    if (store.view === 'edit') {
-        const errorFields = Object.keys(newError)
-        const sectionsToExpand = [] as string[]
-        Object.keys(props.data.sections).forEach((key) => {
-            const section = props.data.sections[key]
-            const sectionFieldNames = section.fields.flat().map((field) => field.name)
-            if (sectionFieldNames.some((name) => errorFields.includes(name))) {
-                sectionsToExpand.push(key)
-            }
-        })
-        expandedSections.value = Array.from(new Set([...expandedSections.value, ...sectionsToExpand]))
-    }
-})
+watch(
+    () => [store.bean.errorMessages, store.view],
+    ([newError, newView]) => {
+        if (store.view === 'edit') {
+            const errorFields = Object.keys(newError)
+            const sectionsToExpand = [] as string[]
+            Object.keys(props.data.sections).forEach((key) => {
+                const section = props.data.sections[key]
+                const sectionFieldNames = section.fields.flat().map((field) => field.name)
+                if (sectionFieldNames.some((name) => errorFields.includes(name))) {
+                    sectionsToExpand.push(key)
+                }
+            })
+            expandedSections.value = Array.from(new Set([...expandedSections.value, ...sectionsToExpand]))
+        }
+    },
+)
 </script>
 
 <style scoped lang="scss">
@@ -199,7 +300,7 @@ watch(() => [store.bean.errorMessages, store.view], ([newError, newView]) => {
             justify-content: end;
         }
 
-        > * {
+        > *:first-child {
             flex: 1;
         }
     }
@@ -215,6 +316,7 @@ watch(() => [store.bean.errorMessages, store.view], ([newError, newView]) => {
             > * {
                 flex: 1;
             }
+
             margin-bottom: 24px;
         }
     }
@@ -242,9 +344,40 @@ watch(() => [store.bean.errorMessages, store.view], ([newError, newView]) => {
             gap: 8px;
         }
     }
+
     .mint-panel-content {
         :deep(.v-expansion-panel-text__wrapper) {
             padding: 0px;
+        }
+    }
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .photo {
+        margin-top: -75px;
+        border: thick solid rgb(var(--v-theme-surface));
+    }
+
+    .name-container {
+        display: flex;
+        flex-direction: column;
+
+        .module-name {
+            font-size: 12px;
+            color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+        }
+
+        .bean-name {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 1;
         }
     }
 }

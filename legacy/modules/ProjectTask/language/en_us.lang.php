@@ -121,4 +121,5 @@ $mod_strings = array(
 
     'LBL_ASCENDING' => 'Ascending',
     'LBL_DESCENDING' => 'Descending',
+    'LBL_DATE_INDEXED' => 'Date Indexed',
 );

@@ -40,6 +40,7 @@
                     @update:modelValue="(newValue) => (input.value = input.modifiers ? runModifiers(input.modifiers, newValue) : newValue)"
                     density="compact"
                     :disabled="!isFilterEditable"
+                    :inputs="inputs"
                 />
             </v-col>
         </v-row>
@@ -127,12 +128,23 @@ function handleOperatorChange() {
         inputs.value = operatorList.value[operator.value].inputs.map((i) => ({
             type: i.type,
             value: null,
-            label: languages.label(i.label),
+            label: parseLabel(i.label),
             modifiers: i.modifiers ?? null,
         }))
     }
     emit('update:operator', operator.value)
     emit('update:inputs', inputs.value)
+}
+
+function parseLabel(label: string | string[])
+{
+    if (Array.isArray(label)) {
+        label.forEach((part, index) => {
+            label[index] = languages.label(part)
+        })
+        return label
+    }
+    return languages.label(label)
 }
 
 const isFilterEditable = computed(() => {

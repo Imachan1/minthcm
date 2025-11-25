@@ -146,6 +146,11 @@ class Offboardings extends MintEntity
     protected $date_start;
 
     /**
+     * @ORM\Column(type="string", length="36")
+     */
+    public $offboardingtemplate_id;
+
+    /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="offboardings")
      */
@@ -182,17 +187,17 @@ class Offboardings extends MintEntity
     protected $offboardingtemplate;
 
     /**
-     * @ORM\OneToMany(targetEntity=Trainings::class, mappedBy="offboardings")
+     * @ORM\OneToMany(targetEntity=Trainings::class, mappedBy="trainings")
      */
     protected Collection $trainings;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="offboardings")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="tasks")
      */
     protected Collection $tasks;
 
     /**
-     * @ORM\OneToMany(targetEntity=ExitInterviews::class, mappedBy="offboardings")
+     * @ORM\OneToMany(targetEntity=ExitInterviews::class, mappedBy="offboarding")
      */
     protected Collection $exitinterviews;
 

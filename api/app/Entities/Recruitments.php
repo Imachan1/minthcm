@@ -253,27 +253,27 @@ class Recruitments extends MintEntity
     protected Collection $candidatures;
 
     /**
-     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="recruitments")
+     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="recruitments_end")
      */
     protected Collection $candidatures_end;
 
     /**
-     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="recruitments")
+     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="calls")
      */
     protected Collection $calls;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="recruitments")
+     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="meetings")
      */
     protected Collection $meetings;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="recruitments")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="notes")
      */
     protected Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="recruitments")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="tasks")
      */
     protected Collection $tasks;
 

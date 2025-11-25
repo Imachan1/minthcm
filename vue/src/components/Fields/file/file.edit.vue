@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { FieldProps } from '../Field.model'
 
 const props = defineProps<FieldProps>()
@@ -46,6 +46,15 @@ const isImage = computed(() => {
 function getEmptyFile(): File {
     return new File([], '')
 }
+
+watch(
+    () => props.modelValue,
+    (newVal) => {
+        if (newVal !== file.value.name) {
+            file.value = newVal ? new File([], newVal) : getEmptyFile()
+        }
+    },
+)
 </script>
 
 <style lang="scss" scoped></style>

@@ -88,6 +88,10 @@ $viewdefs [$module_name] = array(
                     'user_name',
                 ),
                 array(
+                    'checklist',
+                    '',
+                ),
+                array(
                     'assigned_user_name',
                 ),
                 array(

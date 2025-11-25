@@ -296,13 +296,13 @@ class WorkSchedules extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="workplace_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Workplaces::class, inversedBy="workschedules")
+     * @ORM\ManyToOne(targetEntity=Workplaces::class, inversedBy="workplaces_workschedules")
      */
     protected $workplaces_workschedules;
 
     /**
      * @ORM\JoinColumn(name="deputy_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="workschedules")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="deputy")
      */
     protected $deputy;
 

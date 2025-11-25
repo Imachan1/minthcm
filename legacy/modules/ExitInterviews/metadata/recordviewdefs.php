@@ -1,26 +1,16 @@
 <?php
 
 $viewdefs['ExitInterviews'] = [
-    'order' => ['header', 'details', 'subpanels'],
+    'order' => ['details', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    [
-                        'status',
-                        'employee_name',
-                    ],
-                ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                ],
-            ],
-        ],
         'details' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -28,25 +18,17 @@ $viewdefs['ExitInterviews'] = [
                             [
                                 'name',
                                 'employee_name',
+                            ],
+                            [
                                 'status',
+                                'offboarding_name',
                             ],
                             [
                                 'date_start',
                                 'date_end',
-                                'offboarding_name',
                             ],
                             [
                                 'description',
-                            ],
-                            [
-                                'assigned_user_name',
-                                'created_by_name',
-                                'modified_by_name',
-                            ],
-                            [
-                                '',
-                                'date_entered',
-                                'date_modified',
                             ],
                         ],
                     ],

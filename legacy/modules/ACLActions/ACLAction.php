@@ -471,14 +471,14 @@ class ACLAction extends SugarBean
          * }
          */
         if ($access != 0 && (
-                $access == ACL_ALLOW_ALL
+                $access == ACL_ALLOW_ALL || $access == ACL_ALLOW_ADMIN
                 || ($is_owner && ($access == ACL_ALLOW_OWNER || $access == ACL_ALLOW_GROUP))  //if owner that's better than in group so count it...better way to clean this up?
                 || ($in_group && $access == ACL_ALLOW_GROUP) //need to pass if in group with access somehow
             )) {
             return true;
         }
         if (!is_null($action) && isset($action->aclaccess)) {
-            if ($action->aclaccess == ACL_ALLOW_ALL
+            if ($action->aclaccess == ACL_ALLOW_ALL || $action->aclaccess == ACL_ALLOW_ADMIN
                 || ($is_owner && $action->aclaccess == ($access == ACL_ALLOW_OWNER || $access == ACL_ALLOW_GROUP))
                 || ($in_group && $access == ACL_ALLOW_GROUP) //need to pass if in group with access somehow
             ) {

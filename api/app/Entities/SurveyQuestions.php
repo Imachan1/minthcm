@@ -176,18 +176,18 @@ class SurveyQuestions extends MintEntity
     protected Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=SurveyQuestionOptions::class, mappedBy="surveyquestions")
+     * @ORM\OneToMany(targetEntity=SurveyQuestionOptions::class, mappedBy="survey_question")
      */
     protected Collection $surveyquestions_surveyquestionoptions;
 
     /**
-     * @ORM\OneToMany(targetEntity=SurveyQuestionResponses::class, mappedBy="surveyquestions")
+     * @ORM\OneToMany(targetEntity=SurveyQuestionResponses::class, mappedBy="surveyquestion")
      */
     protected Collection $surveyquestions_surveyquestionresponses;
 
     /**
      * @ORM\JoinColumn(name="survey_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Surveys::class, inversedBy="surveyquestions")
+     * @ORM\ManyToOne(targetEntity=Surveys::class, inversedBy="surveys_surveyquestions")
      */
     protected $survey;
 

@@ -262,22 +262,22 @@ class Campaigns extends MintEntity
     protected Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=EmailMarketing::class, mappedBy="campaigns")
+     * @ORM\OneToMany(targetEntity=EmailMarketing::class, mappedBy="email_marketing")
      */
     protected Collection $emailmarketing;
 
     /**
-     * @ORM\OneToMany(targetEntity=EmailMan::class, mappedBy="campaigns")
+     * @ORM\OneToMany(targetEntity=EmailMan::class, mappedBy="emailman")
      */
     protected Collection $queueitems;
 
     /**
-     * @ORM\OneToMany(targetEntity=CampaignLog::class, mappedBy="campaigns")
+     * @ORM\OneToMany(targetEntity=CampaignLog::class, mappedBy="campaign")
      */
     protected Collection $log_entries;
 
     /**
-     * @ORM\OneToMany(targetEntity=SurveyResponses::class, mappedBy="campaigns")
+     * @ORM\OneToMany(targetEntity=SurveyResponses::class, mappedBy="campaign")
      */
     protected Collection $surveyresponses_campaigns;
 
@@ -288,7 +288,7 @@ class Campaigns extends MintEntity
     protected Collection $prospectlists;
 
     /**
-     * @ORM\OneToMany(targetEntity=CampaignTrackers::class, mappedBy="campaigns")
+     * @ORM\OneToMany(targetEntity=CampaignTrackers::class, mappedBy="campaign")
      */
     protected Collection $tracked_urls;
 

@@ -433,6 +433,17 @@ $routes = array(
                 "desc" => "Array of ids",
                 "example" => '["223dee27-b9e7-432a-8da9-c84cc0770035", "223dee27-b9e7-432a-8da9-c84cc0770035"]',
             ),
+            "update_fields" => array(
+                "type" => ArrayType::class,
+                "required" => false,
+                "desc" => "Array of fields to update",
+                "example" => '
+                    "update_fields": {
+                        "status": "Active",
+                        "assigned_user_id": "1",
+                    },
+                ',
+            ),
         ),
     ),
     "link" => array(
@@ -458,6 +469,57 @@ $routes = array(
                 "type" => ArrayType::class,
                 "required" => true,
                 "desc" => "Record ids to link",
+                "example" => '["223dee27-b9e7-432a-8da9-c84cc0770035", "223dee27-b9e7-432a-8da9-c84cc0770035]',
+            ),
+            "link_name" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Link name",
+                "example" => 'contacts',
+            ),
+        ),
+    ),
+    "checklist" => array(
+        "method" => "GET",
+        "path" => "/checklist/{id}",
+        "class" => ModuleController::class,
+        "function" => 'getChecklistItems',
+        "desc" => "Returns checklist items for a record if supported.",
+        "options" => array(
+            'auth' => true,
+        ),
+        "pathParams" => array(
+            "id" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Module id",
+                "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
+            ),
+        ),
+    ),
+    "unlink" => array(
+        "method" => "POST",
+        "path" => "/Unlink/{id}",
+        "class" => ModuleController::class,
+        "function" => 'unlink',
+        "desc" => "Unlink records",
+        "options" => array(
+            'auth' => true,
+        ),
+        "pathParams" => array(
+            "id" => array(
+                "type" => StringType::class,
+                "required" => true,
+                "desc" => "Module id",
+                "example" => '223dee27-b9e7-432a-8da9-c84cc0770035',
+            ),
+        ),
+        "queryParams" => array(),
+        "bodyParams" => array(
+            "ids" => array(
+                "type" => ArrayType::class,
+                "required" => true,
+                "desc" => "Record ids to unlink",
                 "example" => '["223dee27-b9e7-432a-8da9-c84cc0770035", "223dee27-b9e7-432a-8da9-c84cc0770035]',
             ),
             "link_name" => array(

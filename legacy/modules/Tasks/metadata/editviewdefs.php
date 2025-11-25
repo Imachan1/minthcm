@@ -136,6 +136,10 @@ $viewdefs ['Tasks'] = array(
                ),
             ),
             array(
+                'checklist',
+                '',
+            ),
+            array(
                array(
                   'name' => 'description',
                ),

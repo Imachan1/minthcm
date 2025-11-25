@@ -164,7 +164,7 @@ class Attitudes extends MintEntity
     protected $employee_link;
 
     /**
-     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="attitudes")
+     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="attitude")
      */
     protected Collection $appraisalitems;
 

@@ -1,29 +1,24 @@
 <?php
 
 $viewdefs['EmployeeCertificates'] = [
-    'order' => ['header', 'basicInfo', 'subpanels'],
+    'order' => ['basicInfo', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    ['certificate_name', 'status'],
-                ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                ],
-            ],
-        ],
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
                         'fields' => [
-                            ['status', 'start_date', 'end_date'],
-                            ['attempts_number', 'points_scored',
+                            ['name'],
+                            ['status', 'attempts_number'],
+                            ['start_date', 'end_date'],
+                            ['points_scored',
                                 [
                                     'name' => 'certificate_name',
                                     'label' => 'LBL_RELATIONSHIP_CERTIFICATE_NAME',
@@ -34,15 +29,9 @@ $viewdefs['EmployeeCertificates'] = [
                                     'name' => 'candidate_name',
                                     'label' => 'LBL_RELATIONSHIP_CANDIDATE_NAME',
                                 ],
-                                'employee_name', 'name',
+                                'employee_name',
                             ],
                             ['description'],
-                        ],
-                    ],
-                    'userInfo' => [
-                        'title' => 'LBL_USER_INFO',
-                        'fields' => [
-                            ['assigned_user_name'],
                         ],
                     ],
                 ],

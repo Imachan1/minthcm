@@ -152,7 +152,7 @@ class ScheduleReportsLogs extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="schedule_report_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=ScheduleReports::class, inversedBy="schedulereportslogs")
+     * @ORM\ManyToOne(targetEntity=ScheduleReports::class, inversedBy="schedulereports_schedulereportslogs")
      */
     protected $schedulereports_schedulereportslogs;
 

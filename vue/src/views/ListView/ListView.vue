@@ -5,6 +5,7 @@
             <ListViewFilters v-if="store.isInit"/>
             <ListViewHeader />
             <ListViewTable />
+            <ListViewMassUpdate v-if="store.isMassUpdate" />
         </div>
     </div>
 </template>
@@ -19,6 +20,7 @@ import { useLanguagesStore } from '@/store/languages'
 import { useACL } from '@/composables/useACL'
 import ListViewFilters from './ListViewFilters.vue'
 import { filterDef } from '@/utils/qsOperatorsTypes'
+import ListViewMassUpdate from './ListViewMassUpdate.vue'
 
 const url = useUrlStore()
 const store = useListViewStore()

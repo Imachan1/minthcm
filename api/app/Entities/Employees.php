@@ -341,6 +341,11 @@ class Employees extends MintEntity
     /**
      * @ORM\Column(type="id", length="36")
      */
+    protected $securitygroup_id;
+
+    /**
+     * @ORM\Column(type="string", length="36")
+     */
     protected $forced_tabs_dashboard_id;
 
     /**
@@ -393,7 +398,7 @@ class Employees extends MintEntity
     protected Collection $meetings;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="assigned_user_link")
      */
     protected Collection $tasks;
 
@@ -404,24 +409,24 @@ class Employees extends MintEntity
     protected Collection $aclroles;
 
     /**
-     * @ORM\OneToMany(targetEntity=EAPM::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=EAPM::class, mappedBy="assigned_user_link")
      */
     protected Collection $eapm;
 
     /**
-     * @ORM\OneToMany(targetEntity=OAuthTokens::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=OAuthTokens::class, mappedBy="assigned_user_link")
      */
     protected Collection $oauth_tokens;
 
     /**
      * @ORM\JoinTable(name="project_users_1_c", joinColumns={@ORM\JoinColumn(name="project_users_1users_idb", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="project_users_1project_ida", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=Project::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Project::class, inversedBy="project_users_1")
      */
     protected Collection $project_users_1;
 
     /**
      * @ORM\JoinTable(name="am_projecttemplates_users_1_c", joinColumns={@ORM\JoinColumn(name="users_idb", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="am_projecttemplates_ida", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=AM_ProjectTemplates::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=AM_ProjectTemplates::class, inversedBy="am_projecttemplates_users_1")
      */
     protected Collection $am_projecttemplates_users_1;
 
@@ -433,7 +438,7 @@ class Employees extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="employees")
      */
     protected $position;
 
@@ -444,13 +449,13 @@ class Employees extends MintEntity
 
     /**
      * @ORM\JoinTable(name="candidates_employees", joinColumns={@ORM\JoinColumn(name="employee_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="candidate_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=Candidates::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Candidates::class, inversedBy="employee")
      */
     protected Collection $candidates;
 
     /**
      * @ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="employees")
      */
     protected $securitygroups_employees_link;
 
@@ -461,19 +466,19 @@ class Employees extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="forced_tabs_dashboard_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users_forced_tabs_dashboards")
      */
     protected $users_forced_tabs_dashboards;
 
     /**
      * @ORM\JoinColumn(name="locked_dashboard_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users_locked_dashboards")
      */
     protected $users_locked_dashboards;
 
     /**
      * @ORM\JoinColumn(name="one_time_default_dashboard_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=DashboardManager::class, inversedBy="users_one_time_default_dashboards")
      */
     protected $users_one_time_default_dashboards;
 
@@ -484,100 +489,100 @@ class Employees extends MintEntity
     protected Collection $schedulereports;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkSchedules::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=WorkSchedules::class, mappedBy="deputy")
      */
     protected Collection $deputy;
 
     /**
-     * @ORM\OneToMany(targetEntity=EmployeeCertificates::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=EmployeeCertificates::class, mappedBy="employee_link")
      */
     protected Collection $employeecertificates;
 
     /**
-     * @ORM\OneToMany(targetEntity=SpentTime::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=SpentTime::class, mappedBy="employees")
      */
     protected Collection $spenttime;
 
     /**
-     * @ORM\OneToMany(targetEntity=Contracts::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Contracts::class, mappedBy="employee_link")
      */
     protected Collection $contracts;
 
     /**
-     * @ORM\OneToMany(targetEntity=Resources::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Resources::class, mappedBy="employee_link")
      */
     protected Collection $resources;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="employee_link")
      */
     protected Collection $reservations;
 
     /**
-     * @ORM\OneToMany(targetEntity=PeriodsOfEmployment::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=PeriodsOfEmployment::class, mappedBy="employee_link")
      */
     protected Collection $periodsofemployment;
 
     /**
-     * @ORM\OneToMany(targetEntity=Goals::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Goals::class, mappedBy="employee_link")
      */
     protected Collection $goals;
 
     /**
-     * @ORM\OneToMany(targetEntity=Kudos::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Kudos::class, mappedBy="employee_link")
      */
     protected Collection $kudos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Appraisals::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Appraisals::class, mappedBy="employee_link")
      */
     protected Collection $appraisals;
 
     /**
-     * @ORM\OneToMany(targetEntity=Appraisals::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Appraisals::class, mappedBy="evaluators")
      */
     protected Collection $evaluations;
 
     /**
      * @ORM\JoinTable(name="roles_employees", joinColumns={@ORM\JoinColumn(name="employee_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=EmployeeRoles::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=EmployeeRoles::class, inversedBy="employees")
      */
     protected Collection $roles;
 
     /**
      * @ORM\JoinTable(name="benefits_employees", joinColumns={@ORM\JoinColumn(name="employee_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="benefit_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=Benefits::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Benefits::class, inversedBy="employees")
      */
     protected Collection $benefits;
 
     /**
-     * @ORM\OneToMany(targetEntity=Onboardings::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Onboardings::class, mappedBy="employee_link")
      */
     protected Collection $onboardings;
 
     /**
-     * @ORM\OneToMany(targetEntity=Offboardings::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Offboardings::class, mappedBy="employee_link")
      */
     protected Collection $offboardings;
 
     /**
-     * @ORM\OneToMany(targetEntity=CompetencyRatings::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=CompetencyRatings::class, mappedBy="employee_link")
      */
     protected Collection $competencyratings;
 
     /**
-     * @ORM\OneToMany(targetEntity=SecurityGroups::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=SecurityGroups::class, mappedBy="current_manager")
      */
     protected Collection $securitygroups_managers;
 
     /**
-     * @ORM\OneToMany(targetEntity=Applications::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Applications::class, mappedBy="employee_link")
      */
     protected Collection $applications;
 
     /**
      * @ORM\JoinTable(name="allocations_employees", joinColumns={@ORM\JoinColumn(name="employee_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="allocation_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=Allocations::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Allocations::class, inversedBy="allocations_employees")
      */
     protected Collection $allocations_employees;
 
@@ -587,12 +592,12 @@ class Employees extends MintEntity
     protected Collection $trainings;
 
     /**
-     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="employee_link")
      */
     protected Collection $candidatures;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="employee")
      */
     protected Collection $files;
 
@@ -635,7 +640,6 @@ class Employees extends MintEntity
         $this->securitygroups_managers = new ArrayCollection();
         $this->applications = new ArrayCollection();
         $this->allocations_employees = new ArrayCollection();
-        $this->trainings = new ArrayCollection();
         $this->candidatures = new ArrayCollection();
         $this->files = new ArrayCollection();
     }

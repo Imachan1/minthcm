@@ -170,4 +170,5 @@ $mod_strings = array(
     'LBL_LIST_TITLE' => 'Candidate',
     'LBL_PROSPECT_LIST' => 'Prospect List',
     'LBL_LINKEDIN_ACCOUNT' => 'LinkedIn',
+    'LBL_PROSPECT_LIST' => 'Prospect List',
 );

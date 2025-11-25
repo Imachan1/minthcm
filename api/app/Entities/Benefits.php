@@ -170,7 +170,7 @@ class Benefits extends MintEntity
     protected Collection $roles;
 
     /**
-     * @ORM\OneToMany(targetEntity=Requests::class, mappedBy="benefits")
+     * @ORM\OneToMany(targetEntity=Requests::class, mappedBy="benefit")
      */
     protected Collection $requests;
 

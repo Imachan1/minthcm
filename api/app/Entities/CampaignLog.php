@@ -169,18 +169,18 @@ class CampaignLog extends MintEntity
     protected $marketing_id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="campaign_log")
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="users")
      */
     protected Collection $targeted_user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="campaign_log")
+     * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="emails")
      */
     protected Collection $sent_email;
 
     /**
      * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Campaigns::class, inversedBy="campaign_log")
+     * @ORM\ManyToOne(targetEntity=Campaigns::class, inversedBy="log_entries")
      */
     protected $campaign;
 

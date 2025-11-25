@@ -1,24 +1,16 @@
 <?php
 
 $viewdefs['Costs'] = [
-    'order' => ['header', 'contactInfo', 'subpanels'],
+    'order' => ['contactInfo', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    ['type'],
-                ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                ],
-            ],
-        ],
         'contactInfo' => [
             'component' => 'MintPanelRecordDetails',
             'title' => 'LBL_CONTACT_INFORMATION',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -36,19 +28,14 @@ $viewdefs['Costs'] = [
                             [
                                 'cost_amount',
                                 'currency_id',
-                                'cost_date',
                             ],
                             [
+                                'cost_date',
                                 'cost_city',
+                            ],
+                            [
                                 'description',
                             ],
-                        ],
-                    ],
-                    'other' => [
-                        'title' => 'LBL_OTHER',
-                        'collapsed' => true,
-                        'fields' => [
-                            ['assigned_user_name', 'date_entered', 'date_modified'],
                         ],
                     ],
                 ],

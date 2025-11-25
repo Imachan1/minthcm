@@ -1,37 +1,28 @@
 <?php
 
 $viewdefs['Workplaces'] = [
-    'order' => ['header', 'basicInfo', 'subpanels'],
+    'order' => ['basicInfo', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    [
-                        'availability',
-                        'room_name',
-                    ],
-                ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                ],
-            ],
-        ],
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
                         'fields' => [
                             [
                                 'name',
-                                'assigned_user_name',
-                                'mode',
                             ],
                             [
+                                'mode',
                                 'availability',
+                            ],
+                            [
                                 [
                                     'name' => 'room_name',
                                     'filters' => [
@@ -44,14 +35,6 @@ $viewdefs['Workplaces'] = [
                                     ],
                                 ],
                                 'description',
-                            ],
-                            [
-                                'date_entered',
-                                'date_modified',
-                            ],
-                            [
-                                'created_by_name',
-                                'modified_by_name',
                             ],
                         ],
                     ],

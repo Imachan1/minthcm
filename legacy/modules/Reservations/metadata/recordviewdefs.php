@@ -1,27 +1,16 @@
 <?php
 
 $viewdefs['Reservations'] = [
-    'order' => ['header', 'basicInfo'],
+    'order' => ['basicInfo'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    [
-                        'name',
-                        'status',
-                        'resource_name',
-                    ],
-                ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                ],
-            ],
-        ],
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -38,7 +27,6 @@ $viewdefs['Reservations'] = [
                             ],
                             [
                                 'employee_name',
-                                'assigned_user_name',
 
                             ],
                             [

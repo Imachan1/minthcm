@@ -79,6 +79,7 @@ $viewdefs[$module_name]['EditView'] = array(
             ),
             array(
                 'reason_for_rejection',
+                'original_candidature_name',
             ),
             array(
                 'parent_name',
@@ -91,7 +92,7 @@ $viewdefs[$module_name]['EditView'] = array(
             ),
             array(
                 'start_date',
-                'recruitment_end_name',
+                'route_of_acquisition',
             ),
             array(
                 'status_information',

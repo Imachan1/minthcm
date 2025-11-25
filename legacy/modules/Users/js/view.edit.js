@@ -62,6 +62,41 @@ viewTools.form.afterSave(function(){
         $("#dlg_mask").remove();
         return false;    
     }
+    let errorMessage = '';
+    viewTools.api.callCustomApi({
+        module: 'Users',
+        action: 'passwordValidationCheck',
+        async: false,
+        dataPOST: { password: $("#new_password").val() },
+        callback: function (response) {
+            if (response === false || response.message === undefined) {
+                errorMessage = false;
+                return;
+            }
+            errorMessage = response.message;
+            return;
+        }
+    });
+    if (errorMessage !== false && errorMessage !== '') {
+        setTimeout(function(){
+            viewTools.GUI.statusBox.hideStatus();
+            viewTools.GUI.statusBox.showStatus(errorMessage, 'error', 4000);
+        }, 50);
+        $("#tab2")[0].click();
+        $("#dlg_mask").remove();
+        return false;    
+    }
+
+    if (errorMessage === false) {
+        setTimeout(function(){
+            viewTools.GUI.statusBox.hideStatus();
+            viewTools.GUI.statusBox.showStatus(ERR_SERVER_CONNECTION, 'error', 4000);
+        }, 50);
+        $("#tab2")[0].click();
+        $("#dlg_mask").remove();
+        return false;    
+    }
+
     if (!!window["users_editview_units_popup"] === false && (!['Active', 'during_termination'].includes(employee_status) || status != 'Active') && employee_id != '') {
         viewTools.api.callCustomApi({
             module: 'Employees',

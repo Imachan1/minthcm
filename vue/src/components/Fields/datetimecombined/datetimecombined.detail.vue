@@ -3,7 +3,7 @@
         <label>{{ props.label }}</label>
         <div class="detail-field-row">
             <div class="content-wrapper">
-                {{ parsedDate + ' ' + languages.label('LBL_BY') }}
+                {{ parsedDate + ' ' + (parsedDate != '' ? languages.label('LBL_BY') : '') }}
                 <router-link v-if="hasViewAccess" :to="recordUrl" class="relate-field">
                     {{ nameField }}
                 </router-link>

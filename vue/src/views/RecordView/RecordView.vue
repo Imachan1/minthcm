@@ -15,7 +15,7 @@ import { useBackendStore } from '@/store/backend'
 import { useRoute } from 'vue-router'
 import { useStatusBoxesStore } from '@/store/statusBoxes'
 import { useRouter } from 'vue-router'
-import { useACL } from '@/composables/useACL'
+import { useACL, ACLView } from '@/composables/useACL'
 
 const store = useRecordViewStore()
 const languages = useLanguagesStore()
@@ -32,6 +32,10 @@ onMounted(async () => {
         if (Object.keys(route.query).length) {
             store.bean.setAttributesFromQuery(route.query)
         }
+
+        if (Object.keys(route.query).includes('copy_id')) {
+            await store.bean.setAttributesFromBeanId(route.query.copy_id as string)
+        }
     }
 })
 
@@ -39,14 +43,26 @@ function recordAccessError(error: any): Promise<any> {
     if ([403, 404].includes(error.response.status)) {
         useStatusBoxesStore().showStatus('record_access_error', {
             type: 'error',
-            message: useLanguagesStore().label('ERROR_NO_RECORD'),
+            message: languages.label('ERROR_NO_RECORD'),
             autoClose: true,
         })
-        useACL().hasAccess(store.bean.module, 'list', true, true) ?
-            router.push({ name: 'list', params: { module: store.bean.module } }) :
-            router.push({ name: 'dashboard' })
+        redirect('list')
+    }
+
+    if (408 == error.response.status) {
+        useStatusBoxesStore().showStatus('access_timed_out', {
+            type: 'error',
+            message: languages.label('LBL_DETAIL_VIEW_LOADING_TIMEOUT'),
+            autoClose: true,
+        })
     }
     return Promise.reject(error)
+}
+
+function redirect(where: ACLView) {
+    useACL().hasAccess(store.bean.module, where, true, true)
+        ? router.push({ name: where, params: { module: store.bean.module } })
+        : router.push({ name: 'dashboard' })
 }
 
 watch(

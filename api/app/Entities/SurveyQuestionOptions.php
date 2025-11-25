@@ -165,13 +165,13 @@ class SurveyQuestionOptions extends MintEntity
 
     /**
      * @ORM\JoinTable(name="surveyquestionoptions_surveyquestionresponses")
-     * @ORM\ManyToMany(targetEntity=SurveyQuestionResponses::class, mappedBy="surveyquestionoptions")
+     * @ORM\ManyToMany(targetEntity=SurveyQuestionResponses::class, mappedBy="surveyquestionoptions_surveyquestionresponses")
      */
     protected Collection $surveyquestionoptions_surveyquestionresponses;
 
     /**
      * @ORM\JoinColumn(name="survey_question_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=SurveyQuestions::class, inversedBy="surveyquestionoptions")
+     * @ORM\ManyToOne(targetEntity=SurveyQuestions::class, inversedBy="surveyquestions_surveyquestionoptions")
      */
     protected $survey_question;
 

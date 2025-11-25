@@ -1,28 +1,18 @@
 <?php
 
 $viewdefs['Candidatures'] = [
-    'order' => ['header', 'basicInfo', 'files', 'subpanels'],
+    'order' => ['basicInfo', 'files', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
+        'basicInfo' => [
+            'component' => 'MintPanelRecordDetails',
             'data' => [
-                'fields' => [
-                    [
-                        'status',
-                        'scoring',
-                        'task_grade',
-                    ],
-                ],
                 'actions' => [
                     'Audit',
                     'Delete',
                     'ConvertToEmployee',
+                    'Duplicate',
+                    'RejectAndMoveToAnotherRecruitment',
                 ],
-            ],
-        ],
-        'basicInfo' => [
-            'component' => 'MintPanelRecordDetails',
-            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -30,9 +20,9 @@ $viewdefs['Candidatures'] = [
                             [
                                 'status',
                                 'status_information',
-                                'start_date',
                             ],
                             [
+                                'start_date',
                                 'reason_for_rejection',
                             ],
                             [
@@ -41,8 +31,11 @@ $viewdefs['Candidatures'] = [
                             ],
                             [
                                 'to_decision',
+                                'route_of_acquisition',
+                            ],
+                            [
                                 'recruitment_name',
-                                'recruitment_end_name',
+                                'original_candidature_name',
                             ],
                             [
                                 'parent_name',
@@ -51,9 +44,9 @@ $viewdefs['Candidatures'] = [
                             [
                                 'source',
                                 'task_grade',
-                                'scoring',
                             ],
                             [
+                                'scoring',
                                 'description',
                             ],
                         ],
@@ -63,14 +56,14 @@ $viewdefs['Candidatures'] = [
                         'fields' => [
                             [
                                 'employment_form',
-                                'dg_amount',
-                                'currency_name',
+                                'currency_id',
                             ],
                             [
                                 'net_amount',
                                 'gross_amount',
                             ],
                             [
+                                'dg_amount',
                                 'notice',
                             ],
                         ],
@@ -91,25 +84,18 @@ $viewdefs['Candidatures'] = [
                         'title' => 'LBL_PANEL_ASSIGNMENT',
                         'collapsed' => true,
                         'fields' => [
+
                             [
+                                'assigned_user_name',
                                 'employee_name',
+                            ],
+                            [
                                 [
                                     'name' => 'date_entered',
                                     'readonly' => true,
                                 ],
                                 [
                                     'name' => 'date_modified',
-                                    'readonly' => true,
-                                ],
-                            ],
-                            [
-                                'assigned_user_name',
-                                [
-                                    'name' => 'created_by_name',
-                                    'readonly' => true,
-                                ],
-                                [
-                                    'name' => 'modified_by_name',
                                     'readonly' => true,
                                 ],
                             ],

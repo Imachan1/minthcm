@@ -183,16 +183,6 @@ $listViewDefs[$module_name] = array(
         'default' => false,
         'module' => 'Recruitments',
     ),
-    'RECRUITMENT_END_NAME' => array(
-        'name' => 'recruitment_end_name',
-        'label' => 'LBL_CANDIDATURES_RECRUITMENTS_END_FROM_RECRUITMENTS_TITLE',
-        'enabled' => true,
-        'id' => 'RECRUITMENT_END_ID',
-        'link' => true,
-        'sortable' => false,
-        'default' => false,
-        'module' => 'Recruitments',
-    ),
     'SALARY_NET' => array(
         'name' => 'salary_net',
         'label' => 'LBL_SALARY_NET',

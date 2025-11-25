@@ -165,19 +165,19 @@ class AM_ProjectTemplates extends MintEntity
 
     /**
      * @ORM\JoinTable(name="am_projecttemplates_project_1_c")
-     * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="am_projecttemplates")
+     * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="am_projecttemplates_project_1")
      */
     protected Collection $am_projecttemplates_project_1;
 
     /**
      * @ORM\JoinTable(name="am_tasktemplates_am_projecttemplates_c")
-     * @ORM\ManyToMany(targetEntity=AM_TaskTemplates::class, mappedBy="am_projecttemplates")
+     * @ORM\ManyToMany(targetEntity=AM_TaskTemplates::class, mappedBy="am_tasktemplates_am_projecttemplates")
      */
     protected Collection $am_tasktemplates_am_projecttemplates;
 
     /**
      * @ORM\JoinTable(name="am_projecttemplates_users_1_c")
-     * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="am_projecttemplates")
+     * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="am_projecttemplates_users_1")
      */
     protected Collection $am_projecttemplates_users_1;
 

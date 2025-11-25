@@ -98,7 +98,7 @@ class Kudos extends Basic
     public function ACLAccess($view, $is_owner = 'not_set', $in_group = 'not_set')
     {
         global $current_user;
-        
+
         if (!parent::ACLAccess($view, $is_owner, $in_group)) {
             return false;
         }
@@ -117,4 +117,5 @@ class Kudos extends Basic
         }
         return false;
     }
+
 }

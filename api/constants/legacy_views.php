@@ -327,7 +327,7 @@ return [
     ],
     'WorkSchedules' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'WorkingMonths' => [
         'list' => false,
@@ -367,11 +367,11 @@ return [
     ],
     'OnboardingTemplates' => [
         'list' => false,
-        'record' => false,
+        'record' => true,
     ],
     'OffboardingTemplates' => [
         'list' => false,
-        'record' => false,
+        'record' => true,
     ],
     'Goals' => [
         'list' => false,
@@ -475,7 +475,7 @@ return [
     ],
     'Meetings' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Calls' => [
         'list' => false,

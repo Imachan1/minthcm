@@ -157,7 +157,7 @@ class OffboardingTemplates extends MintEntity
     protected Collection $positions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Offboardings::class, mappedBy="offboardingtemplates")
+     * @ORM\OneToMany(targetEntity=Offboardings::class, mappedBy="offboardingtemplate")
      */
     protected Collection $offboardings;
 

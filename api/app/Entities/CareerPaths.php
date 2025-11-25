@@ -128,6 +128,16 @@ class CareerPaths extends MintEntity
     protected $assigned_user_id;
 
     /**
+     * @ORM\Column(type="string", length="36")
+     */
+    public $position_from_id;
+
+    /**
+     * @ORM\Column(type="string", length="36")
+     */
+    public $position_to_id;
+
+    /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="careerpaths")
      */
@@ -153,13 +163,13 @@ class CareerPaths extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="position_from_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="careerpaths")
+     * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="careerpaths_from")
      */
     protected $positions_from;
 
     /**
      * @ORM\JoinColumn(name="position_to_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="careerpaths")
+     * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="careerpaths_to")
      */
     protected $positions_to;
 

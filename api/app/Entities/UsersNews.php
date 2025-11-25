@@ -140,6 +140,11 @@ class UsersNews extends MintEntity
     protected $not_display;
 
     /**
+     * @ORM\Column(type="string", length="36")
+     */
+    public $news_id;
+
+    /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="usersnews")
      */

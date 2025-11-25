@@ -279,7 +279,7 @@ class Calls extends MintEntity
     protected Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Calls_Reschedule::class, mappedBy="calls")
+     * @ORM\OneToMany(targetEntity=Calls_Reschedule::class, mappedBy="calls_reschedule")
      */
     protected Collection $calls_reschedule;
 
@@ -302,7 +302,7 @@ class Calls extends MintEntity
     protected Collection $candidates;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="calls")
+     * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="reservations")
      */
     protected Collection $reservations;
 

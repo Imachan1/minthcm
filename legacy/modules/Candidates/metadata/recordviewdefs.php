@@ -1,34 +1,30 @@
 <?php
 
 $viewdefs['Candidates'] = [
-    'order' => ['header', 'contactInfo', 'subpanels'],
+    'order' => ['contactInfo', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    ['email1', 'potential', 'phone_mobile'],
-                ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                ],
-            ],
-        ],
         'contactInfo' => [
             'component' => 'MintPanelRecordDetails',
             'title' => 'LBL_CONTACT_INFORMATION',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
                         'fields' => [
-                            ['first_name', 'last_name', 'email1'],
+                            ['first_name', 'last_name'],
                             [
+                                'email1',
                                 [
                                     'name' => 'birthdate',
                                     'type' => 'age',
                                 ],
+                            ],
+                            [
                                 'phone_mobile',
                                 'recr_contact_agree',
                             ],
@@ -69,23 +65,24 @@ $viewdefs['Candidates'] = [
                     'moreInfo' => [
                         'title' => 'LBL_SHOW_MORE_INFORMATION',
                         'fields' => [
-                            ['potential', 'relocation', 'description'],
+                            ['potential', 'relocation'],
                             ['last_time_contact', 'date_planned_contact'],
+                            ['description'],
                         ],
                     ],
                     'socials' => [
                         'title' => 'LBL_RECORDVIEW_PANEL1',
                         'fields' => [
-                            ['linkedin', 'github', 'facebook'],
-                            ['x_service'],
+                            ['linkedin', 'github'],
+                            ['facebook', 'x_service'],
                         ],
                     ],
-                    'assignment' => [
+                    'other' => [
                         'title' => 'LBL_RECORDVIEW_PANEL2',
                         'collapsed' => true,
                         'fields' => [
-                            ['assigned_user_name', 'created_by_name', 'modified_by_name'],
-                            ['', 'date_entered', 'date_modified'],
+                            ['assigned_user_name'],
+                            ['date_entered', 'date_modified'],
                         ],
                     ],
                 ],

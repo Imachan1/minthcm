@@ -226,6 +226,19 @@ $dictionary['Task'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_NOTES',
         ),
+        "checklist"  => array(
+            'name' => 'checklist',
+            'vname' => 'LBL_CHECKLIST',
+            'label' => 'LBL_CHECKLIST',
+            'dbType' => 'text',
+            'type' => 'checklist',
+            'rows' => 6,
+            'cols' => 80,
+            'importable' => 'true',
+            'audited' => true,
+            'reportable' => true,
+            'vt_dependency' => "equals(\$parent_type,'Onboardings')",
+        ),
     )
     ,
     'relationships' => array(

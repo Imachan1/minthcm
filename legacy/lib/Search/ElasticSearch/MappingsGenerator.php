@@ -35,8 +35,6 @@ class MappingsGenerator
         'employee_name' => 'employee_name',
         'offboarding_id' => 'offboarding_id',
         'offboarding_name' => 'offboarding_name',
-        'parent_id' => 'parent.id',
-        'parent_name' => 'parent.name',
     ];
 
     // From vardefs to elastic
@@ -86,6 +84,13 @@ class MappingsGenerator
         'employee_name' => 'employee_id'
     ];
 
+    protected const DEFAULT_FIELDS = [
+        'date_entered',
+        'date_modified',
+        'created_by_name',
+        'modified_by_name',
+    ];
+
     protected function getModulesWithElastic()
     {
         global $beanList;
@@ -118,17 +123,15 @@ class MappingsGenerator
             include $module['path'];
             $bean = BeanFactory::newBean($module['module']);
             $data = $ESListViewDefs[$module['module']];
-            $fields_to_map = $this->setFieldsToMap($data);
+            $fields_to_map = $this->setFieldsToMap($data, $bean);
             $defs = $bean->field_defs;
             $key = !empty($data['es_module']) ? $data['es_module'] : $module['module'];
 
             foreach ($fields_to_map as $field) {
                 if (
                     $defs[$field]['source'] != "non-db" 
-                    || (
-                        ( $defs[$field]['type'] == 'relate' || $defs[$field]['type'] == 'parent' )
-                        && !empty($this->not_standard_fields[$field])
-                    )
+                    || $defs[$field]['type'] == 'relate' 
+                    || $defs[$field]['type'] == 'parent'
                 ) {
                     $es_type_name = $this->type_mapping[$defs[$field]['type']] ?? 'text';
                     $es_type = $this->types[$es_type_name];
@@ -220,19 +223,27 @@ class MappingsGenerator
         return $mappings;
     }
 
-    protected function setFieldsToMap($data)
+    protected function setFieldsToMap($data, $bean)
     {
         $fields_to_map = [];
         $columns = array_map('strtolower', array_keys($data['columns'] ? $data['columns'] : []));
         $search = array_map('strtolower', array_keys($data['search'] ? $data['search'] : []));
+        $default = [];
+        foreach (static::DEFAULT_FIELDS as $field) {
+            if (!empty($bean->field_name_map[$field])) {
+                $default[] = $field;
+            }
+        }
 
-        $fields_to_map = array_unique(array_merge($columns, $search));
+        $fields_to_map = array_unique(array_merge($columns, $search, $default));
 
         foreach ($this->fields_must_be_added_to_mappings_because_of_security as $name_field => $id_field) {
             if (in_array($name_field, $fields_to_map) && !in_array($id_field, $fields_to_map)) {
                 $fields_to_map[] = $id_field;
             }
         }
+        
+        $this->addIdFieldsToFieldsToMap($data, $fields_to_map, $bean);
         
         return $fields_to_map;
     }
@@ -282,6 +293,21 @@ class MappingsGenerator
         // - the relationship does not have to change
         if (!$this->includesAtMostPrimaryKey($nested_config['fields'])) {
             $tracked_links[] = $link_field_name;
+        }
+    }
+
+
+    protected function addIdFieldsToFieldsToMap($data, array &$fields_to_map, $bean)
+    {
+        foreach ($data['columns'] as $field => $def) {
+            if (!empty($def['link']) && $def['link'] == true) {
+                if (!empty($bean->field_defs[$field]['id_name'])) {
+                    $id_field = $bean->field_defs[$field]['id_name'];
+                    if (!in_array($id_field, $fields_to_map)) {
+                        $fields_to_map[] = $id_field;
+                    }
+                }
+            }
         }
     }
 }

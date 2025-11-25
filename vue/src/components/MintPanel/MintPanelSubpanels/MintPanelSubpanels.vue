@@ -58,8 +58,10 @@ import MintDataTablePagination from '@/components/MintDataTablePagination/MintDa
 import { useACL } from '@/composables/useACL'
 
 onMounted(() => {
-    store.fetchLanguagesForSubpanels()
-    store.fetchSubpanelsData()
+    if (store.view == 'detail' && store.bean.id) {
+        store.fetchLanguagesForSubpanels()
+        store.fetchSubpanelsData()
+    }
 })
 
 const store = useRecordViewStore()

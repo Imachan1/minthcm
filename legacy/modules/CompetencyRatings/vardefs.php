@@ -130,6 +130,24 @@ $dictionary['CompetencyRatings'] = array(
             'group' => 'parent_name',
             'reportable' => false,
         ),
+        'employee_roles' => array(
+            'name' => 'employee_roles',
+            'type' => 'link',
+            'relationship' => 'competencyratings_roles',
+            'module' => 'EmployeeRoles',
+            'bean_name' => 'EmployeeRoles',
+            'source' => 'non-db',
+            'vname' => 'LBL_EMPLOYEE_ROLES',
+        ),
+        'positions' => array(
+            'name' => 'positions',
+            'type' => 'link',
+            'relationship' => 'competencyratings_positions',
+            'module' => 'Positions',
+            'bean_name' => 'Positions',
+            'source' => 'non-db',
+            'vname' => 'LBL_POSITIONS',
+        ),
     ),
     'relationships' => array(
         'competencyratings_competencies' => array(

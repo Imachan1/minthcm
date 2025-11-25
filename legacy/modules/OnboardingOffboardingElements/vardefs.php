@@ -236,6 +236,19 @@ $dictionary['OnboardingOffboardingElements'] = array(
             'bean_name' => 'Trainings',
             'vname' => 'LBL_RELATIONSHIP_TRAININGS_NAME',
         ),
+        "checklist"  => array(
+            'name' => 'checklist',
+            'vname' => 'LBL_CHECKLIST',
+            'label' => 'LBL_CHECKLIST',
+            'dbType' => 'text',
+            'type' => 'checklist',
+            'rows' => 6,
+            'cols' => 80,
+            'importable' => 'true',
+            'audited' => true,
+            'reportable' => true,
+            'vt_dependency' => "equals(\$type,'task')",
+        ),
     ),
     'relationships' => array(
         "users_onboardingoffboardingelements" => array(

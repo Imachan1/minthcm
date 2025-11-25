@@ -134,7 +134,7 @@ class CampaignTrackers extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Campaigns::class, inversedBy="campaign_trkrs")
+     * @ORM\ManyToOne(targetEntity=Campaigns::class, inversedBy="tracked_urls")
      */
     protected $campaign;
 

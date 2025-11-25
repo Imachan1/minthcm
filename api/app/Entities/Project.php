@@ -172,7 +172,7 @@ class Project extends MintEntity
     protected $jjwg_maps_address_c;
 
     /**
-     * @ORM\Column(type="string", length="255")
+     * @ORM\Column(type="float", length="10")
      */
     protected $jjwg_maps_geocode_status_c;
 
@@ -188,17 +188,17 @@ class Project extends MintEntity
     protected Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="project")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="projects")
      */
     protected Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="project")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="projects")
      */
     protected Collection $tasks;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="project")
+     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="meetings")
      */
     protected Collection $meetings;
 
@@ -208,7 +208,7 @@ class Project extends MintEntity
     protected Collection $calls;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProjectTask::class, mappedBy="project")
+     * @ORM\OneToMany(targetEntity=ProjectTask::class, mappedBy="projects")
      */
     protected Collection $projecttask;
 
@@ -232,13 +232,13 @@ class Project extends MintEntity
 
     /**
      * @ORM\JoinTable(name="project_users_1_c")
-     * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="project")
+     * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="project_users_1")
      */
     protected Collection $project_users_1;
 
     /**
      * @ORM\JoinTable(name="am_projecttemplates_project_1_c", joinColumns={@ORM\JoinColumn(name="am_projecttemplates_project_1project_idb", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="am_projecttemplates_project_1am_projecttemplates_ida", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=AM_ProjectTemplates::class, inversedBy="project")
+     * @ORM\ManyToMany(targetEntity=AM_ProjectTemplates::class, inversedBy="am_projecttemplates_project_1")
      */
     protected Collection $am_projecttemplates_project_1;
 

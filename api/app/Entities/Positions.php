@@ -55,7 +55,7 @@ use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\PositionsRepository")
  * @ORM\Table(name="positions", indexes={
  * @ORM\Index(name="positionspk", columns={"id"})})
  * @property mixed $id
@@ -200,7 +200,7 @@ class Positions extends MintEntity
 
     /**
      * @ORM\JoinTable(name="securitygroups_positions_leader", joinColumns={@ORM\JoinColumn(name="position_leader_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_leader_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="positions_leader")
      */
     protected Collection $securitygroups_leader;
 
@@ -211,7 +211,7 @@ class Positions extends MintEntity
     protected Collection $documents;
 
     /**
-     * @ORM\OneToMany(targetEntity=Employees::class, mappedBy="positions")
+     * @ORM\OneToMany(targetEntity=Employees::class, mappedBy="position")
      */
     protected Collection $employees;
 
@@ -238,18 +238,18 @@ class Positions extends MintEntity
     protected Collection $appraisals;
 
     /**
-     * @ORM\OneToMany(targetEntity=CareerPaths::class, mappedBy="positions")
+     * @ORM\OneToMany(targetEntity=CareerPaths::class, mappedBy="positions_from")
      */
     protected Collection $careerpaths_from;
 
     /**
-     * @ORM\OneToMany(targetEntity=CareerPaths::class, mappedBy="positions")
+     * @ORM\OneToMany(targetEntity=CareerPaths::class, mappedBy="positions_to")
      */
     protected Collection $careerpaths_to;
 
     /**
      * @ORM\JoinTable(name="securitygroups_positions_membership", joinColumns={@ORM\JoinColumn(name="position_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
+     * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="positions_membership")
      */
     protected Collection $securitygroups_membership;
 
@@ -264,7 +264,7 @@ class Positions extends MintEntity
     protected Collection $termsofemployment;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="positions")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="position")
      */
     protected Collection $files;
 

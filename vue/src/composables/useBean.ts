@@ -3,11 +3,14 @@ import { useLogic } from './useLogic'
 import { useDebounceFn, useThrottleFn } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import { useModulesStore } from '@/store/modules'
+import { usePreferencesStore } from '@/store/preferences'
 import { useField } from '@/components/Fields/useField'
 import { useLink } from './useLink'
 import { mintApi } from '@/api/api'
+import { DateTime } from 'luxon'
 
 export const useBean = (module: string, id: string) => {
+    const retrieveTimeoutTimeMs = 30000
     const router = useRouter()
     const modulesStore = useModulesStore()
 
@@ -18,6 +21,17 @@ export const useBean = (module: string, id: string) => {
     const links = ref<Map<string, ReturnType<typeof useLink>>>(new Map())
 
     const logic = useLogic(module)
+
+    const duplicateSkipFields = [
+        'id',
+        'date_entered',
+        'date_modified',
+        'modified_user_id',
+        'modified_by_name',
+        'created_by',
+        'created_by_name',
+        'date_indexed',
+    ]
 
     const filesToSave = ref<{ [key: string]: File }>({})
     const attributesToSave = computed(() => {
@@ -37,6 +51,7 @@ export const useBean = (module: string, id: string) => {
     const isRetrieving = ref(false)
     const isSaving = ref(false)
     const isDirty = ref(false)
+    const loadingError = ref(false)
 
     const validationError = ref('')
     const isValid = computed(() => {
@@ -57,6 +72,7 @@ export const useBean = (module: string, id: string) => {
         const formPanel = Object.values(modulesStore.modules[module]?.metadata.RecordView?.panels ?? {}).find( // FIXME: refactor - podobny kod w useLogic
             (panel) => panel.component === 'MintPanelRecordDetails',
         )
+        
         const errors: { [key: string]: string } = {}
         if (!formPanel) {
             return errors
@@ -111,7 +127,7 @@ export const useBean = (module: string, id: string) => {
     }
 
     async function init() {
-        return await retrieve()
+        return retrieve()
     }
 
     function updateFields(fields: { [fieldName: string]: any }) {
@@ -130,10 +146,21 @@ export const useBean = (module: string, id: string) => {
 
     function setAttributesFromQuery(query: { [key: string]: string | (string | null)[] | null | undefined }) {
         const fieldsToUpdate: { [fieldName: string]: any } = {}
+        const preferences = usePreferencesStore()
         Object.entries(query)
             .filter(([key]) => fieldDefs.value[key])
             .map(([key, value]) => {
-                fieldsToUpdate[key] = value
+                let parsedValue = value;
+                if(['date', 'datetime', 'datetimecombo'].includes(fieldDefs.value[key].type)){
+                    const dateValueParts = (value as string).split(' ');
+                    const dateUserFormat = DateTime.fromFormat(dateValueParts[0], preferences.user?.date_format || 'yyyy-MM-dd');
+                    let timeUserFormat = '00:00';
+                    if(dateValueParts[1]){
+                        timeUserFormat = DateTime.fromFormat(dateValueParts[1], preferences.user?.time_format).setZone('UTC').toFormat('HH:mm');
+                    }
+                    parsedValue = `${dateUserFormat.toFormat('yyyy-MM-dd')}` + ` ${timeUserFormat}:00`
+                }
+                fieldsToUpdate[key] = parsedValue
             })
         if (query?.return_relationship && query?.return_id) {
             const link = loadRelationship(query.return_relationship as string)
@@ -146,9 +173,33 @@ export const useBean = (module: string, id: string) => {
         }
     }
 
+    async function setAttributesFromBeanId(copy_id: string) {
+        const fieldsToUpdate: { [fieldName: string]: any } = {}
+        const copyBean = await useBean(module, copy_id).init()
+        Object.entries(copyBean.data.attributes || {}).forEach(([fieldName, fieldDef]) => {
+            if (
+                duplicateSkipFields.includes(fieldName) 
+                || ['file', 'image'].includes(fieldDefs.value[fieldName].type)
+            ) return
+            if (copyBean.data.attributes[fieldName] !== undefined 
+                && copyBean.data.attributes[fieldName] !== null
+                && copyBean.data.attributes[fieldName] !== ''
+            ) {
+                fieldsToUpdate[fieldName] = copyBean.data.attributes[fieldName]
+            }
+        })
+        updateFields(fieldsToUpdate)
+    }
+
     async function retrieve() {
         isRetrieving.value = true
-        return await mintApi.get(`${module}/Get${id ? `/${id}` : ''}`, { rawError: true })
+        loadingError.value = false
+        const timeout = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('timeout')), retrieveTimeoutTimeMs),
+        )
+
+        const apiCall = mintApi
+            .get(`${module}/Get${id ? `/${id}` : ''}`, { rawError: true })
             .then((response) => {
                 if (response.status === 200 && response.data) {
                     setData(response.data)
@@ -158,6 +209,18 @@ export const useBean = (module: string, id: string) => {
             .finally(() => {
                 isRetrieving.value = false
             })
+
+        try {
+            return await Promise.race([apiCall, timeout])
+        } catch (error) {
+            if (error?.message === 'timeout') {
+                loadingError.value = true
+                throw { response: { status: 408, data: { error: 'Request timed out' } } }
+            }
+            throw error
+        } finally {
+            isRetrieving.value = false
+        }
     }
 
     function setData(data: { [key: string]: any }) {
@@ -171,8 +234,8 @@ export const useBean = (module: string, id: string) => {
 
     async function fetchLogic(triggerFields: string[] = []) {
         const response = await mintApi.post(`${module}/Logic${id ? `/${id}` : ''}`, {
-            attributes: attributesToSave.value,
-            triggerFields,
+            attributes: attributes.value,
+            triggerFields
         })
         if (response.data.rules?.length) {
             response.data.rules.forEach((r: any) => {
@@ -202,7 +265,12 @@ export const useBean = (module: string, id: string) => {
     async function save() {
         isDirty.value = true
         if (!isValid.value) {
-            return false
+            return {
+                status: false,
+                error: 'validation_failed',
+                errorMessages: errorMessages.value,
+                validationError: validationError.value,
+            }
         }
         isSaving.value = true
         try {
@@ -240,7 +308,12 @@ export const useBean = (module: string, id: string) => {
             if (error?.response?.data?.isValid === false && error.response.data.error) {
                 validationError.value = error.response.data.error
             }
-            return false
+            return {
+                status: false,
+                error: 'save_request_failed',
+                errorMessages: errorMessages.value,
+                validationError: validationError.value,
+            }
         } finally {
             isSaving.value = false
         }
@@ -313,5 +386,6 @@ export const useBean = (module: string, id: string) => {
         fieldDefs,
         setAttributesFromQuery,
         loadRelationship,
+        setAttributesFromBeanId,
     }
 }

@@ -176,12 +176,12 @@ class Ideas extends MintEntity
     protected $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="ideas")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="notes")
      */
     protected Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="ideas")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="idea")
      */
     protected Collection $files;
 
