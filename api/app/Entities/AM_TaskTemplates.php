@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="am_tasktemplates", indexes={
@@ -85,6 +86,7 @@ class AM_TaskTemplates extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -217,11 +219,12 @@ class AM_TaskTemplates extends MintEntity
      */
     protected Collection $am_tasktemplates_am_projecttemplates;
 
-// Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionProperties section end
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->am_tasktemplates_am_projecttemplates = new ArrayCollection();
     }
-// Auto-generated SectionMethods section end
+
+    // Auto-generated SectionMethods section end
 }

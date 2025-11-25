@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\EmployeeRolesRepository")
  * @ORM\Table(name="employeeroles", indexes={
@@ -75,6 +76,7 @@ class EmployeeRoles extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -186,8 +188,8 @@ class EmployeeRoles extends MintEntity
      */
     protected Collection $appraisals;
 
-// Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionProperties section end
+        // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();
@@ -197,5 +199,6 @@ class EmployeeRoles extends MintEntity
         $this->competencyratings = new ArrayCollection();
         $this->appraisals = new ArrayCollection();
     }
-// Auto-generated SectionMethods section end
+
+    // Auto-generated SectionMethods section end
 }

@@ -7,10 +7,10 @@
     {rdelim}
 
 {if $generate_custom_entity}
-    {if $isCustom}
-        {include file="$custom_entity_methods_tpl"}
-    {else}
-        {include file="$main_entity_methods_tpl"}
-    {/if}
+{if $isCustom}
+{include file="$custom_entity_methods_tpl"}
+{else}
+{include file="$main_entity_methods_tpl"}
 {/if}
-{$end_sectionmethods}
+{/if}
+    {$end_sectionmethods}

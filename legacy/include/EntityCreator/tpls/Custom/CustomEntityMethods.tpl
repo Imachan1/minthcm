@@ -1,5 +1,3 @@
-    
-    
     public function getMainEntity()
     {
         return $this->mainEntity;

@@ -53,8 +53,8 @@ namespace {$entityNamespace};
 class {$className} extends MintEntity
 {
 
-{include file="$sectionproperties"}
+    {include file="$sectionproperties"}
 
-{include file="$sectionmethods"}
+    {include file="$sectionmethods"}
 
 }

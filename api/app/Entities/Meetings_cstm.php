@@ -55,116 +55,74 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="document_revisions", indexes={
- * @ORM\Index(name="documentrevisionspk", columns={"id"}), 
- * @ORM\Index(name="documentrevision_mimetype", columns={"file_mime_type"})})
- * @property mixed $id
- * @property mixed $change_log
- * @property mixed $document_id
- * @property mixed $doc_id
- * @property mixed $doc_type
- * @property mixed $doc_url
- * @property mixed $date_entered
- * @property mixed $created_by
- * @property mixed $filename
- * @property mixed $file_ext
- * @property mixed $file_mime_type
- * @property mixed $revision
- * @property mixed $deleted
- * @property mixed $date_modified
+ * @ORM\Table(name="meetings_cstm", indexes={
+ * @ORM\Index(name="meetingspk", columns={"id_c"})})
+ * @property mixed $jjwg_maps_lat_c
+ * @property mixed $jjwg_maps_address_c
+ * @property mixed $jjwg_maps_geocode_status_c
+ * @property mixed $jjwg_maps_lng_c
  */
 // Auto-generated SectionRepository section end
-class DocumentRevisions extends MintEntity
+class Meetings_cstm extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Id
+     * @ORM\Column(name="id_c", type="string", length=36)
+     * @ORM\GeneratedValue(strategy="NONE")
      */
-    protected $id;
+    private $id;
+
 
     /**
-     * @ORM\Column(type="string", length="255")
+     * @ORM\OneToOne(targetEntity="Meetings", inversedBy="customEntity")
+     * @ORM\JoinColumn(name="id_c", referencedColumnName="id")
      */
-    protected $change_log;
+    private $mainEntity;
+
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="float", length="10")
      */
-    protected $document_id;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    protected $doc_id;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    protected $doc_type;
+    protected $jjwg_maps_lat_c;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    protected $doc_url;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $date_entered;
-
-    /**
-     * @ORM\Column(type="id", length="36")
-     */
-    protected $created_by;
+    protected $jjwg_maps_address_c;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    protected $filename;
+    protected $jjwg_maps_geocode_status_c;
 
     /**
-     * @ORM\Column(type="string", length="100")
+     * @ORM\Column(type="float", length="11")
      */
-    protected $file_ext;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    protected $file_mime_type;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    protected $revision;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $deleted;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $date_modified;
-
-    /**
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="document_revisions")
-     */
-    protected $created_by_link;
-
-    /**
-     * @ORM\JoinColumn(name="document_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Documents::class, inversedBy="revisions")
-     */
-    protected $documents;
+    protected $jjwg_maps_lng_c;
 
     // Auto-generated SectionProperties section end
-    // Auto-generated SectionMethods section start
+        // Auto-generated SectionMethods section start
     public function __construct()
     {
+    }
+
+    public function getMainEntity()
+    {
+        return $this->mainEntity;
+    }
+
+    public function setMainEntity($mainEntity)
+    {
+        $this->mainEntity = $mainEntity;
+
+        if ($mainEntity && $mainEntity->getCustomEntity() !== $this) {
+            $mainEntity->setCustomEntity($this);
+        }
+
+        return $this;
     }
 
     // Auto-generated SectionMethods section end

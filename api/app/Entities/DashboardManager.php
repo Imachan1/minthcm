@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="dashboardmanager", indexes={
@@ -78,6 +79,7 @@ class DashboardManager extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -194,8 +196,8 @@ class DashboardManager extends MintEntity
      */
     protected Collection $dashboardhistory;
 
-// Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionProperties section end
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->users_forced_tabs_dashboards = new ArrayCollection();
@@ -204,5 +206,6 @@ class DashboardManager extends MintEntity
         $this->dashboardbackups = new ArrayCollection();
         $this->dashboardhistory = new ArrayCollection();
     }
-// Auto-generated SectionMethods section end
+
+    // Auto-generated SectionMethods section end
 }

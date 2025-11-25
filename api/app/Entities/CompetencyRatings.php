@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="competencyratings", indexes={
@@ -70,6 +71,7 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $assigned_user_id
  * @property mixed $employee_id
  * @property mixed $rating
+ * @property mixed $competency_id
  * @property mixed $parent_type
  * @property mixed $parent_id
  */
@@ -78,6 +80,7 @@ class CompetencyRatings extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -142,9 +145,9 @@ class CompetencyRatings extends MintEntity
     protected $rating;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $competency_id;
+    protected $competency_id;
 
     /**
      * @ORM\Column(type="string", length="255")
@@ -196,19 +199,20 @@ class CompetencyRatings extends MintEntity
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="competencyratings")
      */
-    public $positions;
+    protected $positions;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=EmployeeRoles::class, inversedBy="competencyratings")
      */
-    public $employee_roles;
+    protected $employee_roles;
 
-// Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionProperties section end
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();
     }
-// Auto-generated SectionMethods section end
+
+    // Auto-generated SectionMethods section end
 }

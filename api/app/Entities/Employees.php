@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\UsersRepository")
  * @ORM\Table(name="users", indexes={
@@ -103,6 +104,7 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $factor_auth
  * @property mixed $factor_auth_interface
  * @property mixed $position_id
+ * @property mixed $securitygroup_id
  * @property mixed $forced_tabs_dashboard_id
  * @property mixed $locked_dashboard_id
  * @property mixed $one_time_default_dashboard_id
@@ -114,6 +116,7 @@ class Employees extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -337,6 +340,11 @@ class Employees extends MintEntity
      * @ORM\Column(type="id", length="36")
      */
     protected $position_id;
+
+    /**
+     * @ORM\Column(type="id", length="36")
+     */
+    protected $securitygroup_id;
 
     /**
      * @ORM\Column(type="id", length="36")
@@ -582,12 +590,7 @@ class Employees extends MintEntity
     protected Collection $allocations_employees;
 
     /**
-     * @ORM\OneToMany(targetEntity=Trainings::class, mappedBy="users")
-     */
-    protected Collection $trainings;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="users")
+     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="employee_link")
      */
     protected Collection $candidatures;
 
@@ -596,7 +599,7 @@ class Employees extends MintEntity
      */
     protected Collection $files;
 
-// Auto-generated SectionProperties section end
+    // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
     public function __construct()
     {

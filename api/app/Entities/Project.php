@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="project", indexes={
@@ -73,16 +74,22 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $status
  * @property mixed $priority
  * @property mixed $override_business_hours
- * @property mixed $jjwg_maps_lat_c
- * @property mixed $jjwg_maps_address_c
- * @property mixed $jjwg_maps_geocode_status_c
- * @property mixed $jjwg_maps_lng_c
  */
 // Auto-generated SectionRepository section end
 class Project extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
+    /**
+     * @ORM\OneToOne(
+     *     targetEntity="Project_cstm",
+     *     mappedBy="mainEntity",
+     *     cascade={"persist", "remove"},
+     *     fetch="EAGER"
+     * )
+     */
+    private $customEntity;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -162,26 +169,6 @@ class Project extends MintEntity
     protected $override_business_hours;
 
     /**
-     * @ORM\Column(type="float", length="10")
-     */
-    protected $jjwg_maps_lat_c;
-
-    /**
-     * @ORM\Column(type="string", length="255")
-     */
-    protected $jjwg_maps_address_c;
-
-    /**
-     * @ORM\Column(type="float", length="10")
-     */
-    protected $jjwg_maps_geocode_status_c;
-
-    /**
-     * @ORM\Column(type="float", length="11")
-     */
-    protected $jjwg_maps_lng_c;
-
-    /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
@@ -242,8 +229,8 @@ class Project extends MintEntity
      */
     protected Collection $am_projecttemplates_project_1;
 
-// Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionProperties section end
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();
@@ -255,5 +242,26 @@ class Project extends MintEntity
         $this->project_users_1 = new ArrayCollection();
         $this->am_projecttemplates_project_1 = new ArrayCollection();
     }
-// Auto-generated SectionMethods section end
+
+    
+    
+    
+    public function getCustomEntity()
+    {
+        return $this->customEntity;
+    }
+
+
+    public function setCustomEntity($customEntity)
+    {
+        $this->customEntity = $customEntity;
+
+        if ($customEntity && $customEntity->getMainEntity() !== $this) {
+            $customEntity->setMainEntity($this);
+        }
+
+        return $this;
+    }
+
+        // Auto-generated SectionMethods section end
 }

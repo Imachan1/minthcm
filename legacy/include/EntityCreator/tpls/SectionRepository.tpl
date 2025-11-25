@@ -1,4 +1,5 @@
 {$start_sectionrepository}
+
 /**
 {if $repositorySet}
  * @ORM\Entity(repositoryClass="{$repositoryClassPath}")

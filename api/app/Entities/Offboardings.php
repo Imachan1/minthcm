@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="offboardings", indexes={
@@ -71,12 +72,14 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $employee_id
  * @property mixed $status
  * @property mixed $date_start
+ * @property mixed $offboardingtemplate_id
  */
 // Auto-generated SectionRepository section end
 class Offboardings extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -146,9 +149,9 @@ class Offboardings extends MintEntity
     protected $date_start;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $offboardingtemplate_id;
+    protected $offboardingtemplate_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
@@ -201,8 +204,8 @@ class Offboardings extends MintEntity
      */
     protected Collection $exitinterviews;
 
-// Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionProperties section end
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();
@@ -210,5 +213,6 @@ class Offboardings extends MintEntity
         $this->tasks = new ArrayCollection();
         $this->exitinterviews = new ArrayCollection();
     }
-// Auto-generated SectionMethods section end
+
+    // Auto-generated SectionMethods section end
 }

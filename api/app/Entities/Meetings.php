@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="meetings", indexes={
@@ -102,16 +103,22 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $gsync_id
  * @property mixed $gsync_lastsync
  * @property mixed $type
- * @property mixed $jjwg_maps_lat_c
- * @property mixed $jjwg_maps_address_c
- * @property mixed $jjwg_maps_geocode_status_c
- * @property mixed $jjwg_maps_lng_c
  */
 // Auto-generated SectionRepository section end
 class Meetings extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
+    /**
+     * @ORM\OneToOne(
+     *     targetEntity="Meetings_cstm",
+     *     mappedBy="mainEntity",
+     *     cascade={"persist", "remove"},
+     *     fetch="EAGER"
+     * )
+     */
+    private $customEntity;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -316,26 +323,6 @@ class Meetings extends MintEntity
     protected $type;
 
     /**
-     * @ORM\Column(type="float", length="10")
-     */
-    protected $jjwg_maps_lat_c;
-
-    /**
-     * @ORM\Column(type="string", length="255")
-     */
-    protected $jjwg_maps_address_c;
-
-    /**
-     * @ORM\Column(type="float", length="10")
-     */
-    protected $jjwg_maps_geocode_status_c;
-
-    /**
-     * @ORM\Column(type="float", length="11")
-     */
-    protected $jjwg_maps_lng_c;
-
-    /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="meetings")
      */
@@ -410,8 +397,8 @@ class Meetings extends MintEntity
      */
     protected Collection $resources;
 
-// Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionProperties section end
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();
@@ -425,5 +412,26 @@ class Meetings extends MintEntity
         $this->reservations = new ArrayCollection();
         $this->resources = new ArrayCollection();
     }
-// Auto-generated SectionMethods section end
+
+    
+    
+    
+    public function getCustomEntity()
+    {
+        return $this->customEntity;
+    }
+
+
+    public function setCustomEntity($customEntity)
+    {
+        $this->customEntity = $customEntity;
+
+        if ($customEntity && $customEntity->getMainEntity() !== $this) {
+            $customEntity->setMainEntity($this);
+        }
+
+        return $this;
+    }
+
+        // Auto-generated SectionMethods section end
 }

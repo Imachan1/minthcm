@@ -1,11 +1,11 @@
 {$start_sectionproperties}
 
 {if $generate_custom_entity}
-    {if $isCustom}
-        {include file="$custom_entity_fields_tpl"}
-    {else}
-        {include file="$main_entity_fields_tpl"}
-    {/if}
+{if $isCustom}
+{include file="$custom_entity_fields_tpl"}
+{else}
+{include file="$main_entity_fields_tpl"}
+{/if}
 {/if}
 {foreach from=$fields item=field}
     /**
@@ -35,4 +35,4 @@
     protected {if $relationshipField.isCollection}Collection {/if}${$relationshipField.name};
 
 {/foreach}
-{$end_sectionproperties}
+    {$end_sectionproperties}

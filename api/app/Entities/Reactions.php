@@ -52,6 +52,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\ReactionRepository")
  * @ORM\Table(name="reactions", indexes={
@@ -75,6 +76,7 @@ class Reactions extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -179,10 +181,11 @@ class Reactions extends MintEntity
      */
     protected $kudos;
 
-// Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionProperties section end
+        // Auto-generated SectionMethods section start
     public function __construct()
     {
     }
-// Auto-generated SectionMethods section end
+
+    // Auto-generated SectionMethods section end
 }

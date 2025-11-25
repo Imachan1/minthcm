@@ -55,6 +55,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\UsersRepository")
  * @ORM\Table(name="users", indexes={
@@ -104,6 +105,7 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $factor_auth
  * @property mixed $factor_auth_interface
  * @property mixed $position_id
+ * @property mixed $securitygroup_id
  * @property mixed $forced_tabs_dashboard_id
  * @property mixed $locked_dashboard_id
  * @property mixed $one_time_default_dashboard_id
@@ -115,6 +117,7 @@ class Users extends MintEntity implements UserEntityInterface
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -342,6 +345,11 @@ class Users extends MintEntity implements UserEntityInterface
     /**
      * @ORM\Column(type="id", length="36")
      */
+    protected $securitygroup_id;
+
+    /**
+     * @ORM\Column(type="id", length="36")
+     */
     protected $forced_tabs_dashboard_id;
 
     /**
@@ -489,7 +497,7 @@ class Users extends MintEntity implements UserEntityInterface
      */
     protected Collection $deputy;
 
-// Auto-generated SectionProperties section end
+    // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
     public function __construct()
     {

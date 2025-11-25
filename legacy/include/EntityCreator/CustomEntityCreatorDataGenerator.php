@@ -26,7 +26,7 @@ class CustomEntityCreatorDataGenerator extends EntityCreatorDataGenerator
                 continue;
             }
             unset($fieldDef['source']);
-            $customFields[$fieldName] = $fieldDef;
+            $customFields[$fieldName] = $this->getFieldData($fieldName, $fieldDef);
         }
         if (empty($customFields)) {
             return;
@@ -39,7 +39,12 @@ class CustomEntityCreatorDataGenerator extends EntityCreatorDataGenerator
         $this->data['table'] = $this->vardefs['table'] . self::CUSTOM_SUFFIX;
         $this->data['fields'] = $customFields;
         $this->data['relationships'] = [];
-        $this->data['indices'] = [];
+        $this->data['indexes'] = [
+            [
+                'name' => $this->vardefs['table'] . 'pk',
+                'columns' => 'id_c',
+            ],
+        ];
         $this->data['doctrineEntity'] = [];
         $this->data['generate_custom_entity'] = !empty($customFields);
     }

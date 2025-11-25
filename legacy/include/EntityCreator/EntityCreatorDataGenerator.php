@@ -88,37 +88,42 @@ class EntityCreatorDataGenerator
                 continue;
             }
 
-            $field = [
-                'name' => $fieldName,
-                'columnAttributes' => '',
-                'isId' => false,
-            ];
+            $this->data['fields'][$fieldName] = $this->getFieldData($fieldName, $fieldDef);
+        }
+    }
 
-            $attributes = [];
-            if (!empty($fieldDef['type']) || !empty($fieldDef['dbType'])) {
-                $type = $fieldDef['dbType'] ?? $fieldDef['type'];
-                $ORM_type = self::ORM_TYPE_MAP[$type] ?? null;
+    protected function getFieldData(string $fieldName, array $fieldDef): array
+    {
+        $field = [
+            'name' => $fieldName,
+            'columnAttributes' => '',
+            'isId' => false,
+        ];
 
-                if (!$ORM_type) {
-                    throw new \Exception("Unsupported field type: $type for field: $fieldName");
-                }
+        $attributes = [];
+        if (!empty($fieldDef['type']) || !empty($fieldDef['dbType'])) {
+            $type = $fieldDef['dbType'] ?? $fieldDef['type'];
+            $ORM_type = self::ORM_TYPE_MAP[$type] ?? null;
 
-                $attributes[] = 'type="' . $ORM_type . '"';
-
-                if (!empty($fieldDef['len'])) {
-                    $attributes[] = 'length="' . $fieldDef['len'] . '"';
-                } else if ('id' == $type || 'relate' == $type) {
-                    $attributes[] = 'length="36"';
-                }
-
-                if ((in_array($type, ['id', 'int']) && 'id' == $fieldName)) {
-                    $field['isId'] = true;
-                }
+            if (!$ORM_type) {
+                throw new \Exception("Unsupported field type: $type for field: $fieldName");
             }
 
-            $field['columnAttributes'] = implode(', ', $attributes);
-            $this->data['fields'][$field['name']] = $field;
+            $attributes[] = 'type="' . $ORM_type . '"';
+
+            if (!empty($fieldDef['len'])) {
+                $attributes[] = 'length="' . $fieldDef['len'] . '"';
+            } else if ('id' == $type || 'relate' == $type) {
+                $attributes[] = 'length="36"';
+            }
+
+            if ((in_array($type, ['id', 'int']) && 'id' == $fieldName)) {
+                $field['isId'] = true;
+            }
         }
+
+        $field['columnAttributes'] = implode(', ', $attributes);
+        return $field;
     }
 
     protected function buildRelationshipFields()
