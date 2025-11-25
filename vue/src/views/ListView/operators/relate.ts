@@ -19,5 +19,24 @@ export default {
         filters: [
             { op: 'match', value: { query: '{0}', operator: 'and' } }
         ]
+    },
+    one_of: {
+        label: 'LBL_ESLIST_ONE_OF',
+        inputs: [
+            { type: 'multirelate', label: 'LBL_ESLIST_VALUE' }
+        ],
+        filters: [
+            { op: 'terms', value: '{0}' }
+        ]
+    },
+    none_of: {
+        label: 'LBL_ESLIST_NONE_OF',
+        not: true,
+        inputs: [
+            { type: 'multirelate', label: 'LBL_ESLIST_VALUE' }
+        ],
+        filters: [
+            { op: 'terms', value: '{0}' }
+        ]
     }
 }

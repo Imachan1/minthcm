@@ -137,6 +137,37 @@ function showSaveFilterPopup() {
     })
 }
 
+function replacePlaceholders(placeholders, inputs) {
+    if (!inputs || !inputs.length) {
+        return placeholders
+    }
+    let value = JSON.stringify(placeholders)
+    inputs.forEach((input, i) => {
+        if (value.includes(`"{${i}}"`)) {
+            value = value.replaceAll(`"{${i}}"`, JSON.stringify(input.value))
+        } else {
+            value = value.replaceAll(`{${i}}`, input.value)
+        }
+    })
+    return JSON.parse(value)
+}
+
+function getOperator(field: string, operator: string) {
+    const type = store.defs?.search[field].type
+    const defs =
+        operatorDefs[type] ?? operatorDefs[operatorDefs.typeMap[type]] ?? operatorDefs[operatorDefs.defaultOperator]
+    return defs[operator]
+}
+
+function isInputValid(input) {
+    return (
+        input.value &&
+        (input.type !== 'date' || input.value.length === 10) && // todo: date format validation
+        (input.type !== 'multiselect' || input.value.length) &&
+        (input.type !== 'multirelate' || input.value.length)
+    )
+}
+
 function clearInput() {
     store.searchPhrase = ''
     searchByPhrase()

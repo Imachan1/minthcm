@@ -6,6 +6,7 @@ export { default as numeric } from './numeric.vue'
 export { default as relate } from './relate.vue'
 export { default as bool } from './bool.vue'
 export { default as datetime } from './datetime.vue'
+export { default as multirelate } from './multirelate.vue'
 
 export interface Props {
     input: any
