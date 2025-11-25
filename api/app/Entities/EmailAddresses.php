@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
 /**
@@ -57,9 +58,22 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
  * @ORM\Index(name="email_addressespk", columns={"id"}), 
  * @ORM\Index(name="idx_ea_caps_opt_out_invalid", columns={"email_address_caps", "opt_out", "invalid_email"}), 
  * @ORM\Index(name="idx_ea_opt_out_invalid", columns={"email_address", "opt_out", "invalid_email"})})
+ * @property mixed $id
+ * @property mixed $email_address
+ * @property mixed $email_address_caps
+ * @property mixed $invalid_email
+ * @property mixed $opt_out
+ * @property mixed $confirm_opt_in
+ * @property mixed $confirm_opt_in_date
+ * @property mixed $confirm_opt_in_sent_date
+ * @property mixed $confirm_opt_in_fail_date
+ * @property mixed $confirm_opt_in_token
+ * @property mixed $date_created
+ * @property mixed $date_modified
+ * @property mixed $deleted
  */
 // Auto-generated SectionRepository section end
-class EmailAddresses
+class EmailAddresses extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
@@ -67,69 +81,69 @@ class EmailAddresses
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $email_address;
+    protected $email_address;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $email_address_caps;
+    protected $email_address_caps;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $invalid_email;
+    protected $invalid_email;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $opt_out;
+    protected $opt_out;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $confirm_opt_in;
+    protected $confirm_opt_in;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $confirm_opt_in_date;
+    protected $confirm_opt_in_date;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $confirm_opt_in_sent_date;
+    protected $confirm_opt_in_sent_date;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $confirm_opt_in_fail_date;
+    protected $confirm_opt_in_fail_date;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $confirm_opt_in_token;
+    protected $confirm_opt_in_token;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_created;
+    protected $date_created;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

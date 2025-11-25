@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
 /**
@@ -57,9 +58,18 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
  * @ORM\Index(name="oauthtokenpk", columns={"id", "deleted"}), 
  * @ORM\Index(name="oauth_state_ts", columns={"tstate", "token_ts"}), 
  * @ORM\Index(name="constoken_key", columns={"consumer"})})
+ * @property mixed $id
+ * @property mixed $secret
+ * @property mixed $tstate
+ * @property mixed $consumer
+ * @property mixed $token_ts
+ * @property mixed $verify
+ * @property mixed $deleted
+ * @property mixed $callback_url
+ * @property mixed $assigned_user_id
  */
 // Auto-generated SectionRepository section end
-class OAuthTokens
+class OAuthTokens extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
@@ -67,61 +77,61 @@ class OAuthTokens
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="32")
      */
-    public $secret;
+    protected $secret;
 
     /**
      * @ORM\Column(type="string", length="1")
      */
-    public $tstate;
+    protected $tstate;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $consumer;
+    protected $consumer;
 
     /**
      * @ORM\Column(type="bigint")
      */
-    public $token_ts;
+    protected $token_ts;
 
     /**
      * @ORM\Column(type="string", length="32")
      */
-    public $verify;
+    protected $verify;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $callback_url;
+    protected $callback_url;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\JoinColumn(name="consumer", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=OAuthKeys::class, inversedBy="tokens")
      */
-    public $consumer_link;
+    protected $consumer_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="oauth_tokens")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

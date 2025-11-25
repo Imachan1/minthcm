@@ -48,6 +48,7 @@ namespace MintHCM\Api\Controllers;
 
 use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Api\Entities\Reactions;
+use MintHCM\Api\Repositories\ReactionRepository;
 use Slim\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -74,22 +75,24 @@ class ReactionsController
             return $response;
         }
 
-        $reaction = null;
-        $reaction_entity = $this->entityManager->getRepository(Reactions::class)->getUserReactionToParent($parent_type, $parent_id, $current_user->id);
+        /** @var ReactionRepository */
+        $repository = $this->entityManager->getRepository(Reactions::class);
+        /** @var Reactions */
+        $entity = $repository->getUserReactionToParent($parent_type, $parent_id, $current_user->id);
+        if (empty($entity)) {
+            $entity = new Reactions();
+        }
 
-        chdir('../legacy');
-        if (!empty($reaction_entity)) {
-            $reaction = \BeanFactory::getBean('Reactions', $reaction_entity->id);
+        if (!$entity->hasAccess('edit')) {
+            $response = $response->withStatus(403);
+            return $response;
         }
-        if (empty($reaction->id)) {
-            $reaction = \BeanFactory::newBean('Reactions');
-            $reaction->assigned_user_id = $current_user->id;
-            $reaction->parent_type = $parent_type;
-            $reaction->parent_id = $parent_id;
-        }
-        $reaction->reaction_type = $reaction_type;
-        $reaction->save(false);
-        chdir('../api');
+
+        $entity->assigned_user_id = $current_user->id;
+        $entity->parent_type = $parent_type;
+        $entity->parent_id = $parent_id;
+        $entity->reaction_type = $reaction_type;
+        $repository->save($entity, true);
         
         return $response;
     }
@@ -101,9 +104,25 @@ class ReactionsController
         $parent_id = $request->getAttribute('parent_id');
         $parent_type = $request->getAttribute('parent_type');
 
-        $this->entityManager->getRepository(Reactions::class)
-            ->deleteUserReaction($parent_type, $parent_id, $current_user->id);
+        /** @var ReactionRepository */
+        $repository = $this->entityManager->getRepository(Reactions::class);
+         
+        /** @var Reactions */
+        $entity = $repository->getUserReactionToParent($parent_type, $parent_id, $current_user->id);
+        if (empty($entity)) {
+            return $response;
+        }
 
+        if (!$entity->hasAccess('delete')) {
+            $response = $response->withStatus(403);
+            return $response;
+        }
+
+        if (!$repository->delete($entity, true)) {
+            $response = $response->withStatus(500);
+            return $response;
+        }
+        
         return $response;
     }
 }

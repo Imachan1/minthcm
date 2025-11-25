@@ -47,11 +47,10 @@
 namespace MintHCM\Api\Repositories;
 
 use MintHCM\Api\Entities\UsersPasswordLink;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
 
 #[\AllowDynamicProperties]
-class UsersPasswordLinkRepository extends EntityRepository
+class UsersPasswordLinkRepository extends MintEntityRepository
 {
     public function markAllAsDeletedByUsername($username): int
     {

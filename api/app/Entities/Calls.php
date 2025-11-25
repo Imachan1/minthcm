@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
@@ -65,9 +66,38 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Index(name="idx_calls_duration_hours", columns={"duration_hours"}), 
  * @ORM\Index(name="idx_calls_par_del", columns={"parent_id", "parent_type", "deleted"}), 
  * @ORM\Index(name="idx_calls_assigned_del", columns={"deleted", "assigned_user_id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $duration_hours
+ * @property mixed $duration_minutes
+ * @property mixed $date_start
+ * @property mixed $date_end
+ * @property mixed $parent_type
+ * @property mixed $status
+ * @property mixed $direction
+ * @property mixed $parent_id
+ * @property mixed $reminder_time
+ * @property mixed $email_reminder_time
+ * @property mixed $email_reminder_sent
+ * @property mixed $outlook_id
+ * @property mixed $repeat_type
+ * @property mixed $repeat_interval
+ * @property mixed $repeat_dow
+ * @property mixed $repeat_until
+ * @property mixed $repeat_count
+ * @property mixed $repeat_parent_id
+ * @property mixed $recurring_source
  */
 // Auto-generated SectionRepository section end
-class Calls
+class Calls extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
@@ -75,212 +105,212 @@ class Calls
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="50")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
-
-    /**
-     * @ORM\Column(type="integer", length="2")
-     */
-    public $duration_hours;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="integer", length="2")
      */
-    public $duration_minutes;
+    protected $duration_hours;
+
+    /**
+     * @ORM\Column(type="integer", length="2")
+     */
+    protected $duration_minutes;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_start;
+    protected $date_start;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_end;
+    protected $date_end;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $parent_type;
+    protected $parent_type;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $status;
+    protected $status;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $direction;
+    protected $direction;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $parent_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    public $reminder_time;
+    protected $parent_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $email_reminder_time;
+    protected $reminder_time;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $email_reminder_time;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $email_reminder_sent;
+    protected $email_reminder_sent;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $outlook_id;
+    protected $outlook_id;
 
     /**
      * @ORM\Column(type="string", length="36")
      */
-    public $repeat_type;
+    protected $repeat_type;
 
     /**
      * @ORM\Column(type="integer", length="3")
      */
-    public $repeat_interval;
+    protected $repeat_interval;
 
     /**
      * @ORM\Column(type="string", length="7")
      */
-    public $repeat_dow;
+    protected $repeat_dow;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $repeat_until;
+    protected $repeat_until;
 
     /**
      * @ORM\Column(type="integer", length="7")
      */
-    public $repeat_count;
+    protected $repeat_count;
+
+    /**
+     * @ORM\Column(type="id", length="36")
+     */
+    protected $repeat_parent_id;
 
     /**
      * @ORM\Column(type="string", length="36")
      */
-    public $repeat_parent_id;
-
-    /**
-     * @ORM\Column(type="string", length="36")
-     */
-    public $recurring_source;
+    protected $recurring_source;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="calls")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="calls")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="calls")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="calls")
      */
-    public Collection $notes;
+    protected Collection $notes;
 
     /**
      * @ORM\OneToMany(targetEntity=Calls_Reschedule::class, mappedBy="calls_reschedule")
      */
-    public Collection $calls_reschedule;
+    protected Collection $calls_reschedule;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="calls")
      */
-    public $project;
+    protected $project;
 
     /**
      * @ORM\JoinTable(name="calls_users")
      * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="calls")
      */
-    public Collection $users;
+    protected Collection $users;
 
     /**
      * @ORM\JoinTable(name="calls_candidates")
      * @ORM\ManyToMany(targetEntity=Candidates::class, mappedBy="calls")
      */
-    public Collection $candidates;
+    protected Collection $candidates;
 
     /**
      * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="reservations")
      */
-    public Collection $reservations;
+    protected Collection $reservations;
 
     /**
      * @ORM\JoinTable(name="calls_resources")
      * @ORM\ManyToMany(targetEntity=Resources::class, mappedBy="calls")
      */
-    public Collection $resources;
+    protected Collection $resources;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

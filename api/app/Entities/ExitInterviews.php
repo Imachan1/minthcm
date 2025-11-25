@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
@@ -57,9 +58,23 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="exitinterviews", indexes={
  * @ORM\Index(name="exitinterviewspk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $employee_id
+ * @property mixed $date_start
+ * @property mixed $date_end
+ * @property mixed $status
  */
 // Auto-generated SectionRepository section end
-class ExitInterviews
+class ExitInterviews extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
@@ -67,74 +82,74 @@ class ExitInterviews
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $employee_id;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    public $date_start;
+    protected $employee_id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_end;
+    protected $date_start;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $date_end;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $status;
+    protected $status;
 
     /**
      * @ORM\Column(type="string", length="36")
@@ -145,49 +160,49 @@ class ExitInterviews
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="exitinterviews")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="exitinterviews")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="exitinterviews")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="exitinterviews")
      */
-    public $employee_link;
+    protected $employee_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="offboarding_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Offboardings::class, inversedBy="exitinterviews")
      */
-    public $offboarding;
+    protected $offboarding;
 
     /**
      * @ORM\JoinTable(name="exitinterviews_meetings")
      * @ORM\ManyToMany(targetEntity=Meetings::class, mappedBy="exitinterviews")
      */
-    public Collection $meetings;
+    protected Collection $meetings;
 
     /**
      * @ORM\JoinTable(name="exitinterviews_documents")
      * @ORM\ManyToMany(targetEntity=Documents::class, mappedBy="exitinterviews")
      */
-    public Collection $documents;
+    protected Collection $documents;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

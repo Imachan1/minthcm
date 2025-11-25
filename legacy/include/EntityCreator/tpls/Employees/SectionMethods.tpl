@@ -24,4 +24,10 @@
         return !empty($names) ? implode(' ', $names) : '';
     }
 {/literal}
+{literal}
+    public function getName(): ?string
+    {
+        return $this->getFullName();
+    }
+{/literal}
 {$end_sectionmethods}

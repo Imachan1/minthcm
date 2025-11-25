@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
@@ -57,9 +58,41 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="project_task", indexes={
  * @ORM\Index(name="proj_tasks_primary_key_idx", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $project_id
+ * @property mixed $project_task_id
+ * @property mixed $name
+ * @property mixed $status
+ * @property mixed $relationship_type
+ * @property mixed $description
+ * @property mixed $predecessors
+ * @property mixed $date_start
+ * @property mixed $time_start
+ * @property mixed $time_finish
+ * @property mixed $date_finish
+ * @property mixed $duration
+ * @property mixed $duration_unit
+ * @property mixed $actual_duration
+ * @property mixed $percent_complete
+ * @property mixed $date_due
+ * @property mixed $parent_task_id
+ * @property mixed $assigned_user_id
+ * @property mixed $modified_user_id
+ * @property mixed $priority
+ * @property mixed $created_by
+ * @property mixed $milestone_flag
+ * @property mixed $order_number
+ * @property mixed $task_number
+ * @property mixed $estimated_effort
+ * @property mixed $actual_effort
+ * @property mixed $deleted
+ * @property mixed $utilization
  */
 // Auto-generated SectionRepository section end
-class ProjectTask
+class ProjectTask extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
@@ -67,214 +100,214 @@ class ProjectTask
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $project_id;
+    protected $project_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $project_task_id;
+    protected $project_task_id;
 
     /**
      * @ORM\Column(type="string", length="50")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $status;
+    protected $status;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $relationship_type;
+    protected $relationship_type;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $predecessors;
+    protected $predecessors;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $date_start;
+    protected $date_start;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $time_start;
+    protected $time_start;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $time_finish;
+    protected $time_finish;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $date_finish;
+    protected $date_finish;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $duration;
+    protected $duration;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $duration_unit;
+    protected $duration_unit;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $actual_duration;
+    protected $actual_duration;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $percent_complete;
+    protected $percent_complete;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $date_due;
+    protected $date_due;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $parent_task_id;
+    protected $parent_task_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $priority;
+    protected $priority;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $milestone_flag;
+    protected $milestone_flag;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $order_number;
+    protected $order_number;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $task_number;
+    protected $task_number;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $estimated_effort;
+    protected $estimated_effort;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $actual_effort;
+    protected $actual_effort;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $utilization;
+    protected $utilization;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="project_tasks")
      */
-    public Collection $notes;
+    protected Collection $notes;
 
     /**
      * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="project_tasks")
      */
-    public Collection $tasks;
+    protected Collection $tasks;
 
     /**
      * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="meetings")
      */
-    public Collection $meetings;
+    protected Collection $meetings;
 
     /**
      * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="calls")
      */
-    public Collection $calls;
+    protected Collection $calls;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="project_task")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="project_task")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="project_task")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="projecttask")
      */
-    public $projects;
+    protected $projects;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

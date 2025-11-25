@@ -47,14 +47,46 @@
 namespace MintHCM\Api\Repositories;
 
 use MintHCM\Api\Entities\UserPreferences;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
 
 #[\AllowDynamicProperties]
-class UserPreferencesRepository extends EntityRepository
+class UserPreferencesRepository extends MintEntityRepository
 {
     public function findAllUndeletedByUserId($user_id): array
     {
         return $this->findBy(['assigned_user_id' => $user_id, 'deleted' => 0]);
+    }
+
+    /**
+     * Get user preferences by category
+     *
+     * @param string $user_id
+     * @param string $category
+     * @param bool $cache if set to true, the query result will be cached
+     * @return array|null
+     */
+    public function getUserPreferencesByCategory(string $user_id, string $category = 'global', bool $cache = true): ?array
+    {
+        $query = $this->getEntityManager()
+            ->createQuery(<<<DQL
+                SELECT up.contents 
+                FROM MintHCM\Api\Entities\UserPreferences up 
+                WHERE up.assigned_user_id = :user_id 
+                    AND up.category = :category 
+                    AND up.deleted = 0
+
+            DQL)
+            ->setParameters(['user_id' => $user_id, 'category' => $category])
+            ->setMaxResults(1)
+            ->setCacheable(true)
+        ;
+        
+        $result = $query->getOneOrNullResult();
+
+        /** @var UserPreferences $preference */
+        $preference = $this->getNewEntity();
+        $preference->contents = $result['contents'] ?? null;
+
+        return $preference->getContentsAsArray();
     }
 }

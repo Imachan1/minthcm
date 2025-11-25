@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
@@ -58,9 +59,18 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="acl_roles", indexes={
  * @ORM\Index(name="aclrolespk", columns={"id"}), 
  * @ORM\Index(name="idx_aclrole_id_del", columns={"id", "deleted"})})
+ * @property mixed $id
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $name
+ * @property mixed $description
+ * @property mixed $deleted
  */
 // Auto-generated SectionRepository section end
-class ACLRoles
+class ACLRoles extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
@@ -68,67 +78,67 @@ class ACLRoles
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="string", length="150")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\JoinTable(name="acl_roles_users")
      * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="aclroles")
      */
-    public Collection $users;
+    protected Collection $users;
 
     /**
      * @ORM\JoinTable(name="acl_roles_actions")
      * @ORM\ManyToMany(targetEntity=ACLActions::class, mappedBy="roles")
      */
-    public Collection $actions;
+    protected Collection $actions;
 
     /**
      * @ORM\JoinTable(name="securitygroups_acl_roles", joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="aclroles")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

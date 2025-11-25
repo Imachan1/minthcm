@@ -23,7 +23,7 @@
 {/foreach}
 {/if}
      */
-    public ${$field.name};
+    protected ${$field.name};
 
 {/foreach}
 {foreach from=$relationshipFields item=relationshipField}
@@ -32,7 +32,7 @@
      * {$attribute}
 {/foreach}
      */
-    public {if $relationshipField.isCollection}Collection {/if}${$relationshipField.name};
+    protected {if $relationshipField.isCollection}Collection {/if}${$relationshipField.name};
 
 {/foreach}
 {$end_sectionproperties}

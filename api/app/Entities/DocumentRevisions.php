@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
 /**
@@ -56,93 +57,107 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
  * @ORM\Table(name="document_revisions", indexes={
  * @ORM\Index(name="documentrevisionspk", columns={"id"}), 
  * @ORM\Index(name="documentrevision_mimetype", columns={"file_mime_type"})})
+ * @property mixed $id
+ * @property mixed $change_log
+ * @property mixed $document_id
+ * @property mixed $doc_id
+ * @property mixed $doc_type
+ * @property mixed $doc_url
+ * @property mixed $date_entered
+ * @property mixed $created_by
+ * @property mixed $filename
+ * @property mixed $file_ext
+ * @property mixed $file_mime_type
+ * @property mixed $revision
+ * @property mixed $deleted
+ * @property mixed $date_modified
  */
 // Auto-generated SectionRepository section end
-class DocumentRevisions
+class DocumentRevisions extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
     /**
      * @ORM\Column(type="string", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $change_log;
+    protected $change_log;
 
     /**
      * @ORM\Column(type="string", length="36")
      */
-    public $document_id;
+    protected $document_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $doc_id;
+    protected $doc_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $doc_type;
+    protected $doc_type;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $doc_url;
+    protected $doc_url;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $filename;
+    protected $filename;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $file_ext;
+    protected $file_ext;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $file_mime_type;
+    protected $file_mime_type;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $revision;
+    protected $revision;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="document_revisions")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="document_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Documents::class, inversedBy="revisions")
      */
-    public $documents;
+    protected $documents;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

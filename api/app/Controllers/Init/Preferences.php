@@ -48,6 +48,8 @@ namespace MintHCM\Api\Controllers\Init;
 use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Api\Entities\Currencies;
 use MintHCM\Api\Entities\UserPreferences;
+use MintHCM\Api\Repositories\CurrenciesRepository;
+use MintHCM\Api\Repositories\UserPreferencesRepository;
 use MintHCM\Utils\LuxonMapper;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
@@ -115,7 +117,9 @@ class Preferences
 
     protected function getCurrenciesList()
     {
-        $currencies = $this->entityManager->getRepository(Currencies::class)->getAvailable();
+        /** @var CurrenciesRepository */
+        $repository = $this->entityManager->getRepository(Currencies::class);
+        $currencies = $repository->getAvailable();
         $currency_list = [];
         foreach ($currencies as $currency) {
             $currency_list[$currency['id']] = $currency;
@@ -143,19 +147,20 @@ class Preferences
 
     private function setUserPreferences()
     {
-        global $current_user, $sugar_config;
+        global $current_user;
         if (empty($current_user->id)) {
             return array();
         }
 
         try {
+            /** @var UserPreferencesRepository */
+            $repository = $this->entityManager->getRepository(UserPreferences::class);
             /** @var UserPreferences[] */
-            $user_preferences = $this->entityManager->getRepository(UserPreferences::class)
-                ->findAllUndeletedByUserId($current_user->id);
+            $user_preferences = $repository->findAllUndeletedByUserId($current_user->id);
 
             foreach ($user_preferences as $user_preference) {
                 $category = $user_preference->category;
-                $preferences[$category] = unserialize(base64_decode($user_preference->contents));
+                $preferences[$category] = $user_preference->getContentsAsArray();
             }
 
             $this->user_preferences = $preferences;

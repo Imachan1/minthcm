@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
@@ -57,9 +58,23 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="securitygroups", indexes={
  * @ORM\Index(name="securitygroupspk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $noninheritable
+ * @property mixed $group_type
+ * @property mixed $parent_id
+ * @property mixed $current_manager_id
  */
 // Auto-generated SectionRepository section end
-class SecurityGroups
+class SecurityGroups extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
@@ -67,143 +82,143 @@ class SecurityGroups
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $noninheritable;
+    protected $noninheritable;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $group_type;
+    protected $group_type;
 
     /**
      * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="member_of")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
-    public $parent_id;
+    protected $parent_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $current_manager_id;
+    protected $current_manager_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="securitygroups")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="securitygroups")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="securitygroups")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinColumn(name="current_manager_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="securitygroups_managers")
      */
-    public $current_manager;
+    protected $current_manager;
 
     /**
      * @ORM\OneToMany(targetEntity=Employees::class, mappedBy="securitygroups_employees_link")
      */
-    public Collection $employees;
+    protected Collection $employees;
 
     /**
      * @ORM\OneToMany(targetEntity=SecurityGroups::class, mappedBy="parent_id")
      */
-    public Collection $member_of;
+    protected Collection $member_of;
 
     /**
      * @ORM\JoinTable(name="securitygroups_users")
      * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="SecurityGroups")
      */
-    public Collection $users;
+    protected Collection $users;
 
     /**
      * @ORM\JoinTable(name="securitygroups_acl_roles")
      * @ORM\ManyToMany(targetEntity=ACLRoles::class, mappedBy="SecurityGroups")
      */
-    public Collection $aclroles;
+    protected Collection $aclroles;
 
     /**
      * @ORM\JoinTable(name="securitygroups_positions_leader")
      * @ORM\ManyToMany(targetEntity=Positions::class, mappedBy="securitygroups_leader")
      */
-    public Collection $positions_leader;
+    protected Collection $positions_leader;
 
     /**
      * @ORM\JoinTable(name="securitygroups_positions_membership")
      * @ORM\ManyToMany(targetEntity=Positions::class, mappedBy="securitygroups_membership")
      */
-    public Collection $positions_membership;
+    protected Collection $positions_membership;
 
     /**
      * @ORM\OneToMany(targetEntity=OnboardingOffboardingElements::class, mappedBy="securitygroups_unit")
      */
-    public Collection $onboardingoffboardingelements;
+    protected Collection $onboardingoffboardingelements;
 
     /**
      * @ORM\OneToMany(targetEntity=Rooms::class, mappedBy="SecurityGroups")
      */
-    public Collection $securitygroups_rooms;
+    protected Collection $securitygroups_rooms;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

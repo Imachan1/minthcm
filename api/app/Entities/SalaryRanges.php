@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
@@ -57,9 +58,35 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="salaryranges", indexes={
  * @ORM\Index(name="salaryrangespk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $start_date
+ * @property mixed $end_date
+ * @property mixed $gross_value_from
+ * @property mixed $gross_value_from_usdollar
+ * @property mixed $gross_value_to
+ * @property mixed $gross_value_to_usdollar
+ * @property mixed $currency_id
+ * @property mixed $net_value_from
+ * @property mixed $net_value_from_usdollar
+ * @property mixed $net_value_to
+ * @property mixed $net_value_to_usdollar
+ * @property mixed $employer_costs_from
+ * @property mixed $employer_costs_from_usdollar
+ * @property mixed $employer_costs_to
+ * @property mixed $employer_costs_to_usdollar
+ * @property mixed $position_id
  */
 // Auto-generated SectionRepository section end
-class SalaryRanges
+class SalaryRanges extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
@@ -67,164 +94,164 @@ class SalaryRanges
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
-
-    /**
-     * @ORM\Column(type="date")
-     */
-    public $start_date;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $end_date;
+    protected $start_date;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    protected $end_date;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $gross_value_from;
+    protected $gross_value_from;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $gross_value_from_usdollar;
+    protected $gross_value_from_usdollar;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $gross_value_to;
+    protected $gross_value_to;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $gross_value_to_usdollar;
+    protected $gross_value_to_usdollar;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $currency_id;
-
-    /**
-     * @ORM\Column(type="decimal")
-     */
-    public $net_value_from;
+    protected $currency_id;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $net_value_from_usdollar;
+    protected $net_value_from;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $net_value_to;
+    protected $net_value_from_usdollar;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $net_value_to_usdollar;
+    protected $net_value_to;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $employer_costs_from;
+    protected $net_value_to_usdollar;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $employer_costs_from_usdollar;
+    protected $employer_costs_from;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $employer_costs_to;
+    protected $employer_costs_from_usdollar;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $employer_costs_to_usdollar;
+    protected $employer_costs_to;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="decimal")
      */
-    public $position_id;
+    protected $employer_costs_to_usdollar;
+
+    /**
+     * @ORM\Column(type="id", length="36")
+     */
+    protected $position_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="salaryranges")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="salaryranges")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="salaryranges")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="salaryranges")
      */
-    public $positions;
+    protected $positions;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

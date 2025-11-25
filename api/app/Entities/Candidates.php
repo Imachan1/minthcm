@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
@@ -57,9 +58,56 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="candidates", indexes={
  * @ORM\Index(name="candidatespk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $salutation
+ * @property mixed $first_name
+ * @property mixed $last_name
+ * @property mixed $title
+ * @property mixed $photo
+ * @property mixed $department
+ * @property mixed $do_not_call
+ * @property mixed $phone_home
+ * @property mixed $phone_mobile
+ * @property mixed $phone_work
+ * @property mixed $phone_other
+ * @property mixed $phone_fax
+ * @property mixed $lawful_basis
+ * @property mixed $date_reviewed
+ * @property mixed $lawful_basis_source
+ * @property mixed $primary_address_street
+ * @property mixed $primary_address_city
+ * @property mixed $primary_address_state
+ * @property mixed $primary_address_postalcode
+ * @property mixed $primary_address_country
+ * @property mixed $alt_address_street
+ * @property mixed $alt_address_city
+ * @property mixed $alt_address_state
+ * @property mixed $alt_address_postalcode
+ * @property mixed $alt_address_country
+ * @property mixed $assistant
+ * @property mixed $assistant_phone
+ * @property mixed $recr_contact_agree
+ * @property mixed $collaboration
+ * @property mixed $relocation
+ * @property mixed $birthdate
+ * @property mixed $github
+ * @property mixed $linkedin
+ * @property mixed $x_service
+ * @property mixed $facebook
+ * @property mixed $potential
+ * @property mixed $last_time_contact
+ * @property mixed $date_planned_contact
  */
 // Auto-generated SectionRepository section end
-class Candidates
+class Candidates extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
@@ -67,330 +115,330 @@ class Candidates
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
-
-    /**
-     * @ORM\Column(type="string", length="255")
-     */
-    public $salutation;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    public $first_name;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    public $last_name;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    public $title;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $photo;
+    protected $salutation;
+
+    /**
+     * @ORM\Column(type="string", length="100")
+     */
+    protected $first_name;
+
+    /**
+     * @ORM\Column(type="string", length="100")
+     */
+    protected $last_name;
+
+    /**
+     * @ORM\Column(type="string", length="100")
+     */
+    protected $title;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $department;
+    protected $photo;
+
+    /**
+     * @ORM\Column(type="string", length="255")
+     */
+    protected $department;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $do_not_call;
+    protected $do_not_call;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $phone_home;
+    protected $phone_home;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $phone_mobile;
+    protected $phone_mobile;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $phone_work;
+    protected $phone_work;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $phone_other;
+    protected $phone_other;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $phone_fax;
+    protected $phone_fax;
 
     /**
-     * @ORM\Column(type="string", length="100")
+     * @ORM\Column(type="multienum", length="100")
      */
-    public $lawful_basis;
+    protected $lawful_basis;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $date_reviewed;
+    protected $date_reviewed;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $lawful_basis_source;
+    protected $lawful_basis_source;
 
     /**
      * @ORM\Column(type="string", length="150")
      */
-    public $primary_address_street;
+    protected $primary_address_street;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $primary_address_city;
+    protected $primary_address_city;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $primary_address_state;
+    protected $primary_address_state;
 
     /**
      * @ORM\Column(type="string", length="20")
      */
-    public $primary_address_postalcode;
+    protected $primary_address_postalcode;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $primary_address_country;
+    protected $primary_address_country;
 
     /**
      * @ORM\Column(type="string", length="150")
      */
-    public $alt_address_street;
+    protected $alt_address_street;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $alt_address_city;
+    protected $alt_address_city;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $alt_address_state;
+    protected $alt_address_state;
 
     /**
      * @ORM\Column(type="string", length="20")
      */
-    public $alt_address_postalcode;
+    protected $alt_address_postalcode;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $alt_address_country;
+    protected $alt_address_country;
 
     /**
      * @ORM\Column(type="string", length="75")
      */
-    public $assistant;
+    protected $assistant;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $assistant_phone;
+    protected $assistant_phone;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $recr_contact_agree;
+    protected $recr_contact_agree;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $collaboration;
+    protected $collaboration;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $relocation;
+    protected $relocation;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $birthdate;
+    protected $birthdate;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $github;
+    protected $github;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $linkedin;
+    protected $linkedin;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $x_service;
+    protected $x_service;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $facebook;
+    protected $facebook;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $potential;
+    protected $potential;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $last_time_contact;
+    protected $last_time_contact;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_planned_contact;
+    protected $date_planned_contact;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidates")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidates")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="candidates")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="email_addr_bean_rel")
      * @ORM\ManyToMany(targetEntity=EmailAddresses::class, mappedBy="candidates")
      */
-    public Collection $email_addresses;
+    protected Collection $email_addresses;
 
     /**
      * @ORM\JoinTable(name="email_addr_bean_rel")
      * @ORM\ManyToMany(targetEntity=EmailAddresses::class, mappedBy="candidates")
      */
-    public Collection $email_addresses_primary;
+    protected Collection $email_addresses_primary;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="candidatures")
      */
-    public Collection $candidatures;
+    protected Collection $candidatures;
 
     /**
      * @ORM\JoinTable(name="emails_beans")
      * @ORM\ManyToMany(targetEntity=Emails::class, mappedBy="candidates")
      */
-    public Collection $emails;
+    protected Collection $emails;
 
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="notes")
      */
-    public Collection $notes;
+    protected Collection $notes;
 
     /**
      * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="tasks")
      */
-    public Collection $tasks;
+    protected Collection $tasks;
 
     /**
      * @ORM\JoinTable(name="documents_candidates", joinColumns={@ORM\JoinColumn(name="candidate_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Documents::class, inversedBy="candidates")
      */
-    public Collection $documents;
+    protected Collection $documents;
 
     /**
      * @ORM\JoinTable(name="calls_candidates", joinColumns={@ORM\JoinColumn(name="candidate_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="call_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Calls::class, inversedBy="candidates")
      */
-    public Collection $calls;
+    protected Collection $calls;
 
     /**
      * @ORM\JoinTable(name="meetings_candidates", joinColumns={@ORM\JoinColumn(name="candidate_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="meeting_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Meetings::class, inversedBy="candidates")
      */
-    public Collection $meetings;
+    protected Collection $meetings;
 
     /**
      * @ORM\OneToMany(targetEntity=EmployeeCertificates::class, mappedBy="candidate")
      */
-    public Collection $employeecertificates;
+    protected Collection $employeecertificates;
 
     /**
      * @ORM\JoinTable(name="candidates_employees")
      * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="candidates")
      */
-    public Collection $employee;
+    protected Collection $employee;
 
     /**
      * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidate")
      */
-    public Collection $files;
+    protected Collection $files;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

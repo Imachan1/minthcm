@@ -154,7 +154,7 @@ abstract class SearchResult
     {
         $response = array();
         foreach ($this->hits as $hit) {
-            $response[$hit['module']] = $hit;
+            $response[$hit['module']][] = $hit['id'];
         }
         return $response;
     }

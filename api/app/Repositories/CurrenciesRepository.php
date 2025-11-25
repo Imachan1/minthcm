@@ -2,9 +2,9 @@
 
 namespace MintHCM\Api\Repositories;
 
-use Doctrine\ORM\EntityRepository;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
 
-class CurrenciesRepository extends EntityRepository
+class CurrenciesRepository extends MintEntityRepository
 {
     public function getAvailable()
     {
@@ -19,12 +19,13 @@ class CurrenciesRepository extends EntityRepository
             'conversion_rate' => 1,
         );
         return array_merge($currencies, $this->createQueryBuilder('c')
-                ->where('c.status = :status')
-                ->andWhere('c.deleted = :deleted')
-                ->setParameter('status', 'Active')
-                ->setParameter('deleted', 0)
-                ->orderBy('c.name', 'ASC')
-                ->getQuery()
-                ->getArrayResult());
+            ->select('c.id, c.name, c.symbol, c.status, c.currency_on_right, c.conversion_rate')
+            ->where('c.status = :status')
+            ->andWhere('c.deleted = :deleted')
+            ->setParameter('status', 'Active')
+            ->setParameter('deleted', 0)
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getArrayResult());
     }
 }

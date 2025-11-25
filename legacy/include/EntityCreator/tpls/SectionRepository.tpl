@@ -10,5 +10,8 @@
  * @ORM\Index(name="{$index.name}", columns={ldelim}"{$index.columns}"{rdelim}){if !$index@last}, {"\n"}{/if}
 {/foreach}
 {rdelim}{/if})
+{foreach from=$fields item=field}
+ * @property mixed ${$field.name}
+{/foreach}
  */
 {$end_sectionrepository}

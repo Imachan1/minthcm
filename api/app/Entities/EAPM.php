@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
 /**
@@ -56,9 +57,28 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
  * @ORM\Table(name="eapm", indexes={
  * @ORM\Index(name="eapmpk", columns={"id"}), 
  * @ORM\Index(name="idx_app_active", columns={"assigned_user_id", "application", "validated"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $password
+ * @property mixed $url
+ * @property mixed $application
+ * @property mixed $api_data
+ * @property mixed $consumer_key
+ * @property mixed $consumer_secret
+ * @property mixed $oauth_token
+ * @property mixed $oauth_secret
+ * @property mixed $validated
  */
 // Auto-generated SectionRepository section end
-class EAPM
+class EAPM extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
@@ -66,117 +86,117 @@ class EAPM
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
-
-    /**
-     * @ORM\Column(type="string", length="255")
-     */
-    public $password;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $url;
+    protected $password;
+
+    /**
+     * @ORM\Column(type="string", length="255")
+     */
+    protected $url;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $application;
+    protected $application;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $api_data;
+    protected $api_data;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $consumer_key;
+    protected $consumer_key;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $consumer_secret;
+    protected $consumer_secret;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $oauth_token;
+    protected $oauth_token;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $oauth_secret;
+    protected $oauth_secret;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $validated;
+    protected $validated;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="eapm")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="eapm")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="eapm")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
