@@ -194,6 +194,7 @@ $dictionary['Meeting'] = array(
          'options' => 'date_range_search_dom',
          'validation' => array('type' => 'isbefore', 'compareto' => 'date_end', 'blank' => false),
          'audited' => true,
+         'massupdate' => true,
       ),
       'date_end' =>
      array(

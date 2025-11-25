@@ -5,12 +5,14 @@ export { default as select } from './select'
 export { default as multiselect } from './multiselect'
 export { default as relate } from './relate'
 export { default as bool } from './bool'
+export { default as parent } from './parent'
+export { default as datetime } from './datetime'
 
 export const defaultInput = 'text'
 
 export const typeMap = {
-    datetime: 'date',
-    datetimecombo: 'date',
+    datetime: 'datetime',
+    datetimecombo: 'datetime',
     boolean: 'bool',
     int: 'numeric',
     float: 'numeric',

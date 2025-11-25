@@ -22,17 +22,6 @@
             :locale="locale"
             :select-text="languages.label('LBL_ESLIST_SELECT_DATE')"
         />
-        <!-- <v-date-picker
-            v-model="input.value"
-            no-title
-            @input="menu = false"
-            locale="pl"
-            first-day-of-week="1"
-            show-week
-            locale-first-day-of-year="4"
-            color="rgba(0, 0, 0, 0.4)"
-
-        /> -->
     </v-menu>
 </template>
 
@@ -79,19 +68,6 @@ watch(value, () => {
         emit('update:modelValue', value.value)
     }
 })
-// export default {
-//     props: {
-//         input: { type: Object }
-//     },
-//     data: () => ({
-//         menu: false
-//     }),
-//     computed: {
-//         isValidDate() {
-//             return !this.input.value || this.input.value.length === 10
-//         }
-//     }
-// }
 </script>
 
 <style></style>
