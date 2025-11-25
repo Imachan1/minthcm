@@ -13,12 +13,30 @@ abstract class MintEntity
 
     public function __get($name)
     {
-        return $this->$name;
+        if (property_exists($this, $name)) {
+            return $this->$name;
+        }
+
+        if ($this->hasCustomEntity() && property_exists($this->custom_entity, $name)) {
+            return $this->custom_entity->$name;
+        }
+
+        throw new \InvalidArgumentException("Property '$name' does not exist in " . get_class($this));
     }
 
     public function __set($name, $value)
     {
-        $this->$name = (new PropertiesManager($this->getEntityManager(), $this))->getConvertedToPHPValue($name, $value);
+        if (property_exists($this, $name)) {
+            $this->$name = (new PropertiesManager($this->getEntityManager(), $this))->getConvertedToPHPValue($name, $value);
+            return;
+        }
+
+        if ($this->hasCustomEntity() && property_exists($this->custom_entity, $name)) {
+            $this->custom_entity->$name = $value;
+            return;
+        }
+        
+        throw new \InvalidArgumentException("Property '$name' does not exist in " . get_class($this));
     }
 
     public function hasLegacyActions(): bool
@@ -29,6 +47,16 @@ abstract class MintEntity
     public function hasAccess(string $view, bool $is_owner = false, bool $in_group = false): bool
     {
         return $this->checkLegacyAccess($view, $is_owner ?: 'not_set', $in_group ?: 'not_set');
+    }
+
+    public function hasCustomEntity(): bool
+    {
+        return property_exists($this, 'custom_entity') && $this->custom_entity instanceof MintEntity;
+    }
+
+    public function isCustomEntity(): bool
+    {
+        return property_exists($this, 'main_entity') && $this->main_entity instanceof MintEntity;
     }
 
     public function getId(): ?string
@@ -66,6 +94,11 @@ abstract class MintEntity
     public function gerPropertyTypeName(string $property): ?string
     {
         return (new PropertiesManager($this->getEntityManager(), $this))->getPropertyType($property);
+    }
+
+    public function getRelatedPropertiesDefs(): array
+    {
+        return (new PropertiesManager($this->getEntityManager(), $this))->getRelatedPropertiesDefs();
     }
 
     public function getRelatedPropertiesNames(): array

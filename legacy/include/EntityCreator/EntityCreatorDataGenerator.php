@@ -39,12 +39,14 @@ class EntityCreatorDataGenerator
     protected string $moduleName;
     protected array $vardefs;
     protected array $data = [];
+    protected bool $is_custom = false;
 
-    public function __construct(string $moduleName, array $vardefs)
+    public function __construct(string $moduleName, array $vardefs, bool $is_custom = false)
     {
         $this->moduleName = $moduleName;
         $this->vardefs = $vardefs;
         $this->data = [];
+        $this->is_custom = $is_custom;
         $this->buildData();
         $this->buildFields();
         $this->buildRelationshipFields();
@@ -426,6 +428,10 @@ class EntityCreatorDataGenerator
             if ($relationshipField['isCollection']) {
                 $this->data['constructorFields'][] = '$this->' . $relationshipField['name'] . ' = new ArrayCollection();';
             }
+        }
+
+        if (!empty($this->data['generate_custom_entity']) && $this->is_custom == false) {
+            $this->data['constructorFields'][] = '$this->setCustomEntity(new ' . $this->moduleName . '_cstm());';
         }
     }
 

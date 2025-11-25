@@ -53,8 +53,8 @@ namespace {$entityNamespace};
 class {$className} extends MintEntity implements UserEntityInterface
 {
 
-{include file="$sectionproperties"}
+    {include file="$sectionproperties"}
 
-{include file="$sectionmethods"}
+    {include file="$sectionmethods"}
 
 }

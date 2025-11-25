@@ -39,7 +39,10 @@ class MintEntitySerializer
         }
 
         foreach ($legacy_bean->field_defs as $field_name => $field_def) {
-            if (!property_exists($entity, $field_name)) {
+            $is_entity_property = property_exists($entity, $field_name);
+            $is_custom_property = $entity->hasCustomEntity() && property_exists($entity->custom_entity, $field_name);
+            
+            if (!$is_entity_property && !$is_custom_property) {
                 if ($field_def['type'] == 'relate') {
                     $data[$field_name] = $this->getRelateFieldValue($entity, $field_def);
                 }

@@ -82,7 +82,9 @@ class MintEntityRepository extends EntityRepository
      */
     public function findWithRelatedFields(string $id, bool $with_deleted = false): ?MintEntity
     {
-        $related_properties =  $this->getNewEntity()->getRelatedPropertiesNames();
+        /** @var MintEntity */
+        $new_entity = $this->getNewEntity();
+        $related_properties =  $new_entity->getRelatedPropertiesDefs();
 
         $query = $this->createQueryBuilder('e')
             ->where('e.id = :id')
@@ -92,13 +94,15 @@ class MintEntityRepository extends EntityRepository
             $query->andWhere('e.deleted = false');
         }
 
-        foreach ($related_properties as $related_property) {
-            if (!$with_deleted) {
-                $query->leftJoin('e.' . $related_property, $related_property, 'WITH', $related_property . '.deleted = false');
+        foreach ($related_properties as $related_defs) {
+            $related_repository = $this->getEntityManager()->getRepository($related_defs['related_entity']);
+            $related_entity = $related_repository->getNewEntity();
+            if (!$with_deleted && property_exists($related_entity, 'deleted')) {
+                $query->leftJoin('e.' . $related_defs['name'], $related_defs['name'], 'WITH', $related_defs['name'] . '.deleted = false');
             } else {
-                $query->leftJoin('e.' . $related_property, $related_property);
+                $query->leftJoin('e.' . $related_defs['name'], $related_defs['name']);
             }
-            $query->addSelect($related_property);
+            $query->addSelect($related_defs['name']);
         }
 
         return $query->getQuery()->getOneOrNullResult();

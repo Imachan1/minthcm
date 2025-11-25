@@ -1,14 +1,14 @@
     public function getMainEntity()
     {
-        return $this->mainEntity;
+        return $this->main_entity;
     }
 
-    public function setMainEntity($mainEntity)
+    public function setMainEntity($main_entity)
     {
-        $this->mainEntity = $mainEntity;
+        $this->main_entity = $main_entity;
 
-        if ($mainEntity && $mainEntity->getCustomEntity() !== $this) {
-            $mainEntity->setCustomEntity($this);
+        if ($main_entity && $main_entity->getCustomEntity() !== $this) {
+            $main_entity->setCustomEntity($this);
         }
 
         return $this;

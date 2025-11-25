@@ -58,9 +58,9 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
  * @ORM\Table(name="project_cstm", indexes={
  * @ORM\Index(name="projectpk", columns={"id_c"})})
  * @property mixed $jjwg_maps_lat_c
+ * @property mixed $jjwg_maps_lng_c
  * @property mixed $jjwg_maps_address_c
  * @property mixed $jjwg_maps_geocode_status_c
- * @property mixed $jjwg_maps_lng_c
  */
 // Auto-generated SectionRepository section end
 class Project_cstm extends MintEntity
@@ -73,20 +73,25 @@ class Project_cstm extends MintEntity
      * @ORM\Column(name="id_c", type="string", length=36)
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $id;
+    protected $id;
 
 
     /**
-     * @ORM\OneToOne(targetEntity="Project", inversedBy="customEntity")
+     * @ORM\OneToOne(targetEntity="Project", inversedBy="custom_entity")
      * @ORM\JoinColumn(name="id_c", referencedColumnName="id")
      */
-    private $mainEntity;
+    protected $main_entity;
 
 
     /**
      * @ORM\Column(type="float", length="10")
      */
     protected $jjwg_maps_lat_c;
+
+    /**
+     * @ORM\Column(type="float", length="11")
+     */
+    protected $jjwg_maps_lng_c;
 
     /**
      * @ORM\Column(type="string", length="255")
@@ -98,11 +103,6 @@ class Project_cstm extends MintEntity
      */
     protected $jjwg_maps_geocode_status_c;
 
-    /**
-     * @ORM\Column(type="float", length="11")
-     */
-    protected $jjwg_maps_lng_c;
-
     // Auto-generated SectionProperties section end
         // Auto-generated SectionMethods section start
     public function __construct()
@@ -111,15 +111,15 @@ class Project_cstm extends MintEntity
 
     public function getMainEntity()
     {
-        return $this->mainEntity;
+        return $this->main_entity;
     }
 
-    public function setMainEntity($mainEntity)
+    public function setMainEntity($main_entity)
     {
-        $this->mainEntity = $mainEntity;
+        $this->main_entity = $main_entity;
 
-        if ($mainEntity && $mainEntity->getCustomEntity() !== $this) {
-            $mainEntity->setCustomEntity($this);
+        if ($main_entity && $main_entity->getCustomEntity() !== $this) {
+            $main_entity->setCustomEntity($this);
         }
 
         return $this;

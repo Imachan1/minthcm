@@ -2,10 +2,10 @@
     /**
      * @ORM\OneToOne(
      *     targetEntity="{/literal}{$className}{literal}_cstm",
-     *     mappedBy="mainEntity",
+     *     mappedBy="main_entity",
      *     cascade={"persist", "remove"},
      *     fetch="EAGER"
      * )
      */
-    private $customEntity;
+    protected $custom_entity;
 {/literal}

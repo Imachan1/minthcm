@@ -13,10 +13,10 @@
 {/literal}
 {literal}
     /**
-    * Get the fullname 
-    *
-    * @return string
-    */
+     * Get the fullname 
+     *
+     * @return string
+     */
     public function getFullName(): string
     {
         $names = [];
@@ -56,4 +56,4 @@
         return password_verify(strtolower($passwordMd5), $this->user_hash);
     }
 {/literal}
-{$end_sectionmethods}
+    {$end_sectionmethods}

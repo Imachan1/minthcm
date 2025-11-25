@@ -498,7 +498,7 @@ class Users extends MintEntity implements UserEntityInterface
     protected Collection $deputy;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->reports_to_link = new ArrayCollection();
@@ -527,10 +527,10 @@ class Users extends MintEntity implements UserEntityInterface
 
 
     /**
-    * Get the fullname 
-    *
-    * @return string
-    */
+     * Get the fullname 
+     *
+     * @return string
+     */
     public function getFullName(): string
     {
         $names = [];
@@ -570,5 +570,5 @@ class Users extends MintEntity implements UserEntityInterface
         return password_verify(strtolower($passwordMd5), $this->user_hash);
     }
 
-// Auto-generated SectionMethods section end
+    // Auto-generated SectionMethods section end
 }

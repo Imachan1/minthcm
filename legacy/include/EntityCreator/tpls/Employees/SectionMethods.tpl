@@ -7,10 +7,10 @@
     {rdelim}
 {literal}
     /**
-    * Get the fullname 
-    *
-    * @return string
-    */
+     * Get the fullname 
+     *
+     * @return string
+     */
     public function getFullName(): string
     {
         $names = [];
@@ -30,4 +30,4 @@
         return $this->getFullName();
     }
 {/literal}
-{$end_sectionmethods}
+    {$end_sectionmethods}

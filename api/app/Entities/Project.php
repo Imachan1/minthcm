@@ -84,12 +84,12 @@ class Project extends MintEntity
     /**
      * @ORM\OneToOne(
      *     targetEntity="Project_cstm",
-     *     mappedBy="mainEntity",
+     *     mappedBy="main_entity",
      *     cascade={"persist", "remove"},
      *     fetch="EAGER"
      * )
      */
-    private $customEntity;
+    protected $custom_entity;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -241,23 +241,21 @@ class Project extends MintEntity
         $this->projecttask = new ArrayCollection();
         $this->project_users_1 = new ArrayCollection();
         $this->am_projecttemplates_project_1 = new ArrayCollection();
+        $this->setCustomEntity(new Project_cstm());
     }
 
-    
-    
-    
     public function getCustomEntity()
     {
-        return $this->customEntity;
+        return $this->custom_entity;
     }
 
 
-    public function setCustomEntity($customEntity)
+    public function setCustomEntity($custom_entity)
     {
-        $this->customEntity = $customEntity;
+        $this->custom_entity = $custom_entity;
 
-        if ($customEntity && $customEntity->getMainEntity() !== $this) {
-            $customEntity->setMainEntity($this);
+        if ($custom_entity && $custom_entity->getMainEntity() !== $this) {
+            $custom_entity->setMainEntity($this);
         }
 
         return $this;

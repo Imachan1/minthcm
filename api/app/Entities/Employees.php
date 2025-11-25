@@ -600,7 +600,7 @@ class Employees extends MintEntity
     protected Collection $files;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->reports_to_link = new ArrayCollection();
@@ -643,10 +643,10 @@ class Employees extends MintEntity
     }
 
     /**
-    * Get the fullname 
-    *
-    * @return string
-    */
+     * Get the fullname 
+     *
+     * @return string
+     */
     public function getFullName(): string
     {
         $names = [];
@@ -666,5 +666,5 @@ class Employees extends MintEntity
         return $this->getFullName();
     }
 
-// Auto-generated SectionMethods section end
+    // Auto-generated SectionMethods section end
 }

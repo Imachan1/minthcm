@@ -113,12 +113,12 @@ class Meetings extends MintEntity
     /**
      * @ORM\OneToOne(
      *     targetEntity="Meetings_cstm",
-     *     mappedBy="mainEntity",
+     *     mappedBy="main_entity",
      *     cascade={"persist", "remove"},
      *     fetch="EAGER"
      * )
      */
-    private $customEntity;
+    protected $custom_entity;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -411,23 +411,21 @@ class Meetings extends MintEntity
         $this->conclusions = new ArrayCollection();
         $this->reservations = new ArrayCollection();
         $this->resources = new ArrayCollection();
+        $this->setCustomEntity(new Meetings_cstm());
     }
 
-    
-    
-    
     public function getCustomEntity()
     {
-        return $this->customEntity;
+        return $this->custom_entity;
     }
 
 
-    public function setCustomEntity($customEntity)
+    public function setCustomEntity($custom_entity)
     {
-        $this->customEntity = $customEntity;
+        $this->custom_entity = $custom_entity;
 
-        if ($customEntity && $customEntity->getMainEntity() !== $this) {
-            $customEntity->setMainEntity($this);
+        if ($custom_entity && $custom_entity->getMainEntity() !== $this) {
+            $custom_entity->setMainEntity($this);
         }
 
         return $this;

@@ -9,7 +9,7 @@ class CustomEntityCreatorDataGenerator extends EntityCreatorDataGenerator
 
     public function __construct(string $moduleName, array $vardefs)
     {
-        parent::__construct($moduleName, $vardefs);
+        parent::__construct($moduleName, $vardefs, true);
         $this->buildCustomFields();
     }
 
