@@ -1,12 +1,13 @@
 <template>
+    <div class="default-layout-sidebar">
     <v-navigation-drawer
         class="sidebar-nav"
         expand-on-hover
-        :rail="$vuetify.display.mdAndDown"
+            :rail="$vuetify.display.mdAndDown || shrinked"
         permanent
         width="260"
-        :color="$vuetify.display.mdAndDown ? '#d5e6e4dd' : '#00000010'"
-        :floating="$vuetify.display.lgAndUp"
+            color="#00000010"
+            floating="true"
         rail-width="76"
     >
         <v-list
@@ -147,6 +148,21 @@
             </v-expansion-panels>
         </div>
     </v-navigation-drawer>
+        <div 
+            class="shrinker" 
+            :class="{ 'rail-mode': shrinked }"
+            v-if="!$vuetify.display.mdAndDown"
+        >
+            <div class="shrinker-background"></div>
+            <MintButton 
+                class="shrinker-button" 
+                variant="icon" 
+                size="x-large" 
+                :icon="shrinked || $vuetify.display.mdAndDown ? 'mdi-chevron-right' : 'mdi-chevron-left'" 
+                @click="shrink" 
+            />
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -161,6 +177,7 @@ import { useRouter } from 'vue-router'
 import { popupComponents } from '@/custom/components/MintPopups/CustomMintPopupsMap'
 import { usePopupsStore } from '@/store/popups'
 import ComponentLoader from '@/utils/componentLoader'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 
 const modules = useModulesStore()
 const url = useUrlStore()
@@ -169,6 +186,12 @@ const recents = useRecentsStore()
 const languages = useLanguagesStore()
 const router = useRouter()
 const popups = usePopupsStore()
+
+const shrinked = ref(false)
+
+const shrink = () => {
+    shrinked.value = !shrinked.value
+}
 
 const filterModulesQuery = ref('')
 const filteredModules = computed(() => {
@@ -284,7 +307,7 @@ watch(
 .sidebar-nav {
     top: var(--v-top-nav-height) !important;
     max-height: calc(100vh - var(--v-top-nav-height));
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(24px);
     .v-navigation-drawer__content {
         overflow: hidden;
         display: flex;
@@ -433,6 +456,59 @@ watch(
     }
     .v-icon {
         opacity: 1;
+    }
+}
+
+.shrinker {
+    position: fixed;
+    top: 50%;
+    left: calc(260px - 17px);
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    transition: left 0.3s ease;
+    z-index: 1005;
+    
+    &.rail-mode {
+        left: calc(76px - 17px);
+    }
+}
+
+.shrinker-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 34px;
+    background: rgba(0, 0, 0, 0.039);
+    border-radius: 50%;
+    backdrop-filter: blur(24px);
+    clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+    z-index: 0;
+}
+
+.shrinker-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.default-layout-sidebar {
+    &:hover {
+        .shrinker {
+            left: calc(260px - 17px);
+        }
+    }
+
+    &:hover,
+    &:has(.shrinker:hover) {
+        .v-navigation-drawer--rail {
+            transform: translateX(0) !important;
+            width: 260px !important;
+        }
     }
 }
 </style>
