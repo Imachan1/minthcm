@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
 /**
@@ -60,7 +61,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
  * @ORM\Index(name="idx_eman_relid_reltype_id", columns={"related_id", "related_type", "campaign_id"})})
  */
 // Auto-generated SectionRepository section end
-class EmailMan
+class EmailMan extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
@@ -80,6 +81,9 @@ class EmailMan
     public $user_id;
 
     /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      * @ORM\Column(type="integer", length="11")
      */
     public $id;

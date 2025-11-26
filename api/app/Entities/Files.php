@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
@@ -59,7 +60,7 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Index(name="filespk", columns={"id"})})
  */
 // Auto-generated SectionRepository section end
-class Files
+class Files extends MintEntity
 {
 
 // Auto-generated SectionProperties section start

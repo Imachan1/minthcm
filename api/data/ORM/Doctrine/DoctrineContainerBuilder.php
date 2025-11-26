@@ -44,18 +44,16 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-namespace MintHCM\Api\Containers\Doctrine;
+namespace MintHCM\Data\ORM\Doctrine;
 
 use DI\ContainerBuilder;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Setup;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintRepositoryFactory;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -104,6 +102,8 @@ class DoctrineContainerBuilder extends ContainerBuilder
                     $doctrineSettings['proxy_path'],
                     new FilesystemAdapter('', 0, $doctrineSettings['cache_path'] ?? null)
                 );
+                $config->setDefaultRepositoryClassName(MintEntityRepository::class);
+                $config->setRepositoryFactory(new MintRepositoryFactory());
                 $connection = DriverManager::getConnection($doctrineSettings['connection'], $config);
                 return new EntityManager($connection, $config);
             }

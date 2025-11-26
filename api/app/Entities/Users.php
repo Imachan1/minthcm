@@ -50,6 +50,7 @@ namespace MintHCM\Api\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use League\OAuth2\Server\Entities\UserEntityInterface;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
@@ -61,7 +62,7 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Index(name="idx_user_name", columns={"user_name", "is_group", "status", "last_name", "first_name", "id"})})
  */
 // Auto-generated SectionRepository section end
-class Users implements UserEntityInterface
+class Users extends MintEntity implements UserEntityInterface
 {
 
 // Auto-generated SectionProperties section start
