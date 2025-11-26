@@ -497,7 +497,6 @@ class ElasticSearchIndexer extends AbstractIndexer
                 $body = $this->makeIndexParamsBodyFromBean($bean);
                 // TODO: optimize with single load from db before foreach
                 $this->fillAllNestedPropertyValues($bean, $body);
-
                 $this->removeErrorProneFields($module, $body);
                 $this->fixUpIndicesParams($body, $this->getDefaultMapParams($module), $module);
                 $this->restructureParams($body, $this->getDefaultMapParams($module));
@@ -567,6 +566,15 @@ class ElasticSearchIndexer extends AbstractIndexer
                                 if ($key == $new_key) {
                                     $params[$key] = $params[$pkey][$old_key];
                                     unset($params[$pkey][$old_key]);
+                                }
+
+                                if (explode('__', $key)[1] == 'email1' && explode('__', $new_key)[1] == 'email_0') {
+                                    $params[$key] = $params[$pkey][$old_key];
+                                    unset($params[$pkey][$old_key]);
+                                }
+
+                                if (empty($params[$pkey])) {
+                                    unset($params[$pkey]);
                                 }
                             }
                         }
