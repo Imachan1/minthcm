@@ -156,6 +156,7 @@ import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintStatusBox from '@/components/MintStatusBoxes/MintStatusBox.vue'
 import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 import BeanActions from '@/business/BeanActions'
+import { useLocalStorageStore } from '@/store/localStorage'
 
 interface Props {
     data: {
@@ -173,8 +174,18 @@ const languages = useLanguagesStore()
 const modules = useModulesStore()
 const router = useRouter()
 
-const expandedSections = ref<string[]>([])
 const favorites = useFavoritesStore()
+const storage = useLocalStorageStore()
+
+const expandedSections = computed({
+    get: () => {
+        if (!storage.hasPanelSections(store.bean.module, 'MintPanelRecordDetails')) {
+            return []
+        }
+        return storage.getPanelSections(store.bean.module, 'MintPanelRecordDetails')
+    },
+    set: (value: string[]) => storage.setPanelSections(store.bean.module, 'MintPanelRecordDetails', value),
+})
 
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_DETAILS', modules.currentModule?.name)
@@ -247,6 +258,10 @@ const goBack = () => {
 const isFavorite = computed(() => favorites.isFavorite(store.bean.module, store.bean.id))
 
 onMounted(() => {
+    if (storage.hasPanelSections(store.bean.module, 'MintPanelRecordDetails')) {
+        return
+    }
+
     let array = []
     const keys = Object.keys(props.data.sections)
     for (let i = 0; i < keys.length; i++) {
