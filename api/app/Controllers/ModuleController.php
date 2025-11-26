@@ -436,7 +436,6 @@ class ModuleController
             return;
         }
 
-        //TODO add relationship management in Entity
         $bean = $mint_entity->getMintBean();
         foreach ($links as $link_name => $link_data) {
             if (empty($link_data)) {
@@ -449,18 +448,12 @@ class ModuleController
             if (!empty($link_data['beansToAdd']) && is_array($link_data['beansToAdd'])) {
                 foreach ($link_data['beansToAdd'] as $related_id => $related_bean) {
                     $additionalValues = $related_bean['additionalValues'] ?? [];
-                    $link = $bean->$link_name;
-                    chdir('../legacy/');
-                    $link->add($related_id, $additionalValues);
-                    chdir('../api/');
+                    $bean->$link_name->add($related_id, $additionalValues);
                 }
             }
             if (!empty($link_data['beansToRemove']) && is_array($link_data['beansToRemove'])) {
                 foreach ($link_data['beansToRemove'] as $related_id) {
-                    $link = $bean->$link_name;
-                    chdir('../legacy/');
-                    $link->delete($bean->id, $related_id);
-                    chdir('../api/');
+                    $bean->$link_name->delete($bean->id, $related_id);
                 }
             }
         }
