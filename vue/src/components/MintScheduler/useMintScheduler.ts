@@ -6,6 +6,9 @@ import { Participant } from './MintScheduler.model'
 import { useDebounceFn } from '@vueuse/core'
 import { useAuthStore } from '@/store/auth'
 import { AxiosError } from 'axios'
+import { usePreferencesStore } from '@/store/preferences'
+import { useStatusBoxesStore } from '@/store/statusBoxes'
+import { useLanguagesStore } from '@/store/languages'
 
 const MAX_HOURS_COUNT = 10
 
@@ -15,6 +18,7 @@ export const useMintScheduler = (
     dateTo: Ref<string | null>,
 ) => {
     const auth = useAuthStore()
+    const preferences = usePreferencesStore()
 
     const activityDtFrom = computed(() => {
         const date = toValue(dateFrom)
@@ -70,7 +74,7 @@ export const useMintScheduler = (
             return []
         }
         const hours = []
-        const start = schedulerDtFrom.value.setZone('Europe/Warsaw')
+        const start = schedulerDtFrom.value.setZone(preferences.user?.timezone)
         for (let i = 0; i < MAX_HOURS_COUNT; i++) {
             const dt = start.plus({ hours: i })
             if (schedulerDtTo.value && dt > schedulerDtTo.value) {
@@ -129,30 +133,42 @@ export const useMintScheduler = (
         await fetchData()
     }
 
-    function addParticipant(participant: Participant) {
+    async function addParticipant(participant: Participant) {
         if (participants.value.find((p) => p.id === participant.id)) {
             return
         }
         participants.value.push(participant)
         if (bean.id) {
-            mintApi.post(`/${bean.module}/Link/${bean.id}`, {
+            await mintApi.post(`/${bean.module}/Link/${bean.id}`, {
                 ids: [participant.id],
                 link_name: participant.link,
+            })
+            useStatusBoxesStore().showStatus('scheduler-link-success', {
+                type: 'success',
+                autoClose: true,
+                autoCloseDelay: 3000,
+                message: useLanguagesStore().label('LBL_SAVED'),
             })
         } else {
             bean.loadRelationship(participant.link)?.add(participant.id)
         }
     }
 
-    function removeParticipant(participant: Participant) {
+    async function removeParticipant(participant: Participant) {
         if (!participants.value.find((p) => p.id === participant.id)) {
             return
         }
         participants.value = participants.value.filter((p) => p.id !== participant.id)
         if (bean.id) {
-            mintApi.post(`/${bean.module}/Unlink/${bean.id}`, {
+            await mintApi.post(`/${bean.module}/Unlink/${bean.id}`, {
                 ids: [participant.id],
                 link_name: participant.link,
+            })
+            useStatusBoxesStore().showStatus('scheduler-unlink-success', {
+                type: 'success',
+                autoClose: true,
+                autoCloseDelay: 3000,
+                message: useLanguagesStore().label('LBL_SAVED'),
             })
         } else {
             bean.loadRelationship(participant.link)?.remove(participant.id)

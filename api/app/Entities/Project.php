@@ -148,13 +148,8 @@ class Project extends MintEntity
     public $jjwg_maps_address_c;
 
     /**
-     * @ORM\Column(type="float", length="10")
+     * @ORM\Column(type="string", length="255")
      */
-    public $jjwg_maps_lat_c;
-
-    /**
-            * @ORM\Column(type="string", length="255")
-            */
     public $jjwg_maps_geocode_status_c;
 
     /**

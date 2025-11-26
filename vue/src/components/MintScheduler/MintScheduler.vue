@@ -5,7 +5,7 @@
         </div>
         <div v-else-if="!scheduler.isValid.value">{{ language.label('LBL_SCHEDULER_INVALID') }}</div>
         <div v-else class="scheduler-content">
-            <MintSchedulerTimeline :bean="props.bean" :scheduler="scheduler" />
+            <MintSchedulerTimeline :scheduler="scheduler" />
             <MintSchedulerParticipants :scheduler="scheduler" />
             <MintSchedulerAssigner v-if="scheduler.isEditable.value" :scheduler="scheduler" />
         </div>
@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, toValue, ref, watch } from 'vue'
+import { Ref, isRef, computed } from 'vue'
 import { useMintScheduler } from './useMintScheduler'
 import { useBean } from '@/composables/useBean'
 import MintSchedulerAssigner from './MintSchedulerAssigner.vue'
@@ -31,20 +31,8 @@ const props = defineProps<Props>()
 
 const language = useLanguagesStore()
 
-const dateFromRef = ref(toValue(props.dateFrom))
-const dateToRef = ref(toValue(props.dateTo))
-watch(
-    () => props.dateFrom,
-    (newVal) => {
-        dateFromRef.value = toValue(newVal)
-    },
-)
-watch(
-    () => props.dateTo,
-    (newVal) => {
-        dateToRef.value = toValue(newVal)
-    },
-)
+const dateFromRef = computed(() => isRef(props.dateFrom) ? props.dateFrom.value : props.dateFrom)
+const dateToRef = computed(() => isRef(props.dateTo) ? props.dateTo.value : props.dateTo)
 
 const scheduler = useMintScheduler(props.bean, dateFromRef, dateToRef)
 scheduler.init()
