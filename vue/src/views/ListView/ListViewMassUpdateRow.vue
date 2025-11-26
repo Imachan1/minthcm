@@ -23,6 +23,7 @@
                     :input="input"
                     density="compact"
                     @update:modelValue="(newValue) => (input.value = input.modifiers ? runModifiers(input.modifiers, newValue) : newValue)"
+                    :inputs="inputs"
                 />
             </v-col>
         </v-row>
@@ -69,18 +70,38 @@ const fieldDefs = computed(() => {
 const inputsMap = computed(() => {
     if (!field.value) return {}
     const type = fieldDefs.value.type
-    console.error(inputDefs)
-    return inputDefs[type] ?? inputDefs[inputDefs.typeMap[type]] ?? inputDefs[inputDefs.defaultInput]
+    const inputDef = inputDefs[type] ?? inputDefs[inputDefs.typeMap[type]] ?? inputDefs[inputDefs.defaultInput]
+
+    if (inputDef.type && inputDef.label) {
+        return {
+            inputs: [inputDef],
+        }
+    }
+
+    const inputs = Object.values(inputDef)
+    return { inputs }
 })
 
 function handleFieldChange() {
-    inputs.value = [{
-        type: inputsMap.value.type,
-        label: languages.label(inputsMap.value.label),
-        modifiers: inputsMap.value.modifiers ?? null,
-    }]
+    inputs.value = inputsMap.value.inputs.map((i) => ({
+        type: i.type,
+        value: null,
+        label: parseLabel(i.label),
+        modifiers: i.modifiers ?? null,
+    }))
     emit('update:field', field.value)
     emit('update:inputs', inputs.value)
+}
+
+function parseLabel(label: string | string[])
+{
+    if (Array.isArray(label)) {
+        label.forEach((part, index) => {
+            label[index] = languages.label(part)
+        })
+        return label
+    }
+    return languages.label(label)
 }
 
 function getInputComponent(type: string) {

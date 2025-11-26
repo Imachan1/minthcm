@@ -46,11 +46,11 @@
 
 namespace MintHCM\Api\Repositories;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
 
 #[\AllowDynamicProperties]
-class CommentRepository extends EntityRepository
+class CommentRepository extends MintEntityRepository
 {
     /*
         * Get all comments for a parent entity along with their reactions
@@ -66,8 +66,7 @@ class CommentRepository extends EntityRepository
                 'parent_type' => $parent_type,
                 'parent_id' => $parent_id,
             ])
-            ->orderBy('comments.date_entered', 'ASC')
-        ;
+            ->orderBy('comments.date_entered', 'ASC');
 
         return $qb->getQuery()->getResult();
     }

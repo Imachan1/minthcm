@@ -61,7 +61,7 @@ const dateValue = computed({
     get() {
         const dt = DateTime.fromSQL(model.value, { zone: 'UTC' })
         if (dt.isValid) {
-            return dt.setZone('Europe/Warsaw').toFormat(preferences.user?.date_format || 'yyyy-MM-dd') || ''
+            return dt.setZone(preferences.user?.timezone).toFormat(preferences.user?.date_format || 'yyyy-MM-dd') || ''
         }
         return ''
     },

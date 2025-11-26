@@ -2209,6 +2209,8 @@ $app_strings = array(
     'LBL_ESLIST_LESS_OR_EQUAL' => 'Less than/Equal',
     'LBL_ESLIST_GREATER_THAN' => 'Greater than',
     'LBL_ESLIST_LESS_THAN' => 'Less than',
+    'LBL_ESLIST_ONE_OF' => 'One of',
+    'LBL_ESLIST_NONE_OF' => 'None of',
     'LBL_ESLIST_VALUE_FROM' => 'From',
     'LBL_ESLIST_VALUE_TO' => 'To',
     'LBL_ESLIST_DEFAULT' => 'Restore Default',
@@ -2221,6 +2223,8 @@ $app_strings = array(
     'LBL_ESLIST_NO_DATA' => 'No options available',
     'LBL_DETAILS' => 'Details',
     'LBL_ESLIST_DATE' => 'Date',
+    'LBL_ESLIST_TIME' => 'Time',
+    'LBL_ESLIST_RELATED_TO_MODULE' => 'Module',
     'LBL_ESLIST_SELECT_DATE' => 'Select',
     'LBL_ESLIST_OVERWRITE_FILTER_CONFIRM' => 'Filter with that name already exists. Do you want to overwrite it?',
     'LBL_ESLIST_REFRESH' => 'Refresh',
@@ -4816,3 +4820,9 @@ $app_list_strings['spenttime_type_dom'] = array(
 
 $app_strings['LBL_ERR_CANNOT_CHANGE_WORK_SCHEDULE_STATUS'] = 'You cannot change status to "Closed" because there are gaps between spent times or his time frames do not coincide with working times';
 $app_strings['LBL_DETAIL_VIEW_LOADING_TIMEOUT'] = 'Record view loading timeout. Please try again later.';
+
+$app_list_strings['moduleList']['MCPSettings'] = 'MCP Settings';
+$app_list_strings['moduleListSingular']['MCPSettings'] = 'MCP Setting';
+
+$app_strings['LBL_REPEAT_FIELD'] = 'Repeat';
+$app_strings['LBL_EVERY'] = 'every';

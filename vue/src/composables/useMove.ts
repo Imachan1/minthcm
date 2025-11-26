@@ -28,7 +28,6 @@ export const useMove = (args: MoveArgs) => {
 
     const stepWidthPx = computed(() => {
         if (container.value) {
-            console.log('stepWidthPx', width.value / toValue(args.steps))
             return width.value / toValue(args.steps)
         }
         return 0

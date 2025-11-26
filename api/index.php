@@ -55,7 +55,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use MintHCM\Api\ApiManager;
 use MintHCM\Api\Config\AppConfig;
-use MintHCM\Api\Containers\Doctrine\DoctrineContainerBuilder;
+use MintHCM\Data\ORM\Doctrine\DoctrineContainerBuilder;
 use MintHCM\Utils\CustomLoader;
 use Slim\Factory\AppFactory;
 use Slim\App;
@@ -66,6 +66,7 @@ global $mint_app;
 /** @var string */
 global $api_client;
 
+/** @var DoctrineContainerBuilder */
 $doctrineContainerBuilder = new DoctrineContainerBuilder();
 $doctrineContainer = $doctrineContainerBuilder->build();
 $mint_app = AppFactory::createFromContainer($doctrineContainer);

@@ -179,6 +179,10 @@ $ESListViewDefs[$module_name] = [
         ],
         'original_candidature_name' => [
             'default' => false,
+		],        'parent_name' => [
+            'default' => false,
+            'link' => true,
+            'name' => 'parent_name',
         ],
     ],
     'search' => [
@@ -209,5 +213,6 @@ $ESListViewDefs[$module_name] = [
         'work_start' => [],
         'training_date' => [],
         'currency_id' => [],
+        'parent_name' => [],
     ],
 ];

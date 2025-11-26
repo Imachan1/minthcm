@@ -49,6 +49,7 @@ namespace MintHCM\Api\Entities;
 // Auto-generated SectionUse section start
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
@@ -63,7 +64,7 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Index(name="idx_meet_date_start", columns={"date_start"})})
  */
 // Auto-generated SectionRepository section end
-class Meetings
+class Meetings extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
@@ -276,14 +277,8 @@ class Meetings
     public $jjwg_maps_address_c;
 
     /**
-     * @ORM\Column(type="float", length="10")
+     * @ORM\Column(type="string", length="255")
      */
-    public $jjwg_maps_lat_c;
-
-
-    /**
-            * @ORM\Column(type="string", length="255")
-            */
     public $jjwg_maps_geocode_status_c;
 
     /**
