@@ -1,38 +1,16 @@
 <?php
 
 $viewdefs['Employees'] = [
-    'order' => ['header', 'basicInfo', 'subpanels'],
+    'order' => ['basicInfo', 'subpanels'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelEmployeeRecordHeader',
-            'data' => [
-                'fields' => [
-                    [
-                        'position_name',
-                        'phone_work',
-                        [
-                            'name' => 'email1',
-                            'type' => 'email',
-                        ],
-                    ],
-                ],
-                'actions' => [
-                    [
-                        'title' => 'LBL_DELETE_BUTTON_LABEL',
-                        'icon' => 'mdi-trash-can-outline',
-                        'click' => 'deleteBean',
-                    ],
-                    [
-                        'title' => 'LNK_VIEW_CHANGE_LOG',
-                        'icon' => 'mdi-history',
-                        'click' => 'showBeanChangeLog',
-                    ],
-                ],
-            ],
-        ],
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -40,13 +18,15 @@ $viewdefs['Employees'] = [
                             [
                                 'first_name',
                                 'last_name',
+                            ],
+                            [
                                 [
                                     'name' => 'email1',
                                     'type' => 'email',
                                 ],
+                                'phone_mobile',
                             ],
                             [
-                                'phone_mobile',
                                 'phone_work',
                                 'phone_other',
                             ],
@@ -56,13 +36,15 @@ $viewdefs['Employees'] = [
                                     'name' => 'birthdate',
                                     'type' => 'age',
                                 ],
+                            ],
+                            [
+                                'position_name',
                                 [
                                     'name' => 'photo',
                                     'type' => 'file',
                                 ],
                             ],
                             [
-                                'position_name',
                                 'securitygroup_name',
                                 'reports_to_name',
                             ],
@@ -87,10 +69,11 @@ $viewdefs['Employees'] = [
                                         'separator' => ', ',
                                     ],
                                 ],
+                                '',
+                            ],
+                            [
                                 'description',
                             ],
-                            ['created_by_name', 'modified_by_name'],
-                            ['date_entered', 'date_modified'],
                         ],
                     ],
                 ],

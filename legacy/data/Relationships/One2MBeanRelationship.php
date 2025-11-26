@@ -374,6 +374,7 @@ class One2MBeanRelationship extends One2MRelationship
         $targetTable = $alias;
 
         $query .= "$join_type $targetTableWithAlias ON $startingTable.$startingKey=$targetTable.$targetKey AND $targetTable.deleted=0\n"
+         . "AND $targetTable.$targetKey = '{$link->focus->id}' "  //MintHCM 172384 
         //Next add any role filters
                . $this->getRoleWhere($tableInRoleFilter) . "\n";
 
@@ -387,7 +388,7 @@ class One2MBeanRelationship extends One2MRelationship
                 'type' => $this->type,
                 'rel_key' => $targetKey,
                 'join_tables' => array($targetTable),
-                'where' => "WHERE $startingTable.$startingKey='{$link->focus->id}'",
+                'where' => "", //MintHCM 172384 
                 'select' => " ",
             );
         }

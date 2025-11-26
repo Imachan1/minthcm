@@ -55,28 +55,6 @@ $layout_defs["Recruitments"]["subpanel_setup"] = array(
       'get_subpanel_data' => 'candidatures',
       'top_buttons' =>
       array(
-         array(
-            'widget_class' => 'SubPanelTopButtonQuickCreate',
-         ),
-      ),
-   ),
-   'candidatures_end' => array(
-      'order' => 100,
-      'module' => 'Candidatures',
-      'subpanel_name' => 'currentCandidatures',
-      'sort_order' => 'asc',
-      'sort_by' => 'id',
-      'title_key' => 'LBL_CANDIDATURES_RECRUITMENTS_END_FROM_CANDIDATURES_TITLE',
-      'get_subpanel_data' => 'candidatures_end',
-      'top_buttons' =>
-      array(
-         array(
-            'widget_class' => 'SubPanelTopSelectButton',
-            'mode' => 'MultiSelect',
-         ),
-         array(
-            'widget_class' => 'SubPanelTopButtonQuickCreate',
-         ),
       ),
    ),
    'activities' => array(

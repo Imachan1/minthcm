@@ -88,6 +88,7 @@ class WorkSchedules extends Basic
     public $supervisor_acceptance;
     private static $repeatSaveRoudTripCounter = 0;
     private $_date_start = null;
+    public $delegation_duration;
 
     public function bean_implements($interface)
     {

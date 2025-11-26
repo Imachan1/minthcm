@@ -47,6 +47,9 @@ $ESListViewDefs[$module_name] = [
         'email1' => [
             'type' => 'email',
         ],
+        'recr_contact_agree' => [
+            'default' => false,
+        ],
     ],
     'search' => [
         'last_time_contact' => [],
@@ -60,5 +63,13 @@ $ESListViewDefs[$module_name] = [
         'date_modified' => [],
         'created_by_name' => [],
         'modified_by_name' => [],
+        'email1' => [],
+        'first_name' => [],
+        'last_name' => [],
+        'recr_contact_agree' => [],
+        'linkedin' => [],
+        'github' => [],
+        'facebook' => [],
+        'x_service' => [],
     ],
 ];

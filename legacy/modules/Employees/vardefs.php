@@ -355,7 +355,7 @@ $dictionary['Employee']['fields']['files'] = [
 
 $dictionary['Employee']['elasticsearch']['nested']['security_groups'] = [
     'link' => 'SecurityGroups',
-    'fields' => array('id'),
+    'fields' => array('id', 'name'),
 ];
 
 $dictionary["Employee"]["fields"]["SecurityGroups"] = array(

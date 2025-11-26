@@ -92,8 +92,6 @@ class Candidatures_sugar extends Basic {
    public $favorite_link;
    public $reason_for_rejection;
    public $entry_interview;
-   public $recruitment_end_name;
-   public $recruitment_end_id;
 
    public function bean_implements($interface) {
       if ( $interface == 'ACL' ) {

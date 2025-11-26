@@ -188,7 +188,7 @@ class Requests extends MintEntity
     protected $employee_link;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="requests")
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="comments")
      */
     protected Collection $comments;
 

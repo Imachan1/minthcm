@@ -79,6 +79,10 @@ $viewdefs[$module_name]['QuickCreate'] = array(
                 'user_name',
             ),
             array(
+                    'checklist',
+                    '',
+                ),
+            array(
                 'assigned_user_name',
             ),
         ),

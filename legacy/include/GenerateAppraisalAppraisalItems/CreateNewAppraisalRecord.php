@@ -109,7 +109,7 @@ class CreateNewAppraisalRecord {
       if ( $this->transformed_module_name == static::$EMPLOYEES_MODULE_NAME ) {
          $position_id = $transformed_record_bean->position_id;
       } elseif ( $this->transformed_module_name == static::$CANDIDATURES_MODULE_NAME ) {
-         $recruitement_id = (empty($transformed_record_bean->recruitment_end_id) ? $transformed_record_bean->recruitment_id: $transformed_record_bean->recruitment_end_id);
+         $recruitement_id = $transformed_record_bean->recruitment_id;
          $recruitement_bean = BeanFactory::getBean(static::$RECRUITEMENT_MODULE_NAME, $recruitement_id);
          $position_id = $recruitement_bean->position_id;
       }

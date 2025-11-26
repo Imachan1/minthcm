@@ -266,22 +266,22 @@ class ProjectTask extends MintEntity
     protected Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="project_task")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="project_tasks")
      */
     protected Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="project_task")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="project_tasks")
      */
     protected Collection $tasks;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="project_task")
+     * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="meetings")
      */
     protected Collection $meetings;
 
     /**
-     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="project_task")
+     * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="calls")
      */
     protected Collection $calls;
 
@@ -305,7 +305,7 @@ class ProjectTask extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="project_task")
+     * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="projecttask")
      */
     protected $projects;
 

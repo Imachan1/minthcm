@@ -152,7 +152,7 @@ class Responsibilities extends MintEntity
     protected Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="responsibilities")
+     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="appraisalitems")
      */
     protected Collection $appraisalitems;
 

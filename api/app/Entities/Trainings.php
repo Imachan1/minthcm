@@ -218,12 +218,12 @@ class Trainings extends MintEntity
     protected Collection $certificates;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="trainings")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="training")
      */
     protected Collection $files;
 
     /**
-     * @ORM\OneToMany(targetEntity=Requests::class, mappedBy="trainings")
+     * @ORM\OneToMany(targetEntity=Requests::class, mappedBy="training")
      */
     protected Collection $requests;
 

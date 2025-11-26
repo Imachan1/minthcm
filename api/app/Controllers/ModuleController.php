@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,10 +36,10 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
@@ -49,6 +49,7 @@ use BeanFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
+use MintHCM\Data\BeanFactory as MintBeanFactory;
 use MintHCM\Lib\MintLogic\MintLogic;
 use MintHCM\Utils\LegacyConnector;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -329,6 +330,10 @@ class ModuleController
             $response = $response->withStatus(404);
             return $response;
         }
+        if (!$focus->ACLAccess('edit')) {
+            $response = $response->withStatus(403);
+            return $response;
+        }
         $ids = $request->getAttribute('ids');
 
         if (!$focus->load_relationship($link_name) || empty($ids)) {
@@ -355,6 +360,48 @@ class ModuleController
         return $response;
     }
 
+    public function unlink(Request $request, Response $response, array $args): Response
+    {
+        $module = $this->getModuleFromRoute($request);
+        $id = $request->getAttribute('id');
+        $link_name = $request->getAttribute('link_name');
+
+        chdir('../legacy/');
+        $focus = BeanFactory::getBean($module, $id);
+        if (empty($focus->id)) {
+            $response = $response->withStatus(404);
+            return $response;
+        }
+        if (!$focus->ACLAccess('edit')) {
+            $response = $response->withStatus(403);
+            return $response;
+        }
+        $ids = $request->getAttribute('ids');
+
+        if (!$focus->load_relationship($link_name) || empty($ids)) {
+            $response = $response->withStatus(400);
+            return $response;
+        }
+        $errors = [];
+        foreach ($ids as $related_id) {
+            $result = $focus->$link_name->delete($id, $related_id);
+            if (!$result) {
+                $errors[] = 'Failed to unlink ' . $related_id . ' from ' . $focus->id . ' via ' . $link_name;
+            }
+        }
+
+        chdir('../api/');
+
+        if(!empty($errors)) {
+            $response = $response->withStatus(400);
+            $response->getBody()->write(json_encode(['errors' => $errors]));
+            return $response;
+        }
+
+        $response = $response->withStatus(200);
+        return $response;
+    }
+
     protected function getModuleFromRoute(Request $request): ?string
     {
         $routeContext = RouteContext::fromRequest($request);
@@ -372,6 +419,7 @@ class ModuleController
                 'edit' => $entity->hasAccess('edit'),
                 'delete' => $entity->hasAccess('delete'),
                 'view' => $entity->hasAccess('view'),
+                'admin' => $bean->hasAccess('admin'),
             ],
             'logic' => (new MintLogic($entity->getMintBean()))->getInitial(),
         ];
@@ -457,5 +505,31 @@ class ModuleController
                 }
             }
         }
+    }
+
+    public function getChecklistItems(Request $request, Response $response, array $args): Response
+    {
+        $module = $this->getModuleFromRoute($request);
+        $id = $request->getAttribute('id');
+        $focus = MintBeanFactory::getBean($module, $id);
+        if (empty($focus->id)) {
+            $response = $response->withStatus(404);
+            return $response;
+        }
+        $response = $response->withHeader('Content-type', 'application/json');
+        if (isset($focus->checklist) && !empty($focus->checklist)) {
+            if (!array($focus->checklist)) {
+                $checklistRaw = html_entity_decode($focus->checklist, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                $data = json_decode($checklistRaw, true);
+            } else {
+                $data = $focus->checklist;
+            }
+            $response->getBody()->write($data);
+            return $response;
+        }
+        $data = [
+        ];
+        $response->getBody()->write(json_encode($data));
+        return $response;
     }
 }

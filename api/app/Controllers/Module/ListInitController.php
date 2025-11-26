@@ -65,6 +65,14 @@ class ListInitController
         MassActions\Delete::class,
         MassActions\Export::class,
         MassActions\Merge::class,
+        MassActions\Update::class,
+    ];
+
+    const DEFAULT_COLUMNS = [
+        'date_modified',
+        'date_entered',
+        'created_by_name',
+        'modified_by_name',
     ];
     private $request;
     private $module, $metadata, $bean;
@@ -182,13 +190,42 @@ class ListInitController
         return [
             'columns' => $this->prepareDefsType("columns"),
             'search' => $this->prepareSearchDefs(),
+            'massupdate' => $this->prepareMassUpdateDefs()
         ];
+    }
+
+    protected function prepareMassUpdateDefs()
+    {
+        global $mod_strings, $app_strings, $current_language;
+        $massupdate_fields = [];
+        foreach($this->bean->field_name_map as $field => $defs) {
+            if (empty($defs['massupdate']) || $defs['massupdate'] === false) {
+                continue;
+            }
+            if (
+                !empty($defs['has_access']['function'])
+                && function_exists($defs['has_access']['function'])
+                && !$defs['has_access']['function']()
+            ) {
+                continue;
+            }
+            $massupdate_field = $defs;
+            $massupdate_field['name'] = $field;
+            $massupdate_field['key'] = $this->eslistmap[$field] ?? $field;
+            $massupdate_field['options'] = $this->getParsedOptions($defs);
+            $mod_strings = return_module_language($current_language, $this->module);
+            $label = $defs['label'] ?? $defs['vname'];
+            $massupdate_field['label'] = $this->prepareLabel($mod_strings[$label] ?? $app_strings[$label] ?? $label);
+            $massupdate_fields[$massupdate_field['name']] = $massupdate_field;
+        }
+        return $massupdate_fields;
     }
 
     protected function prepareSearchDefs()
     {
         global $mod_strings, $app_strings, $current_language;
         $mod_strings = return_module_language($current_language, $this->module);
+        $this->addDefaultFields('search');
         $search = $this->metadata["search"];
         if (empty($search)) {
             return false;
@@ -231,6 +268,7 @@ class ListInitController
 
     function prepareDefsType($type)
     {
+        $this->addDefaultFields($type);
         $columns = $this->metadata[$type];
 
         global $mod_strings, $app_strings, $current_language, $app_list_strings;
@@ -321,5 +359,18 @@ class ListInitController
         $additional_params = $field_defs['function']['additional_params'] ?? null;
 
         return call_user_func($function, null, null, null, 'eslist', $additional_params);
+    }
+
+    protected function addDefaultFields($metadata_type)
+    {
+        foreach (static::DEFAULT_COLUMNS as $field) {
+            if (!isset($this->metadata[$metadata_type][$field]) && !empty($this->bean->field_name_map[$field])) {
+                if ($metadata_type == 'columns' && in_array($field, ['created_by_name', 'modified_by_name'])) {
+                    $this->metadata[$metadata_type][$field] = [ 'link' => true ];
+                    continue;
+                }
+                $this->metadata[$metadata_type][$field] = [];
+            }
+        }
     }
 }

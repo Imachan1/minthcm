@@ -183,19 +183,19 @@ class SurveyQuestionResponses extends MintEntity
 
     /**
      * @ORM\JoinTable(name="surveyquestionoptions_surveyquestionresponses", joinColumns={@ORM\JoinColumn(name="surveyq10d4sponses_idb", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="surveyq72c7options_ida", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=SurveyQuestionOptions::class, inversedBy="surveyquestionresponses")
+     * @ORM\ManyToMany(targetEntity=SurveyQuestionOptions::class, inversedBy="surveyquestionoptions_surveyquestionresponses")
      */
     protected Collection $surveyquestionoptions_surveyquestionresponses;
 
     /**
      * @ORM\JoinColumn(name="surveyquestion_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=SurveyQuestions::class, inversedBy="surveyquestionresponses")
+     * @ORM\ManyToOne(targetEntity=SurveyQuestions::class, inversedBy="surveyquestions_surveyquestionresponses")
      */
     protected $surveyquestion;
 
     /**
      * @ORM\JoinColumn(name="surveyresponse_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=SurveyResponses::class, inversedBy="surveyquestionresponses")
+     * @ORM\ManyToOne(targetEntity=SurveyResponses::class, inversedBy="surveyresponses_surveyquestionresponses")
      */
     protected $surveyresponse;
 

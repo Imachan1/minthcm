@@ -207,18 +207,18 @@ class OnboardingOffboardingElements extends MintEntity
 
     /**
      * @ORM\JoinTable(name="onboardingoffboardingelements_onboardingtemplates")
-     * @ORM\ManyToMany(targetEntity=OnboardingTemplates::class, mappedBy="onboardingoffboardingelements")
+     * @ORM\ManyToMany(targetEntity=OnboardingTemplates::class, mappedBy="elements")
      */
     protected Collection $onboardingtemplates;
 
     /**
      * @ORM\JoinTable(name="onboardingoffboardingelements_offboardingtemplates")
-     * @ORM\ManyToMany(targetEntity=OffboardingTemplates::class, mappedBy="onboardingoffboardingelements")
+     * @ORM\ManyToMany(targetEntity=OffboardingTemplates::class, mappedBy="elements")
      */
     protected Collection $offboardingtemplates;
 
     /**
-     * @ORM\OneToMany(targetEntity=Trainings::class, mappedBy="onboardingoffboardingelements")
+     * @ORM\OneToMany(targetEntity=Trainings::class, mappedBy="elements")
      */
     protected Collection $trainings;
 

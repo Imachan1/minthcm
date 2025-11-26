@@ -177,13 +177,13 @@ class Allocations extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="workplace_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Workplaces::class, inversedBy="allocations")
+     * @ORM\ManyToOne(targetEntity=Workplaces::class, inversedBy="workplaces_allocations")
      */
     protected $workplaces_allocations;
 
     /**
      * @ORM\JoinTable(name="allocations_employees")
-     * @ORM\ManyToMany(targetEntity=Employees::class, mappedBy="allocations")
+     * @ORM\ManyToMany(targetEntity=Employees::class, mappedBy="allocations_employees")
      */
     protected Collection $allocations_employees;
 

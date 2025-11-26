@@ -170,17 +170,17 @@ class DashboardManager extends MintEntity
     protected $assigned_user_link;
 
     /**
-     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="dashboardmanager")
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="users_forced_tabs_dashboards")
      */
     protected Collection $users_forced_tabs_dashboards;
 
     /**
-     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="dashboardmanager")
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="users_locked_dashboards")
      */
     protected Collection $users_locked_dashboards;
 
     /**
-     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="dashboardmanager")
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="users_one_time_default_dashboards")
      */
     protected Collection $users_one_time_default_dashboards;
 

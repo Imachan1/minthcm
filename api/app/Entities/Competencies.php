@@ -170,7 +170,7 @@ class Competencies extends MintEntity
     protected $employee_link;
 
     /**
-     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="competencies")
+     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="competency")
      */
     protected Collection $appraisalitems;
 

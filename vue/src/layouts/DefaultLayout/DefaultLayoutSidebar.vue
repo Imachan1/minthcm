@@ -1,16 +1,17 @@
 <template>
+    <div class="default-layout-sidebar">
     <v-navigation-drawer
         class="sidebar-nav"
         expand-on-hover
-        :rail="$vuetify.display.mdAndDown"
+            :rail="$vuetify.display.mdAndDown || shrinked"
         permanent
         width="260"
-        :color="$vuetify.display.mdAndDown ? '#d5e6e4dd' : '#00000010'"
-        :floating="$vuetify.display.lgAndUp"
+            color="#00000010"
+            floating="true"
         rail-width="76"
     >
         <v-list
-            v-if="modules.currentModule?.actions"
+                        v-if="modules.currentModule?.name !== 'Home' && modules.currentModule?.actions"
             nav
             bg-color="primary"
             class="nav-list flex-shrink-0 py-4"
@@ -20,8 +21,9 @@
                 :key="action.action+modules.currentModule"
                 class="nav-item module-action"
                 :value="action.action"
-                :to="action.url ? url.fromLegacyUrl(action.url) : ''"
+                v-bind="action.url && action.url !== '/' ? { to: action.url ? url.fromLegacyUrl(action.url) : '' } : {}"
                 :active="false"
+                @click="getClickHandler(action)"
             >
                 <div class="nav-title">
                     <v-icon :icon="`mdi-${action.icon}`" />
@@ -45,7 +47,14 @@
                     </v-fab-transition>
                 </template>
             </v-text-field>
-            <v-list nav class="nav-list nav-list-blurred flex-grow-1" style="min-height: 80px">
+            <v-list
+                ref="nav-list-ref"
+                nav
+                :class="{
+                    'nav-list nav-list-blurred flex-grow-1': true,
+                }"
+                style="min-height: 80px"
+            >
                 <transition-group name="list" tag="ul">
                     <template v-if="filteredModules.length">
                         <v-list-item
@@ -54,21 +63,10 @@
                             :key="filteredModule.name"
                             :value="filteredModule.name"
                             :data-cy="filteredModule.name"
-                            :to="
-                                ![
-                                    'Calls',
-                                    'Candidates',
-                                    'Meetings',
-                                    'Tasks',
-                                    'Candidatures',
-                                    'Positions',
-                                    'Recruitments',
-                                ].includes(filteredModule.name)
-                                    ? `/modules/${filteredModule.name}`
-                                    : `/modules/${filteredModule.name}/ESListView`
-                            "
+                            :to="`/modules/${filteredModule.name}`"
                             :active="filteredModule.name === url.module"
                             color="secondary"
+                            :class="{ 'v-list-item--active keyboard-hovered': selectedItem === filteredModule.name }"
                         >
                             <div style="display: flex; align-items: center; justify-content: space-between">
                                 <div class="nav-title">
@@ -150,22 +148,50 @@
             </v-expansion-panels>
         </div>
     </v-navigation-drawer>
+        <div 
+            class="shrinker" 
+            :class="{ 'rail-mode': shrinked }"
+            v-if="!$vuetify.display.mdAndDown"
+        >
+            <div class="shrinker-background"></div>
+            <MintButton 
+                class="shrinker-button" 
+                variant="icon" 
+                size="x-large" 
+                :icon="shrinked || $vuetify.display.mdAndDown ? 'mdi-chevron-right' : 'mdi-chevron-left'" 
+                @click="shrink" 
+            />
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch, nextTick, useTemplateRef } from 'vue'
 import { useUrlStore } from '@/store/url'
 import { useFavoritesStore } from '@/store/favorites'
 import { useRecentsStore } from '@/store/recents'
 import { useModulesStore, ModuleAction } from '@/store/modules'
 import MintMenuList from '@/components/MintMenuList.vue'
 import { useLanguagesStore } from '@/store/languages'
+import { useRouter } from 'vue-router'
+import { popupComponents } from '@/custom/components/MintPopups/CustomMintPopupsMap'
+import { usePopupsStore } from '@/store/popups'
+import ComponentLoader from '@/utils/componentLoader'
+import MintButton from '@/components/MintButtons/MintButton.vue'
 
 const modules = useModulesStore()
 const url = useUrlStore()
 const favorites = useFavoritesStore()
 const recents = useRecentsStore()
 const languages = useLanguagesStore()
+const router = useRouter()
+const popups = usePopupsStore()
+
+const shrinked = ref(false)
+
+const shrink = () => {
+    shrinked.value = !shrinked.value
+}
 
 const filterModulesQuery = ref('')
 const filteredModules = computed(() => {
@@ -176,23 +202,112 @@ const filteredModules = computed(() => {
     return modules.visibleModules.filter((m) => m.label.toLowerCase().includes(query))
 })
 
+const selectedItem = ref('')
+const itemsKeys = computed(() => filteredModules.value.map((item) => item.name))
+
 function parseModuleActions(actions: ModuleAction[]) {
     return actions.map((action) => ({
         title: action.name,
         url: url.fromLegacyUrl(action.url),
         icon: action.icon,
+        onClickActionData: action?.onClickActionData ?? '',
     }))
 }
 
 function clearInput() {
     filterModulesQuery.value = ''
+    selectedItem.value = ''
 }
+
+async function getClickHandler(action: ModuleAction) {
+    if (!action.url || action.url === '/') {
+        if (action?.onClickActionData?.type === 'popup' && action?.onClickActionData?.componentPath) {
+            popups.showPopup({
+                title: action.name,
+                component: await ComponentLoader.loadComponent(action?.onClickActionData?.componentPath ?? '')
+            })
+        }
+    }
+}
+
+
+function navigateToModule(moduleName: string) {
+    router.push({ name: 'list', params: { module: moduleName } })
+}
+
+const navListRef = useTemplateRef('nav-list-ref')
+function scrollToSelectedItem() {
+    nextTick(() => {
+        if (!selectedItem.value || !navListRef.value) return
+        
+        const navListElement = (navListRef.value as { $el: HTMLElement } | null)?.$el ?? null
+        const selectedElement = navListElement?.querySelector(`[data-cy="${selectedItem.value}"]`)
+        if (selectedElement) {
+            selectedElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'nearest'
+            })
+        }
+    })
+}
+
+function selectItem(event) {
+    if (!filteredModules.value.length || filterModulesQuery.value == '') {
+        selectedItem.value = ''
+        return
+    }
+    const currentIndex = itemsKeys.value.indexOf(selectedItem.value) ?? -1
+    switch (event.key) {
+        case 'ArrowDown':
+            event.preventDefault()
+            if (currentIndex < itemsKeys.value.length - 1) {
+                selectedItem.value = itemsKeys.value[currentIndex + 1]
+            } else {
+                selectedItem.value = itemsKeys.value[0]
+            }
+            scrollToSelectedItem()
+            break
+        case 'ArrowUp':
+            event.preventDefault()
+            if (currentIndex > 0) {
+                selectedItem.value = itemsKeys.value[currentIndex - 1]
+            } else {
+                selectedItem.value = itemsKeys.value[itemsKeys.value.length - 1]
+            }
+            scrollToSelectedItem()
+            break
+        case 'Enter':
+            event.preventDefault()
+            if (selectedItem.value) {
+                navigateToModule(selectedItem.value)
+            }
+            break
+        case 'Escape':
+            event.preventDefault()
+            selectedItem.value = ''
+            break
+    }
+}
+
+onMounted(() => {
+    document.addEventListener('keydown', (event) => selectItem(event))
+})
+
+watch(
+    () => filterModulesQuery.value,
+    (newValue) => {
+        if (newValue === '') {
+            selectedItem.value = ''
+        }
+    },
+)
 </script>
 <style lang="scss">
 .sidebar-nav {
     top: var(--v-top-nav-height) !important;
     max-height: calc(100vh - var(--v-top-nav-height));
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(24px);
     .v-navigation-drawer__content {
         overflow: hidden;
         display: flex;
@@ -274,9 +389,6 @@ function clearInput() {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    &:hover {
-        background: #0000001f;
-    }
     :deep(.v-list-item__content) {
         width: 100%;
     }
@@ -293,10 +405,6 @@ function clearInput() {
             overflow: hidden;
         }
     }
-    &:hover .nav-title {
-        transform: translateX(-8px);
-        color: rgb(var(--v-theme-secondary-dark));
-    }
     .menu-icon {
         margin: 0 8px;
         margin-left: auto;
@@ -306,8 +414,17 @@ function clearInput() {
     .menu-icon.menu-icon-active {
         opacity: 1 !important;
     }
-    &:hover .menu-icon {
-        opacity: 1 !important;
+
+    &:hover,
+    &.keyboard-hovered {
+        background: #0000001f;
+        .nav-title {
+            transform: translateX(-8px);
+            color: rgb(var(--v-theme-secondary-dark));
+        }
+        .menu-icon {
+            opacity: 1 !important;
+        }
     }
 }
 
@@ -339,6 +456,59 @@ function clearInput() {
     }
     .v-icon {
         opacity: 1;
+    }
+}
+
+.shrinker {
+    position: fixed;
+    top: 50%;
+    left: calc(260px - 17px);
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    transition: left 0.3s ease;
+    z-index: 1005;
+    
+    &.rail-mode {
+        left: calc(76px - 17px);
+    }
+}
+
+.shrinker-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 34px;
+    background: rgba(0, 0, 0, 0.039);
+    border-radius: 50%;
+    backdrop-filter: blur(24px);
+    clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+    z-index: 0;
+}
+
+.shrinker-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.default-layout-sidebar {
+    &:hover {
+        .shrinker {
+            left: calc(260px - 17px);
+        }
+    }
+
+    &:hover,
+    &:has(.shrinker:hover) {
+        .v-navigation-drawer--rail {
+            transform: translateX(0) !important;
+            width: 260px !important;
+        }
     }
 }
 </style>

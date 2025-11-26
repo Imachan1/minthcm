@@ -182,12 +182,12 @@ class Surveys extends MintEntity
     protected Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=SurveyQuestions::class, mappedBy="surveys")
+     * @ORM\OneToMany(targetEntity=SurveyQuestions::class, mappedBy="survey")
      */
     protected Collection $surveys_surveyquestions;
 
     /**
-     * @ORM\OneToMany(targetEntity=SurveyResponses::class, mappedBy="surveys")
+     * @ORM\OneToMany(targetEntity=SurveyResponses::class, mappedBy="survey")
      */
     protected Collection $surveys_surveyresponses;
 

@@ -166,6 +166,10 @@ array (
         ),
         4 => 
         array (
+          0 => 'checklist',
+        ),
+        5 => 
+        array (
           0 => 'description',
         ),
       ),

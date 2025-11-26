@@ -142,6 +142,11 @@ const isIcon = computed(() => (props.icon || props.appendIcon) && !props.text)
 .mint-button-icon {
     padding: 8px;
     border-radius: 50%;
+    color: rgb(var(--v-theme-secondary));
+    
+    &:hover {
+        color: rgb(var(--v-theme-secondary-dark));
+    }
 }
 
 .mint-button-small {

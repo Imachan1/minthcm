@@ -74,21 +74,17 @@ $subpanel_layout = array(
          'vname' => 'LBL_SECURITYGROUP_NAME',
          'widget_class' => 'SubPanelDetailViewLink',
       ),
-      'TITLE' => array(
-         'width' => '15%',
-         'vname' => 'LBL_TITLE',
+      'position_name' => array(
+         'width' => '10%',
+         'vname' => 'LBL_POSITION_NAME',
       ),
-      'REPORTS_TO_NAME' => array(
-         'width' => '15%',
-         'vname' => 'LBL_LIST_REPORTS_TO_NAME',
+      'employee_status' => array(
+         'width' => '10%',
+         'vname' => 'LBL_LIST_EMPLOYEE_STATUS',
       ),
       'email1' => array(
          'vname' => 'LBL_LIST_EMAIL',
          'width' => '25%',
-      ),
-      'EMPLOYEE_STATUS' => array(
-         'width' => '10%',
-         'vname' => 'LBL_LIST_EMPLOYEE_STATUS',
       ),
       'remove_button' => array(
          'vname' => 'LBL_REMOVE',

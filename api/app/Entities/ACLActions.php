@@ -131,7 +131,7 @@ class ACLActions extends MintEntity
 
     /**
      * @ORM\JoinTable(name="acl_roles_actions", joinColumns={@ORM\JoinColumn(name="action_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=ACLRoles::class, inversedBy="acl_actions")
+     * @ORM\ManyToMany(targetEntity=ACLRoles::class, inversedBy="actions")
      */
     protected Collection $roles;
 

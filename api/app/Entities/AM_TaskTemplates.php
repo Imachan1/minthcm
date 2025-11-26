@@ -213,7 +213,7 @@ class AM_TaskTemplates extends MintEntity
 
     /**
      * @ORM\JoinTable(name="am_tasktemplates_am_projecttemplates_c", joinColumns={@ORM\JoinColumn(name="am_tasktemplates_am_projecttemplatesam_tasktemplates_idb", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="am_tasktemplates_am_projecttemplatesam_projecttemplates_ida", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=AM_ProjectTemplates::class, inversedBy="am_tasktemplates")
+     * @ORM\ManyToMany(targetEntity=AM_ProjectTemplates::class, inversedBy="am_tasktemplates_am_projecttemplates")
      */
     protected Collection $am_tasktemplates_am_projecttemplates;
 

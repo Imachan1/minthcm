@@ -172,22 +172,22 @@ class Workplaces extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="room_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Rooms::class, inversedBy="workplaces")
+     * @ORM\ManyToOne(targetEntity=Rooms::class, inversedBy="rooms_workplaces")
      */
     protected $rooms_workplaces;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="workplaces")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="workplace")
      */
     protected Collection $files;
 
     /**
-     * @ORM\OneToMany(targetEntity=Allocations::class, mappedBy="workplaces")
+     * @ORM\OneToMany(targetEntity=Allocations::class, mappedBy="workplaces_allocations")
      */
     protected Collection $workplaces_allocations;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkSchedules::class, mappedBy="workplaces")
+     * @ORM\OneToMany(targetEntity=WorkSchedules::class, mappedBy="workplaces_workschedules")
      */
     protected Collection $workplaces_workschedules;
 

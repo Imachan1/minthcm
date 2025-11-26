@@ -46,6 +46,9 @@
 
 $dictionary['EmployeeRoles'] = array(
    'table' => 'employeeroles',
+   'doctrineEntity' => [
+      'repository' => 'EmployeeRolesRepository',
+   ],
    'audited' => true,
    'inline_edit' => true,
    'duplicate_merge' => true,

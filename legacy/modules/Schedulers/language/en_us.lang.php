@@ -179,4 +179,6 @@ $mod_strings = array(
    'LBL_SENDKUDOS' => 'Publish Kudos',
    'LBL_KUDOS_NOTIFICATION' => 'You received a kudos!',
    'LBL_UPDATENEWSBYPROSPECTLISTS' => 'Update news by Prospect Lists',
+
+   'LBL_DATE_INDEXED' => 'Date Indexed',
 );

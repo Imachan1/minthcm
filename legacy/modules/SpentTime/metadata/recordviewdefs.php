@@ -1,24 +1,16 @@
 <?php
 
 $viewdefs['SpentTime'] = [
-    'order' => ['header', 'basicInfo'],
+    'order' => ['basicInfo'],
     'panels' => [
-        'header' => [
-            'component' => 'MintPanelRecordHeader',
-            'data' => [
-                'fields' => [
-                    'employee_name',
-                    'assigned_user_name',
-                ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                ],
-            ],
-        ],
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    'Duplicate',
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',

@@ -386,7 +386,7 @@ class Candidates extends MintEntity
     protected Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="candidates")
+     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="candidatures")
      */
     protected Collection $candidatures;
 
@@ -397,12 +397,12 @@ class Candidates extends MintEntity
     protected Collection $emails;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="candidates")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="notes")
      */
     protected Collection $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="candidates")
+     * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="tasks")
      */
     protected Collection $tasks;
 
@@ -425,7 +425,7 @@ class Candidates extends MintEntity
     protected Collection $meetings;
 
     /**
-     * @ORM\OneToMany(targetEntity=EmployeeCertificates::class, mappedBy="candidates")
+     * @ORM\OneToMany(targetEntity=EmployeeCertificates::class, mappedBy="candidate")
      */
     protected Collection $employeecertificates;
 
@@ -436,7 +436,7 @@ class Candidates extends MintEntity
     protected Collection $employee;
 
     /**
-     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidates")
+     * @ORM\OneToMany(targetEntity=Files::class, mappedBy="candidate")
      */
     protected Collection $files;
 

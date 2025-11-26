@@ -326,7 +326,7 @@ class Meetings extends MintEntity
     protected $jjwg_maps_address_c;
 
     /**
-     * @ORM\Column(type="string", length="255")
+     * @ORM\Column(type="float", length="10")
      */
     protected $jjwg_maps_geocode_status_c;
 
@@ -400,7 +400,7 @@ class Meetings extends MintEntity
     protected Collection $conclusions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="meetings")
+     * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="reservations")
      */
     protected Collection $reservations;
 

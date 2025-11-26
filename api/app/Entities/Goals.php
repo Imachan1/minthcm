@@ -182,7 +182,7 @@ class Goals extends MintEntity
     protected Collection $SecurityGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="goals")
+     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="goal")
      */
     protected Collection $appraisalitems;
 

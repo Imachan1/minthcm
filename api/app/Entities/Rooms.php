@@ -183,18 +183,18 @@ class Rooms extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="security_group_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="rooms")
+     * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="securitygroups_rooms")
      */
     protected $SecurityGroups;
 
     /**
      * @ORM\JoinTable(name="rooms_resources")
-     * @ORM\OneToOne(targetEntity=Resources::class, mappedBy="rooms")
+     * @ORM\OneToOne(targetEntity=Resources::class, mappedBy="rooms_resources")
      */
     protected $rooms_resources;
 
     /**
-     * @ORM\OneToMany(targetEntity=Workplaces::class, mappedBy="rooms")
+     * @ORM\OneToMany(targetEntity=Workplaces::class, mappedBy="rooms_workplaces")
      */
     protected Collection $rooms_workplaces;
 

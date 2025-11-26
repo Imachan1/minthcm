@@ -250,7 +250,7 @@ class SpentTime extends MintEntity
 
     /**
      * @ORM\JoinTable(name="workschedules_spenttime", joinColumns={@ORM\JoinColumn(name="spenttime_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="workschedule_id", referencedColumnName="id")})
-     * @ORM\ManyToMany(targetEntity=WorkSchedules::class, inversedBy="spenttime")
+     * @ORM\ManyToMany(targetEntity=WorkSchedules::class, inversedBy="spenttimes")
      */
     protected Collection $workschedules;
 

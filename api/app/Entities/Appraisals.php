@@ -213,12 +213,12 @@ class Appraisals extends MintEntity
 
     /**
      * @ORM\JoinColumn(name="evaluator_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="appraisals")
+     * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="evaluations")
      */
     protected $evaluators;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="appraisals")
+     * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="appraisal")
      */
     protected Collection $notes;
 
@@ -241,7 +241,7 @@ class Appraisals extends MintEntity
     protected Collection $roles;
 
     /**
-     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="appraisals")
+     * @ORM\OneToMany(targetEntity=AppraisalItems::class, mappedBy="appraisal")
      */
     protected Collection $appraisalitems;
 

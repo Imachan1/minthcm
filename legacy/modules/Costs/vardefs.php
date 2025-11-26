@@ -286,6 +286,7 @@ $dictionary['Costs'] = array(
          'rname' => 'name',
          'audited' => true,
          'vt_required' => 'equals(1,1)',
+         'required' => true,
          'vt_dependency' => "equals(\$type,'transport')",
       ),
       "transportation_id" => array(

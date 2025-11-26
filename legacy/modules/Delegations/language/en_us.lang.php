@@ -157,4 +157,6 @@ $mod_strings = array(
     'LBL_CALCULATIONS' => 'Calculations',
     'LBL_REGIMENTS_USDOLLAR' => 'Per Diem',
     'LBL_REGIMENTS' => 'Per Diem',
+
+    'LBL_REGIMEN_VALUE' => 'Regimen Value',
 );

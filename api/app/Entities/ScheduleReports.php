@@ -189,7 +189,7 @@ class ScheduleReports extends MintEntity
     protected $schedulereports_kreports;
 
     /**
-     * @ORM\OneToMany(targetEntity=ScheduleReportsLogs::class, mappedBy="schedulereports")
+     * @ORM\OneToMany(targetEntity=ScheduleReportsLogs::class, mappedBy="schedulereports_schedulereportslogs")
      */
     protected Collection $schedulereports_schedulereportslogs;
 

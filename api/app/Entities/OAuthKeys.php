@@ -159,7 +159,7 @@ class OAuthKeys extends MintEntity
     protected $assigned_user_link;
 
     /**
-     * @ORM\OneToMany(targetEntity=OAuthTokens::class, mappedBy="oauth_consumer")
+     * @ORM\OneToMany(targetEntity=OAuthTokens::class, mappedBy="consumer_link")
      */
     protected Collection $tokens;
 
