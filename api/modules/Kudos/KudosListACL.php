@@ -27,17 +27,17 @@ class KudosListACL extends BaseListACL
             return [];
         }
         chdir('../api/');
-        $filters = parent::getFiltersByOwner($user_id);
+        $filters = [];
 
         if (isset($bean->field_defs['assigned_user_id'])) {
             $filters[] = [
-                'terms' => [$this->prefixer->modify('meta.assigned.user_id.keyword') => $this->getOwnerIds($user_id)],
+                'terms' => [$this->prefixer->modify('meta.assigned.user_id.keyword') => [$user_id]],
             ];
         }
 
         if ($this->acl_helper->doesModuleUseEmployeeRelationship($this->module)) {
             $filters[] = [
-                'terms' => [$this->prefixer->modify('employee_id.keyword') => $this->getOwnerIds($user_id)],
+                'terms' => [$this->prefixer->modify('employee_id.keyword') => [$user_id]],
             ];
         }
 
