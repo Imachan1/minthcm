@@ -3,7 +3,7 @@
     <v-navigation-drawer
         class="sidebar-nav"
         expand-on-hover
-            :rail="$vuetify.display.mdAndDown || shrinked"
+            :rail="$vuetify.display.mdAndDown || storage.sideMenuShrinked"
         permanent
         width="260"
             color="#00000010"
@@ -150,7 +150,7 @@
     </v-navigation-drawer>
         <div 
             class="shrinker" 
-            :class="{ 'rail-mode': shrinked }"
+            :class="{ 'rail-mode': storage.sideMenuShrinked }"
             v-if="!$vuetify.display.mdAndDown"
         >
             <div class="shrinker-background"></div>
@@ -158,7 +158,7 @@
                 class="shrinker-button" 
                 variant="icon" 
                 size="x-large" 
-                :icon="shrinked || $vuetify.display.mdAndDown ? 'mdi-chevron-right' : 'mdi-chevron-left'" 
+                :icon="storage.sideMenuShrinked || $vuetify.display.mdAndDown ? 'mdi-chevron-right' : 'mdi-chevron-left'" 
                 @click="shrink" 
             />
         </div>
@@ -178,6 +178,7 @@ import { popupComponents } from '@/custom/components/MintPopups/CustomMintPopups
 import { usePopupsStore } from '@/store/popups'
 import ComponentLoader from '@/utils/componentLoader'
 import MintButton from '@/components/MintButtons/MintButton.vue'
+import { useLocalStorageStore } from '@/store/localStorage'
 
 const modules = useModulesStore()
 const url = useUrlStore()
@@ -186,11 +187,11 @@ const recents = useRecentsStore()
 const languages = useLanguagesStore()
 const router = useRouter()
 const popups = usePopupsStore()
+const storage = useLocalStorageStore()
 
-const shrinked = ref(false)
 
 const shrink = () => {
-    shrinked.value = !shrinked.value
+    storage.sideMenuShrinked = !storage.sideMenuShrinked
 }
 
 const filterModulesQuery = ref('')

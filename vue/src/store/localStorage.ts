@@ -13,6 +13,7 @@ interface ExpandedPanels {
 
 export const useLocalStorageStore = defineStore('localStorage', () => {
     const expandedPanels = useStorage<ExpandedPanels>('app.panels.expanded', { modules: {} })
+    const sideMenuShrinked = useStorage<boolean>('app.sidebar.shrinked', false)
 
     function getPanelSections(module: string, panel: string): Array<number | string> {
         if (!expandedPanels.value.modules[module]) {
@@ -40,5 +41,6 @@ export const useLocalStorageStore = defineStore('localStorage', () => {
         getPanelSections,
         setPanelSections,
         hasPanelSections,
+        sideMenuShrinked,
     }
 })
