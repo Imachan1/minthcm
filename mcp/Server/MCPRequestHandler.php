@@ -1,6 +1,6 @@
 <?php
 
-namespace MintMCP\Handlers;
+namespace MintMCP\Server;
 
 use MintMCP\Tools\AbstractMCPTool;
 use MintMCP\Tools\MCPToolRegistry;

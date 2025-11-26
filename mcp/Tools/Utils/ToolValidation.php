@@ -44,13 +44,19 @@ class ToolValidation
     public function filterField(array $fieldDefs): self
     {
         if (empty($fieldDefs[$this->field])) {
-            $this->errors[] = "Field '{$this->field}' is not defined in the module.";
+            $this->errors[] = "Field '{$this->field}' is not defined in the module. Use get_module_fields to get list of fields available in the module.";
             return $this;
         }
 
         $fieldType = $fieldDefs[$this->field]['type'] ?? '';
         if (in_array($fieldType, ['link', 'relate'], true)) {
             $this->errors[] = "Field '{$this->field}' of type '{$fieldType}' cannot be used in filters. Use the field of type 'id' and ID of the related record instead.";
+            return $this;
+        }
+
+        $fieldSource = $fieldDefs[$this->field]['source'];
+        if ($fieldSource == 'non-db') {
+            $this->errors[] = "Field '{$this->field}' is of source 'non-db' and cannot be used in filters.";
             return $this;
         }
 
@@ -77,27 +83,26 @@ class ToolValidation
      * @param string $type
      * @return self
      */
-    public static function validateByType($value, $field, $type): self
+    public function fieldType($type): self
     {
-        $validator = self::make($value, $field);
         switch (strtolower($type)) {
             case 'date':
             case 'datetime':
-                $validator->date();
+                $this->date();
                 break;
             case 'int':
             case 'integer':
-                $validator->integer();
+                $this->integer();
                 break;
             case 'string':
             case 'text':
             case 'varchar':
             case 'char':
             case 'url':
-                $validator->string();
+                $this->string();
                 break;
         }
-        return $validator;
+        return $this;
     }
     public function greaterThanOrEquals($min): self
     {
@@ -177,12 +182,8 @@ class ToolValidation
 
     public function date($format = 'Y-m-d H:i:s'): self
     {
-        if ($this->value !== null) {
-            $dateTime = \DateTime::createFromFormat($format, $this->value);
-
-            if (!$dateTime || $dateTime->format($format) !== $this->value) {
-                $this->errors[] = "Field '{$this->field}' must be a valid date in format '{$format}'. Received: '{$this->value}'.";
-            }
+        if ($this->value !== null && strtotime($this->value) === false) {
+            $this->errors[] = "Field '{$this->field}' must be a valid date in format {$format}.";
         }
         return $this;
     }
@@ -217,7 +218,7 @@ class ToolValidation
             }
         }
         if (!empty($errors)) {
-            throw new \InvalidArgumentException(implode("\n", $errors));
+            throw new \InvalidArgumentException(json_encode($errors, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         }
     }
 
@@ -229,7 +230,7 @@ class ToolValidation
     public static function validateOne(self $validator): void
     {
         if (!$validator->isValid()) {
-            throw new \InvalidArgumentException(implode("\n", $validator->getErrors()));
+            throw new \InvalidArgumentException(json_encode($validator->getErrors(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         }
     }
 
