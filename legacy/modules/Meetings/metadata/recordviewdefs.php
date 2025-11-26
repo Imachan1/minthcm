@@ -18,7 +18,7 @@ $viewdefs['Meetings'] = [
                             ['name', 'status'],
                             ['type', 'assigned_user_name'],
                             ['date_start', 'date_end'],
-                            ['description']
+                            ['description', 'repeat']
                         ],
                     ],
                 ],

@@ -4824,5 +4824,5 @@ $app_strings['LBL_DETAIL_VIEW_LOADING_TIMEOUT'] = 'Record view loading timeout. 
 $app_list_strings['moduleList']['MCPSettings'] = 'MCP Settings';
 $app_list_strings['moduleListSingular']['MCPSettings'] = 'MCP Setting';
 
-$app_strings['LBL_BASIC'] = 'Basic';
-$app_strings['LBL_OTHER'] = 'Other';
+$app_strings['LBL_REPEAT_FIELD'] = 'Repeat';
+$app_strings['LBL_EVERY'] = 'every';

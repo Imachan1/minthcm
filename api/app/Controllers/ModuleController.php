@@ -45,19 +45,21 @@
 
 namespace MintHCM\Api\Controllers;
 
-use BeanFactory;
+use MintHCM\Data\BeanFactory;
+use MintHCM\Data\MintBean;
 use MintHCM\Data\BeanFactory as MintBeanFactory;
 use MintHCM\Lib\MintLogic\MintLogic;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
-use SugarBean;
+use MintHCM\Utils\CyclicRecordsSaver;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[\AllowDynamicProperties]
 class ModuleController
 {
 
-    public function __construct()
+    public function __construct(protected EntityManagerInterface $entityManager)
     {
         global $app_list_strings, $current_language;
         if (!$app_list_strings) {
@@ -113,6 +115,9 @@ class ModuleController
             }
         }
         $bean->save(false);
+        if (!empty($bean->repeat_type) && $bean->repeat_type != '') {
+            $this->handleCyclicalRecords($bean);
+        }
         $this->handleLinks($bean, $links);
         $bean->retrieve();
 
@@ -172,6 +177,9 @@ class ModuleController
         }
         $this->handleFiles($bean, $files);
         $bean->save(false);
+        if (!empty($bean->repeat_type) && $bean->repeat_type != '') {
+            $this->handleCyclicalRecords($bean);
+        }
         $this->handleLinks($bean, $links);
         BeanFactory::unregisterBean($bean->module_name, $bean->id);
         $bean = BeanFactory::getBean($bean->module_name, $bean->id);
@@ -488,7 +496,7 @@ class ModuleController
         }
     }
 
-    protected function handleLinks(SugarBean $bean, array $links = [])
+    protected function handleLinks(MintBean $bean, array $links = [])
     {
         if (!empty($links)) {
             $current_dir = getcwd();
@@ -541,5 +549,11 @@ class ModuleController
         ];
         $response->getBody()->write(json_encode($data));
         return $response;
+    }
+
+
+    protected function handleCyclicalRecords(MintBean $bean)
+    {
+        (new CyclicRecordsSaver($bean, $this->entityManager))->run();
     }
 }

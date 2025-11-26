@@ -74,7 +74,7 @@ class BeanFactory
         $originalDir = getcwd();
         try {
             chdir('../legacy/');
-            $response = LegacyFactory::$name($arguments);
+        $response = LegacyFactory::$name(...$arguments);
         } finally {
             chdir($originalDir);
         }
