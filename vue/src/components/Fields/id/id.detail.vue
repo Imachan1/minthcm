@@ -22,9 +22,9 @@ const backend = useBackendStore()
 
 const parsedValue = computed(() => {
     if (props.defs.name == 'currency_id') {
-        return items.value.find((item) => item.key === props.modelValue)?.value || ''
+        return items.value.find((item) => item.key === props.field.model)?.value || ''
     }
-    return props.modelValue
+    return props.field.model
 })
 
 const items = computed(() => {

@@ -18,7 +18,8 @@ $viewdefs['Candidates'] = [
                         'fields' => [
                             ['first_name', 'last_name'],
                             [
-                                'email1',
+                                /* 'email1', */
+                                '', // FIXME: email1 nie przychodzi w retrieve
                                 [
                                     'name' => 'birthdate',
                                     'type' => 'age',

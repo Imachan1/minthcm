@@ -39,7 +39,7 @@ class Date extends DateType implements MintTypeInterface
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
-            return null;
+            return '';
         }
 
         if ($value instanceof MintDateTime) {

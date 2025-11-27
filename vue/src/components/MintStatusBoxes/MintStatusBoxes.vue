@@ -1,7 +1,11 @@
 <template>
     <transition-group name="scale-transition" class="mint-status-boxes" tag="div">
-        <MintStatusBox v-for="statusBox in statusBoxes" :key="statusBox[0]" v-bind="statusBox[1]"
-            @close="useStatusBoxesStore().close(statusBox[0])">
+        <MintStatusBox
+            v-for="statusBox in statusBoxes"
+            :key="statusBox[0]"
+            v-bind="statusBox[1]"
+            @close="useStatusBoxesStore().close(statusBox[0])"
+        >
             {{ statusBox[1].message }}
         </MintStatusBox>
     </transition-group>

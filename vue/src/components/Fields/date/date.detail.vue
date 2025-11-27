@@ -14,24 +14,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { DateTime } from 'luxon'
 import Pencil from '../Pencil.vue'
-import { usePreferencesStore } from '@/store/preferences';
-import { FieldProps } from '../Field.model';
+import { FieldProps } from '../Field.model'
+import { MintDate } from '@/composables/useMintDate'
 
-const preferences = usePreferencesStore()
-const props = defineProps<FieldProps>()
+const props = defineProps<FieldProps<MintDate>>()
 const emit = defineEmits(['inlineEditBtnClicked'])
 const parsedDate = computed(() => {
-    const value = props.modelValue?.trim()
-    if (!value) {
-        return ''
-    }
-    const dt = DateTime.fromSQL(value)
-    if (!dt.isValid) {
-        return ''
-    }
-    return dt.toFormat(preferences.user?.date_format || 'dd.MM.yyyy')
+    return props.field.model.isValid ? props.field.formatted.user : ''
 })
 function startInlineEdit() {
     if (props?.defs?.name && typeof props.defs.name === 'string' && props.defs.name.length > 0) {

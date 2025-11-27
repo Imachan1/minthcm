@@ -17,7 +17,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { FieldProps } from '../Field.model'
 
-const props = defineProps<FieldProps>()
+const props = defineProps<FieldProps<File>>()
 const emit = defineEmits<{
     (e: 'update:modelValue', value: File): void
 }>()
@@ -25,8 +25,8 @@ const emit = defineEmits<{
 const file = ref<File>(getEmptyFile())
 
 onMounted(() => {
-    if (props.modelValue) {
-        file.value = new File([], props.modelValue)
+    if (props.field.model) {
+        file.value = new File([], props.field.model)
     }
 })
 
@@ -36,6 +36,7 @@ async function updateModelValue(value: File | File[] | null) {
     } else {
         file.value = Array.isArray(value) ? value[0] : value
     }
+    props.field.model = file.value
     emit('update:modelValue', file.value)
 }
 
@@ -48,7 +49,7 @@ function getEmptyFile(): File {
 }
 
 watch(
-    () => props.modelValue,
+    () => props.field.model,
     (newVal) => {
         if (newVal !== file.value.name) {
             file.value = newVal ? new File([], newVal) : getEmptyFile()

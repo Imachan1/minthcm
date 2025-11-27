@@ -4,7 +4,7 @@
         <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()">
             <div>
                 {{ value }}
-                <a v-if="props.modelValue?.length > lengthToCrop" @click="expanded = !expanded"
+                <a v-if="props.field.model?.length > lengthToCrop" @click="expanded = !expanded"
                     >{{ languages.label(expanded ? 'LBL_COLLAPSE' : 'LBL_EXPAND') }}
                     <v-icon :icon="expanded ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
                 </a>
@@ -24,7 +24,7 @@ import { useLanguagesStore } from '@/store/languages'
 import Pencil from '../Pencil.vue'
 import { FieldProps } from '../Field.model';
 
-const props = defineProps<FieldProps>()
+const props = defineProps<FieldProps<string>>()
 const emit = defineEmits(['inlineEditBtnClicked'])
 const languages = useLanguagesStore()
 
@@ -32,9 +32,9 @@ const lengthToCrop = 180
 const expanded = ref<boolean>(false)
 
 const value = computed(() =>
-    !expanded.value && props.modelValue?.length > lengthToCrop
-        ? props.modelValue.substring(0, lengthToCrop).trim() + '...'
-        : props.modelValue,
+    !expanded.value && props.field.model?.length > lengthToCrop
+        ? props.field.model.substring(0, lengthToCrop).trim() + '...'
+        : props.field.model,
 )
 function startInlineEdit() {
     if (props?.defs?.name && typeof props.defs.name === 'string' && props.defs.name.length > 0) {

@@ -2,7 +2,7 @@
     <div>
         <label>{{ props.label }}</label>
         <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()">
-            <div>{{ props.modelValue }}</div>
+            <div>{{ props.field.model }}</div>
             <Pencil
                 :defs="props.defs"
                 :hidePencil="hidePencil"
@@ -14,9 +14,9 @@
 
 <script setup lang="ts">
 import Pencil from '../Pencil.vue'
-import { FieldProps } from '../Field.model';
+import { FieldProps } from '../Field.model'
 
-const props = defineProps<FieldProps>()
+const props = defineProps<FieldProps<string | number>>()
 const emit = defineEmits(['inlineEditBtnClicked'])
 function startInlineEdit() {
     if (props?.defs?.name && typeof props.defs.name === 'string' && props.defs.name.length > 0) {

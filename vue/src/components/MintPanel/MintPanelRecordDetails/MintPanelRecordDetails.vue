@@ -123,12 +123,9 @@
                                     :options="store.bean.logic.fieldsOptions[row[n - 1].name]"
                                     :required="store.bean.logic.requiredFields.includes(row[n - 1].name)"
                                     :errorMessage="store.bean.errorMessages[row[n - 1].name]"
-                                    :isDirty="store.bean.isDirty || store.bean.dirtyFields.has(row[n - 1].name)"
-                                    :modelValue="
-                                        store.bean[store.view === 'detail' ? 'syncAttributes' : 'attributes'][
-                                            row[n - 1].name
-                                        ]
-                                    "
+                                    :isDirty="store.bean.isDirty || store.bean.fields[row[n - 1].name]?.isDirty"
+                                    :field="store.bean.fields[row[n - 1].name]"
+                                    :modelValue="store.bean.fields[row[n - 1].name]?.model"
                                     @update:modelValue="
                                         (value, additionalFields) =>
                                             store.updateField(row[n - 1].name, value, additionalFields)

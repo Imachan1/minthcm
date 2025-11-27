@@ -15,7 +15,7 @@
             <div v-show="props.scheduler.isEditable.value" class="currently-planning-edge right" />
             <div class="currently-planning-header-content">
                 <div class="currently-planning-header-time">{{ currentlyPlanningTimeText }}</div>
-                <div class="currently-planning-header-title">{{ props.bean.attributes.name }} ({{ language.label('LBL_SCHEDULER_CURRENTLY_PLANNING') }})</div>
+                <div class="currently-planning-header-title">{{ props.bean.fields.name?.model }} ({{ language.label('LBL_SCHEDULER_CURRENTLY_PLANNING') }})</div>
             </div>
             <v-fade-transition>
                 <v-progress-circular
@@ -120,7 +120,20 @@ const move = useMove({
         if (!updatedFields.value || !props.scheduler.isEditable.value) {
             return
         }
-        props.bean.updateFields(updatedFields.value)
+        const date_start = updatedFields.value.date_start
+        const date_end = updatedFields.value.date_end
+        if (props.bean.fields.date_start?.model) {
+            props.bean.fields.date_start.model.set(date_start)
+        }
+        if (props.bean.fields.date_end?.model) {
+            props.bean.fields.date_end.model.set(date_end)
+        }
+        if (props.bean.fields.duration_hours) {
+            props.bean.fields.duration_hours.model = updatedFields.value.duration_hours
+        }
+        if (props.bean.fields.duration_minutes) {
+            props.bean.fields.duration_minutes.model = updatedFields.value.duration_minutes
+        }
         if (props.bean.id) {
             props.bean.save()
         }

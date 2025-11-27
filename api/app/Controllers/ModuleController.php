@@ -153,7 +153,7 @@ class ModuleController
         }
 
         foreach ($record_data as $field_name => $value) {
-            if (property_exists($entity, $field_name) && !empty($value)) {
+            if (property_exists($entity, $field_name)) {
                 $entity->$field_name = $value;
             }
         }
@@ -419,7 +419,7 @@ class ModuleController
                 'edit' => $entity->hasAccess('edit'),
                 'delete' => $entity->hasAccess('delete'),
                 'view' => $entity->hasAccess('view'),
-                'admin' => $bean->hasAccess('admin'),
+                'admin' => $entity->hasAccess('admin'),
             ],
             'logic' => (new MintLogic($entity->getMintBean()))->getInitial(),
         ];

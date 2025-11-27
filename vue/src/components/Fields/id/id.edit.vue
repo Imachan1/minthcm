@@ -20,9 +20,8 @@
         variant="outlined"
         density="compact"
         hide-details
-        :modelValue="props.modelValue"
+        v-model="props.field.model"
         :error="props.state === 'error'"
-        @update:modelValue="(v) => $emit('update:modelValue', v)"
         @keyup.enter="$emit('inlineEditSave')"
         @keyup.esc="$emit('inlineEditCancel')"
     />
@@ -40,9 +39,10 @@ const model = ref('')
 
 const parsedValue = computed({
     get() {
-        return items.value.find((item) => item.key === props.modelValue)?.key || ''
+        return items.value.find((item) => item.key === props.field.model)?.key || ''
     },
     set(newValue) {
+        props.field.model = newValue
         model.value = newValue
         emit('update:modelValue', model.value)
     },

@@ -2,9 +2,9 @@
     <div>
         <label>{{ props.label }}</label>
         <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()">
-            <a class="mint-url-detail-field" target="_blank" :href="props.modelValue">
-                <span>{{ props.modelValue }}</span>
-                <v-icon v-if="props.modelValue" size="x-small">mdi-open-in-new</v-icon>
+            <a class="mint-url-detail-field" target="_blank" :href="props.field.model">
+                <span>{{ props.field.model }}</span>
+                <v-icon v-if="props.field.model" size="x-small">mdi-open-in-new</v-icon>
             </a>
             <Pencil
                 :defs="props.defs"

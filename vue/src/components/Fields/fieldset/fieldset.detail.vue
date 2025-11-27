@@ -1,7 +1,7 @@
 <template>
     <label>{{ props.label }}</label>
     <div class="d-flex detail-field-container">
-        <p v-html="fieldContent"></p>
+        <p v-text="fieldContent"></p>
         <Pencil :defs="props.defs" />
     </div>
 </template>

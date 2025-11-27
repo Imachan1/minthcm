@@ -25,8 +25,9 @@ import { ref, computed, watch } from 'vue'
 import { DateTime } from 'luxon'
 import { FieldProps } from '../Field.model'
 import { usePreferencesStore } from '@/store/preferences'
+import { MintDate, useMintDate } from '@/composables/useMintDate'
 
-const props = defineProps<FieldProps>()
+const props = defineProps<FieldProps<MintDate>>()
 const emit = defineEmits(['update:modelValue'])
 
 const datePickerMenu = ref(false)
@@ -35,35 +36,33 @@ const preferences = usePreferencesStore()
 
 const parsedValue = computed({
     get() {
-        const dt = DateTime.fromSQL(model.value)
-        if (dt.isValid) {
-            return dt.toFormat(preferences.user?.date_format || 'dd.MM.yyyy')
+        if (props.field.model.isValid) {
+            return props.field.model.formatted.user_date
         }
         return ''
     },
-    async set(newVal) {
+    set(newVal) {
         datePickerMenu.value = false
         if (!newVal?.trim()) {
+            props.field.model = useMintDate('')
             model.value = ''
         }
-        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'dd.MM.yyyy')
+        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'dd.MM.yyyy', {
+            zone: 'utc',
+        })
         if (dt.isValid) {
-            model.value = dt.toSQLDate()
+            props.field.model.set(dt)
         }
     },
 })
 const pickerValue = computed({
     get() {
-        if (!model.value?.trim()) {
-            return new Date()
-        }
-        return new Date(model.value)
+        if (!props.field.model) return new Date()
+        return props.field.model.isValid ? props.field.model.formatted.js_date : new Date()
     },
     set(newVal) {
-        const dt = DateTime.fromJSDate(newVal)
-        if (dt.isValid) {
-            model.value = dt.toSQLDate()
-        }
+        props.field.model.set(newVal)
+        model.value = props.field.formatted.server
     },
 })
 

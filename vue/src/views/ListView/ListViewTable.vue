@@ -36,6 +36,7 @@
                 :label="languages.label(store.defs.columns[column.name].label, store.module)"
                 :options="item.logic.fieldsOptions[column.name]"
                 :modelValue="item.attributes[column.name]"
+                :field="item.fields[column.name]"
             />
         </template>
         <template v-slot:item.actions="{ item }">

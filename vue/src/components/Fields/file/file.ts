@@ -1,8 +1,8 @@
 import { usePreferencesStore } from '@/store/preferences'
-import { FieldOptions } from '../Field.model'
+import { FieldInterface } from '../Field.model'
 import { useLanguagesStore } from '@/store/languages'
 
-const options: FieldOptions = {
+const field: FieldInterface = {
     validator: (value: any) => {
         if (!value || !(value instanceof File)) {
             return
@@ -15,4 +15,4 @@ const options: FieldOptions = {
     },
 }
 
-export default options
+export default field

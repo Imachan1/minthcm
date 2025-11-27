@@ -41,6 +41,9 @@ abstract class MintEntity
         if (property_exists($this, 'name')) {
             return $this->name;
         }
+        if (property_exists($this, 'first_name') && property_exists($this, 'last_name')) {
+            return trim($this->first_name . ' ' . $this->last_name);
+        }
 
         return null;
     }
