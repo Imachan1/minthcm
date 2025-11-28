@@ -13,7 +13,11 @@
         :show-select="store.itemsSelectable"
         v-model="store.selected"
         @update:options="store.options = $event"
-        :no-data-text="store.error ? languages.label('LBL_ESLIST_FETCHING_DATA_ERROR') : languages.label('LBL_ESLIST_NO_DATA_AVAILABLE')"
+        :no-data-text="
+            store.error
+                ? languages.label('LBL_ESLIST_FETCHING_DATA_ERROR')
+                : languages.label('LBL_ESLIST_NO_DATA_AVAILABLE')
+        "
         hover
     >
         <template v-slot:item.is_favorite="{ item }">
@@ -27,11 +31,13 @@
             />
         </template>
         <template v-for="column in store.visibleColumns" v-slot:[`item.${column.name}`]="{ item }" :key="column.name">
-            <Field 
+            <Field
                 view="list"
-                :defs="column.name === 'name' 
-                    ? Object.assign(store.defs.columns[column.name], { type: 'name' })
-                    : store.defs.columns[column.name]"
+                :defs="
+                    column.name === 'name'
+                        ? Object.assign(store.defs.columns[column.name], { type: 'name' })
+                        : store.defs.columns[column.name]
+                "
                 :data="{ bean: item }"
                 :label="languages.label(store.defs.columns[column.name].label, store.module)"
                 :options="item.logic.fieldsOptions[column.name]"
@@ -62,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'
@@ -71,6 +77,8 @@ import { usePopupsStore } from '@/store/popups'
 import { mintApi } from '@/api/api'
 import { useBackendStore } from '@/store/backend'
 import Field from '@/components/Fields/Field.vue'
+
+import ComponentLoader from '@/utils/componentLoader'
 
 const router = useRouter()
 const store = useListViewStore()
@@ -105,18 +113,106 @@ const coreActions = {
     },
 }
 
-function getItemActions(item: any) {
-    return store.config.config.actions
-        .filter((action) => typeof action !== 'string' || item.aclAccess[action])
-        .map((action) => {
-            if (typeof action === 'string') {
-                return coreActions[action] ?? {}
+const customActionsModules = import.meta.glob('@/custom/views/ListView/Actions/*.ts', { eager: false })
+
+const customActionsCache = new Map<
+    string,
+    {
+        icon: string
+        onClick: (item: any) => void | Promise<void>
+        hasAccess?: (item: any) => boolean
+    }
+>()
+
+const loadingActions = new Set<string>()
+
+const actionsLoadedTrigger = ref(0)
+
+async function loadCustomAction(actionName: string) {
+    const cacheKey = `${url.module}-${actionName}`
+
+    if (customActionsCache.has(cacheKey)) {
+        return customActionsCache.get(cacheKey)
+    }
+
+    if (loadingActions.has(cacheKey)) {
+        return null
+    }
+
+    loadingActions.add(cacheKey)
+
+    const loader = Object.entries(customActionsModules).find(([path]) => path.endsWith(`/${actionName}.ts`))?.[1]
+
+    if (!loader) {
+        loadingActions.delete(cacheKey)
+        return null
+    }
+
+    try {
+        const actionModule = (await loader()) as { default: (context: any) => any }
+        const action = actionModule.default
+        const resolvedAction = action({ router, store, url, languages, popups, backend, ComponentLoader, mintApi })
+        customActionsCache.set(cacheKey, resolvedAction)
+        loadingActions.delete(cacheKey)
+        actionsLoadedTrigger.value++
+        return resolvedAction
+    } catch (error) {
+        console.error(`Failed to load custom action: ${actionName}`, error)
+        loadingActions.delete(cacheKey)
+        return null
+    }
+}
+
+async function resolveAction(actionName: string) {
+    const customAction = await loadCustomAction(actionName)
+    if (customAction) {
+        return customAction
+    }
+
+    return (coreActions as Record<string, any>)[actionName] ?? {}
+}
+
+function getItemActions(item: Record<string, unknown>) {
+    actionsLoadedTrigger.value
+
+    const actions = store.config.config.actions
+        .filter((action: any) => typeof action !== 'string' || (item.aclAccess as any)[action])
+        .map((action: any) => {
+            const actionName = action.action || action
+            if (typeof actionName === 'string') {
+                const cached = customActionsCache.get(`${url.module}-${actionName}`)
+                if (cached) {
+                    if (cached.hasAccess && !cached.hasAccess(item)) {
+                        return null
+                    }
+                    return cached
+                }
+
+                const coreAction = (coreActions as any)[actionName]
+
+                if (!coreAction) {
+                    loadCustomAction(actionName)
+                    return {
+                        icon: 'mdi-loading',
+                        onClick: async (item: any) => {
+                            const resolvedAction = await resolveAction(actionName)
+                            if (resolvedAction?.onClick) {
+                                await resolvedAction.onClick(item)
+                            }
+                        },
+                    }
+                }
+
+                return coreAction
             }
             return {
                 ...action,
-                onClick: (item) => eval(action.onClick)(item),
+                onClick: (item: any) => eval(action.onClick)(item),
             }
         })
+        .filter((action: any) => action !== null)
+
+    return actions
 }
 </script>
 
