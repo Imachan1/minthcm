@@ -45,15 +45,16 @@
 
 namespace MintHCM\Api\Controllers;
 
+use BeanFactory as LegacyBeanFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Data\BeanFactory;
-use MintHCM\Data\MintBean;
 use MintHCM\Data\BeanFactory as MintBeanFactory;
+use MintHCM\Data\MintBean;
 use MintHCM\Lib\MintLogic\MintLogic;
+use MintHCM\Utils\CyclicRecordsSaver;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
-use MintHCM\Utils\CyclicRecordsSaver;
-use Doctrine\ORM\EntityManagerInterface;
 
 #[\AllowDynamicProperties]
 class ModuleController
@@ -115,7 +116,7 @@ class ModuleController
             }
         }
         $bean->save(false);
-        if (!empty($bean->repeat_type) && $bean->repeat_type != '') {
+        if (!empty($bean->repeat_type) && '' != $bean->repeat_type) {
             $this->handleCyclicalRecords($bean);
         }
         $this->handleLinks($bean, $links);
@@ -177,7 +178,7 @@ class ModuleController
         }
         $this->handleFiles($bean, $files);
         $bean->save(false);
-        if (!empty($bean->repeat_type) && $bean->repeat_type != '') {
+        if (!empty($bean->repeat_type) && '' != $bean->repeat_type) {
             $this->handleCyclicalRecords($bean);
         }
         $this->handleLinks($bean, $links);
@@ -293,7 +294,7 @@ class ModuleController
         $module = $this->getModuleFromRoute($request);
         $id = $request->getAttribute('id');
         chdir('../legacy/');
-        $focus = BeanFactory::getBean($module, $id);
+        $focus = LegacyBeanFactory::getBean($module, $id);
         if (empty($focus->id)) {
             $response = $response->withStatus(404);
             return $response;
@@ -306,7 +307,7 @@ class ModuleController
         if (isset($spd->layout_defs['subpanel_setup'][$related_name])) {
 
             $target_module = $spd->layout_defs['subpanel_setup'][$related_name]['module'];
-            $target_bean = BeanFactory::getBean($target_module);
+            $target_bean = LegacyBeanFactory::getBean($target_module);
             if (!$target_bean || !$target_bean->ACLAccess('list')) {
                 return $response->withStatus(403);
             }
@@ -416,14 +417,14 @@ class ModuleController
 
         chdir('../api/');
 
-        if(!empty($errors)) {
+        if (!empty($errors)) {
             $response = $response->withStatus(400);
             $response->getBody()->write(json_encode(['errors' => $errors]));
             return $response;
         }
 
         $response = $response->withStatus(200);
-        return $response; 
+        return $response;
     }
 
     protected function mergeRecordData($bean)
@@ -550,7 +551,6 @@ class ModuleController
         $response->getBody()->write(json_encode($data));
         return $response;
     }
-
 
     protected function handleCyclicalRecords(MintBean $bean)
     {
