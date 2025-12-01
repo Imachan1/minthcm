@@ -132,3 +132,11 @@ $dictionary['Kudos']['fields']['name']['audited'] = true;
 $dictionary['Kudos']['fields']['assigned_user_name']['required'] = true;
 $dictionary['Kudos']['fields']['employee_name']['required'] = true;
 $dictionary['Kudos']['fields']['description']['required'] = true;
+$dictionary['Kudos']['fields']['employee_name']['filters'] = [
+    [
+        'field' => 'employee_status',
+        'operator' => 'equal',
+        'value' => 'Active',
+        'editable' => false,
+    ],
+];

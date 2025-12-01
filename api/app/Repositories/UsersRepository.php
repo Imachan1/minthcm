@@ -96,7 +96,7 @@ class UsersRepository extends MintEntityRepository implements UserRepositoryInte
         $where_user_id = !empty($user_id) ? 'AND u.id != :user_id' : '';
         $qb = $this->createQueryBuilder('u');
         $qb
-            ->where("u.deleted = 0 AND u.status = 'active' {$where_user_id}")
+            ->where("u.deleted = 0 AND u.status = 'Active' {$where_user_id}")
             ->orderBy('u.first_name', 'ASC')
             ->addOrderBy('u.last_name', 'ASC')
         ;
@@ -111,5 +111,21 @@ class UsersRepository extends MintEntityRepository implements UserRepositoryInte
     {
         global $system_config;
         return !empty($system_config->settings['system_ldap_enabled']) && $system_config->settings['system_ldap_enabled'] == true;
+    }
+
+    public function getActiveEmployedUsers($user_id = null): array
+    {
+        $where_user_id = !empty($user_id) ? 'AND u.id != :user_id' : '';
+        $qb = $this->createQueryBuilder('u');
+        $qb
+            ->where("u.deleted = 0 AND u.status = 'Active' AND u.employee_status = 'Active' {$where_user_id}")
+            ->orderBy('u.first_name', 'ASC')
+            ->addOrderBy('u.last_name', 'ASC')
+        ;
+        if (!empty($user_id)) {
+            $qb->setParameter('user_id', $user_id);
+        }
+        
+        return $qb->getQuery()->getResult();
     }
 }

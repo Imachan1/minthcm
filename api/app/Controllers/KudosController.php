@@ -68,7 +68,7 @@ class KudosController
         $list_type = $request->getAttribute('listType');
         
         /** @var Users[] */
-        $users = $this->entityManager->getRepository(Users::class)->getActiveUsers($current_user->id);
+        $users = $this->entityManager->getRepository(Users::class)->getActiveEmployedUsers($current_user->id);
         $users = array_map(fn(Users $user) => [
             'id' => $user->id,
             'user_name' => $user->user_name,
