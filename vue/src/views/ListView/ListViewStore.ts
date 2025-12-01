@@ -14,6 +14,9 @@ import * as operatorDefs from './operators'
 import { useFavoritesStore } from '@/store/favorites'
 import { useBean } from '@/composables/useBean'
 import { useStatusBoxesStore } from '@/store/statusBoxes'
+import { mintApi } from '@/api/api'
+import { useBackendStore } from '@/store/backend'
+import ComponentLoader from '@/utils/componentLoader'
 
 interface Preferences {
     columns: string[]
@@ -76,8 +79,23 @@ export const useListViewStore = defineStore('listview', () => {
     const predefinedFilters = ref<boolean>(false)
     const isMassUpdate = ref(false)
 
+    const customActionsCache = ref(new Map<
+        string,
+        {
+            icon: string
+            onClick: (item: any) => void | Promise<void>
+            hasAccess?: (item: any) => boolean
+        }
+    >())
+    const loadingActions = ref(new Set<string>())
+    const customActionsModules = import.meta.glob('@/custom/views/ListView/Actions/*.ts', { eager: false })
+    
+    // Computed that tracks cache size to trigger reactivity
+    const actionsLoaded = computed(() => customActionsCache.value.size)
+
     async function init() {
         initialLoading.value = true
+        clearCustomActionsCache()
         const result = await modulesApi.getListInit(getModule()).catch(moduleAccessError)
         if (module.value === result.data.module) {
             activeFilter.value = result.data?.preferences?.activeFilter ?? null
@@ -464,6 +482,57 @@ export const useListViewStore = defineStore('listview', () => {
         }
     }
 
+    async function loadCustomAction(actionName: string) {
+        const cacheKey = `${module.value}-${actionName}`
+        
+        if (customActionsCache.value.has(cacheKey)) {
+            return customActionsCache.value.get(cacheKey)
+        }
+
+        if (loadingActions.value.has(cacheKey)) {
+            return null
+        }
+
+        loadingActions.value.add(cacheKey)
+
+        const loader = Object.entries(customActionsModules).find(([path]) => path.endsWith(`/${actionName}.ts`))?.[1]
+
+        if (!loader) {
+            loadingActions.value.delete(cacheKey)
+            return null
+        }
+
+        try {
+            const actionModule = (await loader()) as { default: (context: any) => any }
+            const action = actionModule.default
+            const backend = useBackendStore()
+            const popups = usePopupsStore()
+            const languages = useLanguagesStore()
+            const resolvedAction = action({ 
+                router, 
+                store: useListViewStore(), 
+                url, 
+                languages, 
+                popups, 
+                backend, 
+                ComponentLoader, 
+                mintApi 
+            })
+            customActionsCache.value.set(cacheKey, resolvedAction)
+            loadingActions.value.delete(cacheKey)
+            return resolvedAction
+        } catch (error) {
+            console.error(`Failed to load custom action: ${actionName}`, error)
+            loadingActions.value.delete(cacheKey)
+            return null
+        }
+    }
+
+    function clearCustomActionsCache() {
+        customActionsCache.value.clear()
+        loadingActions.value.clear()
+    }
+
     return {
         mode,
         init,
@@ -507,5 +576,9 @@ export const useListViewStore = defineStore('listview', () => {
         addMassUpdateRow,
         deleteMassUpdateRow,
         massUpdatableFields,
+        loadCustomAction,
+        clearCustomActionsCache,
+        customActionsCache,
+        actionsLoaded,
     }
 })

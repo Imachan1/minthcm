@@ -68,24 +68,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useListViewStore } from './ListViewStore'
 import { useLanguagesStore } from '@/store/languages'
 import { useUrlStore } from '@/store/url'
 import { usePopupsStore } from '@/store/popups'
 import { mintApi } from '@/api/api'
-import { useBackendStore } from '@/store/backend'
 import Field from '@/components/Fields/Field.vue'
-
-import ComponentLoader from '@/utils/componentLoader'
 
 const router = useRouter()
 const store = useListViewStore()
 const url = useUrlStore()
 const languages = useLanguagesStore()
 const popups = usePopupsStore()
-const backend = useBackendStore()
 
 const pageText = computed(() => {
     const pageText = `{0} - {1} ${languages.label('LBL_ESLIST_PAGE_TEXT')} {2}`
@@ -113,74 +109,16 @@ const coreActions = {
     },
 }
 
-const customActionsModules = import.meta.glob('@/custom/views/ListView/Actions/*.ts', { eager: false })
-
-const customActionsCache = new Map<
-    string,
-    {
-        icon: string
-        onClick: (item: any) => void | Promise<void>
-        hasAccess?: (item: any) => boolean
-    }
->()
-
-const loadingActions = new Set<string>()
-
-const actionsLoadedTrigger = ref(0)
-
-async function loadCustomAction(actionName: string) {
-    const cacheKey = `${url.module}-${actionName}`
-
-    if (customActionsCache.has(cacheKey)) {
-        return customActionsCache.get(cacheKey)
-    }
-
-    if (loadingActions.has(cacheKey)) {
-        return null
-    }
-
-    loadingActions.add(cacheKey)
-
-    const loader = Object.entries(customActionsModules).find(([path]) => path.endsWith(`/${actionName}.ts`))?.[1]
-
-    if (!loader) {
-        loadingActions.delete(cacheKey)
-        return null
-    }
-
-    try {
-        const actionModule = (await loader()) as { default: (context: any) => any }
-        const action = actionModule.default
-        const resolvedAction = action({ router, store, url, languages, popups, backend, ComponentLoader, mintApi })
-        customActionsCache.set(cacheKey, resolvedAction)
-        loadingActions.delete(cacheKey)
-        actionsLoadedTrigger.value++
-        return resolvedAction
-    } catch (error) {
-        console.error(`Failed to load custom action: ${actionName}`, error)
-        loadingActions.delete(cacheKey)
-        return null
-    }
-}
-
-async function resolveAction(actionName: string) {
-    const customAction = await loadCustomAction(actionName)
-    if (customAction) {
-        return customAction
-    }
-
-    return (coreActions as Record<string, any>)[actionName] ?? {}
-}
-
 function getItemActions(item: Record<string, unknown>) {
-    actionsLoadedTrigger.value
+    // Access computed to establish reactivity dependency
+    store.actionsLoaded
 
     const actions = store.config.config.actions
         .filter((action: any) => typeof action !== 'string' || (item.aclAccess as any)[action])
         .map((action: any) => {
             const actionName = action.action || action
             if (typeof actionName === 'string') {
-                const cached = customActionsCache.get(`${url.module}-${actionName}`)
+                const cached = store.customActionsCache.get(`${url.module}-${actionName}`)
                 if (cached) {
                     if (cached.hasAccess && !cached.hasAccess(item)) {
                         return null
@@ -191,11 +129,11 @@ function getItemActions(item: Record<string, unknown>) {
                 const coreAction = (coreActions as any)[actionName]
 
                 if (!coreAction) {
-                    loadCustomAction(actionName)
+                    store.loadCustomAction(actionName)
                     return {
                         icon: 'mdi-loading',
                         onClick: async (item: any) => {
-                            const resolvedAction = await resolveAction(actionName)
+                            const resolvedAction = await store.loadCustomAction(actionName)
                             if (resolvedAction?.onClick) {
                                 await resolvedAction.onClick(item)
                             }
