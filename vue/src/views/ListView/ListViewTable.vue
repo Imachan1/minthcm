@@ -1,6 +1,6 @@
 <template>
     <v-data-table-server
-        class="list-table"
+        class="list-table sticky-columns"
         :style="{
             minHeight: store.mode === 'relate' ? 'calc(100vh - 300px)' : 0,
         }"
@@ -244,6 +244,26 @@ function getItemActions(item: Record<string, unknown>) {
         }
         &:active {
             background-color: rgba(var(--v-theme-on-surface), 0.16);
+        }
+    }
+
+    @media only screen and (min-width: 1280px) {
+        &.sticky-columns {
+            :deep(th:nth-child(2)),
+            :deep(td:nth-child(2)) {
+                position: sticky;
+                left: 48px;
+                z-index: 9;
+                background-color: rgb(var(--v-theme-surface));
+            }
+
+            :deep(th:first-child),
+            :deep(td:first-child) {
+                position: sticky;
+                left: 0;
+                z-index: 10;
+                background-color: rgb(var(--v-theme-surface));
+            }
         }
     }
 }
