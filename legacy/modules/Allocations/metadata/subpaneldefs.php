@@ -74,7 +74,7 @@ $layout_defs["Allocations"]["subpanel_setup"] = array(
         'top_buttons' =>
         array(
             array(
-                'widget_class' => 'SubPanelTopSelectButtonForAllocations',
+                'widget_class' => 'SubPanelTopSelectButton',
             ),
         ),
     ),
