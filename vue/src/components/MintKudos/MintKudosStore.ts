@@ -34,7 +34,7 @@ export const useMintKudosStore = defineStore('mint-kudos', () => {
     async function fetchInitialData() {
         kudos.value = []
         isLoading.value = true
-        const response = await mintApi.get<InitialResponse>(`kudos/init`)
+        const response = await mintApi.get<InitialResponse>(`kudos/init?listType=${activeTab.value}`)
         kudos.value = response.data.kudos
         users.value = response.data.users
         isLoading.value = false
