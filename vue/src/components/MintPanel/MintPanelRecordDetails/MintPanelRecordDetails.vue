@@ -199,6 +199,7 @@ const edit = () => {
     store.view = 'edit'
     store.inlineEditField = ''
     store.inlineEditFieldSaving = ''
+    replaceViewPath('DetailView', 'EditView')
 }
 
 const cancel = () => {
@@ -209,6 +210,7 @@ const cancel = () => {
     store.view = 'detail'
     store.inlineEditField = ''
     store.inlineEditFieldSaving = ''
+    replaceViewPath('EditView', 'DetailView')
 }
 
 const save = async () => {
@@ -227,6 +229,15 @@ const save = async () => {
         store.inlineEditFieldSaving = ''
     } else {
         store.inlineEditField = prevInlineEditField
+    }
+    replaceViewPath('EditView', 'DetailView')
+}
+
+const replaceViewPath = (needle: string, replacement: string) => {
+    const pathSegments = window.location.href.split('/')
+    if (pathSegments.includes(needle)) {
+        const location = window.location.href.replace(needle, replacement)
+        window.history.replaceState(null, '', location)
     }
 }
 
