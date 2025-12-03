@@ -46,15 +46,23 @@
         </template>
         <template v-slot:item.actions="{ item }">
             <div class="d-flex justify-end" style="gap: 8px">
-                <v-icon
-                    v-for="action in getItemActions(item)"
+                <v-tooltip
+                    v-for="(action, index) in getItemActions(item)"
                     v-show="action.icon"
-                    :key="action.icon"
-                    @click="action.onClick(item)"
-                    color="secondary"
-                    size="small"
-                    :icon="action.icon"
-                />
+                    :key="`${action.icon}-${index}`"
+                    location="top"
+                >
+                    <template v-slot:activator="{ props }">
+                        <v-icon
+                            v-bind="props"
+                            @click="action.onClick(item)"
+                            color="secondary"
+                            size="small"
+                            :icon="action.icon"
+                        />
+                    </template>
+                    <span>{{ action.label ? languages.label(action.label, url.module) : '' }}</span>
+                </v-tooltip>
             </div>
         </template>
         <template #bottom>
@@ -91,14 +99,17 @@ const pageText = computed(() => {
 const coreActions = {
     edit: {
         icon: 'mdi-pencil',
+        label: 'LBL_EDIT_BUTTON',
         onClick: (item) => router.push(`/modules/${url.module}/EditView/${item.id}`),
     },
     view: {
         icon: 'mdi-eye',
+        label: 'LBL_VIEW_BUTTON',
         onClick: (item) => router.push(`/modules/${url.module}/DetailView/${item.id}`),
     },
     delete: {
         icon: 'mdi-delete',
+        label: 'LBL_DELETE_BUTTON',
         onClick: async (item) => {
             const confirmMessage = `${languages.label('LBL_ESLIST_DELETE_RECORD_CONFIRM_BODY')} ${item.name}?`
             if (await popups.confirm(confirmMessage)) {
@@ -132,6 +143,7 @@ function getItemActions(item: Record<string, unknown>) {
                     store.loadCustomAction(actionName)
                     return {
                         icon: 'mdi-loading',
+                        label: 'LBL_LOADING',
                         onClick: async (item: any) => {
                             const resolvedAction = await store.loadCustomAction(actionName)
                             if (resolvedAction?.onClick) {
