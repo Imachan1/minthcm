@@ -117,7 +117,7 @@ class ModuleController
         $this->entity_manager->persist($entity);
 
         $repository->save($entity, false);
-        if (!empty($entity->repeat_type) && '' != $entity->repeat_type) {
+        if (!empty($record_data['repeat_type']) && '' != $record_data['repeat_type']) {
             $this->handleCyclicalRecords($entity);
         }
         $this->handleLinks($entity, $links);
@@ -173,7 +173,7 @@ class ModuleController
 
         $this->handleFiles($entity, $files);
         $entity_repository->save($entity, false);
-        if (!empty($entity->repeat_type) && '' != $entity->repeat_type) {
+        if (!empty($record_data['repeat_type']) && '' != $record_data['repeat_type']) {
             $this->handleCyclicalRecords($entity);
         }
         $this->handleLinks($entity, $links);
@@ -543,6 +543,6 @@ class ModuleController
 
     protected function handleCyclicalRecords(MintEntity $mint_entity)
     {
-        (new CyclicRecordsSaver($mint_entity->getMintBean(), $this->entityManager))->run();
+        (new CyclicRecordsSaver($mint_entity->getMintBean(), $this->entity_manager))->run();
     }
 }

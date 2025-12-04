@@ -26,9 +26,11 @@
                         <v-icon class="mint-date-field-btn" v-bind="props">mdi-clock-time-eight-outline</v-icon>
                     </template>
                     <v-time-picker
-                        v-model="timePickerValue"
+                        v-model="timeValue"
                         :format="timeFormat"
                         :ampm-in-title="timeFormat === 'ampm'"
+                        :allowed-minutes="allowedMinutesStep"
+                        scrollable
                     >
                         <template #header></template>
                     </v-time-picker>
@@ -54,6 +56,8 @@ const timePickerMenu = ref(false)
 const model = ref(props.field.model)
 const preferences = usePreferencesStore()
 
+const allowedMinutesStep = (m: number) => m % 5 === 0
+
 const timeFormat = computed(() => {
     return DateUtils.getTimeFormatGeneralized()
 })
@@ -66,6 +70,7 @@ const dateValue = computed({
         datePickerMenu.value = false
         if (!newVal?.trim()) {
             model.value.clear()
+            return
         }
         const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
         if (dt.isValid) {
@@ -106,22 +111,6 @@ const datePickerValue = computed({
             ),
         )
         datePickerMenu.value = false
-    },
-})
-
-const timePickerValue = computed({
-    get() {
-        return model.value.isValid ? model.value.formatted.user_time : '00:00'
-    },
-    set(newVal) {
-        const dt = DateTime.fromFormat(
-            `${dateValue.value} ${newVal}`,
-            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`,
-        )
-        if (dt.isValid) {
-            model.value.set(dt)
-        }
-        timePickerMenu.value = false
     },
 })
 

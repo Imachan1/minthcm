@@ -37,7 +37,7 @@ const preferences = usePreferencesStore()
 
 const parsedValue = computed({
     get() {
-        return props.field.formatted.user
+        return model.value.formatted?.user_date || ''
     },
     async set(newVal) {
         datePickerMenu.value = false
@@ -60,6 +60,7 @@ const pickerValue = computed({
             return
         }
         model.value.set(dt.toFormat('yyyy-MM-dd'))
+        emit('update:modelValue', model.value)
         datePickerMenu.value = false
     },
 })
