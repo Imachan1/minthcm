@@ -5,12 +5,12 @@ $viewdefs['Meetings'] = [
     'panels' => [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
+            'data' => [
                 'actions' => [
                     'Audit',
                     'Delete',
                     'Duplicate',
                 ],
-            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -18,7 +18,7 @@ $viewdefs['Meetings'] = [
                             ['name', 'status'],
                             ['type', 'assigned_user_name'],
                             ['date_start', 'date_end'],
-                            ['description']
+                            ['description', 'repeat']
                         ],
                     ],
                 ],

@@ -49,15 +49,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Api\Controllers\Init\Languages;
 use MintHCM\Api\Controllers\Init\Module;
 use MintHCM\Api\Controllers\Init\Preferences;
+use MintHCM\Utils\ConstantsLoader;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use User;
-use MintHCM\Utils\ConstantsLoader;
 
 #[\AllowDynamicProperties]
 class Init
 {
-    protected $preferences_controller, $languages_controller, $module_init_controller, $mintRebuildID, $request_language, $user_id;
+    protected $preferences_controller, $languages_controller, $module_init_controller, $mintRebuildID, $request_language, $user_id, $all_modules;
 
     const VIEW_META = [
         "DetailView",
@@ -106,14 +106,16 @@ class Init
             in_array('reload_module_menu', $rebuild_array)
             || (!$only_minimum_data && empty($rebuild_array))
             || $response_body['user']['id'] !== $this->user_id
-            || false !== $response_body['user']['preferences']['reload_module_menu'] 
+            || false !== $response_body['user']['preferences']['reload_module_menu']
             || $this->request_language !== $_SESSION["authenticated_user_language"]
         ) {
-        [$modules_menu, $modules_data] = $this->getModules();
-        $response_body['menu_modules'] = $modules_menu;
-        $response_body['modules'] = $modules_data;
-        $response_body['quick_create'] = $this->getQuickCreate($modules_menu);
-        $response_body['legacy_views'] = $this->getLegacyViews($modules_data);
+            $this->all_modules = $this->getAllModules();
+            $modules_menu = $this->getModules();
+            $modules_data = $this->getModulesData();
+            $response_body['menu_modules'] = $modules_menu;
+            $response_body['modules'] = $modules_data;
+            $response_body['quick_create'] = $this->getQuickCreate();
+            $response_body['legacy_views'] = $this->getLegacyViews($modules_data);
         }
         if ($only_minimum_data) {
             $response_body['acls'] = $this->module_init_controller->getACLs();
@@ -168,20 +170,43 @@ class Init
     private function getModules()
     {
         global $current_user;
+
+        chdir('../legacy');
+        require_once 'modules/MySettings/TabController.php';
+        $controller = new \TabController();
+        $tabArray = $controller->get_tabs($current_user);
+        chdir('../api');
+        return array_keys($tabArray[0]);
+    }
+
+    private function getModulesData()
+    {
+        $modules_data = array();
+        if (!is_array($this->all_modules)) {
+            return $modules_data;
+        }
+        foreach ($this->all_modules as $module) {
+            $modules_data[$module] = $this->module_init_controller->getModuleData($module);
+        }
+        global $beanList;
+        foreach ($beanList as $key => $module) {
+            if (!array_key_exists($key, $modules_data)) {
+                $modules_data[$key] = $this->module_init_controller->getModuleData($key);
+            }
+        }
+        return $modules_data;
+    }
+
+    private function getALLModules()
+    {
+        global $current_user;
         chdir('../legacy');
         $modules = query_module_access_list($current_user);
         chdir('../api');
-        $modules_data = array();
-        if (!is_array($modules)) {
-            return $modules_data;
-        }
-        foreach ($modules as $module) {
-            $modules_data[$module] = $this->module_init_controller->getModuleData($module);
-        }
-        return $this->getMenuForAllModules($modules_data, $modules);
+        return $modules;
     }
 
-    private function getQuickCreate($modules_menu)
+    private function getQuickCreate()
     {
         chdir('../api');
         $modules = ConstantsLoader::getConstants('quick_create', true);
@@ -192,7 +217,7 @@ class Init
         }
 
         foreach ($modules as $module => $name) {
-            if(!in_array($module, $modules_menu)) {
+            if (!in_array($module, $this->all_modules)) {
                 continue;
             }
             $response[] = array(
@@ -260,7 +285,7 @@ class Init
     {
         if (isset($_SESSION['mintRebuildID']) && !empty($_SESSION['mintRebuildID'])) {
             return $_SESSION['mintRebuildID'];
-}
+        }
         chdir('../legacy');
         $mintRebuildFile = fopen("cache/mintRebuild", 'r');
         if (!$mintRebuildFile) {

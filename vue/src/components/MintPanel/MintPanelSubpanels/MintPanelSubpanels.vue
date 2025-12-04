@@ -7,7 +7,10 @@
                 :key="subpanel.key"
                 bg-color="transparent"
                 :value="subpanel.key"
-                :class="['mint-subpanel', subpanel.total <= 0 && 'mint-subpanel-disabled']"
+                :class="{
+                    'mint-subpanel': true, 
+                    'mint-subpanel-disabled': subpanel.total <= 0 && !expandedSubpanels.includes(subpanel.key)
+                }"
             >
                 <v-expansion-panel-title class="mint-subpanel-title" hide-actions>
                     <div>
@@ -56,6 +59,7 @@ import MintPanelSubpanelsButtons from './MintPanelSubpanelsButtons.vue'
 import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintDataTablePagination from '@/components/MintDataTablePagination/MintDataTablePagination.vue'
 import { useACL } from '@/composables/useACL'
+import { useLocalStorageStore } from '@/store/localStorage'
 
 onMounted(() => {
     if (store.view == 'detail' && store.bean.id) {
@@ -68,8 +72,12 @@ const store = useRecordViewStore()
 const languages = useLanguagesStore()
 const backend = useBackendStore()
 const acl = useACL()
+const storage = useLocalStorageStore()
 
-const expandedSubpanels = ref<string[]>([])
+const expandedSubpanels = computed({
+    get: () => storage.getPanelSections(store.bean.module, 'MintPanelSubpanels'),
+    set: (value: string[]) => storage.setPanelSections(store.bean.module, 'MintPanelSubpanels', value)
+});
 
 const changePage = (page: number, tableName: string, paginateBy: number) => {
     store.fetchSubpanelRecords(tableName, paginateBy, page)

@@ -978,5 +978,10 @@ $mod_strings = array(
    'LBL_CALCULATE_DLNC' => 'Calculate Date Last Next Contact',
    'LBL_CALCULATE_DLNC_CANDIDATES' => 'Candidates',
    // DLNC end
-   'LBL_LOCALE_DISPLAY_WEEK_NUMBER' => 'Display week number in calendar'
+   'LBL_LOCALE_DISPLAY_WEEK_NUMBER' => 'Display week number in calendar',
+
+   # MCP Administration Start
+   'LBL_MCP_SETTINGS_NAME' => 'MCP Settings',
+   'LBL_MCP_SETTINGS_DESCRIPTION' => 'Manage MCP Settings',
+   # MCP Administration End
 );

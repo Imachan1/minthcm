@@ -8,6 +8,9 @@ import { useAuthStore } from '@/store/auth'
 import { AxiosError } from 'axios'
 import { MintDate } from '@/composables/useMintDate'
 import { MintField } from '../Fields/useField'
+import { usePreferencesStore } from '@/store/preferences'
+import { useStatusBoxesStore } from '@/store/statusBoxes'
+import { useLanguagesStore } from '@/store/languages'
 
 const MAX_HOURS_COUNT = 10
 
@@ -17,6 +20,7 @@ export const useMintScheduler = (
     dateTo: Ref<MintField<MintDate> | null>,
 ) => {
     const auth = useAuthStore()
+    const preferences = usePreferencesStore()
 
     const activityDtFrom = computed(() => {
         if (!dateFrom.value) {
@@ -68,7 +72,7 @@ export const useMintScheduler = (
             return []
         }
         const hours = []
-        const start = schedulerDtFrom.value.setZone('Europe/Warsaw')
+        const start = schedulerDtFrom.value.setZone(preferences.user?.timezone)
         for (let i = 0; i < MAX_HOURS_COUNT; i++) {
             const dt = start.plus({ hours: i })
             if (schedulerDtTo.value && dt > schedulerDtTo.value) {
@@ -110,7 +114,7 @@ export const useMintScheduler = (
 
     const participants = ref<Participant[]>([])
     const draftParticipants = computed(() => {
-        if (bean.id) {
+        if (bean.id || bean.originalId) {
             return null
         }
         if (!participants.value?.length && auth.user?.id) {
@@ -121,36 +125,52 @@ export const useMintScheduler = (
 
     const isInitialized = ref(false)
     async function init() {
-        if (!bean.id && auth.user?.id) {
+        if (!bean.id && !bean.originalId && auth.user?.id) {
             bean.loadRelationship('users')?.add(auth.user.id)
         }
         await fetchData()
     }
 
-    function addParticipant(participant: Participant) {
-        if (participants.value.find((p) => p.id === participant.id)) {
-            return
-        }
-        participants.value.push(participant)
+    async function linkParticipant(participant: Participant) {
         if (bean.id) {
-            mintApi.post(`/${bean.module}/Link/${bean.id}`, {
+            await mintApi.post(`/${bean.module}/Link/${bean.id}`, {
                 ids: [participant.id],
                 link_name: participant.link,
+            })
+            useStatusBoxesStore().showStatus('scheduler-link-success', {
+                type: 'success',
+                autoClose: true,
+                autoCloseDelay: 3000,
+                message: useLanguagesStore().label('LBL_SAVED'),
             })
         } else {
             bean.loadRelationship(participant.link)?.add(participant.id)
         }
     }
 
-    function removeParticipant(participant: Participant) {
+    async function addParticipant(participant: Participant) {
+        if (participants.value.find((p) => p.id === participant.id)) {
+            return
+        }
+        participants.value.push(participant)
+        linkParticipant(participant)
+    }
+
+    async function removeParticipant(participant: Participant) {
         if (!participants.value.find((p) => p.id === participant.id)) {
             return
         }
         participants.value = participants.value.filter((p) => p.id !== participant.id)
         if (bean.id) {
-            mintApi.post(`/${bean.module}/Unlink/${bean.id}`, {
+            await mintApi.post(`/${bean.module}/Unlink/${bean.id}`, {
                 ids: [participant.id],
                 link_name: participant.link,
+            })
+            useStatusBoxesStore().showStatus('scheduler-unlink-success', {
+                type: 'success',
+                autoClose: true,
+                autoCloseDelay: 3000,
+                message: useLanguagesStore().label('LBL_SAVED'),
             })
         } else {
             bean.loadRelationship(participant.link)?.remove(participant.id)
@@ -172,7 +192,7 @@ export const useMintScheduler = (
                 {
                     date_from: dateBegin.value,
                     date_to: dateEnd.value,
-                    parent_id: bean.id,
+                    parent_id: bean.id || bean.originalId || '',
                     parent_type: bean.module,
                     participants: draftParticipants.value,
                 },
@@ -181,6 +201,13 @@ export const useMintScheduler = (
                 },
             )
             participants.value = result.data
+            if (!bean.id && bean.originalId) {
+                Object.values(participants.value).forEach((p) => {
+                    if (p.id) {
+                        linkParticipant(p)
+                    }
+                })
+            }
             isInitialized.value = true
         } catch (error: unknown) {
             if (error instanceof AxiosError) {

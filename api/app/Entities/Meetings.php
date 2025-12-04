@@ -316,7 +316,7 @@ class Meetings extends MintEntity
     protected $type;
 
     /**
-     * @ORM\Column(type="float", length="10")
+     * @ORM\Column(type="string", length="255")
      */
     protected $jjwg_maps_lat_c;
 

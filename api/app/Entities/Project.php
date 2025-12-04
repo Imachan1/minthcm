@@ -162,7 +162,7 @@ class Project extends MintEntity
     protected $override_business_hours;
 
     /**
-     * @ORM\Column(type="float", length="10")
+     * @ORM\Column(type="string", length="255")
      */
     protected $jjwg_maps_lat_c;
 

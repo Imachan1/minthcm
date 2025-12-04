@@ -45,13 +45,15 @@
 
 namespace MintHCM\Api\Controllers;
 
-use BeanFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
+use BeanFactory as LegacyBeanFactory;
 use MintHCM\Data\BeanFactory as MintBeanFactory;
+use MintHCM\Data\MintBean;
 use MintHCM\Lib\MintLogic\MintLogic;
 use MintHCM\Utils\LegacyConnector;
+use MintHCM\Utils\CyclicRecordsSaver;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
@@ -115,6 +117,9 @@ class ModuleController
         $this->entity_manager->persist($entity);
 
         $repository->save($entity, false);
+        if (!empty($entity->repeat_type) && '' != $entity->repeat_type) {
+            $this->handleCyclicalRecords($entity);
+        }
         $this->handleLinks($entity, $links);
 
         $this->entity_manager->flush();
@@ -168,6 +173,9 @@ class ModuleController
 
         $this->handleFiles($entity, $files);
         $entity_repository->save($entity, false);
+        if (!empty($entity->repeat_type) && '' != $entity->repeat_type) {
+            $this->handleCyclicalRecords($entity);
+        }
         $this->handleLinks($entity, $links);
 
         $this->entity_manager->flush();
@@ -268,7 +276,7 @@ class ModuleController
         $module = $this->getModuleFromRoute($request);
         $id = $request->getAttribute('id');
         chdir('../legacy/');
-        $focus = BeanFactory::getBean($module, $id);
+        $focus = LegacyBeanFactory::getBean($module, $id);
         if (empty($focus->id)) {
             $response = $response->withStatus(404);
             return $response;
@@ -281,7 +289,7 @@ class ModuleController
         if (isset($spd->layout_defs['subpanel_setup'][$related_name])) {
 
             $target_module = $spd->layout_defs['subpanel_setup'][$related_name]['module'];
-            $target_bean = BeanFactory::getBean($target_module);
+            $target_bean = LegacyBeanFactory::getBean($target_module);
             if (!$target_bean || !$target_bean->ACLAccess('list')) {
                 return $response->withStatus(403);
             }
@@ -325,7 +333,7 @@ class ModuleController
         $link_name = $request->getAttribute('link_name');
 
         chdir('../legacy/');
-        $focus = BeanFactory::getBean($module, $id);
+        $focus = LegacyBeanFactory::getBean($module, $id);
         if (empty($focus->id)) {
             $response = $response->withStatus(404);
             return $response;
@@ -367,7 +375,7 @@ class ModuleController
         $link_name = $request->getAttribute('link_name');
 
         chdir('../legacy/');
-        $focus = BeanFactory::getBean($module, $id);
+        $focus = LegacyBeanFactory::getBean($module, $id);
         if (empty($focus->id)) {
             $response = $response->withStatus(404);
             return $response;
@@ -392,7 +400,7 @@ class ModuleController
 
         chdir('../api/');
 
-        if(!empty($errors)) {
+        if (!empty($errors)) {
             $response = $response->withStatus(400);
             $response->getBody()->write(json_encode(['errors' => $errors]));
             return $response;
@@ -531,5 +539,10 @@ class ModuleController
         ];
         $response->getBody()->write(json_encode($data));
         return $response;
+    }
+
+    protected function handleCyclicalRecords(MintEntity $mint_entity)
+    {
+        (new CyclicRecordsSaver($mint_entity->getMintBean(), $this->entityManager))->run();
     }
 }

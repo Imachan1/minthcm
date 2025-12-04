@@ -39,6 +39,13 @@ export const useBean = (module: string, id: string) => {
         'created_by',
         'created_by_name',
         'date_indexed',
+        'repeat',
+        'repeat_type',
+        'repeat_interval',
+        'repeat_dow',
+        'repeat_until',
+        'repeat_count',
+        'repeat_parent_id',
     ]
 
     const filesToSave = ref<{ [key: string]: File }>({})
@@ -201,7 +208,9 @@ export const useBean = (module: string, id: string) => {
         }
     }
 
+    const originalId = ref('')
     async function setAttributesFromBeanId(copy_id: string) {
+        originalId.value = copy_id
         const fieldsToUpdate: { [fieldName: string]: any } = {}
         const copyBean = await useBean(module, copy_id).init()
         Object.entries(copyBean.data.attributes || {}).forEach(([fieldName, fieldDef]) => {
@@ -425,5 +434,6 @@ export const useBean = (module: string, id: string) => {
         setAttributesFromQuery,
         loadRelationship,
         setAttributesFromBeanId,
+        originalId,
     }
 }

@@ -18,6 +18,9 @@ $viewdefs['Candidatures'] = [
                         'title' => 'LBL_BASIC',
                         'fields' => [
                             [
+                                'entry_interview',
+                            ],
+                            [
                                 'status',
                                 'status_information',
                             ],
@@ -39,7 +42,7 @@ $viewdefs['Candidatures'] = [
                             ],
                             [
                                 'parent_name',
-                                'entry_interview',
+                                '',
                             ],
                             [
                                 'source',
