@@ -104,10 +104,7 @@ export const useListViewStore = defineStore('listview', () => {
             config.value = result.data?.config
             defs.value = result.data?.defs
             preferences.value = Array.isArray(result.data?.preferences) ? {} : result.data?.preferences
-            options.value.sortBy[0] = {
-                key: result.data?.preferences?.sortParams?.sortBy,
-                order: result.data?.preferences?.sortParams?.sortOrder,
-            }
+            prepareDefaultSort(result);
             module.value = result.data?.module
             isInit.value = true
             options.value.sortBy.push({
@@ -125,6 +122,33 @@ export const useListViewStore = defineStore('listview', () => {
         }
     }
 
+    function prepareDefaultSort(listData)
+    {
+        const preferenceSortBy = listData.data?.preferences?.sortParams?.sortBy ?? '';
+        const preferenceSortOrder = listData.data?.preferences?.sortParams?.sortOrder ?? '';
+        const defsDefaultSortField = listData.data?.defs?.defaultSort?.field ?? null;
+        const defsDefaultSortOrder = listData.data?.defs?.defaultSort?.order ?? 'ASC';
+        if(
+            !defsDefaultSortField
+            || (
+                preferenceSortBy 
+                && preferenceSortOrder
+                && preferenceSortBy !== '_score'
+            )
+        ){
+            options.value.sortBy[0] = {
+                key: preferenceSortBy,
+                order: preferenceSortOrder,
+            }
+            return;
+        }
+
+        options.value.sortBy[0] = {
+            key: defsDefaultSortField,
+            order: defsDefaultSortOrder,
+        }
+    }
+
     async function getData() {
         isMassUpdate.value = false
         requestCount++
@@ -138,7 +162,7 @@ export const useListViewStore = defineStore('listview', () => {
             options.value.page ?? 0,
             options.value.itemsPerPage === -1 ? 100 : options.value.itemsPerPage,
             myObjects.value,
-            defs.value?.columns[options.value.sortBy[0]?.key]?.key,
+            options.value.sortBy[0]?.key ?? '',
             options.value.sortBy[0]?.order ?? 'asc',
             activeFilter.value,
             onlyFavorites.value,
@@ -334,11 +358,16 @@ export const useListViewStore = defineStore('listview', () => {
         return massActions
     })
 
-    watch(options, () => {
+    watch(
+        options,
+        () => {
+            if (isInit.value) {
         if (isInit.value) {
-            getData()
-        }
-    })
+                getData()
+            }
+        },
+        { deep: true },
+    )
 
     const relatePopup = computed(() => {
         if (mode.value !== 'relate') {

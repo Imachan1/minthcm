@@ -49,4 +49,8 @@ $ESListViewDefs['Trainings'] = [
         'modified_by_name' => [],
         'element_name' => [],
     ],
+    'defaultSort' => [
+        'field' => 'date_start',
+        'order' => 'DESC'
+    ],
 ];

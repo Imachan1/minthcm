@@ -191,6 +191,7 @@ class ListInitController
             'columns' => $this->prepareDefsType("columns"),
             'search' => $this->prepareSearchDefs(),
             'massupdate' => $this->prepareMassUpdateDefs()
+            'defaultSort' => $this->prepareDefaultSort(),
         ];
     }
 
@@ -219,6 +220,11 @@ class ListInitController
             $massupdate_fields[$massupdate_field['name']] = $massupdate_field;
         }
         return $massupdate_fields;
+    }
+
+    protected function prepareDefaultSort()
+    {
+        return $this->metadata["defaultSort"] ?? [];
     }
 
     protected function prepareSearchDefs()
