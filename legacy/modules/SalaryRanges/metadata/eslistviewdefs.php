@@ -79,4 +79,8 @@ $ESListViewDefs['SalaryRanges'] = [
         'created_by_name' => [],
         'modified_by_name' => [],
     ],
+    'defaultSort' => [
+        'field' => 'start_date',
+        'order' => 'DESC'
+    ],
 ];

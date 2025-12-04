@@ -12,6 +12,7 @@
         must-sort
         :show-select="store.itemsSelectable"
         v-model="store.selected"
+        v-model:sort-by="store.options.sortBy"
         @update:options="store.options = $event"
         :no-data-text="store.error ? languages.label('LBL_ESLIST_FETCHING_DATA_ERROR') : languages.label('LBL_ESLIST_NO_DATA_AVAILABLE')"
         hover

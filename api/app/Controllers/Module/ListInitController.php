@@ -182,7 +182,13 @@ class ListInitController
         return [
             'columns' => $this->prepareDefsType("columns"),
             'search' => $this->prepareSearchDefs(),
+            'defaultSort' => $this->prepareDefaultSort(),
         ];
+    }
+
+    protected function prepareDefaultSort()
+    {
+        return $this->metadata["defaultSort"] ?? [];
     }
 
     protected function prepareSearchDefs()

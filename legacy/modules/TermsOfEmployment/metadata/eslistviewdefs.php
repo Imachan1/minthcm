@@ -64,4 +64,8 @@ $ESListViewDefs['TermsOfEmployment'] = [
         'created_by_name' => [],
         'modified_by_name' => [],
     ],
+    'defaultSort' => [
+        'field' => 'date_of_signing',
+        'order' => 'DESC'
+    ],
 ];

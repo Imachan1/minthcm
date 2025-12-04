@@ -491,20 +491,20 @@ function unformat_number($string) {
    if ( !isset($currency) ) {
       global $current_user;
       $currency = BeanFactory::newBean('Currencies');
-      if ( !empty($current_user->id) ) {
+      if ( !empty($current_user->id) && !empty($currency) ) {
          if ( $current_user->getPreference('currency') ) {
             $currency->retrieve($current_user->getPreference('currency'));
          } else {
             $currency->retrieve('-99'); // use default if none set
          }
-      } else {
+      } else if(!empty($currency)) {
          $currency->retrieve('-99'); // use default if none set
       }
    }
 
    $seps = get_number_separators();
    // remove num_grp_sep and replace decimal separator with decimal
-   $string = trim(str_replace(array( $seps[0], $seps[1], $currency->symbol ), array( '', '.', '' ), $string));
+   $string = trim(str_replace(array( $seps[0], $seps[1], $currency->symbol ?? '' ), array( '', '.', '' ), $string));
    if ( preg_match('/^[+-]?\d(\.\d+)?[Ee]([+-]?\d+)?$/', $string) ) {
       $string = sprintf("%.0f", $string);
    }//for scientific number format. After round(), we may get this number type.
