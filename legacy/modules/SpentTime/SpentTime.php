@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -96,7 +96,7 @@ class SpentTime extends Basic
         global $mod_strings;
 
         $other_worktime_count = $this->getCountOfSpendTimeRecordsInGivenFrame();
-
+        $this->updateDurationField();
         if (!$other_worktime_count) {
             $update_task_on_rel_del = null;
             $is_manual_save = false;
@@ -265,4 +265,14 @@ class SpentTime extends Basic
         $obj->afterSpentTimeEdit($this);
     }
 
+    private function updateDurationField()
+    {
+        $date_start  = getDateTimeObject($this->date_start);
+        $date_end  = getDateTimeObject($this->date_end);
+
+        $interval = $date_end->diff($date_start);
+
+        $this->duration_hours = $interval->format("%h");
+        $this->duration_minutes = $interval->format("%i");
+    }
 }
