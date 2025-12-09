@@ -190,7 +190,7 @@ class ListInitController
         return [
             'columns' => $this->prepareDefsType("columns"),
             'search' => $this->prepareSearchDefs(),
-            'massupdate' => $this->prepareMassUpdateDefs()
+            'massupdate' => $this->prepareMassUpdateDefs(),
             'defaultSort' => $this->prepareDefaultSort(),
         ];
     }
