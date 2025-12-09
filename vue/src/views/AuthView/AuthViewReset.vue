@@ -1,16 +1,6 @@
 <template>
     <div>
         <h2 v-text="languages.label('LBL_MINT4_AUTH_RESET_TITLE')" />
-        <template v-if="resetSuccess">
-            <MintStatusBox type="success">
-                {{ languages.label('LBL_MINT4_AUTH_RESET_SUCCESS') }}
-            </MintStatusBox>
-            <MintButton
-                variant="primary"
-                :text="languages.label('LBL_MINT4_AUTH_RESET_BACK_TO_LOGIN_BTN')"
-                @click="$router.push({ name: 'auth-login' })"
-            />
-        </template>
         <template v-if="tokenError">
             <MintStatusBox type="error">
                 {{ languages.label('LBL_MINT4_AUTH_RESET_TOKEN_ERROR') }}
@@ -118,7 +108,7 @@ onMounted(async () => {
         handleTokenError()
     }
     try {
-        const validTokenResponse = await mintApi.get(`api/validation_token?token=${token.value}`, { rawError: true})
+        const validTokenResponse = await mintApi.get(`validation_token?token=${token.value}`, { rawError: true})
         if (validTokenResponse.data?.username) {
             username.value = validTokenResponse.data.username
         } else {
@@ -140,7 +130,6 @@ const store = useAuthViewStore()
 const password = ref('')
 const password2 = ref('')
 const showPassword = ref(false)
-const resetSuccess = ref(false)
 const tokenError = ref(false)
 
 const token = ref<string | null>('')
@@ -172,8 +161,8 @@ async function submitResetPassword() {
         token: token.value,
     })
     if (response.status === 200) {
-        resetSuccess.value = true
         store.footerNavAction = null
+        router.push({ name: 'auth-login', query: { reset: 'success' } })
     }
 }
 </script>
