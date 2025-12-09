@@ -48,6 +48,7 @@ viewTools.form.afterSave(function(){
             || $("#new_password").val().length !== $("#confirm_pwd").val().length
             || $("#new_password").val() !== $("#confirm_pwd").val()
         )
+        && $("#required_password").val() != '0'
     ){
         setTimeout(function(){
             viewTools.GUI.statusBox.hideStatus();
