@@ -1070,3 +1070,5 @@ $mod_strings['LBL_VISUALIZATION_PARAMS'] = 'Visualization Params';
 $mod_strings['LBL_WHERECONDITION'] = 'Where Condition';
 $mod_strings['LBL_WHEREGROUPS'] = 'Where Groups';
 $mod_strings['LBL_PROSPECTLISTS'] = "Prospect Lists";
+$mod_strings['LBL_QUERYDESCRIPTION'] = "Query Description";
+$mod_strings['LBL_PRESENTDESCRIPTION'] = "Present Description";
