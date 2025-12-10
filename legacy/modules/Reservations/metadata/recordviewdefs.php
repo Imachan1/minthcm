@@ -13,11 +13,6 @@ $viewdefs['Reservations'] = [
                         'resource_name',
                     ],
                 ],
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                    'Duplicate',
-                ],
             ],
         ],
         'basicInfo' => [

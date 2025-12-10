@@ -7,11 +7,6 @@ $viewdefs['Notes'] = [
             'component' => 'MintPanelRecordDetails',
             'title' => 'LBL_NOTE_INFORMATION',
             'data' => [
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                    'Duplicate',
-                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
