@@ -176,9 +176,7 @@ class Init
         $controller = new \TabController();
         $tabArray = $controller->get_tabs($current_user);
         chdir('../api');
-        $menu_modules = array_keys($tabArray[0]);
-        $this->all_modules = array_unique(array_merge($menu_modules, $this->all_modules), SORT_STRING);
-        return $menu_modules;
+        return array_keys($tabArray[0]);
     }
 
     private function getModulesData()
@@ -195,8 +193,12 @@ class Init
 
     private function getALLModules()
     {
-        global $beanList;
-        $modules = array_keys($beanList);
+        global $beanList, $moduleList, $current_user;
+        
+        $modules = $moduleList;
+        if ($current_user->isAdmin()) {
+            $modules = array_unique(array_merge($modules, array_keys($beanList)));
+        }
         chdir('../legacy');
         require_once 'modules/ACL/ACLController.php';
         \ACLController::filterModuleList($modules);
