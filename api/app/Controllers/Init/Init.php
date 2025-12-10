@@ -176,7 +176,9 @@ class Init
         $controller = new \TabController();
         $tabArray = $controller->get_tabs($current_user);
         chdir('../api');
-        return array_keys($tabArray[0]);
+        $menu_modules = array_keys($tabArray[0]);
+        $this->all_modules = array_unique(array_merge($menu_modules, $this->all_modules), SORT_STRING);
+        return $menu_modules;
     }
 
     private function getModulesData()
@@ -188,20 +190,16 @@ class Init
         foreach ($this->all_modules as $module) {
             $modules_data[$module] = $this->module_init_controller->getModuleData($module);
         }
-        global $beanList;
-        foreach ($beanList as $key => $module) {
-            if (!array_key_exists($key, $modules_data)) {
-                $modules_data[$key] = $this->module_init_controller->getModuleData($key);
-            }
-        }
         return $modules_data;
     }
 
     private function getALLModules()
     {
-        global $current_user;
+        global $beanList;
+        $modules = array_keys($beanList);
         chdir('../legacy');
-        $modules = query_module_access_list($current_user);
+        require_once 'modules/ACL/ACLController.php';
+        \ACLController::filterModuleList($modules);
         chdir('../api');
         return $modules;
     }
