@@ -451,7 +451,9 @@ export const useListViewStore = defineStore('listview', () => {
         filters.value = query
         if (filtersChanged) {
             preferences.value.filterRows = filterRows
-            savePreferences()
+            if (mode.value === 'list') {
+                savePreferences()
+            }
             getData()
         }
     }

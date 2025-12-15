@@ -46,7 +46,7 @@ onMounted(async () => {
     store.mode = props.mode
     store.module = module.value
     await store.init()
-    if (props.filters?.length) {
+    if (Array.isArray(props.filters)) {
         store.activeFilter = null
         store.filterRows = props.filters
         store.predefinedFilters = true

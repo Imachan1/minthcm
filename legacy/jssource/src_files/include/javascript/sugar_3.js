@@ -4479,35 +4479,43 @@ function get_close_popup() {
    return window.document.close_popup;
 }
 
- async function open_popup( module_name, width, height, initial_filter, close_popup, hide_clear_button, popup_request_data, popup_mode, create, metadata ) {
-   const result = await window.LegacyEventManager.emit('OpenRelatePopup', {
-      moduleName: module_name,
-      fieldToNameArray: popup_request_data?.field_to_name_array,
-      popupMode: popup_mode?.toLowerCase(),
-    })
+// eVolpe #176208 - new argument (as_legacy)
+async function open_popup( module_name, width, height, initial_filter, close_popup, hide_clear_button, popup_request_data, popup_mode, create, metadata, as_legacy = false ) {
+   // eVolpe #176208, 177342  Start
+   const isLegacyFilter = initial_filter && !Array.isArray(initial_filter)
+   const shouldUseNewPopup = !as_legacy && !isLegacyFilter
+   if (shouldUseNewPopup) {
+      const result = await window.LegacyEventManager.emit('OpenRelatePopup', {
+         moduleName: module_name,
+         fieldToNameArray: popup_request_data?.field_to_name_array,
+         popupMode: popup_mode?.toLowerCase(),
+         filterDefs: Array.isArray(initial_filter) ? initial_filter : [],
+      })
 
-    if (result === false) {
-      return
-    }
+      if (result === false) {
+         return
+      }
 
-    if (result) {
-      const call_back_function = eval(popup_request_data?.call_back_function ?? 'viewTools.form.function.set_return')
-      const call_back_data = {
-         form_name: popup_request_data?.form_name ?? 'EditView',
+      if (result) {
+         const call_back_function = eval(popup_request_data?.call_back_function ?? 'viewTools.form.function.set_return')
+         const call_back_data = {
+            form_name: popup_request_data?.form_name ?? 'EditView',
+         }
+         if (result.nameToValueArray) {
+            call_back_data.name_to_value_array = result.nameToValueArray
+         }
+         if (result.selectionList) {
+            call_back_data.selection_list = result.selectionList
+         }
+         if (popup_request_data?.passthru_data) {
+            call_back_data.passthru_data = popup_request_data.passthru_data
+         }
+         call_back_function(call_back_data)
+         return
       }
-      if (result.nameToValueArray) {
-         call_back_data.name_to_value_array = result.nameToValueArray
-      }
-      if (result.selectionList) {
-         call_back_data.selection_list = result.selectionList
-      }
-      if (popup_request_data?.passthru_data) {
-         call_back_data.passthru_data = popup_request_data.passthru_data
-      }
-      call_back_function(call_back_data)
-      return
-    }
-   
+   }
+   // eVolpe #176208, 177342  End
+
    if ( typeof (popupCount) == "undefined" || popupCount == 0 )
       popupCount = 1;
 
