@@ -74,6 +74,7 @@ class OffboardingTemplates extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -176,5 +177,6 @@ class OffboardingTemplates extends MintEntity
         $this->offboardings = new ArrayCollection();
         $this->elements = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

@@ -70,6 +70,7 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $assigned_user_id
  * @property mixed $news_read
  * @property mixed $not_display
+ * @property mixed $news_id
  */
 // Auto-generated SectionRepository section end
 class UsersNews extends MintEntity
@@ -140,9 +141,9 @@ class UsersNews extends MintEntity
     protected $not_display;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $news_id;
+    protected $news_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")

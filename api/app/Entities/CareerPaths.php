@@ -68,12 +68,15 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $description
  * @property mixed $deleted
  * @property mixed $assigned_user_id
+ * @property mixed $position_from_id
+ * @property mixed $position_to_id
  */
 // Auto-generated SectionRepository section end
 class CareerPaths extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -128,14 +131,14 @@ class CareerPaths extends MintEntity
     protected $assigned_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $position_from_id;
+    protected $position_from_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $position_to_id;
+    protected $position_to_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
@@ -179,5 +182,6 @@ class CareerPaths extends MintEntity
     {
         $this->SecurityGroups = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

@@ -90,6 +90,7 @@ class SpentTime extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -261,5 +262,6 @@ class SpentTime extends MintEntity
         $this->SecurityGroups = new ArrayCollection();
         $this->workschedules = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

@@ -96,6 +96,7 @@ class ProjectTask extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -319,5 +320,6 @@ class ProjectTask extends MintEntity
         $this->meetings = new ArrayCollection();
         $this->calls = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

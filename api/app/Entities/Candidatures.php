@@ -93,16 +93,18 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $final_employment_form
  * @property mixed $employment_form
  * @property mixed $entry_interview
+ * @property mixed $route_of_acquisition
+ * @property mixed $original_candidature_id
  * @property mixed $parent_id
  * @property mixed $parent_type
  * @property mixed $recruitment_id
- * @property mixed $recruitment_end_id
  */
 // Auto-generated SectionRepository section end
 class Candidatures extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -282,6 +284,16 @@ class Candidatures extends MintEntity
     protected $entry_interview;
 
     /**
+     * @ORM\Column(type="string", length="100")
+     */
+    protected $route_of_acquisition;
+
+    /**
+     * @ORM\Column(type="id", length="36")
+     */
+    protected $original_candidature_id;
+
+    /**
      * @ORM\Column(type="id", length="36")
      */
     protected $parent_id;
@@ -295,11 +307,6 @@ class Candidatures extends MintEntity
      * @ORM\Column(type="id", length="36")
      */
     protected $recruitment_id;
-
-    /**
-     * @ORM\Column(type="id", length="36")
-     */
-    protected $recruitment_end_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
@@ -364,12 +371,6 @@ class Candidatures extends MintEntity
     protected $recruitments;
 
     /**
-     * @ORM\JoinColumn(name="recruitment_end_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Recruitments::class, inversedBy="candidatures_end")
-     */
-    protected $recruitments_end;
-
-    /**
      * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="emails")
      */
     protected Collection $emails;
@@ -404,5 +405,6 @@ class Candidatures extends MintEntity
         $this->documents = new ArrayCollection();
         $this->files = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

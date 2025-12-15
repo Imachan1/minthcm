@@ -78,6 +78,7 @@ class Positions extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -289,5 +290,6 @@ class Positions extends MintEntity
         $this->termsofemployment = new ArrayCollection();
         $this->files = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

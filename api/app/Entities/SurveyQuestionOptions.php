@@ -76,6 +76,7 @@ class SurveyQuestionOptions extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -182,5 +183,6 @@ class SurveyQuestionOptions extends MintEntity
         $this->SecurityGroups = new ArrayCollection();
         $this->surveyquestionoptions_surveyquestionresponses = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

@@ -94,6 +94,7 @@ class Campaigns extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -311,5 +312,6 @@ class Campaigns extends MintEntity
         $this->prospectlists = new ArrayCollection();
         $this->tracked_urls = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

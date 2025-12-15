@@ -71,12 +71,14 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $employee_id
  * @property mixed $status
  * @property mixed $date_start
+ * @property mixed $onboardingtemplate_id
  */
 // Auto-generated SectionRepository section end
 class Onboardings extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -146,9 +148,9 @@ class Onboardings extends MintEntity
     protected $date_start;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $onboardingtemplate_id;
+    protected $onboardingtemplate_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
@@ -204,5 +206,6 @@ class Onboardings extends MintEntity
         $this->trainings = new ArrayCollection();
         $this->tasks = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

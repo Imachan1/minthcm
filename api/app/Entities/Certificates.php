@@ -77,6 +77,7 @@ class Certificates extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -195,5 +196,6 @@ class Certificates extends MintEntity
         $this->trainings = new ArrayCollection();
         $this->employeecertificates = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

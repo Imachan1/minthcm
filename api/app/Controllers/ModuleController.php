@@ -111,6 +111,10 @@ class ModuleController
         foreach ($record_data as $field_name => $value) {
             if (property_exists($entity, $field_name)) {
                 $entity->$field_name = $value;
+            } elseif (method_exists($entity, 'set' . ucfirst($field_name))) {
+                // Handle virtual fields with setter methods (e.g., email1)
+                $setter = 'set' . ucfirst($field_name);
+                $entity->$setter($value);
             }
         }
 
@@ -160,6 +164,10 @@ class ModuleController
         foreach ($record_data as $field_name => $value) {
             if (property_exists($entity, $field_name)) {
                 $entity->$field_name = $value;
+            } elseif (method_exists($entity, 'set' . ucfirst($field_name))) {
+                // Handle virtual fields with setter methods (e.g., email1)
+                $setter = 'set' . ucfirst($field_name);
+                $entity->$setter($value);
             }
         }
         $this->entity_manager->persist($entity);
@@ -196,8 +204,8 @@ class ModuleController
         $record_id = $request->getAttribute("id");
 
         /** @var MintEntityRepository */
-        $entity_repository = $this->entity_manager->getRepository($module);
-        
+            $entity_repository = $this->entity_manager->getRepository($module);
+
         /** @var MintEntity */
         $entity = !empty($record_id) ? $entity_repository->find($record_id) : $entity_repository->getNewEntity();
 

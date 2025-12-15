@@ -77,6 +77,7 @@ class DocumentRevisions extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Column(type="string", length="36")
      */
@@ -164,5 +165,6 @@ class DocumentRevisions extends MintEntity
     public function __construct()
     {
     }
+
 // Auto-generated SectionMethods section end
 }

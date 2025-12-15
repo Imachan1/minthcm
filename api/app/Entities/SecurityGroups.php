@@ -78,6 +78,7 @@ class SecurityGroups extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -233,5 +234,6 @@ class SecurityGroups extends MintEntity
         $this->onboardingoffboardingelements = new ArrayCollection();
         $this->securitygroups_rooms = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

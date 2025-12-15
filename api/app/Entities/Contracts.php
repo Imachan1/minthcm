@@ -82,6 +82,7 @@ class Contracts extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -230,5 +231,6 @@ class Contracts extends MintEntity
         $this->termsofemployment = new ArrayCollection();
         $this->documents = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

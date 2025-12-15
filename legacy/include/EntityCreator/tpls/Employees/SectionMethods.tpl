@@ -30,4 +30,7 @@
         return $this->getFullName();
     }
 {/literal}
+{foreach from=$additionalMethods item=method}
+        {$method}
+{/foreach}
 {$end_sectionmethods}

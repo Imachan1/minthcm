@@ -75,6 +75,7 @@ class EmployeeRoles extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -197,5 +198,6 @@ class EmployeeRoles extends MintEntity
         $this->competencyratings = new ArrayCollection();
         $this->appraisals = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

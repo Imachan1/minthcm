@@ -74,6 +74,7 @@ class ResponsibilityActivities extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -170,5 +171,6 @@ class ResponsibilityActivities extends MintEntity
         $this->appraisalitems = new ArrayCollection();
         $this->responsibilities = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

@@ -82,6 +82,7 @@ class EAPM extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -203,5 +204,6 @@ class EAPM extends MintEntity
     public function __construct()
     {
     }
+
 // Auto-generated SectionMethods section end
 }

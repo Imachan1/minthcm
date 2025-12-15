@@ -76,6 +76,7 @@ class Conclusions extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -195,5 +196,6 @@ class Conclusions extends MintEntity
         $this->improvements = new ArrayCollection();
         $this->problems = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

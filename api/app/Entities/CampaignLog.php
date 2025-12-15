@@ -85,6 +85,7 @@ class CampaignLog extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -191,5 +192,6 @@ class CampaignLog extends MintEntity
         $this->targeted_user = new ArrayCollection();
         $this->sent_email = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

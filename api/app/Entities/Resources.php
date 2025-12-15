@@ -77,6 +77,7 @@ class Resources extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -213,5 +214,6 @@ class Resources extends MintEntity
         $this->calls = new ArrayCollection();
         $this->files = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

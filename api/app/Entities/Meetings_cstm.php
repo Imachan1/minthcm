@@ -54,108 +54,55 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionRepository section start
 /**
  * @ORM\Entity
- * @ORM\Table(name="schedulereportslogs", indexes={
- * @ORM\Index(name="schedulereportslogspk", columns={"id"}), 
- * @ORM\Index(name="idx_schedulelogs", columns={"schedule_report_id"})})
- * @property mixed $id
- * @property mixed $name
- * @property mixed $date_entered
- * @property mixed $date_modified
- * @property mixed $date_indexed
- * @property mixed $modified_user_id
- * @property mixed $created_by
- * @property mixed $description
- * @property mixed $deleted
- * @property mixed $status
- * @property mixed $execute_data
- * @property mixed $schedule_report_id
+ * @ORM\Table(name="meetings_cstm", indexes={
+ * @ORM\Index(name="meetingspk", columns={"id"}), 
+ * @ORM\Index(name="idx_mtg_name", columns={"name"}), 
+ * @ORM\Index(name="idx_meet_par_del", columns={"parent_id", "parent_type", "deleted"}), 
+ * @ORM\Index(name="idx_meet_stat_del", columns={"assigned_user_id", "status", "deleted"}), 
+ * @ORM\Index(name="idx_meet_date_start", columns={"date_start"})})
+ * @property mixed $jjwg_maps_lat_c
+ * @property mixed $jjwg_maps_lng_c
+ * @property mixed $jjwg_maps_geocode_status_c
+ * @property mixed $jjwg_maps_address_c
  */
 // Auto-generated SectionRepository section end
-class ScheduleReportsLogs extends MintEntity
+class Meetings_cstm extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
 
+                
+    
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="id", length="36")
+     * @ORM\Column(name="id_c", type="string", length=36)
+     * @ORM\GeneratedValue(strategy="NONE")
      */
-    protected $id;
+    private $id;
+
+
+/**
+ * @ORM\OneToOne(targetEntity="Meetings", inversedBy="customEntity")
+ * @ORM\JoinColumn(name="id_c", referencedColumnName="id")
+ */
+private $mainEntity;
+
+
+        /**
+     */
+    protected $jjwg_maps_lat_c;
 
     /**
-     * @ORM\Column(type="string", length="255")
      */
-    protected $name;
+    protected $jjwg_maps_lng_c;
 
     /**
-     * @ORM\Column(type="datetime")
      */
-    protected $date_entered;
+    protected $jjwg_maps_geocode_status_c;
 
     /**
-     * @ORM\Column(type="datetime")
      */
-    protected $date_modified;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $date_indexed;
-
-    /**
-     * @ORM\Column(type="id", length="36")
-     */
-    protected $modified_user_id;
-
-    /**
-     * @ORM\Column(type="id", length="36")
-     */
-    protected $created_by;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    protected $description;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $deleted;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    protected $status;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $execute_data;
-
-    /**
-     * @ORM\Column(type="id", length="36")
-     */
-    protected $schedule_report_id;
-
-    /**
-     * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="schedulereportslogs")
-     */
-    protected $modified_user_link;
-
-    /**
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="schedulereportslogs")
-     */
-    protected $created_by_link;
-
-    /**
-     * @ORM\JoinColumn(name="schedule_report_id", referencedColumnName="id")
-     * @ORM\ManyToOne(targetEntity=ScheduleReports::class, inversedBy="schedulereports_schedulereportslogs")
-     */
-    protected $schedulereports_schedulereportslogs;
+    protected $jjwg_maps_address_c;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -163,5 +110,23 @@ class ScheduleReportsLogs extends MintEntity
     {
     }
 
-// Auto-generated SectionMethods section end
+                
+    
+    public function getMainEntity()
+    {
+        return $this->mainEntity;
+    }
+
+    public function setMainEntity($mainEntity)
+    {
+        $this->mainEntity = $mainEntity;
+
+        if ($mainEntity && $mainEntity->getCustomEntity() !== $this) {
+            $mainEntity->setCustomEntity($this);
+        }
+
+        return $this;
+    }
+
+    // Auto-generated SectionMethods section end
 }

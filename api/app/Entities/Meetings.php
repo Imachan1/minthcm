@@ -91,28 +91,37 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $email_reminder_sent
  * @property mixed $outlook_id
  * @property mixed $sequence
+ * @property mixed $recurring_source
+ * @property mixed $duration
+ * @property mixed $gsync_id
+ * @property mixed $gsync_lastsync
+ * @property mixed $type
  * @property mixed $repeat_type
  * @property mixed $repeat_interval
  * @property mixed $repeat_dow
  * @property mixed $repeat_until
  * @property mixed $repeat_count
  * @property mixed $repeat_parent_id
- * @property mixed $recurring_source
- * @property mixed $duration
- * @property mixed $gsync_id
- * @property mixed $gsync_lastsync
- * @property mixed $type
- * @property mixed $jjwg_maps_lat_c
- * @property mixed $jjwg_maps_address_c
- * @property mixed $jjwg_maps_geocode_status_c
- * @property mixed $jjwg_maps_lng_c
  */
 // Auto-generated SectionRepository section end
 class Meetings extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
-    /**
+
+                
+    
+/**
+ * @ORM\OneToOne(
+*     targetEntity="Meetings_cstm",
+ *     mappedBy="mainEntity",
+ *     cascade={"persist", "remove"},
+ *     fetch="EAGER"
+ * )
+ */
+private $customEntity;
+
+        /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
@@ -263,6 +272,31 @@ class Meetings extends MintEntity
     /**
      * @ORM\Column(type="string", length="36")
      */
+    protected $recurring_source;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $duration;
+
+    /**
+     * @ORM\Column(type="string", length="1024")
+     */
+    protected $gsync_id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $gsync_lastsync;
+
+    /**
+     * @ORM\Column(type="string", length="255")
+     */
+    protected $type;
+
+    /**
+     * @ORM\Column(type="string", length="36")
+     */
     protected $repeat_type;
 
     /**
@@ -289,51 +323,6 @@ class Meetings extends MintEntity
      * @ORM\Column(type="id", length="36")
      */
     protected $repeat_parent_id;
-
-    /**
-     * @ORM\Column(type="string", length="36")
-     */
-    protected $recurring_source;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $duration;
-
-    /**
-     * @ORM\Column(type="string", length="1024")
-     */
-    protected $gsync_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $gsync_lastsync;
-
-    /**
-     * @ORM\Column(type="string", length="255")
-     */
-    protected $type;
-
-    /**
-     * @ORM\Column(type="string", length="255")
-     */
-    protected $jjwg_maps_lat_c;
-
-    /**
-     * @ORM\Column(type="string", length="255")
-     */
-    protected $jjwg_maps_address_c;
-
-    /**
-     * @ORM\Column(type="float", length="10")
-     */
-    protected $jjwg_maps_geocode_status_c;
-
-    /**
-     * @ORM\Column(type="float", length="11")
-     */
-    protected $jjwg_maps_lng_c;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
@@ -425,5 +414,26 @@ class Meetings extends MintEntity
         $this->reservations = new ArrayCollection();
         $this->resources = new ArrayCollection();
     }
-// Auto-generated SectionMethods section end
+
+                
+    
+    
+    public function getCustomEntity()
+    {
+        return $this->customEntity;
+    }
+
+
+    public function setCustomEntity($customEntity)
+    {
+        $this->customEntity = $customEntity;
+
+        if ($customEntity && $customEntity->getMainEntity() !== $this) {
+            $customEntity->setMainEntity($this);
+        }
+
+        return $this;
+    }
+
+        // Auto-generated SectionMethods section end
 }

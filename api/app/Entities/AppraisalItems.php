@@ -85,6 +85,7 @@ class AppraisalItems extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -265,5 +266,6 @@ class AppraisalItems extends MintEntity
     {
         $this->SecurityGroups = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

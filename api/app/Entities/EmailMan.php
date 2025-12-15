@@ -81,6 +81,7 @@ class EmailMan extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Column(type="datetime")
      */
@@ -169,5 +170,6 @@ class EmailMan extends MintEntity
     public function __construct()
     {
     }
+
 // Auto-generated SectionMethods section end
 }

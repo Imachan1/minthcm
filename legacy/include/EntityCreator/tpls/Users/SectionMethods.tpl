@@ -56,4 +56,7 @@
         return password_verify(strtolower($passwordMd5), $this->user_hash);
     }
 {/literal}
+{foreach from=$additionalMethods item=method}
+        {$method}
+{/foreach}
 {$end_sectionmethods}
