@@ -45,14 +45,7 @@ onMounted(async () => {
     }
     store.mode = props.mode
     store.module = module.value
-    await store.init()
-    if (Array.isArray(props.filters)) {
-        store.activeFilter = null
-        store.filterRows = props.filters
-        store.predefinedFilters = true
-    } else {
-        store.getData()
-    }
+    store.init(Array.isArray(props.filters) ? props.filters : null)
 })
 
 onUnmounted(() => {

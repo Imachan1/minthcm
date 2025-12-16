@@ -24,6 +24,10 @@ interface Preferences {
     saved_filters: []
     activeFilter: string | null
     filterRows: FilterRow[]
+    sortParams: {
+        sortOrder: 'asc' | 'desc'
+        sortBy: string
+    }
 }
 
 interface Defs {
@@ -93,59 +97,65 @@ export const useListViewStore = defineStore('listview', () => {
     // Computed that tracks cache size to trigger reactivity
     const actionsLoaded = computed(() => customActionsCache.value.size)
 
-    async function init() {
+    async function init(filtersParam: FilterRow[] | null = null) {
         initialLoading.value = true
         clearCustomActionsCache()
         const result = await modulesApi.getListInit(getModule()).catch(moduleAccessError)
         if (module.value === result.data.module) {
-            activeFilter.value = result.data?.preferences?.activeFilter ?? null
-            filterRows.value = result.data?.preferences?.filterRows ?? []
-            initialLoading.value = false
             config.value = result.data?.config
             defs.value = result.data?.defs
-            preferences.value = Array.isArray(result.data?.preferences) ? {} : result.data?.preferences
-            prepareDefaultSort(result);
             module.value = result.data?.module
+            preferences.value = Array.isArray(result.data?.preferences) ? {} : result.data?.preferences
+            
+            await prepareInitFilters(filtersParam)
+
+            const defaultSotBy = result.data?.defs?.defaultSort?.field ?? '';
+            const defaultSortOrder = result.data?.defs?.defaultSort?.order ?? 'ASC';
+            await prepareDefaultSort(defaultSotBy, defaultSortOrder);
+            
             isInit.value = true
-            options.value.sortBy.push({
-                "order": preferences.value?.sortOrder,
-                "key": preferences.value?.sortBy
-            })
-            let saved_filters = preferences.value?.filters ?? {}
-            filters.value.filter = saved_filters?.filter ?? []
-            filters.value.must_not = saved_filters?.must_not ?? []
-            if (typeof preferences.value?.filterRows === 'string') {
-                filterRows.value = JSON.parse(preferences.value?.filterRows ?? '[]') ?? []
-            } else {
-                filterRows.value = preferences.value?.filterRows ?? []
-            }
+            getData()
         }
+        initialLoading.value = false
     }
 
-    function prepareDefaultSort(listData)
-    {
-        const preferenceSortBy = listData.data?.preferences?.sortParams?.sortBy ?? '';
-        const preferenceSortOrder = listData.data?.preferences?.sortParams?.sortOrder ?? '';
-        const defsDefaultSortField = listData.data?.defs?.defaultSort?.field ?? null;
-        const defsDefaultSortOrder = listData.data?.defs?.defaultSort?.order ?? 'ASC';
-        if(
-            !defsDefaultSortField
-            || (
-                preferenceSortBy 
-                && preferenceSortOrder
-                && preferenceSortBy !== '_score'
-            )
-        ){
-            options.value.sortBy[0] = {
-                key: preferenceSortBy,
-                order: preferenceSortOrder,
-            }
+    async function prepareInitFilters(filtersParam: FilterRow[] | null = null) {
+        if (Array.isArray(filtersParam)) {
+            activeFilter.value = null
+            filterRows.value = filtersParam
+            predefinedFilters.value = true
             return;
         }
 
-        options.value.sortBy[0] = {
-            key: defsDefaultSortField,
-            order: defsDefaultSortOrder,
+        activeFilter.value = preferences.value?.activeFilter ?? null
+        if (typeof preferences.value?.filterRows === 'string') {
+            filterRows.value = JSON.parse(preferences.value?.filterRows ?? '[]') ?? []
+        } else {
+            filterRows.value = preferences.value?.filterRows ?? []
+        }
+    }
+
+    async function prepareDefaultSort(defaultSortBy: string, defaultSortOrder: string)
+    {
+        const preferenceSortBy = preferences.value?.sortParams?.sortBy ?? '';
+        const preferenceSortOrder = preferences.value?.sortParams?.sortOrder ?? '';
+        if (preferenceSortOrder && preferenceSortBy !== '_score') {
+            options.value.sortBy = [
+                {
+                    key: preferenceSortBy,
+                    order: preferenceSortOrder,
+                }
+            ]
+            return;
+        }
+
+        if (defaultSortBy && defaultSortOrder) {
+            options.value.sortBy = [
+                {
+                    key: defaultSortBy,
+                    order: defaultSortOrder,
+                }
+            ]
         }
     }
 
@@ -449,7 +459,7 @@ export const useListViewStore = defineStore('listview', () => {
         })
         const filtersChanged = JSON.stringify(query) !== JSON.stringify(filters.value)
         filters.value = query
-        if (filtersChanged) {
+        if (filtersChanged && isInit.value) {
             preferences.value.filterRows = filterRows
             if (mode.value === 'list') {
                 savePreferences()
