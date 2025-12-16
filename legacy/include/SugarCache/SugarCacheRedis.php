@@ -109,6 +109,14 @@ class SugarCacheRedis extends SugarCacheAbstract
                 if (!$this->_redis->connect($this->_host, $this->_port)) {
                     return false;
                 }
+                
+                // Authenticate if password is configured
+                $password = SugarConfig::getInstance()->get('external_cache.redis.password');
+                if (!empty($password)) {
+                    if (!$this->_redis->auth($password)) {
+                        return false;
+                    }
+                }
             }
         } catch (RedisException $e) {
             return false;
