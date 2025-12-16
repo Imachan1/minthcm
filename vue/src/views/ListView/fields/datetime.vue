@@ -51,8 +51,9 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { DateTime } from 'luxon'
-import { usePreferencesStore } from '@/store/preferences';
+import { usePreferencesStore } from '@/store/preferences'
 import DateUtils from '@/utils/dates'
+import { useMintDate } from '@/composables/useMintDate'
 
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps(['input', 'disabled'])
@@ -62,6 +63,7 @@ const timePickerMenu = ref(false)
 const preferences = usePreferencesStore()
 const dateLabel = ref(props.input.label[0])
 const timeLabel = ref(props.input.label[1])
+const model = useMintDate(props.input.value)
 const isValidDateTime = computed(() => {
     return !value.value || value.value.length === 19
 })
@@ -74,69 +76,58 @@ const timeFormat = computed(() => {
 
 const dateValue = computed({
     get() {
-        const dt = DateTime.fromSQL(value.value)
-        if (dt.isValid) {
-            return dt.toFormat(preferences.user?.date_format || 'yyyy-MM-dd') || ''
-        }
-        return ''
+        return model.value.isValid ? model.value.formatted.user_date : ''
     },
-    async set(newVal) {
+    set(newVal) {
         datePickerMenu.value = false
-        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
+        if (!newVal?.trim()) {
+            model.value.clear()
+            return
+        }
+        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd', { zone: 'UTC' })
         if (dt.isValid) {
-            value.value = dt.toSQLDate()
+            model.value.set(dt)
+            emit('update:modelValue', model.value.formatted.db_datetime)
         }
     },
 })
 
 const timeValue = computed({
     get() {
-        const dt = DateTime.fromSQL(value.value, { zone: 'UTC' })
-        if (dt.isValid) {
-            return dt.toFormat('HH:mm') || '00:00'
-        }
-        return '00:00'
+        return model.value.isValid ? model.value.formatted.db_time.slice(0, -3) : '00:00'
     },
-    async set(newVal) {
-        const timeDt = DateTime.fromFormat(newVal, 'HH:mm')
-        if (!timeDt.isValid) {
-            return
-        }
-        const modelDt = DateTime.fromSQL(value.value, { zone: 'UTC' })
-        if (modelDt.isValid) {
-            value.value = `${modelDt.toFormat('yyyy-MM-dd')} ${timeDt.toFormat('HH:mm')}:00`
+    set(newVal) {
+        const dt = DateTime.fromFormat(
+            `${dateValue.value} ${newVal}`,
+            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`,
+            { zone: 'UTC' }
+        )
+        if (dt.isValid) {
+            model.value.set(dt)
+            emit('update:modelValue', model.value.formatted.db_datetime)
         }
     },
 })
 
 const datePickerValue = computed({
     get() {
-        if (!value.value?.trim()) {
-            return new Date()
-        }
-        return new Date(value.value)
+        return model.value.isValid ? model.value.formatted.js_date : new Date()
     },
     set(newVal) {
         const dt = DateTime.fromJSDate(newVal)
-        if (dt.isValid) {
-            const modelDt = DateTime.fromSQL(value.value)
-            if (!modelDt.isValid) {
-                value.value = dt.toFormat('yyyy-MM-dd HH:mm:ss')
-            } else {
-                value.value = `${dt.toFormat('yyyy-MM-dd')} ${modelDt.toFormat('HH:mm:ss')}`
-            }
+        if (!dt.isValid) {
+            return
         }
+        model.value.set(
+            DateTime.fromFormat(
+                `${dt.toFormat('yyyy-MM-dd')} ${model.value.isValid ? model.value.formatted.user_time : '00:00'}`,
+                `yyyy-MM-dd ${preferences.user?.time_format || 'HH:mm'}`,
+                { zone: 'UTC' },
+            ),
+        )
+        datePickerMenu.value = false
+        emit('update:modelValue', model.value.formatted.db_datetime)
     },
-})
-
-watch(value, (newVal) => {
-    datePickerMenu.value = false
-    const dt = DateTime.fromSQL(newVal?.toString())
-    if (dt.isValid) {
-        emit('update:modelValue', value.value)
-    } else {
-        emit('update:modelValue', '')
-    }
 })
 </script>
 

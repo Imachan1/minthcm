@@ -64,7 +64,7 @@ const timeFormat = computed(() => {
 
 const dateValue = computed({
     get() {
-        return props.field.model.isValid ? props.field.model.formatted.user_date : ''
+        return model.value.isValid ? model.value.formatted.user_date : ''
     },
     set(newVal) {
         datePickerMenu.value = false
@@ -72,7 +72,7 @@ const dateValue = computed({
             model.value.clear()
             return
         }
-        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
+        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd', { zone: 'UTC' })
         if (dt.isValid) {
             model.value.set(dt)
         }
@@ -81,7 +81,18 @@ const dateValue = computed({
 
 const timeValue = computed({
     get() {
-        return model.value.isValid ? model.value.formatted.user_time : '00:00'
+        return model.value.isValid ? model.value.formatted.db_time.slice(0, -3) : '00:00'
+    },
+    set(newVal) {
+        const dt = DateTime.fromFormat(
+            `${dateValue.value} ${newVal}`,
+            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`,
+            { zone: 'UTC' }
+        )
+        if (dt.isValid) {
+            return dt.toFormat('HH:mm') || '00:00'
+        }
+        return '00:00'
     },
     set(newVal) {
         const dt = DateTime.fromFormat(
@@ -107,7 +118,8 @@ const datePickerValue = computed({
         model.value.set(
             DateTime.fromFormat(
                 `${dt.toFormat('yyyy-MM-dd')} ${model.value.isValid ? model.value.formatted.user_time : '00:00'}`,
-                'yyyy-MM-dd HH:mm',
+                `yyyy-MM-dd ${preferences.user?.time_format || 'HH:mm'}`,
+                { zone: 'UTC' },
             ),
         )
         datePickerMenu.value = false
