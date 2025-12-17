@@ -109,9 +109,9 @@ export const useListViewStore = defineStore('listview', () => {
             
             await prepareInitFilters(filtersParam)
 
-            const defaultSotBy = result.data?.defs?.defaultSort?.field ?? '';
+            const defaultSortBy = result.data?.defs?.defaultSort?.field ?? '';
             const defaultSortOrder = result.data?.defs?.defaultSort?.order ?? 'ASC';
-            await prepareDefaultSort(defaultSotBy, defaultSortOrder);
+            await prepareDefaultSort(defaultSortBy, defaultSortOrder);
             
             isInit.value = true
             getData()
