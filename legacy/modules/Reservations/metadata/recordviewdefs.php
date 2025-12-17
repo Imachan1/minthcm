@@ -6,10 +6,6 @@ $viewdefs['Reservations'] = [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                    'Duplicate',
                 ],
                 'sections' => [
                     'basic' => [

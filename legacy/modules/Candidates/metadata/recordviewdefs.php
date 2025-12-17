@@ -7,11 +7,6 @@ $viewdefs['Candidates'] = [
             'component' => 'MintPanelRecordDetails',
             'title' => 'LBL_CONTACT_INFORMATION',
             'data' => [
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                    'Duplicate',
-                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
