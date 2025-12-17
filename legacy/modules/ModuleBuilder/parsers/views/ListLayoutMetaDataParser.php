@@ -136,7 +136,7 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
             CASE_UPPER
         )); // force the field names back to upper case so the list view will work correctly
         $this->view = "eslistview";
-        $this->implementation->deploy($this->_eslistviewdefs, true);
+        $this->implementation->deploy($this->_eslistviewdefs, MB_ESLISTVIEW);
     }
 
     /**
