@@ -6,7 +6,6 @@ $viewdefs['Reservations'] = [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
-                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',

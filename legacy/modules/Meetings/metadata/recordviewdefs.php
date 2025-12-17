@@ -5,6 +5,7 @@ $viewdefs['Meetings'] = [
     'panels' => [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
+            'data' => [
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
