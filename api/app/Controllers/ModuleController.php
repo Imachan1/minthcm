@@ -111,10 +111,6 @@ class ModuleController
         foreach ($record_data as $field_name => $value) {
             if (property_exists($entity, $field_name)) {
                 $entity->$field_name = $value;
-            } elseif (method_exists($entity, 'set' . ucfirst($field_name))) {
-                // Handle virtual fields with setter methods (e.g., email1)
-                $setter = 'set' . ucfirst($field_name);
-                $entity->$setter($value);
             }
         }
 

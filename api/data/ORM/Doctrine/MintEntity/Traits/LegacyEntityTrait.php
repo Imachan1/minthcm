@@ -92,25 +92,6 @@ trait LegacyEntityTrait
 
             $bean->$property = $value;
         }
-
-        // Handle email1 virtual field if it was set
-        if (isset($this->pending_email1)) {
-            $bean->email1 = $this->pending_email1;
-        }
-    }
-
-    /**
-     * Temporary storage for email1 virtual field
-     */
-    private $pending_email1;
-
-    /**
-     * Setter for email1 virtual field
-     * Email1 is not a real database column, it's managed through email_addresses relationship
-     */
-    public function setEmail1(?string $email): void
-    {
-        $this->pending_email1 = $email;
     }
 
 }
