@@ -106,7 +106,7 @@ class Init
             in_array('reload_module_menu', $rebuild_array)
             || (!$only_minimum_data && empty($rebuild_array))
             || $response_body['user']['id'] !== $this->user_id
-            || false !== $response_body['user']['preferences']['reload_module_menu']
+            || false !== $response_body['preferences']['reload_module_menu']
             || $this->request_language !== $_SESSION["authenticated_user_language"]
         ) {
             $this->all_modules = $this->getAllModules();
@@ -143,17 +143,6 @@ class Init
         if (empty($current_user->id)) {
             return array();
         }
-        $preferences = [];
-        $preferences['date_time_preferences'] = $current_user->getUserDateTimePreferences();
-        $preferences['first_day_of_week'] = $current_user->getPreference('fdow');
-        $preferences['timezone'] = $current_user->getPreference('timezone');
-        $preferences['name_format'] = $current_user->getPreference('default_locale_name_format');
-        $preferences['dec_sep'] = $current_user->getPreference('dec_sep');
-        $preferences['num_grp_sep'] = $current_user->getPreference('num_grp_sep');
-        $preferences['reload_module_menu'] = $current_user->getPreference('reload_module_menu');
-        $current_user->setPreference('reload_module_menu', false, 0, 'global');
-        $preferences['default_currency_significant_digits'] = $current_user->getPreference('default_currency_significant_digits');
-        $preferences['language'] = $_SESSION['authenticated_user_language'];
         return array(
             "id" => $current_user->id,
             "is_admin" => "1" === $current_user->is_admin ? true : false,
@@ -162,7 +151,6 @@ class Init
             "full_name" => $current_user->full_name,
             "email" => $current_user->email1,
             "photo" => $current_user->photo,
-            "preferences" => $preferences,
             "show_login_wizard" => empty($current_user->getPreference('ut')),
         );
     }

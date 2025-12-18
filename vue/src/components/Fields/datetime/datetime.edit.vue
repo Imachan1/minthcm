@@ -72,7 +72,7 @@ const dateValue = computed({
             model.value.clear()
             return
         }
-        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd', { zone: 'UTC' })
+        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
         if (dt.isValid) {
             model.value.set(dt)
         }
@@ -81,28 +81,16 @@ const dateValue = computed({
 
 const timeValue = computed({
     get() {
-        return model.value.isValid ? model.value.formatted.db_time.slice(0, -3) : '00:00'
+        return model.value.isValid ? model.value.formatted.user_time_normal.slice(0, -3) : '12:00'
     },
     set(newVal) {
         const dt = DateTime.fromFormat(
             `${dateValue.value} ${newVal}`,
-            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`,
-            { zone: 'UTC' }
-        )
-        if (dt.isValid) {
-            return dt.toFormat('HH:mm') || '00:00'
-        }
-        return '00:00'
-    },
-    set(newVal) {
-        const dt = DateTime.fromFormat(
-            `${dateValue.value} ${newVal}`,
-            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`,
+            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`
         )
         if (dt.isValid) {
             model.value.set(dt)
         }
-        timePickerMenu.value = false
     },
 })
 
@@ -117,9 +105,8 @@ const datePickerValue = computed({
         }
         model.value.set(
             DateTime.fromFormat(
-                `${dt.toFormat('yyyy-MM-dd')} ${model.value.isValid ? model.value.formatted.user_time : '00:00'}`,
-                `yyyy-MM-dd ${preferences.user?.time_format || 'HH:mm'}`,
-                { zone: 'UTC' },
+                `${dt.toFormat('yyyy-MM-dd')} ${model.value.isValid ? model.value.formatted.user_time : (timeFormat.value == 'ampm' ? '12:00 PM' : '12:00')}`,
+                `yyyy-MM-dd ${preferences.user?.time_format || 'HH:mm'}`
             ),
         )
         datePickerMenu.value = false

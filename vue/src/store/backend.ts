@@ -119,8 +119,8 @@ export const useBackendStore = defineStore('backend', () => {
             
             if (typeof caches !== "undefined") {
             Settings.defaultLocale = languages.currentLanguage.split('_')[0] ?? 'en'
-            if (initData.value.user.preferences.timezone) {
-                Settings.defaultZone = initData.value.user.preferences.timezone
+            if (initData.value.preferences.timezone) {
+                Settings.defaultZone = initData.value.preferences.timezone
             }
 
                 caches.open('mint-rebuild').then(function(cache) {

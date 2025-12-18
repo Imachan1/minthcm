@@ -190,16 +190,6 @@ class Costs extends MintEntity
     protected $transportation_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
-     */
-    public $delegation_id;
-
-    /**
-     * @ORM\Column(type="string", length="36")
-     */
-    public $transportation_id;
-
-    /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="costs")
      */

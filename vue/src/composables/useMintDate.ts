@@ -22,6 +22,7 @@ export const useMintDate = (input?: DateInput) => {
                 db_datetime: null,
                 user_date: null,
                 user_time: null,
+                user_time_normal: null,
                 user_datetime: null,
                 js_date: null,
             }
@@ -35,6 +36,7 @@ export const useMintDate = (input?: DateInput) => {
             db_datetime: instance.value.toFormat('yyyy-MM-dd HH:mm:ss'),
             user_date: instance.value.toFormat(preferences.userDateFormat),
             user_time: userInstance.toFormat(preferences.userTimeFormat),
+            user_time_normal: userInstance.toFormat('HH:mm:ss'),
             user_datetime: userInstance.toFormat(preferences.userDatetimeFormat),
             js_date: instance.value.toJSDate(),
         }

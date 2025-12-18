@@ -63,7 +63,7 @@ const timePickerMenu = ref(false)
 const preferences = usePreferencesStore()
 const dateLabel = ref(props.input.label[0])
 const timeLabel = ref(props.input.label[1])
-const model = useMintDate(props.input.value)
+const model = ref(useMintDate(props.input?.value))
 const isValidDateTime = computed(() => {
     return !value.value || value.value.length === 19
 })
@@ -84,7 +84,7 @@ const dateValue = computed({
             model.value.clear()
             return
         }
-        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd', { zone: 'UTC' })
+        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
         if (dt.isValid) {
             model.value.set(dt)
             emit('update:modelValue', model.value.formatted.db_datetime)
@@ -94,13 +94,12 @@ const dateValue = computed({
 
 const timeValue = computed({
     get() {
-        return model.value.isValid ? model.value.formatted.db_time.slice(0, -3) : '00:00'
+        return model.value.isValid ? model.value.formatted.user_time_normal.slice(0, -3) : '12:00'
     },
     set(newVal) {
         const dt = DateTime.fromFormat(
             `${dateValue.value} ${newVal}`,
-            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`,
-            { zone: 'UTC' }
+            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`
         )
         if (dt.isValid) {
             model.value.set(dt)
@@ -120,9 +119,8 @@ const datePickerValue = computed({
         }
         model.value.set(
             DateTime.fromFormat(
-                `${dt.toFormat('yyyy-MM-dd')} ${model.value.isValid ? model.value.formatted.user_time : '00:00'}`,
-                `yyyy-MM-dd ${preferences.user?.time_format || 'HH:mm'}`,
-                { zone: 'UTC' },
+                `${dt.toFormat('yyyy-MM-dd')} ${model.value.isValid ? model.value.formatted.user_time : (timeFormat.value == 'ampm' ? '12:00 PM' : '12:00')}`,
+                `yyyy-MM-dd ${preferences.user?.time_format || 'HH:mm'}`
             ),
         )
         datePickerMenu.value = false

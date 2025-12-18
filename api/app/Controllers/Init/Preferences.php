@@ -138,6 +138,9 @@ class Preferences
             'dec_sep' => $this->user_preferences['global']['dec_sep'] ?? $sugar_config['default_decimal_seperator'],
             'num_grp_sep' => $this->user_preferences['global']['num_grp_sep'] ?? $sugar_config['default_number_grouping_seperator'],
             'default_currency_significant_digits' => $locale->getPrecedentPreference('default_currency_significant_digits', $current_user),
+            'first_day_of_week' => $this->user_preferences['global']['fdow'] ?? 0,
+            'language' => $_SESSION['authenticated_user_language'],
+            'reload_module_menu' => $this->user_preferences['global']['reload_module_menu'] ?? false,
         );
     }
 
