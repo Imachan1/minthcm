@@ -7,6 +7,7 @@ class EntityCreatorDataGenerator
         'varchar' => 'string',
         'int' => 'integer',
         'float' => 'float',
+        'decimal' => 'decimal',  //COPY TO CORE MINTHCM
         'bool' => 'boolean',
         'date' => 'date',
         'datetime' => 'datetime',
@@ -441,9 +442,9 @@ class EntityCreatorDataGenerator
             $this->data['additionalMethods'][] = <<<'PHP'
     public function getEmail1(): string
             {
-                \$conn = \$this->getEntityManager()->getConnection();
+                $conn = $this->getEntityManager()->getConnection();
 
-                \$sql = '
+                $sql = '
                     SELECT ea.email_address
                     FROM email_addresses ea
                     INNER JOIN email_addr_bean_rel eabr
@@ -455,20 +456,20 @@ class EntityCreatorDataGenerator
                     LIMIT 1
                 ';
 
-                \$module_name = \$this->getModuleName();
-                if (in_array(\$module_name, ['Employees'])) {
-                    \$module_name = 'Users';
+                $module_name = $this->getModuleName();
+                if (in_array($module_name, ['Employees'])) {
+                    $module_name = 'Users';
                 }
 
-                \$stmt = \$conn->prepare(\$sql);
-                \$result = \$stmt->executeQuery([
-                    'bean_id' => \$this->id,
-                    'bean_module' => \$module_name,
+                $stmt = $conn->prepare($sql);
+                $result = $stmt->executeQuery([
+                    'bean_id' => $this->id,
+                    'bean_module' => $module_name,
                     'primary_address' => 1,
                     'deleted' => 0,
                 ]);
 
-                return \$result->fetchOne() ?: '';
+                return $result->fetchOne() ?: '';
     }
 
     public function getSerialized(bool $json = false): array|string
