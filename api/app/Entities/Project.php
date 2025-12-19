@@ -54,7 +54,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="project", indexes={
@@ -81,16 +80,19 @@ class Project extends MintEntity
 
 // Auto-generated SectionProperties section start
 
-    /**
-     * @ORM\OneToOne(
-     *     targetEntity="Project_cstm",
-     *     mappedBy="main_entity",
-     *     cascade={"persist", "remove"},
-     *     fetch="EAGER"
-     * )
-     */
-    protected $custom_entity;
-    /**
+                
+    
+/**
+ * @ORM\OneToOne(
+*     targetEntity="Project_cstm",
+ *     mappedBy="mainEntity",
+ *     cascade={"persist", "remove"},
+ *     fetch="EAGER"
+ * )
+ */
+private $customEntity;
+
+        /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
@@ -229,8 +231,8 @@ class Project extends MintEntity
      */
     protected Collection $am_projecttemplates_project_1;
 
-    // Auto-generated SectionProperties section end
-    // Auto-generated SectionMethods section start
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();
@@ -241,21 +243,23 @@ class Project extends MintEntity
         $this->projecttask = new ArrayCollection();
         $this->project_users_1 = new ArrayCollection();
         $this->am_projecttemplates_project_1 = new ArrayCollection();
-        $this->setCustomEntity(new Project_cstm());
     }
 
+                
+    
+    
     public function getCustomEntity()
     {
-        return $this->custom_entity;
+        return $this->customEntity;
     }
 
 
-    public function setCustomEntity($custom_entity)
+    public function setCustomEntity($customEntity)
     {
-        $this->custom_entity = $custom_entity;
+        $this->customEntity = $customEntity;
 
-        if ($custom_entity && $custom_entity->getMainEntity() !== $this) {
-            $custom_entity->setMainEntity($this);
+        if ($customEntity && $customEntity->getMainEntity() !== $this) {
+            $customEntity->setMainEntity($this);
         }
 
         return $this;

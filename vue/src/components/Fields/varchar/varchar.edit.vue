@@ -5,9 +5,8 @@
         density="compact"
         hide-details
         :name="props.defs.name"
-        :modelValue="props.modelValue"
+        v-model="props.field.model"
         :error="props.state === 'error'"
-        @update:modelValue="(v) => $emit('update:modelValue', v)"
         @keyup.enter="$emit('inlineEditSave')"
         @keyup.esc="$emit('inlineEditCancel')"
         :autocomplete="autocompleteValue"
@@ -18,7 +17,7 @@
 import { FieldProps } from '../Field.model'
 import { computed } from 'vue'
 
-const props = defineProps<FieldProps>()
+const props = defineProps<FieldProps<string>>()
 
 const autocompleteValue = computed(() => {
     const name = props.defs?.name?.toLowerCase() || ''

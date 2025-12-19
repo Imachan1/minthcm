@@ -2,7 +2,7 @@
     <div class="scheduler-timeline">
         <div class="left-col"></div>
         <div class="scheduler-timeline-hours">
-            <MintSchedulerCurrentlyPlanning :bean="props.bean" :scheduler="props.scheduler" />
+            <MintSchedulerCurrentlyPlanning :scheduler="props.scheduler" />
             <div v-for="hour in props.scheduler.schedulerHours.value" :key="hour">
                 <div class="scheduler-timeline-hour">{{ hour }}</div>
                 <div />
@@ -16,12 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import { useBean } from '@/composables/useBean'
 import MintSchedulerCurrentlyPlanning from './MintSchedulerCurrentlyPlanning.vue'
 import { useMintScheduler } from './useMintScheduler'
 
 interface Props {
-    bean: ReturnType<typeof useBean>
     scheduler: ReturnType<typeof useMintScheduler>
 }
 

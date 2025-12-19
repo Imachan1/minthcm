@@ -54,7 +54,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="onboardings", indexes={
@@ -199,8 +198,8 @@ class Onboardings extends MintEntity
      */
     protected Collection $tasks;
 
-    // Auto-generated SectionProperties section end
-    // Auto-generated SectionMethods section start
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();
@@ -208,5 +207,5 @@ class Onboardings extends MintEntity
         $this->tasks = new ArrayCollection();
     }
 
-    // Auto-generated SectionMethods section end
+// Auto-generated SectionMethods section end
 }

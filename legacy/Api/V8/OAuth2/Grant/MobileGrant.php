@@ -2,13 +2,8 @@
 namespace Api\V8\OAuth2\Grant;
 
 use BeanFactory;  // MintHCM #136592
-use DateInterval; // MintHCM #136592
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Grant\PasswordGrant; // MintHCM #131001
-use League\OAuth2\Server\RequestAccessTokenEvent;
-use League\OAuth2\Server\RequestEvent;
-use League\OAuth2\Server\RequestRefreshTokenEvent;
-use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 #[\AllowDynamicProperties]
@@ -51,32 +46,4 @@ class MobileGrant extends PasswordGrant
     }
     // MintHCM #136592 end
 
-    public function respondToAccessTokenRequest(
-        ServerRequestInterface $request,
-        ResponseTypeInterface $responseType,
-        DateInterval $accessTokenTTL
-    ) {
-        // Validate request
-        $client = $this->validateClient($request);
-        $scopes = $this->validateScopes($this->getRequestParameter('scope', $request, $this->defaultScope));
-        $user = $this->validateUser($request, $client);
-
-        // Finalize the requested scopes
-        $finalizedScopes = $this->scopeRepository->finalizeScopes($scopes, $this->getIdentifier(), $client, $user->getIdentifier()); // MintHCM #170401
-
-        // Issue and persist new access token
-        $accessToken = $this->issueAccessToken($accessTokenTTL, $client, $user->getIdentifier(), $finalizedScopes); // MintHCM #170401
-        $this->getEmitter()->emit(new RequestAccessTokenEvent(RequestEvent::ACCESS_TOKEN_ISSUED, $request, $accessToken));
-        $responseType->setAccessToken($accessToken);
-
-        // Issue and persist new refresh token if given
-        $refreshToken = $this->issueRefreshToken($accessToken);
-
-        if ($refreshToken !== null) {
-            $this->getEmitter()->emit(new RequestRefreshTokenEvent(RequestEvent::REFRESH_TOKEN_ISSUED, $request, $refreshToken));
-            $responseType->setRefreshToken($refreshToken);
-        }
-
-        return $responseType;
-    }
 }

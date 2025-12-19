@@ -1,6 +1,6 @@
 <?php
 
-namespace MintMCP\Handlers;
+namespace MintMCP\Server;
 
 use Monolog\Logger as MonologLogger;
 use Monolog\Handler\StreamHandler;

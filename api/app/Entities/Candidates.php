@@ -54,7 +54,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="candidates", indexes={
@@ -80,6 +79,7 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $phone_work
  * @property mixed $phone_other
  * @property mixed $phone_fax
+ * @property mixed $email1
  * @property mixed $lawful_basis
  * @property mixed $date_reviewed
  * @property mixed $lawful_basis_source
@@ -220,6 +220,10 @@ class Candidates extends MintEntity
      * @ORM\Column(type="string", length="100")
      */
     protected $phone_fax;
+
+    /**
+     */
+    protected $email1;
 
     /**
      * @ORM\Column(type="multienum", length="100")
@@ -370,14 +374,14 @@ class Candidates extends MintEntity
     protected $assigned_user_link;
 
     /**
-     * @ORM\JoinTable(name="email_addr_bean_rel")
-     * @ORM\ManyToMany(targetEntity=EmailAddresses::class, mappedBy="candidates")
+     * @ORM\JoinTable(name="email_addr_bean_rel", joinColumns={@ORM\JoinColumn(name="bean_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="email_address_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=EmailAddresses::class, inversedBy="email_addresses")
      */
     protected Collection $email_addresses;
 
     /**
-     * @ORM\JoinTable(name="email_addr_bean_rel")
-     * @ORM\ManyToMany(targetEntity=EmailAddresses::class, mappedBy="candidates")
+     * @ORM\JoinTable(name="email_addr_bean_rel", joinColumns={@ORM\JoinColumn(name="bean_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="email_address_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=EmailAddresses::class, inversedBy="email_addresses")
      */
     protected Collection $email_addresses_primary;
 
@@ -442,8 +446,8 @@ class Candidates extends MintEntity
      */
     protected Collection $files;
 
-    // Auto-generated SectionProperties section end
-    // Auto-generated SectionMethods section start
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->email_addresses = new ArrayCollection();
@@ -461,5 +465,43 @@ class Candidates extends MintEntity
         $this->files = new ArrayCollection();
     }
 
-    // Auto-generated SectionMethods section end
+        public function getEmail1(): string
+        {
+            $conn = $this->getEntityManager()->getConnection();
+
+            $sql = '
+                SELECT ea.email_address
+                FROM email_addresses ea
+                INNER JOIN email_addr_bean_rel eabr
+                    ON eabr.email_address_id = ea.id
+                WHERE eabr.bean_id = :bean_id
+                AND eabr.bean_module = :bean_module
+                AND eabr.primary_address = :primary_address
+                AND eabr.deleted = :deleted
+                LIMIT 1
+            ';
+
+            $module_name = $this->getModuleName();
+            if (in_array($module_name, ['Employees'])) {
+                $module_name = 'Users';
+            }
+
+            $stmt = $conn->prepare($sql);
+            $result = $stmt->executeQuery([
+                'bean_id' => $this->id,
+                'bean_module' => $module_name,
+                'primary_address' => 1,
+                'deleted' => 0,
+            ]);
+
+            return $result->fetchOne() ?: '';
+}
+
+public function getSerialized(bool $json = false): array|string
+{
+    $data = parent::getSerialized($json);
+    $data['email1'] = $this->getEmail1();
+    return $data;
+}
+// Auto-generated SectionMethods section end
 }

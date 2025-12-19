@@ -14,6 +14,9 @@ import * as operatorDefs from './operators'
 import { useFavoritesStore } from '@/store/favorites'
 import { useBean } from '@/composables/useBean'
 import { useStatusBoxesStore } from '@/store/statusBoxes'
+import { mintApi } from '@/api/api'
+import { useBackendStore } from '@/store/backend'
+import ComponentLoader from '@/utils/componentLoader'
 
 interface Preferences {
     columns: string[]
@@ -21,6 +24,10 @@ interface Preferences {
     saved_filters: []
     activeFilter: string | null
     filterRows: FilterRow[]
+    sortParams: {
+        sortOrder: 'asc' | 'desc'
+        sortBy: string
+    }
 }
 
 interface Defs {
@@ -76,34 +83,79 @@ export const useListViewStore = defineStore('listview', () => {
     const predefinedFilters = ref<boolean>(false)
     const isMassUpdate = ref(false)
 
-    async function init() {
+    const customActionsCache = ref(new Map<
+        string,
+        {
+            icon: string
+            onClick: (item: any) => void | Promise<void>
+            hasAccess?: (item: any) => boolean
+        }
+    >())
+    const loadingActions = ref(new Set<string>())
+    const customActionsModules = import.meta.glob('@/custom/views/ListView/Actions/*.ts', { eager: false })
+    
+    // Computed that tracks cache size to trigger reactivity
+    const actionsLoaded = computed(() => customActionsCache.value.size)
+
+    async function init(filtersParam: FilterRow[] | null = null) {
         initialLoading.value = true
+        clearCustomActionsCache()
         const result = await modulesApi.getListInit(getModule()).catch(moduleAccessError)
         if (module.value === result.data.module) {
-            activeFilter.value = result.data?.preferences?.activeFilter ?? null
-            filterRows.value = result.data?.preferences?.filterRows ?? []
-            initialLoading.value = false
             config.value = result.data?.config
             defs.value = result.data?.defs
-            preferences.value = Array.isArray(result.data?.preferences) ? {} : result.data?.preferences
-            options.value.sortBy[0] = {
-                key: result.data?.preferences?.sortParams?.sortBy,
-                order: result.data?.preferences?.sortParams?.sortOrder,
-            }
             module.value = result.data?.module
+            preferences.value = Array.isArray(result.data?.preferences) ? {} : result.data?.preferences
+            
+            await prepareInitFilters(filtersParam)
+
+            const defaultSortBy = result.data?.defs?.defaultSort?.field ?? '';
+            const defaultSortOrder = result.data?.defs?.defaultSort?.order ?? 'ASC';
+            await prepareDefaultSort(defaultSortBy, defaultSortOrder);
+            
             isInit.value = true
-            options.value.sortBy.push({
-                "order": preferences.value?.sortOrder,
-                "key": preferences.value?.sortBy
-            })
-            let saved_filters = preferences.value?.filters ?? {}
-            filters.value.filter = saved_filters?.filter ?? []
-            filters.value.must_not = saved_filters?.must_not ?? []
-            if (typeof preferences.value?.filterRows === 'string') {
-                filterRows.value = JSON.parse(preferences.value?.filterRows ?? '[]') ?? []
-            } else {
-                filterRows.value = preferences.value?.filterRows ?? []
-            }
+            getData()
+        }
+        initialLoading.value = false
+    }
+
+    async function prepareInitFilters(filtersParam: FilterRow[] | null = null) {
+        if (Array.isArray(filtersParam)) {
+            activeFilter.value = null
+            filterRows.value = filtersParam
+            predefinedFilters.value = true
+            return;
+        }
+
+        activeFilter.value = preferences.value?.activeFilter ?? null
+        if (typeof preferences.value?.filterRows === 'string') {
+            filterRows.value = JSON.parse(preferences.value?.filterRows ?? '[]') ?? []
+        } else {
+            filterRows.value = preferences.value?.filterRows ?? []
+        }
+    }
+
+    async function prepareDefaultSort(defaultSortBy: string, defaultSortOrder: string)
+    {
+        const preferenceSortBy = preferences.value?.sortParams?.sortBy ?? '';
+        const preferenceSortOrder = preferences.value?.sortParams?.sortOrder ?? '';
+        if (preferenceSortOrder && preferenceSortBy !== '_score') {
+            options.value.sortBy = [
+                {
+                    key: preferenceSortBy,
+                    order: preferenceSortOrder,
+                }
+            ]
+            return;
+        }
+
+        if (defaultSortBy && defaultSortOrder) {
+            options.value.sortBy = [
+                {
+                    key: defaultSortBy,
+                    order: defaultSortOrder,
+                }
+            ]
         }
     }
 
@@ -120,7 +172,7 @@ export const useListViewStore = defineStore('listview', () => {
             options.value.page ?? 0,
             options.value.itemsPerPage === -1 ? 100 : options.value.itemsPerPage,
             myObjects.value,
-            defs.value?.columns[options.value.sortBy[0]?.key]?.key,
+            options.value.sortBy[0]?.key ?? '',
             options.value.sortBy[0]?.order ?? 'asc',
             activeFilter.value,
             onlyFavorites.value,
@@ -316,11 +368,15 @@ export const useListViewStore = defineStore('listview', () => {
         return massActions
     })
 
-    watch(options, () => {
-        if (isInit.value) {
-            getData()
-        }
-    })
+    watch(
+        options,
+        () => {
+            if (isInit.value) {
+                getData()
+            }
+        },
+        { deep: true },
+    )
 
     const relatePopup = computed(() => {
         if (mode.value !== 'relate') {
@@ -403,9 +459,11 @@ export const useListViewStore = defineStore('listview', () => {
         })
         const filtersChanged = JSON.stringify(query) !== JSON.stringify(filters.value)
         filters.value = query
-        if (filtersChanged) {
+        if (filtersChanged && isInit.value) {
             preferences.value.filterRows = filterRows
-            savePreferences()
+            if (mode.value === 'list') {
+                savePreferences()
+            }
             getData()
         }
     }
@@ -464,6 +522,57 @@ export const useListViewStore = defineStore('listview', () => {
         }
     }
 
+    async function loadCustomAction(actionName: string) {
+        const cacheKey = `${module.value}-${actionName}`
+        
+        if (customActionsCache.value.has(cacheKey)) {
+            return customActionsCache.value.get(cacheKey)
+        }
+
+        if (loadingActions.value.has(cacheKey)) {
+            return null
+        }
+
+        loadingActions.value.add(cacheKey)
+
+        const loader = Object.entries(customActionsModules).find(([path]) => path.endsWith(`/${actionName}.ts`))?.[1]
+
+        if (!loader) {
+            loadingActions.value.delete(cacheKey)
+            return null
+        }
+
+        try {
+            const actionModule = (await loader()) as { default: (context: any) => any }
+            const action = actionModule.default
+            const backend = useBackendStore()
+            const popups = usePopupsStore()
+            const languages = useLanguagesStore()
+            const resolvedAction = action({ 
+                router, 
+                store: useListViewStore(), 
+                url, 
+                languages, 
+                popups, 
+                backend, 
+                ComponentLoader, 
+                mintApi 
+            })
+            customActionsCache.value.set(cacheKey, resolvedAction)
+            loadingActions.value.delete(cacheKey)
+            return resolvedAction
+        } catch (error) {
+            console.error(`Failed to load custom action: ${actionName}`, error)
+            loadingActions.value.delete(cacheKey)
+            return null
+        }
+    }
+
+    function clearCustomActionsCache() {
+        customActionsCache.value.clear()
+        loadingActions.value.clear()
+    }
+
     return {
         mode,
         init,
@@ -488,6 +597,7 @@ export const useListViewStore = defineStore('listview', () => {
         activeFilter,
         savePreferences,
         setDefaultColumns,
+        setFilters,
         pageOffsetMap,
         selected,
         filterRows,
@@ -507,5 +617,9 @@ export const useListViewStore = defineStore('listview', () => {
         addMassUpdateRow,
         deleteMassUpdateRow,
         massUpdatableFields,
+        loadCustomAction,
+        clearCustomActionsCache,
+        customActionsCache,
+        actionsLoaded,
     }
 })

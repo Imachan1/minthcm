@@ -52,7 +52,6 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="emailman", indexes={
@@ -166,11 +165,11 @@ class EmailMan extends MintEntity
      */
     protected $related_confirm_opt_in;
 
-    // Auto-generated SectionProperties section end
-    // Auto-generated SectionMethods section start
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
     public function __construct()
     {
     }
 
-    // Auto-generated SectionMethods section end
+// Auto-generated SectionMethods section end
 }

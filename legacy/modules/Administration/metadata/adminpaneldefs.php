@@ -537,7 +537,20 @@ $admin_option_defs['Administration']['configs'] = array(
     'index.php?entryPoint=CalculateDLNC',
 );
 $admin_group_header[] = array('LBL_ADD_LAST_NEXT_CONTACT_PANEL', '', false, $admin_option_defs, '');
-# DateLastNextContact Administration Definition begin
+# DateLastNextContact Administration Definition end
+
+# MCP Administration Definition begin
+$admin_option_defs = array();
+$admin_option_defs['Administration']['MCPSettings'] = array(
+    'MCPSettings',
+    'LBL_MCP_SETTINGS_NAME',
+    'LBL_MCP_SETTINGS_DESCRIPTION',
+    'index.php?module=MCPSettings&action=EditView&record=1',
+);
+
+$admin_group_header[] = array('LBL_MCP_SETTINGS_NAME', '', false, $admin_option_defs, 'LBL_MCP_SETTINGS_DESCRIPTION');
+
+# MCP Administration Definition end
 
 if (file_exists('custom/modules/Administration/Ext/Administration/administration.ext.php')) {
     include 'custom/modules/Administration/Ext/Administration/administration.ext.php';

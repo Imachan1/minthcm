@@ -121,6 +121,39 @@ abstract class AbstractMetaDataImplementation
      */
     protected $_variables;
 
+    protected const RECORDVIEW_ADDRESS_FIELDS = [
+        'primary_address_street' => [
+            'name' => 'primary_address',
+            'type' => 'fieldset',
+            'label' => 'LBL_PRIMARY_ADDRESS',
+            'properties' => [
+                'fields' => [
+                    'primary_address_street',
+                    'primary_address_city',
+                    'primary_address_state',
+                    'primary_address_postalcode',
+                    'primary_address_country',
+                ],
+                'separator' => ', ',
+            ],
+        ],
+        'alt_address_street' => [
+            'name' => 'alt_address',
+            'type' => 'fieldset',
+            'label' => 'LBL_ALT_ADDRESS',
+            'properties' => [
+                'fields' => [
+                    'alt_address_street',
+                    'alt_address_city',
+                    'alt_address_state',
+                    'alt_address_postalcode',
+                    'alt_address_country',
+                ],
+                'separator' => ', ',
+            ],
+        ],
+    ];
+
     /**
      * Getters for the definitions loaded by the Constructor
      * @return array
@@ -429,6 +462,66 @@ EOQ;
         }
     }
     //MintHCM end
+
+    protected function _saveToFileRecordView($filename, $defs, $recordView)
+    {
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
+
+        mkdir_recursive(dirname($filename));
+        
+        foreach ($defs as $section => $rows) {
+            foreach ($rows as $rowIndex => $row) {
+                foreach ($row as $index => $fields) {
+                    foreach ($fields as $fieldKey => $field) {
+                        if ($field == '(filler)') {
+                            $defs[$section][$rowIndex][$index][$fieldKey] = '';
+                        }
+
+                        if ($field == '(empty)') {
+                            unset($defs[$section][$rowIndex][$index][$fieldKey]);
+                        }
+
+                        if (in_array($field, array_keys(self::RECORDVIEW_ADDRESS_FIELDS))) {
+                            $defs[$section][$rowIndex][$index][$fieldKey] = self::RECORDVIEW_ADDRESS_FIELDS[$field];
+                        }
+                    }
+                }
+            }
+        }
+
+        $main_panel = '';
+        foreach ($recordView['panels'] as $key => $panel) {
+            if ($panel['component'] === 'MintPanelRecordDetails') {
+                $main_panel = $key;
+                break;
+            }
+        }
+
+        unset($recordView['panels'][$main_panel]['data']['sections']);
+
+        foreach ($defs['RecordView'] as $key => $fields) {
+            $recordView['panels'][$main_panel]['data']['sections'][$key]['fields'] = $fields;
+            $recordView['panels'][$main_panel]['data']['sections'][$key]['title'] = strtoupper($key);
+        }
+
+        $start = "<?php\n";
+        $out = "\$viewdefs['" . $this->_moduleName . "'] = " . var_export_helper($recordView);
+        $out .= ";";
+
+        $out = str_replace('array (', '[', $out);
+        $out = str_replace(')', ']', $out);
+        $out = preg_replace('/=>\s*\[/', '=> [', $out);
+        $out = preg_replace('/\[\s*\n\s*\]/', '[]', $out);
+        $out = str_replace('  ', '    ', $out);
+
+        $out = $start . $out;
+
+        if (sugar_file_put_contents($filename, $out) === false) {
+            $GLOBALS ['log']->fatal(get_class($this) . ": could not write new viewdef file " . $filename);
+        }
+    }
 
     /**
      * @param $defs array The definitions to save

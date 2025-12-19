@@ -7,7 +7,7 @@
         ref="currently-planning"
         :style="{
             ...style,
-            pointerEvents: props.bean.isSaving ? 'none' : 'auto',
+            pointerEvents: props.scheduler.bean.isSaving ? 'none' : 'auto',
         }"
     >
         <div class="currently-planning-header">
@@ -15,11 +15,11 @@
             <div v-show="props.scheduler.isEditable.value" class="currently-planning-edge right" />
             <div class="currently-planning-header-content">
                 <div class="currently-planning-header-time">{{ currentlyPlanningTimeText }}</div>
-                <div class="currently-planning-header-title">{{ props.bean.attributes.name }} ({{ language.label('LBL_SCHEDULER_CURRENTLY_PLANNING') }})</div>
+                <div class="currently-planning-header-title">{{ props.scheduler.bean.fields.name?.model }} ({{ language.label('LBL_SCHEDULER_CURRENTLY_PLANNING') }})</div>
             </div>
             <v-fade-transition>
                 <v-progress-circular
-                    v-if="props.bean.isSaving"
+                    v-if="props.scheduler.bean.isSaving"
                     size="16"
                     width="2"
                     class="mr-2"
@@ -35,19 +35,20 @@
 import { useDataPosition } from '@/composables/useDataPosition'
 import { useMintScheduler } from './useMintScheduler'
 import { computed, ref, useTemplateRef, watch } from 'vue'
-import { useBean } from '@/composables/useBean'
 import { DateTime } from 'luxon'
 import { useMove } from '@/composables/useMove'
 import { useLanguagesStore } from '@/store/languages'
+import { usePreferencesStore } from '@/store/preferences'
+import { useStatusBoxesStore } from '@/store/statusBoxes'
 
 interface Props {
-    bean: ReturnType<typeof useBean>
     scheduler: ReturnType<typeof useMintScheduler>
 }
 
 const props = defineProps<Props>()
 
 const language = useLanguagesStore()
+const preferences = usePreferencesStore()
 
 // date from
 const dateFrom = ref(props.scheduler.activityFrom.value)
@@ -59,6 +60,9 @@ const positionDtFrom = computed(() => {
     }
     if (move.movedSteps.value && ['both', 'left'].includes(move.moveEdge.value)) {
         dt = dt.plus({ minutes: move.movedSteps.value * 15 })
+    }
+    if (move.moveEdge.value == 'left' && dt >= dateToDt.value) {
+        dt = dateToDt.value.minus({ minutes: 15 })
     }
     return dt
 })
@@ -82,6 +86,9 @@ const positionDtTo = computed(() => {
     }
     if (move.movedSteps.value && ['both', 'right'].includes(move.moveEdge.value)) {
         dt = dt.plus({ minutes: move.movedSteps.value * 15 })
+    }
+    if (move.moveEdge.value == 'right' && dt <= dateFromDt.value) {
+        dt = dateFromDt.value.plus({ minutes: 15 })
     }
     return dt
 })
@@ -120,9 +127,29 @@ const move = useMove({
         if (!updatedFields.value || !props.scheduler.isEditable.value) {
             return
         }
-        props.bean.updateFields(updatedFields.value)
-        if (props.bean.id) {
-            props.bean.save()
+        const date_start = updatedFields.value.date_start
+        const date_end = updatedFields.value.date_end
+        if (props.scheduler.bean.fields.date_start?.model) {
+            props.scheduler.bean.fields.date_start.model.set(date_start)
+        }
+        if (props.scheduler.bean.fields.date_end?.model) {
+            props.scheduler.bean.fields.date_end.model.set(date_end)
+        }
+        if (props.scheduler.bean.fields.duration_hours) {
+            props.scheduler.bean.fields.duration_hours.model = updatedFields.value.duration_hours
+        }
+        if (props.scheduler.bean.fields.duration_minutes) {
+            props.scheduler.bean.fields.duration_minutes.model = updatedFields.value.duration_minutes
+        }
+        if (props.scheduler.bean.id) {
+            props.scheduler.bean.save().then(() => {
+                useStatusBoxesStore().showStatus('scheduler-save-success', {
+                    type: 'success',
+                    autoClose: true,
+                    autoCloseDelay: 3000,
+                    message: language.label('LBL_SAVED'),
+                })
+            })
         }
     },
 })
@@ -135,10 +162,10 @@ const { style } = useDataPosition(
 const currentlyPlanningTimeText = computed(() => {
     const text = []
     if (positionDtFrom.value?.isValid) {
-        text.push(positionDtFrom.value.setZone('Europe/Warsaw').toFormat('H:mm'))
+        text.push(positionDtFrom.value.setZone(preferences.user?.timezone).toFormat('H:mm'))
     }
     if (positionDtTo.value?.isValid) {
-        text.push(positionDtTo.value.setZone('Europe/Warsaw').toFormat('H:mm'))
+        text.push(positionDtTo.value.setZone(preferences.user?.timezone).toFormat('H:mm'))
     }
     return text.join(' - ')
 })

@@ -8,6 +8,7 @@ use Mcp\Types\CallToolResult;
 use Mcp\Types\TextContent;
 use Mcp\Types\ToolInputSchema;
 use MintMCP\Config\Config;
+use MintMCP\Server\ControllerFactory;
 use MintMCP\Tools\Exceptions\ModuleNotAllowedException;
 
 abstract class AbstractMCPTool
@@ -74,6 +75,17 @@ abstract class AbstractMCPTool
     }
 
     /**
+     * Get an API Controller instance
+     *
+     * @param string $controllerClass The fully qualified class name of the controller
+     * @return mixed The controller instance
+     */
+    protected function getController(string $controllerClass)
+    {
+        return ControllerFactory::getInstance()->createController($controllerClass);
+    }
+
+    /**
      * Checks user permissions for a module.
      *
      * Throws an exception if the user is not authenticated or does not have access.
@@ -92,24 +104,14 @@ abstract class AbstractMCPTool
             throw new \Exception('User not authenticated');
         }
 
-        // Load whitelist/blacklist settings from config
-        $useBlacklist = $this->config->get('use_blacklist', false); 
-        $useWhitelist = $this->config->get('use_whitelist', false);
-
-        $whitelist = array_filter(array_map('trim', explode(',', $this->config->get('module_whitelist'))));
-        $blacklist = array_filter(array_map('trim', explode(',', $this->config->get('module_blacklist'))));
-
-        // Whitelist check: if enabled and module not in whitelist, block access
-        if ($useWhitelist && !in_array($module, $whitelist, true)) {
-            throw new ModuleNotAllowedException("Access to module '{$module}' is not allowed by whitelist.");
-        }
+        $blacklist = array_filter(array_map('trim', explode(',', $this->config->get('blacklist'))));
 
         // Blacklist check: if enabled and module is in blacklist, block access
-        if ($useBlacklist && in_array($module, $blacklist, true)) {
-            throw new ModuleNotAllowedException("Access to module '{$module}' is blocked by blacklist.");
+        if (in_array($module, $blacklist, true)) {
+            throw new ModuleNotAllowedException("Access to module '{$module}' is not allowed by blacklist.");
         }
 
-        if (!\ACLController::checkAccess($module, $acl_action)) {
+        if (!\ACLController::checkAccess($module, $acl_action, true, 'module', true)) {
             throw new ModuleNotAllowedException("Insufficient permissions for module: {$module}");
         }
 

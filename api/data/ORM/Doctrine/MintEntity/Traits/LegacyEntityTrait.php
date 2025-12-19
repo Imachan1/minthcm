@@ -74,7 +74,11 @@ trait LegacyEntityTrait
             'include/EntityCreator/EntityCreatorManager.php',
         );
 
-        foreach ($bean->field_defs as $property => $defs) {
+        global $mint_app;
+        $entity_manager = $mint_app->getContainer()->get(EntityManagerInterface::class);
+
+        foreach (get_object_vars($this) as $property => $value) {
+            $defs = $bean->field_defs[$property] ?? null;
             if (empty($defs) || in_array($defs['type'], $entity_creator_manager::getSkipingFieldTypes())) {
                 continue;
             }
@@ -86,9 +90,6 @@ trait LegacyEntityTrait
             }
 
             $value = $this->$property;
-
-            global $mint_app;
-            $entity_manager = $mint_app->getContainer()->get(EntityManagerInterface::class);
             $meta = $entity_manager->getClassMetadata($is_entity_property ? static::class : get_class($this->custom_entity));
             if ($meta->hasField($property)) {
                 $fieldType = $meta->getTypeOfField($property);
@@ -99,4 +100,5 @@ trait LegacyEntityTrait
             $bean->$property = $value;
         }
     }
+
 }

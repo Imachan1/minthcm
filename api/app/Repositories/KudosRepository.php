@@ -54,6 +54,22 @@ class KudosRepository extends MintEntityRepository
     {
         global $current_user;
 
+        $basic_select = 'CASE
+                            WHEN kudos.announcement_date IS NULL THEN 1
+                            ELSE 2
+                        END AS HIDDEN announcement_order,
+                        CASE
+                            WHEN kudos.announcement_date IS NULL THEN kudos.date_entered
+                            ELSE kudos.announcement_date
+                        END AS HIDDEN date_order';
+        
+        $select_string = $list_type !== 'all' 
+                        ? 'CASE
+                                WHEN (alerts.is_read = 0 OR alerts.id IS NULL) THEN 1
+                                ELSE 2 
+                            END AS HIDDEN alert_order,' . $basic_select 
+                        : $basic_select;
+        
         $qb = $this->createQueryBuilder('kudos')
             ->addSelect('employee')
             ->innerJoin('kudos.employee_link', 'employee', 'WITH', 'employee.deleted = 0 AND employee.status = \'active\'')
@@ -63,38 +79,30 @@ class KudosRepository extends MintEntityRepository
             ->leftJoin('kudos.reactions', 'reactions', 'WITH', 'reactions.deleted = 0')
             ->addSelect('alerts')
             ->leftJoin('kudos.alerts', 'alerts', 'WITH', "alerts.assigned_user_id = '{$current_user->id}'")
-            ->addSelect("
-                CASE
-                    WHEN (alerts.is_read = 0 OR alerts.id IS NULL) THEN 1
-                    ELSE 2 
-                END AS HIDDEN alert_order,
-                CASE
-                    WHEN kudos.announcement_date IS NULL THEN 1
-                    ELSE 2
-                END AS HIDDEN announcement_order,
-                CASE
-                    WHEN kudos.announcement_date IS NULL THEN kudos.date_entered
-                    ELSE kudos.announcement_date
-                END AS HIDDEN date_order
-            ")
-            ->orderBy('alert_order', 'ASC')
-            ->addOrderBy('announcement_order', 'ASC')
-            ->addOrderBy('date_order', 'DESC')
-            ->addOrderBy('employee.last_name', 'ASC')
-            ->setFirstResult($page == 1 ? 0 : 20 * ($page - 1))
-            ->setMaxResults(20);
+            ->addSelect($select_string)
+        ;
 
         switch ($list_type) {
             case 'received':
-                $qb->andWhere('kudos.announced = 1 AND kudos.employee_id = :current_user_id');
+                $qb->andWhere('kudos.announced = 1 AND kudos.employee_id = :current_user_id')
+                    ->orderBy('alert_order', 'ASC');
                 break;
             case 'given':
-                $qb->andWhere('kudos.assigned_user_id = :current_user_id');
+                $qb->andWhere('kudos.assigned_user_id = :current_user_id')
+                    ->orderBy('alert_order', 'ASC');
                 break;
             default:
                 $qb->andWhere('((kudos.announced IS NULL OR kudos.announced = 0) AND kudos.assigned_user_id = :current_user_id) OR kudos.announced = 1');
                 break;
         }
+
+        $qb->addOrderBy('announcement_order', 'ASC')
+            ->addOrderBy('date_order', 'DESC')
+            ->addOrderBy('employee.last_name', 'ASC')
+            ->setFirstResult($page == 1 ? 0 : 20 * ($page - 1))
+            ->setMaxResults(20)
+        ;
+        
         $qb->setParameter('current_user_id', $current_user->id);
 
         return $qb->getQuery()->getResult();

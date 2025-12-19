@@ -6,20 +6,41 @@
         <div class="panel-content">
             <MintScheduler
                 :bean="store.bean"
-                :dateFrom="store.bean.attributes.date_start"
-                :dateTo="store.bean.attributes.date_end"
+                :dateFrom="dateFrom"
+                :dateTo="dateTo"
             />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { MintField } from '@/components/Fields/useField'
 import MintScheduler from '@/components/MintScheduler/MintScheduler.vue'
+import { MintDate } from '@/composables/useMintDate'
 import { useLanguagesStore } from '@/store/languages'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
+import { ref, watch } from 'vue'
 
 const store = useRecordViewStore()
 const language = useLanguagesStore()
+
+const dateFrom = ref<MintField<MintDate> | null>(null)
+const dateTo = ref(null)
+
+watch(
+    () => store.bean.fields.date_start,
+    (newVal) => {
+        dateFrom.value = newVal
+    },
+    { immediate: true },
+)
+watch(
+    () => store.bean.fields.date_end,
+    (newVal) => {
+        dateTo.value = newVal
+    },
+    { immediate: true },
+)
 </script>
 
 <style scoped lang="scss">

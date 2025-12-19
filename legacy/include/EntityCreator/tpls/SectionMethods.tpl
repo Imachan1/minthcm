@@ -13,4 +13,7 @@
 {include file="$main_entity_methods_tpl"}
 {/if}
 {/if}
+{foreach from=$additionalMethods item=method}
+        {$method}
+{/foreach}
     {$end_sectionmethods}

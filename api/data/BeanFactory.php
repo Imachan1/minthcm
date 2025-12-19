@@ -54,11 +54,14 @@ class BeanFactory
 {
     public static function getBean($module, $id = null, $params = array(), $deleted = true)
     {
-        chdir('../legacy/');
-        $legacy_bean = LegacyFactory::getBean($module, $id, $params, $deleted);
-        chdir('../api/');
-
-        return new MintBean($legacy_bean);
+        $originalDir = getcwd();
+        try {
+            chdir('../legacy/');
+            $legacyBean = LegacyFactory::getBean($module, $id, $params, $deleted);
+        } finally {
+            chdir($originalDir);
+        }
+        return new MintBean($legacyBean);
     }
 
     public static function newBean($module)
@@ -68,9 +71,13 @@ class BeanFactory
 
     public static function __callStatic($name, $arguments)
     {
-        chdir('../legacy/');
-        $response = LegacyFactory::$name($arguments);
-        chdir('../api/');
+        $originalDir = getcwd();
+        try {
+            chdir('../legacy/');
+        $response = LegacyFactory::$name(...$arguments);
+        } finally {
+            chdir($originalDir);
+        }
 
         return $response;
     }

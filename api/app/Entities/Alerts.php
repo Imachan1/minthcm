@@ -52,7 +52,6 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="alerts", indexes={
@@ -206,11 +205,11 @@ class Alerts extends MintEntity
      */
     protected $kudos;
 
-    // Auto-generated SectionProperties section end
-    // Auto-generated SectionMethods section start
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
     public function __construct()
     {
     }
 
-    // Auto-generated SectionMethods section end
+// Auto-generated SectionMethods section end
 }

@@ -21,61 +21,48 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { DateTime } from 'luxon'
+import { ref, computed } from 'vue'
 import { FieldProps } from '../Field.model'
+import { MintDate } from '@/composables/useMintDate'
+import { DateTime } from 'luxon'
+import { usePreferencesStore } from '@/store/preferences'
 
-const props = defineProps<FieldProps>()
-import { usePreferencesStore } from '@/store/preferences';
+const props = defineProps<FieldProps<MintDate>>()
 
-const preferences = usePreferencesStore()
 const emit = defineEmits(['update:modelValue'])
 
 const datePickerMenu = ref(false)
 const model = ref(props.modelValue)
+const preferences = usePreferencesStore()
 
 const parsedValue = computed({
     get() {
-        const dt = DateTime.fromSQL(model.value)
-        if (dt.isValid) {
-            return dt.toFormat(preferences.user?.date_format || 'dd.MM.yyyy') || ''
-        }
-        return ''
+        return model.value.formatted?.user_date || ''
     },
     async set(newVal) {
         datePickerMenu.value = false
         if (!newVal?.trim()) {
-            model.value = ''
+            model.value.clear()
         }
-        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'dd.MM.yyyy')
+        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
         if (dt.isValid) {
-            model.value = dt.toSQLDate()
+            model.value.set(dt)
         }
     },
 })
 const pickerValue = computed({
     get() {
-        if (!model.value?.trim()) {
-            return new Date()
-        }
-        return new Date(model.value)
+        return model.value.isValid ? model.value.formatted.js_date : new Date()
     },
     set(newVal) {
-        const dt = DateTime.fromJSDate(newVal)
-        if (dt.isValid) {
-            model.value = dt.toSQLDate()
+        const dt = DateTime.fromJSDate(newVal, { zone: preferences.userTimezone || 'utc' })
+        if (!dt.isValid) {
+            return
         }
-    },
-})
-
-watch(model, (newVal) => {
-    datePickerMenu.value = false
-    const dt = DateTime.fromSQL(newVal?.toString())
-    if (dt.isValid) {
+        model.value.set(dt.toFormat('yyyy-MM-dd'))
         emit('update:modelValue', model.value)
-    } else {
-        emit('update:modelValue', '')
-    }
+        datePickerMenu.value = false
+    },
 })
 </script>
 

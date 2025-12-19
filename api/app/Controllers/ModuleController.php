@@ -45,13 +45,15 @@
 
 namespace MintHCM\Api\Controllers;
 
-use BeanFactory;
-use MintHCM\Data\BeanFactory as MintBeanFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
+use BeanFactory as LegacyBeanFactory;
+use MintHCM\Data\BeanFactory as MintBeanFactory;
+use MintHCM\Data\MintBean;
 use MintHCM\Lib\MintLogic\MintLogic;
 use MintHCM\Utils\LegacyConnector;
+use MintHCM\Utils\CyclicRecordsSaver;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
@@ -115,6 +117,9 @@ class ModuleController
         $this->entity_manager->persist($entity);
 
         $repository->save($entity, false);
+        if (!empty($record_data['repeat_type']) && '' != $record_data['repeat_type']) {
+            $this->handleCyclicalRecords($entity);
+        }
         $this->handleLinks($entity, $links);
 
         $this->entity_manager->flush();
@@ -153,7 +158,7 @@ class ModuleController
         }
 
         foreach ($record_data as $field_name => $value) {
-            if (property_exists($entity, $field_name) && !empty($value)) {
+            if (property_exists($entity, $field_name)) {
                 $entity->$field_name = $value;
             }
         }
@@ -168,6 +173,9 @@ class ModuleController
 
         $this->handleFiles($entity, $files);
         $entity_repository->save($entity, false);
+        if (!empty($record_data['repeat_type']) && '' != $record_data['repeat_type']) {
+            $this->handleCyclicalRecords($entity);
+        }
         $this->handleLinks($entity, $links);
 
         $this->entity_manager->flush();
@@ -268,7 +276,7 @@ class ModuleController
         $module = $this->getModuleFromRoute($request);
         $id = $request->getAttribute('id');
         chdir('../legacy/');
-        $focus = BeanFactory::getBean($module, $id);
+        $focus = LegacyBeanFactory::getBean($module, $id);
         if (empty($focus->id)) {
             $response = $response->withStatus(404);
             return $response;
@@ -281,7 +289,7 @@ class ModuleController
         if (isset($spd->layout_defs['subpanel_setup'][$related_name])) {
 
             $target_module = $spd->layout_defs['subpanel_setup'][$related_name]['module'];
-            $target_bean = BeanFactory::getBean($target_module);
+            $target_bean = LegacyBeanFactory::getBean($target_module);
             if (!$target_bean || !$target_bean->ACLAccess('list')) {
                 return $response->withStatus(403);
             }
@@ -325,7 +333,7 @@ class ModuleController
         $link_name = $request->getAttribute('link_name');
 
         chdir('../legacy/');
-        $focus = BeanFactory::getBean($module, $id);
+        $focus = LegacyBeanFactory::getBean($module, $id);
         if (empty($focus->id)) {
             $response = $response->withStatus(404);
             return $response;
@@ -367,7 +375,7 @@ class ModuleController
         $link_name = $request->getAttribute('link_name');
 
         chdir('../legacy/');
-        $focus = BeanFactory::getBean($module, $id);
+        $focus = LegacyBeanFactory::getBean($module, $id);
         if (empty($focus->id)) {
             $response = $response->withStatus(404);
             return $response;
@@ -419,6 +427,7 @@ class ModuleController
                 'edit' => $entity->hasAccess('edit'),
                 'delete' => $entity->hasAccess('delete'),
                 'view' => $entity->hasAccess('view'),
+                'admin' => $entity->hasAccess('admin'),
             ],
             'logic' => (new MintLogic($entity->getMintBean()))->getInitial(),
         ];
@@ -483,7 +492,6 @@ class ModuleController
             return;
         }
 
-        //TODO add relationship management in Entity
         $bean = $mint_entity->getMintBean();
         foreach ($links as $link_name => $link_data) {
             if (empty($link_data)) {
@@ -496,18 +504,12 @@ class ModuleController
             if (!empty($link_data['beansToAdd']) && is_array($link_data['beansToAdd'])) {
                 foreach ($link_data['beansToAdd'] as $related_id => $related_bean) {
                     $additionalValues = $related_bean['additionalValues'] ?? [];
-                    $link = $bean->$link_name;
-                    chdir('../legacy/');
-                    $link->add($related_id, $additionalValues);
-                    chdir('../api/');
+                    $bean->$link_name->add($related_id, $additionalValues);
                 }
             }
             if (!empty($link_data['beansToRemove']) && is_array($link_data['beansToRemove'])) {
                 foreach ($link_data['beansToRemove'] as $related_id) {
-                    $link = $bean->$link_name;
-                    chdir('../legacy/');
-                    $link->delete($bean->id, $related_id);
-                    chdir('../api/');
+                    $bean->$link_name->delete($bean->id, $related_id);
                 }
             }
         }
@@ -538,4 +540,9 @@ class ModuleController
         $response->getBody()->write(json_encode($data));
         return $response;
     }
+
+    protected function handleCyclicalRecords(MintEntity $mint_entity)
+    {
+        (new CyclicRecordsSaver($mint_entity->getMintBean(), $this->entity_manager))->run();
+}
 }

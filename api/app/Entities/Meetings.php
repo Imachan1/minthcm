@@ -54,7 +54,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="meetings", indexes={
@@ -92,17 +91,17 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $email_reminder_sent
  * @property mixed $outlook_id
  * @property mixed $sequence
+ * @property mixed $recurring_source
+ * @property mixed $duration
+ * @property mixed $gsync_id
+ * @property mixed $gsync_lastsync
+ * @property mixed $type
  * @property mixed $repeat_type
  * @property mixed $repeat_interval
  * @property mixed $repeat_dow
  * @property mixed $repeat_until
  * @property mixed $repeat_count
  * @property mixed $repeat_parent_id
- * @property mixed $recurring_source
- * @property mixed $duration
- * @property mixed $gsync_id
- * @property mixed $gsync_lastsync
- * @property mixed $type
  */
 // Auto-generated SectionRepository section end
 class Meetings extends MintEntity
@@ -110,16 +109,19 @@ class Meetings extends MintEntity
 
 // Auto-generated SectionProperties section start
 
-    /**
-     * @ORM\OneToOne(
-     *     targetEntity="Meetings_cstm",
-     *     mappedBy="main_entity",
-     *     cascade={"persist", "remove"},
-     *     fetch="EAGER"
-     * )
-     */
-    protected $custom_entity;
-    /**
+                
+    
+/**
+ * @ORM\OneToOne(
+*     targetEntity="Meetings_cstm",
+ *     mappedBy="mainEntity",
+ *     cascade={"persist", "remove"},
+ *     fetch="EAGER"
+ * )
+ */
+private $customEntity;
+
+        /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
@@ -270,6 +272,31 @@ class Meetings extends MintEntity
     /**
      * @ORM\Column(type="string", length="36")
      */
+    protected $recurring_source;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $duration;
+
+    /**
+     * @ORM\Column(type="string", length="1024")
+     */
+    protected $gsync_id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $gsync_lastsync;
+
+    /**
+     * @ORM\Column(type="string", length="255")
+     */
+    protected $type;
+
+    /**
+     * @ORM\Column(type="string", length="36")
+     */
     protected $repeat_type;
 
     /**
@@ -296,31 +323,6 @@ class Meetings extends MintEntity
      * @ORM\Column(type="id", length="36")
      */
     protected $repeat_parent_id;
-
-    /**
-     * @ORM\Column(type="string", length="36")
-     */
-    protected $recurring_source;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $duration;
-
-    /**
-     * @ORM\Column(type="string", length="1024")
-     */
-    protected $gsync_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $gsync_lastsync;
-
-    /**
-     * @ORM\Column(type="string", length="255")
-     */
-    protected $type;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
@@ -397,8 +399,8 @@ class Meetings extends MintEntity
      */
     protected Collection $resources;
 
-    // Auto-generated SectionProperties section end
-    // Auto-generated SectionMethods section start
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();
@@ -411,21 +413,23 @@ class Meetings extends MintEntity
         $this->conclusions = new ArrayCollection();
         $this->reservations = new ArrayCollection();
         $this->resources = new ArrayCollection();
-        $this->setCustomEntity(new Meetings_cstm());
     }
 
+                
+    
+    
     public function getCustomEntity()
     {
-        return $this->custom_entity;
+        return $this->customEntity;
     }
 
 
-    public function setCustomEntity($custom_entity)
+    public function setCustomEntity($customEntity)
     {
-        $this->custom_entity = $custom_entity;
+        $this->customEntity = $customEntity;
 
-        if ($custom_entity && $custom_entity->getMainEntity() !== $this) {
-            $custom_entity->setMainEntity($this);
+        if ($customEntity && $customEntity->getMainEntity() !== $this) {
+            $customEntity->setMainEntity($this);
         }
 
         return $this;

@@ -71,6 +71,8 @@ define('MB_MANYTOMANY', 'many-to-many');
 define('MB_MAXDBIDENTIFIERLENGTH', 30); // maximum length of any identifier in our supported databases
 define('MB_EXPORTPREPEND', 'project_');
 define('MB_VISIBILITY', 'visibility');
+define('MB_ESLISTVIEW', 'eslistview');
+define('MB_RECORDVIEW', 'recordview');
 
 #[\AllowDynamicProperties]
 class MBConstants

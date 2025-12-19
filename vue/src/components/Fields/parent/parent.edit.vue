@@ -115,18 +115,18 @@ const parentTypeOptions = computed(() => {
 })
 
 const items = ref(
-    props.data?.bean.attributes[props.defs.id_name]
+    props.data?.bean.fields[props.defs.id_name]?.model
         ? [
               {
-                  id: props.data.bean.attributes[props.defs.id_name],
-                  name: props.modelValue,
+                  id: props.data.bean.fields[props.defs.id_name]?.model || '',
+                  name: props.field.model || '',
               },
           ]
         : [],
 )
 const currentRecordItem = ref({
-    id: props.data?.bean.attributes[props.defs.id_name] ?? '',
-    name: props.data?.bean.attributes[props.defs.name] ?? '',
+    id: props.data?.bean.fields[props.defs.id_name]?.model ?? '',
+    name: props.data?.bean.fields[props.defs.name]?.model ?? '',
 })
 const recordModel = computed({
     get() {
@@ -140,7 +140,7 @@ const recordModel = computed({
         })
     },
 })
-const currentTypeItem = ref(props.data?.bean.attributes[props.defs.type_name])
+const currentTypeItem = ref(props.data?.bean.fields[props.defs.type_name]?.model ?? '')
 const parentModel = computed({
     get() {
         return currentTypeItem.value
@@ -157,7 +157,7 @@ async function fetchRecordItems(e) {
         items.value = []
         isLoading.value = true
         menuOpen.value = true
-        const val = e?.target?.value ?? props.data?.bean.attributes[props.defs.name] ?? ''
+        const val = e?.target?.value ?? props.data?.bean.fields[props.defs.name]?.model ?? ''
         const predefinedFilters = getFilters(
             modulesStore.modules[currentTypeItem.value].vardefs,
             props.defs.filters && typeof props.defs.filters === 'object' && !Array.isArray(props.defs.filters)
@@ -250,13 +250,13 @@ function getHighlightedText(text: string, query: string) {
 }
 
 watch(
-    () => props.data?.bean.attributes[props.defs.id_name],
+    () => props.data?.bean.fields[props.defs.id_name]?.model,
     (newVal) => {
         currentRecordItem.value = {
             id: newVal ?? '',
-            name: props.data?.bean.attributes[props.defs.name] ?? '',
+            name: props.data?.bean.fields[props.defs.name]?.model ?? '',
         }
-        currentTypeItem.value = props.data?.bean.attributes[props.defs.type_name]
+        currentTypeItem.value = props.data?.bean.fields[props.defs.type_name].model ?? ''
     }
 )
 </script>

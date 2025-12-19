@@ -27,10 +27,11 @@ const model = ref('')
 
 const parsedValue = computed({
     get() {
-        return items.value.find((item) => item.key === props.modelValue)?.key || ''
+        return items.value.find((item) => item.key === props.field.model)?.key || ''
     },
     set(newValue) {
         model.value = newValue
+        props.field.model = newValue
         emit('update:modelValue', model.value)
     },
 })
@@ -56,6 +57,7 @@ watch(items, () => {
     if (!items.value.find((item) => item.key === model.value)) {
         const newItem = items.value.find((item) => !item.key) || items.value[0]
         model.value = newItem?.key || ''
+        props.field.model = newItem
         emit('update:modelValue', model.value)
     }
 })

@@ -123,12 +123,9 @@
                                     :options="store.bean.logic.fieldsOptions[row[n - 1].name]"
                                     :required="store.bean.logic.requiredFields.includes(row[n - 1].name)"
                                     :errorMessage="store.bean.errorMessages[row[n - 1].name]"
-                                    :isDirty="store.bean.isDirty || store.bean.dirtyFields.has(row[n - 1].name)"
-                                    :modelValue="
-                                        store.bean[store.view === 'detail' ? 'syncAttributes' : 'attributes'][
-                                            row[n - 1].name
-                                        ]
-                                    "
+                                    :isDirty="store.bean.isDirty || store.bean.fields[row[n - 1].name]?.isDirty"
+                                    :field="store.bean.fields[row[n - 1].name]"
+                                    :modelValue="store.bean.fields[row[n - 1].name]?.model"
                                     @update:modelValue="
                                         (value, additionalFields) =>
                                             store.updateField(row[n - 1].name, value, additionalFields)
@@ -156,6 +153,7 @@ import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintStatusBox from '@/components/MintStatusBoxes/MintStatusBox.vue'
 import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 import BeanActions from '@/business/BeanActions'
+import { useLocalStorageStore } from '@/store/localStorage'
 
 interface Props {
     data: {
@@ -173,8 +171,18 @@ const languages = useLanguagesStore()
 const modules = useModulesStore()
 const router = useRouter()
 
-const expandedSections = ref<string[]>([])
 const favorites = useFavoritesStore()
+const storage = useLocalStorageStore()
+
+const expandedSections = computed({
+    get: () => {
+        if (!storage.hasPanelSections(store.bean.module, 'MintPanelRecordDetails')) {
+            return []
+        }
+        return storage.getPanelSections(store.bean.module, 'MintPanelRecordDetails')
+    },
+    set: (value: string[]) => storage.setPanelSections(store.bean.module, 'MintPanelRecordDetails', value),
+})
 
 const title = computed(() => {
     return languages.label(props.data?.title ?? 'LBL_DETAILS', modules.currentModule?.name)
@@ -188,6 +196,7 @@ const edit = () => {
     store.view = 'edit'
     store.inlineEditField = ''
     store.inlineEditFieldSaving = ''
+    replaceViewPath('DetailView', 'EditView')
 }
 
 const cancel = () => {
@@ -198,6 +207,7 @@ const cancel = () => {
     store.view = 'detail'
     store.inlineEditField = ''
     store.inlineEditFieldSaving = ''
+    replaceViewPath('EditView', 'DetailView')
 }
 
 const save = async () => {
@@ -216,6 +226,15 @@ const save = async () => {
         store.inlineEditFieldSaving = ''
     } else {
         store.inlineEditField = prevInlineEditField
+    }
+    replaceViewPath('EditView', 'DetailView')
+}
+
+const replaceViewPath = (needle: string, replacement: string) => {
+    const pathSegments = window.location.href.split('/')
+    if (pathSegments.includes(needle)) {
+        const location = window.location.href.replace(needle, replacement)
+        window.history.replaceState(null, '', location)
     }
 }
 
@@ -247,6 +266,10 @@ const goBack = () => {
 const isFavorite = computed(() => favorites.isFavorite(store.bean.module, store.bean.id))
 
 onMounted(() => {
+    if (storage.hasPanelSections(store.bean.module, 'MintPanelRecordDetails')) {
+        return
+    }
+
     let array = []
     const keys = Object.keys(props.data.sections)
     for (let i = 0; i < keys.length; i++) {

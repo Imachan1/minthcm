@@ -245,7 +245,7 @@ class DemoDataDumpCommand extends Command
     {
         $insert_into_columns = implode(", ", $columns);
         $value_columns = array_map(function ($field) {
-            return "IFNULL(CONCAT('\'', {$field}, '\''), 'NULL')";
+            return "IFNULL(CONCAT('\'', `{$field}`, '\''), 'NULL')";
         }, $columns);
         $value_columns_imploded = implode(",',',", $value_columns);
         $sql = "SELECT

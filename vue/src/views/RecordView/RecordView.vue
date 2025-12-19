@@ -27,8 +27,13 @@ store.resetBean()
 
 onMounted(async () => {
     await store.bean.init().catch(recordAccessError)
-    if (store.bean.isNew) {
+    
+    const pathSegments = route.path.split('/')
+    if (pathSegments.includes('EditView')) {
         store.view = 'edit'
+    }
+
+    if (store.bean.isNew) {
         if (Object.keys(route.query).length) {
             store.bean.setAttributesFromQuery(route.query)
         }

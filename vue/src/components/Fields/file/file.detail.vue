@@ -5,7 +5,7 @@
             <template v-if="fileUrl">
                 <img v-if="isImage" :src="fileUrl" :alt="props.modelValue" />
                 <a v-else :href="fileUrl">
-                    {{ props.modelValue }}
+                    {{ props.field.model }}
                 </a>
             </template>
         </div>
@@ -16,7 +16,7 @@
 import { computed } from 'vue'
 import { FieldProps } from '../Field.model'
 
-const props = defineProps<FieldProps>()
+const props = defineProps<FieldProps<string>>()
 
 const serverFileName = computed(() => {
     if (!props.data?.bean?.attributes?.id) {
@@ -30,7 +30,7 @@ const serverFileName = computed(() => {
 })
 
 const fileUrl = computed(() => {
-    if (props.modelValue) {
+    if (props.field.model) {
         return `legacy/index.php?entryPoint=download&type=${props.data.bean.module}&id=${serverFileName.value}&time=${new Date().toISOString()}`
     }
     return ''

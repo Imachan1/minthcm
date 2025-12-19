@@ -13,7 +13,7 @@
                 @click="menuOpen = true"
             >
                 <template #append-inner>
-                    <v-fab-transition class="search-prepend-icon">
+                    <v-fab-transition class="search-prepend-icon" v-if="showAdvancedSearch !== false">
                         <v-icon v-if="model.name" icon="mdi-close" @click="model = { id: '', name: '' }" />
                         <v-icon v-else icon="mdi-magnify" @click.stop="openRelatePopup" />
                     </v-fab-transition>
@@ -28,7 +28,7 @@
                 v-if="!isLoading && !items.length"
                 class="text-caption"
                 v-text="
-                    !items || model.name.length < 3
+                    !items || !model.name || model.name.length < 3
                         ? languages.label('LBL_MINT4_GS_HELP_TIP')
                         : languages.label('LBL_MINT4_GS_NO_RECORDS_FOUND')
                 "
@@ -39,8 +39,8 @@
                     <span v-html="getHighlightedText(item.name, model.name)"></span>
                 </v-list-item>
             </div>
-            <v-divider />
-            <v-list-item>
+            <v-divider v-if="showAdvancedSearch !== false" />
+            <v-list-item v-if="showAdvancedSearch !== false">
                 <MintButton
                     variant="text"
                     :text="languages.label('LBL_ADVANCED_SEARCH_BUTTON')"
@@ -66,7 +66,13 @@ import he from 'he'
 import getFilters from '@/utils/qsOperators'
 import { FieldProps } from '../Field.model'
 
-const props = defineProps<FieldProps>()
+interface Props extends FieldProps {
+    showAdvancedSearch?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    showAdvancedSearch: true,
+})
 const emit = defineEmits(['update:modelValue'])
 
 let debounceTimeout: number | null = null
@@ -77,7 +83,6 @@ const popupsStore = usePopupsStore()
 const modulesStore = useModulesStore()
 const preferencesStore = usePreferencesStore()
 const menuOpen = ref(false)
-
 const items = ref(props.data.bean.attributes[props.defs.id_name] ? [getCurrentItem()] : [])
 const currentItem = ref(getCurrentItem())
 

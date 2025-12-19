@@ -2,22 +2,30 @@ import { computed, ref, watch } from 'vue'
 import { useLogic } from './useLogic'
 import { useDebounceFn, useThrottleFn } from '@vueuse/core'
 import { useRouter } from 'vue-router'
-import { useModulesStore } from '@/store/modules'
+import { FieldVardef, useModulesStore } from '@/store/modules'
 import { usePreferencesStore } from '@/store/preferences'
-import { useField } from '@/components/Fields/useField'
+import { MintField, useField } from '@/components/Fields/useField'
 import { useLink } from './useLink'
 import { mintApi } from '@/api/api'
 import { DateTime } from 'luxon'
+
+export type MintBean = ReturnType<typeof useBean>
+interface MintBeanAttributes {
+    [fieldName: string]: string | number | boolean | null | string[]
+}
 
 export const useBean = (module: string, id: string) => {
     const retrieveTimeoutTimeMs = 30000
     const router = useRouter()
     const modulesStore = useModulesStore()
 
+    const fields = ref<{ [fieldName: string]: MintField<unknown> }>({})
     const attributes = ref<{ [key: string]: any }>({})
     const syncAttributes = ref<{ [key: string]: any }>({})
     const aclAccess = ref<{ [key: string]: boolean }>({})
-    const dirtyFields = ref(new Set<string>())
+    const dirtyFields = computed(() => {
+        return Object.keys(fields.value).filter((fieldName) => fields.value[fieldName].isDirty)
+    })
     const links = ref<Map<string, ReturnType<typeof useLink>>>(new Map())
 
     const logic = useLogic(module)
@@ -31,22 +39,52 @@ export const useBean = (module: string, id: string) => {
         'created_by',
         'created_by_name',
         'date_indexed',
+        'repeat',
+        'repeat_type',
+        'repeat_interval',
+        'repeat_dow',
+        'repeat_until',
+        'repeat_count',
+        'repeat_parent_id',
     ]
 
     const filesToSave = ref<{ [key: string]: File }>({})
-    const attributesToSave = computed(() => {
-        const attributesToSave = {} as { [key: string]: any }
-        Object.keys(attributes.value).forEach((fieldName) => {
+
+    function getFieldDefs(fieldName: string): FieldVardef {
+        if (fieldDefs.value[fieldName]) {
+            return fieldDefs.value[fieldName]
+        }
+        // default field defs
+        return {
+            name: fieldName,
+            type: 'varchar',
+            label: 'LBL_' + fieldName.toUpperCase(),
+        }
+    }
+    function setFields(attrs) {
+        if (!attrs || typeof attrs !== 'object') {
+            return
+        }
+        Object.keys(attrs).forEach((fieldName) => {
+            const fieldDefs = getFieldDefs(fieldName)
+            let value = attrs[fieldName]
+            if (isNew.value && !value && Object.hasOwn(fieldDefs, 'default')) {
+                value = fieldDefs.default
+            }
+            fields.value[fieldName] = useField(fieldDefs, value)
+        })
+    }
+    function getAttributesToSave() {
+        const attributesToSave: MintBeanAttributes = {}
+        Object.keys(fields.value).forEach((fieldName) => {
             if (logic.hiddenFields.value.includes(fieldName)) {
+                attributesToSave[fieldName] = null
                 return
             }
-            // attributesToSave[fieldName] = logic.readonlyFields.value.includes(fieldName)
-            //     ? syncAttributes.value[fieldName]
-            //     : attributes.value[fieldName]
-            attributesToSave[fieldName] = attributes.value[fieldName]
+            attributesToSave[fieldName] = fields.value[fieldName].formatted.server
         })
         return attributesToSave
-    })
+    }
 
     const isRetrieving = ref(false)
     const isSaving = ref(false)
@@ -57,7 +95,7 @@ export const useBean = (module: string, id: string) => {
     const isValid = computed(() => {
         if (logic.requiredFields.value) {
             for (const fieldName of logic.requiredFields.value) {
-                if ((isDirty.value || dirtyFields.value.has(fieldName)) && !attributes.value[fieldName]) {
+                if ((isDirty.value || fields.value[fieldName].isDirty) && !fields.value[fieldName].model) {
                     return false
                 }
             }
@@ -84,8 +122,7 @@ export const useBean = (module: string, id: string) => {
                 if (logic.hiddenFields.value.includes(field.name) || logic.readonlyFields.value.includes(field.name)) {
                     return
                 }
-                const value = filesToSave.value[field.name] ?? attributes.value[field.name]
-                const fieldValidationResult = useField(field, value).validate()
+                const fieldValidationResult = fields.value[field.name]?.validate()
                 if (typeof fieldValidationResult === 'string') {
                     errors[field.name] = fieldValidationResult
                 } else if (logic.errorMessages.value[field.name]) {
@@ -115,13 +152,13 @@ export const useBean = (module: string, id: string) => {
     })
 
     const isChanged = computed(() => {
-        return Array.from(dirtyFields.value).some((f) => attributes.value[f] !== syncAttributes.value[f])
+        return dirtyFields.value.some((f) => attributes.value[f] !== syncAttributes.value[f])
     })
 
     function restore() {
         attributes.value = { ...syncAttributes.value }
         filesToSave.value = {}
-        dirtyFields.value.clear()
+        setFields(attributes.value)
         isDirty.value = false
         validationError.value = ''
     }
@@ -130,17 +167,15 @@ export const useBean = (module: string, id: string) => {
         return retrieve()
     }
 
-    function updateFields(fields: { [fieldName: string]: any }) {
-        Object.entries(fields || {}).forEach(([key, value]) => {
+    function updateFields(updatedFields: { [fieldName: string]: any }) {
+        Object.entries(updatedFields || {}).forEach(([key, value]) => {
             if (value instanceof File) {
                 filesToSave.value[key] = value
                 value = value?.name ?? ''
             }
-            attributes.value = {
-                ...attributes.value,
-                [key]: value,
+            if (fields.value[key]) {
+                fields.value[key].model = value
             }
-            dirtyFields.value.add(key)
         })
     }
 
@@ -166,14 +201,16 @@ export const useBean = (module: string, id: string) => {
             const link = loadRelationship(query.return_relationship as string)
             if (link && !link.relateFieldName) link.add(query.return_id as string)
         }
-        updateFields(fieldsToUpdate)
+        setFields(fieldsToUpdate)
         const triggerFields = logic.triggerFields.value.filter((f) => Object.hasOwn(fieldsToUpdate, f))
         if (triggerFields.length > 0) {
             fetchLogic(triggerFields)
         }
     }
 
+    const originalId = ref('')
     async function setAttributesFromBeanId(copy_id: string) {
+        originalId.value = copy_id
         const fieldsToUpdate: { [fieldName: string]: any } = {}
         const copyBean = await useBean(module, copy_id).init()
         Object.entries(copyBean.data.attributes || {}).forEach(([fieldName, fieldDef]) => {
@@ -227,14 +264,14 @@ export const useBean = (module: string, id: string) => {
         aclAccess.value = data.acl_access
         attributes.value = data.attributes
         syncAttributes.value = structuredClone(data.attributes)
+        setFields(data.attributes)
         logic.rules.value = data.logic?.rules ?? {}
-        updateFields(logic.getUpdatedFields())
-        dirtyFields.value = new Set()
+        setFields(logic.getUpdatedFields())
     }
 
     async function fetchLogic(triggerFields: string[] = []) {
         const response = await mintApi.post(`${module}/Logic${id ? `/${id}` : ''}`, {
-            attributes: attributes.value,
+            attributes: fieldsValues.value,
             triggerFields
         })
         if (response.data.rules?.length) {
@@ -245,7 +282,8 @@ export const useBean = (module: string, id: string) => {
                     rule.logic = r.logic
                 }
             })
-            updateFields(logic.getUpdatedFields(response.data.rules))
+
+            setFields(logic.getUpdatedFields(response.data.rules))
         }
     }
 
@@ -288,7 +326,7 @@ export const useBean = (module: string, id: string) => {
                 })
             }
             const response = await mintApi.patch(`${module}/Update${id ? `/${id}` : ''}`, {
-                record_data: attributesToSave.value,
+                record_data: getAttributesToSave(),
                 files,
                 links: Object.fromEntries([...links.value].map(([name, link]) => [name, link.getChanges()]))
             })
@@ -323,14 +361,22 @@ export const useBean = (module: string, id: string) => {
         return await mintApi.delete(`${module}/${id}`)
     }
 
-    const prevAttributes = ref<{ [key: string]: any }>({})
+    const fieldsValues = computed(() => {
+        const values: { [key: string]: any } = {}
+        Object.keys(fields.value).forEach((fieldName) => {
+            values[fieldName] = fields.value[fieldName].formatted.server
+        })
+        return values
+    })
+    const prevFieldsValues = ref<{ [key: string]: any }>({})
+
     const compareChangesThrottled = useThrottleFn(
         () => {
-            const newAttributes = JSON.parse(JSON.stringify(attributes.value))
+            const newFieldsValues = fieldsValues.value
             const updatedFields = {} as { [key: string]: any }
-            Object.entries(prevAttributes.value).forEach(([key, value]) => {
-                if (JSON.stringify(value) !== JSON.stringify(newAttributes[key])) {
-                    dirtyFields.value.add(key)
+
+            Object.entries(prevFieldsValues.value).forEach(([key, value]) => {
+                if (value !== newFieldsValues[key]) {
                     updatedFields[key] = value
                 }
             })
@@ -338,7 +384,7 @@ export const useBean = (module: string, id: string) => {
             if (triggerFields.length > 0) {
                 fetchLogic(triggerFields)
             }
-            prevAttributes.value = newAttributes
+            prevFieldsValues.value = { ...newFieldsValues }
         },
         1000,
         true,
@@ -352,7 +398,7 @@ export const useBean = (module: string, id: string) => {
     )
 
     watch(
-        attributes,
+        fields,
         () => {
             compareChangesDebounced()
         },
@@ -366,6 +412,7 @@ export const useBean = (module: string, id: string) => {
         isNew,
         attributes,
         syncAttributes,
+        fields,
         aclAccess,
         dirtyFields,
         logic,
@@ -387,5 +434,6 @@ export const useBean = (module: string, id: string) => {
         setAttributesFromQuery,
         loadRelationship,
         setAttributesFromBeanId,
+        originalId,
     }
 }

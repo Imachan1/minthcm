@@ -61,6 +61,7 @@ class GridLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
         MB_EDITVIEW => 'EditView',
         MB_DETAILVIEW => 'DetailView',
         MB_QUICKCREATE => 'QuickCreate',
+        MB_RECORDVIEW => 'RecordView',
     );
 
     /**
@@ -162,7 +163,8 @@ class GridLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
 
         $viewdefs = $this->_viewdefs;
         $viewdefs ['panels'] = $this->_convertToCanonicalForm($this->_viewdefs ['panels'], $this->_fielddefs);
-        $this->implementation->deploy(array(self::$variableMap [$this->_view] => $viewdefs));
+        $this->implementation->deploy(array(self::$variableMap[$this->_view] => $viewdefs));
+        $this->implementation->deploy([self::$variableMap[MB_RECORDVIEW] => $this->_viewdefs['panels']], MB_RECORDVIEW);
     }
 
     /**

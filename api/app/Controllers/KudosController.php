@@ -65,6 +65,7 @@ class KudosController
     {
         global $current_user;
         $response = $response->withHeader('Content-type', 'application/json');
+        $list_type = $request->getAttribute('listType');
         
         /** @var Users[] */
         $users = $this->entityManager->getRepository(Users::class)->getActiveUsers($current_user->id);
@@ -76,7 +77,7 @@ class KudosController
             'photo' => $user->photo,
         ], $users);
 
-        $kudos = $this->getDrawerKudoses(1, 'all');
+        $kudos = $this->getDrawerKudoses(1, $list_type);
 
         $response->getBody()->write(json_encode([
             'kudos' => $kudos,

@@ -52,74 +52,77 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="meetings_cstm", indexes={
- * @ORM\Index(name="meetingspk", columns={"id_c"})})
+ * @ORM\Index(name="meetingspk", columns={"id"}), 
+ * @ORM\Index(name="idx_mtg_name", columns={"name"}), 
+ * @ORM\Index(name="idx_meet_par_del", columns={"parent_id", "parent_type", "deleted"}), 
+ * @ORM\Index(name="idx_meet_stat_del", columns={"assigned_user_id", "status", "deleted"}), 
+ * @ORM\Index(name="idx_meet_date_start", columns={"date_start"})})
  * @property mixed $jjwg_maps_lat_c
  * @property mixed $jjwg_maps_lng_c
- * @property mixed $jjwg_maps_address_c
  * @property mixed $jjwg_maps_geocode_status_c
+ * @property mixed $jjwg_maps_address_c
  */
 // Auto-generated SectionRepository section end
 class Meetings_cstm extends MintEntity
 {
 
-    // Auto-generated SectionProperties section start
+// Auto-generated SectionProperties section start
 
+                
+    
     /**
      * @ORM\Id
      * @ORM\Column(name="id_c", type="string", length=36)
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    protected $id;
+    private $id;
 
 
-    /**
-     * @ORM\OneToOne(targetEntity="Meetings", inversedBy="custom_entity")
-     * @ORM\JoinColumn(name="id_c", referencedColumnName="id")
-     */
-    protected $main_entity;
+/**
+ * @ORM\OneToOne(targetEntity="Meetings", inversedBy="customEntity")
+ * @ORM\JoinColumn(name="id_c", referencedColumnName="id")
+ */
+private $mainEntity;
 
 
-    /**
-     * @ORM\Column(type="float", length="10")
+        /**
      */
     protected $jjwg_maps_lat_c;
 
     /**
-     * @ORM\Column(type="float", length="11")
      */
     protected $jjwg_maps_lng_c;
 
     /**
-     * @ORM\Column(type="string", length="255")
-     */
-    protected $jjwg_maps_address_c;
-
-    /**
-     * @ORM\Column(type="string", length="255")
      */
     protected $jjwg_maps_geocode_status_c;
 
-    // Auto-generated SectionProperties section end
-        // Auto-generated SectionMethods section start
+    /**
+     */
+    protected $jjwg_maps_address_c;
+
+// Auto-generated SectionProperties section end
+// Auto-generated SectionMethods section start
     public function __construct()
     {
     }
 
+                
+    
     public function getMainEntity()
     {
-        return $this->main_entity;
+        return $this->mainEntity;
     }
 
-    public function setMainEntity($main_entity)
+    public function setMainEntity($mainEntity)
     {
-        $this->main_entity = $main_entity;
+        $this->mainEntity = $mainEntity;
 
-        if ($main_entity && $main_entity->getCustomEntity() !== $this) {
-            $main_entity->setCustomEntity($this);
+        if ($mainEntity && $mainEntity->getCustomEntity() !== $this) {
+            $mainEntity->setCustomEntity($this);
         }
 
         return $this;

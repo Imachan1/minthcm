@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,14 +36,16 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 namespace MintHCM\Data;
+
+use MintHCM\Utils\LegacyConnector;
 
 require_once '../legacy/data/SugarBean.php';
 
@@ -97,6 +98,11 @@ class MintBean
 
     public function __call($name, $arguments)
     {
+        // Prevent __call from intercepting methods defined in this class
+        if (method_exists($this, $name)) {
+            return $this->$name(...$arguments);
+        }
+
         chdir('../legacy/');
         $response = $this->legacy_bean->$name(...$arguments);
         chdir('../api/');
@@ -112,4 +118,19 @@ class MintBean
 
         return $response;
     }
+
+    public function load_relationship(string $link_name): bool
+    {
+        chdir('../legacy/');
+        $response = false;
+        if ($this->legacy_bean->load_relationship($link_name)) {
+            $link = new LegacyConnector('Link2', null, [$link_name, $this->legacy_bean]);
+            $this->$link_name = $link;
+            $response = true;
+        }
+        chdir('../api/');
+        return $response;
+
+    }
+
 }
