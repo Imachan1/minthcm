@@ -58,129 +58,146 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="rooms", indexes={
  * @ORM\Index(name="roomspk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $number_of_seats
+ * @property mixed $room_surface
+ * @property mixed $room_plan
+ * @property mixed $reservation_type
+ * @property mixed $availability
+ * @property mixed $security_group_id
  */
 // Auto-generated SectionRepository section end
 class Rooms extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $number_of_seats;
+    protected $number_of_seats;
 
     /**
      * @ORM\Column(type="float", length="16")
      */
-    public $room_surface;
+    protected $room_surface;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $room_plan;
+    protected $room_plan;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $reservation_type;
+    protected $reservation_type;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $availability;
+    protected $availability;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $security_group_id;
+    protected $security_group_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="rooms")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="rooms")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="rooms")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinColumn(name="security_group_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="securitygroups_rooms")
      */
-    public $SecurityGroups;
+    protected $SecurityGroups;
 
     /**
      * @ORM\JoinTable(name="rooms_resources")
      * @ORM\OneToOne(targetEntity=Resources::class, mappedBy="rooms_resources")
      */
-    public $rooms_resources;
+    protected $rooms_resources;
 
     /**
      * @ORM\OneToMany(targetEntity=Workplaces::class, mappedBy="rooms_workplaces")
      */
-    public Collection $rooms_workplaces;
+    protected Collection $rooms_workplaces;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -188,5 +205,6 @@ class Rooms extends MintEntity
     {
         $this->rooms_workplaces = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

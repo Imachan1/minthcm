@@ -24,7 +24,10 @@ const value = computed(() => {
     if (!props.modelValue) {
         return ''
     }
-    let value = props.modelValue.replaceAll('^', '').split(',')
+    let value = props.modelValue
+    if (typeof value === 'string') {
+        value = props.modelValue.replaceAll('^', '').split(',')
+    }
     if (!props.defs?.options) {
         return value.join(', ')
     }

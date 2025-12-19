@@ -57,79 +57,93 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
  * @ORM\Table(name="currencies", indexes={
  * @ORM\Index(name="currenciespk", columns={"id"}), 
  * @ORM\Index(name="idx_currency_name", columns={"name", "deleted"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $symbol
+ * @property mixed $iso4217
+ * @property mixed $conversion_rate
+ * @property mixed $status
+ * @property mixed $deleted
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $created_by
+ * @property mixed $currency_on_right
+ * @property mixed $hidden
  */
 // Auto-generated SectionRepository section end
 class Currencies extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="36")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="string", length="36")
      */
-    public $symbol;
+    protected $symbol;
 
     /**
      * @ORM\Column(type="string", length="3")
      */
-    public $iso4217;
+    protected $iso4217;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $conversion_rate;
+    protected $conversion_rate;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $status;
+    protected $status;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    public $currency_on_right;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $hidden;
+    protected $currency_on_right;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $hidden;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
     public function __construct()
     {
     }
+
 // Auto-generated SectionMethods section end
 }

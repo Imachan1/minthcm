@@ -58,152 +58,176 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="onboardingoffboardingelements", indexes={
  * @ORM\Index(name="onboardingoffboardingelementspk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $kind_of_element
+ * @property mixed $type
+ * @property mixed $task_duration_hours
+ * @property mixed $task_duration_minutes
+ * @property mixed $days_from_start
+ * @property mixed $user_id
+ * @property mixed $securitygroup_unit_id
+ * @property mixed $checklist
  */
 // Auto-generated SectionRepository section end
 class OnboardingOffboardingElements extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    public $kind_of_element;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $type;
+    protected $kind_of_element;
+
+    /**
+     * @ORM\Column(type="string", length="100")
+     */
+    protected $type;
 
     /**
      * @ORM\Column(type="integer", length="2")
      */
-    public $task_duration_hours;
+    protected $task_duration_hours;
 
     /**
      * @ORM\Column(type="integer", length="2")
      */
-    public $task_duration_minutes;
+    protected $task_duration_minutes;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $days_from_start;
+    protected $days_from_start;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $user_id;
+    protected $user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $securitygroup_unit_id;
+    protected $securitygroup_unit_id;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $checklist;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="onboardingoffboardingelements")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="onboardingoffboardingelements")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="onboardingoffboardingelements")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="onboardingoffboardingelements")
      */
-    public $users;
+    protected $users;
 
     /**
      * @ORM\JoinColumn(name="securitygroup_unit_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=SecurityGroups::class, inversedBy="onboardingoffboardingelements")
      */
-    public $securitygroups_unit;
+    protected $securitygroups_unit;
 
     /**
      * @ORM\JoinTable(name="onboardingoffboardingelements_onboardingtemplates")
      * @ORM\ManyToMany(targetEntity=OnboardingTemplates::class, mappedBy="elements")
      */
-    public Collection $onboardingtemplates;
+    protected Collection $onboardingtemplates;
 
     /**
      * @ORM\JoinTable(name="onboardingoffboardingelements_offboardingtemplates")
      * @ORM\ManyToMany(targetEntity=OffboardingTemplates::class, mappedBy="elements")
      */
-    public Collection $offboardingtemplates;
+    protected Collection $offboardingtemplates;
 
     /**
      * @ORM\OneToMany(targetEntity=Trainings::class, mappedBy="elements")
      */
-    public Collection $trainings;
+    protected Collection $trainings;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -214,5 +238,6 @@ class OnboardingOffboardingElements extends MintEntity
         $this->offboardingtemplates = new ArrayCollection();
         $this->trainings = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

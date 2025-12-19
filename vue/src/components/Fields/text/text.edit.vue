@@ -6,8 +6,7 @@
         rows="4"
         hide-details
         :error="props.state === 'error'"
-        :modelValue="props.modelValue"
-        @update:modelValue="(v) => $emit('update:modelValue', v)"
+        v-model="props.field.model"
         @keyup.enter.prevent="$emit('inlineEditSave')"
         @keyup.esc="$emit('inlineEditCancel')"
     />
@@ -16,7 +15,7 @@
 <script setup lang="ts">
 import { FieldProps } from '../Field.model'
 
-const props = defineProps<FieldProps>()
+const props = defineProps<FieldProps<string>>()
 </script>
 
 <style scoped lang="scss"></style>

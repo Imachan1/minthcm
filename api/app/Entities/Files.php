@@ -58,186 +58,207 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="files", indexes={
  * @ORM\Index(name="filespk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $document_name
+ * @property mixed $filename
+ * @property mixed $file_ext
+ * @property mixed $file_mime_type
+ * @property mixed $active_date
+ * @property mixed $exp_date
+ * @property mixed $category_id
+ * @property mixed $subcategory_id
+ * @property mixed $status_id
+ * @property mixed $parent_id
+ * @property mixed $parent_type
  */
 // Auto-generated SectionRepository section end
 class Files extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
-
-    /**
-     * @ORM\Column(type="string", length="255")
-     */
-    public $document_name;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $filename;
+    protected $document_name;
+
+    /**
+     * @ORM\Column(type="string", length="255")
+     */
+    protected $filename;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $file_ext;
+    protected $file_ext;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $file_mime_type;
+    protected $file_mime_type;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $active_date;
+    protected $active_date;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $exp_date;
+    protected $exp_date;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $category_id;
+    protected $category_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $subcategory_id;
+    protected $subcategory_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $status_id;
+    protected $status_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $parent_id;
+    protected $parent_id;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $parent_type;
+    protected $parent_type;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="files")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="files")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="files")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Candidatures::class, inversedBy="files")
      */
-    public $candidature;
+    protected $candidature;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Candidates::class, inversedBy="files")
      */
-    public $candidate;
+    protected $candidate;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Resources::class, inversedBy="files")
      */
-    public $resource;
+    protected $resource;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="files")
      */
-    public $position;
+    protected $position;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Workplaces::class, inversedBy="files")
      */
-    public $workplace;
+    protected $workplace;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Trainings::class, inversedBy="files")
      */
-    public $training;
+    protected $training;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Ideas::class, inversedBy="files")
      */
-    public $idea;
+    protected $idea;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="files")
      */
-    public $employee;
+    protected $employee;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -245,5 +266,6 @@ class Files extends MintEntity
     {
         $this->SecurityGroups = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

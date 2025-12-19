@@ -54,6 +54,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
 use MintHCM\Data\ORM\Doctrine\MintRepository\MintRepositoryFactory;
+use MintHCM\Data\ORM\Doctrine\MintTypes\MintTypeManager;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -72,6 +73,7 @@ class DoctrineContainerBuilder extends ContainerBuilder
     protected function setupExtensions()
     {
         Type::addType('uuid', 'Ramsey\Uuid\Doctrine\UuidType');
+        MintTypeManager::registerTypes();
     }
 
     protected function addSettings()

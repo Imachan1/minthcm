@@ -9,8 +9,9 @@
                 :label="languages.label(field.label, modules.currentModule?.name)"
                 :required="store.bean.logic.requiredFields.includes(field.name)"
                 :errorMessage="store.bean.logic.errorMessages[field.name]"
-                :isDirty="store.bean.isDirty || store.bean.dirtyFields.has(field.name)"
+                :isDirty="store.bean.isDirty || store.bean.fields[field.name]?.isDirty"
                 :modelValue="store.bean[store.view === 'detail' ? 'syncAttributes' : 'attributes'][field.name]"
+                :field="store.bean.fields[field.name]"
                 @update:modelValue="(value, additionalFields) => store.updateField(field.name, value, additionalFields)"
             />
         </div>

@@ -4,23 +4,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { DateTime } from 'luxon'
-import { usePreferencesStore } from '@/store/preferences'
 import { FieldProps } from '../Field.model'
+import { MintDate } from '@/composables/useMintDate'
 
-const props = defineProps<FieldProps>()
-const preferences = usePreferencesStore()
+const props = defineProps<FieldProps<MintDate>>()
 
 const parsedDate = computed(() => {
-    const value = props.modelValue?.trim()
-    if (!value) {
-        return ''
-    }
-    const dt = DateTime.fromSQL(value, { zone: 'UTC' })
-    if (!dt.isValid) {
-        return ''
-    }
-    return dt.toLocal().toFormat(`${preferences.user?.date_format} ${preferences.user?.time_format}`)
+    return props.field.model.isValid ? props.field.formatted.user : ''
 })
 </script>
 

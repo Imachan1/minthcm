@@ -11,7 +11,7 @@ return [
                 'required' => function ($bean) {
                     $required = [];
                     foreach ($bean->field_defs as $field => $def) {
-                        if (!empty($def['required']) && empty($bean->$field)) {
+                        if (!empty($def['required'])) {
                             $required[$field] = true;
                         }
                     }

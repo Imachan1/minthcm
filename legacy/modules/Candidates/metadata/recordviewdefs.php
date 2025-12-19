@@ -13,7 +13,7 @@ $viewdefs['Candidates'] = [
                         'fields' => [
                             ['first_name', 'last_name'],
                             [
-                                'email1',
+                                 'email1', 
                                 [
                                     'name' => 'birthdate',
                                     'type' => 'age',

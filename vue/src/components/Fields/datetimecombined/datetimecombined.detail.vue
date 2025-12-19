@@ -17,22 +17,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { DateTime } from 'luxon'
-import { FieldVardef } from '@/store/modules'
-import Pencil from '../Pencil.vue'
-import { usePreferencesStore } from '@/store/preferences';
 import { useLanguagesStore } from '@/store/languages';
 import { useACL } from '@/composables/useACL';
+import { FieldProps } from '../Field.model';
 
-interface Props {
-    defs: FieldVardef
-    label: string
-    modelValue?: any
-    data?: any
-}
-
-const props = defineProps<Props>()
-const preferences = usePreferencesStore()
+const props = defineProps<FieldProps>()
 const languages = useLanguagesStore()
 
 const module = computed(() => props.defs?.module || 'Employees')
@@ -69,15 +58,7 @@ const recordUrl = computed(() => {
 })
 
 const parsedDate = computed(() => {
-    const value = props.modelValue?.trim()
-    if (!value) {
-        return ''
-    }
-    const dt = DateTime.fromSQL(value, { zone: 'UTC' })
-    if (!dt.isValid) {
-        return ''
-    }
-    return dt.toLocal().toFormat(`${preferences.user?.date_format} ${preferences.user?.time_format}`)
+    return props.field.model.isValid ? props.field.formatted.user : ''
 })
 
 const hasViewAccess = computed<boolean>(() => {

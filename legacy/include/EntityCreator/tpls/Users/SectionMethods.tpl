@@ -31,6 +31,12 @@
     }
 {/literal}
 {literal}
+    public function getName(): ?string
+    {
+        return $this->getFullName();
+    }
+{/literal}
+{literal}
     /**
      * Check that password matches existing hash
      * @param string $password Plaintext password
@@ -50,4 +56,7 @@
         return password_verify(strtolower($passwordMd5), $this->user_hash);
     }
 {/literal}
+{foreach from=$additionalMethods item=method}
+        {$method}
+{/foreach}
 {$end_sectionmethods}

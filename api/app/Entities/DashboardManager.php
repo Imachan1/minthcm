@@ -58,127 +58,142 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="dashboardmanager", indexes={
  * @ORM\Index(name="dashboardmanagerpk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $encoded_pages
+ * @property mixed $encoded_dashlets
+ * @property mixed $is_loaded
+ * @property mixed $business_role
  */
 // Auto-generated SectionRepository section end
 class DashboardManager extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    public $encoded_pages;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $encoded_dashlets;
+    protected $encoded_pages;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $encoded_dashlets;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $is_loaded;
+    protected $is_loaded;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $business_role;
+    protected $business_role;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dashboardmanager")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dashboardmanager")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dashboardmanager")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="users_forced_tabs_dashboards")
      */
-    public Collection $users_forced_tabs_dashboards;
+    protected Collection $users_forced_tabs_dashboards;
 
     /**
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="users_locked_dashboards")
      */
-    public Collection $users_locked_dashboards;
+    protected Collection $users_locked_dashboards;
 
     /**
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="users_one_time_default_dashboards")
      */
-    public Collection $users_one_time_default_dashboards;
+    protected Collection $users_one_time_default_dashboards;
 
     /**
      * @ORM\OneToMany(targetEntity=DashboardBackups::class, mappedBy="dashboardmanager")
      */
-    public Collection $dashboardbackups;
+    protected Collection $dashboardbackups;
 
     /**
      * @ORM\OneToMany(targetEntity=DashboardHistory::class, mappedBy="dashboardmanager")
      */
-    public Collection $dashboardhistory;
+    protected Collection $dashboardhistory;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -190,5 +205,6 @@ class DashboardManager extends MintEntity
         $this->dashboardbackups = new ArrayCollection();
         $this->dashboardhistory = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

@@ -63,110 +63,127 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Index(name="idx_camp_more_info", columns={"more_information"}), 
  * @ORM\Index(name="idx_target_id", columns={"target_id"}), 
  * @ORM\Index(name="idx_target_id_deleted", columns={"target_id", "deleted"})})
+ * @property mixed $id
+ * @property mixed $campaign_id
+ * @property mixed $target_tracker_key
+ * @property mixed $target_id
+ * @property mixed $target_type
+ * @property mixed $activity_type
+ * @property mixed $activity_date
+ * @property mixed $related_id
+ * @property mixed $related_type
+ * @property mixed $archived
+ * @property mixed $hits
+ * @property mixed $list_id
+ * @property mixed $deleted
+ * @property mixed $date_modified
+ * @property mixed $more_information
+ * @property mixed $marketing_id
  */
 // Auto-generated SectionRepository section end
 class CampaignLog extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
+
+    /**
+     * @ORM\Column(type="id", length="36")
+     */
+    protected $campaign_id;
 
     /**
      * @ORM\Column(type="string", length="36")
      */
-    public $campaign_id;
+    protected $target_tracker_key;
 
     /**
      * @ORM\Column(type="string", length="36")
      */
-    public $target_tracker_key;
-
-    /**
-     * @ORM\Column(type="string", length="36")
-     */
-    public $target_id;
+    protected $target_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $target_type;
+    protected $target_type;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $activity_type;
+    protected $activity_type;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $activity_date;
+    protected $activity_date;
 
     /**
      * @ORM\Column(type="string", length="36")
      */
-    public $related_id;
+    protected $related_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $related_type;
+    protected $related_type;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $archived;
+    protected $archived;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $hits;
+    protected $hits;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $list_id;
+    protected $list_id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $more_information;
+    protected $more_information;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $marketing_id;
+    protected $marketing_id;
 
     /**
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="users")
      */
-    public Collection $targeted_user;
+    protected Collection $targeted_user;
 
     /**
      * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="emails")
      */
-    public Collection $sent_email;
+    protected Collection $sent_email;
 
     /**
      * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Campaigns::class, inversedBy="log_entries")
      */
-    public $campaign;
+    protected $campaign;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -175,5 +192,6 @@ class CampaignLog extends MintEntity
         $this->targeted_user = new ArrayCollection();
         $this->sent_email = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

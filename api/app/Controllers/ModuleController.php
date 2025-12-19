@@ -45,12 +45,14 @@
 
 namespace MintHCM\Api\Controllers;
 
-use BeanFactory as LegacyBeanFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use MintHCM\Data\BeanFactory;
+use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
+use BeanFactory as LegacyBeanFactory;
 use MintHCM\Data\BeanFactory as MintBeanFactory;
 use MintHCM\Data\MintBean;
 use MintHCM\Lib\MintLogic\MintLogic;
+use MintHCM\Utils\LegacyConnector;
 use MintHCM\Utils\CyclicRecordsSaver;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
@@ -59,9 +61,12 @@ use Slim\Routing\RouteContext;
 #[\AllowDynamicProperties]
 class ModuleController
 {
+    protected EntityManagerInterface $entity_manager;
 
-    public function __construct(protected EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
+        $this->entity_manager = $entityManager;
+
         global $app_list_strings, $current_language;
         if (!$app_list_strings) {
             $app_list_strings = return_app_list_strings_language($current_language);
@@ -88,50 +93,43 @@ class ModuleController
     {
         $response = $response->withHeader('Content-type', 'application/json');
         $module = $this->getModuleFromRoute($request);
-        chdir('../legacy/');
         $links = $request->getAttribute("links") ?? [];
+        $record_data = $request->getAttribute("record_data") ?: []; 
 
-        $current_time_zone = date_default_timezone_get();
-        date_default_timezone_set('UTC');
-        $disable_date_format = $GLOBALS['disable_date_format'];
-        $GLOBALS['disable_date_format'] = true;
-
-        $bean = BeanFactory::newBean($module);
-        if (empty($bean)) {
+        /** @var MintEntityRepository */
+        $repository = $this->entity_manager->getRepository($module);
+        
+        /** @var MintEntity */
+        $entity = $repository->getNewEntity();
+        if (empty($entity)) {
             return $response->withStatus(404);
         }
-        if (!$bean->ACLAccess('edit')) {
+        if (!$entity->hasAccess('edit')) {
             return $response->withStatus(403);
         }
-        $record_data = $request->getAttribute("record_data");
+
         foreach ($record_data as $field_name => $value) {
-            if (isset($bean->field_defs[$field_name])) {
-                if ('id' === $field_name && !empty($value)) {
-                    $bean->new_with_id = true;
-                }
-                if ('multienum' === $bean->field_defs[$field_name]['type'] && is_array($value)) {
-                    $value = '^' . implode('^,^', $value) . '^';
-                }
-                $bean->$field_name = $value;
+            if (property_exists($entity, $field_name)) {
+                $entity->$field_name = $value;
             }
         }
-        $bean->save(false);
-        if (!empty($bean->repeat_type) && '' != $bean->repeat_type) {
-            $this->handleCyclicalRecords($bean);
+
+        $this->entity_manager->persist($entity);
+
+        $repository->save($entity, false);
+        if (!empty($record_data['repeat_type']) && '' != $record_data['repeat_type']) {
+            $this->handleCyclicalRecords($entity);
         }
-        $this->handleLinks($bean, $links);
-        $bean->retrieve();
+        $this->handleLinks($entity, $links);
 
-        date_default_timezone_set($current_time_zone);
-        $GLOBALS['disable_date_format'] = $disable_date_format;
+        $this->entity_manager->flush();
 
-        if (!empty($bean) && !empty($bean->id)) {
-            $record_data = $this->mergeRecordData($bean);
+        if (empty($entity) || !$entity->getId())  {
+            return $response->withStatus(500);
         }
 
-        chdir('../api/');
         $response = $response->withStatus(201);
-        $response->getBody()->write(json_encode($record_data));
+        $response->getBody()->write(json_encode($this->mergeRecordData($entity)));
         return $response;
     }
 
@@ -139,63 +137,59 @@ class ModuleController
     {
         $response = $response->withHeader('Content-type', 'application/json');
         $module = $this->getModuleFromRoute($request);
-        chdir('../legacy/');
+
+        $record_id = $request->getAttribute("id");
         $record_data = $request->getAttribute("record_data");
         $files = $request->getAttribute("files") ?? [];
         $links = $request->getAttribute("links") ?? [];
-        $record_id = $request->getAttribute("id");
 
-        $current_time_zone = date_default_timezone_get();
-        date_default_timezone_set('UTC');
-        $disable_date_format = $GLOBALS['disable_date_format'];
-        $GLOBALS['disable_date_format'] = true;
+        /** @var MintEntityRepository */
+        $entity_repository = $this->entity_manager->getRepository($module);
 
-        if (!empty($record_id)) {
-            $bean = BeanFactory::getBean($module, $record_id);
-        } else {
-            $bean = BeanFactory::newBean($module);
-        }
+        /** @var MintEntity */
+        $entity = !empty($record_id) ? $entity_repository->find($record_id) : $entity_repository->getNewEntity();
 
-        if (empty($bean) || $bean->id !== $record_id) {
+        if (empty($entity) || ($entity->getId() !== $record_id)) {
             return $response->withStatus(404);
         }
-        if (!$bean->ACLAccess('edit')) {
+
+        if (!$entity->hasAccess('edit')) {
             return $response->withStatus(403);
         }
+
         foreach ($record_data as $field_name => $value) {
-            if (isset($bean->field_defs[$field_name]) && "id" !== $field_name) {
-                if ('multienum' === $bean->field_defs[$field_name]['type'] && is_array($value)) {
-                    $value = '^' . implode('^,^', $value) . '^';
-                }
-                $bean->$field_name = $value;
+            if (property_exists($entity, $field_name)) {
+                $entity->$field_name = $value;
+            } elseif (method_exists($entity, 'set' . ucfirst($field_name))) {
+                // Handle virtual fields with setter methods (e.g., email1)
+                $setter = 'set' . ucfirst($field_name);
+                $entity->$setter($value);
             }
         }
-        $validationResult = (new MintLogic($bean))->validateBean();
+        $this->entity_manager->persist($entity);
+
+        $validationResult = (new MintLogic($entity->getMintBean()))->validateBean();
         if (!$validationResult['isValid']) {
             $response = $response->withStatus(422);
             $response->getBody()->write(json_encode($validationResult));
             return $response;
         }
-        $this->handleFiles($bean, $files);
-        $bean->save(false);
-        if (!empty($bean->repeat_type) && '' != $bean->repeat_type) {
-            $this->handleCyclicalRecords($bean);
+
+        $this->handleFiles($entity, $files);
+        $entity_repository->save($entity, false);
+        if (!empty($record_data['repeat_type']) && '' != $record_data['repeat_type']) {
+            $this->handleCyclicalRecords($entity);
         }
-        $this->handleLinks($bean, $links);
-        BeanFactory::unregisterBean($bean->module_name, $bean->id);
-        $bean = BeanFactory::getBean($bean->module_name, $bean->id);
-        // $bean->retrieve();
+        $this->handleLinks($entity, $links);
 
-        date_default_timezone_set($current_time_zone);
-        $GLOBALS['disable_date_format'] = $disable_date_format;
+        $this->entity_manager->flush();
 
-        if (!empty($bean) && ($bean->id === $record_id || empty($record_id))) {
-            $record_data = $this->mergeRecordData($bean);
+        if (!empty($record_id) && $entity->getId() !== $record_id)  {
+            return $response->withStatus(500);
         }
 
-        chdir('../api/');
         $response = $response->withStatus(200);
-        $response->getBody()->write(json_encode($record_data));
+        $response->getBody()->write(json_encode($this->mergeRecordData($entity)));
         return $response;
     }
 
@@ -203,34 +197,23 @@ class ModuleController
     {
         $response = $response->withHeader('Content-type', 'application/json');
         $module = $this->getModuleFromRoute($request);
-        chdir('../legacy/');
         $record_id = $request->getAttribute("id");
 
-        $current_time_zone = date_default_timezone_get();
-        date_default_timezone_set('UTC');
-        $disable_date_format = $GLOBALS['disable_date_format'];
-        $GLOBALS['disable_date_format'] = true;
+        /** @var MintEntityRepository */
+            $entity_repository = $this->entity_manager->getRepository($module);
 
-        if (!empty($record_id)) {
-            $bean = BeanFactory::getBean($module, $record_id);
-        } else {
-            $bean = BeanFactory::newBean($module);
-        }
+        /** @var MintEntity */
+        $entity = !empty($record_id) ? $entity_repository->find($record_id) : $entity_repository->getNewEntity();
 
-        date_default_timezone_set($current_time_zone);
-        $GLOBALS['disable_date_format'] = $disable_date_format;
-
-        if (empty($bean) || $bean->id !== $record_id) {
+        if(!$entity || $entity->getId() !== $record_id) {
             return $response->withStatus(404);
         }
-        if (!$bean->ACLAccess('view')) {
+
+        if (!$entity->hasAccess('view')) {
             return $response->withStatus(403);
         }
 
-        if (!empty($bean) && $bean->id === $record_id) {
-            $record_data = $this->mergeRecordData($bean);
-        }
-        chdir('../api/');
+        $record_data = !empty($entity) && $entity->id === $record_id ? $this->mergeRecordData($entity) : null;
         $response->getBody()->write(json_encode($record_data));
         return $response;
     }
@@ -241,22 +224,26 @@ class ModuleController
         $record_id = $request->getAttribute("id");
         $attributes = $request->getAttribute("attributes");
         $triggerFields = $request->getAttribute("triggerFields");
-        chdir('../legacy/');
-        if (!empty($record_id)) {
-            $bean = BeanFactory::getBean($module, $record_id);
-            if (empty($bean->id)) {
-                $response = $response->withStatus(404);
-                return $response;
-            }
-        } else {
-            $bean = BeanFactory::newBean($module);
+
+        /** @var MintEntityRepository */
+        $repository = $this->entity_manager->getRepository($module);
+        
+        /** @var MintEntity */
+        $entity = !empty($record_id) ? $repository->find($record_id) : $repository->getNewEntity();
+
+        if (empty($entity)) {
+            return $response->withStatus(404);
         }
 
         foreach ($attributes as $field => $value) {
-            $bean->{$field} = $value;
+            if (!property_exists($entity, $field)) {
+                continue;
+            }
+            $entity->{$field} = $value;
         }
-        $result = (new MintLogic($bean))->getChanged($triggerFields);
-        chdir('../api/');
+
+        $mint_bean = $entity->getMintBean();
+        $result = (new MintLogic($mint_bean))->getChanged($triggerFields);
         $response->getBody()->write(json_encode($result));
         return $response;
     }
@@ -265,32 +252,31 @@ class ModuleController
     {
         $module = $this->getModuleFromRoute($request);
         $id = $request->getAttribute('id');
-        chdir('../legacy/');
-        $f = BeanFactory::getBean($module, $id);
-        if (empty($f->id)) {
-            $response = $response->withStatus(404);
-            return $response;
-        } else {
-            if (!$f->ACLAccess('delete')) {
-                $response = $response->withStatus(403);
-                return $response;
-            }
+
+        /** @var MintEntityRepository */
+        $repository = $this->entity_manager->getRepository($module);
+
+        /** @var MintEntity */
+        $entity = $repository->find($id);
+        if (empty($entity) || $entity->getId() !== $id) {
+            return $response->withStatus(404);
         }
-        $f->mark_deleted($id);
-        chdir('../api/');
+        if (!$entity->hasAccess('delete')) {
+            return $response->withStatus(403);
+        }
+
+        if (!$repository->delete($entity, true)) {
+            $response = $response->withStatus(500);
+            return $response;
+        }
+
         $response = $response->withStatus(200);
         return $response;
     }
 
-    protected function getModuleFromRoute(Request $request): ?string
-    {
-        $routeContext = RouteContext::fromRequest($request);
-        $route = $routeContext->getRoute();
-        return explode('/', $route->getPattern())[1] ?? null;
-    }
-
     public function subpanelRecords(Request $request, Response $response, array $args): Response
     {
+        //TODO add relationship management in Entity to get subpanel list with acls  
         $module = $this->getModuleFromRoute($request);
         $id = $request->getAttribute('id');
         chdir('../legacy/');
@@ -345,12 +331,13 @@ class ModuleController
 
     public function link(Request $request, Response $response, array $args): Response
     {
+        //TODO add relationship management in Entity
         $module = $this->getModuleFromRoute($request);
         $id = $request->getAttribute('id');
         $link_name = $request->getAttribute('link_name');
 
         chdir('../legacy/');
-        $focus = BeanFactory::getBean($module, $id);
+        $focus = LegacyBeanFactory::getBean($module, $id);
         if (empty($focus->id)) {
             $response = $response->withStatus(404);
             return $response;
@@ -392,7 +379,7 @@ class ModuleController
         $link_name = $request->getAttribute('link_name');
 
         chdir('../legacy/');
-        $focus = BeanFactory::getBean($module, $id);
+        $focus = LegacyBeanFactory::getBean($module, $id);
         if (empty($focus->id)) {
             $response = $response->withStatus(404);
             return $response;
@@ -427,102 +414,108 @@ class ModuleController
         return $response;
     }
 
-    protected function mergeRecordData($bean)
+    protected function getModuleFromRoute(Request $request): ?string
+    {
+        $routeContext = RouteContext::fromRequest($request);
+        $route = $routeContext->getRoute();
+        return explode('/', $route->getPattern())[1] ?? null;
+    }
+
+    protected function mergeRecordData(MintEntity $entity): array
     {
         return [
-            'id' => $bean->id,
-            'module' => $bean->module_name,
-            'attributes' => $bean->toArray(),
+            'id' => $entity->getId(),
+            'module' => $entity->getModuleName(),
+            'attributes' => $entity->getSerialized(),
             'acl_access' => [
-                'edit' => $bean->ACLAccess('edit'),
-                'delete' => $bean->ACLAccess('delete'),
-                'view' => $bean->ACLAccess('view'),
-                'admin' => $bean->ACLAccess('admin'),
+                'edit' => $entity->hasAccess('edit'),
+                'delete' => $entity->hasAccess('delete'),
+                'view' => $entity->hasAccess('view'),
+                'admin' => $entity->hasAccess('admin'),
             ],
-            'logic' => (new MintLogic($bean))->getInitial(),
+            'logic' => (new MintLogic($entity->getMintBean()))->getInitial(),
         ];
     }
-    protected function handleFiles($bean, $files = [])
+    protected function handleFiles(MintEntity $mint_entity, array|null $files = []): void
     {
-        if (!empty($files) && is_array($files)) {
-            global $sugar_config;
-            if (empty($bean->id)) {
-                $bean->id = create_guid();
-                $bean->new_with_id = true;
-            }
-            $current_dir = getcwd();
-            chdir('../legacy/');
-            require_once 'include/SugarObjects/templates/file/File.php';
-            $upload_dir = $sugar_config['upload_dir'] ?? 'upload/';
-            foreach ($files as $field_name => $base64) {
-                $field_type = $bean->field_defs[$field_name]['type'] ?? '';
-                if (empty($bean->id) || !in_array($field_type, ['file', 'image'])) {
-                    continue;
-                }
-                $file_name = $bean->id;
-                if ('image' === $field_type) {
-                    $file_name .= "_{$field_name}";
-                }
-                $file_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $file_name); // Sanitize file name
-                if (empty($base64)) {
-                    unlink($upload_dir . $file_name);
-                } else {
-                    $base64_prefix = '';
-                    if (strpos($base64, 'data:') === 0) {
-                        $base64_prefix = substr($base64, 0, strpos($base64, ';base64,') + 8);
-                    }
-                    $base64_decoded = base64_decode(str_replace($base64_prefix, '', $base64), true);
+        if (empty($files)) {
+            return;
+        }
 
-                    $tmp_file = tmpfile();
-                    fwrite($tmp_file, $base64_decoded);
-                    $tmp_file_path = stream_get_meta_data($tmp_file)['uri'];
+        global $sugar_config;
 
-                    $_FILES[$field_name] = [
-                        'name' => $file_name,
-                        'type' => 'application/octet-stream',
-                        'tmp_name' => $tmp_file_path,
-                        'error' => 0,
-                        'size' => strlen($base64_decoded),
-                    ];
-                    $_FILES['filename_file'] = $file_name;
-                    $upload_file = new \UploadFile($field_name);
-                    $upload_file->set_is_http_upload(false);
-                    if ($upload_file->confirm_upload()) {
-                        $upload_file->final_move($file_name, $field_name);
-                    }
-                    fclose($tmp_file);
-                }
+        $bean = $mint_entity->getMintBean();
+        if (empty($bean->id)) {
+            return;
+        }
+
+        $upload_dir = $sugar_config['upload_dir'] ?? 'upload/';
+        foreach ($files as $field_name => $base64) {
+            $field_type = $bean->field_defs[$field_name]['type'] ?? '';
+            if (!in_array($field_type, ['file', 'image'])) {
+                continue;
             }
-            chdir($current_dir);
+
+            $file_name = 'image' === $field_type ? $bean->id . "_{$field_name}" : $bean->id;
+            $file_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $file_name); // Sanitize file name
+            
+            if (empty($base64)) {
+                unlink($upload_dir . $file_name);
+                continue;
+            }
+
+            $base64_prefix = '';
+            if (strpos($base64, 'data:') === 0) {
+                $base64_prefix = substr($base64, 0, strpos($base64, ';base64,') + 8);
+            }
+            $base64_decoded = base64_decode(str_replace($base64_prefix, '', $base64), true);
+            
+            $tmp_file = tmpfile();
+            fwrite($tmp_file, $base64_decoded);
+            $tmp_file_path = stream_get_meta_data($tmp_file)['uri'];
+            $_FILES[$field_name] = [
+                'name' => $file_name,
+                'type' => 'application/octet-stream',
+                'tmp_name' => $tmp_file_path,
+                'error' => 0,
+                'size' => strlen($base64_decoded),
+            ];
+            $_FILES['filename_file'] = $file_name;
+            $upload_file = new LegacyConnector('UploadFile', 'include/upload_file.php', [$field_name]);
+            $upload_file->set_is_http_upload(false);
+            if ($upload_file->confirm_upload()) {
+                $upload_file->final_move($file_name, $field_name);
+            }
+            fclose($tmp_file);
         }
     }
 
-    protected function handleLinks(MintBean $bean, array $links = [])
+    protected function handleLinks(MintEntity $mint_entity, array $links = []): void
     {
-        if (!empty($links)) {
-            $current_dir = getcwd();
-            chdir('../legacy/');
-            foreach ($links as $link_name => $link_data) {
-                if (empty($link_data)) {
-                    continue;
-                }
-                if (!$bean->load_relationship($link_name)) {
-                    $GLOBALS['log']->error("Failed to load relationship {$link_name} for module {$bean->module_name} and record {$bean->id}");
-                    continue;
-                }
-                if (!empty($link_data['beansToAdd']) && is_array($link_data['beansToAdd'])) {
-                    foreach ($link_data['beansToAdd'] as $related_id => $related_bean) {
-                        $additionalValues = $related_bean['additionalValues'] ?? [];
-                        $bean->$link_name->add($related_id, $additionalValues);
-                    }
-                }
-                if (!empty($link_data['beansToRemove']) && is_array($link_data['beansToRemove'])) {
-                    foreach ($link_data['beansToRemove'] as $related_id) {
-                        $bean->$link_name->delete($bean->id, $related_id);
-                    }
+        if (empty($links)) {
+            return;
+        }
+
+        $bean = $mint_entity->getMintBean();
+        foreach ($links as $link_name => $link_data) {
+            if (empty($link_data)) {
+                continue;
+            }
+            if (!$bean->load_relationship($link_name)) {
+                $GLOBALS['log']->error("Failed to load relationship {$link_name} for module {$bean->module_name} and record {$bean->id}");
+                continue;
+            }
+            if (!empty($link_data['beansToAdd']) && is_array($link_data['beansToAdd'])) {
+                foreach ($link_data['beansToAdd'] as $related_id => $related_bean) {
+                    $additionalValues = $related_bean['additionalValues'] ?? [];
+                    $bean->$link_name->add($related_id, $additionalValues);
                 }
             }
-            chdir($current_dir);
+            if (!empty($link_data['beansToRemove']) && is_array($link_data['beansToRemove'])) {
+                foreach ($link_data['beansToRemove'] as $related_id) {
+                    $bean->$link_name->delete($bean->id, $related_id);
+                }
+            }
         }
     }
 
@@ -552,8 +545,8 @@ class ModuleController
         return $response;
     }
 
-    protected function handleCyclicalRecords(MintBean $bean)
+    protected function handleCyclicalRecords(MintEntity $mint_entity)
     {
-        (new CyclicRecordsSaver($bean, $this->entityManager))->run();
+        (new CyclicRecordsSaver($mint_entity->getMintBean(), $this->entity_manager))->run();
     }
 }

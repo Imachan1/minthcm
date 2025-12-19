@@ -57,138 +57,159 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
  * @ORM\Table(name="alerts", indexes={
  * @ORM\Index(name="alertspk", columns={"id"}), 
  * @ORM\Index(name="idx_notifications_my_unread_items", columns={"assigned_user_id", "is_read", "deleted"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $is_read
+ * @property mixed $is_closed
+ * @property mixed $target_module
+ * @property mixed $type
+ * @property mixed $url_redirect
+ * @property mixed $reminder_id
+ * @property mixed $alert_type
+ * @property mixed $parent_type
+ * @property mixed $parent_id
  */
 // Auto-generated SectionRepository section end
 class Alerts extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    public $is_read;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $is_closed;
+    protected $is_read;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $is_closed;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $target_module;
+    protected $target_module;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $type;
+    protected $type;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $url_redirect;
+    protected $url_redirect;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $reminder_id;
+    protected $reminder_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $alert_type;
+    protected $alert_type;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $parent_type;
+    protected $parent_type;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $parent_id;
+    protected $parent_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="alerts")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="alerts")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="alerts")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Kudos::class, inversedBy="alerts")
      */
-    public $kudos;
+    protected $kudos;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
     public function __construct()
     {
     }
+
 // Auto-generated SectionMethods section end
 }

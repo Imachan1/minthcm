@@ -14,23 +14,12 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { DateTime } from 'luxon'
 import Pencil from '../Pencil.vue'
-import { usePreferencesStore } from '@/store/preferences';
 import { FieldProps } from '../Field.model';
 
 const props = defineProps<FieldProps>()
-const preferences = usePreferencesStore()
 const parsedDate = computed(() => {
-    const value = props.modelValue?.trim()
-    if (!value) {
-        return ''
-    }
-    const dt = DateTime.fromSQL(value, { zone: 'UTC' })
-    if (!dt.isValid) {
-        return ''
-    }
-    return dt.toLocal().toFormat(`${preferences.user?.date_format} ${preferences.user?.time_format}`)
+    return props.field.formatted.user
 })
 function startInlineEdit() {
     if (props?.defs?.name && typeof props.defs.name === 'string' && props.defs.name.length > 0) {

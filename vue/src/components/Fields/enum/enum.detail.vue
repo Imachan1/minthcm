@@ -32,7 +32,7 @@ const languages = useLanguagesStore()
 const backend = useBackendStore()
 
 const parsedValue = computed(() => {
-    return items.value.find((item) => item.key === props.modelValue)?.value || ''
+    return items.value.find((item) => item.key === props.field.model)?.value || ''
 })
 
 const coloredEnumStyle = computed(() => {

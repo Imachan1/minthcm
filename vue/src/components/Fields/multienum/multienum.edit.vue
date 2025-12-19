@@ -28,12 +28,7 @@ const model = ref<Array<string>>(Array.isArray(props.modelValue) ? props.modelVa
 
 const parsedValue = computed({
     get() {
-        // Always return array for multiselect
-        if (Array.isArray(props.modelValue)) {
-            return props.modelValue
-        }
-        // fallback for legacy single value
-        return props.modelValue ? [props.modelValue] : []
+        return props.field.model
     },
     set(newValue: string[]) {
         model.value = newValue

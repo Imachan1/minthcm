@@ -3,6 +3,7 @@
 namespace MintHCM\Data\ORM\Doctrine\MintRepository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Repository\DefaultRepositoryFactory;
 use Doctrine\ORM\Repository\RepositoryFactory;
 
@@ -22,7 +23,7 @@ class MintRepositoryFactory implements RepositoryFactory
 
     public function getRepository(EntityManagerInterface $entityManager, $entityName)
     {
-        if (! class_exists($entityName)) {
+        if (!class_exists($entityName) || !is_subclass_of($entityName, EntityRepository::class)) {
             foreach (self::ENTITY_NAMESPACES as $namespace) {
                 $fullClassName = $namespace . '\\' . $entityName;
                 if (class_exists($fullClassName)) {

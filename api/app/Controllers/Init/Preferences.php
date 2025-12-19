@@ -48,6 +48,8 @@ namespace MintHCM\Api\Controllers\Init;
 use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Api\Entities\Currencies;
 use MintHCM\Api\Entities\UserPreferences;
+use MintHCM\Api\Repositories\CurrenciesRepository;
+use MintHCM\Api\Repositories\UserPreferencesRepository;
 use MintHCM\Utils\LuxonMapper;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
@@ -115,7 +117,9 @@ class Preferences
 
     protected function getCurrenciesList()
     {
-        $currencies = $this->entityManager->getRepository(Currencies::class)->getAvailable();
+        /** @var CurrenciesRepository */
+        $repository = $this->entityManager->getRepository(Currencies::class);
+        $currencies = $repository->getAvailable();
         $currency_list = [];
         foreach ($currencies as $currency) {
             $currency_list[$currency['id']] = $currency;
@@ -129,6 +133,7 @@ class Preferences
         return array(
             'date_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['datef'] ?? $sugar_config['default_date_format']),
             'time_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['timef'] ?? $sugar_config['default_time_format']),
+            'timezone' => $this->user_preferences["global"]["timezone"] ?? $sugar_config['default_timezone'],
             'name_format' => $this->user_preferences["global"]["default_locale_name_format"] ?? $sugar_config['default_locale_name_format'],
             'dec_sep' => $this->user_preferences['global']['dec_sep'] ?? $sugar_config['default_decimal_seperator'],
             'num_grp_sep' => $this->user_preferences['global']['num_grp_sep'] ?? $sugar_config['default_number_grouping_seperator'],
@@ -144,19 +149,20 @@ class Preferences
 
     private function setUserPreferences()
     {
-        global $current_user, $sugar_config;
+        global $current_user;
         if (empty($current_user->id)) {
             return array();
         }
 
         try {
+            /** @var UserPreferencesRepository */
+            $repository = $this->entityManager->getRepository(UserPreferences::class);
             /** @var UserPreferences[] */
-            $user_preferences = $this->entityManager->getRepository(UserPreferences::class)
-                ->findAllUndeletedByUserId($current_user->id);
+            $user_preferences = $repository->findAllUndeletedByUserId($current_user->id);
 
             foreach ($user_preferences as $user_preference) {
                 $category = $user_preference->category;
-                $preferences[$category] = unserialize(base64_decode($user_preference->contents));
+                $preferences[$category] = $user_preference->getContentsAsArray();
             }
 
             $this->user_preferences = $preferences;

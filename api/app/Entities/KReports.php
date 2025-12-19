@@ -59,163 +59,189 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="kreports", indexes={
  * @ORM\Index(name="kreportspk", columns={"id"}), 
  * @ORM\Index(name="idx_reminder_name", columns={"name"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $report_module
+ * @property mixed $report_status
+ * @property mixed $union_modules
+ * @property mixed $reportoptions
+ * @property mixed $listtype
+ * @property mixed $listtypeproperties
+ * @property mixed $selectionlimit
+ * @property mixed $presentation_params
+ * @property mixed $visualization_params
+ * @property mixed $integration_params
+ * @property mixed $wheregroups
+ * @property mixed $whereconditions
+ * @property mixed $listfields
+ * @property mixed $unionlistfields
+ * @property mixed $advancedoptions
  */
 // Auto-generated SectionRepository section end
 class KReports extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="45")
      */
-    public $report_module;
+    protected $report_module;
 
     /**
      * @ORM\Column(type="string", length="1")
      */
-    public $report_status;
+    protected $report_status;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $union_modules;
+    protected $union_modules;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $reportoptions;
+    protected $reportoptions;
 
     /**
      * @ORM\Column(type="string", length="10")
      */
-    public $listtype;
+    protected $listtype;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $listtypeproperties;
+    protected $listtypeproperties;
 
     /**
      * @ORM\Column(type="string", length="25")
      */
-    public $selectionlimit;
+    protected $selectionlimit;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $presentation_params;
+    protected $presentation_params;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $visualization_params;
+    protected $visualization_params;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $integration_params;
+    protected $integration_params;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $wheregroups;
+    protected $wheregroups;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $whereconditions;
+    protected $whereconditions;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $listfields;
+    protected $listfields;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $unionlistfields;
+    protected $unionlistfields;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $advancedoptions;
+    protected $advancedoptions;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="kreports")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="kreports")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="kreports")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -223,5 +249,6 @@ class KReports extends MintEntity
     {
         $this->SecurityGroups = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

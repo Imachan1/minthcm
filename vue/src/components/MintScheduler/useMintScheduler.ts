@@ -6,6 +6,8 @@ import { Participant } from './MintScheduler.model'
 import { useDebounceFn } from '@vueuse/core'
 import { useAuthStore } from '@/store/auth'
 import { AxiosError } from 'axios'
+import { MintDate } from '@/composables/useMintDate'
+import { MintField } from '../Fields/useField'
 import { usePreferencesStore } from '@/store/preferences'
 import { useStatusBoxesStore } from '@/store/statusBoxes'
 import { useLanguagesStore } from '@/store/languages'
@@ -14,27 +16,23 @@ const MAX_HOURS_COUNT = 10
 
 export const useMintScheduler = (
     bean: ReturnType<typeof useBean>,
-    dateFrom: Ref<string | null>,
-    dateTo: Ref<string | null>,
+    dateFrom: Ref<MintField<MintDate> | null>,
+    dateTo: Ref<MintField<MintDate> | null>,
 ) => {
     const auth = useAuthStore()
     const preferences = usePreferencesStore()
 
     const activityDtFrom = computed(() => {
-        const date = toValue(dateFrom)
-        if (!date) {
+        if (!dateFrom.value) {
             return null
         }
-        const dt = DateTime.fromSQL(date, { zone: 'UTC' })
-        return dt.isValid ? dt : null
+        return dateFrom.value.model.isValid ? dateFrom.value.model.instance : null
     })
     const activityDtTo = computed(() => {
-        const date = toValue(dateTo)
-        if (!date) {
+        if (!dateTo.value) {
             return null
         }
-        const dt = DateTime.fromSQL(date, { zone: 'UTC' })
-        return dt.isValid ? dt : null
+        return dateTo.value.model.isValid ? dateTo.value.model.instance : null
     })
     const activityFrom = computed(() => {
         if (!activityDtFrom.value) {

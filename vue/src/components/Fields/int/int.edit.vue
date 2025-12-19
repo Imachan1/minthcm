@@ -4,9 +4,8 @@
         variant="outlined"
         density="compact"
         hide-details
-        :modelValue="props.modelValue"
+        v-model="props.field.model"
         :error="props.state === 'error'"
-        @update:modelValue="(v) => $emit('update:modelValue', v)"
         @keyup.enter="$emit('inlineEditSave')"
         @keyup.esc="$emit('inlineEditCancel')"
     />
@@ -15,7 +14,7 @@
 <script setup lang="ts">
 import { FieldProps } from '../Field.model'
 
-const props = defineProps<FieldProps>()
+const props = defineProps<FieldProps<string | number>>()
 </script>
 
 <style scoped lang="scss"></style>

@@ -65,182 +65,206 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Index(name="idx_email_cat", columns={"category_id"}), 
  * @ORM\Index(name="dlnc_email", columns={"id", "deleted", "status", "date_sent_received"}), 
  * @ORM\Index(name="idx_email_uid", columns={"uid"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $orphaned
+ * @property mixed $last_synced
+ * @property mixed $date_sent_received
+ * @property mixed $message_id
+ * @property mixed $type
+ * @property mixed $status
+ * @property mixed $flagged
+ * @property mixed $reply_to_status
+ * @property mixed $intent
+ * @property mixed $mailbox_id
+ * @property mixed $parent_type
+ * @property mixed $parent_id
+ * @property mixed $uid
+ * @property mixed $category_id
  */
 // Auto-generated SectionRepository section end
 class Emails extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $orphaned;
+    protected $orphaned;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $last_synced;
+    protected $last_synced;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_sent_received;
+    protected $date_sent_received;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $message_id;
+    protected $message_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $type;
+    protected $type;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $status;
+    protected $status;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $flagged;
+    protected $flagged;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $reply_to_status;
+    protected $reply_to_status;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $intent;
+    protected $intent;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $mailbox_id;
+    protected $mailbox_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $parent_type;
+    protected $parent_type;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $parent_id;
+    protected $parent_id;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $uid;
+    protected $uid;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $category_id;
+    protected $category_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="emails")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="emails")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="emails")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="emails")
      */
-    public Collection $notes;
+    protected Collection $notes;
 
     /**
      * @ORM\JoinTable(name="emails_beans")
      * @ORM\ManyToMany(targetEntity=Employees::class, mappedBy="emails")
      */
-    public Collection $employees;
+    protected Collection $employees;
 
     /**
      * @ORM\JoinTable(name="emails_beans")
      * @ORM\ManyToMany(targetEntity=Meetings::class, mappedBy="emails")
      */
-    public Collection $meetings;
+    protected Collection $meetings;
 
     /**
      * @ORM\JoinTable(name="emails_beans", joinColumns={@ORM\JoinColumn(name="email_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="bean_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Candidates::class, inversedBy="emails")
      */
-    public Collection $candidates;
+    protected Collection $candidates;
 
     /**
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Recruitments::class, inversedBy="emails")
      */
-    public $recruitments;
+    protected $recruitments;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -252,5 +276,6 @@ class Emails extends MintEntity
         $this->meetings = new ArrayCollection();
         $this->candidates = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

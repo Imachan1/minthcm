@@ -57,6 +57,13 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
  * @ORM\Table(name="user_preferences", indexes={
  * @ORM\Index(name="userpreferencespk", columns={"id"}), 
  * @ORM\Index(name="idx_userprefnamecat", columns={"assigned_user_id", "category"})})
+ * @property mixed $id
+ * @property mixed $category
+ * @property mixed $deleted
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $assigned_user_id
+ * @property mixed $contents
  */
 // Auto-generated SectionRepository section end
 class UserPreferences extends MintEntity
@@ -67,39 +74,39 @@ class UserPreferences extends MintEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="50")
      */
-    public $category;
+    protected $category;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $contents;
+    protected $contents;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -107,4 +114,17 @@ class UserPreferences extends MintEntity
     {
     }
 // Auto-generated SectionMethods section end
+
+    public function getContentsAsArray(): array
+    {
+        if (!is_string($this->contents)) {
+            return [];
+        }
+        
+        $contents = unserialize(base64_decode($this->contents) ?: '');
+        if (!is_array($contents)) {
+            $contents = [];
+        }
+        return $contents;
+    }
 }

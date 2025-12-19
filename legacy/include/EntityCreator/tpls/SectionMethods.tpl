@@ -5,4 +5,7 @@
         {$constructedField}
 {/foreach}
     {rdelim}
+{foreach from=$additionalMethods item=method}
+        {$method}
+{/foreach}
 {$end_sectionmethods}

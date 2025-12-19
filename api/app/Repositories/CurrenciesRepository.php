@@ -19,6 +19,7 @@ class CurrenciesRepository extends MintEntityRepository
             'conversion_rate' => 1,
         );
         return array_merge($currencies, $this->createQueryBuilder('c')
+            ->select('c.id, c.name, c.symbol, c.status, c.currency_on_right, c.conversion_rate')
             ->where('c.status = :status')
             ->andWhere('c.deleted = :deleted')
             ->setParameter('status', 'Active')

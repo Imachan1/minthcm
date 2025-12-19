@@ -59,6 +59,20 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="prospect_lists", indexes={
  * @ORM\Index(name="prospectlistsspk", columns={"id"}), 
  * @ORM\Index(name="idx_prospect_list_name", columns={"name"})})
+ * @property mixed $assigned_user_id
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $list_type
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $deleted
+ * @property mixed $description
+ * @property mixed $domain_name
+ * @property mixed $automatic_update
+ * @property mixed $kreport_id
  */
 // Auto-generated SectionRepository section end
 class ProspectLists extends MintEntity
@@ -66,107 +80,107 @@ class ProspectLists extends MintEntity
 
 // Auto-generated SectionProperties section start
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $list_type;
+    protected $list_type;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $domain_name;
+    protected $domain_name;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $automatic_update;
+    protected $automatic_update;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $kreport_id;
+    protected $kreport_id;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="prospect_lists")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinTable(name="prospect_list_campaigns")
      * @ORM\ManyToMany(targetEntity=Campaigns::class, mappedBy="prospectlists")
      */
-    public Collection $campaigns;
+    protected Collection $campaigns;
 
     /**
      * @ORM\JoinTable(name="email_marketing_prospect_lists", joinColumns={@ORM\JoinColumn(name="prospect_list_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="email_marketing_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=EmailMarketing::class, inversedBy="prospectlists")
      */
-    public Collection $email_marketing;
+    protected Collection $email_marketing;
 
     /**
      * @ORM\JoinTable(name="prospect_list_news", joinColumns={@ORM\JoinColumn(name="prospectlist_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="news_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=News::class, inversedBy="prospectlists")
      */
-    public Collection $news;
+    protected Collection $news;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start

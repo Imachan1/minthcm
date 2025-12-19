@@ -4,10 +4,10 @@
             <label>{{ languages.label('LBL_ASSIGNED_TO_MODULE') }}</label>
             <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()">
                 <router-link v-if="hasListAccess" :to="urls.parent" class="relate-field">
-                    {{ props.data.bean.attributes.parent_type }}
+                    {{ props.data.bean.fields.parent_type?.model ?? '' }}
                 </router-link>
                 <span v-else>
-                    {{ props.data.bean.attributes.parent_type }}
+                    {{ props.data.bean.fields.parent_type?.model ?? '' }}
                 </span>
                 <Pencil :defs="props.defs" />
             </div>
@@ -16,10 +16,10 @@
             <label>{{ languages.label('LBL_ASSIGNED_TO_RECORD') }}</label>
             <div class="detail-field-row">
                 <router-link v-if="hasViewAccess" :to="urls.record" class="relate-field">
-                    {{ props.modelValue }}
+                    {{ props.field.model }}
                 </router-link>
                 <span v-else>
-                    {{ props.modelValue }}
+                    {{ props.field.model }}
                 </span>
                 <Pencil :defs="props.defs" :hidePencil="hidePencil"
                     @inlineEditBtnClicked="(fieldName: string) => $emit('inlineEditBtnClicked', fieldName)" />
@@ -39,8 +39,8 @@ const props = defineProps<FieldProps>()
 const languages = useLanguagesStore()
 const emit = defineEmits(['inlineEditBtnClicked'])
 const urls = computed(() => {
-    const recordModule = props.data.bean.attributes.parent_type
-    const recordId = props.data.bean.attributes[props.defs.id_name]
+    const recordModule = props.data.bean.fields.parent_type?.model || ''
+    const recordId = props.data.bean.fields[props.defs.id_name]?.model || ''
     return { record: `/modules/${recordModule}/DetailView/${recordId}`, parent: `/modules/${recordModule}/ESListView` }
 })
 function startInlineEdit() {
@@ -49,10 +49,10 @@ function startInlineEdit() {
     }
 }
 const hasListAccess = computed<boolean>(() => {
-    return useACL().hasAccess(props.data.bean.attributes.parent_type, 'list', true, true)
+    return useACL().hasAccess(props.data.bean.fields.parent_type?.model, 'list', true, true)
 })
 const hasViewAccess = computed<boolean>(() => {
-    return useACL().hasAccess(props.data.bean.attributes.parent_type, 'view', true, true)
+    return useACL().hasAccess(props.data.bean.fields.parent_type?.model, 'view', true, true)
 })
 </script>
 

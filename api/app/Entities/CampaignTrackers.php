@@ -57,80 +57,93 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
  * @ORM\Table(name="campaign_trkrs", indexes={
  * @ORM\Index(name="campaign_trackepk", columns={"id"}), 
  * @ORM\Index(name="campaign_tracker_key_idx", columns={"tracker_key"})})
+ * @property mixed $id
+ * @property mixed $tracker_name
+ * @property mixed $tracker_url
+ * @property mixed $tracker_key
+ * @property mixed $campaign_id
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $is_optout
+ * @property mixed $deleted
  */
 // Auto-generated SectionRepository section end
 class CampaignTrackers extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $tracker_name;
+    protected $tracker_name;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $tracker_url;
+    protected $tracker_url;
 
     /**
      * @ORM\Column(type="integer", length="11")
      */
-    public $tracker_key;
+    protected $tracker_key;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $campaign_id;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    public $date_entered;
+    protected $campaign_id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_entered;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="datetime")
      */
-    public $modified_user_id;
+    protected $date_modified;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $modified_user_id;
+
+    /**
+     * @ORM\Column(type="id", length="36")
+     */
+    protected $created_by;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $is_optout;
+    protected $is_optout;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
      * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Campaigns::class, inversedBy="tracked_urls")
      */
-    public $campaign;
+    protected $campaign;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
     public function __construct()
     {
     }
+
 // Auto-generated SectionMethods section end
 }

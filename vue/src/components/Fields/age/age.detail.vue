@@ -4,7 +4,9 @@
         <div class="detail-field-row">
             <div>
                 {{ parsedDate }}
-                <span v-if="props.modelValue"> - ({{ age }} {{ languages.label('LBL_YEARS')?.toLowerCase() }})</span>
+                <span v-if="props.field.model.isValid">
+                    - ({{ age }} {{ languages.label('LBL_YEARS')?.toLowerCase() }})
+                </span>
             </div>
             <Pencil :defs="props.defs" />
         </div>
@@ -13,34 +15,25 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { DateTime } from 'luxon'
 import { useLanguagesStore } from '@/store/languages'
 import Pencil from '../Pencil.vue'
-import { usePreferencesStore } from '@/store/preferences'
 import { FieldProps } from '../Field.model'
+import { MintDate } from '@/composables/useMintDate'
 
-const props = defineProps<FieldProps>()
+const props = defineProps<FieldProps<MintDate>>()
 const languages = useLanguagesStore()
-const preferences = usePreferencesStore()
 
 const parsedDate = computed(() => {
-    const value = props.modelValue?.trim()
-    if (!value) {
+    if (!props.field.model.isValid) {
         return ''
     }
-    const dt = DateTime.fromSQL(value)
-    if (!dt.isValid) {
-        return ''
-    }
-    return dt.toFormat(preferences.user?.date_format || 'dd.MM.yyyy')
+    return props.field.model.formatted.user_date
 })
 const age = computed(() => {
-    const value = props.modelValue?.trim()
-    if (!value) {
+    if (!props.field.model.isValid) {
         return ''
     }
-    const birthDate = DateTime.fromSQL(value)
-    const age = birthDate.diffNow('years').years
+    const age = props.field.model.instance.diffNow('years').years
     return Math.floor(-age)
 })
 </script>

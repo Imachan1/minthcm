@@ -60,7 +60,8 @@
                     <v-row>
                         <v-col cols="6">
                             <MintDateField
-                                v-model="repeatProps.repeat_until"
+                                :modelValue="repeatProps.repeat_until"
+                                :field="repeatProps.repeat_until"
                                 :label="languages.label('LBL_REPEAT_UNTIL', currentModule)"
                             />
                         </v-col>
@@ -118,11 +119,11 @@ const isCountOrUntil = ref('count')
 const currentModule = ref(props.data.bean.module)
 
 const repeatProps = ref({
-    repeat_type: props.data.bean.attributes.repeat_type,
-    repeat_interval: props.data.bean.attributes.repeat_interval ?? '1',
-    repeat_dow: props.data.bean.attributes.repeat_dow ? props.data.bean.attributes.repeat_dow.split('') : [],
-    repeat_until: props.data.bean.attributes.repeat_until,
-    repeat_count: props.data.bean.attributes.repeat_count ?? '10',
+    repeat_type: props.data.bean.fields.repeat_type?.model,
+    repeat_interval: props.data.bean.fields.repeat_interval?.model ?? '1',
+    repeat_dow: props.data.bean.fields.repeat_dow?.model ? props.data.bean.fields.repeat_dow?.model.split('') : [],
+    repeat_until: props.data.bean.fields.repeat_until?.model,
+    repeat_count: props.data.bean.fields.repeat_count?.model ?? '10',
 })
 
 const repeatTypes = computed(() => {
@@ -138,7 +139,7 @@ const repeatIntervals = computed(() => {
 })
 
 const currentInterval = computed(() => {
-    return repeatIntervals.value.find((interval) => interval.key == repeatProps.value.repeat_type).value
+    return repeatIntervals.value.find((interval) => interval.key == repeatProps.value.repeat_type)?.value
 })
 
 const cancelRepeat = () => {
@@ -147,18 +148,18 @@ const cancelRepeat = () => {
 
 const saveRepeat = () => {
     if (isCountOrUntil.value == 'until') {
-        props.data.bean.attributes.repeat_until = repeatProps.value.repeat_until
-        props.data.bean.attributes.repeat_count = ''
+        props.data.bean.fields.repeat_until.model = repeatProps.value.repeat_until
+        props.data.bean.fields.repeat_count.model = ''
     } else {
-        props.data.bean.attributes.repeat_count = repeatProps.value.repeat_count
-        props.data.bean.attributes.repeat_until = ''
+        props.data.bean.fields.repeat_count.model = repeatProps.value.repeat_count
+        props.data.bean.fields.repeat_until.model = ''
     }
 
-    props.data.bean.attributes.repeat_type = repeatProps.value.repeat_type
-    props.data.bean.attributes.repeat_interval = repeatProps.value.repeat_interval
+    props.data.bean.fields.repeat_type.model = repeatProps.value.repeat_type
+    props.data.bean.fields.repeat_interval.model = repeatProps.value.repeat_interval
 
     if (repeatProps.value.repeat_type == 'Weekly') {
-        props.data.bean.attributes.repeat_dow = repeatProps.value.repeat_dow.toString().replaceAll(',','')
+        props.data.bean.fields.repeat_dow.model = repeatProps.value.repeat_dow.toString().replaceAll(',','')
     }
     emit('close')
 }

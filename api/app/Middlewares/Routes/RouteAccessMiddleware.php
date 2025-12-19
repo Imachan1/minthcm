@@ -70,7 +70,7 @@ class RouteAccessMiddleware extends Middleware
     private function hasAccessToRoute(Request $request): bool
     {
         $route_data = $this->getRouteData($request);
-        $route_access = $route_data['options']['access'] ?: self::ALL_ACCESS;
+        $route_access = !empty($route_data['options']['access']) ? $route_data['options']['access'] : self::ALL_ACCESS;
         if ($route_access === self::ALL_ACCESS) {
             return true;
         }

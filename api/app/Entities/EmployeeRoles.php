@@ -58,122 +58,134 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\EmployeeRolesRepository")
  * @ORM\Table(name="employeeroles", indexes={
  * @ORM\Index(name="employeerolespk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $status
  */
 // Auto-generated SectionRepository section end
 class EmployeeRoles extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $status;
+    protected $status;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="employeeroles")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="employeeroles")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="employeeroles")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinTable(name="roles_employees")
      * @ORM\ManyToMany(targetEntity=Employees::class, mappedBy="roles")
      */
-    public Collection $employees;
+    protected Collection $employees;
 
     /**
      * @ORM\JoinTable(name="benefits_roles", joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="benefit_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Benefits::class, inversedBy="roles")
      */
-    public Collection $benefits;
+    protected Collection $benefits;
 
     /**
      * @ORM\JoinTable(name="responsibilities_roles", joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="responsibility_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Responsibilities::class, inversedBy="roles")
      */
-    public Collection $responsibilities;
+    protected Collection $responsibilities;
 
     /**
      * @ORM\OneToMany(targetEntity=CompetencyRatings::class, mappedBy="employee_roles")
      */
-    public Collection $competencyratings;
+    protected Collection $competencyratings;
 
     /**
      * @ORM\JoinTable(name="appraisals_roles", joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="appraisal_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Appraisals::class, inversedBy="roles")
      */
-    public Collection $appraisals;
+    protected Collection $appraisals;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -186,5 +198,6 @@ class EmployeeRoles extends MintEntity
         $this->competencyratings = new ArrayCollection();
         $this->appraisals = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

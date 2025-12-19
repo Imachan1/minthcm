@@ -26,9 +26,11 @@
                         <v-icon class="mint-date-field-btn" v-bind="props">mdi-clock-time-eight-outline</v-icon>
                     </template>
                     <v-time-picker
-                        v-model="timePickerValue"
+                        v-model="timeValue"
                         :format="timeFormat"
                         :ampm-in-title="timeFormat === 'ampm'"
+                        :allowed-minutes="allowedMinutesStep"
+                        scrollable
                     >
                         <template #header></template>
                     </v-time-picker>
@@ -44,14 +46,17 @@ import { DateTime } from 'luxon'
 import { FieldProps } from '../Field.model'
 import { usePreferencesStore } from '@/store/preferences'
 import DateUtils from '@/utils/dates'
+import { MintDate } from '@/composables/useMintDate'
 
-const props = defineProps<FieldProps>()
+const props = defineProps<FieldProps<MintDate>>()
 const emit = defineEmits(['update:modelValue'])
 
 const datePickerMenu = ref(false)
 const timePickerMenu = ref(false)
-const model = ref(props.modelValue)
+const model = ref(props.field.model)
 const preferences = usePreferencesStore()
+
+const allowedMinutesStep = (m: number) => m % 5 === 0
 
 const timeFormat = computed(() => {
     return DateUtils.getTimeFormatGeneralized()
@@ -59,97 +64,60 @@ const timeFormat = computed(() => {
 
 const dateValue = computed({
     get() {
-        const dt = DateTime.fromSQL(model.value, { zone: 'UTC' })
-        if (dt.isValid) {
-            return dt.setZone(preferences.user?.timezone).toFormat(preferences.user?.date_format || 'yyyy-MM-dd') || ''
-        }
-        return ''
+        return props.field.model.isValid ? props.field.model.formatted.user_date : ''
     },
     set(newVal) {
         datePickerMenu.value = false
         if (!newVal?.trim()) {
-            model.value = ''
+            model.value.clear()
+            return
         }
         const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
         if (dt.isValid) {
-            model.value = dt.toSQLDate()
+            model.value.set(dt)
         }
     },
 })
 
 const timeValue = computed({
     get() {
-        const dt = DateTime.fromSQL(model.value, { zone: 'UTC' })
-        if (dt.isValid) {
-            return dt.toLocal().toFormat('HH:mm') || '00:00'
-        }
-        return '00:00'
+        return model.value.isValid ? model.value.formatted.user_time : '00:00'
     },
     set(newVal) {
-        timePickerMenu.value = false
-        newVal = DateTime.fromSQL(newVal).setZone('UTC').toFormat('HH:mm')
-        const modelDt = DateTime.fromSQL(model.value, { zone: 'UTC' })
-        if (modelDt.isValid) {
-            model.value = `${modelDt.toFormat('yyyy-MM-dd')} ${newVal}:00`
-        } else {
-            model.value = ''
+        const dt = DateTime.fromFormat(
+            `${dateValue.value} ${newVal}`,
+            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`,
+        )
+        if (dt.isValid) {
+            model.value.set(dt)
         }
+        timePickerMenu.value = false
     },
 })
 
 const datePickerValue = computed({
     get() {
-        if (!model.value?.trim()) {
-            return new Date()
-        }
-        return new Date(model.value)
+        return model.value.isValid ? model.value.formatted.js_date : new Date()
     },
     set(newVal) {
         const dt = DateTime.fromJSDate(newVal)
-        if (dt.isValid) {
-            const modelDt = DateTime.fromSQL(model.value)
-            if (!modelDt.isValid) {
-                model.value = dt.toFormat('yyyy-MM-dd HH:mm:ss')
-            } else {
-                model.value = `${dt.toFormat('yyyy-MM-dd')} ${modelDt.toFormat('HH:mm:ss')}`
-            }
+        if (!dt.isValid) {
+            return
         }
+        model.value.set(
+            DateTime.fromFormat(
+                `${dt.toFormat('yyyy-MM-dd')} ${model.value.isValid ? model.value.formatted.user_time : '00:00'}`,
+                'yyyy-MM-dd HH:mm',
+            ),
+        )
+        datePickerMenu.value = false
     },
 })
 
-const timePickerValue = computed({
-    get() {
-        const dt = DateTime.fromSQL(model.value, { zone: 'UTC' })
-        if (dt.isValid) {
-            return dt.toLocal().toFormat('HH:mm') || '00:00'
-        }
-        return '00:00'
-    },
-    set(newVal) {
-        newVal = DateTime.fromFormat(newVal, 'HH:mm').setZone('UTC').toFormat('HH:mm')
-        const modelDt = DateTime.fromSQL(model.value, { zone: 'UTC' })
-        if (modelDt.isValid) {
-            model.value = `${modelDt.toFormat('yyyy-MM-dd')} ${newVal}:00`
-        } else {
-            model.value = ''
-        }
-    },
-})
-
-watch(model, (newVal) => {
-    datePickerMenu.value = false
-    timePickerMenu.value = false
-    const dt = DateTime.fromSQL(newVal?.toString())
-    if (dt.isValid) {
-        emit('update:modelValue', model.value)
-    } else {
-        emit('update:modelValue', '')
-    }
-})
 watch(
-    () => props.modelValue,
+    () => props.field.model,
     () => {
-        model.value = props.modelValue
+        model.value = props.field.model
     },
 )
 </script>

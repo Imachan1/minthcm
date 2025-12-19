@@ -58,209 +58,231 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Entity
  * @ORM\Table(name="recruitments", indexes={
  * @ORM\Index(name="recruitmentspk", columns={"id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $end_date
+ * @property mixed $announcement
+ * @property mixed $project_status
+ * @property mixed $start_date
+ * @property mixed $start_work_date
+ * @property mixed $vacancy
+ * @property mixed $employees_number
+ * @property mixed $position_id
+ * @property mixed $version
+ * @property mixed $recruitment_channels
+ * @property mixed $recruitment_type
+ * @property mixed $salary_from
+ * @property mixed $salary_from_usdollar
+ * @property mixed $salary_to
+ * @property mixed $salary_to_usdollar
+ * @property mixed $currency_id
  */
 // Auto-generated SectionRepository section end
 class Recruitments extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $end_date;
+    protected $end_date;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $announcement;
+    protected $announcement;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $project_status;
+    protected $project_status;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $start_date;
+    protected $start_date;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $start_work_date;
+    protected $start_work_date;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $vacancy;
+    protected $vacancy;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $employees_number;
+    protected $employees_number;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $position_id;
+    protected $position_id;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $version;
+    protected $version;
+
+    /**
+     * @ORM\Column(type="multienum", length="100")
+     */
+    protected $recruitment_channels;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $recruitment_channels;
-
-    /**
-     * @ORM\Column(type="string", length="100")
-     */
-    public $recruitment_type;
+    protected $recruitment_type;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $salary_from;
+    protected $salary_from;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $salary_from_usdollar;
+    protected $salary_from_usdollar;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $salary_to;
+    protected $salary_to;
 
     /**
      * @ORM\Column(type="decimal")
      */
-    public $salary_to_usdollar;
+    protected $salary_to_usdollar;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $currency_id;
+    protected $currency_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="recruitments")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="recruitments")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="recruitments")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="recruitments")
      */
-    public Collection $candidatures;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="recruitments_end")
-     */
-    public Collection $candidatures_end;
+    protected Collection $candidatures;
 
     /**
      * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="calls")
      */
-    public Collection $calls;
+    protected Collection $calls;
 
     /**
      * @ORM\OneToMany(targetEntity=Meetings::class, mappedBy="meetings")
      */
-    public Collection $meetings;
+    protected Collection $meetings;
 
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="notes")
      */
-    public Collection $notes;
+    protected Collection $notes;
 
     /**
      * @ORM\OneToMany(targetEntity=Tasks::class, mappedBy="tasks")
      */
-    public Collection $tasks;
+    protected Collection $tasks;
 
     /**
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Positions::class, inversedBy="recruitments")
      */
-    public $positions;
+    protected $positions;
 
     /**
      * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="recruitments")
      */
-    public Collection $emails;
+    protected Collection $emails;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -268,12 +290,12 @@ class Recruitments extends MintEntity
     {
         $this->SecurityGroups = new ArrayCollection();
         $this->candidatures = new ArrayCollection();
-        $this->candidatures_end = new ArrayCollection();
         $this->calls = new ArrayCollection();
         $this->meetings = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->tasks = new ArrayCollection();
         $this->emails = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

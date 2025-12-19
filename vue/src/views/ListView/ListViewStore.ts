@@ -597,6 +597,7 @@ export const useListViewStore = defineStore('listview', () => {
         activeFilter,
         savePreferences,
         setDefaultColumns,
+        setFilters,
         pageOffsetMap,
         selected,
         filterRows,

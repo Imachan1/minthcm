@@ -59,310 +59,359 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="delegations", indexes={
  * @ORM\Index(name="delegationspk", columns={"id"}), 
  * @ORM\Index(name="idx_delegation_locale_id", columns={"delegation_locale_id"})})
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $date_entered
+ * @property mixed $date_modified
+ * @property mixed $date_indexed
+ * @property mixed $modified_user_id
+ * @property mixed $created_by
+ * @property mixed $description
+ * @property mixed $deleted
+ * @property mixed $assigned_user_id
+ * @property mixed $delegation_id
+ * @property mixed $purpose
+ * @property mixed $start_date
+ * @property mixed $end_date
+ * @property mixed $transport_cost
+ * @property mixed $transport_cost_usdollar
+ * @property mixed $currency_id
+ * @property mixed $regiments
+ * @property mixed $regiments_usdollar
+ * @property mixed $restaurant_bills
+ * @property mixed $accomodations
+ * @property mixed $total_accommodation
+ * @property mixed $total_accommodation_usdollar
+ * @property mixed $accommodation_lump_sum
+ * @property mixed $accommodation_lump_sum_usdollar
+ * @property mixed $other
+ * @property mixed $other_usdollar
+ * @property mixed $total_expenses
+ * @property mixed $total_expenses_usdollar
+ * @property mixed $obtained_sum
+ * @property mixed $obtained_sum_usdollar
+ * @property mixed $payoff_sum
+ * @property mixed $payoff_sum_usdollar
+ * @property mixed $return_sum
+ * @property mixed $return_sum_usdollar
+ * @property mixed $regimen_value
+ * @property mixed $regimen_value_usdollar
+ * @property mixed $accommodation_value
+ * @property mixed $accommodation_value_usdollar
+ * @property mixed $obtained_sum_usdollars
+ * @property mixed $owner
+ * @property mixed $exchange_rate
+ * @property mixed $assured_number_of_breakfasts
+ * @property mixed $assured_number_of_dinners
+ * @property mixed $assured_number_of_suppers
+ * @property mixed $assured_number_of_accommodations
+ * @property mixed $costs_sum
+ * @property mixed $delegation_locale_id
  */
 // Auto-generated SectionRepository section end
 class Delegations extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_entered;
+    protected $date_entered;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_modified;
+    protected $date_modified;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $date_indexed;
+    protected $date_indexed;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $modified_user_id;
+    protected $modified_user_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $created_by;
+    protected $created_by;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $deleted;
+    protected $deleted;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $assigned_user_id;
+    protected $assigned_user_id;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $delegation_id;
+    protected $delegation_id;
 
     /**
      * @ORM\Column(type="string", length="100")
      */
-    public $purpose;
+    protected $purpose;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $start_date;
+    protected $start_date;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $end_date;
+    protected $end_date;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $transport_cost;
+    protected $transport_cost;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $transport_cost_usdollar;
+    protected $transport_cost_usdollar;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $currency_id;
-
-    /**
-     * @ORM\Column(type="decimal", length="26")
-     */
-    public $regiments;
+    protected $currency_id;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $regiments_usdollar;
+    protected $regiments;
+
+    /**
+     * @ORM\Column(type="decimal", length="26")
+     */
+    protected $regiments_usdollar;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $restaurant_bills;
+    protected $restaurant_bills;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
-    public $accomodations;
+    protected $accomodations;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $total_accommodation;
+    protected $total_accommodation;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $total_accommodation_usdollar;
+    protected $total_accommodation_usdollar;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $accommodation_lump_sum;
+    protected $accommodation_lump_sum;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $accommodation_lump_sum_usdollar;
+    protected $accommodation_lump_sum_usdollar;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $other;
+    protected $other;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $other_usdollar;
+    protected $other_usdollar;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $total_expenses;
+    protected $total_expenses;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $total_expenses_usdollar;
+    protected $total_expenses_usdollar;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $obtained_sum;
+    protected $obtained_sum;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $obtained_sum_usdollar;
+    protected $obtained_sum_usdollar;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $payoff_sum;
+    protected $payoff_sum;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $payoff_sum_usdollar;
+    protected $payoff_sum_usdollar;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $return_sum;
+    protected $return_sum;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $return_sum_usdollar;
+    protected $return_sum_usdollar;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $regimen_value;
+    protected $regimen_value;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $regimen_value_usdollar;
+    protected $regimen_value_usdollar;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $accommodation_value;
+    protected $accommodation_value;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $accommodation_value_usdollar;
+    protected $accommodation_value_usdollar;
 
     /**
      * @ORM\Column(type="decimal", length="26")
      */
-    public $obtained_sum_usdollars;
+    protected $obtained_sum_usdollars;
 
     /**
      * @ORM\Column(type="boolean", length="255")
      */
-    public $owner;
+    protected $owner;
 
     /**
      * @ORM\Column(type="float", length="18")
      */
-    public $exchange_rate;
+    protected $exchange_rate;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $assured_number_of_breakfasts;
+    protected $assured_number_of_breakfasts;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $assured_number_of_dinners;
+    protected $assured_number_of_dinners;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $assured_number_of_suppers;
+    protected $assured_number_of_suppers;
 
     /**
      * @ORM\Column(type="integer", length="255")
      */
-    public $assured_number_of_accommodations;
+    protected $assured_number_of_accommodations;
 
     /**
      * @ORM\Column(type="float", length="18")
      */
-    public $costs_sum;
+    protected $costs_sum;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $delegation_locale_id;
+    protected $delegation_locale_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="delegations")
      */
-    public $modified_user_link;
+    protected $modified_user_link;
 
     /**
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="delegations")
      */
-    public $created_by_link;
+    protected $created_by_link;
 
     /**
      * @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="delegations")
      */
-    public $assigned_user_link;
+    protected $assigned_user_link;
 
     /**
      * @ORM\JoinTable(name="securitygroups_records", joinColumns={@ORM\JoinColumn(name="record_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="securitygroup_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=SecurityGroups::class, inversedBy="securitygroups")
      */
-    public Collection $SecurityGroups;
+    protected Collection $SecurityGroups;
 
     /**
      * @ORM\JoinColumn(name="delegation_locale_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=DelegationsLocale::class, inversedBy="delegations")
      */
-    public $delegationslocale;
+    protected $delegationslocale;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkSchedules::class, mappedBy="delegations")
      */
-    public Collection $workschedules;
+    protected Collection $workschedules;
 
     /**
      * @ORM\JoinTable(name="documents_delegations", joinColumns={@ORM\JoinColumn(name="delegation_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")})
      * @ORM\ManyToMany(targetEntity=Documents::class, inversedBy="delegations")
      */
-    public Collection $documents;
+    protected Collection $documents;
 
     /**
      * @ORM\OneToMany(targetEntity=Costs::class, mappedBy="delegations")
      */
-    public Collection $costs;
+    protected Collection $costs;
 
     /**
      * @ORM\OneToMany(targetEntity=Transportations::class, mappedBy="delegations")
      */
-    public Collection $transportations;
+    protected Collection $transportations;
 
     /**
      * @ORM\OneToMany(targetEntity=Reservations::class, mappedBy="delegations")
      */
-    public Collection $reservations;
+    protected Collection $reservations;
 
 // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
@@ -375,5 +424,6 @@ class Delegations extends MintEntity
         $this->transportations = new ArrayCollection();
         $this->reservations = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }
