@@ -76,9 +76,7 @@ trait LegacyEntityTrait
 
         global $mint_app;
         $entity_manager = $mint_app->getContainer()->get(EntityManagerInterface::class);
-
-        foreach (get_object_vars($this) as $property => $value) {
-            $defs = $bean->field_defs[$property] ?? null;
+        foreach ($bean->field_defs as $property => $defs) {
             if (empty($defs) || in_array($defs['type'], $entity_creator_manager::getSkipingFieldTypes())) {
                 continue;
             }

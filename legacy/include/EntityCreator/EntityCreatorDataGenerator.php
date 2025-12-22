@@ -449,6 +449,7 @@ class EntityCreatorDataGenerator
         if (!empty($this->data['generate_custom_entity']) && $this->is_custom == false) {
             $this->data['constructorFields'][] = '$this->setCustomEntity(new ' . $this->moduleName . '_cstm());';
         }
+    }
 
     protected function buildAdditionalMethods()
     {

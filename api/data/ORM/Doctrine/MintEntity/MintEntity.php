@@ -20,8 +20,6 @@ abstract class MintEntity
         if ($this->hasCustomEntity() && property_exists($this->custom_entity, $name)) {
             return $this->custom_entity->$name;
         }
-
-        throw new \InvalidArgumentException("Property '$name' does not exist in " . get_class($this));
     }
 
     public function __set($name, $value)
@@ -35,8 +33,13 @@ abstract class MintEntity
             $this->custom_entity->$name = $value;
             return;
         }
+
+        $mint_bean = $this->getMintBean(false);
+        if(isset($mint_bean->field_defs[$name])){
+            $this->$name = $value;
+            return;
+        }
         
-        throw new \InvalidArgumentException("Property '$name' does not exist in " . get_class($this));
     }
 
     public function hasLegacyActions(): bool
