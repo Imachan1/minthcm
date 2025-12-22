@@ -42,7 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-global $current_user, $admin_group_header;
+global $current_user, $admin_group_header, $sugar_config;
 
 //users and security.
 $admin_option_defs = [];
@@ -583,6 +583,19 @@ foreach ($admin_group_header as $key => $values) {
         } else {
             //hide the link
             unset($admin_group_header[$key][3][$mod_val]);
+        }
+    }
+}
+
+if(isset($sugar_config['system_mode']) && $sugar_config['system_mode'] !== 'normal'){
+    foreach ($admin_group_header as $key => $values) {
+        $module_index = array_keys($values[3]);
+        foreach ($module_index as $mod_key => $mod_val) {
+            foreach($admin_group_header[$key][3][$mod_val] as $option_key => $defs){
+                if(in_array($option_key, $sugar_config['system_mode_restriced_panel_defs'])){
+                    unset($admin_group_header[$key][3][$mod_val][$option_key]);
+                }
+            }
         }
     }
 }

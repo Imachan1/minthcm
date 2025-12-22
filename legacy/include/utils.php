@@ -601,6 +601,19 @@ function get_sugar_config_defaults(): array
         ],
         'legacy_email_behaviour' => false,
         'display_week_number' => false,
+        'system_mode' => 'normal',
+        'system_mode_restriced_modules' => ['ModuleBuilder', 'UpgradeWizard', 'Schedulers', 'OAuth2Clients', 'OAuthKeys', 'Connectors', 'Studio'],
+        'system_mode_restriced_administration_actions' => ['UpgradeWizard', 'SearchSettings'],
+        'system_mode_restriced_panel_defs' => [
+            'oauth2_clients',
+            'oauth_keys',
+            'upgrade_wizard',
+            'module_loader',
+            'search_wrapper',
+            'studio',
+            'moduleBuilder',
+            'connector_settings',
+        ],
     ];
 
     if (!is_object($locale)) {
