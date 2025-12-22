@@ -24,6 +24,7 @@ $application->add(new MintHCM\MintCLI\Commands\DemoDataInstallCommand());
 if (file_exists('legacy/config.php')) {
     $application->add(new MintHCM\MintCLI\Commands\ElasticSearchReindex());
     $application->add(new MintHCM\MintCLI\Commands\ElasticSearchReindexModule());
+    $application->add(new MintHCM\MintCLI\Commands\RepairAndRebuild());
 }
 
 $application->run();
