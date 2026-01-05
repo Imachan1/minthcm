@@ -8,6 +8,7 @@ use Mcp\Types\CallToolResult;
 use Mcp\Types\TextContent;
 use Mcp\Types\ToolInputSchema;
 use MintMCP\Config\Config;
+use MintMCP\Server\ControllerFactory;
 use MintMCP\Tools\Exceptions\ModuleNotAllowedException;
 
 abstract class AbstractMCPTool
@@ -74,6 +75,17 @@ abstract class AbstractMCPTool
     }
 
     /**
+     * Get an API Controller instance
+     *
+     * @param string $controllerClass The fully qualified class name of the controller
+     * @return mixed The controller instance
+     */
+    protected function getController(string $controllerClass)
+    {
+        return ControllerFactory::getInstance()->createController($controllerClass);
+    }
+
+    /**
      * Checks user permissions for a module.
      *
      * Throws an exception if the user is not authenticated or does not have access.
@@ -109,9 +121,11 @@ abstract class AbstractMCPTool
             throw new ModuleNotAllowedException("Access to module '{$module}' is blocked by blacklist.");
         }
 
-        if (!\ACLController::checkAccess($module, $acl_action)) {
+        chdir('../legacy');
+        if (!\ACLController::checkAccess($module, $acl_action, true, 'module', true)) {
             throw new ModuleNotAllowedException("Insufficient permissions for module: {$module}");
         }
+        chdir('../mcp');
 
         return true;
     }
