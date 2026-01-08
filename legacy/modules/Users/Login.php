@@ -106,6 +106,7 @@ foreach ((array)$lvars as $k => $v) {
 
 // Retrieve username from the session if possible.
 if (isset($_SESSION['login_user_name'])) {
+    $_SESSION['login_user_name'] = purify_html($_SESSION['login_user_name']);
     if (isset($_REQUEST['default_user_name'])) {
         $login_user_name = $_REQUEST['default_user_name'];
     } else {

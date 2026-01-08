@@ -630,6 +630,8 @@ class User extends Person implements EmailInterface
 
         $isUpdate = $this->isUpdate();
 
+        $this->restrictAdminOnlyFields();
+
         //No SMTP server is set up Error.
         $admin = BeanFactory::newBean('Administration');
         $smtp_error = $admin->checkSmtpError();
@@ -2246,6 +2248,37 @@ EOQ;
        parent::mark_deleted($id);
     }
 
+    protected function restrictAdminOnlyFields(): void
+    {
+        global $current_user;
+
+        if (is_admin($current_user)){
+            return;
+        }
+
+        if (empty($this->id)) {
+            return;
+        }
+
+        $savedBean = BeanFactory::getBean('Users', $this->id);
+
+        if (empty($savedBean->id)) {
+            return;
+        }
+
+        $adminOnlyFields = [
+            'UserType',
+            'status',
+            'employee_status',
+        ];
+
+        foreach ($adminOnlyFields as $field) {
+            if (isset($this->$field) && $this->$field !== $savedBean->$field) {
+                $this->$field = $savedBean->$field;
+            }
+        }
+    }
+
     public static function getUserSupervisiorID($id)
     {
         $user = BeanFactory::getBean('Users');
@@ -2329,5 +2362,13 @@ EOQ;
         );
     }
     // MintHCM #122506 end
+    
+    public function hasActionAccess(string $module, string $action): bool
+    {
+        if (is_admin($this) || !$this->bean_implements('ACL')) {
+            return true;
+        }
 
+        return ACLController::checkAccess($module, $action);
+    }
 }
