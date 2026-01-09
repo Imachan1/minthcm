@@ -208,6 +208,8 @@ class EntityCreatorDataGenerator
             'isCollection' => false,
         ];
 
+        $relationshipSide = '';
+        $targetSide = '';
         foreach ($relationshipDef as $key => $value) {
             if (
                 $value == $this->moduleName
@@ -276,6 +278,10 @@ class EntityCreatorDataGenerator
     protected function getRelationshipLinkFieldName($relationshipDef, $side, $relationshipName)
     {
         $dictionary = EntityCreatorManager::$dictionary;
+        
+        if (empty($side)) {
+            return '';
+        }
 
         $moduleName = $relationshipDef[$side . '_module'];
         if (empty($moduleName)) {

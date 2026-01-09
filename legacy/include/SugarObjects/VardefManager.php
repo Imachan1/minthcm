@@ -170,7 +170,7 @@ class VardefManager {
             }
          }
          // MintHCM #122704 END
-         if(isset($templates[$template]['doctrineEntity'])){
+         if(isset($templates[$template]['doctrineEntity']) && empty($GLOBALS['dictionary'][$object]['doctrineEntity'])){
             $GLOBALS['dictionary'][$object]['doctrineEntity'] = array_merge([], $templates[$template]['doctrineEntity']);
          }
          

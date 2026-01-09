@@ -28,9 +28,6 @@ class CustomEntityCreatorDataGenerator extends EntityCreatorDataGenerator
             unset($fieldDef['source']);
             $customFields[$fieldName] = $this->getFieldData($fieldName, $fieldDef);
         }
-        if (empty($customFields)) {
-            return;
-        }
         $this->setCustomData($customFields);
     }
 
