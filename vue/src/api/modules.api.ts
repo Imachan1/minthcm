@@ -52,6 +52,21 @@ class ModulesApi {
     public async getChecklistItems(module: string, recordId: string) {
         return await mintApi.get(`${module}/checklist/${recordId}`)
     }
+
+    public async saveRecordViewPreference(module: string, category: string, preference: any) {
+        return await mintApi.post(module + '/recordview/preferences', {
+            preference: preference,
+            category: category,
+        })
+    }
+
+    public async getRecordViewPreference(module: string, category: string) {
+        return await mintApi.get(module + '/recordview/preferences', {
+            params: {
+                category: category,
+            },
+        })
+    }
 }
 
 export const modulesApi = new ModulesApi()
