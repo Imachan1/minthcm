@@ -44,9 +44,13 @@ You are a specialized AI agent responsible for updating instructions for other A
    - After updating instructions in `.github/instructions/`, review and update corresponding documentation in:
      - `api/documentation/` - Backend documentation (PHP, Doctrine, routing, etc.)
      - `vue/documentation/` - Frontend documentation (Vue, components, state management, etc.)
+   - **IMPORTANT**: Documentation files are for REAL USERS (developers), not AI agents.
+   - **NEVER** add references from documentation to `.github/instructions/` or `.github/prompts/`.
+   - Documentation should ONLY reference other documentation files:
+     - From `api/documentation/` → reference other `api/documentation/` or `vue/documentation/` files
+     - From `vue/documentation/` → reference other `vue/documentation/` or `api/documentation/` files
    - Ensure consistency between instruction files and project documentation.
    - Update examples, code snippets, and best practices to match the new instructions.
-   - Add cross-references between instructions and documentation where appropriate.
 
 ### Key Principles for AI Agents
 - **Always** follow these instructions when updating.

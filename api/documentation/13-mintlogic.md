@@ -543,6 +543,82 @@ return [
 
 Both rules will be merged and active in the system.
 
+## Migrating from View Tools to MintLogic
+
+When migrating legacy modules from old views to new recordviewdefs-based views, View Tools (vt_*) must be converted to MintLogic rules:
+
+### View Tools Mapping
+
+| View Tool | MintLogic Equivalent | Notes |
+|-----------|---------------------|-------|
+| `vt_dependency` | `visible` logic | Requires BOTH show and hide rules |
+| `vt_calculated` | `update` logic | Use function with BeanFactory |
+| `vt_required` | `required` logic | Requires BOTH true and false rules |
+| `vt_readonly` | `readonly` logic | Single rule often sufficient |
+
+### Example: vt_dependency Migration
+
+**Old (View Tools)**:
+```php
+'field_name' => [
+    'vt_dependency' => "inArray('other', $type)",
+]
+```
+
+**New (MintLogic)**:
+```php
+return [
+    'rules' => [
+        'field_show' => [
+            'hooks' => [Hook::ALL, Hook::CHANGE],
+            'triggerFields' => ['type'],
+            'trigger' => Formula::equals('$type', 'other'),
+            'logic' => ['visible' => ['field_name' => true]],
+        ],
+        'field_hide' => [
+            'hooks' => [Hook::ALL, Hook::CHANGE],
+            'triggerFields' => ['type'],
+            'trigger' => Formula::notEquals('$type', 'other'),
+            'logic' => ['visible' => ['field_name' => false]],
+        ],
+    ],
+];
+```
+
+**Important**: Visibility rules require BOTH show and hide rules for proper functionality!
+
+### Example: vt_calculated Migration
+
+**Old (View Tools)**:
+```php
+'assigned_user_id' => [
+    'vt_calculated' => 'related(@assigned_user_id, #delegations)',
+]
+```
+
+**New (MintLogic)**:
+```php
+'assigned_user_calculated' => [
+    'hooks' => [Hook::INIT, Hook::CHANGE],
+    'triggerFields' => ['delegation_id'],
+    'logic' => [
+        'update' => function ($bean) {
+            if (!empty($bean->delegation_id)) {
+                $delegation = \BeanFactory::getBean('Delegations', $bean->delegation_id);
+                if ($delegation && !empty($delegation->assigned_user_id)) {
+                    return ['assigned_user_id' => $delegation->assigned_user_id];
+                }
+            }
+            return [];
+        },
+    ],
+],
+```
+
+**Note**: Update functions must always return an array, even if empty.
+
+For complete recordview structure documentation, see: `vue/documentation/12-recordviewdefs.md`
+
 ## Debugging
 
 To debug MintLogic:

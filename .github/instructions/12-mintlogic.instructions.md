@@ -7,8 +7,8 @@ applyTo:
 
 # MintLogic System
 
-**Version**: 2.0  
-**Last Updated**: 2026-01-02
+**Version**: 2.1  
+**Last Updated**: 2026-01-13
 
 MintLogic defines dynamic form behavior based on field values.
 
@@ -179,20 +179,160 @@ const isFieldRequired = bean.logic.requiredFields.value.has('email')
 const isFieldReadonly = bean.logic.readonlyFields.value.has('employee_id')
 ```
 
+## Modern MintLogic Format (v2)
+
+MintHCM uses a newer format with Formula class and Hook constants:
+
+```php
+<?php
+use MintHCM\Lib\MintLogic\Hook;
+use MintHCM\Lib\MintLogic\Formula;
+
+return [
+    'rules' => [
+        'rule_name' => [
+            'hooks' => [Hook::ALL, Hook::CHANGE],
+            'triggerFields' => ['field_name'],
+            'trigger' => Formula::equals('$field_name', 'value'),
+            'logic' => [
+                'visible' => ['target_field' => true],
+            ],
+        ],
+    ],
+];
+```
+
+### Formula Functions
+
+**Comparison**:
+- `Formula::equals($a, $b)` - Check equality
+- `Formula::notEquals($a, $b)` - Check inequality
+- `Formula::greaterThan($a, $b)` - Greater than
+- `Formula::lessThan($a, $b)` - Less than
+- `Formula::empty($a)` - Check if empty
+- `Formula::notEmpty($a)` - Check if not empty
+
+**Arrays**:
+- `Formula::inArray($field, $array)` - Check if field value in array
+- `Formula::notInArray($field, $array)` - Check if field value not in array
+
+**Logic**:
+- `Formula::and($a, $b, ...)` - All conditions true
+- `Formula::or($a, $b, ...)` - Any condition true
+- `Formula::not($a)` - Negate condition
+
+**CRITICAL**: `Formula::inArray('$field', ['val1', 'val2'])` - Field first, array second!
+
+## Visibility Pattern (Show/Hide Fields)
+
+**CRITICAL**: Visibility rules require BOTH show and hide rules!
+
+```php
+'field_show' => [
+    'hooks' => [Hook::ALL, Hook::CHANGE],
+    'triggerFields' => ['type'],
+    'trigger' => Formula::equals('$type', 'other'),
+    'logic' => [
+        'visible' => [
+            'other_field' => true,
+        ],
+    ],
+],
+'field_hide' => [
+    'hooks' => [Hook::ALL, Hook::CHANGE],
+    'triggerFields' => ['type'],
+    'trigger' => Formula::notEquals('$type', 'other'),
+    'logic' => [
+        'visible' => [
+            'other_field' => false,
+        ],
+    ],
+],
+```
+
+**Why both rules?**
+- Show rule: Makes field visible when condition is true
+- Hide rule: Hides field when condition is false
+- Without both, field may stay in wrong state
+
+## Common Errors
+
+### Error 1: Formula::inArray() Arguments
+
+**Wrong**:
+```php
+Formula::inArray('value', '$field')  // ❌ Reversed!
+```
+
+**Correct**:
+```php
+Formula::inArray('$field', ['value'])  // ✅ Field first, array second
+```
+
+### Error 2: Missing Hide Rule
+
+**Wrong**:
+```php
+'show_field' => [
+    'trigger' => Formula::equals('$type', 'other'),
+    'logic' => ['visible' => ['field' => true]],
+],
+// Field stays visible even when type changes!
+```
+
+**Correct**:
+```php
+'show_field' => [
+    'trigger' => Formula::equals('$type', 'other'),
+    'logic' => ['visible' => ['field' => true]],
+],
+'hide_field' => [  // ✅ Add opposite rule
+    'trigger' => Formula::notEquals('$type', 'other'),
+    'logic' => ['visible' => ['field' => false]],
+],
+```
+
+### Error 3: Type Mismatch
+
+**Wrong**:
+```php
+Formula::inArray('other', '$type')  // ❌ String instead of array
+```
+
+**Error**: `array_map(): Argument #2 ($array) must be of type array, string given`
+
+**Correct**:
+```php
+Formula::equals('$type', 'other')  // ✅ For single value
+// OR
+Formula::inArray('$type', ['other'])  // ✅ For array
+```
+
 ## Best Practices
 
 **Do**:
-- Keep conditions simple
-- Use multiple small rules over complex ones
-- Test edge cases
+- ✅ Always create BOTH show and hide rules for visibility
+- ✅ Use `Formula::equals()` for single value checks
+- ✅ Use `Formula::inArray()` for multiple value checks
+- ✅ Keep conditions simple
+- ✅ Use multiple small rules over complex ones
+- ✅ Test edge cases
+- ✅ Use `Hook::ALL, Hook::CHANGE` as standard pattern
 
 **Don't**:
-- Create circular dependencies
-- Rely on external state
-- Hardcode values (use constants)
+- ❌ Create only show OR hide rule (need both!)
+- ❌ Reverse arguments in Formula::inArray()
+- ❌ Create circular dependencies
+- ❌ Rely on external state
+- ❌ Hardcode values (use constants)
+- ❌ Use `Hook::INIT, Hook::CHANGE` (use `Hook::ALL`)
 
 **Full Documentation**: `api/documentation/07-mintlogic.md`
 
 ---
 
-**Related**: [CRUD Operations](07-crud-operations.md), [Field System](05-field-system.md), [Validation & Security](13-validation-security.md)
+**Related**: 
+- [CRUD Operations](07-crud-operations.md) - useBean composable
+- [Field System](05-field-system.md) - Dynamic field rendering
+- [Validation & Security](13-validation-security.md) - Input validation
+- [Legacy Migration](17-legacy-migration.instructions.md) - Migrating View Tools to MintLogic

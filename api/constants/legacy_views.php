@@ -305,10 +305,6 @@ return [
         'list' => false,
         'record' => true,
     ],
-    'Transportations' => [
-        'list' => false,
-        'record' => true,
-    ],
     'EmployeeRoles' => [
         'list' => false,
         'record' => false,

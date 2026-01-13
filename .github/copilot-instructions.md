@@ -1,7 +1,7 @@
 # MintHCM AI Coding Assistant Instructions
 
-**Version**: 2.1  
-**Last Updated**: 2026-01-02  
+**Version**: 2.2  
+**Last Updated**: 2026-01-13  
 **Maintained by**: AI Agent
 
 ## 📚 Table of Contents
@@ -37,6 +37,9 @@ This is the main instructions file for AI coding assistants working on MintHCM. 
 - [Troubleshooting](instructions/15-troubleshooting.instructions.md)
 - [Performance Optimization](instructions/16-performance.instructions.md)
 
+**Migration**:
+- [Legacy to New View Migration](instructions/17-legacy-migration.instructions.md)
+
 ---
 
 ## 📖 How to Use These Instructions
@@ -45,10 +48,11 @@ This is the main instructions file for AI coding assistants working on MintHCM. 
 
 **Setting up environment?** → [Development Setup](instructions/02-development-setup.instructions.md)  
 **Adding a custom feature?** → [Customization Patterns](instructions/03-customization.instructions.md)  
-**Creating a custom field?** → [Field System](instructions/11-field-system.instructions.md)  
-**Working with records?** → [CRUD Operations](instructions/13-crud-operations.instructions.md)  
+**Creating a custom field?** → [Field System](instructions/05-field-system.instructions.md)  
+**Working with records?** → [CRUD Operations](instructions/07-crud-operations.instructions.md)  
 **Adding backend logic?** → [PHP Backend](instructions/08-backend-php.instructions.md) + [Routing](instructions/09-routing-controllers.instructions.md)  
 **Implementing form logic?** → [MintLogic System](instructions/12-mintlogic.instructions.md)  
+**Migrating legacy module?** → [Legacy Migration](instructions/17-legacy-migration.instructions.md)  
 **Debugging issues?** → [Troubleshooting](instructions/15-troubleshooting.instructions.md)
 
 ### Quick Navigation by Technology
@@ -56,7 +60,8 @@ This is the main instructions file for AI coding assistants working on MintHCM. 
 **Vue.js / Frontend**: [04](instructions/04-frontend-vue.instructions.md), [05](instructions/05-field-system.instructions.md), [06](instructions/06-state-management.instructions.md), [07](instructions/07-crud-operations.instructions.md)  
 **PHP / Backend**: [08](instructions/08-backend-php.instructions.md), [09](instructions/09-routing-controllers.instructions.md), [10](instructions/10-doctrine-orm.instructions.md), [11](instructions/11-legacy-integration.instructions.md)  
 **Business Logic**: [12](instructions/12-mintlogic.instructions.md), [13](instructions/13-validation-security.instructions.md)  
-**Development**: [14](instructions/14-testing.instructions.md), [15](instructions/15-troubleshooting.instructions.md), [16](instructions/16-performance.instructions.md)
+**Development**: [14](instructions/14-testing.instructions.md), [15](instructions/15-troubleshooting.instructions.md), [16](instructions/16-performance.instructions.md)  
+**Migration**: [17](instructions/17-legacy-migration.instructions.md)
 
 ### For AI Agents
 
@@ -67,13 +72,14 @@ This is the main instructions file for AI coding assistants working on MintHCM. 
 
 ### File Naming Convention
 
-Instructions use sequential numbering (00-16) organized by topic:
+Instructions use sequential numbering (00-17) organized by topic:
 - **00**: Coding standards (language, naming conventions)
 - **01-03**: Core concepts (architecture, setup, customization)
 - **04-07**: Frontend (Vue.js, fields, state, CRUD)
 - **08-11**: Backend (PHP, routing, Doctrine, legacy)
 - **12-13**: Business logic (MintLogic, validation, security)
 - **14-16**: Development practices (testing, troubleshooting, performance)
+- **17**: Migration (legacy to new views)
 
 ---
 
@@ -188,6 +194,12 @@ MintLogic re-evaluates → Frontend applies new logic
 1. Backend: `api/custom/app/Routes/{Module}.php` (array format)
 2. Frontend: `vue/src/custom/router/routes.ts`
 3. See [Routing](instructions/09-routing-controllers.instructions.md)
+
+**Migrating legacy module to new view**:
+1. Create `legacy/modules/{Module}/metadata/recordviewdefs.php`
+2. Create `api/lib/MintLogic/Modules/{Module}/logicdefs.php`
+3. Remove module from `api/constants/legacy_views.php`
+4. See [Legacy Migration](instructions/17-legacy-migration.instructions.md)
 
 **Modifying fields**:
 1. Edit vardefs in `modules/{Module}/vardefs.php`
@@ -419,14 +431,22 @@ See [Troubleshooting Guide](instructions/15-troubleshooting.instructions.md) for
 
 ## 📚 Documentation Locations
 
-- **Frontend docs**: `vue/documentation/*.md` (7 guides)
-- **Backend docs**: `api/documentation/*.md` (14 guides)
-- **AI instructions**: `.github/instructions/*.md` (this folder)
+- **Frontend docs**: `vue/documentation/*.md` (8 guides including recordviewdefs) - For developers/users
+- **Backend docs**: `api/documentation/*.md` (14 guides including MintLogic migration) - For developers/users
+- **AI instructions**: `.github/instructions/*.md` (18 instruction files: 00-17) - For AI agents only
+
+**IMPORTANT**: Documentation files (`api/documentation/`, `vue/documentation/`) are for REAL USERS (developers), not AI agents. Never reference AI instructions (`.github/instructions/`, `.github/prompts/`) from documentation files. Documentation should only cross-reference other documentation files.
 
 ---
 
 ## 🔄 Version History
-
+- **2.2** (2026-01-13):
+  - Added Legacy to New View Migration guide (17-legacy-migration.instructions.md)
+  - Enhanced MintLogic instructions with visibility patterns and common errors
+  - Added migration examples and troubleshooting
+  - Updated Quick Navigation with migration tasks
+  - Added recordviewdefs.md documentation to vue/documentation/
+  - Added migration section to api/documentation/13-mintlogic.md
 - **2.1** (2026-01-02): 
   - Added language guidelines and PHP naming conventions
   - Moved detailed coding standards to 00-coding-standards.md (reduced main file by ~20%)
