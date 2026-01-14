@@ -92,6 +92,30 @@ class Onboardings extends Basic
         return $id;
     }
 
+    protected function postSave()
+    {
+        if(
+            $this->status === 'held' 
+            && $this->status !== $this->fetched_row['status']
+        ){
+            $this->closeRelatedRecords();
+        }
+    }
+
+    protected function closeRelatedRecords()
+    {
+        foreach(['tasks' => 'Completed', 'trainings' => 'held'] as $relate_link => $held_status_key){
+            if($this->load_relationship($relate_link)){
+                foreach($this->$relate_link->getBeans() as $related_bean){
+                    if($related_bean->status !== $held_status_key){
+                        $related_bean->status = $held_status_key;
+                        $related_bean->save();
+                    }
+                }
+            }
+        }
+    }
+
     protected function concatName()
     {
         global $timedate, $current_user;

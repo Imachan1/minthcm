@@ -172,7 +172,6 @@ $dictionary['Task'] = array(
             'type' => 'enum',
             'options' => 'task_priority_dom',
             'len' => 100,
-            'required' => 'true',
             'audited' => true,
         ),
         'users' => array(
