@@ -175,7 +175,7 @@ $routes = array(
         ),
     ),
     "get_record" => array(
-        "method" => "GET",
+        "method" => "POST",
         "path" => "/Get[/{id}]",
         "class" => ModuleController::class,
         "function" => 'getRecord',
@@ -192,7 +192,14 @@ $routes = array(
             ),
         ),
         "queryParams" => array(),
-        "bodyParams" => array(),
+        "bodyParams" => array(
+            "links" => array(
+                "type" => ArrayType::class,
+                "required" => false,
+                "desc" => "List of relations to load",
+                "example" => ['meetings'],
+            ),
+        ),
     ),
     "get_record_logic" => array(
         "method" => "POST",
@@ -260,7 +267,7 @@ $routes = array(
         "bodyParams" => array(),
     ),
     "subpanel_records" => array(
-        "method" => "GET",
+        "method" => "POST",
         "path" => "/subpanel/{relation_name}/{id}",
         "class" => ModuleController::class,
         "function" => 'subpanelRecords',
@@ -296,7 +303,20 @@ $routes = array(
                 "example" => '6',
             ),
         ),
-        "bodyParams" => array(),
+        "bodyParams" => array(
+            "sortBy" => array(
+                "type" => StringType::class,
+                "required" => false,
+                "desc" => "Field name to sort by",
+                "example" => 'name',
+            ),
+            "sortOrder" => array(
+                "type" => StringType::class,
+                "required" => false,
+                "desc" => "Sort order",
+                "example" => 'DESC',
+            ),
+        ),
     ),
     "list_data" => array(
         "method" => "POST",

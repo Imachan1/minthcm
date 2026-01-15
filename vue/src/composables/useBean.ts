@@ -15,7 +15,7 @@ interface MintBeanAttributes {
     [fieldName: string]: string | number | boolean | null | string[]
 }
 
-export const useBean = (module: string, id: string) => {
+export const useBean = (module: string, id: string, fetch_links: Array<string> = []) => {
     const retrieveTimeoutTimeMs = 30000
     const router = useRouter()
     const modulesStore = useModulesStore()
@@ -256,7 +256,9 @@ export const useBean = (module: string, id: string) => {
         )
 
         const apiCall = mintApi
-            .get(`${module}/Get${id ? `/${id}` : ''}`, { rawError: true })
+            .post(`${module}/Get${id ? `/${id}` : ''}`, {
+                links: fetch_links
+            }, { rawError: true })
             .then((response) => {
                 if (response.status === 200 && response.data) {
                     setData(response.data)
@@ -285,8 +287,21 @@ export const useBean = (module: string, id: string) => {
         attributes.value = data.attributes
         syncAttributes.value = structuredClone(data.attributes)
         setFields(data.attributes)
-        logic.rules.value = data.logic?.rules ?? {}
+        logic.rules.value = data.logic?.rules ?? []
         setFields(logic.getUpdatedFields())
+        setLinks(data.related_records)
+    }
+
+    function setLinks(related_records: Record<string, any>) {
+        Object.entries(related_records || {}).forEach(([linkName, records]) => {
+            const link = useLink(
+                linkName,
+                fieldDefs.value[linkName]?.relationship,
+                { module, id, fieldDefs }
+            )
+            link.hydrateFromBackend(records)
+            links.value.set(linkName, link)
+        })
     }
 
     async function fetchLogic(triggerFields: string[] = []) {

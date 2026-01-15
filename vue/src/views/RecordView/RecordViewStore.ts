@@ -5,8 +5,6 @@ import { useModulesStore } from '@/store/modules'
 import { useLanguagesStore } from '@/store/languages'
 import { useBean } from '@/composables/useBean'
 import { useACL } from '@/composables/useACL'
-import { subpanelsApi } from '@/api/subpanels.api'
-import { mintApi } from '@/api/api'
 import { useBackendStore } from '@/store/backend'
 import { MintInlineButton } from '@/components/MintPanel/MintPanelSubpanels/MintSubpanelsInlineButtons.vue'
 
@@ -123,6 +121,9 @@ export const useRecordViewStore = defineStore('recordview', () => {
                         name: col,
                         widget_class: props?.widget_class || '',
                 } as MintInlineButton)),
+                sortBy: subpanelDefs[key].properties?.sort_by || '',
+                sortOrder: subpanelDefs[key].properties?.sort_order || '',
+                filters: subpanelDefs[key].properties?.filters && Object.keys(subpanelDefs[key].properties?.filters).length ? subpanelDefs[key].properties?.filters : {},
                 columns: Object.entries(subpanelDefs[key].columns ?? {})
                     .filter(([col, props]) => props.usage !== 'query_only')
                     .map(([col, props]) => ({
@@ -135,61 +136,69 @@ export const useRecordViewStore = defineStore('recordview', () => {
                             ) || '',
                         type: props.type || '',
                     })),
-                records: Object.keys(subpanelsData.value?.[key] ?? {})
-                    .map((id) => ({
-                        ...(subpanelsData.value?.[key][id] || {}),
-                        id,
-                        parent_module: subpanelDefs[key].properties?.module?.toString() || '',
-                    }))
-                    .filter((record) => record.id !== 'total' && record.id !== 'page'),
-                page: subpanelsData.value?.[key]?.page || 0,
-                total: subpanelsData.value?.[key]?.total || 0,
+                records: subpanelsData.value?.[key]?.records ?? [],
+                page: subpanelsData.value?.[key]?.page ?? 0,
+                total: subpanelsData.value?.[key]?.total ?? 0,
                 paginateBy: backendStore.initData.global.list_max_entries_per_subpanel
                     ? parseInt(backendStore.initData.global.list_max_entries_per_subpanel, 10)
                     : 10,
             }))
     })
 
-    async function fetchSubpanelsData() {
-        const route = useRoute()
-        const data = await Promise.all(
-            subpanels.value.map((subpanel) => {
-                return subpanelsApi.fetchSubpanelsData(
-                    route.params.module,
-                    subpanel.key,
-                    route.params.id,
-                    subpanel.paginateBy,
-                    0,
-                )
-            }),
-        )
-        subpanelsData.value = subpanels.value.reduce((prev, curr, index) => {
-            prev[curr.key] = data[index]?.data
-            return prev
-        }, {} as SubpanelsData)
+    const getSubpanelByKey = (subpanelKey: string) => {
+        return subpanels.value.find(sp => sp.key === subpanelKey)
     }
 
-    async function fetchSubpanelRecords(subpanelKey: string, paginateBy: number, page: number) {
-        const data = await subpanelsApi.fetchSubpanelsData(
-            route.params.module,
-            subpanelKey,
-            route.params.id,
-            paginateBy,
-            page,
+    async function fetchSubpanelsData() {
+        if (!subpanels.value || subpanels.value.length === 0) return
+
+        await Promise.all(
+            subpanels.value.map(async (subpanel) => {
+                const link = bean.value.loadRelationship(subpanel.key)
+                if (link) {
+                    await link.fetchRelatedRecords(subpanel.paginateBy, 0, subpanel.properties?.sortBy, subpanel.properties?.sortOrder)
+                    
+                    if (!subpanelsData.value) {
+                        subpanelsData.value = {}
+                    }
+                    subpanelsData.value[subpanel.key] = {
+                        records: link.beansArray,
+                        page: link.currentPage,
+                        total: link.total
+                    }
+                }
+            })
         )
-        if (!subpanelsData.value) subpanelsData.value = {}
-        subpanelsData.value[subpanelKey] = data?.data
+    }
+
+    async function fetchSubpanelRecords(subpanelKey: string, paginateBy: number, page: number, sortBy: string = '', sortOrder: string = '') {
+        const link = bean.value.loadRelationship(subpanelKey)
+        if (!link) {
+            return
+        }
+        const subpanel = getSubpanelByKey(subpanelKey);
+        await link.fetchRelatedRecords(paginateBy, page, sortBy || subpanel?.properties?.sortBy, sortOrder || subpanel?.properties?.sortOrder)
+        
+        if (!subpanelsData.value) {
+            subpanelsData.value = {}
+        }
+        subpanelsData.value[subpanelKey] = {
+            records: link.beansArray,
+            page: link.currentPage,
+            total: link.total
+        }
     }
 
     interface SubpanelsData {
         [key: string]: {
-            [id: string]: {
-                [property: string]: any
-            }
+            records: ReturnType<typeof useBean>[]
+            page: any
+            total: any
         }
     }
 
     const subpanelsData = ref<SubpanelsData | null>(null)
+
 
     async function fetchLanguagesForSubpanels() {
         const languages = useLanguagesStore()

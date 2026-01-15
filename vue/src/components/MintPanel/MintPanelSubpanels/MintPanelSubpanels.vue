@@ -52,15 +52,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 import { useLanguagesStore } from '@/store/languages'
-import { useBackendStore } from '@/store/backend'
 import MintDataTable from '@/components/MintDataTable/MintDataTable.vue'
 import MintPanelSubpanelsButtons from './MintPanelSubpanelsButtons.vue'
-import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintDataTablePagination from '@/components/MintDataTablePagination/MintDataTablePagination.vue'
-import { useACL } from '@/composables/useACL'
 import { useLocalStorageStore } from '@/store/localStorage'
 
 onMounted(() => {
@@ -72,8 +69,6 @@ onMounted(() => {
 
 const store = useRecordViewStore()
 const languages = useLanguagesStore()
-const backend = useBackendStore()
-const acl = useACL()
 const storage = useLocalStorageStore()
 
 const expandedSubpanels = computed({
