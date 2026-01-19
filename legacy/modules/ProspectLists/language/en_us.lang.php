@@ -101,5 +101,6 @@ $mod_strings = array(
     'LBL_KREPORTS' => "Reports",
     'LBL_KREPORT_ID' => "Report ID",
     'LBL_KREPORT_NAME' => "Report",
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );
 

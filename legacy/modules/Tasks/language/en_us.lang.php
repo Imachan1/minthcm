@@ -102,4 +102,5 @@ $mod_strings = array(
     'LBL_KANBAN_REQUIRED_FIELDS_ERROR' => "To change the entry status, complete the required fields: ",
     'LNK_NEW_RECORD' => ' Create Task',  // MintHCM
     'LBL_CHECKLIST' => 'Checklist',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

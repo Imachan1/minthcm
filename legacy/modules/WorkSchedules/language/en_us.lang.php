@@ -149,4 +149,5 @@ $mod_strings = array(
     'LBL_MASSCONFIRMATION_POPUP_ERROR' => 'Mass confirmation could not be completed',
     'LBL_ACCEPTANCE_ACTION_ERROR' => 'An error occured while trying to accept this work schedule',
     'LBL_UNDO_ACCEPTANCE_ACTION_ERROR' => 'An error occured while trying to undo acceptance for this work schedule',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

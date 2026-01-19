@@ -118,4 +118,5 @@ $mod_strings = array(
    'LBL_LIST_TITLE' => 'Recruitments',
    'LBL_CURRENCY_NAME' => 'Currency Name',
    'LBL_CURRENCY_SYMBOL' => 'Currency Symbol',
+   'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

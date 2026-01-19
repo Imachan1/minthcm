@@ -158,5 +158,6 @@ Please note that every User is also an Employee.',
     'LBL_ORIGINAL_CANDIDATURE_ID' => 'Original Candidature ID',
     'LBL_ORIGINAL_CANDIDATURES' => 'Original Candidatures',
 
-'LBL_REJECT_AND_MOVE_TO_ANOTHER_RECRUITMENT' => 'Reject and Move to Another Recruitment'
+'LBL_REJECT_AND_MOVE_TO_ANOTHER_RECRUITMENT' => 'Reject and Move to Another Recruitment',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

@@ -86,7 +86,8 @@ $dictionary['Email'] = array(
       'to_addrs_names' => array(
          'name' => 'to_addrs_names',
          'type' => 'varchar',
-         'vname' => 'to_addrs_names',
+         'label' => 'LBL_TO_ADDRS_NAMES',
+         'vname' => 'LBL_TO_ADDRS_NAMES',
          'source' => 'non-db',
          'inline_edit' => false,
       ),

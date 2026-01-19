@@ -54,4 +54,5 @@ $mod_strings = array(
     'LBL_NET_VALUE_FROM_USDOLLAR' => 'Net Value UoP from (Default Currency)',
     'LBL_NET_VALUE_TO_USDOLLAR' => 'Net Value UoP to (Default Currency)',
     'LBL_SALARY_RANGES' => 'Salary Ranges',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

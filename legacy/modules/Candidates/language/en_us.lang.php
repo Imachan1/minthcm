@@ -171,4 +171,5 @@ $mod_strings = array(
     'LBL_PROSPECT_LIST' => 'Prospect List',
     'LBL_LINKEDIN_ACCOUNT' => 'LinkedIn',
     'LBL_PROSPECT_LIST' => 'Prospect List',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

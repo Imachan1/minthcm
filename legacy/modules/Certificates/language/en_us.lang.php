@@ -89,4 +89,5 @@ $mod_strings = array(
     'LBL_ATTEMPTS_NUMBER' => 'Number of Attempts',
     'LBL_DURATION' => 'Duration',
     'LBL_PASS_RATE' => 'Pass Rate',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

@@ -112,4 +112,5 @@ $mod_strings = array(
     'LBL_DATE_INDEXED' => 'Date Indexed',
     'LBL_BUGS' => 'Bugs',
     'LBL_PROJECT_TASKS' => 'Project Tasks',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

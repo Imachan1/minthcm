@@ -140,7 +140,7 @@ $mod_strings = array(
     'LBL_TO_ADDRS' => 'To',
     'LBL_USERS_SUBPANEL_TITLE' => 'Users',
     'LBL_USERS' => 'Users',
-
+    'LBL_TO_ADDRS_NAMES' => 'Recipient Names',
     'LNK_CALL_LIST' => 'Calls',
     'LBL_EMAIL_RELATE' => 'Related To',
     'LNK_EMAIL_TEMPLATE_LIST' => 'View Email Templates',
