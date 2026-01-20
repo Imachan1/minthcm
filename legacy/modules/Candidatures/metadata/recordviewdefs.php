@@ -37,12 +37,22 @@ $viewdefs['Candidatures'] = [
                                 'route_of_acquisition',
                             ],
                             [
-                                'recruitment_name',
+                                [
+                                    'name' => 'recruitment_name',
+                                    'filters' => [
+                                        [
+                                            'field' => 'project_status',
+                                            'operator' => 'equal',
+                                            'value' => 'open',
+                                            'editable' => true,
+                                        ],
+                                    ],
+                                ],
                                 'original_candidature_name',
                             ],
                             [
                                 'parent_name',
-                                '',
+                                'linkedin',
                             ],
                             [
                                 'source',

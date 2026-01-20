@@ -1,10 +1,19 @@
 <?php
 
+use MintHCM\Data\BeanFactory;
 use MintHCM\Lib\MintLogic\Formula;
 use MintHCM\Lib\MintLogic\Hook;
 
 return [
     'rules' => [
+        'init' => [
+            'hooks' => [Hook::INIT],
+            'logic' => [
+                'readonly' => [
+                    'linkedin' => true,
+                ],
+            ],
+        ],
         'notHired' => [
             'hooks' => [Hook::ALL, Hook::CHANGE],
             'triggerFields' => ['status'],
@@ -34,6 +43,17 @@ return [
                 'visible' => [
                     'original_candidature_name' => false,
                 ],
+            ],
+        ],
+        'linkedin' => [
+            'hooks' => [Hook::INIT, Hook::CHANGE],
+            'triggerFields' => ['parent_id', 'parent_type'],
+            'trigger' => Formula::and(Formula::equals('$parent_type', 'Candidates')),
+            'logic' => [
+                'update' => function ($bean) {
+                    $candidate = BeanFactory::getBean('Candidates', $bean->parent_id);
+                    return ['linkedin' => $candidate->linkedin ?? ''];
+                },
             ],
         ],
     ],

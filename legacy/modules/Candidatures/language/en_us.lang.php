@@ -80,7 +80,6 @@ $mod_strings = array(
     'LNK_IMPORT_CANDIDATURES' => 'Import Candidatures',
     'LBL_SEARCH_FORM_TITLE' => 'Search Candidatures',
     'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
-    'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activity Stream',
     'LBL_NEW_FORM_TITLE' => 'New Candidature',
     'LBL_IMPORT' => 'Import Candidatures',
     'LBL_IMPORT_VCARDTEXT' => 'Automatically create a new Candidature record by importing a vCard from your file system.',
@@ -121,14 +120,9 @@ $mod_strings = array(
     'LBL_EMAILS_TITLE' => 'E-mails',
     'LBL_WORK_START' => 'Work Start Date',
     'LBL_TRAINING_DATE' => 'Introductory Training Date',
-    'LBL_CALLS_TITLE' => 'Calls',
-    'LBL_MEETINGS_TITLE' => 'Meetings',
-    'LBL_NOTES_TITLE' => 'Notes',
-    'LBL_TASKS_TITLE' => 'Tasks',
     'LBL_SHOW_MORE_INFORMATION' => 'Other',
     'LBL_REASON_FOR_REJECTION' => 'Reason for Rejection',
     'LBL_ENTRY_INTERVIEW' => 'Entry Interview',
-    'LBL_EMAILS_TITLE' => 'E-mails',
     'LBL_CANDIDATURES_APPRAISALS' => 'Appraisals',
     'LBL_CREATE_APPRAISAL' => 'Create Appraisal',
     'LBL_ENTER_APPRAISAL_NAME' => 'Enter Appraisal name',
@@ -148,7 +142,7 @@ If you create a User, you will need to provide a login, which will be used to si
 If you create an Employee, it will not be possible to log in to this account.<br>
 <br>
 Please note that every User is also an Employee.',
-'LBL_CONVERT_TO_EMPLOYEE_UNIQUE_LOGIN' => 'Please provide a unique login',
+    'LBL_CONVERT_TO_EMPLOYEE_UNIQUE_LOGIN' => 'Please provide a unique login',
     'LBL_CONVERT_TO_EMPLOYEE_CREATE_USER' => 'Create User',
     'LBL_CONVERT_TO_EMPLOYEE_CREATE_EMPLOYEE' => 'Create Employee',
     'LBL_CONVERT_TO_EMPLOYEE_USER_LOGIN' => 'User Login',
@@ -158,5 +152,6 @@ Please note that every User is also an Employee.',
     'LBL_ORIGINAL_CANDIDATURE_ID' => 'Original Candidature ID',
     'LBL_ORIGINAL_CANDIDATURES' => 'Original Candidatures',
 
-'LBL_REJECT_AND_MOVE_TO_ANOTHER_RECRUITMENT' => 'Reject and Move to Another Recruitment'
+    'LBL_REJECT_AND_MOVE_TO_ANOTHER_RECRUITMENT' => 'Reject and Move to Another Recruitment',
+    'LBL_LINKEDIN_ACCOUNT' => 'LinkedIn',
 );
