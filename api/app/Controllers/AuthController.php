@@ -63,6 +63,15 @@ class AuthController
         $this->entityManager = $entityManager;
     }
 
+    public function getInternalFrontendToken(Request $request, Response $response, array $args): Response
+    {
+        global $mint_config;
+        $response = $response->withHeader('Content-type', 'application/json');
+        $data = json_encode(['client_secret' => $mint_config['frontend_secret']]);
+        $response->getBody()->write($data);
+        return $response;
+    }
+
     public function login(Request $request, Response $response, array $args): Response
     {
         $username = trim($request->getAttribute('username'));

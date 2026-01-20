@@ -49,6 +49,19 @@ use MintHCM\Api\Middlewares\Params\ParamTypes\EmailType;
 use MintHCM\Api\Middlewares\Params\ParamTypes\StringType;
 
 $routes = array(
+    "getInternalFrontendToken" => array(
+        "method" => "POST",
+        "path" => "/getInternalFrontendToken",
+        "class" => AuthController::class,
+        "function" => 'getInternalFrontendToken',
+        "desc" => "Get internal frontend token",
+        "options" => array(
+            'auth' => false,
+        ),
+        "pathParams" => array(),
+        "queryParams" => array(),
+        "bodyParams" => array(),
+    ),
     "login" => array(
         "method" => "POST",
         "path" => "/login",
