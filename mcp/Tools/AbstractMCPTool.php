@@ -111,9 +111,11 @@ abstract class AbstractMCPTool
             throw new ModuleNotAllowedException("Access to module '{$module}' is not allowed by blacklist.");
         }
 
+        chdir('../legacy');
         if (!\ACLController::checkAccess($module, $acl_action, true, 'module', true)) {
             throw new ModuleNotAllowedException("Insufficient permissions for module: {$module}");
         }
+        chdir('../mcp');
 
         return true;
     }

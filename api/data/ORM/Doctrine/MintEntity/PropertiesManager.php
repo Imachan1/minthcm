@@ -56,7 +56,7 @@ class PropertiesManager
         return gettype($this->$property);
     }
 
-    public function getRelatedPropertiesNames(): array
+    public function getRelatedPropertiesDefs(): array
     {
         $related_properties = [];
         $meta = $this->entity_manager->getClassMetadata($this->entity::class);
@@ -65,13 +65,21 @@ class PropertiesManager
                 \Doctrine\ORM\Mapping\ClassMetadata::MANY_TO_ONE,
                 \Doctrine\ORM\Mapping\ClassMetadata::ONE_TO_ONE,
             ];
-            if (!in_array($association_mapping['type'], $related_fields_types)) {
+            if (!in_array($association_mapping['type'], $related_fields_types) || in_array($association_name, ['custom_entity', 'main_entity'])) {
                 continue;
             }
             
-            $related_properties[] = $association_name;
+            $related_properties[] = array(
+                'name' => $association_name,
+                'related_entity' => $association_mapping['targetEntity'],
+            );
         }
         return $related_properties;
+    }
+
+    public function getRelatedPropertiesNames(): array
+    {
+        return array_map(fn($def) => $def['name'], $this->getRelatedPropertiesDefs());
     }
 
     protected function getLegacyPropertyType(string $property): ?string

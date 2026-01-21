@@ -87,6 +87,7 @@ class TermsOfEmployment extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -260,5 +261,6 @@ class TermsOfEmployment extends MintEntity
         $this->SecurityGroups = new ArrayCollection();
         $this->documents = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

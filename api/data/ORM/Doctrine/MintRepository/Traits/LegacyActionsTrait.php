@@ -25,6 +25,10 @@ trait LegacyActionsTrait
             // Refresh and detach the entity to avoid query after flush
             $this->_em->refresh($entity);
             $this->_em->detach($entity);
+            if ($entity->hasCustomEntity()) {
+                $this->_em->refresh($entity->custom_entity);
+                $this->_em->detach($entity->custom_entity);
+            }
         }
         return $saved;
     }

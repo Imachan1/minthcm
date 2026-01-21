@@ -77,6 +77,7 @@ class OAuthKeys extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -169,5 +170,6 @@ class OAuthKeys extends MintEntity
     {
         $this->tokens = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

@@ -83,6 +83,7 @@ class Notes extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Column(type="id", length="36")
      */
@@ -244,5 +245,6 @@ class Notes extends MintEntity
     {
         $this->SecurityGroups = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

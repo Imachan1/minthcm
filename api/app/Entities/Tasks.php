@@ -81,12 +81,14 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $parent_type
  * @property mixed $parent_id
  * @property mixed $priority
+ * @property mixed $checklist
  */
 // Auto-generated SectionRepository section end
 class Tasks extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -181,6 +183,11 @@ class Tasks extends MintEntity
     protected $priority;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    protected $checklist;
+
+    /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="tasks")
      */
@@ -228,5 +235,6 @@ class Tasks extends MintEntity
         $this->SecurityGroups = new ArrayCollection();
         $this->notes = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

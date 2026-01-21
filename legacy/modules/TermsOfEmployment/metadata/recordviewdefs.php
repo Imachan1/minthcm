@@ -6,11 +6,6 @@ $viewdefs['TermsOfEmployment'] = [
         'contract' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                    'Duplicate',
-                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',

@@ -238,4 +238,5 @@ $vardefs = array(
             ],
         ],
     ],
+    'doctrineEntity' => [],
 );

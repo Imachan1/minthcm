@@ -61,4 +61,8 @@ $ESListViewDefs['Contracts'] = [
         'modified_by_name' => [],
         'daily_working_time' => [],
     ],
+    'defaultSort' => [
+        'field' => 'date_of_signing',
+        'order' => 'DESC'
+    ],
 ];

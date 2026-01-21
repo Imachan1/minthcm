@@ -80,6 +80,7 @@ class Rooms extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -204,5 +205,6 @@ class Rooms extends MintEntity
     {
         $this->rooms_workplaces = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

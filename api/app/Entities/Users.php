@@ -99,11 +99,13 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $messenger_id
  * @property mixed $messenger_type
  * @property mixed $reports_to_id
+ * @property mixed $email1
  * @property mixed $business_role
  * @property mixed $is_group
  * @property mixed $factor_auth
  * @property mixed $factor_auth_interface
  * @property mixed $position_id
+ * @property mixed $securitygroup_id
  * @property mixed $forced_tabs_dashboard_id
  * @property mixed $locked_dashboard_id
  * @property mixed $one_time_default_dashboard_id
@@ -115,6 +117,7 @@ class Users extends MintEntity implements UserEntityInterface
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -315,6 +318,10 @@ class Users extends MintEntity implements UserEntityInterface
     protected $reports_to_id;
 
     /**
+     */
+    protected $email1;
+
+    /**
      * @ORM\Column(type="string")
      */
     protected $business_role;
@@ -345,7 +352,7 @@ class Users extends MintEntity implements UserEntityInterface
     protected $securitygroup_id;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
     protected $forced_tabs_dashboard_id;
 
@@ -375,14 +382,14 @@ class Users extends MintEntity implements UserEntityInterface
     protected Collection $reports_to_link;
 
     /**
-     * @ORM\JoinTable(name="email_addr_bean_rel")
-     * @ORM\ManyToMany(targetEntity=EmailAddresses::class, mappedBy="users")
+     * @ORM\JoinTable(name="email_addr_bean_rel", joinColumns={@ORM\JoinColumn(name="bean_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="email_address_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=EmailAddresses::class, inversedBy="email_addresses")
      */
     protected Collection $email_addresses;
 
     /**
-     * @ORM\JoinTable(name="email_addr_bean_rel")
-     * @ORM\ManyToMany(targetEntity=EmailAddresses::class, mappedBy="users")
+     * @ORM\JoinTable(name="email_addr_bean_rel", joinColumns={@ORM\JoinColumn(name="bean_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="email_address_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity=EmailAddresses::class, inversedBy="email_addresses")
      */
     protected Collection $email_addresses_primary;
 
@@ -567,5 +574,43 @@ class Users extends MintEntity implements UserEntityInterface
         return password_verify(strtolower($passwordMd5), $this->user_hash);
     }
 
+        public function getEmail1(): string
+        {
+            $conn = $this->getEntityManager()->getConnection();
+
+            $sql = '
+                SELECT ea.email_address
+                FROM email_addresses ea
+                INNER JOIN email_addr_bean_rel eabr
+                    ON eabr.email_address_id = ea.id
+                WHERE eabr.bean_id = :bean_id
+                AND eabr.bean_module = :bean_module
+                AND eabr.primary_address = :primary_address
+                AND eabr.deleted = :deleted
+                LIMIT 1
+            ';
+
+            $module_name = $this->getModuleName();
+            if (in_array($module_name, ['Employees'])) {
+                $module_name = 'Users';
+            }
+
+            $stmt = $conn->prepare($sql);
+            $result = $stmt->executeQuery([
+                'bean_id' => $this->id,
+                'bean_module' => $module_name,
+                'primary_address' => 1,
+                'deleted' => 0,
+            ]);
+
+            return $result->fetchOne() ?: '';
+}
+
+public function getSerialized(bool $json = false): array|string
+{
+    $data = parent::getSerialized($json);
+    $data['email1'] = $this->getEmail1();
+    return $data;
+}
 // Auto-generated SectionMethods section end
 }

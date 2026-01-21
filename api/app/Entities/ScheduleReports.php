@@ -81,6 +81,7 @@ class ScheduleReports extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -206,5 +207,6 @@ class ScheduleReports extends MintEntity
         $this->schedulereports_schedulereportslogs = new ArrayCollection();
         $this->users = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

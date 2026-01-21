@@ -45,8 +45,7 @@ $vardefs = array(
             'rname' => 'user_name',
             'id_name' => 'employee_id',
             'vname' => 'LBL_EMPLOYEE_ID',
-            'group' => 'employee_name',
-            'type' => 'relate',
+            'type' => 'id',
             'table' => 'users',
             'module' => 'Employees',
             'reportable' => true,
@@ -55,6 +54,7 @@ $vardefs = array(
             'audited' => true,
             'comment' => 'Employee assigned to record',
             'duplicate_merge' => 'disabled',
+            'relationship' => strtolower($module) . '_employee',
         ),
         'employee_name' => array(
             'name' => 'employee_name',

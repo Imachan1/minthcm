@@ -81,6 +81,7 @@ class Trainings extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -238,5 +239,6 @@ class Trainings extends MintEntity
         $this->files = new ArrayCollection();
         $this->requests = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

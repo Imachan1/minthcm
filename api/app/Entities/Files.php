@@ -84,6 +84,7 @@ class Files extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -265,5 +266,6 @@ class Files extends MintEntity
     {
         $this->SecurityGroups = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

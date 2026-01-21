@@ -12,6 +12,7 @@
         must-sort
         :show-select="store.itemsSelectable"
         v-model="store.selected"
+        v-model:sort-by="store.options.sortBy"
         @update:options="store.options = $event"
         :no-data-text="
             store.error

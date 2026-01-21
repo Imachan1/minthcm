@@ -77,6 +77,7 @@ class PeriodsOfEmployment extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -187,5 +188,6 @@ class PeriodsOfEmployment extends MintEntity
         $this->SecurityGroups = new ArrayCollection();
         $this->contracts = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

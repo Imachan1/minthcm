@@ -82,6 +82,7 @@ class EmployeeCertificates extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -223,5 +224,6 @@ class EmployeeCertificates extends MintEntity
     {
         $this->SecurityGroups = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

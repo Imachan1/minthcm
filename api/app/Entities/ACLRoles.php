@@ -74,6 +74,7 @@ class ACLRoles extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -148,5 +149,6 @@ class ACLRoles extends MintEntity
         $this->actions = new ArrayCollection();
         $this->SecurityGroups = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

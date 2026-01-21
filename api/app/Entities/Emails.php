@@ -94,6 +94,7 @@ class Emails extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -275,5 +276,6 @@ class Emails extends MintEntity
         $this->meetings = new ArrayCollection();
         $this->candidates = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

@@ -85,6 +85,7 @@ class AM_TaskTemplates extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -223,5 +224,6 @@ class AM_TaskTemplates extends MintEntity
     {
         $this->am_tasktemplates_am_projecttemplates = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

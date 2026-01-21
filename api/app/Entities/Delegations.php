@@ -113,6 +113,7 @@ class Delegations extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -423,5 +424,6 @@ class Delegations extends MintEntity
         $this->transportations = new ArrayCollection();
         $this->reservations = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

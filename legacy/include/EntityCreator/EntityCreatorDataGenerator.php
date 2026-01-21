@@ -7,6 +7,7 @@ class EntityCreatorDataGenerator
         'varchar' => 'string',
         'int' => 'integer',
         'float' => 'float',
+        'decimal' => 'decimal',  //COPY TO CORE MINTHCM
         'bool' => 'boolean',
         'date' => 'date',
         'datetime' => 'datetime',
@@ -35,21 +36,28 @@ class EntityCreatorDataGenerator
         'time',
     ];
 
-    private string $moduleName;
-    private array $vardefs;
-    private array $data = [];
+    protected const CUSTOM_SUFFIX = '_cstm';
+    protected string $moduleName;
+    protected array $vardefs;
+    protected array $data = [];
+    protected bool $is_custom = false;
+    public const VIRTUAL_FIELDS = [
+        'email1',
+    ];
 
-    public function __construct(string $moduleName, array $vardefs)
+    public function __construct(string $moduleName, array $vardefs, bool $is_custom = false)
     {
         $this->moduleName = $moduleName;
         $this->vardefs = $vardefs;
         $this->data = [];
+        $this->is_custom = $is_custom;
         $this->buildData();
         $this->buildFields();
         $this->buildRelationshipFields();
         $this->buildIndexes();
         $this->buildAdditionalUseStatements();
         $this->buildConstructorFields();
+        $this->buildAdditionalMethods();
     }
     public function getData(): array
     {
@@ -66,9 +74,10 @@ class EntityCreatorDataGenerator
             'relationshipFields' => [],
             'additionalUseStatements' => [],
             'constructorFields' => [],
+            'generate_custom_entity' => $this->hasCustomTable(),
+            'additionalMethods' => [],
         ];
-
-        $repositorySet = ! empty($this->vardefs['doctrineEntity']['repository']);
+        $repositorySet = !empty($this->vardefs['doctrineEntity']['repository']);
         if ($repositorySet) {
             $this->data['repositoryClassPath'] = EntityCreator::REPOSITORY_FOLDER_PATH . $this->vardefs['doctrineEntity']['repository'];
             $this->data['repositorySet'] = true;
@@ -78,43 +87,61 @@ class EntityCreatorDataGenerator
     protected function buildFields()
     {
         foreach ($this->vardefs['fields'] as $fieldName => $fieldDef) {
+            if (
+                in_array($fieldDef['name'], self::VIRTUAL_FIELDS)
+                && empty($fieldDef['dbType'])
+                && 'non-db' === $fieldDef['source']) {
+                $this->data['fields'][$fieldDef['name']] = [
+                    'name' => $fieldDef['name'],
+                    'columnAttributes' => null,
+                    'isId' => false,
+                    'virtual' => true,
+                ];
+                continue;
+            }
             if ((! empty($fieldDef['source']) && 'non-db' === $fieldDef['source'])
-                || (in_array($fieldDef['type'], self::SKIP_TYPES) && (empty($fieldDef['dbType']) || $fieldDef['dbType'] !== 'id'))
+                || (in_array($fieldDef['type'], self::SKIP_TYPES) && (empty($fieldDef['dbType']) || 'id' !== $fieldDef['dbType']))
+                || 'custom_fields' === $fieldDef['source']
             ) {
                 continue;
             }
 
-            $field = [
-                'name' => $fieldName,
-                'columnAttributes' => '',
-                'isId' => false,
-            ];
+            $this->data['fields'][$fieldName] = $this->getFieldData($fieldName, $fieldDef);
+        }
+    }
 
-            $attributes = [];
-            if (! empty($fieldDef['type']) || ! empty($fieldDef['dbType'])) {
-                $type = $fieldDef['dbType'] ?? $fieldDef['type'];
-                $ORM_type = self::ORM_TYPE_MAP[$type] ?? null;
+    protected function getFieldData(string $fieldName, array $fieldDef): array
+    {
+        $field = [
+            'name' => $fieldName,
+            'columnAttributes' => '',
+            'isId' => false,
+        ];
 
-                if (! $ORM_type) {
-                    throw new \Exception("Unsupported field type: $type for field: $fieldName");
-                }
+        $attributes = [];
+        if (!empty($fieldDef['type']) || !empty($fieldDef['dbType'])) {
+            $type = $fieldDef['dbType'] ?? $fieldDef['type'];
+            $ORM_type = self::ORM_TYPE_MAP[$type] ?? null;
 
-                $attributes[] = 'type="' . $ORM_type . '"';
-
-                if (! empty($fieldDef['len'])) {
-                    $attributes[] = 'length="' . $fieldDef['len'] . '"';
-                } else if ('id' == $type || 'relate' == $type) {
-                    $attributes[] = 'length="36"';
-                }
-
-                if (in_array($type, ['id', 'int']) && 'id' == $fieldName) {
-                    $field['isId'] = true;
-                }
+            if (!$ORM_type) {
+                throw new \Exception("Unsupported field type: $type for field: $fieldName");
             }
 
-            $field['columnAttributes'] = implode(', ', $attributes);
-            $this->data['fields'][$field['name']] = $field;
+            $attributes[] = 'type="' . $ORM_type . '"';
+
+            if (!empty($fieldDef['len'])) {
+                $attributes[] = 'length="' . $fieldDef['len'] . '"';
+            } else if ('id' == $type || 'relate' == $type) {
+                $attributes[] = 'length="36"';
+            }
+
+            if ((in_array($type, ['id', 'int']) && 'id' == $fieldName)) {
+                $field['isId'] = true;
+            }
         }
+
+        $field['columnAttributes'] = implode(', ', $attributes);
+        return $field;
     }
 
     protected function buildRelationshipFields()
@@ -127,7 +154,7 @@ class EntityCreatorDataGenerator
         }
 
         foreach ($this->vardefs['fields'] as $fieldName => $fieldDef) {
-            if ('link' === $fieldDef['type'] && ! empty($fieldDef['relationship'])) {
+            if ('link' === $fieldDef['type'] && !empty($fieldDef['relationship'])) {
                 if ($this->dataHasRelationshipField($fieldName)) {
                     continue;
                 }
@@ -181,6 +208,8 @@ class EntityCreatorDataGenerator
             'isCollection' => false,
         ];
 
+        $relationshipSide = '';
+        $targetSide = '';
         foreach ($relationshipDef as $key => $value) {
             if (
                 $value == $this->moduleName
@@ -239,15 +268,20 @@ class EntityCreatorDataGenerator
         $relationshipField['isCollection'] = 'many-to-many' === $relationshipDef['relationship_type'] || ('one-to-many' === $relationshipDef['relationship_type'] && 'lhs' === $relationshipSide);
         $this->data['relationshipFields'][] = $relationshipField;
 
-        if (! in_array($target['module'], $entityCreator['CreatingEntities']) && ! empty($dictionary[$target['module']])) {
+        if (!in_array($target['module'], $entityCreator['CreatingEntities']) && !empty($dictionary[$target['module']])) {
             $entityCreator['CreatingEntities'][] = $target['module'];
             (new EntityCreator($target['module'], $dictionary[$target['module']]))->run();
+            (new CustomEntityCreator($target['module'], $dictionary[$target['module']]))->run();
         }
     }
 
     protected function getRelationshipLinkFieldName($relationshipDef, $side, $relationshipName)
     {
         $dictionary = EntityCreatorManager::$dictionary;
+        
+        if (empty($side)) {
+            return '';
+        }
 
         $moduleName = $relationshipDef[$side . '_module'];
         if (empty($moduleName)) {
@@ -282,7 +316,7 @@ class EntityCreatorDataGenerator
             'inverseJoinAttributes' => [],
         ];
 
-        $directionType = 'SecurityGroups' == $target['module'] ? 'unidirectional' : 'bidirectional';
+        $directionType = in_array($target['module'], ['SecurityGroups', 'EmailAddresses']) ? 'unidirectional' : 'bidirectional';
         $selfReferencing = $module['module'] === $target['module'];
         switch ($relationshipType) {
             case 'one-to-many':
@@ -350,10 +384,10 @@ class EntityCreatorDataGenerator
         }
 
         $relationAttributes = [];
-        if ($joinTable && ! empty($attributes['joinAttributes'] && ! empty($attributes['inverseJoinAttributes']))) {
+        if ($joinTable && !empty($attributes['joinAttributes'] && !empty($attributes['inverseJoinAttributes']))) {
             $relationAttributes[] = '@ORM\\JoinTable(name="' . $joinTable . '", joinColumns={@ORM\\JoinColumn(' . implode(', ', $attributes['joinAttributes']) . ')}, inverseJoinColumns={@ORM\\JoinColumn(' . implode(', ', $attributes['inverseJoinAttributes']) . ')})';
         } else {
-            if (! empty($attributes['joinAttributes'])) {
+            if (!empty($attributes['joinAttributes'])) {
                 $relationAttributes[] = '@ORM\\JoinColumn(' . implode(', ', $attributes['joinAttributes']) . ')';
             }
             if ($joinTable) {
@@ -384,7 +418,7 @@ class EntityCreatorDataGenerator
 
     protected function buildIndexes()
     {
-        if (! empty($this->vardefs['indices'])) {
+        if (!empty($this->vardefs['indices'])) {
             $this->data['indexes'] = [];
             foreach ($this->vardefs['indices'] as $index) {
                 if (isset($index['fields']) && is_array($index['fields'])) {
@@ -417,5 +451,63 @@ class EntityCreatorDataGenerator
                 $this->data['constructorFields'][] = '$this->' . $relationshipField['name'] . ' = new ArrayCollection();';
             }
         }
+
+        if (!empty($this->data['generate_custom_entity']) && $this->is_custom == false) {
+            $this->data['constructorFields'][] = '$this->setCustomEntity(new ' . $this->moduleName . '_cstm());';
+        }
     }
+
+    protected function buildAdditionalMethods()
+    {
+        if (!empty($this->vardefs['fields']['email1'])) {
+            $this->data['additionalMethods'][] = <<<'PHP'
+    public function getEmail1(): string
+            {
+                $conn = $this->getEntityManager()->getConnection();
+
+                $sql = '
+                    SELECT ea.email_address
+                    FROM email_addresses ea
+                    INNER JOIN email_addr_bean_rel eabr
+                        ON eabr.email_address_id = ea.id
+                    WHERE eabr.bean_id = :bean_id
+                    AND eabr.bean_module = :bean_module
+                    AND eabr.primary_address = :primary_address
+                    AND eabr.deleted = :deleted
+                    LIMIT 1
+                ';
+
+                $module_name = $this->getModuleName();
+                if (in_array($module_name, ['Employees'])) {
+                    $module_name = 'Users';
+                }
+
+                $stmt = $conn->prepare($sql);
+                $result = $stmt->executeQuery([
+                    'bean_id' => $this->id,
+                    'bean_module' => $module_name,
+                    'primary_address' => 1,
+                    'deleted' => 0,
+                ]);
+
+                return $result->fetchOne() ?: '';
+    }
+
+    public function getSerialized(bool $json = false): array|string
+    {
+        $data = parent::getSerialized($json);
+        $data['email1'] = $this->getEmail1();
+        return $data;
+    }
+    PHP;
+        }
+    }
+
+    protected function hasCustomTable(): bool
+    {
+        $db = DBManagerFactory::getInstance();
+        $tables = $db->getTablesArray();
+        return in_array(strtolower($this->vardefs["table"] . self::CUSTOM_SUFFIX), $tables);
+    }
+
 }

@@ -1,6 +1,7 @@
 <?php
 
 require_once 'include/EntityCreator/EntityCreator.php';
+require_once 'include/EntityCreator/CustomEntityCreator.php';
 
 class EntityCreatorManager
 {
@@ -24,8 +25,8 @@ class EntityCreatorManager
         foreach(self::$dictionary as $key => $module_vardefs) {
             if(isset($module_vardefs['doctrineEntity'])) {
                 $GLOBALS['entityCreator']['CreatingEntities'][] = $key;
-                $entityCreator = new EntityCreator($key, $module_vardefs);
-                $entityCreator->run();
+                (new EntityCreator($key, $module_vardefs))->run();
+                (new CustomEntityCreator($key, $module_vardefs))->run();
             }
         }
     }

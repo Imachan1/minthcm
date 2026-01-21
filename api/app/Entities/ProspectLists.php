@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="prospect_lists", indexes={
@@ -79,6 +80,7 @@ class ProspectLists extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Column(type="id", length="36")
      */
@@ -182,8 +184,8 @@ class ProspectLists extends MintEntity
      */
     protected Collection $news;
 
-// Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionProperties section end
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();
@@ -191,5 +193,6 @@ class ProspectLists extends MintEntity
         $this->email_marketing = new ArrayCollection();
         $this->news = new ArrayCollection();
     }
-// Auto-generated SectionMethods section end
+
+    // Auto-generated SectionMethods section end
 }

@@ -90,6 +90,7 @@ class Recruitments extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -253,11 +254,6 @@ class Recruitments extends MintEntity
     protected Collection $candidatures;
 
     /**
-     * @ORM\OneToMany(targetEntity=Candidatures::class, mappedBy="recruitments_end")
-     */
-    protected Collection $candidatures_end;
-
-    /**
      * @ORM\OneToMany(targetEntity=Calls::class, mappedBy="calls")
      */
     protected Collection $calls;
@@ -294,12 +290,12 @@ class Recruitments extends MintEntity
     {
         $this->SecurityGroups = new ArrayCollection();
         $this->candidatures = new ArrayCollection();
-        $this->candidatures_end = new ArrayCollection();
         $this->calls = new ArrayCollection();
         $this->meetings = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->tasks = new ArrayCollection();
         $this->emails = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

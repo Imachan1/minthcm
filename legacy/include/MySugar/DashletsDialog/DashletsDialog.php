@@ -82,6 +82,10 @@ class DashletsDialog
         foreach ($dashletsFiles as $className => $files) {
             if (!empty($files['meta']) && is_file($files['meta'])) {
                 require_once($files['meta']); // get meta file
+                
+                if (empty($dashletMeta[$files['class']])) {
+                    continue;
+                }
 
                 $directory = substr($files['meta'], 0, strrpos($files['meta'], '/') + 1);
                 if (is_file($directory . $files['class'] . '.' . $current_language . '.lang.php')) {

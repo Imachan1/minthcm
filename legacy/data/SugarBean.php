@@ -4004,7 +4004,13 @@ class SugarBean {
                $ret_array[$eVSecGroupUpdKey] .= $n;
             }
          }
-         $ret_array['where'] = str_replace($group_where, "secg.id is not null", $ret_array['where']);
+         /* MintHCM #179746 START */
+         if (strpos($group_where, "INNER JOIN securitygroups_records secr") === false) {
+         /* eVolpe #179746 END */
+            $ret_array['where'] = str_replace($group_where, "secg.id is not null", $ret_array['where']);
+         /* MintHCM #179746 START */
+         }
+         /* eVolpe #179746 END */
       }
       // Mint end SG optimization
       //make call to process the order by clause

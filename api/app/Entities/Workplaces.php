@@ -78,6 +78,7 @@ class Workplaces extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -200,5 +201,6 @@ class Workplaces extends MintEntity
         $this->workplaces_allocations = new ArrayCollection();
         $this->workplaces_workschedules = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

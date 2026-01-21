@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="usersnews", indexes={
@@ -70,12 +71,14 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $assigned_user_id
  * @property mixed $news_read
  * @property mixed $not_display
+ * @property mixed $news_id
  */
 // Auto-generated SectionRepository section end
 class UsersNews extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -140,9 +143,9 @@ class UsersNews extends MintEntity
     protected $not_display;
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Column(type="id", length="36")
      */
-    public $news_id;
+    protected $news_id;
 
     /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
@@ -174,11 +177,12 @@ class UsersNews extends MintEntity
      */
     protected $news;
 
-// Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionProperties section end
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();
     }
-// Auto-generated SectionMethods section end
+
+    // Auto-generated SectionMethods section end
 }

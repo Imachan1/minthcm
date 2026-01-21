@@ -170,7 +170,10 @@ class VardefManager {
             }
          }
          // MintHCM #122704 END
-
+         if(isset($templates[$template]['doctrineEntity']) && empty($GLOBALS['dictionary'][$object]['doctrineEntity'])){
+            $GLOBALS['dictionary'][$object]['doctrineEntity'] = array_merge([], $templates[$template]['doctrineEntity']);
+         }
+         
          // maintain a record of this objects inheritance from the SugarObject templates...
          $GLOBALS['dictionary'][$object]['templates'][$template] = $template;
       }

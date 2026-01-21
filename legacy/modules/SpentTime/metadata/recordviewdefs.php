@@ -6,11 +6,6 @@ $viewdefs['SpentTime'] = [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
-                'actions' => [
-                    'Audit',
-                    'Delete',
-                    'Duplicate',
-                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',
@@ -43,20 +38,14 @@ $viewdefs['SpentTime'] = [
                                         'minutesStep' => 5,
                                     ],
                                 ],
+                            ],
+                            [
+                                'category',
                                 [
                                     'name' => 'description',
                                     'span' => 12,
                                 ],
                             ],
-                        ],
-                        'hiddenFields' => [
-                            'projecttask_issue_tracker',
-                            'current_user_is_admin',
-                            'work_date',
-                        ],
-                        'includes' => [
-                            'include/javascript/moment.min.js',
-                            'modules/SpentTime/js/view.edit.js',
                         ],
                     ],
                 ],

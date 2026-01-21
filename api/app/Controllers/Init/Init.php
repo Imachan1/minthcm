@@ -176,20 +176,20 @@ class Init
         foreach ($this->all_modules as $module) {
             $modules_data[$module] = $this->module_init_controller->getModuleData($module);
         }
-        global $beanList;
-        foreach ($beanList as $key => $module) {
-            if (!array_key_exists($key, $modules_data)) {
-                $modules_data[$key] = $this->module_init_controller->getModuleData($key);
-            }
-        }
         return $modules_data;
     }
 
     private function getALLModules()
     {
-        global $current_user;
+        global $beanList, $moduleList, $current_user;
+        
+        $modules = $moduleList;
+        if ($current_user->isAdmin()) {
+            $modules = array_unique(array_merge($modules, array_keys($beanList)));
+        }
         chdir('../legacy');
-        $modules = query_module_access_list($current_user);
+        require_once 'modules/ACL/ACLController.php';
+        \ACLController::filterModuleList($modules);
         chdir('../api');
         return $modules;
     }

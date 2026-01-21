@@ -88,6 +88,7 @@ class Documents extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -312,5 +313,6 @@ class Documents extends MintEntity
         $this->candidatures = new ArrayCollection();
         $this->termsofemployment = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

@@ -52,6 +52,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use MintHCM\Data\ORM\Doctrine\MintEventManager\MintEventManager;
 use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
 use MintHCM\Data\ORM\Doctrine\MintRepository\MintRepositoryFactory;
 use MintHCM\Data\ORM\Doctrine\MintTypes\MintTypeManager;
@@ -107,7 +108,10 @@ class DoctrineContainerBuilder extends ContainerBuilder
                 $config->setDefaultRepositoryClassName(MintEntityRepository::class);
                 $config->setRepositoryFactory(new MintRepositoryFactory());
                 $connection = DriverManager::getConnection($doctrineSettings['connection'], $config);
-                return new EntityManager($connection, $config);
+
+                $eventManager = MintEventManager::getEventManager();
+
+                return new EntityManager($connection, $config, $eventManager);
             }
         ]);
     }

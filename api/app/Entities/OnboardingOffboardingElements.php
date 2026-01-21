@@ -75,12 +75,14 @@ use Doctrine\Common\Collections\Collection;
  * @property mixed $days_from_start
  * @property mixed $user_id
  * @property mixed $securitygroup_unit_id
+ * @property mixed $checklist
  */
 // Auto-generated SectionRepository section end
 class OnboardingOffboardingElements extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -170,6 +172,11 @@ class OnboardingOffboardingElements extends MintEntity
     protected $securitygroup_unit_id;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    protected $checklist;
+
+    /**
      * @ORM\JoinColumn(name="modified_user_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="onboardingoffboardingelements")
      */
@@ -231,5 +238,6 @@ class OnboardingOffboardingElements extends MintEntity
         $this->offboardingtemplates = new ArrayCollection();
         $this->trainings = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

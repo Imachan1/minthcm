@@ -45,15 +45,14 @@
 
 namespace MintHCM\Api\Controllers;
 
+use BeanFactory as LegacyBeanFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use MintHCM\Data\BeanFactory as MintBeanFactory;
 use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
-use BeanFactory as LegacyBeanFactory;
-use MintHCM\Data\BeanFactory as MintBeanFactory;
-use MintHCM\Data\MintBean;
 use MintHCM\Lib\MintLogic\MintLogic;
-use MintHCM\Utils\LegacyConnector;
 use MintHCM\Utils\CyclicRecordsSaver;
+use MintHCM\Utils\LegacyConnector;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
@@ -94,11 +93,11 @@ class ModuleController
         $response = $response->withHeader('Content-type', 'application/json');
         $module = $this->getModuleFromRoute($request);
         $links = $request->getAttribute("links") ?? [];
-        $record_data = $request->getAttribute("record_data") ?: []; 
+        $record_data = $request->getAttribute("record_data") ?: [];
 
         /** @var MintEntityRepository */
         $repository = $this->entity_manager->getRepository($module);
-        
+
         /** @var MintEntity */
         $entity = $repository->getNewEntity();
         if (empty($entity)) {
@@ -109,9 +108,7 @@ class ModuleController
         }
 
         foreach ($record_data as $field_name => $value) {
-            if (property_exists($entity, $field_name)) {
-                $entity->$field_name = $value;
-            }
+            $entity->$field_name = $value;
         }
 
         $this->entity_manager->persist($entity);
@@ -124,7 +121,7 @@ class ModuleController
 
         $this->entity_manager->flush();
 
-        if (empty($entity) || !$entity->getId())  {
+        if (empty($entity) || !$entity->getId()) {
             return $response->withStatus(500);
         }
 
@@ -158,9 +155,7 @@ class ModuleController
         }
 
         foreach ($record_data as $field_name => $value) {
-            if (property_exists($entity, $field_name)) {
-                $entity->$field_name = $value;
-            }
+            $entity->$field_name = $value;
         }
         $this->entity_manager->persist($entity);
 
@@ -180,7 +175,7 @@ class ModuleController
 
         $this->entity_manager->flush();
 
-        if (!empty($record_id) && $entity->getId() !== $record_id)  {
+        if (!empty($record_id) && $entity->getId() !== $record_id) {
             return $response->withStatus(500);
         }
 
@@ -197,11 +192,11 @@ class ModuleController
 
         /** @var MintEntityRepository */
         $entity_repository = $this->entity_manager->getRepository($module);
-        
+
         /** @var MintEntity */
         $entity = !empty($record_id) ? $entity_repository->find($record_id) : $entity_repository->getNewEntity();
 
-        if(!$entity || $entity->getId() !== $record_id) {
+        if (!$entity || $entity->getId() !== $record_id) {
             return $response->withStatus(404);
         }
 
@@ -223,7 +218,7 @@ class ModuleController
 
         /** @var MintEntityRepository */
         $repository = $this->entity_manager->getRepository($module);
-        
+
         /** @var MintEntity */
         $entity = !empty($record_id) ? $repository->find($record_id) : $repository->getNewEntity();
 
@@ -272,7 +267,7 @@ class ModuleController
 
     public function subpanelRecords(Request $request, Response $response, array $args): Response
     {
-        //TODO add relationship management in Entity to get subpanel list with acls  
+        //TODO add relationship management in Entity to get subpanel list with acls
         $module = $this->getModuleFromRoute($request);
         $id = $request->getAttribute('id');
         chdir('../legacy/');
@@ -432,7 +427,7 @@ class ModuleController
             'logic' => (new MintLogic($entity->getMintBean()))->getInitial(),
         ];
     }
-    protected function handleFiles(MintEntity $mint_entity, array|null $files = []): void
+    protected function handleFiles(MintEntity $mint_entity, array | null $files = []): void
     {
         if (empty($files)) {
             return;
@@ -454,7 +449,7 @@ class ModuleController
 
             $file_name = 'image' === $field_type ? $bean->id . "_{$field_name}" : $bean->id;
             $file_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $file_name); // Sanitize file name
-            
+
             if (empty($base64)) {
                 unlink($upload_dir . $file_name);
                 continue;
@@ -465,7 +460,7 @@ class ModuleController
                 $base64_prefix = substr($base64, 0, strpos($base64, ';base64,') + 8);
             }
             $base64_decoded = base64_decode(str_replace($base64_prefix, '', $base64), true);
-            
+
             $tmp_file = tmpfile();
             fwrite($tmp_file, $base64_decoded);
             $tmp_file_path = stream_get_meta_data($tmp_file)['uri'];

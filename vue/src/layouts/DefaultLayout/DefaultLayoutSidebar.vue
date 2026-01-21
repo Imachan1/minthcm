@@ -18,7 +18,7 @@
         >
             <v-list-item
                 v-for="action in modules.currentModule.actions"
-                :key="action.action+modules.currentModule"
+                :key="action.action + modules.currentModule + action.url"
                 class="nav-item module-action"
                 :value="action.action"
                 v-bind="action.url && action.url !== '/' ? { to: action.url ? url.fromLegacyUrl(action.url) : '' } : {}"

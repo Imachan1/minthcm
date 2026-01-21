@@ -82,6 +82,7 @@ class Transportations extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -212,5 +213,6 @@ class Transportations extends MintEntity
         $this->SecurityGroups = new ArrayCollection();
         $this->costs = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }

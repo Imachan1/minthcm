@@ -5,11 +5,6 @@ $viewdefs['Allocations'] = [
     'panels' => [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
-            'actions' => [
-                'Audit',
-                'Delete',
-                'Duplicate',
-            ],
             'data' => [
                 'sections' => [
                     'basic' => [

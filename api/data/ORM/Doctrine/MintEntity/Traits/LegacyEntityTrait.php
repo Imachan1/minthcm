@@ -74,15 +74,21 @@ trait LegacyEntityTrait
             'include/EntityCreator/EntityCreatorManager.php',
         );
 
-        foreach (get_object_vars($this) as $property => $value) {
-            $defs = $bean->field_defs[$property] ?? null;
+        global $mint_app;
+        $entity_manager = $mint_app->getContainer()->get(EntityManagerInterface::class);
+        foreach ($bean->field_defs as $property => $defs) {
             if (empty($defs) || in_array($defs['type'], $entity_creator_manager::getSkipingFieldTypes())) {
                 continue;
             }
 
-            global $mint_app;
-            $entity_manager = $mint_app->getContainer()->get(EntityManagerInterface::class);
-            $meta = $entity_manager->getClassMetadata(static::class);
+            $is_entity_property = property_exists($this, $property);
+            $is_custom_entity_property = $this->hasCustomEntity() && property_exists($this->custom_entity, $property);
+            if (! $is_entity_property && ! $is_custom_entity_property) {
+                continue;
+            }
+
+            $value = $this->$property;
+            $meta = $entity_manager->getClassMetadata($is_entity_property ? static::class : get_class($this->custom_entity));
             if ($meta->hasField($property)) {
                 $fieldType = $meta->getTypeOfField($property);
                 $doctrineType = \Doctrine\DBAL\Types\Type::getType($fieldType);
@@ -92,4 +98,5 @@ trait LegacyEntityTrait
             $bean->$property = $value;
         }
     }
+
 }

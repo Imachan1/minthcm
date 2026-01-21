@@ -101,6 +101,7 @@ class Calls extends MintEntity
 {
 
 // Auto-generated SectionProperties section start
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -324,5 +325,6 @@ class Calls extends MintEntity
         $this->reservations = new ArrayCollection();
         $this->resources = new ArrayCollection();
     }
+
 // Auto-generated SectionMethods section end
 }
