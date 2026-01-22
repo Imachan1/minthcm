@@ -11,8 +11,9 @@ $viewdefs['Meetings'] = [
                         'title' => 'LBL_BASIC',
                         'fields' => [
                             ['name', 'status'],
-                            ['type', 'assigned_user_name'],
+                            ['type', 'parent_name'],
                             ['date_start', 'date_end'],
+                            ['assigned_user_name', 'location'],
                             ['description', 'repeat']
                         ],
                     ],
