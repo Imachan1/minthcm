@@ -112,11 +112,6 @@ class UserPreferences extends MintEntity
 
     // Auto-generated SectionProperties section end
     // Auto-generated SectionMethods section start
-    public function __construct()
-    {
-    }
-
-    // Auto-generated SectionMethods section end
 
     public function getContentsAsArray(): array
     {
@@ -130,4 +125,6 @@ class UserPreferences extends MintEntity
         }
         return $contents;
     }
+
+// Auto-generated SectionMethods section end
 }

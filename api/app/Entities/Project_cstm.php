@@ -52,10 +52,11 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="project_cstm", indexes={
- * @ORM\Index(name="projects_primary_key_index", columns={"id"})})
+ * @ORM\Index(name="projectpk", columns={"id_c"})})
  * @property mixed $jjwg_maps_lat_c
  * @property mixed $jjwg_maps_lng_c
  * @property mixed $jjwg_maps_geocode_status_c
@@ -67,62 +68,62 @@ class Project_cstm extends MintEntity
 
 // Auto-generated SectionProperties section start
 
-                
-    
     /**
      * @ORM\Id
      * @ORM\Column(name="id_c", type="string", length=36)
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $id;
+    protected $id;
 
 
-/**
- * @ORM\OneToOne(targetEntity="Project", inversedBy="customEntity")
- * @ORM\JoinColumn(name="id_c", referencedColumnName="id")
- */
-private $mainEntity;
+    /**
+     * @ORM\OneToOne(targetEntity="Project", inversedBy="custom_entity")
+     * @ORM\JoinColumn(name="id_c", referencedColumnName="id")
+     */
+    protected $main_entity;
 
 
-        /**
+    /**
+     * @ORM\Column(type="float", length="10")
      */
     protected $jjwg_maps_lat_c;
 
     /**
+     * @ORM\Column(type="float", length="11")
      */
     protected $jjwg_maps_lng_c;
 
     /**
+     * @ORM\Column(type="string", length="255")
      */
     protected $jjwg_maps_geocode_status_c;
 
     /**
+     * @ORM\Column(type="string", length="255")
      */
     protected $jjwg_maps_address_c;
 
-// Auto-generated SectionProperties section end
+    // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
     public function __construct()
     {
     }
 
-                
-    
-    public function getMainEntity()
+                public function getMainEntity()
     {
-        return $this->mainEntity;
+        return $this->main_entity;
     }
 
-    public function setMainEntity($mainEntity)
+    public function setMainEntity($main_entity)
     {
-        $this->mainEntity = $mainEntity;
+        $this->main_entity = $main_entity;
 
-        if ($mainEntity && $mainEntity->getCustomEntity() !== $this) {
-            $mainEntity->setCustomEntity($this);
+        if ($main_entity && $main_entity->getCustomEntity() !== $this) {
+            $main_entity->setCustomEntity($this);
         }
 
         return $this;
     }
 
-    // Auto-generated SectionMethods section end
+        // Auto-generated SectionMethods section end
 }

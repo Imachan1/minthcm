@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="goals", indexes={
@@ -187,7 +188,7 @@ class Goals extends MintEntity
      */
     protected Collection $appraisalitems;
 
-// Auto-generated SectionProperties section end
+    // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
     public function __construct()
     {
@@ -195,5 +196,5 @@ class Goals extends MintEntity
         $this->appraisalitems = new ArrayCollection();
     }
 
-// Auto-generated SectionMethods section end
+    // Auto-generated SectionMethods section end
 }

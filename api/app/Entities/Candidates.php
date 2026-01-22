@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="candidates", indexes={
@@ -446,7 +447,7 @@ class Candidates extends MintEntity
      */
     protected Collection $files;
 
-// Auto-generated SectionProperties section end
+    // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
     public function __construct()
     {
@@ -503,5 +504,5 @@ public function getSerialized(bool $json = false): array|string
     $data['email1'] = $this->getEmail1();
     return $data;
 }
-// Auto-generated SectionMethods section end
+    // Auto-generated SectionMethods section end
 }

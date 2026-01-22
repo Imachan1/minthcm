@@ -28,6 +28,7 @@ class EntityCreatorDataGenerator
         'encrypt' => 'string',
         'long' => 'bigint',
         'mediumtext' => 'text',
+        'dynamicenum' => 'string',
     ];
 
     public const SKIP_TYPES = [

@@ -8,9 +8,9 @@
 </template>
 
 <script setup lang="ts">
-import { FieldProps } from '../Field.model';
-import { computed } from 'vue';
-import { useLanguagesStore } from '@/store/languages';
+import { FieldProps } from '../Field.model'
+import { computed } from 'vue'
+import { useLanguagesStore } from '@/store/languages'
 
 const languages = useLanguagesStore()
 
@@ -22,18 +22,23 @@ const fieldValue = computed(() => {
     const calendarDays = languages.getList('dom_cal_day_long').filter((item) => item.value !== '')
 
     const repeatType = repeatTypeDom.find((item) => item.key === props.data.bean.fields.repeat_type?.model)?.value || ''
-    const repeatInterval = repeatIntervals.find((item) => item.key == props.data.bean.fields.repeat_type?.model)?.value || ''
-    
-    if (props.data.bean.fields.repeat_type?.model == '') {
+    const repeatInterval =
+        repeatIntervals.find((item) => item.key == props.data.bean.fields.repeat_type?.model)?.value || ''
+
+    if (!props.data.bean.fields.repeat_type?.model) {
         return repeatType
     }
 
-    let value = `${repeatType}, ${languages.label('LBL_EVERY')} ${props.data.bean.fields.repeat_interval?.model} ${repeatInterval}, `
+    let value = `${repeatType}, ${languages.label('LBL_EVERY')} ${
+        props.data.bean.fields.repeat_interval?.model
+    } ${repeatInterval}, `
 
     if (props.data.bean.fields.repeat_count?.model && props.data.bean.fields.repeat_count?.model !== '') {
         value += `${props.data.bean.fields.repeat_count?.model} ${languages.label('LBL_TIMES').toLowerCase()}`
     } else if (props.data.bean.fields.repeat_until?.model) {
-        value += `${languages.label('LBL_UNTIL').toLowerCase()} ${props.data.bean.fields.repeat_until?.model.formatted.user_date ?? ''}`
+        value += `${languages.label('LBL_UNTIL').toLowerCase()} ${
+            props.data.bean.fields.repeat_until?.model.formatted.user_date ?? ''
+        }`
     }
 
     if (props.data.bean.fields.repeat_type?.model === 'Weekly' && props.data.bean.fields.repeat_dow?.model) {
@@ -44,7 +49,6 @@ const fieldValue = computed(() => {
     }
 
     return value
-    
 })
 </script>
 
