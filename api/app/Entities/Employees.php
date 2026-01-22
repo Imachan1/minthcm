@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity(repositoryClass="MintHCM\Api\Repositories\UsersRepository")
  * @ORM\Table(name="users", indexes={
@@ -603,7 +604,7 @@ class Employees extends MintEntity
      */
     protected Collection $files;
 
-// Auto-generated SectionProperties section end
+    // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
     public function __construct()
     {
@@ -647,10 +648,10 @@ class Employees extends MintEntity
     }
 
     /**
-    * Get the fullname 
-    *
-    * @return string
-    */
+     * Get the fullname 
+     *
+     * @return string
+     */
     public function getFullName(): string
     {
         $names = [];
@@ -708,5 +709,5 @@ public function getSerialized(bool $json = false): array|string
     $data['email1'] = $this->getEmail1();
     return $data;
 }
-// Auto-generated SectionMethods section end
+    // Auto-generated SectionMethods section end
 }

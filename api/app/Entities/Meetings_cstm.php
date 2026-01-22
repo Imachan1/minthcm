@@ -52,14 +52,11 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="meetings_cstm", indexes={
- * @ORM\Index(name="meetingspk", columns={"id"}), 
- * @ORM\Index(name="idx_mtg_name", columns={"name"}), 
- * @ORM\Index(name="idx_meet_par_del", columns={"parent_id", "parent_type", "deleted"}), 
- * @ORM\Index(name="idx_meet_stat_del", columns={"assigned_user_id", "status", "deleted"}), 
- * @ORM\Index(name="idx_meet_date_start", columns={"date_start"})})
+ * @ORM\Index(name="meetingspk", columns={"id_c"})})
  * @property mixed $jjwg_maps_lat_c
  * @property mixed $jjwg_maps_lng_c
  * @property mixed $jjwg_maps_geocode_status_c
@@ -71,62 +68,62 @@ class Meetings_cstm extends MintEntity
 
 // Auto-generated SectionProperties section start
 
-                
-    
     /**
      * @ORM\Id
      * @ORM\Column(name="id_c", type="string", length=36)
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $id;
+    protected $id;
 
 
-/**
- * @ORM\OneToOne(targetEntity="Meetings", inversedBy="customEntity")
- * @ORM\JoinColumn(name="id_c", referencedColumnName="id")
- */
-private $mainEntity;
+    /**
+     * @ORM\OneToOne(targetEntity="Meetings", inversedBy="custom_entity")
+     * @ORM\JoinColumn(name="id_c", referencedColumnName="id")
+     */
+    protected $main_entity;
 
 
-        /**
+    /**
+     * @ORM\Column(type="float", length="10")
      */
     protected $jjwg_maps_lat_c;
 
     /**
+     * @ORM\Column(type="float", length="11")
      */
     protected $jjwg_maps_lng_c;
 
     /**
+     * @ORM\Column(type="string", length="255")
      */
     protected $jjwg_maps_geocode_status_c;
 
     /**
+     * @ORM\Column(type="string", length="255")
      */
     protected $jjwg_maps_address_c;
 
-// Auto-generated SectionProperties section end
+    // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
     public function __construct()
     {
     }
 
-                
-    
-    public function getMainEntity()
+                public function getMainEntity()
     {
-        return $this->mainEntity;
+        return $this->main_entity;
     }
 
-    public function setMainEntity($mainEntity)
+    public function setMainEntity($main_entity)
     {
-        $this->mainEntity = $mainEntity;
+        $this->main_entity = $main_entity;
 
-        if ($mainEntity && $mainEntity->getCustomEntity() !== $this) {
-            $mainEntity->setCustomEntity($this);
+        if ($main_entity && $main_entity->getCustomEntity() !== $this) {
+            $main_entity->setCustomEntity($this);
         }
 
         return $this;
     }
 
-    // Auto-generated SectionMethods section end
+        // Auto-generated SectionMethods section end
 }

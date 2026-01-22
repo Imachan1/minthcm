@@ -54,6 +54,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // Auto-generated SectionUse section end
 // Auto-generated SectionRepository section start
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="candidates", indexes={
@@ -113,6 +114,15 @@ class Candidates extends MintEntity
 
 // Auto-generated SectionProperties section start
 
+    /**
+     * @ORM\OneToOne(
+     *     targetEntity="Candidates_cstm",
+     *     mappedBy="main_entity",
+     *     cascade={"persist", "remove"},
+     *     fetch="EAGER"
+     * )
+     */
+    protected $custom_entity;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -446,7 +456,7 @@ class Candidates extends MintEntity
      */
     protected Collection $files;
 
-// Auto-generated SectionProperties section end
+    // Auto-generated SectionProperties section end
 // Auto-generated SectionMethods section start
     public function __construct()
     {
@@ -463,9 +473,27 @@ class Candidates extends MintEntity
         $this->employeecertificates = new ArrayCollection();
         $this->employee = new ArrayCollection();
         $this->files = new ArrayCollection();
+        $this->setCustomEntity(new Candidates_cstm());
     }
 
-        public function getEmail1(): string
+                public function getCustomEntity()
+    {
+        return $this->custom_entity;
+    }
+
+
+    public function setCustomEntity($custom_entity)
+    {
+        $this->custom_entity = $custom_entity;
+
+        if ($custom_entity && $custom_entity->getMainEntity() !== $this) {
+            $custom_entity->setMainEntity($this);
+        }
+
+        return $this;
+    }
+
+                public function getEmail1(): string
         {
             $conn = $this->getEntityManager()->getConnection();
 
@@ -503,5 +531,5 @@ public function getSerialized(bool $json = false): array|string
     $data['email1'] = $this->getEmail1();
     return $data;
 }
-// Auto-generated SectionMethods section end
+    // Auto-generated SectionMethods section end
 }

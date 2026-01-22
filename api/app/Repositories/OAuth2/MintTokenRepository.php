@@ -46,9 +46,9 @@
 
  namespace MintHCM\Api\Repositories\OAuth2;
 
- use Doctrine\ORM\EntityRepository;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
  
- class MintTokenRepository extends EntityRepository 
+ class MintTokenRepository extends MintEntityRepository 
  {
 
  }
