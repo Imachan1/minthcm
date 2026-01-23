@@ -3,9 +3,9 @@
 
 namespace MintHCM\Api\Repositories;
 
-use Doctrine\ORM\EntityRepository;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
 
-class EmployeeRolesRepository extends EntityRepository
+class EmployeeRolesRepository extends MintEntityRepository
 {
     public function getCompetencies($roleId)
     {
