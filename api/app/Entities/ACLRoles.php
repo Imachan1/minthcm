@@ -74,7 +74,7 @@ use Doctrine\Common\Collections\Collection;
 class ACLRoles extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -143,7 +143,7 @@ class ACLRoles extends MintEntity
     protected Collection $SecurityGroups;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->users = new ArrayCollection();

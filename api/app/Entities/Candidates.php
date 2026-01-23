@@ -112,7 +112,7 @@ use Doctrine\Common\Collections\Collection;
 class Candidates extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -448,7 +448,7 @@ class Candidates extends MintEntity
     protected Collection $files;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->email_addresses = new ArrayCollection();

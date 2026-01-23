@@ -101,7 +101,7 @@ use Doctrine\Common\Collections\Collection;
 class Calls extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -315,7 +315,7 @@ class Calls extends MintEntity
     protected Collection $resources;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();

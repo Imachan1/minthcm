@@ -76,7 +76,7 @@ use Doctrine\Common\Collections\Collection;
 class DashboardHistory extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -171,7 +171,7 @@ class DashboardHistory extends MintEntity
     protected $dashboardmanager;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->dashboardbackups = new ArrayCollection();

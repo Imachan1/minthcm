@@ -70,7 +70,7 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 class UserPreferences extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id

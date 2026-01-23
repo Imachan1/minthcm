@@ -79,7 +79,7 @@ use Doctrine\Common\Collections\Collection;
 class Project extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\OneToOne(
@@ -230,7 +230,7 @@ class Project extends MintEntity
     protected Collection $am_projecttemplates_project_1;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();

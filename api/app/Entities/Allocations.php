@@ -78,7 +78,7 @@ use Doctrine\Common\Collections\Collection;
 class Allocations extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -190,7 +190,7 @@ class Allocations extends MintEntity
     protected Collection $allocations_employees;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();

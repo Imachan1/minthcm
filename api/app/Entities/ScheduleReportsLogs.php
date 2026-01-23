@@ -75,7 +75,7 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 class ScheduleReportsLogs extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -159,7 +159,7 @@ class ScheduleReportsLogs extends MintEntity
     protected $schedulereports_schedulereportslogs;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
     }

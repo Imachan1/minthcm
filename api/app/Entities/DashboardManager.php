@@ -78,7 +78,7 @@ use Doctrine\Common\Collections\Collection;
 class DashboardManager extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -197,7 +197,7 @@ class DashboardManager extends MintEntity
     protected Collection $dashboardhistory;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->users_forced_tabs_dashboards = new ArrayCollection();
