@@ -77,7 +77,7 @@ use Doctrine\Common\Collections\Collection;
 class Certificates extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -189,7 +189,7 @@ class Certificates extends MintEntity
     protected Collection $employeecertificates;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();

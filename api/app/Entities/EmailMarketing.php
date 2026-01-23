@@ -84,7 +84,7 @@ use Doctrine\Common\Collections\Collection;
 class EmailMarketing extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id

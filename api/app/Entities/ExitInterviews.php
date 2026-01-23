@@ -79,7 +79,7 @@ use Doctrine\Common\Collections\Collection;
 class ExitInterviews extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -208,7 +208,7 @@ class ExitInterviews extends MintEntity
     protected Collection $documents;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();

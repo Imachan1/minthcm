@@ -77,7 +77,7 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 class DocumentRevisions extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Column(type="string", length="36")
@@ -162,7 +162,7 @@ class DocumentRevisions extends MintEntity
     protected $documents;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
     }

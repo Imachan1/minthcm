@@ -75,7 +75,7 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 class Currencies extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -141,7 +141,7 @@ class Currencies extends MintEntity
     protected $hidden;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
     }

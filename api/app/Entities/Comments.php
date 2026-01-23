@@ -80,7 +80,7 @@ use Doctrine\Common\Collections\Collection;
 class Comments extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -201,7 +201,7 @@ class Comments extends MintEntity
     protected $news;
 
     // Auto-generated SectionProperties section end
-        // Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->reply_to = new ArrayCollection();

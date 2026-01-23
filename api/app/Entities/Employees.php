@@ -116,7 +116,7 @@ use Doctrine\Common\Collections\Collection;
 class Employees extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -605,7 +605,7 @@ class Employees extends MintEntity
     protected Collection $files;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->reports_to_link = new ArrayCollection();

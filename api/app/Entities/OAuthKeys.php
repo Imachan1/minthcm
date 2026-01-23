@@ -77,7 +77,7 @@ use Doctrine\Common\Collections\Collection;
 class OAuthKeys extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -166,7 +166,7 @@ class OAuthKeys extends MintEntity
     protected Collection $tokens;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->tokens = new ArrayCollection();

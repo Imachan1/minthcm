@@ -66,7 +66,7 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 class Project_cstm extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -104,7 +104,7 @@ class Project_cstm extends MintEntity
     protected $jjwg_maps_address_c;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
     }

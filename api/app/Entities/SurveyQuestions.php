@@ -78,7 +78,7 @@ use Doctrine\Common\Collections\Collection;
 class SurveyQuestions extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -194,7 +194,7 @@ class SurveyQuestions extends MintEntity
     protected $survey;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();

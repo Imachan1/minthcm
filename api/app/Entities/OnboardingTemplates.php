@@ -74,7 +74,7 @@ use Doctrine\Common\Collections\Collection;
 class OnboardingTemplates extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -170,7 +170,7 @@ class OnboardingTemplates extends MintEntity
     protected Collection $elements;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();

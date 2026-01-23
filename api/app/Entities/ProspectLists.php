@@ -79,7 +79,7 @@ use Doctrine\Common\Collections\Collection;
 class ProspectLists extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Column(type="id", length="36")

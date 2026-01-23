@@ -117,7 +117,7 @@ use Doctrine\Common\Collections\Collection;
 class Users extends MintEntity implements UserEntityInterface
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -503,7 +503,7 @@ class Users extends MintEntity implements UserEntityInterface
     protected Collection $deputy;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->reports_to_link = new ArrayCollection();
