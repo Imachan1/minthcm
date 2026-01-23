@@ -95,7 +95,7 @@ export const useBean = (module: string, id: string) => {
     const isValid = computed(() => {
         if (logic.requiredFields.value) {
             for (const fieldName of logic.requiredFields.value) {
-                if ((isDirty.value || fields.value[fieldName].isDirty) && !fields.value[fieldName].model) {
+                if ((isDirty.value || fields.value[fieldName]?.isDirty) && !fields.value[fieldName].model) {
                     return false
                 }
             }

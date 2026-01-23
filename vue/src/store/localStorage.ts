@@ -33,7 +33,6 @@ export const useLocalStorageStore = defineStore('localStorage', () => {
     }
 
     function hasPanelSections(module: string, panel: string): boolean {
-        console.error(expandedPanels.value)
         return !!(expandedPanels.value.modules[module] && expandedPanels.value.modules[module][panel])
     }
 

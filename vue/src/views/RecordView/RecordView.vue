@@ -27,7 +27,7 @@ store.resetBean()
 
 onMounted(async () => {
     await store.bean.init().catch(recordAccessError)
-    
+
     const pathSegments = route.path.split('/')
     if (pathSegments.includes('EditView')) {
         store.view = 'edit'
@@ -45,7 +45,7 @@ onMounted(async () => {
 })
 
 function recordAccessError(error: any): Promise<any> {
-    if ([403, 404].includes(error.response.status)) {
+    if (error.response && [403, 404].includes(error.response.status)) {
         useStatusBoxesStore().showStatus('record_access_error', {
             type: 'error',
             message: languages.label('ERROR_NO_RECORD'),
@@ -54,11 +54,18 @@ function recordAccessError(error: any): Promise<any> {
         redirect('list')
     }
 
-    if (408 == error.response.status) {
+    if (error.response && 408 == error.response.status) {
         useStatusBoxesStore().showStatus('access_timed_out', {
             type: 'error',
             message: languages.label('LBL_DETAIL_VIEW_LOADING_TIMEOUT'),
             autoClose: true,
+        })
+    }
+    if (error.response && 500 == error.response.status) {
+        useStatusBoxesStore().showStatus('access_timed_out', {
+            type: 'error',
+            message: error.response.statusText + ': ' + error.response.data.message,
+            autoClose: false,
         })
     }
     return Promise.reject(error)
@@ -74,7 +81,9 @@ watch(
     () => store.bean.syncAttributes,
     (newVal) => {
         if (!newVal.name || !newVal.module_name) return
-        document.title = `${newVal.name} | ${languages.label('LBL_MODULE_NAME', newVal.module_name)} | ${backend.initData?.systemName}`
+        document.title = `${newVal.name} | ${languages.label('LBL_MODULE_NAME', newVal.module_name)} | ${
+            backend.initData?.systemName
+        }`
     },
 )
 </script>
