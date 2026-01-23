@@ -24,7 +24,7 @@
 | Component | Version |
 |-----------|--------|
 | **PHP** | 8.2 |
-| **MySQL** | 8.0 |
+| **MySQL** | 8.0 (or MariaDB 10.5, 10.6, 10.10, 10.11) |
 | **Elasticsearch** | 7.9 - 7.16 |
 | **Node.js** | 21 |
 

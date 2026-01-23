@@ -78,7 +78,7 @@ use Doctrine\Common\Collections\Collection;
 class Offboardings extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -205,7 +205,7 @@ class Offboardings extends MintEntity
     protected Collection $exitinterviews;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();

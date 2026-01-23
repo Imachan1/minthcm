@@ -77,7 +77,7 @@ use Doctrine\Common\Collections\Collection;
 class AM_ProjectTemplates extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -184,7 +184,7 @@ class AM_ProjectTemplates extends MintEntity
     protected Collection $am_projecttemplates_users_1;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->am_projecttemplates_project_1 = new ArrayCollection();

@@ -83,7 +83,7 @@ use Doctrine\Common\Collections\Collection;
 class Notes extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Column(type="id", length="36")
@@ -241,7 +241,7 @@ class Notes extends MintEntity
     protected $appraisal;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
         $this->SecurityGroups = new ArrayCollection();

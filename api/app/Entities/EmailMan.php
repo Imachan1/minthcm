@@ -81,7 +81,7 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 class EmailMan extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Column(type="datetime")
@@ -167,7 +167,7 @@ class EmailMan extends MintEntity
     protected $related_confirm_opt_in;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
     }

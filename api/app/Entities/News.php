@@ -80,7 +80,7 @@ use Doctrine\Common\Collections\Collection;
 class News extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id

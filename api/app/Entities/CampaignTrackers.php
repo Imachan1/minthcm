@@ -74,7 +74,7 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
 class CampaignTrackers extends MintEntity
 {
 
-// Auto-generated SectionProperties section start
+    // Auto-generated SectionProperties section start
 
     /**
      * @ORM\Id
@@ -141,7 +141,7 @@ class CampaignTrackers extends MintEntity
     protected $campaign;
 
     // Auto-generated SectionProperties section end
-// Auto-generated SectionMethods section start
+    // Auto-generated SectionMethods section start
     public function __construct()
     {
     }
