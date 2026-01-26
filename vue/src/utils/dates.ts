@@ -6,7 +6,7 @@ export default class DateUtils {
         const backend = useBackendStore()
         const preferences = usePreferencesStore()
         const dateFormat = preferences.userDateFormat || backend.initData.global.date_format || 'Y-m-d'
-        const timeFormat = preferences.userTimeFormat || backend.initData.global.time_format || 'H:i'
+        const timeFormat = preferences.userTimeFormat || backend.initData.global.time_format || 'HH:mm'
         return { date: dateFormat, time: timeFormat }
     }
 
@@ -15,6 +15,7 @@ export default class DateUtils {
         switch (dateTimeFormat.time) {
             case 'H:i':
             case 'H.i':
+            case 'HH:mm':
                 return '24hr'
             default:
                 return 'ampm'
