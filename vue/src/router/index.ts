@@ -25,7 +25,15 @@ router.beforeEach(async (to, from) => {
         await backend.init()
     }
     if (to.meta?.auth !== false && !auth.user?.id) {
+        sessionStorage.setItem('auth_redirect', to.fullPath)
         return { name: 'auth-login', query: { redirect: to.path } }
+    }
+    if (auth.user?.id && to.name === 'auth-login') {
+        const redirect = sessionStorage.getItem('auth_redirect')
+        if (redirect && redirect !== to.fullPath) {
+            sessionStorage.removeItem('auth_redirect')
+            return redirect
+        }
     }
     if (auth.user?.show_login_wizard && to.name !== 'setup-wizard') {
         return { name: 'setup-wizard' }
