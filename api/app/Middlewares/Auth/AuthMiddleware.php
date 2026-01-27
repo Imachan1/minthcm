@@ -47,6 +47,7 @@
 namespace MintHCM\Api\Middlewares\Auth;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use MintHCM\Api\Controllers\OAuth2\Controller;
@@ -94,8 +95,19 @@ class AuthMiddleware extends Middleware
                 }
             }
         }
-
+        if(str_contains($request->getRequestTarget(), "api/forget_password")){
+            $this->validateForgotPassword($request, $handler);
+        }
         return $handler->handle($request);
+    }
+
+    protected function validateForgotPassword(Request $request, RequestHandler $handler)
+    {
+        $username = $request->getAttribute('username');
+        $email = $request->getAttribute('email');
+        if(empty(trim($username)) || empty(trim($email))){
+            throw new Exception(translate('LBL_MINT4_AUTH_FORGOT_PASSWORD_MISSING_CREDENTIALS_ERROR'));
+        }
     }
 
     private function runTokenValidation(Request $request): Request|Response

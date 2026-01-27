@@ -31,10 +31,23 @@
                 :label="languages.label('LBL_MINT4_AUTH_PASSWORD')"
                 variant="outlined"
                 hide-details
-                :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                @click:append-inner="showPassword = !showPassword"
                 :disabled="isSubmiting"
-            />
+                >
+                <template #append-inner>
+                <v-btn
+                    icon 
+                    variant="text"
+                    density="compact"
+                    class="login-password-toggle"
+                    :aria-label="showPassword ? languages.label('LBL_MINT4_AUTH_HIDE_PASSWORD') : languages.label('LBL_MINT4_AUTH_SHOW_PASSWORD')"
+                    @click="showPassword = !showPassword"
+                >
+                    <v-icon size="20">
+                    {{ showPassword ? 'mdi-eye-off' : 'mdi-eye' }}
+                    </v-icon>
+                </v-btn>
+                </template>
+            </v-text-field>
             <MintButton variant="primary" :text="languages.label('LBL_MINT4_AUTH_LOGIN_BTN')" @click="handleSubmit" />
         </v-form>
     </div>
@@ -130,5 +143,9 @@ async function handleSubmit() {
 .login-form .login-input input:-webkit-autofill:focus,
 .login-form .login-input input:-webkit-autofill:active {
     transition: background-color 9999s ease-in-out 0s;
+}
+.login-password-toggle {
+    min-width: 0;
+    padding: 0;
 }
 </style>
