@@ -187,7 +187,14 @@ class Meeting extends SugarBean {
             $this->date_end = $td->asDb();
          }
       }
-
+      if(isset($this->date_start) && !empty($this->date_end)){
+          $start = new DateTime($this->date_start);
+          $end = new DateTime($this->date_end);
+          $interval = $start->diff($end);
+          $this->duration = $interval->h . 'h ' . $interval->i . 'm';
+          $this->duration_hours = $interval->h;
+          $this->duration_minutes = $interval->i;
+      }
       $check_notify = (!empty($_REQUEST['send_invites']) && $_REQUEST['send_invites'] == '1') ? true : false;
       if ( empty($_REQUEST['send_invites']) ) {
          if ( !empty($this->id) ) {
