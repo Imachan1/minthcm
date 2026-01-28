@@ -6,7 +6,7 @@
                     {{ column.label }}
                 </th>
             </tr>
-        </thead>
+        </thead> 
         <tbody>
             <tr v-for="record in props.records" :key="record.id">
                 <td v-for="column in columns" :key="column.name">
@@ -20,6 +20,12 @@
                         :modelValue="record.attributes[column.name]"
                     />
                 </td>
+                <MintSubpanelsInlineButtons
+                    v-if="props.subpanel && props.subpanel.inlineButtons && props.module"
+                    :module="props.module"
+                    :recordId="record.id"
+                    :subpanel="props.subpanel"
+                />
             </tr>
         </tbody>
     </table>
@@ -28,12 +34,15 @@
 <script setup lang="ts">
 import Field from '@/components/Fields/Field.vue'
 import { useLanguagesStore } from '@/store/languages';
+import MintSubpanelsInlineButtons from '../MintPanel/MintPanelSubpanels/MintSubpanelsInlineButtons.vue';
 
 const languages = useLanguagesStore()
 
 interface Props {
-    columns: []
-    records: []
+    columns: Array<Object>
+    records: Array<Object>
+    module?: string
+    subpanel?: Object
 }
 
 const props = defineProps<Props>()

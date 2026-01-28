@@ -1,5 +1,6 @@
 import { computed, ComputedRef, ref } from 'vue'
 import { modulesApi } from '@/api/modules.api'
+import { mintApi } from '@/api/api'
 
 interface RelationshipRecord {
     id: string
@@ -49,6 +50,14 @@ export const useLink = (link: string, relationshipName: string, beanData: BeanDa
         beansToAdd.value.delete(id)
     }
 
+    async function unlink(parentBean: any, link_name: string)
+    {
+        await mintApi.post(`/${parentBean.module}/Unlink/${parentBean.id}`, {
+                ids: [...beansToRemove.value],
+                link_name: link_name,
+        })
+    }
+
     // TODO: to trzeba zmienić, żeby po pobraniu rekordów przerabiało je na useBean
     // TODO: Użyć tego do pobierania danych do subpaneli i dołączyć stronnicowanie
     async function fetchRelatedRecords() {
@@ -79,5 +88,6 @@ export const useLink = (link: string, relationshipName: string, beanData: BeanDa
         remove,
         fetchRelatedRecords,
         getChanges,
+        unlink,
     }
 }

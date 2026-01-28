@@ -32,8 +32,10 @@
                 </v-expansion-panel-title>
                 <v-expansion-panel-text class="mint-subpanel-content">
                     <MintDataTable
+                        :subpanel="subpanel"
                         :columns="subpanel.columns"
                         :records="subpanel.records"
+                        :module="subpanel.module"
                         :key="`${subpanel.key}-${subpanel.page}`"
                     />
                     <MintDataTablePagination
