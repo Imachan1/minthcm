@@ -51,7 +51,7 @@ $vardefs = array(
             'options' => 'salutation_dom',
             'massupdate' => false,
             'len' => '255',
-            'comment' => 'Contact salutation (e.g., Mr, Ms)'
+            'comment' => 'LBL_SALUTATION_COMMENT'
         ),
         'first_name' => array(
             'name' => 'first_name',
@@ -60,7 +60,7 @@ $vardefs = array(
             'len' => '100',
             'unified_search' => true,
             'full_text_search' => array('boost' => 3),
-            'comment' => 'First name of the contact',
+            'comment' => 'LBL_FIRST_NAME_COMMENT',
             'merge_filter' => 'selected',
 
         ),
@@ -71,7 +71,7 @@ $vardefs = array(
             'len' => '100',
             'unified_search' => true,
             'full_text_search' => array('boost' => 3),
-            'comment' => 'Last name of the contact',
+            'comment' => 'LBL_LAST_NAME_COMMENT',
             'merge_filter' => 'selected',
             'required' => true,
             'importable' => 'required',
@@ -89,6 +89,7 @@ $vardefs = array(
             'len' => '255',
             'db_concat_fields' => array(0 => 'first_name', 1 => 'last_name'),
             'importable' => 'false',
+            'comment' => 'LBL_NAME_COMMENT'
         ),
         'full_name' => array(
             'name' => 'full_name',
@@ -102,13 +103,14 @@ $vardefs = array(
             'len' => '510',
             'db_concat_fields' => array(0 => 'first_name', 1 => 'last_name'),
             'studio' => array('listview' => false),
+            'comment' => 'LBL_NAME_COMMENT'
         ),
         'title' => array(
             'name' => 'title',
             'vname' => 'LBL_TITLE',
             'type' => 'varchar',
             'len' => '100',
-            'comment' => 'The title of the contact'
+            'comment' => 'LBL_TITLE_COMMENT'
         ),
         'photo' => array(
             'name' => 'photo',
@@ -124,13 +126,14 @@ $vardefs = array(
             'width' => '160',
             'height' => '160',
 			'studio' => array('listview' => true),
+            'comment' => 'LBL_PHOTO_COMMENT'
         ),
         'department' => array(
             'name' => 'department',
             'vname' => 'LBL_DEPARTMENT',
             'type' => 'varchar',
             'len' => '255',
-            'comment' => 'The department of the contact',
+            'comment' => 'LBL_DEPARTMENT_COMMENT',
             'merge_filter' => 'enabled',
         ),
         'do_not_call' => array(
@@ -139,7 +142,7 @@ $vardefs = array(
             'type' => 'bool',
             'default' => '0',
             'audited' => true,
-            'comment' => 'An indicator of whether contact can be called'
+            'comment' => 'LBL_DO_NOT_CALL_COMMENT'
         ),
         'phone_home' => array(
             'name' => 'phone_home',
@@ -149,7 +152,7 @@ $vardefs = array(
             'len' => 100,
             'unified_search' => true,
             'full_text_search' => array('boost' => 1),
-            'comment' => 'Home phone number of the contact',
+            'comment' => 'LBL_PHONE_HOME_COMMENT',
             'merge_filter' => 'enabled',
         ),
         //bug 42902
@@ -175,7 +178,7 @@ $vardefs = array(
             'len' => 100,
             'unified_search' => true,
             'full_text_search' => array('boost' => 1),
-            'comment' => 'Mobile phone number of the contact',
+            'comment' => 'LBL_PHONE_MOBILE_COMMENT',
             'merge_filter' => 'enabled',
         ),
         'phone_work' => array(
@@ -187,7 +190,7 @@ $vardefs = array(
             'audited' => true,
             'unified_search' => true,
             'full_text_search' => array('boost' => 1),
-            'comment' => 'Work phone number of the contact',
+            'comment' => 'LBL_PHONE_WORK_COMMENT',
             'merge_filter' => 'enabled',
         ),
         'phone_other' => array(
@@ -198,7 +201,7 @@ $vardefs = array(
             'len' => 100,
             'unified_search' => true,
             'full_text_search' => array('boost' => 1),
-            'comment' => 'Other phone number for the contact',
+            'comment' => 'LBL_PHONE_OTHER_COMMENT',
             'merge_filter' => 'enabled',
         ),
         'phone_fax' => array(
@@ -209,7 +212,7 @@ $vardefs = array(
             'len' => 100,
             'unified_search' => true,
             'full_text_search' => array('boost' => 1),
-            'comment' => 'Contact fax number',
+            'comment' => 'LBL_PHONE_FAX_COMMENT',
             'merge_filter' => 'enabled',
         ),
         'email1' => array(
@@ -227,6 +230,7 @@ $vardefs = array(
             // bug 46859
             'full_text_search' => array('boost' => 3, 'analyzer' => 'whitespace'),
             //bug 54567
+            'comment' => 'LBL_EMAIL_ADDRESS_COMMENT'
         ),
         'email2' => array(
             'name' => 'email2',

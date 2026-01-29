@@ -93,6 +93,7 @@ export interface FieldVardef {
     readonly?: boolean
     properties?: PropertiesObject
     filters?: { [moduleName: string]: filterDef[] } | filterDef[]
+    comment?: string
 }
 
 interface PropertiesObject {

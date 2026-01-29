@@ -915,3 +915,45 @@ if (!class_exists('VardefManager')) {
 }
 VardefManager::createVardef('Candidatures', 'Candidatures',
     array('basic', 'assignable', 'security_groups', 'employee_related'));
+    
+foreach ([
+    'name' => 'LBL_NAME_COMMENT',
+    'currency_id' => 'LBL_CURRENCY_ID_COMMENT',
+    'currency_name' => 'LBL_CURRENCY_NAME_COMMENT',
+    'currency_symbol' => 'LBL_CURRENCY_SYMBOL_COMMENT',
+    'reason_for_rejection' => 'LBL_REASON_FOR_REJECTION_COMMENT',
+    'dg_amount' => 'LBL_DG_AMOUNT_COMMENT',
+    'dg_amount_usdollar' => 'LBL_DG_AMOUNT_USDOLLAR_COMMENT',
+    'gross_amount' => 'LBL_GROSS_AMOUNT_COMMENT',
+    'gross_amount_usdollar' => 'LBL_GROSS_AMOUNT_USDOLLAR_COMMENT',
+    'net_amount' => 'LBL_NET_AMOUNT_COMMENT',
+    'net_amount_usdollar' => 'LBL_NET_AMOUNT_USDOLLAR_COMMENT',
+    'notice' => 'LBL_NOTICE_COMMENT',
+    'notice_final_expectations' => 'LBL_NOTICE_FINAL_EXPECTATIONS_COMMENT',
+    'salary_net' => 'LBL_SALARY_NET_COMMENT',
+    'salary_net_usdollar' => 'LBL_SALARY_NET_USDOLLAR_COMMENT',
+    'scoring' => 'LBL_SCORING_COMMENT',
+    'source' => 'LBL_SOURCE_COMMENT',
+    'start_date' => 'LBL_START_DATE_COMMENT',
+    'work_start' => 'LBL_WORK_START_COMMENT',
+    'training_date' => 'LBL_TRAINING_DATE_COMMENT',
+    'status' => 'LBL_STATUS_COMMENT',
+    'status_information' => 'LBL_STATUS_INFORMATION_COMMENT',
+    'task_grade' => 'LBL_TASK_GRADE_COMMENT',
+    'to_decision' => 'LBL_TO_DECISION_COMMENT',
+    'final_employment_form' => 'LBL_FINAL_EMPLOYMENT_FORM_COMMENT',
+    'employment_form' => 'LBL_EMPLOYMENT_FORM_COMMENT',
+    'entry_interview' => 'LBL_ENTRY_INTERVIEW_COMMENT',
+    'route_of_acquisition' => 'LBL_ROUTE_OF_ACQUISITION_COMMENT',
+    'original_candidature_name' => 'LBL_ORIGINAL_CANDIDATURE_NAME_COMMENT',
+    'original_candidature_id' => 'LBL_ORIGINAL_CANDIDATURE_ID_COMMENT',
+    'parent_id' => 'LBL_PARENT_ID_COMMENT',
+    'parent_type' => 'LBL_PARENT_TYPE_COMMENT',
+    'parent_name' => 'LBL_PARENT_NAME_COMMENT',
+    'recruitment_name' => 'LBL_RECRUITMENT_NAME_COMMENT',
+    'recruitment_id' => 'LBL_RECRUITMENT_ID_COMMENT',
+] as $field => $commentLabel) {
+    if (isset($dictionary['Candidatures']['fields'][$field])) {
+        $dictionary['Candidatures']['fields'][$field]['comment'] = $commentLabel;
+    }
+}
