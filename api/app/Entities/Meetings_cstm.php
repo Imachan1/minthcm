@@ -57,10 +57,10 @@ use MintHCM\Data\ORM\Doctrine\MintEntity\MintEntity;
  * @ORM\Entity
  * @ORM\Table(name="meetings_cstm", indexes={
  * @ORM\Index(name="meetingspk", columns={"id_c"})})
- * @property mixed $jjwg_maps_lat_c
  * @property mixed $jjwg_maps_lng_c
- * @property mixed $jjwg_maps_geocode_status_c
+ * @property mixed $jjwg_maps_lat_c
  * @property mixed $jjwg_maps_address_c
+ * @property mixed $jjwg_maps_geocode_status_c
  */
 // Auto-generated SectionRepository section end
 class Meetings_cstm extends MintEntity
@@ -84,24 +84,24 @@ class Meetings_cstm extends MintEntity
 
 
     /**
-     * @ORM\Column(type="float", length="10")
-     */
-    protected $jjwg_maps_lat_c;
-
-    /**
      * @ORM\Column(type="float", length="11")
      */
     protected $jjwg_maps_lng_c;
 
     /**
-     * @ORM\Column(type="string", length="255")
+     * @ORM\Column(type="float", length="10")
      */
-    protected $jjwg_maps_geocode_status_c;
+    protected $jjwg_maps_lat_c;
 
     /**
      * @ORM\Column(type="string", length="255")
      */
     protected $jjwg_maps_address_c;
+
+    /**
+     * @ORM\Column(type="string", length="255")
+     */
+    protected $jjwg_maps_geocode_status_c;
 
     // Auto-generated SectionProperties section end
     // Auto-generated SectionMethods section start
