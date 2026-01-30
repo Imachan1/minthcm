@@ -80,7 +80,10 @@ class DocumentRevisions extends MintEntity
     // Auto-generated SectionProperties section start
 
     /**
-     * @ORM\Column(type="string", length="36")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     * @ORM\Column(type="id", length="36")
      */
     protected $id;
 

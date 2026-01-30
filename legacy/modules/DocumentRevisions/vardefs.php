@@ -52,8 +52,7 @@ $dictionary['DocumentRevision'] = array('table' => 'document_revisions'
   array(
     'name' => 'id',
     'vname' => 'LBL_REVISION_NAME',
-    'type' => 'varchar',
-    'len' => '36',
+    'type' => 'id',
     'required'=>true,
     'reportable'=>false,
   ),
