@@ -46,11 +46,11 @@
 
 namespace MintHCM\Api\Repositories\OAuth2;
 
-use Doctrine\ORM\EntityRepository;
+use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
 use MintHCM\Api\Entities\OAuth2\Client;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 
-class ClientRepository extends EntityRepository implements ClientRepositoryInterface
+class ClientRepository extends MintEntityRepository implements ClientRepositoryInterface
 {
     public function getClientEntity($clientIdentifier): ?\League\OAuth2\Server\Entities\ClientEntityInterface
     {

@@ -848,6 +848,21 @@ $dictionary['Candidatures'] = array(
             'vname' => 'LBL_FILES',
             'label' => 'LBL_FILES',
         ),
+        'linkedin' => array(
+            'name' => 'linkedin',
+            'label' => 'LBL_LINKEDIN_ACCOUNT',
+            'vname' => 'LBL_LINKEDIN_ACCOUNT',
+            'source' => 'non-db',
+            'comments' => '',
+            'type' => 'url',
+            'max_size' => '255',
+            'audited' => false,
+            'mass_update' => false,
+            'duplicate_merge' => '1',
+            'reportable' => false,
+            'importable' => false,
+            'link_target' => '_blank',
+        ),
     ),
     'relationships' => array(
         'candidate_candidatures' => array(

@@ -1,51 +1,89 @@
-# 4.3 Releases
+#  MintHCM 4.3 Release Notes
 
-## 4.3
+## Table of Contents
 
-### System Requirements
+- [System Requirements](#system-requirements)
+- [Features - Major Changes](#-features---major-changes)
+  - [OAuth2 - New Authorization System](#oauth2---new-authorization-system)
+  - [MintMCP - Model Context Protocol](#mintmcp---model-context-protocol)
+  - [RecordView - New Unified Record View](#recordview---new-unified-record-view)
+  - [MintLogic - Dynamic Form Logic System](#mintlogic---dynamic-form-logic-system)
+  - [Entities/ORM - Doctrine Integration](#entitiesorm---doctrine-integration)
+  - [UnifiedSearchView - Global Search Interface](#unifiedsearchview---global-search-interface)
+  - [ListView Improvements](#listview-improvements)
+  - [User Experience Improvements](#user-experience-improvements)
+  - [Technical Documentation](#technical-documentation)
+- [Bugfixes](#-bugfixes)
+- [Security Patches](#-security-patches)
+- [Upgrade Instructions](#upgrade-instructions-minthcm-42---minthcm-43)
 
-* **PHP**: 8.2
-* **MySQL**: 8.0
-* **Elasticsearch**: 7.9 - 7.16
-* **Node.js**: 21
+---
 
-### 📦 Features - Major changes
+## System Requirements
 
+| Component | Version |
+|-----------|--------|
+| **PHP** | 8.2 |
+| **MySQL** | 8.0 (or MariaDB 10.5, 10.6, 10.10, 10.11) |
+| **Elasticsearch** | 7.9 - 7.16 |
+| **Node.js** | 21 |
 
-####  OAuth2 - New Authorization System
+---
 
-- Complete new OAuth2 implementation in `api/app/Controllers/OAuth2/`
+## 📦 Features - Major Changes
+
+### OAuth2 - New Authorization System
+
+**Key Changes:**
+
+- 🔐 Complete new OAuth2 implementation in `api/app/Controllers/OAuth2/`
 - New grants: `FrontendGrant`, `MobileGrant`
-- Token repositories: AccessToken, RefreshToken, MintToken
+- Token repositories: `AccessToken`, `RefreshToken`, `MintToken`
 - **Private keys required**: OAuth2 private keys are now mandatory for frontend authentication
 - Keys are automatically generated during fresh installation
-- New MintCLI commands for key management:
-  - `./MintCLI oauth2:create-keys` - Generate OAuth2 private/public key pair
-  - `./MintCLI oauth2:repair-frontend-client` - Repair frontend OAuth2 client configuration
 
-**⚠️ Important**: If you experience login issues after upgrade, run:
+**MintCLI Commands:**
+
+| Command | Description |
+|---------|-------------|
+| `./MintCLI oauth2:create-keys` | Generate OAuth2 private/public key pair |
+| `./MintCLI oauth2:repair-frontend-client` | Repair frontend OAuth2 client configuration |
+
+> **⚠️ IMPORTANT**  
+> If you experience login issues after upgrade, run:
 ```bash
 ./MintCLI oauth2:create-keys
 ./MintCLI oauth2:repair-frontend-client
 ```
 
-#### MintMCP - Model Context Protocol
+---
 
-- New MCP server implementation with permission control
+### MintMCP - Model Context Protocol
+
+**Implementation:**
+
+- 🔧 New MCP server implementation with permission control
 - Pagination support in MCP tools (trait `PaginationTrait`)
 - Configuration with pagination limit (`max_pagination_limit`)
-- New MCP tools:
-  - `ListUsers` - List system users with filtering options
-  - `SearchRecords` - Search records across modules with advanced filters
-  - `SumRecords` - Aggregate numeric data from records
-  - `UpdateRecord` - Update existing records with validation
-- Enhanced data validation with `ToolValidation` (previously `ToolValidationMiddleware`)
-- Date/timezone conversion utilities (`DateTimeConversion`) for proper timezone handling
+- Enhanced data validation with `ToolValidation`
+- Date/timezone conversion utilities (`DateTimeConversion`)
 - Improved error handling and structured responses
 
-#### RecordView - New Unified Record View
+**New MCP Tools:**
 
-**NEW FEATURE**: RecordView is a completely new view type designed to replace the legacy EditView and DetailView with a modern, unified interface.
+| Tool | Purpose |
+|------|--------|
+| `ListUsers` | List system users with filtering options |
+| `SearchRecords` | Search records across modules with advanced filters |
+| `SumRecords` | Aggregate numeric data from records |
+| `UpdateRecord` | Update existing records with validation |
+
+---
+
+### RecordView - New Unified Record View
+
+> **✨ NEW FEATURE**  
+> RecordView is a completely new view type designed to replace the legacy EditView and DetailView with a modern, unified interface.
 
 ![RecordView](assets/recordView.png)
 
@@ -58,32 +96,34 @@
 - **ACL Integration**: Comprehensive permissions checking at view, field, and action levels
 - **Dynamic Title**: Browser tab title updates based on record name and module
 
-**Migration Path**: RecordView is intended to become the default view for all modules, gradually replacing the legacy EditView and DetailView. Modules can be configured to use RecordView through metadata configuration.
+**Migration Path:**
 
-#### MintLogic - Dynamic Form Logic System
+RecordView is intended to become the default view for all modules, gradually replacing the legacy EditView and DetailView. Modules can be configured to use RecordView through metadata configuration.
 
-**NEW FEATURE**: A powerful backend system for managing dynamic form behavior and validation without modifying frontend code.
+---
+
+### MintLogic - Dynamic Form Logic System
+
+> **✨ NEW FEATURE**  
+> A powerful backend system for managing dynamic form behavior and validation without modifying frontend code.
 
 **Key Features:**
-- **Declarative Logic Definition**: Define form behavior in PHP configuration files (`logicdefs.php`)
-- **Dynamic Field Control**:
-  - Conditional field visibility/hiding
-  - Dynamic required field marking
-  - Automatic read-only field setting
-  - Field value updates based on other fields or conditions
-- **Advanced Validation**:
-  - Field-level validation with custom validators
-  - Bean (record) level validation
-  - Built-in validators: `IsUnique`, `IsInRange`, and module-specific validators
-- **Formula System**: Built-in formula helpers for common conditions
-  - `Formula::equals()`, `Formula::notEmpty()`, `Formula::or()`, `Formula::and()`
-  - Field value parsing with `$fieldName` syntax
-- **Hook-Based Execution**:
-  - `Hook::INIT` - On form initialization
-  - `Hook::CHANGE` - On field value change
-  - `Hook::ALL` - Both init and change
-- **Dynamic Options**: Update enum field options based on conditions
-- **API Integration**: Automatically returns logic updates to frontend via API responses
+**Capabilities:**
+
+| Feature | Description |
+|---------|------------|
+| **Declarative Logic** | Define form behavior in PHP configuration files (`logicdefs.php`) |
+| **Dynamic Fields** | Control visibility, required state, read-only status, and values |
+| **Advanced Validation** | Field-level and bean-level validation with custom validators |
+| **Formula System** | Built-in helpers: `equals()`, `notEmpty()`, `or()`, `and()` with `$fieldName` syntax |
+| **Hook-Based Execution** | `INIT`, `CHANGE`, or `ALL` hooks for flexible trigger timing |
+| **Dynamic Options** | Update enum field options based on conditions |
+| **API Integration** | Automatic logic updates via API responses |
+
+**Built-in Validators:**
+- `IsUnique` - Ensure field value uniqueness
+- `IsInRange` - Validate numeric ranges
+- Module-specific validators available
 
 **Implementation:**
 - Location: `api/lib/MintLogic/`
@@ -91,11 +131,17 @@
 - Example modules with logic: WorkSchedules, Workplaces, Rooms, SpentTime
 - BasicSet implementation
 
-**Purpose**: Essential component for RecordView forms, enabling complex business logic and validation without frontend modifications. Provides a maintainable, server-side approach to form behavior management.
+**Purpose:**
 
-#### Entities/ORM - Doctrine Integration
+Essential component for RecordView forms, enabling complex business logic and validation without frontend modifications. Provides a maintainable, server-side approach to form behavior management.
 
-**Enhanced ORM Layer**: Massive expansion of Doctrine entity support across the entire system.
+---
+
+### Entities/ORM - Doctrine Integration
+
+**Enhanced ORM Layer:**
+
+Massive expansion of Doctrine entity support across the entire system.
 
 **Key Features:**
 - **200+ Entity Files**: Added/updated entities for all modules in `api/app/Entities/`
@@ -107,11 +153,16 @@
   - Automatic constraint handling for custom entities
   - Fixed entity rebuilding issues with technical column names (e.g., "system")
 
-**Impact**: This provides a robust, type-safe ORM layer for API development, replacing direct database queries with proper entity management.
+**Impact:**
 
-#### UnifiedSearchView - Global Search Interface
+This provides a robust, type-safe ORM layer for API development, replacing direct database queries with proper entity management.
 
-**NEW FEATURE**: A new unified global search interface that allows users to search across all modules from a single view.
+---
+
+### UnifiedSearchView - Global Search Interface
+
+> **✨ NEW FEATURE**  
+> A new unified global search interface that allows users to search across all modules from a single view.
 
 **Key Features:**
 - **Cross-Module Search**: Search records across all accessible modules simultaneously
@@ -126,7 +177,9 @@
 - API: `unifiedSearchApi.globalSearch()`
 - Accessible via search bar with query parameters
 
-#### ListView Improvements
+---
+
+### ListView Improvements
 
 **Mass Actions Enhancement:**
 - **Mass Update**: New capability to update multiple records at once directly from ListView
@@ -136,15 +189,17 @@
   - Available for modules with appropriate permissions
 
 **Filter Operators Enhancements:**
-- **New Operators**:
-  - `parent` - Filter by parent relationship fields
-  - `datetime` - Separate datetime operator (previously combined with `date`)
-- **Enhanced Relate Operators**:
-  - `one_of` - Filter by one of multiple related records
-  - `none_of` - Exclude multiple related records
-- **New Input Types**:
-  - `parent` input - For parent field filtering
-  - `multirelate` input - Multi-select for related records
+
+| Operator Type | Operator | Description |
+|---------------|----------|-------------|
+| **New** | `parent` | Filter by parent relationship fields |
+| **New** | `datetime` | Separate datetime operator (previously combined with `date`) |
+| **Enhanced** | `one_of` | Filter by one of multiple related records |
+| **Enhanced** | `none_of` | Exclude multiple related records |
+
+**New Input Types:**
+- `parent` input - For parent field filtering
+- `multirelate` input - Multi-select for related records
 
 **UI/UX Improvements:**
 - Default list sorting with customizable sort order
@@ -152,7 +207,9 @@
 - Improved pagination in subpanels with configurable items per page
 - Better handling of large datasets
 
-#### User Experience Improvements
+---
+
+### User Experience Improvements
 
 **Navigation & Interface:**
 - **Menu Management**: 
@@ -173,7 +230,9 @@
 - Support for exporting demo data with technical field names (e.g., "system")
 - New configuration file: `legacy/install/DemoDataInstallation/Configs/demo_data.php`
 
-#### Technical Documentation
+---
+
+### Technical Documentation
 
 **AI-Generated Documentation**: Comprehensive technical documentation for API and Vue components.
 
@@ -189,11 +248,15 @@
   - Ensures accuracy and completeness
   - Living documentation that grows with the project
 
-**Purpose**: Provides developers with comprehensive, up-to-date technical reference for both backend and frontend development.
+**Purpose:**
 
-### 🐞 Bugfixes
+Provides developers with comprehensive, up-to-date technical reference for both backend and frontend development.
 
-#### ListView & Filtering
+---
+
+## 🐞 Bugfixes
+
+### ListView & Filtering
 - Fixed multiple data loading when entering list view
 - Fixed "Email Addresses" column sorting not working
 - Fixed sorting by relational field breaking the list view
@@ -203,7 +266,9 @@
 - Fixed non-functional parent field on edit view
 - Fixed global search relate/parent fields - display and navigation to records
 
-#### Subpanels
+---
+
+### Subpanels
 - Fixed missing data in subpanels
 - Fixed subpanel loading errors
 - Fixed subpanel visibility issue despite having module access 
@@ -211,7 +276,9 @@
 - Fixed users not being able to see too much in subpanels
 - Fixed adding Contracts through subpanel not working
 
-#### RecordView & Forms
+---
+
+### RecordView & Forms
 - Fixed Date field clearing itself
 - Fixed missing users when duplicating meeting records
 - Fixed empty fields after failed user creation attempt
@@ -219,7 +286,9 @@
 - Fixed unable to change employee status
 - Fixed multienum field issues
 
-#### Module-Specific Issues
+---
+
+### Module-Specific Issues
 - **Onboarding**: Fixed Onboarding statuses
 - **Applications**: Fixed "Current Recruitment" not auto-filling
 - **Allocations**: Fixed unable to add Employee to allocation 
@@ -238,21 +307,33 @@
 - Fixed alert panel clearing when clicking "x" on alerts
 - Fixed test environment lagging due to alerts
 
-#### Database & Technical
+---
+
+### Database & Technical
 - Fixed database errors
 - Fixed entity generation issues with technical column names (e.g., "system")
 - Fixed Doctrine cache not being cleared during Quick Repair and Rebuild
 
-#### Dependencies Updates
+---
+
+### Dependencies Updates
 **Frontend (Vue.js):**
-- `@vueuse/core`: Updated from `^13.0.0` to `^13.1.0`
-- Added `dropzone`: `^6.0.0-beta.2` - new dependency for file upload functionality
-- Node.js version requirement: Updated to require `~21` (previously `~16 || ~21`)
+
+| Package | Change | Description |
+|---------|--------|-------------|
+| `@vueuse/core` | `^13.0.0` → `^13.1.0` | Updated |
+| `dropzone` | Added `^6.0.0-beta.2` | New dependency for file upload |
+| `Node.js` | Requirement: `~21` | Previously `~16 || ~21` |
 
 **Backend (PHP/Composer):**
-- Added `league/oauth2-server`: `^8.5` - OAuth2 server implementation
 
-### 🔒 Security Patches
+| Package | Version | Description |
+|---------|---------|-------------|
+| `league/oauth2-server` | `^8.5` | OAuth2 server implementation |
+
+---
+
+## 🔒 Security Patches
 - **CVE-2025-64490**: Security vulnerability patch
   - Enhanced authentication security in multiple areas:
     - `ParamsMiddleware.php` - Parameter validation improvements
@@ -263,17 +344,19 @@
     - Enhanced login attempt tracking and security logging
     - Improved SOAP service security measures
 
-### Upgrade Instructions (MintHCM 4.2 -> MintHCM 4.3)
+---
+
+## 📋 Upgrade Instructions (MintHCM 4.2 → MintHCM 4.3)
 
 We recommend two approaches for upgrading to MintHCM 4.3:
 
-#### Option 1: In-Place Upgrade (Advanced Users)
+### ⚙️ Option 1: In-Place Upgrade (Advanced Users)
 
 This option updates your existing installation while preserving all customizations.
 
-**Prerequisites:**
-- Backup your database and files before starting
-- Ensure system requirements are met (PHP 8.2, MySQL 8.0, Elasticsearch 7.9-7.16, Node.js 21)
+> **⚠️ PREREQUISITES**
+> - ✅ Backup your database and files before starting
+> - ✅ Ensure system requirements are met (PHP 8.2, MySQL 8.0, Elasticsearch 7.9-7.16, Node.js 21)
 
 **Steps:**
 
@@ -306,7 +389,9 @@ This option updates your existing installation while preserving all customizatio
    ./MintCLI oauth2:repair-frontend-client
    ```
    
-   Without these keys, the frontend will not be able to authenticate users.
+   
+   > **⚠️ CRITICAL**  
+   > Without these keys, the frontend will not be able to authenticate users.
 
 5. **Clear Browser Cache**
    
@@ -324,7 +409,7 @@ This option updates your existing installation while preserving all customizatio
 
 ---
 
-#### Option 2: Fresh Installation with Database Migration (Recommended for most users)
+### 🆕 Option 2: Fresh Installation with Database Migration (Recommended)
 
 This option provides a cleaner upgrade path with minimal risk.
 
@@ -383,7 +468,9 @@ This option provides a cleaner upgrade path with minimal risk.
    - Reindex all modules and records
    - Ensure search functionality works correctly with your data
    
-   **Note:** Depending on the size of your database, this process may take several minutes to complete.
+   
+   > **ℹ️ NOTE**  
+   > Depending on the size of your database, this process may take several minutes to complete.
 
 5. **Verify System**
    
@@ -401,7 +488,7 @@ This option provides a cleaner upgrade path with minimal risk.
 
 ---
 
-#### Post-Upgrade Checklist
+## ✅ Post-Upgrade Checklist
 
 After completing either upgrade method:
 
@@ -416,9 +503,3 @@ After completing either upgrade method:
 - [ ] Scheduled jobs are configured
 - [ ] Email configuration is working
 - [ ] File permissions are correct
-
----
-
-**Additional Technical Changes**
-
-### New API Controllers

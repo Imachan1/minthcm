@@ -4173,6 +4173,9 @@ $app_list_strings['reason_for_rejection_list'] = array(
     'too_high_requirements' => 'Too high financial requirements',
     'lack_of_open_recrutation' => 'No open recruitment',
     'closed_recrutation' => 'Completed recruitment',
+    'slight_deviation_from_requirements' => 'Slight deviation from requirements',
+    'misalignment_with_organizational_values' => 'Misalignment with organizational values',
+    'no_employment_opportunities' => 'No employment opportunities after the recruitment process',
     'other' => 'Other',
 );
 
