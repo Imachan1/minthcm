@@ -21,11 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { DateTime } from 'luxon'
 import { FieldProps } from '../Field.model'
 import { usePreferencesStore } from '@/store/preferences'
-import { MintDate, useMintDate } from '@/composables/useMintDate'
+import { MintDate } from '@/composables/useMintDate'
 
 const props = defineProps<FieldProps<MintDate>>()
 const emit = defineEmits(['update:modelValue'])
@@ -36,44 +36,34 @@ const preferences = usePreferencesStore()
 
 const parsedValue = computed({
     get() {
-        if (props.field.model.isValid) {
-            return props.field.model.formatted.user_date
-        }
-        return ''
+        return model.value.formatted?.user_date || ''
     },
-    set(newVal) {
+    async set(newVal) {
         datePickerMenu.value = false
         if (!newVal?.trim()) {
-            props.field.model = useMintDate('')
-            model.value = ''
+            model.value.clear()
         }
-        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'dd.MM.yyyy', {
-            zone: 'utc',
-        })
+        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
         if (dt.isValid) {
-            props.field.model.set(dt)
+            model.value.set(dt)
         }
     },
 })
 const pickerValue = computed({
     get() {
-        if (!props.field.model) return new Date()
-        return props.field.model.isValid ? props.field.model.formatted.js_date : new Date()
+        return model.value.isValid ? model.value.formatted.js_date : new Date()
     },
     set(newVal) {
-        props.field.model.set(newVal)
-        model.value = props.field.formatted.server
-    },
-})
-
-watch(model, (newVal) => {
-    datePickerMenu.value = false
-    const dt = DateTime.fromSQL(newVal?.toString())
-    if (dt.isValid) {
+        // Get date components without timezone conversion
+        const year = newVal.getFullYear()
+        const month = String(newVal.getMonth() + 1).padStart(2, '0')
+        const day = String(newVal.getDate()).padStart(2, '0')
+        const dateString = `${year}-${month}-${day}`
+        
+        model.value.set(dateString)
         emit('update:modelValue', model.value)
-    } else {
-        emit('update:modelValue', '')
-    }
+        datePickerMenu.value = false
+    },
 })
 </script>
 
