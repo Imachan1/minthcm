@@ -103,12 +103,11 @@ const datePickerValue = computed({
         if (!dt.isValid) {
             return
         }
-        model.value.set(
-            DateTime.fromFormat(
+        const formatedDatetime =  DateTime.fromFormat(
                 `${dt.toFormat('yyyy-MM-dd')} ${model.value.isValid ? model.value.formatted.user_time : (timeFormat.value == 'ampm' ? '12:00 PM' : '12:00')}`,
-                `yyyy-MM-dd ${preferences.user?.time_format || 'HH:mm'}`
-            ),
-        )
+                `yyyy-MM-dd ${timeFormat.value == 'ampm' ? 'hh:mm a' : 'HH:mm'}`
+            )
+        model.value.set(formatedDatetime)
         datePickerMenu.value = false
     },
 })
