@@ -130,10 +130,11 @@ class Preferences
     public function getUserPreferences()
     {
         global $sugar_config, $locale, $current_user;
+        // $pref_tz = $current_user->getPreference('timezone');
         return array(
             'date_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['datef'] ?? $sugar_config['default_date_format']),
             'time_format' => LuxonMapper::phpToLuxonFormat($this->user_preferences['global']['timef'] ?? $sugar_config['default_time_format']),
-            'timezone' => $this->user_preferences["global"]["timezone"] ?? $sugar_config['default_timezone'],
+            'timezone' => $current_user->getPreference('timezone') ?? $sugar_config['default_timezone'],
             'name_format' => $this->user_preferences["global"]["default_locale_name_format"] ?? $sugar_config['default_locale_name_format'],
             'dec_sep' => $this->user_preferences['global']['dec_sep'] ?? $sugar_config['default_decimal_seperator'],
             'num_grp_sep' => $this->user_preferences['global']['num_grp_sep'] ?? $sugar_config['default_number_grouping_seperator'],
