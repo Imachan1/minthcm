@@ -67,6 +67,9 @@ abstract class MintEntity
         return $this->id ?? null;
     }
 
+    /**
+     * QA: Add support for first_name and last_name sequence
+     */
     public function getName(): ?string
     {
         if (property_exists($this, 'name')) {

@@ -6,10 +6,12 @@ import SetupWizardLocaleSettings from './SetupWizardSteps/SetupWizardLocaleSetti
 import { useAuthStore } from '@/store/auth'
 import { useBackendStore } from '@/store/backend'
 import { mintApi } from '@/api/api'
+import { usePreferencesStore } from '@/store/preferences'
 
 export const useSetupWizardStore = defineStore('setup-wizard', () => {
     const auth = useAuthStore()
     const backend = useBackendStore()
+    const preferences = usePreferencesStore()
 
     const isFinished = ref(false)
     const isLoading = ref(false)
@@ -18,12 +20,12 @@ export const useSetupWizardStore = defineStore('setup-wizard', () => {
         first_name: auth.user?.first_name ?? '',
         last_name: auth.user?.last_name ?? '',
         email: auth.user?.email ?? '',
-        time_zone: auth.user?.preferences.timezone ?? 'Europe/Warsaw',
+        time_zone: preferences.user?.timezone ?? 'Europe/Warsaw',
         time_format:
-            auth.user?.preferences.date_time_preferences.time ?? backend.initData?.global?.time_format ?? 'H:i',
+            preferences.user?.time_format ?? backend.initData?.global?.time_format ?? 'H:i',
         date_format:
-            auth.user?.preferences.date_time_preferences.date ?? backend.initData?.global?.date_format ?? 'd.m.Y',
-        display_name_format: auth.user?.preferences.name_format ?? backend.initData?.global?.name_format ?? 's f l',
+            preferences.user?.date_format ?? backend.initData?.global?.date_format ?? 'd.m.Y',
+        display_name_format: preferences.user?.name_format ?? backend.initData?.global?.name_format ?? 's f l',
     })
 
     const steps = [

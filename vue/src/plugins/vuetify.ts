@@ -4,7 +4,6 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as locales from 'vuetify/locale'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
-import { VTimePicker } from 'vuetify/labs/VTimePicker'
 
 const variables = {
     'top-nav-height': '72px',
@@ -18,9 +17,6 @@ if (!locales[locale]) {
 }
 
 export default createVuetify({
-    components: {
-        VTimePicker,
-    },
     locale: {
         locale,
         fallback: locale,
