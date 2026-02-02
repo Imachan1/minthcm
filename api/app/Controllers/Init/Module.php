@@ -122,10 +122,9 @@ class Module
         );
     }
 
-    public function getACLs(){
-        global $moduleList;
+    public function getACLs($modules){
         $acls = array();
-        foreach ($moduleList as $module) {
+        foreach ($modules as $module) {
             $acls[$module] = $this->getACLForModule($module);
         }
         return $acls;
@@ -189,6 +188,7 @@ class Module
                 "action" => $item[2],
                 "icon" => $this->action_icons[strtolower($item[2])] ?? $this->action_icons['default'],
                 "params" => $item[3] ?? array(),
+                "onClickActionData" => $item[4] ?? [],
             );
             if (isset($item[3])) {
                 $row['module'] = $item[3];

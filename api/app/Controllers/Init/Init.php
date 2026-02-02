@@ -8,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -118,7 +118,8 @@ class Init
             $response_body['legacy_views'] = $this->getLegacyViews($modules_data);
         }
         if ($only_minimum_data) {
-            $response_body['acls'] = $this->module_init_controller->getACLs();
+            $this->all_modules = $this->getAllModules();
+            $response_body['acls'] = $this->module_init_controller->getACLs($this->all_modules);
         }
 
         if (!empty($rebuild_array)) {
@@ -191,7 +192,7 @@ class Init
         require_once 'modules/ACL/ACLController.php';
         \ACLController::filterModuleList($modules);
         chdir('../api');
-        return $modules;
+        return array_merge(['Users', 'EAPM'], $modules );
     }
 
     private function getQuickCreate()
@@ -223,7 +224,7 @@ class Init
         foreach ($modules_data as $module => $data) {
             $this->processESListViewConfig($module, $legacy_views);
             $this->processRecordViewConfig($module, $legacy_views);
-        }
+            }
         chdir('../api');
         return $legacy_views;
     }

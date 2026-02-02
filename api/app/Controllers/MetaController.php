@@ -35,7 +35,7 @@ class MetaController
         if (!file_exists($ve->getMetaDataFile())) {
             return [];
         }
-        require_once $ve->getMetaDataFile();
+        include $ve->getMetaDataFile();
         $bean = \BeanFactory::newBean($module);
         $module_fields = $this->getModuleVardefs($bean);
         chdir('../api/');
@@ -51,7 +51,7 @@ class MetaController
         if (!file_exists($vd->getMetaDataFile())) {
             return [];
         }
-        require_once $vd->getMetaDataFile();
+        include $vd->getMetaDataFile();
 
         $bean = \BeanFactory::newBean($module);
         $module_fields = $this->getModuleVardefs($bean);
@@ -72,7 +72,7 @@ class MetaController
         if (!file_exists($vr->getMetaDataFile())) {
             return [];
         }
-        require_once $vr->getMetaDataFile();
+        include $vr->getMetaDataFile();
 
         $bean = \BeanFactory::newBean($module);
         $module_fields = $this->getModuleVardefs($bean);
