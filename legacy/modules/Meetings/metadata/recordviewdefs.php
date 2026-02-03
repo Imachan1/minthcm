@@ -6,6 +6,14 @@ $viewdefs['Meetings'] = [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
             'data' => [
+                'actions' => [
+                    'Audit',
+                    'Delete',
+                    [
+                        'name' => 'Duplicate',
+                        'skipFields' => ['date_start', 'date_end'],
+                    ],
+                ],
                 'sections' => [
                     'basic' => [
                         'title' => 'LBL_BASIC',

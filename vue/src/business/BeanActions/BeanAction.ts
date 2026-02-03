@@ -7,6 +7,8 @@ interface BeanActionOptions {
     title?: string
     icon?: string
     acl?: string[]
+    skipFields?: string[]  // For Duplicate action - fields to exclude when copying
+    [key: string]: any     // Allow other custom options for future actions
 }
 
 export abstract class BeanAction {

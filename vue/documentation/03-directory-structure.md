@@ -335,7 +335,38 @@ export class DeleteAction extends BeanAction {
         // Refresh list, show notification, etc.
     }
 }
+
+// Action with options (e.g., Duplicate with skipFields)
+export class Duplicate extends BeanAction {
+    public async execute() {
+        router.push({
+            path: `/modules/${this.bean.module}/EditView`,
+            query: {
+                copy_id: this.bean.id,
+                excludedFields: this.options.skipFields ?? {}
+            },
+        })
+        return true
+    }
+}
 ```
+
+**Configuring Actions in Backend:**
+
+Actions are defined in module metadata (`recordviewdefs.php`):
+
+```php
+'actions' => [
+    'Audit',          // Simple action
+    'Delete',
+    [
+        'name' => 'Duplicate',
+        'skipFields' => ['date_start', 'date_end'],  // Options
+    ],
+]
+```
+
+See [Working with Beans](./10-working-with-beans.md#bean-actions) for more details.
 
 #### `custom/` - Your Customizations ⭐
 

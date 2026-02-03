@@ -219,7 +219,12 @@ onMounted(async () => {
     // Copy data from existing record
     const originalId = route.query.copy_id as string
     if (originalId) {
+        // Basic duplication - copies all non-system fields
         await bean.setAttributesFromBeanId(originalId)
+        
+        // Or with excluded fields (optional)
+        // const excludedFields = route.query.excludedFields ?? []
+        // await bean.setAttributesFromBeanId(originalId, excludedFields)
     }
 })
 
@@ -234,7 +239,9 @@ async function handleSave() {
 - ✅ All field values (except excluded fields)
 - ❌ `id`, `date_entered`, `date_modified`
 - ❌ `created_by`, `modified_user_id`
+- ❌ `repeat_*` fields (meeting recurrence)
 - ❌ Files and images
+- ❌ Any fields specified in `excludedFields` parameter
 
 ## useBean API Reference
 
@@ -385,15 +392,23 @@ onMounted(async () => {
 
 **Use case:** Pre-fill form from URL parameters
 
-#### `setAttributesFromBeanId(copyId)`
+#### `setAttributesFromBeanId(copyId, excludedFields?)`
 
 Copy data from another record.
 
 ```typescript
+// Copy all non-system fields
 await bean.setAttributesFromBeanId('original-record-id')
+
+// Copy with specific field exclusions
+await bean.setAttributesFromBeanId('original-record-id', ['date_start', 'date_end', 'status'])
 ```
 
-**Use case:** Duplicate record functionality
+**Parameters:**
+- `copyId` - ID of the record to copy from
+- `excludedFields` - (Optional) Array of field names to skip during copy
+
+**Use case:** Duplicate record functionality with configurable field exclusion
 
 #### `loadRelationship(name)`
 
@@ -945,6 +960,132 @@ bean.updateFields({ status: 'Closed' })
 1. Field is in `triggerFields`
 2. Using `updateFields()` not direct assignment
 3. Logic rules are defined in backend
+
+## Bean Actions
+
+Bean Actions are operations that can be performed on a record (edit, delete, duplicate, audit, etc.). These actions are defined in the backend metadata and rendered in the UI as menu items.
+
+### Configuring Bean Actions
+
+Actions are configured in the module's `recordviewdefs.php` file:
+
+```php
+// legacy/modules/Meetings/metadata/recordviewdefs.php
+$viewdefs['Meetings'] = [
+    'panels' => [
+        'basicInfo' => [
+            'component' => 'MintPanelRecordDetails',
+            'data' => [
+                'actions' => [
+                    'Audit',          // Simple action (string)
+                    'Delete',
+                    [
+                        'name' => 'Duplicate',           // Action with options (array)
+                        'skipFields' => ['date_start', 'date_end'],  // Custom options
+                    ],
+                ],
+                'sections' => [ /* ... */ ],
+            ],
+        ],
+    ],
+];
+```
+
+### Action Types
+
+**String format** - Simple action:
+```php
+'actions' => [
+    'Edit',
+    'Delete',
+    'Audit',
+]
+```
+
+**Array format** - Action with options:
+```php
+'actions' => [
+    [
+        'name' => 'Duplicate',
+        'skipFields' => ['date_start', 'date_end', 'status'],
+    ],
+]
+```
+
+### Duplicate Action with skipFields
+
+The `Duplicate` action supports a special `skipFields` option to exclude specific fields when copying a record:
+
+```php
+'actions' => [
+    [
+        'name' => 'Duplicate',
+        'skipFields' => ['date_start', 'date_end'],
+    ],
+]
+```
+
+When the user clicks "Duplicate", they'll be redirected to the EditView with:
+- All field values copied from the original record
+- Fields listed in `skipFields` will **not** be copied
+- System fields (id, date_entered, etc.) are always excluded
+
+**Example Use Cases:**
+
+- **Meetings**: Skip `date_start`, `date_end` so user sets new meeting time
+- **Projects**: Skip `status` to always start new projects as "Draft"
+- **Contracts**: Skip `date_signed`, `signed_by` for new contract from template
+
+### Available Bean Actions
+
+Common built-in actions:
+
+- `Edit` - Switch to edit mode
+- `Delete` - Delete the record
+- `Duplicate` - Create a copy (supports `skipFields` option)
+- `Audit` - View audit trail
+- `Export` - Export record data
+- `ConvertToEmployee` - Convert candidate to employee (Candidates module)
+
+### How Actions Work
+
+1. **Backend defines actions** in `recordviewdefs.php`
+2. **Frontend loads metadata** when viewing record
+3. **MintPanelRecordDetails** renders action menu
+4. **BeanAction classes** handle execution when clicked
+5. **Options are passed** to action constructor
+
+**Frontend Flow:**
+
+```typescript
+// In MintPanelRecordDetails.vue
+const actions = computed<MenuListItem[]>(() => {
+    const actions: MenuListItem[] = []
+
+    props.data.actions?.forEach((action) => {
+        const actionName = typeof action === 'string' ? action : action.name
+        const actionClass = BeanActions[actionName]
+        
+        if (typeof actionClass !== 'function') {
+            console.warn(`Action ${actionName} not defined in BeanActions`)
+            return
+        }
+        
+        // Pass options to action constructor
+        const optionDefs = typeof action === 'string' ? {} : action
+        const actionObject = new actionClass(store.bean, optionDefs)
+        
+        if (actionObject.isAvailable()) {
+            actions.push(actionObject.toMenuListItem())
+        }
+    })
+    return actions
+})
+```
+
+### Creating Custom Bean Actions
+
+See [Customization Guide](./11-customization.md) for how to create custom actions in the `custom/` directory.
 
 ## Next Steps
 

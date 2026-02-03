@@ -7,11 +7,18 @@ export class Duplicate extends BeanAction {
     public static readonly ACL = ['edit']
 
     public async execute() {
+        const query: { copy_id: string; excludedFields?: string } = {
+            copy_id: this.bean.id,
+        }
+        
+        // Serialize excludedFields as JSON string for query param
+        if (this.options.skipFields && Array.isArray(this.options.skipFields)) {
+            query.excludedFields = JSON.stringify(this.options.skipFields)
+        }
+        
         router.push({
             path: `/modules/${this.bean.module}/EditView`,
-            query: {
-                copy_id: this.bean.id,
-            },
+            query,
         })
         return true
     }

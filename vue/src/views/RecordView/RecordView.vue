@@ -37,9 +37,21 @@ onMounted(async () => {
         if (Object.keys(route.query).length) {
             store.bean.setAttributesFromQuery(route.query)
         }
-
+        
         if (Object.keys(route.query).includes('copy_id')) {
-            await store.bean.setAttributesFromBeanId(route.query.copy_id as string)
+            // Parse excludedFields from JSON string in query param
+            let excludedFields: string[] = []
+            if (route.query.excludedFields && typeof route.query.excludedFields === 'string') {
+                try {
+                    excludedFields = JSON.parse(route.query.excludedFields)
+                    if (!Array.isArray(excludedFields)) {
+                        excludedFields = []
+                    }
+                } catch (e) {
+                    console.warn('Failed to parse excludedFields from query', e)
+                }
+            }
+            await store.bean.setAttributesFromBeanId(route.query.copy_id as string, excludedFields)
         }
     }
 })

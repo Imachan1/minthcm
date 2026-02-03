@@ -209,14 +209,15 @@ export const useBean = (module: string, id: string) => {
     }
 
     const originalId = ref('')
-    async function setAttributesFromBeanId(copy_id: string) {
+    async function setAttributesFromBeanId(copy_id: string, excludedFields: string[] = []) {
         originalId.value = copy_id
         const fieldsToUpdate: { [fieldName: string]: any } = {}
         const copyBean = await useBean(module, copy_id).init()
         Object.entries(copyBean.data.attributes || {}).forEach(([fieldName, fieldDef]) => {
             if (
                 duplicateSkipFields.includes(fieldName) 
-                || ['file', 'image'].includes(fieldDefs.value[fieldName].type)
+                || (fieldDefs.value[fieldName] && ['file', 'image'].includes(fieldDefs.value[fieldName].type))
+                || excludedFields.includes(fieldName)
             ) return
             if (copyBean.data.attributes[fieldName] !== undefined 
                 && copyBean.data.attributes[fieldName] !== null

@@ -248,7 +248,8 @@ const actions = computed<MenuListItem[]>(() => {
             console.warn(`Action ${actionName} not defined in BeanActions`)
             return
         }
-        const actionObject = new actionClass(store.bean)
+        const optionDefs = typeof action === 'string' ? {} : action
+        const actionObject = new actionClass(store.bean, optionDefs)
         if (actionObject.isAvailable()) {
             actions.push(actionObject.toMenuListItem())
         }
