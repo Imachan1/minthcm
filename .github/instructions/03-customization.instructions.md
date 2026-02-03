@@ -7,9 +7,6 @@ applyTo:
 
 # Customization Patterns
 
-**Version**: 2.0  
-**Last Updated**: 2026-01-02
-
 ## Prime Directive: Never Edit Core
 
 **The golden rule**: Never modify files in core directories. Always use `custom/` directories.

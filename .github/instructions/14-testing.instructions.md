@@ -10,9 +10,6 @@ applyTo:
 
 # Testing Guide
 
-**Version**: 2.0  
-**Last Updated**: 2026-01-02
-
 Testing patterns for frontend and backend.
 
 ## Frontend Testing

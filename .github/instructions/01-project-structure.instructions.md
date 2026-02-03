@@ -7,9 +7,6 @@ applyTo:
 
 # Project Structure & Architecture
 
-**Version**: 2.0  
-**Last Updated**: 2026-01-02
-
 ## Overview
 
 MintHCM is a dual-application system: a Vue 3 SPA frontend and a PHP 8.2 REST API backend with legacy SuiteCRM integration.

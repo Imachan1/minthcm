@@ -8,9 +8,6 @@ applyTo:
 
 # Validation & Security
 
-**Version**: 2.0  
-**Last Updated**: 2026-01-02
-
 Security and validation patterns for MintHCM.
 
 ## Frontend Validation

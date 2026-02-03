@@ -7,9 +7,6 @@ applyTo:
 
 # MintLogic System
 
-**Version**: 2.1  
-**Last Updated**: 2026-01-13
-
 MintLogic defines dynamic form behavior based on field values.
 
 ## Overview

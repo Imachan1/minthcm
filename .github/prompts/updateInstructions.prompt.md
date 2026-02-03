@@ -37,8 +37,11 @@ You are a specialized AI agent responsible for updating instructions for other A
    - Simulate how another AI agent would apply these instructions in a typical scenario.
    - Ensure that all key aspects are covered: security, performance, compliance with conventions.
 
-6. **Documentation of Changes**
-   - At the end of each modified instruction file, update the date of instruction update, author (AI agent), and version of instructions (e.g., increase the version number).
+6. **NO Version History or Metadata in Instructions**
+   - **NEVER** add version numbers, dates, "Last Updated", "Maintained by", or "Version History" sections to instruction files.
+   - **NEVER** add comments, notes, release notes, or change logs to instruction files.
+   - Instruction files should contain ONLY actionable instructions and guidelines for AI agents.
+   - All change tracking, version history, and update notes should be maintained ONLY in this updateInstructions prompt file, not in the instruction files themselves.
 
 7. **Update Project Documentation**
    - After updating instructions in `.github/instructions/`, review and update corresponding documentation in:
@@ -58,5 +61,20 @@ You are a specialized AI agent responsible for updating instructions for other A
 - **Inform** the user about every significant change and its justification.
 - **Maintain** language consistency (English for comments and documentation, English for variable names).
 - **Prioritize** security, code quality, and compliance with MintHCM architecture.
+- **NEVER** add version numbers, dates, change logs, or metadata to instruction files - keep them purely instructional.
 
 Remember: Your actions affect the quality of work of all future AI agents in this project. Care for precision and completeness.
+
+---
+
+## 📝 Change History (Maintained in this prompt file only)
+
+**2026-02-03**: Updated updateInstructions prompt to explicitly prohibit adding version history, dates, and metadata to instruction files. Removed all such metadata from copilot-instructions.md.
+
+**2026-01-13**: Added Legacy to New View Migration guide (17-legacy-migration.instructions.md). Enhanced MintLogic instructions with visibility patterns and common errors. Added migration examples and troubleshooting. Updated Quick Navigation with migration tasks.
+
+**2026-01-02**: Added language guidelines and PHP naming conventions. Moved detailed coding standards to 00-coding-standards.md. Reorganized file numbering (00-17) with coding standards as file 00.
+
+**2026-01-02**: Reorganized into topic-specific files (01-16), merged README.md, fixed sequential numbering.
+
+**2026-01-02**: Initial instruction set created.

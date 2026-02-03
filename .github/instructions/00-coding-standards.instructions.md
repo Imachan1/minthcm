@@ -5,9 +5,6 @@ applyTo:
 
 # Coding Standards & Conventions
 
-**Version**: 2.1  
-**Last Updated**: 2026-01-02
-
 This document defines coding standards and naming conventions for all MintHCM development.
 
 ## 🌍 Language Guidelines

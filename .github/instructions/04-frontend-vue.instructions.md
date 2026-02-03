@@ -5,9 +5,6 @@ applyTo:
 
 # Vue Frontend Guide
 
-**Version**: 2.0  
-**Last Updated**: 2026-01-02
-
 ## Overview
 
 The MintHCM frontend is a Vue 3 Single Page Application (SPA) built with TypeScript, Vite, Vuetify, and Pinia.

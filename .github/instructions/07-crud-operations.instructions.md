@@ -7,9 +7,6 @@ applyTo:
 
 # CRUD Operations (useBean)
 
-**Version**: 2.0  
-**Last Updated**: 2026-01-02
-
 `useBean` is the core composable for all record operations.
 
 ## Basic Usage

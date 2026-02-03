@@ -9,9 +9,6 @@ applyTo:
 
 # PHP Backend Guide
 
-**Version**: 2.0  
-**Last Updated**: 2026-01-02
-
 MintHCM backend uses modern PHP 8.2 with Slim Framework and Doctrine ORM.
 
 ## Tech Stack

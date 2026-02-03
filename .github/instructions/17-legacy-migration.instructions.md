@@ -7,9 +7,6 @@ applyTo:
 
 # Legacy to New View Migration Guide
 
-**Version**: 1.0  
-**Last Updated**: 2026-01-13
-
 This guide explains how to migrate legacy modules from old views (detailviewdefs.php, editviewdefs.php) to new Vue-based views (recordviewdefs.php).
 
 ## Migration Overview
@@ -266,7 +263,3 @@ Edit `api/constants/legacy_views.php` and remove the module entry:
 - [MintLogic System](12-mintlogic.instructions.md) - Complete logic system reference
 - [Legacy Integration](11-legacy-integration.instructions.md) - Working with legacy code
 - [Troubleshooting](15-troubleshooting.instructions.md) - Common issues
-
-**Version**: 1.0  
-**Last Updated**: 2026-01-13  
-**Maintained by**: AI Agent

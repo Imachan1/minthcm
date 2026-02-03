@@ -9,9 +9,6 @@ applyTo:
 
 # Doctrine ORM
 
-**Version**: 2.0  
-**Last Updated**: 2026-01-02
-
 Doctrine entities are auto-generated from vardefs.
 
 ## Entity Generation Workflow

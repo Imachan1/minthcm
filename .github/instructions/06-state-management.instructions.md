@@ -8,9 +8,6 @@ applyTo:
 
 # State Management (Pinia)
 
-**Version**: 2.0  
-**Last Updated**: 2026-01-02
-
 MintHCM uses Pinia for global state management.
 
 ## Key Stores

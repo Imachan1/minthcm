@@ -7,9 +7,6 @@ applyTo:
 
 # Legacy Integration
 
-**Version**: 2.0  
-**Last Updated**: 2026-01-02
-
 MintHCM includes legacy SuiteCRM code for backward compatibility.
 
 ## LegacyConnector

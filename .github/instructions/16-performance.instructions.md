@@ -6,9 +6,6 @@ applyTo:
 
 # Performance Optimization
 
-**Version**: 2.0  
-**Last Updated**: 2026-01-02
-
 Performance best practices for MintHCM.
 
 ## Frontend Optimization

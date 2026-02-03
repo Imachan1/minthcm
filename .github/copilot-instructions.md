@@ -1,9 +1,5 @@
 # MintHCM AI Coding Assistant Instructions
 
-**Version**: 2.2  
-**Last Updated**: 2026-01-13  
-**Maintained by**: AI Agent
-
 ## 📚 Table of Contents
 
 This is the main instructions file for AI coding assistants working on MintHCM. For detailed topic-specific guides, see the [instructions/](instructions/) directory:
@@ -436,23 +432,6 @@ See [Troubleshooting Guide](instructions/15-troubleshooting.instructions.md) for
 - **AI instructions**: `.github/instructions/*.md` (18 instruction files: 00-17) - For AI agents only
 
 **IMPORTANT**: Documentation files (`api/documentation/`, `vue/documentation/`) are for REAL USERS (developers), not AI agents. Never reference AI instructions (`.github/instructions/`, `.github/prompts/`) from documentation files. Documentation should only cross-reference other documentation files.
-
----
-
-## 🔄 Version History
-- **2.2** (2026-01-13):
-  - Added Legacy to New View Migration guide (17-legacy-migration.instructions.md)
-  - Enhanced MintLogic instructions with visibility patterns and common errors
-  - Added migration examples and troubleshooting
-  - Updated Quick Navigation with migration tasks
-  - Added recordviewdefs.md documentation to vue/documentation/
-  - Added migration section to api/documentation/13-mintlogic.md
-- **2.1** (2026-01-02): 
-  - Added language guidelines and PHP naming conventions
-  - Moved detailed coding standards to 00-coding-standards.md (reduced main file by ~20%)
-  - Reorganized file numbering (00-16) with coding standards as file 00
-- **2.0** (2026-01-02): Reorganized into topic-specific files (01-16), merged README.md, fixed sequential numbering
-- **1.0** (2026-01-02): Initial instruction set
 
 ---
 
