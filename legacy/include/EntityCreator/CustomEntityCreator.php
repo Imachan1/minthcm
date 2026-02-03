@@ -17,11 +17,32 @@ class CustomEntityCreator extends EntityCreator
 
     public function run(): void
     {
+        if($this->shouldGenerateCustomEntity() === false) {
+            return;
+        }
         $this->data = (new CustomEntityCreatorDataGenerator($this->moduleName, $this->vardefs))->getData();
         if (!$this->data["generate_custom_entity"]) {
             return;
         }
         $this->data['isCustom'] = $this->isCustom;
         $this->generateEntity();
+    }
+
+    public function shouldGenerateCustomEntity(): bool
+    {
+        if(empty($this->vardefs["table"])) {
+            return false;
+        }
+        if (!EntityCreatorDataGenerator::hasCustomTable($this->vardefs["table"])) {
+            return false;
+        }
+        foreach ($this->vardefs['fields'] as $fieldName => $fieldDef) {
+            if (empty($this->vardefs["fields"][$fieldName]["source"])
+                || "custom_fields" != $this->vardefs["fields"][$fieldName]["source"]) {
+                continue;
+            }
+            return true;
+        }
+        return false;
     }
 }

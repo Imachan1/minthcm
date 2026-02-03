@@ -15,7 +15,7 @@ class CustomEntityCreatorDataGenerator extends EntityCreatorDataGenerator
 
     protected function buildCustomFields()
     {
-        if (!$this->hasCustomTable()) {
+        if (!self::hasCustomTable($this->vardefs["table"])) {
             return;
         }
         $customFields = [];

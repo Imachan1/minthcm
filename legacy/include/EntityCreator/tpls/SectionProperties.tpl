@@ -11,8 +11,10 @@
     /**
 {if $field.isId}
      * @ORM\Id
+{if $field.CustomIdGenerator}
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     * @ORM\CustomIdGenerator({$field.CustomIdGenerator})
+{/if}
 {/if}
 {if $field.columnAttributes}
      * @ORM\Column({$field.columnAttributes})

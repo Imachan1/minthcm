@@ -75,7 +75,7 @@ class EntityCreatorDataGenerator
             'relationshipFields' => [],
             'additionalUseStatements' => [],
             'constructorFields' => [],
-            'generate_custom_entity' => $this->hasCustomTable(),
+            'generate_custom_entity' => (new CustomEntityCreator($this->moduleName, $this->vardefs))->shouldGenerateCustomEntity(),
             'additionalMethods' => [],
         ];
         $repositorySet = !empty($this->vardefs['doctrineEntity']['repository']);
@@ -138,8 +138,11 @@ class EntityCreatorDataGenerator
 
             if ((in_array($type, ['id', 'int']) && 'id' == $fieldName)) {
                 $field['isId'] = true;
+                    if('id' == $type) {
+                        $field['CustomIdGenerator'] = 'class=UuidGenerator::class';
+                    }
+                }
             }
-        }
 
         $field['columnAttributes'] = implode(', ', $attributes);
         return $field;
@@ -268,12 +271,15 @@ class EntityCreatorDataGenerator
         );
         $relationshipField['isCollection'] = 'many-to-many' === $relationshipDef['relationship_type'] || ('one-to-many' === $relationshipDef['relationship_type'] && 'lhs' === $relationshipSide);
         $this->data['relationshipFields'][] = $relationshipField;
-
         if (!in_array($target['module'], $entityCreator['CreatingEntities']) && !empty($dictionary[$target['module']])) {
             $entityCreator['CreatingEntities'][] = $target['module'];
+            try{
             (new EntityCreator($target['module'], $dictionary[$target['module']]))->run();
             (new CustomEntityCreator($target['module'], $dictionary[$target['module']]))->run();
+            } catch (Exception $e) {
+                sugar_die("Exception caught while creating related entity: " . $e->getMessage());
         }
+    }
     }
 
     protected function getRelationshipLinkFieldName($relationshipDef, $side, $relationshipName)
@@ -504,11 +510,11 @@ class EntityCreatorDataGenerator
         }
     }
 
-    protected function hasCustomTable(): bool
+    public static function hasCustomTable(string $table_name): bool
     {
         $db = DBManagerFactory::getInstance();
         $tables = $db->getTablesArray();
-        return in_array(strtolower($this->vardefs["table"] . self::CUSTOM_SUFFIX), $tables);
+        return in_array(strtolower($table_name . static::CUSTOM_SUFFIX), $tables);
     }
 
 }
