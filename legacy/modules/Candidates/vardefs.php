@@ -468,6 +468,7 @@ $dictionary['Candidates'] = array(
             'options' => 'dom_meeting_accept_status',
             'importable' => 'false',
         ),
+		// CR FIXME #182875 2026-02-04: Wyleciały jakieś pola typu link
         "employeecertificates" => array(
             'name' => 'employeecertificates',
             'type' => 'link',
