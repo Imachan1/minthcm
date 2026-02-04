@@ -276,6 +276,7 @@ $vardefs = array(
             'options' => 'lawful_basis_dom',
             'audited' => true,
             'importable' => true,
+            'comment' => 'LBL_LAWFUL_BASIS_COMMENT'
         ),
         'date_reviewed' => array(
             'name' => 'date_reviewed',
@@ -284,6 +285,7 @@ $vardefs = array(
             'massupdate' => true,
             'audited' => true,
             'importable' => true,
+            'comment' => 'LBL_DATE_REVIEWED_COMMENT'
         ),
         'lawful_basis_source' => array(
             'name' => 'lawful_basis_source',
@@ -300,6 +302,7 @@ $vardefs = array(
             'options' => 'lawful_basis_source_dom',
             'audited' => true,
             'importable' => true,
+            'comment' => 'LBL_LAWFUL_BASIS_SOURCE_COMMENT'
         ),
         'primary_address_street' => array(
             'name' => 'primary_address_street',
@@ -307,8 +310,8 @@ $vardefs = array(
             'type' => 'varchar',
             'len' => '150',
             'group' => 'primary_address',
-            'comment' => 'Street address for primary address',
             'merge_filter' => 'enabled',
+            'comment' => 'LBL_PRIMARY_ADDRESS_STREET_COMMENT',
         ),
         'primary_address_street_2' => array(
             'name' => 'primary_address_street_2',
@@ -330,8 +333,8 @@ $vardefs = array(
             'type' => 'varchar',
             'len' => '100',
             'group' => 'primary_address',
-            'comment' => 'City for primary address',
             'merge_filter' => 'enabled',
+            'comment' => 'LBL_PRIMARY_ADDRESS_CITY_COMMENT',
         ),
         'primary_address_state' => array(
             'name' => 'primary_address_state',
@@ -339,8 +342,8 @@ $vardefs = array(
             'type' => 'varchar',
             'len' => '100',
             'group' => 'primary_address',
-            'comment' => 'State for primary address',
             'merge_filter' => 'enabled',
+            'comment' => 'LBL_PRIMARY_ADDRESS_STATE_COMMENT',
         ),
         'primary_address_postalcode' => array(
             'name' => 'primary_address_postalcode',
@@ -348,8 +351,8 @@ $vardefs = array(
             'type' => 'varchar',
             'len' => '20',
             'group' => 'primary_address',
-            'comment' => 'Postal code for primary address',
             'merge_filter' => 'enabled',
+            'comment' => 'LBL_PRIMARY_ADDRESS_POSTALCODE_COMMENT',
 
         ),
         'primary_address_country' => array(
@@ -357,8 +360,8 @@ $vardefs = array(
             'vname' => 'LBL_PRIMARY_ADDRESS_COUNTRY',
             'type' => 'varchar',
             'group' => 'primary_address',
-            'comment' => 'Country for primary address',
             'merge_filter' => 'enabled',
+            'comment' => 'LBL_PRIMARY_ADDRESS_COUNTRY_COMMENT',
         ),
         'alt_address_street' => array(
             'name' => 'alt_address_street',
@@ -366,8 +369,8 @@ $vardefs = array(
             'type' => 'varchar',
             'len' => '150',
             'group' => 'alt_address',
-            'comment' => 'Street address for alternate address',
             'merge_filter' => 'enabled',
+            'comment' => 'LBL_ALT_ADDRESS_STREET_COMMENT',
         ),
         'alt_address_street_2' => array(
             'name' => 'alt_address_street_2',
@@ -389,8 +392,8 @@ $vardefs = array(
             'type' => 'varchar',
             'len' => '100',
             'group' => 'alt_address',
-            'comment' => 'City for alternate address',
             'merge_filter' => 'enabled',
+            'comment' => 'LBL_ALT_ADDRESS_CITY_COMMENT',
         ),
         'alt_address_state' => array(
             'name' => 'alt_address_state',
@@ -398,8 +401,8 @@ $vardefs = array(
             'type' => 'varchar',
             'len' => '100',
             'group' => 'alt_address',
-            'comment' => 'State for alternate address',
             'merge_filter' => 'enabled',
+            'comment' => 'LBL_ALT_ADDRESS_STATE_COMMENT',
         ),
         'alt_address_postalcode' => array(
             'name' => 'alt_address_postalcode',
@@ -407,16 +410,16 @@ $vardefs = array(
             'type' => 'varchar',
             'len' => '20',
             'group' => 'alt_address',
-            'comment' => 'Postal code for alternate address',
             'merge_filter' => 'enabled',
+            'comment' => 'LBL_ALT_ADDRESS_POSTALCODE_COMMENT',
         ),
         'alt_address_country' => array(
             'name' => 'alt_address_country',
             'vname' => 'LBL_ALT_ADDRESS_COUNTRY',
             'type' => 'varchar',
             'group' => 'alt_address',
-            'comment' => 'Country for alternate address',
             'merge_filter' => 'enabled',
+            'comment' => 'LBL_ALT_ADDRESS_COUNTRY_COMMENT',
         ),
         'assistant' => array(
             'name' => 'assistant',
@@ -425,8 +428,8 @@ $vardefs = array(
             'len' => '75',
             'unified_search' => true,
             'full_text_search' => array('boost' => 2),
-            'comment' => 'Name of the assistant of the contact',
             'merge_filter' => 'enabled',
+            'comment' => 'LBL_ASSISTANT_COMMENT',
         ),
         'assistant_phone' => array(
             'name' => 'assistant_phone',
@@ -437,7 +440,7 @@ $vardefs = array(
             'group' => 'assistant',
             'unified_search' => true,
             'full_text_search' => array('boost' => 1),
-            'comment' => 'Phone number of the assistant of the contact',
+            'comment' => 'LBL_ASSISTANT_PHONE_COMMENT',
             'merge_filter' => 'enabled',
         ),
 

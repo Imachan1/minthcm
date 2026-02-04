@@ -117,9 +117,9 @@ $mod_strings = array(
     'LBL_PHONE_OTHER_COMMENT' => 'Additional phone number of the contact',
     'LBL_PHONE_FAX_COMMENT' => 'Fax number of the contact',
     'LBL_EMAIL_ADDRESS_COMMENT' => 'Email address widget of the contact',
-    'LBL_LAWFUL_BASIS_COMMENT' => 'Legal basis for processing the contact\'s personal data', // CR FIXME #182875 2026-02-04: Nieużywana etykieta
-    'LBL_DATE_REVIEWED_COMMENT' => 'Date when the legal basis was last reviewed', // CR FIXME #182875 2026-02-04: Nieużywana etykieta
-    'LBL_LAWFUL_BASIS_SOURCE_COMMENT' => 'Source of the legal basis for data processing', // CR FIXME #182875 2026-02-04: Nieużywana etykieta
+    'LBL_LAWFUL_BASIS_COMMENT' => 'Legal basis for processing the contact\'s personal data',
+    'LBL_DATE_REVIEWED_COMMENT' => 'Date when the legal basis was last reviewed',
+    'LBL_LAWFUL_BASIS_SOURCE_COMMENT' => 'Source of the legal basis for data processing',
     'LBL_PRIMARY_ADDRESS_STREET_COMMENT' => 'Street address of the primary residence',
     'LBL_PRIMARY_ADDRESS_CITY_COMMENT' => 'City of the primary residence',
     'LBL_PRIMARY_ADDRESS_STATE_COMMENT' => 'State or region of the primary residence',
@@ -130,7 +130,7 @@ $mod_strings = array(
     'LBL_ALT_ADDRESS_STATE_COMMENT' => 'State or region of the alternate residence',
     'LBL_ALT_ADDRESS_POSTALCODE_COMMENT' => 'Postal code of the alternate residence',
     'LBL_ALT_ADDRESS_COUNTRY_COMMENT' => 'Country of the alternate residence',
-    'LBL_ASSISTANT_COMMENT' => 'Name of the contact\'s assistant', // CR FIXME #182875 2026-02-04: Nieużywana etykieta
+    'LBL_ASSISTANT_COMMENT' => 'Name of the contact\'s assistant',
     'LBL_ASSISTANT_PHONE_COMMENT' => 'Phone number of the contact\'s assistant',
 );
 
