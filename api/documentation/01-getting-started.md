@@ -131,6 +131,10 @@ rm -rf cache/smarty/*
 - Clear session cache
 - Check OAuth2 configuration
 - Verify user credentials and permissions
+- Regenerate OAuth2 client secret if needed:
+  ```bash
+  ./MintCLI oauth2:regenerateClientSecret
+  ```
 
 ## Getting Help
 

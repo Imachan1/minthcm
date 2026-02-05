@@ -63,25 +63,8 @@ Edit `.env` and configure:
 ```bash
 # Backend API URL (adjust to your instance)
 PROXY_URL=http://localhost:8080/<instance_name>
-
-# OAuth Client Secret for OAuth authentication
-CLIENT_SECRET=
 ```
 
-**Generating CLIENT_SECRET:**
-
-The OAuth client secret must be generated before running the frontend. From the MintHCM root directory, run:
-
-```bash
-./MintCLI oauth2:repairFrontend
-```
-
-This command will:
-1. Generate a new OAuth2 client for the frontend
-2. Output the `CLIENT_SECRET` value
-3. Configure the backend OAuth2 settings
-
-Copy the generated secret and paste it into your `.env` file.
 
 **PROXY_URL** should point to your MintHCM backend instance. Common configurations:
 
@@ -365,7 +348,6 @@ Available environment variables:
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
 | `PROXY_URL` | Backend API URL | - | ✅ Yes |
-| `CLIENT_SECRET` | OAuth client secret | - | ✅ Yes |
 | `NODE_ENV` | Environment mode | `development` | Auto-set |
 
 ### Using Environment Variables in Code
@@ -375,13 +357,31 @@ Available environment variables:
 export default defineConfig({
     define: {
         'process.env': {
-            CLIENT_SECRET: process.env.CLIENT_SECRET ?? '',
+            PROXY_URL: process.env.PROXY_URL ?? '',
         },
     },
 })
 
 // Access in code
-const clientSecret = process.env.CLIENT_SECRET
+const proxyUrl = process.env.PROXY_URL
+```
+
+**OAuth2 Client Secret Handling:**
+
+Since version 4.3.0, the client secret is automatically retrieved from the backend during login:
+
+```typescript
+// In auth store (example)
+const internalTokenResponse = await mintApi.post('getInternalFrontendToken', {}, { rawError: true });
+if (!internalTokenResponse.data?.client_secret) {
+    return false
+}
+const response = await mintApi.post('login', {
+    client_secret: internalTokenResponse.data.client_secret,
+    username,
+    password,
+    login_language: languages.currentLanguage ?? 'pl_PL',
+})
 ```
 
 ⚠️ **Security Note:** Never commit `.env` file to version control. Use `.env.example` as a template.

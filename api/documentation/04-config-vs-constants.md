@@ -228,6 +228,20 @@ openssl genrsa -out private.key 2048
 openssl rsa -in private.key -pubout -out public.key
 ```
 
+**OAuth2 Client Secrets:**
+
+Since version 4.3.0, OAuth2 client secrets (e.g., for the frontend client) are stored in the database table `oauth2clients` and can be regenerated using:
+
+```bash
+./MintCLI oauth2:regenerateClientSecret
+```
+
+This command:
+- Generates a new random secret for the 'frontend' OAuth2 client
+- Stores it in the database (plain text, not hashed)
+- Does not require manual configuration in frontend `.env` files
+
+
 ## When to Use Constants vs Configuration
 
 ### Use Constants When:
