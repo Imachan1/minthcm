@@ -16,7 +16,40 @@ class MintLogic
             throw new \InvalidArgumentException("Bean must be an instance of SugarBean or MintBean");
         }
         $this->bean = clone $bean;
-        $this->defs = include __DIR__ . "/Modules/{$bean->module_name}/logicdefs.php" ?? [];
+        $this->defs = $this->loadLogicDefs($bean->module_name);
+    }
+
+    private function loadLogicDefs($moduleName)
+    {
+        $mergedDefs = [];
+        
+        // Load from main module directory
+        $moduleDir = __DIR__ . "/Modules/{$moduleName}";
+        if (is_dir($moduleDir)) {
+            $mergedDefs = $this->loadLogicDefsFromDirectory($moduleDir, $mergedDefs);
+        }
+        
+        // Load from custom directory
+        $customDir = __DIR__ . "/../../custom/lib/MintLogic/{$moduleName}";
+        if (is_dir($customDir)) {
+            $mergedDefs = $this->loadLogicDefsFromDirectory($customDir, $mergedDefs);
+        }
+        
+        return $mergedDefs;
+    }
+
+    private function loadLogicDefsFromDirectory($directory, $mergedDefs)
+    {
+        $files = glob($directory . '/*logicdefs.php');
+        
+        foreach ($files as $file) {
+            $defs = include $file;
+            if (is_array($defs)) {
+                $mergedDefs = array_merge_recursive($mergedDefs, $defs);
+            }
+        }
+        
+        return $mergedDefs;
     }
 
     public function getInitial()

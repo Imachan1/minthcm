@@ -15,12 +15,27 @@ The system is located in `api/lib/MintLogic/` and enables:
 
 ## Basic Structure
 
-### The logicdefs.php File
+### The logicdefs.php Files
 
-Each module can have its own logic definition file at:
+Each module can have one or more logic definition files. The system loads all files matching the pattern `*logicdefs.php` from the following directories:
+
+**Main module directory:**
 ```
-api/lib/MintLogic/Modules/{ModuleName}/logicdefs.php
+api/lib/MintLogic/Modules/{ModuleName}/*logicdefs.php
 ```
+
+**Custom directory (for extensions and customizations):**
+```
+api/custom/lib/MintLogic/{ModuleName}/*logicdefs.php
+```
+
+The system automatically merges all found definitions, allowing you to split logic into multiple files and extend standard logic with custom definitions without modifying core files.
+
+Examples of valid filenames:
+- `logicdefs.php`
+- `validation.logicdefs.php`
+- `visibility.logicdefs.php`
+- `custom.logicdefs.php`
 
 Basic file structure:
 
@@ -477,13 +492,56 @@ Example API response with logic:
 
 ## Extending via Custom
 
-Like other API elements, MintLogic can be extended through the `custom/` directory:
+The MintLogic system supports extending and customizing logic through the `custom/` directory:
 
 ```
-custom/api/lib/MintLogic/Modules/{ModuleName}/logicdefs.php
+api/custom/lib/MintLogic/{ModuleName}/*logicdefs.php
 ```
 
-The custom file will override the default logicdefs file for the given module.
+### How It Works
+
+1. The system first loads all `*logicdefs.php` files from the main module directory
+2. Then loads all `*logicdefs.php` files from the custom directory
+3. Definitions are merged recursively using `array_merge_recursive()`
+
+### Benefits
+
+- **Non-invasive customization** - You can add or extend logic without modifying core files
+- **Multiple files** - Split logic into multiple thematic files (e.g., `validation.logicdefs.php`, `visibility.logicdefs.php`)
+- **Safe upgrades** - Custom definitions remain intact during system upgrades
+
+### Example
+
+Standard file in `api/lib/MintLogic/Modules/Candidates/logicdefs.php`:
+```php
+return [
+    'rules' => [
+        'standard_rule' => [
+            'hooks' => [Hook::INIT],
+            'logic' => [
+                'readonly' => ['field1' => true],
+            ],
+        ],
+    ],
+];
+```
+
+Custom extension in `api/custom/lib/MintLogic/Candidates/custom.logicdefs.php`:
+```php
+return [
+    'rules' => [
+        'custom_rule' => [
+            'hooks' => [Hook::CHANGE],
+            'triggerFields' => ['status'],
+            'logic' => [
+                'required' => ['custom_field' => true],
+            ],
+        ],
+    ],
+];
+```
+
+Both rules will be merged and active in the system.
 
 ## Debugging
 
