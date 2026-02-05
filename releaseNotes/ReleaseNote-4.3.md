@@ -47,13 +47,13 @@
 | Command | Description |
 |---------|-------------|
 | `./MintCLI oauth2:create-keys` | Generate OAuth2 private/public key pair |
-| `./MintCLI oauth2:repair-frontend-client` | Repair frontend OAuth2 client configuration |
+| `./MintCLI oauth2:regenerateClientSecret` | Regenerate OAuth2 client secret |
 
 > **⚠️ IMPORTANT**  
 > If you experience login issues after upgrade, run:
 ```bash
 ./MintCLI oauth2:create-keys
-./MintCLI oauth2:repair-frontend-client
+./MintCLI oauth2:regenerateClientSecret
 ```
 
 ---
@@ -127,7 +127,8 @@ RecordView is intended to become the default view for all modules, gradually rep
 
 **Implementation:**
 - Location: `api/lib/MintLogic/`
-- Module-specific logic: `api/lib/MintLogic/Modules/{ModuleName}/logicdefs.php`
+- Module-specific logic: `api/lib/MintLogic/Modules/{ModuleName}/*logicdefs.php`
+- Custom logic: `api/custom/lib/MintLogic/{ModuleName}/*logicdefs.php`
 - Example modules with logic: WorkSchedules, Workplaces, Rooms, SpentTime
 - BasicSet implementation
 
@@ -152,6 +153,9 @@ Massive expansion of Doctrine entity support across the entire system.
   - Better entity generator with relational field support
   - Automatic constraint handling for custom entities
   - Fixed entity rebuilding issues with technical column names (e.g., "system")
+  - Fixed Custom ID Generator handling in entity properties
+  - Improved shouldGenerateCustomEntity validation logic
+  - Better hasCustomTable() detection
 
 **Impact:**
 
@@ -229,6 +233,12 @@ This provides a robust, type-safe ORM layer for API development, replacing direc
 - Improved demo data installation process
 - Support for exporting demo data with technical field names (e.g., "system")
 - New configuration file: `legacy/install/DemoDataInstallation/Configs/demo_data.php`
+
+**Mobile Support:**
+- Enhanced mobile device token tracking (ref #168518)
+  - Device tokens stored with last_used timestamp
+  - Automatic cleanup of stale device tokens
+  - Improved token management for mobile applications
 
 ---
 
@@ -324,6 +334,19 @@ Provides developers with comprehensive, up-to-date technical reference for both 
 | `@vueuse/core` | `^13.0.0` → `^13.1.0` | Updated |
 | `dropzone` | Added `^6.0.0-beta.2` | New dependency for file upload |
 | `Node.js` | Requirement: `~21` | Previously `~16 || ~21` |
+| `axios` | `^1.3.5` → `^1.12.0` | **Major update** for security and performance |
+| `@vitejs/plugin-vue` | `^3.0.3` → `^6.0.1` | **Major update** |
+| `vite` | `^3.0.8` → `^6.3.4` | **Major update** |
+| `vite-plugin-vuetify` | `^1.0.0-alpha.12` → `^2.1.2` | **Major update** |
+| `vuetify` | `npm:@vuetify/nightly@next` → `^3.11.3` | Moved from nightly to stable |
+| `tinymce` | `^5.10.7` → `^7.2.0` | **Major update** |
+| `md-editor-v3` | Added `^6.1.1` | New Markdown editor dependency |
+
+**Security Overrides:**
+- `cross-spawn`: `7.0.5`
+- `esbuild`: `0.25.0`
+- `postcss`: `8.4.31`
+- `webpack-dev-server`: `5.2.1`
 
 **Backend (PHP/Composer):**
 
@@ -386,7 +409,7 @@ This option updates your existing installation while preserving all customizatio
    Generate new OAuth2 keys for frontend authentication:
    ```bash
    ./MintCLI oauth2:create-keys
-   ./MintCLI oauth2:repair-frontend-client
+   ./MintCLI oauth2:regenerateClientSecret
    ```
    
    
@@ -402,10 +425,11 @@ This option updates your existing installation while preserving all customizatio
    Navigate to your MintHCM URL and log in with your credentials.
 
 **If login issues occur:**
-- Regenerate OAuth2 keys: `./MintCLI oauth2:create-keys && ./MintCLI oauth2:repair-frontend-client`
-- Check `legacy/config_override.php` contains `CLIENT_SECRET` configuration
-- Verify OAuth2 key files exist in the OAuth2 keys directory
+- Regenerate OAuth2 keys: `./MintCLI oauth2:create-keys && ./MintCLI oauth2:regenerateClientSecret`
+- Check database table `oauth2clients` contains 'frontend' client record
+- Verify OAuth2 key files exist in the OAuth2 keys directory (`api/configs/`)
 - Clear browser cache completely
+- Check browser console for authentication errors
 
 ---
 
