@@ -1,5 +1,5 @@
 <template>
-    <span>
+    <span :name="props.defs.name">
         {{ parsedDate }}
         <span v-if="props.modelValue"> - ({{ age }} {{ languages.label('LBL_YEARS')?.toLowerCase() }})</span>
     </span>

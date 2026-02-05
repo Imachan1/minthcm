@@ -2,7 +2,7 @@
     <div>
         <label>{{ props.label }}</label>
         <div class="detail-field-row">
-            <div>
+            <div :name="props.defs.name">
                 {{ parsedDate }}
                 <span v-if="props.field.model.isValid">
                     - ({{ age }} {{ languages.label('LBL_YEARS')?.toLowerCase() }})

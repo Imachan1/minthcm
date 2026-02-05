@@ -1,6 +1,9 @@
 <template>
     <component
-        v-bind="$attrs"
+        v-bind="{
+            ...$attrs,
+            ...( !['date', 'age', 'datetime', 'datetimecombo', 'relate', 'parent'].includes(props.defs?.type) ? { name: props.defs.name } : {} )
+        }"
         :aria-description="comment"
         :aria-describedby="props.defs.name+'-help'"
         :aria-label="label"
@@ -15,7 +18,6 @@
         :field="props.field"
         :modelValue="props.field?.model ?? modelValue"
         :view="view"
-        :name="props.defs.name"
     >
     </component>
     <p :id="`${props.defs.name}-help`" hidden>
