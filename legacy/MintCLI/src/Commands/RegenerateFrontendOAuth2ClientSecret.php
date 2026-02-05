@@ -19,22 +19,22 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class RepairFrontendOAuth2Client extends Command
+class RegenerateFrontendOAuth2ClientSecret extends Command
 {
-    protected static $defaultName = 'oauth2:repairFrontend';
-    protected static $defaultDescription = 'Repait Frontend OAuth2 Client';
+    protected static $defaultName = 'oauth2:regenerateClientSecret';
+    protected static $defaultDescription = 'Regenerate Frontend OAuth2 Client Secret';
 
     protected function configure()
     {
         $this
-            ->setHelp('This command add oauth2 client and create new client secrect for him.');
+            ->setHelp('This command add oauth2 client and create new or regenerate client secret for him.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
-        $io->title("Repair Frontend OAuth2 Client\n");
+        $io->title("Regenerate Frontend OAuth2 Client Secret\n");
 
         try {
             if (!$this->checkKeysExists()) {

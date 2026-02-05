@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useLanguagesStore } from './languages'
 import { mintApi } from '@/api/api'
+import { responseErrorHandler } from '@/api/interceptors/response-error-handler'
 
 export interface User {
     id: string
@@ -25,8 +26,12 @@ export const useAuthStore = defineStore('auth', () => {
 
         const languages = useLanguagesStore()
         try {
+            const internalTokenResponse = await mintApi.post('getInternalFrontendToken', {}, { rawError: true });
+            if (!internalTokenResponse.data?.client_secret) {
+                return false
+            }
             const response = await mintApi.post('login', {
-                client_secret: process.env.CLIENT_SECRET ?? '',
+                client_secret: internalTokenResponse.data.client_secret ?? '',
                 username,
                 password,
                 login_language: languages.currentLanguage ?? 'pl_PL',
