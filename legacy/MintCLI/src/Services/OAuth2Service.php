@@ -31,34 +31,11 @@ class OAuth2Service
             require_once 'include/entryPoint.php';
             $secret = bin2hex(openssl_random_pseudo_bytes(32));
             $this->createOrUpdateClient($secret);
-            $this->saveConfig($secret); //CR po co go zapisujesz do config? Nie jest tam potrzebny.
             chdir('..');
             return true;
         } catch (\Exception $e) {
             return false;
         }
-    }
-
-    protected function saveConfig($secret)
-    {
-        $config_file = '../api/configs/mint/config_override.php';
-
-        $config_contents = file_get_contents($config_file);
-
-        if (preg_match("/\\\$mint_config\\['frontend_secret'\\]\s*=\s*'.*?';/s", $config_contents)) {
-            $config_contents = preg_replace_callback(
-                "/(\\\$mint_config\\['frontend_secret'\\]\s*=\s*')(.*)(';)/s",
-                function ($matches) use ($secret) {
-                    return $matches[1] . addslashes($secret) . $matches[3];
-                },
-                $config_contents
-            );
-        } else {
-            $config_contents = rtrim($config_contents);
-            $config_contents .= "\n\$mint_config['frontend_secret'] = '" . addslashes($secret) . "';\n";
-        }
-
-        file_put_contents($config_file, $config_contents);
     }
 
     private function getKeyPath(string $type): string

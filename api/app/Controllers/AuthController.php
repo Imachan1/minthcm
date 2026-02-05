@@ -48,6 +48,7 @@ namespace MintHCM\Api\Controllers;
 
 use Doctrine\ORM\EntityManagerInterface;
 use MintHCM\Api\Controllers\OAuth2\Controller;
+use MintHCM\Api\Entities\OAuth2\Client;
 use MintHCM\Api\Entities\UsersPasswordLink;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpUnauthorizedException;
@@ -65,10 +66,12 @@ class AuthController
 
     public function getInternalFrontendToken(Request $request, Response $response, array $args): Response
     {
-        global $mint_config;
         $response = $response->withHeader('Content-type', 'application/json');
-        $data = json_encode(['client_secret' => $mint_config['frontend_secret']]); //CR dane wyciągnąć z bazy a nie z config.php
-        //CR jak nie ma w bazie klucza to rzuć wyjątkiem
+        $client = $this->entityManager->getRepository(Client::class)->find('frontend');
+        if(empty($client)){
+            throw new HttpUnauthorizedException($request);
+        }
+        $data = json_encode(['client_secret' => $client->secret]); 
         $response->getBody()->write($data);
         return $response;
     }
