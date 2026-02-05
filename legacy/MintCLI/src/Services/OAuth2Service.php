@@ -31,7 +31,7 @@ class OAuth2Service
             require_once 'include/entryPoint.php';
             $secret = bin2hex(openssl_random_pseudo_bytes(32));
             $this->createOrUpdateClient($secret);
-            $this->saveConfig($secret);
+            $this->saveConfig($secret); //CR po co go zapisujesz do config? Nie jest tam potrzebny.
             chdir('..');
             return true;
         } catch (\Exception $e) {

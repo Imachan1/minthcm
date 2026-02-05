@@ -67,7 +67,8 @@ class AuthController
     {
         global $mint_config;
         $response = $response->withHeader('Content-type', 'application/json');
-        $data = json_encode(['client_secret' => $mint_config['frontend_secret']]);
+        $data = json_encode(['client_secret' => $mint_config['frontend_secret']]); //CR dane wyciągnąć z bazy a nie z config.php
+        //CR jak nie ma w bazie klucza to rzuć wyjątkiem
         $response->getBody()->write($data);
         return $response;
     }
