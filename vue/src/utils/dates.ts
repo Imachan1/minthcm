@@ -16,6 +16,7 @@ export default class DateUtils {
             case 'H:i':
             case 'H.i':
             case 'HH:mm':
+            case 'HH.mm':
                 return '24hr'
             default:
                 return 'ampm'

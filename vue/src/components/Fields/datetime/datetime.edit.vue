@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { defineProps, ref, computed, watch, defineEmits } from 'vue'
 import { DateTime } from 'luxon'
 import { FieldProps } from '../Field.model'
 import { usePreferencesStore } from '@/store/preferences'
@@ -86,7 +86,7 @@ const timeValue = computed({
     set(newVal) {
         const dt = DateTime.fromFormat(
             `${dateValue.value} ${newVal}`,
-            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`
+            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`,
         )
         if (dt.isValid) {
             model.value.set(dt)
@@ -103,10 +103,18 @@ const datePickerValue = computed({
         if (!dt.isValid) {
             return
         }
-        const formatedDatetime =  DateTime.fromFormat(
-                `${dt.toFormat('yyyy-MM-dd')} ${model.value.isValid ? model.value.formatted.user_time : (timeFormat.value == 'ampm' ? '12:00 PM' : '12:00')}`,
-                `yyyy-MM-dd ${timeFormat.value == 'ampm' ? 'hh:mm a' : 'HH:mm'}`
-            )
+
+        let timeStr: string
+        if (timeFormat.value === 'ampm') {
+            timeStr = model.value.isValid ? model.value.formatted.user_time.replace('.', ':') : '12:00 PM'
+        } else {
+            timeStr = model.value.isValid ? model.value.formatted.user_time_normal.slice(0, -3) : '12:00'
+        }
+
+        const formatedDatetime = DateTime.fromFormat(
+            `${dt.toFormat('yyyy-MM-dd')} ${timeStr}`,
+            `yyyy-MM-dd ${timeFormat.value == 'ampm' ? 'hh:mm a' : 'HH:mm'}`,
+        )
         model.value.set(formatedDatetime)
         datePickerMenu.value = false
     },
