@@ -283,6 +283,7 @@ EOD
       $this->ev->process($processSpecial, $processFormName);
 
       echo $this->ev->display($this->showTitle);
+      unset($_SESSION[$this->dv->bean->user_name . "_PREFERENCES"]);
    }
 
    /**
