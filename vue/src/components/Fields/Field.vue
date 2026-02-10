@@ -2,7 +2,7 @@
     <component
         v-bind="{
             ...$attrs,
-            ...( !['date', 'age', 'datetime', 'datetimecombo', 'relate', 'parent'].includes(props.defs?.type) ? { name: props.defs.name } : {} )
+            ...( !['fieldset', 'date', 'age', 'datetime', 'datetimecombo', 'relate', 'parent'].includes(props.defs?.type) ? { name: props.defs.name } : {} )
         }"
         :aria-description="comment"
         :aria-describedby="props.defs.name+'-help'"
@@ -45,6 +45,11 @@ const label = computed(() => {
 })
 
 const comment = computed(() => {
+    if(props.defs.type === 'fieldset'){
+        return  languagesStore.label(modulesStore.currentModule?.vardefs[props.defs.name + '_street']?.comment, modulesStore.currentModule?.name) ? 
+        languagesStore.label(modulesStore.currentModule?.vardefs[props.defs.name + '_street']?.comment, modulesStore.currentModule?.name)
+        : modulesStore.currentModule?.vardefs[props.defs.name + '_street']?.comment;
+    }
     if(!props.defs?.comment || !modulesStore.currentModule?.name){
         return ''
     }

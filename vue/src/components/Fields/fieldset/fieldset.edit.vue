@@ -5,6 +5,7 @@
                 v-if="field && !store.bean.logic.hiddenFields.includes(field.name)"
                 :view="store.bean.logic.readonlyFields.includes(field.name) ? 'detail' : store.view"
                 :defs="field"
+                :name="field.name"
                 :data="{ bean: store.bean.attributes }"
                 :label="languages.label(field.label, modules.currentModule?.name)"
                 :required="store.bean.logic.requiredFields.includes(field.name)"

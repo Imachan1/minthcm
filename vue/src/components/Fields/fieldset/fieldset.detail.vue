@@ -1,6 +1,6 @@
 <template>
     <label>{{ props.label }}</label>
-    <div class="d-flex detail-field-container">
+    <div :name="props.defs.name" class="d-flex detail-field-container">
         <p v-text="fieldContent"></p>
         <Pencil :defs="props.defs" />
     </div>
@@ -24,6 +24,15 @@ const fieldContent = computed(() => {
         }
     })
     return text
+})
+const computedDescription = computed(() => {
+    let description = ''
+    props.defs.properties?.fields.forEach((field, index) => {
+        if(field.name.includes('_street')){
+            description = field.comment
+        }
+    })
+    return description
 })
 </script>
 
