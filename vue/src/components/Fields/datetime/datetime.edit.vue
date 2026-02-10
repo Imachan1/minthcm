@@ -56,7 +56,7 @@ const timePickerMenu = ref(false)
 const model = ref(props.field.model)
 const preferences = usePreferencesStore()
 
-const allowedMinutesStep = (m: number) => m % 5 === 0
+const allowedMinutesStep = (m: number) => m % (props.minuteStep || 5) === 0
 
 const timeFormat = computed(() => {
     return DateUtils.getTimeFormatGeneralized()
