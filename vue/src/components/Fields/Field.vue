@@ -46,9 +46,9 @@ const label = computed(() => {
 
 const comment = computed(() => {
     if(props.defs.type === 'fieldset'){
-        return  languagesStore.label(modulesStore.currentModule?.vardefs[props.defs.name + '_street']?.comment, modulesStore.currentModule?.name) ? 
-        languagesStore.label(modulesStore.currentModule?.vardefs[props.defs.name + '_street']?.comment, modulesStore.currentModule?.name)
-        : modulesStore.currentModule?.vardefs[props.defs.name + '_street']?.comment;
+        return  languagesStore.label(modulesStore.currentModule?.vardefs[props.defs.properties?.fields[0].name]?.comment, modulesStore.currentModule?.name) ? 
+        languagesStore.label(modulesStore.currentModule?.vardefs[props.defs.properties?.fields[0].name]?.comment, modulesStore.currentModule?.name)
+        : modulesStore.currentModule?.vardefs[props.defs.properties?.fields[0].name]?.comment;
     }
     if(!props.defs?.comment || !modulesStore.currentModule?.name){
         return ''

@@ -25,15 +25,6 @@ const fieldContent = computed(() => {
     })
     return text
 })
-const computedDescription = computed(() => {
-    let description = ''
-    props.defs.properties?.fields.forEach((field, index) => {
-        if(field.name.includes('_street')){
-            description = field.comment
-        }
-    })
-    return description
-})
 </script>
 
 <style scoped lang="scss">
