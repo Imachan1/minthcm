@@ -52,6 +52,9 @@ class CyclicRecordsSaver
 
     public function hasCyclicRecords(): bool
     {
+        if(!empty($this->bean->repeat_parent_id)){
+            return true;
+        } 
         $entity_class = $this->getEntityClassName();
         $queryBuilder = $this->entityManager->createQueryBuilder($entity_class);
         $children = $queryBuilder->select('e.id')
