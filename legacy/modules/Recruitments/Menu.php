@@ -55,5 +55,5 @@ if (ACLController::checkAccess('Recruitments', 'list', true)) {
 }
 
 if (ACLController::checkAccess('Recruitments', 'import', true)) {
-    $module_menu[] = array("index.php?module=Import&action=Step1&import_module=Recruitments&return_module=Recruitments&return_action=index", $mod_strings['LNK_IMPORT_RECRUITMENTS'], "Import", 'Contacts');
+    $module_menu[] = array("index.php?module=Import&action=Step1&import_module=Recruitments&return_module=Recruitments&return_action=index", $mod_strings['LBL_IMPORT'], "Import", 'Contacts');
 }
