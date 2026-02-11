@@ -15,6 +15,7 @@ interface SelectionList {
 export class SelectWorkScheduleForDelegation extends SubpanelAction {
     public static readonly TITLE = 'LBL_LINK_RECORD_BUTTON'
     public static readonly ICON = 'mdi-link'
+    public static readonly ACTION_KEY = 'selectWorkScheduleForDelegation'
     public static readonly ACL = ['list']
 
     public async execute() {

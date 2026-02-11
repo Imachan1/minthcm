@@ -6,6 +6,8 @@
             variant="regular"
             :text="buttons[0].title"
             :icon="buttons[0].icon"
+            :id="buttons[0].actionKey || null"
+            :name="buttons[0].actionKey || null"
             @click.stop="buttons[0].onClick"
         />
         <v-menu v-else-if="buttons.length > 1" offset="16">

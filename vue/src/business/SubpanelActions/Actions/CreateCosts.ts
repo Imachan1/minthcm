@@ -6,6 +6,7 @@ import { ref } from 'vue'
 
 export class CreateCosts extends SubpanelAction {
     public static readonly TITLE = 'LBL_CREATE_BUTTON_LABEL'
+    public static readonly ACTION_KEY = 'createCosts'
     public static readonly ICON = 'mdi-plus'
     public static readonly ACL = ['edit']
 

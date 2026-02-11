@@ -10,6 +10,7 @@ interface SubpanelActionOptions {
 
 export abstract class SubpanelAction {
     public static readonly TITLE: string = ''
+    public static readonly ACTION_KEY: string = ''
     public static readonly ICON: string = 'mdi-circle-medium'
     public static readonly ACL: string[] = []
 
@@ -35,10 +36,12 @@ export abstract class SubpanelAction {
     public toMenuListItem(): MenuListItem {
         const languagesStore = useLanguagesStore()
         const self = this.constructor as typeof SubpanelAction
+        const actionKey = self.ACTION_KEY + '_' + this.subpanel.key
         return {
             title: languagesStore.label(this.options.title || self.TITLE),
             icon: this.options.icon || self.ICON,
             onClick: () => this.execute(),
+            actionKey: self.ACTION_KEY ? actionKey : null
         }
     }
 }
