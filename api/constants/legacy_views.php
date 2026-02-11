@@ -495,7 +495,7 @@ return [
     ],
     'Recruitments' => [
         'list' => false,
-        'record' => true,
+        'record' => false,
     ],
     'Positions' => [
         'list' => false,
