@@ -11,6 +11,8 @@ use Exception;
 
 class CyclicRecordsSaver
 {
+    const REPEAT_LIMIT = 250;
+
     const ALLOWED_REPEAT_TYPES = [
         'Daily',
         'Weekly',
@@ -151,6 +153,9 @@ class CyclicRecordsSaver
         $date_end_object = new DateTime($this->bean->date_end);
         $dates_diff = $date_start_object->diff($date_end_object);
         $next_start_date_objects = $this->calculateStartDates(clone $date_start_object);
+        if (count($next_start_date_objects) > static::REPEAT_LIMIT) {
+            $next_start_date_objects = array_slice($next_start_date_objects, 0, static::REPEAT_LIMIT);
+        }
         foreach ($next_start_date_objects as $next_start_date_object) {
             $next_start_date_object->setTime(
                 $date_start_object->format('H'),
