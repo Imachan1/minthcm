@@ -38,6 +38,7 @@ class MobileGrant extends PasswordGrant
             $app_tokens_array = json_decode(html_entity_decode($user_bean->app_tokens), 1);
             if (
                 empty($app_tokens_array[$device_id])
+                || empty($app_tokens_array[$device_id]['token'])
                 || $app_tokens_array[$device_id]['token'] != $firebase_token
                 || empty($app_tokens_array[$device_id]['last_used'])
                 || $app_tokens_array[$device_id]['last_used'] < date('Y-m-d H:i:s', strtotime(self::APP_TOKEN_LAST_USED_INTERVAL))
