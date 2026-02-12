@@ -3993,6 +3993,7 @@ $app_list_strings['supervisor_acceptance_dom'] = array(
     'wait' => 'Waiting for acceptance',
     'not_applicable' => 'Not applicable',
     'accepted' => 'Accepted',
+    'rejected' => 'Rejected',
 );
 $app_list_strings['appraisals_type_list'] = array(
     'recruiting' => 'Recruiting',

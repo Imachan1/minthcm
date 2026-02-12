@@ -1,7 +1,7 @@
 <?php
 
 $viewdefs['WorkSchedules'] = [
-    'order' => ['basicInfo', 'recurrence', 'subpanels'],
+    'order' => ['basicInfo', /* 'recurrence', */ 'subpanels'],
     'panels' => [
         'basicInfo' => [
             'component' => 'MintPanelRecordDetails',
