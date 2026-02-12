@@ -110,7 +110,7 @@
     {literal}
 
     $(function(){
-        var percent = Math.round(100/(colNum+1));
+        var percent = colNum > 2 ? 25 : 50;
         $('#pageContainer #pageNum_'+activePage+'_div .dashletcontainer').addClass('col-'+percent);
     });
 
