@@ -429,7 +429,7 @@ $dictionary['WorkSchedules'] = array(
       ),
       'occasional_leave_type' => array(
          'name' => 'occasional_leave_type',
-         'vname' => 'LBL_OCCASIONAL_LEAVE_TYPE',
+         'vname' => 'LBL_TYPE_OF_SPECIAL_LEAVE',
          'required' => false,
          'type' => 'enum',
          'massupdate' => false,

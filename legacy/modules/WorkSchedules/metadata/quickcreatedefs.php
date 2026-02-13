@@ -112,7 +112,7 @@ $viewdefs[$module_name] = array(
                ),
                array(
                   'name' => 'occasional_leave_type',
-                  'label' => 'LBL_OCCASIONAL_LEAVE_TYPE',
+                  'label' => 'LBL_TYPE_OF_SPECIAL_LEAVE',
                ),
             ),
             array(

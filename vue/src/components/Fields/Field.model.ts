@@ -16,6 +16,7 @@ export interface FieldProps<T = any> {
     disabled?: boolean
     hidePencil?: boolean
     isDirty?: boolean
+    minuteStep?: number
 }
 
 export type FieldState = 'normal' | 'error' | 'required'

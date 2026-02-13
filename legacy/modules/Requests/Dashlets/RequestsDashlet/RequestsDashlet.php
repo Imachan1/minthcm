@@ -63,7 +63,7 @@ require_once 'modules/Requests/Requests.php';
 class RequestsDashlet extends DashletGeneric
 {
 
-    public function RequestsDashlet($id, $def = null)
+    public function __construct($id, $def = null)
     {
         require 'modules/Requests/metadata/dashletviewdefs.php';
 
@@ -75,8 +75,6 @@ class RequestsDashlet extends DashletGeneric
 
         $this->searchFields = $dashletData['RequestsDashlet']['searchFields'];
         $this->columns = $dashletData['RequestsDashlet']['columns'];
-
-        $this->seedBean = new Requests();
+        $this->seedBean = BeanFactory::newBean('Requests');
     }
-
 }
