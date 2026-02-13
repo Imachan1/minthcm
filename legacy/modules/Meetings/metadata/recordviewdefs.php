@@ -11,7 +11,7 @@ $viewdefs['Meetings'] = [
                     'Delete',
                     [
                         'name' => 'Duplicate',
-                        'skipFields' => ['date_start', 'date_end'],
+                        'skipFields' => ['repeat'],
                     ],
                 ],
                 'sections' => [

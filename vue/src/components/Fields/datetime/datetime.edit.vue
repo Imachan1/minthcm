@@ -72,7 +72,10 @@ const dateValue = computed({
             model.value.clear()
             return
         }
-        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
+        const dt = DateTime.fromFormat(
+            `${newVal} ${timeValue.value}`, 
+            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`
+        )
         if (dt.isValid) {
             model.value.set(dt)
         }

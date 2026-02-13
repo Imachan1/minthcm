@@ -8,6 +8,7 @@ import { MintField, useField } from '@/components/Fields/useField'
 import { useLink } from './useLink'
 import { mintApi } from '@/api/api'
 import { DateTime } from 'luxon'
+import { MintDate, useMintDate } from '@/composables/useMintDate'
 
 export type MintBean = ReturnType<typeof useBean>
 interface MintBeanAttributes {
@@ -181,21 +182,11 @@ export const useBean = (module: string, id: string) => {
 
     function setAttributesFromQuery(query: { [key: string]: string | (string | null)[] | null | undefined }) {
         const fieldsToUpdate: { [fieldName: string]: any } = {}
-        const preferences = usePreferencesStore()
+        // const preferences = usePreferencesStore()
         Object.entries(query)
             .filter(([key]) => fieldDefs.value[key])
             .map(([key, value]) => {
-                let parsedValue = value;
-                if(['date', 'datetime', 'datetimecombo'].includes(fieldDefs.value[key].type)){
-                    const dateValueParts = (value as string).split(' ');
-                    const dateUserFormat = DateTime.fromFormat(dateValueParts[0], preferences.user?.date_format || 'yyyy-MM-dd');
-                    let timeUserFormat = '00:00';
-                    if(dateValueParts[1]){
-                        timeUserFormat = DateTime.fromFormat(dateValueParts[1], preferences.user?.time_format).setZone('UTC').toFormat('HH:mm');
-                    }
-                    parsedValue = `${dateUserFormat.toFormat('yyyy-MM-dd')}` + ` ${timeUserFormat}:00`
-                }
-                fieldsToUpdate[key] = parsedValue
+                fieldsToUpdate[key] = parseRawFieldValueToField(key, value)
             })
         if (query?.return_relationship && query?.return_id) {
             const link = loadRelationship(query.return_relationship as string)
@@ -206,6 +197,33 @@ export const useBean = (module: string, id: string) => {
         if (triggerFields.length > 0) {
             fetchLogic(triggerFields)
         }
+    }
+
+    function parseRawFieldValueToField(fieldName: string, value: any) {
+        const preferences = usePreferencesStore()
+        let parsedValue = value;
+        
+        if(['date', 'datetime', 'datetimecombo'].includes(fieldDefs.value[fieldName].type)){
+            // Try parsing as ISO format first
+            const isoDate = DateTime.fromISO(value as string).setZone('UTC');
+            if (isoDate.isValid) {
+                const dateFormatted = isoDate.toFormat('yyyy-MM-dd');
+                const timeFormatted = isoDate.toFormat('HH:mm:ss');
+                parsedValue = `${dateFormatted} ${timeFormatted}`;
+            } else {
+                // Fallback to user format parsing
+                const dateValueParts = (value as string).split(' ');
+                const dateUserFormat = DateTime.fromFormat(dateValueParts[0], preferences.user?.date_format || 'yyyy-MM-dd');
+                let timeUserFormat = '00:00';
+                if(dateValueParts[1]){
+                    timeUserFormat = DateTime.fromFormat(dateValueParts[1], preferences.user?.time_format).setZone('UTC').toFormat('HH:mm');
+                }
+                parsedValue = `${dateUserFormat.toFormat('yyyy-MM-dd')} ${timeUserFormat}:00`;
+            }
+            parsedValue = useMintDate(parsedValue)
+        }
+        
+        return parsedValue;
     }
 
     const originalId = ref('')
@@ -223,7 +241,8 @@ export const useBean = (module: string, id: string) => {
                 && copyBean.data.attributes[fieldName] !== null
                 && copyBean.data.attributes[fieldName] !== ''
             ) {
-                fieldsToUpdate[fieldName] = copyBean.data.attributes[fieldName]
+
+                fieldsToUpdate[fieldName] = parseRawFieldValueToField(fieldName, copyBean.data.attributes[fieldName])
             }
         })
         updateFields(fieldsToUpdate)
