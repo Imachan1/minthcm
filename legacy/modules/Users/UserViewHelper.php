@@ -313,21 +313,48 @@ class UserViewHelper
         }
 
         // If new regular user without system generated password or new portal user
-        if (((isset($enable_syst_generate_pwd) && !$enable_syst_generate_pwd && $this->usertype != 'GROUP') || $this->usertype == 'PORTAL_ONLY') && empty($this->bean->id)) {
+        if (
+                (
+                    (
+                        isset($enable_syst_generate_pwd) 
+                        && !$enable_syst_generate_pwd 
+                        && $this->usertype != 'GROUP'
+                    ) 
+                    || $this->usertype == 'PORTAL_ONLY'
+                ) 
+                && empty($this->bean->id)
+                && empty($GLOBALS['system_config']->settings['system_ldap_enabled'])
+            ) {
             $this->ss->assign('REQUIRED_PASSWORD', '1');
         } else {
             $this->ss->assign('REQUIRED_PASSWORD', '0');
         }
 
         // If my account page or portal only user or regular user without system generated password or a duplicate user
-        if ((($current_user->id == $this->bean->id) || $this->usertype == 'PORTAL_ONLY' || (($this->usertype == 'REGULAR' || $this->usertype == 'Administrator' || (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true' && $this->usertype != 'GROUP')) && !$enable_syst_generate_pwd)) && !$this->bean->external_auth_only) {
+        // Make sure group users don't get a password change prompt
+        if (
+            (
+                $current_user->id == $this->bean->id
+                || $this->usertype == 'PORTAL_ONLY' 
+                || (
+                    (
+                        $this->usertype == 'REGULAR' 
+                        || $this->usertype == 'Administrator' 
+                        || (
+                            isset($_REQUEST['isDuplicate']) 
+                            && $_REQUEST['isDuplicate'] == 'true' 
+                            && $this->usertype != 'GROUP'
+                        )
+                    ) 
+                    && !$enable_syst_generate_pwd
+                )
+            )
+            && !$this->bean->external_auth_only
+            && $this->usertype != 'GROUP'
+            && empty($GLOBALS['system_config']->settings['system_ldap_enabled'])
+        ) {
             $this->ss->assign('CHANGE_PWD', '1');
         } else {
-            $this->ss->assign('CHANGE_PWD', '0');
-        }
-
-        // Make sure group users don't get a password change prompt
-        if ($this->usertype == 'GROUP') {
             $this->ss->assign('CHANGE_PWD', '0');
         }
 
