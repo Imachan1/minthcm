@@ -143,6 +143,7 @@ class EntityCreatorDataGenerator
                     }
                 }
             }
+            }
 
         $field['columnAttributes'] = implode(', ', $attributes);
         return $field;

@@ -4,6 +4,14 @@ use MintHCM\Lib\MintLogic\Formula;
 
 return [
     'rules' => [
+        'assigned_user_readonly' => [
+            'hooks' => [Hook::ALL],
+            'logic' => [
+                'readonly' => [
+                    'assigned_user_name' => true,
+                ],
+            ],
+        ],
         'other_transportation_show' => [
             'hooks' => [Hook::ALL, Hook::CHANGE],
             'triggerFields' => ['type'],
@@ -29,11 +37,13 @@ return [
             'triggerFields' => ['delegation_id'],
             'logic' => [
                 'update' => function ($bean) {
-                    if (!empty($bean->delegation_id)) {
-                        $delegation = \BeanFactory::getBean('Delegations', $bean->delegation_id);
+                    $delegation_id = $bean->delegation_id;
+                    if (!empty($delegation_id)) {
+                        $delegation = MintHCM\Data\BeanFactory::getBean('Delegations', $delegation_id);
                         if ($delegation && !empty($delegation->assigned_user_id)) {
                             return [
                                 'assigned_user_id' => $delegation->assigned_user_id,
+                                'assigned_user_name' => $delegation->assigned_user_name,
                             ];
                         }
                     }

@@ -305,6 +305,102 @@ Formula::equals('$type', 'other')  // ✅ For single value
 Formula::inArray('$type', ['other'])  // ✅ For array
 ```
 
+### Error 4: Wrong BeanFactory Path
+
+**Wrong**:
+```php
+$delegation = \BeanFactory::getBean('Delegations', $id);  // ❌ Wrong namespace
+```
+
+**Correct**:
+```php
+$delegation = MintHCM\Data\BeanFactory::getBean('Delegations', $id);  // ✅ Correct path
+```
+
+### Error 5: Not Returning Array from Update Function
+
+**Wrong**:
+```php
+'update' => function ($bean) {
+    if (!empty($bean->field)) {
+        return $bean->field * 2;  // ❌ Returns scalar, not array
+    }
+    return null;  // ❌ Returns null, not array
+}
+```
+
+**Correct**:
+```php
+'update' => function ($bean) {
+    if (!empty($bean->field)) {
+        return ['calculated_field' => $bean->field * 2];  // ✅ Returns array
+    }
+    return [];  // ✅ Returns empty array
+}
+```
+
+## Advanced Patterns
+
+### Global Readonly Rule (No Trigger)
+
+For fields that should always be readonly without any condition:
+
+```php
+'assigned_user_readonly' => [
+    'hooks' => [Hook::ALL],  // No CHANGE needed for global rules
+    'logic' => [
+        'readonly' => [
+            'assigned_user_name' => true,
+        ],
+    ],
+],
+```
+
+**Key points**:
+- No `triggerFields` needed for global rules
+- Use `Hook::ALL` instead of `Hook::ALL, Hook::CHANGE`
+- Rule applies at all times without conditions
+
+### Update Multiple Related Fields
+
+Calculate and update multiple fields from a related record:
+
+```php
+'assigned_user_calculated' => [
+    'hooks' => [Hook::INIT, Hook::CHANGE],
+    'triggerFields' => ['delegation_id'],
+    'logic' => [
+        'update' => function ($bean) {
+            // Store field value in local variable first
+            $delegation_id = $bean->delegation_id;
+            
+            if (!empty($delegation_id)) {
+                // Use correct BeanFactory path
+                $delegation = MintHCM\Data\BeanFactory::getBean('Delegations', $delegation_id);
+                
+                if ($delegation && !empty($delegation->assigned_user_id)) {
+                    // Return multiple fields to update
+                    return [
+                        'assigned_user_id' => $delegation->assigned_user_id,
+                        'assigned_user_name' => $delegation->assigned_user_name,
+                    ];
+                }
+            }
+            
+            // Always return array (even empty)
+            return [];
+        },
+    ],
+],
+```
+
+**Key points**:
+- Store `$bean->field` in local variable before using
+- Use `MintHCM\Data\BeanFactory` (not `\BeanFactory`)
+- Return array with multiple fields to update
+- Always return array (even empty `[]`)
+- Function can access related records via BeanFactory
+
 ## Best Practices
 
 **Do**:
@@ -315,6 +411,10 @@ Formula::inArray('$type', ['other'])  // ✅ For array
 - ✅ Use multiple small rules over complex ones
 - ✅ Test edge cases
 - ✅ Use `Hook::ALL, Hook::CHANGE` as standard pattern
+- ✅ Store bean fields in local variables before using in closures
+- ✅ Use `MintHCM\Data\BeanFactory` for legacy beans
+- ✅ Always return array from update functions (even empty)
+- ✅ Update multiple related fields in one return statement
 
 **Don't**:
 - ❌ Create only show OR hide rule (need both!)
@@ -323,6 +423,10 @@ Formula::inArray('$type', ['other'])  // ✅ For array
 - ❌ Rely on external state
 - ❌ Hardcode values (use constants)
 - ❌ Use `Hook::INIT, Hook::CHANGE` (use `Hook::ALL`)
+- ❌ Use `\BeanFactory` (use `MintHCM\Data\BeanFactory`)
+- ❌ Use bean fields directly in closures without storing in variables
+- ❌ Return non-array from update functions
+- ❌ Forget to return empty array `[]` in else branches
 
 **Full Documentation**: `api/documentation/07-mintlogic.md`
 
