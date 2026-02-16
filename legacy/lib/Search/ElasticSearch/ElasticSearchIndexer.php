@@ -91,10 +91,11 @@ class ElasticSearchIndexer extends AbstractIndexer
      * ElasticSearchIndexer constructor.
      *
      * @param Client|null $client
+     * @param int $level the minimum logging level to log to the console (Logger::DEBUG, Logger::INFO, etc.)
      */
-    public function __construct(Client $client = null)
+    public function __construct(Client $client = null, $level = Logger::ERROR) // Logger::ERROR dla cronicle
     {
-        parent::__construct();
+        parent::__construct($level);
         $this->client = !empty($client) ? $client : ElasticSearchClientBuilder::getClient();
     }
 
@@ -225,11 +226,13 @@ class ElasticSearchIndexer extends AbstractIndexer
         $GLOBALS['disable_date_format'] = true;
 
         $batchOffset = 0;
-        $maxBatchSize = $sugar_config['search']['ElasticSearch']['max_batch_size'] ?? 50000;
+        $maxBatchSize = $sugar_config['search']['ElasticSearch']['max_batch_size'] ?? intval(\BeanFactory::getMaxLoaded() / 2);
         $totalRecordsCount = 0;
         $oldIndexedRecordsCount = $this->indexedRecordsCount;
         $this->nested_properties = (new \ElasticSearchVardefsReader)->getModuleNestedProperties($seed->object_name);
         try {
+            $records_in_module_count = $this->getRecordsInModuleCount($seed, $tableName, $where, $showDeleted);
+            $memory_limit_bytes = \MintHCM\Utils\EnvironmentUtils::getMemoryLimitInBytes();
             do {
                 $batch = $seed->get_list("$tableName.date_entered", $where, $batchOffset, $maxBatchSize, $maxBatchSize, $showDeleted);
                 if (empty($batch['list'])) {
@@ -237,6 +240,9 @@ class ElasticSearchIndexer extends AbstractIndexer
                 }
                 $totalRecordsCount += count($batch['list']);
                 $this->indexBatch($module, $batch['list']);
+                $memory_free = ($memory_limit_bytes - memory_get_usage(true)) / 1024 / 1024;
+                $percentage = $records_in_module_count > 0 ? round($totalRecordsCount / $records_in_module_count * 100, 1) : 100;
+                $this->logger->info("Indexed {$totalRecordsCount}/{$records_in_module_count} - {$percentage}% records for module $module (free memory: $memory_free MB)");
                 $batchOffset += $maxBatchSize;
             } while (true);
         } catch (RuntimeException $exception) {
@@ -761,4 +767,17 @@ class ElasticSearchIndexer extends AbstractIndexer
 
         return array_values($nested_data);
     }
+
+    protected function getRecordsInModuleCount(SugarBean $seed, string $tableName, string $where, int $showDeleted): int
+    {
+        $db = \DBManagerFactory::getInstance();
+        $records_in_module = $seed->create_new_list_query(
+            "$tableName.date_entered", $where, array(), array(), $showDeleted, '', false, null, false
+        );
+        $records_in_module = $seed->create_list_count_query($records_in_module);
+        $records_in_module = $db->query($records_in_module, true, "Error running count query for $seed->object_name List: ");
+        $records_in_module = $db->fetchByAssoc($records_in_module);
+        return intval($records_in_module['c'] ?? 0);
+    }
+    
 }

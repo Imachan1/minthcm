@@ -92,6 +92,16 @@ class BeanFactory
      */
     public static $hits = 0;
 
+    public static function setMaxLoaded(int $maxLoaded)
+    {
+        self::$maxLoaded = $maxLoaded;
+    }
+
+    public static function getMaxLoaded(): int
+    {
+        return self::$maxLoaded;
+    }
+
     /**
      * Returns a SugarBean object by id.
      * The Last 10 loaded beans are cached in memory to prevent multiple retrieves per request.
