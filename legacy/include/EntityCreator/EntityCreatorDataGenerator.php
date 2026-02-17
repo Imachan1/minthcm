@@ -138,12 +138,11 @@ class EntityCreatorDataGenerator
 
             if ((in_array($type, ['id', 'int']) && 'id' == $fieldName)) {
                 $field['isId'] = true;
-                    if('id' == $type) {
-                        $field['CustomIdGenerator'] = 'class=UuidGenerator::class';
-                    }
+                if ('id' == $type) {
+                    $field['CustomIdGenerator'] = 'class=UuidGenerator::class';
                 }
             }
-            }
+        }
 
         $field['columnAttributes'] = implode(', ', $attributes);
         return $field;
