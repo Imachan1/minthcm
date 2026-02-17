@@ -48,6 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once __DIR__ . '/../php_version.php';
 require_once __DIR__ . '/../include/SugarObjects/SugarConfig.php';
 require_once __DIR__ . '/../include/utils/security_utils.php';
+require_once __DIR__ . '/../include/utils/environment_utils.php';
 
 use voku\helper\AntiXSS;
 

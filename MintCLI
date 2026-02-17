@@ -3,6 +3,13 @@
 
 require 'legacy/MintCLI/vendor/autoload.php';
 
+register_shutdown_function(function () {
+    $error = error_get_last();
+    if ($error !== null && is_array($error) && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        echo "Fatal error: " . $error['message'] . " in " . $error['file'] . " on line " . $error['line'] . "\n";
+    }
+});
+
 use Symfony\Component\Console\Application;
 
 $application = new Application();

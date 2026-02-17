@@ -22,6 +22,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Monolog\Logger;
 
 class ElasticSearchReindex extends Command
 {
@@ -43,7 +44,7 @@ class ElasticSearchReindex extends Command
         $io->title("Reindexing ElasticSearch\n");
 
         try {
-            $indexer = new ElasticSearchIndexer();
+            $indexer = new ElasticSearchIndexer(null, Logger::DEBUG);
             $indexer->index();
             chdir('../');
         } catch (\Exception $e) {
