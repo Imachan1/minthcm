@@ -127,6 +127,7 @@ class ElasticQuery extends SearchQuery
             "size" => $this->size,
             "from" => $this->from,
             "sort" => $this->sort,
+            "track_total_hits" => true,
         );
     }
 
