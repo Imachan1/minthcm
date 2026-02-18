@@ -207,7 +207,11 @@ class ModuleController
         $record_data = !empty($entity) && $entity->id === $record_id ? $this->mergeRecordData($entity) : null;
         $bean = MintBeanFactory::getBean($module, $record_id);
         foreach ($bean->field_defs as $field => $defs) {
-            if ($defs['source'] === 'non-db' && $defs['type'] !== 'link') {
+            if (
+                $defs['source'] === 'non-db' 
+                && $defs['type'] !== 'link' 
+                && $defs['name'] !== 'email1'
+            ) {
                 $record_data['attributes'][$field] = $bean->$field;
             }
         }

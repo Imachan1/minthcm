@@ -69,7 +69,7 @@ $ESListViewDefs[$module_name] = [
         ],
         'scoring' => [
             'name' => 'scoring',
-            'label' => 'SCORING',
+            'label' => 'LBL_SCORING',
             'enabled' => true,
             'default' => true,
         ],
