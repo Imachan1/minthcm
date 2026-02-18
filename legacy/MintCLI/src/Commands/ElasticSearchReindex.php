@@ -44,8 +44,11 @@ class ElasticSearchReindex extends Command
         $io->title("Reindexing ElasticSearch\n");
 
         try {
+            $default_max_loaded = \BeanFactory::getMaxLoaded();
+            \BeanFactory::setMaxLoaded(2000);
             $indexer = new ElasticSearchIndexer(null, Logger::DEBUG);
             $indexer->index();
+            \BeanFactory::setMaxLoaded($default_max_loaded);
             chdir('../');
         } catch (\Exception $e) {
             $io->error("There was an error during execution: " . $e . "\n");
