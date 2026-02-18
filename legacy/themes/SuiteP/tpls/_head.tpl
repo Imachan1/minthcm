@@ -56,6 +56,7 @@
     <link href='themes/SuiteP/css/fonts.css' rel='stylesheet' type='text/css'>
     <link href="themes/SuiteP/css/grid.css" rel="stylesheet" type="text/css"/>
     <link href="themes/SuiteP/css/footable.core.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdn.materialdesignicons.com/6.6.96/css/materialdesignicons.min.css" rel="stylesheet">
     <!-- MintHCM #100459 START -->
     <title>{$TITLE}</title>
     <!-- MintHCM #100459 END -->
