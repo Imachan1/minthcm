@@ -28,11 +28,6 @@ return [
                 ],
                 'update' => function ($bean) {
                     $return = [];
-                    global $current_user; /** @var User $current_user */
-                    if (empty($bean->assigned_user_id)) {
-                        $return['assigned_user_id'] = $current_user->id;
-                        $return['assigned_user_name'] = $current_user->name;
-                    }
                     if (empty($bean->date_start) && empty($bean->date_end)) {
                         $return['date_start'] = ((new SugarDateTime('today 08:00'))->asDb(true));
                         $return['date_end'] = (new SugarDateTime('today 16:00'))->asDb(true);
@@ -260,6 +255,30 @@ return [
                     $start->add($interval);
                     return [
                         'date_end' => $start->asDb(false),
+                    ];
+                },
+            ],
+        ],
+        [
+            'hooks' => [Hook::INIT, Hook::CHANGE],
+            'triggerFields' => ['assigned_user_id'],
+            'trigger' => true,
+            'logic' => [
+                'update' => function ($bean) {
+                    global $current_user; /** @var User $current_user */
+                    if(!empty($bean->assigned_user_id)){
+                        $user = BeanFactory::getBean('Users', $bean->assigned_user_id);
+                        if(empty($user->id) || $user->id !== $bean->assigned_user_id){
+                            return [];
+                        }
+                        return [
+                            'assigned_user_id' => $user->id,
+                            'assigned_user_name' => $user->name
+                        ];
+                    }
+                    return [
+                        'assigned_user_id' => $current_user->id,
+                        'assigned_user_name' => $current_user->name
                     ];
                 },
             ],

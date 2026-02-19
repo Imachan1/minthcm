@@ -87,18 +87,21 @@ const items = ref(props.data.bean.attributes[props.defs.id_name] ? [getCurrentIt
 const currentItem = ref(getCurrentItem())
 
 watch(
-    () => props.data.bean.attributes[props.defs.id_name],
+    () => [
+        props.data.bean.fields[props.defs.id_name]?.model,
+        props.data.bean.fields[props.defs.name]?.model,
+    ],
     () => {
         const item = getCurrentItem()
         items.value = item.id ? [item] : []
         currentItem.value = item
-    },
+    }
 )
 
 function getCurrentItem() {
     return {
-        id: props.data.bean.attributes[props.defs.id_name],
-        name: props.modelValue,
+        id: props.data.bean.fields[props.defs.id_name]?.model,
+        name: props.data.bean.fields[props.defs.name]?.model,
     }
 }
 
