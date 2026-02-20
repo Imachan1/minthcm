@@ -61,11 +61,13 @@ class MintBean
 
     public function __get($name)
     {
+        $old_cwd = getcwd();
         chdir('../legacy/');
-        $response = $this->legacy_bean->$name;
-        chdir('../api/');
-
-        return $response;
+        try {
+            return $this->legacy_bean->$name;
+        } finally {
+            chdir($old_cwd);
+        }
     }
 
     public function __set($name, $value)
@@ -75,62 +77,72 @@ class MintBean
             return;
         }
 
+        $old_cwd = getcwd();
         chdir('../legacy/');
-        $this->legacy_bean->$name = $value;
-        chdir('../api/');
+        try {
+            $this->legacy_bean->$name = $value;
+        } finally {
+            chdir($old_cwd);
+        }
     }
 
     public function __isset($name)
     {
+        $old_cwd = getcwd();
         chdir('../legacy/');
-        $response = isset($this->legacy_bean->$name);
-        chdir('../api/');
-
-        return $response;
+        try {
+            return isset($this->legacy_bean->$name);
+        } finally {
+            chdir($old_cwd);
+        }
     }
 
     public function __unset($name)
     {
+        $old_cwd = getcwd();
         chdir('../legacy/');
-        unset($this->legacy_bean->$name);
-        chdir('../api/');
+        try {
+            unset($this->legacy_bean->$name);
+        } finally {
+            chdir($old_cwd);
+        }
     }
 
     public function __call($name, $arguments)
     {
-        // Prevent __call from intercepting methods defined in this class
-        if (method_exists($this, $name)) {
-            return $this->$name(...$arguments);
-        }
-
+        $old_cwd = getcwd();
         chdir('../legacy/');
-        $response = $this->legacy_bean->$name(...$arguments);
-        chdir('../api/');
-
-        return $response;
+        try {
+            return $this->legacy_bean->$name(...$arguments);
+        } finally {
+            chdir($old_cwd);
+        }
     }
 
     public static function __callStatic($name, $arguments)
     {
+        $old_cwd = getcwd();
         chdir('../legacy/');
-        $response = static::$static_legacy_bean::$name(...$arguments);
-        chdir('../api/');
-
-        return $response;
+        try {
+            return static::$static_legacy_bean::$name(...$arguments);
+        } finally {
+            chdir($old_cwd);
+        }
     }
 
     public function load_relationship(string $link_name): bool
     {
+        $old_cwd = getcwd();
         chdir('../legacy/');
-        $response = false;
-        if ($this->legacy_bean->load_relationship($link_name)) {
-            $link = new LegacyConnector('Link2', null, [$link_name, $this->legacy_bean]);
-            $this->$link_name = $link;
-            $response = true;
+        try {
+            if ($this->legacy_bean->load_relationship($link_name)) {
+                $link = new LegacyConnector('Link2', null, [$link_name, $this->legacy_bean]);
+                $this->$link_name = $link;
+                return true;
+            }
+            return false;
+        } finally {
+            chdir($old_cwd);
         }
-        chdir('../api/');
-        return $response;
-
     }
-
 }

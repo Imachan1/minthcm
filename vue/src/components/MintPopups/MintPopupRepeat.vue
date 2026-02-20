@@ -60,9 +60,11 @@
                     <v-row>
                         <v-col cols="6">
                             <MintDateField
+                                view="edit"
                                 :modelValue="repeatProps.repeat_until"
-                                :field="repeatProps.repeat_until"
+                                :field="props.data.bean.fields.repeat_until"
                                 :label="languages.label('LBL_REPEAT_UNTIL', currentModule)"
+                                :defs="props.data.bean.fields.repeat_until?.defs || { name: 'repeat_until', type: 'date' }"
                             />
                         </v-col>
                         <v-col cols="6">

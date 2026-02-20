@@ -6,7 +6,6 @@ use MintHCM\Utils\CyclicRecordsSaver;
 use MintHCM\Data\BeanFactory;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
-use Slim\Routing\RouteContext;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CyclicRecordsController
@@ -26,7 +25,8 @@ class CyclicRecordsController
             $response->getBody()->write(json_encode(['canEdit' => false, 'error' => 'Record not found']));
             return $response;
         }
-        $canEdit = !(new CyclicRecordsSaver($bean, $this->entityManager))->hasCyclicRecords();
+        $CRS = new CyclicRecordsSaver($bean, $this->entityManager);
+        $canEdit = !$CRS->isCyclicRecord() && !$CRS->hasCyclicRecords();
 
         $response = $response->withStatus(200);
         $response->getBody()->write(json_encode(['canEdit' => $canEdit]));
