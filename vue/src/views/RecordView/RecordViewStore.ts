@@ -8,6 +8,7 @@ import { useACL } from '@/composables/useACL'
 import { subpanelsApi } from '@/api/subpanels.api'
 import { mintApi } from '@/api/api'
 import { useBackendStore } from '@/store/backend'
+import { MintInlineButton } from '@/components/MintPanel/MintPanelSubpanels/MintSubpanelsInlineButtons.vue'
 
 interface Panel {
     component: string
@@ -115,6 +116,13 @@ export const useRecordViewStore = defineStore('recordview', () => {
                 key,
                 module: subpanelDefs[key].properties?.module?.toString() || '',
                 label: subpanelDefs[key].properties?.title_key || '',
+                inlineButtons: Object.entries(subpanelDefs[key].columns ?? {})
+                    .filter(([col, props]) => props.usage !== 'query_only' && !props?.type)
+                    .map(([col, props]) => ({
+                        ...(props || {}),
+                        name: col,
+                        widget_class: props?.widget_class || '',
+                } as MintInlineButton)),
                 columns: Object.entries(subpanelDefs[key].columns ?? {})
                     .filter(([col, props]) => props.usage !== 'query_only')
                     .map(([col, props]) => ({
