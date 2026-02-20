@@ -5,6 +5,7 @@
                 <th v-for="column in props.columns" :key="column.name">
                     {{ column.label }}
                 </th>
+                <th v-if="props.subpanel && props.subpanel.inlineButtons && props.module"></th>
             </tr>
         </thead> 
         <tbody>
@@ -20,12 +21,13 @@
                         :modelValue="record.attributes[column.name]"
                     />
                 </td>
-                <MintSubpanelsInlineButtons
-                    v-if="props.subpanel && props.subpanel.inlineButtons && props.module"
-                    :module="props.module"
-                    :recordId="record.id"
-                    :subpanel="props.subpanel"
-                />
+                <td v-if="props.subpanel && props.subpanel.inlineButtons && props.module">
+                    <MintSubpanelsInlineButtons
+                        :module="props.module"
+                        :recordId="record.id"
+                        :subpanel="props.subpanel"
+                    />
+                </td>
             </tr>
         </tbody>
     </table>
