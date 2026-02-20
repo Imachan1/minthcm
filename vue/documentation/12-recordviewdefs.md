@@ -77,6 +77,45 @@ Displays related records (relationships).
 ],
 ```
 
+#### Subpanel Inline Action Buttons
+
+Each row in a subpanel can display action buttons (Edit, Remove, Delete). These come from the legacy subpanel definition's `_buttons` property (e.g. `subpaneldefs.php`) and are mapped to Vue action classes in `vue/src/business/SubpanelActions/InlineActions/`.
+
+**Available inline actions:**
+
+| `widget_class` (legacy) | Vue class | Behavior |
+|---|---|---|
+| `SubPanelEditButton` | `Edit` | Redirects to the related record's EditView |
+| `SubPanelDeleteButton` | `Delete` | Deletes the related record after confirmation |
+| `SubPanelRemoveButton` | `Remove` | Unlinks (removes relationship to) the related record after confirmation |
+
+**ACL requirements:**
+- `Edit` — requires `edit` access on the related module
+- `Delete` — requires `delete` + `edit` access on the related module
+- `Remove` — requires `delete` + `edit` access on **both** the related module and the parent record's module
+
+**Extending with a custom inline action:**
+
+Create a new class in `vue/src/business/SubpanelActions/InlineActions/` extending `SubpanelAction`, then register its `widget_class` mapping in `MintSubpanelsInlineButtons.vue`.
+
+```typescript
+// vue/src/business/SubpanelActions/InlineActions/MyAction.ts
+import { SubpanelAction } from '../SubpanelAction'
+
+export class MyAction extends SubpanelAction {
+    public static readonly TITLE = 'LBL_MY_ACTION'
+    public static readonly ICON = 'mdi-star'
+    public static readonly ACL = ['edit']
+
+    public async execute(): Promise<boolean> {
+        // custom logic here
+        return true
+    }
+}
+```
+
+The file is auto-discovered by `index.ts` via `import.meta.glob` — no registration needed beyond adding the `widget_class` mapping in `MintSubpanelsInlineButtons.vue`.
+
 ### MintPanelFiles
 Displays file attachments.
 

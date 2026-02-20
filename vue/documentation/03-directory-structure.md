@@ -319,11 +319,17 @@ business/
 │       └── ...
 │
 └── SubpanelActions/        # Subpanel operations
-    ├── SubpanelAction.ts
-    ├── index.ts
-    └── Actions/
-        ├── AddAction.ts
-        └── RemoveAction.ts
+    ├── SubpanelAction.ts   # Base action class
+    ├── index.ts            # Action registry (Actions + InlineActions)
+    ├── Actions/            # Header-level buttons (per subpanel)
+    │   ├── Create.ts
+    │   ├── CreateCosts.ts
+    │   ├── Select.ts
+    │   └── SelectWorkScheduleForDelegation.ts
+    └── InlineActions/      # Per-row action buttons
+        ├── Edit.ts         # Redirect to EditView of related record
+        ├── Delete.ts       # Delete related record (with confirmation)
+        └── Remove.ts       # Unlink related record (with confirmation)
 ```
 
 **Action Pattern:**
