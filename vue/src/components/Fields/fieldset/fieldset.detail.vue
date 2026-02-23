@@ -1,6 +1,6 @@
 <template>
     <label>{{ props.label }}</label>
-    <div class="d-flex detail-field-container">
+    <div :name="props.defs.name" class="d-flex detail-field-container">
         <p v-text="fieldContent"></p>
         <Pencil :defs="props.defs" />
     </div>

@@ -10,7 +10,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -276,14 +276,14 @@ $dictionary['Note'] = array(
 
         'parent_name' =>
         [
-            'name'=> 'parent_name',
-            'parent_type'=>'record_type_display' ,
-            'type_name'=>'parent_type',
-            'id_name'=>'parent_id',
-            'vname'=>'LBL_RELATED_TO',
-            'type'=>'parent',
-            'source'=>'non-db',
-            'options'=> 'record_type_display_notes',
+            'name' => 'parent_name',
+            'parent_type' => 'record_type_display',
+            'type_name' => 'parent_type',
+            'id_name' => 'parent_id',
+            'vname' => 'LBL_RELATED_TO',
+            'type' => 'parent',
+            'source' => 'non-db',
+            'options' => 'record_type_display_notes',
         ],
         'show_preview' =>
         [
@@ -291,7 +291,7 @@ $dictionary['Note'] = array(
             'type' => 'bool',
             'source' => 'non-db',
             'reportable' => false,
-            'mass_update' => false
+            'mass_update' => false,
         ],
 
         'campaign_id' =>
@@ -455,3 +455,31 @@ $dictionary['Note'] = array(
 
 VardefManager::createVardef('Notes', 'Note', array('assignable', 'security_groups',
 ));
+
+foreach ([
+    'id' => 'LBL_ID_COMMENT',
+    'date_entered' => 'LBL_DATE_ENTERED_COMMENT',
+    'date_modified' => 'LBL_DATE_MODIFIED_COMMENT',
+    'date_indexed' => 'LBL_DATE_INDEXED_COMMENT',
+    'modified_user_id' => 'LBL_MODIFIED_COMMENT',
+    'created_by' => 'LBL_CREATED_BY_COMMENT',
+    'name' => 'LBL_NOTE_SUBJECT_COMMENT',
+    'file_mime_type' => 'LBL_FILE_MIME_TYPE_COMMENT',
+    'file_url' => 'LBL_FILE_URL_COMMENT',
+    'filename' => 'LBL_FILENAME_COMMENT',
+    'filecontents' => 'LBL_FILE_CONTENTS_COMMENT',
+    'parent_type' => 'LBL_PARENT_TYPE_COMMENT',
+    'parent_id' => 'LBL_PARENT_ID_COMMENT',
+    'portal_flag' => 'LBL_PORTAL_FLAG_COMMENT',
+    'embed_flag' => 'LBL_EMBED_FLAG_COMMENT',
+    'description' => 'LBL_DESCRIPTION_COMMENT',
+    'deleted' => 'LBL_DELETED_COMMENT',
+    'parent_name' => 'LBL_RELATED_TO_COMMENT',
+    'show_preview' => 'LBL_SHOW_PREVIEW_COMMENT',
+    'campaign_id' => 'LBL_CAMPAIGN_ID_COMMENT',
+    'acase_id' => 'LBL_CASE_ID_COMMENT',
+] as $field => $commentLabel) {
+    if (isset($dictionary['Note']['fields'][$field])) {
+        $dictionary['Note']['fields'][$field]['comment'] = $commentLabel;
+    }
+}

@@ -13,6 +13,7 @@
             v-bind="$attrs"
             item-value="key"
             item-title="value"
+            :name="props.defs.name + '_module'"
         /> 
         <v-menu v-model="menuOpen" :location="'bottom'">
             <template v-slot:activator="val">
@@ -22,6 +23,7 @@
                 variant="outlined"
                 density="compact"
                 hide-details
+                :name="props.defs.name"
                 :title="recordModel.name"
                 v-model="recordModel.name"
                 v-bind="val.props"
@@ -92,6 +94,7 @@ import { modulesApi } from '@/api/modules.api'
 import he from 'he'
 import getFilters from '@/utils/qsOperators'
 import { FieldProps } from '../Field.model'
+import { provideSSRWidth } from '@vueuse/core'
 
 const props = defineProps<FieldProps>()
 const emit = defineEmits(['update:modelValue'])

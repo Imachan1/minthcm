@@ -6,6 +6,7 @@
             variant="outlined"
             density="compact"
             hide-details
+            :name="props.defs.name"
             :error="props.state === 'error'"
             v-model="parsedValue"
         />

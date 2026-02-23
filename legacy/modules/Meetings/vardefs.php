@@ -676,3 +676,42 @@ VardefManager::createVardef('Meetings', 'Meeting',array( 'default', 'assignable'
 
 $dictionary['Meeting']['fields']['assigned_user_id']['audited'] = false;
 $dictionary['Meeting']['fields']['assigned_user_name']['audited'] = true;
+
+foreach ([
+    'name' => 'LBL_SUBJECT_COMMENT',
+    'accept_status' => 'LBL_ACCEPT_STATUS_COMMENT',
+    'set_accept_links' => 'LBL_ACCEPT_LINK_COMMENT',
+    'location' => 'LBL_LOCATION_COMMENT',
+    'password' => 'LBL_PASSWORD_COMMENT',
+    'duration_hours' => 'LBL_DURATION_HOURS_COMMENT',
+    'duration_minutes' => 'LBL_DURATION_MINUTES_COMMENT',
+    'date_start' => 'LBL_DATE_COMMENT',
+    'date_end' => 'LBL_DATE_END_COMMENT',
+    'parent_type' => 'LBL_PARENT_TYPE_COMMENT',
+    'status' => 'LBL_STATUS_COMMENT',
+    'direction' => 'LBL_DIRECTION_COMMENT',
+    'parent_id' => 'LBL_PARENT_ID_COMMENT',
+    'reminder_checked' => 'LBL_REMINDER_COMMENT',
+    'reminder_time' => 'LBL_REMINDER_TIME_COMMENT',
+    'email_reminder_checked' => 'LBL_EMAIL_REMINDER_COMMENT',
+    'email_reminder_time' => 'LBL_EMAIL_REMINDER_TIME_COMMENT',
+    'email_reminder_sent' => 'LBL_EMAIL_REMINDER_SENT_COMMENT',
+    'reminders' => 'LBL_REMINDERS_COMMENT',
+    'outlook_id' => 'LBL_OUTLOOK_ID_COMMENT',
+    'sequence' => 'LBL_SEQUENCE_COMMENT',
+    'recurring_source' => 'LBL_RECURRING_SOURCE_COMMENT',
+    'duration' => 'LBL_DURATION_COMMENT',
+    'gsync_id' => 'LBL_GSYNC_ID_COMMENT',
+    'gsync_lastsync' => 'LBL_GSYNC_LASTSYNC_COMMENT',
+    'type' => 'LBL_TYPE_COMMENT',
+    'repeat_type' => 'LBL_REPEAT_TYPE_COMMENT',
+    'repeat_interval' => 'LBL_REPEAT_INTERVAL_COMMENT',
+    'repeat_dow' => 'LBL_REPEAT_DOW_COMMENT',
+    'repeat_until' => 'LBL_REPEAT_UNTIL_COMMENT',
+    'repeat_count' => 'LBL_REPEAT_COUNT_COMMENT',
+    'repeat_parent_id' => 'LBL_REPEAT_PARENT_ID_COMMENT',
+] as $field => $commentLabel) {
+    if (isset($dictionary['Meeting']['fields'][$field])) {
+        $dictionary['Meeting']['fields'][$field]['comment'] = $commentLabel;
+    }
+}

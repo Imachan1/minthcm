@@ -7,6 +7,7 @@
             hide-details
             v-model="dateValue"
             :error="props.state === 'error'"
+            :name="props.defs.name"
         >
             <template #append-inner>
                 <v-menu v-model="datePickerMenu" offset="16" :close-on-content-click="false">
@@ -19,7 +20,7 @@
                 </v-menu>
             </template>
         </v-text-field>
-        <v-text-field :disabled="!dateValue" variant="outlined" density="compact" hide-details v-model="timeValue">
+        <v-text-field :disabled="!dateValue" variant="outlined" density="compact" hide-details v-model="timeValue" :name="props.defs.name+'_time'">
             <template #append-inner>
                 <v-menu v-model="timePickerMenu" offset="16" :close-on-content-click="false">
                     <template v-slot:activator="{ props }">
