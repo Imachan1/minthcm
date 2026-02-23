@@ -525,10 +525,10 @@ eoq;
             return null;
         }
 
-        $client = $api->getClient();
-        $client_id = $client->getClientId();
-        $client_secret = $client->getClientSecret();
-        $redirect_uri = $client->getRedirectUri();
+        $settings = $api->getSettings();
+        $client_id = $settings['clientId'];
+        $client_secret = $settings['clientSecret'];
+        $redirect_uri = $settings['redirectUri'];
 
         $api_data = json_decode(html_entity_decode($eapm->api_data), true);
         $refresh_token = $api_data['refresh_token'];
