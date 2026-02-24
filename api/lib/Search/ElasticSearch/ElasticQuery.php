@@ -51,6 +51,7 @@ use MintHCM\Lib\Search\Base\SearchQuery;
 use MintHCM\Lib\Search\ElasticSearch\ElasticMapperParser;
 use MintHCM\Lib\Search\ElasticSearch\ElasticQueryOperatorsManager;
 use MintHCM\Lib\Search\ElasticSearch\ModulePrefixer;
+use MintHCM\Utils\ConstantsLoader;
 use MintHCM\Utils\CustomLoader;
 use MintHCM\Utils\LegacyConnector;
 
@@ -228,13 +229,29 @@ class ElasticQuery extends SearchQuery
     private function noAclGlobalQuery()
     {
         $fields = !empty($this->params['fields']) ? $this->params['fields'] : array(static::ALL_FIELDS);
+
+        // Phone queries need query_string with allow_leading_wildcard so that
+        // patterns like *906888767* (contains) work. simple_query_string only
+        // supports trailing wildcards (prefix queries), so leading * is silently
+        // dropped there.
+        if (!empty($this->params['phone_query'])) {
+            return [
+                'query_string' => [
+                    'query' => $this->params['query'],
+                    'fields' => $fields,
+                    'default_operator' => 'OR',
+                    'allow_leading_wildcard' => true,
+                ],
+            ];
+        }
+
         return [
             'simple_query_string' => [
                     'query' => $this->params['query'],
                     'fields' => $fields,
                     'analyzer' => 'standard',
                     'default_operator' => 'AND',
-                    'minimum_should_match' => '66%',
+                    'minimum_should_match' => $this->params['minimum_should_match'] ?? '66%',
             ],
         ];
     }
@@ -314,7 +331,7 @@ class ElasticQuery extends SearchQuery
         include '../legacy/custom/modules/unified_search_modules_display.php';
 
         $search_modules = [];
-        $exclude_hardcode = ["Connectors", "Currencies", "OAuthTokens", "OAuthKeys", "ACLRoles", "ACLActions", "EmailMan", "Schedulers", "SchedulersJobs", "CampaignLog", "EmailMarketing", "AOW_WorkFlow"];
+        $exclude_hardcode = ConstantsLoader::getConstants('global_search_excluded_modules') ?: [];
         global $beanList;
         if (!empty($unified_search_modules_display)) {
             $search_modules = array_filter(array_map(function ($row) {
