@@ -29,6 +29,7 @@ cd vue
 npm install
 cp .env.example .env          # Set PROXY_URL=http://localhost/<instance>
 npm run dev                   # Dev server with HMR (proxies /api and /legacy to backend)
+npx vite --host 0.0.0.0       # Dev server dostępny na wszystkich interfejsach sieciowych
 npm run build                 # Production build to dist/
 npm run build:repo            # Build and copy dist/* to repo root (replaces ../assets)
 npm run lint                  # ESLint
@@ -72,6 +73,46 @@ docker compose logs -f
 ```
 
 Access at `http://localhost` (default admin/minthcm).
+
+### Screenshots i automatyzacja Playwright
+
+**Prosty screenshot (bez logowania):**
+```bash
+# Wymaga 15 s — Vue czeka na api/init przed wyrenderowaniem strony logowania
+npx playwright screenshot --wait-for-timeout 15000 http://localhost:5173 screenshot.png
+
+# WAŻNE: zapisuj screeny w /var/www/minthcm/, NIE w /tmp/ — /tmp nie jest widoczny w VSCode
+```
+
+**Automatyzacja z logowaniem (skrypt Node.js):**
+
+Gdy trzeba wejść głębiej (zalogowanie, nawigacja, interakcja), użyj skryptu `playwright-login.mjs` z katalogu projektu:
+
+```bash
+# Jednorazowa instalacja (nie commituj node_modules)
+npm install --no-save playwright
+npx playwright install chromium
+
+# Uruchom skrypt
+node playwright-login.mjs
+```
+
+Kluczowe selektory i timingiem:
+- Formularz logowania czeka na: `input[name="username"]` (timeout 20 s)
+- Przycisk logowania: `.mint-button-primary` (NIE `button:has-text("LOGIN")` — tekst pochodzi z etykiety i może być wielojęzyczny)
+- Po kliknięciu login, `router.go(0)` robi pełny reload — poczekaj na `nav` (do 30 s) zanim nawigujesz dalej
+- Po nawigacji do modułu odczekaj min. 8 s zanim robisz screenshot
+
+**Legacy vs Vue views:**
+Część modułów (np. Candidates) może renderować się w `<iframe>` (legacy view). Jeśli po nawigacji do `#/ModuleName` treść nie zmienia się — sprawdź `await page.$('iframe')`. Screenshot strony nadrzędnej pokaże wtedy tylko nav i pusty obszar. Użyj `iframeEl.contentFrame()` żeby dostać się do zawartości iframe.
+
+**Dane deweloperskie:**
+Credentials środowiska dev przechowuj w `vue/.env` (plik gitignorowany, NIE commituj haseł):
+```
+DEV_USERNAME=<user>
+DEV_PASSWORD=<password>
+```
+Serwer dev: `http://localhost:5173` (Vite), backend: `http://localhost/minthcm`.
 
 ## Architecture
 
