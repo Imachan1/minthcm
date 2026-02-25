@@ -29,6 +29,7 @@ cd vue
 npm install
 cp .env.example .env          # Set PROXY_URL=http://localhost/<instance>
 npm run dev                   # Dev server with HMR (proxies /api and /legacy to backend)
+npx vite --host 0.0.0.0      # Alternative: dev server accessible on all network interfaces
 npm run build                 # Production build to dist/
 npm run build:repo            # Build and copy dist/* to repo root (replaces ../assets)
 npm run lint                  # ESLint
