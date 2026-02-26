@@ -93,4 +93,8 @@ function getIcon(icon: string) {
         margin-inline-end: 8px;
     }
 }
+.mint-menu-list button.v-list-item {
+    width: 100%; 
+    text-align: left;
+}
 </style>
