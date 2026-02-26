@@ -133,4 +133,5 @@ $mod_strings = array(
     'LBL_SHOW_PREVIEW_COMMENT' => 'Flag for showing preview of the note.',
     'LBL_CAMPAIGN_ID_COMMENT' => 'ID of the campaign the note is associated with.',
     'LBL_CASE_ID_COMMENT' => 'ID of the related case for the note.',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

@@ -200,4 +200,5 @@ $mod_strings = array(
     'LBL_DO_NOT_CALL_COMMENT' => 'Indicates that the candidate should not be contacted by phone.',
     'LBL_LAST_TIME_CONTACT_COMMENT' => 'Date and time when the candidate was last contacted.',
     'LBL_DATE_PLANNED_CONTACT_COMMENT' => 'Planned date and time for the next contact with the candidate.',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

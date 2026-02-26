@@ -125,4 +125,5 @@ $mod_strings = array(
     'LBL_ONBOARDINGTEMPLATES_POSITIONS' => 'Onboarding Templates',
     'LBL_SALARYRANGES' => 'Salary Ranges',
     'LBL_TERMSOFEMPLOYMENT' => 'Terms of Employment',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

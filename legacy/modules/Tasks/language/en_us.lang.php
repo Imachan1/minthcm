@@ -114,4 +114,5 @@ $mod_strings = array(
     'LBL_PARENT_ID_COMMENT' => 'Identifier of the related parent record.',
     'LBL_PRIORITY_COMMENT' => 'Priority level assigned to this task.',
     'LBL_CHECKLIST_COMMENT' => 'Checklist of steps or requirements associated with this task.',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

@@ -159,4 +159,5 @@ $mod_strings = array(
     'LBL_REGIMENTS' => 'Per Diem',
 
     'LBL_REGIMEN_VALUE' => 'Regimen Value',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );

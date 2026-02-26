@@ -190,4 +190,5 @@ Please note that every User is also an Employee.',
     'LBL_PARENT_NAME_COMMENT' => 'Parent name field used in the candidature process.',
     'LBL_RECRUITMENT_NAME_COMMENT' => 'Recruitment name field used in the candidature process.',
     'LBL_RECRUITMENT_ID_COMMENT' => 'Recruitment id field used in the candidature process.',
+    'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
 );
