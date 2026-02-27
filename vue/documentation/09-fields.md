@@ -481,7 +481,7 @@ const errorMessage = computed(() => {
 Displays and selects related records:
 
 ```vue
-<Field 
+<Field
     :defs="{
         type: 'relate',
         name: 'manager_id',
@@ -495,9 +495,12 @@ Displays and selects related records:
 ```
 
 **Features:**
-- Autocomplete search
+- Autocomplete search with **multi-word support** — each word is matched independently using a wildcard (`word*`), so typing `"Jan Ko"` finds records matching both `Jan*` and `Ko*`
+- Search triggers after **minimum 3 characters**; results are **debounced** (500 ms) to avoid excessive API calls
 - Related record display
 - Link to related record
+- Advanced search popup (via `mdi-magnify` icon or "Advanced Search" button)
+- Matching words highlighted in the dropdown results (words of any length are highlighted)
 
 ### Enum Field
 
