@@ -65,6 +65,17 @@ interface FieldProps {
 }
 ```
 
+## Relate Field — Search Behavior
+
+`relate.edit.vue` performs an autocomplete search against the related module:
+
+- **Multi-word search**: the input value is split by whitespace; each word is sent as a separate `wildcard` filter (`word*`). Searching `"Jan Ko"` matches records where the name contains both `Jan*` and `Ko*`.
+- **Minimum 3 characters** are required before the search fires.
+- Requests are **debounced** (500 ms) to reduce API calls.
+- Matching words are **highlighted** in the dropdown (all words, regardless of length).
+
+Backend counterpart: `api/lib/Search/ElasticSearch/Operators/QueryString.php` applies the same multi-word wildcard logic for global (ElasticSearch) queries — each word receives a trailing `*` and words are joined with `* `.
+
 ## Creating Custom Field Type
 
 See [Customization Guide](03-customization.md#example-2-custom-field-type) for complete example.
