@@ -2,10 +2,10 @@
     <div>
         <label>{{ props.label }}</label>
         <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()" @keyup.enter="$emit('inlineEditSave')">
-            <router-link v-if="hasViewAccess" :to="recordUrl" class="relate-field">
+            <router-link :name="props.defs.name" v-if="hasViewAccess" :to="recordUrl" class="relate-field">
                 {{ props.modelValue }}
             </router-link>
-            <span v-else>
+            <span :name="props.defs.name" v-else>
                 {{ props.modelValue }}
             </span>
             <Pencil

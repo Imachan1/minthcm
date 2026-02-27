@@ -1,6 +1,12 @@
 <template>
     <component
-        v-bind="$attrs"
+        v-bind="{
+            ...$attrs,
+            ...( !['fieldset', 'date', 'age', 'datetime', 'datetimecombo', 'relate', 'parent'].includes(props.defs?.type) ? { name: props.defs.name } : {} )
+        }"
+        :aria-description="comment"
+        :aria-describedby="props.defs.name+'-help'"
+        :aria-label="label"
         :is="FieldComponent"
         :class="classList"
         :data="data"
@@ -14,6 +20,9 @@
         :view="view"
     >
     </component>
+    <p :id="`${props.defs.name}-help`" hidden>
+        {{comment}}
+    </p>
     <div v-if="errorMessage" class="field-error-message">{{ errorMessage }}</div>
 </template>
 
@@ -33,6 +42,18 @@ const label = computed(() => {
         return props.label
     }
     return `${props.label} (${languagesStore.label('LBL_REQUIRED').toLowerCase()})`
+})
+
+const comment = computed(() => {
+    if(props.defs.type === 'fieldset'){
+        return  languagesStore.label(modulesStore.currentModule?.vardefs[props.defs.properties?.fields[0].name]?.comment, modulesStore.currentModule?.name) ? 
+        languagesStore.label(modulesStore.currentModule?.vardefs[props.defs.properties?.fields[0].name]?.comment, modulesStore.currentModule?.name)
+        : modulesStore.currentModule?.vardefs[props.defs.properties?.fields[0].name]?.comment;
+    }
+    if(!props.defs?.comment || !modulesStore.currentModule?.name){
+        return ''
+    }
+    return languagesStore.label(props.defs.comment, modulesStore.currentModule?.name)
 })
 
 const errorMessage = computed(() => {

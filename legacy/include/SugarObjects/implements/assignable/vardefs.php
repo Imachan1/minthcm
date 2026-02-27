@@ -58,8 +58,8 @@ $vardefs = array(
 			'isnull' => 'false',
 			'dbType' => 'id',
 			'audited'=>true,
-			'comment' => 'User ID assigned to record',
-            'duplicate_merge'=>'disabled'           
+            'duplicate_merge'=>'disabled',
+			'comment' => 'LBL_ASSIGNED_TO_ID_COMMENT',           
 		),
 	 'assigned_user_name' => 
 	 array (
@@ -73,7 +73,8 @@ $vardefs = array(
 		    'table' => 'users',
 		    'id_name' => 'assigned_user_id',
 		    'module'=>'Users',
-		    'duplicate_merge'=>'disabled' 
+		    'duplicate_merge'=>'disabled',
+			'comment' => 'LBL_ASSIGNED_TO_NAME_COMMENT',
 	 ),
 		      'assigned_user_link' =>
   array (

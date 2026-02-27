@@ -95,12 +95,13 @@ Application-wide constants that can be extended via the `custom/` directory:
 
 ```
 constants/
-├── colored_enum.php       # Color definitions for enums
-├── legacy_views.php       # Legacy view mappings
-├── list_constants.php     # List view constants
-├── menu_icons.php         # Menu icon mappings
-├── module_icons.php       # Module icon definitions
-└── quick_create.php       # Quick create configurations
+├── colored_enum.php                    # Color definitions for enums
+├── global_search_excluded_modules.php  # Modules excluded from global search
+├── legacy_views.php                    # Legacy view mappings
+├── list_constants.php                  # List view constants
+├── menu_icons.php                      # Menu icon mappings
+├── module_icons.php                    # Module icon definitions
+└── quick_create.php                    # Quick create configurations
 ```
 
 See [Configuration vs Constants](./04-config-vs-constants.md) for details.

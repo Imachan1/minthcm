@@ -1,5 +1,5 @@
 <template>
-    <span>{{ parsedDate }}</span>
+    <span :name="props.defs.name">{{ parsedDate }}</span>
 </template>
 
 <script setup lang="ts">

@@ -2,7 +2,7 @@
     <div>
         <label>{{ props.label }}</label>
         <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()">
-            <div>{{ parsedDate }}</div>
+            <div :name="props.defs.name">{{ parsedDate }}</div>
             <Pencil
                 :defs="props.defs"
                 :hidePencil="hidePencil"

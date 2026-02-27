@@ -28,27 +28,161 @@ Constants are **application-wide definitions** that define behavior, appearance,
 
 ```
 api/constants/
-├── colored_enum.php       # Color codes for enum values
-├── legacy_views.php       # Legacy view type mappings
-├── list_constants.php     # List view configuration
-├── menu_icons.php         # Menu icon mappings
-├── module_icons.php       # Module icon definitions
-└── quick_create.php       # Quick create configurations
+├── colored_enum.php                    # Color codes for enum values
+├── global_search_excluded_modules.php  # Modules excluded from global search
+├── legacy_views.php                    # Legacy view type mappings
+├── list_constants.php                  # List view configuration
+├── menu_icons.php                      # Menu icon mappings
+├── module_icons.php                    # Module icon definitions
+└── quick_create.php                    # Quick create configurations
 ```
 
-### Example: Module Icons
+### Constants Files Overview
+
+#### 1. colored_enum.php
+
+Defines CSS styles for enum field values based on color names.
+
+**File:** `constants/colored_enum.php`
+
+```php
+<?php
+return [
+    "gray" => "color:#616161; background-color:#dbdbdb;",
+    "blue" => "color:#316b95; background-color: #e0f1ff;",
+    "yellow" => "color:#5b5800; background-color: #f8f0aa;",
+    "green" => "color:#006222; background-color:#e1ffeb;",
+    "red" => "color:#b00020; background-color:#ffe0e8;",
+    "-default-" => "color:#000000; background-color:#cccccc;",
+];
+```
+
+**Usage:** Used by enum fields in list and detail views to apply consistent color coding.
+
+#### 2. global_search_excluded_modules.php
+
+Defines modules that should be excluded from global search results (but still indexed in ElasticSearch).
+
+**File:** `constants/global_search_excluded_modules.php`
+
+```php
+<?php
+return [
+    "Connectors",
+    "Currencies",
+    "OAuthTokens",
+    "OAuthKeys",
+    "ACLRoles",
+    "ACLActions",
+    "EmailMan",
+    "Schedulers",
+    "SchedulersJobs",
+    "CampaignLog",
+    "EmailMarketing",
+    "AOW_WorkFlow",
+];
+```
+
+**Usage:** Used by ElasticSearch integration to filter out administrative/system modules from user-facing global search.
+
+**Extension:** Add a file `custom/constants/global_search_excluded_modules/my_exclusions.php` to exclude additional modules.
+
+#### 3. legacy_views.php
+
+Maps modules to their legacy view types (list and record views).
+
+**File:** `constants/legacy_views.php`
+
+```php
+<?php
+return [
+    'ACLRoles' => [
+        'list' => false,
+        'record' => true,
+    ],
+    'Employees' => [
+        'list' => false,  // Uses new Vue list view
+        'record' => false, // Uses new Vue record view
+    ],
+    // ... more modules
+];
+```
+
+**Usage:** Determines whether to redirect to legacy views or use new Vue-based interfaces. Modules not listed default to new views.
+
+#### 4. list_constants.php
+
+Defines default configuration for list views.
+
+**File:** `constants/list_constants.php`
+
+```php
+<?php
+return array(
+    "config" => array(
+        "actions" => ["edit", "view", "delete"],
+        "itemsPerPageOptions" => [5, 10, 20, 50, 100, 200, 500, 1000],
+        // ... more config
+    ),
+);
+```
+
+**Usage:** Provides default settings for list view functionality, including available actions and pagination options.
+
+#### 5. menu_icons.php
+
+Maps menu action names to icon names.
+
+**File:** `constants/menu_icons.php`
+
+```php
+<?php
+return array(
+    "add" => 'plus',
+    "create" => 'plus',
+    "view" => 'view-list',
+    // ... more mappings
+);
+```
+
+**Usage:** Used to display consistent icons in navigation menus and action buttons.
+
+#### 6. module_icons.php
+
+Maps module names to their display icons.
 
 **File:** `constants/module_icons.php`
 
 ```php
 <?php
-return [
-    'Employees' => 'user',
-    'Accounts' => 'building',
-    'Contacts' => 'users',
-    'Leads' => 'user-plus',
-];
+return array(
+    "Employees" => "account",
+    "Accounts" => "domain",
+    "Contacts" => "account-multiple",
+    "Leads" => "account-plus",
+    // ... more modules
+);
 ```
+
+**Usage:** Used throughout the UI to display module-specific icons in navigation, headers, and lists.
+
+#### 7. quick_create.php
+
+Defines which modules appear in the quick create menu.
+
+**File:** `constants/quick_create.php`
+
+```php
+<?php
+return array(
+    "Ideas" => translate("LBL_LIST_TITLE", "Ideas"),
+    "Kudos" => translate("LBL_LIST_TITLE", "Kudos"),
+    "Notes" => translate("LBL_LIST_TITLE", "Notes"),
+    // ... more modules
+);
+```
+
+**Usage:** Populates the quick create dropdown menu with frequently used modules.
 
 ### How Constants Are Loaded
 
@@ -95,18 +229,28 @@ class ConstantsLoader
 ### Using Constants in Code
 
 ```php
-// Load constants
+// Load module icons
 $moduleIcons = ConstantsLoader::getConstants('module_icons');
-
-// Use them
 $icon = $moduleIcons['Employees'] ?? 'default';
+
+// Load global search exclusions
+$excludedModules = ConstantsLoader::getConstants('global_search_excluded_modules');
+$isExcluded = in_array('Currencies', $excludedModules);
+
+// Load colored enum styles
+$coloredEnum = ConstantsLoader::getConstants('colored_enum');
+$style = $coloredEnum['green'] ?? $coloredEnum['-default-'];
+
+// Load legacy view mappings
+$legacyViews = ConstantsLoader::getConstants('legacy_views');
+$useLegacyList = $legacyViews['Employees']['list'] ?? false;
 ```
 
 ## Extending Constants
 
 To add or override constants, create files in the `custom/constants/{constant_name}/` directory:
 
-### Example: Adding Custom Module Icons
+### Example 1: Adding Custom Module Icons
 
 **Step 1:** Create the custom constants directory
 
@@ -122,7 +266,7 @@ mkdir -p custom/constants/module_icons
 <?php
 return [
     'MyCustomModule' => 'star',
-    'Employees' => 'user-tie',  // Override existing icon
+    'Employees' => 'account-tie',  // Override existing icon
 ];
 ```
 
@@ -130,6 +274,29 @@ return [
 1. Base constants loaded from `constants/module_icons.php`
 2. Custom constants loaded from `custom/constants/module_icons/my_custom_icons.php`
 3. Arrays merged (custom values override base values)
+
+### Example 2: Excluding Additional Modules from Global Search
+
+**Step 1:** Create the custom constants directory
+
+```bash
+mkdir -p custom/constants/global_search_excluded_modules
+```
+
+**Step 2:** Create a custom exclusion file
+
+**File:** `custom/constants/global_search_excluded_modules/custom_exclusions.php`
+
+```php
+<?php
+return [
+    'MyInternalModule',
+    'TemporaryData',
+    'SystemLogs',
+];
+```
+
+**Result:** These modules will be added to the global search exclusion list alongside the default exclusions.
 
 ### Multiple Custom Files
 
@@ -251,12 +418,17 @@ This command:
 - ✅ Values that need to be extended by customizations
 - ✅ Enumerations, mappings, list definitions
 - ✅ Module-specific default settings
+- ✅ Search and filtering behavior
+- ✅ View routing rules
 
 **Examples:**
-- Module icon mappings
-- Enum color codes
-- Quick create field lists
-- Default view configurations
+- Module icon mappings (`module_icons.php`)
+- Enum color codes (`colored_enum.php`)
+- Quick create field lists (`quick_create.php`)
+- Default view configurations (`list_constants.php`)
+- Global search exclusions (`global_search_excluded_modules.php`)
+- Legacy view mappings (`legacy_views.php`)
+- Menu icon mappings (`menu_icons.php`)
 
 ### Use Configuration When:
 
@@ -279,26 +451,34 @@ This command:
 1. **Keep constants organized by purpose**
    ```
    constants/
-   ├── module_icons.php      # All module icons
-   ├── colored_enum.php      # All enum colors
-   └── quick_create.php      # All quick create configs
+   ├── module_icons.php                    # Module icon mappings
+   ├── menu_icons.php                      # Menu action icons
+   ├── colored_enum.php                    # Enum color styles
+   ├── quick_create.php                    # Quick create menu
+   ├── list_constants.php                  # List view config
+   ├── legacy_views.php                    # View routing rules
+   └── global_search_excluded_modules.php  # Search exclusions
    ```
 
 2. **Use descriptive keys**
    ```php
    // ✅ Good
-   'Employees' => 'user-tie'
+   'Employees' => 'account-tie'
    
    // ❌ Bad
-   'emp' => 'ut'
+   'emp' => 'at'
    ```
 
 3. **Document complex constants**
    ```php
    <?php
+   /**
+    * Modules excluded from global search results.
+    * These modules are still indexed but won't appear in user-facing search.
+    */
    return [
-       // Icon for employee module (FontAwesome name)
-       'Employees' => 'user-tie',
+       'OAuthTokens',   // Security: Hide OAuth tokens
+       'ACLRoles',      // Admin-only module
    ];
    ```
 
@@ -309,6 +489,15 @@ This command:
    
    # ❌ Bad - modify core file
    constants/module_icons.php
+   ```
+
+5. **Use consistent naming in custom directories**
+   ```bash
+   # Organize custom constants by feature/client
+   custom/constants/module_icons/
+   ├── 01-hr-modules.php          # HR-related icons
+   ├── 02-sales-modules.php       # Sales-related icons
+   └── 99-client-overrides.php    # Client-specific overrides
    ```
 
 ### Configuration
@@ -345,19 +534,47 @@ This command:
 
 ## Common Patterns
 
-### Pattern: Feature Flags via Constants
+### Pattern: Adding Custom Enum Colors
 
 ```php
-// constants/features.php
+// custom/constants/colored_enum/custom_colors.php
 return [
-    'enable_social_feed' => true,
-    'enable_chat' => false,
-    'enable_notifications' => true,
+    "purple" => "color:#4a148c; background-color:#e1bee7;",
+    "orange" => "color:#e65100; background-color:#ffe0b2;",
 ];
+```
 
-// custom/constants/features/production.php
+### Pattern: Hiding Module from Global Search
+
+```php
+// custom/constants/global_search_excluded_modules/hide_sensitive.php
 return [
-    'enable_chat' => true,  // Enable in production
+    'Salaries',
+    'PerformanceReviews',
+    'InternalAudits',
+];
+```
+
+### Pattern: Override Legacy View Behavior
+
+```php
+// custom/constants/legacy_views/force_new_views.php
+return [
+    'CustomModule' => [
+        'list' => false,    // Use Vue list view
+        'record' => false,  // Use Vue record view
+    ],
+];
+```
+
+### Pattern: Custom Quick Create Entries
+
+```php
+// custom/constants/quick_create/custom_entries.php
+return [
+    'Tasks' => translate('LBL_LIST_TITLE', 'Tasks'),
+    'Meetings' => translate('LBL_LIST_TITLE', 'Meetings'),
+    'Calls' => translate('LBL_LIST_TITLE', 'Calls'),
 ];
 ```
 
@@ -376,14 +593,32 @@ public static function isDebug()
 }
 ```
 
-### Pattern: Module-Specific Constants
+### Real-World Example: Complete Custom Constants Setup
 
 ```php
-// constants/modules/employees.php
+// custom/constants/module_icons/hr_modules.php
 return [
-    'default_status' => 'Active',
-    'required_fields' => ['first_name', 'last_name', 'email'],
-    'max_upload_size' => 5242880, // 5MB
+    'Employees' => 'account-tie',
+    'Recruitment' => 'account-search',
+    'Onboarding' => 'account-plus',
+];
+
+// custom/constants/colored_enum/status_colors.php
+return [
+    "active" => "color:#006622; background-color:#e1ffeb;",
+    "inactive" => "color:#b00020; background-color:#ffe0e8;",
+];
+
+// custom/constants/global_search_excluded_modules/hr_exclusions.php
+return [
+    'SalaryHistory',
+    'PerformanceNotes',
+];
+
+// custom/constants/quick_create/hr_quick_create.php
+return [
+    'Employees' => translate('LBL_LIST_TITLE', 'Employees'),
+    'Candidates' => translate('LBL_LIST_TITLE', 'Candidates'),
 ];
 ```
 
@@ -403,6 +638,40 @@ php -r "var_dump(include 'custom/constants/module_icons/my_icons.php');"
 
 # Check file naming (must end in .php)
 mv my_icons.txt my_icons.php
+```
+
+**Problem:** Custom constants not merging correctly
+
+**Solution:**
+```php
+// Verify your custom file returns an array (not echo or var_dump)
+<?php
+// ✅ Good
+return [
+    'MyModule' => 'icon-name',
+];
+
+// ❌ Bad - doesn't return
+<?php
+$icons = [
+    'MyModule' => 'icon-name',
+];
+```
+
+**Problem:** Module still appears in global search after exclusion
+
+**Solution:**
+```bash
+# 1. Verify the constant is loaded
+php -r "require 'api/utils/ConstantsLoader.php'; 
+        var_dump(MintHCM\Util\ConstantsLoader::getConstants('global_search_excluded_modules'));"
+
+# 2. Rebuild ElasticSearch index
+cd api
+php bin/console elasticsearch:reindex
+
+# 3. Clear caches
+rm -rf api/data/cache/*
 ```
 
 ### Configuration Not Found

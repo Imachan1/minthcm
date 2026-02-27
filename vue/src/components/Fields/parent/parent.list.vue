@@ -1,9 +1,9 @@
 <template>
-    <router-link v-if="hasViewAccess" :to="recordUrl" :target="store.mode === 'relate' ? '_blank' : null"
+    <router-link :name="props.defs.name" v-if="hasViewAccess" :to="recordUrl" :target="store.mode === 'relate' ? '_blank' : null"
         class="relate-field">
         {{ props.modelValue }}
     </router-link>
-    <span v-else>
+    <span :name="props.defs.name"v-else>
         {{ props.modelValue }}
     </span>
 </template>

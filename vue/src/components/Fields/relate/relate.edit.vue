@@ -11,6 +11,7 @@
                 v-bind="{ ...$attrs, ...val.props }"
                 @input="(event) => fetchItems(event)"
                 @click="menuOpen = true"
+                :name="props.defs.name"
             >
                 <template #append-inner>
                     <v-fab-transition class="search-prepend-icon" v-if="showAdvancedSearch !== false">

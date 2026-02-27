@@ -308,3 +308,22 @@ VardefManager::createVardef('Tasks', 'Task', array(
 
 $dictionary['Task']['fields']['assigned_user_id']['audited'] = false;
 $dictionary['Task']['fields']['assigned_user_name']['audited'] = true;
+
+foreach ([
+    'name' => 'LBL_SUBJECT_COMMENT',
+    'status' => 'LBL_STATUS_COMMENT',
+    'date_due_flag' => 'LBL_DATE_DUE_FLAG_COMMENT',
+    'date_due' => 'LBL_DUE_DATE_COMMENT',
+    'time_due' => 'LBL_DUE_TIME_COMMENT',
+    'date_start_flag' => 'LBL_DATE_START_FLAG_COMMENT',
+    'date_start' => 'LBL_START_DATE_COMMENT',
+    'parent_type' => 'LBL_PARENT_TYPE_COMMENT',
+    'parent_name' => 'LBL_PARENT_NAME_COMMENT',
+    'parent_id' => 'LBL_PARENT_ID_COMMENT',
+    'priority' => 'LBL_PRIORITY_COMMENT',
+    'checklist' => 'LBL_CHECKLIST_COMMENT',
+] as $field => $commentLabel) {
+    if (isset($dictionary['Task']['fields'][$field])) {
+        $dictionary['Task']['fields'][$field]['comment'] = $commentLabel;
+    }
+}

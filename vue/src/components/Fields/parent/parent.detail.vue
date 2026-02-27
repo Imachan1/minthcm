@@ -3,10 +3,10 @@
         <div class="detail-field-assigned-module">
             <label>{{ languages.label('LBL_ASSIGNED_TO_MODULE') }}</label>
             <div class="detail-field-row" v-on:dblclick.prevent="startInlineEdit()">
-                <router-link v-if="hasListAccess" :to="urls.parent" class="relate-field">
+                <router-link :name="props.defs.name + '_module'" v-if="hasListAccess" :to="urls.parent" class="relate-field">
                     {{ props.data.bean.fields.parent_type?.model ?? '' }}
                 </router-link>
-                <span v-else>
+                <span :name="props.defs.name + '_module'"v-else>
                     {{ props.data.bean.fields.parent_type?.model ?? '' }}
                 </span>
                 <Pencil :defs="props.defs" />
@@ -15,10 +15,10 @@
         <div class="detail-field-assigned-record">
             <label>{{ languages.label('LBL_ASSIGNED_TO_RECORD') }}</label>
             <div class="detail-field-row">
-                <router-link v-if="hasViewAccess" :to="urls.record" class="relate-field">
+                <router-link :name="props.defs.name" v-if="hasViewAccess" :to="urls.record" class="relate-field">
                     {{ props.field.model }}
                 </router-link>
-                <span v-else>
+                <span :name="props.defs.name" v-else>
                     {{ props.field.model }}
                 </span>
                 <Pencil :defs="props.defs" :hidePencil="hidePencil"
