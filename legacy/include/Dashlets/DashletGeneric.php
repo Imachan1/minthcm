@@ -292,7 +292,7 @@ class DashletGeneric extends Dashlet
                 }
 
                 //bug 39170 - end
-                if ('enum' == $widgetDef['type']) {
+                if ($widgetDef['type']=='enum' || $widgetDef['type']=='multienum') {
                     $filterNotSelected = array(); // we need to have some value otherwise '' or null values make -none- to be selected by default
                 } else {
                     $filterNotSelected = '';

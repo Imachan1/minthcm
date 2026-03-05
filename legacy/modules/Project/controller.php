@@ -111,7 +111,6 @@ class ProjectController extends SugarController
             SugarApplication::redirect('index.php');
             return;
         }
-
         $task_name = $_POST['task_name'];
         $project_id = $_POST['project_id'];
         $override_business_hours = (int)$_POST['override_business_hours'];
@@ -293,7 +292,6 @@ class ProjectController extends SugarController
             SugarApplication::redirect('index.php');
             return;
         }
-
        //convert quotes in json string back to normal
         $jArray = htmlspecialchars_decode((string) $_POST['orderArray']);
 
@@ -310,6 +308,7 @@ class ProjectController extends SugarController
     //returns tasks for predecessor in the add task pop-up form
     public function action_get_predecessors()
     {
+
         global $mod_strings, $current_user;
         if (!$current_user->hasActionAccess($this->module, $this->action)) {
             SugarApplication::appendErrorMessage(translate('LBL_NO_ACCESS', 'ACL'));
