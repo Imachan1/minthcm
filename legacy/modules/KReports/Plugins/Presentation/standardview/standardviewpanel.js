@@ -150,8 +150,8 @@ Ext.define( "SpiceCRM.KReporter.Designer.presentationplugins.standardviewpanel",
             return void 0 !== a && "" !== a ? languageGetText( "LBL_ALIGNMENT_" + a.toUpperCase() ) : a
          }
       }, {
-         text: languageGetText( "LBL_PRESENTDESCRIPTION" ),
-         dataIndex: "presentdescription",
+         text: languageGetText( "LBL_RESULT_COLUMN_DESCRIPTION" ),
+         dataIndex: "result_column_description",
          sortable: !1,
          width: 200,
          editor: {
