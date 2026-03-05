@@ -1,7 +1,16 @@
 <template>
     <v-menu offset="16">
         <template v-slot:activator="{ props, isActive }">
-            <button class="user-btn" :class="[isActive && 'active']" v-ripple v-bind="props">
+            <button 
+                class="user-btn" 
+                :class="[isActive && 'active']" 
+                v-ripple v-bind="props"
+                name="user-menu-button"
+                id="user-menu-button"
+                :aria-label="languages.label('LBL_MINT_USER_MENU')"
+                :aria-description="languages.label('LBL_MINT_USER_MENU_COMMENT')"
+                aria-describedby="user-menu-button-help"
+            >
                 <img
                     v-if="auth.user?.photo"
                     class="user-avatar"
@@ -12,6 +21,7 @@
                     {{ auth.user?.first_name || auth.user?.last_name }}
                 </span>
             </button>
+            <p id="user-menu-button-help" name="user-menu-button-help" hidden>{{ languages.label('LBL_MINT_USER_MENU_COMMENT') }}</p>
         </template>
         <MintMenuList :items="menuItems" />
     </v-menu>

@@ -8,8 +8,14 @@
             hide-details
             :placeholder="languages.label('LBL_MINT4_GS_SEARCH_INPUT')"
             @keyup.enter="goToFullList"
+            @keyup.space="goToFullList"
             variant="plain"
             @update:focused="isFocused = $event"
+            name="global-search-input"
+            id="global-search-input"
+            :aria-label="languages.label('LBL_GLOBAL_SEARCH_INPUT')"
+            :aria-description="languages.label('LBL_GLOBAL_SEARCH_INPUT_COMMENT')"
+            :aria-describedby="'global-search-input-help'"
         >
             <template #prepend-inner>
                 <v-fab-transition class="search-prepend-icon">
@@ -17,6 +23,7 @@
                     <v-icon v-else icon="mdi-magnify" />
                 </v-fab-transition>
             </template>
+        <p id="global-search-input-help" name="global-search-input-help" hidden>{{languages.label('LBL_GLOBAL_SEARCH_INPUT_COMMENT')}}</p>
         </v-text-field>
         <v-slide-y-transition>
             <template v-if="isFocused">
