@@ -50,6 +50,7 @@ use Api\V8\JsonApi\Helper\RelationshipObjectHelper;
 use Api\V8\JsonApi\Response\AttributeResponse;
 use Api\V8\JsonApi\Response\DataResponse;
 use Api\V8\JsonApi\Response\DocumentResponse;
+use RuntimeException;
 use Slim\Http\Request;
 
 if (!defined('sugarEntry') || !sugarEntry) {
@@ -108,6 +109,11 @@ class UserService
         );
 
         $currentUser = $this->beanManager->getBeanSafe('Users', $oauth2Token->assigned_user_id);
+
+        if (!$currentUser->isEnabled()) {
+            throw new RuntimeException('Not found');
+        }
+
         $currentUserData = $currentUser->toArray();
         unset($currentUserData['user_hash']);
 
