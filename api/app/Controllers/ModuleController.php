@@ -114,6 +114,7 @@ class ModuleController
         $this->entity_manager->persist($entity);
 
         $repository->save($entity, false);
+        $this->handleRelateFieldsFromRecordData($entity, $record_data);
         $this->handleLinks($entity, $links);
 
         if (!empty($record_data['repeat_type']) && '' != $record_data['repeat_type']) {
@@ -169,6 +170,7 @@ class ModuleController
 
         $this->handleFiles($entity, $files);
         $entity_repository->save($entity, false);
+        $this->handleRelateFieldsFromRecordData($entity, $record_data);
         $this->handleLinks($entity, $links);
 
         if (!empty($record_data['repeat_type']) && '' != $record_data['repeat_type']) {
@@ -486,6 +488,63 @@ class ModuleController
                 $upload_file->final_move($file_name, $field_name);
             }
             fclose($tmp_file);
+        }
+    }
+
+    protected function handleRelateFieldsFromRecordData(MintEntity $entity, array $record_data): void
+    {
+        $bean = $entity->getMintBean(false);
+        if (empty($bean) || empty($bean->field_defs)) {
+            return;
+        }
+
+        // Build map: id_name => relate field def, for relate fields with save: true
+        $relate_fields_by_id_name = [];
+        foreach ($bean->field_defs as $field_def) {
+            if (($field_def['type'] ?? '') === 'relate'
+                && !empty($field_def['save'])
+                && !empty($field_def['id_name'])
+                && !empty($field_def['link'])) {
+                $relate_fields_by_id_name[$field_def['id_name']] = $field_def;
+            }
+        }
+
+        $synthesized_links = [];
+        foreach ($record_data as $field_name => $value) {
+            if (!isset($relate_fields_by_id_name[$field_name])) {
+                continue;
+            }
+
+            $link_name = $relate_fields_by_id_name[$field_name]['link'];
+
+            // Get current related IDs via legacy relationship to handle one-to-one replace
+            $existing_ids = [];
+            if ($bean->load_relationship($link_name)) {
+                $existing_ids = array_values($bean->$link_name->get() ?? []);
+            }
+
+            $link_ops = [];
+            if (!empty($value)) {
+                // Remove existing entries that differ from the new value (one-to-one replace)
+                $ids_to_remove = array_values(array_filter($existing_ids, fn($id) => $id !== $value));
+                if (!empty($ids_to_remove)) {
+                    $link_ops['beansToRemove'] = $ids_to_remove;
+                }
+                $link_ops['beansToAdd'] = [$value => []];
+            } else {
+                // Clearing: remove all existing entries
+                if (!empty($existing_ids)) {
+                    $link_ops['beansToRemove'] = $existing_ids;
+                }
+            }
+
+            if (!empty($link_ops)) {
+                $synthesized_links[$link_name] = $link_ops;
+            }
+        }
+
+        if (!empty($synthesized_links)) {
+            $this->handleLinks($entity, $synthesized_links);
         }
     }
 

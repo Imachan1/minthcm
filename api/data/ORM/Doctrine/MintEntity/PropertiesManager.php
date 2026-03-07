@@ -61,20 +61,50 @@ class PropertiesManager
         $related_properties = [];
         $meta = $this->entity_manager->getClassMetadata($this->entity::class);
         foreach ($meta->getAssociationMappings() as $association_name => $association_mapping) {
+            if (in_array($association_name, ['custom_entity', 'main_entity'])) {
+                continue;
+            }
+
             $related_fields_types = [
                 \Doctrine\ORM\Mapping\ClassMetadata::MANY_TO_ONE,
                 \Doctrine\ORM\Mapping\ClassMetadata::ONE_TO_ONE,
             ];
-            if (!in_array($association_mapping['type'], $related_fields_types) || in_array($association_name, ['custom_entity', 'main_entity'])) {
+            if (in_array($association_mapping['type'], $related_fields_types)) {
+                $related_properties[] = array(
+                    'name' => $association_name,
+                    'related_entity' => $association_mapping['targetEntity'],
+                );
                 continue;
             }
-            
-            $related_properties[] = array(
-                'name' => $association_name,
-                'related_entity' => $association_mapping['targetEntity'],
-            );
+
+            // Semantic one-to-one via ManyToMany: detect by presence of a getter method
+            if ($association_mapping['type'] === \Doctrine\ORM\Mapping\ClassMetadata::MANY_TO_MANY) {
+                $targetShortName = (new \ReflectionClass($association_mapping['targetEntity']))->getShortName();
+                $getterByTarget = 'get' . $this->singularize($targetShortName);
+                $getterByLink = 'get' . ucfirst($association_name);
+                if (method_exists($this->entity, $getterByTarget) || method_exists($this->entity, $getterByLink)) {
+                    $related_properties[] = array(
+                        'name' => $association_name,
+                        'related_entity' => $association_mapping['targetEntity'],
+                    );
+                }
+            }
         }
         return $related_properties;
+    }
+
+    protected function singularize(string $word): string
+    {
+        if (str_ends_with($word, 'ies')) {
+            return substr($word, 0, -3) . 'y';
+        }
+        if (str_ends_with($word, 'sses')) {
+            return substr($word, 0, -2);
+        }
+        if (str_ends_with($word, 's') && !str_ends_with($word, 'ss')) {
+            return substr($word, 0, -1);
+        }
+        return $word;
     }
 
     public function getRelatedPropertiesNames(): array

@@ -33,7 +33,8 @@ return [
                     'security_group_name' => [
                         function ($bean) {
                             /** @var SecurityGroup $group */
-                            $group = \BeanFactory::getBean('SecurityGroups', $bean->security_group_id);
+                            $sg_id = $bean->security_group_id;
+                            $group = MintHCM\Data\BeanFactory::getBean('SecurityGroups', $sg_id);
                             if (empty($group->id) || $group->group_type !== 'business_unit') {
                                 throw new ValidationException('LBL_ERR_CANT_SELECT_SEC_GROUP');
                             }
