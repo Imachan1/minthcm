@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -2190,7 +2189,7 @@ EOQ;
      */
     public function isPrimaryEmail($email)
     {
-        if (!empty($this->email1) && !empty($email) && strcasecmp($this->email1, $email) == 0) {
+        if (!empty($this->email1) && !empty($email) && strcasecmp($this->email1, $email) === 0) {
             return true;
         }
         return false;

@@ -211,3 +211,6 @@ if (empty($GLOBALS['installing'])) {
 
 ////	END SETTING DEFAULT VAR VALUES
 ///////////////////////////////////////////////////////////////////////////////
+
+//It does a check to see if the host is valid
+check_trusted_hosts();

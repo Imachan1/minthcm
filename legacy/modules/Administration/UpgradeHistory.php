@@ -1,7 +1,5 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -45,9 +43,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
-
-
-
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 // The history of upgrades on the system
 #[\AllowDynamicProperties]
@@ -200,8 +198,8 @@ class UpgradeHistory extends SugarBean
             //or the unique_keys do not match
             $patch_to_check_backup_path    = clean_path(remove_file_extension(from_html($patch_to_check->filename))).'-restore';
             $more_recent_patch_backup_path = clean_path(remove_file_extension(from_html($more_recent_patch->filename))).'-restore';
-            $patch_to_check_timestamp = TimeDate::getInstance()->fromUser($patch_to_check->date_entered)->getTimestamp();
-            $more_resent_patch_timestamp = TimeDate::getInstance()->fromUser($more_recent_patch->date_entered)->getTimestamp();
+            $patch_to_check_timestamp = $this->getPackageTimestamp($this->getPackageDateString($patch_to_check));
+            $more_resent_patch_timestamp = $this->getPackageTimestamp($this->getPackageDateString($more_recent_patch));
             if (
                 $this->foundConflict($patch_to_check_backup_path, $more_recent_patch_backup_path) &&
                 ($more_resent_patch_timestamp >= $patch_to_check_timestamp)
@@ -308,5 +306,32 @@ class UpgradeHistory extends SugarBean
     public function retrieve($id = -1, $encode=true, $deleted=true)
     {
         return parent::retrieve($id, $encode, false);  //ignore the deleted filter. the table does not have the deleted column in it.
+    }
+
+    /**
+     * Returns correct string for getting timestamp if the package has just been installed;
+     * @param UpgradeHistory $bean
+     * @return string
+     */
+    protected function getPackageDateString(UpgradeHistory $bean): string
+    {
+        global $timedate;
+
+        if (!$bean->date_entered) {
+            return $timedate->to_display_date_time($bean->date_modified);
+        }
+
+        return $bean->date_entered;
+    }
+
+    /**
+     * Handler to get timestamp if the package has just been installed;
+     * @param $date
+     * @return int
+     */
+    protected function getPackageTimestamp($date): int
+    {
+        global $timedate;
+        return $timedate->fromUser($date)->getTimestamp();
     }
 }
