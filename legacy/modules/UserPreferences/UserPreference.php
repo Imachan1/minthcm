@@ -102,9 +102,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
          $name,
          $category = 'global'
          ) {
-         global $sugar_config;
- 
+         global $sugar_config, $current_user;
+
          $user = $this->_userFocus;
+
+         if ($user->user_name !== $current_user->user_name){
+            $this->loadPreferences($category);
+            return $user->user_preferences[$category][$name] ?? $this->getDefaultPreference($name, $category);
+         }
+
  
          // if the unique key in session doesn't match the app or prefereces are empty
          if (!isset($_SESSION[$user->user_name.'_PREFERENCES'][$category]) || (!empty($_SESSION['unique_key']) && $_SESSION['unique_key'] != $sugar_config['unique_key'])) {
@@ -249,13 +255,18 @@ if (!defined('sugarEntry') || !sugarEntry) {
      public function loadPreferences(
          $category = 'global'
          ) {
-         global $sugar_config;
+         global $sugar_config, $current_user;
  
          $user = $this->_userFocus;
  
          if ($user->object_name != 'User') {
              return;
          }
+
+         if ($user->user_name !== $current_user->user_name){
+            return $this->reloadPreferences($category);
+         }
+
          if (!empty($user->id) && (!isset($_SESSION[$user->user_name . '_PREFERENCES'][$category]) || (!empty($_SESSION['unique_key']) && $_SESSION['unique_key'] != $sugar_config['unique_key']))) {
              // cn: moving this to only log when valid - throwing errors on install
              return $this->reloadPreferences($category);
@@ -276,8 +287,10 @@ if (!defined('sugarEntry') || !sugarEntry) {
              return false;
          }
          $GLOBALS['log']->debug('Loading Preferences DB ' . $user->user_name);
-         if (!isset($_SESSION[$user->user_name . '_PREFERENCES'])) {
-             $_SESSION[$user->user_name . '_PREFERENCES'] = array();
+         if ($GLOBALS['current_user']->user_name === $user->user_name){
+            if (!isset($_SESSION[$user->user_name . '_PREFERENCES'])) {
+                $_SESSION[$user->user_name . '_PREFERENCES'] = array();
+            }
          }
          if (!isset($user->user_preferences) || !is_array($user->user_preferences)) {
              $user->user_preferences = array();
@@ -286,11 +299,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
          $result = $db->query("SELECT contents FROM user_preferences WHERE assigned_user_id='$user->id' AND category = '" . $category . "' AND deleted = 0", false, 'Failed to load user preferences');
          $row = $db->fetchByAssoc($result);
          if ($row) {
-             $_SESSION[$user->user_name . '_PREFERENCES'][$category] = unserialize(base64_decode($row['contents']));
+            if ($GLOBALS['current_user']->user_name === $user->user_name){
+                $_SESSION[$user->user_name . '_PREFERENCES'][$category] = unserialize(base64_decode($row['contents']));
+            }
              $user->user_preferences[$category] = unserialize(base64_decode($row['contents']));
              return true;
          } else {
-             $_SESSION[$user->user_name . '_PREFERENCES'][$category] = array();
+            if ($GLOBALS['current_user']->user_name === $user->user_name){
+                $_SESSION[$user->user_name . '_PREFERENCES'][$category] = array();
+            }
              $user->user_preferences[$category] = array();
          }
          return false;

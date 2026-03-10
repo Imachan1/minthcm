@@ -51,7 +51,6 @@ require_once('include/ListView/ListViewSmarty.php');
 require_once('include/TemplateHandler/TemplateHandler.php');
 require_once('include/EditView/EditView2.php');
 
-
 #[\AllowDynamicProperties]
 class SearchForm
 {
@@ -440,16 +439,16 @@ class SearchForm
                                 }
                             }
                         }
-                  $value = implode(', ', $values);
-               }
+                        $value = implode(', ', $values);
+                    }
                 // MintHCM #69594  START
                 else if($value[0] == '[' && $value[strlen($value) - 1] == ']'){
                     $value = $defs['options'][substr($value, 1, -1)];
                 }
                 // MintHCM #69594 END
-               $data[$labelText] = $type == 'bool' ? '&#10004' : $value;
+                    $data[$labelText] = $type == 'bool' ? '&#10004' : $value;
+                }
             }
-        }
         }
 
         return $data;
@@ -909,10 +908,10 @@ class SearchForm
     public function generateSearchWhere($add_custom_fields = false, $module = '')
     {
         global $timedate;
-      // MintHCM begin #70311
-      include 'modules/Employees/access_config.php';
-      $employee_assignable = isset($GLOBALS["dictionary"][$this->seed->object_name]["templates"]['employee_related'])? true:false;
-      // MintHCM end #70311
+        // MintHCM begin #70311
+        include 'modules/Employees/access_config.php';
+        $employee_assignable = isset($GLOBALS["dictionary"][$this->seed->object_name]["templates"]['employee_related'])? true:false;
+        // MintHCM end #70311
         $db = $this->seed->db;
         $this->searchColumns = array();
         $values = $this->searchFields;
@@ -1088,17 +1087,17 @@ class SearchForm
                         $field_value = $db->quote($current_user->id);
                         $operator = '=';
                     }
-            } elseif(!empty($parms['my_subordinates'])){
-               if ( $parms['value'] == false ) {
-                  continue;
-               } else {
-                  global $current_user;
-                  $uc = ControllerFactory::getController('Users');
-                  $field_value = "'" . implode("','", $uc::getIDOfSubordinates([$current_user->id])). "'";
-                $operator = 'in';
-               }
-            } elseif ( !empty($parms['closed_values']) && is_array($parms['closed_values']) ) {
-               if ( $parms['value'] == false ) {
+                } elseif (!empty($parms['my_subordinates'])){
+                    if ($parms['value'] == false) {
+                        continue;
+                    } else {
+                        global $current_user;
+                        $uc = ControllerFactory::getController('Users');
+                        $field_value = "'" . implode("','", $uc::getIDOfSubordinates([$current_user->id])). "'";
+                        $operator = 'in';
+                    }
+                } elseif ( !empty($parms['closed_values']) && is_array($parms['closed_values']) ) {
+                    if ($parms['value'] == false) {
                         continue;
                     } else {
                         $field_value = '';
@@ -1183,7 +1182,6 @@ class SearchForm
 
                         if ($type == 'datetime' || $type == 'datetimecombo') {
                             try {
-                                $field_value = $timedate->to_db_date($field_value, false);
                                 if ($operator == '=' || $operator == 'between') {
                                     // FG - bug45287 - If User asked for a range, takes edges from it.
                                     $placeholderPos = strpos($field_value, "<>");
@@ -1291,10 +1289,12 @@ class SearchForm
                         }
 
                   switch ( strtolower($operator) ) {
-                    case 'subquery_with_in':
-                       $new_subquery = str_replace('{0}', $field_value, $parms['subquery']);
-                       $where .= "{$db_field} IN ($new_subquery)";
-                       break;
+                            // MintHCM start
+                            case 'subquery_with_in':
+                                $new_subquery = str_replace('{0}', $field_value, $parms['subquery']);
+                                $where .= "{$db_field} IN ($new_subquery)";
+                                break;
+                            // MintHCM end
                             case 'subquery':
                                 $in = 'IN';
                                 if (isset($parms['subquery_in_clause'])) {
@@ -1393,35 +1393,33 @@ class SearchForm
                                 $where .= $db_field . ' not in (' . $field_value . ')';
                                 break;
                             case 'in':
-                        // MintHCM begin #70311
-                        if(!empty($parms['my_subordinates'])){
-                           if($employee_assignable){
-                              $where .= " (". $db_field . ' IN (' . $field_value . ') OR employee_id IN (' . $field_value . ') ) ';
-                           } else {
-                              $where .= " ". $db_field . ' IN (' . $field_value . ') ';
-                           }
-                           
-                        } else {
-                                $where .= $db_field . ' in (' . $field_value . ')';
-                        }
-                        // MintHCM end #70311
+                                // MintHCM begin #70311
+                                if(!empty($parms['my_subordinates'])){
+                                    if($employee_assignable){
+                                        $where .= " (". $db_field . ' IN (' . $field_value . ') OR employee_id IN (' . $field_value . ') ) ';
+                                    } else {
+                                        $where .= " ". $db_field . ' IN (' . $field_value . ') ';
+                                    }                       
+                                } else {
+                                    $where .= $db_field . ' in (' . $field_value . ')';
+                                }
+                                // MintHCM end #70311
                                 break;
                             case '=':
-                        // MintHCM begin #70311
-                        if ( $type == 'bool' && $field_value == 0 ) {
+                                // MintHCM begin #70311
+                                if ( $type == 'bool' && $field_value == 0 ) {
                                     $where .= "($db_field = 0 OR $db_field IS NULL)";
-                        } 
-                        else if(!empty($parms['my_items'])){  
-                           if($employee_assignable){
-                              $where .= " (".$db_field . " = " . $db->quoteType($type, $field_value). " OR employee_id = ".$db->quoteType($type, $field_value).")";
-                                } else {
-                              $where .= " (".$db_field . " = " . $db->quoteType($type, $field_value). ")"; 
-                           }
-                           
-                        }else {
+                                } 
+                                else if(!empty($parms['my_items'])){  
+                                    if($employee_assignable){
+                                        $where .= " (".$db_field . " = " . $db->quoteType($type, $field_value). " OR employee_id = ".$db->quoteType($type, $field_value).")";
+                                    } else {
+                                        $where .= " (".$db_field . " = " . $db->quoteType($type, $field_value). ")"; 
+                                    }
+                                }else {
                                     $where .= $db_field . " = " . $db->quoteType($type, $field_value);
                                 }
-                        // MintHCM end #70311
+                                // MintHCM end #70311
                                 break;
                             // tyoung bug 15971 - need to add these special cases into the $where query
                             case 'custom_enum':
@@ -1450,23 +1448,23 @@ class SearchForm
                                 $field_value = $db->quoteType($type, $field_value);
                                 $where .= "($db_field IS NULL OR $db_field != $field_value)";
                                 break;
-                     //viewTools start #37386
-                     case 'over_n_months_ago':
-                        global $timedate, $current_user;
-                        $start = $timedate->now(true);
-                        $tz = $current_user->getPreference('timezone');
-                        if ( empty($tz) ) {
-                           $tz = 'Europe/Warsaw';
-                        }
-                        $timezone = new DateTimeZone($tz);
-                        $current_date = new DateTime($start, $timezone);
-                        $field_value = ( int ) $field_value;
-                        $modify_date = $current_date->modify("-{$field_value} months");
-                        $formated_date = $modify_date->format('Y-m-d H:i:s');
-                        $down_date = $db->quoteType($type, $formated_date);
-                        $where .= "($db_field IS NULL OR $db_field < $down_date)";
-                        break;
-                     //viewTools end #37386
+                            //viewTools start #37386
+                            case 'over_n_months_ago':
+                                global $timedate, $current_user;
+                                $start = $timedate->now(true);
+                                $tz = $current_user->getPreference('timezone');
+                                if ( empty($tz) ) {
+                                    $tz = 'Europe/Warsaw';
+                                }
+                                $timezone = new DateTimeZone($tz);
+                                $current_date = new DateTime($start, $timezone);
+                                $field_value = ( int ) $field_value;
+                                $modify_date = $current_date->modify("-{$field_value} months");
+                                $formated_date = $modify_date->format('Y-m-d H:i:s');
+                                $down_date = $db->quoteType($type, $formated_date);
+                                $where .= "($db_field IS NULL OR $db_field < $down_date)";
+                                break;
+                            //viewTools end #37386
                             case 'greater_than':
                                 $field_value = $db->quoteType($type, $field_value);
                                 $where .= "$db_field > $field_value";
@@ -1505,135 +1503,105 @@ class SearchForm
                                     $where .= ' OR ' . $db_field . " in (" . $field_value . ')';
                                 }
                                 break;
-                    //MintHCM #69594 START
-                     case 'last_week':
-                        global $timedate, $current_user;
-                        $start = $timedate->now(true);
-                        $tz = $current_user->getPreference('timezone');
-                        if (empty($tz)) {
-                            $tz = 'Europe/Warsaw';
+                            //MintHCM #69594 START
+                            case 'last_week':
+                                global $timedate, $current_user;
+                                $start = $timedate->now(true);
+                                $tz = $current_user->getPreference('timezone');
+                                if (empty($tz)) {
+                                    $tz = 'Europe/Warsaw';
+                                }
+                                $current_date = new DateTime($start, new DateTimeZone($tz));
+                                $previous_week = $current_date->modify("-1 week");
+                                $start_week = $previous_week->modify("last sunday midnight");
+                                $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
+                                $end_week = $start_week->modify("next sunday");
+                                $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
+                                $where .= "($db_field >= '$formatted_start_week' AND $db_field <= '$formatted_end_week')";
+                                break;
+                            case 'this_week':
+                                global $timedate, $current_user;
+                                $start = $timedate->now(true);
+                                $tz = $current_user->getPreference('timezone');
+                                if (empty($tz)) {
+                                    $tz = 'Europe/Warsaw';
+                                }
+                                $current_date = new DateTime($start, new DateTimeZone($tz));
+                                $start_week = $current_date->modify("last sunday midnight");
+                                $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
+                                $end_week = $current_date->modify("next saturday");
+                                $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
+                                $where .= "($db_field >= {$formatted_start_week} AND $db_field <= {$formatted_end_week})";
+                                break;
+                            case 'next_week':
+                                global $timedate, $current_user;
+                                $start = $timedate->now(true);
+                                $tz = $current_user->getPreference('timezone');
+                                if (empty($tz)) {
+                                    $tz = 'Europe/Warsaw';
+                                }
+                                $current_date = new DateTime($start, new DateTimeZone($tz));
+                                $next_week = $current_date->modify("+1 week -1 day");
+                                $start_week = $next_week->modify("last sunday midnight");
+                                $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
+                                $end_week = $next_week->modify("next saturday");
+                                $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
+                                $where .= "($db_field >= '{$formatted_start_week}' AND $db_field <= '{$formatted_end_week}')";
+                                break;
+                            case 'in_the_past':
+                                global $timedate, $current_user;
+                                $start = $timedate->now(true);
+                                $tz = $current_user->getPreference('timezone');
+                                if (empty($tz)) {
+                                    $tz = 'Europe/Warsaw';
+                                }
+                                $current_date = new DateTime($start, new DateTimeZone($tz));
+                                $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
+                                $where .= "$db_field < '$formatted_current_date'";
+                                break;
+                            case 'in_the_future':
+                                global $timedate, $current_user;
+                                $start = $timedate->now(true);
+                                $tz = $current_user->getPreference('timezone');
+                                if (empty($tz)) {
+                                    $tz = 'Europe/Warsaw';
+                                }
+                                $current_date = new DateTime($start, new DateTimeZone($tz));
+                                $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
+                                $where .= "$db_field > '$formatted_current_date'";
+                                break;
+                            case 'last_n_days':
+                                global $timedate, $current_user;
+                                $start = $timedate->now(true);
+                                $tz = $current_user->getPreference('timezone');
+                                if (empty($tz)) {
+                                    $tz = 'Europe/Warsaw';
+                                }
+                                $current_date = new DateTime($start, new DateTimeZone($tz));
+                                $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
+                                $field_value = (int) $field_value;
+                                $modify_date = $current_date->modify("-{$field_value} days");
+                                $formatted_date = $modify_date->format($timedate->get_db_date_time_format());
+                                $where .= "($db_field >= '{$formatted_date}' AND $db_field <= '{$formatted_current_date}')";
+                                break;
+                            case 'next_n_days':
+                                global $timedate, $current_user;
+                                $start = $timedate->now(true);
+                                $tz = $current_user->getPreference('timezone');
+                                if (empty($tz)) {
+                                    $tz = 'Europe/Warsaw';
+                                }
+                                $current_date = new DateTime($start, new DateTimeZone($tz));
+                                $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
+                                $field_value = (int) $field_value;
+                                $modify_date = $current_date->modify("+{$field_value} days");
+                                $formatted_date = $modify_date->format($timedate->get_db_date_time_format());
+                                $where .= "($db_field >= '{$formatted_current_date}' AND $db_field <= '{$formatted_date}')";
+                                break;
+                            //MintHCM #69594 END
                         }
-                        $current_date = new DateTime($start, new DateTimeZone($tz));
-                        $previous_week = $current_date->modify("-1 week");
-                        $start_week = $previous_week->modify("last sunday midnight");
-                        $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
-                        $end_week = $start_week->modify("next sunday");
-                        $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
-                        $where .= "($db_field >= '$formatted_start_week' AND $db_field <= '$formatted_end_week')";
-                        break;
-                     case 'this_week':
-                        global $timedate, $current_user;
-                        $start = $timedate->now(true);
-                        $tz = $current_user->getPreference('timezone');
-                        if (empty($tz)) {
-                            $tz = 'Europe/Warsaw';
-                        }
-                        $current_date = new DateTime($start, new DateTimeZone($tz));
-                        $start_week = $current_date->modify("last sunday midnight");
-                        $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
-                        $end_week = $current_date->modify("next saturday");
-                        $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
-                        $where .= "($db_field >= {$formatted_start_week} AND $db_field <= {$formatted_end_week})";
-                        break;
-                    //MintHCM #69594 START
-                     case 'last_week':
-                        global $timedate, $current_user;
-                        $start = $timedate->now(true);
-                        $tz = $current_user->getPreference('timezone');
-                        if (empty($tz)) {
-                            $tz = 'Europe/Warsaw';
-                        }
-                        $current_date = new DateTime($start, new DateTimeZone($tz));
-                        $previous_week = $current_date->modify("-1 week");
-                        $start_week = $previous_week->modify("last sunday midnight");
-                        $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
-                        $end_week = $start_week->modify("next sunday");
-                        $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
-                        $where .= "($db_field >= '$formatted_start_week' AND $db_field <= '$formatted_end_week')";
-                        break;
-                     case 'this_week':
-                        global $timedate, $current_user;
-                        $start = $timedate->now(true);
-                        $tz = $current_user->getPreference('timezone');
-                        if (empty($tz)) {
-                            $tz = 'Europe/Warsaw';
-                        }
-                        $current_date = new DateTime($start, new DateTimeZone($tz));
-                        $start_week = $current_date->modify("last sunday midnight");
-                        $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
-                        $end_week = $current_date->modify("next saturday");
-                        $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
-                        $where .= "($db_field >= '{$formatted_start_week}' AND $db_field <= '{$formatted_end_week}' )";
-                        break;
-                     case 'next_week':
-                        global $timedate, $current_user;
-                        $start = $timedate->now(true);
-                        $tz = $current_user->getPreference('timezone');
-                        if (empty($tz)) {
-                            $tz = 'Europe/Warsaw';
-                        }
-                        $current_date = new DateTime($start, new DateTimeZone($tz));
-                        $next_week = $current_date->modify("+1 week -1 day");
-                        $start_week = $next_week->modify("last sunday midnight");
-                        $formatted_start_week = $start_week->format($timedate->get_db_date_time_format());
-                        $end_week = $next_week->modify("next saturday");
-                        $formatted_end_week = $end_week->format($timedate->get_db_date_time_format());
-                        $where .= "($db_field >= '{$formatted_start_week}' AND $db_field <= '{$formatted_end_week}')";
-                        break;
-                     case 'in_the_past':
-                        global $timedate, $current_user;
-                        $start = $timedate->now(true);
-                        $tz = $current_user->getPreference('timezone');
-                        if (empty($tz)) {
-                            $tz = 'Europe/Warsaw';
-                        }
-                        $current_date = new DateTime($start, new DateTimeZone($tz));
-                        $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
-                        $where .= "$db_field < '$formatted_current_date'";
-                        break;
-                     case 'in_the_future':
-                        global $timedate, $current_user;
-                        $start = $timedate->now(true);
-                        $tz = $current_user->getPreference('timezone');
-                        if (empty($tz)) {
-                            $tz = 'Europe/Warsaw';
-                        }
-                        $current_date = new DateTime($start, new DateTimeZone($tz));
-                        $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
-                        $where .= "$db_field > '$formatted_current_date'";
-                        break;
-                     case 'last_n_days':
-                        global $timedate, $current_user;
-                        $start = $timedate->now(true);
-                        $tz = $current_user->getPreference('timezone');
-                        if (empty($tz)) {
-                            $tz = 'Europe/Warsaw';
-                        }
-                        $current_date = new DateTime($start, new DateTimeZone($tz));
-                        $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
-                        $field_value = (int) $field_value;
-                        $modify_date = $current_date->modify("-{$field_value} days");
-                        $formatted_date = $modify_date->format($timedate->get_db_date_time_format());
-                        $where .= "($db_field >= '{$formatted_date}' AND $db_field <= '{$formatted_current_date}')";
-                        break;
-                     case 'next_n_days':
-                        global $timedate, $current_user;
-                        $start = $timedate->now(true);
-                        $tz = $current_user->getPreference('timezone');
-                        if (empty($tz)) {
-                            $tz = 'Europe/Warsaw';
-                        }
-                        $current_date = new DateTime($start, new DateTimeZone($tz));
-                        $formatted_current_date = $current_date->format($timedate->get_db_date_time_format());
-                        $field_value = (int) $field_value;
-                        $modify_date = $current_date->modify("+{$field_value} days");
-                        $formatted_date = $modify_date->format($timedate->get_db_date_time_format());
-                        $where .= "($db_field >= '{$formatted_current_date}' AND $db_field <= '{$formatted_date}')";
-                        break;
-                     //MintHCM #69594 END
-                  }
-               }
-            }
+                    }
+                }
 
                 if (!empty($where)) {
                     if ($itr > 1) {

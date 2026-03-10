@@ -87,7 +87,6 @@ class InboundEmail extends SugarBean
    // MintHCM #110041 START
    public $eapm_id;
    public $authorized_account;
-   public $auth_type;
    // MintHCM #110041 END
     public $port;
     public $service;
@@ -97,6 +96,7 @@ class InboundEmail extends SugarBean
     public $mailbox_type;
     public $template_id;
     public $stored_options;
+    public $email_body_filtering;
     public $group_id;
     public $is_personal;
     public $groupfolder_id;
@@ -201,6 +201,127 @@ class InboundEmail extends SugarBean
     private $overview;
 
     /**
+     * @var string|null
+     */
+    public $from_addr;
+
+    /**
+     * @var string|null
+     */
+    public $from_name;
+
+    /**
+     * @var string|null
+     */
+    public $reply_to_name;
+
+    /**
+     * @var string|null
+     */
+    public $reply_to_addr;
+
+    /**
+     * @var string|null
+     */
+    public $only_since;
+
+    /**
+     * @var string|null
+     */
+    public $filter_domain;
+
+    /**
+     * @var string|null
+     */
+    public $trashFolder;
+
+    /**
+     * @var string|null
+     */
+    public $sentFolder;
+
+    /**
+     * @var string|null
+     */
+    public $distrib_method;
+
+    /**
+     * @var string|null
+     */
+    public $distribution_user_id;
+
+    /**
+     * @var string|null
+     */
+    public $distribution_options;
+
+    /**
+     * @var string|null
+     */
+    public $create_case_template_id;
+
+    /**
+     * @var int|null
+     */
+    public $email_num_autoreplies_24_hours;
+
+    /**
+     * @var bool|null
+     */
+    public $is_auto_import;
+
+    /**
+     * @var bool|null
+     */
+    public $is_create_case;
+
+    /**
+     * @var bool|string|null
+     */
+    public $allow_outbound_group_usage;
+
+    /**
+     * @var string|null
+     */
+    public $outbound_email_id;
+
+    /**
+     * @var bool|string|null
+     */
+    public $leave_messages_on_mail_server;
+
+    /**
+     * @var string|null
+     */
+    public $type;
+
+    /**
+     * @var int|null
+     */
+    public $is_default;
+
+    /**
+     * @var string|null
+     */
+    public $external_oauth_connection_id;
+
+    /**
+     * @var string|null
+     */
+    public $auth_type;
+
+    /**
+     * @var string|null
+     */
+    public $connection_string;
+
+    /**
+     * @var bool|null
+     */
+    public $move_messages_to_trash_after_import;
+
+
+    /**
      * Email constructor
      * @param ImapHandlerInterface|null $imapHandler
      * @param MailMimeParser|null $mailParser
@@ -208,8 +329,8 @@ class InboundEmail extends SugarBean
      */
     public function __construct(ImapHandlerInterface $imapHandler = null, MailMimeParser $mailParser = null)
     {
-         // MintHCM #110041 START
-         parent::__construct();
+        // MintHCM #110041 START
+        parent::__construct();
         global $sugar_config;
 
         if (null === $mailParser) {
@@ -229,7 +350,7 @@ class InboundEmail extends SugarBean
         if (isset($sugar_config['site_url'])) {
             $this->imagePrefix = $sugar_config['site_url'] . '/cache/images/';
         }
-      // MintHCM #110041 END
+        // MintHCM #110041 END
     }
 
     /**
@@ -3270,9 +3391,9 @@ class InboundEmail extends SugarBean
         );
         $login = $this->email_user;
         $passw = $this->email_password;
-      // MintHCM #110041 START
-      $accessToken = $this->getAccessToken();
-      // MintHCM #110041 END
+        // MintHCM #110041 START
+        $accessToken = $this->getAccessToken();
+        // MintHCM #110041 END
         $foundGoodConnection = false;
         foreach ($serviceArr as $k => $serviceTest) {
             $errors = '';
@@ -3280,10 +3401,10 @@ class InboundEmail extends SugarBean
 
             $GLOBALS['log']->debug($l . ': I-E testing string: ' . $serviceTest);
 
-         // open the connection and try the test string
-         // MintHCM #110041 START
-         $this->conn = $this->getImapConnection($serviceTest, $login, $passw, $accessToken);
-         // MintHCM #110041 END
+            // open the connection and try the test string
+            // MintHCM #110041 START
+            $this->conn = $this->getImapConnection($serviceTest, $login, $passw, $accessToken);
+            // MintHCM #110041 END
 
             if (($errors = $this->getImap()->getLastError()) || ($alerts = $this->getImap()->getAlerts())) {
                 // login failure means don't bother trying the rest
@@ -4164,7 +4285,7 @@ class InboundEmail extends SugarBean
             $decodedHeader = $this->decodeHeader($fullHeader);
 
             // now get actual body contents
-            $text = $this->getImap()->getBody($msgNo);
+            $text = $this->getImap()->getBody($uid);
 
             $upperCaseKeyDecodeHeader = array();
             if (is_array($decodedHeader)) {
@@ -4631,7 +4752,7 @@ class InboundEmail extends SugarBean
         $fileName = htmlspecialchars((string) $attach->id);
 
         // download the attachment if we didn't do it yet
-      if ( !file_exists($uploadDir . $fileName) ) {
+        if (!file_exists($uploadDir . $fileName)) {
          // MintHCM #110041 START
          if ( empty($this->conn) ) {
          // MintHCM #110041 END
@@ -4954,9 +5075,9 @@ class InboundEmail extends SugarBean
         global $sugar_config;
         global $current_user;
 
-      // MintHCM #110041 START
-      if ( empty($this->conn) ) {
-      // MintHCM #110041 END
+        // MintHCM #110041 START
+        if ( empty($this->conn) ) {
+        // MintHCM #110041 END
             LoggerManager::getLogger()->fatal('Inbounc Email Connection is not valid resource for getting duplicate email id.');
 
             return false;
@@ -5021,9 +5142,9 @@ class InboundEmail extends SugarBean
         // UNCOMMENT THIS IF YOU HAVE THIS PROBLEM!  See notes on Bug # 45477
         // $this->markEmails($uid, "read");
 
-      // MintHCM #110041 START
-      if ( empty($this->conn) ) {
-      // MintHCM #110041 END
+        // MintHCM #110041 START
+        if ( empty($this->conn) ) {
+        // MintHCM #110041 END
             LoggerManager::getLogger()->warn('Connection is not a valid resource for importOneEmail()');
             $header = null;
             $fullHeader = null;
@@ -6237,9 +6358,9 @@ class InboundEmail extends SugarBean
             $this->stored_options = base64_encode(serialize($storedOptions));
             $this->save();
         } else {
-         // MintHCM #110041 START
-         if ( empty($this->conn) ) {
-         // MintHCM #110041 END
+            // MintHCM #110041 START
+            if ( empty($this->conn) ) {
+            // MintHCM #110041 END
                 LoggerManager::getLogger()->fatal('Inbound Email Connection is not valid resource for getting New Message Ids.');
 
                 return false;
@@ -7154,11 +7275,11 @@ class InboundEmail extends SugarBean
      * deletes and expunges emails on server
      * @param string $uid UID(s), comma delimited, of email(s) on server
      */
-   public function deleteMessageOnMailServerForPop3($uid) 
-   {
-      // MintHCM #110041 START
-      if ( empty($this->conn) ) {
-      // MintHCM #110041 END
+    public function deleteMessageOnMailServerForPop3($uid)
+    {
+        // MintHCM #110041 START
+        if ( empty($this->conn) ) {
+        // MintHCM #110041 END
             LoggerManager::getLogger()->fatal('Inbound Email connection is not a resource for deleting Message On Mail Server For Pop3');
 
             return false;
@@ -8118,9 +8239,9 @@ eoq;
         // ids's count limit for batch processing
         $limit = 20;
 
-      // MintHCM #110041 START
-      if ( empty($this->conn) ) {
-      // MintHCM #110041 END
+        // MintHCM #110041 START
+        if ( empty($this->conn) ) {
+        // MintHCM #110041 END
             LoggerManager::getLogger()->fatal('Inbound Email connection is not a resource for getting New Emails For Synced Mailbox');
 
             return false;

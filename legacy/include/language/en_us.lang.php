@@ -353,7 +353,7 @@ $app_list_strings = array(
         'Dr.' => 'Dr.',
         'Prof.' => 'Prof.',
     ),
-//time is in seconds; the greater the time the longer it takes;
+    //time is in seconds; the greater the time the longer it takes;
     'reminder_max_time' => 90000,
     'reminder_time_options' => array(
         60 => '1 minute prior',
@@ -630,7 +630,7 @@ $app_list_strings = array(
         'Upgrade' => 'Upgrade',
         'Users' => 'Users',
     ),
-/* Added entries 'Queued' and 'Sending' for 4.0 release.. */
+    /*Added entries 'Queued' and 'Sending' for 4.0 release..*/
     'campaign_status_dom' => array(
         '' => '',
         'Planning' => 'Planning',
@@ -1894,6 +1894,8 @@ $app_strings = array(
     'LBL_REMOVE_DASHLET_CONFIRM' => 'Are you sure you want to remove this MintHCM Dashlet?',
     'LBL_REMOVING_DASHLET' => 'Removing MintHCM Dashlet...',
     'LBL_REMOVED_DASHLET' => 'MintHCM Dashlet Removed',
+    'LBL_MAX_DASHLET_COLUMNS' => "Maximum of %s columns can be displayed.",
+    'LBL_RETRIEVING_XML_DATA' => "There was a problem retrieving the XML data:\n",
     // MySugar Menu Options
     'LBL_LOADING_PAGE' => 'Loading page, please wait...',
     'LBL_RELOAD_PAGE' => 'Please <a href="javascript: window.location.reload()">reload the window</a> to use this MintHCM Dashlet.',

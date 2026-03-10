@@ -43,7 +43,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 if ( !defined('sugarEntry') || !sugarEntry ) {
-   die('Not A Valid Entry Point');
+    die('Not A Valid Entry Point');
 }
 
 require_once 'modules/DynamicFields/DynamicField.php';
@@ -644,15 +644,15 @@ class SugarBean
         if ($time) {
             $dtAry = explode('&', $value, 2);
             $now = $timedate->getNow(true);
-         // Mint START
-         try {
-            // Mint END
-            $dateValue = $now->modify($dtAry[0]);
             // Mint START
-         } catch ( Exception $e ) {
-            $GLOBALS['log']->fatal('DateTime error: ' . $e->getMessage());
-            throw $e;
-            // Mint END
+            try {
+                // Mint END
+                $dateValue = $now->modify($dtAry[0]);
+                // Mint START
+            } catch ( Exception $e ) {
+                $GLOBALS['log']->fatal('DateTime error: ' . $e->getMessage());
+                throw $e;
+                // Mint END
             }
             if (!empty($dtAry[1])) {
                 $timeValue = $timedate->fromString($dtAry[1]);
@@ -670,9 +670,9 @@ class SugarBean
             $results = $now->modify($value);
         } catch (Exception $e) {
             $GLOBALS['log']->fatal('DateTime error: ' . $e->getMessage());
-         // Mint START
-         throw $e;
-         // Mint END
+            // Mint START
+            throw $e;
+            // Mint END
         }
         if (is_bool($results)) {
             $GLOBALS['log']->fatal('Type Error: Argument 1 passed to TimeDate::asUser() ' .
@@ -744,9 +744,9 @@ class SugarBean
     {
         //load the module dictionary if not supplied.
       if ( empty($dictionary) && !empty($module_dir) ) {
-// View Tools #51928 START
-         $dictionary = array();
-// View Tools #51928 END
+        // View Tools #51928 START
+        $dictionary = array();
+        // View Tools #51928 END
          if ( $is_custom ) {
                 $filename = 'custom/modules/' . $module_dir . '/Ext/Vardefs/vardefs.ext.php';
             } else {
@@ -1720,36 +1720,36 @@ class SugarBean
      * @return bool
      */
     public function isOwner(?string $user_id) {
-      // MintHCM Begin #70311 - whole isOwner function redesigned
-      $controller = ControllerFactory::getController('Users');
-      $subordinates_ids = $controller::getIDOfSubordinates(array($user_id));
-      $is_owner = false;
-      include 'modules/Employees/access_config.php';
+        // MintHCM Begin #70311 - whole isOwner function redesigned
+        $controller = ControllerFactory::getController('Users');
+        $subordinates_ids = $controller::getIDOfSubordinates(array($user_id));
+        $is_owner = false;
+        include 'modules/Employees/access_config.php';
       
         //if we don't have an id we must be the owner as we are creating it
         if (!isset($this->id)  || $this->id == "[SELECT_ID_LIST]") {
             return true;
         }
         //if there is an assigned_user that is the owner
-      if ( !empty($this->fetched_row['assigned_user_id']) && $this->fetched_row['assigned_user_id'] == $user_id) {
-                return true;
-      } elseif ( !empty($this->assigned_user_id) && ($this->assigned_user_id == $user_id || in_array($this->assigned_user_id, $subordinates_ids)) ) {         
+        if ( !empty($this->fetched_row['assigned_user_id']) && $this->fetched_row['assigned_user_id'] == $user_id) {
+            return true;
+        } elseif ( !empty($this->assigned_user_id) && ($this->assigned_user_id == $user_id || in_array($this->assigned_user_id, $subordinates_ids)) ) {         
             $is_owner = true;      
-            }
-      elseif (isset($GLOBALS["dictionary"][$this->object_name]["templates"]['employee_related']) && !in_array($this->module_dir,$employee_related_exclude_modules)
-       && !empty($this->employee_id) && ($this->employee_id == $user_id || in_array($this->employee_id, $subordinates_ids))
-      ) {
+        }
+        elseif (isset($GLOBALS["dictionary"][$this->object_name]["templates"]['employee_related']) && !in_array($this->module_dir,$employee_related_exclude_modules)
+            && !empty($this->employee_id) && ($this->employee_id == $user_id || in_array($this->employee_id, $subordinates_ids))
+        ) {
             $is_owner = true;
         }
-      else {
-        //other wise if there is a created_by that is the owner
-         if (!$is_owner &&  !empty($this->created_by) && $this->created_by == $user_id ) {
-            $is_owner =  true;
-         }
+        else {
+            //other wise if there is a created_by that is the owner
+            if (!$is_owner &&  !empty($this->created_by) && $this->created_by == $user_id ) {
+                $is_owner =  true;
+            }
         }
 
-      return $is_owner;
-      // MintHCM End #70311
+        return $is_owner;
+        // MintHCM End #70311
     }
 
     /**
@@ -2420,7 +2420,8 @@ class SugarBean
         require_once("data/BeanFactory.php");
         BeanFactory::registerBean($this->module_name, $this);
 
-      if ( empty($GLOBALS['updating_relationships']) && empty($GLOBALS['saving_relationships']) && empty($GLOBALS['resavingRelatedBeans']) ) {
+        if (empty($GLOBALS['updating_relationships']) && empty($GLOBALS['saving_relationships'])
+            && empty($GLOBALS['resavingRelatedBeans'])) {
             $GLOBALS['saving_relationships'] = true;
             // let subclasses save related field changes
             $this->save_relationship_changes($isUpdate);
@@ -2449,7 +2450,8 @@ class SugarBean
         if ( $this->vt_prevent_saving !== true || $this->skip_vt_validation === true ) {
          // View Tools end #38123
         // If we're importing back semi-colon separated non-primary emails
-         if ( $this->hasEmails() && !empty($this->email_addresses_non_primary) && is_array($this->email_addresses_non_primary) ) {
+        if ($this->hasEmails() && !empty($this->email_addresses_non_primary)
+            && is_array($this->email_addresses_non_primary)) {
             // Add each mail to the account
             if (!isset($this->emailAddress)) {
                 $GLOBALS['log']->fatal('Undefined property: SugarBeanMock::$emailAddress');
@@ -2607,6 +2609,11 @@ class SugarBean
                     $type .= $def['dbType'];
                 }
 
+                // Trim name & varchar type values on save when the value is not null
+                if (isset($def['type']) && in_array($def['type'], ['name', 'varchar']) && !is_null($this->$key)) {
+                    $this->$key = trim($this->$key);
+                }
+
                 if (isset($def['type']) && ($def['type'] == 'html' || $def['type'] == 'longhtml')) {
                     $this->$key = purify_html($this->$key, ['HTML.ForbiddenElements' => ['iframe' => true]]);
                 } elseif (
@@ -2654,7 +2661,8 @@ class SugarBean
                                 $this->$field = '';
                                 break;
                             }
-                     if ( !preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', (string) $this->$field) ) {
+                            if (!preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/',
+                                (string) $this->$field)) {
                                 $this->$field = $timedate->to_db($this->$field);
                                 $reformatted = true;
                             }
@@ -3473,10 +3481,10 @@ class SugarBean
         if (in_array('set_notification_body', get_class_methods($this))) {
             $xtpl = $this->set_notification_body($xtpl, $this);
         } else {
-        // MintHCM #75607 START
-        //$xtpl->assign("OBJECT", translate('LBL_MODULE_NAME', $this->module_name));
-        $xtpl->assign("OBJECT", return_app_list_strings_language($current_language)['moduleList'][$this->module_name] ?? $this->module_name);
-        // MintHCM #75607 END
+            // MintHCM #75607 START
+            //$xtpl->assign("OBJECT", translate('LBL_MODULE_NAME', $this->module_name));
+            $xtpl->assign("OBJECT", return_app_list_strings_language($current_language)['moduleList'][$this->module_name] ?? $this->module_name);
+            // MintHCM #75607 END
             $template_name = "Default";
         }
         if (!empty($_SESSION["special_notification"]) && $_SESSION["special_notification"]) {
@@ -3708,7 +3716,7 @@ class SugarBean
       
       return '';
       // MintHCM End #70311 - whole isOwner function redesigned
-   }
+    }
 
     /**
      * Return the list query used by the list views and export button.
@@ -3740,7 +3748,7 @@ class SugarBean
         $singleSelect = false,
         $ifListForExport = false
     ) {
-	  global $current_view; // View Tools #60131
+	    global $current_view; // View Tools #60131
         $selectedFields = array();
         $secondarySelectedFields = array();
         $ret_array = array();
@@ -3751,22 +3759,22 @@ class SugarBean
             $where .= empty($where) ? $accessWhere : ' AND ' . $accessWhere;
         }
 
-      // View Tools start #60131
-      #if ( !empty($params['distinct']) ) {
-     $action=filter_input(INPUT_GET, "action", FILTER_SANITIZE_SPECIAL_CHARS); //subpanel
-     $dynamic_action=filter_input(INPUT_GET, "DynamicAction", FILTER_SANITIZE_SPECIAL_CHARS); //dashlet refresh
-     $entry_point=filter_input(INPUT_GET, "entryPoint", FILTER_SANITIZE_SPECIAL_CHARS); //dashlet retrive
+        // View Tools start #60131
+        #if ( !empty($params['distinct']) ) {
+        $action=filter_input(INPUT_GET, "action", FILTER_SANITIZE_SPECIAL_CHARS); //subpanel
+        $dynamic_action=filter_input(INPUT_GET, "DynamicAction", FILTER_SANITIZE_SPECIAL_CHARS); //dashlet refresh
+        $entry_point=filter_input(INPUT_GET, "entryPoint", FILTER_SANITIZE_SPECIAL_CHARS); //dashlet retrive
 
-     if((!empty($current_view) && $current_view->type=='list') || $action=="SubPanelViewer" || $dynamic_action=='displayDashlet' || $entry_point=="retrieve_dash_page" ){
-      $distinct = ' DISTINCT ';
-     }else{
-         if ( !empty($params['distinct']) ) {
+        if((!empty($current_view) && $current_view->type=='list') || $action=="SubPanelViewer" || $dynamic_action=='displayDashlet' || $entry_point=="retrieve_dash_page" ){
             $distinct = ' DISTINCT ';
+        }else{
+            if ( !empty($params['distinct']) ) {
+                $distinct = ' DISTINCT ';
+            }
         }
-         }
-      #}
-      // View Tools end #60131
-      if ( empty($filter) ) {
+        #}
+        // View Tools end #60131
+        if ( empty($filter) ) {
             $ret_array['select'] = " SELECT $distinct $this->table_name.* ";
         } else {
             $ret_array['select'] = " SELECT $distinct $this->table_name.id ";

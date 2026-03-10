@@ -1,4 +1,5 @@
 <?php
+
 namespace Api\V8\Service;
 
 use Api\V8\BeanDecorator\BeanListResponse;
@@ -81,6 +82,7 @@ class ModuleService
         if (!$bean->ACLAccess('view')) {
             throw new AccessDeniedException();
         }
+
         $dataResponse = $this->getDataResponse($bean, $fields, $path);
 
         $response = new DocumentResponse();
@@ -107,6 +109,7 @@ class ModuleService
 
         $size = $params->getPage()->getSize();
         $number = $params->getPage()->getNumber();
+
         $bean = $this->beanManager->newBeanSafe(
             $params->getModuleName()
         );
@@ -114,6 +117,7 @@ class ModuleService
         if (!$bean->ACLAccess('view')) {
             throw new AccessDeniedException();
         }
+
         // negative numbers are validated in params
         $offset = $number !== 0 ? ($number - 1) * $size : $number;
         $realRowCount = $this->beanManager->countRecords($module, $where);
@@ -256,9 +260,11 @@ class ModuleService
         }
 
         $bean = $this->beanManager->newBeanSafe($module);
+
         if (!$bean->ACLAccess('save')) {
             throw new AccessDeniedException();
         }
+
         if ($id !== null) {
             $bean->id = $id;
             $bean->new_with_id = true;
@@ -426,6 +432,10 @@ class ModuleService
             throw new AccessDeniedException();
         }
 
+        if (isset($attributes['deleted']) && isTrue($attributes['deleted']) && !$bean->ACLAccess('delete')) {
+            throw new AccessDeniedException();
+        }
+
         $this->setRecordUpdateParams($bean, $attributes);
         $fileUpload = $this->processAttributes($bean, $attributes);
         $bean->save();
@@ -434,6 +444,7 @@ class ModuleService
             $this->addFileToNote($bean->id, $attributes);
         }
         $bean->retrieve($bean->id);
+
         $dataResponse = $this->getDataResponse(
             $bean,
             null,
@@ -493,9 +504,11 @@ class ModuleService
             $params->getModuleName(),
             $params->getId()
         );
+
         if (!$bean->ACLAccess('delete')) {
             throw new AccessDeniedException();
         }
+
         $bean->mark_deleted($bean->id);
 
         $response = new DocumentResponse();

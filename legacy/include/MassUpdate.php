@@ -398,11 +398,8 @@ eoq;
                                     $parentenum_value = $newbean->$parentenum_name;
 
                                     $dynamic_field_name = $field_name['name'];
-                                    // Dynamic field set value.
-                                    list($dynamic_field_value) = explode('_', $newbean->$dynamic_field_name);
 
-                                    if ($parentenum_value != $dynamic_field_value) {
-
+                                    if (strpos($newbean->$dynamic_field_name, $parentenum_value) !== 0) {
                                         // Change to the default value of the correct value set.
                                         $defaultValue = '';
                                         foreach ($app_list_strings[$field_name['options']] as $key => $value) {
@@ -1245,7 +1242,7 @@ EOQ;
 	$cal_fdow = $current_user->get_first_day_of_week() ? $current_user->get_first_day_of_week() : '0';
 
         $javascriptend = <<<EOQ
-		 
+
 	<span id="{$varname}_trigger" class="suitepicon suitepicon-module-calendar" onclick="return false;"></span>
 EOQ;
         $dtscript = getVersionedScript('include/SugarFields/Fields/Datetimecombo/Datetimecombo.js');

@@ -101,7 +101,8 @@ if (!empty($mkt_id)) {
 }
 echo (empty($_REQUEST['inline']))?$subpanel_object->get_buttons():'' ;
 
-$subpanel_object->display();
+$countOnly = isset($_REQUEST['countOnly']) && $_REQUEST['countOnly'];
+$subpanel_object->display($countOnly);
 
 if (empty($_REQUEST['inline'])) {
     insert_popup_footer($theme);
