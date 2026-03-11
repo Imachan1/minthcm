@@ -87,7 +87,7 @@ class templateParser
                     $repl_arr[$key . "_" . $fieldName] = implode(", ", $translatedVals);
                 } //Fix for Windows Server as it needed to be converted to a string.
                 elseif ($field_def['type'] == 'int') {
-                    $repl_arr[$key . "_" . $fieldName] = (string) $focus->$fieldName;
+                    $repl_arr[$key . "_" . $fieldName] = (string)$focus->$fieldName;
                 } elseif ($field_def['type'] == 'bool') {
                     if ($focus->{$fieldName} == "1") {
                         $repl_arr[$key . "_" . $fieldName] = "true";
@@ -101,8 +101,8 @@ class templateParser
                     if (!file_exists('public')) {
                         sugar_mkdir('public', 0777);
                     }
-                    if (!copy($file_location, "public/{$focus->id}" . '_' . $fieldName)) {
-                        $secureLink = $sugar_config['site_url'] . '/' . $file_location;
+                    if (!copy($file_location, "public/{$focus->id}".  '_' . $fieldName)) {
+                        $secureLink = $sugar_config['site_url'] . '/'. $file_location;
                     }
 
                     if (empty($focus->{$fieldName})) {
@@ -116,6 +116,13 @@ class templateParser
                         ENT_COMPAT, 'UTF-8');
                     $repl_arr[$key . "_" . $fieldName] = html_entity_decode((string) $focus->{$fieldName},
                         ENT_COMPAT, 'UTF-8');
+                } elseif ($field_def['type'] == 'decimal' || $field_def['type'] == 'float') {
+                    if ($_REQUEST['entryPoint'] == 'formLetter') {
+                        $value = formatDecimalInConfigSettings($focus->$fieldName, true);
+                    } else {
+                        $value = formatDecimalInConfigSettings($focus->$fieldName, false);
+                    }
+                    $repl_arr[$key . "_" . $fieldName] = $value;
                 } else {
                     $repl_arr[$key . "_" . $fieldName] = $focus->{$fieldName};
                 }

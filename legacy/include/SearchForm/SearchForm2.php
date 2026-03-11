@@ -971,7 +971,7 @@ class SearchForm
 
                         $this->searchFields[$real_field]['value'] = $this->searchFields[$field]['value'];
                         $this->searchFields[$real_field]['operator'] = $this->searchFields[$field]['operator'];
-                        $params['value'] = $this->searchFields[$field]['value'];
+                        $params['value'] = $db->quote($this->searchFields[$field]['value']);
                         $params['operator'] = $this->searchFields[$field]['operator'];
                         unset($this->searchFields[$field]['value']);
                         $field = $real_field;
@@ -1069,7 +1069,7 @@ class SearchForm
                         }
                     }
                 } else {
-                    $field_value = $parms['value'];
+                    $field_value = $db->quote($parms['value']);
                 }
 
                 //set db_fields array.
@@ -1641,7 +1641,7 @@ class SearchForm
      */
     public static function retrieveSearchDefs($module)
     {
-        global $current_user, $db;
+        global $current_user, $db; // MintHCM
         $searchdefs = array();
         $searchFields = array();
 
@@ -1668,6 +1668,7 @@ class SearchForm
         if (file_exists('custom/modules/' . $module . '/metadata/SearchFields.php')) {
             require('custom/modules/' . $module . '/metadata/SearchFields.php');
         }
+        // MintHCM Start
         $sql = "SELECT id from users WHERE reports_to_id = '{$current_user->id}'";
         if($db->getOne($sql)){
            $searchdefs[$module]['layout']['basic_search'][] = array('name' => 'my_subordinates', 'label' => 'LBL_SUBORDINATES_FILTER', 'type' => 'bool');
@@ -1691,6 +1692,7 @@ class SearchForm
              }
            }
         }
+        // MintHCM End
         return array('searchdefs' => $searchdefs, 'searchFields' => $searchFields);
     }
 
