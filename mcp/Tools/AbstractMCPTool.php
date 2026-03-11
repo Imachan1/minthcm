@@ -10,6 +10,8 @@ use Mcp\Types\ToolInputSchema;
 use MintMCP\Config\Config;
 use MintMCP\Server\ControllerFactory;
 use MintMCP\Tools\Exceptions\ModuleNotAllowedException;
+use MintMCP\Server\Logger;
+use Monolog\Logger as MonologLogger;
 
 abstract class AbstractMCPTool
 {
@@ -19,11 +21,16 @@ abstract class AbstractMCPTool
     public Config $config;
 
     /**
+     * @var MonologLogger MCP logger instance
+     */
+    public MonologLogger $logger;
+    /**
      * Initializes the configuration instance.
      */
     public function __construct()
     {
         $this->config = Config::getInstance();
+        $this->logger = Logger::getLogger();
     }
 
     /**

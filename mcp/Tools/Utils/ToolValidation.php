@@ -204,6 +204,44 @@ class ToolValidation
         return $this;
     }
 
+    public function numeric(): self
+    {
+        if ($this->value !== null && $this->value !== '' && !is_numeric($this->value)) {
+            $this->errors[] = "Field '{$this->field}' must be numeric. Got: '{$this->value}'.";
+        }
+        return $this;
+    }
+
+    /**
+     * Validates that the value matches a strict date format using DateTime::createFromFormat.
+     * More precise than date() which uses strtotime.
+     * @param string $format e.g. 'Y-m-d' or 'Y-m-d H:i:s'
+     */
+    public function dateFormat(string $format): self
+    {
+        if ($this->value !== null && $this->value !== '') {
+            $str = (string) $this->value;
+            if (\DateTime::createFromFormat($format, $str) === false) {
+                $this->errors[] = "Field '{$this->field}' must be a valid date in format {$format}. Got: '{$str}'.";
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Run a custom validation callable against the current value.
+     * The callable receives the value and must return true (valid) or false (invalid).
+     * @param callable $validator fn($value): bool
+     * @param string $errorMessage Error message added when the callable returns false
+     */
+    public function customValidation(callable $validator, string $errorMessage): self
+    {
+        if (!$validator($this->value)) {
+            $this->errors[] = $errorMessage;
+        }
+        return $this;
+    }
+
     /**
      * Validate multiple fields and throw InvalidArgumentException if any errors.
      * @param ToolValidation[] $validators
