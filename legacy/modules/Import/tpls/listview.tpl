@@ -1,4 +1,5 @@
 {*
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -83,7 +84,7 @@
                 {counter start=0 name="colCounter" print=false assign="colCounter"}
                 {foreach from=$rowData key=col item=params}
                     {strip}
-                    <td align='left' valign="top">
+                    <td align='left' valign="top" scope="record">
                         {$params}
                     </td>
                     {/strip}

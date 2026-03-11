@@ -42,7 +42,7 @@
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
- if (!defined('sugarEntry') || !sugarEntry) {
+if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
@@ -502,7 +502,7 @@ class ListViewDataEmails extends ListViewData
                 $ret = $emailHeader['flagged'];
                 break;
             case 'name':
-                $ret = html_entity_decode((string) $inboundEmail->handleMimeHeaderDecode($emailHeader['subject']));
+                $ret = html_entity_decode(purify_html((string) $inboundEmail->handleMimeHeaderDecode($emailHeader['subject'])));
                 break;
             case 'date_entered':
                 $db = DBManagerFactory::getInstance();

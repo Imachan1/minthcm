@@ -2358,6 +2358,10 @@ EOQ;
 
     }
 
+    protected function getCurrentPreference(string $key) {
+        return $_SESSION[$this->user_name.'_PREFERENCES']['global'][$key] ?? $this->getPreference($key);
+    }
+
     /**
      * @return bool
      */

@@ -153,7 +153,7 @@ class SugarCacheRedis extends SugarCacheAbstract
         }
         
         return is_string($returnValue) ?
-            unserialize($returnValue) :
+            unserialize($returnValue, ['allowed_classes' => false]) :
             $returnValue;
     }
     

@@ -45,6 +45,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
+
+
+
+
+
 #[\AllowDynamicProperties]
 class SugarWidgetSubPanelDetailViewLink extends SugarWidgetField
 {
@@ -118,10 +123,11 @@ class SugarWidgetSubPanelDetailViewLink extends SugarWidgetField
         $detailView = $layout_def['DetailView'] ?? '';
         $ownerId = $layout_def['owner_id'] ?? '';
         $ownerModule = $layout_def['owner_module'] ?? '';
+        $groupAccessView = SecurityGroup::groupHasAccess($module,$record,'view');
         if (!empty($record) &&
             ($detailView && !$layout_def['owner_module']
-            ||  $detailView && !ACLController::moduleSupportsACL($layout_def['owner_module'])
-            || ACLController::checkAccess($ownerModule, 'view', $ownerId == $current_user->id))) {
+            || $detailView && !ACLController::moduleSupportsACL($layout_def['owner_module'])
+            || ACLController::checkAccess($ownerModule, 'view', $ownerId == $current_user->id, 'module',  $groupAccessView))) {
             // MintHCM start #57627
             if ( $layout_def['owner_module'] && !empty($layout_def['fields']['PARENT_ID']) && !empty($layout_def['fields']['PARENT_NAME']) && !empty($layout_def['fields']['PARENT_TYPE']) ) {
                 $module = $layout_def['fields']['PARENT_TYPE'];

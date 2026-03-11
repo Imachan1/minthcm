@@ -41,6 +41,7 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
+
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
@@ -2318,7 +2319,7 @@ function clean_xss($str, $cleanImg = true)
         $sugar_config['email_xss'] = getDefaultXssTags();
     }
 
-    $xsstags = unserialize(base64_decode($sugar_config['email_xss']));
+    $xsstags = unserialize(base64_decode($sugar_config['email_xss']), ['allowed_classes' => false]);
 
     // cn: bug 13079 - "on\w" matched too many non-events (cONTact, strONG, etc.)
     $jsEvents = 'onblur|onfocus|oncontextmenu|onresize|onscroll|onunload|ondblclick|onclick|';
@@ -5935,7 +5936,7 @@ function sugar_unserialize($value)
         return false;
     }
 
-    return unserialize($value);
+    return unserialize($value, ['allowed_classes' => false]);
 }
 
 define('DEFAULT_UTIL_SUITE_ENCODING', 'UTF-8');

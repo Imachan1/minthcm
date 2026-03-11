@@ -524,7 +524,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
          $ical_array[] = array("VERSION", "2.0");
          $ical_array[] = array("METHOD", "PUBLISH");
          $ical_array[] = array("X-WR-CALNAME", "$cal_name (SugarCRM)");
-         $ical_array[] = array("PRODID", "-//SugarCRM//SugarCRM Calendar//EN");
+        $ical_array[] = array("PRODID", "-//SuiteCRM//SuiteCRM Calendar//EN");
          $ical_array = array_merge($ical_array, vCal::create_ical_array_from_string($this->getTimezoneString()));
          $ical_array[] = array("CALSCALE", "GREGORIAN");
  

@@ -610,7 +610,7 @@ EOQ;
         // BEGIN ASSERTIONS
         if ($type != MB_BASEMETADATALOCATION && $type != MB_HISTORYMETADATALOCATION) {
             // just warn rather than die
-            $GLOBALS ['log']->warning(
+            $GLOBALS ['log']->warn(
                 "UndeployedMetaDataImplementation->getFileName(): view type $type is not recognized"
             );
         }

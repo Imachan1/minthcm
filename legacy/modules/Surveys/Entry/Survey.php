@@ -17,11 +17,12 @@ if (!empty($_REQUEST['id']) && $isValidator->isValidId($_REQUEST['id'])) {
 }
 
 $survey = BeanFactory::getBean('Surveys', $surveyId);
+
 if (empty($survey->id)) {
     header('HTTP/1.0 404 Not Found');
     exit();
 }
-if ($survey->status == 'Closed') {
+if ($survey->status === 'Closed') {
     displayClosedPage($survey);
     exit();
 }
@@ -90,7 +91,6 @@ if (!empty($_REQUEST['tracker']) && $isValidator->isValidId($_REQUEST['tracker']
 } else {
     LoggerManager::getLogger()->warn('Invalid tracker ID in survey.');
 }
-
 
 $themeObject = SugarThemeRegistry::current();
 $companyLogoURL = $themeObject->getImageURL('company_logo.png');
@@ -207,7 +207,7 @@ EOF;
 function displaySurvey($survey, $employeeId, $trackerId)
 {
     ?>
-    <form method="post">
+    <form method="post" onsubmit="disableSubmitButton(this)">
         <input type="hidden" name="entryPoint" value="surveySubmit">
         <input type="hidden" name="id" value="<?=$survey->id;?>">
         <!-- MintHCM #74238 START -->
@@ -228,6 +228,11 @@ $questions = $survey->get_linked_beans('surveys_surveyquestions', 'SurveyQuestio
     ?>
         <button class="btn btn-primary send-button" type="submit"><?php echo $survey->getSubmitText(); ?></button>
     </form>
+    <script>
+        function disableSubmitButton(form) {
+            form.querySelector('button[type="submit"]').disabled = true; 
+        }
+    </script>    
     <?php
 }
 
