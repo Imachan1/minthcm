@@ -309,7 +309,7 @@ class OAuthAuthorizationService
             $message = translate('WARN_OAUTH_TOKEN_SESSION_EXPIRED');
         }
 
-        $oauthConnectionName = $oauthConnection->name;
+        $oauthConnectionName = htmlspecialchars($oauthConnection->name, ENT_QUOTES, 'UTF-8');
 
         $hasAccess = $oauthConnection->ACLAccess('edit') ?? false;
         if ($hasAccess === true) {

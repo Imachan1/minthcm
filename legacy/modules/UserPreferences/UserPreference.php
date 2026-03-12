@@ -286,7 +286,7 @@ class UserPreference extends SugarBean
             return false;
         }
         $GLOBALS['log']->debug('Loading Preferences DB ' . $user->user_name);
-        if ( !$GLOBALS['current_user']->id || $GLOBALS['current_user']->user_name === $user->user_name){
+        if (empty($GLOBALS['current_user']) || !$GLOBALS['current_user']->id || $GLOBALS['current_user']->user_name === $user->user_name){
             if (!isset($_SESSION[$user->user_name . '_PREFERENCES'])) {
                 $_SESSION[$user->user_name . '_PREFERENCES'] = array();
             }
@@ -298,13 +298,13 @@ class UserPreference extends SugarBean
         $result = $db->query("SELECT contents FROM user_preferences WHERE assigned_user_id='$user->id' AND category = '" . $category . "' AND deleted = 0", false, 'Failed to load user preferences');
         $row = $db->fetchByAssoc($result);
         if ($row) {
-            if (!$GLOBALS['current_user']->id || $GLOBALS['current_user']->user_name === $user->user_name){
+            if (empty($GLOBALS['current_user']) || !$GLOBALS['current_user']->id || $GLOBALS['current_user']->user_name === $user->user_name){
                 $_SESSION[$user->user_name . '_PREFERENCES'][$category] = unserialize(base64_decode($row['contents']), ['allowed_classes' => false]);
             }
             $user->user_preferences[$category] = unserialize(base64_decode($row['contents']), ['allowed_classes' => false]);
             return true;
         } else {
-            if (!$GLOBALS['current_user']->id || $GLOBALS['current_user']->user_name === $user->user_name){
+            if (empty($GLOBALS['current_user']) || !$GLOBALS['current_user']->id || $GLOBALS['current_user']->user_name === $user->user_name){
                 $_SESSION[$user->user_name . '_PREFERENCES'][$category] = array();
             }
             $user->user_preferences[$category] = array();

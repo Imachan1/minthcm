@@ -127,9 +127,7 @@ class HtmlSanitizer
             $dirtyHtml = from_html($dirtyHtml);
         }
 
-        if (preg_match('/([a-z]+)(?![^>]*\/>)[^>]*/', $dirtyHtml)) {
-            $dirtyHtml = strip_tags($dirtyHtml);
-        }
+        $dirtyHtml = strip_tags($dirtyHtml);
 
         return $isEncoded ? to_html($dirtyHtml) : $dirtyHtml;
     }

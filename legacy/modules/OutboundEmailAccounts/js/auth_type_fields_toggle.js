@@ -46,7 +46,7 @@ function authTypeToggleFields(type) {
         'external_oauth_connection_name': 'relate',
     };
 
-    var fieldDisplay = fieldsPerType[type] || fieldsPerType.personal;
+    var fieldDisplay = fieldsPerType[type] || fieldsPerType['no_auth'];
 
     Object.keys(fieldDisplay).forEach(function (fieldKey) {
         var display = fieldDisplay[fieldKey];

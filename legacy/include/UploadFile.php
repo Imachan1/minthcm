@@ -70,6 +70,7 @@ class UploadFile
     public $file;
     public $file_ext;
     public $mime_type;
+    protected $is_http_upload = true; // MintHCM
     protected static $url = "upload/";
 
     /**
@@ -110,6 +111,17 @@ class UploadFile
         $this->use_soap = true;
         $this->file = $file;
     }
+
+    // MintHCM Start
+    /**
+     * Set if the upload is from HTTP request
+     * @param bool $is_http_upload
+     */
+    public function set_is_http_upload($is_http_upload)
+    {
+        $this->is_http_upload = $is_http_upload;
+    }
+    // MintHCM End
 
     /**
      * Get URL for a document
@@ -292,7 +304,9 @@ class UploadFile
             return false;
         }
 
-        if (!is_uploaded_file($_FILES[$this->field_name]['tmp_name'])) {
+        // MintHCM Start
+        if ($this->is_http_upload && !is_uploaded_file($_FILES[$this->field_name]['tmp_name'])) {
+        // MintHCM End
             return false;
         } elseif ($_FILES[$this->field_name]['size'] > $sugar_config['upload_maxsize']) {
             $GLOBALS['log']->fatal("ERROR: uploaded file was too big: max filesize: {$sugar_config['upload_maxsize']}");
@@ -481,14 +495,23 @@ class UploadFile
                 $log->fatal('Unable to save file to ' . $destination);
                 return false;
             }
-        } elseif (!UploadStream::move_uploaded_file($_FILES[$this->field_name]['tmp_name'], $destination)) {
+        // MintHCM Start
+        } elseif ($this->is_http_upload && !UploadStream::move_uploaded_file($_FILES[$this->field_name]['tmp_name'], $destination)) {
             $log->fatal(
                 'Unable to move move_uploaded_file to ' . $destination .
                 ' You should try making the directory writable by the webserver'
             );
 
             return false;
+        } elseif (!$this->is_http_upload && !rename($_FILES[$this->field_name]['tmp_name'], UploadStream::path($destination))) {
+            $log->fatal(
+                'Unable to rename file to ' . $destination .
+                ' You should try making the directory writable by the webserver'
+            );
+
+            return false;
         }
+        // MintHCM End
 
         return true;
     }

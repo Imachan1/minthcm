@@ -449,7 +449,7 @@ HTML;
         $adminNotifyFromAddress = $admin->settings['notify_fromaddress'];
         isValidEmailAddress($adminNotifyFromAddress);
         $adminNotifyFromName = $admin->settings['notify_fromname'];
-        $record = $_REQUEST['record'] ?? '';
+        $record = SuiteValidator::isValidId($_REQUEST['record'] ?? '') ? ($_REQUEST['record'] ?? '') : '';
         $html = <<<HTML
 			<input id="sendTestOutboundEmailSettingsBtn" type="button" class="button" value="{$APP['LBL_EMAIL_TEST_OUTBOUND_SETTINGS']}" onclick="testOutboundSettings();">
 			<script type="text/javascript" src="cache/include/javascript/sugar_grp_yui_widgets.js"></script>

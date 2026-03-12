@@ -316,7 +316,7 @@ class actionCreateRecord extends actionBase
                                     }
                                     $type = $bean->field_defs[$dateToUse]['type'] ?? 'datetime';
                                     $date = $timedate->fromUserType($bean->$dateToUse, $type);
-                                    $date !== null ? $date->asDB() : gmdate($dformat);
+                                    $date = $date !== null ? $date->asDB() : gmdate($dformat);
                                 }
 
                                 if ($params['value'][$key][1] !== 'now') {
