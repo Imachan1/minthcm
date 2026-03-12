@@ -415,6 +415,10 @@ class SugarController
      */
     private function processView()
     {
+        if($this->getSystemModeAccess()){
+            ACLController::displayNoAccess(true);
+            sugar_cleanup(true);
+        }
         if (!isset($this->view_object_map['remap_action']) && isset($this->action_view_map[strtolower($this->action)])) {
             $this->view_object_map['remap_action'] = $this->action_view_map[strtolower($this->action)];
         }
@@ -434,6 +438,26 @@ class SugarController
             $view->errors = $this->errors;
         }
         $view->process();
+    }
+
+    protected function getSystemModeAccess(): bool
+    {
+        global $sugar_config;
+        if(!isset($sugar_config['system_mode'])){
+            return false;
+        }
+        return (
+            isset($sugar_config['system_mode']) 
+            && $sugar_config['system_mode'] !== 'normal'
+            && ( 
+                (
+                    $_REQUEST['module'] === 'Administration' && in_array($_REQUEST['action'], $sugar_config['system_mode_restriced_administration_actions'])
+                )
+                || (
+                    in_array($_REQUEST['module'], $sugar_config['system_mode_restriced_modules'])
+                )
+            )
+        );
     }
 
     /**
