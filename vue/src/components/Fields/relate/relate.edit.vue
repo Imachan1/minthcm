@@ -124,15 +124,16 @@ async function fetchItems(e) {
             modulesStore.modules[props.defs.module].vardefs,
             Array.isArray(props.defs.filters) ? props.defs.filters : [],
         )
+        const wordFilters = val.split(/\s+/).filter(Boolean).map((word: string) => ({
+            wildcard: {
+                name: word + '*',
+            },
+        }))
         const filters = {
             ...predefinedFilters,
             must: [
                 ...(predefinedFilters.must || []),
-                {
-                    wildcard: {
-                        name: val + '*',
-                    },
-                },
+                ...wordFilters,
             ],
         }
         if (debounceTimeout) {
@@ -203,7 +204,7 @@ function getHighlightedText(text: string, query: string) {
         const regex = new RegExp(
             `\\b(${query
                 .split(' ')
-                .filter((q) => !['AND', 'OR'].includes(q) && q.length > 2)
+                .filter((q) => !['AND', 'OR'].includes(q) && q.length > 0)
                 .join('|')})`,
             'gi',
         )
