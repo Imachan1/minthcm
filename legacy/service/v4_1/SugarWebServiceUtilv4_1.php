@@ -82,7 +82,7 @@ class SugarWebServiceUtilv4_1 extends SugarWebServiceUtilv4
 
                     return false;
                 }
-                
+
                 $this->login_success();
                 $GLOBALS['log']->info('Begin: SoapHelperWebServices->validate_authenticated - passed');
                 $GLOBALS['log']->info('End: SoapHelperWebServices->validate_authenticated');

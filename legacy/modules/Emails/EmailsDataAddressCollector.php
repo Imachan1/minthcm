@@ -497,7 +497,8 @@ class EmailsDataAddressCollector
         );
         $dataAddressesWithUserAddressesAndSystem = $this->fillDataAddressWithSystemMailerSettings(
             $dataAddressesWithUserAddresses,
-            $defaultEmailSignature
+            $defaultEmailSignature,
+            $prependSignature
         );
 
         return
@@ -665,9 +666,10 @@ class EmailsDataAddressCollector
      *
      * @param array $dataAddresses
      * @param array $defaultEmailSignature
+     * @param boolean $prependSignature
      * @return array
      */
-    protected function fillDataAddressWithSystemMailerSettings($dataAddresses, $defaultEmailSignature)
+    protected function fillDataAddressWithSystemMailerSettings($dataAddresses, $defaultEmailSignature, $prependSignature)
     {
         $this->setOe(new OutboundEmail());
         if ($this->getOe()->isAllowUserAccessToSystemDefaultOutbound()) {
@@ -678,7 +680,8 @@ class EmailsDataAddressCollector
                 $system->smtp_from_name,
                 $system->smtp_from_addr,
                 $system->mail_smtpuser,
-                $defaultEmailSignature
+                $defaultEmailSignature,
+                $prependSignature
             );
         }
 
@@ -748,6 +751,7 @@ class EmailsDataAddressCollector
      * @param string $fromAddr
      * @param string $mailUser
      * @param array $defaultEmailSignature
+     * @param boolean $prependSignature
      * @return array
      */
     protected function getFillDataAddressArray(
@@ -756,7 +760,8 @@ class EmailsDataAddressCollector
         $fromName,
         $fromAddr,
         $mailUser,
-        $defaultEmailSignature
+        $defaultEmailSignature,
+        bool $prependSignature = false
     ) {
         $dataAddress = new EmailsDataAddress();
 
@@ -767,7 +772,7 @@ class EmailsDataAddressCollector
             $fromAddr,
             $fromName,
             false,
-            false,
+            $prependSignature,
             true,
             $id,
             $name,

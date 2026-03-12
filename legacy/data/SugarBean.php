@@ -42,12 +42,14 @@
  * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
-if ( !defined('sugarEntry') || !sugarEntry ) {
+
+if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
 require_once 'modules/DynamicFields/DynamicField.php';
 require_once "data/Relationships/RelationshipFactory.php";
+
 
 /**
  * SugarBean is the base class for all business objects in Sugar.  It implements
@@ -75,7 +77,7 @@ class SugarBean
      * @var array $fileFields
      */
     protected static $fileFields = array();
-   /**
+    /**
     * View Tools prevent bean saving
     */
    public $vt_prevent_saving = false;
@@ -508,27 +510,29 @@ class SugarBean
                     $this->field_defs = $dictionary[$this->object_name]['fields'];
                 }
 
-            if(isset($dictionary[$this->object_name]['search_boost'])) {
-                $this->search_boost = $dictionary[$this->object_name]['search_boost'];
-            }
+                // MintHCM Start
+                if(isset($dictionary[$this->object_name]['search_boost'])) {
+                    $this->search_boost = $dictionary[$this->object_name]['search_boost'];
+                }
+                // MintHCM End
 
-            if ( !empty($dictionary[$this->object_name]['optimistic_locking']) ) {
+                if (!empty($dictionary[$this->object_name]['optimistic_locking'])) {
                     $this->optimistic_lock = true;
                 }
             }
-         $loaded_definitions[$this->object_name]['column_fields'] = & $this->column_fields;
-         $loaded_definitions[$this->object_name]['list_fields'] = & $this->list_fields;
-         $loaded_definitions[$this->object_name]['required_fields'] = & $this->required_fields;
-         $loaded_definitions[$this->object_name]['field_name_map'] = & $this->field_name_map;
-         $loaded_definitions[$this->object_name]['field_defs'] = & $this->field_defs;
-         $loaded_definitions[$this->object_name]['search_boost'] = & $this->search_boost;
+            $loaded_definitions[$this->object_name]['column_fields'] =& $this->column_fields;
+            $loaded_definitions[$this->object_name]['list_fields'] =& $this->list_fields;
+            $loaded_definitions[$this->object_name]['required_fields'] =& $this->required_fields;
+            $loaded_definitions[$this->object_name]['field_name_map'] =& $this->field_name_map;
+            $loaded_definitions[$this->object_name]['field_defs'] =& $this->field_defs;
+            $loaded_definitions[$this->object_name]['search_boost'] =& $this->search_boost; // MintHCM
         } else {
-         $this->column_fields = & $loaded_definitions[$this->object_name]['column_fields'];
-         $this->list_fields = & $loaded_definitions[$this->object_name]['list_fields'];
-         $this->required_fields = & $loaded_definitions[$this->object_name]['required_fields'];
-         $this->field_name_map = & $loaded_definitions[$this->object_name]['field_name_map'];
-         $this->field_defs = & $loaded_definitions[$this->object_name]['field_defs'];
-         $this->search_boost = & $loaded_definitions[$this->object_name]['search_boost'];
+            $this->column_fields =& $loaded_definitions[$this->object_name]['column_fields'];
+            $this->list_fields =& $loaded_definitions[$this->object_name]['list_fields'];
+            $this->required_fields =& $loaded_definitions[$this->object_name]['required_fields'];
+            $this->field_name_map =& $loaded_definitions[$this->object_name]['field_name_map'];
+            $this->field_defs =& $loaded_definitions[$this->object_name]['field_defs'];
+            $this->search_boost = & $loaded_definitions[$this->object_name]['search_boost']; // MintHCM
             $this->added_custom_field_defs = true;
 
             if (!isset($this->custom_fields) &&
@@ -613,9 +617,11 @@ class SugarBean
                         }
                     // no break
                     default:
-                    $this->field_defs[$field]['field_module_name'] = $_REQUEST['module'] ?? '';
-                    $this->field_defs[$field]['field_record'] = $_REQUEST['record'] ?? '';
-                  if ( isset($value['default']) && $value['default'] !== '' ) {
+                        // MintHCM Start
+                        $this->field_defs[$field]['field_module_name'] = $_REQUEST['module'] ?? '';
+                        $this->field_defs[$field]['field_record'] = $_REQUEST['record'] ?? '';
+                        // MintHCM End
+                        if (isset($value['default']) && $value['default'] !== '') {
                             $this->$field = htmlentities((string) $value['default'], ENT_QUOTES, 'UTF-8');
                         } else {
                             $this->$field = '';
@@ -743,11 +749,11 @@ class SugarBean
     public static function createRelationshipMeta($key, $db, $tablename, array $dictionary, $module_dir, $is_custom = false)
     {
         //load the module dictionary if not supplied.
-      if ( empty($dictionary) && !empty($module_dir) ) {
-        // View Tools #51928 START
-        $dictionary = array();
-        // View Tools #51928 END
-         if ( $is_custom ) {
+        if (empty($dictionary) && !empty($module_dir)) {
+            // View Tools #51928 START
+            $dictionary = array();
+            // View Tools #51928 END
+            if ($is_custom) {
                 $filename = 'custom/modules/' . $module_dir . '/Ext/Vardefs/vardefs.ext.php';
             } else {
                 if ($key == 'User') {
@@ -975,7 +981,7 @@ class SugarBean
                     $query = ' UNION ALL ( ' . $query . ' )';
                     $final_query_rows .= " UNION ALL ";
                 } else {
-                    // $query = '(' . $query . ')';
+                    // $query = '(' . $query . ')'; // MintHCM
                     $first = false;
                 }
                 $query_array = $subquery['query_array'];
@@ -2426,9 +2432,6 @@ class SugarBean
             // let subclasses save related field changes
             $this->save_relationship_changes($isUpdate);
             $GLOBALS['saving_relationships'] = false;
-        }
-        if ($isUpdate && !$this->update_date_entered) {
-            unset($this->date_entered);
         }
         // call the custom business logic
         $custom_logic_arguments = [];
