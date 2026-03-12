@@ -45,7 +45,6 @@
  */
 
 use MintHCM\Api\Controllers\Init\Module;
-use MintHCM\Api\Controllers\Module\RecordViewController;
 use MintHCM\Api\Controllers\ModuleController;
 use MintHCM\Api\Controllers\Module\ListController;
 use MintHCM\Api\Controllers\Module\ListInitController;
@@ -528,42 +527,6 @@ $routes = array(
                 "required" => true,
                 "desc" => "Link name",
                 "example" => 'contacts',
-            ),
-        ),
-    ),
-    'record_view_save_preference' => array(
-        "method" => "POST",
-        "path" => "/recordview/preferences",
-        "class" => RecordViewController::class,
-        "function" => 'savePreference',
-        "desc" => "Save user recordview preference",
-        "options" => array(
-            'auth' => true,
-        ),
-        "bodyParams" => array(
-            "preference" => array(
-                "type" => ArrayType::class,
-                "required" => true,
-            ),
-            "category" => array(
-                "type" => StringType::class,
-                "required" => true,
-            ),
-        ),
-    ),
-    'record_view_get_preference' => array(
-        "method" => "GET",
-        "path" => "/recordview/preferences",
-        "class" => RecordViewController::class,
-        "function" => 'getPreference',
-        "desc" => "Get user recordview preference",
-        "options" => array(
-            'auth' => true,
-        ),
-        "queryParams" => array(
-            "category" => array(
-                "type" => StringType::class,
-                "required" => true,
             ),
         ),
     ),
