@@ -62,6 +62,22 @@ Slim 4 REST API with Doctrine ORM and PHP-DI dependency injection.
 
 The `LegacyView` embeds legacy PHP-rendered pages in an iframe. Whether a module uses a native Vue view or legacy view is controlled by `backend.initData.legacy_views[module]`.
 
+## Git Workflow
+
+### Branching strategy
+
+| Branch type | Base branch | Naming |
+|---|---|---|
+| Feature (US/Epic/Spike) | `release/4.3.0` | `feature/{ISSUE_ID}` |
+| Hotfix | `master` | `hotfix/{ISSUE_ID}` |
+| Release | `master` | `release/{version}` |
+
+`develop` — integration branch for the current release cycle; **not** a base for feature work.
+
+`master` — always reflects production-ready code.
+
+---
+
 ## Development Commands
 
 ### Frontend (Vue)
