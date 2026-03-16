@@ -62,7 +62,6 @@ $entry_point_registry = array(
    'TreeData' => array( 'file' => 'TreeData.php', 'auth' => true ),
    'image' => array( 'file' => 'modules/Campaigns/image.php', 'auth' => false ),
    'campaign_trackerv2' => array( 'file' => 'modules/Campaigns/Tracker.php', 'auth' => false ),
-   'WebToPersonCapture' => array( 'file' => 'modules/Campaigns/WebToPersonCapture.php', 'auth' => false ),
    'removeme' => array( 'file' => 'modules/Campaigns/RemoveMe.php', 'auth' => false ),
    'ConfirmOptIn' => array( 'file' => 'include/entryPointConfirmOptInConnector.php', 'auth' => false ),
    'acceptDecline' => array( 'file' => 'modules/Contacts/AcceptDecline.php', 'auth' => false ),
