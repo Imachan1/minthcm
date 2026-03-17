@@ -353,4 +353,16 @@ class ExtAPIMicrosoftEmail extends ExternalAPIBase
     {
         return Stevenmaguire\OAuth2\Client\Provider\Microsoft::class;
     }
+
+    public function getSettings()
+    {
+        $config = $this->getMicrosoftOauth2Config();
+        return [
+            'clientId' => $config['properties']['oauth2_client_id'],
+            'clientSecret' => $config['properties']['oauth2_client_secret'],
+            'redirectUri' => $config['redirect_uri'],
+            'urlAuthorize' => static::URL_AUTHORIZE,
+            'urlAccessToken' => static::URL_ACCESS_TOKEN,
+        ];
+    }
 }

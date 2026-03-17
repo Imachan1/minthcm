@@ -155,8 +155,8 @@ class SugarPHPMailer extends PHPMailer
             $this->Port = $oe->mail_smtpport;
             $this->setSecureProtocol($oe->mail_smtpssl);
             $this->initSMTPAuth(
-                $oe->auth_type ?? '',
-                $oe->external_oauth_connection_id ?? '',
+                $oe->mail_authtype ?? $oe->auth_type ?? '',
+                $oe->eapm_id ?? $oe->external_oauth_connection_id ?? '',
                 $oe->mail_smtpuser ?? '',
                 $oe->mail_smtppass ?? '',
             );
@@ -194,8 +194,8 @@ class SugarPHPMailer extends PHPMailer
             $this->Port = $oe->mail_smtpport;
             $this->setSecureProtocol($oe->mail_smtpssl);
             $this->initSMTPAuth(
-                $oe->auth_type ?? '',
-                $oe->external_oauth_connection_id ?? '',
+                $oe->mail_authtype ?? $oe->auth_type ?? '',
+                $oe->eapm_id ?? $oe->external_oauth_connection_id ?? '',
                 $oe->mail_smtpuser ?? '',
                 $oe->mail_smtppass ?? '',
             );
@@ -219,6 +219,21 @@ class SugarPHPMailer extends PHPMailer
             );
             return;
         }
+
+        // MintHCM #110041 START
+        if ($authType === 'oauth2') {
+            $this->isSMTP();
+            $this->SMTPAuth = true;
+            $this->AuthType = 'XOAUTH2';
+            $oauthConfig = $this->getOAuth2Config($externalOAuthConnectionId);
+            if ($oauthConfig === null) {
+                $GLOBALS['log']->error('SugarPHPMailer: OAuth2 config not available for eapm_id: ' . $externalOAuthConnectionId);
+                return;
+            }
+            $this->setOAuth($oauthConfig);
+            return;
+        }
+        // MintHCM #110041 END
 
         if ($authType === 'basic') {
             $this->SMTPAuth = true;
@@ -597,35 +612,26 @@ eoq;
         }
 
         $eapm = BeanFactory::getBean('EAPM', $eapm_id);
+        /** @var ExtAPIGoogleEmail|ExtAPIMicrosoftEmail $api */
         $api = $this->getExternalApi($eapm->application);
         if (empty($api)) {
             return null;
         }
 
         $settings = $api->getSettings();
-        $client_id = $settings['clientId'];
-        $client_secret = $settings['clientSecret'];
-        $redirect_uri = $settings['redirectUri'];
 
         $api_data = json_decode(html_entity_decode($eapm->api_data), true);
         $refresh_token = $api_data['refresh_token'];
         $email_addr = $api->getEmailAddress($eapm_id);
 
         $providerClass = $api->getPHPMailerOAuth2ProviderClass();
-        $provider = new $providerClass([
-            'clientId' => $client_id,
-            'clientSecret' => $client_secret,
-            'redirectUri' => $redirect_uri,
-            'accessType' => 'offline'
-        ]);
+        $provider = new $providerClass(array_merge($settings, ['accessType' => 'offline']));
 
-        return new OAuth([
+        return new OAuth(array_merge($settings, [
             'provider' => $provider,
-            'clientId' => $client_id,
-            'clientSecret' => $client_secret,
             'refreshToken' => $refresh_token,
             'userName' => $email_addr,
-        ]);
+        ]));
     }
 
     protected function getExternalApi($application)
