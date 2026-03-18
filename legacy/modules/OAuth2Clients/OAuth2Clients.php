@@ -109,7 +109,7 @@ class OAuth2Clients extends SugarBean
         if (empty($this->duration_value)) { // MintHCM #159328
             $this->setDurationValue();
         }
-        return parent::save();
+        return parent::save($check_notify);
     }
 
     private function setDurationValue()
