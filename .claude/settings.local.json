@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls .claude/skills/implementation/evals/fixtures/*/plan.md 2>/dev/null)"
+    ]
+  }
+}

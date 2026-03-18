@@ -12,7 +12,7 @@ Bazowy URL: `https://redmine.evolpe.net`
 ## Pobieranie zagadnienia (Step 2)
 
 ```
-redmine_request: GET /issues/{ISSUE_ID}.json?include=children
+redmine_request: GET /issues/{ISSUE_ID}.json
 ```
 
 Wyciągnij i zapamiętaj:
@@ -44,6 +44,7 @@ Nie mam dostępu do Redmine MCP. Proszę wklej następujące dane zagadnienia #{
 - Tracker (np. User Story, Epic, Spike, Task):
 - Projekt (identifier/slug z URL, np. evolpe-ai-voicebot):
 - Status:
+- Priorytet (np. Normalny, Wysoki, Pilny):
 - Opis / kryteria akceptacji (opcjonalnie, ale pomoże w review):
 - ID zagadnienia nadrzędnego (parent issue), jeśli istnieje:
 ```
@@ -137,6 +138,43 @@ Czy mam utworzyć zagadnienie CR BUG w Redmine dla #{ISSUE_ID}?
 ```
 Czekaj na potwierdzenie. Jeśli user odmówi — zakończ bez tworzenia zagadnienia.
 
+### Tworzenie zagadnienia Re-CR (Step R6c z re-review.md)
+
+Przy werdykcie CHANGES REQUESTED w re-review twórz zagadnienie z opisem zawierającym zarówno UNFIXED stare bugi jak i nowe.
+
+**Zapytaj usera o zgodę:**
+```
+Czy mam utworzyć zagadnienie Re-CR BUG w Redmine dla #{ISSUE_ID}?
+
+  Tytuł:       CR BUG: {ISSUE_SUBJECT}
+  Projekt:     {project_identifier}
+  Przypisano:  {ASSIGNEE_NAME}
+  UNFIXED z poprzedniego CR: {M}
+  Nowe problemy: {X} CRITICAL, {Y} WARNING
+```
+Czekaj na potwierdzenie. Jeśli user odmówi — zakończ bez tworzenia zagadnienia.
+
+Przy tworzeniu zagadnienia Re-CR użyj tych samych kroków 13a–13b co przy zwykłym CR, z następującymi różnicami:
+- `subject`: `"CR BUG: {ISSUE_SUBJECT}"`
+- `description` zawiera dwie sekcje:
+
+```
+Błędy znalezione podczas Re-CR #{RECR_ROUND} zagadnienia #{ISSUE_ID}: {ISSUE_SUBJECT}.
+
+### Nienaprawione problemy z poprzedniego CR
+
+{lista UNFIXED findings z poprzedniego CR z plikiem, linią i opisem}
+
+### Nowe problemy znalezione w Re-CR #{RECR_ROUND}
+
+Znaleziono: {X} CRITICAL, {Y} WARNING, {Z} INFO
+
+{lista nowych findings z plikiem, linią i opisem}
+
+Raport CR (w repozytorium projektu): .ai/tasks/{ISSUE_ID}/cr.md
+Commit Re-CR: {commit_hash}
+```
+
 ### 13a. Pobierz ID kategorii "Bug"
 
 ```
@@ -161,9 +199,10 @@ redmine_request: POST /issues.json
     "tracker_id": 24,
     "parent_issue_id": {ISSUE_ID},
     "subject": "CR BUG: {ISSUE_SUBJECT}",
-    "description": "Błędy znalezione podczas code review zagadnienia #{ISSUE_ID}: {ISSUE_SUBJECT}.\n\nZnaleziono: {X} CRITICAL, {Y} WARNING, {Z} INFO\n\nRaport: .ai/tasks/{ISSUE_ID}/cr.md\nCommit: {commit_hash}\n\n### Lista FIXME\n\n{lista findings CRITICAL, WARNING i INFO z plikiem i opisem}",
+    "description": "Błędy znalezione podczas code review zagadnienia #{ISSUE_ID}: {ISSUE_SUBJECT}.\n\nZnaleziono: {X} CRITICAL, {Y} WARNING, {Z} INFO\n\nRaport CR (w repozytorium projektu): .ai/tasks/{ISSUE_ID}/cr.md\nCommit CR: {commit_hash}\n\n### Lista FIXME\n\n{lista findings CRITICAL, WARNING i INFO z plikiem i opisem}",
     "status_id": 1,
-    "priority_id": 5,
+    "priority_id": {PARENT_PRIORITY_ID},
+    "estimated_hours": 0,
     "assigned_to_id": {ASSIGNEE_ID},
     "category_id": {CATEGORY_ID}
   }
@@ -173,12 +212,20 @@ redmine_request: POST /issues.json
 Pola:
 - `project_identifier` — z Step 2
 - `tracker_id: 24` — Task (wymagany dla podzagadnień User Story)
-- `priority_id: 5` — Wysoki
+- `priority_id` — **przejmij z zagadnienia nadrzędnego** (`priority.id` z Step 2), nie ustawiaj na stałe
+- `estimated_hours: 0` — zawsze ustawiaj na 0 (pole wymagane, nie zostawiaj pustego)
 - `parent_issue_id` — numer zagadnienia z którego robiono CR
 - `assigned_to_id` — ASSIGNEE_ID (autor kodu)
 - `category_id` — z Step 13a
 
-Po utworzeniu wyświetl:
+Jeśli POST zwróci błąd (422 lub inny) — wyświetl szczegóły odpowiedzi i poinformuj usera:
+```
+Nie udało się utworzyć zagadnienia w Redmine (błąd {status_code}).
+Możesz je założyć ręcznie — poniżej dane do wypełnienia formularza.
+```
+Następnie wyświetl dane jak w "Tryb manualny — Step 13".
+
+Po pomyślnym utworzeniu wyświetl:
 ```
 Utworzono zagadnienie #{new_issue_id}: CR BUG: {ISSUE_SUBJECT}
 https://redmine.evolpe.net/issues/{new_issue_id}
@@ -198,7 +245,7 @@ Nie mam dostępu do Redmine MCP. Utwórz zagadnienie ręcznie w Redmine
   Zagadnienie nadrzędne (parent): #{ISSUE_ID}
   Tytuł:            CR BUG: {ISSUE_SUBJECT}
   Status:           Nowy
-  Priorytet:        Wysoki
+  Priorytet:        {priorytet z zagadnienia nadrzędnego z Step 2}
   Przypisane do:    {ASSIGNEE_NAME}
   Kategoria:        Bug
 

@@ -1,6 +1,22 @@
 # Kryteria Code Review i Format Raportu
 
-## Kryteria review — baseline (Step 8c, per-agent)
+## Spis treści
+
+- [Kryteria review — baseline](#kryteria-review--baseline)
+  - [Agent 1 — Poprawność](#agent-1--poprawność)
+  - [Agent 2 — Błędy logiczne](#agent-2--błędy-logiczne)
+  - [Agent 3 — Bezpieczeństwo](#agent-3--bezpieczeństwo)
+  - [Agent 4 — Wydajność](#agent-4--wydajność)
+  - [Agent 5 — Jakość kodu](#agent-5--jakość-kodu)
+  - [Werdykt NEEDS DISCUSSION](#werdykt-needs-discussion)
+- [Format findings (Step 8c)](#format-findings-step-8c)
+- [Confidence scoring (Step 8e)](#confidence-scoring-step-8e)
+- [Szablon raportu CR (Step 9)](#szablon-raportu-cr-step-9)
+- [Inline FIXME komentarze (Step 10)](#inline-fixme-komentarze-step-10)
+
+---
+
+## Kryteria review — baseline (Step 8b i 8c, per-agent)
 
 Każdy agent otrzymuje diff + pełne pliki + kontekst Redmine + **jedno** kryterium z poniższej listy. Model per agent określony w `workflow.md` (Step 8c).
 
@@ -71,7 +87,23 @@ Każdy agent otrzymuje diff + pełne pliki + kontekst Redmine + **jedno** kryter
 
 ---
 
-> Jeśli w `.claude/skills/` istnieje dedykowany skill do code review dla danego systemu — użyj jego kryteriów zamiast powyższych. Uruchom po jednym agencie na każde kryterium z dedykowanego skilla.
+### Werdykt NEEDS DISCUSSION
+
+Stosuj gdy problem jest realny, ale **nie można go rozstrzygnąć bez rozmowy z zespołem** — czyli samo naprawienie kodu przez dewelopera nie wystarczy.
+
+**Kiedy użyć:**
+- Problem architektoniczny (np. wybrane podejście koliduje z kierunkiem systemu)
+- Sprzeczność z wymaganiami, której nie da się rozstrzygnąć z samego kodu (np. niejasne kryteria akceptacji)
+- Decyzja projektowa budząca poważne wątpliwości co do intencji (np. celowe obejście zabezpieczenia?)
+- Brakująca specyfikacja dla ważnego edge-case
+
+**Jak oznaczać:** Agent zgłasza finding jako `CRITICAL` z adnotacją `[NEEDS DISCUSSION]` w opisie. Główny model (nie agent) podejmuje decyzję o werdykcie końcowym na etapie tworzenia raportu (Step 9).
+
+**Czym NIE jest NEEDS DISCUSSION:** Zwykły błąd logiczny, problem bezpieczeństwa lub zła jakość kodu — te idą jako CRITICAL/WARNING bez adnotacji.
+
+---
+
+> Każdy agent może otrzymać dodatkowy blok reguł zebranych w Step 8a (z trafnych skilli załadowanych w kontekście). Traktuj je jako rozszerzenie swojego kryterium — zgłaszaj naruszenia tych reguł w ramach swojego zakresu. Wybrane skille i ich przypisanie do agentów są logowane przed uruchomieniem agentów (patrz `workflow.md` Step 8a i 8c).
 
 ---
 
@@ -83,6 +115,7 @@ Dla każdego znalezionego problemu zapisz:
 - **Plik i linia**
 - **Krótki opis problemu**
 - **Sugestia naprawy**
+- **Confidence:** (tylko CRITICAL/WARNING, uzupełniane w Step 8e — tymczasowo zostaw puste)
 
 ---
 
@@ -100,11 +133,17 @@ Dla każdego finding o severity **CRITICAL** lub **WARNING** uruchom równoległ
 
 Findings o severity **INFO** przechodzą bez scoringu (zawsze zachowane).
 
+### Weryfikacja double-throw w bloku catch
+
+Gdy finding dotyczy potencjalnego rzucenia wyjątku wewnątrz bloku `catch` (swallowing oryginału): sprawdź czy oryginalny wyjątek i wtórny wyjątek produkują **identyczny komunikat**. Jeśli tak — strata diagnostyczna jest minimalna i finding należy odrzucić (lub zdegradować do INFO). Finding jest zasadny tylko gdy wtórny wyjątek niesie inny komunikat i tym samym ukrywa rzeczywistą przyczynę błędu.
+
 ---
 
 ## Szablon raportu CR (Step 9)
 
-Upewnij się że katalog `.ai/tasks/{ISSUE_ID}/` istnieje (`mkdir -p .ai/tasks/{ISSUE_ID}`), następnie utwórz `.ai/tasks/{ISSUE_ID}/cr.md`:
+Utwórz `.ai/tasks/{ISSUE_ID}/cr.md` (katalog już istnieje po `mkdir -p` z Step 9 w `workflow.md`).
+
+> **Re-CR:** Przy ponownym review nie nadpisuj pliku — appenduj sekcję `## Re-CR #{N}: {data}` na końcu. Format sekcji Re-CR opisany w `references/re-review.md` (Step R4).
 
 ```markdown
 # Code Review: #{ISSUE_ID} — {subject}
@@ -126,10 +165,10 @@ Upewnij się że katalog `.ai/tasks/{ISSUE_ID}/` istnieje (`mkdir -p .ai/tasks/{
 ## Znalezione problemy
 
 ### CRITICAL
-- [ ] `{plik}:{linia}` — **[Kategoria] Opis** — szczegóły → sugestia [confidence: XX]
+- [ ] `{plik}:{linia}` — **[Kategoria] Opis** — szczegóły → sugestia *(tylko ścieżka równoległa: [confidence: XX])*
 
 ### WARNING
-- [ ] `{plik}:{linia}` — **[Kategoria] Opis** — szczegóły → sugestia [confidence: XX]
+- [ ] `{plik}:{linia}` — **[Kategoria] Opis** — szczegóły → sugestia *(tylko ścieżka równoległa: [confidence: XX])*
 
 ### INFO
 - `{plik}:{linia}` — {opis}
@@ -140,7 +179,14 @@ Upewnij się że katalog `.ai/tasks/{ISSUE_ID}/` istnieje (`mkdir -p .ai/tasks/{
 
 **Werdykt:** APPROVED / CHANGES REQUESTED / NEEDS DISCUSSION
 
+Definicje werdyktu:
+- **APPROVED** — brak CRITICAL i WARNING (ewentualnie tylko INFO); kod gotowy do merge
+- **CHANGES REQUESTED** — co najmniej jedno CRITICAL lub WARNING; wymagane poprawki przed merge
+- **NEEDS DISCUSSION** — znaleziono problemy architektoniczne lub niejasności wymagające rozmowy z zespołem (np. wątpliwości co do projektu, sprzeczność z wymaganiami której nie można rozstrzygnąć z kodu)
+
 ## Odrzucone (confidence < 80)
+
+*(Sekcję pomiń jeśli lista jest pusta lub review był na ścieżce sekwencyjnej)*
 
 | Finding | Agent | Confidence | Powód odrzucenia |
 |---|---|---|---|
@@ -159,8 +205,11 @@ Składnia komentarza wg rozszerzenia pliku:
 
 | Rozszerzenia | Składnia |
 |---|---|
-| `.js` `.ts` `.jsx` `.tsx` `.php` `.java` `.cs` `.go` `.swift` `.kt` | `// FIXME - AI CR - {opis}` |
+| `.js` `.ts` `.jsx` `.tsx` `.vue` `.php` `.java` `.cs` `.go` `.swift` `.kt` `.rs` | `// FIXME - AI CR - {opis}` |
 | `.py` `.rb` `.sh` `.yaml` `.yml` | `# FIXME - AI CR - {opis}` |
 | `.html` `.xml` `.twig` `.tpl` | `<!-- FIXME - AI CR - {opis} -->` |
 | `.css` `.scss` `.less` | `/* FIXME - AI CR - {opis} */` |
 | `.sql` | `-- FIXME - AI CR - {opis}` |
+| `.json` | *(pomiń — format nie obsługuje komentarzy; finding CRITICAL/WARNING nadal trafia do raportu CR, ale bez FIXME w pliku)* |
+
+Jeśli deweloper nie zgadza się z findingiem, może dodać własny komentarz bezpośrednio za lub pod komentarzem FIXME — obsługa tego scenariusza opisana w `references/re-review.md` (Step R2).
