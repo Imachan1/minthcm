@@ -154,9 +154,14 @@ export const useRecordViewStore = defineStore('recordview', () => {
 
         await Promise.all(
             subpanels.value.map(async (subpanel) => {
-                const link = bean.value.loadRelationship(subpanel.key)
+                let link = bean.value.loadRelationship(subpanel.properties?.get_subpanel_data.toString())
+
+                if (!link && subpanel.properties?.get_subpanel_data.toString().includes('function:')) {
+                    link = bean.value.createFakeLink(subpanel.properties?.get_subpanel_data.toString())
+                }
+                
                 if (link) {
-                    await link.fetchRelatedRecords(subpanel.paginateBy, 0, subpanel.properties?.sortBy, subpanel.properties?.sortOrder)
+                    await link.fetchRelatedRecords(subpanel.key, subpanel.paginateBy, 0, subpanel.properties?.sortBy, subpanel.properties?.sortOrder)
                     
                     if (!subpanelsData.value) {
                         subpanelsData.value = {}

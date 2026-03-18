@@ -322,6 +322,13 @@ export const useBean = (module: string, id: string, fetch_links: Array<string> =
         }
     }
 
+    function createFakeLink(name: string): ReturnType<typeof useLink> {
+        if (!links.value.has(name)) {
+            links.value.set(name, useLink(name, name, { module, id, fieldDefs }, true))
+        }
+        return links.value.get(name)!
+    }
+
     function loadRelationship(name: string): ReturnType<typeof useLink> | null {
         if (!name) return null
         if (!Object.keys(fieldDefs.value?.[name] || {}).length) {
@@ -468,6 +475,7 @@ export const useBean = (module: string, id: string, fetch_links: Array<string> =
         fieldDefs,
         setAttributesFromQuery,
         loadRelationship,
+        createFakeLink,
         setAttributesFromBeanId,
         originalId,
     }

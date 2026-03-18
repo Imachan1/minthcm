@@ -14,12 +14,13 @@ interface BeanData {
     fieldDefs: ComputedRef
 }
 
-export const useLink = (link: string, relationshipName: string, beanData: BeanData) => {
+export const useLink = (link: string, relationshipName: string, beanData: BeanData, fake: boolean = false) => {
     const beans = ref<Map<string, ReturnType<typeof useBean>>>(new Map())
     const beansToAdd = ref<Map<string, RelationshipRecord>>(new Map())
     const beansToRemove = ref<Set<string>>(new Set())
     const total = ref(0)
     const currentPage = ref(0)
+    const isFake = ref(fake)
 
     const relateFieldName = computed<string | null>(() => {
         const relateField = Object.keys(beanData.fieldDefs.value).find(
@@ -46,29 +47,29 @@ export const useLink = (link: string, relationshipName: string, beanData: BeanDa
     })
 
     function add(id: string, additionalValues?: { [key: string]: string }) {
-        if (!id || beansToAdd.value.has(id)) return
+        if (isFake.value || !id || beansToAdd.value.has(id)) return
         beansToAdd.value.set(id, { id, additionalValues })
         beansToRemove.value.delete(id)
     }
 
     function remove(id: string) {
-        if (!id || beansToRemove.value.has(id)) return
+        if (isFake.value || !id || beansToRemove.value.has(id)) return
         beansToRemove.value.add(id)
         beansToAdd.value.delete(id)
     }
 
-    async function unlink(parentBean: any, link_name: string)
-    {
+    async function unlink(parentBean: any, link_name: string) {
+        if (isFake.value) return
         await mintApi.post(`/${parentBean.module}/Unlink/${parentBean.id}`, {
                 ids: [...beansToRemove.value],
                 link_name: link_name,
         })
     }
 
-    async function fetchRelatedRecords(paginateBy: number = -1, page: number = 0, sortBy: string = '', sortOrder: string = '') {
+    async function fetchRelatedRecords(subpanelKey: string, paginateBy: number = -1, page: number = 0, sortBy: string = '', sortOrder: string = '') {
         const result = await subpanelsApi.fetchSubpanelsData(
             beanData.module,
-            link,
+            subpanelKey,
             beanData.id,
             paginateBy,
             page,
@@ -118,6 +119,7 @@ export const useLink = (link: string, relationshipName: string, beanData: BeanDa
         beans,
         relateFieldName,
         idFieldName,
+        isFake,
         add,
         remove,
         fetchRelatedRecords,
