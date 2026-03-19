@@ -2,7 +2,6 @@
 
 namespace MintHCM\MintCLI\Commands;
 
-use MintHCM\MintCLI\Services\ClearDirectory;
 use MintHCM\MintCLI\Services\ClearDirectoryService;
 use MintHCM\MintCLI\Services\OAuth2RepairPermissionsService;
 use MintHCM\MintCLI\Services\RepairAndRebuildJavascriptService;
@@ -36,21 +35,21 @@ class RepairAndRebuild extends Command
         $io = new SymfonyStyle($input, $output);
         $previous_dir = getcwd();
 
-        $io->title("Reparing and Rebuilding MintHCM Instace\n");
-        
+        $io->title("Repairing and Rebuilding MintHCM Instance\n");
+
         $io->block("Rebuilding MintHCM instance...");
         chdir('legacy');
         (new RepairAndRebuildLegacyService())->run();
-        
+
         $io->block("Rebuilding javascript...");
         (new RepairAndRebuildJavascriptService())->run();
-        
+
         chdir($previous_dir);
         $io->block("Clearing api cache...");
-        
+
         (new ClearDirectoryService())->run(static::API_CACHE_DIR);
 
-        $io->block("Reparing oauth keys permissions...");
+        $io->block("Repairing oauth keys permissions...");
         (new OAuth2RepairPermissionsService())->repair();
 
         $io->success('The instance has been rebuilt successfully');
