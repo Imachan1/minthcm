@@ -1071,3 +1071,5 @@ $mod_strings['LBL_WHERECONDITION'] = 'Where Condition';
 $mod_strings['LBL_WHEREGROUPS'] = 'Where Groups';
 $mod_strings['LBL_PROSPECTLISTS'] = "Prospect Lists";
 $mod_strings['LBL_UNION_MODULES'] = 'Union Modules';
+$mod_strings['LBL_FILTER_DESCRIPTION'] = "Description (useful for AI)";
+$mod_strings['LBL_RESULT_COLUMN_DESCRIPTION'] = "Description (useful for AI)";
