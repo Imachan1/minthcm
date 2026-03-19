@@ -52,7 +52,7 @@ return [
                         );
 
                         $interval = new DateInterval($spec);
-                        if (!empty($data['invert'])) {
+                        if (!empty($bean->date_diff['invert'])) {
                             $interval->invert = 1;
                         }
                     }
