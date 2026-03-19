@@ -1,5 +1,5 @@
 <template>
-    <div class="record-view">
+    <div class="record-view" :class="{'record-view-railed': $vuetify.display.mdAndDown}">
         <div class="record-panels">
             <MintPanel v-for="panel in store.panels" :key="panel.key" :component="panel.component" :data="panel.data" />
         </div>
@@ -103,6 +103,10 @@ watch(
 <style scoped lang="scss">
 .record-view {
     padding: 32px;
+
+    &.record-view-railed {
+        padding: 8px;
+    }
 }
 
 .record-panels {

@@ -1,5 +1,5 @@
 <template>
-    <div class="list-header">
+    <div class="list-header" :class="{ 'list-header-railed': $vuetify.display.mdAndDown }">
         <v-menu v-if="store.mode === 'list' && store.massActions.length" offset="16">
             <template v-slot:activator="{ props, isActive }">
                 <MintButton
@@ -80,5 +80,10 @@ onMounted(() => {
     gap: 16px;
     padding: 16px;
     justify-content: space-between;
+
+    &.list-header-railed {
+        overflow-y: auto;
+        scrollbar-width: none;
+    }
 }
 </style>

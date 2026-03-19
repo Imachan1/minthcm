@@ -39,14 +39,18 @@
                         v-if="store.view === 'detail'"
                         class="ml-auto"
                         icon="mdi-pencil"
-                        :text="`${languages.label('LBL_EDIT_BUTTON_LABEL')} ${languages.label('LBL_DETAILS')}`"
+                        :text="
+                            mdAndDown
+                                ? ''
+                                : `${languages.label('LBL_EDIT_BUTTON_LABEL')} ${languages.label('LBL_DETAILS')}`
+                        "
                         @click="edit"
                     />
                     <div class="buttons" v-if="store.view === 'edit'">
                         <MintButton
                             v-if="!store.bean.isSaving"
                             icon="mdi-close"
-                            :text="languages.label('LBL_CANCEL_BUTTON_LABEL')"
+                            :text="mdAndDown ? '' : languages.label('LBL_CANCEL_BUTTON_LABEL')"
                             @click="cancel"
                         />
                         <MintButton
@@ -54,7 +58,11 @@
                             :icon="!store.bean.isSaving ? 'mdi-check' : ''"
                             :loading="store.bean.isSaving"
                             variant="primary"
-                            :text="languages.label(store.bean.isSaving ? 'LBL_SAVING' : 'LBL_SAVE_BUTTON_LABEL')"
+                            :text="
+                                mdAndDown
+                                    ? ''
+                                    : languages.label(store.bean.isSaving ? 'LBL_SAVING' : 'LBL_SAVE_BUTTON_LABEL')
+                            "
                             @click="save"
                         />
                     </div>
@@ -66,7 +74,7 @@
                             v-bind="props"
                             :active="isActive"
                             append-icon="mdi-menu-down"
-                            :text="languages.label('LBL_ESLIST_ACTIONS')"
+                            :text="mdAndDown ? '' : languages.label('LBL_ESLIST_ACTIONS')"
                         />
                     </template>
                     <MintMenuList :items="/*props.data.actions*/ actions || []" />
@@ -101,7 +109,7 @@
                         </div>
                     </v-expansion-panel-title>
                     <v-expansion-panel-text class="fields-container">
-                        <div v-for="(row, i) in computeRows(section)" class="row" :key="row">
+                        <div v-for="(row, i) in computeRows(section)" class="row" :key="`${index}-${i}`">
                             <div v-for="n in row.length >= 2 ? 2 : 1" :key="n - 1">
                                 <v-skeleton-loader
                                     v-if="store.bean.isRetrieving"
@@ -154,6 +162,7 @@ import MintStatusBox from '@/components/MintStatusBoxes/MintStatusBox.vue'
 import MintMenuList, { MenuListItem } from '@/components/MintMenuList.vue'
 import BeanActions from '@/business/BeanActions'
 import { useLocalStorageStore } from '@/store/localStorage'
+import { useDisplay } from 'vuetify'
 
 interface Props {
     data: {
@@ -170,6 +179,7 @@ const store = useRecordViewStore()
 const languages = useLanguagesStore()
 const modules = useModulesStore()
 const router = useRouter()
+const { mdAndDown } = useDisplay()
 
 const favorites = useFavoritesStore()
 const storage = useLocalStorageStore()
@@ -189,7 +199,22 @@ const title = computed(() => {
 })
 
 const computeRows = (panel) => {
-    return panel.fields.filter((row) => row.some((field) => !store.bean.logic.hiddenFields.includes(field.name)))
+    const panelFiltered = panel.fields.filter((row) =>
+        row.some((field) => !store.bean.logic.hiddenFields.includes(field.name)),
+    )
+
+    if (!mdAndDown.value) {
+        return panelFiltered
+    }
+
+    const singleFieldRows = []
+    panelFiltered.forEach((row) => {
+        row.forEach((field) => {
+            singleFieldRows.push([field])
+        })
+    })
+
+    return singleFieldRows
 }
 
 const edit = () => {

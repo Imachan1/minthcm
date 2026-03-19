@@ -28,5 +28,6 @@ export const fieldConfig = {
         ColoredActivityStatus: 'enum',
         ColoredEnum: 'enum',
         image: 'file',
+        name: 'varchar',
     } as { [key: string]: string },
 }

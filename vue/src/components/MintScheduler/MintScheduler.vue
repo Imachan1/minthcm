@@ -5,7 +5,7 @@
         </div>
         <div v-else-if="!scheduler.isValid.value">{{ language.label('LBL_SCHEDULER_INVALID') }}</div>
         <div v-else class="scheduler-content">
-            <MintSchedulerTimeline :scheduler="scheduler" />
+            <MintSchedulerTimeline :scheduler="scheduler" v-if="!$vuetify.display.mdAndDown"/>
             <MintSchedulerParticipants :scheduler="scheduler" />
             <MintSchedulerAssigner v-if="scheduler.isEditable.value" :scheduler="scheduler" />
         </div>
