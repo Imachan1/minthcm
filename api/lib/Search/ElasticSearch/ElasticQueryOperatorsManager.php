@@ -95,34 +95,46 @@ class ElasticQueryOperatorsManager
 
     protected function setQuery()
     {
-        $query = [];
+        $this->query = $this->parseBooleanFilters($this->filters);
+    }
+
+    protected function parseBooleanFilters(array $filters): array
+    {
+        $parsed_filters = [];
         foreach (self::BOOLEAN_CLAUSES as $clause) {
-            if (isset($this->filters[$clause]) && is_array($this->filters[$clause])) {
-                if (is_array($this->filters[$clause])) {
-                foreach ($this->filters[$clause] as $filter) {
-                        if (is_array($filter)) {
-                    foreach ($filter as $filter_type => $filter_data) {
-                        if (empty($filter_type) || !in_array($filter_type, array_keys($this::OPERATORS_MAPPER))) {
-                                    throw new BadRequest400Exception();
-                                }
-                        $class = $this::OPERATORS_MAPPER[$filter_type];
-                        $operator = new $class($filter_data);
-                        $data = $operator->getData(new ModulePrefixer($this->module));
-                        $query[$clause][] = $data;
-                            }
-                        }
+            if (!isset($filters[$clause]) || !is_array($filters[$clause])) {
+                continue;
+            }
+
+            foreach ($filters[$clause] as $filter) {
+                if (!is_array($filter)) {
+                    continue;
+                }
+                foreach ($filter as $filter_type => $filter_data) {
+                    if ($filter_type === 'bool' && is_array($filter_data)) {
+                        $parsed_filters[$clause][] = $this->parseBooleanFilters($filter_data);
+                        continue;
                     }
-        }
+                    if (empty($filter_type) || !in_array($filter_type, array_keys($this::OPERATORS_MAPPER))) {
+                        throw new BadRequest400Exception();
+                    }
+                    $class = $this::OPERATORS_MAPPER[$filter_type];
+                    $operator = new $class($filter_data);
+                    $data = $operator->getData(new ModulePrefixer($this->module));
+                    $parsed_filters[$clause][] = $data;
+                }
             }
         }
-        if (empty($query)) {
-            $this->query = [
-                'bool' => [ 'must' => [] ],
+
+        if (empty($parsed_filters)) {
+            $parsed_filters = [
+                'bool' => ['must' => []],
             ];
         } else {
-            $this->query = [
-                'bool' => $query,
+            $parsed_filters = [
+                'bool' => $parsed_filters,
             ];
         }
+        return $parsed_filters;
     }
 }

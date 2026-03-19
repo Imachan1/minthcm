@@ -48,6 +48,7 @@ namespace MintHCM\Api\Controllers\Module;
 use Doctrine\ORM\EntityManagerInterface;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
+use MintHCM\Lib\Search\ElasticSearch\ESListACLHelper;
 use MintHCM\Lib\Search\Search;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
@@ -142,7 +143,7 @@ class ListController
         $params['sort_by'] = $request->getAttribute('sortBy') ?? static::DEFAULT_SORT_BY;
         $params['sort_order'] = $params['sort_by'] == static::DEFAULT_SORT_BY ? 'desc' : $request->getAttribute('sortOrder') ?? 'asc';
         $params['type'] = str_replace('/', '', $route->getPattern());
-        $params['filters'] = $this->getParsedFilters($request);
+        $params['filters'] = $this->getParsedFilters($request, (string) $module ?? '');
         $params["fields"] = array("*__last^5", "*__first^4", "*__name.*^3", "*");
         $sortParams = (new UserPreference($current_user))->getPreference($module, 'eslist')['sortParams'] ?? null;
         if(empty($sortParams) || $params['sort_by'] !== '_score'){
@@ -174,7 +175,17 @@ class ListController
 
         if ($request->getAttribute('myObjects') === true) {
             global $current_user;
-            $filters['filter'][] = ['term' => ['meta.assigned.user_id.keyword' => $current_user->id]];
+            $my_objects_filters = [];
+            $my_objects_filters[] = ['term' => ['meta.assigned.user_id.keyword' => $current_user->id]];
+            $acl_helper = new ESListACLHelper();
+            if (!empty($module) && $acl_helper->doesModuleUseEmployeeRelationship($module)) {
+                $my_objects_filters[] = ['term' => ['employee_id.keyword' => $current_user->id]];
+            }
+            $filters['filter'][] = [
+                'bool' => [
+                    'should' => $my_objects_filters,
+                ],
+            ];
         }
 
         if ($request->getAttribute('onlyFavorites') === true) {
