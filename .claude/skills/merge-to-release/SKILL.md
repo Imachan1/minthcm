@@ -1,6 +1,6 @@
 ---
 name: merge-to-release
-version: 1.1.0
+version: 1.2.0
 description: Skill do mergowania gotowych zagadnien (US/Epic/Spike) do galezi release. Uzywaj gdy user prosi o merge do release, wlaczenie do wydania, zmergowanie feature brancha, lub podaje numer zagadnienia Redmine w kontekscie mergowania. Skill przeglada zmiany pod katem naruszen architektonicznych i zakazanych slow w kodzie, merguje do release i aktualizuje Redmine. Trigger: merge, release, wydanie, wlacz do release, zmerguj.
 argument-hint: <numer_zagadnienia> <branch_release> (np. 184819 release/4.3.0)
 ---
@@ -75,6 +75,120 @@ git fetch --all
 Sprawdz czy istnieje branch `feature/{ISSUE_ID}`. Jesli nie -- zapytaj usera o nazwe brancha.
 
 **Nie rób checkout feature brancha** -- zostajemy na aktualnym uzywanym branchu. Diff robimy zdalnie.
+
+### Step 3b -- Walidacja zrodla brancha
+
+Sprawdz, czy feature branch jest oparty na `{RELEASE_BRANCH}` (lub `master` w przypadku hotfixow), a **nie na `develop`**.
+
+Metoda wykrywania:
+
+```bash
+git merge-base origin/{RELEASE_BRANCH} origin/feature/{ISSUE_ID}
+git log origin/{RELEASE_BRANCH}..origin/feature/{ISSUE_ID} --oneline
+```
+
+Jesli lista commitow zawiera wiele merge commitow z develop (np. `Merge branch 'feature/...' into develop`, `Merge branch 'release/...' into develop`), oznacza to ze branch zostal utworzony z `develop` zamiast z `{RELEASE_BRANCH}`.
+
+**Jesli branch jest oparty na `develop`** -- to jest blad. Zatrzymaj procedure i wyswietl:
+
+```
+Branch feature/{ISSUE_ID} jest oparty na `develop` zamiast na `{RELEASE_BRANCH}`.
+Nie mozna mergowac -- branch zawiera niezwiazane zmiany z calego developmentu.
+
+Branch musi zostac przepiety na {RELEASE_BRANCH} (rebase lub cherry-pick wlasciwych commitow).
+
+Co chcesz zrobic?
+(r) Przepnij zmiany na {RELEASE_BRANCH} (cherry-pick wlasciwych commitow na nowy branch)
+(b) Zglos buga w Redmine z prosba o przepiecie i przerwij
+(n) Przerwij bez zglaszania
+```
+
+**Czekaj na odpowiedz usera.**
+
+#### Opcja (r) -- Przepiecie zmian na nowy branch
+
+1. **Zidentyfikuj wlasciwe commity** -- znajdz commity ktore bezposrednio dotycza #{ISSUE_ID} (zawieraja `ref #{ISSUE_ID}` w tytule, nie sa merge commitami z develop). Wyswietl liste:
+
+```
+Znalezione commity dotyczace #{ISSUE_ID}:
+{hash} {message}
+...
+
+Czy to sa wszystkie wlasciwe commity do przepiecia? (t/n)
+```
+
+**Czekaj na potwierdzenie usera.** User moze wskazac dodatkowe lub usunac z listy.
+
+2. **Utworz nowy branch z {RELEASE_BRANCH}**:
+
+```bash
+git checkout origin/{RELEASE_BRANCH} -b feature/{ISSUE_ID}_rebased
+```
+
+3. **Cherry-pick wlasciwych commitow** (w kolejnosci chronologicznej):
+
+```bash
+git cherry-pick {COMMIT_SHA_1} {COMMIT_SHA_2} ...
+```
+
+Jesli sa konflikty:
+- Wyswietl liste plikow z konfliktami
+- Zaproponuj rozwiazanie lub zapytaj usera
+- Po rozwiazaniu kontynuuj cherry-pick (`git cherry-pick --continue`)
+
+4. **Push nowego brancha**:
+
+```bash
+git push origin feature/{ISSUE_ID}_rebased
+```
+
+5. **Usun stary remote branch i przemianuj nowy** (zapytaj usera o potwierdzenie):
+
+```
+Nowy branch feature/{ISSUE_ID}_rebased jest gotowy.
+Czy usunac stary branch origin/feature/{ISSUE_ID} i przemianowac nowy na feature/{ISSUE_ID}?
+(t/n)
+```
+
+Jesli tak:
+```bash
+git push origin --delete feature/{ISSUE_ID}
+git push origin feature/{ISSUE_ID}_rebased:feature/{ISSUE_ID}
+git push origin --delete feature/{ISSUE_ID}_rebased
+git branch -D feature/{ISSUE_ID}_rebased
+git fetch origin
+```
+
+6. **Kontynuuj procedure od Step 4** -- teraz branch jest prawidlowo oparty na `{RELEASE_BRANCH}`.
+
+#### Opcja (b) -- Zgloszenie buga w Redmine
+
+1. Znajdz przypisana osobe -- z listy podzagnien (children) pobierz podzagadnienie z prefixem `BUG:` i sprawdz kto jest do niego przypisany (`assigned_to`). Jesli nie ma podzagadnienia BUG, uzyj assigned_to z zagadnienia glownego.
+2. Utworz podzagadnienie typu Task (tracker_id: 24) z prefixem `BUG:` i kategoria Bug (category_id: 813):
+
+```json
+{
+  "issue": {
+    "project_id": "{PROJECT_ID}",
+    "tracker_id": 24,
+    "subject": "BUG: Branch feature/{ISSUE_ID} oparty na develop zamiast na {RELEASE_BRANCH} - przepiac zrodlo brancha",
+    "parent_issue_id": "{ISSUE_ID}",
+    "assigned_to_id": "{ASSIGNED_TO_ID}",
+    "category_id": 813,
+    "description": "Branch `feature/{ISSUE_ID}` zostal utworzony z `develop` zamiast z `{RELEASE_BRANCH}`.\nNalezy przepiac branch na `{RELEASE_BRANCH}` (rebase lub cherry-pick wlasciwych commitow).\n\nWykryto podczas proby merge do release."
+  }
+}
+```
+
+3. Wyswietl potwierdzenie i zakoncz procedure.
+
+#### Opcja (n) -- Przerwij
+
+Zakoncz procedure bez dalszych akcji.
+
+---
+
+Jesli branch jest prawidlowo oparty na `{RELEASE_BRANCH}` -- kontynuuj do Step 4.
 
 ### Step 4 -- Przeglad zmian
 
