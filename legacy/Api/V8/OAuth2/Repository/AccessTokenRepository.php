@@ -4,6 +4,7 @@ namespace Api\V8\OAuth2\Repository;
 use Api\V8\BeanDecorator\BeanManager;
 use Api\V8\OAuth2\Entity\AccessTokenEntity;
 use DateTime;
+use BeanFactory;
 use InvalidArgumentException;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
@@ -74,6 +75,12 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
 
         if ($userId === null) {
             throw new InvalidArgumentException('No user found');
+        }
+
+        $user = BeanFactory::getBean('Users', $userId);
+
+        if (!$user || !($user instanceof User) || !$user->isEnabled()) {
+            throw new InvalidArgumentException('Not Authorized');
         }
 
         /** @var OAuth2Tokens $token */

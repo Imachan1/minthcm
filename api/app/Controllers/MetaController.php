@@ -220,11 +220,50 @@ class MetaController
             $module_bean = \BeanFactory::newBean($defs['module']);
             $array[$name]['properties'] = $defs;
             if (!empty($module_bean) && $module_bean instanceof \SugarBean) {
-                $array[$name]['columns'] = $this->mergeSubpanelFields(($sb->load_subpanel($name))->panel_definition['list_fields'], $this->getModuleVardefs($module_bean));
+                $columns = $this->mergeSubpanelFields(($sb->load_subpanel($name))->panel_definition['list_fields'], $this->getModuleVardefs($module_bean));
+                $array[$name]['columns'] = $this->resolveFieldFunctionOptions($columns ?? []);
             } else {
                 $array[$name]['columns'] = ($sb->load_subpanel($name))->panel_definition['list_fields'];
             }
         }
         return $array;
+    }
+
+    /**
+     * For enum/multienum columns whose options come from a custom function (vardef 'function' key)
+     * rather than a named dropdown list, call that function and store the resulting key→label map
+     * directly in the 'options' key. This mirrors the MintLogic function_options.php pattern and
+     * lets enum.list.vue resolve labels without any extra frontend work.
+     */
+    private function resolveFieldFunctionOptions(array $columns): array
+    {
+        foreach ($columns as $key => $column) {
+            if (
+                !isset($column['type']) ||
+                !in_array($column['type'], ['enum', 'multienum'], true) ||
+                !isset($column['function'])
+            ) {
+                continue;
+            }
+            $function = $column['function'];
+            if (!empty($function['include'])) {
+                require_once $function['include'];
+            }
+            $function_name = $function['name'] ?? '';
+            if (!empty($function_name) && function_exists($function_name)) {
+                $result = call_user_func(
+                    $function_name,
+                    null,
+                    $key,
+                    '',
+                    'list',
+                    $function['additional_params'] ?? ''
+                );
+                if (!empty($result)) {
+                    $columns[$key]['options'] = $result;
+                }
+            }
+        }
+        return $columns;
     }
 }

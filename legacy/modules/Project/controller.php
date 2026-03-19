@@ -29,11 +29,24 @@ class ProjectController extends SugarController
     //Loads the gantt view
     public function action_view_GanttChart()
     {
+        global $current_user;
+        if (!$current_user->hasActionAccess($this->module, $this->action)) {
+            SugarApplication::appendErrorMessage(translate('LBL_NO_ACCESS', 'ACL'));
+            SugarApplication::redirect('index.php');
+            return;
+        }
         $this->view = 'GanttChart';
     }
 
     public function action_generate_chart()
     {
+        global $current_user;
+        if (!$current_user->hasActionAccess($this->module, $this->action)) {
+            SugarApplication::appendErrorMessage(translate('LBL_NO_ACCESS', 'ACL'));
+            SugarApplication::redirect('index.php');
+            return;
+        }
+
         $db = DBManagerFactory::getInstance();
 
         include_once('modules/Project/gantt.php');
@@ -93,6 +106,11 @@ class ProjectController extends SugarController
         global $current_user;
         $db = DBManagerFactory::getInstance();
 
+        if (!$current_user->hasActionAccess($this->module, $this->action)) {
+            SugarApplication::appendErrorMessage(translate('LBL_NO_ACCESS', 'ACL'));
+            SugarApplication::redirect('index.php');
+            return;
+        }
         $task_name = $_POST['task_name'];
         $project_id = $_POST['project_id'];
         $override_business_hours = (int)$_POST['override_business_hours'];
@@ -223,6 +241,12 @@ class ProjectController extends SugarController
     //mark project task as deleted
     public function action_delete_task()
     {
+        global $current_user;
+        if (!$current_user->hasActionAccess($this->module, $this->action)) {
+            SugarApplication::appendErrorMessage(translate('LBL_NO_ACCESS', 'ACL'));
+            SugarApplication::redirect('index.php');
+            return;
+        }
         $id = $_POST['task_id'];
         $task = BeanFactory::newBean('ProjectTask');
         $task->retrieve($id);
@@ -233,8 +257,14 @@ class ProjectController extends SugarController
     //Returns new task start date including any lag via ajax call
     public function action_get_end_date()
     {
-        global  $timeDate;
+        global  $timeDate, $current_user;
         $db = DBManagerFactory::getInstance();
+
+        if (!$current_user->hasActionAccess($this->module, $this->action)) {
+            SugarApplication::appendErrorMessage(translate('LBL_NO_ACCESS', 'ACL'));
+            SugarApplication::redirect('index.php');
+            return;
+        }
 
         $timeDate = new TimeDate();
         $id = $_POST['task_id'];
@@ -256,7 +286,12 @@ class ProjectController extends SugarController
     //updates the order of the tasks
     public function action_update_order()
     {
-
+        global $current_user;
+        if (!$current_user->hasActionAccess($this->module, $this->action)) {
+            SugarApplication::appendErrorMessage(translate('LBL_NO_ACCESS', 'ACL'));
+            SugarApplication::redirect('index.php');
+            return;
+        }
        //convert quotes in json string back to normal
         $jArray = htmlspecialchars_decode((string) $_POST['orderArray']);
 
@@ -273,7 +308,13 @@ class ProjectController extends SugarController
     //returns tasks for predecessor in the add task pop-up form
     public function action_get_predecessors()
     {
-        global $mod_strings;
+
+        global $mod_strings, $current_user;
+        if (!$current_user->hasActionAccess($this->module, $this->action)) {
+            SugarApplication::appendErrorMessage(translate('LBL_NO_ACCESS', 'ACL'));
+            SugarApplication::redirect('index.php');
+            return;
+        }
         $project = BeanFactory::newBean('Project');
         $project->retrieve($_REQUEST["project_id"]);
         //Get project tasks
@@ -337,12 +378,24 @@ class ProjectController extends SugarController
     //Loads the resource chart view
     public function action_ResourceList()
     {
+        global $current_user;
+        if (!$current_user->hasActionAccess($this->module, $this->action)) {
+            SugarApplication::appendErrorMessage(translate('LBL_NO_ACCESS', 'ACL'));
+            SugarApplication::redirect('index.php');
+            return;
+        }
         $this->view = 'ResourceList';
     }
 
     //Updates the resource chart based on specified dates and users
     public function action_update_chart()
     {
+        global $current_user;
+        if (!$current_user->hasActionAccess($this->module, $this->action)) {
+            SugarApplication::appendErrorMessage(translate('LBL_NO_ACCESS', 'ACL'));
+            SugarApplication::redirect('index.php');
+            return;
+        }
         $db = DBManagerFactory::getInstance();
         include('modules/Project/chart.php');
 
@@ -486,8 +539,12 @@ class ProjectController extends SugarController
     //Get tasks for resource chart tooltips
     public function action_Tooltips()
     {
-        global $mod_strings;
-
+        global $mod_strings, $current_user;
+        if (!$current_user->hasActionAccess($this->module, $this->action)) {
+            SugarApplication::appendErrorMessage(translate('LBL_NO_ACCESS', 'ACL'));
+            SugarApplication::redirect('index.php');
+            return;
+        }
         $db = DBManagerFactory::getInstance();
 
         $start_date = $db->quote($_REQUEST['start_date']);
