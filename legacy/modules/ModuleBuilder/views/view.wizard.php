@@ -85,6 +85,17 @@ class ModuleBuilderViewWizard extends SugarView
     {
         $this->ajax = new AjaxCompose() ;
         $smarty = new Sugar_Smarty() ;
+        
+        $module_icons = include '../api/constants/module_icons.php';
+        $menu_icons = include '../api/constants/menu_icons.php';
+        $icons = array_merge($module_icons, $menu_icons);
+        $icons = array_combine(
+            array_map(function($key) {
+                return str_replace('_', '-', strtolower($key));
+            }, 
+            array_keys($icons)),
+            array_values($icons)
+        );
 
         if (isset($_REQUEST [ 'MB' ])) {
             $this->processMB($this->ajax) ;
@@ -92,6 +103,7 @@ class ModuleBuilderViewWizard extends SugarView
             $this->processStudio($this->ajax) ;
         }
 
+        $smarty->assign('icons', $icons);
         $smarty->assign('buttons', $this->buttons) ;
         $smarty->assign('image_path', $GLOBALS [ 'image_path' ]) ;
         $smarty->assign("title", $this->title) ;
