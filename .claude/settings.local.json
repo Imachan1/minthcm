@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(ls .claude/skills/implementation/evals/fixtures/*/plan.md 2>/dev/null)",
-      "Bash(grep -r \"Candidates\\\\|Employees\" /c/GIT/MintHCM/MintHCM/legacy/modules/*/vardefs.php | grep parent_type | head -10)",
-      "Bash(find /c/GIT/MintHCM/MintHCM/legacy/modules -name \"vardefs.php\" -exec grep -l \"parent_name.*Candidates\\\\|parent_name.*Employees\" {} \\\\; | head -5)"
-    ]
-  }
-}
