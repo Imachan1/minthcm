@@ -132,8 +132,10 @@ Wyswietl raport:
 
 Jesli sa problemy -- zapytaj:
 ```
-Znaleziono problemy w kodzie. Czy mimo to chcesz kontynuowac merge?
-(t/n)
+Znaleziono problemy w kodzie. Co chcesz zrobic?
+(m) Kontynuuj merge mimo problemow
+(b) Zglos buga w Redmine i przerwij merge
+(n) Przerwij bez zglaszania
 ```
 
 Jesli nie ma problemow:
@@ -143,6 +145,49 @@ Brak uwag do zmian. Kontynuowac merge feature/{ISSUE_ID} -> {RELEASE_BRANCH}?
 ```
 
 **Czekaj na odpowiedz usera.** Nie kontynuuj bez potwierdzenia.
+
+### Step 5b -- Zgloszenie buga w Redmine (opcjonalne)
+
+Jesli user wybral opcje (b) w Step 5:
+
+1. **Znajdz przypisana osobe** -- z listy podzagnien (children) pobierz podzagadnienie z prefixem `BUG:` i sprawdz kto jest do niego przypisany (`assigned_to`). Jesli nie ma podzagadnienia BUG, uzyj assigned_to z zagadnienia glownego.
+
+```
+redmine_request: GET /issues/{BUG_CHILD_ID}.json
+```
+
+2. **Utworz podzagadnienie** typu Task (tracker_id: 24) z prefixem `BUG:` i kategorią Bug (category_id: 813):
+
+```
+redmine_request: POST /issues.json
+```
+
+```json
+{
+  "issue": {
+    "project_id": {PROJECT_ID},
+    "tracker_id": 24,
+    "subject": "BUG: {opis problemu}",
+    "parent_issue_id": {ISSUE_ID},
+    "assigned_to_id": {ASSIGNED_TO_ID},
+    "category_id": 813,
+    "description": "{opis problemu z raportu przegladu -- uwagi architektoniczne lub zakazane slowa}"
+  }
+}
+```
+
+- `tracker_id: 24` -- Task (Redmine wymaga Task jako podzagadnienie US/Epic)
+- `category_id: 813` -- Bug (kategoria w projekcie MintHCM - Development)
+- `assigned_to_id` -- osoba przypisana do podzagadnienia BUG z implementacji
+
+3. Wyswietl potwierdzenie:
+```
+Utworzono podzagadnienie #{NEW_ID}: BUG: {opis}
+Przypisano do: {imie nazwisko}
+Link: https://redmine.evolpe.net/issues/{NEW_ID}
+```
+
+4. Zakoncz procedure (nie kontynuuj do Step 6).
 
 ### Step 6 -- Merge
 
