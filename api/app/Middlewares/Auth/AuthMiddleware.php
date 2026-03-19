@@ -106,6 +106,7 @@ class AuthMiddleware extends Middleware
         $username = $request->getAttribute('username');
         $email = $request->getAttribute('email');
         if(empty(trim($username)) || empty(trim($email))){
+            // FIXME [CR #182042]: Use Slim\Exception\HttpBadRequestException instead of generic Exception to return 400 instead of 500
             throw new Exception(translate('LBL_MINT4_AUTH_FORGOT_PASSWORD_MISSING_CREDENTIALS_ERROR'));
         }
     }
