@@ -28,7 +28,6 @@ $viewdefs['Ideas'] = [
                                     'type' => 'enum',
                                     'options' => 'idea_status_list',
                                 ],
-                                'description',
                             ],
                             [
                                 [
@@ -40,6 +39,9 @@ $viewdefs['Ideas'] = [
                                 ],
                                 'explanation',
                             ],
+                            [
+                                'description',
+                            ]
                         ],
                     ],
                 ],
