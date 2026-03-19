@@ -177,11 +177,15 @@ export const useRecordViewStore = defineStore('recordview', () => {
     }
 
     async function fetchSubpanelRecords(subpanelKey: string, paginateBy: number, page: number, sortBy: string = '', sortOrder: string = '') {
+        // FIXME: [CR] loadRelationship używa subpanelKey zamiast subpanel.properties?.get_subpanel_data — nie znajdzie linku dla function-based subpaneli.
+        // FIXME: [CR] Brak fallbacku na createFakeLink (jak w fetchSubpanelsData) — function-based subpanele nie będą działać przy paginacji/sortowaniu.
         const link = bean.value.loadRelationship(subpanelKey)
         if (!link) {
             return
         }
         const subpanel = getSubpanelByKey(subpanelKey);
+        // FIXME: [CR] BUG KRYTYCZNY — brak pierwszego argumentu subpanelKey. paginateBy trafia jako subpanelKey, page jako paginateBy itd. Powinno być:
+        // await link.fetchRelatedRecords(subpanelKey, paginateBy, page, sortBy || subpanel?.properties?.sortBy, sortOrder || subpanel?.properties?.sortOrder)
         await link.fetchRelatedRecords(paginateBy, page, sortBy || subpanel?.properties?.sortBy, sortOrder || subpanel?.properties?.sortOrder)
         
         if (!subpanelsData.value) {

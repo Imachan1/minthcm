@@ -322,6 +322,7 @@ export const useBean = (module: string, id: string, fetch_links: Array<string> =
         }
     }
 
+    // NOTE: [CR] Fake link jest uwzględniany w save() (Object.fromEntries links) i wysyła pusty payload — nie psuje danych, ale można rozważyć filtrowanie isFake linków przy zapisie.
     function createFakeLink(name: string): ReturnType<typeof useLink> {
         if (!links.value.has(name)) {
             links.value.set(name, useLink(name, name, { module, id, fieldDefs }, true))

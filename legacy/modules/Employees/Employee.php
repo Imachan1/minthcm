@@ -366,21 +366,26 @@ class Employee extends Person implements EmailInterface
 
     public function fetchAllSubordinates()
     {
+        // FIXME: [CR] INNER JOIN na positions i securitygroups powoduje, że pracownicy bez przypisanej pozycji
+        // lub bez security group znikają z wyników. Powinny być LEFT JOIN, chyba że celowo chcemy ich wykluczyć.
+        // FIXME: [CR] users.* już zawiera position_id i securitygroup_id — aliasy positions.id AS position_id
+        // i securitygroups.id AS securitygroup_id nadpisują oryginalne wartości. Przy INNER JOIN wartości są identyczne,
+        // ale przy zmianie na LEFT JOIN aliasy zwrócą NULL zamiast oryginalnego users.position_id — rozważyć inne nazwy aliasów.
         $query = "
-            SELECT users.*, 
+            SELECT users.*,
             CONCAT(users.first_name, ' ', users.last_name) AS full_name,
             positions.id AS position_id,
             positions.name AS position_name,
             securitygroups.id AS securitygroup_id,
             securitygroups.name AS securitygroup_name
-            FROM users 
-            JOIN positions 
-                ON positions.id = users.position_id 
-                    AND positions.deleted = 0 
+            FROM users
+            JOIN positions
+                ON positions.id = users.position_id
+                    AND positions.deleted = 0
             JOIN securitygroups
                 ON securitygroups.id = users.securitygroup_id
                     AND securitygroups.deleted = 0
-                WHERE users.deleted=0 
+                WHERE users.deleted=0
                     AND users.reports_to_id='{$this->id}'";
         return $query;
     }
