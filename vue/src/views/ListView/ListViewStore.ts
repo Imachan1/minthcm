@@ -373,8 +373,8 @@ export const useListViewStore = defineStore('listview', () => {
         () => {
             if (isInit.value) {
                 getData()
-            }
-        },
+            } 
+        }, 
         { deep: true },
     )
 

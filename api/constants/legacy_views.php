@@ -485,10 +485,6 @@ return [
         'list' => false,
         'record' => false,
     ],
-    'Kudos' => [
-        'list' => false,
-        'record' => true,
-    ],
     'Recruitments' => [
         'list' => false,
         'record' => false,
