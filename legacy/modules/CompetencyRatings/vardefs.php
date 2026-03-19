@@ -96,7 +96,7 @@ $dictionary['CompetencyRatings'] = array(
         ),
         'competency_id' => array(
             'name' => 'competency_id',
-            'type' => 'link',
+            'type' => 'id',
             'relationship' => 'competencyratings_competencies',
             'reportable' => false,
             'vname' => 'LBL_COMPETENCY_ID',
