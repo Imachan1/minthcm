@@ -76,3 +76,6 @@ legacy/lib/Search/ElasticSearch/defaultParams.yml
 legacy/modules/ACLRoles/ACLRoles.js
 legacy/modules/Meetings/jsclass_scheduler.js
 legacy/reindexElastic.php
+
+#CLAUDE
+.claude/settings.local.json
