@@ -52,6 +52,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use MintHCM\Data\ORM\Doctrine\Filter\SoftDeleteFilter;
 use MintHCM\Data\ORM\Doctrine\MintEventManager\MintEventManager;
 use MintHCM\Data\ORM\Doctrine\MintRepository\MintEntityRepository;
 use MintHCM\Data\ORM\Doctrine\MintRepository\MintRepositoryFactory;
@@ -105,13 +106,17 @@ class DoctrineContainerBuilder extends ContainerBuilder
                     $doctrineSettings['proxy_path'],
                     new FilesystemAdapter('', 0, $doctrineSettings['cache_path'] ?? null)
                 );
+                $config->addFilter('soft_delete', SoftDeleteFilter::class);
                 $config->setDefaultRepositoryClassName(MintEntityRepository::class);
                 $config->setRepositoryFactory(new MintRepositoryFactory());
                 $connection = DriverManager::getConnection($doctrineSettings['connection'], $config);
 
                 $eventManager = MintEventManager::getEventManager();
 
-                return new EntityManager($connection, $config, $eventManager);
+                $em = new EntityManager($connection, $config, $eventManager);
+                $em->getFilters()->enable('soft_delete');
+
+                return $em;
             }
         ]);
     }
