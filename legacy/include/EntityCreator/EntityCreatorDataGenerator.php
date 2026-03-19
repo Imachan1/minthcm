@@ -180,7 +180,11 @@ class EntityCreatorDataGenerator
     {
         $dictionary = EntityCreatorManager::$dictionary;
         if (!empty($dictionary[$fieldDef['relationship']]['relationships'][$fieldDef['relationship']])) {
-            return $dictionary[$fieldDef['relationship']]['relationships'][$fieldDef['relationship']];
+            $rel = $dictionary[$fieldDef['relationship']]['relationships'][$fieldDef['relationship']];
+            if (!empty($dictionary[$fieldDef['relationship']]['true_relationship_type'])) {
+                $rel['true_relationship_type'] = $dictionary[$fieldDef['relationship']]['true_relationship_type'];
+            }
+            return $rel;
         }
 
         $bean = BeanFactory::getBean($this->moduleName);
@@ -260,6 +264,28 @@ class EntityCreatorDataGenerator
             $module['join_key'] = $relationshipDef['join_key_' . $relationshipSide] ?? '';
         }
 
+        // Detect semantic one-to-one via junction table
+        $isSemanticOneToOne = false;
+        if (!empty($joinTable)) {
+            // Pattern 1: relationship_type='one-to-one' with join_table — invalid for Doctrine, convert to ManyToMany
+            if ($relationshipDef['relationship_type'] === 'one-to-one') {
+                $relationshipDef['relationship_type'] = 'many-to-many';
+                $isSemanticOneToOne = true;
+            }
+            // Pattern 2: true_relationship_type='one-to-one' propagated from metadata, relationship_type already 'many-to-many'
+            elseif (($relationshipDef['true_relationship_type'] ?? '') === 'one-to-one'
+                && $relationshipDef['relationship_type'] === 'many-to-many') {
+                $isSemanticOneToOne = true;
+            }
+            // Pattern 3: check dictionary directly for true_relationship_type
+            if (!$isSemanticOneToOne) {
+                $dictionary = EntityCreatorManager::$dictionary;
+                if (($dictionary[$relationshipName]['true_relationship_type'] ?? '') === 'one-to-one') {
+                    $isSemanticOneToOne = true;
+                }
+            }
+        }
+
         $relationshipField['attributes'] = $this->buildRelationshipAttributes(
             $relationshipDef['relationship_type'],
             $module,
@@ -270,6 +296,12 @@ class EntityCreatorDataGenerator
             $targetFieldName
         );
         $relationshipField['isCollection'] = 'many-to-many' === $relationshipDef['relationship_type'] || ('one-to-many' === $relationshipDef['relationship_type'] && 'lhs' === $relationshipSide);
+
+        if ($isSemanticOneToOne) {
+            $relationshipField['isSemanticOneToOne'] = true;
+            $relationshipField['targetModule'] = $target['module'];
+        }
+
         $this->data['relationshipFields'][] = $relationshipField;
         if (!in_array($target['module'], $entityCreator['CreatingEntities']) && !empty($dictionary[$target['module']])) {
             $entityCreator['CreatingEntities'][] = $target['module'];
@@ -508,6 +540,51 @@ class EntityCreatorDataGenerator
     }
     PHP;
         }
+
+        $this->buildSemanticOneToOneGetters();
+    }
+
+    protected function buildSemanticOneToOneGetters()
+    {
+        $usedGetterNames = [];
+        foreach ($this->data['relationshipFields'] as $relationshipField) {
+            if (empty($relationshipField['isSemanticOneToOne'])) {
+                continue;
+            }
+
+            $targetModule = $relationshipField['targetModule'];
+            $linkName = $relationshipField['name'];
+            $getterName = 'get' . $this->singularize($targetModule);
+
+            // Avoid getter name collisions
+            if (in_array($getterName, $usedGetterNames)) {
+                $getterName = 'get' . ucfirst($linkName);
+            }
+            $usedGetterNames[] = $getterName;
+
+            $this->data['additionalMethods'][] =
+                '    public function ' . $getterName . '(): ?' . $targetModule . "\n"
+                . "    {\n"
+                . '        if ($this->' . $linkName . ' instanceof \Doctrine\Common\Collections\Collection) {' . "\n"
+                . '            return $this->' . $linkName . '->first() ?: null;' . "\n"
+                . "        }\n"
+                . "        return null;\n"
+                . "    }";
+        }
+    }
+
+    protected function singularize(string $word): string
+    {
+        if (str_ends_with($word, 'ies')) {
+            return substr($word, 0, -3) . 'y';
+        }
+        if (str_ends_with($word, 'sses')) {
+            return substr($word, 0, -2);
+        }
+        if (str_ends_with($word, 's') && !str_ends_with($word, 'ss')) {
+            return substr($word, 0, -1);
+        }
+        return $word;
     }
 
     public static function hasCustomTable(string $table_name): bool
