@@ -1,6 +1,6 @@
 <template>
     <v-list class="mint-menu-list" nav density="compact" color="secondary">
-        <v-list-item v-for="item in processedItems" :key="item.title" @click="item.onClick" :active="false" v-bind="item.url && item.url !== '/' ? { to: item.url } : { tag: 'button' }">
+        <v-list-item v-for="item in processedItems" :name="item.actionKey || null" :id="item.actionKey || null" :key="item.title" @click="item.onClick" :active="false" v-bind="item.url && item.url !== '/' ? { to: item.url } : { tag: 'button' }">
             <template v-if="item.icon" #prepend>
                 <span style="font-size: 11px"><v-icon :icon="getIcon(item.icon)" /></span>
             </template>
@@ -28,6 +28,7 @@ export interface MenuListItem {
     url?: string
     onClick?: (() => Promise<void>) | (() => void)
     onClickActionData?: MenuListOnClickActionData
+    actionKey?: string | null
 }
 
 interface Props {

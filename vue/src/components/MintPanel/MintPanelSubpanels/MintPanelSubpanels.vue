@@ -7,6 +7,11 @@
                 :key="subpanel.key"
                 bg-color="transparent"
                 :value="subpanel.key"
+                :aria-label="languages.label(subpanel.label as string, useModulesStore().currentModule?.name)"
+                :aria-description="languages.label(subpanel.properties?.comment as string, subpanel.module) ?? ''"
+                :aria-describedby="subpanel.key + '_help'"
+                :name="subpanel.key"
+                :id="subpanel.key"
                 :class="{
                     'mint-subpanel': true, 
                     'mint-subpanel-disabled': subpanel.total <= 0 && !expandedSubpanels.includes(subpanel.key)
@@ -46,6 +51,7 @@
                         :total="subpanel.total"
                     />
                 </v-expansion-panel-text>
+                <p :id="subpanel.key + '_help'">{{languages.label(subpanel.properties?.comment as string, subpanel.module) ?? ''}}</p>
             </v-expansion-panel>
         </v-expansion-panels>
     </div>
@@ -62,6 +68,7 @@ import MintButton from '@/components/MintButtons/MintButton.vue'
 import MintDataTablePagination from '@/components/MintDataTablePagination/MintDataTablePagination.vue'
 import { useACL } from '@/composables/useACL'
 import { useLocalStorageStore } from '@/store/localStorage'
+import { useModulesStore } from '@/store/modules'
 
 onMounted(() => {
     if (store.view == 'detail' && store.bean.id) {
