@@ -118,7 +118,7 @@ viewTools.form.afterSave(function () {
     const systemGeneratedPassword = $('#systemGeneratedPasswordSetting').val() === '1';
 
     let result = false;
-    if (changePassword && !systemGeneratedPassword) {
+    if (changePassword && !systemGeneratedPassword && $("#required_password").val() !== '0') {
         if (!validatePasswordFields(employeeId)) {
             return false;
         }

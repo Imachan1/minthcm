@@ -314,17 +314,17 @@ class UserViewHelper
 
         // If new regular user without system generated password or new portal user
         if (
+            (
                 (
-                    (
-                        isset($enable_syst_generate_pwd) 
-                        && !$enable_syst_generate_pwd 
-                        && $this->usertype != 'GROUP'
-                    ) 
-                    || $this->usertype == 'PORTAL_ONLY'
-                ) 
-                && empty($this->bean->id)
-                && empty($GLOBALS['system_config']->settings['system_ldap_enabled'])
-            ) {
+                    isset($enable_syst_generate_pwd)
+                    && !$enable_syst_generate_pwd
+                    && $this->usertype != 'GROUP'
+                )
+                || $this->usertype == 'PORTAL_ONLY'
+            )
+            && empty($this->bean->id)
+            && empty($GLOBALS['system_config']->settings['system_ldap_enabled'])
+        ) {
             $this->ss->assign('REQUIRED_PASSWORD', '1');
         } else {
             $this->ss->assign('REQUIRED_PASSWORD', '0');
