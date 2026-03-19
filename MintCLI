@@ -33,6 +33,7 @@ if (file_exists('legacy/config.php')) {
     $application->add(new MintHCM\MintCLI\Commands\ElasticSearchReindexModule());
     $application->add(new MintHCM\MintCLI\Commands\RegenerateFrontendOAuth2ClientSecret());
     $application->add(new MintHCM\MintCLI\Commands\CreateOAuth2Keys());
+    $application->add(new MintHCM\MintCLI\Commands\RepairAndRebuild());
 }
 
 $application->run();
