@@ -11,6 +11,7 @@ import { MintField } from '../Fields/useField'
 import { usePreferencesStore } from '@/store/preferences'
 import { useStatusBoxesStore } from '@/store/statusBoxes'
 import { useLanguagesStore } from '@/store/languages'
+import { useRecordViewStore } from '@/views/RecordView/RecordViewStore'
 
 const MAX_HOURS_COUNT = 10
 
@@ -21,6 +22,7 @@ export const useMintScheduler = (
 ) => {
     const auth = useAuthStore()
     const preferences = usePreferencesStore()
+    const recordView = useRecordViewStore()
 
     const activityDtFrom = computed(() => {
         if (!dateFrom.value) {
@@ -148,33 +150,50 @@ export const useMintScheduler = (
         }
     }
 
+    let participantsQueue = Promise.resolve()
+
+    function runInQueue(fn: () => Promise<void>) {
+        participantsQueue = participantsQueue.then(fn).catch(() => {})
+        return participantsQueue
+    }
+
     async function addParticipant(participant: Participant) {
-        if (participants.value.find((p) => p.id === participant.id)) {
-            return
-        }
-        participants.value.push(participant)
-        linkParticipant(participant)
+        await runInQueue(async () => {
+            if (participants.value.find(p => p.id === participant.id)) {
+                return
+            }
+            participants.value.push(participant)
+            await linkParticipant(participant)
+            await recordView.fetchSubpanelRecords(participant.link, 10, 0)
+        })
     }
 
     async function removeParticipant(participant: Participant) {
-        if (!participants.value.find((p) => p.id === participant.id)) {
-            return
-        }
-        participants.value = participants.value.filter((p) => p.id !== participant.id)
-        if (bean.id) {
-            await mintApi.post(`/${bean.module}/Unlink/${bean.id}`, {
-                ids: [participant.id],
-                link_name: participant.link,
-            })
-            useStatusBoxesStore().showStatus('scheduler-unlink-success', {
-                type: 'success',
-                autoClose: true,
-                autoCloseDelay: 3000,
-                message: useLanguagesStore().label('LBL_SAVED'),
-            })
-        } else {
-            bean.loadRelationship(participant.link)?.remove(participant.id)
-        }
+        await runInQueue(async () => { 
+
+            if (!participants.value.find(p => p.id === participant.id)) {
+                return
+            }
+
+            participants.value = participants.value.filter(p => p.id !== participant.id)
+
+            if (bean.id) {
+                await mintApi.post(`/${bean.module}/Unlink/${bean.id}`, {
+                    ids: [participant.id],
+                    link_name: participant.link,
+                })
+                useStatusBoxesStore().showStatus('scheduler-unlink-success', {
+                    type: 'success',
+                    autoClose: true,
+                    autoCloseDelay: 3000,
+                    message: useLanguagesStore().label('LBL_SAVED'),
+                })
+            } else {
+                bean.loadRelationship(participant.link)?.remove(participant.id)
+            }
+
+            await recordView.fetchSubpanelRecords(participant.link, 10, 0)
+        })
     }
 
     let fetchDataController: AbortController | null = null
