@@ -1,6 +1,6 @@
 ---
 name: merge-to-release
-version: 1.0.0
+version: 1.1.0
 description: Skill do mergowania gotowych zagadnien (US/Epic/Spike) do galezi release. Uzywaj gdy user prosi o merge do release, wlaczenie do wydania, zmergowanie feature brancha, lub podaje numer zagadnienia Redmine w kontekscie mergowania. Skill przeglada zmiany pod katem naruszen architektonicznych i zakazanych slow w kodzie, merguje do release i aktualizuje Redmine. Trigger: merge, release, wydanie, wlacz do release, zmerguj.
 argument-hint: <numer_zagadnienia> <branch_release> (np. 184819 release/4.3.0)
 ---
@@ -135,6 +135,7 @@ Jesli sa problemy -- zapytaj:
 Znaleziono problemy w kodzie. Co chcesz zrobic?
 (m) Kontynuuj merge mimo problemow
 (b) Zglos buga w Redmine i przerwij merge
+(c) Dodaj komentarze FIXME w kodzie, wypchnij, zglos buga z referencja do uniecia i przerwij merge
 (n) Przerwij bez zglaszania
 ```
 
@@ -146,9 +147,35 @@ Brak uwag do zmian. Kontynuowac merge feature/{ISSUE_ID} -> {RELEASE_BRANCH}?
 
 **Czekaj na odpowiedz usera.** Nie kontynuuj bez potwierdzenia.
 
-### Step 5b -- Zgloszenie buga w Redmine (opcjonalne)
+### Step 5b -- Komentarze FIXME + push + bug w Redmine (opcjonalne)
 
-Jesli user wybral opcje (b) w Step 5:
+Jesli user wybral opcje (c) w Step 5:
+
+1. **Checkout feature brancha**:
+```bash
+git checkout feature/{ISSUE_ID}
+```
+
+2. **Dodaj komentarze FIXME** w kodzie przy kazdym znalezionym problemie z raportu (uwagi architektoniczne, zakazane slowa). Format komentarza:
+```
+// FIXME [CR #{ISSUE_ID}]: {opis problemu}
+```
+Komentarz umieszczaj bezposrednio przed lub nad linia z problemem. Jesli user chce dodac wlasne komentarze -- poczekaj az to zrobi.
+
+3. **Commituj i pushuj**:
+```bash
+git add {zmienione pliki}
+git commit -m "Add FIXME [CR #{ISSUE_ID}] comments for issues found during merge review"
+git push origin feature/{ISSUE_ID}
+```
+
+4. Zapamietaj **hash uniecia** (commit SHA) -- bedzie potrzebny do opisu buga.
+
+5. **Przejdz do Step 5c** (zgloszenie buga z referencja do uniecia).
+
+### Step 5c -- Zgloszenie buga w Redmine (opcjonalne)
+
+Jesli user wybral opcje (b) lub (c) w Step 5:
 
 1. **Znajdz przypisana osobe** -- z listy podzagnien (children) pobierz podzagadnienie z prefixem `BUG:` i sprawdz kto jest do niego przypisany (`assigned_to`). Jesli nie ma podzagadnienia BUG, uzyj assigned_to z zagadnienia glownego.
 
@@ -171,7 +198,7 @@ redmine_request: POST /issues.json
     "parent_issue_id": {ISSUE_ID},
     "assigned_to_id": {ASSIGNED_TO_ID},
     "category_id": 813,
-    "description": "{opis problemu z raportu przegladu -- uwagi architektoniczne lub zakazane slowa}"
+    "description": "{opis problemu z raportu przegladu -- uwagi architektoniczne lub zakazane slowa. Jesli opcja (c): dodaj link do uniecia z komentarzami FIXME, np. https://dev.evolpe.net/MintHCM/MintHCM/-/commit/{COMMIT_SHA}}"
   }
 }
 ```
