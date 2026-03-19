@@ -233,15 +233,19 @@ class ModuleController
         if (empty($entity)) {
             return $response->withStatus(404);
         }
-
+        $bean_attributes = [];
         foreach ($attributes as $field => $value) {
             if (!property_exists($entity, $field)) {
+                $bean_attributes[$field] = $value;
                 continue;
             }
             $entity->{$field} = $value;
         }
 
         $mint_bean = $entity->getMintBean();
+        foreach($bean_attributes as $field => $value){
+            $mint_bean->$field = $value;
+        }
         $result = (new MintLogic($mint_bean))->getChanged($triggerFields);
         $response->getBody()->write(json_encode($result));
         return $response;
