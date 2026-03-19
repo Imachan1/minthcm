@@ -888,8 +888,14 @@ class User extends Person implements EmailInterface
      */
     public function retrieve($id = -1, $encode = true, $deleted = true)
     {
+        global $current_user;
         $ret = parent::retrieve($id, $encode, $deleted);
-        if ($ret && isset($_SESSION) && null !== $_SESSION) {
+        if (
+            $ret && isset($_SESSION) 
+            && null !== $_SESSION 
+            && !empty($current_user->id)
+            && $current_user->id === $ret->id
+        ) {
             $this->loadPreferences();
         }
         return $ret;

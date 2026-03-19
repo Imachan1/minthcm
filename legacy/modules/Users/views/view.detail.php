@@ -192,6 +192,7 @@ class UsersViewDetail extends ViewDetail
         }
         $this->dv->process();
         echo $this->dv->display();
+        unset($_SESSION[$this->bean->user_name . "_PREFERENCES"]);
     }
 
     /**
