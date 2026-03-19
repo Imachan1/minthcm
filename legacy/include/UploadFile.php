@@ -70,7 +70,7 @@ class UploadFile
     public $file;
     public $file_ext;
     public $mime_type;
-    protected $is_http_upload = true;
+    protected $is_http_upload = true; // MintHCM
     protected static $url = "upload/";
 
     /**
@@ -112,6 +112,7 @@ class UploadFile
         $this->file = $file;
     }
 
+    // MintHCM Start
     /**
      * Set if the upload is from HTTP request
      * @param bool $is_http_upload
@@ -120,6 +121,7 @@ class UploadFile
     {
         $this->is_http_upload = $is_http_upload;
     }
+    // MintHCM End
 
     /**
      * Get URL for a document
@@ -302,7 +304,9 @@ class UploadFile
             return false;
         }
 
+        // MintHCM Start
         if ($this->is_http_upload && !is_uploaded_file($_FILES[$this->field_name]['tmp_name'])) {
+        // MintHCM End
             return false;
         } elseif ($_FILES[$this->field_name]['size'] > $sugar_config['upload_maxsize']) {
             $GLOBALS['log']->fatal("ERROR: uploaded file was too big: max filesize: {$sugar_config['upload_maxsize']}");
@@ -329,6 +333,11 @@ class UploadFile
         $this->stored_file_name = $this->create_stored_filename();
         $this->temp_file_location = $_FILES[$this->field_name]['tmp_name'];
         $this->uploaded_file_name = $_FILES[$this->field_name]['name'];
+
+        if (has_valid_image_mime_type($this->mime_type) && !verify_uploaded_image($this->temp_file_location)) {
+            LoggerManager::getLogger()->security("Image Malware found, unable to save file: {$_FILES[$this->field_name]['name']}");
+            return false;
+        }
 
         return true;
     }
@@ -486,8 +495,8 @@ class UploadFile
                 $log->fatal('Unable to save file to ' . $destination);
                 return false;
             }
-        }
-        elseif ($this->is_http_upload && !UploadStream::move_uploaded_file($_FILES[$this->field_name]['tmp_name'], $destination)) {
+        // MintHCM Start
+        } elseif ($this->is_http_upload && !UploadStream::move_uploaded_file($_FILES[$this->field_name]['tmp_name'], $destination)) {
             $log->fatal(
                 'Unable to move move_uploaded_file to ' . $destination .
                 ' You should try making the directory writable by the webserver'
@@ -502,6 +511,7 @@ class UploadFile
 
             return false;
         }
+        // MintHCM End
 
         return true;
     }

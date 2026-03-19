@@ -187,8 +187,8 @@ class actionComputeField extends actionBase
 
         array_walk(
             $displayFieldValues,
-            function ($val) use ($bean, $fieldName) {
-                $val = $GLOBALS['app_list_strings'][$bean->field_defs[$fieldName]['options'][$bean->$fieldName]];
+            function (&$val) use ($bean, $fieldName) {
+                $val = $GLOBALS['app_list_strings'][$bean->field_defs[$fieldName]['options']][$val];
             }
         );
 
@@ -457,7 +457,6 @@ class actionComputeField extends actionBase
 					</div>
 				</fieldset>";
 
-        if (count($params) > 0) {
             $parameters = $this->createJavascriptArrayFromParams($params, 'parameter');
             $parameterTypes = $this->createJavascriptArrayFromParams($params, 'parameterType');
             $formulas = $this->createJavascriptArrayFromParams($params, 'formula');
@@ -465,6 +464,7 @@ class actionComputeField extends actionBase
             $relationParameters = $this->createJavascriptArrayFromParams($params, 'relationParameter');
             $relationParameterFields = $this->createJavascriptArrayFromParams($params, 'relationParameterField');
             $relationParameterTypes = $this->createJavascriptArrayFromParams($params, 'relationParameterType');
+
 
             $html .= "
 				<script id ='aow_script$line' type='text/javascript'>
@@ -479,7 +479,7 @@ class actionComputeField extends actionBase
 					$('#relationParameterSelect$line').change();
 					
 					function onFieldChange$line(dropdown, valueDropdown) {
-						var value = $(dropdown).find('option:selected').attr('dataType');						
+                        var value = $(dropdown).find('option:selected').attr('dataType');						
 						if (value == 'enum' || value == 'multienum' || value == 'dynamicenum') {
 							$(valueDropdown).show();
 						} else {
@@ -497,12 +497,8 @@ class actionComputeField extends actionBase
 					
 					$('#$containerName .computeFieldParametersContainer').find('.parameterSelect').change();
 					$('#$containerName .computeFieldRelationParametersContainer').find('.relationParameterFieldSelect:visible').change();
-				</script>";
-        }
-
-        $html .= "
-			</div>
-		";
+				</script>
+			</div>";
 
         return $html;
     }

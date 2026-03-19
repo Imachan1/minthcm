@@ -229,7 +229,7 @@ $dictionary['AOS_Products'] = array(
                 'required' => false,
                 'name' => 'url',
                 'vname' => 'LBL_URL',
-                'type' => 'varchar',
+                'type' => 'url',
                 'massupdate' => 0,
                 'comments' => '',
                 'help' => '',
@@ -285,6 +285,7 @@ $dictionary['AOS_Products'] = array(
                 'type' => 'varchar',
                 'len' => '255',
                 'reportable' => true,
+                'inline_edit' => false,
                 'comment' => 'File name associated with the note (attachment)'
             ),
         'file_url' =>

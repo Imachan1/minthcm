@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -2190,7 +2189,7 @@ EOQ;
      */
     public function isPrimaryEmail($email)
     {
-        if (!empty($this->email1) && !empty($email) && strcasecmp($this->email1, $email) == 0) {
+        if (!empty($this->email1) && !empty($email) && strcasecmp($this->email1, $email) === 0) {
             return true;
         }
         return false;
@@ -2357,6 +2356,10 @@ EOQ;
             $this->is_admin = $originalIsAdminValue;
         }
 
+    }
+
+    protected function getCurrentPreference(string $key) {
+        return $_SESSION[$this->user_name.'_PREFERENCES']['global'][$key] ?? $this->getPreference($key);
     }
 
     /**

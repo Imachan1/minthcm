@@ -189,7 +189,7 @@
          $ical_array = array();
          $ical_array[] = array("BEGIN", "VCALENDAR");
          $ical_array[] = array("VERSION", "2.0");
-         $ical_array[] = array("PRODID", "-//SugarCRM//SugarCRM Calendar//EN");
+         $ical_array[] = array("PRODID", "-//SuiteCRM//SuiteCRM Calendar//EN");
          $ical_array[] = array("BEGIN", "VFREEBUSY");
 
          $name = $locale->getLocaleFormattedName($user_focus->first_name, $user_focus->last_name);
@@ -378,7 +378,7 @@
 
          $ical_array[] = array("BEGIN", "VCALENDAR");
          $ical_array[] = array("VERSION", "2.0");
-         $ical_array[] = array("PRODID", "-//SugarCRM//SugarCRM Calendar//EN");
+         $ical_array[] = array("PRODID", "-//SuiteCRM//SuiteCRM Calendar//EN");
          $ical_array[] = array("BEGIN", "VEVENT");
          $ical_array[] = array("UID", $bean->id);
          $ical_array[] = array("ORGANIZER;CN=" . $user->name, "mailto:" . $user->email1);

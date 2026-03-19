@@ -1063,7 +1063,7 @@ if (!function_exists("get_encoded")) {
 
     function get_decoded($object)
     {
-        return unserialize(base64_decode($object));
+        return unserialize(base64_decode($object), ['allowed_classes' => false]);
     }
 
     /**

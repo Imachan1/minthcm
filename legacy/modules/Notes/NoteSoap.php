@@ -1,4 +1,7 @@
 <?php
+
+use SuiteCRM\Utility\SuiteValidator;
+
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
@@ -45,10 +48,10 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
- require_once('include/upload_file.php');
+require_once('include/upload_file.php');
 
- require_once('include/upload_file.php');
- 
+require_once('include/upload_file.php');
+
 #[\AllowDynamicProperties]
 class NoteSoap
 {
@@ -76,6 +79,12 @@ class NoteSoap
 
 
         if (!empty($note['id'])) {
+
+            $isValidator = new SuiteValidator();
+            if (!$isValidator->isValidId($note['id'])) {
+                return '-1';
+            }
+
             $focus->retrieve($note['id']);
             if (empty($focus->id)) {
                 return '-1';
@@ -175,4 +184,3 @@ class NoteSoap
         return -1;
     }
 }
- 

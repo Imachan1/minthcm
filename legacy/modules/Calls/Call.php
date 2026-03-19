@@ -43,13 +43,7 @@ if ( !defined('sugarEntry') || !sugarEntry ) {
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  * ****************************************************************************** */
 
-/* * *******************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- * ****************************************************************************** */
 
 #[\AllowDynamicProperties]
 class Call extends SugarBean {
@@ -170,7 +164,7 @@ class Call extends SugarBean {
       global $timedate;
 
       if ( !empty($this->date_start) ) {
-         if ( !empty($this->duration_hours) && !empty($this->duration_minutes) ) {
+         if (!empty($this->duration_hours) || !empty($this->duration_minutes)) {
             $td = $timedate->fromDb($this->date_start);
             if ( $td ) {
                $this->date_end = $td->modify(

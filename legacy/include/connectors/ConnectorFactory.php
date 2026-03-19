@@ -60,6 +60,11 @@ class ConnectorFactory
             require_once('include/connectors/sources/SourceFactory.php');
             require_once('include/connectors/component.php');
             $source = SourceFactory::getSource($source_name);
+
+            if ($source === null){
+                return null;
+            }
+
             $component = new component();
             $component->setSource($source);
             $component->init();
@@ -85,6 +90,11 @@ class ConnectorFactory
     public static function loadClass($class, $type)
     {
         $dir = str_replace('_', '/', $class);
+
+        if (strpos($dir, '..') !== false) {
+            return;
+        }
+
         $parts = explode("/", $dir);
         $file = $parts[count($parts)-1] . '.php';
         if (file_exists("custom/modules/Connectors/connectors/{$type}/{$dir}/$file")) {

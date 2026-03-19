@@ -83,9 +83,9 @@ class MetaService
         'default',
         'len',
         'precision',
-        'comments',
+        'comment',
         'required',
-        'vname', // MintHCM #84318
+        'vname'
     ];
 
     /**

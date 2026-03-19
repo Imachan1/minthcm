@@ -1530,9 +1530,9 @@ EOHTML;
                     $this->bean->id .
                     "' module='" .
                     $this->bean->module_dir .
-                    "'><div class='favorite_icon_outline'>" .
+                    "'><div class='favorite_icon_outline' title='" . translate('LBL_MARK_FAVORITE', 'Favorites') . "'>" .
                     "<span class='suitepicon suitepicon-favorite-star-outline'></span></div>
-                                                    <div class='favorite_icon_fill' 'title=\"' . translate('LBL_DASHLET_EDIT', 'Home') . '\" border=\"0\"  align=\"absmiddle\"'>" .
+                                                    <div class='favorite_icon_fill' title='" . translate('LBL_UNMARK_FAVORITE', 'Favorites') . "' border=\"0\"  align=\"absmiddle\">" .
 
                     "<span class='suitepicon suitepicon-favorite-star'></span></div></div>";
             }

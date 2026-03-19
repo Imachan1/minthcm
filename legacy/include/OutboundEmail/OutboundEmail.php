@@ -103,6 +103,8 @@ class OutboundEmail
     public $authorized_account;
     public $mail_authtype;
     // MintHCM #110041 END
+    public $auth_type; // no_auth, oauth2, external_oauth
+    public $external_oauth_connection_id; // no_auth, oauth2, external_oauth
 
     /**
      * Sole constructor
@@ -401,6 +403,19 @@ class OutboundEmail
         }
 
         return $allowAccess;
+    }
+
+    public function getSystemEmail(): ?object
+    {
+        $q = "SELECT id FROM outbound_email WHERE type = 'system' AND deleted = 0";
+        $r = $this->db->query($q);
+        $a = $this->db->fetchByAssoc($r);
+
+        if (!empty($a)) {
+            return $this->retrieve($a['id']) ?? null;
+        }
+
+        return null;
     }
 
     /**

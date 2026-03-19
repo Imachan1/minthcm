@@ -201,10 +201,8 @@ class Administration extends SugarBean
                 }
                 $this->saveSetting($prefix[0], $prefix[1], trim($val));
             }
-            if (strpos($key, "mail_") !== false) {
-                if (in_array($key, $oe->field_defs)) {
-                    $oe->$key = trim($val);
-                }
+            if (in_array($key, $oe->field_defs)) {
+                $oe->$key = trim($val);
             }
         }
 
