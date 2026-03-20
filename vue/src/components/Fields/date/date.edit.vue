@@ -40,27 +40,30 @@ const parsedValue = computed({
     get() {
         return model.value.formatted?.user_date || ''
     },
-    async set(newVal) {
+    set(newVal) {
         datePickerMenu.value = false
         if (!newVal?.trim()) {
             model.value.clear()
+            return
         }
-        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
+        const dt = DateTime.fromFormat(newVal, preferences.userDateFormat || 'yyyy-MM-dd', { zone: 'utc' })
         if (dt.isValid) {
             model.value.set(dt)
         }
     },
 })
+
 const pickerValue = computed({
     get() {
         return model.value.isValid ? model.value.formatted.js_date : new Date()
     },
     set(newVal) {
-        const dt = DateTime.fromJSDate(newVal, { zone: preferences.userTimezone || 'utc' })
-        if (!dt.isValid) {
-            return
-        }
-        model.value.set(dt.toFormat('yyyy-MM-dd'))
+        const year = newVal.getFullYear()
+        const month = String(newVal.getMonth() + 1).padStart(2, '0')
+        const day = String(newVal.getDate()).padStart(2, '0')
+        const dateString = `${year}-${month}-${day}`
+        
+        model.value.set(dateString)
         emit('update:modelValue', model.value)
         datePickerMenu.value = false
     },

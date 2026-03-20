@@ -65,7 +65,9 @@ const timeFormat = computed(() => {
 
 const dateValue = computed({
     get() {
-        return model.value.isValid ? model.value.formatted.user_date : ''
+        if (!model.value.isValid) return ''
+        const userDt = model.value.instance.setZone(preferences.userTimezone || 'utc')
+        return userDt.toFormat(preferences.userDateFormat)
     },
     set(newVal) {
         datePickerMenu.value = false
@@ -74,8 +76,9 @@ const dateValue = computed({
             return
         }
         const dt = DateTime.fromFormat(
-            `${newVal} ${timeValue.value}`, 
-            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`
+            `${newVal} ${timeValue.value}`,
+            `${preferences.userDateFormat} HH:mm`,
+            { zone: preferences.userTimezone || 'utc' }
         )
         if (dt.isValid) {
             model.value.set(dt)
@@ -90,7 +93,8 @@ const timeValue = computed({
     set(newVal) {
         const dt = DateTime.fromFormat(
             `${dateValue.value} ${newVal}`,
-            `${preferences.user?.date_format || 'yyyy-MM-dd'} HH:mm`,
+            `${preferences.userDateFormat} HH:mm`,
+            { zone: preferences.userTimezone || 'utc' }
         )
         if (dt.isValid) {
             model.value.set(dt)
@@ -100,13 +104,15 @@ const timeValue = computed({
 
 const datePickerValue = computed({
     get() {
-        return model.value.isValid ? model.value.formatted.js_date : new Date()
+        if (!model.value.isValid) return new Date()
+        const userDt = model.value.instance.setZone(preferences.userTimezone || 'utc')
+        return new Date(userDt.year, userDt.month - 1, userDt.day)
     },
     set(newVal) {
-        const dt = DateTime.fromJSDate(newVal)
-        if (!dt.isValid) {
-            return
-        }
+        const year = newVal.getFullYear()
+        const month = String(newVal.getMonth() + 1).padStart(2, '0')
+        const day = String(newVal.getDate()).padStart(2, '0')
+        const dateStr = `${year}-${month}-${day}`
 
         let timeStr: string
         if (timeFormat.value === 'ampm') {
@@ -116,10 +122,13 @@ const datePickerValue = computed({
         }
 
         const formatedDatetime = DateTime.fromFormat(
-            `${dt.toFormat('yyyy-MM-dd')} ${timeStr}`,
+            `${dateStr} ${timeStr}`,
             `yyyy-MM-dd ${timeFormat.value == 'ampm' ? 'hh:mm a' : 'HH:mm'}`,
+            { zone: preferences.userTimezone || 'utc' }
         )
-        model.value.set(formatedDatetime)
+        if (formatedDatetime.isValid) {
+            model.value.set(formatedDatetime)
+        }
         datePickerMenu.value = false
     },
 })

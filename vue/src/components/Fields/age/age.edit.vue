@@ -1,7 +1,6 @@
 <template>
     <div class="mint-date-field-detail">
         <v-text-field
-            v-bind="props"
             :label="label"
             variant="outlined"
             density="compact"
@@ -44,7 +43,7 @@ const parsedValue = computed({
         if (!newVal?.trim()) {
             model.value.clear()
         }
-        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd')
+        const dt = DateTime.fromFormat(newVal, preferences.user?.date_format || 'yyyy-MM-dd', { zone: 'utc' })
         if (dt.isValid) {
             model.value.set(dt)
         }
