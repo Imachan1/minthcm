@@ -2418,7 +2418,9 @@ function xss_check_pattern($pattern, $str)
  */
 function clean_string($str, $filter = 'STANDARD', $dieOnBadData = true)
 {
-    global $sugar_config;
+    if (!is_array($str) && !is_string($str)) {
+        return false;
+    }
 
     $filters = array(
         'STANDARD' => '#[^A-Z0-9\-_\.\@]#i',
@@ -2432,6 +2434,22 @@ function clean_string($str, $filter = 'STANDARD', $dieOnBadData = true)
         'AUTO_INCREMENT' => '#[^0-9\-,\ ]#i',
         'ALPHANUM' => '#[^A-Z0-9\-]#i',
     );
+
+    if (is_array($str)) {
+        foreach ($str as $key => $value) {
+            if (preg_match($filters[$filter], $value)) {
+                if (isset($GLOBALS['log']) && is_object($GLOBALS['log'])) {
+                    $GLOBALS['log']->fatal("SECURITY[$filter]: bad data passed in; string: {$value}");
+                }
+                if ($dieOnBadData) {
+                    die("Bad data passed in; <a href=\"index.php\">Return to Home</a>");
+                }
+
+                return false;
+            }
+        }
+        return $str;
+    }
 
     if (preg_match($filters[$filter], $str)) {
         if (isset($GLOBALS['log']) && is_object($GLOBALS['log'])) {
