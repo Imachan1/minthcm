@@ -5,6 +5,7 @@
 legacy/.htaccess
 legacy/upload
 legacy/cache/**/*
+legacy/custom/blowfish/
 legacy/custom/modules/*/logic_hooks.php
 legacy/custom/modules/*/Ext/Vardefs/vardefs.ext.php
 legacy/minthcm.log
