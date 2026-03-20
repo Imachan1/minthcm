@@ -18,7 +18,7 @@ export class Delete extends SubpanelAction {
 
         const relateBean = ref<ReturnType<typeof useBean>>(useBean(this.subpanel.module, this.options?.recordId))
         relateBean.value.markDeleted()
-        store.fetchSubpanelRecords(this.subpanel.key, 10, 0)
+        store.fetchSubpanelRecords(this.subpanel.key, this.subpanel.paginateBy, 0)
         return true
     }
 }

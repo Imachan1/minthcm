@@ -42,7 +42,9 @@ export const useLogic = (module: string) => {
     const activeRules = computed(() => rules.value.filter((rule) => rule.trigger))
 
     const rulesTriggeredOnChange = computed(() =>
-        rules.value.filter((rule) => rule.hooks.some((hook) => ['all', 'change'].includes(hook))),
+        rules.value.filter(
+            (rule) => Array.isArray(rule.hooks) && rule.hooks.some((hook) => ['all', 'change'].includes(hook))
+        ),
     )
 
     const triggerFields = computed(() => {
@@ -132,9 +134,10 @@ export const useLogic = (module: string) => {
 
     function getUpdatedFields(rules: Rule[] | null = null) {
         rules = rules || activeRules.value
-        const updatedFields = {} as { [fieldName: string]: any }
+        const updatedFields: { [key: string]: any } = {}
         rules.forEach((rule) => {
-            Object.entries(rule.logic.update ?? {}).forEach(([fieldName, value]) => {
+            if (!rule.logic?.update) return
+            Object.entries(rule.logic.update).forEach(([fieldName, value]) => {
                 updatedFields[fieldName] = value
             })
         })

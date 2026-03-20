@@ -1148,6 +1148,9 @@ class ListView
             str_replace(' ', '', trim($sortBy)) == 'last_name,first_name') {
             $this->sortby = 'last_name '.$this->sort_order.', first_name ';
         }
+        if(!empty($_REQUEST['subpanel_sort_by'])){
+            $this->sortby = $_REQUEST['subpanel_sort_by'];
+        }
         try {
             if (!empty($this->response)) {
                 $response =& $this->response;

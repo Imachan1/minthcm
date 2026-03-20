@@ -15,7 +15,7 @@ interface MintBeanAttributes {
     [fieldName: string]: string | number | boolean | null | string[]
 }
 
-export const useBean = (module: string, id: string) => {
+export const useBean = (module: string, id: string, fetch_links: Array<string> = []) => {
     const retrieveTimeoutTimeMs = 30000
     const router = useRouter()
     const modulesStore = useModulesStore()
@@ -256,7 +256,9 @@ export const useBean = (module: string, id: string) => {
         )
 
         const apiCall = mintApi
-            .get(`${module}/Get${id ? `/${id}` : ''}`, { rawError: true })
+            .post(`${module}/Get${id ? `/${id}` : ''}`, {
+                links: fetch_links
+            }, { rawError: true })
             .then((response) => {
                 if (response.status === 200 && response.data) {
                     setData(response.data)
@@ -285,8 +287,21 @@ export const useBean = (module: string, id: string) => {
         attributes.value = data.attributes
         syncAttributes.value = structuredClone(data.attributes)
         setFields(data.attributes)
-        logic.rules.value = data.logic?.rules ?? {}
+        logic.rules.value = data.logic?.rules ?? []
         setFields(logic.getUpdatedFields())
+        setLinks(data.related_records)
+    }
+
+    function setLinks(related_records: Record<string, any>) {
+        Object.entries(related_records || {}).forEach(([linkName, records]) => {
+            const link = useLink(
+                linkName,
+                fieldDefs.value[linkName]?.relationship,
+                { module, id, fieldDefs }
+            )
+            link.hydrateFromBackend(records)
+            links.value.set(linkName, link)
+        })
     }
 
     async function fetchLogic(triggerFields: string[] = []) {
@@ -305,6 +320,13 @@ export const useBean = (module: string, id: string) => {
 
             setFields(logic.getUpdatedFields(response.data.rules))
         }
+    }
+
+    function createFakeLink(name: string): ReturnType<typeof useLink> {
+        if (!links.value.has(name)) {
+            links.value.set(name, useLink(name, name, { module, id, fieldDefs }, true))
+        }
+        return links.value.get(name)!
     }
 
     function loadRelationship(name: string): ReturnType<typeof useLink> | null {
@@ -348,7 +370,7 @@ export const useBean = (module: string, id: string) => {
             const response = await mintApi.patch(`${module}/Update${id ? `/${id}` : ''}`, {
                 record_data: getAttributesToSave(),
                 files,
-                links: Object.fromEntries([...links.value].map(([name, link]) => [name, link.getChanges()]))
+                links: Object.fromEntries([...links.value].filter(([, link]) => !link.isFake.value).map(([name, link]) => [name, link.getChanges()]))
             })
             if (!id && response.data.id) {
                 router.push({
@@ -453,6 +475,7 @@ export const useBean = (module: string, id: string) => {
         fieldDefs,
         setAttributesFromQuery,
         loadRelationship,
+        createFakeLink,
         setAttributesFromBeanId,
         originalId,
     }

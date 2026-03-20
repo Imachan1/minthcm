@@ -366,7 +366,20 @@ class Employee extends Person implements EmailInterface
 
     public function fetchAllSubordinates()
     {
-        $query = "SELECT users.* FROM users WHERE users.deleted=0 AND users.reports_to_id='{$this->id}'";
+        $query = "
+            SELECT users.*,
+            CONCAT(users.first_name, ' ', users.last_name) AS full_name,
+            positions.name AS position_name,
+            securitygroups.name AS securitygroup_name
+            FROM users
+            LEFT JOIN positions
+                ON positions.id = users.position_id
+                    AND positions.deleted = 0
+            LEFT JOIN securitygroups
+                ON securitygroups.id = users.securitygroup_id
+                    AND securitygroups.deleted = 0
+                WHERE users.deleted=0
+                    AND users.reports_to_id='{$this->id}'";
         return $query;
     }
 

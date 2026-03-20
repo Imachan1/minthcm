@@ -199,16 +199,35 @@ class ModuleController
 
         /** @var MintEntity */
         $entity = !empty($record_id) ? $entity_repository->find($record_id) : $entity_repository->getNewEntity();
-
         if (!$entity || $entity->getId() !== $record_id) {
             return $response->withStatus(404);
         }
-
+        $links = $request->getAttribute("links");
+        $relation_list = [];
+        foreach($links as $link){
+            $bean = MintBeanFactory::getBean($module, $record_id);
+            if($bean->load_relationship($link)){
+                $related_beans = $bean->$link->getBeans();
+                foreach($related_beans as $record){
+                    $record->fill_in_additional_detail_fields();
+                    $relation_list[$link][$record->id] = [
+                        'id' => $record->id,
+                        'module' => $record->module_name,
+                        'attributes' => $record->toArray(),
+                        'acl_access' => [
+                            'edit' => $record->ACLAccess('edit'),
+                            'delete' => $record->ACLAccess('delete'),
+                            'view' => $record->ACLAccess('view'),
+                        ],
+                    ];
+                }
+            }
+        }
         if (!$entity->hasAccess('view')) {
             return $response->withStatus(403);
         }
 
-        $record_data = !empty($entity) && $entity->id === $record_id ? $this->mergeRecordData($entity) : null;
+        $record_data = !empty($entity) && $entity->id === $record_id ? $this->mergeRecordData($entity, $relation_list) : null;
         $bean = MintBeanFactory::getBean($module, $record_id);
         foreach ($bean->field_defs as $field => $defs) {
             if ($defs['source'] === 'non-db' && $defs['type'] !== 'link') {
@@ -293,6 +312,8 @@ class ModuleController
         $related_name = $request->getAttribute('relation_name');
         $page = $request->getQueryParams()['page'] ?? 0;
         $records_per_page = $request->getQueryParams()['paginate_by'] ?? -1;
+        $_REQUEST['sort_order'] = !empty($request->getAttribute('sortOrder')) ? $request->getAttribute('sortOrder') : 'asc';
+        $_REQUEST['subpanel_sort_by'] = !empty($request->getAttribute('sortBy')) ? $request->getAttribute('sortBy') : 'id';
         require_once 'include/SubPanel/SubPanelDefinitions.php';
         $spd = new \SubPanelDefinitions($focus, $module);
         if (isset($spd->layout_defs['subpanel_setup'][$related_name])) {
@@ -426,7 +447,7 @@ class ModuleController
         return explode('/', $route->getPattern())[1] ?? null;
     }
 
-    protected function mergeRecordData(MintEntity $entity): array
+    protected function mergeRecordData(MintEntity $entity, $related_records = []): array
     {
         return [
             'id' => $entity->getId(),
@@ -439,6 +460,7 @@ class ModuleController
                 'admin' => $entity->hasAccess('admin'),
             ],
             'logic' => (new MintLogic($entity->getMintBean()))->getInitial(),
+            'related_records' => $related_records
         ];
     }
     protected function handleFiles(MintEntity $mint_entity, array | null $files = []): void

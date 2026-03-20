@@ -21,7 +21,7 @@ export class Remove extends SubpanelAction {
         const link = store.bean.loadRelationship(this.subpanel.properties.get_subpanel_data)
         link?.remove(relateBean.value.id);
         await link?.unlink(store.bean, this.subpanel.properties.get_subpanel_data)
-        store.fetchSubpanelRecords(this.subpanel.key, 10, 0)
+        store.fetchSubpanelRecords(this.subpanel.key, this.subpanel.paginateBy, 0)
         return true
     }
 
