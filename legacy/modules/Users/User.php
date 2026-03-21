@@ -1821,7 +1821,7 @@ EOQ;
      */
     public function isEnabled()
     {
-        return ($this->status !== 'Inactive') && (in_array($this->employee_status, ['Active', 'during_termination']));
+        return $this->status !== 'Inactive';
     }
 
     /**
