@@ -206,14 +206,16 @@ class ModuleController
 
         $record_data = !empty($entity) && $entity->id === $record_id ? $this->mergeRecordData($entity) : null;
         $bean = MintBeanFactory::getBean($module, $record_id);
+        $class_metadata = $this->entity_manager->getClassMetadata(get_class($entity));
         foreach ($bean->field_defs as $field => $defs) {
-            // FIXME [CR #184598]: Hardcoded 'reports_to_id' — replace with a generic condition, e.g. check for 'relationship' key in defs to include all relation id fields
-            // uwagi co to za dzwiny wyjątek na pole reports_to_id ? Czy może nie powinniśmy sprawdzić definicji pola w vardefs skoro jest coś nie tak?
+            // Fields mapped as Doctrine associations (ManyToOne/JoinColumn without a separate @Column)
+            // are not serialized as scalars by getSerialized() — fetch them from the legacy bean instead.
+            // Non-db, non-link fields (e.g. relate/computed) are absent from the entity entirely.
             if (
-                $defs['name'] === 'reports_to_id'
+                $class_metadata->hasAssociation($field)
                 || (
-                    $defs['source'] === 'non-db'
-                    && $defs['type'] !== 'link'
+                    ($defs['source'] ?? '') === 'non-db'
+                    && ($defs['type'] ?? '') !== 'link'
                 )
             ) {
                 $record_data['attributes'][$field] = $bean->$field;
