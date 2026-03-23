@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -9,7 +8,7 @@
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
  * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
- * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM, 
+ * MintHCM is a Human Capital Management software based on SuiteCRM developed by MintHCM,
  * Copyright (C) 2018-2024 MintHCM
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,17 +36,16 @@
  * Section 5 of the GNU Affero General Public License version 3.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM" 
- * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo. 
- * If the display of the logos is not reasonably feasible for technical reasons, the 
- * Appropriate Legal Notices must display the words "Powered by SugarCRM" and 
+ * these Appropriate Legal Notices must retain the display of the "Powered by SugarCRM"
+ * logo and "Supercharged by SuiteCRM" logo and "Reinvented by MintHCM" logo.
+ * If the display of the logos is not reasonably feasible for technical reasons, the
+ * Appropriate Legal Notices must display the words "Powered by SugarCRM" and
  * "Supercharged by SuiteCRM" and "Reinvented by MintHCM".
  */
 
 namespace MintHCM\Api\Middlewares\Auth;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use MintHCM\Api\Controllers\OAuth2\Controller;
@@ -55,9 +53,9 @@ use MintHCM\Api\Controllers\OAuth2\Server;
 use MintHCM\Api\Entities\OAuth2\AccessToken;
 use MintHCM\Api\Entities\OAuth2\MintToken;
 use MintHCM\Api\Middlewares\Middleware;
-use MintHCM\Api\Repositories\OAuth2\AccessTokenRepository;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Psr7\Response;
 
@@ -81,7 +79,7 @@ class AuthMiddleware extends Middleware
     {
         [$runLogic, $optionalAuth] = $this->getAuthOptions($request);
         if ($runLogic || $optionalAuth) {
-            $session_cookie_exists =  !empty($_COOKIE['PHPSESSID']);
+            $session_cookie_exists = !empty($_COOKIE['PHPSESSID']);
             if (!$session_cookie_exists) {
                 $token_result = $this->runTokenValidation($request);
                 if ($token_result instanceof Response) {
@@ -95,7 +93,7 @@ class AuthMiddleware extends Middleware
                 }
             }
         }
-        if(str_contains($request->getRequestTarget(), "api/forget_password")){
+        if (str_contains($request->getRequestTarget(), "api/forget_password")) {
             $this->validateForgotPassword($request, $handler);
         }
         return $handler->handle($request);
@@ -105,13 +103,12 @@ class AuthMiddleware extends Middleware
     {
         $username = $request->getAttribute('username');
         $email = $request->getAttribute('email');
-        if(empty(trim($username)) || empty(trim($email))){
-            // FIXME [CR #182042]: Use Slim\Exception\HttpBadRequestException instead of generic Exception to return 400 instead of 500
-            throw new Exception(translate('LBL_MINT4_AUTH_FORGOT_PASSWORD_MISSING_CREDENTIALS_ERROR'));
+        if (empty(trim($username)) || empty(trim($email))) {
+            throw new HttpBadRequestException(translate('LBL_MINT4_AUTH_FORGOT_PASSWORD_MISSING_CREDENTIALS_ERROR'));
         }
     }
 
-    private function runTokenValidation(Request $request): Request|Response
+    private function runTokenValidation(Request $request): Request | Response
     {
         global $mint_app;
         $response = $mint_app->getResponseFactory()->createResponse();
@@ -138,7 +135,7 @@ class AuthMiddleware extends Middleware
             session_destroy();
             return false;
         }
-        
+
         $request = $request->withHeader('authorization', 'Bearer ' . $token);
         $token_result = $this->runTokenValidation($request);
         if ($token_result instanceof Response && !$this->refreshToken($request)) {
@@ -181,7 +178,7 @@ class AuthMiddleware extends Middleware
         $token_response = $oauth_controller->accessToken($request, $response, []);
         if ($token_response->getStatusCode() !== 200) {
             return false;
-        } 
+        }
 
         $token_body = $token_response->getBody();
         $token_data = json_decode($token_body, true);
