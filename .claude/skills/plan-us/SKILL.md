@@ -25,7 +25,7 @@ Layers are discovered from the project's architecture documentation (e.g. `CLAUD
 ## When NOT to use
 
 - **Implementation is already in progress** — the plan should already exist, don't create it mid-implementation
-- Issues other than US/Epic/Spike — e.g. Task, Bug (not planned separately)
+- Issues other than US/Epic/Spike/Mały rozwój/Błąd krytyczny/Błąd niekrytyczny — e.g. Task (not planned separately)
 - User only asks about the US content without wanting to create a plan and branch
 
 ---
@@ -56,7 +56,7 @@ Extract `ISSUE_ID` from `$ARGUMENTS` (slash cmd) or from conversation context.
 
 Fetch:
 - Title, description, acceptance criteria (as part of description)
-- Tracker (validate: only 18=US, 19=US Bug, 22=Epic, 23=Spike)
+- Tracker (validate: only 14=Mały rozwój, 15=Błąd krytyczny, 16=Błąd niekrytyczny, 18=US, 19=US Bug, 22=Epic, 23=Spike)
 - Sprint (`fixed_version_id`), project, assignee
 - Existing Tasks (issue children)
 
@@ -65,9 +65,9 @@ Fetch:
 ### Step 3 — Validate tracker
 
 If tracker is Task (24) or other non-planning type — stop:
-> "Issue #{ISSUE_ID} is a {tracker}, not a US. Planning applies to US/Epic/Spike only."
+> "Issue #{ISSUE_ID} is a {tracker}, not a plannable type. Planning applies to US/Epic/Spike/Mały rozwój/Błąd krytyczny/Błąd niekrytyczny only."
 
-Allowed tracker IDs: 18, 19, 22, 23.
+Allowed tracker IDs: 14, 15, 16, 18, 19, 22, 23.
 
 ### Step 4 — Clarify ambiguities
 
@@ -144,6 +144,66 @@ The subagent should return a **structured report** with:
 
 > Do not use `Glob`/`Grep`/`Read` directly in the main conversation for exploration — delegate entirely to the subagent to keep the main context clean.
 
+#### Bug investigation mode (trackers 15=Błąd krytyczny, 16=Błąd niekrytyczny, 19=US Bug)
+
+For bugs, shallow exploration produces wrong fixes. The subagent must go deeper:
+
+**1. Trace the full execution path** from user-visible symptom to code — don't stop at the first plausible explanation:
+- Start from the user action that triggers the bug
+- Follow the call chain end-to-end: UI event → component → store/API client → HTTP request → backend route → controller → response → state update → render
+- **Read every file in the chain completely**, not just the suspicious lines. A bug hiding three layers deep won't appear in a surface scan.
+
+**2. Check git history** for each affected file:
+```bash
+git log --oneline -15 -- {file}
+```
+Bugs are often caused by a recent change. Knowing *when* the file changed often pinpoints *what* broke.
+
+**3. Identify exact preconditions** — under what conditions does the bug occur vs. not?
+- "always" vs. "only when field X is set" vs. "only on create, not edit" vs. "only after navigating from list"
+- Each variant may point to a different root cause.
+
+**4. Generate multiple hypotheses, then eliminate** — don't commit to the first explanation that fits:
+- List 2–3 plausible root causes
+- For each: what evidence supports it? What evidence would disprove it?
+- Read the code to eliminate the less likely ones before concluding
+
+**5. Distinguish levels of causality:**
+- **Symptom**: what the user observes ("spinner stops, no redirect")
+- **Proximate cause**: the immediate code failure ("API call returns 404")
+- **Root cause**: the underlying design flaw causing the failure ("component makes API calls before record is saved")
+- The fix must address the root cause — defensive coding (try-catch, guards) that only masks the symptom will leave the bug latent.
+
+**The subagent must include a Root cause analysis section:**
+
+```
+## Root cause analysis
+
+### Symptom
+{What the user sees — exact behavior}
+
+### Execution trace
+Step 1: User does {action}
+Step 2: {Component/function A} calls {B}
+Step 3: {B} does {X} — at this point {state/value is Y}
+Step N: {This is where it fails — why}
+
+### Hypotheses considered
+| # | Hypothesis | Evidence for | Evidence against | Verdict |
+|---|------------|-------------|-----------------|---------|
+| 1 | {hypothesis} | {what supports it} | {what contradicts it} | likely / ruled out |
+| 2 | ... | ... | ... | ... |
+
+### Root cause (confirmed)
+{The specific file:line / condition / missing handling that causes the bug}
+{Confidence: high / medium / low — and why}
+
+### Why defensive fixes (try-catch, guards) are not enough
+{If applicable: explain what the guard would hide vs. what the real fix is}
+```
+
+If confidence in the root cause is medium or low — say so explicitly in the plan and list what additional runtime investigation (browser console, network tab, added logging) would confirm it.
+
 #### Layer identification (for the explore subagent)
 
 As the **first action**, read the project's architecture documentation:
@@ -177,6 +237,27 @@ Layers affected by this US:
 
 If no architecture docs exist: flag it — "No architecture documentation found — layers inferred
 from directory structure. Please confirm before writing the plan."
+
+### Step 7b — Resolve open questions from exploration
+
+After receiving the subagent's report, review it for any unresolved questions — places where:
+- Multiple valid implementation approaches exist and the choice has non-trivial consequences
+- The scope is ambiguous (e.g. "should this affect module X as well?")
+- A technical assumption was made that the user may want to override
+- Confidence in the root cause (bugs) is medium or low
+
+**If such questions exist:**
+1. List them clearly — **max 3, most consequential first**
+2. For each, briefly explain the trade-off or why it matters for the plan
+3. Ask the user for decisions and **wait for answers before continuing**
+
+> Do not ask about things that have a clear best practice answer or where either option leads to the same plan. Only escalate genuine decision points that would change what gets written in the plan.
+
+**If no open questions** — continue immediately to Step 8.
+
+The plan must not contain open questions that the user could have answered at planning time. The "Open questions" section in plan templates is reserved for things that genuinely cannot be determined without runtime investigation (e.g. "confirm in browser console that X is null before the call").
+
+---
 
 ### Step 8 — Create feature branch
 
@@ -250,6 +331,21 @@ heading and uses it in the commit message.
 ## Acceptance criteria
 
 {List from US — rewrite or supplement if unclear}
+
+## Root cause analysis *(bug trackers only — omit for feature USes)*
+
+**Symptom:** {what the user observes}
+
+**Execution trace:**
+1. {User action}
+2. {Component/function called}
+3. ...
+N. {Where and why it fails}
+
+**Root cause:** {specific file:line / condition / missing handling}
+**Confidence:** {high / medium / low} — {reason}
+
+{If confidence < high: describe what runtime investigation (console, network, logging) would confirm the diagnosis.}
 
 ## Implementation approach
 
@@ -441,10 +537,11 @@ Display commit hash. Do not push without asking.
 
 - **Explore before writing the plan** — don't guess code structure, use Step 7
 - **Paraphrase requirements** — don't copy the US description, show that you understand the intent
-- **Ask about ambiguities** — open questions in the plan are better than silent assumptions
+- **Resolve ambiguities before writing** — ask the user in Step 4 (requirements) and Step 7b (exploration findings); the plan must not contain open questions that could have been answered at planning time
 - **Don't commit without consent** — always wait for confirmation before Step 10 commit
 - **One commit** — only plan files, no code whatsoever
 - **Hierarchical when it matters** — split only when 2+ layers have meaningful work; don't split artificially
 - **Layers come from the project, not from you** — always derive layer names from the project's `CLAUDE.md` or `README.md` via the Step 7 subagent. Never invent layer names or default to `legacy/api/vue` on projects that don't use those names.
 - **Sub-plans must be self-contained** — each sub-plan should make sense on its own without reading the others
 - After completion, the user proceeds to implementation using the plan files as a checklist
+- **For bugs: root cause first, fix second** — a plan that says "add try-catch around the failing call" without tracing *why* it fails is incomplete. The exploration subagent must follow the execution chain to its end, not stop at the first plausible hypothesis. A fix that only masks the symptom will leave the bug latent.

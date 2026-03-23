@@ -1,7 +1,8 @@
 ---
 name: coding-standards
 version: 1.0.0
-description: Skill for verifying and applying coding standards. Use whenever you are writing new code, doing a code review, refactoring, or have a question about naming, function structure, class design, or code organization. Applies to PHP, JavaScript, C# and Python. Also trigger for questions like: "is this name OK?", "how should I name this class?", "is this function too long?", "how should I split this code?".
+description: |
+  Skill for verifying and applying coding standards. Use whenever you are writing new code, doing a code review, refactoring, or have a question about naming, function structure, class design, or code organization. Applies to PHP, JavaScript, C# and Python. Also trigger for questions like: "is this name OK?", "how should I name this class?", "is this function too long?", "how should I split this code?".
 ---
 
 # Coding Standards

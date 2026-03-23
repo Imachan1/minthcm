@@ -1,7 +1,8 @@
 ---
 name: implementation
 version: 1.3.0
-description: Executes implementation plans created by plan-us. Trigger on: "implement", "execute the plan", "zaimplementuj", "kontynuuj implementację", "wznów implementację", "implement #XXXX", "zaimplementuj US #XXXX", "dokończ implementację", "start coding for US #XXXX", "let's implement this", "let's code this up", "can you build what's in the plan", "execute plan.md", or any issue number after a plan already exists. If no plan exists yet, tell the user to run plan-us first.
+description: >
+  Executes implementation plans created by plan-us. Trigger on: "implement", "execute the plan", "zaimplementuj", "kontynuuj implementację", "wznów implementację", "implement #XXXX", "zaimplementuj US #XXXX", "dokończ implementację", "start coding for US #XXXX", "let's implement this", "let's code this up", "can you build what's in the plan", "execute plan.md", or any issue number after a plan already exists. If no plan exists yet, tell the user to run plan-us first.
 argument-hint: <issue_id> or <plan_path> (e.g. 184819 or .ai/tasks/184819/plan.md)
 ---
 

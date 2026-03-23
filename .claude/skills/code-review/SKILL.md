@@ -32,7 +32,7 @@ Ten skill realizuje fazę **Code Review** z procesu AI w SD (po Self Code Review
 
 ## Kiedy nie używać
 
-- **Self Code Review podczas implementacji** — to inna faza (wyniki do `.ai/tasks/XXXXXX/cr.md`), nie ten skill
+- **Self Code Review podczas implementacji** — to inna faza (użyj skilla `self-code-review`, wyniki do `.ai/tasks/XXXXXX/self-cr.md`), nie ten skill
 - Review kodu bez powiązanego zagadnienia Redmine
 - Review bez feature brancha w repozytorium git
 - Analiza kodu bez kontekstu wdrożeniowego (użyj zwykłego czytania kodu)
