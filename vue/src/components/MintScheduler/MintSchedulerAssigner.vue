@@ -16,7 +16,6 @@
                     : []
             "
             @keydown.enter="search"
-            @keydown.space="search"
             name="search-resources"
             id="search-resources"
             :aria-label="languages.label('LBL_SEARCH')"

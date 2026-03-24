@@ -8,7 +8,6 @@
             hide-details
             :placeholder="languages.label('LBL_MINT4_GS_SEARCH_INPUT')"
             @keyup.enter="goToFullList"
-            @keyup.space="goToFullList"
             variant="plain"
             @update:focused="isFocused = $event"
             name="global-search-input"
@@ -23,8 +22,8 @@
                     <v-icon v-else icon="mdi-magnify" />
                 </v-fab-transition>
             </template>
-        <p id="global-search-input-help" name="global-search-input-help" hidden>{{languages.label('LBL_GLOBAL_SEARCH_INPUT_COMMENT')}}</p>
         </v-text-field>
+        <p id="global-search-input-help" name="global-search-input-help" hidden>{{languages.label('LBL_GLOBAL_SEARCH_INPUT_COMMENT')}}</p>
         <v-slide-y-transition>
             <template v-if="isFocused">
                 <v-skeleton-loader v-if="isSearching" type="list-item-two-line" class="search-results" />
