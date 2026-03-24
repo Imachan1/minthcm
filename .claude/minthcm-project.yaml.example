@@ -1,5 +1,0 @@
-# MintHCM Project Configuration
-# Copy this file as minthcm-project.yaml and fill in values for your project.
-
-PROJECT_NAME: ""       # e.g., "ConVista" — used as filename segment in the SuiteCRM Extension Framework (legacy/custom/Extension)
-MODULE_PREFIX: ""      # e.g., "con_" — prefix for new custom module names (con_BankAccounts)
