@@ -1,0 +1,94 @@
+{
+  "skill_name": "bug-fix",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Napraw bugi z CR dla zagadnienia #179416. Tryb: cr. Raport CR jest w .ai/tasks/179416/cr.md — przejrzyj niezaznaczone CRITICAL i WARNING z checklisty i napraw każdy z nich zgodnie z opisem w raporcie. Nie commituj bez mojej zgody.",
+      "expected_output": "Skill wczytuje .ai/tasks/179416/cr.md, identyfikuje niezaznaczone checkboxy CRITICAL i WARNING, naprawia każdy bug w odpowiednich plikach PHP, usuwa komentarze FIXME, aktualizuje checkboxy w cr.md na [x], wypisuje podsumowanie naprawionych bugów i pyta o commit.",
+      "files": [],
+      "expectations": [
+        "Skill wczytał plik .ai/tasks/179416/cr.md",
+        "Skill zidentyfikował niezaznaczone checkboxy CRITICAL lub WARNING",
+        "Skill wypisał listę bugów do naprawy przed przystąpieniem do naprawy",
+        "Skill zapytał użytkownika o zgodę na commit (nie commitował automatycznie)",
+        "Skill zaznaczył naprawione bugi jako [x] w cr.md",
+        "Skill usunął komentarze FIXME z naprawionych plików"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Napraw bugi z testów dla zagadnienia #179416. Tryb: test. Pobierz z Redmine listę subtasków i znajdź ten zaczynający się od BUG:. Jeśli opis subtaska jest pusty, zapytaj mnie co konkretnie naprawić.",
+      "expected_output": "Skill pobiera z Redmine zagadnienie #179416 z jego subtaskami (include=children), znajduje subtask BUG: #179419, pobiera jego szczegóły i stwierdza że description jest puste. Następnie pyta użytkownika o konkretny opis buga do naprawy — nawet jeśli zagadnienie nadrzędne ma opis, skill pyta usera żeby potwierdzić zakres naprawy.",
+      "files": [],
+      "expectations": [
+        "Skill wywołał Redmine API z include=children aby pobrać subtaski zagadnienia #179416",
+        "Skill znalazł subtask BUG: #179419",
+        "Skill stwierdził że opis subtaska BUG jest pusty lub niewystarczający",
+        "Skill zapytał użytkownika o opis buga do naprawy zamiast automatycznie użyć opisu nadrzędnego"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Napraw bugi z CR dla zagadnienia #999999 tryb cr.",
+      "expected_output": "Skill próbuje znaleźć plik .ai/tasks/999999/cr.md, nie znajduje go i informuje użytkownika że raport CR nie istnieje. Pyta czy code review był wykonany tym skillem.",
+      "files": [],
+      "expectations": [
+        "Skill sprawdził istnienie pliku .ai/tasks/999999/cr.md",
+        "Skill poinformował użytkownika że plik nie istnieje",
+        "Skill wyjaśnił że tryb cr wymaga wcześniejszego CR wykonanego skillem code-review",
+        "Skill nie próbował naprawiać czegokolwiek bez raportu"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Uruchom skill bug-fix bez podania trybu dla zagadnienia #179416.",
+      "expected_output": "Skill parsuje ISSUE_ID jako 179416, rozpoznaje że brakuje trybu i pyta użytkownika: 'cr' (po code review) czy 'test' (po testach), z wyjaśnieniem obu opcji.",
+      "files": [],
+      "expectations": [
+        "Skill rozpoznał ISSUE_ID = 179416",
+        "Skill wykrył brak parametru trybu (cr lub test)",
+        "Skill zapytał użytkownika który tryb wybrać",
+        "Skill wyjaśnił różnicę między trybem cr a test"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Zagadnienie #888001 z sekcją Re-CR #1. Uruchom bug-fix tryb cr. Plik cr.md jest w .ai/tasks/888001/cr.md. Skill powinien zebrać bugi z sekcji Re-CR #1 — zarówno nowe findings jak i pozycje oznaczone jako UNFIXED w tabeli weryfikacyjnej (np. CR-1 jest UNFIXED w tabeli, CR-1b to nowy finding).",
+      "expected_output": "Skill wykrywa sekcję Re-CR #1, parsuje zarówno nowe [ ] findings (CR-1b) JAK I UNFIXED z tabeli weryfikacyjnej (CR-1). Lista bugów do naprawy zawiera CR-1 (UNFIXED z poprzedniej rundy) oraz CR-1b (nowy finding). CR-3 jest POMINIĘTY (oznaczony FIXED w tabeli). Skill nie naprawia INFO.",
+      "files": ["evals/fixtures/re-cr-round1/cr.md"],
+      "expectations": [
+        "Skill wykrył sekcję Re-CR #1 i rozpoznał że to aktywna runda",
+        "Skill zidentyfikował CR-1b jako nowy finding z sekcji Re-CR #1 (nowy CRITICAL)",
+        "Skill zidentyfikował CR-1 jako UNFIXED w tabeli weryfikacyjnej i włączył go do listy napraw",
+        "Skill NIE włączył CR-3 do listy napraw (oznaczony jako FIXED w tabeli weryfikacyjnej)",
+        "Skill wypisał listę napraw zawierającą zarówno CR-1 jak i CR-1b"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Zagadnienie testowe #888004 — uruchom bug-fix tryb cr. Skopiuj plik evals/fixtures/info-only-checkbox/cr.md do .ai/tasks/888004/cr.md. Plik zawiera checkboxy [ ] ale są to tylko INFO (CR-1 i CR-2). CRITICAL i WARNING są już wszystkie [x].",
+      "expected_output": "Skill wczytuje cr.md, widzi że unchecked items to CR-1 INFO i CR-2 INFO, rozpoznaje że INFO nie są bugami wymaganymi do naprawy i informuje użytkownika że wszystkie CRITICAL i WARNING są naprawione — nie modyfikuje żadnych plików źródłowych.",
+      "files": ["evals/fixtures/info-only-checkbox/cr.md"],
+      "expectations": [
+        "Skill wczytał plik cr.md i sprawdził checkboxy",
+        "Skill rozpoznał że niezaznaczone pozycje (CR-1, CR-2) to INFO a nie CRITICAL/WARNING",
+        "Skill poinformował że nie ma CRITICAL ani WARNING do naprawy",
+        "Skill NIE próbował modyfikować plików źródłowych dla pozycji INFO",
+        "Skill wyjaśnił że INFO to tylko sugestie które nie wymagają obowiązkowej naprawy"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Zagadnienie testowe #888003 — plik cr.md: evals/fixtures/re-cr-dev-response/cr.md — skopiuj go do .ai/tasks/888003/cr.md. Następnie utwórz plik api/utils/BarService.php z kodem: <?php class BarService { public function calculate($total, $count) { /* FIXME - AI CR - Możliwy podział przez zero w calculate() */ // DEVELOPER: W tym API $count nigdy nie jest zero, walidacja jest po stronie wywołującego return $total / $count; } public function format($input) { // FIXME - AI CR - Brak trim() w format() return strtoupper($input); } }. Uruchom tryb cr dla zagadnienia #888003.",
+      "expected_output": "Skill wykrywa FIXME CR-1 i widzi że developer dodał komentarz obok ('DEVELOPER: W tym API $count nigdy nie jest zero...'). Skill zatrzymuje się przy tym findingu, wyświetla odpowiedź dewelopera i pyta użytkownika czy zaakceptować wyjaśnienie (i pominąć naprawę) czy wymagać naprawy mimo wyjaśnienia. Dla CR-2 (brak odpowiedzi dewelopera) naprawia normalnie.",
+      "files": ["evals/fixtures/re-cr-dev-response/cr.md"],
+      "expectations": [
+        "Skill wykrył komentarz dewelopera obok FIXME CR-1",
+        "Skill wyświetlił treść odpowiedzi dewelopera użytkownikowi",
+        "Skill zapytał użytkownika czy zaakceptować wyjaśnienie dewelopera czy wymagać naprawy",
+        "Skill nie naprawił CR-1 automatycznie (czekał na decyzję użytkownika)",
+        "Skill naprawił lub zaproponował naprawę CR-2 (bez odpowiedzi dewelopera) normalnie"
+      ]
+    }
+  ]
+}
