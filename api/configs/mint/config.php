@@ -71,6 +71,7 @@ $mint_config = array(
         'charset' => 'utf8mb4',
     ),
     'oauth2_encryption_key' => 'MintHCM-DEFKEY',
+    'session_grant_interval' => 'PT4H',
 );
 
 $files = scandir(__DIR__);

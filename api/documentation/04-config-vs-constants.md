@@ -408,6 +408,53 @@ This command:
 - Stores it in the database (plain text, not hashed)
 - Does not require manual configuration in frontend `.env` files
 
+### $mint_config — Application Settings
+
+The `$mint_config` global array (defined in `configs/mint/config.php`) holds runtime settings consumed by the API. It is loaded before every request and can be overridden per-environment via `configs/mint/config_override.php` (git-ignored).
+
+#### Available keys
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `database` | *(see config.php)* | Doctrine DB connection params (`driver`, `host`, `port`, `dbname`, `user`, `password`, `charset`) |
+| `search.default_engine` | `'ElasticSearch'` | Search engine to use |
+| `search.default_page_size` | `25` | Default number of items per list page |
+| `search.engines.ElasticSearch` | `[['host'=>'localhost','port'=>'9200',...]]` | ElasticSearch node list |
+| `oauth2_encryption_key` | `'MintHCM-DEFKEY'` | Encryption key for OAuth2 token payload |
+| `session_grant_interval` | `'PT4H'` | OAuth2 access token lifetime (ISO 8601 duration). Controls how long a user stays logged in before re-authentication is required. |
+
+#### Overriding settings per environment
+
+Create or edit `configs/mint/config_override.php` (never committed to git):
+
+```php
+<?php
+// configs/mint/config_override.php
+
+// Extend session to 8 hours on this instance
+$mint_config['session_grant_interval'] = 'PT8H';
+
+// Or shorten to 30 minutes for high-security environments
+// $mint_config['session_grant_interval'] = 'PT30M';
+```
+
+Valid ISO 8601 duration examples: `PT1H` (1 hour), `PT4H` (4 hours), `PT8H` (8 hours), `P1D` (1 day).
+
+> **Note:** Changing `session_grant_interval` only affects **newly issued tokens**. Users logged in before the change will be logged out at their original token expiry; they receive the new TTL on next login.
+
+#### Reading $mint_config in code
+
+```php
+// app/Controllers/OAuth2/Server.php — pattern used for configurable values
+public static function getGrantInterval(): string
+{
+    global $mint_config;
+    return $mint_config['session_grant_interval'] ?? self::GRANT_INTERVAL;
+}
+```
+
+Always provide a sensible fallback (`?? self::GRANT_INTERVAL`) so the application works even if `config_override.php` does not define the key.
+
 
 ## When to Use Constants vs Configuration
 

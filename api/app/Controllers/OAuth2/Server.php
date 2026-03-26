@@ -72,6 +72,12 @@ class Server
     const GRANT_INTERVAL = 'PT1H';
     const REFRESH_TOKEN_TTL = 'P1M';
 
+    public static function getGrantInterval(): string
+    {
+        global $mint_config;
+        return $mint_config['session_grant_interval'] ?? self::GRANT_INTERVAL;
+    }
+
     const OAUTH2_PRIVATE_KEY = 'configs/private.key';
     const OAUTH2_PUBLIC_KEY = 'configs/public.key';
 
@@ -95,10 +101,12 @@ class Server
             $oauth2EncKey
         );
 
+        $grantInterval = new \DateInterval(self::getGrantInterval());
+
         // Client credentials grant
         $server->enableGrantType(
             new ClientCredentialsGrant(),
-            new \DateInterval(self::GRANT_INTERVAL)
+            $grantInterval
         );
 
         /** @var UsersRepository */
@@ -109,7 +117,7 @@ class Server
                 $user_repository,
                 new RefreshTokenRepository($entityManager)
             ),
-            new \DateInterval(self::GRANT_INTERVAL)
+            $grantInterval
         );
 
         // Mobile grant
@@ -118,7 +126,7 @@ class Server
                 $user_repository,
                 new RefreshTokenRepository($entityManager)
             ),
-            new \DateInterval(self::GRANT_INTERVAL)
+            $grantInterval
         );
 
         // Frontend grant
@@ -127,7 +135,7 @@ class Server
                 $user_repository,
                 new RefreshTokenRepository($entityManager)
             ),
-            new \DateInterval(self::GRANT_INTERVAL)
+            $grantInterval
         );
 
         $refreshGrant = new RefreshTokenGrant(
@@ -137,7 +145,7 @@ class Server
 
         $server->enableGrantType(
             $refreshGrant,
-            new \DateInterval(self::GRANT_INTERVAL)
+            $grantInterval
         );
 
         return $server;
