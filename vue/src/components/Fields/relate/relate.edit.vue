@@ -8,7 +8,7 @@
                 hide-details
                 :error="props.state === 'error'"
                 v-model="model.name"
-                v-bind="{ ...$attrs, ...val.props }"
+                v-bind="{ ...$attrs, ...val.props, onKeydown: undefined }"
                 @input="(event) => fetchItems(event)"
                 @click="menuOpen = true"
                 :name="props.defs.name"
