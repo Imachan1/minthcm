@@ -40,4 +40,5 @@ Przy tworzeniu nowych skilli — użyj `skill-creator`.
 
 - Skille z `local_changes: true` w `skills-manifest.yaml` nie są nadpisywane przy `--pull`
 - Aby wymusić nadpisanie: `sync.sh --pull --force`
+- Skille z `local_only: true` są całkowicie ignorowane przez sync — ani `--pull` ich nie aktualizuje, ani `--push` nie pozwala ich wysłać do upstream. Służą do skilli projektowych/paczek OOB, które żyją wyłącznie w projekcie.
 - Plik `skills-manifest.yaml` jest jedynym źródłem prawdy — `source.ref` określa wersję zestawu skilli

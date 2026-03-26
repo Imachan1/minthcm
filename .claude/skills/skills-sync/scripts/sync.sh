@@ -6,6 +6,10 @@
 #   sync.sh --pull --force      # Pobierz, nadpisując też skille z local_changes: true
 #   sync.sh --push <skill>      # Pokaż diff lokalnego skilla względem upstream
 #
+# Flagi w skills-manifest.yaml:
+#   local_changes: true   — skill jest modyfikowany lokalnie; --pull go pomija (chyba że --force)
+#   local_only: true      — skill istnieje tylko w projekcie; --pull i --push całkowicie go ignorują
+#
 # Wymagania: git, bash (Git Bash na Windows)
 
 set -euo pipefail
@@ -80,6 +84,15 @@ mapfile -t SKILL_NAMES    < <(grep '  - name:'       "$MANIFEST" | sed 's/.*- na
 mapfile -t SOURCE_PATHS   < <(grep '    source_path:' "$MANIFEST" | sed 's/.*source_path: *//' || true)
 mapfile -t LOCAL_CHANGES  < <(grep '    local_changes:' "$MANIFEST" | sed 's/.*local_changes: *//' || true)
 
+# Lookup per-skill dla pól opcjonalnych (awk, bo mapfile nie działa przy brakujących polach)
+skill_local_only() {
+  local skill_name="$1"
+  awk -v name="$skill_name" '
+    /^  - name:/ { current = $NF }
+    current == name && /^    local_only:/ { print $NF; exit }
+  ' "$MANIFEST"
+}
+
 if [[ -z "$SKILLS_REPO" || -z "$SKILLS_REF" ]]; then
   err "Nie udało się odczytać source.repo lub source.ref z manifestu."
   exit 1
@@ -122,6 +135,11 @@ if [[ "$MODE" == "pull" ]]; then
     name="${SKILL_NAMES[$i]}"
     src_path="${SOURCE_PATHS[$i]}"
     local_changes="${LOCAL_CHANGES[$i]}"
+    local_only="$(skill_local_only "$name")"
+
+    if [[ "$local_only" == "true" ]]; then
+      continue
+    fi
 
     src="$TEMP_DIR/repo/$src_path"
     dst="$PROJECT_ROOT/.claude/skills/$name"
@@ -177,7 +195,9 @@ if [[ "$MODE" == "push" ]]; then
     err "Nie podano nazwy skilla."
     echo ""
     echo -e "${BOLD}Dostępne skille:${RESET}"
-    for s in "${SKILL_NAMES[@]}"; do echo "  - $s"; done
+    for s in "${SKILL_NAMES[@]}"; do
+      [[ "$(skill_local_only "$s")" != "true" ]] && echo "  - $s"
+    done
     echo ""
     echo -e "Użycie: ${CYAN}sync.sh --push <nazwa-skilla>${RESET}"
     exit 1
@@ -192,11 +212,18 @@ if [[ "$MODE" == "push" ]]; then
     fi
   done
 
+  if [[ "$(skill_local_only "$PUSH_SKILL")" == "true" ]]; then
+    err "Skill '$PUSH_SKILL' jest oznaczony jako local_only — nie można go wysłać do upstream."
+    exit 1
+  fi
+
   if [[ -z "$SKILL_SRC_PATH" ]]; then
     err "Skill '$PUSH_SKILL' nie istnieje w skills-manifest.yaml."
     echo ""
     echo -e "${BOLD}Dostępne skille:${RESET}"
-    for s in "${SKILL_NAMES[@]}"; do echo "  - $s"; done
+    for s in "${SKILL_NAMES[@]}"; do
+      [[ "$(skill_local_only "$s")" != "true" ]] && echo "  - $s"
+    done
     exit 1
   fi
 

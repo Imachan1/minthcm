@@ -1,6 +1,6 @@
 source:
   repo: https://dev.evolpe.net/ai/ai-engineering/dev-skills.git
-  ref: "master"          # commit: caa80d1
+  ref: "master"          # commit: 7c975f5
 
 project:
   system: minthcm
@@ -74,4 +74,7 @@ skills:
   - name: minthcm-e2e
     source_path: skills/systems/minthcm/minthcm-e2e
     local_changes: false
+
+  - name: merge-to-release
+    local_only: true
 

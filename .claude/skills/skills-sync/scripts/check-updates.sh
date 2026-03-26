@@ -107,11 +107,23 @@ echo -e "${BOLD}Wersje skilli:${RESET}"
 mapfile -t SKILL_NAMES  < <(grep '  - name:'      "$MANIFEST" | sed 's/.*- name: *//')
 mapfile -t SOURCE_PATHS < <(grep '    source_path:' "$MANIFEST" | sed 's/.*source_path: *//')
 
+skill_local_only() {
+  local skill_name="$1"
+  awk -v name="$skill_name" '
+    /^  - name:/ { current = $NF }
+    current == name && /^    local_only:/ { print $NF; exit }
+  ' "$MANIFEST"
+}
+
 HAS_CHANGES=false
 
 for i in "${!SKILL_NAMES[@]}"; do
   name="${SKILL_NAMES[$i]}"
   src_path="${SOURCE_PATHS[$i]}"
+
+  if [[ "$(skill_local_only "$name")" == "true" ]]; then
+    continue
+  fi
 
   LOCAL_SKILL="$PROJECT_ROOT/.claude/skills/$name/SKILL.md"
   UPSTREAM_SKILL="$TEMP_DIR/repo/$src_path/SKILL.md"
