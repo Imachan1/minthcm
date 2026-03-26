@@ -104,7 +104,7 @@ class AuthMiddleware extends Middleware
         $username = $request->getAttribute('username');
         $email = $request->getAttribute('email');
         if (empty(trim($username)) || empty(trim($email))) {
-            throw new HttpBadRequestException(translate('LBL_MINT4_AUTH_FORGOT_PASSWORD_MISSING_CREDENTIALS_ERROR'));
+            throw new HttpBadRequestException($request, translate('LBL_MINT4_AUTH_FORGOT_PASSWORD_MISSING_CREDENTIALS_ERROR'));
         }
     }
 
