@@ -4961,3 +4961,6 @@ $app_list_strings['moduleListSingular']['MCPSettings'] = 'MCP Setting';
 
 $app_strings['LBL_REPEAT_FIELD'] = 'Repeat';
 $app_strings['LBL_EVERY'] = 'every';
+$app_strings['LBL_MINT4_AUTH_HIDE_PASSWORD'] = 'Hide Password';
+$app_strings['LBL_MINT4_AUTH_SHOW_PASSWORD'] = 'Show Password';
+$app_strings['LBL_MINT4_AUTH_FORGOT_PASSWORD_MISSING_CREDENTIALS_ERROR'] = 'Missing Email or Username';
