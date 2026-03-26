@@ -1,6 +1,6 @@
 source:
   repo: https://dev.evolpe.net/ai/ai-engineering/dev-skills.git
-  ref: "master"          # commit: 1fb0b69
+  ref: "master"          # commit: caa80d1
 
 project:
   system: minthcm

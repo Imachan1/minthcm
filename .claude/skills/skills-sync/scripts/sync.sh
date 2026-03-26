@@ -72,13 +72,13 @@ SKILLS_REPO=$(grep 'repo:' "$MANIFEST" | sed 's/.*repo: *//')
 SKILLS_REF=$(grep '  ref:' "$MANIFEST" | sed 's/.*ref: *//' | tr -d '"' | sed 's/ *#.*//')
 LOCAL_COMMIT=$(grep '  ref:' "$MANIFEST" | grep -o '# commit: [a-f0-9]*' | sed 's/# commit: //' || true)
 
-PROJECT_SYSTEM=$(grep 'system:' "$MANIFEST" | head -1 | sed 's/.*system: *//')
-PROJECT_VERSION=$(grep 'system_version:' "$MANIFEST" | sed 's/.*system_version: *//' | tr -d '"')
-PROJECT_CLIENT=$(grep 'client:' "$MANIFEST" | sed 's/.*client: *//' | tr -d '"')
+PROJECT_SYSTEM=$(grep 'system:' "$MANIFEST" | head -1 | sed 's/.*system: *//' || true)
+PROJECT_VERSION=$(grep 'system_version:' "$MANIFEST" | sed 's/.*system_version: *//' | tr -d '"' || true)
+PROJECT_CLIENT=$(grep 'client:' "$MANIFEST" | sed 's/.*client: *//' | tr -d '"' || true)
 
-mapfile -t SKILL_NAMES    < <(grep '  - name:'       "$MANIFEST" | sed 's/.*- name: *//')
-mapfile -t SOURCE_PATHS   < <(grep '    source_path:' "$MANIFEST" | sed 's/.*source_path: *//')
-mapfile -t LOCAL_CHANGES  < <(grep '    local_changes:' "$MANIFEST" | sed 's/.*local_changes: *//')
+mapfile -t SKILL_NAMES    < <(grep '  - name:'       "$MANIFEST" | sed 's/.*- name: *//' || true)
+mapfile -t SOURCE_PATHS   < <(grep '    source_path:' "$MANIFEST" | sed 's/.*source_path: *//' || true)
+mapfile -t LOCAL_CHANGES  < <(grep '    local_changes:' "$MANIFEST" | sed 's/.*local_changes: *//' || true)
 
 if [[ -z "$SKILLS_REPO" || -z "$SKILLS_REF" ]]; then
   err "Nie udało się odczytać source.repo lub source.ref z manifestu."
