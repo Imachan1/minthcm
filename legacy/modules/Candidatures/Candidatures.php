@@ -25,7 +25,7 @@ class Candidatures extends Candidatures_sugar
 
         $old_bean = $this->fetched_row;
 
-        if ($old_bean['status'] != $this->status) {
+        if (!empty($old_bean) && $old_bean['status'] != $this->status) {
             $this->to_decision = 0;
         }
 

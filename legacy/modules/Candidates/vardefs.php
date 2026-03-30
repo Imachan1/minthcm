@@ -310,7 +310,7 @@ $dictionary['Candidates'] = array(
             'merge_filter' => 'enabled',
             'duplicate_on_record_copy' => 'always',
             'audited' => true,
-            'default' => 'Polska',
+            'default' => '',
         ),
         'birthdate' => array(
             'name' => 'birthdate',

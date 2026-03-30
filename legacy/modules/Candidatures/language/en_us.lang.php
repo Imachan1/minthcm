@@ -110,8 +110,8 @@ $mod_strings = array(
     'LBL_DG_AMOUNT_USDOLLAR' => 'Net Amount Contract (base currency)',
     'LBL_GROSS_AMOUNT' => 'Gross Amount',
     'LBL_GROSS_AMOUNT_USDOLLAR' => 'Gross Amount (base currency)',
-    'LBL_SALARY_NET' => 'Salary brutto/netto Contract',
-    'LBL_SALARY_NET_USDOLLAR' => 'Salary brutto/netto Contract (base currency)',
+    'LBL_SALARY_NET' => 'Salary Gross/Net Contract',
+    'LBL_SALARY_NET_USDOLLAR' => 'Salary Gross/Net Contract (base currency)',
     'LBL_CALLS_TITLE' => 'Calls',
     'LBL_TASKS_TITLE' => 'Tasks',
     'LBL_MEETINGS_TITLE' => 'Meetings',
@@ -154,6 +154,7 @@ Please note that every User is also an Employee.',
 
     'LBL_REJECT_AND_MOVE_TO_ANOTHER_RECRUITMENT' => 'Reject and Move to Another Recruitment',
     'LBL_LINKEDIN_ACCOUNT' => 'LinkedIn',
+<<<<<<< HEAD
     
     'LBL_NAME_COMMENT' => 'Name field used in the candidature process.',
     'LBL_CURRENCY_ID_COMMENT' => 'Currency id field used in the candidature process.',
@@ -191,4 +192,5 @@ Please note that every User is also an Employee.',
     'LBL_RECRUITMENT_NAME_COMMENT' => 'Recruitment name field used in the candidature process.',
     'LBL_RECRUITMENT_ID_COMMENT' => 'Recruitment id field used in the candidature process.',
     'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Organizational Units',
+    'LBL_EMPLOYEE_NAME' => 'Employee'
 );
