@@ -12,6 +12,8 @@
   - [UnifiedSearchView - Global Search Interface](#unifiedsearchview---global-search-interface)
   - [ListView Improvements](#listview-improvements)
   - [User Experience Improvements](#user-experience-improvements)
+  - [Mobile Web View](#mobile-web-view)
+  - [MintCLI — Instance Rebuild](#mintcli--instance-rebuild)
   - [Technical Documentation](#technical-documentation)
 - [Bugfixes](#-bugfixes)
 - [Security Patches](#-security-patches)
@@ -25,7 +27,7 @@
 |-----------|--------|
 | **PHP** | 8.2 |
 | **MySQL** | 8.0 (or MariaDB 10.5, 10.6, 10.10, 10.11) |
-| **Elasticsearch** | 7.9 - 7.16 |
+| **Elasticsearch** | 7.10 - 7.16 |
 | **Node.js** | 21 |
 
 ---
@@ -239,6 +241,32 @@ This provides a robust, type-safe ORM layer for API development, replacing direc
   - Device tokens stored with last_used timestamp
   - Automatic cleanup of stale device tokens
   - Improved token management for mobile applications
+
+---
+
+### Mobile Web View
+
+> **✨ NEW FEATURE**
+> Comprehensive responsive design support for mobile browsers — the entire application UI (navigation, sidebar, list views, record views, scheduler) adapts to small screens using Vuetify breakpoints, with UI preferences persisted in localStorage.
+
+---
+
+### MintCLI — Instance Rebuild
+
+New CLI command that performs a full repair and rebuild of a MintHCM instance, eliminating the need for manual web-based admin repair operations.
+
+```bash
+./MintCLI instance:rebuild
+```
+
+**Rebuild Pipeline:**
+
+| Phase | Description |
+|-------|-------------|
+| **RepairAndRebuildLegacy** | Repairs and clears all legacy (Sugar) modules |
+| **RepairAndRebuildJavascript** | Rebuilds all JS resources (replace → concat → minify → repair + vTools) |
+| **ClearDirectory** | Clears API cache directory (`api/cache`) |
+| **OAuth2RepairPermissions** | Sets proper permissions (`chmod 600`) on OAuth2 key files |
 
 ---
 
