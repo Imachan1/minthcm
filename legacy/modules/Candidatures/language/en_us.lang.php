@@ -154,8 +154,6 @@ Please note that every User is also an Employee.',
 
     'LBL_REJECT_AND_MOVE_TO_ANOTHER_RECRUITMENT' => 'Reject and Move to Another Recruitment',
     'LBL_LINKEDIN_ACCOUNT' => 'LinkedIn',
-<<<<<<< HEAD
-    
     'LBL_NAME_COMMENT' => 'Name field used in the candidature process.',
     'LBL_CURRENCY_ID_COMMENT' => 'Currency id field used in the candidature process.',
     'LBL_CURRENCY_NAME_COMMENT' => 'Currency name field used in the candidature process.',
