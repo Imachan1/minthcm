@@ -126,7 +126,7 @@ When adding new patterns or changing existing ones, update:
 
 - PHP 8.2
 - MySQL 8.0 / MariaDB 10.5+
-- ElasticSearch 7.9
+- ElasticSearch 7.10+ (7.x only)
 - Node ~21
 - Vue 3 + TypeScript (strict mode)
 
