@@ -243,8 +243,9 @@ class Favorites extends Basic
         if(empty($this->assigned_user_id)) {
             $this->assigned_user_id = $current_user->id;
         }
-        parent::save($notify);
+        $result = parent::save($notify);
         $this->runElasticSearchHooks();
+        return $result;
     }
     /**
      * @param string $interface

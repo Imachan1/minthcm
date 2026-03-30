@@ -79,7 +79,7 @@ class Recruitments extends Recruitments_sugar {
 
       $this->calculateCurrencies();
 
-      parent::save($check_notify);
+      $result = parent::save($check_notify);
 
       //name is a calculated field so it could be change due to change of the position name after save
       if ( ($curr_name != $this->name || $old_bean_name != $this->name) && $this->load_relationship('candidatures') ) {
@@ -92,6 +92,7 @@ class Recruitments extends Recruitments_sugar {
       }
 
       $this->pushFeed();
+      return $result;
    }
 
    protected function pushFeed() {

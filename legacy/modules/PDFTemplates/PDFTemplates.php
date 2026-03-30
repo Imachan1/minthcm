@@ -53,10 +53,11 @@ class PDFTemplates extends PDFTemplates_sugar
         }
         $this->resetDefaultTemplate();
         $this->saveTemplateFile();
-        parent::save($check_notify);
+        $result = parent::save($check_notify);
         require_once 'modules/PDFGenerator/ButtonParser.php';
         $genController = new ButtonParser();
         $genController->rebuild($this->relatedmodule);
+        return $result;
     }
 
     public function resetDefaultTemplate()

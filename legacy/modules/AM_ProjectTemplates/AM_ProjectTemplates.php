@@ -63,8 +63,7 @@ class AM_ProjectTemplates extends AM_ProjectTemplates_sugar
             (isset($_POST['return_action']) && $_POST['return_action'] == 'SubPanelViewer') && !empty($focus->id))||
              !isset($_POST['user_invitees']) // we need to check that user_invitees exists before processing, it is ok to be empty
         ) {
-            parent::save(true) ;
-            $return_id = $focus->id;
+            $return_id = parent::save($check_notify);
         } else {
             if (!empty($_POST['user_invitees'])) {
                 $userInvitees = explode(',', trim($_POST['user_invitees'], ','));

@@ -463,7 +463,7 @@ class KReport extends SugarBean
         //                $this->korgobjectmultiple = json_encode(array('primary' => $_REQUEST['authaccess_id'], 'secondary' => array()));
         //                break;
         //        }
-        parent::save($checkNotify);
+        return parent::save($checkNotify);
 
         //MintHCM #107136 start
         // switch ($sugar_config['KReports']['authCheck']) {

@@ -112,7 +112,7 @@ class AOP_Case_Updates extends Basic
     {
         $this->name = SugarCleaner::cleanHtml($this->name);
         $this->parseDescription();
-        parent::save($check_notify);
+        $result = parent::save($check_notify);
         if (file_exists('custom/modules/AOP_Case_Updates/CaseUpdatesHook.php')) {
             require_once 'custom/modules/AOP_Case_Updates/CaseUpdatesHook.php';
         } else {
@@ -125,7 +125,7 @@ class AOP_Case_Updates extends Basic
         }
         $hook->sendCaseUpdate($this);
 
-        return $this->id;
+        return $result;
     }
 
     /**

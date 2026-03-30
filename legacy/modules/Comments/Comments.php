@@ -38,7 +38,7 @@ class Comments extends Basic
     public function save($check_notify = false)
     {
         $this->setDateEdited();
-        parent::save($check_notify);
+        return parent::save($check_notify);
     }
 
     public function getAuthorFullName()

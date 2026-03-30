@@ -64,8 +64,9 @@ require_once 'modules/Positions/SugarFeeds/PositionsFeed.php';
 class Positions extends Positions_sugar {
 
    public function save($check_notify = false) {
-      parent::save($check_notify);
+      $result = parent::save($check_notify);
       $this->pushFeed();
+      return $result;
    }
 
    protected function pushFeed() {

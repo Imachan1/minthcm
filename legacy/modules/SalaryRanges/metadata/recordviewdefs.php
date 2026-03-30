@@ -11,6 +11,9 @@ $viewdefs['SalaryRanges'] = [
                         'title' => 'LBL_BASIC',
                         'fields' => [
                             [
+                                ['name' => 'position_name'],
+                            ],
+                            [
                                 ['name' => 'start_date'],
                                 ['name' => 'end_date'],
                             ],
