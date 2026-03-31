@@ -1,0 +1,80 @@
+source:
+  repo: https://dev.evolpe.net/ai/ai-engineering/dev-skills.git
+  ref: "master"          # commit: 7c975f5
+
+project:
+  system: minthcm
+  system_version: "6.x"
+
+skills:
+  - name: redmine
+    source_path: skills/common/redmine
+    local_changes: false
+
+  - name: skill-creator
+    source_path: skills/common/skill-creator
+    local_changes: false
+
+  - name: code-review
+    source_path: skills/common/code-review
+    local_changes: false
+
+  - name: bug-fix
+    source_path: skills/common/bug-fix
+    local_changes: false
+
+  - name: coding-standards
+    source_path: skills/common/coding-standards
+    local_changes: false
+
+  - name: plan-us
+    source_path: skills/common/plan-us
+    local_changes: false
+
+  - name: implementation
+    source_path: skills/common/implementation
+    local_changes: false
+
+  - name: skills-sync
+    source_path: skills/common/skills-sync
+    local_changes: false
+
+  - name: dev-tools
+    source_path: skills/common/dev-tools
+    local_changes: false
+
+  - name: git-workflow
+    source_path: skills/common/git-workflow
+    local_changes: false
+
+  - name: self-code-review
+    source_path: skills/common/self-code-review
+    local_changes: false
+
+  - name: self-test
+    source_path: skills/common/self-test
+    local_changes: false
+
+  - name: bug-report
+    source_path: skills/common/bug-report
+    local_changes: false
+
+  - name: e2e-testing
+    source_path: skills/common/e2e-testing
+    local_changes: false
+
+  - name: minthcm
+    source_path: skills/systems/minthcm/minthcm-project
+    local_changes: false
+
+  - name: minthcm-core
+    source_path: skills/systems/minthcm/minthcm-core
+    local_changes: false
+
+  - name: minthcm-e2e
+    source_path: skills/systems/minthcm/minthcm-e2e
+    local_changes: false
+
+  - name: merge-to-release
+    local_only: true
+

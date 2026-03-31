@@ -1,0 +1,212 @@
+{
+  "skill_name": "implementation",
+  "test_setup": "Each eval requires a plan.md fixture at `.ai/tasks/{ISSUE_ID}/plan.md`. Before running an eval, use the plan-us skill to generate the plan for a simple dummy issue (e.g. 'Add a notes text field to the Employees module'), then copy or adjust the generated file to match the fixture template at `evals/fixtures/{ISSUE_ID}/plan.md`. For evals 2–5, copy the fixture file directly since specific step markers ([x], [~], [!]) are required to simulate the test scenario. For evals 7–8 (hierarchical plans), copy ALL files in the fixture directory (plan.md + plan_*.md sub-plans). For eval 8, the Legacy sub-plan is pre-marked [x] (done) to simulate a resume-after-layer scenario.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Implement plan for US #000001",
+      "alternate_prompts": [
+        "Zaimplementuj plan dla US #000001",
+        "Implement https://redmine.evolpe.net/issues/000001"
+      ],
+      "setup": "Run plan-us for a simple issue (e.g. 'Add a notes field to the Employees module') to generate `.ai/tasks/000001/plan.md`. Verify it has at least two phases with a [CHECKPOINT] between them and all steps marked [ ]. Alternatively, copy `evals/fixtures/000001/plan.md` directly.",
+      "expected_output": "Agent locates .ai/tasks/000001/plan.md (extracts ID from URL if needed), displays skill selection table, executes steps in order marking [~] before each and [x] after, launches [P] steps via subagents, auto-verifies at [CHECKPOINT] without asking user, updates all markers in real time",
+      "files": ["evals/fixtures/000001/plan.md"],
+      "expectations": [
+        "Agent reads .ai/tasks/000001/plan.md",
+        "Agent correctly extracts issue ID from a full Redmine URL when that format is used",
+        "Agent displays skill selection table before loading skills and waits for confirmation",
+        "Agent marks each step [~] in plan.md before starting it, [x] immediately after finishing",
+        "Agent executes steps sequentially in the order defined by the plan (no [P] steps in this fixture; [P] execution is tested in a dedicated integration test)",
+        "Agent handles [CHECKPOINT] autonomously: runs git diff + syntax checks (php -l, tsc, etc.), no user confirmation needed",
+        "Agent does NOT start the next phase until [CHECKPOINT] passes"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Continue implementation #000002",
+      "alternate_prompts": [
+        "Kontynuuj implementację #000002",
+        "Resume #000002"
+      ],
+      "setup": "Copy `evals/fixtures/000002/plan.md` to `.ai/tasks/000002/plan.md`. The fixture contains steps with mixed markers: one [x] (fully done), one [~] whose target file already appears in git diff (truly complete), and one [~] that is genuinely incomplete (file not modified). Simulate the git diff state by creating the 'already done' file manually if needed.",
+      "expected_output": "Agent reads plan with mixed markers ([x], [~]), runs git diff to get ground truth, for a [~] step whose files are already present in git diff marks it [x] without re-executing, for a [~] step that is genuinely incomplete resumes it, displays a resume summary with counts",
+      "files": ["evals/fixtures/000002/plan.md"],
+      "expectations": [
+        "Agent reads the plan and runs git diff before touching anything",
+        "Agent treats git diff as ground truth over plan markers",
+        "Agent correctly skips steps marked [x] — does NOT re-execute them",
+        "For a [~] step whose expected files already appear in git diff: agent marks it [x] without re-executing",
+        "For a [~] step that is genuinely incomplete: agent resumes only the missing part",
+        "Agent displays resume summary showing completed / in-progress / remaining counts"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Resume implementation #000003",
+      "alternate_prompts": [
+        "Wznów implementację #000003",
+        "Continue #000003"
+      ],
+      "setup": "Copy `evals/fixtures/000003/plan.md` to `.ai/tasks/000003/plan.md`. The fixture contains some [x] steps followed by a [!] step with a failure note, and one remaining [ ] step.",
+      "expected_output": "Agent finds [!] step, explains the failure, retries exactly once. On success: marks [x] and continues. On second failure: stops and asks user for guidance — does NOT attempt a third retry.",
+      "files": ["evals/fixtures/000003/plan.md"],
+      "expectations": [
+        "Agent identifies [!] step and clearly explains what failed",
+        "Agent runs git diff to assess current state before retrying",
+        "Agent retries the failed step exactly once (never more)",
+        "On successful retry: marks step [x] and continues with remaining steps",
+        "On second consecutive failure: agent stops immediately and asks user for guidance",
+        "Agent does NOT attempt a third retry under any circumstances"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Implement #000004",
+      "alternate_prompts": [
+        "Zaimplementuj #000004",
+        "Execute plan for US #000004"
+      ],
+      "setup": "Copy `evals/fixtures/000004/plan.md` to `.ai/tasks/000004/plan.md`. The fixture has all steps marked [x] — implementation is already complete. The eval tests that the agent skips re-execution and goes straight to the commit flow.",
+      "expected_output": "Agent detects all steps [x], informs user implementation is complete, asks for reviewer. With 'Aleksander Bąk': normalizes diacritics → 'aleksander.bak', confirms, commits with #CR|aleksander.bak. When reviewer is skipped: commits with #CR only. Never pushes.",
+      "files": ["evals/fixtures/000004/plan.md"],
+      "user_responses": ["Aleksander Bąk"],
+      "expectations": [
+        "Agent detects all steps are marked [x] and does NOT re-execute any",
+        "Agent informs user that implementation is already complete",
+        "Agent always asks for reviewer login before committing",
+        "Agent normalizes Polish diacritics correctly (ą→a, ć→c, ę→e, ł→l, ó→o, ś→s, ź/ż→z) and spaces to dots",
+        "Agent displays the normalized login and waits for confirmation before committing",
+        "When reviewer is provided: commit message contains #CR|{normalized_login}",
+        "Agent does NOT run git push"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Implement plan for US #000005",
+      "alternate_prompts": [
+        "Zaimplementuj plan dla US #000005",
+        "Execute #000005"
+      ],
+      "setup": "Copy `evals/fixtures/000005/plan.md` to `.ai/tasks/000005/plan.md`. The fixture has two phases separated by a [CHECKPOINT]. Phase 1 steps are [ ]. The test scenario is that after completing Phase 1, auto-verification detects a syntax error (or missing file) — the agent must fix it autonomously and re-verify before starting Phase 2. Also includes a step where the actual file path differs from what the plan specifies.",
+      "expected_output": "Agent executes Phase 1, hits [CHECKPOINT], auto-verification fails (e.g. file missing or syntax error), fixes the issue autonomously and re-verifies — only then starts Phase 2. When a step's actual file structure differs from the plan, agent adds an inline note to plan.md near the affected step and continues without stopping.",
+      "files": ["evals/fixtures/000005/plan.md"],
+      "expectations": [
+        "Agent completes Phase 1 steps and reaches [CHECKPOINT]",
+        "Agent runs auto-verification: git diff + syntax checks (php -l / tsc / json validation)",
+        "On verification failure: agent fixes the issue immediately without asking the user",
+        "Agent re-runs full verification after fixing — does NOT proceed on assumption",
+        "Agent does NOT start Phase 2 until [CHECKPOINT] passes",
+        "When encountering a technical deviation from the plan: agent adds an inline note to plan.md near the affected step explaining the change",
+        "Agent continues implementation after documenting the deviation — does NOT stop to ask the user"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Resume implementation #000003b",
+      "alternate_prompts": [
+        "Wznów implementację #000003b",
+        "Continue #000003b"
+      ],
+      "setup": "Copy `evals/fixtures/000003b/plan.md` to `.ai/tasks/000003b/plan.md`. The fixture has a [!] step that has already been retried once and failed again (the failure note says 'file locked by deployment process'). This simulates the second-failure scenario where the agent must stop and ask the user for guidance.",
+      "expected_output": "Agent finds [!] step with second-failure context, explains the failure clearly, does NOT retry again (retry cap reached), immediately stops and asks user for guidance on how to proceed.",
+      "files": ["evals/fixtures/000003b/plan.md"],
+      "expectations": [
+        "Agent identifies the [!] step and clearly explains what failed (including quoting the failure note)",
+        "Agent runs git diff to assess current file state before deciding on action",
+        "Agent recognizes this is a second-failure scenario (retry cap reached) and does NOT attempt another retry",
+        "Agent stops immediately and asks user for guidance — does not attempt any workaround autonomously",
+        "Agent does NOT modify the [!] marker or attempt to execute the failed step"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Implement #000007",
+      "alternate_prompts": [
+        "Zaimplementuj #000007",
+        "Implement plan for US #000007"
+      ],
+      "setup": "Copy ALL files from `evals/fixtures/000007/` (plan.md + plan_legacy.md + plan_api.md + plan_vue.md) to `.ai/tasks/000007/`. All sub-plans have status ⬜ pending. This tests fresh-start hierarchical plan handling.",
+      "expected_output": "Agent detects hierarchical plan, displays layer status table (all ⬜ pending), auto-selects Legacy as the first layer (per Architecture overview order), loads only master plan context + plan_legacy.md as working document, executes Legacy steps, marks sub-plan steps [x], updates master plan Legacy status to ✅ done, then proceeds to commit flow for the completed layer.",
+      "files": [
+        "evals/fixtures/000007/plan.md",
+        "evals/fixtures/000007/plan_legacy.md",
+        "evals/fixtures/000007/plan_api.md",
+        "evals/fixtures/000007/plan_vue.md"
+      ],
+      "expectations": [
+        "Agent detects hierarchical plan by finding Sub-plans table + plan_*.md files on disk",
+        "Agent displays layer status summary showing all 3 layers as ⬜ pending",
+        "Agent auto-selects Legacy layer (first pending in Architecture overview order)",
+        "Agent reads plan_legacy.md as the working document for this session",
+        "Agent does NOT read plan_api.md or plan_vue.md contents (unnecessary context)",
+        "Agent marks steps [~] and [x] in plan_legacy.md (not in plan.md)",
+        "After completing all sub-plan steps: agent updates master plan.md Sub-plans table — Legacy status changes from ⬜ pending to ✅ done",
+        "Agent proceeds to commit flow after completing the layer"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Continue implementation #000008",
+      "alternate_prompts": [
+        "Kontynuuj implementację #000008",
+        "Resume #000008"
+      ],
+      "setup": "Copy ALL files from `evals/fixtures/000008/` (plan.md + plan_legacy.md + plan_api.md) to `.ai/tasks/000008/`. The master plan has Legacy marked ✅ done and API marked ⬜ pending. plan_legacy.md has all steps [x]. This simulates resuming after completing one layer.",
+      "expected_output": "Agent detects hierarchical plan, displays layer status (✅ Legacy, ⬜ API), auto-selects API as the next pending layer, loads plan_api.md as working document, executes API steps, updates master plan API status to ✅ done after completion.",
+      "files": [
+        "evals/fixtures/000008/plan.md",
+        "evals/fixtures/000008/plan_legacy.md",
+        "evals/fixtures/000008/plan_api.md"
+      ],
+      "expectations": [
+        "Agent detects hierarchical plan and reads master plan.md",
+        "Agent displays layer status: ✅ Legacy (done), ⬜ API (pending)",
+        "Agent skips Legacy layer (already ✅ done) and auto-selects API layer",
+        "Agent reads plan_api.md as the working document — does NOT read plan_legacy.md contents",
+        "Agent marks steps [~] and [x] in plan_api.md",
+        "After completing API steps: agent updates master plan.md — API status changes from ⬜ pending to ✅ done",
+        "Agent correctly identifies that all layers are now ✅ done and informs the user"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Implement #000009",
+      "alternate_prompts": [
+        "Zaimplementuj #000009",
+        "Execute plan for US #000009"
+      ],
+      "setup": "Copy `evals/fixtures/000009/plan.md` to `.ai/tasks/000009/plan.md`. The fixture has 3 steps marked [P] that ALL modify the same files (vardefs.php and en_us.lang.php). This tests the file conflict detection for parallel steps.",
+      "expected_output": "Agent detects [P] steps 1–3, checks file sets for conflicts, finds that all three modify vardefs.php and en_us.lang.php, executes them sequentially instead of in parallel. Steps 4 and 5 are sequential and executed normally.",
+      "files": ["evals/fixtures/000009/plan.md"],
+      "expectations": [
+        "Agent identifies steps 1–3 as [P] (parallel candidates)",
+        "Agent checks file sets before launching parallel execution",
+        "Agent detects that steps 1–3 all modify the same files (vardefs.php and/or en_us.lang.php)",
+        "Agent executes steps 1–3 sequentially instead of in parallel due to file conflicts",
+        "Agent does NOT launch subagents for conflicting [P] steps",
+        "Agent handles [CHECKPOINT] after the sequential execution normally"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Implement #000010",
+      "alternate_prompts": [
+        "Zaimplementuj #000010",
+        "Execute plan for US #000010"
+      ],
+      "setup": "Copy `evals/fixtures/000010/plan.md` to `.ai/tasks/000010/plan.md`. The fixture has steps 2 and 3 marked [P] that touch different files (recordviewdefs.php vs listviewdefs.php). This tests successful parallel execution with disjoint file sets.",
+      "expected_output": "Agent executes step 1 sequentially, passes [CHECKPOINT], then detects [P] steps 2 and 3 with disjoint file sets, launches them in parallel via subagents, marks both [x] after completion.",
+      "files": ["evals/fixtures/000010/plan.md"],
+      "expectations": [
+        "Agent executes step 1 sequentially (not marked [P])",
+        "Agent handles [CHECKPOINT] autonomously after step 1",
+        "Agent identifies steps 2 and 3 as [P] (parallel candidates)",
+        "Agent checks file sets and confirms they are disjoint (recordviewdefs.php vs listviewdefs.php)",
+        "Agent launches subagents for steps 2 and 3 in parallel",
+        "Agent marks both [P] steps as [~] before launching, then [x] after completion",
+        "Agent passes minimal context to each subagent (only the relevant step + file info)"
+      ]
+    }
+  ]
+}
