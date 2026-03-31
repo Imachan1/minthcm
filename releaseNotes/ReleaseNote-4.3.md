@@ -87,7 +87,7 @@
 > **✨ NEW FEATURE**  
 > RecordView is a completely new view type designed to replace the legacy EditView and DetailView with a modern, unified interface.
 
-![RecordView](assets/recordView.png)
+![RecordView](https://minthcm.org/wp-content/uploads/2026/03/recordView.png)
 
 **Key Features:**
 - **Unified Interface**: Single view that combines both display and edit modes, eliminating the need for separate DetailView and EditView
