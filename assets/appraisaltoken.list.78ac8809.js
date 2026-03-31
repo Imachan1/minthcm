@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:assets/appraisaltoken.list.78ac8809.js
-import{l as s,X as o,n as p,w as r,s as l,P as i,y as c}from"./index.484b954d.js";const _=s({__name:"appraisaltoken.list",props:{defs:{},data:{}},setup(e){const a=e,n=o(),t=()=>{window.open(`legacy/index.php?entryPoint=ShowAppraisal&appraisal_id=${a.data.bean.id}&token=${a.data.bean[a.defs.name]}`,"_blank")};return(d,u)=>a.data.bean[a.defs.name]?(p(),r(i,{key:0,text:l(n).label("LBL_OPEN_FORM","Appraisals"),onClick:t},null,8,["text"])):c("",!0)}});export{_ as default};
-========
-import{l as s,X as o,n as p,w as r,s as l,Q as i,y as c}from"./index.85f34d44.js";const _=s({__name:"appraisaltoken.list",props:{defs:{},data:{}},setup(e){const a=e,n=o(),t=()=>{window.open(`legacy/index.php?entryPoint=ShowAppraisal&appraisal_id=${a.data.bean.id}&token=${a.data.bean[a.defs.name]}`,"_blank")};return(d,u)=>a.data.bean[a.defs.name]?(p(),r(i,{key:0,text:l(n).label("LBL_OPEN_FORM","Appraisals"),onClick:t},null,8,["text"])):c("",!0)}});export{_ as default};
->>>>>>>> master:assets/appraisaltoken.list.aec4598c.js
