@@ -4,6 +4,7 @@ if (!defined('sugarEntry')) {
     define('sugarEntry', true);
 }
 
+#[\AllowDynamicProperties]
 class ESlistviewdefsGenerator
 {
     // Skrypt odpalam tutaj, ale chce aby pliki automatycznie przeniosły się do repo postawionego na kontenerze, abym nie musiał tego robić ręcznie.
