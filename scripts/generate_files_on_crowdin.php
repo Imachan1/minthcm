@@ -47,6 +47,22 @@ function is_excluded_folder($path)
         'Contacts',
         'Opportunities',
         'Prospects',
+        'AOP_Case_Events',
+        'AOP_Case_Updates',
+        'AOS_Contracts',
+        'AOS_Invoices',
+        'AOS_Line_Item_Groups',
+        'AOS_Product_Categories',
+        'AOS_Products',
+        'AOS_Products_Quotes',
+        'AOS_Quotes',
+        'Connectors',
+        'MySettings',
+        'Spots',
+        'jjwg_Address_Cache',
+        'jjwg_Areas',
+        'jjwg_Maps',
+        'jjwg_Markers',
     ];
     foreach ($excluded_modules as $module) {
         if (strpos($path, 'modules/' . $module) === 0) {
