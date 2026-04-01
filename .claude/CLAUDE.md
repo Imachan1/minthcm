@@ -68,7 +68,7 @@ The `LegacyView` embeds legacy PHP-rendered pages in an iframe. Whether a module
 
 | Branch type | Base branch | Naming |
 |---|---|---|
-| Feature (US/Epic/Spike) | `release/4.3.0` | `feature/{ISSUE_ID}` |
+| Feature (US/Epic/Spike) | `master` | `feature/{ISSUE_ID}` |
 | Hotfix | `master` | `hotfix/{ISSUE_ID}` |
 | Release | `master` | `release/{version}` |
 
