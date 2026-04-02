@@ -18,7 +18,9 @@
 
 ## Kryteria review — baseline (Step 8b i 8c, per-agent)
 
-Każdy agent otrzymuje diff + pełne pliki + kontekst Redmine + **jedno** kryterium z poniższej listy. Model per agent określony w `workflow.md` (Step 8c).
+Każdy agent otrzymuje diff + kontekst plików (pełne pliki lub rozszerzony diff wg reguły z Step 8a) + **jedno** kryterium z poniższej listy. Model per agent określony w `workflow.md` (Step 8c).
+
+Kontekst Redmine jest zróżnicowany: Agent 1 dostaje pełny opis i kryteria akceptacji; Agenci 2–5 dostają tylko tytuł zagadnienia.
 
 ---
 

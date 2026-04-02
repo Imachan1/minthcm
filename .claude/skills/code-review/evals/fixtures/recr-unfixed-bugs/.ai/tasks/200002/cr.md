@@ -12,16 +12,16 @@ REST API do zarządzania użytkownikami. Kryteria: GET /users, GET /users/search
 
 ## Zmienione pliki
 
-- api/users.php (+45/-2)
+- api/users.php (+77/-2)
 
 ## Znalezione problemy
 
 ### CRITICAL
 
-- [ ] `api/users.php:19` — **[Bezpieczeństwo] SQL Injection w searchUsers** — zapytanie budowane przez konkatenację z `$request['query']` → użyj prepared statements z parametrami LIKE [confidence: 99]
-- [ ] `api/users.php:26` — **[Bezpieczeństwo] SQL Injection w getUserById** — `$id` z requestu wstrzykiwane bezpośrednio do zapytania → użyj prepared statement z parametrem [confidence: 99]
-- [ ] `api/users.php:32` — **[Bezpieczeństwo] SQL Injection w createUser** — `$name` i `$email` z requestu konkatenowane do INSERT → użyj prepared statement [confidence: 99]
-- [ ] `api/users.php:39` — **[Bezpieczeństwo] SQL Injection w deleteUser** — `$id` wstrzykiwany do DELETE bez sanityzacji → użyj prepared statement [confidence: 99]
+- [ ] `api/users.php:20` — **[Bezpieczeństwo] SQL Injection w searchUsers** — zapytanie budowane przez konkatenację z `$request['query']` → użyj prepared statements z parametrami LIKE [confidence: 99]
+- [ ] `api/users.php:27` — **[Bezpieczeństwo] SQL Injection w getUserById** — `$id` z requestu wstrzykiwane bezpośrednio do zapytania → użyj prepared statement z parametrem [confidence: 99]
+- [ ] `api/users.php:33` — **[Bezpieczeństwo] SQL Injection w createUser** — `$name` i `$email` z requestu konkatenowane do INSERT → użyj prepared statement [confidence: 99]
+- [ ] `api/users.php:47` — **[Bezpieczeństwo] SQL Injection w deleteUser** — `$id` wstrzykiwany do DELETE bez sanityzacji → użyj prepared statement [confidence: 99]
 - [ ] Brak autoryzacji — żaden z endpointów nie weryfikuje tożsamości wywołującego → dodaj middleware autoryzacji lub sprawdzenie sesji przed każdą operacją [confidence: 95]
 
 ### WARNING

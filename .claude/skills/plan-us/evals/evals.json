@@ -173,5 +173,84 @@
         }
       ]
     }
+  ,
+    {
+      "id": 5,
+      "prompt": "Zaplanuj zagadnienie dla mnie. Poniżej treść błędu (tryb manualny — bez Redmine MCP):\n\n---\n\n# Bug #100010 — Candidature status not refreshed in list view after record save\n\n**Tracker:** Błąd niekrytyczny (16)\n**Sprint:** Sprint 45\n**Project:** MintHCM Core\n**Assignee:** Marek Kowalczyk\n\n## Description\n\nAfter saving a Candidature record (changing the status field, e.g. from \"New\" to \"In progress\"),\nthe list view still shows the old status value. The user must manually reload the page (F5) to\nsee the updated value in the list.\n\nThe record view itself shows the correct value immediately after save — the problem is only\nin the list view.\n\n## Steps to reproduce\n\n1. Open the Candidatures module list view\n2. Click on any candidature record\n3. In the record view, change the `status` field to a different value\n4. Click Save\n5. Navigate back to the list view (using breadcrumb or sidebar menu)\n6. Observe: the `status` column still shows the old value\n\n## Expected behavior\n\nAfter saving, returning to the list view should show the updated status value without requiring\na page reload.\n\n## Actual behavior\n\nList view shows stale data. Hard reload (F5) fixes the display.\n\n## Notes\n\n- Possibly related to Pinia store caching — the list store may not be invalidated after a record\n  save event\n- Similar stale-data symptom was reported for the Employees module 2 sprints ago (resolved)",
+      "expected_output": "Claude presents a root cause diagnosis (hypothesis about the Pinia store not being invalidated) with evidence from the codebase, then asks the user to confirm before creating any plan file. plan.md must NOT be created at this stage.",
+      "files": [
+        "evals/fixtures/bug_simple.md"
+      ],
+      "assertions": [
+        {
+          "id": "no-plan-before-confirmation",
+          "description": "plan.md is NOT created before user confirms the diagnosis",
+          "check": "file_not_exists",
+          "target": ".ai/tasks/100010/plan.md"
+        },
+        {
+          "id": "presents-diagnosis",
+          "description": "Response contains a diagnosis hypothesis about the root cause",
+          "check": "qualitative",
+          "note": "Response must describe a specific root cause hypothesis (e.g. Pinia store not invalidated, list not refetching after save) with at least one file reference as evidence"
+        },
+        {
+          "id": "asks-for-confirmation",
+          "description": "Response explicitly asks the user to confirm the diagnosis before proceeding",
+          "check": "response_contains_question",
+          "note": "Response must contain '?' and ask whether the user agrees with the diagnosis — not just a rhetorical question"
+        },
+        {
+          "id": "no-domain-skills-loaded-prematurely",
+          "description": "Response does not mention loading minthcm-core or minthcm-project before diagnosis is confirmed",
+          "check": "qualitative",
+          "note": "Response must not indicate that domain skills were selected or loaded at this stage — that happens only after confirmation"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Zaplanuj zagadnienie dla mnie. Poniżej treść błędu wraz z potwierdzeniem diagnozy (tryb manualny — bez Redmine MCP):\n\n---\n\n# Bug #100010 — Candidature status not refreshed in list view after record save\n\n**Tracker:** Błąd niekrytyczny (16)\n**Sprint:** Sprint 45\n**Project:** MintHCM Core\n**Assignee:** Marek Kowalczyk\n\n## Description\n\nAfter saving a Candidature record (changing the status field, e.g. from \"New\" to \"In progress\"),\nthe list view still shows the old status value. The user must manually reload the page (F5) to\nsee the updated value in the list.\n\nThe record view itself shows the correct value immediately after save — the problem is only\nin the list view.\n\n## Steps to reproduce\n\n1. Open the Candidatures module list view\n2. Click on any candidature record\n3. In the record view, change the `status` field to a different value\n4. Click Save\n5. Navigate back to the list view (using breadcrumb or sidebar menu)\n6. Observe: the `status` column still shows the old value\n\n## Expected behavior\n\nAfter saving, returning to the list view should show the updated status value without requiring\na page reload.\n\n## Actual behavior\n\nList view shows stale data. Hard reload (F5) fixes the display.\n\n## Notes\n\n- Possibly related to Pinia store caching — the list store may not be invalidated after a record\n  save event\n- Similar stale-data symptom was reported for the Employees module 2 sprints ago (resolved)\n\n---\n\n## Diagnosis confirmation (user response)\n\nTak, zgadzam się z diagnozą. Rzeczywiście po zapisie rekordu store listy nie jest odświeżany.\nPunkt 1 jest trafny — brakuje wywołania akcji odświeżenia listy po powrocie z widoku rekordu.\nMożemy przejść do planowania.",
+      "expected_output": "plan.md is created at .ai/tasks/100010/plan.md. The plan must contain a '## Root Cause' section describing the confirmed diagnosis, a Files to modify table, and implementation steps with - [ ] markers.",
+      "files": [
+        "evals/fixtures/bug_simple_confirmed.md"
+      ],
+      "assertions": [
+        {
+          "id": "plan-created",
+          "description": "plan.md is created at .ai/tasks/100010/plan.md",
+          "check": "file_exists",
+          "target": ".ai/tasks/100010/plan.md"
+        },
+        {
+          "id": "issue-subject-in-heading",
+          "description": "plan.md H1 heading contains ISSUE_ID",
+          "check": "file_contains",
+          "target": ".ai/tasks/100010/plan.md",
+          "pattern": "# Plan: #100010"
+        },
+        {
+          "id": "has-root-cause-section",
+          "description": "plan.md contains a Root Cause section",
+          "check": "file_contains",
+          "target": ".ai/tasks/100010/plan.md",
+          "pattern": "## Root Cause"
+        },
+        {
+          "id": "has-implementation-steps",
+          "description": "plan.md contains unchecked implementation steps",
+          "check": "file_contains",
+          "target": ".ai/tasks/100010/plan.md",
+          "pattern": "- [ ]"
+        },
+        {
+          "id": "has-files-table",
+          "description": "plan.md contains Files to modify/create table",
+          "check": "file_contains",
+          "target": ".ai/tasks/100010/plan.md",
+          "pattern": "| "
+        }
+      ]
+    }
   ]
 }
