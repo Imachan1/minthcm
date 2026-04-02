@@ -63,7 +63,7 @@ create_fixture_200001() {
 }
 
 # ============================================================
-# Fixture 200002: Średni diff (>=20 linii) — ścieżka równoległa
+# Fixture 200002: Średni diff (>=80 linii) — ścieżka równoległa
 # SQL injection + brak autoryzacji w User API
 # ============================================================
 create_fixture_200002() {
@@ -254,7 +254,7 @@ EOF
  */
 function calculateTotal($items) {
     $total = 0;
-    // FIXME [CR #200001] Off-by-one: $i <= count($items) powinno być $i < count($items)
+    // FIXME - AI CR - Off-by-one: $i <= count($items) powinno być $i < count($items)
     for ($i = 0; $i <= count($items); $i++) {
         $total += $items[$i]['price'];
     }
@@ -332,6 +332,7 @@ EOF
 
 /**
  * User API Controller
+ * Handles CRUD operations for the users resource
  */
 class UserApiController {
     private $db;
@@ -341,13 +342,13 @@ class UserApiController {
     }
 
     public function getUsers() {
-        $stmt = $this->db->prepare("SELECT id, name, email FROM users");
+        $stmt = $this->db->prepare("SELECT id, name, email FROM users ORDER BY name ASC");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function searchUsers($request) {
-        // FIXME [CR #200002] SQL Injection: użyj prepared statement zamiast konkatenacji
+        // FIXME - AI CR - SQL Injection: użyj prepared statement zamiast konkatenacji
         $search = $request['query'];
         $query = "SELECT * FROM users WHERE name LIKE '%" . $search . "%' OR email LIKE '%" . $search . "%'";
         $result = $this->db->query($query);
@@ -355,14 +356,14 @@ class UserApiController {
     }
 
     public function getUserById($id) {
-        // FIXME [CR #200002] SQL Injection: użyj prepared statement zamiast konkatenacji
+        // FIXME - AI CR - SQL Injection: użyj prepared statement zamiast konkatenacji
         $query = "SELECT * FROM users WHERE id = " . $id;
         $result = $this->db->query($query);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
 
     public function createUser($request) {
-        // FIXME [CR #200002] SQL Injection: użyj prepared statement zamiast konkatenacji
+        // FIXME - AI CR - SQL Injection: użyj prepared statement zamiast konkatenacji
         $name = $request['name'];
         $email = $request['email'];
         $query = "INSERT INTO users (name, email) VALUES ('" . $name . "', '" . $email . "')";
@@ -370,13 +371,47 @@ class UserApiController {
         return ['status' => 'created'];
     }
 
+    public function updateUserEmail($id, $email) {
+        $stmt = $this->db->prepare("UPDATE users SET email = ? WHERE id = ?");
+        $stmt->execute([$email, $id]);
+        return ['status' => 'updated'];
+    }
+
     public function deleteUser($id) {
-        // FIXME [CR #200002] SQL Injection: użyj prepared statement zamiast konkatenacji
+        // FIXME - AI CR - SQL Injection: użyj prepared statement zamiast konkatenacji
         $this->db->query("DELETE FROM users WHERE id = " . $id);
         return ['status' => 'deleted'];
     }
 
-    // FIXME [CR #200002] Brak autoryzacji: dodaj sprawdzenie sesji/tokenu przed każdą metodą
+    public function countUsers() {
+        $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM users");
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getUsersByIds(array $ids) {
+        if (empty($ids)) {
+            return [];
+        }
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $stmt = $this->db->prepare("SELECT id, name, email FROM users WHERE id IN ($placeholders)");
+        $stmt->execute($ids);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function deactivateUser($id) {
+        $stmt = $this->db->prepare("UPDATE users SET active = 0, deactivated_at = NOW() WHERE id = ?");
+        $stmt->execute([$id]);
+        return ['status' => 'deactivated'];
+    }
+
+    public function getActiveUsers() {
+        $stmt = $this->db->prepare("SELECT id, name, email FROM users WHERE active = 1 ORDER BY name ASC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // FIXME - AI CR - Brak autoryzacji: dodaj sprawdzenie sesji/tokenu przed każdą metodą
 }
 EOF
     git add . && git commit -m "ref #200002 Dodanie API uzytkownikow #BUG|jan.kowalski" -q

@@ -7,13 +7,14 @@
 - [Step 3 — Walidacja typu zagadnienia](#step-3)
 - [Step 4 — Pobierz najnowsze zmiany](#step-4)
 - [Step 5 — Znajdź i przełącz na feature branch](#step-5)
-- [Step 6 — Zidentyfikuj autora kodu](#step-6)
-- [Step 7 — Ustal zakres diff](#step-7)
-- [Step 8 — Przeprowadź code review](#step-8)
-- [Step 9 — Napisz raport CR](#step-9)
-- [Step 10 — Dodaj inline FIXME komentarze](#step-10)
-- [Step 11 — Zapytaj usera o commit](#step-11)
-- [Step 12 — Commit](#step-12)
+- [Step 6 — Ustal zakres diff](#step-6)
+  - [Step 6b — Zidentyfikuj autora kodu](#step-6b) *(po 6a)*
+- [Step 7 — Przeprowadź code review](#step-7)
+- [Step 8 — Napisz raport CR](#step-8)
+- [Step 9 — Dodaj inline FIXME komentarze](#step-9)
+- [Step 10 — Zapytaj usera o commit](#step-10)
+- [Step 11 — Commit](#step-11)
+- [Step 12 — Squash i merge do DEFAULT_BRANCH (tylko APPROVED)](#step-12)
 - [Step 13 — Utwórz zagadnienie Task/Bug w Redmine](#step-13)
 - [Zakończenie](#zakończenie)
 - [Re-CR](#re-cr) → `references/re-review.md`
@@ -50,6 +51,7 @@ Zapamiętaj wyciągnięty numer jako `ISSUE_ID`.
 ## Step 2 — Pobierz kontekst z Redmine
 
 → Szczegóły w `references/redmine-integration.md` (sekcja "Pobieranie zagadnienia")
+→ Jeśli brak Redmine MCP — patrz sekcja "Tryb manualny — Step 2" w tym samym pliku
 
 ---
 
@@ -76,70 +78,64 @@ Czy kontynuować bez fetch?
 ```
 Jeśli user potwierdzi — kontynuuj. Jeśli odmówi — zakończ.
 
-**Ustal domyślną gałąź bazową** (używana w Step 6 i Step 5 do sprawdzenia aktualności):
+**Następnie uruchom skrypt zbierający dane o gałęziach:**
 
 ```bash
-git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||'
+bash .claude/skills/code-review/scripts/collect_branch_info.sh {ISSUE_ID}
 ```
 
-Jeśli polecenie zwróci wynik (np. `main`, `develop`, `master`) — zapamiętaj jako `DEFAULT_BRANCH`.
-Jeśli polecenie zawiedzie (brak `origin/HEAD`) — sprawdź kolejno:
+Skrypt zwraca JSON z polami:
+- `default_branch` — wykryta gałąź bazowa (może być pusta jeśli nie znaleziono)
+- `current_branch` — aktualny branch
+- `feature_branch` — `feature/{ISSUE_ID}` jeśli istnieje, lub `""` jeśli nie
+- `alternate_branches` — lista branchy zawierających `{ISSUE_ID}` (gdy brak dokładnego dopasowania)
+- `is_clean` — czy working tree jest czysty
+- `dirty_count` — liczba niezacommitowanych plików
+- `behind_count` — ile commitów feature branch jest za `origin/{DEFAULT_BRANCH}`
+- `remote_ahead_count` — ile commitów `origin/feature/{ISSUE_ID}` ma więcej niż lokalny branch (czy trzeba `git pull --rebase`)
 
-```bash
-git branch -r | grep -E 'origin/(main|develop|master)$' | head -1 | sed 's|.*origin/||'
-```
-
-Jeśli nadal brak — zapytaj usera: „Nie mogę ustalić domyślnej gałęzi. Jak nazywa się gałąź bazowa (np. `main`, `develop`, `master`)?" i użyj podanej wartości jako `DEFAULT_BRANCH`.
+Zapamiętaj `default_branch` jako `DEFAULT_BRANCH`. Jeśli pole jest puste — zapytaj usera: „Nie mogę ustalić domyślnej gałęzi. Jak nazywa się gałąź bazowa (np. `main`, `develop`, `master`)?"
 
 ---
 
 ## Step 5 — Znajdź i przełącz na feature branch
 
-Najpierw sprawdź czy working tree jest czysty:
+Użyj danych z `collect_branch_info.sh` (Step 4):
 
-```bash
-git status --porcelain
+**Jeśli `is_clean` = false** — zatrzymaj się i poinformuj usera:
 ```
-
-Jeśli są niezacommitowane zmiany — zatrzymaj się i poinformuj usera:
-```
-Working tree ma niezacommitowane zmiany. Przed przełączeniem na feature branch
+Working tree ma niezacommitowane zmiany ({dirty_count} plik(ów)). Przed przełączeniem na feature branch
 zapisz lub schowaj swoje zmiany:
   git stash        (odłóż zmiany tymczasowo)
   git commit ...   (zacommituj zmiany)
 ```
 Czekaj na potwierdzenie usera że zmiany są zabezpieczone, zanim przejdziesz dalej.
 
-Sprawdź czy branch `feature/{ISSUE_ID}` istnieje:
+**Jeśli `feature_branch` jest puste:**
+- Jeśli `alternate_branches` jest niepuste — wyświetl listę i zapytaj usera którego użyć
+- Jeśli `alternate_branches` też puste — zatrzymaj się: „Nie znaleziono brancha dla zagadnienia #{ISSUE_ID}. Upewnij się, że feature branch istnieje."
 
-```bash
-git branch -a | grep "feature/{ISSUE_ID}"
-```
-
-**Jeśli branch NIE istnieje:**
-- Szukaj alternatywnych branchy zawierających `{ISSUE_ID}`:
-  ```bash
-  git branch -a | grep "{ISSUE_ID}"
-  ```
-- Jeśli znaleziono — wyświetl listę i zapytaj usera którego użyć
-- Jeśli brak — zatrzymaj się: „Nie znaleziono brancha dla zagadnienia #{ISSUE_ID}. Upewnij się, że feature branch istnieje."
-
-**Jeśli branch istnieje:**
-- Sprawdź aktualny branch: `git branch --show-current`
-- Jeśli już jesteśmy na `feature/{ISSUE_ID}` — kontynuuj
+**Jeśli `feature_branch` = `feature/{ISSUE_ID}`:**
+- Jeśli `current_branch` = `feature/{ISSUE_ID}` — kontynuuj (już jesteś na właściwym branchu)
 - Jeśli nie — przełącz się:
   - Lokalnie: `git checkout feature/{ISSUE_ID}`
   - Tylko zdalnie: `git checkout -b feature/{ISSUE_ID} origin/feature/{ISSUE_ID}`
 
-**Sprawdź czy branch jest aktualny relative do `DEFAULT_BRANCH`:**
+**Po checkout — zaktualizuj branch do wersji zdalnej:**
 
+Jeśli `remote_ahead_count` > 0 — wykonaj:
 ```bash
-git rev-list --count HEAD..origin/{DEFAULT_BRANCH}
+git pull --rebase origin feature/{ISSUE_ID}
+```
+Jeśli `git pull --rebase` zakończy się konfliktem — zatrzymaj się i poinformuj usera:
+```
+git pull --rebase nie powiódł się — konflikt z origin/feature/{ISSUE_ID}.
+Rozwiąż konflikty ręcznie i wróć do review.
 ```
 
-Jeśli wynik > 0 — poinformuj usera (nie blokuj, ale zaznacz):
+**Jeśli `behind_count` > 0** — poinformuj usera (nie blokuj):
 ```
-Uwaga: feature/{ISSUE_ID} jest {N} commit(ów) za origin/{DEFAULT_BRANCH}.
+Uwaga: feature/{ISSUE_ID} jest {behind_count} commit(ów) za origin/{DEFAULT_BRANCH}.
 Branch może mieć konflikty przy merge — rozważ rebase przed review:
   git rebase origin/{DEFAULT_BRANCH}
 Kontynuuję review na aktualnym stanie brancha.
@@ -147,76 +143,56 @@ Kontynuuję review na aktualnym stanie brancha.
 
 ---
 
-## Step 6 — Zidentyfikuj autora kodu (assignee CR)
+## Step 6 — Ustal zakres diff
 
-Pobierz autora ostatniego commita (pomijając commity CR z wzorcem `#BUG|`):
+### 6a. Zbierz commity i ustal zakres
 
-```bash
-git log HEAD --invert-grep --grep="#BUG|" -1 --format="%ae %an"
-```
-
-Wyciągnij:
-- **AUTHOR_EMAIL** — pełny email (np. `aleksander.bak@evolpe.pl`)
-- **AUTHOR_LOGIN** — część przed `@` (np. `aleksander.bak`)
-- **AUTHOR_NAME** — pełne imię i nazwisko z gita
-
-**Wielu autorów na branchu:** Sprawdź czy commity feature na branchu mają więcej niż jednego autora:
+Uruchom skrypt (na feature branchu po Step 5):
 
 ```bash
-git log origin/{DEFAULT_BRANCH}..HEAD --invert-grep --grep="#BUG|" --format="%ae" | sort -u
+bash .claude/skills/code-review/scripts/collect_commit_scope.sh {ISSUE_ID}
 ```
 
-*(Na tym etapie zakres diff nie jest jeszcze ustalony — używamy pełnego zakresu brancha. Dokładne zawężenie do zakresu diff nastąpi w Step 7.)*
+Skrypt zwraca JSON z polami:
+- `is_re_review` — czy wykryto poprzednie commity CR (`#BUG|`)
+- `last_cr_hash` — hash ostatniego commita CR (tylko gdy `is_re_review` = true, inaczej pusty string)
+- `feature_commits` — lista `{hash, message}` commitów feature do przeglądu
+- `cr_commits` — lista commitów CR (poprzednie code review)
+- `feature_count` — liczba commitów feature
+- `diff_base` — `{oldest_hash}~1`
+- `diff_head` — `{newest_hash}`
+- `error` (opcjonalnie) — opis błędu gdy brak commitów
 
-Jeśli więcej niż jeden email — wyświetl listę i zapytaj usera:
-```
-Na branchu commitowało kilka osób:
-  - {email1} ({name1})
-  - {email2} ({name2})
+Jeśli JSON zawiera `error`:
+- `no_commits` → zatrzymaj się: „Nie znaleziono commitów odwołujących się do #{ISSUE_ID}. Upewnij się, że commity zawierają `ref #{ISSUE_ID}` w wiadomości."
+- `no_new_commits` → zatrzymaj się: „Brak nowych zmian do przeglądu od ostatniego CR."
 
-Do kogo przypisać zagadnienie CR z poprawkami?
-```
+Zapamiętaj `diff_base` jako `DIFF_BASE`, `diff_head` jako `DIFF_HEAD` oraz `last_cr_hash` jako `LAST_CR_COMMIT` (używany w re-review.md Step R2).
 
-Następnie wyszukaj użytkownika w Redmine → patrz `references/redmine-integration.md` (sekcja "Lookup użytkownika").
-
-**Potwierdź z userem:**
-```
-Autor ostatniego commita: {AUTHOR_NAME} ({AUTHOR_EMAIL})
-CR zostanie przypisany do: {ASSIGNEE_NAME} (Redmine #{ASSIGNEE_ID})
-
-Czy to właściwa osoba do zgłoszenia poprawek CR?
-```
-
-Czekaj na potwierdzenie. Jeśli user poda inną osobę — wyszukaj ją w Redmine i użyj zamiast.
-
----
-
-## Step 7 — Ustal zakres diff
-
-### 7a. Znajdź commity powiązane z zagadnieniem
+### 6b. Zidentyfikuj autora kodu
 
 ```bash
-git log --oneline --no-merges --grep="ref #{ISSUE_ID}"
+bash .claude/skills/code-review/scripts/get_author_info.sh {ISSUE_ID} {DIFF_BASE} {DIFF_HEAD}
 ```
 
-Wydziel:
-- **Commity feature** — BEZ `#BUG|` w wiadomości
-- **Commity CR** — Z `#BUG|` w wiadomości (wcześniejsze code review)
+Skrypt zwraca JSON z polami:
+- `author_email` — pełny email (np. `aleksander.bak@evolpe.pl`)
+- `author_name` — pełne imię i nazwisko z gita
+- `author_login` — część przed `@` (np. `aleksander.bak`)
+- `is_multiple_authors` — czy w zakresie commitowało więcej niż jedna osoba
+- `all_authors` — lista `{email, name, login}` wszystkich autorów (gdy `is_multiple_authors` = true)
 
-Jeśli brak commitów z `ref #{ISSUE_ID}` — zatrzymaj się: „Nie znaleziono commitów odwołujących się do #{ISSUE_ID}. Upewnij się, że commity zawierają `ref #{ISSUE_ID}` w wiadomości."
+Jeśli JSON zawiera `error: no_feature_commits` — zatrzymaj się i poinformuj usera.
 
-### 7b. Sprawdź czy to re-review
+Zapamiętaj `author_login` jako `AUTHOR_LOGIN` — potrzebny w Step 11 do formatu commita.
+Jeśli `is_multiple_authors` = true — zanotuj wszystkich autorów z `all_authors` do późniejszego użycia.
 
-Jeśli istnieją commity CR (`#BUG|`) — to jest re-review. Uwzględnij tylko commity feature **nowsze** niż ostatni commit CR.
+Pytanie o to, do kogo przypisać zagadnienie CR, jest zadawane dopiero w Step 13 — tuż przed jego utworzeniem, kiedy wiadomo już czy w ogóle powstaną jakieś findings.
 
-Jeśli po odfiltrowaniu nie ma commitów feature — zatrzymaj się: „Brak nowych zmian do przeglądu od ostatniego CR."
-
-**Routing re-review:** Jeśli to re-review, po ustaleniu zakresu diff (Steps 7c–7e) **przejdź do `references/re-review.md` Step R0** zamiast kontynuować Step 8. Pełna procedura re-CR jest tam opisana.
-
-### 7c. Potwierdź zakres z userem
+### 6c. Potwierdź zakres z userem
 
 ```
-Znaleziono {N} commit(ów) powiązanych z #{ISSUE_ID}:
+Znaleziono {feature_count} commit(ów) powiązanych z #{ISSUE_ID}:
 
 {hash1} {message1}
 {hash2} {message2}
@@ -225,47 +201,67 @@ Znaleziono {N} commit(ów) powiązanych z #{ISSUE_ID}:
 Czy code review ma dotyczyć właśnie tych commitów?
 ```
 
-Czekaj na potwierdzenie. Jeśli user wskaże inne commity — dostosuj zakres.
+Czekaj na potwierdzenie. Jeśli user wskaże inne commity — dostosuj zakres i ustaw `DIFF_BASE`/`DIFF_HEAD` ręcznie.
 
-### 7d. Ustaw zakres diff
+### 6d. Routing re-review
 
-- **Jeden commit:** `DIFF_BASE={commit}~1`, `DIFF_HEAD={commit}`
-- **Wiele commitów:** `DIFF_BASE={najstarszy_commit}~1`, `DIFF_HEAD={najnowszy_commit}`
+Jeśli `is_re_review` = true (skrypt wykrył commity CR `#BUG|` na branchu) — **przejdź do `references/re-review.md` Step R0** zamiast kontynuować Step 6e i Step 7.
 
-### 7e. Pokaż statystyki
+`LAST_CR_COMMIT` jest dostępny od Step 6a — re-review.md używa go jako zakresu diffu (`LAST_CR_COMMIT..HEAD`).
+
+### 6e. Pokaż statystyki (tylko normalny flow — pomiń jeśli `is_re_review` = true)
 
 ```bash
 git diff {DIFF_BASE}..{DIFF_HEAD} --stat
 ```
 
-Jeśli diff jest pusty — zatrzymaj się: „Brak zmian do przeglądu."
-
 ---
 
-## Step 8 — Przeprowadź code review
+## Step 7 — Przeprowadź code review
 
-### 8a. Zbierz materiał
+### 7a. Zbierz materiał
+
+Uruchom skrypt zbierający statystyki diffu:
 
 ```bash
-git diff {DIFF_BASE}..{DIFF_HEAD} --name-only
+bash .claude/skills/code-review/scripts/collect_diff_stats.sh {DIFF_BASE} {DIFF_HEAD}
+```
+
+Skrypt zwraca JSON z polami:
+- `total_lines` — łączna liczba zmienionych linii
+- `review_mode` — `sequential` (<80), `parallel` (80–499), `chunked` (≥500)
+- `reviewable_count` / `vendor_count` / `binary_count` — liczby plików wg kategorii
+- `files[]` — per plik: `path`, `diff_lines`, `file_lines`, `is_binary`, `is_vendor`, `context_strategy`
+
+Pole `context_strategy` per plik przyjmuje wartości:
+- `full_file` — odczytaj pełną aktualną wersję pliku
+- `extended_diff` — użyj `git diff -U30 {DIFF_BASE}..{DIFF_HEAD} -- {plik}`
+- `skip` — pomiń (vendor, generated, binarny)
+
+Jeśli `error` = `empty_diff` — zatrzymaj się: „Brak zmian do przeglądu."
+
+**Po odczytaniu JSON:**
+
+Pobierz właściwy diff do przekazania agentom:
+```bash
 git diff {DIFF_BASE}..{DIFF_HEAD}
 ```
 
-Dla każdego zmienionego pliku tekstowego — przeczytaj pełną aktualną wersję (nie tylko diff) aby mieć kontekst.
-
-**Pliki vendor/generated:** Przed review odfiltruj pliki, które nie powinny być ręcznie reviewowane:
-- Katalogi: `vendor/`, `node_modules/`, `bower_components/`, `composer.lock`, `package-lock.json`, `yarn.lock`
-- Pliki auto-generowane: `*.min.js`, `*.min.css`, pliki z nagłówkiem `// This file is auto-generated` lub podobnym
-- Jeśli te pliki są w diffie — pomiń je w review i odnotuj: „Pominięto {N} plik(ów) vendor/generated."
-- Wyjątek: jeśli plik `composer.lock` / `package-lock.json` zawiera nieoczekiwaną zmianę zależności — odnotuj jako finding INFO.
-
-**Pliki binarne:** Jeśli diff zawiera pliki binarne (obrazy, PDF, skompilowane pliki itp.) — pomiń je w review i poinformuj usera:
+Dla każdego pliku z `context_strategy` = `full_file` — odczytaj pełną wersję.
+Dla każdego pliku z `context_strategy` = `extended_diff` — pobierz rozszerzony diff:
+```bash
+git diff -U30 {DIFF_BASE}..{DIFF_HEAD} -- {plik}
 ```
-Pominięto {N} plik(ów) binarnych (brak możliwości analizy treści):
+
+**Jeśli `vendor_count` > 0** — odnotuj: „Pominięto {vendor_count} plik(ów) vendor/generated."
+
+**Jeśli `binary_count` > 0** — poinformuj usera:
+```
+Pominięto {binary_count} plik(ów) binarnych (brak możliwości analizy treści):
   - {plik1}
   - {plik2}
 ```
-Jeśli plik binarny wydaje się nieoczekiwany w kontekście zagadnienia (np. skompilowany plik `.class` w repozytorium PHP) — odnotuj to jako finding INFO.
+Jeśli plik binarny wydaje się nieoczekiwany w kontekście zagadnienia (np. skompilowany `.class` w repo PHP) — odnotuj jako finding INFO.
 
 **Pusty opis zagadnienia:** Jeśli opis lub kryteria akceptacji w Redmine są puste — poinformuj agentów, że Agent 1 (Poprawność) ma ograniczony kontekst wymagań. Agent 1 wtedy skupia się wyłącznie na spójności z tytułem zagadnienia i ogólnych konwencjach projektu zamiast na zgodności z kryteriami akceptacji.
 
@@ -281,31 +277,54 @@ Jeśli jakiś skill został wybrany, **wypisz podsumowanie**:
 | {nazwa-skilla} | {krótkie uzasadnienie na podstawie diffa/zagadnienia} |
 ```
 
-### 8b. Heurystyka rozmiaru
+**Code Review Overrides:** Po odczytaniu SKILL.md trafnych skilli, sprawdź czy którykolwiek z nich zawiera sekcję **„## Code Review Overrides"**. Jeśli tak:
 
-```bash
-git diff {DIFF_BASE}..{DIFF_HEAD} --stat
+1. Przeczytaj sekcję overrides — każda podsekcja (### nagłówek) to jedna kategoria z **wzorcem ścieżek** i **instrukcjami review**
+2. Zidentyfikuj pliki z diffa pasujące do wzorców
+3. **Zastosuj instrukcje z overrides dokładnie tak, jak je opisuje skill systemowy** — override definiuje jak reviewować pasujące pliki. Może to być np.:
+   - Wydzielenie plików do osobnego subagenta z własnym zakresem sprawdzeń
+   - Dodatkowe reguły przekazane standardowym 5 agentom
+   - Inna konfiguracja agentów lub priorytetów
+   - Inne podejście — skill systemowy jest autorytetem
+4. Findings z overrides włącz do wspólnej listy findings w Step 7d (scalanie przebiegają normalnie)
+5. Jeśli override wydziela pliki do osobnego review — pliki standardowe przechodzą normalnie przez Steps 7b–7f. Jeśli **wszystkie** pliki pasują do overrides i override je wydziela — pomiń Steps 7b–7f i przejdź do Step 7d
+
+Poinformuj usera o zastosowanych overrides:
+
+```
+🔀 Code Review Overrides (z {nazwa-skilla}):
+
+| Kategoria | Pliki | Tryb review |
+|---|---|---|
+| {nazwa kategorii} | {N} plik(ów) | {krótki opis trybu z overrides} |
+
+Pozostałe pliki ({M}): standardowy review 5 agentów.
 ```
 
-Policz łączną liczbę zmienionych linii (insertions + deletions):
+Jeśli żaden skill nie definiuje overrides — kontynuuj normalnie (wszystkie pliki trafiają do standardowego review).
 
-- **Mniej niż 20 linii** → pomiń agentów, przeprowadź review sekwencyjnie (oceń 5 kryteriów jedno po drugim wg `references/review-criteria.md`, uwzględniając reguły ze skilli (8a)), przejdź do Step 8f.
-- **20 lub więcej linii** → kontynuuj do 8c.
+### 7b. Heurystyka rozmiaru
 
-### 8b-bis. Bardzo duże diffy (>500 linii)
+Użyj `review_mode` z `collect_diff_stats.sh` (Step 7a):
+
+- **`sequential`** (total_lines < 80) → pomiń agentów, przeprowadź review sekwencyjnie (oceń 5 kryteriów jedno po drugim wg `references/review-criteria.md`, uwzględniając reguły ze skilli (7a)), przejdź do Step 7f.
+- **`parallel`** (80–499 linii) → kontynuuj do 7c.
+- **`chunked`** (≥500 linii) → przejdź do 7b-bis.
+
+### 7b-bis. Bardzo duże diffy (>500 linii)
 
 Jeśli łączna liczba zmienionych linii przekracza **500**, podziel diff na chunki po plikach:
 
 1. Zgrupuj zmienione pliki tematycznie (np. modele razem, widoki razem, testy razem) — maksymalnie **3 grupy**
 2. Poinformuj usera: „Diff jest duży ({N} linii) — review może potrwać dłużej."
-3. Dla każdej grupy uruchom osobny zestaw 5 agentów zgodnie z Step 8c, przekazując im tylko diff plików z danej grupy (nie cały diff). Grupy przetwarzaj **sekwencyjnie** (jedna po drugiej), nie wszystkie naraz — łączna liczba równoległych agentów nie może przekroczyć 5 w danym momencie.
-4. Zbierz findings ze wszystkich grup i scal je łącznie w Step 8d — duplikaty między grupami usuwaj według tych samych reguł co duplikaty między agentami
+3. Dla każdej grupy uruchom osobny zestaw 5 agentów zgodnie z Step 7c, przekazując im tylko diff plików z danej grupy (nie cały diff). Grupy przetwarzaj **sekwencyjnie** (jedna po drugiej), nie wszystkie naraz — łączna liczba równoległych agentów nie może przekroczyć 5 w danym momencie.
+4. Zbierz findings ze wszystkich grup i scal je łącznie w Step 7d — duplikaty między grupami usuwaj według tych samych reguł co duplikaty między agentami
 
 ---
 
-### 8c. Uruchom 5 równoległych agentów review
+### 7c. Uruchom 5 równoległych agentów review
 
-Jeśli w 8a wybrano jakiekolwiek skille, **wypisz mapowanie** przed uruchomieniem agentów:
+Jeśli w 7a wybrano jakiekolwiek skille, **wypisz mapowanie** przed uruchomieniem agentów:
 
 ```
 🤖 Przypisanie skilli do agentów review:
@@ -323,8 +342,10 @@ Mapowanie agent → dodatkowy kontekst:
 
 Uruchom jednocześnie 5 niezależnych agentów. Każdy agent dostaje:
 - Pełny diff (`git diff {DIFF_BASE}..{DIFF_HEAD}`)
-- Pełne wersje zmienionych plików
-- Kontekst zagadnienia z Redmine (tytuł, opis, kryteria akceptacji)
+- Kontekst plików (pełne wersje lub rozszerzony diff wg reguły z Step 7a)
+- Kontekst zagadnienia z Redmine — **zróżnicowany per agent:**
+  - Agent 1 (Poprawność): pełny kontekst — tytuł, opis, kryteria akceptacji
+  - Agenci 2–5: tylko tytuł zagadnienia (opis i kryteria akceptacji niepotrzebne do oceny kodu)
 - **Jedno** kryterium z `references/review-criteria.md` (sekcja "Kryteria review — baseline")
 
 Przypisanie modeli:
@@ -336,35 +357,42 @@ Przypisanie modeli:
 
 Każdy agent zwraca findings w formacie z sekcji "Format findings" w `references/review-criteria.md`.
 
-> Reguły z trafnych skilli (zebrane w 8a) uzupełniają baseline kryteria agentów — nie zastępują ich.
+> Reguły z trafnych skilli (zebrane w 7a) uzupełniają baseline kryteria agentów — nie zastępują ich.
 
-### 8d. Zbierz i scal wyniki
+### 7d. Zbierz i scal wyniki
 
 Połącz findings ze wszystkich 5 agentów w jedną listę. Zduplikowane findings (ten sam plik + linia zgłoszona przez kilka agentów) — zachowaj jeden, wybierz wyższe severity i notuj oba agenty.
 
 **Scalanie confidence dla duplikatów:** Jeśli ten sam finding pojawia się u 2 lub więcej agentów i żaden z nich nie przekracza progu 80, zachowaj go z `max(confidence)` spośród wszystkich zgłoszeń. Powtórzenie przez niezależnych agentów jest samo w sobie sygnałem, że problem jest realny.
 
-### 8e. Confidence scoring
+### 7e. Confidence scoring
 
 Dla każdego finding o severity **CRITICAL** lub **WARNING** uruchom równoległego agenta Haiku — maksymalnie **10 agentów jednocześnie**. Jeśli findings jest więcej niż 10, przetwarzaj w batchach po 10. Każdy agent Haiku:
-- Otrzymuje: diff + pełny plik + treść finding
+- Otrzymuje:
+  - treść finding (plik, linia, opis, sugestia)
+  - diff pliku z findingiem — dobierz kontekst do rozmiaru pliku:
+    - plik ≤ 300 linii: `git diff {DIFF_BASE}..{DIFF_HEAD} -- {plik}` (pełny diff pliku)
+    - plik > 300 linii: `git diff -U5 {DIFF_BASE}..{DIFF_HEAD} -- {plik}` (zredukowany kontekst diffa)
+  - fragment pliku wokół problematycznej linii (±30 linii): `sed -n '{start},{end}p' {plik}`
 - Ocenia pewność wg rubric z `references/review-criteria.md` (sekcja "Confidence scoring")
 - Zwraca: score (0–100) + uzasadnienie
 
+**Weryfikacja po scoringu:** Jeśli chcesz zweryfikować konkretny finding w kodzie, używaj `grep` lub `git diff -- {plik}` zamiast `Read` całego pliku. `Read` pełnego pliku jest uzasadniony tylko gdy grep nie daje wystarczającego kontekstu (np. potrzeba zrozumienia szerokiego otoczenia funkcji). Unikaj szczególnie `Read` dużych plików (>200 linii) jeśli grep już zwrócił pasujące fragmenty.
+
 Findings o severity **INFO** przechodzą bez scoringu.
 
-### 8f. Filtruj i finalizuj
+### 7f. Filtruj i finalizuj
 
-**Ścieżka sekwencyjna (z 8b, <20 linii):** Brak confidence scoringu — wszystkie findings przechodzą. Posortuj: CRITICAL → WARNING → INFO. Sekcja "Odrzucone" w raporcie jest pomijana.
+**Ścieżka sekwencyjna (z 7b, <80 linii):** Brak confidence scoringu — wszystkie findings przechodzą. Posortuj: CRITICAL → WARNING → INFO. Sekcja "Odrzucone" w raporcie jest pomijana.
 
-**Ścieżka równoległa (z 8e, >=20 linii):**
+**Ścieżka równoległa (z 7e, >=80 linii):**
 - Zachowaj findings z confidence >= progu (patrz `references/review-criteria.md` sekcja "Confidence scoring") oraz wszystkie INFO
 - Odrzucone findings (poniżej progu) zachowaj osobno — będą w sekcji "Odrzucone" w raporcie
 - Posortuj finalne findings: CRITICAL → WARNING → INFO, w obrębie severity malejąco po confidence
 
 ---
 
-## Step 9 — Napisz raport CR
+## Step 8 — Napisz raport CR
 
 → Szczegóły w `references/review-criteria.md` (sekcja "Szablon raportu CR")
 
@@ -374,13 +402,13 @@ Upewnij się że katalog istnieje: `mkdir -p .ai/tasks/{ISSUE_ID}`
 
 ---
 
-## Step 10 — Dodaj inline FIXME komentarze
+## Step 9 — Dodaj inline FIXME komentarze
 
 → Szczegóły w `references/review-criteria.md` (sekcja "Inline FIXME komentarze")
 
 ---
 
-## Step 11 — Zapytaj usera o commit
+## Step 10 — Zapytaj usera o commit
 
 Wyświetl podsumowanie i poczekaj na zgodę:
 
@@ -389,7 +417,7 @@ Code review zakończony dla #{ISSUE_ID}.
 
 Raport: .ai/tasks/{ISSUE_ID}/cr.md
 Znaleziono: {X} CRITICAL, {Y} WARNING, {Z} INFO
-[Odrzucone (confidence < 80): {N} findings]  ← tylko dla ścieżki równoległej (>=20 linii)
+[Odrzucone (confidence < 80): {N} findings]  ← tylko dla ścieżki równoległej (>=80 linii)
 Dodano FIXME komentarzy: {N}
 Werdykt: {APPROVED / CHANGES REQUESTED / NEEDS DISCUSSION}
 
@@ -402,11 +430,11 @@ User może mieć dodatkowe uwagi — wprowadź poprawki jeśli poprosi. Jeśli o
 
 ---
 
-## Step 12 — Commit
+## Step 11 — Commit
 
 Po uzyskaniu zgody:
 
-1. Użyj `AUTHOR_LOGIN` z Step 6 (np. `aleksander.bak`)
+1. Użyj `AUTHOR_LOGIN` z Step 6b (np. `aleksander.bak`)
 
 2. Sprawdź czy `.ai/tasks/` nie jest w `.gitignore`:
    ```bash
@@ -424,7 +452,7 @@ Po uzyskaniu zgody:
 3. Dodaj pliki — **tylko** raport CR i pliki z dodanymi komentarzami FIXME:
    ```bash
    git add .ai/tasks/{ISSUE_ID}/cr.md
-   git add {plik1} {plik2} ...  # pliki które dostały komentarze FIXME w Step 10
+   git add {plik1} {plik2} ...  # pliki które dostały komentarze FIXME w Step 9
    ```
    Nie używaj `git add -u` ani `git add .` — mogłoby to wciągnąć do commitu niezwiązane zmiany z working tree.
 
@@ -460,11 +488,11 @@ Po uzyskaniu zgody:
 
 ---
 
-## Step 12b — Squash i merge do DEFAULT_BRANCH (tylko APPROVED)
+## Step 12 — Squash i merge do DEFAULT_BRANCH (tylko APPROVED)
 
 Wykonaj ten krok **tylko jeśli werdykt to APPROVED** (brak CRITICAL i WARNING). Jeśli werdykt to CHANGES REQUESTED lub NEEDS DISCUSSION — pomiń i przejdź do Step 13.
 
-### 12b-1. Propozycja squash
+### 12-1. Propozycja squash
 
 Sprawdź czy squash jest możliwy:
 
@@ -472,9 +500,9 @@ Sprawdź czy squash jest możliwy:
 git log --oneline --merges origin/{DEFAULT_BRANCH}..HEAD
 ```
 
-Jeśli są merge commity → poinformuj usera że squash niemożliwy (merge commity w historii) i przejdź do 12b-2.
+Jeśli są merge commity → poinformuj usera że squash niemożliwy (merge commity w historii) i przejdź do 12-2.
 
-Jeśli jest tylko 1 commit na branchu → pomiń squash, przejdź do 12b-2.
+Jeśli jest tylko 1 commit na branchu → pomiń squash, przejdź do 12-2.
 
 W pozostałych przypadkach — **zaproponuj squash i CZEKAJ na potwierdzenie usera**:
 
@@ -501,7 +529,7 @@ git commit -m "ref #{ISSUE_ID} {ISSUE_SUBJECT}"
 
 **Ważne:** po `git reset --soft` sprawdź staged files (`git status`) i upewnij się że `.ai/tasks/{ISSUE_ID}/cr.md` jest zaindeksowany przed commitem.
 
-### 12b-2. Propozycja merge do DEFAULT_BRANCH
+### 12-2. Propozycja merge do DEFAULT_BRANCH
 
 **CZEKAJ na potwierdzenie usera** przed wykonaniem merge:
 
@@ -541,7 +569,10 @@ git push origin {DEFAULT_BRANCH}
 
 ## Step 13 — Utwórz zagadnienie Task/Bug w Redmine
 
-→ Szczegóły w `references/redmine-integration.md` (sekcja "Tworzenie zagadnienia CR")
+Przed utworzeniem zagadnienia wykonaj lookup użytkownika i potwierdź assignee:
+→ `references/redmine-integration.md` (sekcja "Lookup użytkownika w Redmine — Step 13")
+
+→ Następnie szczegóły tworzenia w `references/redmine-integration.md` (sekcja "Tworzenie zagadnienia CR")
 
 W opisie zagadnienia Redmine umieść link do raportu CR: `.ai/tasks/{ISSUE_ID}/cr.md`
 
@@ -592,13 +623,13 @@ Werdykt: NEEDS DISCUSSION — znaleziono problemy wymagające rozmowy z zespołe
 Nie utworzono zagadnienia w Redmine — wymagana rozmowa przed podjęciem działań.
 ```
 
-Ścieżka NEEDS DISCUSSION nie tworzy zagadnienia w Redmine (Step 13 jest pomijany). Raport CR i FIXME są commitowane normalnie (Steps 11–12).
+Ścieżka NEEDS DISCUSSION nie tworzy zagadnienia w Redmine (Step 13 jest pomijany). Raport CR i FIXME są commitowane normalnie (Steps 10–11).
 
 ---
 
 ## Re-CR
 
-Jeśli w Step 7b wykryto commity CR na branchu (`#BUG|`), po ustaleniu zakresu diff przejdź do pełnej procedury re-CR:
+Jeśli w Step 6d (po potwierdzeniu zakresu w Step 6c) wykryto commity CR na branchu (`#BUG|`), przejdź do pełnej procedury re-CR:
 
 → `references/re-review.md`
 

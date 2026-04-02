@@ -1,6 +1,6 @@
 ---
 name: code-review
-version: 1.4.0
+version: 1.6.0
 description: >
   Skill do przeprowadzania AI code review na feature branchu powiązanym
   z zagadnieniem Redmine. Używaj gdy user prosi o code review, CR,
@@ -49,8 +49,7 @@ Ten skill realizuje fazę **Code Review** z procesu AI w SD (po Self Code Review
 
 Jeśli `redmine_request` **nie jest dostępne**, nie przerywaj — przejdź w tryb manualny:
 - **Step 2** — poproś usera o wklejenie danych zagadnienia z Redmine
-- **Step 6** — zapytaj usera kto jest autorem/osobą do przypisania
-- **Step 13** — wyświetl gotowe dane do ręcznego utworzenia zagadnienia w Redmine
+- **Step 13** — zapytaj usera kto jest autorem/osobą do przypisania, następnie wyświetl gotowe dane do ręcznego utworzenia zagadnienia w Redmine
 
 ---
 
@@ -63,14 +62,13 @@ Pełna procedura w `references/workflow.md`. Skrócony przebieg:
 3. **Walidacja trackera** — tylko User Story/User Story Bug/Mały rozwój/Błąd krytyczny/Błąd niekrytyczny/Epic/Spike (nie Task); dozwolone ID: 14, 15, 16, 18, 19, 22, 23
 4. **git fetch --all** — pobierz najnowsze zmiany
 5. **Checkout branch** — `feature/{ISSUE_ID}` lub alternatywny po pytaniu
-6. **Zidentyfikuj autora** — git log → Redmine lookup → potwierdzenie z userem
-7. **Ustal zakres diff** — commity feature, re-review detection, potwierdzenie; jeśli to re-review → przejdź do `references/re-review.md`
-8. **Przeprowadź review** — zbierz diff i trafne skille; uruchom review (sekwencyjny dla <20 linii, 5 równoległych agentów dla >=20 linii, podział na chunki po plikach dla >500 linii); szczegóły w `references/workflow.md` (Steps 8a–8f, 8b-bis)
-9. **Napisz raport** — `.ai/tasks/{ISSUE_ID}/cr.md` z werdyktem i checklistą CRITICAL/WARNING
-10. **Dodaj FIXME** — inline komentarze dla CRITICAL i WARNING
-11. **Zapytaj o commit** — podsumowanie + potwierdzenie usera
-12. **Commit** — format `ref #{ISSUE_ID} {ISSUE_SUBJECT} #BUG|{AUTHOR_LOGIN}`; następnie zapytaj o push
-12b. **Squash i merge** — tylko przy APPROVED: zaproponuj squash commitów brancha do jednego, następnie merge do `DEFAULT_BRANCH` (oba kroki wymagają osobnego potwierdzenia usera)
+6. **Ustal zakres diff** — 6a: commity feature, re-review detection, DIFF_BASE/DIFF_HEAD; 6b: zidentyfikuj autora (git log → AUTHOR_LOGIN); 6c: potwierdzenie zakresu z userem; 6d: routing re-review → `references/re-review.md`; 6e: statystyki
+7. **Przeprowadź review** — zbierz diff i trafne skille; sprawdź **Code Review Overrides** w skillach systemowych (mogą modyfikować sposób review dla określonych typów plików); uruchom review (sekwencyjny dla <80 linii, 5 równoległych agentów dla >=80 linii, podział na chunki po plikach dla >500 linii); szczegóły w `references/workflow.md` (Steps 7a–7f, 7b-bis)
+8. **Napisz raport** — `.ai/tasks/{ISSUE_ID}/cr.md` z werdyktem i checklistą CRITICAL/WARNING
+9. **Dodaj FIXME** — inline komentarze dla CRITICAL i WARNING
+10. **Zapytaj o commit** — podsumowanie + potwierdzenie usera
+11. **Commit** — format `ref #{ISSUE_ID} {ISSUE_SUBJECT} #BUG|{AUTHOR_LOGIN}`; następnie zapytaj o push
+12. **Squash i merge** — tylko przy APPROVED: zaproponuj squash commitów brancha do jednego, następnie merge do `DEFAULT_BRANCH` (oba kroki wymagają osobnego potwierdzenia usera)
 13. **Utwórz zagadnienie** — Task z kategorią Bug w Redmine (tylko gdy są CRITICAL/WARNING i werdykt to CHANGES REQUESTED; pomijany dla APPROVED i NEEDS DISCUSSION); dla projektów serwisowych twórz je w podprojekcie `-internal`, nie w projekcie nadrzędnym; następnie wyświetl podsumowanie końcowe
 
 ---
@@ -81,7 +79,7 @@ Skill generuje trzy artefakty:
 
 - **Raport CR** — `.ai/tasks/{ISSUE_ID}/cr.md` z werdyktem (APPROVED / CHANGES REQUESTED / NEEDS DISCUSSION) i listą findings
 - **Inline FIXME** — komentarze w plikach źródłowych dla każdego CRITICAL i WARNING
-- **Zagadnienie Redmine** — Task z kategorią Bug, przypisany do autora kodu (tylko gdy są CRITICAL lub WARNING)
+- **Zagadnienie Redmine** — Task z kategorią Bug, przypisany do autora kodu (tylko gdy werdykt to CHANGES REQUESTED — pomijane dla APPROVED i NEEDS DISCUSSION)
 - **Obsługa sporów** — podczas re-CR, jeśli deweloper dodał komentarz przy FIXME wyjaśniający dlaczego nie poprawia, reviewer decyduje czy zaakceptować; zaakceptowane findings trafiają do checklisty jako zrealizowane z komentarzem dewelopera
 
 ---
@@ -90,11 +88,25 @@ Skill generuje trzy artefakty:
 
 | Kiedy | Czytaj |
 |---|---|
-| Steps 2, 3, 6 (Redmine), 13 | `references/redmine-integration.md` |
-| Steps 2, 6, 13 bez Redmine MCP (tryb manualny) | `references/redmine-integration.md` (sekcje "Tryb manualny") |
-| Steps 8b–8f, 9, 10 | `references/review-criteria.md` |
-| Pełna procedura, steps 1, 4–7, 11–12b | `references/workflow.md` |
-| Re-CR (po wykryciu commitów CR w Step 7b) | `references/re-review.md` |
+| Steps 2, 3, 13 (Redmine) | `references/redmine-integration.md` |
+| Steps 2, 13 bez Redmine MCP (tryb manualny) | `references/redmine-integration.md` (sekcje "Tryb manualny") |
+| Steps 7b–7f, 8, 9 | `references/review-criteria.md` |
+| Pełna procedura, steps 1, 4–6, 7–12 | `references/workflow.md` |
+| Re-CR (po wykryciu commitów CR w Step 6d) | `references/re-review.md` |
+
+## Skrypty bash (steps 4-5, 6, 7a-7b)
+
+Skill używa skryptów z `scripts/` do zbierania danych git — wywołuj je z katalogu projektu:
+
+| Skrypt | Krok | Zastępuje |
+|---|---|---|
+| `scripts/collect_branch_info.sh {ISSUE_ID}` | Step 4-5 | DEFAULT_BRANCH, dirty check, branch lookup, behind_count, remote_ahead_count |
+| `scripts/collect_commit_scope.sh {ISSUE_ID}` | Step 6a | commit filtering, re-review detection, DIFF_BASE/DIFF_HEAD/LAST_CR_COMMIT |
+| `scripts/get_author_info.sh {ISSUE_ID} {DIFF_BASE} {DIFF_HEAD}` | Step 6b (po 6a) | autor ostatniego commita feature, lista autorów w zakresie |
+| `scripts/collect_diff_stats.sh {DIFF_BASE} {DIFF_HEAD}` | Step 7a-7b, Re-CR Step R2 | numstat, file sizes, context strategy per plik, review_mode |
+| `scripts/load_previous_findings.sh {ISSUE_ID}` | Re-CR Step R0 | parsowanie cr.md, lista niezatwierdzonych findings (CRITICAL/WARNING) z poprzedniej rundy |
+
+Skrypty zwracają JSON. Szczegóły wywołania i interpretacji wyniku w `references/workflow.md`.
 
 Zacznij od `references/workflow.md` — zawiera kompletną sekwencję z odwołaniami do pozostałych plików.
 
@@ -102,10 +114,11 @@ Zacznij od `references/workflow.md` — zawiera kompletną sekwencję z odwołan
 
 ## Oczekiwany sposób pracy
 
-- **Potwierdzaj z userem** w kluczowych momentach: autor kodu (Step 6), zakres commitów (Step 7c), commit raportu (Step 11)
-- **Nie commituj bez zgody** — zawsze czekaj na odpowiedź przed Step 12
-- **Skille** — w Step 8a przejrzyj skille załadowane w kontekście i zdecyduj, które są trafne na podstawie diffa i kontekstu zagadnienia z Redmine; wypisz podsumowanie wybranych, a przed uruchomieniem agentów (Step 8c) — mapowanie skill → agent; przekaż reguły agentom jako uzupełnienie baseline kryteriów
-- **Re-review** — jeśli istnieją wcześniejsze commity CR (`BUG|`), automatycznie ogranicz zakres do nowych zmian (Step 7b), następnie przejdź do `references/re-review.md`
+- **Potwierdzaj z userem** w kluczowych momentach: zakres commitów (Step 6c), commit raportu (Step 10), assignee CR (Step 13 — tylko gdy są findings)
+- **Nie commituj bez zgody** — zawsze czekaj na odpowiedź przed Step 11
+- **Skille** — w Step 7a przejrzyj skille załadowane w kontekście i zdecyduj, które są trafne na podstawie diffa i kontekstu zagadnienia z Redmine; wypisz podsumowanie wybranych, a przed uruchomieniem agentów (Step 7c) — mapowanie skill → agent; przekaż reguły agentom jako uzupełnienie baseline kryteriów
+- **Code Review Overrides** — jeśli skill systemowy definiuje sekcję „## Code Review Overrides", zastosuj zawarte tam instrukcje dla pasujących plików — override może modyfikować sposób review (np. wydzielić pliki do osobnego subagenta, dodać dodatkowe reguły, zmienić kryteria). Szczegóły mechanizmu w `references/workflow.md` Step 7a
+- **Re-review** — jeśli istnieją wcześniejsze commity CR (`BUG|`), automatycznie ogranicz zakres do nowych zmian (Step 6d), następnie przejdź do `references/re-review.md`
 - **APPROVED (CR i Re-CR): przed squash i merge zawsze pytaj o potwierdzenie** — squash jest nieodwracalny lokalnie; merge do develop wymaga oddzielnego potwierdzenia
 - **Brak CRITICAL/WARNING** — nie twórz zagadnienia w Redmine, wyświetl informację
 - **Projekt serwisowy** — w Step 13 twórz CR BUG w podprojekcie `-internal`; `parent_issue_id` pozostaje numerem oryginalnego zagadnienia z projektu serwisowego
