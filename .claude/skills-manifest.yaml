@@ -78,3 +78,6 @@ skills:
   - name: merge-to-release
     local_only: true
 
+  - name: finish-release
+    local_only: true
+
