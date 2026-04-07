@@ -16,7 +16,7 @@
         "Raport zawiera nagłówek z datą, branch feature/200001 i zakresem commitów",
         "Raport zawiera sekcję 'Znalezione problemy' z co najmniej jedną z kategorii: CRITICAL, WARNING lub INFO",
         "Raport zawiera werdykt: APPROVED, CHANGES REQUESTED lub NEEDS DISCUSSION",
-        "Skill NIE uruchamiał równoległych agentów review (diff <20 linii — ścieżka sekwencyjna)",
+        "Skill NIE uruchamiał równoległych agentów review (diff <80 linii — ścieżka sekwencyjna)",
         "Jeśli znaleziono CRITICAL lub WARNING, plik src/cart.php zawiera komentarz FIXME"
       ]
     },

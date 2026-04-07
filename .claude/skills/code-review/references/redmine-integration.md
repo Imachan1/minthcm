@@ -92,9 +92,21 @@ Jeśli zagadnienie ma `parent.id` — podpowiedz: „Parent tego taska: #{parent
 
 ---
 
-## Lookup użytkownika w Redmine (Step 6 — część Redmine)
+## Lookup użytkownika w Redmine — Step 13
 
-Po ustaleniu `AUTHOR_LOGIN` z git log, wyszukaj użytkownika w Redmine:
+Wykonywany tuż przed utworzeniem zagadnienia CR (Step 13), tylko gdy werdykt to CHANGES REQUESTED i są findings CRITICAL lub WARNING.
+
+**Jeśli `is_multiple_authors` = true** (odnotowane w Step 6b) — najpierw zapytaj usera:
+```
+W zakresie commitowało kilka osób:
+  - {email1} ({name1})
+  - {email2} ({name2})
+
+Do kogo przypisać zagadnienie CR z poprawkami?
+```
+Użyj wskazanego loginu jako `AUTHOR_LOGIN` do lookup poniżej.
+
+Po ustaleniu `AUTHOR_LOGIN`, wyszukaj użytkownika w Redmine:
 
 ```
 redmine_request: GET /users.json?name={AUTHOR_LOGIN}
@@ -104,6 +116,12 @@ Zapamiętaj:
 - **ASSIGNEE_ID** — Redmine user id
 - **ASSIGNEE_NAME** — pełne imię i nazwisko z Redmine
 
+**Jeśli `/users.json` zwróci błąd 403** (brak uprawnień do listowania użytkowników) — nie próbuj alternatywnych endpointów. Od razu zapytaj:
+```
+Nie mam uprawnień do wyszukiwania użytkowników w Redmine (403).
+Podaj Redmine ID osoby, której robię CR (możesz sprawdzić na stronie profilu: https://redmine.evolpe.net/users/{ID}).
+```
+
 **Jeśli wyszukiwanie nie zwróciło wyników lub lista jest pusta** — zapytaj usera:
 ```
 Nie znalazłem użytkownika "{AUTHOR_LOGIN}" w Redmine.
@@ -111,9 +129,22 @@ Podaj Redmine ID osoby, której robię CR (możesz sprawdzić na stronie profilu
 ```
 Czekaj na podanie `ASSIGNEE_ID` i opcjonalnie `ASSIGNEE_NAME` przez usera.
 
-Jeśli user poda inną osobę do przypisania CR — wyszukaj ją w Redmine tą samą metodą.
+**Jeśli user podał ID** — pobierz dane użytkownika bezpośrednio:
+```
+redmine_request: GET /users/{ASSIGNEE_ID}.json
+```
+Zapamiętaj `ASSIGNEE_NAME` z odpowiedzi.
 
-### Tryb manualny — Step 6
+**Potwierdź z userem:**
+```
+Autor kodu: {AUTHOR_NAME} ({AUTHOR_EMAIL})
+CR zostanie przypisany do: {ASSIGNEE_NAME} (Redmine #{ASSIGNEE_ID})
+
+Czy to właściwa osoba do zgłoszenia poprawek CR?
+```
+Czekaj na potwierdzenie. Jeśli user poda inną osobę — wyszukaj ją w Redmine tą samą metodą.
+
+### Tryb manualny — Step 13 (lookup)
 
 Jeśli nie masz `redmine_request`, wyświetl:
 

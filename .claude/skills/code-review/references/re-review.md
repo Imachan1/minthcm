@@ -1,6 +1,8 @@
 # Re-CR — Procedura ponownego code review
 
-Używaj tego pliku gdy w Step 7b workflow.md wykryto commity CR (`#BUG|`) na branchu — czyli to jest re-review po wprowadzeniu poprawek przez developera.
+Używaj tego pliku gdy w Step 6d workflow.md wykryto commity CR (`#BUG|`) na branchu — czyli to jest re-review po wprowadzeniu poprawek przez developera.
+
+> `LAST_CR_COMMIT` — hash ostatniego commita CR — jest dostępny z wyników `collect_commit_scope.sh` (pole `last_cr_hash`) pobranych w Step 6a workflow.md. Upewnij się, że go zapamiętałeś przed wejściem do tej procedury.
 
 ## Spis treści
 
@@ -16,15 +18,20 @@ Używaj tego pliku gdy w Step 7b workflow.md wykryto commity CR (`#BUG|`) na bra
 
 ---
 
-## Step R0 — Ustal numer rundy Re-CR
+## Step R0 — Ustal numer rundy Re-CR + wczytaj poprzedni raport
 
-Najpierw sprawdź czy raport CR istnieje:
+Uruchom skrypt (zastępuje ręczne sprawdzenie pliku i parsowanie checkboxów):
 
 ```bash
-test -f .ai/tasks/{ISSUE_ID}/cr.md && echo "exists" || echo "missing"
+bash .claude/skills/code-review/scripts/load_previous_findings.sh {ISSUE_ID}
 ```
 
-Jeśli plik **nie istnieje** — zatrzymaj się i poinformuj usera:
+Skrypt zwraca JSON z polami:
+- `recr_round` — numer bieżącej rundy (1 = pierwsza runda po oryginalnym CR)
+- `previous_findings_count` — liczba niezatwierdzonych findings z poprzedniej rundy
+- `findings` — lista `{index, severity, file, line, description}` niezatwierdzonych findings
+
+Jeśli JSON zawiera `error: cr_not_found` — zatrzymaj się i poinformuj usera:
 ```
 Nie znaleziono raportu CR: .ai/tasks/{ISSUE_ID}/cr.md
 Re-review wymaga wcześniejszego CR wykonanego tym skillem.
@@ -36,42 +43,46 @@ Czy chcesz przeprowadzić pełny CR (nie re-review) dla #{ISSUE_ID}?
 ```
 Jeśli user potwierdzi — wróć do Step 1 workflow.md i wykonaj pełny CR.
 
-Jeśli plik **istnieje** — przeczytaj `.ai/tasks/{ISSUE_ID}/cr.md` i policz istniejące sekcje `## Re-CR:`:
-
-- Jeśli brak sekcji `## Re-CR:` → to **Re-CR #1** (pierwsza runda po oryginalnym CR)
-- Jeśli istnieje N sekcji `## Re-CR:` → to **Re-CR #(N+1)**
-
-Zapamiętaj `RECR_ROUND` — używany w nagłówku sekcji w raporcie.
+Zapamiętaj `recr_round` jako `RECR_ROUND` — używany w nagłówku sekcji w raporcie.
 
 ---
 
 ## Step R1 — Wczytaj poprzedni raport CR
 
-Przeczytaj `.ai/tasks/{ISSUE_ID}/cr.md`.
+Skrypt `load_previous_findings.sh` z Step R0 automatycznie:
+- wykrywa właściwą rundę (ostatnia sekcja `## Re-CR` lub oryginalny CR)
+- parsuje tylko `- [ ]` (niezatwierdzone) checkboxy z CRITICAL i WARNING
+- pomija `- [x]` (już zatwierdzone)
 
-**Wielokrotne rundy Re-CR:** weryfikuj findings z **ostatniej rundy**, nie z oryginalnego CR:
-- Jeśli istnieją sekcje `## Re-CR:` w pliku → parsuj checkboxy z **ostatniej** sekcji Re-CR
-- Jeśli brak sekcji Re-CR → parsuj checkboxy z oryginalnego raportu (sekcje CRITICAL i WARNING)
+Lista `PREVIOUS_FINDINGS` gotowa z pola `findings` w JSON.
 
-Parsuj tylko `- [ ]` (niezaznaczone checkboxy) z sekcji CRITICAL i WARNING.
-
-Zbuduj listę `PREVIOUS_FINDINGS` do weryfikacji — każdy wpis to:
-- numer lub identyfikator finding
-- plik i linia
-- opis problemu
+Każdy wpis zawiera: `file`, `line`, `severity`, `description`.
 
 ---
 
 ## Step R2 — Weryfikuj poprawki
 
-Dla każdego finding z `PREVIOUS_FINDINGS`:
+**Grupuj findings po pliku** — zamiast czytać każdy plik osobno dla każdego findingu, najpierw zbierz wszystkie findings dotyczące tego samego pliku i pobierz kontekst raz:
 
-1. Sprawdź diff od ostatniego commita CR do HEAD:
+Najpierw jednym wywołaniem zbierz strategię kontekstu dla wszystkich plików z `PREVIOUS_FINDINGS`:
+
+```bash
+bash .claude/skills/code-review/scripts/collect_diff_stats.sh {LAST_CR_COMMIT} HEAD
+```
+
+Użyj pola `context_strategy` per plik z wynikowego JSON (znaczenie takie samo jak w Step 7a workflow.md: `full_file` / `extended_diff` / `skip`).
+
+Dla każdej **unikalnej** ścieżki pliku z `PREVIOUS_FINDINGS`:
+
+1. Pobierz diff dla pliku:
    ```bash
    git diff {LAST_CR_COMMIT}..HEAD -- {plik}
    ```
-2. Przeczytaj aktualny stan pliku (Read tool)
-3. Oceń: **FIXED** lub **UNFIXED**
+2. Pobierz kontekst pliku wg `context_strategy` z JSON:
+   - `full_file` → przeczytaj pełną wersję (Read tool)
+   - `extended_diff` → użyj `git diff -U30 {LAST_CR_COMMIT}..HEAD -- {plik}`
+   - `skip` → pomiń
+3. Oceń wszystkie findings dotyczące tego pliku naraz: każde **FIXED** lub **UNFIXED**
 
 **FIXED** → zaznacz checkbox w oryginalnym raporcie: zmień `- [ ]` na `- [x]` w odpowiedniej sekcji cr.md
 
@@ -129,9 +140,9 @@ Poprawiono/zaakceptowano {N+K}/{N+K+M} zgłoszonych problemów.
 
 ## Step R3 — Review nowych zmian
 
-Przeprowadź normalny review według Steps 8–8f z `workflow.md`.
+Przeprowadź normalny review według Steps 7–7f z `workflow.md`.
 
-Zakres diff już ustalony w Step 7b/7d (od ostatniego commita CR do HEAD) — użyj tego zakresu.
+Zakres diff dla re-review: `LAST_CR_COMMIT..HEAD` (od ostatniego commita CR do HEAD) — ustalony w Step 6a workflow.md.
 
 Wszystkie zasady z `references/review-criteria.md` (kryteria, agenty, confidence scoring) obowiązują tak samo jak przy pierwszym CR.
 
@@ -217,7 +228,7 @@ Dla findings z odpowiedzią dewelopera z Step R2:
 
 ### R6b. Commit raportu Re-CR
 
-Zapytaj usera o zgodę na commit (analogicznie do Step 11 z workflow.md):
+Zapytaj usera o zgodę na commit (analogicznie do Step 10 z workflow.md):
 
 ```
 Re-CR #{RECR_ROUND} zakończony dla #{ISSUE_ID}.
