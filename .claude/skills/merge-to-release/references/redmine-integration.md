@@ -68,7 +68,7 @@ W API ustawia sie je jako `release_id` w body PUT/POST.
 | Wersja | release_id |
 |---|---|
 | 4.4.0 | 252 |
-| 4.3.1 | ? |
+| 4.3.1 | 264 |
 | 4.3.0 | 156 |
 | 4.2.2 | 231 |
 | 4.2.1 | 228 |
