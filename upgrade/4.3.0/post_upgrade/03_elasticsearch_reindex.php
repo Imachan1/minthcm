@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 return function (OutputInterface $output): bool
 {
-    $mint_cli = __DIR__ . '/../../../../MintCLI';
+    $mint_cli = __DIR__ . '/../../../MintCLI';
 
     $output->writeln('  Reindexing Elasticsearch (this may take several minutes depending on database size)...');
     exec('php ' . escapeshellarg($mint_cli) . ' elasticsearch:reindex 2>&1', $out, $code);

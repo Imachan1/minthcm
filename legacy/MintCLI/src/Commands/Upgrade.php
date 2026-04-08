@@ -114,7 +114,7 @@ class Upgrade extends Command
                 $this->io->note([
                     "Upgrade interrupted at step: {$step_name}",
                     'Details have been written to: ' . UpgradeService::UPGRADE_LOG,
-                    "To resume, run: php MintCLI upgrade --tag={$tag}",
+                    "To resume, run: ./MintCLI upgrade --tag={$tag}",
                 ]);
                 return Command::FAILURE;
             }
