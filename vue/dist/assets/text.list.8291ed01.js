@@ -1,1 +1,5 @@
+<<<<<<<< HEAD:vue/dist/assets/text.list.8291ed01.js
 import{l as a,n,q as s,t as o}from"./index.85f34d44.js";const l=a({__name:"text.list",props:{defs:{},data:{}},setup(t){const e=t;return(p,r)=>(n(),s("span",null,o(e.data.bean[e.defs.name]),1))}});export{l as default};
+========
+import{l as a,n,q as s,t as o}from"./index.10d9344d.js";const l=a({__name:"text.list",props:{defs:{},data:{}},setup(t){const e=t;return(p,r)=>(n(),s("span",null,o(e.data.bean[e.defs.name]),1))}});export{l as default};
+>>>>>>>> feature/upgrade_420:vue/dist/assets/text.list.f49b79fc.js
