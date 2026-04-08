@@ -8,7 +8,7 @@
   },
   "elasticsearch": {
     "min": "7.10",
-    "max": "7.16"
+    "max": "7.16.99"
   },
   "node": {
     "min": "21"
