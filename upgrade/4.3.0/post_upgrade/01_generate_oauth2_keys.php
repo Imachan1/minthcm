@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 return function (OutputInterface $output): bool
 {
-    $root        = __DIR__ . '/../../../..';
+    $root        = __DIR__ . '/../../..';
     $mint_cli    = $root . '/MintCLI';
     $keys_dir    = $root . '/api/configs';
     $private_key = $keys_dir . '/private.key';
@@ -23,7 +23,7 @@ return function (OutputInterface $output): bool
     }
 
     $output->writeln('  Generating OAuth2 private/public key pair...');
-    exec('php ' . escapeshellarg($mint_cli) . ' oauth2:create-keys 2>&1', $out, $code);
+    exec('php ' . escapeshellarg($mint_cli) . ' oauth2:createKeys 2>&1', $out, $code);
     if ($code !== 0) {
         $output->writeln('  <error>oauth2:create-keys failed: ' . implode(' ', $out) . '</error>');
         return false;
