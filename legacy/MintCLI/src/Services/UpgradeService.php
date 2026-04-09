@@ -173,35 +173,52 @@ class UpgradeService
     }
 
     // -------------------------------------------------------------------------
+    // Vue dist
+    // -------------------------------------------------------------------------
+
+    /**
+     * Copy contents of vue/dist/ to the root project directory.
+     */
+    public function copyVueDist(): bool
+    {
+        $src = './vue/dist';
+        $dst = '.';
+
+        if (!is_dir($src)) {
+            $this->output->writeln('  <comment>vue/dist directory not found, skipping.</comment>');
+            return true;
+        }
+
+        return $this->exec("cp -r " . escapeshellarg($src) . "/. " . escapeshellarg($dst) . "/", 'Copying vue/dist to root');
+    }
+
+    // -------------------------------------------------------------------------
     // Permissions
     // -------------------------------------------------------------------------
 
-    public function setupPermissions(): bool
+    public function setupPermissions(string $owner = 'www-data:www-data'): bool
     {
-        $this->log('Setting file permissions...');
+        $this->log("Setting file ownership ({$owner}) and permissions...");
 
-        $dirs = [
-            self::INSTANCE_DIR . '/cache',
-            self::INSTANCE_DIR . '/custom',
-            self::INSTANCE_DIR . '/modules',
-            self::INSTANCE_DIR . '/upload',
-            self::INSTANCE_DIR . '/data',
-        ];
-
-        foreach ($dirs as $dir) {
-            if (is_dir($dir)) {
-                exec("chmod -R 755 " . escapeshellarg($dir) . " 2>&1", $out, $code);
-                if ($code !== 0) {
-                    $error = "Failed to set permissions on {$dir}: " . implode(' ', $out);
-                    $this->last_error = $error;
-                    $this->output->writeln("  <error>{$error}</error>");
-                    $this->logError($error);
-                    return false;
-                }
-            }
+        exec("chown -R " . escapeshellarg($owner) . " . 2>&1", $out, $code);
+        if ($code !== 0) {
+            $error = "Failed to set ownership to {$owner}: " . implode(' ', $out);
+            $this->last_error = $error;
+            $this->output->writeln("  <error>{$error}</error>");
+            $this->logError($error);
+            return false;
         }
 
-        $this->output->writeln('  <info>Permissions set successfully.</info>');
+        exec("chmod -R 755 . 2>&1", $out, $code);
+        if ($code !== 0) {
+            $error = "Failed to set permissions: " . implode(' ', $out);
+            $this->last_error = $error;
+            $this->output->writeln("  <error>{$error}</error>");
+            $this->logError($error);
+            return false;
+        }
+
+        $this->output->writeln("  <info>Ownership and permissions set successfully.</info>");
         return true;
     }
 
@@ -309,8 +326,11 @@ class UpgradeService
             return true;
         }
 
-        foreach ($files as $file) {
-            $this->output->writeln("  Running: " . basename($file));
+        foreach ($files as $i => $file) {
+            if ($i > 0) {
+                $this->output->writeln('');
+            }
+            $this->output->writeln("  <options=bold>Running: " . basename($file) . "</options=bold>");
             // Each script must return a callable: return function(OutputInterface $output): bool { ... };
             // Using require (not require_once) + closure contract avoids global function redeclaration
             // when multiple scripts are loaded in the same process.

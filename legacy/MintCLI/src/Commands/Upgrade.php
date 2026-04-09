@@ -16,6 +16,7 @@ class Upgrade extends Command
     protected static $defaultDescription = 'Upgrade MintHCM to a specific version tag';
 
     private SymfonyStyle $io;
+    private InputInterface $input;
     private UpgradeService $upgrade_service;
     private UpgradeRequirementsService $requirements_service;
     private array $skip_steps = [];
@@ -29,12 +30,15 @@ class Upgrade extends Command
             ->addOption('skip-checks', null, InputOption::VALUE_NONE, 'Skip environment requirement checks (not recommended)')
             ->addOption('git-user', null, InputOption::VALUE_REQUIRED, 'Git username for HTTPS authentication')
             ->addOption('git-pass', null, InputOption::VALUE_REQUIRED, 'Git password or personal access token for HTTPS authentication')
+            ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Automatically confirm all prompts (for non-interactive/batch use)')
+            ->addOption('owner', null, InputOption::VALUE_REQUIRED, 'File owner to set as user:group (e.g. www-data:www-data)', 'www-data:www-data')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = new SymfonyStyle($input, $output);
+        $this->input = $input;
         $this->upgrade_service = new UpgradeService($output);
         $this->requirements_service = new UpgradeRequirementsService();
 
@@ -89,13 +93,17 @@ class Upgrade extends Command
             }
         }
 
+        $owner = (string) $input->getOption('owner');
+
         $steps = [
-            'pre_upgrade'        => fn() => $this->runPreUpgrade($effective_upgrade),
-            'fetch_and_checkout' => fn() => $this->fetchAndCheckout($tag),
-            'apply_permissions'  => fn() => $this->applyPermissions(),
-            'instance_rebuild'   => fn() => $this->runInstanceRebuild(),
-            'migrations'         => fn() => $this->runMigrations($effective_upgrade),
-            'post_upgrade'       => fn() => $this->runPostUpgrade($effective_upgrade),
+            'pre_upgrade'               => fn() => $this->runPreUpgrade($effective_upgrade),
+            'fetch_and_checkout'        => fn() => $this->fetchAndCheckout($tag),
+            'copy_vue_dist'             => fn() => $this->copyVueDist(),
+            'apply_permissions'         => fn() => $this->applyPermissions($owner),
+            'instance_rebuild'          => fn() => $this->runInstanceRebuild(),
+            'migrations'                => fn() => $this->runMigrations($effective_upgrade),
+            'post_upgrade'              => fn() => $this->runPostUpgrade($effective_upgrade),
+            'finally_apply_permissions' => fn() => $this->applyPermissions($owner),
         ];
 
         foreach ($steps as $step_name => $step) {
@@ -162,6 +170,11 @@ class Upgrade extends Command
             'Completed    : ' . (implode(', ', $state['completed_steps'] ?? []) ?: '(none)'),
         ]);
 
+        if ($this->input->getOption('yes') || !$this->io->isInteractive()) {
+            $this->io->text('Auto-confirming resume (--yes or non-interactive mode).');
+            return true;
+        }
+
         return $this->io->confirm('Do you want to resume the upgrade from the failed step?', true);
     }
 
@@ -225,6 +238,11 @@ class Upgrade extends Command
             'Ensure you have a FULL BACKUP of your database and files before proceeding.',
         ]);
 
+        if ($this->input->getOption('yes') || !$this->io->isInteractive()) {
+            $this->io->text('Auto-confirming upgrade (--yes or non-interactive mode).');
+            return true;
+        }
+
         if (!$this->io->confirm('Do you want to continue with the upgrade?', false)) {
             $this->io->text('Upgrade cancelled.');
             return false;
@@ -251,6 +269,7 @@ class Upgrade extends Command
             return false;
         }
 
+        $this->io->newLine();
         $this->io->section("Checking out {$tag}...");
         if (!$this->upgrade_service->gitCheckout($tag)) {
             $this->io->error("git checkout {$tag} failed. Upgrade aborted.");
@@ -260,11 +279,21 @@ class Upgrade extends Command
         return true;
     }
 
-    private function applyPermissions(): bool
+    private function copyVueDist(): bool
     {
-        $this->io->section('Setting file permissions...');
-        if (!$this->upgrade_service->setupPermissions()) {
-            $this->io->error('Failed to set file permissions.');
+        $this->io->section('Copying vue/dist to root directory...');
+        if (!$this->upgrade_service->copyVueDist()) {
+            $this->io->error('Failed to copy vue/dist files.');
+            return false;
+        }
+        return true;
+    }
+
+    private function applyPermissions(string $owner = 'www-data:www-data'): bool
+    {
+        $this->io->section("Setting file ownership and permissions (owner: {$owner})...");
+        if (!$this->upgrade_service->setupPermissions($owner)) {
+            $this->io->error('Failed to set file ownership/permissions.');
             return false;
         }
         return true;
