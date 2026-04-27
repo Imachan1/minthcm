@@ -4377,6 +4377,26 @@ $app_list_strings['role_status'] = array(
     'inactive' => 'Inactive',
 );
 
+$app_list_strings['achievements_category_list'] = array(
+    '' => '',
+    'aktywnosc' => 'Activity',
+    'rekrutacja' => 'Recruitment',
+    'sprzedaz' => 'Sales',
+    'integracje' => 'Integrations',
+    'specjalne' => 'Special',
+);
+$app_list_strings['achievements_award_type_list'] = array(
+    '' => '',
+    'automatyczny' => 'Automatic',
+    'reczny' => 'Manual',
+    'hybrydowy' => 'Hybrid',
+);
+$app_list_strings['achievements_visibility_list'] = array(
+    '' => '',
+    'publiczna' => 'Public',
+    'ukryta' => 'Hidden',
+);
+
 $app_list_strings['news_type_list'] = array(
     '' => '',
     'announcement' => 'Announcement',

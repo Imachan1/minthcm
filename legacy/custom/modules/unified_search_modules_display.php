@@ -1,6 +1,10 @@
 <?php
 // created: 2024-12-12 15:06:49
 $unified_search_modules_display = array (
+  'Achievements' => 
+  array (
+    'visible' => true,
+  ),
   'ACLRoles' => 
   array (
     'visible' => true,
